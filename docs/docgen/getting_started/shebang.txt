@@ -1,5 +1,17 @@
 $ buildtest build -b tutorials/shebang.yml 
 
+
+User:  siddiq90
+Hostname:  DOE-7086392.fios-router.home
+Platform:  Darwin
+Current Time:  2021/04/10 00:58:05
+buildtest path: /Users/siddiq90/Documents/github/buildtest/bin/buildtest
+buildtest version:  0.9.5
+python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-Ir4AdrfC/bin/python
+python version:  3.7.3
+Test Directory:  /Users/siddiq90/.buildtest/var/tests
+Configuration File:  /Users/siddiq90/Documents/github/buildtest/buildtest/settings/config.yml
+
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
@@ -15,14 +27,21 @@ Discovered Buildspecs:
 -------------------------+--------------+------------------------------------------------------------------
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/shebang.yml
 
+
+
+name                   description
+---------------------  ---------------------------------------------------------
+bash_login_shebang     customize shebang line with bash login shell
+bash_nonlogin_shebang  customize shebang line with default bash (nonlogin) shell
+
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
 
- name                  | id       | type   | executor           | tags      | compiler
------------------------+----------+--------+--------------------+-----------+---------------------------------------------------------------------------------------------------------------------------
- bash_login_shebang    | 0a66f080 | script | generic.local.bash | tutorials | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shebang/bash_login_shebang/2/stage/generate.sh
- bash_nonlogin_shebang | b63c7eec | script | generic.local.bash | tutorials | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shebang/bash_nonlogin_shebang/2/stage/generate.sh
+ name                  | id       | type   | executor           | tags      | testpath
+-----------------------+----------+--------+--------------------+-----------+-----------------------------------------------------------------------------------------------------------
+ bash_login_shebang    | 85250d83 | script | generic.local.bash | tutorials | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/shebang/bash_login_shebang/2/stage/generate.sh
+ bash_nonlogin_shebang | d4728294 | script | generic.local.bash | tutorials | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/shebang/bash_nonlogin_shebang/2/stage/generate.sh
 
 
 
@@ -30,10 +49,10 @@ Discovered Buildspecs:
 | Stage: Running Test |
 +---------------------+ 
 
- name                  | id       | executor           | status   |   returncode | testpath
------------------------+----------+--------------------+----------+--------------+---------------------------------------------------------------------------------------------------------------------------
- bash_login_shebang    | 0a66f080 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shebang/bash_login_shebang/2/stage/generate.sh
- bash_nonlogin_shebang | b63c7eec | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/shebang/bash_nonlogin_shebang/2/stage/generate.sh
+ name                  | id       | executor           | status   |   returncode
+-----------------------+----------+--------------------+----------+--------------
+ bash_login_shebang    | 85250d83 | generic.local.bash | PASS     |            0
+ bash_nonlogin_shebang | d4728294 | generic.local.bash | PASS     |            0
 
 +----------------------+
 | Stage: Test Summary  |
@@ -43,4 +62,5 @@ Passed Tests: 2/2 Percentage: 100.000%
 Failed Tests: 0/2 Percentage: 0.000%
 
 
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_bv0t5kds.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_c7i71p03.log
+A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/github/buildtest/buildtest.log

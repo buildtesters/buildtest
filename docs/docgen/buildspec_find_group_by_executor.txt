@@ -2,7 +2,9 @@ $ buildtest buildspec find --group-by-executor
 +----------------------+------------------------------+-------------------------------------------------------------------+
 | executor             | name                         | description                                                       |
 +======================+==============================+===================================================================+
-| generic.local.bash   | run_only_macos_distro        | Run test only if linux distro is darwin.                          |
+| generic.local.bash   | run_only_macos_distro        | Run test only if distro is darwin.                                |
++----------------------+------------------------------+-------------------------------------------------------------------+
+| generic.local.bash   | run_only_linux_distro        | Run test only if distro is CentOS.                                |
 +----------------------+------------------------------+-------------------------------------------------------------------+
 | generic.local.bash   | _bin_bash_shell              | /bin/bash shell example                                           |
 +----------------------+------------------------------+-------------------------------------------------------------------+

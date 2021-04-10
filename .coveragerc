@@ -4,6 +4,8 @@ source = buildtest
 omit =
     buildtest/docgen/*
     buildtest/main.py
+    buildtest/defaults.py
+    buildtest/__init__.py
 
 [report]
 # Regexes for lines to exclude from consideration
@@ -12,7 +14,6 @@ exclude_lines =
     pragma: no cover
     def __repr__
     def __str__
-    class BuildTestParser
     if self.debug
 
     # Don't complain if tests don't hit defensive assertion code:

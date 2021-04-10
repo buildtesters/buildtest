@@ -11,6 +11,7 @@ from buildtest.cli.config import (
 from buildtest.utils.file import walk_tree
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_schema, load_recipe
+from buildtest.system import BuildTestSystem
 
 pytest_root = os.path.dirname(os.path.dirname(__file__))
 
@@ -47,7 +48,9 @@ def test_config_validate():
 
 @pytest.mark.cli
 def test_config_summary():
-    view_summary()
+    system = BuildTestSystem()
+    system.check()
+    view_summary(system)
 
 
 @pytest.mark.cli

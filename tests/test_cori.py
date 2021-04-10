@@ -3,6 +3,7 @@ import pytest
 import socket
 from buildtest.cli.build import BuildTest
 from buildtest.cli.compilers import BuildtestCompilers
+from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
 
 
@@ -17,7 +18,12 @@ def test_cori():
     buildspec_files = walk_tree(
         os.path.join(os.getenv("BUILDTEST_ROOT"), "tests", "examples", "cori"), ".yml"
     )
-    cmd = BuildTest(config_file=settings_file, buildspecs=buildspec_files)
+
+    system = BuildTestSystem()
+    system.check()
+    cmd = BuildTest(
+        config_file=settings_file, buildspecs=buildspec_files, buildtest_system=system
+    )
     cmd.build()
 
     # testing buildtest config compilers find

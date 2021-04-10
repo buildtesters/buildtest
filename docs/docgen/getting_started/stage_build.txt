@@ -1,5 +1,17 @@
 $ buildtest build -b tutorials/vars.yml --stage=build 
 
+
+User:  siddiq90
+Hostname:  DOE-7086392.fios-router.home
+Platform:  Darwin
+Current Time:  2021/04/10 00:58:06
+buildtest path: /Users/siddiq90/Documents/github/buildtest/bin/buildtest
+buildtest version:  0.9.5
+python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-Ir4AdrfC/bin/python
+python version:  3.7.3
+Test Directory:  /Users/siddiq90/.buildtest/var/tests
+Configuration File:  /Users/siddiq90/Documents/github/buildtest/buildtest/settings/config.yml
+
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
@@ -15,13 +27,20 @@ Discovered Buildspecs:
 -------------------------+--------------+---------------------------------------------------------------
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/vars.yml
 
+
+
+name            description
+--------------  -------------------------------
+variables_bash  Declare shell variables in bash
+
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
 
- name           | id       | type   | executor           | tags          | compiler
-----------------+----------+--------+--------------------+---------------+-----------------------------------------------------------------------------------------------------------------
- variables_bash | 41d48d93 | script | generic.local.bash | ['tutorials'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vars/variables_bash/4/stage/generate.sh
+ name           | id       | type   | executor           | tags          | testpath
+----------------+----------+--------+--------------------+---------------+-------------------------------------------------------------------------------------------------
+ variables_bash | 05b2bd5f | script | generic.local.bash | ['tutorials'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/4/stage/generate.sh
 
 
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_0z0qnb_p.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_0isk93ju.log
+A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/github/buildtest/buildtest.log

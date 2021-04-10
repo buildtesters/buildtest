@@ -1,15 +1,27 @@
 $ buildtest build -b general_tests/configuration/ -b tutorials/vars.yml 
 
+
+User:  siddiq90
+Hostname:  DOE-7086392.fios-router.home
+Platform:  Darwin
+Current Time:  2021/04/10 00:57:34
+buildtest path: /Users/siddiq90/Documents/github/buildtest/bin/buildtest
+buildtest version:  0.9.5
+python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-Ir4AdrfC/bin/python
+python version:  3.7.3
+Test Directory:  /Users/siddiq90/.buildtest/var/tests
+Configuration File:  /Users/siddiq90/Documents/github/buildtest/buildtest/settings/config.yml
+
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
 
 Discovered Buildspecs:
-/Users/siddiq90/Documents/github/buildtest/general_tests/configuration/systemd-default-target.yml
 /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/ssh_localhost.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/configuration/disk_usage.yml
+/Users/siddiq90/Documents/github/buildtest/general_tests/configuration/systemd-default-target.yml
 /Users/siddiq90/Documents/github/buildtest/tutorials/vars.yml
 /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/ulimits.yml
+/Users/siddiq90/Documents/github/buildtest/general_tests/configuration/disk_usage.yml
 /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/kernel_state.yml
 [ssh_localhost_remotecommand][/Users/siddiq90/Documents/github/buildtest/general_tests/configuration/ssh_localhost.yml]: test is skipped because this test is expected to run on platform: Linux but detected platform: Darwin.
 
@@ -19,29 +31,44 @@ Discovered Buildspecs:
 
  schemafile              | validstate   | buildspec
 -------------------------+--------------+---------------------------------------------------------------------------------------------------
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/systemd-default-target.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/ssh_localhost.yml
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/disk_usage.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/systemd-default-target.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/vars.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/ulimits.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/disk_usage.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/kernel_state.yml
+
+
+
+name                          description
+----------------------------  -----------------------------------------------------------
+systemd_default_target        check if default target is multi-user.target
+variables_bash                Declare shell variables in bash
+ulimit_filelock_unlimited     Check if file lock is set to unlimited in ulimits
+ulimit_cputime_unlimited      Check if cputime is set to unlimited in ulimits
+ulimit_stacksize_unlimited    Check if stack size is set to unlimited in ulimits
+ulimit_vmsize_unlimited       Check virtual memory size and check if its set to unlimited
+ulimit_filedescriptor_4096    Check if open file descriptors limit is set to 4096
+ulimit_max_user_process_2048  Check max number of user process limit is set to 2048
+root_disk_usage               Check root disk usage and report if it exceeds threshold
+kernel_swapusage              Retrieve Kernel Swap Usage
 
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
 
- name                         | id       | type   | executor           | tags                      | compiler
-------------------------------+----------+--------+--------------------+---------------------------+-------------------------------------------------------------------------------------------------------------------------------------------
- systemd_default_target       | ddb69f6b | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/systemd-default-target/systemd_default_target/1/stage/generate.sh
- root_disk_usage              | b70f6606 | script | generic.local.bash | ['filesystem', 'storage'] | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/1/stage/generate.sh
- variables_bash               | 44b0240d | script | generic.local.bash | ['tutorials']             | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vars/variables_bash/1/stage/generate.sh
- ulimit_filelock_unlimited    | 9b4b0bed | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/ulimits/ulimit_filelock_unlimited/1/stage/generate.sh
- ulimit_cputime_unlimited     | 90945f13 | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/ulimits/ulimit_cputime_unlimited/1/stage/generate.sh
- ulimit_stacksize_unlimited   | e7fe2663 | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/ulimits/ulimit_stacksize_unlimited/1/stage/generate.sh
- ulimit_vmsize_unlimited      | 787d6269 | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/ulimits/ulimit_vmsize_unlimited/1/stage/generate.sh
- ulimit_filedescriptor_4096   | 55b3f1aa | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/ulimits/ulimit_filedescriptor_4096/1/stage/generate.sh
- ulimit_max_user_process_2048 | 1ecdada0 | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/ulimits/ulimit_max_user_process_2048/1/stage/generate.sh
- kernel_swapusage             | e8ab24ce | script | generic.local.bash | ['configuration']         | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/kernel_state/kernel_swapusage/1/stage/generate.sh
+ name                         | id       | type   | executor           | tags                      | testpath
+------------------------------+----------+--------+--------------------+---------------------------+---------------------------------------------------------------------------------------------------------------------------
+ systemd_default_target       | 8afc7858 | script | generic.local.bash | ['system']                | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/systemd-default-target/systemd_default_target/1/stage/generate.sh
+ variables_bash               | 5d1591cb | script | generic.local.bash | ['tutorials']             | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/1/stage/generate.sh
+ ulimit_filelock_unlimited    | 783a22bc | script | generic.local.bash | ['system']                | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_filelock_unlimited/1/stage/generate.sh
+ ulimit_cputime_unlimited     | 9d5ffec7 | script | generic.local.bash | ['system']                | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_cputime_unlimited/1/stage/generate.sh
+ ulimit_stacksize_unlimited   | 32acb5b8 | script | generic.local.bash | ['system']                | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_stacksize_unlimited/1/stage/generate.sh
+ ulimit_vmsize_unlimited      | e03c8b67 | script | generic.local.bash | ['system']                | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_vmsize_unlimited/1/stage/generate.sh
+ ulimit_filedescriptor_4096   | 9a0351fb | script | generic.local.bash | ['system']                | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_filedescriptor_4096/1/stage/generate.sh
+ ulimit_max_user_process_2048 | 19b2f269 | script | generic.local.bash | ['system']                | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_max_user_process_2048/1/stage/generate.sh
+ root_disk_usage              | 4c8b9767 | script | generic.local.bash | ['filesystem', 'storage'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/1/stage/generate.sh
+ kernel_swapusage             | eafc6fc2 | script | generic.local.bash | ['configuration']         | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/kernel_state/kernel_swapusage/1/stage/generate.sh
 
 
 
@@ -49,18 +76,18 @@ Discovered Buildspecs:
 | Stage: Running Test |
 +---------------------+ 
 
- name                         | id       | executor           | status   |   returncode | testpath
-------------------------------+----------+--------------------+----------+--------------+-------------------------------------------------------------------------------------------------------------------------------------------
- systemd_default_target       | ddb69f6b | generic.local.bash | FAIL     |            1 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/systemd-default-target/systemd_default_target/1/stage/generate.sh
- root_disk_usage              | b70f6606 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/1/stage/generate.sh
- variables_bash               | 44b0240d | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/vars/variables_bash/1/stage/generate.sh
- ulimit_filelock_unlimited    | 9b4b0bed | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/ulimits/ulimit_filelock_unlimited/1/stage/generate.sh
- ulimit_cputime_unlimited     | 90945f13 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/ulimits/ulimit_cputime_unlimited/1/stage/generate.sh
- ulimit_stacksize_unlimited   | e7fe2663 | generic.local.bash | FAIL     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/ulimits/ulimit_stacksize_unlimited/1/stage/generate.sh
- ulimit_vmsize_unlimited      | 787d6269 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/ulimits/ulimit_vmsize_unlimited/1/stage/generate.sh
- ulimit_filedescriptor_4096   | 55b3f1aa | generic.local.bash | FAIL     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/ulimits/ulimit_filedescriptor_4096/1/stage/generate.sh
- ulimit_max_user_process_2048 | 1ecdada0 | generic.local.bash | FAIL     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/ulimits/ulimit_max_user_process_2048/1/stage/generate.sh
- kernel_swapusage             | e8ab24ce | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/kernel_state/kernel_swapusage/1/stage/generate.sh
+ name                         | id       | executor           | status   |   returncode
+------------------------------+----------+--------------------+----------+--------------
+ systemd_default_target       | 8afc7858 | generic.local.bash | FAIL     |            1
+ variables_bash               | 5d1591cb | generic.local.bash | PASS     |            0
+ ulimit_filelock_unlimited    | 783a22bc | generic.local.bash | PASS     |            0
+ ulimit_cputime_unlimited     | 9d5ffec7 | generic.local.bash | PASS     |            0
+ ulimit_stacksize_unlimited   | 32acb5b8 | generic.local.bash | FAIL     |            0
+ ulimit_vmsize_unlimited      | e03c8b67 | generic.local.bash | PASS     |            0
+ ulimit_filedescriptor_4096   | 9a0351fb | generic.local.bash | FAIL     |            0
+ ulimit_max_user_process_2048 | 19b2f269 | generic.local.bash | FAIL     |            0
+ root_disk_usage              | 4c8b9767 | generic.local.bash | PASS     |            0
+ kernel_swapusage             | eafc6fc2 | generic.local.bash | PASS     |            0
 
 +----------------------+
 | Stage: Test Summary  |
@@ -70,4 +97,5 @@ Passed Tests: 6/10 Percentage: 60.000%
 Failed Tests: 4/10 Percentage: 40.000%
 
 
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_lhzjotah.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_cw3mvzlr.log
+A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/github/buildtest/buildtest.log

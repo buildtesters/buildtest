@@ -7,7 +7,6 @@ import os
 
 from termcolor import colored
 from buildtest import BUILDTEST_VERSION, BUILDTEST_COPYRIGHT
-from buildtest.docs import buildtestdocs, schemadocs
 from buildtest.schemas.defaults import schema_table
 
 
@@ -27,16 +26,19 @@ def handle_kv_string(val):
     if "," in val:
         args = val.split(",")
         for kv in args:
-            if "=" in kv:
-                key, value = kv.split("=")[0], kv.split("=")[1]
-                kv_dict[key] = value
-            else:
+            if "=" not in kv:
                 raise argparse.ArgumentTypeError("Must specify k=v")
 
-    else:
-        if "=" in val:
-            key, value = val.split("=")[0], val.split("=")[1]
+            key, value = kv.split("=")[0], kv.split("=")[1]
             kv_dict[key] = value
+
+        return kv_dict
+
+    if "=" not in val:
+        raise argparse.ArgumentTypeError("Must specify in key=value format")
+
+    key, value = val.split("=")[0], val.split("=")[1]
+    kv_dict[key] = value
 
     return kv_dict
 
@@ -87,7 +89,7 @@ def get_parser():
         "-V",
         "--version",
         action="version",
-        version=f"""buildtest version {BUILDTEST_VERSION}""",
+        version=f"%(prog)s version {BUILDTEST_VERSION}",
     )
     parser.add_argument(
         "-d",
@@ -115,11 +117,8 @@ def get_parser():
         title="COMMANDS", description=command_description, dest="subcommands"
     )
 
-    parser_docs = subparsers.add_parser("docs")
-    parser_docs.set_defaults(func=buildtestdocs)
-
-    parser_schemadocs = subparsers.add_parser("schemadocs")
-    parser_schemadocs.set_defaults(func=schemadocs)
+    subparsers.add_parser("docs")
+    subparsers.add_parser("schemadocs")
 
     build_menu(subparsers)
     buildspec_menu(subparsers)

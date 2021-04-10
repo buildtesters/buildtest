@@ -109,11 +109,16 @@ def view_executors(json_format=False):
     print(yaml.dump(d, default_flow_style=False))
 
 
-def view_summary():
+def view_summary(buildtestsystem=None):
     """This method implements ``buildtest config summary`` option. In this method
     we will display a summary of System Details, Buildtest settings, Schemas,
     Repository details, Buildspecs files and test names.
+
+    :parse buildtestsystem: instance of class BuildTestSystem, optional
+    :type buildtestsystem: BuildTestSystem
     """
+
+    system_details = buildtestsystem or system
 
     print("buildtest version: ", BUILDTEST_VERSION)
     print("buildtest Path:", shutil.which("buildtest"))
@@ -121,12 +126,12 @@ def view_summary():
     print("\n")
     print("Machine Details")
     print("{:_<30}".format(""))
-    print("Operating System: ", system.system["os"])
-    print("Hostname: ", system.system["host"])
-    print("Machine: ", system.system["machine"])
-    print("Processor: ", system.system["processor"])
-    print("Python Path", system.system["python"])
-    print("Python Version:", system.system["pyver"])
+    print("Operating System: ", system_details.system["os"])
+    print("Hostname: ", system_details.system["host"])
+    print("Machine: ", system_details.system["machine"])
+    print("Processor: ", system_details.system["processor"])
+    print("Python Path", system_details.system["python"])
+    print("Python Version:", system_details.system["pyver"])
     print("User:", getpass.getuser())
 
     print("\n")

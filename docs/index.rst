@@ -32,18 +32,11 @@ Status
 .. |regressiontest| image:: https://github.com/buildtesters/buildtest/workflows/regressiontest/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
 
-Source Code
-------------
-
-- buildtest framework: https://github.com/buildtesters/buildtest
-
-Test Repositories
-------------------
-
-- Cori @ NERSC: https://github.com/buildtesters/buildtest-cori
 
 Useful Links
 -------------
+
+- Source Code: https://github.com/buildtesters/buildtest
 
 - Documentation: http://buildtest.rtfd.io/
 
@@ -53,13 +46,15 @@ Useful Links
 
 - CodeCov: https://codecov.io/gh/buildtesters/buildtest
 
+- Slack Channel: http://hpcbuildtest.slack.com
+
+- Slack Invite: https://hpcbuildtest.herokuapp.com
+
 - CodeFactor: https://www.codefactor.io/repository/github/buildtesters/buildtest
 
 - Snyk: https://app.snyk.io/org/buildtesters/
 
-- Slack Channel: http://hpcbuildtest.slack.com
-
-- Slack Invite: https://hpcbuildtest.herokuapp.com
+- Cori Test Repository: https://github.com/buildtesters/buildtest-cori
 
 Description
 ------------

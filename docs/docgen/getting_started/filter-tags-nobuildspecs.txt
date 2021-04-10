@@ -1,5 +1,17 @@
 $ buildtest build -b tutorials/shell_examples.yml --filter-tags compile 
 
+
+User:  siddiq90
+Hostname:  DOE-7086392.fios-router.home
+Platform:  Darwin
+Current Time:  2021/04/10 00:57:46
+buildtest path: /Users/siddiq90/Documents/github/buildtest/bin/buildtest
+buildtest version:  0.9.5
+python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-Ir4AdrfC/bin/python
+python version:  3.7.3
+Test Directory:  /Users/siddiq90/.buildtest/var/tests
+Configuration File:  /Users/siddiq90/Documents/github/buildtest/buildtest/settings/config.yml
+
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
@@ -12,4 +24,5 @@ Discovered Buildspecs:
 [sh_shell][/Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml]: test is skipped because it is not in tag filter list: ['compile']
 [shell_options][/Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml]: test is skipped because it is not in tag filter list: ['compile']
 No buildspecs to process because there are no valid buildspecs
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_ygr0y6gg.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_qz6mfc__.log
+A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/github/buildtest/buildtest.log

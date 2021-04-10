@@ -2,8 +2,9 @@
 
 import os
 import shutil
-import sys
 import tempfile
+import webbrowser
+
 from buildtest.config import (
     check_settings,
     resolve_settings_file,
@@ -17,7 +18,7 @@ from buildtest.defaults import (
 )
 from buildtest.cli import get_parser
 from buildtest.cli.build import BuildTest
-from buildtest.system import system
+from buildtest.system import BuildTestSystem
 from buildtest.log import init_logfile, streamlog
 from buildtest.utils.file import create_dir, resolve_path
 
@@ -45,11 +46,15 @@ def main():
     create_dir(BUILDTEST_BUILDSPEC_DIR)
 
     # Create a build test system, and check requirements
-    # BuildTestSystem()
+    system = BuildTestSystem()
     system.check()
 
     parser = get_parser()
     args, extras = parser.parse_known_args()
+
+    # if no commands specified we raise an error
+    if not args.subcommands:
+        raise SystemExit("Invalid input argument")
 
     if args.debug:
         streamlog(args.debug)
@@ -67,6 +72,7 @@ def main():
             rebuild=args.rebuild,
             stage=args.stage,
             testdir=args.testdir,
+            buildtest_system=system,
         )
         cmd.build()
 
@@ -74,7 +80,15 @@ def main():
 
         if not logdir:
             print(f"Writing Logfile to: {dest_logfile}")
-            sys.exit(0)
+
+            shutil.copy2(
+                dest_logfile, os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log")
+            )
+            print(
+                "A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log - ",
+                os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log"),
+            )
+            return
 
         logdir = resolve_path(logdir, exist=False)
         if logdir:
@@ -92,6 +106,10 @@ def main():
         shutil.copy2(
             dest_logfile, os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log")
         )
+        print(
+            "A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log - ",
+            os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log"),
+        )
         return
 
     settings_file = resolve_settings_file()
@@ -104,10 +122,15 @@ def main():
         from buildtest.cli.buildspec import buildspec_find
 
         buildspec_find(args=args, settings_file=settings_file)
-    elif args.subcommands == "inspect":
-        from buildtest.cli.inspect import inspect
+    elif args.subcommands == "docs":
+        webbrowser.open("https://buildtest.readthedocs.io/")
+    elif args.subcommands == "schemadocs":
 
-        inspect(args)
+        webbrowser.open("https://buildtesters.github.io/buildtest/")
+    elif args.subcommands == "inspect":
+        from buildtest.cli.inspect import inspect_cmd
+
+        inspect_cmd(args)
 
     elif args.subcommands == "config" and args.config == "compilers":
         from buildtest.cli.compilers import compiler_cmd
