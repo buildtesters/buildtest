@@ -19,11 +19,13 @@ from buildtest.utils.tools import deep_get
 def cdash_cmd(args, configuration):
 
     if args.cdash == "view":
+        cdash_url = args.url or deep_get(configuration.target_config, "cdash", "url")
         # if url is specified open the page
-        if args.url:
-            webbrowser.open(args.url)
-
-        webbrowser.open("https://my.cdash.org/index.php?project=buildtest-cori")
+        if not cdash_url:
+            sys.exit(
+                "Unable to find CDASH url. Please specify url in configuration file or via 'buildtest cdash upload --url'"
+            )
+        webbrowser.open(cdash_url)
 
     if args.cdash == "upload":
         upload_test_cdash(args.site, args.buildname, args.url, configuration)
