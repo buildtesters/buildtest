@@ -4,13 +4,12 @@ import json
 import os.path
 import re
 import sys
-import time
 import webbrowser
 import xml.etree.cElementTree as ET
 import zlib
 
 from datetime import datetime
-from urllib.request import urlopen, HTTPHandler, Request
+from urllib.request import urlopen, Request
 from urllib.parse import urlencode
 from buildtest.defaults import BUILD_REPORT
 from buildtest.utils.tools import deep_get
