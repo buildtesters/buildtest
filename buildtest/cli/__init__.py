@@ -107,6 +107,7 @@ def get_parser():
         "inspect": "Inspect details for test from test report",
         "docs": "Open buildtest docs in browser",
         "schemadocs": "Open buildtest schema docs in browser",
+        "cdash": "Options to interact with CDASH server",
     }
 
     command_description = ""
@@ -126,6 +127,7 @@ def get_parser():
     report_menu(subparsers)
     inspect_menu(subparsers)
     schema_menu(subparsers)
+    cdash_menu(subparsers)
 
     return parser
 
@@ -404,4 +406,22 @@ def schema_menu(subparsers):
     )
     parser_schema.add_argument(
         "-j", "--json", action="store_true", help="Display json schema file"
+    )
+
+
+def cdash_menu(subparsers):
+
+    parser_cdash = subparsers.add_parser("cdash")
+    subparser = parser_cdash.add_subparsers(
+        help="subcommands", description="CDASH operations", dest="cdash"
+    )
+    view = subparser.add_parser("view", help="Open CDASH project in webbrowser")
+    view.add_argument("--url", help="Specify a url to CDASH project")
+
+    upload = subparser.add_parser("upload", help="Upload Test to CDASH server")
+    upload.add_argument("--site", help="Specify site name reported in CDASH")
+    upload.add_argument("--buildname", help="Specify Build Name reported in CDASH")
+    upload.add_argument(
+        "--url",
+        help="Specify url to CDASH server (example: https://my.cdash.org/submit.php?project=buildtest-cori)",
     )
