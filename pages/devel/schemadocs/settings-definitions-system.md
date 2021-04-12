@@ -27,6 +27,7 @@ settings.schema.json#/definitions/system
 | [moduletool](#moduletool)                           | `string`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-moduletool.md "settings.schema.json#/definitions/system/properties/moduletool")                           |
 | [compilers](#compilers)                             | `object`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers.md "settings.schema.json#/definitions/system/properties/compilers")                             |
 | [executors](#executors)                             | `object`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors.md "settings.schema.json#/definitions/system/properties/executors")                             |
+| [cdash](#cdash)                                     | `object`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-cdash.md "settings.schema.json#/definitions/system/properties/cdash")                                     |
 
 ## hostnames
 
@@ -199,3 +200,21 @@ The executor section is used for declaring your executors that are responsible f
 ### executors Type
 
 `object` ([Details](settings-definitions-system-properties-executors.md))
+
+## cdash
+
+Specify CDASH configuration used to upload tests via 'buildtest cdash' command
+
+`cdash`
+
+*   is optional
+
+*   Type: `object` ([Details](settings-definitions-system-properties-cdash.md))
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-cdash.md "settings.schema.json#/definitions/system/properties/cdash")
+
+### cdash Type
+
+`object` ([Details](settings-definitions-system-properties-cdash.md))

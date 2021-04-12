@@ -182,6 +182,8 @@
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-pbs-patternproperties-.md "An instance object of cobalt executor") – `settings.schema.json#/definitions/system/properties/executors/properties/pbs/patternProperties/^.*$`
 
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-cdash.md "Specify CDASH configuration used to upload tests via 'buildtest cdash' command") – `settings.schema.json#/definitions/system/properties/cdash`
+
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system.md) – `settings.schema.json#/definitions/system`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers.md "Declare compiler section for defining system compilers that can be referenced in buildspec") – `settings.schema.json#/definitions/system/properties/compilers`
@@ -255,6 +257,8 @@
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-pbs.md "The pbs section is used for declaring PBS executors for running jobs using PBS scheduler") – `settings.schema.json#/definitions/system/properties/executors/properties/pbs`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-pbs-patternproperties-.md "An instance object of cobalt executor") – `settings.schema.json#/definitions/system/properties/executors/properties/pbs/patternProperties/^.*$`
+
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-cdash.md "Specify CDASH configuration used to upload tests via 'buildtest cdash' command") – `settings.schema.json#/definitions/system/properties/cdash`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section.md "A compiler section is composed of cc, cxx and fc wrapper these are required when you need to specify compiler wrapper") – `settings.schema.json#/definitions/compiler_section`
 
