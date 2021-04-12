@@ -10,7 +10,7 @@ import zlib
 
 from datetime import datetime
 from urllib.request import urlopen, Request
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urljoin
 from buildtest.defaults import BUILD_REPORT
 from buildtest.utils.tools import deep_get
 
@@ -27,6 +27,7 @@ def cdash_cmd(args, configuration):
         webbrowser.open(cdash_url)
 
     if args.cdash == "upload":
+
         upload_test_cdash(args.site, args.buildname, args.url, configuration)
 
 
@@ -38,9 +39,9 @@ def upload_test_cdash(site, buildname, url, configuration):
     )
     cdash_url = url or deep_get(configuration.target_config, "cdash", "url")
 
-    if not site:
+    if not site_name:
         sys.exit("Please specify site name")
-    if not buildname:
+    if not build_name:
         sys.exit("Please specify a buildname")
 
     # if cdash url not specified we raise an error
@@ -63,6 +64,8 @@ def upload_test_cdash(site, buildname, url, configuration):
         sys.exit(
             f"Unable to find report file: {BUILD_REPORT} please build a test via buildtest build"
         )
+
+    print("Reading report file: ", BUILD_REPORT)
 
     with open(BUILD_REPORT) as json_file:
         buildtest_data = json.load(json_file)
@@ -285,15 +288,14 @@ def upload_test_cdash(site, buildname, url, configuration):
         url = "{0}&{1}".format(cdash_url, encoded_params)
         hdrs = {"Content-Type": "text/xml", "Content-Length": os.path.getsize(filename)}
         request = Request(url, data=f, method="PUT", headers=hdrs)
+
         with urlopen(request) as response:
+
             resp_value = response.read()
             if isinstance(resp_value, bytes):
                 resp_value = resp_value.decode("utf-8")
             match = buildid_regexp.search(resp_value)
+            print("PUT STATUS:", response.status)
             if match:
                 buildid = match.group(1)
-                print(
-                    "Your results have been uploaded to CDash as build #{0}".format(
-                        buildid
-                    )
-                )
+                print(f"Your results have been uploaded with build #{buildid}")
