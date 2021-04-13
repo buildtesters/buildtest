@@ -284,13 +284,17 @@ def upload_test_cdash(site, buildname, url, configuration):
             "stamp": build_stamp,
             "MD5": md5sum,
         }
+        print("build name: ", build_name)
+        print("site: ", site_name)
+        print("stamp: ", build_stamp)
+        print("MD5SUM:", md5sum)
         encoded_params = urlencode(params_dict)
         url = "{0}&{1}".format(cdash_url, encoded_params)
         hdrs = {"Content-Type": "text/xml", "Content-Length": os.path.getsize(filename)}
         request = Request(url, data=f, method="PUT", headers=hdrs)
 
         with urlopen(request) as response:
-
+            print("URL: ", response.url)
             resp_value = response.read()
             if isinstance(resp_value, bytes):
                 resp_value = resp_value.decode("utf-8")

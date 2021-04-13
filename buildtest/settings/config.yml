@@ -60,3 +60,8 @@ system:
 
     # specify one or more directory where buildtest should load buildspecs
     # buildspec_roots: []
+
+    cdash:
+      url: https://my.cdash.org/submit.php?project=buildtest
+      site: generic
+      buildname: tutorials
