@@ -75,5 +75,3 @@ buildtest has a few bots to do various operations that are described below.
 - `CodeCov <https://github.com/marketplace/codecov>`_ - The codecov bot will report codecov report from the issued pull request once coverage report is complete. The configuration for codecov is defined in ``.codecov.yml`` found in root of repo.
 
 - `Pull Request Size <https://github.com/marketplace/pull-request-size>`_ - is a bot that labels Pull Request by number of **changed** lines of code.
-
-- `Trafico <https://github.com/marketplace/trafico-pull-request-labeler>`_ - is a bot that automatically labels Pull Request depending on their status, during code reviews. The configuration is found in ``.github/trafico.yml``.

@@ -17,11 +17,9 @@ These are just a few points to consider when dealing with incoming pull requests
 
 4. Maintainers can request user to put meaningful commit if author has not provided a meaningful message (i.e ``git commit --amend``)
 
-5. All incoming PRs should be label by maintainer to help sort through PRs. Trafico and Pull Request bot will label PRs with additional labels, the maintainers are responsible for labeling PRs based on functionality.
+5. Maintainers are requested that committer name and email is from a valid Github account. If not please request the committer to fix the author name and email.
 
-6. Maintainers are requested that committer name and email is from a valid Github account. If not please request the committer to fix the author name and email.
-
-7. All incoming PRs should be pushed to ``devel`` branch, if you see any PR sent to any other branch please inform code owner to fix it
+6. All incoming PRs should be pushed to ``devel`` branch, if you see any PR sent to any other branch please inform code owner to fix it
 
 
 Release Process
