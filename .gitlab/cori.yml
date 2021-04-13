@@ -20,6 +20,7 @@ cori_pr_regression_test:
     - source setup.sh
     - pip install -r docs/requirements.txt
     - python $BUILDTEST_ROOT/scripts/regtest.py
+    - buildtest cdash upload --site=cori --buildname=unittests
     # CODECOV_TOKEN environment must be set, this value is stored in CI/CD variable SECRET_CODECOV_TOKEN at https://software.nersc.gov/siddiq90/buildtest/-/settings/ci_cd
     - export CODECOV_TOKEN=$SECRET_CODECOV_TOKEN
     - bash <(curl -s https://codecov.io/bash)
