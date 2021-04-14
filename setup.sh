@@ -33,7 +33,7 @@ if ! [ -x "$(command -v $pip)" ]; then
 fi
 
 # error printing tables from tabulate when utf8 encoding not set. See https://github.com/buildtesters/buildtest/issues/665
-export LANG=en_US.utf8
+# export LANG=en_US.utf8
 
 echo "Installing buildtest dependencies"
 $pip install -r ${buildtest_root}/requirements.txt &> /dev/null
