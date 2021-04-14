@@ -10,7 +10,6 @@ system:
     cdash:
       url: https://my.cdash.org/submit.php?project=buildtest-cori
       site: laptop
-      buildname: macos-tests
     processor:
       numcpus: 8
       cores: 4

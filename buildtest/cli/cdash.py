@@ -41,6 +41,7 @@ def upload_test_cdash(site, buildname, url, configuration):
 
     if not site_name:
         sys.exit("Please specify site name")
+
     if not build_name:
         sys.exit("Please specify a buildname")
 
