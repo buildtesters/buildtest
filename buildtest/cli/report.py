@@ -56,11 +56,14 @@ class Report:
         "buildspec": [],
     }
 
-    def __init__(self, filter_args, format_args, latest, oldest):
+    def __init__(
+        self, filter_args, format_args, latest, oldest, report_file=BUILD_REPORT
+    ):
         self.latest = latest
         self.oldest = oldest
         self.filter = filter_args
         self.format = format_args
+        self.reportfile = report_file
         self.report = self.load()
         self._check_filter_fields()
         self._check_format_fields()
@@ -72,21 +75,18 @@ class Report:
         # check if filter arguments (--filter) are valid fields
         if self.filter:
 
-            raiseError = False
             # check if filter keys are accepted filter fields, if not we raise error
             for key in self.filter.keys():
                 if key not in self.filter_fields:
-                    print(f"Invalid filter key: {key}")
-                    raiseError = True
+                    self.print_filter_fields()
+                    raise BuildTestError(
+                        f"Invalid filter key: {key}, please run 'buildtest report --helpfilter' for list of available filter fields"
+                    )
 
                 if key == "returncode" and not is_int(self.filter[key]):
                     raise BuildTestError(
                         f"Invalid returncode:{self.filter[key]} must be an integer"
                     )
-
-            # raise error if any filter field is invalid
-            if raiseError:
-                sys.exit(1)
 
     def _check_format_fields(self):
         """Check all format arguments (--format) are valid, the arguments are specified
@@ -103,7 +103,8 @@ class Report:
             # check all input format fields are valid fields
             for field in self.display_format_fields:
                 if field not in self.format_fields:
-                    sys.exit(f"Invalid format field: {field}")
+                    self.print_format_fields()
+                    raise BuildTestError(f"Invalid format field: {field}")
 
             # reassign display_table to format fields
             self.display_table = {}
@@ -119,18 +120,18 @@ class Report:
         """
 
         # raise error if BUILD_REPORT not found
-        if not is_file(BUILD_REPORT):
-            sys.exit(f"Unable to fetch report no such file found: {BUILD_REPORT}")
+        if not is_file(self.reportfile):
+            sys.exit(f"Unable to fetch report no such file found: {self.reportfile}")
 
         report = None
-        with open(BUILD_REPORT, "r") as fd:
+        with open(self.reportfile, "r") as fd:
             report = json.loads(fd.read())
 
         # if report is None or issue with how json.load returns content of file we
         # raise error
         if not report:
             sys.exit(
-                f"Fail to process {BUILD_REPORT} please check if file is valid json"
+                f"Fail to process {self.reportfile} please check if file is valid json"
                 f"or remove file"
             )
         return report
@@ -387,7 +388,14 @@ class Report:
 
 def report_cmd(args):
 
-    results = Report(args.filter, args.format, args.latest, args.oldest)
+    if args.report == "clear":
+        if not is_file(args.file):
+            sys.exit(f"There is no report file: {args.file} to delete")
+        print(f"Removing report file: {args.file}")
+        os.remove(BUILD_REPORT)
+        return
+
+    results = Report(args.filter, args.format, args.latest, args.oldest, args.file)
     if args.helpfilter:
         results.print_filter_fields()
         return
@@ -399,21 +407,23 @@ def report_cmd(args):
     results.print_display_table()
 
 
-def update_report(valid_builders):
+def update_report(valid_builders, report_file=BUILD_REPORT):
     """This method will update BUILD_REPORT after every test run performed
     by ``buildtest build``. If BUILD_REPORT is not created, we will create
     file and update json file by extracting contents from builder.metadata
 
     :param valid_builders: builder object that were successful during build and able to execute test
     :type valid_builders: instance of BuilderBase (subclass)
+    :param report_file: specify location to report file
+    :type report_file: str
     """
 
-    if not is_file(os.path.dirname(BUILD_REPORT)):
-        create_dir(os.path.dirname(BUILD_REPORT))
+    if not is_file(os.path.dirname(report_file)):
+        create_dir(os.path.dirname(report_file))
 
     # if file exists, read json file otherwise set report to empty dict
     try:
-        with open(BUILD_REPORT, "r") as fd:
+        with open(report_file, "r") as fd:
             report = json.loads(fd.read())
     except OSError:
         report = {}
@@ -466,5 +476,5 @@ def update_report(valid_builders):
         entry["job"] = builder.metadata["job"]
         report[buildspec][name].append(entry)
 
-    with open(BUILD_REPORT, "w") as fd:
+    with open(report_file, "w") as fd:
         json.dump(report, fd, indent=2)

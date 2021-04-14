@@ -20,7 +20,7 @@ from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.report import update_report
 from buildtest.config import check_settings
-from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDTEST_USER_HOME
+from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDTEST_USER_HOME, BUILD_REPORT
 from buildtest.exceptions import BuildTestError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.system import system
@@ -92,6 +92,7 @@ class BuildTest:
         filter_tags=None,
         rebuild=None,
         buildtest_system=None,
+        report_file=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -117,6 +118,8 @@ class BuildTest:
         :type rebuild: list, optional
         :param buildtest_system: Instance of BuildTestSystem class
         :type  buildtest_system: BuildTestSystem
+        :param report_file: Specify location where report file is written
+        :type report_file: str, optional
         """
 
         stage_values = ["parse", "build"]
@@ -176,6 +179,13 @@ class BuildTest:
         self.builders = None
         self.buildexecutor = BuildExecutor(self.configuration)
         self.system = buildtest_system or system
+        self.report_file = BUILD_REPORT
+
+        if report_file:
+            self.report_file = resolve_path(report_file, exist=False)
+
+            if not self.report_file.endswith(".json"):
+                sys.exit(f"{self.report_file} must end in .json extension")
 
         print("\n")
         print("User: ", self.system.system["user"])
@@ -213,7 +223,7 @@ class BuildTest:
 
         # only update report if we have a list of valid builders returned from run_phase
         if self.builders:
-            update_report(self.builders)
+            update_report(self.builders, self.report_file)
 
     def discover_buildspecs(self, printTable=False):
         """This method discovers all buildspecs based on --buildspecs, --tags, --executor

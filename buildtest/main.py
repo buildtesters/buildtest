@@ -73,6 +73,7 @@ def main():
             stage=args.stage,
             testdir=args.testdir,
             buildtest_system=system,
+            report_file=args.report_file,
         )
         cmd.build()
 
