@@ -7,6 +7,7 @@ import os
 
 from termcolor import colored
 from buildtest import BUILDTEST_VERSION, BUILDTEST_COPYRIGHT
+from buildtest.defaults import BUILD_REPORT
 from buildtest.schemas.defaults import schema_table
 
 
@@ -192,7 +193,7 @@ def build_menu(subparsers):
     parser_build.add_argument(
         "-c", "--config", help="Specify path to buildtest configuration file"
     )
-
+    parser_build.add_argument("-r", "--report_file", help="Specify a report file where tests will be written. File must be in .json extension")
 
 def buildspec_menu(subparsers):
     """This method implements ``buildtest buildspec`` command"""
@@ -341,6 +342,10 @@ def report_menu(subparsers):
     """This method implements the ``buildtest report`` command options"""
 
     parser_report = subparsers.add_parser("report")
+    subparsers = parser_report.add_subparsers(
+        description="query information from buildtest configuration file", dest="report"
+    )
+    subparsers.add_parser("clear", help="delete report file")
     parser_report.add_argument(
         "--helpformat", action="store_true", help="List of available format fields"
     )
@@ -369,6 +374,7 @@ def report_menu(subparsers):
         action="store_true",
     )
 
+    parser_report.add_argument("-f", "--file", help="Specify a report file to read", default=BUILD_REPORT)
 
 def inspect_menu(subparsers):
     """This method builds menu for `buildtest inspect` """
