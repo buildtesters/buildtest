@@ -9,6 +9,7 @@ from buildtest.defaults import BUILD_REPORT, BUILDTEST_ROOT
 from buildtest.cli.report import report_cmd
 from buildtest.exceptions import BuildTestError
 
+
 @pytest.mark.cli
 def test_report_format():
 
@@ -40,6 +41,7 @@ def test_report_format():
     # run 'buildtest report --format name,state,returncode,buildspec'
     report_cmd(args)
 
+
 @pytest.mark.cli
 def test_invalid_format():
     class args:
@@ -56,6 +58,7 @@ def test_invalid_format():
     with pytest.raises(BuildTestError):
         report_cmd(args)
 
+
 @pytest.mark.cli
 def test_report_helpformat():
     class args:
@@ -69,6 +72,7 @@ def test_report_helpformat():
         report = None
 
     report_cmd(args)
+
 
 @pytest.mark.cli
 def test_report_filter():
@@ -169,7 +173,6 @@ def test_report_filter():
     # run 'buildtest report --filter name=exit1_pass --format name,returncode,state
     report_cmd(args)
 
-
     class args:
         helpformat = False
         helpfilter = False
@@ -183,24 +186,25 @@ def test_report_filter():
     # run 'buildtest report --filter returncode=-999 to ensure _filter_test_by_returncode returns True
     report_cmd(args)
 
-def test_report_oldest_and_latest():
 
+def test_report_oldest_and_latest():
     class args:
         helpformat = False
         helpfilter = False
-        filter = { "tags": "tutorials" }
+        filter = {"tags": "tutorials"}
         format = None
         oldest = False
         latest = True
         file = BUILD_REPORT
         report = None
+
     # buildtest report --filter tags=tutorials --latest
     report_cmd(args)
 
     class args:
         helpformat = False
         helpfilter = False
-        filter = { "tags": "tutorials"}
+        filter = {"tags": "tutorials"}
         format = None
         oldest = True
         latest = False
@@ -213,18 +217,18 @@ def test_report_oldest_and_latest():
     class args:
         helpformat = False
         helpfilter = False
-        filter = { "tags": "tutorials" }
+        filter = {"tags": "tutorials"}
         format = None
         oldest = True
         latest = True
         file = BUILD_REPORT
         report = None
+
     # buildtest report --filter tags=tutorials --oldest --latest
     report_cmd(args)
 
 
 def test_invalid_filters():
-
     class args:
         helpformat = False
         helpfilter = False
@@ -292,7 +296,6 @@ def test_invalid_filters():
 
         report_cmd(args)
 
-
     class args:
         helpformat = False
         helpfilter = False
@@ -313,6 +316,7 @@ def test_invalid_filters():
 def test_report_JSONDecodeError():
 
     tf = tempfile.NamedTemporaryFile()
+
     class args:
         helpformat = False
         helpfilter = False
@@ -327,8 +331,8 @@ def test_report_JSONDecodeError():
     with pytest.raises(json.JSONDecodeError):
         report_cmd(args)
 
-def test_report_clear():
 
+def test_report_clear():
     class args:
         helpformat = False
         helpfilter = False
@@ -339,7 +343,7 @@ def test_report_clear():
         file = BUILD_REPORT
         report = "clear"
 
-    backupfile = BUILD_REPORT+".bak"
+    backupfile = BUILD_REPORT + ".bak"
     shutil.copy2(BUILD_REPORT, backupfile)
     report_cmd(args)
     shutil.move(backupfile, BUILD_REPORT)
@@ -358,6 +362,7 @@ def test_report_clear():
     # buildtest report clear -f <file> will raise an error since file doesn't exist
     with pytest.raises(SystemExit):
         report_cmd(args)
+
 
 def test_report_missing_file():
     class args:

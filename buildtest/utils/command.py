@@ -134,8 +134,8 @@ class BuildTestCommand:
         self.out += ["%s\n" % x for x in self.decode(capture.out).split("\n") if x]
         self.err += ["%s\n" % x for x in self.decode(capture.err).split("\n") if x]
 
-        #self.out += ["%s\n" % x for x in capture.out.split("\n") if x]
-        #self.err += ["%s\n" % x for x in capture.err.split("\n") if x]
+        # self.out += ["%s\n" % x for x in capture.out.split("\n") if x]
+        # self.err += ["%s\n" % x for x in capture.err.split("\n") if x]
         # Cleanup capture files and save final return code
         capture.cleanup()
         self.returncode = returncode
@@ -149,7 +149,6 @@ class BuildTestCommand:
 
         return self.returncode
 
-
     def decode(self, line):
         """Given a line of output (error or regular) decode using the
         system default, if appropriate
@@ -161,7 +160,6 @@ class BuildTestCommand:
         except Exception:
             pass
         return line
-
 
     def get_output(self):
         """Returns the output from shell command

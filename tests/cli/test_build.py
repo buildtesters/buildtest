@@ -119,6 +119,7 @@ def test_build_multi_executors():
     )
     cmd.build()
 
+
 def test_run_only():
 
     system = BuildTestSystem()
@@ -136,6 +137,7 @@ def test_run_only():
     )
     cmd.build()
 
+
 def test_skip_field():
 
     system = BuildTestSystem()
@@ -148,6 +150,7 @@ def test_skip_field():
         buildtest_system=system,
     )
     cmd.build()
+
 
 @pytest.mark.cli
 def test_build_by_stages():
@@ -173,6 +176,7 @@ def test_build_by_stages():
     )
     cmd.build()
 
+
 @pytest.mark.cli
 def test_build_rebuild():
 
@@ -190,7 +194,10 @@ def test_build_rebuild():
     )
     cmd.build()
 
-@pytest.mark.xfail(reason="Invalid report file must end in .json extension", raises=SystemExit)
+
+@pytest.mark.xfail(
+    reason="Invalid report file must end in .json extension", raises=SystemExit
+)
 def test_invalid_report():
     system = BuildTestSystem()
     system.check()
@@ -199,10 +206,11 @@ def test_invalid_report():
         config_file=DEFAULT_SETTINGS_FILE,
         tags=["pass"],
         buildtest_system=system,
-        report_file="".join(random.choice(string.ascii_letters) for i in range(10))
+        report_file="".join(random.choice(string.ascii_letters) for i in range(10)),
     )
 
     cmd.build()
+
 
 def test_invalid_buildspes():
 
@@ -239,6 +247,7 @@ def test_build_disable_BUILDTEST_COLOR():
         buildtest_system=system,
     )
     cmd.build()
+
 
 def test_discover():
 
@@ -280,6 +289,7 @@ def test_discover():
     cmd = BuildTest(config_file=DEFAULT_SETTINGS_FILE, buildspecs=buildspec)
     with pytest.raises(SystemExit):
         cmd.discover_buildspecs()
+
 
 def test_BuildTest_type():
 

@@ -193,7 +193,12 @@ def build_menu(subparsers):
     parser_build.add_argument(
         "-c", "--config", help="Specify path to buildtest configuration file"
     )
-    parser_build.add_argument("-r", "--report_file", help="Specify a report file where tests will be written. File must be in .json extension")
+    parser_build.add_argument(
+        "-r",
+        "--report_file",
+        help="Specify a report file where tests will be written. File must be in .json extension",
+    )
+
 
 def buildspec_menu(subparsers):
     """This method implements ``buildtest buildspec`` command"""
@@ -374,7 +379,10 @@ def report_menu(subparsers):
         action="store_true",
     )
 
-    parser_report.add_argument("-f", "--file", help="Specify a report file to read", default=BUILD_REPORT)
+    parser_report.add_argument(
+        "-f", "--file", help="Specify a report file to read", default=BUILD_REPORT
+    )
+
 
 def inspect_menu(subparsers):
     """This method builds menu for `buildtest inspect` """

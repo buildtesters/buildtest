@@ -187,7 +187,6 @@ class BuildTest:
             if not self.report_file.endswith(".json"):
                 sys.exit(f"{self.report_file} must end in .json extension")
 
-
         print("\n")
         print("User: ", self.system.system["user"])
         print("Hostname: ", self.system.system["host"])

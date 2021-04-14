@@ -56,7 +56,9 @@ class Report:
         "buildspec": [],
     }
 
-    def __init__(self, filter_args, format_args, latest, oldest, report_file=BUILD_REPORT):
+    def __init__(
+        self, filter_args, format_args, latest, oldest, report_file=BUILD_REPORT
+    ):
         self.latest = latest
         self.oldest = oldest
         self.filter = filter_args
@@ -77,14 +79,14 @@ class Report:
             for key in self.filter.keys():
                 if key not in self.filter_fields:
                     self.print_filter_fields()
-                    raise BuildTestError(f"Invalid filter key: {key}, please run 'buildtest report --helpfilter' for list of available filter fields")
-
+                    raise BuildTestError(
+                        f"Invalid filter key: {key}, please run 'buildtest report --helpfilter' for list of available filter fields"
+                    )
 
                 if key == "returncode" and not is_int(self.filter[key]):
                     raise BuildTestError(
                         f"Invalid returncode:{self.filter[key]} must be an integer"
                     )
-
 
     def _check_format_fields(self):
         """Check all format arguments (--format) are valid, the arguments are specified
@@ -401,7 +403,6 @@ def report_cmd(args):
     if args.helpformat:
         results.print_format_fields()
         return
-
 
     results.print_display_table()
 
