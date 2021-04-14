@@ -57,6 +57,7 @@ Reference this group by using
 | [testdir](#testdir)                                 | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-testdir.md "settings.schema.json#/definitions/system/properties/testdir")                                 |
 | [logdir](#logdir)                                   | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-logdir.md "settings.schema.json#/definitions/system/properties/logdir")                                   |
 | [moduletool](#moduletool)                           | `string`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-moduletool.md "settings.schema.json#/definitions/system/properties/moduletool")                           |
+| [processor](#processor)                             | `object`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor.md "settings.schema.json#/definitions/system/properties/processor")                             |
 | [compilers](#compilers)                             | `object`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers.md "settings.schema.json#/definitions/system/properties/compilers")                             |
 | [executors](#executors)                             | `object`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors.md "settings.schema.json#/definitions/system/properties/executors")                             |
 | [cdash](#cdash)                                     | `object`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-cdash.md "settings.schema.json#/definitions/system/properties/cdash")                                     |
@@ -196,6 +197,24 @@ Specify modules tool used for interacting with `module` command.
 | `"environment-modules"` |             |
 | `"lmod"`                |             |
 | `"N/A"`                 |             |
+
+### processor
+
+Specify processor information
+
+`processor`
+
+*   is optional
+
+*   Type: `object` ([Details](settings-definitions-system-properties-processor.md))
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-processor.md "settings.schema.json#/definitions/system/properties/processor")
+
+#### processor Type
+
+`object` ([Details](settings-definitions-system-properties-processor.md))
 
 ### compilers
 

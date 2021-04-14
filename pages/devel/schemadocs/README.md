@@ -110,6 +110,8 @@
 
 *   [Untitled object in buildtest configuration schema](./settings-properties-system-patternproperties-.md) – `settings.schema.json#/properties/system/patternProperties/^.*$`
 
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-processor.md "Specify processor information") – `settings.schema.json#/definitions/system/properties/processor`
+
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers.md "Declare compiler section for defining system compilers that can be referenced in buildspec") – `settings.schema.json#/definitions/system/properties/compilers`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-find.md "Find compilers by specifying regular expression that is applied to modulefile names") – `settings.schema.json#/definitions/system/properties/compilers/properties/find`
@@ -185,6 +187,8 @@
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-cdash.md "Specify CDASH configuration used to upload tests via 'buildtest cdash' command") – `settings.schema.json#/definitions/system/properties/cdash`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system.md) – `settings.schema.json#/definitions/system`
+
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-processor.md "Specify processor information") – `settings.schema.json#/definitions/system/properties/processor`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers.md "Declare compiler section for defining system compilers that can be referenced in buildspec") – `settings.schema.json#/definitions/system/properties/compilers`
 
