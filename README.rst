@@ -1,4 +1,4 @@
-| |license| |docs| |codecov| |slack| |release| |ascent_pipeline_status| |cori_pipeline_status| |installation| |regressiontest| |gh_pages_master| |gh_pages_devel| |checkurls| |dailyurlcheck| |codefactor| |blackformat|  |black| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
+| |license| |docs| |codecov| |slack| |release| |installation| |regressiontest| |gh_pages_master| |gh_pages_devel| |checkurls| |dailyurlcheck| |codefactor| |blackformat|  |black| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -9,12 +9,6 @@
     :target: http://hpcbuildtest.slack.com
 
 .. |license| image:: https://img.shields.io/github/license/buildtesters/buildtest.svg
-
-.. |ascent_pipeline_status| image::  https://code.ornl.gov/ecpcitest/buildtest/badges/devel/pipeline.svg
-   :target: https://code.ornl.gov/ecpcitest/buildtest/-/commits/devel
- 
-.. |cori_pipeline_status| image:: https://software.nersc.gov/siddiq90/buildtest/badges/devel/pipeline.svg
-   :target: https://software.nersc.gov/siddiq90/buildtest/-/commits/devel
 
 .. |release| image:: https://img.shields.io/github/v/release/buildtesters/buildtest.svg
    :target: https://github.com/buildtesters/buildtest/releases
