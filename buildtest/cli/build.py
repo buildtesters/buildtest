@@ -20,7 +20,7 @@ from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.report import update_report
 from buildtest.config import check_settings
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDTEST_USER_HOME, BUILD_REPORT
-from buildtest.exceptions import BuildTestError
+from buildtest.exceptions import BuildTestError, BuildspecError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.system import system
 from buildtest.utils.file import walk_tree, resolve_path, is_file, create_dir, load_json
@@ -546,7 +546,7 @@ class BuildTest:
             try:
                 # Read in Buildspec file here, loading each will validate the buildspec file
                 bp = BuildspecParser(buildspec, self.buildexecutor)
-            except (BuildTestError, ValidationError) as err:
+            except (BuildTestError, BuildspecError, ValidationError) as err:
                 invalid_buildspecs.append(
                     f"Skipping {buildspec} since it failed to validate"
                 )

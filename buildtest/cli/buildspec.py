@@ -15,7 +15,7 @@ from buildtest.defaults import (
     BUILDTEST_BUILDSPEC_DIR,
 )
 from buildtest.executors.setup import BuildExecutor
-from buildtest.exceptions import BuildTestError
+from buildtest.exceptions import BuildTestError, BuildspecError
 from buildtest.utils.file import (
     create_dir,
     is_dir,
@@ -215,7 +215,7 @@ class BuildspecCache:
             # any buildspec that raises SystemExit or ValidationError imply
             # buildspec is not valid, we add this to invalid list along with
             # error message and skip to next buildspec
-            except (BuildTestError, ValidationError) as err:
+            except (BuildTestError, BuildspecError, ValidationError) as err:
                 self.invalid_buildspecs[buildspec] = err
                 continue
 
