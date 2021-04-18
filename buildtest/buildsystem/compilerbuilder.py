@@ -241,13 +241,13 @@ class CompilerBuilder(BuilderBase):
         Buildspec recipe.
         """
 
-        # attempt to resolve path based on 'source' field. One can specify an absolute path if specified we honor it
-        self.abspath_sourcefile = resolve_path(self.sourcefile)
-        # One can specify a relative path to where buildspec is located when using 'source' field so we try again
-        if not self.abspath_sourcefile:
-            self.abspath_sourcefile = resolve_path(
-                os.path.join(os.path.dirname(self.buildspec), self.sourcefile)
-            )
+        # attempt to resolve path based on 'source' field.
+        # 1. The source file can be absolute path and if exists we use this
+        # 2. The source file can be relative path to where buildspec is located
+
+        self.abspath_sourcefile = resolve_path(self.sourcefile) or resolve_path(
+            os.path.join(os.path.dirname(self.buildspec), self.sourcefile)
+        )
 
         # raise error if we can't find source file to compile
         if not self.abspath_sourcefile:

@@ -5,7 +5,7 @@ from termcolor import colored
 from tabulate import tabulate
 from buildtest.defaults import BUILD_REPORT
 from buildtest.exceptions import BuildTestError
-from buildtest.utils.file import is_file, create_dir, resolve_path
+from buildtest.utils.file import create_dir, is_file, load_json, resolve_path
 
 
 def is_int(val):
@@ -123,9 +123,7 @@ class Report:
         if not is_file(self.reportfile):
             sys.exit(f"Unable to fetch report no such file found: {self.reportfile}")
 
-        report = None
-        with open(self.reportfile, "r") as fd:
-            report = json.loads(fd.read())
+        report = load_json(self.reportfile)
 
         # if report is None or issue with how json.load returns content of file we
         # raise error
@@ -421,12 +419,11 @@ def update_report(valid_builders, report_file=BUILD_REPORT):
     if not is_file(os.path.dirname(report_file)):
         create_dir(os.path.dirname(report_file))
 
-    # if file exists, read json file otherwise set report to empty dict
-    try:
-        with open(report_file, "r") as fd:
-            report = json.loads(fd.read())
-    except OSError:
-        report = {}
+    report = {}
+
+    # if file exists, read json file
+    if is_file(report_file):
+        report = load_json(report_file)
 
     for builder in valid_builders:
         buildspec = builder.metadata["buildspec"]

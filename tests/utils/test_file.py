@@ -10,10 +10,11 @@ from buildtest.utils.file import (
     is_dir,
     is_file,
     create_dir,
-    walk_tree,
+    load_json,
     read_file,
-    write_file,
     resolve_path,
+    walk_tree,
+    write_file,
 )
 from buildtest.exceptions import BuildTestError
 
@@ -183,6 +184,8 @@ def test_resolve_path():
     assert resolve_path("$HOME")
     assert resolve_path("~")
 
+    assert not resolve_path(None)
+
     random_name = "".join(random.choice(string.ascii_letters) for i in range(10))
     # test a directory path that doesn't exist in $HOME with random key, but setting exist=False will return
     # path but doesn't mean file exists
@@ -192,3 +195,14 @@ def test_resolve_path():
     assert not is_file(path)
     assert not is_dir(path)
     assert path is not None
+
+
+@pytest.mark.utility
+def test_load_json():
+    # passing None will raise an error
+    with pytest.raises(BuildTestError):
+        load_json(None)
+
+    with pytest.raises(BuildTestError):
+        random_name = "".join(random.choice(string.ascii_letters) for i in range(10))
+        load_json(random_name)

@@ -1,5 +1,4 @@
 import os
-import json
 import pytest
 import random
 import shutil
@@ -313,7 +312,7 @@ def test_invalid_filters():
         report_cmd(args)
 
 
-def test_report_JSONDecodeError():
+def test_invalid_report_format():
 
     tf = tempfile.NamedTemporaryFile()
 
@@ -327,8 +326,8 @@ def test_report_JSONDecodeError():
         file = tf.name
         report = None
 
-    # reading a report file not in JSON format will result in JSONDecodeError
-    with pytest.raises(json.JSONDecodeError):
+    # reading a report file not in JSON format will result in exception BuildTestError
+    with pytest.raises(BuildTestError):
         report_cmd(args)
 
 

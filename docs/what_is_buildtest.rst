@@ -262,6 +262,7 @@ Timeline
     :header: "Date", "Description"
     :widths: 30, 60
 
+    **Mar 31th 2021**, "`v0.9.5 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.5>`_ add support for PBS scheduler and reimplement ``buildtest inspect`` command"
     **Mar 14th 2021**, "`v0.9.4 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.4>`_ introduced major change in buildtest configuration file (``settings.schema.json``) to define multiple HPC systems in configuration file. This lead to change in how ``executors`` are referenced in buildspec file."
     **Feb 22nd 2021**, "`v0.9.3 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.3>`_ change Copyright details for project to include `LBNL <https://www.lbl.gov/>`_. We added `dependabot <https://dependabot.com/>`_ for managing dependencies, added OLCF facility pipelines for running regression test."
     **Jan 12th 2021**, "`v0.9.2 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.2>`_ contains major refactor to ``compiler-v1.0-schema.json`` for writing compiler test using regular expression to search for compilers that are defined in configuration file."

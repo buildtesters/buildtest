@@ -3,48 +3,43 @@ import random
 import string
 import uuid
 from buildtest.cli.inspect import get_all_ids, inspect_cmd
-
-
-def test_inspect_ids():
-
-    test_ids = get_all_ids()
-    # return should be a list of test ids
-    assert isinstance(test_ids, dict)
-
-    # ensure there is atleast one test ID in report.json
-    assert len(test_ids.keys()) >= 1
-    print(test_ids)
+from buildtest.defaults import BUILD_REPORT
+from buildtest.utils.file import load_json
 
 
 def test_buildtest_inspect_list():
     class args:
         subcommands = "config"
         inspect = "list"
+        report_file = False
 
     inspect_cmd(args)
 
 
 def test_buildtest_inspect_name():
 
-    test_ids = get_all_ids()
-    test_name = None
+    report = load_json(BUILD_REPORT)
+    test_ids = get_all_ids(report)
+    # print(test_ids)
 
-    for identifier, name in test_ids.items():
-        test_name = name
-        break
+    # get first element's value from dict. dict in format  { <ID> : <name>, <ID>: <name> }
+    test_name = list(test_ids.values())[0]
 
     class args:
         subcommands = "config"
         inspect = "name"
         name = [test_name]
+        report_file = None
 
     print(f"Querying test names: {args.name}")
+    print(args)
     inspect_cmd(args)
 
     class args:
         subcommands = "config"
         inspect = "name"
         name = ["".join(random.choice(string.ascii_letters) for i in range(10))]
+        report_file = None
 
     print(f"Querying test names: {args.name}")
     with pytest.raises(SystemExit):
@@ -52,8 +47,8 @@ def test_buildtest_inspect_name():
 
 
 def test_buildtest_inspect_id():
-
-    test_ids = get_all_ids()
+    report = load_json(BUILD_REPORT)
+    test_ids = get_all_ids(report)
 
     identifier = list(test_ids.keys())[0]
 
@@ -61,6 +56,7 @@ def test_buildtest_inspect_id():
         subcommands = "config"
         inspect = "id"
         id = [identifier]
+        report_file = None
 
     print(f"Querying test identifier: {args.id}")
     inspect_cmd(args)
@@ -69,6 +65,7 @@ def test_buildtest_inspect_id():
         subcommands = "config"
         inspect = "id"
         id = [str(uuid.uuid4())]
+        report_file = None
 
     print(f"Querying test identifier: {args.id}")
     # generate a random unique id which is not a valid test id when searching for tests by id.

@@ -4,7 +4,6 @@ for building test scripts from a Buildspec
 """
 
 import logging
-import json
 import os
 import re
 import shutil
@@ -21,10 +20,10 @@ from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.report import update_report
 from buildtest.config import check_settings
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDTEST_USER_HOME, BUILD_REPORT
-from buildtest.exceptions import BuildTestError
+from buildtest.exceptions import BuildTestError, BuildspecError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.system import system
-from buildtest.utils.file import walk_tree, resolve_path, is_file, create_dir
+from buildtest.utils.file import walk_tree, resolve_path, is_file, create_dir, load_json
 from buildtest.utils.tools import Hasher, deep_get
 
 logger = logging.getLogger(__name__)
@@ -47,16 +46,10 @@ def resolve_testdirectory(buildtest_configuration, cli_testdir=None):
     prefix = buildtest_configuration.get("testdir")
 
     # variable to set test directory if prefix is set
-    prefix_testdir = None
-    if prefix:
-        prefix = resolve_path(prefix, exist=False)
+    prefix_testdir = resolve_path(prefix, exist=False)
 
-        if prefix:
-            prefix_testdir = prefix
-
-    if cli_testdir:
-        # resolve full path for test directory specified by --testdir option
-        cli_testdir = resolve_path(cli_testdir, exist=False)
+    # resolve full path for test directory specified by --testdir option
+    cli_testdir = resolve_path(cli_testdir, exist=False)
 
     # Order of precedence when detecting test directory
     # 1. Command line option --testdir
@@ -398,8 +391,17 @@ class BuildTest:
                 f"Cannot for buildspec cache: {BUILDSPEC_CACHE_FILE}, please run 'buildtest buildspec find' "
             )
 
+        cache = load_json(BUILDSPEC_CACHE_FILE)
+
+        """
         with open(BUILDSPEC_CACHE_FILE, "r") as fd:
-            cache = json.loads(fd.read())
+            
+            try:
+                cache = json.loads(fd.read())
+            except json.JSONDecodeError as err:
+                print(err)
+                raise BuildTestError(f"Error loading file: {BUILDSPEC_CACHE_FILE} via json.loads please make sure its valid JSON file")
+        """
 
         buildspecs = []
         # query all buildspecs from BUILDSPEC_CACHE_FILE for tags keyword and
@@ -436,8 +438,7 @@ class BuildTest:
                 f"Cannot for buildspec cache: {BUILDSPEC_CACHE_FILE}, please run 'buildtest buildspec find' "
             )
 
-        with open(BUILDSPEC_CACHE_FILE, "r") as fd:
-            cache = json.loads(fd.read())
+        cache = load_json(BUILDSPEC_CACHE_FILE)
 
         buildspecs = []
         # query all buildspecs from BUILDSPEC_CACHE_FILE for tags keyword and
@@ -545,7 +546,7 @@ class BuildTest:
             try:
                 # Read in Buildspec file here, loading each will validate the buildspec file
                 bp = BuildspecParser(buildspec, self.buildexecutor)
-            except (BuildTestError, ValidationError) as err:
+            except (BuildTestError, BuildspecError, ValidationError) as err:
                 invalid_buildspecs.append(
                     f"Skipping {buildspec} since it failed to validate"
                 )

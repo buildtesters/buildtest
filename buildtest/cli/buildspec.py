@@ -15,11 +15,12 @@ from buildtest.defaults import (
     BUILDTEST_BUILDSPEC_DIR,
 )
 from buildtest.executors.setup import BuildExecutor
-from buildtest.exceptions import BuildTestError
+from buildtest.exceptions import BuildTestError, BuildspecError
 from buildtest.utils.file import (
     create_dir,
     is_dir,
     is_file,
+    load_json,
     read_file,
     resolve_path,
     walk_tree,
@@ -139,8 +140,7 @@ class BuildspecCache:
         if not is_file(BUILDSPEC_CACHE_FILE):
             self.build_cache()
 
-        with open(BUILDSPEC_CACHE_FILE, "r") as fd:
-            self.cache = json.loads(fd.read())
+        self.cache = load_json(BUILDSPEC_CACHE_FILE)
 
     def _discover_buildspecs(self):
         """This method retrieves buildspecs based on ``self.paths`` which is a
@@ -215,7 +215,7 @@ class BuildspecCache:
             # any buildspec that raises SystemExit or ValidationError imply
             # buildspec is not valid, we add this to invalid list along with
             # error message and skip to next buildspec
-            except (BuildTestError, ValidationError) as err:
+            except (BuildTestError, BuildspecError, ValidationError) as err:
                 self.invalid_buildspecs[buildspec] = err
                 continue
 

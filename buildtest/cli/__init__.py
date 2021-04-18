@@ -385,9 +385,12 @@ def report_menu(subparsers):
 
 
 def inspect_menu(subparsers):
-    """This method builds menu for `buildtest inspect` """
+    """This method builds argument for `buildtest inspect` command """
 
     parser_inspect = subparsers.add_parser("inspect")
+    parser_inspect.add_argument(
+        "-r", "--report-file", help="Specify a report file to load when inspecting test"
+    )
     subparser = parser_inspect.add_subparsers(
         help="subcommands", description="Inspect Test result", dest="inspect"
     )
@@ -424,6 +427,7 @@ def schema_menu(subparsers):
 
 
 def cdash_menu(subparsers):
+    """This method builds arguments for `buildtest cdash` command."""
 
     parser_cdash = subparsers.add_parser("cdash")
     subparser = parser_cdash.add_subparsers(
@@ -438,4 +442,7 @@ def cdash_menu(subparsers):
     upload.add_argument(
         "--url",
         help="Specify url to CDASH server (example: https://my.cdash.org/submit.php?project=buildtest-cori)",
+    )
+    upload.add_argument(
+        "-r", "--report-file", help="Path to report file to upload test results"
     )
