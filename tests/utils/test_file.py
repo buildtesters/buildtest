@@ -183,6 +183,8 @@ def test_resolve_path():
     assert resolve_path("$HOME")
     assert resolve_path("~")
 
+    assert not resolve_path(None)
+
     random_name = "".join(random.choice(string.ascii_letters) for i in range(10))
     # test a directory path that doesn't exist in $HOME with random key, but setting exist=False will return
     # path but doesn't mean file exists

@@ -20,6 +20,7 @@ from buildtest.utils.file import (
     create_dir,
     is_dir,
     is_file,
+    load_json,
     read_file,
     resolve_path,
     walk_tree,
@@ -139,8 +140,7 @@ class BuildspecCache:
         if not is_file(BUILDSPEC_CACHE_FILE):
             self.build_cache()
 
-        with open(BUILDSPEC_CACHE_FILE, "r") as fd:
-            self.cache = json.loads(fd.read())
+        self.cache = load_json(BUILDSPEC_CACHE_FILE)
 
     def _discover_buildspecs(self):
         """This method retrieves buildspecs based on ``self.paths`` which is a

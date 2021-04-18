@@ -1,3 +1,6 @@
+"""This module implements methods for buildtest inspect command that can be used
+to retrieve test record from report file in JSON format."""
+
 import json
 import os
 import sys
@@ -5,23 +8,46 @@ from termcolor import colored
 from tabulate import tabulate
 
 from buildtest.defaults import BUILD_REPORT
-from buildtest.exceptions import BuildTestError
+from buildtest.utils.file import load_json, resolve_path
 
 
-def get_all_ids():
+def inspect_cmd(args):
+    """Entry point for ``buildtest inspect`` command"""
+
+    report_file = resolve_path(args.report_file) or BUILD_REPORT
+
+    report = load_json(report_file)
+
+    assert isinstance(report, dict)
+    test_ids = get_all_ids(report)
+
+    print(f"Reading Report File: {report_file} \n")
+
+    # implements command 'buildtest inspect list'
+    if args.inspect == "list":
+        inspect_list(test_ids)
+        return
+
+    # implements command 'buildtest inspect name'
+    if args.inspect == "name":
+        inspect_by_name(report, args.name)
+        return
+
+    # implements command 'buildtest inspect id'
+    if args.inspect == "id":
+        inspect_by_id(test_ids, report, args)
+
+
+def get_all_ids(report):
     """Return all unique test ids from report cache
-    :return: list of unique ids
-    :rtype: list
+
+    :param report: loaded report file in JSON format
+    :type report: dict
+    :return: a dictionary returning a list of unique test IDs
+    :rtype: dict
     """
 
     test_id = {}
-    if not os.path.exists(BUILD_REPORT):
-        raise BuildTestError(
-            f"Cannot find file {BUILD_REPORT}, please build a test via 'buildtest build' in order to generate report file."
-        )
-
-    with open(BUILD_REPORT, "r") as fd:
-        report = json.loads(fd.read())
 
     for buildspec in report.keys():
         # loop over all tests in buildspecs
@@ -34,55 +60,8 @@ def get_all_ids():
     return test_id
 
 
-def inspect_cmd(args):
-    """Entry point for ``buildtest inspect`` command"""
-
-    # implements command 'buildtest inspect list'
-    if args.inspect == "list":
-        inspect_list()
-        return
-
-    test_ids = get_all_ids()
-    with open(BUILD_REPORT, "r") as fd:
-        report = json.loads(fd.read())
-
-    # implements command 'buildtest inspect name'
-    if args.inspect == "name":
-        inspect_by_name(report, args.name)
-        return
-
-    # implements command 'buildtest inspect id'
-    if args.inspect == "id":
-
-        discovered_ids = []
-        records = {}
-
-        # discover all tests based on all unique ids from report cache
-        for identifier in test_ids.keys():
-            for input_id in args.id:
-                if identifier.startswith(input_id):
-                    discovered_ids.append(identifier)
-
-        # if no test discovered exit with message
-        if not discovered_ids:
-            sys.exit(
-                f"Unable to find any test records based on id: {args.id}, please run 'buildtest inspect list' to see list of ids."
-            )
-
-        for buildspec in report.keys():
-            for test in report[buildspec].keys():
-                for test_record in report[buildspec][test]:
-                    for identifier in discovered_ids:
-                        if test_record["full_id"] == identifier:
-                            records[identifier] = test_record
-
-        print(json.dumps(records, indent=2))
-
-
-def inspect_list():
+def inspect_list(test_ids):
     """Implements method ``buildtest inspect list``"""
-
-    test_ids = get_all_ids()
 
     table = {"name": [], "id": []}
     for id, name in test_ids.items():
@@ -119,5 +98,31 @@ def inspect_by_name(report, names):
         sys.exit(
             f"Unable to find any records based on {names}. Please run 'buildtest inspect list' and see list of test names."
         )
+
+    print(json.dumps(records, indent=2))
+
+
+def inspect_by_id(test_ids, report, args):
+    discovered_ids = []
+    records = {}
+
+    # discover all tests based on all unique ids from report cache
+    for identifier in test_ids.keys():
+        for input_id in args.id:
+            if identifier.startswith(input_id):
+                discovered_ids.append(identifier)
+
+    # if no test discovered exit with message
+    if not discovered_ids:
+        sys.exit(
+            f"Unable to find any test records based on id: {args.id}, please run 'buildtest inspect list' to see list of ids."
+        )
+
+    for buildspec in report.keys():
+        for test in report[buildspec].keys():
+            for test_record in report[buildspec][test]:
+                for identifier in discovered_ids:
+                    if test_record["full_id"] == identifier:
+                        records[identifier] = test_record
 
     print(json.dumps(records, indent=2))

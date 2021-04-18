@@ -12,6 +12,7 @@ from datetime import datetime
 from urllib.request import urlopen, Request
 from urllib.parse import urlencode
 from buildtest.defaults import BUILD_REPORT
+from buildtest.utils.file import resolve_path
 from buildtest.utils.tools import deep_get
 
 
@@ -28,10 +29,12 @@ def cdash_cmd(args, configuration):
 
     if args.cdash == "upload":
 
-        upload_test_cdash(args.site, args.buildname, args.url, configuration)
+        upload_test_cdash(
+            args.site, args.buildname, args.url, args.report_file, configuration
+        )
 
 
-def upload_test_cdash(site, buildname, url, configuration):
+def upload_test_cdash(site, buildname, url, report_file, configuration):
 
     site_name = site or deep_get(configuration.target_config, "cdash", "site")
     build_name = buildname or deep_get(
@@ -61,14 +64,15 @@ def upload_test_cdash(site, buildname, url, configuration):
     build_endtime = None
 
     tests = []
-    if not os.path.exists(BUILD_REPORT):
+    abspath_report_file = resolve_path(report_file) or BUILD_REPORT
+    if not abspath_report_file:
         sys.exit(
-            f"Unable to find report file: {BUILD_REPORT} please build a test via buildtest build"
+            f"Unable to find report file: {report_file} please build a test via buildtest build"
         )
 
-    print("Reading report file: ", BUILD_REPORT)
+    print("Reading report file: ", abspath_report_file)
 
-    with open(BUILD_REPORT) as json_file:
+    with open(abspath_report_file) as json_file:
         buildtest_data = json.load(json_file)
         for file_name in buildtest_data.keys():
             for test_name, tests_data in buildtest_data[file_name].items():

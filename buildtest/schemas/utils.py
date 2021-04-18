@@ -2,11 +2,11 @@
 Utility and helper functions for schemas.
 """
 
-import json
 import logging
 import os
 import sys
 import yaml
+from buildtest.utils.file import load_json
 
 here = os.path.dirname(os.path.abspath(__file__))
 
@@ -28,8 +28,7 @@ def load_schema(path):
         logger.error(msg)
         sys.exit(msg)
 
-    with open(path, "r") as fd:
-        schema = json.loads(fd.read())
+    schema = load_json(path)
 
     logger.debug(f"Successfully loaded schema file: {path}")
     return schema
