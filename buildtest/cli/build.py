@@ -20,54 +20,18 @@ from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.report import update_report
 from buildtest.config import check_settings
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDTEST_USER_HOME, BUILD_REPORT
-from buildtest.exceptions import BuildTestError, BuildspecError
+from buildtest.exceptions import (
+    BuildTestError,
+    BuildspecError,
+    ConfigurationError,
+    ExecutorError,
+)
 from buildtest.executors.setup import BuildExecutor
 from buildtest.system import system
 from buildtest.utils.file import walk_tree, resolve_path, is_file, create_dir, load_json
 from buildtest.utils.tools import Hasher, deep_get
 
 logger = logging.getLogger(__name__)
-
-
-def resolve_testdirectory(buildtest_configuration, cli_testdir=None):
-    """This method resolves which test directory to select. For example, one
-    can specify test directory via command line ``buildtest build --testdir <path>``
-    or path in configuration file. The default is $BUILDTEST_ROOT/var/tests
-
-
-    :param buildtest_configuration: loaded buildtest configuration as a dict.
-    :type buildtest_configuration: dict
-    :param cli_testdir: test directory from command line ``buildtest build --testdir``
-    :type cli_testdir: str
-    :return: Path to test directory to use
-    :rtype: str
-    """
-
-    prefix = buildtest_configuration.get("testdir")
-
-    # variable to set test directory if prefix is set
-    prefix_testdir = resolve_path(prefix, exist=False)
-
-    # resolve full path for test directory specified by --testdir option
-    cli_testdir = resolve_path(cli_testdir, exist=False)
-
-    # Order of precedence when detecting test directory
-    # 1. Command line option --testdir
-    # 2. Configuration option specified by 'testdir'
-    # 3. Defaults to $BUILDTEST_ROOT/var/tests
-    test_directory = (
-        cli_testdir
-        or prefix_testdir
-        or os.path.join(BUILDTEST_USER_HOME, "var", "tests")
-    )
-    if not test_directory:
-        raise BuildTestError(
-            "Invalid value for test directory, please specify a valid directory path through command line (--testdir) or configuration file"
-        )
-
-    create_dir(test_directory)
-
-    return test_directory
 
 
 class BuildTest:
@@ -146,18 +110,17 @@ class BuildTest:
         if rebuild and not isinstance(rebuild, int):
             raise BuildTestError(f"{rebuild} is not of type int")
 
-        self.configfile = config_file
+        self.config_file = config_file
         self.configuration = check_settings(
-            settings_path=self.configfile, executor_check=True
+            settings_path=self.config_file, executor_check=True
         )
 
-        # self.configuration = BuildtestConfiguration(self.configfile)
         self.buildspecs = buildspecs
         self.exclude_buildspecs = exclude_buildspecs
         self.tags = tags
         self.executors = executors
 
-        self.testdir = resolve_testdirectory(self.configuration.target_config, testdir)
+        self.testdir = self.resolve_testdirectory(testdir)
         self.stage = stage
         self.filtertags = filter_tags
         self.rebuild = rebuild
@@ -172,13 +135,7 @@ class BuildTest:
         self.builders = None
         self.buildexecutor = BuildExecutor(self.configuration)
         self.system = buildtest_system or system
-        self.report_file = BUILD_REPORT
-
-        if report_file:
-            self.report_file = resolve_path(report_file, exist=False)
-
-            if not self.report_file.endswith(".json"):
-                sys.exit(f"{self.report_file} must end in .json extension")
+        self.report_file = resolve_path(report_file, exist=False) or BUILD_REPORT
 
         print("\n")
         print("User: ", self.system.system["user"])
@@ -217,6 +174,40 @@ class BuildTest:
         # only update report if we have a list of valid builders returned from run_phase
         if self.builders:
             update_report(self.builders, self.report_file)
+
+    def resolve_testdirectory(self, cli_testdir=None):
+        """This method resolves which test directory to select. For example, one
+        can specify test directory via command line ``buildtest build --testdir <path>``
+        or path in configuration file. The default is $HOME/.buildtest/var/tests
+
+
+        :param cli_testdir: test directory from command line ``buildtest build --testdir``
+        :type cli_testdir: str
+        :return: Path to test directory to use
+        :rtype: str
+        """
+
+        # variable to set test directory if prefix is set
+        prefix_testdir = resolve_path(
+            self.configuration.target_config.get("testdir"), exist=False
+        )
+
+        # resolve full path for test directory specified by --testdir option
+        cli_testdir = resolve_path(cli_testdir, exist=False)
+
+        # Order of precedence when detecting test directory
+        # 1. Command line option --testdir
+        # 2. Configuration option specified by 'testdir'
+        # 3. Defaults to $HOME/.buildtest/var/tests
+        test_directory = (
+            cli_testdir
+            or prefix_testdir
+            or os.path.join(BUILDTEST_USER_HOME, "var", "tests")
+        )
+
+        create_dir(test_directory)
+
+        return test_directory
 
     def discover_buildspecs(self, printTable=False):
         """This method discovers all buildspecs based on --buildspecs, --tags, --executor
@@ -776,7 +767,7 @@ class BuildTest:
         for builder in self.builders:
             try:
                 self.buildexecutor.run(builder)
-            except SystemExit as err:
+            except ExecutorError as err:
                 print("[%s]: Failed to Run Test" % builder.metadata["name"])
                 errmsg.append(err)
                 logger.error(err)

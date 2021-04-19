@@ -196,7 +196,7 @@ def build_menu(subparsers):
     parser_build.add_argument(
         "-r",
         "--report_file",
-        help="Specify a report file where tests will be written. File must be in .json extension",
+        help="Specify a report file where tests will be written.",
     )
 
 

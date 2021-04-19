@@ -30,7 +30,7 @@ def test_BuildspecParser(tmp_path):
         BuildspecParser(None, executors)
 
     directory = os.path.join(here, "invalid_buildspecs")
-    builders = []
+
     for buildspec in walk_tree(directory, ".yml"):
         buildspecfile = os.path.join(directory, buildspec)
         print("Processing buildspec: ", buildspecfile)

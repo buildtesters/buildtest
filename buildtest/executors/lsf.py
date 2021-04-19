@@ -10,6 +10,7 @@ import subprocess
 import sys
 import time
 from buildtest.executors.base import BaseExecutor
+from buildtest.exceptions import ExecutorError
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import read_file
 from buildtest.utils.tools import deep_get
@@ -106,12 +107,9 @@ class LSFExecutor(BaseExecutor):
         if command.returncode != 0:
             err = f"[{builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
             err += f"[{builder.metadata['name']}] running command: {bsub_cmd}"
-            sys.exit(err)
+            raise ExecutorError(err)
 
         interval = 5
-
-        print(f"[{builder.metadata['name']}] job dispatched to scheduler")
-        print(f"[{builder.metadata['name']}] acquiring job id in {interval} seconds")
 
         # wait a few seconds before querying for jobID. It can take a few seconds
         # between job submission and running bjobs to get output.

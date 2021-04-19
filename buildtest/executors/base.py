@@ -47,11 +47,19 @@ class BaseExecutor:
         """
 
     def start_time(self, builder):
-        """Record start time in builder metadata object. This method is called right after job submission"""
+        """Record start time in builder metadata object. This method is called right after job submission
+
+        :param builder: instance of BuilderBase class
+        :type builder: BuilderBase (subclass)
+        """
         builder.metadata["result"]["starttime"] = datetime.datetime.now()
 
     def end_time(self, builder):
-        """Record end time in builder metadata object. This method is after job completion."""
+        """Record end time in builder metadata object. This method is after job completion.
+
+        :param builder: instance of BuilderBase class
+        :type builder: BuilderBase (subclass)
+        """
         builder.metadata["result"]["endtime"] = datetime.datetime.now()
 
         # Calculate runtime of job by calculating delta between start and endtime.
@@ -82,8 +90,9 @@ class BaseExecutor:
         will return a boolean True indicates there is a match otherwise False
         if ``regex`` object not defined or ``re.search`` doesn't find a match.
 
-        :param status: status property defined in Buildspec file
-        :type status: dict, required
+        :param builder: instance of BuilderBase class
+        :type builder: BuilderBase (subclass)
+
         :return: A boolean return True/False based on if re.search is successful or not
         :rtype: bool
         """
@@ -115,6 +124,9 @@ class BaseExecutor:
     def _returncode_check(self, builder):
         """Check status check of ``returncode`` field if specified in status
         property.
+
+        :param builder: instance of BuilderBase class
+        :type builder: BuilderBase (subclass)
         """
 
         returncode_match = False
@@ -146,6 +158,9 @@ class BaseExecutor:
     def check_test_state(self, builder):
         """This method is responsible for detecting state of test (PASS/FAIL)
         based on returncode or regular expression.
+
+        :param builder: instance of BuilderBase class
+        :type builder: BuilderBase (subclass)
         """
 
         builder.metadata["result"]["state"] = "FAIL"
