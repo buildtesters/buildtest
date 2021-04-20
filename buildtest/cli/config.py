@@ -15,20 +15,27 @@ from buildtest.config import (
     buildtest_configuration,
 )
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, supported_schemas
+from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.utils import load_recipe
 from buildtest.system import system
 
 
-def config_cmd(args):
+def config_cmd(args, configuration):
+
+    buildexecutor = BuildExecutor(configuration)
 
     if args.config == "view":
         view_configuration()
+
     elif args.config == "executors":
-        view_executors(args.json)
+        view_executors(buildexecutor, args.json, args.yaml)
+
     elif args.config == "summary":
         view_summary()
+
     elif args.config == "validate":
         validate_config()
+
     elif args.config == "systems":
         view_system()
 
@@ -93,7 +100,7 @@ def view_configuration():
     print(f"Settings File: {settings_file}")
 
 
-def view_executors(json_format=False):
+def view_executors(buildexecutor, json_format=False, yaml_format=False):
     """Display executors from buildtest configuration. This implements ``buildtest config executors`` command.
     If no option is specified we display output in JSON format
     """
@@ -106,7 +113,13 @@ def view_executors(json_format=False):
         return
 
     # display output in YAML format
-    print(yaml.dump(d, default_flow_style=False))
+    if yaml_format:
+        print(yaml.dump(d, default_flow_style=False))
+        return
+
+    names = buildexecutor.list_executors()
+    for name in names:
+        print(name)
 
 
 def view_summary(buildtestsystem=None):

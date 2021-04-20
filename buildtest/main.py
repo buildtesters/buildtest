@@ -141,7 +141,7 @@ def main():
     elif args.subcommands == "config":
         from buildtest.cli.config import config_cmd
 
-        config_cmd(args)
+        config_cmd(args, configuration)
 
     elif args.subcommands == "report":
         from buildtest.cli.report import report_cmd

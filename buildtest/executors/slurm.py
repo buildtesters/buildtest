@@ -7,7 +7,7 @@ import os
 import re
 import shutil
 
-from buildtest.exceptions import BuildTestError
+from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import read_file
@@ -112,17 +112,17 @@ class SlurmExecutor(BaseExecutor):
         command = BuildTestCommand(builder.metadata["command"])
         command.execute()
 
-        # record starttime of job
-        self.start_time(builder)
-        builder.start()
-
         # if sbatch job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
             err = f"[{builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
             err += (
                 f"[{builder.metadata['name']}] running command: {' '.join(sbatch_cmd)}"
             )
-            raise BuildTestError(err)
+            raise ExecutorError(err)
+
+        # record starttime of job
+        self.start_time(builder)
+        builder.start()
 
         parse_jobid = command.get_output()
         parse_jobid = " ".join(parse_jobid)
@@ -187,17 +187,13 @@ class SlurmExecutor(BaseExecutor):
                     )
                 )
 
-                # return builder.job_state
-
             builder.start()
-
-        # return builder.job_state
 
     def gather(self, builder):
         """Gather Slurm job data after job completion
 
-        :param builder: builder object
-        :type builder: BuilderBase, required
+        :param builder: instance of BuilderBase
+        :type builder: BuilderBase (subclass), required
         """
 
         gather_cmd = f"{self.poll_cmd} -j {builder.metadata['jobid']} -X -n -P -o {','.join(self.sacct_fields)}"
@@ -265,8 +261,8 @@ class SlurmExecutor(BaseExecutor):
     def cancel(self, builder):
         """Cancel slurm job, this operation is performed if job exceeds pending or runtime.
 
-        :param builder: builder object
-        :type builder: BuilderBase, required
+        :param builder: Instance of BuilderBase
+        :type builder: BuilderBase (subclass), required
         """
 
         query = f"scancel {builder.metadata['jobid']}"

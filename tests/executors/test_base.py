@@ -10,6 +10,7 @@ from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import BuildtestConfiguration
 from buildtest.defaults import DEFAULT_SETTINGS_FILE
+from buildtest.exceptions import BuildTestError, BuildspecError
 from buildtest.executors.setup import BuildExecutor
 
 
@@ -42,7 +43,7 @@ def test_build_executor(tmp_path):
         buildspec = os.path.join(examples_dir, buildspec)
         try:
             bp = BuildspecParser(buildspec, be)
-        except (SystemExit, ValidationError):
+        except (BuildTestError, BuildspecError, ValidationError):
             continue
 
         bp_filters = {"tags": None}

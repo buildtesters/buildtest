@@ -1,6 +1,10 @@
 import os
 import pytest
-from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, SCHEMA_ROOT
+from buildtest.defaults import (
+    DEFAULT_SETTINGS_SCHEMA,
+    SCHEMA_ROOT,
+    DEFAULT_SETTINGS_FILE,
+)
 from buildtest.cli.config import (
     view_configuration,
     validate_config,
@@ -8,6 +12,8 @@ from buildtest.cli.config import (
     view_executors,
     view_system,
 )
+from buildtest.config import check_settings
+from buildtest.executors.setup import BuildExecutor
 from buildtest.utils.file import walk_tree
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_schema, load_recipe
@@ -55,14 +61,14 @@ def test_config_summary():
 
 @pytest.mark.cli
 def test_config_executors():
-    class args:
-        json = True
+    configuration = check_settings(DEFAULT_SETTINGS_FILE)
+    buildexecutor = BuildExecutor(configuration)
 
     # run buildtest config executors --json
-    view_executors(args)
+    view_executors(buildexecutor=buildexecutor, json_format=True, yaml_format=False)
 
-    class args:
-        json = False
+    # run buildtest config executors --yaml
+    view_executors(buildexecutor=buildexecutor, json_format=False, yaml_format=True)
 
     # run buildtest config executors
-    view_executors(args)
+    view_executors(buildexecutor=buildexecutor, json_format=False, yaml_format=False)

@@ -2,9 +2,10 @@
 job to PBS Scheduler"""
 import json
 import os
-import sys
+
 
 from buildtest.executors.base import BaseExecutor
+from buildtest.exceptions import ExecutorError
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import read_file
 from buildtest.utils.tools import deep_get
@@ -85,7 +86,7 @@ class PBSExecutor(BaseExecutor):
             err += (
                 f"[{builder.metadata['name']}] running command: {' '.join(batch_cmd)}"
             )
-            sys.exit(err)
+            raise ExecutorError(err)
 
         parse_jobid = command.get_output()
         self.job_id = " ".join(parse_jobid).strip()

@@ -5,9 +5,9 @@ import json
 import os
 import re
 import shutil
-import sys
 
 from buildtest.executors.base import BaseExecutor
+from buildtest.exceptions import ExecutorError
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import read_file
 from buildtest.utils.tools import deep_get
@@ -82,7 +82,7 @@ class CobaltExecutor(BaseExecutor):
             err += (
                 f"[{builder.metadata['name']}] running command: {' '.join(batch_cmd)}"
             )
-            sys.exit(err)
+            raise ExecutorError(err)
 
         parse_jobid = command.get_output()
         parse_jobid = " ".join(parse_jobid)
@@ -226,7 +226,7 @@ class CobaltExecutor(BaseExecutor):
         self.check_test_state(builder)
 
     def cancel(self, builder):
-        """Cancel Cobalt job using qdel, this operation is performed if job exceeds its max_pend_time
+        """Cancel Cobalt job using qdel, this operation is performed if job exceeds its ``max_pend_time``
 
         :param builder: builder object
         :type builder: BuilderBase, required

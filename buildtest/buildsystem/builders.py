@@ -62,7 +62,7 @@ class Builder:
                 if self._skip_tests_by_tags(recipe, name):
                     continue
 
-                if self._skip_tests_run_only(recipe, name, system):
+                if self._skip_tests_run_only(recipe, name):
                     continue
 
                 # Add the builder based on the type
@@ -165,7 +165,7 @@ class Builder:
 
         return False
 
-    def _skip_tests_run_only(self, recipe, name, system):
+    def _skip_tests_run_only(self, recipe, name):
         """This method will skip tests based on ``run_only`` field from buildspec. Checks
         are performed based on conditionals and if any conditional is not met we skip test.
 
@@ -173,8 +173,6 @@ class Builder:
         :type recipe: dict, required
         :param name: name of test from buildspec file
         :type name: str, required
-        :param system: An instance of ``BuildTestSystem`` class
-        :type system: BuildTestSystem, required
         :return: Returns a boolean to see if test is skipped based on ``run_only`` property
         :rtype: bool
         """
