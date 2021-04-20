@@ -1,10 +1,12 @@
 $ buildtest report --filter buildspec=tutorials/python-hello.yml --format=name,id,state,buildspec
-+--------------+----------+---------+-----------------------------------------------------------------------+
-| name         | id       | state   | buildspec                                                             |
-+==============+==========+=========+=======================================================================+
-| python_hello | f7510a00 | PASS    | /Users/siddiq90/Documents/github/buildtest/tutorials/python-hello.yml |
-+--------------+----------+---------+-----------------------------------------------------------------------+
-| python_hello | 386c7d7f | PASS    | /Users/siddiq90/Documents/github/buildtest/tutorials/python-hello.yml |
-+--------------+----------+---------+-----------------------------------------------------------------------+
-| python_hello | 0e9ed89e | PASS    | /Users/siddiq90/Documents/github/buildtest/tutorials/python-hello.yml |
-+--------------+----------+---------+-----------------------------------------------------------------------+
+Reading report file: /Users/siddiq90/.buildtest/report.json 
+
++--------------+----------+---------+------------------------------------------------------------------------------+
+| name         | id       | state   | buildspec                                                                    |
++==============+==========+=========+==============================================================================+
+| python_hello | 1c5a491a | PASS    | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml |
++--------------+----------+---------+------------------------------------------------------------------------------+
+| python_hello | 7b2c4233 | PASS    | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml |
++--------------+----------+---------+------------------------------------------------------------------------------+
+| python_hello | f5441dfd | PASS    | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml |
++--------------+----------+---------+------------------------------------------------------------------------------+

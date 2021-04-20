@@ -63,13 +63,16 @@ class Report:
         self.oldest = oldest
         self.filter = filter_args
         self.format = format_args
-        self.reportfile = report_file
+        self.reportfile = resolve_path(report_file)
         self.report = self.load()
         self._check_filter_fields()
         self._check_format_fields()
         self.filter_buildspecs_from_report()
 
         self.process_report()
+
+    def get_report_file(self):
+        return self.reportfile
 
     def _check_filter_fields(self):
         # check if filter arguments (--filter) are valid fields
@@ -119,7 +122,6 @@ class Report:
         entire report of all tests.
         """
 
-        # raise error if BUILD_REPORT not found
         if not is_file(self.reportfile):
             sys.exit(f"Unable to fetch report no such file found: {self.reportfile}")
 
@@ -404,6 +406,7 @@ def report_cmd(args):
         results.print_format_fields()
         return
 
+    print(f"Reading report file: {results.get_report_file()} \n")
     results.print_display_table()
 
 

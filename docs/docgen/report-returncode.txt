@@ -1,20 +1,22 @@
 $ buildtest report --filter returncode=2 --format=name,id,returncode
+Reading report file: /Users/siddiq90/.buildtest/report.json 
+
 +--------------------------+----------+--------------+
 | name                     | id       |   returncode |
 +==========================+==========+==============+
-| returncode_list_mismatch | 3251b8bb |            2 |
+| returncode_list_mismatch | dd257e76 |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | 36ba3a8f |            2 |
+| returncode_list_mismatch | 789099cd |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | 0d11a1d5 |            2 |
+| returncode_list_mismatch | 1970ec3a |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | 9d91ccfa |            2 |
+| returncode_list_mismatch | cdca839a |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | faa35e9e |            2 |
+| returncode_list_mismatch | b8378d30 |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | bd530f7c |            2 |
+| returncode_list_mismatch | d93d7855 |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | 506be516 |            2 |
+| returncode_list_mismatch | 99dba926 |            2 |
 +--------------------------+----------+--------------+
-| returncode_list_mismatch | 13635b80 |            2 |
+| returncode_list_mismatch | 7c5b5bcc |            2 |
 +--------------------------+----------+--------------+

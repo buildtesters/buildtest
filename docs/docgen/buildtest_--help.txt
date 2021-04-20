@@ -19,8 +19,9 @@ COMMANDS:
    inspect                        Inspect details for test from test report
    docs                           Open buildtest docs in browser
    schemadocs                     Open buildtest schema docs in browser
+   cdash                          Options to interact with CDASH server
 
-  {docs,schemadocs,build,buildspec,config,report,inspect,schema}
+  {docs,schemadocs,build,buildspec,config,report,inspect,schema,cdash}
 
     References
     _______________________________________________________________________________________

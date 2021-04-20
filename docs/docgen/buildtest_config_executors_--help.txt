@@ -1,6 +1,7 @@
 $ buildtest config executors --help
-usage: buildtest [options] [COMMANDS] config executors [-h] [-j]
+usage: buildtest [options] [COMMANDS] config executors [-h] [-j] [-y]
 
 optional arguments:
   -h, --help  show this help message and exit
   -j, --json  View executor in JSON format
+  -y, --yaml  View executors in YAML format
