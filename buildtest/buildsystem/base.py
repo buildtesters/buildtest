@@ -33,7 +33,7 @@ class BuilderBase(ABC):
     any kind of builder.
     """
 
-    def __init__(self, name, recipe, buildspec, buildexecutor, testdir):
+    def __init__(self, name, recipe, buildspec, executor, buildexecutor, testdir):
         """The BuilderBase provides common functions for any builder. The builder
         is an instance of BuilderBase. The initializer method will setup the builder
         attributes based on input test by ``name`` parameter.
@@ -57,6 +57,12 @@ class BuilderBase(ABC):
 
         self.duration = 0
 
+        # The type must match the type of the builder
+        self.recipe = recipe
+
+        # self.executor = self.recipe.get("executor")
+        self.executor = executor
+
         # keeps track of job state as job progress through queuing system. This is
         # applicable for builders using batch executor.
         self.job_state = None
@@ -66,9 +72,7 @@ class BuilderBase(ABC):
 
         self.buildspec = buildspec
         file_name = re.sub("[.](yml)", "", os.path.basename(buildspec))
-        self.testdir = os.path.join(
-            testdir, recipe.get("executor"), file_name, self.name
-        )
+        self.testdir = os.path.join(testdir, self.executor, file_name, self.name)
 
         self.logger = logging.getLogger(__name__)
         self.logger.debug(f"Processing Buildspec: {self.buildspec}")
@@ -80,10 +84,6 @@ class BuilderBase(ABC):
                 "A builder base is required to define the 'type' as a class variable"
             )
 
-        # The type must match the type of the builder
-        self.recipe = recipe
-
-        self.executor = self.recipe.get("executor")
         # get type attribute from Executor class (local, slurm, cobalt, lsf)
         self.executor_type = buildexecutor.executors[self.executor].type
         self.buildexecutor = buildexecutor

@@ -1,22 +1,24 @@
 $ buildtest report --filter name=exit1_pass --format=name,id,returncode,state
+Reading report file: /Users/siddiq90/.buildtest/report.json 
+
 +------------+----------+--------------+---------+
 | name       | id       |   returncode | state   |
 +============+==========+==============+=========+
-| exit1_pass | 2dd15190 |            1 | PASS    |
+| exit1_pass | ac4605a4 |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | 136bf739 |            1 | PASS    |
+| exit1_pass | a4f1f1fa |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | 3544198a |            1 | PASS    |
+| exit1_pass | 33cb7540 |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | 29a0ab78 |            1 | PASS    |
+| exit1_pass | fa922095 |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | a5b5276b |            1 | PASS    |
+| exit1_pass | 3aec9d39 |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | e64febfe |            1 | PASS    |
+| exit1_pass | 02f393a7 |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | 77f2da00 |            1 | PASS    |
+| exit1_pass | a2679c1e |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | 0e0d0d32 |            1 | PASS    |
+| exit1_pass | 2fbcdaf6 |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | e7f11b46 |            1 | PASS    |
+| exit1_pass | c5543cdf |            1 | PASS    |
 +------------+----------+--------------+---------+

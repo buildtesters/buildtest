@@ -504,3 +504,22 @@ This test will run successfully because this was ran on a Mac OS (darwin) system
 
 .. program-output:: cat docgen/schemas/run_only_distro.txt
 
+
+Running test across multiple executors
+----------------------------------------
+
+The `executor` property can support regular expression to search for compatible
+executors, this can be used if you want to run a test across multiple executors. In buildtest,
+we use `re.fullmatch <https://docs.python.org/3/library/re.html#re.fullmatch>`_ with the input
+pattern defined by **executor** property against a list of available executors defined in configuration file.
+You can retrieve a list of executors by running ``buildtest config executors``.
+
+In example below we will run this test on `generic.local.bash` and `generic.local.sh` executor based
+on the regular expression.
+
+.. program-output:: cat ../tutorials/executor_regex_script.yml
+
+If we build this test, notice that there are two tests, one for each executor.
+
+.. program-output:: cat docgen/getting_started/regex-executor-script.txt
+

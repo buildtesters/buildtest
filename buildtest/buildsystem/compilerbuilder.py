@@ -45,12 +45,20 @@ class CompilerBuilder(BuilderBase):
     cppflags = None
 
     def __init__(
-        self, name, recipe, buildspec, buildexecutor, compiler=None, testdir=None
+        self,
+        name,
+        recipe,
+        buildspec,
+        buildexecutor,
+        executor,
+        compiler=None,
+        testdir=None,
     ):
         super().__init__(
             name=name,
             recipe=recipe,
             buildspec=buildspec,
+            executor=executor,
             buildexecutor=buildexecutor,
             testdir=testdir,
         )

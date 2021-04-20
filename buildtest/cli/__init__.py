@@ -383,7 +383,10 @@ def report_menu(subparsers):
     )
 
     parser_report.add_argument(
-        "-f", "--file", help="Specify a report file to read", default=BUILD_REPORT
+        "-r",
+        "--report_file",
+        help="Specify a report file to read",
+        default=BUILD_REPORT,
     )
 
 

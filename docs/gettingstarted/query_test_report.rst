@@ -149,6 +149,8 @@ and it will retrieve the first record which is test id **349f3ada**.
 .. code-block:: console
 
    $ buildtest report --filter name=hello_f --format name,id,starttime
+    Reading Report File: /Users/siddiq90/.buildtest/report.json
+
     +---------+----------+---------------------+
     | name    | id       | starttime           |
     +=========+==========+=====================+
@@ -160,6 +162,8 @@ and it will retrieve the first record which is test id **349f3ada**.
     +---------+----------+---------------------+
 
     $ buildtest report --filter name=hello_f --format name,id,starttime --oldest
+    Reading Report File: /Users/siddiq90/.buildtest/report.json
+
     +---------+----------+---------------------+
     | name    | id       | starttime           |
     +=========+==========+=====================+
@@ -174,6 +178,8 @@ will retrieve the last record, in the same example we will retrieve test id `5c8
 .. code-block:: console
 
     $ buildtest report --filter name=hello_f --format name,id,starttime --latest
+    Reading Report File: /Users/siddiq90/.buildtest/report.json
+
     +---------+----------+---------------------+
     | name    | id       | starttime           |
     +=========+==========+=====================+
@@ -186,6 +192,8 @@ buildtest will retrieve the first and last record of every test.
 .. code-block:: console
 
     $ buildtest report --format name,id,starttime --oldest --latest | more
+    Reading Report File: /Users/siddiq90/.buildtest/report.json
+
     +------------------------------+----------+---------------------+
     | name                         | id       | starttime           |
     +==============================+==========+=====================+
@@ -240,6 +248,7 @@ a few characters **fee** and buildtest found a matching record **fee66c67-db4e-4
 .. code-block:: console
 
     $ buildtest inspect id fee
+    Reading Report File: /Users/siddiq90/.buildtest/report.json
 
     {
       "fee66c67-db4e-4d35-8c6d-28ac5cbbaba0": {
@@ -279,6 +288,7 @@ ID and buildtest will retrieve the record.
 .. code-block:: console
 
    $ buildtest inspect id 944 a76
+    Reading Report File: /Users/siddiq90/.buildtest/report.json
 
     {
       "a76799db-f11e-4050-8dcb-8b147092c536": {
@@ -347,3 +357,93 @@ message as follows.
     Unable to find any test records based on id: ['lad'], please run 'buildtest inspect list' to see list of ids.
 
 You will see similar message if you specify an invalid test name using ``buildtest inspect name`` command.
+
+Using Alternate Report File
+-----------------------------
+
+The `buildtest report` and `buildtest inspect` command will read from report file $HOME/.buildtest/report.json
+which is the central report file. This single file can became an issue if you are running jobs through CI where you
+can potentially overwrite same file or remove $HOME/.buildtest as part of CI job that can impact other jobs.
+
+In that case you can write your report file to alternate location using ``buildtest build -r <report>`` and then
+specify the path to report file in ``buildtest report -r <report>`` and ``buildtest inspect -r <report>`` command.
+
+.. code-block:: console
+
+    $ buildtest report -r test.json --format name,state,runtime
+    Reading report file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/test.json
+
+    +----------------+---------+-----------+
+    | name           | state   |   runtime |
+    +================+=========+===========+
+    | variables_bash | PASS    |  0.213196 |
+    +----------------+---------+-----------+
+    | variables_bash | PASS    |  0.075224 |
+    +----------------+---------+-----------+
+
+
+
+.. code-block:: console
+
+    $ buildtest inspect -r test.json name variables_bash
+    Reading Report File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/test.json
+
+    {
+      "variables_bash": [
+        {
+          "id": "cd0511ce",
+          "full_id": "cd0511ce-377e-4ed2-95f4-f244e5518732",
+          "schemafile": "script-v1.0.schema.json",
+          "executor": "generic.local.bash",
+          "compiler": null,
+          "hostname": "DOE-7086392.local",
+          "user": "siddiq90",
+          "testroot": "/Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/1",
+          "testpath": "/Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/1/stage/generate.sh",
+          "stagedir": "/Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/1/stage",
+          "rundir": "/Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/1/run",
+          "command": "/Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/1/stage/generate.sh",
+          "outfile": "/Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/1/run/variables_bash.out",
+          "errfile": "/Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/1/run/variables_bash.err",
+          "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  variables_bash:\n    type: script\n    executor: generic.local.bash\n    description: Declare shell variables in bash\n    tags: [tutorials]\n    vars:\n      X: 1\n      Y: 2\n      literalstring: |\n        \"this is a literal string ':' \"\n      singlequote: \"'singlequote'\"\n      doublequote: \"\\\"doublequote\\\"\"\n      current_user: \"$(whoami)\"\n      files_homedir: \"`find $HOME -type f -maxdepth 1`\"\n\n    run: |\n      echo \"$X+$Y=\" $(($X+$Y))\n      echo $literalstring\n      echo $singlequote\n      echo $doublequote\n\n      echo $current_user\n      echo $files_homedir",
+          "test_content": "#!/bin/bash \nsource /Users/siddiq90/.buildtest/executor/generic.local.bash/before_script.sh\nX=1\nY=2\nliteralstring=\"this is a literal string ':' \"\n\nsinglequote='singlequote'\ndoublequote=\"doublequote\"\ncurrent_user=$(whoami)\nfiles_homedir=`find $HOME -type f -maxdepth 1`\necho \"$X+$Y=\" $(($X+$Y))\necho $literalstring\necho $singlequote\necho $doublequote\n\necho $current_user\necho $files_homedir\nsource /Users/siddiq90/.buildtest/executor/generic.local.bash/after_script.sh",
+          "tags": "tutorials",
+          "starttime": "2021/04/16 14:29:25",
+          "endtime": "2021/04/16 14:29:25",
+          "runtime": 0.213196,
+          "state": "PASS",
+          "returncode": 0,
+          "output": "1+2= 3\nthis is a literal string ':'\nsinglequote\ndoublequote\nsiddiq90\n/Users/siddiq90/buildtest_e7yxgttm.log /Users/siddiq90/.anyconnect /Users/siddiq90/buildtest_utwigb8w.log /Users/siddiq90/.DS_Store /Users/siddiq90/.serverauth.555 /Users/siddiq90/.CFUserTextEncoding /Users/siddiq90/.wget-hsts /Users/siddiq90/.bashrc /Users/siddiq90/.zshrc /Users/siddiq90/.coverage /Users/siddiq90/.serverauth.87055 /Users/siddiq90/buildtest_r7bck5zh.log /Users/siddiq90/.zsh_history /Users/siddiq90/.lesshst /Users/siddiq90/calltracker.py /Users/siddiq90/.git-completion.bash /Users/siddiq90/buildtest_wvjaaztp.log /Users/siddiq90/buildtest.log /Users/siddiq90/darhan.log /Users/siddiq90/ascent.yml /Users/siddiq90/.cshrc /Users/siddiq90/buildtest_nyq22whj.log /Users/siddiq90/github-tokens /Users/siddiq90/buildtest_ozb8b52z.log /Users/siddiq90/.zcompdump /Users/siddiq90/buildtest_nab_ckph.log /Users/siddiq90/.serverauth.543 /Users/siddiq90/.s.PGSQL.15007.lock /Users/siddiq90/.bash_profile /Users/siddiq90/.Xauthority /Users/siddiq90/.python_history /Users/siddiq90/.gitconfig /Users/siddiq90/output.txt /Users/siddiq90/.bash_history /Users/siddiq90/.viminfo\n",
+          "error": "",
+          "job": null
+        },
+        {
+          "id": "e0901505",
+          "full_id": "e0901505-a66b-4c91-9b29-d027cb6fabb6",
+          "schemafile": "script-v1.0.schema.json",
+          "executor": "generic.local.bash",
+          "compiler": null,
+          "hostname": "DOE-7086392.local",
+          "user": "siddiq90",
+          "testroot": "/Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/2",
+          "testpath": "/Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/2/stage/generate.sh",
+          "stagedir": "/Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/2/stage",
+          "rundir": "/Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/2/run",
+          "command": "/Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/2/stage/generate.sh",
+          "outfile": "/Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/2/run/variables_bash.out",
+          "errfile": "/Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/2/run/variables_bash.err",
+          "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  variables_bash:\n    type: script\n    executor: generic.local.bash\n    description: Declare shell variables in bash\n    tags: [tutorials]\n    vars:\n      X: 1\n      Y: 2\n      literalstring: |\n        \"this is a literal string ':' \"\n      singlequote: \"'singlequote'\"\n      doublequote: \"\\\"doublequote\\\"\"\n      current_user: \"$(whoami)\"\n      files_homedir: \"`find $HOME -type f -maxdepth 1`\"\n\n    run: |\n      echo \"$X+$Y=\" $(($X+$Y))\n      echo $literalstring\n      echo $singlequote\n      echo $doublequote\n\n      echo $current_user\n      echo $files_homedir",
+          "test_content": "#!/bin/bash \nsource /Users/siddiq90/.buildtest/executor/generic.local.bash/before_script.sh\nX=1\nY=2\nliteralstring=\"this is a literal string ':' \"\n\nsinglequote='singlequote'\ndoublequote=\"doublequote\"\ncurrent_user=$(whoami)\nfiles_homedir=`find $HOME -type f -maxdepth 1`\necho \"$X+$Y=\" $(($X+$Y))\necho $literalstring\necho $singlequote\necho $doublequote\n\necho $current_user\necho $files_homedir\nsource /Users/siddiq90/.buildtest/executor/generic.local.bash/after_script.sh",
+          "tags": "tutorials",
+          "starttime": "2021/04/16 14:29:58",
+          "endtime": "2021/04/16 14:29:58",
+          "runtime": 0.075224,
+          "state": "PASS",
+          "returncode": 0,
+          "output": "1+2= 3\nthis is a literal string ':'\nsinglequote\ndoublequote\nsiddiq90\n/Users/siddiq90/buildtest_e7yxgttm.log /Users/siddiq90/.anyconnect /Users/siddiq90/buildtest_utwigb8w.log /Users/siddiq90/.DS_Store /Users/siddiq90/.serverauth.555 /Users/siddiq90/.CFUserTextEncoding /Users/siddiq90/.wget-hsts /Users/siddiq90/.bashrc /Users/siddiq90/.zshrc /Users/siddiq90/.coverage /Users/siddiq90/.serverauth.87055 /Users/siddiq90/buildtest_r7bck5zh.log /Users/siddiq90/.zsh_history /Users/siddiq90/.lesshst /Users/siddiq90/calltracker.py /Users/siddiq90/.git-completion.bash /Users/siddiq90/buildtest_wvjaaztp.log /Users/siddiq90/buildtest.log /Users/siddiq90/darhan.log /Users/siddiq90/ascent.yml /Users/siddiq90/.cshrc /Users/siddiq90/buildtest_nyq22whj.log /Users/siddiq90/github-tokens /Users/siddiq90/buildtest_ozb8b52z.log /Users/siddiq90/.zcompdump /Users/siddiq90/buildtest_nab_ckph.log /Users/siddiq90/.serverauth.543 /Users/siddiq90/.s.PGSQL.15007.lock /Users/siddiq90/.bash_profile /Users/siddiq90/.Xauthority /Users/siddiq90/.python_history /Users/siddiq90/.gitconfig /Users/siddiq90/output.txt /Users/siddiq90/.bash_history /Users/siddiq90/.viminfo\n",
+          "error": "",
+          "job": null
+        }
+      ]
+    }
+

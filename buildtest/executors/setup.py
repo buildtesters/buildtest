@@ -7,9 +7,9 @@ on executor name.
 
 import logging
 import os
-import sys
 
-from buildtest.defaults import USER_SETTINGS_FILE, BUILDTEST_EXECUTOR_DIR
+from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
+from buildtest.executors.base import BaseExecutor
 from buildtest.executors.cobalt import CobaltExecutor
 from buildtest.executors.local import LocalExecutor
 from buildtest.executors.lsf import LSFExecutor
@@ -107,31 +107,13 @@ class BuildExecutor:
         :type builder: BuilderBase (subclass), required.
         """
 
-        # extract executor name from buildspec recipe
-        executor = builder.recipe.get("executor")
-
-        # if executor not defined in buildspec we raise an error
-        if not executor:
-            msg = "[%s]: 'executor' key not defined in buildspec: %s" % (
-                builder.metadata["name"],
-                builder.metadata["buildspec"],
-            )
-            builder.logger.error(msg)
-            builder.logger.debug("test: %s", builder.recipe)
-            sys.exit(msg)
-
-        # The executor is not valid we raise error
-        if executor not in self.executors:
-            msg = "[%s]: executor %s is not defined in %s" % (
-                builder.metadata["name"],
-                executor,
-                USER_SETTINGS_FILE,
-            )
-            builder.logger.error(msg)
-            sys.exit(msg)
-
         # Get the executor by name, and add the builder to it
-        executor = self.executors.get(executor)
+        executor = self.executors.get(builder.executor)
+        if not isinstance(executor, BaseExecutor):
+            raise ExecutorError(
+                f"{executor} is not a valid executor because it is not of type BaseExecutor class."
+            )
+
         executor.builder = builder
         return executor
 

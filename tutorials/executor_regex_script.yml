@@ -1,0 +1,8 @@
+version: "1.0"
+buildspecs:
+  executor_regex_script_schema:
+    type: script
+    executor: "generic.local.(bash|sh)"
+    description: regular expression test with executor using script schema
+    tags: [tutorials]
+    run: date
