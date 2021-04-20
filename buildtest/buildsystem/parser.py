@@ -67,7 +67,6 @@ class BuildspecParser:
             )
 
         self.recipe = load_recipe(self.buildspec)
-        print(self.buildspec, ":", self.recipe)
         # ensure self.recipe exists after loading recipe
         assert self.recipe
 
