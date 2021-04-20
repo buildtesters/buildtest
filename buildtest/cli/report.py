@@ -387,13 +387,15 @@ class Report:
 def report_cmd(args):
 
     if args.report == "clear":
-        if not is_file(args.file):
-            sys.exit(f"There is no report file: {args.file} to delete")
-        print(f"Removing report file: {args.file}")
+        if not is_file(args.report_file):
+            sys.exit(f"There is no report file: {args.report_file} to delete")
+        print(f"Removing report file: {args.report_file}")
         os.remove(BUILD_REPORT)
         return
 
-    results = Report(args.filter, args.format, args.latest, args.oldest, args.file)
+    results = Report(
+        args.filter, args.format, args.latest, args.oldest, args.report_file
+    )
     if args.helpfilter:
         results.print_filter_fields()
         return

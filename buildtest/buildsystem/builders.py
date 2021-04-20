@@ -94,7 +94,20 @@ class Builder:
             self.logger.debug(builder)
 
     def _generate_builders(self, recipe, name, compiler_name=None):
+        """This method is responsible for generating builders by applying regular expression specified by
+        `executor` field in buildspec with list of executors. If their is a match we generate a builder.
 
+        :param name: Name of test in buildspec file
+        :type name: str
+        :param recipe: Loaded test recipe from a test section.
+        :type recipe: dict
+        :param compiler_name: Name of compiler
+        :type compiler_name: str, optional
+        :return: A list of builder objects
+        :type recipe: object
+
+
+        """
         builders = []
         self.logger.debug(
             f"Searching for builders for test: {name} by applying regular expression with available builders: {self.buildexecutor.list_executors()} "
@@ -202,7 +215,9 @@ class Builder:
 
 
         :param recipe: loaded buildspec recipe as dictionary
+        :type recipe: dict
         :param name: An instance of test from buildspec file
+        :type name: str
         :return: Returns a boolean True/False which determines if test is skipped.
         :rtype: bool
         """
