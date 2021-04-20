@@ -5,7 +5,6 @@ import json
 import os
 import re
 import shutil
-import sys
 
 from buildtest.executors.base import BaseExecutor
 from buildtest.exceptions import ExecutorError

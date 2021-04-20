@@ -23,7 +23,6 @@ from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDTEST_USER_HOME, BUILD_
 from buildtest.exceptions import (
     BuildTestError,
     BuildspecError,
-    ConfigurationError,
     ExecutorError,
 )
 from buildtest.executors.setup import BuildExecutor

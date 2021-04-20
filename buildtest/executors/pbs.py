@@ -2,7 +2,7 @@
 job to PBS Scheduler"""
 import json
 import os
-import sys
+
 
 from buildtest.executors.base import BaseExecutor
 from buildtest.exceptions import ExecutorError

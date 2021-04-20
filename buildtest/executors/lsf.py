@@ -7,7 +7,6 @@ when initializing the executors.
 import json
 import os
 import subprocess
-import sys
 import time
 from buildtest.executors.base import BaseExecutor
 from buildtest.exceptions import ExecutorError

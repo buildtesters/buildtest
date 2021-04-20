@@ -297,6 +297,9 @@ def config_menu(subparsers):
     executors.add_argument(
         "-j", "--json", action="store_true", help="View executor in JSON format"
     )
+    executors.add_argument(
+        "-y", "--yaml", action="store_true", help="View executors in YAML format"
+    )
 
     subparsers_config.add_parser("view", help="View Buildtest Configuration File")
     subparsers_config.add_parser(
