@@ -643,7 +643,7 @@ class BuildTest:
             table[builder.type]["name"].append(builder.metadata["name"])
             table[builder.type]["id"].append(builder.metadata["id"])
             table[builder.type]["type"].append(builder.recipe["type"])
-            table[builder.type]["executor"].append(builder.recipe["executor"])
+            table[builder.type]["executor"].append(builder.executor)
             table[builder.type]["tags"].append(builder.recipe.get("tags"))
             table[builder.type]["testpath"].append(builder.metadata["testpath"])
 

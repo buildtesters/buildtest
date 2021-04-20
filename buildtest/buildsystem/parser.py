@@ -7,6 +7,7 @@ expose functions to run builds.
 
 import logging
 import os
+import re
 
 from buildtest.exceptions import BuildTestError, BuildspecError
 from buildtest.executors.setup import BuildExecutor
@@ -47,7 +48,7 @@ class BuildspecParser:
                 "Invalid type argument for 'buildexecutor', must be of type BuildExecutor"
             )
 
-        self.buildexecutors = buildexecutor.list_executors()
+        self.buildexecutors = buildexecutor
 
         # if invalid input for buildspec
         if not buildspec:
@@ -124,15 +125,31 @@ class BuildspecParser:
         :type test: str, required
         """
 
-        # extract type field from test, if not found set to None
-        executor = self.recipe["buildspecs"][test].get("executor") or None
+        # extract type field from test, if not found
+        executor = self.recipe["buildspecs"][test].get("executor")
 
+        if not executor:
+            raise BuildspecError(self.buildspec, "No 'executor' key found in buildspec")
+
+        match = False
+        for name in self.buildexecutors.list_executors():
+            if re.match(executor, name):
+                match = True
+                break
+
+        if not match:
+            raise BuildspecError(
+                self.buildspec,
+                f"Unable to find executor: {executor} in {self.buildexecutors.list_executors()}",
+            )
+
+        """
         if executor not in self.buildexecutors:
             msg = f"executor: {executor} not found in executor list: {self.buildexecutors}"
             raise BuildspecError(self.buildspec, msg)
-
+        """
         self.logger.debug(
-            f"Executor: {executor} found in executor list: {self.buildexecutors}"
+            f"Executor: {executor} found in executor list: {self.buildexecutors.list_executors()}"
         )
 
     def _validate(self):

@@ -38,9 +38,11 @@ class Builder:
         self.logger = logging.getLogger(__name__)
         self.testdir = testdir
         self.buildexecutor = buildexecutor
+
         if not rebuild:
             self.rebuild = 1
         else:
+            # FIX LINE BELOW
             self.rebuild = rebuild or 1
             self.rebuild = int(rebuild)
 
@@ -67,6 +69,8 @@ class Builder:
 
                 # Add the builder based on the type
                 if recipe["type"] == "script":
+                    self.builders += self._generate_builders(recipe, name)
+                    """
                     self.builders.append(
                         ScriptBuilder(
                             name=name,
@@ -76,6 +80,7 @@ class Builder:
                             testdir=self.testdir,
                         )
                     )
+                    """
                 elif recipe["type"] == "compiler":
 
                     self._build_compilers(name, recipe)
@@ -87,6 +92,54 @@ class Builder:
 
         for builder in self.builders:
             self.logger.debug(builder)
+
+    def _generate_builders(self, recipe, name, compiler_name=None):
+
+        builders = []
+        self.logger.debug(
+            f"Searching for builders for test: {name} by applying regular expression with available builders: {self.buildexecutor.list_executors()} "
+        )
+        for executor in self.buildexecutor.list_executors():
+            builder = None
+
+            if (
+                re.fullmatch(recipe.get("executor"), executor)
+                and recipe["type"] == "script"
+            ):
+                self.logger.debug(
+                    f"Found a match in buildspec with available executors via re.fullmatch({recipe.get('executor')},{executor})"
+                )
+                builder = ScriptBuilder(
+                    name=name,
+                    recipe=recipe,
+                    executor=executor,
+                    buildspec=self.bp.buildspec,
+                    buildexecutor=self.buildexecutor,
+                    testdir=self.testdir,
+                )
+
+            elif (
+                re.fullmatch(recipe.get("executor"), executor)
+                and recipe["type"] == "compiler"
+            ):
+                self.logger.debug(
+                    f"Found a match in buildspec with available executors via re.fullmatch({recipe.get('executor')},{executor})"
+                )
+                builder = CompilerBuilder(
+                    name=name,
+                    recipe=recipe,
+                    executor=executor,
+                    compiler=compiler_name,
+                    buildspec=self.bp.buildspec,
+                    buildexecutor=self.buildexecutor,
+                    testdir=self.testdir,
+                )
+
+            if builder:
+                self.logger.debug(builder)
+                builders.append(builder)
+
+        return builders
 
     def _build_compilers(self, name, recipe):
         """This method will perform regular expression with 'name' field in compilers
@@ -117,6 +170,12 @@ class Builder:
         for compiler_pattern in recipe["compilers"]["name"]:
             for bc_name in discovered_compilers:
                 if re.match(compiler_pattern, bc_name):
+
+                    builder = self._generate_builders(
+                        name=name, recipe=recipe, compiler_name=bc_name
+                    )
+
+                    """
                     builder = CompilerBuilder(
                         name=name,
                         recipe=recipe,
@@ -125,7 +184,8 @@ class Builder:
                         compiler=bc_name,
                         testdir=self.testdir,
                     )
-                    builders.append(builder)
+                    """
+                    builders += builder
 
         if not builders:
             msg = f"[{name}][{self.bp.buildspec}]: Unable to find any compilers based on regular expression: {recipe['compilers']['name']} so no tests were created."
