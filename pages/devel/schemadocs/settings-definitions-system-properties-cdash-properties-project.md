@@ -1,15 +1,15 @@
 # Untitled string in buildtest configuration schema Schema
 
 ```txt
-settings.schema.json#/definitions/system/properties/cdash/properties/url
+settings.schema.json#/definitions/system/properties/cdash/properties/project
 ```
 
-Url to CDASH server
+Name of CDASH project
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
 
-## url Type
+## project Type
 
 `string`

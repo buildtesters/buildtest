@@ -8,7 +8,8 @@ system:
     moduletool: N/A
     load_default_buildspecs: False
     cdash:
-      url: https://my.cdash.org/submit.php?project=buildtest-cori
+      url: https://my.cdash.org
+      project: buildtest
       site: laptop
     processor:
       numcpus: 8

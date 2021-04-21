@@ -16,14 +16,15 @@ Specify CDASH configuration used to upload tests via 'buildtest cdash' command
 
 # cdash Properties
 
-| Property      | Type     | Required | Nullable       | Defined by                                                                                                                                                                    |
-| :------------ | :------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [url](#url)   | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-cdash-properties-url.md "settings.schema.json#/definitions/system/properties/cdash/properties/url")   |
-| [site](#site) | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-cdash-properties-site.md "settings.schema.json#/definitions/system/properties/cdash/properties/site") |
+| Property            | Type     | Required | Nullable       | Defined by                                                                                                                                                                          |
+| :------------------ | :------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [url](#url)         | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-cdash-properties-url.md "settings.schema.json#/definitions/system/properties/cdash/properties/url")         |
+| [project](#project) | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-cdash-properties-project.md "settings.schema.json#/definitions/system/properties/cdash/properties/project") |
+| [site](#site)       | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-cdash-properties-site.md "settings.schema.json#/definitions/system/properties/cdash/properties/site")       |
 
 ## url
 
-Url to CDASH project
+Url to CDASH server
 
 `url`
 
@@ -36,6 +37,24 @@ Url to CDASH project
 *   defined in: [buildtest configuration schema](settings-definitions-system-properties-cdash-properties-url.md "settings.schema.json#/definitions/system/properties/cdash/properties/url")
 
 ### url Type
+
+`string`
+
+## project
+
+Name of CDASH project
+
+`project`
+
+*   is required
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-cdash-properties-project.md "settings.schema.json#/definitions/system/properties/cdash/properties/project")
+
+### project Type
 
 `string`
 
