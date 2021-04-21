@@ -250,11 +250,15 @@
         "cdash": {
           "type": "object",
           "description": "Specify CDASH configuration used to upload tests via 'buildtest cdash' command",
-          "required": ["url", "site"],
+          "required": ["url", "project", "site"],
           "properties": {
             "url": {
               "type": "string",
-              "description": "Url to CDASH project"
+              "description": "Url to CDASH server"
+            },
+            "project": {
+              "type": "string",
+              "description": "Name of CDASH project"
             },
             "site": {
               "type": "string",

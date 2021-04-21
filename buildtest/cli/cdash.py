@@ -3,14 +3,16 @@ import hashlib
 import json
 import os.path
 import re
+import requests
 import sys
 import webbrowser
 import xml.etree.cElementTree as ET
+import yaml
 import zlib
 
 from datetime import datetime
 from urllib.request import urlopen, Request
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urljoin
 from buildtest.defaults import BUILD_REPORT
 from buildtest.utils.file import resolve_path
 from buildtest.utils.tools import deep_get
@@ -18,29 +20,75 @@ from buildtest.utils.tools import deep_get
 
 def cdash_cmd(args, configuration):
 
+    # Shown below is an example cdash setting in configuration file
+    #     cdash:
+    #       url: https://my.cdash.org
+    #       project: buildtest
+    #       site: laptop
+    cdash_config = deep_get(configuration.target_config, "cdash")
+
+    if not cdash_config:
+        sys.exit(f"We found no 'cdash' setting set in configuration file: {configuration.file}. Please specify 'cdash' setting in order to use 'buildtest cdash' command")
+
     if args.cdash == "view":
-        cdash_url = args.url or deep_get(configuration.target_config, "cdash", "url")
-        # if url is specified open the page
-        if not cdash_url:
-            sys.exit(
-                "Unable to find CDASH url. Please specify url in configuration file or via 'buildtest cdash upload --url'"
-            )
-        webbrowser.open(cdash_url)
+        # if url is specified on command line (buildtest cdash view --url) then open link as is
+        if args.url:
+            webbrowser.open(args.url)
+            return
+
+
+        url = cdash_config["url"]
+        project = cdash_config["project"]
+        target_url = urljoin(url, f"index.php?project={project}")
+
+        print("URL:",  target_url)
+        # check for url via requests, it can raise an exception if its invalid URL in that case we print a message
+        try:
+            r = requests.get(target_url)
+        except requests.ConnectionError as err:
+            print(err)
+
+            print("\nShown below is the CDASH settings from configuration file:", configuration.file)
+            print(yaml.dump(cdash_config,indent=2))
+            sys.exit(f"Invalid URL: {target_url}")
+
+        # A 200 status code is valid URL, if its not found we exit before opening page in browser
+        if not r.status_code == 200:
+            sys.exit("Invalid URL")
+
+        webbrowser.open(target_url)
 
     if args.cdash == "upload":
 
-        upload_test_cdash(
-            args.site, args.buildname, args.url, args.report_file, configuration
+        upload_test_cdash(cdash_config,
+            args.site, args.buildname, args.report_file, configuration
         )
 
 
-def upload_test_cdash(site, buildname, url, report_file, configuration):
+def upload_test_cdash(cdash_setting, site, buildname, report_file, configuration):
+    """This method is responsible for reading report file and pushing results to CDASH
+    server. User can specify cdash settings in configuration file or pass them in command line.
+    The command ``buildtest cdash upload`` will upload results to CDASH.
 
-    site_name = site or deep_get(configuration.target_config, "cdash", "site")
-    build_name = buildname or deep_get(
-        configuration.target_config, "cdash", "buildname"
-    )
-    cdash_url = url or deep_get(configuration.target_config, "cdash", "url")
+    :param cdash_setting: cdash settings loaded from configuration file
+    :type cdash_setting: dict
+    :param site: site name that shows up in CDASH
+    :type site: str
+    :param buildname: build name that shows up in CDASH
+    :type site: str
+    :param report_file: Path to report file when uploading results. This is specified via ``buildtest cdash upload -r`` command
+    :type report_file: str
+    :param configuration: Instance of BuildTestConfiguration class that contains the configuration file
+    :type configuration: BuildTestConfiguration
+    :return:
+    """
+
+
+    cdash_url = cdash_setting["url"]
+    project_name = cdash_setting["project"]
+    site_name = site or cdash_setting["site"]
+    build_name = buildname or cdash_setting["buildname"]
+
 
     if not site_name:
         sys.exit("Please specify site name")
@@ -48,13 +96,31 @@ def upload_test_cdash(site, buildname, url, report_file, configuration):
     if not build_name:
         sys.exit("Please specify a buildname")
 
-    # if cdash url not specified we raise an error
-    if not cdash_url:
-        sys.exit(
-            "Please specify a CDASH url in configuration file or via 'buildtest cdash upload --url'"
-        )
+    if not project_name:
+        sys.exit("Please specify a project name in cdash section")
 
-    # TODO: make site_name and build_name more configurable.
+    if not cdash_url:
+        sys.exit("Please specify a CDASH url in configuration file or via 'buildtest cdash upload --url'")
+
+    try:
+        r = requests.get(cdash_url)
+    except requests.ConnectionError as err:
+        print("\nShown below is the CDASH settings from configuration file:", configuration.file)
+        print(yaml.dump(cdash_config, indent=2))
+        sys.exit(err)
+
+    if not requests.get(cdash_url).status_code == 200:
+        sys.exit(f"Invalid URL: {cdash_url} please check your CDASH server URL.")
+
+    upload_url = urljoin(cdash_url, f"submit.php?project={project_name}")
+
+    r = requests.get(upload_url)
+    # output of text property is the following:
+    # '<cdash version="3.0.3">\n  <status>OK</status>\n  <message></message>\n  <md5>d41d8cd98f00b204e9800998ecf8427e</md5>\n</cdash>\n'
+    if not re.search("<status>OK</status>", r.text):
+        sys.exit(f"Invalid URL: {upload_url}")
+
+
     # For best CDash results, builds names should be consistent (ie not change every time).
 
     input_datetime_format = "%Y/%m/%d %H:%M:%S"
@@ -294,12 +360,11 @@ def upload_test_cdash(site, buildname, url, report_file, configuration):
         print("stamp: ", build_stamp)
         print("MD5SUM:", md5sum)
         encoded_params = urlencode(params_dict)
-        url = "{0}&{1}".format(cdash_url, encoded_params)
+        url = "{0}&{1}".format(upload_url, encoded_params)
         hdrs = {"Content-Type": "text/xml", "Content-Length": os.path.getsize(filename)}
         request = Request(url, data=f, method="PUT", headers=hdrs)
 
         with urlopen(request) as response:
-            print("URL: ", response.url)
             resp_value = response.read()
             if isinstance(resp_value, bytes):
                 resp_value = resp_value.decode("utf-8")
@@ -307,4 +372,4 @@ def upload_test_cdash(site, buildname, url, report_file, configuration):
             print("PUT STATUS:", response.status)
             if match:
                 buildid = match.group(1)
-                print(f"Your results have been uploaded with build #{buildid}")
+                print(f"You can view the results at: {cdash_url}/viewTest.php?buildid={buildid}")

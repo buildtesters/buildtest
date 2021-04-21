@@ -62,6 +62,7 @@ system:
     # buildspec_roots: []
 
     cdash:
-      url: https://my.cdash.org/submit.php?project=buildtest
+      url: https://my.cdash.org/
+      project: buildtest
       site: generic
       buildname: tutorials
