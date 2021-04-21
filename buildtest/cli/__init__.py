@@ -446,9 +446,5 @@ def cdash_menu(subparsers):
     upload.add_argument("--site", help="Specify site name reported in CDASH")
     upload.add_argument("buildname", help="Specify Build Name reported in CDASH")
     upload.add_argument(
-        "--url",
-        help="Specify url to CDASH server (example: https://my.cdash.org/submit.php?project=buildtest-cori)",
-    )
-    upload.add_argument(
         "-r", "--report-file", help="Path to report file to upload test results"
     )
