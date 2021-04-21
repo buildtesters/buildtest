@@ -120,9 +120,7 @@ def upload_test_cdash(cdash_setting, site, buildname, report_file, configuration
     if not re.search("<status>OK</status>", r.text):
         sys.exit(f"Invalid URL: {upload_url}")
 
-    print(upload_url)
-
-    # TODO: make site_name and build_name more configurable.
+    
     # For best CDash results, builds names should be consistent (ie not change every time).
 
     input_datetime_format = "%Y/%m/%d %H:%M:%S"
