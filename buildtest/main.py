@@ -156,7 +156,7 @@ def main():
     elif args.subcommands == "cdash":
         from buildtest.cli.cdash import cdash_cmd
 
-        cdash_cmd(args, configuration)
+        cdash_cmd(args, default_configuration=configuration)
 
 
 if __name__ == "__main__":
