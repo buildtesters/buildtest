@@ -13,100 +13,120 @@ import zlib
 from datetime import datetime
 from urllib.request import urlopen, Request
 from urllib.parse import urlencode, urljoin
+from buildtest.config import check_settings
 from buildtest.defaults import BUILD_REPORT
 from buildtest.utils.file import resolve_path
 from buildtest.utils.tools import deep_get
 
 
-def cdash_cmd(args, configuration):
+def cdash_cmd(args, default_configuration=None, open_browser=True):
+    """This method is entry point for ``buildtest cdash`` command which implements uploading
+    results to CDASH server and command line interface to open CDASH project.
+
+    :param args: Instance of ArgumentParser that contains arguments for ``buildtest cdash`` command
+    :type args: ArgumentParser
+    :param default_configuration: The loaded default configuration which is an instance of BuildTestConfiguration
+    :type default_configuration: BuildTestConfiguration, optional
+    :param open_browser: boolean to control if we open page in web browser using webbrowser.open. This is enabled by default, but can be turned off especially when running regression test where we don't want to see the page
+    :type open_browser: optional
+
+    """
 
     # Shown below is an example cdash setting in configuration file
     #     cdash:
     #       url: https://my.cdash.org
     #       project: buildtest
     #       site: laptop
+    configuration = default_configuration
+
+    # if buildtest cdash --config option is specified check the configuration file
+    if args.config:
+        configuration = check_settings(args.config)
+
+    if not configuration:
+        sys.exit("Unable to load a configuration file")
+
+    print("Reading configuration file: ", configuration.file)
+
     cdash_config = deep_get(configuration.target_config, "cdash")
 
     if not cdash_config:
-        sys.exit(f"We found no 'cdash' setting set in configuration file: {configuration.file}. Please specify 'cdash' setting in order to use 'buildtest cdash' command")
+        sys.exit(
+            f"We found no 'cdash' setting set in configuration file: {configuration.file}. Please specify 'cdash' setting in order to use 'buildtest cdash' command"
+        )
 
     if args.cdash == "view":
         # if url is specified on command line (buildtest cdash view --url) then open link as is
-        if args.url:
+        if args.url and open_browser:
             webbrowser.open(args.url)
             return
-
 
         url = cdash_config["url"]
         project = cdash_config["project"]
         target_url = urljoin(url, f"index.php?project={project}")
 
-        print("URL:",  target_url)
+        print("URL:", target_url)
         # check for url via requests, it can raise an exception if its invalid URL in that case we print a message
         try:
             r = requests.get(target_url)
         except requests.ConnectionError as err:
             print(err)
 
-            print("\nShown below is the CDASH settings from configuration file:", configuration.file)
-            print(yaml.dump(cdash_config,indent=2))
+            print(
+                "\nShown below is the CDASH settings from configuration file:",
+                configuration.file,
+            )
+            print(yaml.dump(cdash_config, indent=2))
             sys.exit(f"Invalid URL: {target_url}")
 
         # A 200 status code is valid URL, if its not found we exit before opening page in browser
         if not r.status_code == 200:
             sys.exit("Invalid URL")
 
-        webbrowser.open(target_url)
+        if open_browser:
+            webbrowser.open(target_url)
 
     if args.cdash == "upload":
 
-        upload_test_cdash(cdash_config,
-            args.site, args.buildname, args.report_file, configuration
+        upload_test_cdash(
+            build_name=args.buildname,
+            configuration=configuration,
+            site=args.site,
+            report_file=args.report_file,
         )
 
 
-def upload_test_cdash(cdash_setting, site, buildname, report_file, configuration):
+def upload_test_cdash(build_name, configuration, site=None, report_file=None):
     """This method is responsible for reading report file and pushing results to CDASH
     server. User can specify cdash settings in configuration file or pass them in command line.
     The command ``buildtest cdash upload`` will upload results to CDASH.
 
-    :param cdash_setting: cdash settings loaded from configuration file
-    :type cdash_setting: dict
-    :param site: site name that shows up in CDASH
+    :param build_name: build name that shows up in CDASH
     :type site: str
-    :param buildname: build name that shows up in CDASH
-    :type site: str
-    :param report_file: Path to report file when uploading results. This is specified via ``buildtest cdash upload -r`` command
-    :type report_file: str
     :param configuration: Instance of BuildTestConfiguration class that contains the configuration file
     :type configuration: BuildTestConfiguration
+    :param site: site name that shows up in CDASH
+    :type site: str, optional
+    :param report_file: Path to report file when uploading results. This is specified via ``buildtest cdash upload -r`` command
+    :type report_file: str, optional
     :return:
     """
 
-
-    cdash_url = cdash_setting["url"]
-    project_name = cdash_setting["project"]
-    site_name = site or cdash_setting["site"]
-    build_name = buildname or cdash_setting["buildname"]
-
-
-    if not site_name:
-        sys.exit("Please specify site name")
+    cdash_url = configuration.target_config["cdash"]["url"]
+    site_name = site or configuration.target_config["cdash"]["site"]
+    project_name = configuration.target_config["cdash"]["project"]
 
     if not build_name:
         sys.exit("Please specify a buildname")
 
-    if not project_name:
-        sys.exit("Please specify a project name in cdash section")
-
-    if not cdash_url:
-        sys.exit("Please specify a CDASH url in configuration file or via 'buildtest cdash upload --url'")
-
     try:
         r = requests.get(cdash_url)
     except requests.ConnectionError as err:
-        print("\nShown below is the CDASH settings from configuration file:", configuration.file)
-        print(yaml.dump(cdash_config, indent=2))
+        print(
+            "\nShown below is the CDASH settings from configuration file:",
+            configuration.file,
+        )
+        print(yaml.dump(configuration.target_config["cdash"], indent=2))
         sys.exit(err)
 
     if not requests.get(cdash_url).status_code == 200:
@@ -119,7 +139,6 @@ def upload_test_cdash(cdash_setting, site, buildname, report_file, configuration
     # '<cdash version="3.0.3">\n  <status>OK</status>\n  <message></message>\n  <md5>d41d8cd98f00b204e9800998ecf8427e</md5>\n</cdash>\n'
     if not re.search("<status>OK</status>", r.text):
         sys.exit(f"Invalid URL: {upload_url}")
-
 
     # For best CDash results, builds names should be consistent (ie not change every time).
 
@@ -372,4 +391,6 @@ def upload_test_cdash(cdash_setting, site, buildname, report_file, configuration
             print("PUT STATUS:", response.status)
             if match:
                 buildid = match.group(1)
-                print(f"You can view the results at: {cdash_url}/viewTest.php?buildid={buildid}")
+                print(
+                    f"You can view the results at: {cdash_url}/viewTest.php?buildid={buildid}"
+                )

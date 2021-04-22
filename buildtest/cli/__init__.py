@@ -436,6 +436,8 @@ def cdash_menu(subparsers):
     """This method builds arguments for `buildtest cdash` command."""
 
     parser_cdash = subparsers.add_parser("cdash")
+    parser_cdash.add_argument("-c", "--config", help="Path to buildtest configuration")
+
     subparser = parser_cdash.add_subparsers(
         help="subcommands", description="CDASH operations", dest="cdash"
     )

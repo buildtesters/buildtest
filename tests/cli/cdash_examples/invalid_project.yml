@@ -1,0 +1,37 @@
+system:
+  generic:
+    hostnames:
+    - .*
+    description: Generic System
+    moduletool: lmod
+    load_default_buildspecs: true
+    cdash:
+      url: "https://my.cdash.org"
+      project:  INVALID-PROJECT
+      site: laptop
+    executors:
+      local:
+        bash:
+          description: submit jobs on local machine using bash shell
+          shell: bash
+        sh:
+          description: submit jobs on local machine using sh shell
+          shell: sh
+        csh:
+          description: submit jobs on local machine using csh shell
+          shell: csh
+        zsh:
+          description: submit jobs on local machine using zsh shell
+          shell: zsh
+        python:
+          description: submit jobs on local machine using python shell
+          shell: python
+    compilers:
+      find:
+        gcc: "^(gcc)"
+      compiler:
+        gcc:
+          builtin_gcc:
+            cc: /usr/bin/gcc
+            fc: /usr/bin/gfortran
+            cxx: /usr/bin/g++
