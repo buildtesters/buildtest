@@ -20,7 +20,7 @@ from buildtest.utils.tools import deep_get
 
 
 def cdash_cmd(args, default_configuration=None, open_browser=True):
-    """ This method is entry point for ``buildtest cdash`` command which implements uploading
+    """This method is entry point for ``buildtest cdash`` command which implements uploading
     results to CDASH server and command line interface to open CDASH project.
 
     :param args: Instance of ArgumentParser that contains arguments for ``buildtest cdash`` command
@@ -31,7 +31,6 @@ def cdash_cmd(args, default_configuration=None, open_browser=True):
     :type open_browser: optional
 
     """
-
 
     # Shown below is an example cdash setting in configuration file
     #     cdash:
@@ -44,18 +43,17 @@ def cdash_cmd(args, default_configuration=None, open_browser=True):
     if args.config:
         configuration = check_settings(args.config)
 
-
     if not configuration:
         sys.exit("Unable to load a configuration file")
-
 
     print("Reading configuration file: ", configuration.file)
 
     cdash_config = deep_get(configuration.target_config, "cdash")
 
-
     if not cdash_config:
-        sys.exit(f"We found no 'cdash' setting set in configuration file: {configuration.file}. Please specify 'cdash' setting in order to use 'buildtest cdash' command")
+        sys.exit(
+            f"We found no 'cdash' setting set in configuration file: {configuration.file}. Please specify 'cdash' setting in order to use 'buildtest cdash' command"
+        )
 
     if args.cdash == "view":
         # if url is specified on command line (buildtest cdash view --url) then open link as is
@@ -63,20 +61,22 @@ def cdash_cmd(args, default_configuration=None, open_browser=True):
             webbrowser.open(args.url)
             return
 
-
         url = cdash_config["url"]
         project = cdash_config["project"]
         target_url = urljoin(url, f"index.php?project={project}")
 
-        print("URL:",  target_url)
+        print("URL:", target_url)
         # check for url via requests, it can raise an exception if its invalid URL in that case we print a message
         try:
             r = requests.get(target_url)
         except requests.ConnectionError as err:
             print(err)
 
-            print("\nShown below is the CDASH settings from configuration file:", configuration.file)
-            print(yaml.dump(cdash_config,indent=2))
+            print(
+                "\nShown below is the CDASH settings from configuration file:",
+                configuration.file,
+            )
+            print(yaml.dump(cdash_config, indent=2))
             sys.exit(f"Invalid URL: {target_url}")
 
         # A 200 status code is valid URL, if its not found we exit before opening page in browser
@@ -88,7 +88,12 @@ def cdash_cmd(args, default_configuration=None, open_browser=True):
 
     if args.cdash == "upload":
 
-        upload_test_cdash(build_name=args.buildname,configuration=configuration, site=args.site, report_file=args.report_file)
+        upload_test_cdash(
+            build_name=args.buildname,
+            configuration=configuration,
+            site=args.site,
+            report_file=args.report_file,
+        )
 
 
 def upload_test_cdash(build_name, configuration, site=None, report_file=None):
@@ -107,7 +112,6 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
     :return:
     """
 
-
     cdash_url = configuration.target_config["cdash"]["url"]
     site_name = site or configuration.target_config["cdash"]["site"]
     project_name = configuration.target_config["cdash"]["project"]
@@ -118,7 +122,10 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
     try:
         r = requests.get(cdash_url)
     except requests.ConnectionError as err:
-        print("\nShown below is the CDASH settings from configuration file:", configuration.file)
+        print(
+            "\nShown below is the CDASH settings from configuration file:",
+            configuration.file,
+        )
         print(yaml.dump(configuration.target_config["cdash"], indent=2))
         sys.exit(err)
 
@@ -132,7 +139,6 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
     # '<cdash version="3.0.3">\n  <status>OK</status>\n  <message></message>\n  <md5>d41d8cd98f00b204e9800998ecf8427e</md5>\n</cdash>\n'
     if not re.search("<status>OK</status>", r.text):
         sys.exit(f"Invalid URL: {upload_url}")
-
 
     # For best CDash results, builds names should be consistent (ie not change every time).
 
@@ -385,4 +391,6 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
             print("PUT STATUS:", response.status)
             if match:
                 buildid = match.group(1)
-                print(f"You can view the results at: {cdash_url}/viewTest.php?buildid={buildid}")
+                print(
+                    f"You can view the results at: {cdash_url}/viewTest.php?buildid={buildid}"
+                )

@@ -1,6 +1,17 @@
 CHANGELOG
 =========
 
+v0.9.6 or v0.10.0 (TBD)
+------------------------
+
+- Add support for buildtest cdash integration for uploading test results using `buildtest cdash` command. The `buildtest cdash upload` command
+  can be used to upload test results to CDASH server. See `#721 <https://github.com/buildtesters/buildtest/pull/721>`_, `#733 <https://github.com/buildtesters/buildtest/pull/733>`_,  `#734 <https://github.com/buildtesters/buildtest/pull/734>`_
+- Change behavior of buildtest to write files to `$HOME/.buildtest` instead of `$BUILDTEST_ROOT`. See `#719 <https://github.com/buildtesters/buildtest/pull/719>`_.
+- Add command `buildtest report clear` to clear report file. In addition we add option to specify report file on command line. This can be specified using
+  `buildtest report --report_file`, `buildtest build --report_file`, and `buildtest inspect --report_file` see `#727 <https://github.com/buildtesters/buildtest/pull/727>`_, `#730 <https://github.com/buildtesters/buildtest/pull/730>`_.
+- Change behavior of `buildtest config executors` to print a list of executors, previously it was showing content of YAML. Now we have option `buildtest config executors --yaml` for YAML format.
+
+
 v0.9.5 (Mar 31, 2021)
 ----------------------
 
