@@ -155,6 +155,43 @@ class BaseExecutor:
 
         return returncode_match
 
+    def _check_runtime(self, builder):
+        """This method will return a boolean (True/False) based on runtime specified in buildspec and check with test runtime.
+        User can specify both `min` and `max`, or just specify `min` or `max`.
+
+        """
+
+        if not builder.status.get("runtime"):
+            return False
+
+        min_time = builder.status["runtime"].get("min") or 0
+        max_time = builder.status["runtime"].get("max")
+
+        # if both min and max are specified
+        if min_time and max_time:
+            self.logger.debug(
+                f"Checking test: {builder.name} runtime: {builder.metadata['result']['runtime']} is greater than min: {float(min_time)} and less than max: {float(max_time)}"
+            )
+            return (
+                float(min_time)
+                < builder.metadata["result"]["runtime"]
+                < float(max_time)
+            )
+
+        # if min specified
+        if min_time and not max_time:
+            self.logger.debug(
+                f"Checking test: {builder.name} runtime: {builder.metadata['result']['runtime']} is greater than min: {float(min_time)}"
+            )
+            return float(min_time) < builder.metadata["result"]["runtime"]
+
+        # if max specified
+        if not min_time and max_time:
+            self.logger.debug(
+                f"Checking test: {builder.name} runtime: {builder.metadata['result']['runtime']} is less than max: {float(max_time)}"
+            )
+            return builder.metadata["result"]["runtime"] < float(max_time)
+
     def check_test_state(self, builder):
         """This method is responsible for detecting state of test (PASS/FAIL)
         based on returncode or regular expression.
@@ -167,10 +204,6 @@ class BaseExecutor:
         # if status is defined in Buildspec, then check for returncode and regex
         if builder.status:
 
-            # regex_match is boolean to check if output/error stream matches regex defined in Buildspec,
-            # if no regex is defined we set this to True since we do a logical AND
-            regex_match = False
-
             slurm_job_state_match = False
 
             # returncode_match is boolean to check if reference returncode matches return code from test
@@ -179,6 +212,8 @@ class BaseExecutor:
             # check regex against output or error stream based on regular expression
             # defined in status property. Return value is a boolean
             regex_match = self._check_regex(builder)
+
+            runtime_match = self._check_runtime(builder)
 
             # if slurm_job_state_codes defined in buildspec.
             # self.builder.metadata["job"] only defined when job run through SlurmExecutor
@@ -193,7 +228,12 @@ class BaseExecutor:
                 % (returncode_match, regex_match, slurm_job_state_match)
             )
 
-            if returncode_match or regex_match or slurm_job_state_match:
+            if (
+                returncode_match
+                or regex_match
+                or slurm_job_state_match
+                or runtime_match
+            ):
                 builder.metadata["result"]["state"] = "PASS"
 
         # if status is not defined we check test returncode, by default 0 is PASS and any other return code is a FAIL
