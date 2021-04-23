@@ -1,13 +1,9 @@
 """Entry point for buildtest"""
 
 import os
-import shutil
 import webbrowser
 
-from buildtest.config import (
-    check_settings,
-    resolve_settings_file,
-)
+from buildtest.config import check_settings
 from buildtest.defaults import (
     BUILDTEST_VAR_DIR,
     BUILDTEST_USER_HOME,
@@ -18,7 +14,7 @@ from buildtest.cli import get_parser
 from buildtest.cli.build import BuildTest
 from buildtest.system import BuildTestSystem
 from buildtest.log import init_logfile, streamlog
-from buildtest.utils.file import create_dir, resolve_path
+from buildtest.utils.file import create_dir
 
 # column width for linewrap for argparse library
 os.environ["COLUMNS"] = "120"
