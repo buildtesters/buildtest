@@ -79,7 +79,8 @@
             "threads_per_core": {"type": "integer", "minimum":  1, "description": "Specify Threads per Core" },
             "core_per_socket": {"type": "integer", "minimum": 1, "description": "Specify Cores per Socket"},
             "model": {"type": "string", "description": "Specify Processor Model" },
-            "arch": {"type": "string", "description": "Specify processor architecture"}
+            "arch": {"type": "string", "description": "Specify processor architecture"},
+            "vendor": {"type": "string", "description": "Vendor Name"}
           }
         },
         "compilers": {

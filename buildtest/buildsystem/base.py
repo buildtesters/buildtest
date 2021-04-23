@@ -75,6 +75,7 @@ class BuilderBase(ABC):
         self.testdir = os.path.join(testdir, self.executor, file_name, self.name)
 
         self.logger = logging.getLogger(__name__)
+
         self.logger.debug(f"Processing Buildspec: {self.buildspec}")
         self.logger.debug(f"Processing Buildspec section: {self.name}")
 

@@ -457,6 +457,7 @@ def update_report(valid_builders, report_file=BUILD_REPORT):
             "errfile",
             "buildspec_content",
             "test_content",
+            "logpath",
         ]:
             entry[item] = builder.metadata[item]
 

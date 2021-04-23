@@ -322,10 +322,6 @@ def test_BuildTest_type():
     with pytest.raises(BuildTestError):
         BuildTest(config_file=DEFAULT_SETTINGS_FILE, tags=["pass"], stage=["parse"])
 
-    # invalid value for stage argument, must be 'parse' or 'build'
-    with pytest.raises(BuildTestError):
-        BuildTest(config_file=DEFAULT_SETTINGS_FILE, tags=["pass"], stage="unknown")
-
     # invalid value for testdir argument, must be a str
     with pytest.raises(BuildTestError):
         BuildTest(

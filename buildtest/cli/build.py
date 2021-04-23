@@ -9,6 +9,7 @@ import re
 import shutil
 import sys
 import time
+import tempfile
 from datetime import datetime
 from jsonschema.exceptions import ValidationError
 from tabulate import tabulate
@@ -38,7 +39,8 @@ class BuildTest:
 
     def __init__(
         self,
-        config_file,
+        configuration=None,
+        config_file=None,
         buildspecs=None,
         exclude_buildspecs=None,
         tags=None,
@@ -56,6 +58,8 @@ class BuildTest:
 
         :param config_file: path to configuration file
         :type config_file: str, required
+        :param configuration: Loaded configuration content which is an instance of BuildTestConfiguration
+        :type configuration: BuildTestConfiguration
         :param buildspecs: list of buildspecs from command line (--buildspec)
         :type buildspecs: list, optional
         :param exclude_buildspecs: list of excluded buildspecs from command line (--exclude)
@@ -78,8 +82,6 @@ class BuildTest:
         :type report_file: str, optional
         """
 
-        stage_values = ["parse", "build"]
-
         if buildspecs and not isinstance(buildspecs, list):
             raise BuildTestError(f"{buildspecs} is not of type list")
 
@@ -101,23 +103,40 @@ class BuildTest:
         if stage and not isinstance(stage, str):
             raise BuildTestError(f"{stage} is not of type str")
 
-        if stage and stage not in stage_values:
-            raise BuildTestError(
-                f"argument to 'stage' must be one of: {stage_values}. We got value of {stage}"
-            )
-
         if rebuild and not isinstance(rebuild, int):
             raise BuildTestError(f"{rebuild} is not of type int")
 
         self.config_file = config_file
-        self.configuration = check_settings(
-            settings_path=self.config_file, executor_check=True
-        )
+        self.configuration = configuration
+
+        # If we pass a configuration file to BuildTest class we check settings which validates configuration file and returns a loaded configuration
+        if self.config_file:
+            self.configuration = check_settings(
+                settings_path=self.config_file, executor_check=True
+            )
 
         self.buildspecs = buildspecs
         self.exclude_buildspecs = exclude_buildspecs
         self.tags = tags
         self.executors = executors
+
+        # get real path to log directory which accounts for variable expansion, user expansion, and symlinks
+        self.logdir = resolve_path(
+            self.configuration.target_config.get("logdir"), exist=False
+        )
+
+        # create a temporary file to store logfile and we don't delete file by setting 'delete=False'
+        # by default tempfile will delete file upon exit.
+        self.logfile = tempfile.NamedTemporaryFile(
+            prefix="buildtest_", delete=False, suffix=".log"
+        )
+
+        if self.logdir:
+
+            create_dir(self.logdir)
+            self.logfile.name = os.path.join(
+                self.logdir, os.path.basename(self.logfile.name)
+            )
 
         self.testdir = self.resolve_testdirectory(testdir)
         self.stage = stage
@@ -170,9 +189,24 @@ class BuildTest:
 
         self.builders = self.run_phase(printTable=True)
 
+        # store path to logfile in each builder object. There is a single logfile per build.
+        for builder in self.builders:
+            builder.metadata["logpath"] = self.logfile.name
+
         # only update report if we have a list of valid builders returned from run_phase
         if self.builders:
             update_report(self.builders, self.report_file)
+
+        shutil.copy2(
+            os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log"),
+            self.logfile.name,
+        )
+
+        print(f"Writing Logfile to: {self.logfile.name}")
+        print(
+            "A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log - ",
+            os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log"),
+        )
 
     def resolve_testdirectory(self, cli_testdir=None):
         """This method resolves which test directory to select. For example, one
