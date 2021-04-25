@@ -2,7 +2,6 @@
 
 import os
 import webbrowser
-
 from buildtest.config import check_settings
 from buildtest.defaults import (
     BUILDTEST_VAR_DIR,
@@ -13,7 +12,7 @@ from buildtest.defaults import (
 from buildtest.cli import get_parser
 from buildtest.cli.build import BuildTest
 from buildtest.system import BuildTestSystem
-from buildtest.log import init_logfile, streamlog
+from buildtest.log import buildtest_logger
 from buildtest.utils.file import create_dir
 
 # column width for linewrap for argparse library
@@ -26,8 +25,13 @@ def main():
     if not os.getenv("BUILDTEST_COLOR"):
         os.environ["BUILDTEST_COLOR"] = "True"
 
-    # the logfile is written to $BUILDTEST_ROOT/buildtest.log
-    logger = init_logfile(os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log"))
+    parser = get_parser()
+    args, extras = parser.parse_known_args()
+
+    if args.debug:
+        buildtest_logger.add_streamhandler(level=args.debug)
+
+    logger = buildtest_logger
     logger.info("Starting buildtest log")
 
     create_dir(BUILDTEST_USER_HOME)
@@ -39,15 +43,15 @@ def main():
     system = BuildTestSystem()
     system.check()
 
-    parser = get_parser()
-    args, extras = parser.parse_known_args()
+    # parser = get_parser()
+    # args, extras = parser.parse_known_args()
 
     # if no commands specified we raise an error
     if not args.subcommands:
         raise SystemExit("Invalid input argument")
 
-    if args.debug:
-        streamlog(args.debug)
+    # if args.debug:
+    #    streamlog(args.debug)
 
     if args.subcommands == "build":
 

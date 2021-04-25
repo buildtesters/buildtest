@@ -1,7 +1,5 @@
 import os
 import pytest
-import random
-import string
 import tempfile
 
 from buildtest.defaults import BUILDTEST_ROOT, DEFAULT_SETTINGS_FILE
@@ -192,23 +190,6 @@ def test_build_rebuild():
         rebuild=5,
         buildtest_system=system,
     )
-    cmd.build()
-
-
-@pytest.mark.xfail(
-    reason="Invalid report file must end in .json extension", raises=SystemExit
-)
-def test_invalid_report():
-    system = BuildTestSystem()
-    system.check()
-
-    cmd = BuildTest(
-        config_file=DEFAULT_SETTINGS_FILE,
-        tags=["pass"],
-        buildtest_system=system,
-        report_file="".join(random.choice(string.ascii_letters) for i in range(10)),
-    )
-
     cmd.build()
 
 
