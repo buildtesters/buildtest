@@ -3,7 +3,7 @@ system:
     hostnames:
     - .*
     description: Generic System
-    moduletool: lmod
+    moduletool: N/A
     load_default_buildspecs: true
     cdash:
       url: "https://my.cdash.XYZ.org"
