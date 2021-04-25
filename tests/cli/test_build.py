@@ -1,7 +1,5 @@
 import os
 import pytest
-import random
-import string
 import tempfile
 
 from buildtest.defaults import BUILDTEST_ROOT, DEFAULT_SETTINGS_FILE
@@ -195,23 +193,6 @@ def test_build_rebuild():
     cmd.build()
 
 
-@pytest.mark.xfail(
-    reason="Invalid report file must end in .json extension", raises=SystemExit
-)
-def test_invalid_report():
-    system = BuildTestSystem()
-    system.check()
-
-    cmd = BuildTest(
-        config_file=DEFAULT_SETTINGS_FILE,
-        tags=["pass"],
-        buildtest_system=system,
-        report_file="".join(random.choice(string.ascii_letters) for i in range(10)),
-    )
-
-    cmd.build()
-
-
 def test_invalid_buildspes():
 
     system = BuildTestSystem()
@@ -321,10 +302,6 @@ def test_BuildTest_type():
     # invalid type for stage argument, must be a string not list
     with pytest.raises(BuildTestError):
         BuildTest(config_file=DEFAULT_SETTINGS_FILE, tags=["pass"], stage=["parse"])
-
-    # invalid value for stage argument, must be 'parse' or 'build'
-    with pytest.raises(BuildTestError):
-        BuildTest(config_file=DEFAULT_SETTINGS_FILE, tags=["pass"], stage="unknown")
 
     # invalid value for testdir argument, must be a str
     with pytest.raises(BuildTestError):

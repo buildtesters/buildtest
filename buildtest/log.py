@@ -2,39 +2,36 @@
 Methods related to buildtest logging
 """
 import logging
+import os
 import sys
-from buildtest.defaults import logID
 
 
-def init_logfile(logfile):
-    """Initialize a log file intended for a builder. This requires
-    passing the filename intended for the log (from the builder)
-    and returns the logger.
-
-    :param logfile: logfile name
-    :type logfile: str
-    """
-
-    logger = logging.getLogger(logID)
-    fh = logging.FileHandler(logfile)
-    formatter = logging.Formatter(
-        "%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s"
-    )
-    fh.setFormatter(formatter)
-    logger.addHandler(fh)
-    logger.setLevel(logging.DEBUG)
-
-    return logger
+LOG_FORMATTER = "%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s"
+LOG_NAME = "buildtest"
+FILE_LOG = os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log")
 
 
-def streamlog(debuglevel):
+class BuildTestLogger(logging.Logger):
+    def __init__(self, name="buildtest", level=10):
+        super().__init__(name, level)
+        self.logger = logging.getLogger(name)
 
-    logger = logging.getLogger(logID)
-    streamhandler = logging.StreamHandler(sys.stdout)
-    streamhandler.setLevel(debuglevel)
-    formatter = logging.Formatter(
-        "%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s"
-    )
-    streamhandler.setFormatter(formatter)
-    logger.addHandler(streamhandler)
-    return logger
+    def add_filehandler(self, name, fmt):
+        self.file_hander = logging.FileHandler(name)
+        formatter = logging.Formatter(fmt)
+        self.file_hander.setFormatter(formatter)
+        self.file_hander.setLevel(logging.DEBUG)
+        self.logger.addHandler(self.file_hander)
+
+    def add_streamhandler(self, fmt=LOG_FORMATTER, level=logging.ERROR):
+        self.stream_handler = logging.StreamHandler(sys.stdout)
+        formatter = logging.Formatter(fmt)
+        self.stream_handler.setFormatter(formatter)
+        self.stream_handler.setLevel(level)
+        self.logger.addHandler(self.stream_handler)
+
+
+# a = BuildTestLogger("buildtest",0)
+
+buildtest_logger = BuildTestLogger(LOG_NAME, logging.DEBUG)
+buildtest_logger.add_filehandler(FILE_LOG, LOG_FORMATTER)
