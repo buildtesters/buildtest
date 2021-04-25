@@ -25,6 +25,7 @@ Specify processor information
 | [core_per_socket](#core_per_socket)   | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-core_per_socket.md "settings.schema.json#/definitions/system/properties/processor/properties/core_per_socket")   |
 | [model](#model)                       | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-model.md "settings.schema.json#/definitions/system/properties/processor/properties/model")                       |
 | [arch](#arch)                         | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-arch.md "settings.schema.json#/definitions/system/properties/processor/properties/arch")                         |
+| [vendor](#vendor)                     | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-vendor.md "settings.schema.json#/definitions/system/properties/processor/properties/vendor")                     |
 
 ## numcpus
 
@@ -169,5 +170,23 @@ Specify processor architecture
 *   defined in: [buildtest configuration schema](settings-definitions-system-properties-processor-properties-arch.md "settings.schema.json#/definitions/system/properties/processor/properties/arch")
 
 ### arch Type
+
+`string`
+
+## vendor
+
+Vendor Name
+
+`vendor`
+
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-processor-properties-vendor.md "settings.schema.json#/definitions/system/properties/processor/properties/vendor")
+
+### vendor Type
 
 `string`
