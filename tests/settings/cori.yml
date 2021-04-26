@@ -1,6 +1,6 @@
 system:
   cori:
-    hostnames: ["cori*"]
+    hostnames: ["cori*", .*]
     moduletool: environment-modules
     load_default_buildspecs: false
     compilers:

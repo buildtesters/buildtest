@@ -6,12 +6,10 @@ from tabulate import tabulate
 from termcolor import colored
 from jsonschema.exceptions import ValidationError
 from buildtest.buildsystem.parser import BuildspecParser
-from buildtest.config import check_settings, BuildtestConfiguration
 from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
     BUILDSPEC_ERROR_FILE,
     BUILDSPEC_DEFAULT_PATH,
-    DEFAULT_SETTINGS_FILE,
     BUILDTEST_BUILDSPEC_DIR,
 )
 from buildtest.executors.setup import BuildExecutor
@@ -38,11 +36,11 @@ class BuildspecCache:
 
     def __init__(
         self,
+        configuration,
         rebuild=False,
         filterfields=None,
         formatfields=None,
         roots=None,
-        settings_file=None,
     ):
         """The initializer method for BuildspecCache class is responsible for
         loading and finding buildspecs into buildspec cache. This method is called
@@ -61,8 +59,7 @@ class BuildspecCache:
         if not is_dir(BUILDTEST_BUILDSPEC_DIR):
             create_dir(BUILDTEST_BUILDSPEC_DIR)
 
-        self.settings = settings_file or DEFAULT_SETTINGS_FILE
-        self.configuration = check_settings(self.settings, executor_check=True)
+        self.configuration = configuration
         self.filter = filterfields
         self.format = formatfields
         # if --root is not specified we set to empty list instead of None
@@ -204,8 +201,7 @@ class BuildspecCache:
         valid_buildspecs = []
         self.count = 0
 
-        configuration = BuildtestConfiguration(self.settings)
-        buildexecutor = BuildExecutor(configuration)
+        buildexecutor = BuildExecutor(self.configuration)
 
         for buildspec in buildspecs:
             self.count += 1
@@ -685,7 +681,7 @@ class BuildspecCache:
             print(path)
 
 
-def buildspec_find(args, settings_file):
+def buildspec_find(args, configuration):
     """Entry point for ``buildtest buildspec find`` command"""
 
     cache = BuildspecCache(
@@ -693,7 +689,7 @@ def buildspec_find(args, settings_file):
         filterfields=args.filter,
         formatfields=args.format,
         roots=args.root,
-        settings_file=settings_file,
+        configuration=configuration,
     )
 
     # buildtest buildspec find --tags

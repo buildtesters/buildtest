@@ -1,13 +1,15 @@
 import os
 import pytest
 from buildtest.cli.cdash import cdash_cmd
-from buildtest.config import check_settings
+from buildtest.config import SiteConfiguration
 from buildtest.defaults import DEFAULT_SETTINGS_FILE
 
 
 def test_cdash_view():
 
-    configuration = check_settings()
+    configuration = SiteConfiguration()
+    configuration.get_current_system()
+    configuration.validate()
 
     class args:
         cdash = "view"

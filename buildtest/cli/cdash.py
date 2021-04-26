@@ -13,7 +13,7 @@ import zlib
 from datetime import datetime
 from urllib.request import urlopen, Request
 from urllib.parse import urlencode, urljoin
-from buildtest.config import check_settings
+from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILD_REPORT
 from buildtest.utils.file import resolve_path
 from buildtest.utils.tools import deep_get
@@ -25,8 +25,8 @@ def cdash_cmd(args, default_configuration=None, open_browser=True):
 
     :param args: Instance of ArgumentParser that contains arguments for ``buildtest cdash`` command
     :type args: ArgumentParser
-    :param default_configuration: The loaded default configuration which is an instance of BuildTestConfiguration
-    :type default_configuration: BuildTestConfiguration, optional
+    :param default_configuration: The loaded default configuration which is an instance of SiteConfiguration
+    :type default_configuration: SiteConfiguration, optional
     :param open_browser: boolean to control if we open page in web browser using webbrowser.open. This is enabled by default, but can be turned off especially when running regression test where we don't want to see the page
     :type open_browser: optional
 
@@ -41,9 +41,11 @@ def cdash_cmd(args, default_configuration=None, open_browser=True):
 
     # if buildtest cdash --config option is specified check the configuration file
     if args.config:
-        configuration = check_settings(args.config)
+        configuration = SiteConfiguration(args.config)
+        configuration.get_current_system()
+        configuration.validate()
 
-    if not configuration:
+    if not configuration.target_config:
         sys.exit("Unable to load a configuration file")
 
     print("Reading configuration file: ", configuration.file)
@@ -103,8 +105,8 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
 
     :param build_name: build name that shows up in CDASH
     :type site: str
-    :param configuration: Instance of BuildTestConfiguration class that contains the configuration file
-    :type configuration: BuildTestConfiguration
+    :param configuration: Instance of SiteConfiguration class that contains the configuration file
+    :type configuration: SiteConfiguration
     :param site: site name that shows up in CDASH
     :type site: str, optional
     :param report_file: Path to report file when uploading results. This is specified via ``buildtest cdash upload -r`` command

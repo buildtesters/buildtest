@@ -1,14 +1,17 @@
 import os
 import pytest
 from buildtest.cli.compilers import BuildtestCompilers
-from buildtest.exceptions import BuildTestError
+from buildtest.config import SiteConfiguration
+from buildtest.exceptions import BuildTestError, ConfigurationError
 
 here = os.path.dirname(os.path.abspath(__file__))
 
 
 class TestBuildtestCompilers:
-
-    bc = BuildtestCompilers()
+    configuration = SiteConfiguration()
+    configuration.get_current_system()
+    configuration.validate()
+    bc = BuildtestCompilers(configuration)
 
     def test_init(self):
 
@@ -23,8 +26,13 @@ class TestBuildtestCompilers:
     def test_invalid_moduletool(self):
         settings_file = os.path.join(here, "test_compilers", "invalid_moduletool.yml")
         print(f"Using settings file: {settings_file} for loading compilers")
-        bc = BuildtestCompilers(settings_file=settings_file)
-        with pytest.raises(BuildTestError):
+
+        configuration = SiteConfiguration(settings_file)
+        configuration.get_current_system()
+        configuration.validate()
+
+        bc = BuildtestCompilers(configuration=configuration)
+        with pytest.raises(ConfigurationError):
             bc.find_compilers()
 
     def test_missing_compiler_find(self):
@@ -32,6 +40,12 @@ class TestBuildtestCompilers:
             here, "test_compilers", "missing_compiler_find.yml"
         )
         print(f"Using settings file: {settings_file} for loading compilers")
-        bc = BuildtestCompilers(settings_file=settings_file)
+
+        configuration = SiteConfiguration(settings_file)
+        configuration.get_current_system()
+        configuration.validate()
+
+        bc = BuildtestCompilers(configuration=configuration)
+
         with pytest.raises(BuildTestError):
             bc.find_compilers()
