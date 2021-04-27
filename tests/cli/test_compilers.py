@@ -2,7 +2,7 @@ import os
 import pytest
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
-from buildtest.exceptions import BuildTestError, ConfigurationError
+from buildtest.exceptions import ConfigurationError
 
 here = os.path.dirname(os.path.abspath(__file__))
 
@@ -47,5 +47,5 @@ class TestBuildtestCompilers:
 
         bc = BuildtestCompilers(configuration=configuration)
 
-        with pytest.raises(BuildTestError):
+        with pytest.raises(ConfigurationError):
             bc.find_compilers()
