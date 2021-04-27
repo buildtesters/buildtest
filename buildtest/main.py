@@ -2,7 +2,7 @@
 
 import os
 import webbrowser
-from buildtest.config import check_settings
+from buildtest.config import SiteConfiguration
 from buildtest.defaults import (
     BUILDTEST_VAR_DIR,
     BUILDTEST_USER_HOME,
@@ -28,6 +28,11 @@ def main():
     parser = get_parser()
     args, extras = parser.parse_known_args()
 
+    # if no commands just print the help message and return.
+    if not args.subcommands:
+        print(parser.print_help())
+        return
+
     if args.debug:
         buildtest_logger.add_streamhandler(level=args.debug)
 
@@ -43,20 +48,14 @@ def main():
     system = BuildTestSystem()
     system.check()
 
-    # parser = get_parser()
-    # args, extras = parser.parse_known_args()
-
-    # if no commands specified we raise an error
-    if not args.subcommands:
-        raise SystemExit("Invalid input argument")
-
-    # if args.debug:
-    #    streamlog(args.debug)
-
     if args.subcommands == "build":
 
-        configuration = check_settings(args.config)
-        logger.info(f"Processing buildtest configuration file: {configuration.file}")
+        configuration = SiteConfiguration(args.config)
+        configuration.get_current_system()
+        configuration.validate()
+
+        # configuration = check_settings(args.config)
+        # logger.info(f"Processing buildtest configuration file: {configuration.file}")
 
         cmd = BuildTest(
             configuration=configuration,
@@ -76,14 +75,17 @@ def main():
 
         return
 
-    configuration = check_settings()
+    configuration = SiteConfiguration()
+    configuration.get_current_system()
+    configuration.validate()
+
     logger.info(f"Processing buildtest configuration file: {configuration.file}")
 
     # implementation for 'buildtest buildspec find'
     if args.subcommands == "buildspec":
         from buildtest.cli.buildspec import buildspec_find
 
-        buildspec_find(args=args, settings_file=configuration.file)
+        buildspec_find(args=args, configuration=configuration)
     elif args.subcommands == "docs":
         webbrowser.open("https://buildtest.readthedocs.io/")
     elif args.subcommands == "schemadocs":
@@ -97,7 +99,7 @@ def main():
     elif args.subcommands == "config" and args.config == "compilers":
         from buildtest.cli.compilers import compiler_cmd
 
-        compiler_cmd(args)
+        compiler_cmd(args, configuration)
 
     elif args.subcommands == "config":
         from buildtest.cli.config import config_cmd
@@ -118,7 +120,10 @@ def main():
         from buildtest.cli.cdash import cdash_cmd
 
         # Check for configuration since 'buildtest cdash -c /path/to/config' can specify alternate location
-        configuration = check_settings(args.config)
+        configuration = SiteConfiguration(args.config)
+        configuration.get_current_system()
+        configuration.validate()
+
         logger.info(f"Processing buildtest configuration file: {configuration.file}")
 
         cdash_cmd(args, default_configuration=configuration)

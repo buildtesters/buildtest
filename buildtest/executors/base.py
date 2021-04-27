@@ -24,7 +24,7 @@ class BaseExecutor:
         :param settings: executor settings from configuration file for a particular executor instance (``local.bash``)
         :type settings: dict, required
         :param site_configs: loaded buildtest configuration
-        :type site_configs: instance of BuildtestConfiguration, required
+        :type site_configs: instance of SiteConfiguration, required
         """
 
         self.logger = logging.getLogger(__name__)

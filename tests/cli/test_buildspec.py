@@ -1,23 +1,25 @@
 import os
 import pytest
-from buildtest.config import resolve_settings_file
+from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 from buildtest.cli.buildspec import BuildspecCache
 
-settings_file = resolve_settings_file()
+configuration = SiteConfiguration()
+configuration.get_current_system()
+configuration.validate()
 
 
 @pytest.mark.cli
 def test_func_buildspec_find():
 
     # buildtest buildspec find --rebuild
-    cache = BuildspecCache(rebuild=True, settings_file=settings_file)
+    cache = BuildspecCache(rebuild=True, configuration=configuration)
 
     cache.print_buildspecs()
 
     # buildtest buildspec find
-    cache = BuildspecCache(settings_file=settings_file)
+    cache = BuildspecCache(configuration=configuration)
     cache.print_buildspecs()
 
     # implements buildtest buildspec find --tags
@@ -55,20 +57,20 @@ def test_func_buildspec_find():
 def test_buildspec_find_filter():
 
     # testing buildtest buildspec find --filter tags=fail
-    cache = BuildspecCache(filterfields={"tags": "fail"}, settings_file=settings_file)
+    cache = BuildspecCache(filterfields={"tags": "fail"}, configuration=configuration)
     cache.print_buildspecs()
 
     # testing buildtest buildspec find --filter type=script,executor=generic.local.sh,tags=fail
     cache = BuildspecCache(
         filterfields={"type": "script", "executor": "generic.local.sh", "tags": "fail"},
-        settings_file=settings_file,
+        configuration=configuration,
     )
     cache.print_buildspecs()
 
     # testing buildtest buildspec find --filter key1=val1,key2=val2
     with pytest.raises(BuildTestError):
         cache = BuildspecCache(
-            filterfields={"key1": "val1", "key2": "val2"}, settings_file=settings_file
+            filterfields={"key1": "val1", "key2": "val2"}, configuration=configuration
         )
         cache.print_buildspecs()
 
@@ -78,7 +80,7 @@ def test_buildspec_find_format():
 
     # testing buildtest buildspec find --format name,type,executor,description,file
     cache = BuildspecCache(
-        formatfields="name,type,executor,description,file", settings_file=settings_file
+        formatfields="name,type,executor,description,file", configuration=configuration
     )
     cache.print_buildspecs()
 
@@ -86,7 +88,7 @@ def test_buildspec_find_format():
     with pytest.raises(BuildTestError):
 
         # testing buildtest buildspec find --format field1
-        cache = BuildspecCache(formatfields="field1", settings_file=settings_file)
+        cache = BuildspecCache(formatfields="field1", configuration=configuration)
         cache.print_buildspecs()
 
 
@@ -98,7 +100,7 @@ def test_buildspec_find_roots():
         os.path.join(BUILDTEST_ROOT, "tutorials"),
     ]
     # testing buildtest buildspec find --root $BUILDTEST_ROOT/tests/buildsystem --root $BUILDTEST_ROOT/tutorials
-    BuildspecCache(roots=root_buildspecs, settings_file=settings_file)
+    BuildspecCache(roots=root_buildspecs, configuration=configuration)
 
     # running buildtest buildspec find --root $BUILDTEST_ROOT/README.rst --root $BUILDTEST_ROOT/environment.yml
     BuildspecCache(
@@ -106,5 +108,5 @@ def test_buildspec_find_roots():
             os.path.join(BUILDTEST_ROOT, "README.rst"),
             os.path.join(BUILDTEST_ROOT, "tutorials", "environment.yml"),
         ],
-        settings_file=settings_file,
+        configuration=configuration,
     )

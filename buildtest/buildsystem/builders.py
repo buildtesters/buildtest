@@ -15,7 +15,14 @@ from buildtest.system import system
 
 class Builder:
     def __init__(
-        self, bp, buildexecutor, filters, testdir, buildtest_system=None, rebuild=1
+        self,
+        bp,
+        buildexecutor,
+        filters,
+        testdir,
+        configuration,
+        buildtest_system=None,
+        rebuild=1,
     ):
         """Based on a loaded Buildspec file, return the correct builder
         for each based on the type. Each type is associated with a known
@@ -29,11 +36,15 @@ class Builder:
         :type filters: dict, required
         :param testdir: Test Destination directory, specified by --testdir
         :type testdir: str, required
+        :param configuration: Instance of SiteConfiguration class
+        :type configuration: SiteConfiguration
         :param buildtest_system: Instance of BuildTestSystem
         :type buildtest_system: BuildTestSystem
         :param rebuild: Number of rebuilds for a tesst this is specified by ``buildtest build --rebuild``. Defaults to 1
         :type rebuild: int, optional
         """
+
+        self.configuration = configuration
         self.system = buildtest_system or system
         self.logger = logging.getLogger(__name__)
         self.testdir = testdir
@@ -144,6 +155,7 @@ class Builder:
                     executor=executor,
                     compiler=compiler_name,
                     buildspec=self.bp.buildspec,
+                    configuration=self.configuration,
                     buildexecutor=self.buildexecutor,
                     testdir=self.testdir,
                 )
@@ -166,7 +178,8 @@ class Builder:
         :type recipe: dict
         """
         self.compilers = {}
-        bc = BuildtestCompilers()
+
+        bc = BuildtestCompilers(configuration=self.configuration)
         discovered_compilers = bc.list()
 
         builders = []

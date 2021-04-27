@@ -35,7 +35,7 @@ class BuildExecutor:
         each executor to be available.
 
         :param site_config: the site configuration for buildtest.
-        :type site_config: BuildtestConfiguration class, required
+        :type site_config: SiteConfiguration class, required
         """
 
         self.executors = {}

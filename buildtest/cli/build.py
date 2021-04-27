@@ -19,7 +19,7 @@ from buildtest import BUILDTEST_VERSION
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.report import update_report
-from buildtest.config import check_settings
+from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDTEST_USER_HOME, BUILD_REPORT
 from buildtest.exceptions import (
     BuildTestError,
@@ -58,8 +58,8 @@ class BuildTest:
 
         :param config_file: path to configuration file
         :type config_file: str, required
-        :param configuration: Loaded configuration content which is an instance of BuildTestConfiguration
-        :type configuration: BuildTestConfiguration
+        :param configuration: Loaded configuration content which is an instance of SiteConfiguration
+        :type configuration: SiteConfiguration
         :param buildspecs: list of buildspecs from command line (--buildspec)
         :type buildspecs: list, optional
         :param exclude_buildspecs: list of excluded buildspecs from command line (--exclude)
@@ -111,9 +111,11 @@ class BuildTest:
 
         # If we pass a configuration file to BuildTest class we check settings which validates configuration file and returns a loaded configuration
         if self.config_file:
-            self.configuration = check_settings(
-                settings_path=self.config_file, executor_check=True
-            )
+            bc = SiteConfiguration(self.config_file)
+            bc.get_current_system()
+            bc.validate()
+
+            self.configuration = bc.config
 
         self.buildspecs = buildspecs
         self.exclude_buildspecs = exclude_buildspecs
@@ -588,6 +590,7 @@ class BuildTest:
                 testdir=self.testdir,
                 rebuild=self.rebuild,
                 buildtest_system=self.system,
+                configuration=self.configuration,
             )
             self.builders += builder.get_builders()
 

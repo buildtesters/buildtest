@@ -8,8 +8,8 @@ system:
         gcc: "^(gcc|PrgEnv-gnu)"
         cray: "^(PrgEnv-cray)"
         intel: "^(intel|PrgEnv-intel)"
-        pgi: "^(pgi)"
         cuda: "^(cuda\/)"
+        upcxx: "^(upcxx)"
       compiler:
         gcc:
           builtin_gcc:

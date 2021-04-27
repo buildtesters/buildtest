@@ -1,6 +1,5 @@
 import logging
 import json
-import os
 import re
 from buildtest.defaults import (
     USER_SETTINGS_FILE,
@@ -13,38 +12,64 @@ from buildtest.system import Slurm, LSF, Cobalt, PBS, system
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import resolve_path
 from buildtest.utils.tools import deep_get
-from buildtest.exceptions import BuildTestError, ConfigurationError
+from buildtest.exceptions import ConfigurationError
 
 
 logger = logging.getLogger(__name__)
 
 
-class BuildtestConfiguration:
+class SiteConfiguration:
     """This class is an interface to buildtest configuration"""
 
-    def __init__(self, settings_file):
-        self.file = settings_file
-        self.config = load_recipe(settings_file)
-        self.systems = self.config["system"].keys()
-
+    def __init__(self, settings_file=None):
+        self._file = settings_file
+        self.config = None
         # self.target_config stores value for target system. The configuration may define multiple system,
         # but only one system can be active depending on which host buildtest is run
         self.target_config = None
-        self._validate()
 
-        self.localexecutors = None
-        self.slurmexecutors = None
-        self.lsfexecutors = None
-        self.cobaltexecutors = None
-        self.pbsexecutors = None
+        self.localexecutors = []
+        self.slurmexecutors = []
+        self.lsfexecutors = []
+        self.cobaltexecutors = []
+        self.pbsexecutors = []
 
-        self.get_current_system()
+        self.resolve()
+        self.load()
+
+    def load(self):
+        """Loads configuration file"""
+        self.config = load_recipe(self._file)
+
+    @property
+    def file(self):
+        return self._file
+
+    @file.setter
+    def file(self, path):
+        self._file = path
+
+    def resolve(self):
+        """This method will resolve path to configuration file. The order of precedence is as follows:
+        1. command line argument - Must be valid path
+        2. User Configuration: $HOME/.buildtest/config.yml
+        3. Default Configuration: $BUILDTEST_ROOT/buildtest/settings/config.yml
+        """
+
+        self._file = (
+            resolve_path(self._file)
+            or resolve_path(USER_SETTINGS_FILE)
+            or DEFAULT_SETTINGS_FILE
+        )
 
     def get_current_system(self):
         """This method gets current system by setting ``self.target`` by matching ``hostnames`` entry
         in each system list with actual system. We retrieve target hostname and determine which system configuration to use.
         If no system is found we raise an error.
         """
+
+        self.systems = self.config["system"].keys()
+
         host_lookup = {}
 
         # get hostname fqdn
@@ -72,20 +97,7 @@ class BuildtestConfiguration:
         if self.target_config["executors"].get("local"):
             self.localexecutors = list(self.target_config["executors"]["local"].keys())
 
-        if self.target_config["executors"].get("slurm"):
-            self.slurmexecutors = list(self.target_config["executors"]["slurm"].keys())
-
-        if self.target_config["executors"].get("lsf"):
-            self.lsfexecutors = list(self.target_config["executors"]["lsf"].keys())
-
-        if self.target_config["executors"].get("cobalt"):
-            self.cobaltexecutors = list(
-                self.target_config["executors"]["cobalt"].keys()
-            )
-        if self.target_config["executors"].get("pbs"):
-            self.pbsexecutors = list(self.target_config["executors"]["pbs"].keys())
-
-    def _validate(self):
+    def validate(self, validate_executors=True):
         """This method validates the site configuration with schema"""
 
         logger.debug(f"Loading default settings schema: {DEFAULT_SETTINGS_SCHEMA}")
@@ -95,27 +107,8 @@ class BuildtestConfiguration:
         custom_validator(recipe=self.config, schema=config_schema)
         logger.debug("Validation was successful")
 
-    def validate_executors(self):
-        slurm_executors = deep_get(self.target_config, "executors", "slurm")
-        lsf_executors = deep_get(self.target_config, "executors", "lsf")
-        cobalt_executors = deep_get(self.target_config, "executors", "cobalt")
-        pbs_executors = deep_get(self.target_config, "executors", "pbs")
-
-        if slurm_executors:
-            logger.debug("Checking slurm executors")
-            self._validate_slurm_executors(slurm_executors)
-
-        if lsf_executors:
-            logger.debug("Checking lsf executors")
-            self._validate_lsf_executors(lsf_executors)
-
-        if cobalt_executors:
-            logger.debug("Checking cobalt executors")
-            self._validate_cobalt_executors(cobalt_executors)
-
-        if pbs_executors:
-            logger.debug("Checking pbs executors")
-            self._validate_pbs_executors(pbs_executors)
+        if validate_executors:
+            self._executor_check()
 
         if (
             self.target_config.get("moduletool") != "N/A"
@@ -124,16 +117,24 @@ class BuildtestConfiguration:
             raise ConfigurationError(
                 self.config,
                 self.file,
-                f"Cannot find modules_tool: {self.target_config('moduletool')} from configuration, please confirm if you have environment-modules or lmod and specify the appropriate tool.",
+                f"Cannot find modules_tool: {self.target_config['moduletool']} from configuration, please confirm if you have environment-modules or lmod and specify the appropriate tool.",
             )
 
-    def _validate_lsf_executors(self, lsf_executors):
+    def _executor_check(self):
+        self._validate_slurm_executors()
+        self._validate_lsf_executors()
+        self._validate_cobalt_executors()
+        self._validate_pbs_executors()
+
+    def _validate_lsf_executors(self):
         """This method validates all LSF executors. We check if queue is available
         and in ``Open:Active`` state.
-
-        :param lsf_executors: A list of LSF executors to validate
-        :type lsf_executors: dict
         """
+
+        lsf_executors = deep_get(self.target_config, "executors", "lsf")
+        if not lsf_executors:
+            return
+
         lsf = LSF()
         assert hasattr(lsf, "queues")
 
@@ -146,6 +147,7 @@ class BuildtestConfiguration:
 
         # check all executors have defined valid queues and check queue state.
         for executor in lsf_executors:
+
             queue = lsf_executors[executor].get("queue")
             # if queue field is defined check if its valid queue
             if queue:
@@ -172,15 +174,18 @@ class BuildtestConfiguration:
                             f"{lsf_executors[executor]['queue']} is in state: {queue_state}. It must be in {valid_queue_state} state in order to accept jobs",
                         )
 
-    def _validate_slurm_executors(self, slurm_executor):
+            self.lsfexecutors.append(executor)
+
+    def _validate_slurm_executors(self):
         """This method will validate slurm executors, we check if partition, qos,
         and cluster fields are valid values by retrieving details from slurm configuration.
         These checks are performed on fields ``partition``, ``qos`` or ``cluster``
         if specified in executor section.
-
-        :param slurm_executor: list of slurm executors defined in loaded buildtest configuration
-        :type slurm_executor: dict
         """
+
+        slurm_executor = deep_get(self.target_config, "executors", "slurm")
+        if not slurm_executor:
+            return
 
         slurm = Slurm()
         # make sure slurm attributes slurm.partitions, slurm.qos, slurm.clusters are set
@@ -189,7 +194,6 @@ class BuildtestConfiguration:
         assert hasattr(slurm, "clusters")
 
         for executor in slurm_executor:
-
             # if 'partition' key defined check if its valid partition
             if slurm_executor[executor].get("partition"):
 
@@ -236,11 +240,17 @@ class BuildtestConfiguration:
                     f"{slurm_executor[executor]['cluster']} not a valid slurm cluster! Please select one of the following slurm clusters: {slurm.clusters}",
                 )
 
-    def _validate_cobalt_executors(self, cobalt_executor):
+            self.slurmexecutors.append(executor)
+
+    def _validate_cobalt_executors(self):
         """Validate cobalt queue property by running ```qstat -Ql <queue>``. If
         its a non-zero exit code then queue doesn't exist otherwise it is a valid
         queue.
         """
+
+        cobalt_executor = deep_get(self.target_config, "executors", "cobalt")
+        if not cobalt_executor:
+            return
 
         cobalt = Cobalt()
         assert hasattr(cobalt, "queues")
@@ -255,7 +265,9 @@ class BuildtestConfiguration:
                     f"Queue: {queue} does not exist! To see available queues you can run 'qstat -Ql'",
                 )
 
-    def _validate_pbs_executors(self, pbs_executor):
+            self.cobaltexecutors.append(executor)
+
+    def _validate_pbs_executors(self):
         """Validate pbs queue property by running by checking if queue is found and
         queue is 'enabled' and 'started' which are two properties found in pbs queue
         configuration that can be retrieved using ``qstat -Q -f -F json``. The output is in
@@ -287,6 +299,10 @@ class BuildtestConfiguration:
 
         """
 
+        pbs_executor = deep_get(self.target_config, "executors", "pbs")
+        if not pbs_executor:
+            return
+
         pbs = PBS()
         assert hasattr(pbs, "queues")
         for executor in pbs_executor:
@@ -308,65 +324,4 @@ class BuildtestConfiguration:
                     f"{queue} is not enabled or started properly. Please check your queue configuration",
                 )
 
-
-def check_settings(settings_path=None, executor_check=True):
-    """Checks all keys in configuration file (settings/config.yml) are valid
-    keys and ensure value of each key matches expected type. For some keys
-    special logic is taken to ensure values are correct and directory path
-    exists. If any error is found buildtest will terminate immediately.
-
-    :param settings_path: Path to buildtest settings file
-    :type settings_path: str, optional
-    :param executor_check: boolean to control if executor checks are performed
-    :type executor_check: bool
-    :return: returns an instance object of BuildtestConfiguration
-    """
-
-    settings_file = resolve_settings_file(settings_path)
-    if not settings_file:
-        raise BuildTestError("Cannot detect a buildtest configuration file")
-
-    bc = BuildtestConfiguration(settings_file)
-
-    # only perform executor check if executor_check is True. This is default
-    # behavior, this can be disabled only for regression test where executor check
-    # such as slurm check are not applicable.
-    if executor_check:
-        bc.validate_executors()
-
-    return bc
-
-
-def load_settings(settings_path=None):
-    """Load the default settings file if no argument is specified.
-
-    :param settings_path: Path to buildtest settings file
-    :type settings_path: str, optional
-    """
-
-    if not settings_path:
-        settings_path = resolve_settings_file()
-
-    # load the settings file into a schema object
-    return load_recipe(settings_path)
-
-
-def resolve_settings_file(settings_path=None):
-    """Returns path to buildtest settings file that should be used. If there
-    is a user defined buildtest settings ($HOME/.buildtest/config.yml) it will
-    be honored, otherwise default settings from buildtest will be used.
-    """
-
-    if settings_path:
-        settings_path = resolve_path(settings_path)
-        return settings_path
-
-    # if buildtest settings file exist return it otherwise return default file
-    if os.path.exists(USER_SETTINGS_FILE):
-        return USER_SETTINGS_FILE
-
-    return DEFAULT_SETTINGS_FILE
-
-
-settings_file = resolve_settings_file()
-buildtest_configuration = BuildtestConfiguration(settings_file)
+            self.pbsexecutors.append(executor)

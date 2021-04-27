@@ -1,10 +1,6 @@
 import os
 import pytest
-from buildtest.defaults import (
-    DEFAULT_SETTINGS_SCHEMA,
-    SCHEMA_ROOT,
-    DEFAULT_SETTINGS_FILE,
-)
+
 from buildtest.cli.config import (
     view_configuration,
     validate_config,
@@ -12,30 +8,40 @@ from buildtest.cli.config import (
     view_executors,
     view_system,
 )
-from buildtest.config import check_settings
+from buildtest.config import SiteConfiguration
+from buildtest.defaults import (
+    DEFAULT_SETTINGS_SCHEMA,
+    SCHEMA_ROOT,
+)
 from buildtest.executors.setup import BuildExecutor
-from buildtest.utils.file import walk_tree
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_schema, load_recipe
 from buildtest.system import BuildTestSystem
+from buildtest.utils.file import walk_tree
 
 pytest_root = os.path.dirname(os.path.dirname(__file__))
+
+configuration = SiteConfiguration()
+configuration.get_current_system()
+configuration.validate()
 
 
 @pytest.mark.cli
 def test_config_systems():
+
     schema_files = os.path.join(
         SCHEMA_ROOT, "examples", "settings.schema.json", "valid"
     )
     # run 'buildtest config systems' against all valid configuration files
-    for settings_file in os.listdir(schema_files):
-        bc_file = os.path.join(schema_files, settings_file)
-        view_system(settings_file=bc_file)
+    for config_examples in os.listdir(schema_files):
+        fname = os.path.join(schema_files, config_examples)
+        configuration = SiteConfiguration(fname)
+        view_system(configuration)
 
 
 @pytest.mark.cli
 def test_view_configuration():
-    view_configuration()
+    view_configuration(configuration)
 
 
 def test_valid_config_schemas():
@@ -49,26 +55,40 @@ def test_valid_config_schemas():
 
 @pytest.mark.cli
 def test_config_validate():
-    validate_config()
+    validate_config(configuration)
 
 
 @pytest.mark.cli
 def test_config_summary():
     system = BuildTestSystem()
     system.check()
-    view_summary(system)
+    view_summary(configuration=configuration, buildtestsystem=system)
 
 
 @pytest.mark.cli
 def test_config_executors():
-    configuration = check_settings(DEFAULT_SETTINGS_FILE)
     buildexecutor = BuildExecutor(configuration)
 
     # run buildtest config executors --json
-    view_executors(buildexecutor=buildexecutor, json_format=True, yaml_format=False)
+    view_executors(
+        configuration=configuration,
+        buildexecutor=buildexecutor,
+        json_format=True,
+        yaml_format=False,
+    )
 
     # run buildtest config executors --yaml
-    view_executors(buildexecutor=buildexecutor, json_format=False, yaml_format=True)
+    view_executors(
+        configuration=configuration,
+        buildexecutor=buildexecutor,
+        json_format=False,
+        yaml_format=True,
+    )
 
     # run buildtest config executors
-    view_executors(buildexecutor=buildexecutor, json_format=False, yaml_format=False)
+    view_executors(
+        configuration=configuration,
+        buildexecutor=buildexecutor,
+        json_format=False,
+        yaml_format=False,
+    )

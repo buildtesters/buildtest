@@ -3,7 +3,6 @@ import os
 import shutil
 
 from buildtest.buildsystem.base import BuilderBase
-from buildtest.config import buildtest_configuration
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
 from buildtest.exceptions import BuildTestError
 from buildtest.cli.compilers import BuildtestCompilers
@@ -51,6 +50,7 @@ class CompilerBuilder(BuilderBase):
         buildspec,
         buildexecutor,
         executor,
+        configuration,
         compiler=None,
         testdir=None,
     ):
@@ -63,7 +63,7 @@ class CompilerBuilder(BuilderBase):
             testdir=testdir,
         )
         self.compiler = compiler
-
+        self.configuration = configuration
         self.metadata["compiler"] = compiler
 
         self.compiler_section = self.recipe["compilers"]
@@ -393,7 +393,7 @@ class CompilerBuilder(BuilderBase):
         configuration in buildtest setting if none defined. This method is responsible
         for setting cc, fc, cxx, cflags, cxxflags, fflags, ldflags, and cppflags.
         """
-        bc = BuildtestCompilers()
+        bc = BuildtestCompilers(configuration=self.configuration)
 
         self.compiler_group = bc.compiler_name_to_group[self.compiler]
         self.logger.debug(
@@ -401,9 +401,9 @@ class CompilerBuilder(BuilderBase):
         )
 
         # compiler from buildtest settings
-        self.bc_compiler = buildtest_configuration.target_config["compilers"][
-            "compiler"
-        ][self.compiler_group][self.compiler]
+        self.bc_compiler = self.configuration.target_config["compilers"]["compiler"][
+            self.compiler_group
+        ][self.compiler]
 
         self.logger.debug(self.bc_compiler)
         # set compiler values based on 'default' property in buildspec. This can override

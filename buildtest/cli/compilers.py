@@ -6,22 +6,19 @@ import yaml
 from lmod.module import Module
 from lmod.spider import Spider
 
-from buildtest.config import (
-    buildtest_configuration as site_config,
-    BuildtestConfiguration,
-)
-from buildtest.exceptions import BuildTestError
+from buildtest.config import SiteConfiguration
+from buildtest.exceptions import BuildTestError, ConfigurationError
 from buildtest.schemas.defaults import custom_validator, schema_table
 from buildtest.utils.tools import deep_get
 
 
-def compiler_cmd(args):
+def compiler_cmd(args, configuration):
 
     if args.compilers == "find":
-        compiler_find(args)
+        compiler_find(args, configuration)
         return
 
-    bc = BuildtestCompilers()
+    bc = BuildtestCompilers(configuration)
 
     if args.json is False and args.yaml is False:
         bc.print_compilers()
@@ -33,33 +30,37 @@ def compiler_cmd(args):
         bc.print_yaml()
 
 
-def compiler_find(args=None):
+def compiler_find(args, configuration):
     """This method implements ``buildtest config compilers find`` which detects
     new compilers based on module names defined in configuration. If system has
     Lmod we use Lmodule API to detect the compilers. For environment-modules we
     search for all modules in current ``$MODULEPATH``.
     """
 
-    bc = BuildtestCompilers(debug=args.debug)
+    bc = BuildtestCompilers(debug=args.debug, configuration=configuration)
     bc.find_compilers()
     # configuration["compilers"]["compiler"] = bc.compilers
 
-    site_config.target_config["compilers"]["compiler"] = bc.compilers
+    configuration.target_config["compilers"]["compiler"] = bc.compilers
 
     # delete system entry
-    del site_config.config["system"][site_config.name]
+    del configuration.config["system"][configuration.name]
 
-    site_config.config["system"][site_config.name] = site_config.target_config
+    configuration.config["system"][configuration.name] = configuration.target_config
 
-    custom_validator(site_config.config, schema_table["settings.schema.json"]["recipe"])
+    custom_validator(
+        configuration.config, schema_table["settings.schema.json"]["recipe"]
+    )
 
-    print(yaml.safe_dump(site_config.config, default_flow_style=False, sort_keys=False))
+    print(
+        yaml.safe_dump(configuration.config, default_flow_style=False, sort_keys=False)
+    )
     print("{:_<80}".format(""))
-    print(f"Updating settings file: {site_config.file}")
+    print(f"Updating settings file: {configuration.file}")
 
-    with open(site_config.file, "w") as fd:
+    with open(configuration.file, "w") as fd:
         yaml.safe_dump(
-            site_config.config,
+            configuration.config,
             fd,
             default_flow_style=False,
             sort_keys=False,
@@ -77,7 +78,7 @@ class BuildtestCompilers:
         "upcxx": {"cc": "upcxx", "cxx": "upcxx", "fc": "None"},
     }
 
-    def __init__(self, settings_file=None, debug=False):
+    def __init__(self, configuration, settings_file=None, debug=False):
         """
         :param settings_file: Specify an alternate settings file to use when finding compilers
         :param settings_file: str, optional
@@ -85,20 +86,22 @@ class BuildtestCompilers:
         :type compilers: dict
         """
 
-        self.configuration = site_config.target_config
+        self.configuration = configuration
 
-        # if settings_file is provided, let's load settings into BuildtestConfiguration
+        # if settings_file is provided, let's load settings into SiteConfiguration
         # and set self.configuration to loaded configuration
         if settings_file:
-            bc = BuildtestConfiguration(settings_file)
-            self.configuration = bc.target_config
+            bc = SiteConfiguration(settings_file)
+            bc.get_current_system()
+            bc.validate()
+            self.configuration = bc
 
         self.debug = debug
 
-        if not deep_get(self.configuration, "compilers", "compiler"):
+        if not deep_get(self.configuration.target_config, "compilers", "compiler"):
             raise BuildTestError("compiler section not defined")
 
-        self.compilers = self.configuration["compilers"]["compiler"]
+        self.compilers = self.configuration.target_config["compilers"]["compiler"]
 
         self.names = []
         self.compiler_name_to_group = {}
@@ -118,16 +121,22 @@ class BuildtestCompilers:
         :rtype: dict
         """
 
-        self.moduletool = self.configuration.get("moduletool")
+        self.moduletool = self.configuration.target_config.get("moduletool")
 
         if self.moduletool == "N/A" or not self.moduletool:
-            raise BuildTestError(
-                "You must have environment-modules or Lmod to use this tool. Please specify 'moduletool' in your configuration"
+            raise ConfigurationError(
+                self.configuration.config,
+                self.configuration.file,
+                "You must have environment-modules or lmod to use this tool. Please specify 'moduletool' in your configuration",
             )
 
         # The 'find' section is required for discovering new compilers
-        if not self.configuration["compilers"].get("find"):
-            raise BuildTestError("Compiler section not detected")
+        if not self.configuration.target_config["compilers"].get("find"):
+            raise ConfigurationError(
+                self.configuration.config,
+                self.configuration.file,
+                "Compiler 'find' section not detected, we are unable to search for compilers.",
+            )
 
         module_dict = {}
         print(f"MODULEPATH: {os.getenv('MODULEPATH')}")
@@ -139,9 +148,9 @@ class BuildtestCompilers:
             spider = Spider()
 
             spider_modules = list(spider.get_modules().values())
-            for name, module_regex_patttern in self.configuration["compilers"][
-                "find"
-            ].items():
+            for name, module_regex_patttern in self.configuration.target_config[
+                "compilers"
+            ]["find"].items():
                 module_dict[name] = []
                 raw_string = r"{}".format(module_regex_patttern)
 
@@ -165,9 +174,9 @@ class BuildtestCompilers:
 
             # discover all modules based with list of module names specified in find field, we add all
             # modules that start with the key name
-            for compiler, module_regex_pattern in self.configuration["compilers"][
-                "find"
-            ].items():
+            for compiler, module_regex_pattern in self.configuration.target_config[
+                "compilers"
+            ]["find"].items():
                 module_dict[compiler] = []
 
                 raw_string = r"{}".format(module_regex_pattern)
