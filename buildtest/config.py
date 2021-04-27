@@ -117,7 +117,7 @@ class SiteConfiguration:
             raise ConfigurationError(
                 self.config,
                 self.file,
-                f"Cannot find modules_tool: {self.target_config('moduletool')} from configuration, please confirm if you have environment-modules or lmod and specify the appropriate tool.",
+                f"Cannot find modules_tool: {self.target_config['moduletool']} from configuration, please confirm if you have environment-modules or lmod and specify the appropriate tool.",
             )
 
     def _executor_check(self):
