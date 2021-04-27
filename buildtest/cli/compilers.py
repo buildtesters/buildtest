@@ -127,12 +127,16 @@ class BuildtestCompilers:
             raise ConfigurationError(
                 self.configuration.config,
                 self.configuration.file,
-                "You must have environment-modules or Lmod to use this tool. Please specify 'moduletool' in your configuration",
+                "You must have environment-modules or lmod to use this tool. Please specify 'moduletool' in your configuration",
             )
 
         # The 'find' section is required for discovering new compilers
         if not self.configuration.target_config["compilers"].get("find"):
-            raise BuildTestError("Compiler section not detected")
+            raise ConfigurationError(
+                self.configuration.config,
+                self.configuration.file,
+                "Compiler 'find' section not detected, we are unable to search for compilers.",
+            )
 
         module_dict = {}
         print(f"MODULEPATH: {os.getenv('MODULEPATH')}")

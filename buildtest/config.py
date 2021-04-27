@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 class SiteConfiguration:
     """This class is an interface to buildtest configuration"""
 
-    def __init__(self, settings_file=DEFAULT_SETTINGS_FILE):
+    def __init__(self, settings_file=None):
         self._file = settings_file
         self.config = None
         # self.target_config stores value for target system. The configuration may define multiple system,
