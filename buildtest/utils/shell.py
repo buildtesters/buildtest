@@ -100,7 +100,7 @@ class Shell:
         # if input shell is not in list of valid shells we raise error.
         if self.name not in self.valid_shells:
             raise BuildTestError(
-                f"Invalid shell: {self.name} select from one of the following shells: {self.valid_shells}"
+                f"Please select one of the following shells: {self.valid_shells}"
             )
 
         self._path = path

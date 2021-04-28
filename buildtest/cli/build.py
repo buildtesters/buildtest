@@ -406,16 +406,6 @@ class BuildTest:
 
         cache = load_json(BUILDSPEC_CACHE_FILE)
 
-        """
-        with open(BUILDSPEC_CACHE_FILE, "r") as fd:
-            
-            try:
-                cache = json.loads(fd.read())
-            except json.JSONDecodeError as err:
-                print(err)
-                raise BuildTestError(f"Error loading file: {BUILDSPEC_CACHE_FILE} via json.loads please make sure its valid JSON file")
-        """
-
         buildspecs = []
         # query all buildspecs from BUILDSPEC_CACHE_FILE for tags keyword and
         # if it matches input_tag we add buildspec to list

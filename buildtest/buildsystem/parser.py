@@ -143,11 +143,6 @@ class BuildspecParser:
                 f"Unable to find executor: {executor} in {self.buildexecutors.list_executors()}",
             )
 
-        """
-        if executor not in self.buildexecutors:
-            msg = f"executor: {executor} not found in executor list: {self.buildexecutors}"
-            raise BuildspecError(self.buildspec, msg)
-        """
         self.logger.debug(
             f"Executor: {executor} found in executor list: {self.buildexecutors.list_executors()}"
         )

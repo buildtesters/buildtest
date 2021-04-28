@@ -41,9 +41,10 @@ class TestBuildtestCompilers:
         )
         print(f"Using settings file: {settings_file} for loading compilers")
 
+        # we don't run validate method because it may fail upon moduletool. On GitHub
+        # CI it will fail because it doesn't have lmod
         configuration = SiteConfiguration(settings_file)
         configuration.get_current_system()
-        configuration.validate()
 
         bc = BuildtestCompilers(configuration=configuration)
 

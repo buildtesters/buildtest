@@ -54,7 +54,7 @@ def test_BuildspecParser(tmp_path):
                 buildexecutor=executors,
                 configuration=config,
                 filters=[],
-                testdir="/tmp",
+                testdir=tmp_path,
             )
             builders = builder.get_builders()
             for test in builders:

@@ -201,16 +201,6 @@ class Builder:
                         name=name, recipe=recipe, compiler_name=bc_name
                     )
 
-                    """
-                    builder = CompilerBuilder(
-                        name=name,
-                        recipe=recipe,
-                        buildspec=self.bp.buildspec,
-                        buildexecutor=self.buildexecutor,
-                        compiler=bc_name,
-                        testdir=self.testdir,
-                    )
-                    """
                     builders += builder
 
         if not builders:
