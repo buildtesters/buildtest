@@ -1,0 +1,12 @@
+$ buildtest cdash --help
+usage: buildtest [options] [COMMANDS] cdash [-h] {view,upload} ...
+
+optional arguments:
+  -h, --help     show this help message and exit
+
+subcommands:
+  CDASH operations
+
+  {view,upload}  subcommands
+    view         Open CDASH project in webbrowser
+    upload       Upload Test to CDASH server

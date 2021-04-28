@@ -4,7 +4,7 @@
 Query Test Report
 ==================
 
-buildtest keeps track of all tests and results in a JSON file that is stored in **$BUILDTEST_ROOT/var/report.json**. This
+buildtest keeps track of all tests and results in a JSON file that is stored in **$HOME/.buildtest/report.json**. This
 file is read by **buildtest report** command to extract certain fields from JSON file and display
 them in table format. We use python `tabulate <https://pypi.org/project/tabulate/>`_ library for
 pretty print data in tables. Shown below is command usage to query test reports.
@@ -206,6 +206,7 @@ buildtest will retrieve the first and last record of every test.
     | ulimit_filelock_unlimited    | 56345a43 | 2021/02/11 18:13:18 |
     +------------------------------+----------+---------------------+
 
+
 .. _inspect_test:
 
 Inspect Tests Records
@@ -361,26 +362,28 @@ You will see similar message if you specify an invalid test name using ``buildte
 Using Alternate Report File
 -----------------------------
 
-The `buildtest report` and `buildtest inspect` command will read from report file $HOME/.buildtest/report.json
+The ``buildtest report`` and ``buildtest inspect`` command will read from report file $HOME/.buildtest/report.json
 which is the central report file. This single file can became an issue if you are running jobs through CI where you
 can potentially overwrite same file or remove $HOME/.buildtest as part of CI job that can impact other jobs.
 
 In that case you can write your report file to alternate location using ``buildtest build -r <report>`` and then
 specify the path to report file in ``buildtest report -r <report>`` and ``buildtest inspect -r <report>`` command.
+The report file must be valid JSON file that buildtest understands in order to use `buildtest report` and
+`buildtest inspect` command. Shown below are example usage with **-r** option using **buildtest report**
+and **buildtest inspect** command
 
 .. code-block:: console
 
-    $ buildtest report -r test.json --format name,state,runtime
-    Reading report file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/test.json
+    $ buildtest report -r python.json --format name,id
+    Reading report file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/docs/python.json
 
-    +----------------+---------+-----------+
-    | name           | state   |   runtime |
-    +================+=========+===========+
-    | variables_bash | PASS    |  0.213196 |
-    +----------------+---------+-----------+
-    | variables_bash | PASS    |  0.075224 |
-    +----------------+---------+-----------+
-
+    +--------------+----------+
+    | name         | id       |
+    +==============+==========+
+    | circle_area  | 6be6c404 |
+    +--------------+----------+
+    | python_hello | f21ba744 |
+    +--------------+----------+
 
 
 .. code-block:: console

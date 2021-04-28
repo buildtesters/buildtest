@@ -4,7 +4,7 @@ usage: buildtest [options] [COMMANDS] config [-h] {executors,view,validate,summa
 optional arguments:
   -h, --help            show this help message and exit
 
-subcommands:
+COMMAND:
   query information from buildtest configuration file
 
   {executors,view,validate,summary,systems,compilers}

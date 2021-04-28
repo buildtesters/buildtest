@@ -13,7 +13,6 @@ import zlib
 from datetime import datetime
 from urllib.request import urlopen, Request
 from urllib.parse import urlencode, urljoin
-from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILD_REPORT
 from buildtest.utils.file import resolve_path
 from buildtest.utils.tools import deep_get

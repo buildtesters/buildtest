@@ -2,30 +2,30 @@ $ buildtest build -b tutorials/shebang.yml
 
 
 User:  siddiq90
-Hostname:  DOE-7086392.fios-router.home
+Hostname:  DOE-7086392.local
 Platform:  Darwin
-Current Time:  2021/04/10 00:58:05
-buildtest path: /Users/siddiq90/Documents/github/buildtest/bin/buildtest
+Current Time:  2021/04/28 15:41:04
+buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
 buildtest version:  0.9.5
-python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-Ir4AdrfC/bin/python
+python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
 python version:  3.7.3
 Test Directory:  /Users/siddiq90/.buildtest/var/tests
-Configuration File:  /Users/siddiq90/Documents/github/buildtest/buildtest/settings/config.yml
+Configuration File:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
 
 Discovered Buildspecs:
-/Users/siddiq90/Documents/github/buildtest/tutorials/shebang.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/shebang.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
 
  schemafile              | validstate   | buildspec
--------------------------+--------------+------------------------------------------------------------------
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/shebang.yml
+-------------------------+--------------+-------------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/shebang.yml
 
 
 
@@ -40,8 +40,8 @@ bash_nonlogin_shebang  customize shebang line with default bash (nonlogin) shell
 
  name                  | id       | type   | executor           | tags      | testpath
 -----------------------+----------+--------+--------------------+-----------+-----------------------------------------------------------------------------------------------------------
- bash_login_shebang    | 85250d83 | script | generic.local.bash | tutorials | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/shebang/bash_login_shebang/2/stage/generate.sh
- bash_nonlogin_shebang | d4728294 | script | generic.local.bash | tutorials | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/shebang/bash_nonlogin_shebang/2/stage/generate.sh
+ bash_login_shebang    | 212fb650 | script | generic.local.bash | tutorials | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/shebang/bash_login_shebang/2/stage/generate.sh
+ bash_nonlogin_shebang | 1fc7cda9 | script | generic.local.bash | tutorials | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/shebang/bash_nonlogin_shebang/2/stage/generate.sh
 
 
 
@@ -51,8 +51,8 @@ bash_nonlogin_shebang  customize shebang line with default bash (nonlogin) shell
 
  name                  | id       | executor           | status   |   returncode
 -----------------------+----------+--------------------+----------+--------------
- bash_login_shebang    | 85250d83 | generic.local.bash | PASS     |            0
- bash_nonlogin_shebang | d4728294 | generic.local.bash | PASS     |            0
+ bash_login_shebang    | 212fb650 | generic.local.bash | PASS     |            0
+ bash_nonlogin_shebang | 1fc7cda9 | generic.local.bash | PASS     |            0
 
 +----------------------+
 | Stage: Test Summary  |
@@ -62,5 +62,5 @@ Passed Tests: 2/2 Percentage: 100.000%
 Failed Tests: 0/2 Percentage: 0.000%
 
 
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_c7i71p03.log
-A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/github/buildtest/buildtest.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_yjbrkvwp.log
+A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log

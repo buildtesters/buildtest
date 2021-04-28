@@ -4,35 +4,51 @@ Reading report file: /Users/siddiq90/.buildtest/report.json
 +--------------------------+----------+---------+------------------+
 | name                     | id       | state   | executor         |
 +==========================+==========+=========+==================+
-| exit1_fail               | 64450f52 | FAIL    | generic.local.sh |
+| timelimit_min_fail       | e095502e | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | 92d1e8fa | FAIL    | generic.local.sh |
+| timelimit_min_fail       | 19147626 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | b0b24604 | FAIL    | generic.local.sh |
+| timelimit_min_fail       | d298a041 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | 37fc35ea | FAIL    | generic.local.sh |
+| timelimit_min_fail       | 489df5e9 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | 9164d42d | FAIL    | generic.local.sh |
+| timelimit_max_fail       | 4f6391ed | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | 27a0db81 | FAIL    | generic.local.sh |
+| timelimit_max_fail       | 64bfd8dd | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | 6a82a693 | FAIL    | generic.local.sh |
+| timelimit_max_fail       | 9a619af7 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| exit1_fail               | 54dddcaa | FAIL    | generic.local.sh |
+| timelimit_max_fail       | 7c41637d | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | dd257e76 | FAIL    | generic.local.sh |
+| exit1_fail               | 25780485 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | 789099cd | FAIL    | generic.local.sh |
+| exit1_fail               | a2be1c16 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | 1970ec3a | FAIL    | generic.local.sh |
+| exit1_fail               | 6cd9e468 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | cdca839a | FAIL    | generic.local.sh |
+| exit1_fail               | 5326ab2c | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | b8378d30 | FAIL    | generic.local.sh |
+| exit1_fail               | 62f86f7a | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | d93d7855 | FAIL    | generic.local.sh |
+| exit1_fail               | 21bbc591 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | 99dba926 | FAIL    | generic.local.sh |
+| exit1_fail               | f6622540 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+
-| returncode_list_mismatch | 7c5b5bcc | FAIL    | generic.local.sh |
+| exit1_fail               | bf006651 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 801653e0 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 80658744 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | ca2b64ec | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 78148e3e | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 3db435aa | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 576100d2 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | dfab2904 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 857dcae9 | FAIL    | generic.local.sh |
 +--------------------------+----------+---------+------------------+

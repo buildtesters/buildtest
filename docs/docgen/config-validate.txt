@@ -1,2 +1,2 @@
 $ buildtest config validate
-/Users/siddiq90/.buildtest/config.yml is valid
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml is valid

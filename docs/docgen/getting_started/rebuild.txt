@@ -2,30 +2,30 @@ $ buildtest build -b tutorials/python-shell.yml --rebuild=3
 
 
 User:  siddiq90
-Hostname:  DOE-7086392.fios-router.home
+Hostname:  DOE-7086392.local
 Platform:  Darwin
-Current Time:  2021/04/10 00:58:06
-buildtest path: /Users/siddiq90/Documents/github/buildtest/bin/buildtest
+Current Time:  2021/04/28 15:41:05
+buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
 buildtest version:  0.9.5
-python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-Ir4AdrfC/bin/python
+python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
 python version:  3.7.3
 Test Directory:  /Users/siddiq90/.buildtest/var/tests
-Configuration File:  /Users/siddiq90/Documents/github/buildtest/buildtest/settings/config.yml
+Configuration File:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
 
 Discovered Buildspecs:
-/Users/siddiq90/Documents/github/buildtest/tutorials/python-shell.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-shell.yml
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
 
  schemafile              | validstate   | buildspec
--------------------------+--------------+-----------------------------------------------------------------------
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/python-shell.yml
+-------------------------+--------------+------------------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-shell.yml
 
 
 
@@ -41,9 +41,9 @@ circle_area  Calculate circle of area given a radius
 
  name        | id       | type   | executor             | tags                    | testpath
 -------------+----------+--------+----------------------+-------------------------+--------------------------------------------------------------------------------------------------------
- circle_area | 6816cae5 | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/.buildtest/var/tests/generic.local.python/python-shell/circle_area/2/stage/generate.sh
- circle_area | d0dbf9eb | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/.buildtest/var/tests/generic.local.python/python-shell/circle_area/3/stage/generate.sh
- circle_area | 4e1f2bbd | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/.buildtest/var/tests/generic.local.python/python-shell/circle_area/4/stage/generate.sh
+ circle_area | 1edfcecd | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/.buildtest/var/tests/generic.local.python/python-shell/circle_area/2/stage/generate.sh
+ circle_area | 5273cb13 | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/.buildtest/var/tests/generic.local.python/python-shell/circle_area/3/stage/generate.sh
+ circle_area | b14ed7c8 | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/.buildtest/var/tests/generic.local.python/python-shell/circle_area/4/stage/generate.sh
 
 
 
@@ -53,9 +53,9 @@ circle_area  Calculate circle of area given a radius
 
  name        | id       | executor             | status   |   returncode
 -------------+----------+----------------------+----------+--------------
- circle_area | 6816cae5 | generic.local.python | PASS     |            0
- circle_area | d0dbf9eb | generic.local.python | PASS     |            0
- circle_area | 4e1f2bbd | generic.local.python | PASS     |            0
+ circle_area | 1edfcecd | generic.local.python | PASS     |            0
+ circle_area | 5273cb13 | generic.local.python | PASS     |            0
+ circle_area | b14ed7c8 | generic.local.python | PASS     |            0
 
 +----------------------+
 | Stage: Test Summary  |
@@ -65,5 +65,5 @@ Passed Tests: 3/3 Percentage: 100.000%
 Failed Tests: 0/3 Percentage: 0.000%
 
 
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_8s87piqa.log
-A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/github/buildtest/buildtest.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_2_0mojv9.log
+A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log

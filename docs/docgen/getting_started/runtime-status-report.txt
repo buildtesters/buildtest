@@ -1,0 +1,16 @@
+$ buildtest report --filter buildspec=tutorials/runtime_status_test.yml --format name,id,state,runtime --latest 
+Reading report file: /Users/siddiq90/.buildtest/report.json 
+
++--------------------+----------+---------+-----------+
+| name               | id       | state   |   runtime |
++====================+==========+=========+===========+
+| timelimit_min_max  | 1cc51c8a | PASS    |   2.06694 |
++--------------------+----------+---------+-----------+
+| timelimit_min      | c9e9f9e6 | PASS    |   2.06637 |
++--------------------+----------+---------+-----------+
+| timelimit_max      | 3d174ef8 | PASS    |   2.15458 |
++--------------------+----------+---------+-----------+
+| timelimit_min_fail | 489df5e9 | FAIL    |   2.06377 |
++--------------------+----------+---------+-----------+
+| timelimit_max_fail | 7c41637d | FAIL    |   2.07245 |
++--------------------+----------+---------+-----------+

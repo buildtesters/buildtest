@@ -8,11 +8,9 @@ from jsonschema import ValidationError
 from tabulate import tabulate
 from termcolor import colored
 from buildtest import BUILDTEST_VERSION
-from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, supported_schemas
 from buildtest.exceptions import ConfigurationError
 from buildtest.executors.setup import BuildExecutor
-from buildtest.utils.file import resolve_path
 from buildtest.system import system
 
 

@@ -8,6 +8,8 @@ optional arguments:
   -V, --version         show program's version number and exit
   -d {DEBUG,INFO,WARNING,ERROR,CRITICAL}, --debug {DEBUG,INFO,WARNING,ERROR,CRITICAL}
                         Enable debugging messages.
+  -c CONFIG_FILE, --config_file CONFIG_FILE
+                        Specify alternate configuration file
 
 COMMANDS:
   

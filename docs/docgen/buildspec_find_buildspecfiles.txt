@@ -1,92 +1,96 @@
 $ buildtest buildspec find --buildspec
-+---------------------------------------------------------------------------------------------------+
-| buildspecs                                                                                        |
-+===================================================================================================+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/run_only_distro.yml                          |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml                           |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/environment.yml                              |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/python-hello.yml                             |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/vars.yml                                     |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/selinux.yml                                  |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/shebang.yml                                  |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml                          |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/csh_shell_examples.yml                       |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/hello_world.yml                              |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/root_user.yml                                |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/tags_example.yml                             |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/run_only_platform.yml                        |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/python-shell.yml                             |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/skip_tests.yml                               |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/sleep.yml                                    |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/openmp_hello.yml                   |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/vecadd.yml                         |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/envvar_override.yml                |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_exclude.yml               |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/gnu_hello_c.yml                    |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/pre_post_build_run.yml             |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/custom_run.yml                     |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/gnu_hello_fortran.yml              |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_status_regex.yml          |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/disk_usage.yml             |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/kernel_state.yml           |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/ssh_localhost.yml          |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/systemd-default-target.yml |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/ulimits.yml                |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sacctmgr.yml                 |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/scontrol.yml                 |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/squeue.yml                   |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sinfo.yml                    |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/sched/cobalt/commands.yml                |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bmgroups.yml                   |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/lsinfo.yml                     |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bugroup.yml                    |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bqueues.yml                    |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bhosts.yml                     |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/containers/singularity/pull.yml          |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/containers/singularity/run.yml           |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/containers/singularity/inspect.yml       |
-+---------------------------------------------------------------------------------------------------+
-| /Users/siddiq90/Documents/github/buildtest/general_tests/containers/singularity/build.yml         |
-+---------------------------------------------------------------------------------------------------+
++----------------------------------------------------------------------------------------------------------+
+| buildspecs                                                                                               |
++==========================================================================================================+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/executor_regex_script.yml                    |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/run_only_distro.yml                          |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/shell_examples.yml                           |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/environment.yml                              |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml                             |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/vars.yml                                     |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/selinux.yml                                  |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/shebang.yml                                  |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml                          |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/csh_shell_examples.yml                       |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/hello_world.yml                              |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/root_user.yml                                |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/tags_example.yml                             |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/run_only_platform.yml                        |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-shell.yml                             |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/skip_tests.yml                               |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/runtime_status_test.yml                      |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/sleep.yml                                    |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/openmp_hello.yml                   |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/vecadd.yml                         |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/envvar_override.yml                |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_exclude.yml               |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/gnu_hello_c.yml                    |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/pre_post_build_run.yml             |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/custom_run.yml                     |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/gnu_hello_fortran.yml              |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_status_regex.yml          |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/disk_usage.yml             |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/kernel_state.yml           |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ssh_localhost.yml          |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/systemd-default-target.yml |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ulimits.yml                |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sacctmgr.yml                 |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/scontrol.yml                 |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/squeue.yml                   |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sinfo.yml                    |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/cobalt/commands.yml                |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bmgroups.yml                   |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/lsinfo.yml                     |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bugroup.yml                    |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bqueues.yml                    |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bhosts.yml                     |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/pull.yml          |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/run.yml           |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/inspect.yml       |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/build.yml         |
++----------------------------------------------------------------------------------------------------------+
