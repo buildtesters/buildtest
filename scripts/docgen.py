@@ -25,7 +25,6 @@ def build_helper():
         "buildtest report --help",
         "buildtest inspect --help",
         "buildtest cdash --help",
-        "buildtest cdash view --help",
         "buildtest cdash upload --help",
     ]
     for cmd in help_cmds:
