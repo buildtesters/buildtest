@@ -283,7 +283,7 @@ If you try to exceed this bound you will get an error such as::
 Use Alternate Settings file
 ----------------------------
 
-If you want to use an alternate configuration file when building test you can use ``buildtest build -c <buildtest-configuration>``.
+If you want to use an alternate configuration file when building test you can use ``buildtest -c <config> build``.
 buildtest will prefer configuration file on command line over the user configuration (``$HOME/.buildtest/config.yml``). For more
 details see :ref:`which_configuration_file_buildtest_reads`.
 

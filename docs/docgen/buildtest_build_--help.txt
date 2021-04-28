@@ -1,6 +1,6 @@
 $ buildtest build --help
 usage: buildtest [options] [COMMANDS] build [-h] [-b BUILDSPEC] [-x EXCLUDE] [-t TAGS] [-ft FILTER_TAGS] [-e EXECUTOR]
-                                            [-s {parse,build}] [--testdir TESTDIR] [--rebuild REBUILD] [-c CONFIG]
+                                            [-s {parse,build}] [--testdir TESTDIR] [--rebuild REBUILD]
                                             [-r REPORT_FILE]
 
 optional arguments:
@@ -20,7 +20,5 @@ optional arguments:
   --testdir TESTDIR     Specify a custom test directory where to write tests. This overrides configuration file and
                         default location.
   --rebuild REBUILD     Rebuild test X number of times. Must be a positive number between [1-50]
-  -c CONFIG, --config CONFIG
-                        Specify path to buildtest configuration file
   -r REPORT_FILE, --report_file REPORT_FILE
                         Specify a report file where tests will be written.

@@ -2,31 +2,31 @@ $ buildtest build -b tutorials/skip_tests.yml
 
 
 User:  siddiq90
-Hostname:  DOE-7086392.fios-router.home
+Hostname:  DOE-7086392.local
 Platform:  Darwin
-Current Time:  2021/04/10 00:58:14
-buildtest path: /Users/siddiq90/Documents/github/buildtest/bin/buildtest
+Current Time:  2021/04/28 15:41:24
+buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
 buildtest version:  0.9.5
-python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-Ir4AdrfC/bin/python
+python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
 python version:  3.7.3
 Test Directory:  /Users/siddiq90/.buildtest/var/tests
-Configuration File:  /Users/siddiq90/Documents/github/buildtest/buildtest/settings/config.yml
+Configuration File:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
 
 Discovered Buildspecs:
-/Users/siddiq90/Documents/github/buildtest/tutorials/skip_tests.yml
-[skip](/Users/siddiq90/Documents/github/buildtest/tutorials/skip_tests.yml): test is skipped.
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/skip_tests.yml
+[skip](/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/skip_tests.yml): test is skipped.
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
 
  schemafile              | validstate   | buildspec
--------------------------+--------------+---------------------------------------------------------------------
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/skip_tests.yml
+-------------------------+--------------+----------------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/skip_tests.yml
 
 
 
@@ -40,7 +40,7 @@ unskipped  This test is not skipped
 
  name      | id       | type   | executor           | tags          | testpath
 -----------+----------+--------+--------------------+---------------+--------------------------------------------------------------------------------------------------
- unskipped | 0153984c | script | generic.local.bash | ['tutorials'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/skip_tests/unskipped/2/stage/generate.sh
+ unskipped | 8db37438 | script | generic.local.bash | ['tutorials'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/skip_tests/unskipped/2/stage/generate.sh
 
 
 
@@ -50,7 +50,7 @@ unskipped  This test is not skipped
 
  name      | id       | executor           | status   |   returncode
 -----------+----------+--------------------+----------+--------------
- unskipped | 0153984c | generic.local.bash | PASS     |            0
+ unskipped | 8db37438 | generic.local.bash | PASS     |            0
 
 +----------------------+
 | Stage: Test Summary  |
@@ -60,5 +60,5 @@ Passed Tests: 1/1 Percentage: 100.000%
 Failed Tests: 0/1 Percentage: 0.000%
 
 
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_szi7f4lv.log
-A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/github/buildtest/buildtest.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_otfg4aek.log
+A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log

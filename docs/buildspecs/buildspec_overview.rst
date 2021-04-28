@@ -523,3 +523,29 @@ If we build this test, notice that there are two tests, one for each executor.
 
 .. program-output:: cat docgen/getting_started/regex-executor-script.txt
 
+
+Passing Test based on test runtime
+-----------------------------------
+
+buildtest can determine state of test based on `runtime` property which is part of
+``status`` object. This can be used if you want to control how test `PASS` or `FAIL` based on
+execution time of test. In example below we have five tests that make use of **runtime** property
+for passing a test.  The runtime property support ``min`` and ``max`` property that can mark test
+pass based on minimum and maximum runtime. A test will pass if it's execution time is greater than ``min``
+time and less than ``max`` time. If `min` is specified without `max` property the upperbound is not set, likewise
+`max` without `min` will pass if test is less than **max** time. The lower bound is not set, but test runtime
+will be greater than 0 sec.
+
+In test **timelimit_min**, we sleep for 2 seconds and it will pass because minimum runtime is 1.0 seconds. Similarly,
+**timelimit_max** will pass because we sleep for 2 seconds with a max time of 5.0.
+
+
+.. program-output:: cat ../tutorials/runtime_status_test.yml
+
+
+.. program-output:: cat docgen/getting_started/runtime-status.txt
+
+If we look at the test results, we expect the first three tests **timelimit_min**, **timelimit_max**, **timelimit_min_max** will
+will pass.
+
+.. program-output:: cat docgen/getting_started/runtime-status-report.txt

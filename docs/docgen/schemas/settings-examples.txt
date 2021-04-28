@@ -1,5 +1,5 @@
 $ buildtest schema -n settings.schema.json -e 
-File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/settings.schema.json/valid/local-executor.yml
+File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/schemas/examples/settings.schema.json/valid/local-executor.yml
 ________________________________________________________________________________
 system:
   generic:
@@ -10,6 +10,16 @@ system:
 
     moduletool: N/A
     load_default_buildspecs: False
+    cdash:
+      url: https://my.cdash.org
+      project: buildtest
+      site: laptop
+    processor:
+      numcpus: 8
+      cores: 4
+      threads_per_core: 2
+      sockets: 1
+      model: "Intel(R) Core(TM) i7-8569U CPU @ 2.80GHz"
     executors:
       local:
         bash:
@@ -105,7 +115,7 @@ system:
             module:
               load: [pgi/18.0]
 
-File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/settings.schema.json/valid/cobalt-example.yml
+File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/schemas/examples/settings.schema.json/valid/cobalt-example.yml
 ________________________________________________________________________________
 system:
   generic:
@@ -132,7 +142,7 @@ system:
             cc: /usr/bin/gcc
             cxx: /usr/bin/g++
             fc: /usr/bin/gfortran
-File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/settings.schema.json/valid/pbs-example.yml
+File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/schemas/examples/settings.schema.json/valid/pbs-example.yml
 ________________________________________________________________________________
 system:
   generic:
@@ -155,7 +165,7 @@ system:
             cc: /usr/bin/gcc
             cxx: /usr/bin/g++
             fc: /usr/bin/gfortran
-File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/settings.schema.json/valid/slurm-example.yml
+File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/schemas/examples/settings.schema.json/valid/slurm-example.yml
 ________________________________________________________________________________
 system:
   generic:
@@ -189,7 +199,7 @@ system:
             cc: /usr/bin/gcc
             cxx: /usr/bin/g++
             fc: /usr/bin/gfortran
-File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/settings.schema.json/valid/combined_executor.yml
+File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/schemas/examples/settings.schema.json/valid/combined_executor.yml
 ________________________________________________________________________________
 system:
   generic:
@@ -232,7 +242,7 @@ system:
             cc: /usr/bin/gcc
             cxx: /usr/bin/g++
             fc: /usr/bin/gfortran
-File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/settings.schema.json/valid/lsf-example.yml
+File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/schemas/examples/settings.schema.json/valid/lsf-example.yml
 ________________________________________________________________________________
 system:
   generic:

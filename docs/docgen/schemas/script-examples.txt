@@ -1,10 +1,10 @@
 $ buildtest schema -n script-v1.0.schema.json --example 
-File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/script-v1.0.schema.json/valid/examples.yml
+File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/schemas/examples/script-v1.0.schema.json/valid/examples.yml
 ________________________________________________________________________________
 version: "1.0"
 buildspecs:
   multiline_run:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: multiline run command
     run: |
@@ -12,13 +12,13 @@ buildspecs:
       echo "2"
 
   single_command_run:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: single command as a string for run command
     run: "hostname"
 
   declare_env:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: declaring environment variables
     env:
@@ -29,7 +29,7 @@ buildspecs:
       echo $X
 
   declare_vars:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: declaring variables
     vars:
@@ -41,21 +41,21 @@ buildspecs:
 
 
   declare_shell_sh:
-    executor: local.sh
+    executor: generic.local.sh
     type: script
     description: declare shell name to sh
     shell: sh
     run: hostname
 
   declare_shell_bash:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: declare shell name to bash
     shell: bash
     run: hostname
 
   declare_shell_python:
-    executor: local.python
+    executor: generic.local.python
     type: script
     description: declare shell name to python
     shell: python
@@ -63,56 +63,56 @@ buildspecs:
       print("Hello World")
 
   declare_shell_bin_bash:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: declare shell name to /bin/bash
     shell: "/bin/bash -e"
     run: hostname
 
   declare_shell_name_bin_sh:
-    executor: local.sh
+    executor: generic.local.sh
     type: script
     description: declare shell name to /bin/sh
     shell: "/bin/sh -e"
     run: hostname
 
   declare_shell_opts:
-    executor: local.sh
+    executor: generic.local.sh
     type: script
     description: declare shell name to sh
     shell: "sh -e"
     run: hostname
 
   declare_shell_bin_zsh:
-    executor: local.zsh
+    executor: generic.local.zsh
     type: script
     description: declare shell zsh
     shell: "zsh"
     run: hostname
 
   declare_shell_zsh:
-    executor: local.zsh
+    executor: generic.local.zsh
     type: script
     description: declare shell /bin/zsh
     shell: "zsh"
     run: hostname
 
   declare_shell_bin_csh:
-    executor: local.csh
+    executor: generic.local.csh
     type: script
     description: declare shell /bin/csh
     shell: "/bin/csh"
     run: hostname
 
   declare_shell_csh:
-    executor: local.csh
+    executor: generic.local.csh
     type: script
     description: declare shell /bin/tcsh
     shell: "csh"
     run: hostname
 
   declare_shell_bin_tcsh:
-    executor: local.csh
+    executor: generic.local.csh
     type: script
     description: declare shell /bin/tcsh
     shell: "/bin/tcsh"
@@ -120,21 +120,21 @@ buildspecs:
 
 
   declare_shell_tcsh:
-    executor: local.csh
+    executor: generic.local.csh
     type: script
     description: declare shell tcsh
     shell: "tcsh"
     run: hostname
 
   declare_shebang:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: declare shell name to sh
     shebang: "#!/usr/bin/env bash"
     run: hostname
 
   status_returncode_list:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: The returncode can be a list of integers
     run: exit 0
@@ -142,7 +142,7 @@ buildspecs:
       returncode: [0]
 
   status_returncode_int:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: The returncode can be an integer to match with single returncode
     run: exit 0
@@ -150,7 +150,7 @@ buildspecs:
       returncode: 0
 
   status_regex:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: This test pass with a regular expression status check
     run: hostname
@@ -160,7 +160,7 @@ buildspecs:
         exp: "^$"
 
   status_regex_returncode:
-    executor: local.bash
+    executor: generic.local.bash
     type: script
     description: This test fails because returncode and regex specified
     run: hostname
@@ -170,9 +170,41 @@ buildspecs:
         stream: stdout
         exp: "^hello"
 
+
+  status_runtime_min_max:
+    type: script
+    executor: generic.local.sh
+    description: "Run a sleep job for 2 seconds and test pass if its within 1.0-4.0sec"
+    tags: ["tutorials"]
+    run: sleep 2
+    status:
+      runtime:
+        min: 1.0
+        max: 4.0
+
+  status_runtime_min:
+    type: script
+    executor: generic.local.sh
+    description: "Run a sleep job for 2 seconds and test pass if exceeds mintime of 1.0sec"
+    tags: ["tutorials"]
+    run: sleep 2
+    status:
+      runtime:
+        min: 1.0
+
+  status_runtime_max:
+    type: script
+    executor: generic.local.sh
+    description: "Run a sleep job for 2 seconds and test pass if less than maxtime of 4.0sec"
+    tags: ["tutorials"]
+    run: sleep 2
+    status:
+      runtime:
+        max: 4.0
+
   sbatch_example:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: This test runs hostname using sbatch directives
     sbatch:
       - "-t 10:00:00"
@@ -183,7 +215,7 @@ buildspecs:
 
   bsub_example:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: This test runs hostname using bsub directives
     bsub:
       - "-W 00:30"
@@ -192,7 +224,7 @@ buildspecs:
 
   cobalt_example:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: This test runs hostname using cobalt directives
     cobalt:
       - "-t 30"
@@ -201,21 +233,21 @@ buildspecs:
 
   skip_example:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: this test is skip
     skip: true
     run: hostname
 
   tag_str_example:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: tags can be defined as string
     tags: network
     run: hostname
 
   tag_list_example:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: This is a tag example using list
     sbatch:
       - "-t 10:00:00"
@@ -227,7 +259,7 @@ buildspecs:
 
   run_only_example:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: run_only example that runs with user1 on Linux system (rhel, centos) with LSF
     run_only:
       user: user1
@@ -239,23 +271,23 @@ buildspecs:
     run: |
       uname -av
       lsinfo
-File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/script-v1.0.schema.json/invalid/examples.yml
+File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/schemas/examples/script-v1.0.schema.json/invalid/examples.yml
 ________________________________________________________________________________
 version: "1.0"
 buildspecs:
   invalid_test_name_&!@#$%:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: "invalid test name"
 
   invalid_bash:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     shell: "bash-missing-run"
 
   missing_run_key:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: invalid key name roon, missing run key
     roon: |
         systemctl is-active slurmd
@@ -263,7 +295,7 @@ buildspecs:
 
   invalid_env_type:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: env key should be a dictionary
     env:
       - FOO=BAR
@@ -271,7 +303,7 @@ buildspecs:
 
   invalid_vars_type:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: var key should be a dictionary
     vars:
       - FOO=BAR
@@ -280,14 +312,14 @@ buildspecs:
 
   invalid_description:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description:
       - "Multi Line description"
       - "is not accepted"
 
   invalid_regex_stream:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: This test fails because of invalid regex stream
     run: hostname
     status:
@@ -297,7 +329,7 @@ buildspecs:
 
   missing_regex_exp:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: This test fails because of missing key 'exp' in regex
     run: hostname
     status:
@@ -306,7 +338,7 @@ buildspecs:
 
   invalid_returncode_type:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: This test fails because of invalid return code type
     run: hostname
     status:
@@ -314,7 +346,7 @@ buildspecs:
 
   empty_returncode_list:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: An empty returncode list will cause an error
     run: hostname
     status:
@@ -322,7 +354,7 @@ buildspecs:
 
   non_int_returncodes:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: The returncode must be an int and not a number
     run: exit 1
     status:
@@ -330,7 +362,7 @@ buildspecs:
 
   non_int_returncodes_list:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: The returncode must be a list of integers and no numbers
     run: exit 1
     status:
@@ -338,35 +370,35 @@ buildspecs:
 
   invalid_shell_usr_bin_bash:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: invalid shell name '/usr/bin/bash'
     shell: /usr/bin/bash
     run: hostname
 
   invalid_shell_type:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: invalid shell type must be a string
     shell: ["/bin/bash"]
     run: hostname
 
   invalid_type_shell_shebang:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: invalid type for shell shebang, must be a string
     shebang: ["#!/bin/bash"]
     run: hostname
 
   invalid_skip_value:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: invalid value for skip, must be boolean
     skip: 1
     run: hostname
 
   empty_tags:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: tag list can't be empty, requires one item.
     tags: []
     run: hostname
@@ -380,21 +412,21 @@ buildspecs:
 
   invalid_tags_value:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: invalid tag value must be all string items
     tags: ["network", 400 ]
     run: hostname
 
   additionalProperties_test:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: additional properties are not allowed so any invalid key/value pair will result in error
     FOO: BAR
     run: hostname
 
   additionalProperties_status:
     type: script
-    executor: slurm.debug
+    executor: generic.local.bash
     description: test additional properties in status object. This is not allowed
     sbatch: [ "-n 2", "-q normal", "-t 10"]
     run: hostname
@@ -402,9 +434,27 @@ buildspecs:
       slurm_job_state: "COMPLETED"
       FOO: BAR
 
+  invalid_runtime_min:
+    type: script
+    executor: generic.local.sh
+    description: "Invalid type for min property in runtime. Must be an integer or float not a string"
+    run: sleep 2
+    status:
+      runtime:
+        min: "1"
+
+  runtime_min_must_exceed_0:
+    type: script
+    executor: generic.local.sh
+    description: "The runtime must exceed 0"
+    run: sleep 2
+    status:
+      runtime:
+        min: -1
+
   invalid_slurm_job_state:
     type: script
-    executor: slurm.debug
+    executor: generic.local.sh
     description: invalid value for slurm_job_state, should raise error with enum values.
     sbatch:
       - "-n 2"
@@ -416,7 +466,7 @@ buildspecs:
 
   duplicate_linux_distro:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: Duplicate items in linux_distro is not allowed
     run_only:
       linux_distro:
@@ -426,7 +476,7 @@ buildspecs:
 
   empty_list_linux_distro:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: Empty List in linux_distro is not allowed. Requires atleast 1 item
     run_only:
       linux_distro: []
@@ -434,9 +484,11 @@ buildspecs:
 
   additionalProperties_run_only:
     type: script
-    executor: local.bash
+    executor: generic.local.bash
     description: additional Properties not allowed in run_only field. Invalid field python
     run_only:
       user: root
       python: 3.5
     run: hostname
+
+

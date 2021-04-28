@@ -1,5 +1,5 @@
 $ buildtest schema -n compiler-v1.0.schema.json --example 
-File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/compiler-v1.0.schema.json/valid/examples.yml
+File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/schemas/examples/compiler-v1.0.schema.json/valid/examples.yml
 ________________________________________________________________________________
 version: "1.0"
 buildspecs:
@@ -370,7 +370,7 @@ buildspecs:
             swap: [PrgEnv-intel, PrgEnv-cray]
             load: [craype/2.6.2]
 
-File: /Users/siddiq90/Documents/github/buildtest/buildtest/schemas/examples/compiler-v1.0.schema.json/invalid/examples.yml
+File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/schemas/examples/compiler-v1.0.schema.json/invalid/examples.yml
 ________________________________________________________________________________
 version: "1.0"
 buildspecs:

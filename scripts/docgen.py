@@ -24,6 +24,9 @@ def build_helper():
         "buildtest buildspec find --help",
         "buildtest report --help",
         "buildtest inspect --help",
+        "buildtest cdash --help",
+        "buildtest cdash view --help",
+        "buildtest cdash upload --help",
     ]
     for cmd in help_cmds:
         out = run(cmd)
@@ -77,6 +80,8 @@ def tutorial():
         f"{os.path.join(prefix, 'rebuild-tags.txt')}": "buildtest build --tags fail --rebuild=2",
         f"{os.path.join(prefix, 'debug-mode.txt')}": "buildtest -d DEBUG build -b tutorials/invalid_executor.yml",
         f"{os.path.join(prefix, 'regex-executor-script.txt')}": "buildtest build -b tutorials/executor_regex_script.yml",
+        f"{os.path.join(prefix, 'runtime-status.txt')}": "buildtest build -b tutorials/runtime_status_test.yml",
+        f"{os.path.join(prefix, 'runtime-status-report.txt')}": "buildtest report --filter buildspec=tutorials/runtime_status_test.yml --format name,id,state,runtime --latest",
     }
 
     generate_tests(prefix, cmd_dict)

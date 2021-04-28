@@ -18,10 +18,9 @@ Which configuration file does buildtest read?
 
 buildtest will read configuration files in the following order:
 
-- Command line ``buildtest build -c <buildtest-configuration>.yml``
+- Command line ``buildtest -c <config>.yml build``
 - User Configuration - ``$HOME/.buildtest/config.yml``
 - Default Configuration - ``$BUILDTEST_ROOT/buildtest/settings/config.yml``
-
 
 .. _default_configuration:
 
@@ -499,3 +498,27 @@ PBS Limitation
 
 .. Note:: Please note that buildtest PBS support relies on job history set because buildtest needs to query job after completion using `qstat -x`. This
           can be configured using ``qmgr`` by setting ``set server job_history_enable=True``. For more details see section **13.15.5.1 Enabling Job History** in `PBS 2020.1 Admin Guide <https://www.altair.com/pdfs/pbsworks/PBSAdminGuide2020.1.pdf>`_
+
+.. _cdash_configuration:
+
+CDASH Configuration
+--------------------
+
+buildtest can be configured to push test to `CDASH <https://www.kitware.com/cdash/project/about.html>`_. The default configuration
+file provides a CDASH configuration for buildtest project is the following::
+
+    cdash:
+      url: https://my.cdash.org/
+      project: buildtest
+      site: generic
+      buildname: tutorials
+
+The cdash section can be summarized as follows:
+
+ - ``url``: URL to CDASH server
+ - ``project``: Project Name in CDASH server
+ - ``site``: Site name that shows up in CDASH entry. This should be name of your system name
+ - ``buildname``: Build Name that shows up in CDASH, this can be any name you want.
+
+The cdash settings can be used with ``buildtest cdash`` command. For more details
+see :ref:`cdash_integration`.

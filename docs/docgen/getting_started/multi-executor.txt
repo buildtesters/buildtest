@@ -2,249 +2,256 @@ $ buildtest build --executor generic.local.sh --executor generic.local.bash
 
 
 User:  siddiq90
-Hostname:  DOE-7086392.fios-router.home
+Hostname:  DOE-7086392.local
 Platform:  Darwin
-Current Time:  2021/04/10 00:57:48
-buildtest path: /Users/siddiq90/Documents/github/buildtest/bin/buildtest
+Current Time:  2021/04/28 15:40:40
+buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
 buildtest version:  0.9.5
-python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-Ir4AdrfC/bin/python
+python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
 python version:  3.7.3
 Test Directory:  /Users/siddiq90/.buildtest/var/tests
-Configuration File:  /Users/siddiq90/Documents/github/buildtest/buildtest/settings/config.yml
+Configuration File:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
 
 Discovered Buildspecs:
-/Users/siddiq90/Documents/github/buildtest/tutorials/root_user.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/environment.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/custom_run.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bmgroups.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/containers/singularity/inspect.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/containers/singularity/run.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/tags_example.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/skip_tests.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/pre_post_build_run.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/envvar_override.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/configuration/ssh_localhost.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/gnu_hello_fortran.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/sched/cobalt/commands.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/sleep.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/configuration/systemd-default-target.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/lsinfo.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/scontrol.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bhosts.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/openmp_hello.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bqueues.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_exclude.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/hello_world.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/containers/singularity/pull.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/configuration/disk_usage.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sacctmgr.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/shebang.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/selinux.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/containers/singularity/build.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sinfo.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_status_regex.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/squeue.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/configuration/kernel_state.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/run_only_distro.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/gnu_hello_c.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/configuration/ulimits.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/vecadd.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bugroup.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/vars.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/python-hello.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/gnu_hello_c.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/openmp_hello.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/environment.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/shell_examples.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/pull.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/vars.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/skip_tests.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/squeue.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bhosts.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_exclude.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/hello_world.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/kernel_state.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/gnu_hello_fortran.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/build.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/root_user.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/sleep.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bqueues.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/selinux.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/custom_run.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sacctmgr.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_status_regex.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bugroup.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/vecadd.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/runtime_status_test.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/pre_post_build_run.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/inspect.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/run_only_distro.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/lsinfo.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/cobalt/commands.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/run.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/envvar_override.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bmgroups.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/systemd-default-target.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sinfo.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/scontrol.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/shebang.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/tags_example.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/disk_usage.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ssh_localhost.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ulimits.yml
 
 BREAKDOWN OF BUILDSPECS BY EXECUTORS
 
-generic.local.sh                                                                    generic.local.bash
-----------------------------------------------------------------------------------  -------------------------------------------------------------------------------------------------
-/Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml            /Users/siddiq90/Documents/github/buildtest/tutorials/root_user.yml
-/Users/siddiq90/Documents/github/buildtest/general_tests/sched/cobalt/commands.yml  /Users/siddiq90/Documents/github/buildtest/tutorials/environment.yml
-/Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml             /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/custom_run.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bmgroups.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/containers/singularity/inspect.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/containers/singularity/run.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/tags_example.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/skip_tests.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/pre_post_build_run.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/envvar_override.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/ssh_localhost.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/gnu_hello_fortran.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/sleep.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/systemd-default-target.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/lsinfo.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/scontrol.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bhosts.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/openmp_hello.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bqueues.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_exclude.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/hello_world.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/containers/singularity/pull.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/disk_usage.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sacctmgr.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/shebang.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/selinux.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/containers/singularity/build.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sinfo.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_status_regex.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/squeue.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/kernel_state.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/run_only_distro.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/gnu_hello_c.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/ulimits.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/vecadd.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bugroup.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/vars.yml
-                                                                                    /Users/siddiq90/Documents/github/buildtest/tutorials/python-hello.yml
-[run_only_as_root][/Users/siddiq90/Documents/github/buildtest/tutorials/root_user.yml]: test is skipped because this test is expected to run as user: root but detected user: siddiq90.
-[show_host_groups][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bmgroups.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
-[skip](/Users/siddiq90/Documents/github/buildtest/tutorials/skip_tests.yml): test is skipped.
-[override_environmentvars][/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/envvar_override.yml]: Unable to find any compilers based on regular expression: ['^(gcc)'] so no tests were created.
-[ssh_localhost_remotecommand][/Users/siddiq90/Documents/github/buildtest/general_tests/configuration/ssh_localhost.yml]: test is skipped because this test is expected to run on platform: Linux but detected platform: Darwin.
-[qsub_version][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/cobalt/commands.yml]: test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
-[qselect_version][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/cobalt/commands.yml]: test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
-[cqsub_version][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/cobalt/commands.yml]: test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
-[qdel_version][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/cobalt/commands.yml]: test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
-[qmove_version][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/cobalt/commands.yml]: test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
-[show_jobs][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/cobalt/commands.yml]: test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
-[show_queues][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/cobalt/commands.yml]: test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
-[show_lsf_configuration][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/lsinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
-[show_lsf_models][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/lsinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
-[show_lsf_resources][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/lsinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
-[lsf_version][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/lsinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
-[slurm_config][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/scontrol.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[show_partition][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/scontrol.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[display_lsf_hosts][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bhosts.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
-[display_hosts_format][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bhosts.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
-[bhosts_version][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bhosts.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
-[openmp_hello_c_example][/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/openmp_hello.yml]: Unable to find any compilers based on regular expression: ['^(gcc)'] so no tests were created.
-[show_lsf_queues][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bqueues.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
-[show_lsf_queues_formatted][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bqueues.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
-[show_lsf_queues_current_user][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bqueues.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
-[vecadd_gnu_exclude][/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_exclude.yml]: Unable to find any compilers based on regular expression: ['^(gcc)'] so no tests were created.
-[show_accounts][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sacctmgr.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[show_users][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sacctmgr.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[show_qos][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sacctmgr.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[show_tres][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sacctmgr.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[nodes_state_down][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[nodes_state_reboot][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[nodes_state_allocated][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[nodes_state_completing][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[nodes_state_idle][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[node_down_fail_list_reason][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[dead_nodes][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[get_partitions][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[sinfo_version][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[default_status_regex][/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_status_regex.yml]: Unable to find any compilers based on regular expression: ['^(gcc)'] so no tests were created.
-[override_status_regex][/Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_status_regex.yml]: Unable to find any compilers based on regular expression: ['^(gcc)'] so no tests were created.
-[current_user_queue][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/squeue.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[show_all_jobs][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/squeue.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
-[run_only_linux_distro][/Users/siddiq90/Documents/github/buildtest/tutorials/run_only_distro.yml]: test is skipped because this test is expected to run on linux distro: ['centos'] but detected linux distro: darwin.
-[show_lsf_user_groups][/Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bugroup.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+generic.local.sh                                                                           generic.local.bash
+-----------------------------------------------------------------------------------------  --------------------------------------------------------------------------------------------------------
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/shell_examples.yml             /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/gnu_hello_c.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/cobalt/commands.yml  /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/openmp_hello.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml            /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/runtime_status_test.yml        /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/environment.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/shell_examples.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/pull.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/vars.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/skip_tests.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/squeue.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bhosts.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_exclude.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/hello_world.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/kernel_state.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/gnu_hello_fortran.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/build.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/root_user.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/sleep.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bqueues.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/selinux.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/custom_run.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sacctmgr.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_status_regex.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bugroup.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/vecadd.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/pre_post_build_run.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/inspect.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/run_only_distro.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/lsinfo.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/run.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/envvar_override.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bmgroups.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/systemd-default-target.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sinfo.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/scontrol.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/shebang.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/tags_example.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/disk_usage.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ssh_localhost.yml
+                                                                                           /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ulimits.yml
+[openmp_hello_c_example][/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/openmp_hello.yml]: Unable to find any compilers based on regular expression: ['^(gcc)'] so no tests were created.
+[skip](/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/skip_tests.yml): test is skipped.
+[current_user_queue][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/squeue.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[show_all_jobs][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/squeue.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[display_lsf_hosts][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bhosts.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+[display_hosts_format][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bhosts.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+[bhosts_version][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bhosts.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+[vecadd_gnu_exclude][/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_exclude.yml]: Unable to find any compilers based on regular expression: ['^(gcc)'] so no tests were created.
+[run_only_as_root][/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/root_user.yml]: test is skipped because this test is expected to run as user: root but detected user: siddiq90.
+[show_lsf_queues][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bqueues.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+[show_lsf_queues_formatted][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bqueues.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+[show_lsf_queues_current_user][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bqueues.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+[show_accounts][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sacctmgr.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[show_users][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sacctmgr.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[show_qos][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sacctmgr.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[show_tres][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sacctmgr.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[default_status_regex][/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_status_regex.yml]: Unable to find any compilers based on regular expression: ['^(gcc)'] so no tests were created.
+[override_status_regex][/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_status_regex.yml]: Unable to find any compilers based on regular expression: ['^(gcc)'] so no tests were created.
+[show_lsf_user_groups][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bugroup.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+[run_only_linux_distro][/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/run_only_distro.yml]: test is skipped because this test is expected to run on linux distro: ['centos'] but detected linux distro: darwin.
+[show_lsf_configuration][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/lsinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+[show_lsf_models][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/lsinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+[show_lsf_resources][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/lsinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+[lsf_version][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/lsinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+[qsub_version][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/cobalt/commands.yml]: test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
+[qselect_version][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/cobalt/commands.yml]: test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
+[cqsub_version][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/cobalt/commands.yml]: test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
+[qdel_version][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/cobalt/commands.yml]: test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
+[qmove_version][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/cobalt/commands.yml]: test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
+[show_jobs][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/cobalt/commands.yml]: test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
+[show_queues][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/cobalt/commands.yml]: test is skipped because ['run_only']['scheduler'] got value: cobalt but detected scheduler: [].
+[override_environmentvars][/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/envvar_override.yml]: Unable to find any compilers based on regular expression: ['^(gcc)'] so no tests were created.
+[show_host_groups][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bmgroups.yml]: test is skipped because ['run_only']['scheduler'] got value: lsf but detected scheduler: [].
+[nodes_state_down][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[nodes_state_reboot][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[nodes_state_allocated][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[nodes_state_completing][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[nodes_state_idle][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[node_down_fail_list_reason][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[dead_nodes][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[get_partitions][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[sinfo_version][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sinfo.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[slurm_config][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/scontrol.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[show_partition][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/scontrol.yml]: test is skipped because ['run_only']['scheduler'] got value: slurm but detected scheduler: [].
+[ssh_localhost_remotecommand][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ssh_localhost.yml]: test is skipped because this test is expected to run on platform: Linux but detected platform: Darwin.
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
 
  schemafile                | validstate   | buildspec
----------------------------+--------------+---------------------------------------------------------------------------------------------------
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/root_user.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/environment.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/custom_run.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bmgroups.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/containers/singularity/inspect.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/containers/singularity/run.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/tags_example.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/skip_tests.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/pre_post_build_run.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/envvar_override.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/ssh_localhost.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/gnu_hello_fortran.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/sched/cobalt/commands.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/sleep.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/systemd-default-target.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/pass_returncode.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/lsinfo.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/scontrol.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bhosts.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/openmp_hello.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bqueues.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_exclude.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/hello_world.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/containers/singularity/pull.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/disk_usage.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sacctmgr.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/shebang.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/selinux.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/containers/singularity/build.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/sinfo.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/shell_examples.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/compiler_status_regex.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/sched/slurm/squeue.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/kernel_state.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/run_only_distro.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/gnu_hello_c.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/configuration/ulimits.yml
- compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/vecadd.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/general_tests/sched/lsf/bugroup.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/vars.yml
- script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/python-hello.yml
+---------------------------+--------------+----------------------------------------------------------------------------------------------------------
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/gnu_hello_c.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/openmp_hello.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/environment.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/shell_examples.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/pull.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/vars.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/skip_tests.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/squeue.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bhosts.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_exclude.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/hello_world.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/kernel_state.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/gnu_hello_fortran.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/build.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/root_user.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/sleep.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bqueues.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/selinux.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/custom_run.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sacctmgr.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_status_regex.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bugroup.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/vecadd.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/runtime_status_test.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/pre_post_build_run.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/inspect.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/run_only_distro.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/lsinfo.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/cobalt/commands.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/run.yml
+ compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/envvar_override.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bmgroups.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/systemd-default-target.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sinfo.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/scontrol.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/shebang.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/tags_example.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/disk_usage.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ssh_localhost.yml
+ script-v1.0.schema.json   | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ulimits.yml
 
 
 
 name                          description
-----------------------------  ---------------------------------------------------------------
+----------------------------  ------------------------------------------------------------------------------
+hello_c                       Hello World C Compilation
+python_hello                  Hello World python
 bash_env_variables            Declare environment variables in default shell (bash)
 csh_env_declaration           csh shell example to declare environment variables
 tcsh_env_declaration          tcsh shell example to declare environment variables
-custom_run_by_compilers       Customize binary launch based on compiler
-inspect_image                 Inspect image via 'singularity inspect'
-runImage                      run container docker://godlovedc/lolcow
-string_tag                    tags can be a string
-list_of_strings_tags          tags can be a list of strings
-unskipped                     This test is not skipped
-pre_post_build_run            example using pre_build, post_build, pre_run, post_run example
-hello_f                       Hello World Fortran Compilation
-sleep                         sleep 2 seconds
-systemd_default_target        check if default target is multi-user.target
-exit1_fail                    exit 1 by default is FAIL
-exit1_pass                    report exit 1 as PASS
-returncode_list_mismatch      exit 2 failed since it failed to match returncode 1
-returncode_int_match          exit 128 matches returncode 128
-hello_world                   hello world example
-pullImage_dockerhub           Pull image docker://godlovedc/lolcow from DockerHub
-pullImage_sylabscloud         Pull image library://alpine:latest from Sylabs Cloud
-pullImage_shub                Pull image shub://vsoch/singularity-images from SingularityHub
-root_disk_usage               Check root disk usage and report if it exceeds threshold
-bash_login_shebang            customize shebang line with bash login shell
-bash_nonlogin_shebang         customize shebang line with default bash (nonlogin) shell
-selinux_disable               Check if SELinux is Disabled
-build_sif_from_dockerimage    build sif image from docker image docker://godlovedc/lolcow
-build_sandbox_image           build sandbox image from docker image docker://godlovedc/lolcow
-build_remoteimages            build remote hosted image from AWS
 _bin_sh_shell                 /bin/sh shell example
 _bin_bash_shell               /bin/bash shell example
 bash_shell                    bash shell example
 sh_shell                      sh shell example
 shell_options                 shell options
+pullImage_dockerhub           Pull image docker://godlovedc/lolcow from DockerHub
+pullImage_sylabscloud         Pull image library://alpine:latest from Sylabs Cloud
+pullImage_shub                Pull image shub://vsoch/singularity-images from SingularityHub
+variables_bash                Declare shell variables in bash
+unskipped                     This test is not skipped
+hello_world                   hello world example
 kernel_swapusage              Retrieve Kernel Swap Usage
+hello_f                       Hello World Fortran Compilation
+build_sif_from_dockerimage    build sif image from docker image docker://godlovedc/lolcow
+build_sandbox_image           build sandbox image from docker image docker://godlovedc/lolcow
+build_remoteimages            build remote hosted image from AWS
+sleep                         sleep 2 seconds
+selinux_disable               Check if SELinux is Disabled
+custom_run_by_compilers       Customize binary launch based on compiler
+vecadd_gnu                    Vector Addition example with GNU compiler
+timelimit_min_max             Run a sleep job for 2 seconds and test pass if its within 1.0-4.0sec
+timelimit_min                 Run a sleep job for 2 seconds and test pass if its exceeds min time of 1.0 sec
+timelimit_max                 Run a sleep job for 2 seconds and test pass if it's within max time: 5.0 sec
+timelimit_min_fail            This test fails because it runs less than mintime of 1.0 second
+timelimit_max_fail            This test fails because it exceeds maxtime of 1.0 second
+pre_post_build_run            example using pre_build, post_build, pre_run, post_run example
+inspect_image                 Inspect image via 'singularity inspect'
 run_only_macos_distro         Run test only if distro is darwin.
-hello_c                       Hello World C Compilation
+runImage                      run container docker://godlovedc/lolcow
+systemd_default_target        check if default target is multi-user.target
+bash_login_shebang            customize shebang line with bash login shell
+bash_nonlogin_shebang         customize shebang line with default bash (nonlogin) shell
+exit1_fail                    exit 1 by default is FAIL
+exit1_pass                    report exit 1 as PASS
+returncode_list_mismatch      exit 2 failed since it failed to match returncode 1
+returncode_int_match          exit 128 matches returncode 128
+string_tag                    tags can be a string
+list_of_strings_tags          tags can be a list of strings
+root_disk_usage               Check root disk usage and report if it exceeds threshold
 ulimit_filelock_unlimited     Check if file lock is set to unlimited in ulimits
 ulimit_cputime_unlimited      Check if cputime is set to unlimited in ulimits
 ulimit_stacksize_unlimited    Check if stack size is set to unlimited in ulimits
 ulimit_vmsize_unlimited       Check virtual memory size and check if its set to unlimited
 ulimit_filedescriptor_4096    Check if open file descriptors limit is set to 4096
 ulimit_max_user_process_2048  Check max number of user process limit is set to 2048
-vecadd_gnu                    Vector Addition example with GNU compiler
-variables_bash                Declare shell variables in bash
-python_hello                  Hello World python
 
 +----------------------+
 | Stage: Building Test |
@@ -252,55 +259,60 @@ python_hello                  Hello World python
 
  name                         | id       | type   | executor           | tags                          | testpath
 ------------------------------+----------+--------+--------------------+-------------------------------+---------------------------------------------------------------------------------------------------------------------------
- bash_env_variables           | 0ce65a6a | script | generic.local.bash | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/environment/bash_env_variables/1/stage/generate.sh
- csh_env_declaration          | 2386b4d8 | script | generic.local.csh  | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.csh/environment/csh_env_declaration/1/stage/generate.sh
- tcsh_env_declaration         | 0dd19635 | script | generic.local.csh  | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.csh/environment/tcsh_env_declaration/1/stage/generate.sh
- inspect_image                | 9cf27b24 | script | generic.local.bash | ['containers', 'singularity'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/inspect/inspect_image/0/stage/generate.sh
- runImage                     | f580201d | script | generic.local.bash | ['containers', 'singularity'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/run/runImage/0/stage/generate.sh
- string_tag                   | 0cffe14b | script | generic.local.bash | network                       | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/tags_example/string_tag/0/stage/generate.sh
- list_of_strings_tags         | 1572e98e | script | generic.local.bash | ['network', 'ping']           | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/tags_example/list_of_strings_tags/0/stage/generate.sh
- unskipped                    | a768a8c2 | script | generic.local.bash | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/skip_tests/unskipped/1/stage/generate.sh
- sleep                        | 4c96543c | script | generic.local.bash | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/sleep/sleep/1/stage/generate.sh
- systemd_default_target       | a7a3da5a | script | generic.local.bash | ['system']                    | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/systemd-default-target/systemd_default_target/3/stage/generate.sh
- exit1_fail                   | df29467b | script | generic.local.sh   | ['tutorials', 'fail']         | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/4/stage/generate.sh
- exit1_pass                   | e64febfe | script | generic.local.sh   | ['tutorials', 'pass']         | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/5/stage/generate.sh
- returncode_list_mismatch     | faa35e9e | script | generic.local.sh   | ['tutorials', 'fail']         | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/4/stage/generate.sh
- returncode_int_match         | 9434a368 | script | generic.local.sh   | ['tutorials', 'pass']         | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/5/stage/generate.sh
- hello_world                  | c8610536 | script | generic.local.bash | tutorials                     | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/hello_world/hello_world/1/stage/generate.sh
- pullImage_dockerhub          | 1b274dfa | script | generic.local.bash | ['containers', 'singularity'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/pull/pullImage_dockerhub/0/stage/generate.sh
- pullImage_sylabscloud        | 5b512239 | script | generic.local.bash | ['containers', 'singularity'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/pull/pullImage_sylabscloud/0/stage/generate.sh
- pullImage_shub               | 70c66a39 | script | generic.local.bash | ['containers', 'singularity'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/pull/pullImage_shub/0/stage/generate.sh
- root_disk_usage              | 3b1ab4a7 | script | generic.local.bash | ['filesystem', 'storage']     | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/3/stage/generate.sh
- bash_login_shebang           | 595e95ab | script | generic.local.bash | tutorials                     | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/shebang/bash_login_shebang/1/stage/generate.sh
- bash_nonlogin_shebang        | 6b823545 | script | generic.local.bash | tutorials                     | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/shebang/bash_nonlogin_shebang/1/stage/generate.sh
- selinux_disable              | 7ffb83c3 | script | generic.local.bash | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/selinux/selinux_disable/1/stage/generate.sh
- build_sif_from_dockerimage   | fbc32743 | script | generic.local.bash | ['containers', 'singularity'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/build/build_sif_from_dockerimage/0/stage/generate.sh
- build_sandbox_image          | 0d3c79c8 | script | generic.local.bash | ['containers', 'singularity'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/build/build_sandbox_image/0/stage/generate.sh
- build_remoteimages           | f00965ad | script | generic.local.bash | ['containers', 'singularity'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/build/build_remoteimages/0/stage/generate.sh
- _bin_sh_shell                | 3a8da259 | script | generic.local.sh   | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/shell_examples/_bin_sh_shell/2/stage/generate.sh
- _bin_bash_shell              | 3e4a41ea | script | generic.local.bash | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/shell_examples/_bin_bash_shell/2/stage/generate.sh
- bash_shell                   | 75cd2f83 | script | generic.local.bash | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/shell_examples/bash_shell/2/stage/generate.sh
- sh_shell                     | d454fbd3 | script | generic.local.sh   | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/shell_examples/sh_shell/2/stage/generate.sh
- shell_options                | 3113eb67 | script | generic.local.sh   | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/shell_examples/shell_options/2/stage/generate.sh
- kernel_swapusage             | bec821b4 | script | generic.local.bash | ['configuration']             | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/kernel_state/kernel_swapusage/3/stage/generate.sh
- run_only_macos_distro        | 9e31931e | script | generic.local.bash | ['mac']                       | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/run_only_distro/run_only_macos_distro/0/stage/generate.sh
- ulimit_filelock_unlimited    | 00046ad3 | script | generic.local.bash | ['system']                    | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_filelock_unlimited/2/stage/generate.sh
- ulimit_cputime_unlimited     | c00483c1 | script | generic.local.bash | ['system']                    | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_cputime_unlimited/2/stage/generate.sh
- ulimit_stacksize_unlimited   | 338fd55d | script | generic.local.bash | ['system']                    | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_stacksize_unlimited/2/stage/generate.sh
- ulimit_vmsize_unlimited      | 38954651 | script | generic.local.bash | ['system']                    | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_vmsize_unlimited/2/stage/generate.sh
- ulimit_filedescriptor_4096   | a7d6e673 | script | generic.local.bash | ['system']                    | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_filedescriptor_4096/2/stage/generate.sh
- ulimit_max_user_process_2048 | 237aa8b7 | script | generic.local.bash | ['system']                    | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_max_user_process_2048/2/stage/generate.sh
- variables_bash               | 9a60e6a0 | script | generic.local.bash | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/3/stage/generate.sh
- python_hello                 | 0e9ed89e | script | generic.local.bash | python                        | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/python-hello/python_hello/2/stage/generate.sh
+ python_hello                 | 5cd78955 | script | generic.local.bash | python                        | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/python-hello/python_hello/2/stage/generate.sh
+ bash_env_variables           | 81e109fe | script | generic.local.bash | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/environment/bash_env_variables/1/stage/generate.sh
+ csh_env_declaration          | 5b6b3d17 | script | generic.local.csh  | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.csh/environment/csh_env_declaration/1/stage/generate.sh
+ tcsh_env_declaration         | d3a6a1d8 | script | generic.local.csh  | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.csh/environment/tcsh_env_declaration/1/stage/generate.sh
+ _bin_sh_shell                | ad417b36 | script | generic.local.sh   | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/shell_examples/_bin_sh_shell/2/stage/generate.sh
+ _bin_bash_shell              | ddacd3dc | script | generic.local.bash | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/shell_examples/_bin_bash_shell/2/stage/generate.sh
+ bash_shell                   | 6ff693ee | script | generic.local.bash | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/shell_examples/bash_shell/2/stage/generate.sh
+ sh_shell                     | fefc74cd | script | generic.local.sh   | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/shell_examples/sh_shell/2/stage/generate.sh
+ shell_options                | e6dc74f9 | script | generic.local.sh   | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/shell_examples/shell_options/2/stage/generate.sh
+ pullImage_dockerhub          | f044636c | script | generic.local.bash | ['containers', 'singularity'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/pull/pullImage_dockerhub/0/stage/generate.sh
+ pullImage_sylabscloud        | 6a181ce8 | script | generic.local.bash | ['containers', 'singularity'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/pull/pullImage_sylabscloud/0/stage/generate.sh
+ pullImage_shub               | 80ad791e | script | generic.local.bash | ['containers', 'singularity'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/pull/pullImage_shub/0/stage/generate.sh
+ variables_bash               | 4bfc380d | script | generic.local.bash | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/3/stage/generate.sh
+ unskipped                    | 133a68dd | script | generic.local.bash | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/skip_tests/unskipped/1/stage/generate.sh
+ hello_world                  | 96390126 | script | generic.local.bash | tutorials                     | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/hello_world/hello_world/1/stage/generate.sh
+ kernel_swapusage             | 6ec0f529 | script | generic.local.bash | ['configuration']             | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/kernel_state/kernel_swapusage/3/stage/generate.sh
+ build_sif_from_dockerimage   | 8a6bb5a7 | script | generic.local.bash | ['containers', 'singularity'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/build/build_sif_from_dockerimage/0/stage/generate.sh
+ build_sandbox_image          | 7958c908 | script | generic.local.bash | ['containers', 'singularity'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/build/build_sandbox_image/0/stage/generate.sh
+ build_remoteimages           | 3542a59a | script | generic.local.bash | ['containers', 'singularity'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/build/build_remoteimages/0/stage/generate.sh
+ sleep                        | 6e1a1a45 | script | generic.local.bash | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/sleep/sleep/1/stage/generate.sh
+ selinux_disable              | ef7bfbe1 | script | generic.local.bash | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/selinux/selinux_disable/1/stage/generate.sh
+ timelimit_min_max            | a034f579 | script | generic.local.sh   | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/runtime_status_test/timelimit_min_max/2/stage/generate.sh
+ timelimit_min                | 0c3926a5 | script | generic.local.sh   | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/runtime_status_test/timelimit_min/2/stage/generate.sh
+ timelimit_max                | 4d2e7eb0 | script | generic.local.sh   | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/runtime_status_test/timelimit_max/2/stage/generate.sh
+ timelimit_min_fail           | d298a041 | script | generic.local.sh   | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/runtime_status_test/timelimit_min_fail/2/stage/generate.sh
+ timelimit_max_fail           | 9a619af7 | script | generic.local.sh   | ['tutorials']                 | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/runtime_status_test/timelimit_max_fail/2/stage/generate.sh
+ inspect_image                | 8e67ebe6 | script | generic.local.bash | ['containers', 'singularity'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/inspect/inspect_image/0/stage/generate.sh
+ run_only_macos_distro        | 792ff405 | script | generic.local.bash | ['mac']                       | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/run_only_distro/run_only_macos_distro/0/stage/generate.sh
+ runImage                     | 6985487f | script | generic.local.bash | ['containers', 'singularity'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/run/runImage/0/stage/generate.sh
+ systemd_default_target       | fdf13207 | script | generic.local.bash | ['system']                    | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/systemd-default-target/systemd_default_target/3/stage/generate.sh
+ bash_login_shebang           | dbcfb272 | script | generic.local.bash | tutorials                     | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/shebang/bash_login_shebang/1/stage/generate.sh
+ bash_nonlogin_shebang        | 81c37454 | script | generic.local.bash | tutorials                     | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/shebang/bash_nonlogin_shebang/1/stage/generate.sh
+ exit1_fail                   | 62f86f7a | script | generic.local.sh   | ['tutorials', 'fail']         | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/4/stage/generate.sh
+ exit1_pass                   | e7dfe82c | script | generic.local.sh   | ['tutorials', 'pass']         | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/5/stage/generate.sh
+ returncode_list_mismatch     | 3db435aa | script | generic.local.sh   | ['tutorials', 'fail']         | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/4/stage/generate.sh
+ returncode_int_match         | 7c54384e | script | generic.local.sh   | ['tutorials', 'pass']         | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/5/stage/generate.sh
+ string_tag                   | 5e252a6b | script | generic.local.bash | network                       | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/tags_example/string_tag/0/stage/generate.sh
+ list_of_strings_tags         | 6047a9e3 | script | generic.local.bash | ['network', 'ping']           | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/tags_example/list_of_strings_tags/0/stage/generate.sh
+ root_disk_usage              | eb2c105b | script | generic.local.bash | ['filesystem', 'storage']     | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/3/stage/generate.sh
+ ulimit_filelock_unlimited    | c47dfd53 | script | generic.local.bash | ['system']                    | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_filelock_unlimited/2/stage/generate.sh
+ ulimit_cputime_unlimited     | 5f848b01 | script | generic.local.bash | ['system']                    | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_cputime_unlimited/2/stage/generate.sh
+ ulimit_stacksize_unlimited   | 2320a5fb | script | generic.local.bash | ['system']                    | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_stacksize_unlimited/2/stage/generate.sh
+ ulimit_vmsize_unlimited      | f4297b2b | script | generic.local.bash | ['system']                    | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_vmsize_unlimited/2/stage/generate.sh
+ ulimit_filedescriptor_4096   | 82025fbd | script | generic.local.bash | ['system']                    | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_filedescriptor_4096/2/stage/generate.sh
+ ulimit_max_user_process_2048 | d50b4284 | script | generic.local.bash | ['system']                    | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/ulimits/ulimit_max_user_process_2048/2/stage/generate.sh
 
 
  name                    | id       | type     | executor           | tags                     | compiler    | testpath
 -------------------------+----------+----------+--------------------+--------------------------+-------------+-------------------------------------------------------------------------------------------------------------------
- custom_run_by_compilers | 9e2f5364 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/1/stage/generate.sh
- pre_post_build_run      | 3ed1317c | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/pre_post_build_run/pre_post_build_run/1/stage/generate.sh
- hello_f                 | 982b746c | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/1/stage/generate.sh
- hello_c                 | 3b5e7806 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/1/stage/generate.sh
- vecadd_gnu              | 37789b85 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/1/stage/generate.sh
+ hello_c                 | 1f785bd8 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/1/stage/generate.sh
+ hello_f                 | 6681e112 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/1/stage/generate.sh
+ custom_run_by_compilers | 7805dbba | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/1/stage/generate.sh
+ vecadd_gnu              | 1fa1547b | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/1/stage/generate.sh
+ pre_post_build_run      | f6005cce | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/pre_post_build_run/pre_post_build_run/1/stage/generate.sh
 
 +---------------------+
 | Stage: Running Test |
@@ -308,59 +320,64 @@ python_hello                  Hello World python
 
  name                         | id       | executor           | status   |   returncode
 ------------------------------+----------+--------------------+----------+--------------
- bash_env_variables           | 0ce65a6a | generic.local.bash | PASS     |            0
- csh_env_declaration          | 2386b4d8 | generic.local.csh  | PASS     |            0
- tcsh_env_declaration         | 0dd19635 | generic.local.csh  | PASS     |            0
- custom_run_by_compilers      | 9e2f5364 | generic.local.bash | PASS     |            0
- inspect_image                | 9cf27b24 | generic.local.bash | PASS     |            0
- runImage                     | f580201d | generic.local.bash | PASS     |            0
- string_tag                   | 0cffe14b | generic.local.bash | PASS     |            0
- list_of_strings_tags         | 1572e98e | generic.local.bash | PASS     |            0
- unskipped                    | a768a8c2 | generic.local.bash | PASS     |            0
- pre_post_build_run           | 3ed1317c | generic.local.bash | PASS     |            0
- hello_f                      | 982b746c | generic.local.bash | PASS     |            0
- sleep                        | 4c96543c | generic.local.bash | PASS     |            0
- systemd_default_target       | a7a3da5a | generic.local.bash | FAIL     |            1
- exit1_fail                   | df29467b | generic.local.sh   | FAIL     |            1
- exit1_pass                   | e64febfe | generic.local.sh   | PASS     |            1
- returncode_list_mismatch     | faa35e9e | generic.local.sh   | FAIL     |            2
- returncode_int_match         | 9434a368 | generic.local.sh   | PASS     |          128
- hello_world                  | c8610536 | generic.local.bash | PASS     |            0
- pullImage_dockerhub          | 1b274dfa | generic.local.bash | PASS     |            0
- pullImage_sylabscloud        | 5b512239 | generic.local.bash | PASS     |            0
- pullImage_shub               | 70c66a39 | generic.local.bash | PASS     |            0
- root_disk_usage              | 3b1ab4a7 | generic.local.bash | PASS     |            0
- bash_login_shebang           | 595e95ab | generic.local.bash | PASS     |            0
- bash_nonlogin_shebang        | 6b823545 | generic.local.bash | PASS     |            0
- selinux_disable              | 7ffb83c3 | generic.local.bash | FAIL     |            0
- build_sif_from_dockerimage   | fbc32743 | generic.local.bash | PASS     |            0
- build_sandbox_image          | 0d3c79c8 | generic.local.bash | PASS     |            0
- build_remoteimages           | f00965ad | generic.local.bash | PASS     |            0
- _bin_sh_shell                | 3a8da259 | generic.local.sh   | PASS     |            0
- _bin_bash_shell              | 3e4a41ea | generic.local.bash | PASS     |            0
- bash_shell                   | 75cd2f83 | generic.local.bash | PASS     |            0
- sh_shell                     | d454fbd3 | generic.local.sh   | PASS     |            0
- shell_options                | 3113eb67 | generic.local.sh   | PASS     |            0
- kernel_swapusage             | bec821b4 | generic.local.bash | PASS     |            0
- run_only_macos_distro        | 9e31931e | generic.local.bash | PASS     |            0
- hello_c                      | 3b5e7806 | generic.local.bash | PASS     |            0
- ulimit_filelock_unlimited    | 00046ad3 | generic.local.bash | PASS     |            0
- ulimit_cputime_unlimited     | c00483c1 | generic.local.bash | PASS     |            0
- ulimit_stacksize_unlimited   | 338fd55d | generic.local.bash | FAIL     |            0
- ulimit_vmsize_unlimited      | 38954651 | generic.local.bash | PASS     |            0
- ulimit_filedescriptor_4096   | a7d6e673 | generic.local.bash | FAIL     |            0
- ulimit_max_user_process_2048 | 237aa8b7 | generic.local.bash | FAIL     |            0
- vecadd_gnu                   | 37789b85 | generic.local.bash | PASS     |            0
- variables_bash               | 9a60e6a0 | generic.local.bash | PASS     |            0
- python_hello                 | 0e9ed89e | generic.local.bash | PASS     |            0
+ hello_c                      | 1f785bd8 | generic.local.bash | PASS     |            0
+ python_hello                 | 5cd78955 | generic.local.bash | PASS     |            0
+ bash_env_variables           | 81e109fe | generic.local.bash | PASS     |            0
+ csh_env_declaration          | 5b6b3d17 | generic.local.csh  | PASS     |            0
+ tcsh_env_declaration         | d3a6a1d8 | generic.local.csh  | PASS     |            0
+ _bin_sh_shell                | ad417b36 | generic.local.sh   | PASS     |            0
+ _bin_bash_shell              | ddacd3dc | generic.local.bash | PASS     |            0
+ bash_shell                   | 6ff693ee | generic.local.bash | PASS     |            0
+ sh_shell                     | fefc74cd | generic.local.sh   | PASS     |            0
+ shell_options                | e6dc74f9 | generic.local.sh   | PASS     |            0
+ pullImage_dockerhub          | f044636c | generic.local.bash | PASS     |            0
+ pullImage_sylabscloud        | 6a181ce8 | generic.local.bash | PASS     |            0
+ pullImage_shub               | 80ad791e | generic.local.bash | PASS     |            0
+ variables_bash               | 4bfc380d | generic.local.bash | PASS     |            0
+ unskipped                    | 133a68dd | generic.local.bash | PASS     |            0
+ hello_world                  | 96390126 | generic.local.bash | PASS     |            0
+ kernel_swapusage             | 6ec0f529 | generic.local.bash | PASS     |            0
+ hello_f                      | 6681e112 | generic.local.bash | PASS     |            0
+ build_sif_from_dockerimage   | 8a6bb5a7 | generic.local.bash | PASS     |            0
+ build_sandbox_image          | 7958c908 | generic.local.bash | PASS     |            0
+ build_remoteimages           | 3542a59a | generic.local.bash | PASS     |            0
+ sleep                        | 6e1a1a45 | generic.local.bash | PASS     |            0
+ selinux_disable              | ef7bfbe1 | generic.local.bash | FAIL     |            0
+ custom_run_by_compilers      | 7805dbba | generic.local.bash | PASS     |            0
+ vecadd_gnu                   | 1fa1547b | generic.local.bash | PASS     |            0
+ timelimit_min_max            | a034f579 | generic.local.sh   | PASS     |            0
+ timelimit_min                | 0c3926a5 | generic.local.sh   | PASS     |            0
+ timelimit_max                | 4d2e7eb0 | generic.local.sh   | PASS     |            0
+ timelimit_min_fail           | d298a041 | generic.local.sh   | FAIL     |            0
+ timelimit_max_fail           | 9a619af7 | generic.local.sh   | FAIL     |            0
+ pre_post_build_run           | f6005cce | generic.local.bash | PASS     |            0
+ inspect_image                | 8e67ebe6 | generic.local.bash | PASS     |            0
+ run_only_macos_distro        | 792ff405 | generic.local.bash | PASS     |            0
+ runImage                     | 6985487f | generic.local.bash | PASS     |            0
+ systemd_default_target       | fdf13207 | generic.local.bash | FAIL     |            1
+ bash_login_shebang           | dbcfb272 | generic.local.bash | PASS     |            0
+ bash_nonlogin_shebang        | 81c37454 | generic.local.bash | PASS     |            0
+ exit1_fail                   | 62f86f7a | generic.local.sh   | FAIL     |            1
+ exit1_pass                   | e7dfe82c | generic.local.sh   | PASS     |            1
+ returncode_list_mismatch     | 3db435aa | generic.local.sh   | FAIL     |            2
+ returncode_int_match         | 7c54384e | generic.local.sh   | PASS     |          128
+ string_tag                   | 5e252a6b | generic.local.bash | PASS     |            0
+ list_of_strings_tags         | 6047a9e3 | generic.local.bash | PASS     |            0
+ root_disk_usage              | eb2c105b | generic.local.bash | PASS     |            0
+ ulimit_filelock_unlimited    | c47dfd53 | generic.local.bash | PASS     |            0
+ ulimit_cputime_unlimited     | 5f848b01 | generic.local.bash | PASS     |            0
+ ulimit_stacksize_unlimited   | 2320a5fb | generic.local.bash | FAIL     |            0
+ ulimit_vmsize_unlimited      | f4297b2b | generic.local.bash | PASS     |            0
+ ulimit_filedescriptor_4096   | 82025fbd | generic.local.bash | FAIL     |            0
+ ulimit_max_user_process_2048 | d50b4284 | generic.local.bash | FAIL     |            0
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
 
-Passed Tests: 38/45 Percentage: 84.444%
-Failed Tests: 7/45 Percentage: 15.556%
+Passed Tests: 41/50 Percentage: 82.000%
+Failed Tests: 9/50 Percentage: 18.000%
 
 
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_kfzus6tt.log
-A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/github/buildtest/buildtest.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest__mfgqsnm.log
+A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log

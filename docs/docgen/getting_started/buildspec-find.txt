@@ -1,192 +1,298 @@
 $ buildtest buildspec find 
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| name                         | type     | executor             | tags                          | description                                                       |
-+==============================+==========+======================+===============================+===================================================================+
-| run_only_macos_distro        | script   | generic.local.bash   | ['mac']                       | Run test only if distro is darwin.                                |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| run_only_linux_distro        | script   | generic.local.bash   | ['mac']                       | Run test only if distro is CentOS.                                |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| _bin_sh_shell                | script   | generic.local.sh     | ['tutorials']                 | /bin/sh shell example                                             |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| _bin_bash_shell              | script   | generic.local.bash   | ['tutorials']                 | /bin/bash shell example                                           |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| bash_shell                   | script   | generic.local.bash   | ['tutorials']                 | bash shell example                                                |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| sh_shell                     | script   | generic.local.sh     | ['tutorials']                 | sh shell example                                                  |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| shell_options                | script   | generic.local.sh     | ['tutorials']                 | shell options                                                     |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| bash_env_variables           | script   | generic.local.bash   | ['tutorials']                 | Declare environment variables in default shell (bash)             |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| csh_env_declaration          | script   | generic.local.csh    | ['tutorials']                 | csh shell example to declare environment variables                |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| tcsh_env_declaration         | script   | generic.local.csh    | ['tutorials']                 | tcsh shell example to declare environment variables               |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| python_hello                 | script   | generic.local.bash   | python                        | Hello World python                                                |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| variables_bash               | script   | generic.local.bash   | ['tutorials']                 | Declare shell variables in bash                                   |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| selinux_disable              | script   | generic.local.bash   | ['tutorials']                 | Check if SELinux is Disabled                                      |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| bash_login_shebang           | script   | generic.local.bash   | tutorials                     | customize shebang line with bash login shell                      |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| bash_nonlogin_shebang        | script   | generic.local.bash   | tutorials                     | customize shebang line with default bash (nonlogin) shell         |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| exit1_fail                   | script   | generic.local.sh     | ['tutorials', 'fail']         | exit 1 by default is FAIL                                         |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| exit1_pass                   | script   | generic.local.sh     | ['tutorials', 'pass']         | report exit 1 as PASS                                             |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| returncode_list_mismatch     | script   | generic.local.sh     | ['tutorials', 'fail']         | exit 2 failed since it failed to match returncode 1               |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| returncode_int_match         | script   | generic.local.sh     | ['tutorials', 'pass']         | exit 128 matches returncode 128                                   |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| csh_shell                    | script   | generic.local.csh    | ['tutorials']                 | csh shell example                                                 |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| hello_world                  | script   | generic.local.bash   | tutorials                     | hello world example                                               |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| run_only_as_root             | script   | generic.local.bash   | ['tutorials']                 | This test will only run if current user is root                   |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| string_tag                   | script   | generic.local.bash   | network                       | tags can be a string                                              |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| list_of_strings_tags         | script   | generic.local.bash   | ['network', 'ping']           | tags can be a list of strings                                     |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| run_only_platform_darwin     | script   | generic.local.python | ['tutorials']                 | This test will only run if target platform is Darwin              |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| run_only_platform_linux      | script   | generic.local.python | ['tutorials']                 | This test will only run if target platform is Linux               |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| circle_area                  | script   | generic.local.python | ['tutorials', 'python']       | Calculate circle of area given a radius                           |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| skip                         | script   | generic.local.bash   | ['tutorials']                 | This test is skipped                                              |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| unskipped                    | script   | generic.local.bash   | ['tutorials']                 | This test is not skipped                                          |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| sleep                        | script   | generic.local.bash   | ['tutorials']                 | sleep 2 seconds                                                   |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| openmp_hello_c_example       | compiler | generic.local.bash   | ['tutorials', 'compile']      | OpenMP Hello World C example                                      |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| vecadd_gnu                   | compiler | generic.local.bash   | ['tutorials', 'compile']      | Vector Addition example with GNU compiler                         |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| override_environmentvars     | compiler | generic.local.bash   | ['tutorials', 'compile']      | override default environment variables                            |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| vecadd_gnu_exclude           | compiler | generic.local.bash   | ['tutorials', 'compile']      | Vector Addition example with GNU compilers but exclude gcc@10.2.0 |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| hello_c                      | compiler | generic.local.bash   | ['tutorials', 'compile']      | Hello World C Compilation                                         |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| pre_post_build_run           | compiler | generic.local.bash   | ['tutorials', 'compile']      | example using pre_build, post_build, pre_run, post_run example    |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| custom_run_by_compilers      | compiler | generic.local.bash   | ['tutorials', 'compile']      | Customize binary launch based on compiler                         |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| hello_f                      | compiler | generic.local.bash   | ['tutorials', 'compile']      | Hello World Fortran Compilation                                   |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| default_status_regex         | compiler | generic.local.bash   | ['tutorials', 'compile']      | Regular expression check in stdout for gcc group                  |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| override_status_regex        | compiler | generic.local.bash   | ['tutorials', 'compile']      | Override regular expression for compiler gcc/10.2.0-37fmsw7       |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| root_disk_usage              | script   | generic.local.bash   | ['filesystem', 'storage']     | Check root disk usage and report if it exceeds threshold          |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| kernel_swapusage             | script   | generic.local.bash   | ['configuration']             | Retrieve Kernel Swap Usage                                        |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| ssh_localhost_remotecommand  | script   | generic.local.bash   | ['ssh']                       | Test if ssh on localhost works and if we can run remote command.  |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| systemd_default_target       | script   | generic.local.bash   | ['system']                    | check if default target is multi-user.target                      |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| ulimit_filelock_unlimited    | script   | generic.local.bash   | ['system']                    | Check if file lock is set to unlimited in ulimits                 |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| ulimit_cputime_unlimited     | script   | generic.local.bash   | ['system']                    | Check if cputime is set to unlimited in ulimits                   |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| ulimit_stacksize_unlimited   | script   | generic.local.bash   | ['system']                    | Check if stack size is set to unlimited in ulimits                |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| ulimit_vmsize_unlimited      | script   | generic.local.bash   | ['system']                    | Check virtual memory size and check if its set to unlimited       |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| ulimit_filedescriptor_4096   | script   | generic.local.bash   | ['system']                    | Check if open file descriptors limit is set to 4096               |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| ulimit_max_user_process_2048 | script   | generic.local.bash   | ['system']                    | Check max number of user process limit is set to 2048             |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| show_accounts                | script   | generic.local.bash   | ['slurm']                     | run sacctmgr list accounts                                        |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| show_users                   | script   | generic.local.bash   | ['slurm']                     | run sacctmgr list users                                           |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| show_qos                     | script   | generic.local.bash   | ['slurm']                     | run sacctmgr list qos                                             |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| show_tres                    | script   | generic.local.bash   | ['slurm']                     | run sacctmgr list tres                                            |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| slurm_config                 | script   | generic.local.bash   | ['slurm']                     | run scontrol show config                                          |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| show_partition               | script   | generic.local.bash   | ['slurm']                     | run scontrol show partition                                       |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| current_user_queue           | script   | generic.local.bash   | ['slurm']                     | show all current pending jobs for current user (squeue -u $USER)  |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| show_all_jobs                | script   | generic.local.bash   | ['slurm']                     | show all pending + running jobs (squeue -a)                       |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| nodes_state_down             | script   | generic.local.bash   | ['slurm']                     | Show nodes in DOWN state                                          |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| nodes_state_reboot           | script   | generic.local.bash   | ['slurm']                     | Show nodes in REBOOT state                                        |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| nodes_state_allocated        | script   | generic.local.bash   | ['slurm']                     | Show nodes in ALLOCATED state                                     |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| nodes_state_completing       | script   | generic.local.bash   | ['slurm']                     | Show nodes in COMPLETING state                                    |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| nodes_state_idle             | script   | generic.local.bash   | ['slurm']                     | Show nodes in IDLE state                                          |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| node_down_fail_list_reason   | script   | generic.local.bash   | ['slurm']                     | Show nodes DOWN, DRAINED, FAIL or FAILING and list reason         |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| dead_nodes                   | script   | generic.local.bash   | ['slurm']                     | Show non-responding nodes                                         |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| get_partitions               | script   | generic.local.bash   | ['slurm']                     | Get all slurm partitions                                          |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| sinfo_version                | script   | generic.local.bash   | ['slurm']                     | get slurm version                                                 |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| qsub_version                 | script   | generic.local.sh     | ['cobalt']                    | print version for qsub command                                    |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| qselect_version              | script   | generic.local.sh     | ['cobalt']                    | print version for qselect                                         |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| cqsub_version                | script   | generic.local.sh     | ['cobalt']                    | print version for cqsub command                                   |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| qdel_version                 | script   | generic.local.sh     | ['cobalt']                    | print version for qdel command                                    |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| qmove_version                | script   | generic.local.sh     | ['cobalt']                    | print version for qmove command                                   |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| show_jobs                    | script   | generic.local.sh     | ['cobalt']                    | Show all jobs in queue                                            |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| show_queues                  | script   | generic.local.sh     | ['cobalt']                    | Show all queues                                                   |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| show_host_groups             | script   | generic.local.bash   | lsf                           | Show information about host groups using bmgroup                  |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| show_lsf_configuration       | script   | generic.local.bash   | lsf                           | Show LSF configuration using lsinfo                               |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| show_lsf_models              | script   | generic.local.bash   | lsf                           | Show information about host models in LSF cluster                 |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| show_lsf_resources           | script   | generic.local.bash   | lsf                           | Show information about LSF resources                              |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| lsf_version                  | script   | generic.local.bash   | lsf                           | Display lsf version using lsinfo                                  |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| show_lsf_user_groups         | script   | generic.local.bash   | lsf                           | Show information about all LSF user groups                        |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| show_lsf_queues              | script   | generic.local.bash   | lsf                           | Show LSF queues                                                   |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| show_lsf_queues_formatted    | script   | generic.local.bash   | lsf                           | Show LSF queues with formatted columns                            |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| show_lsf_queues_current_user | script   | generic.local.bash   | lsf                           | Show LSF queues available for current user                        |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| display_lsf_hosts            | script   | generic.local.bash   | lsf                           | Show all hosts in LSF cluster                                     |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| display_hosts_format         | script   | generic.local.bash   | lsf                           | Show all hosts with column hostname and status                    |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| bhosts_version               | script   | generic.local.bash   | lsf                           | display version from bhosts command                               |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| pullImage_dockerhub          | script   | generic.local.bash   | ['containers', 'singularity'] | Pull image docker://godlovedc/lolcow from DockerHub               |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| pullImage_sylabscloud        | script   | generic.local.bash   | ['containers', 'singularity'] | Pull image library://alpine:latest from Sylabs Cloud              |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| pullImage_shub               | script   | generic.local.bash   | ['containers', 'singularity'] | Pull image shub://vsoch/singularity-images from SingularityHub    |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| runImage                     | script   | generic.local.bash   | ['containers', 'singularity'] | run container docker://godlovedc/lolcow                           |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| inspect_image                | script   | generic.local.bash   | ['containers', 'singularity'] | Inspect image via 'singularity inspect'                           |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| build_sif_from_dockerimage   | script   | generic.local.bash   | ['containers', 'singularity'] | build sif image from docker image docker://godlovedc/lolcow       |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| build_sandbox_image          | script   | generic.local.bash   | ['containers', 'singularity'] | build sandbox image from docker image docker://godlovedc/lolcow   |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
-| build_remoteimages           | script   | generic.local.bash   | ['containers', 'singularity'] | build remote hosted image from AWS                                |
-+------------------------------+----------+----------------------+-------------------------------+-------------------------------------------------------------------+
+
+Buildspec Paths: ['/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials', '/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests'] 
+
+Discovered Buildspecs
+________________________________________________________________________________
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/invalid_buildspec_section.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/executor_regex_script.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/run_only_distro.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/shell_examples.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/environment.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/vars.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/selinux.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/shebang.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/csh_shell_examples.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/invalid_tags.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/hello_world.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/invalid_executor.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/root_user.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/tags_example.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/run_only_platform.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-shell.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/skip_tests.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/runtime_status_test.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/sleep.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/openmp_hello.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/vecadd.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/envvar_override.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_exclude.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/gnu_hello_c.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/pre_post_build_run.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/custom_run.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/gnu_hello_fortran.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_status_regex.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/disk_usage.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/kernel_state.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ssh_localhost.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/systemd-default-target.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ulimits.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sacctmgr.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/scontrol.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/squeue.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/slurm/sinfo.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/cobalt/commands.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bmgroups.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/lsinfo.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bugroup.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bqueues.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/lsf/bhosts.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/pbs/batch.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/pbs/hostname.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/pull.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/run.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/inspect.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/containers/singularity/build.yml
+Found 51 buildspecs 
+________________________________________________________________________________
+
+
+Validated 5/51 buildspecs
+Validated 10/51 buildspecs
+Validated 15/51 buildspecs
+Validated 20/51 buildspecs
+Validated 25/51 buildspecs
+Validated 30/51 buildspecs
+Validated 35/51 buildspecs
+Validated 40/51 buildspecs
+Validated 45/51 buildspecs
+Validated 50/51 buildspecs
+Validated 51/51 buildspecs
+
+
+Invalid buildspecs
+________________________________________________________________________________
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/invalid_buildspec_section.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/invalid_tags.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/invalid_executor.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/pbs/batch.yml
+/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/sched/pbs/hostname.yml
+Found 5 invalid buildspecs
+________________________________________________________________________________
+
+
+Adding 46 buildspec files to cache
+There are 100 tests in buildspec cache
+
+
+
+Updating buildspec cache file: /Users/siddiq90/.buildtest/buildspecs/cache.json
+Writing invalid buildspecs to file: /Users/siddiq90/.buildtest/buildspecs/error.txt 
+
+
+
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| name                         | type     | executor                | tags                          | description                                                                    |
++==============================+==========+=========================+===============================+================================================================================+
+| executor_regex_script_schema | script   | generic.local.(bash|sh) | ['tutorials']                 | regular expression test with executor using script schema                      |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| run_only_macos_distro        | script   | generic.local.bash      | ['mac']                       | Run test only if distro is darwin.                                             |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| run_only_linux_distro        | script   | generic.local.bash      | ['mac']                       | Run test only if distro is CentOS.                                             |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| _bin_sh_shell                | script   | generic.local.sh        | ['tutorials']                 | /bin/sh shell example                                                          |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| _bin_bash_shell              | script   | generic.local.bash      | ['tutorials']                 | /bin/bash shell example                                                        |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| bash_shell                   | script   | generic.local.bash      | ['tutorials']                 | bash shell example                                                             |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| sh_shell                     | script   | generic.local.sh        | ['tutorials']                 | sh shell example                                                               |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| shell_options                | script   | generic.local.sh        | ['tutorials']                 | shell options                                                                  |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| bash_env_variables           | script   | generic.local.bash      | ['tutorials']                 | Declare environment variables in default shell (bash)                          |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| csh_env_declaration          | script   | generic.local.csh       | ['tutorials']                 | csh shell example to declare environment variables                             |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| tcsh_env_declaration         | script   | generic.local.csh       | ['tutorials']                 | tcsh shell example to declare environment variables                            |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| python_hello                 | script   | generic.local.bash      | python                        | Hello World python                                                             |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| variables_bash               | script   | generic.local.bash      | ['tutorials']                 | Declare shell variables in bash                                                |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| selinux_disable              | script   | generic.local.bash      | ['tutorials']                 | Check if SELinux is Disabled                                                   |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| bash_login_shebang           | script   | generic.local.bash      | tutorials                     | customize shebang line with bash login shell                                   |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| bash_nonlogin_shebang        | script   | generic.local.bash      | tutorials                     | customize shebang line with default bash (nonlogin) shell                      |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| exit1_fail                   | script   | generic.local.sh        | ['tutorials', 'fail']         | exit 1 by default is FAIL                                                      |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| exit1_pass                   | script   | generic.local.sh        | ['tutorials', 'pass']         | report exit 1 as PASS                                                          |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| returncode_list_mismatch     | script   | generic.local.sh        | ['tutorials', 'fail']         | exit 2 failed since it failed to match returncode 1                            |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| returncode_int_match         | script   | generic.local.sh        | ['tutorials', 'pass']         | exit 128 matches returncode 128                                                |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| csh_shell                    | script   | generic.local.csh       | ['tutorials']                 | csh shell example                                                              |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| hello_world                  | script   | generic.local.bash      | tutorials                     | hello world example                                                            |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| run_only_as_root             | script   | generic.local.bash      | ['tutorials']                 | This test will only run if current user is root                                |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| string_tag                   | script   | generic.local.bash      | network                       | tags can be a string                                                           |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| list_of_strings_tags         | script   | generic.local.bash      | ['network', 'ping']           | tags can be a list of strings                                                  |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| run_only_platform_darwin     | script   | generic.local.python    | ['tutorials']                 | This test will only run if target platform is Darwin                           |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| run_only_platform_linux      | script   | generic.local.python    | ['tutorials']                 | This test will only run if target platform is Linux                            |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| circle_area                  | script   | generic.local.python    | ['tutorials', 'python']       | Calculate circle of area given a radius                                        |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| skip                         | script   | generic.local.bash      | ['tutorials']                 | This test is skipped                                                           |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| unskipped                    | script   | generic.local.bash      | ['tutorials']                 | This test is not skipped                                                       |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| timelimit_min_max            | script   | generic.local.sh        | ['tutorials']                 | Run a sleep job for 2 seconds and test pass if its within 1.0-4.0sec           |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| timelimit_min                | script   | generic.local.sh        | ['tutorials']                 | Run a sleep job for 2 seconds and test pass if its exceeds min time of 1.0 sec |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| timelimit_max                | script   | generic.local.sh        | ['tutorials']                 | Run a sleep job for 2 seconds and test pass if it's within max time: 5.0 sec   |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| timelimit_min_fail           | script   | generic.local.sh        | ['tutorials']                 | This test fails because it runs less than mintime of 1.0 second                |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| timelimit_max_fail           | script   | generic.local.sh        | ['tutorials']                 | This test fails because it exceeds maxtime of 1.0 second                       |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| sleep                        | script   | generic.local.bash      | ['tutorials']                 | sleep 2 seconds                                                                |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| openmp_hello_c_example       | compiler | generic.local.bash      | ['tutorials', 'compile']      | OpenMP Hello World C example                                                   |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| vecadd_gnu                   | compiler | generic.local.bash      | ['tutorials', 'compile']      | Vector Addition example with GNU compiler                                      |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| override_environmentvars     | compiler | generic.local.bash      | ['tutorials', 'compile']      | override default environment variables                                         |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| vecadd_gnu_exclude           | compiler | generic.local.bash      | ['tutorials', 'compile']      | Vector Addition example with GNU compilers but exclude gcc@10.2.0              |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| hello_c                      | compiler | generic.local.bash      | ['tutorials', 'compile']      | Hello World C Compilation                                                      |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| pre_post_build_run           | compiler | generic.local.bash      | ['tutorials', 'compile']      | example using pre_build, post_build, pre_run, post_run example                 |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| custom_run_by_compilers      | compiler | generic.local.bash      | ['tutorials', 'compile']      | Customize binary launch based on compiler                                      |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| hello_f                      | compiler | generic.local.bash      | ['tutorials', 'compile']      | Hello World Fortran Compilation                                                |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| default_status_regex         | compiler | generic.local.bash      | ['tutorials', 'compile']      | Regular expression check in stdout for gcc group                               |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| override_status_regex        | compiler | generic.local.bash      | ['tutorials', 'compile']      | Override regular expression for compiler gcc/10.2.0-37fmsw7                    |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| root_disk_usage              | script   | generic.local.bash      | ['filesystem', 'storage']     | Check root disk usage and report if it exceeds threshold                       |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| kernel_swapusage             | script   | generic.local.bash      | ['configuration']             | Retrieve Kernel Swap Usage                                                     |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| ssh_localhost_remotecommand  | script   | generic.local.bash      | ['ssh']                       | Test if ssh on localhost works and if we can run remote command.               |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| systemd_default_target       | script   | generic.local.bash      | ['system']                    | check if default target is multi-user.target                                   |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| ulimit_filelock_unlimited    | script   | generic.local.bash      | ['system']                    | Check if file lock is set to unlimited in ulimits                              |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| ulimit_cputime_unlimited     | script   | generic.local.bash      | ['system']                    | Check if cputime is set to unlimited in ulimits                                |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| ulimit_stacksize_unlimited   | script   | generic.local.bash      | ['system']                    | Check if stack size is set to unlimited in ulimits                             |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| ulimit_vmsize_unlimited      | script   | generic.local.bash      | ['system']                    | Check virtual memory size and check if its set to unlimited                    |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| ulimit_filedescriptor_4096   | script   | generic.local.bash      | ['system']                    | Check if open file descriptors limit is set to 4096                            |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| ulimit_max_user_process_2048 | script   | generic.local.bash      | ['system']                    | Check max number of user process limit is set to 2048                          |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| show_accounts                | script   | generic.local.bash      | ['slurm']                     | run sacctmgr list accounts                                                     |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| show_users                   | script   | generic.local.bash      | ['slurm']                     | run sacctmgr list users                                                        |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| show_qos                     | script   | generic.local.bash      | ['slurm']                     | run sacctmgr list qos                                                          |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| show_tres                    | script   | generic.local.bash      | ['slurm']                     | run sacctmgr list tres                                                         |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| slurm_config                 | script   | generic.local.bash      | ['slurm']                     | run scontrol show config                                                       |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| show_partition               | script   | generic.local.bash      | ['slurm']                     | run scontrol show partition                                                    |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| current_user_queue           | script   | generic.local.bash      | ['slurm']                     | show all current pending jobs for current user (squeue -u $USER)               |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| show_all_jobs                | script   | generic.local.bash      | ['slurm']                     | show all pending + running jobs (squeue -a)                                    |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| nodes_state_down             | script   | generic.local.bash      | ['slurm']                     | Show nodes in DOWN state                                                       |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| nodes_state_reboot           | script   | generic.local.bash      | ['slurm']                     | Show nodes in REBOOT state                                                     |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| nodes_state_allocated        | script   | generic.local.bash      | ['slurm']                     | Show nodes in ALLOCATED state                                                  |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| nodes_state_completing       | script   | generic.local.bash      | ['slurm']                     | Show nodes in COMPLETING state                                                 |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| nodes_state_idle             | script   | generic.local.bash      | ['slurm']                     | Show nodes in IDLE state                                                       |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| node_down_fail_list_reason   | script   | generic.local.bash      | ['slurm']                     | Show nodes DOWN, DRAINED, FAIL or FAILING and list reason                      |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| dead_nodes                   | script   | generic.local.bash      | ['slurm']                     | Show non-responding nodes                                                      |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| get_partitions               | script   | generic.local.bash      | ['slurm']                     | Get all slurm partitions                                                       |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| sinfo_version                | script   | generic.local.bash      | ['slurm']                     | get slurm version                                                              |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| qsub_version                 | script   | generic.local.sh        | ['cobalt']                    | print version for qsub command                                                 |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| qselect_version              | script   | generic.local.sh        | ['cobalt']                    | print version for qselect                                                      |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| cqsub_version                | script   | generic.local.sh        | ['cobalt']                    | print version for cqsub command                                                |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| qdel_version                 | script   | generic.local.sh        | ['cobalt']                    | print version for qdel command                                                 |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| qmove_version                | script   | generic.local.sh        | ['cobalt']                    | print version for qmove command                                                |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| show_jobs                    | script   | generic.local.sh        | ['cobalt']                    | Show all jobs in queue                                                         |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| show_queues                  | script   | generic.local.sh        | ['cobalt']                    | Show all queues                                                                |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| show_host_groups             | script   | generic.local.bash      | lsf                           | Show information about host groups using bmgroup                               |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| show_lsf_configuration       | script   | generic.local.bash      | lsf                           | Show LSF configuration using lsinfo                                            |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| show_lsf_models              | script   | generic.local.bash      | lsf                           | Show information about host models in LSF cluster                              |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| show_lsf_resources           | script   | generic.local.bash      | lsf                           | Show information about LSF resources                                           |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| lsf_version                  | script   | generic.local.bash      | lsf                           | Display lsf version using lsinfo                                               |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| show_lsf_user_groups         | script   | generic.local.bash      | lsf                           | Show information about all LSF user groups                                     |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| show_lsf_queues              | script   | generic.local.bash      | lsf                           | Show LSF queues                                                                |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| show_lsf_queues_formatted    | script   | generic.local.bash      | lsf                           | Show LSF queues with formatted columns                                         |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| show_lsf_queues_current_user | script   | generic.local.bash      | lsf                           | Show LSF queues available for current user                                     |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| display_lsf_hosts            | script   | generic.local.bash      | lsf                           | Show all hosts in LSF cluster                                                  |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| display_hosts_format         | script   | generic.local.bash      | lsf                           | Show all hosts with column hostname and status                                 |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| bhosts_version               | script   | generic.local.bash      | lsf                           | display version from bhosts command                                            |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| pullImage_dockerhub          | script   | generic.local.bash      | ['containers', 'singularity'] | Pull image docker://godlovedc/lolcow from DockerHub                            |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| pullImage_sylabscloud        | script   | generic.local.bash      | ['containers', 'singularity'] | Pull image library://alpine:latest from Sylabs Cloud                           |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| pullImage_shub               | script   | generic.local.bash      | ['containers', 'singularity'] | Pull image shub://vsoch/singularity-images from SingularityHub                 |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| runImage                     | script   | generic.local.bash      | ['containers', 'singularity'] | run container docker://godlovedc/lolcow                                        |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| inspect_image                | script   | generic.local.bash      | ['containers', 'singularity'] | Inspect image via 'singularity inspect'                                        |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| build_sif_from_dockerimage   | script   | generic.local.bash      | ['containers', 'singularity'] | build sif image from docker image docker://godlovedc/lolcow                    |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| build_sandbox_image          | script   | generic.local.bash      | ['containers', 'singularity'] | build sandbox image from docker image docker://godlovedc/lolcow                |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+
+| build_remoteimages           | script   | generic.local.bash      | ['containers', 'singularity'] | build remote hosted image from AWS                                             |
++------------------------------+----------+-------------------------+-------------------------------+--------------------------------------------------------------------------------+

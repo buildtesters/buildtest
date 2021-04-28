@@ -1,0 +1,11 @@
+$ buildtest cdash upload --help
+usage: buildtest [options] [COMMANDS] cdash upload [-h] [--site SITE] [-r REPORT_FILE] buildname
+
+positional arguments:
+  buildname             Specify Build Name reported in CDASH
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --site SITE           Specify site name reported in CDASH
+  -r REPORT_FILE, --report-file REPORT_FILE
+                        Path to report file to upload test results
