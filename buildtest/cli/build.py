@@ -19,7 +19,6 @@ from buildtest import BUILDTEST_VERSION
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.report import update_report
-from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDTEST_USER_HOME, BUILD_REPORT
 from buildtest.exceptions import (
     BuildTestError,

@@ -2,7 +2,6 @@ import os
 import pytest
 from buildtest.cli.cdash import cdash_cmd
 from buildtest.config import SiteConfiguration
-from buildtest.defaults import DEFAULT_SETTINGS_FILE
 
 configuration = SiteConfiguration()
 configuration.get_current_system()

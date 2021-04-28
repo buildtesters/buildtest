@@ -1,6 +1,0 @@
-$ buildtest cdash view --help
-usage: buildtest [options] [COMMANDS] cdash view [-h] [--url URL]
-
-optional arguments:
-  -h, --help  show this help message and exit
-  --url URL   Specify a url to CDASH project
