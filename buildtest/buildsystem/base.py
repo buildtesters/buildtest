@@ -145,6 +145,7 @@ class BuilderBase(ABC):
         self.metadata["stagedir"] = None
         # location of run directory in test root
         self.metadata["rundir"] = None
+        self.metadata["description"] = self.recipe.get("description")
 
         # location of test script
         self.metadata["testpath"] = None

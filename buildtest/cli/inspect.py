@@ -64,9 +64,9 @@ def inspect_list(test_ids):
     """Implements method ``buildtest inspect list``"""
 
     table = {"name": [], "id": []}
-    for id, name in test_ids.items():
+    for identifier, name in test_ids.items():
         table["name"].append(name)
-        table["id"].append(id)
+        table["id"].append(identifier)
 
     if os.getenv("BUILDTEST_COLOR") == "True":
         print(

@@ -443,6 +443,7 @@ def update_report(valid_builders, report_file=BUILD_REPORT):
         for item in [
             "id",
             "full_id",
+            "description",
             "schemafile",
             "executor",
             "compiler",

@@ -40,7 +40,6 @@ class BuildTest:
     def __init__(
         self,
         configuration=None,
-        config_file=None,
         buildspecs=None,
         exclude_buildspecs=None,
         tags=None,
@@ -56,8 +55,6 @@ class BuildTest:
         check, if any argument fails type check we raise an error. If all arguments pass
         we assign the values and proceed with building the test.
 
-        :param config_file: path to configuration file
-        :type config_file: str, required
         :param configuration: Loaded configuration content which is an instance of SiteConfiguration
         :type configuration: SiteConfiguration
         :param buildspecs: list of buildspecs from command line (--buildspec)
@@ -106,17 +103,7 @@ class BuildTest:
         if rebuild and not isinstance(rebuild, int):
             raise BuildTestError(f"{rebuild} is not of type int")
 
-        self.config_file = config_file
         self.configuration = configuration
-
-        # If we pass a configuration file to BuildTest class we check settings which validates configuration file and returns a loaded configuration
-        if self.config_file:
-            bc = SiteConfiguration(self.config_file)
-            bc.get_current_system()
-            bc.validate()
-
-            self.configuration = bc.config
-
         self.buildspecs = buildspecs
         self.exclude_buildspecs = exclude_buildspecs
         self.tags = tags
@@ -418,16 +405,6 @@ class BuildTest:
             )
 
         cache = load_json(BUILDSPEC_CACHE_FILE)
-
-        """
-        with open(BUILDSPEC_CACHE_FILE, "r") as fd:
-            
-            try:
-                cache = json.loads(fd.read())
-            except json.JSONDecodeError as err:
-                print(err)
-                raise BuildTestError(f"Error loading file: {BUILDSPEC_CACHE_FILE} via json.loads please make sure its valid JSON file")
-        """
 
         buildspecs = []
         # query all buildspecs from BUILDSPEC_CACHE_FILE for tags keyword and

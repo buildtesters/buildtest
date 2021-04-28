@@ -98,7 +98,9 @@ def get_parser():
         choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
         help="Enable debugging messages.",
     )
-
+    parser.add_argument(
+        "-c", "--config_file", help="Specify alternate configuration file"
+    )
     subparser_dict = {
         "build": "Options for building test scripts",
         "buildspec": "Options for querying buildspec cache",
@@ -190,9 +192,7 @@ def build_menu(subparsers):
         type=positive_number,
         help="Rebuild test X number of times. Must be a positive number between [1-50]",
     )
-    parser_build.add_argument(
-        "-c", "--config", help="Specify path to buildtest configuration file"
-    )
+
     parser_build.add_argument(
         "-r",
         "--report_file",
@@ -287,7 +287,9 @@ def config_menu(subparsers):
     parser_config = subparsers.add_parser("config")
 
     subparsers_config = parser_config.add_subparsers(
-        description="query information from buildtest configuration file", dest="config"
+        description="query information from buildtest configuration file",
+        dest="config",
+        title="COMMAND",
     )
 
     executors = subparsers_config.add_parser(
@@ -436,7 +438,6 @@ def cdash_menu(subparsers):
     """This method builds arguments for `buildtest cdash` command."""
 
     parser_cdash = subparsers.add_parser("cdash")
-    parser_cdash.add_argument("-c", "--config", help="Path to buildtest configuration")
 
     subparser = parser_cdash.add_subparsers(
         help="subcommands", description="CDASH operations", dest="cdash"
