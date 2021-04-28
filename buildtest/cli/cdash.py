@@ -39,12 +39,6 @@ def cdash_cmd(args, default_configuration=None, open_browser=True):
     #       site: laptop
     configuration = default_configuration
 
-    # if buildtest cdash --config option is specified check the configuration file
-    if args.config:
-        configuration = SiteConfiguration(args.config)
-        configuration.get_current_system()
-        configuration.validate()
-
     if not configuration.target_config:
         sys.exit("Unable to load a configuration file")
 
@@ -180,7 +174,7 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
                         )
                     )
                     test["status"] = "failed"
-
+                test["description"] = test_data["description"]
                 test["command"] = test_data["command"]
                 test["path"] = test_data["testpath"]
                 test["test_content"] = test_data["test_content"]
@@ -270,6 +264,11 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
             name="Return Code",
         )
         ET.SubElement(returncode_measurement, "Value").text = str(test["returncode"])
+
+        description_measurement = ET.SubElement(
+            results_element, "NamedMeasurement", type="text/string", name="description"
+        )
+        ET.SubElement(description_measurement, "Value").text = test["description"]
 
         user_measurement = ET.SubElement(
             results_element, "NamedMeasurement", type="text/string", name="User"
