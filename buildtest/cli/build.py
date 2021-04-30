@@ -49,6 +49,7 @@ class BuildTest:
         rebuild=None,
         buildtest_system=None,
         report_file=None,
+        max_pend_time=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -76,6 +77,8 @@ class BuildTest:
         :type  buildtest_system: BuildTestSystem
         :param report_file: Specify location where report file is written
         :type report_file: str, optional
+        :param max_pend_time: Maximum Pend Time for batch job submission
+        :type report_file: float, optional
         """
 
         if buildspecs and not isinstance(buildspecs, list):
@@ -107,6 +110,7 @@ class BuildTest:
         self.exclude_buildspecs = exclude_buildspecs
         self.tags = tags
         self.executors = executors
+        self.max_pend_time = max_pend_time
 
         # get real path to log directory which accounts for variable expansion, user expansion, and symlinks
         self.logdir = resolve_path(
@@ -139,7 +143,7 @@ class BuildTest:
         self.detected_buildspecs = None
 
         self.builders = None
-        self.buildexecutor = BuildExecutor(self.configuration)
+        self.buildexecutor = BuildExecutor(self.configuration, self.max_pend_time)
         self.system = buildtest_system or system
         self.report_file = resolve_path(report_file, exist=False) or BUILD_REPORT
 

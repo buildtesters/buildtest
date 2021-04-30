@@ -198,6 +198,11 @@ def build_menu(subparsers):
         "--report_file",
         help="Specify a report file where tests will be written.",
     )
+    parser_build.add_argument(
+        "--max-pend-time",
+        type=float,
+        help="Specify Maximum Pending Time for job before cancelling job. This only applies for batch job submission.",
+    )
 
 
 def buildspec_menu(subparsers):
