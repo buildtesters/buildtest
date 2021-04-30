@@ -545,7 +545,7 @@ In test **timelimit_min**, we sleep for 2 seconds and it will pass because minim
 
 .. program-output:: cat docgen/getting_started/runtime-status.txt
 
-If we look at the test results, we expect the first three tests **timelimit_min**, **timelimit_max**, **timelimit_min_max** will
-will pass.
+If we look at the test results, we expect the first three tests **timelimit_min**, **timelimit_max**, **timelimit_min_max**
+will pass while the last two tests fail because it fails to comply with runtime property.
 
 .. program-output:: cat docgen/getting_started/runtime-status-report.txt

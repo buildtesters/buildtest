@@ -13,7 +13,6 @@ import re
 import shutil
 import socket
 import stat
-import sys
 import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
