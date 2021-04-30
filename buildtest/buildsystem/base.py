@@ -13,9 +13,9 @@ import re
 import shutil
 import socket
 import stat
-import sys
 import uuid
 from abc import ABC, abstractmethod
+from pathlib import Path
 from buildtest.buildsystem.batch import (
     SlurmBatchScript,
     LSFBatchScript,
@@ -60,17 +60,14 @@ class BuilderBase(ABC):
         # The type must match the type of the builder
         self.recipe = recipe
 
-        # self.executor = self.recipe.get("executor")
         self.executor = executor
 
         # keeps track of job state as job progress through queuing system. This is
         # applicable for builders using batch executor.
         self.job_state = None
 
-        # ensure buildspec ends with .yml extension
-        assert os.path.basename(buildspec).endswith(".yml")
-
         self.buildspec = buildspec
+        # strip .yml extension from file name
         file_name = re.sub("[.](yml)", "", os.path.basename(buildspec))
         self.testdir = os.path.join(testdir, self.executor, file_name, self.name)
 
@@ -78,12 +75,6 @@ class BuilderBase(ABC):
 
         self.logger.debug(f"Processing Buildspec: {self.buildspec}")
         self.logger.debug(f"Processing Buildspec section: {self.name}")
-
-        # A builder is required to define the type attribute
-        if not hasattr(self, "type"):
-            sys.exit(
-                "A builder base is required to define the 'type' as a class variable"
-            )
 
         # get type attribute from Executor class (local, slurm, cobalt, lsf)
         self.executor_type = buildexecutor.executors[self.executor].type
@@ -205,7 +196,6 @@ class BuilderBase(ABC):
 
         self._build_setup()
         self._write_test()
-        self._create_symlinks()
 
     def _build_setup(self):
         """This method is the setup operation to get ready to build test which
@@ -238,10 +228,14 @@ class BuilderBase(ABC):
 
         # Derive the path to the test script
         self.metadata["testpath"] = "%s.%s" % (
-            os.path.join(self.stage_dir, "generate"),
+            os.path.join(self.stage_dir, self.name),
             self.get_test_extension(),
         )
         self.metadata["testpath"] = os.path.expandvars(self.metadata["testpath"])
+
+        # copy all files relative to buildspec file into stage directory
+        for fname in Path(os.path.dirname(self.buildspec)).glob("*.*"):
+            shutil.copy2(fname, self.stage_dir)
 
     def _get_scheduler_directives(self, bsub, sbatch, cobalt, pbs, batch):
         """Get Scheduler Directives for LSF, Slurm or Cobalt if we are processing
@@ -362,23 +356,6 @@ class BuilderBase(ABC):
             self.metadata["testpath"],
             os.path.join(self.run_dir, os.path.basename(self.metadata["testpath"])),
         )
-
-    def _create_symlinks(self):
-        """This method will retrieve all files relative to buildspec file and
-        create symlinks in destination directory
-        """
-        buildspec_directory = os.path.dirname(self.buildspec)
-        # list all files in current directory where buildspec file resides
-        files = [
-            os.path.join(buildspec_directory, file)
-            for file in os.listdir(buildspec_directory)
-        ]
-
-        # create symlink for all files directory where buildspec file exists
-        for file in files:
-            os.symlink(
-                file, os.path.join(self.metadata["stagedir"], os.path.basename(file))
-            )
 
     def get_environment(self, env):
         """Retrieve a list of environment variables defined in buildspec and
