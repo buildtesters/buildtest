@@ -50,7 +50,7 @@ def positive_number(value):
     """
 
     value = int(value)
-    if value <= 0 or value > 50:
+    if value <= 0:
         raise argparse.ArgumentTypeError(
             f"{value} must be a positive number between [1-50]"
         )
@@ -200,8 +200,8 @@ def build_menu(subparsers):
     )
     parser_build.add_argument(
         "--max-pend-time",
-        type=float,
-        help="Specify Maximum Pending Time for job before cancelling job. This only applies for batch job submission.",
+        type=positive_number,
+        help="Specify Maximum Pending Time (sec) for job before cancelling job. This only applies for batch job submission.",
     )
 
 

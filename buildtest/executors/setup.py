@@ -228,7 +228,10 @@ class BuildExecutor:
         # poll LSF job
         elif executor.type == "lsf":
             # only poll job if its in PENDING or RUNNING state
-            if builder.job_state in ["PEND", "RUN"] or not builder.job_state:
+            if (
+                builder.job_state in ["PEND", "RUN", "PSUSP", "USUSP", "SSUSP"]
+                or not builder.job_state
+            ):
                 executor.poll(builder)
             # only gather result when job state in DONE. This implies job is complete
             elif builder.job_state == "DONE":
@@ -265,11 +268,6 @@ class BuildExecutor:
             elif builder.job_state in ["F"]:
                 executor.gather(builder)
                 poll_info["job_complete"] = True
-            # if job is on hold we cancel it asap
-            elif builder.job_state in ["H"]:
-                executor.cancel(builder)
-                poll_info["job_complete"] = True
-                poll_info["ignore_job"] = True
             else:
                 poll_info["job_complete"] = True
                 poll_info["ignore_job"] = True

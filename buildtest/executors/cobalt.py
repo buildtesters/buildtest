@@ -27,6 +27,11 @@ class CobaltExecutor(BaseExecutor):
     type = "cobalt"
     poll_cmd = "qstat"
 
+    def __init__(self, name, settings, site_configs, max_pend_time=None):
+
+        self.maxpendtime = max_pend_time
+        super().__init__(name, settings, site_configs)
+
     def load(self):
         """Load the a Cobalt executor configuration from buildtest settings."""
 
@@ -39,8 +44,15 @@ class CobaltExecutor(BaseExecutor):
         self.account = self._settings.get("account") or deep_get(
             self._buildtestsettings.target_config, "executors", "defaults", "account"
         )
-        self.max_pend_time = self._settings.get("max_pend_time") or deep_get(
-            self._buildtestsettings, "executors", "defaults", "max_pend_time"
+        self.max_pend_time = (
+            self.maxpendtime
+            or self._settings.get("max_pend_time")
+            or deep_get(
+                self._buildtestsettings.target_config,
+                "executors",
+                "defaults",
+                "max_pend_time",
+            )
         )
 
     def dispatch(self, builder):

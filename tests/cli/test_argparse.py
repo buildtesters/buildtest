@@ -6,13 +6,8 @@ from buildtest.cli import positive_number, handle_kv_string, get_parser
 
 def test_positive_number():
     assert 1 == positive_number(1)
-    assert 50 == positive_number("50")
     with pytest.raises(argparse.ArgumentTypeError) as err:
         positive_number(0)
-        print(err)
-
-    with pytest.raises(argparse.ArgumentTypeError) as err:
-        positive_number(51)
         print(err)
 
 

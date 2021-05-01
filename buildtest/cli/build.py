@@ -102,8 +102,14 @@ class BuildTest:
         if stage and not isinstance(stage, str):
             raise BuildTestError(f"{stage} is not of type str")
 
-        if rebuild and not isinstance(rebuild, int):
-            raise BuildTestError(f"{rebuild} is not of type int")
+        if rebuild:
+            if not isinstance(rebuild, int):
+                raise BuildTestError(f"{rebuild} is not of type int")
+
+            if rebuild > 50:
+                raise BuildTestError(
+                    f"--rebuild {rebuild} exceeds maximum rebuild limit of 50"
+                )
 
         self.configuration = configuration
         self.buildspecs = buildspecs

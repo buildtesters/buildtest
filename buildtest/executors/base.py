@@ -14,7 +14,7 @@ class BaseExecutor:
 
     type = "base"
 
-    def __init__(self, name, settings, site_configs, max_pend_time=None):
+    def __init__(self, name, settings, site_configs):
         """Initiate a base executor, meaning we provide a name (also held
         by the BuildExecutor base that holds it) and the loaded dictionary
         of config opts to parse.
@@ -33,7 +33,6 @@ class BaseExecutor:
         self._buildtestsettings = site_configs
         self.load()
         self.result = {}
-        self.max_pend_time = max_pend_time
 
     def load(self):
         """Load a particular configuration based on the name. This method

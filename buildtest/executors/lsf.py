@@ -51,6 +51,11 @@ class LSFExecutor(BaseExecutor):
         "error_file",
     ]
 
+    def __init__(self, name, settings, site_configs, max_pend_time=None):
+
+        self.maxpendtime = max_pend_time
+        super().__init__(name, settings, site_configs)
+
     def load(self):
         """Load the a LSF executor configuration from buildtest settings."""
 
@@ -61,11 +66,15 @@ class LSFExecutor(BaseExecutor):
         self.account = self._settings.get("account") or deep_get(
             self._buildtestsettings.target_config, "executors", "defaults", "account"
         )
-        self.max_pend_time = self._settings.get("max_pend_time") or deep_get(
-            self._buildtestsettings.target_config,
-            "executors",
-            "defaults",
-            "max_pend_time",
+        self.max_pend_time = (
+            self.maxpendtime
+            or self._settings.get("max_pend_time")
+            or deep_get(
+                self._buildtestsettings.target_config,
+                "executors",
+                "defaults",
+                "max_pend_time",
+            )
         )
         self.queue = self._settings.get("queue")
 
