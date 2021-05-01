@@ -69,6 +69,7 @@ def main():
             testdir=args.testdir,
             buildtest_system=system,
             report_file=args.report_file,
+            max_pend_time=args.max_pend_time,
         )
         cmd.build()
 

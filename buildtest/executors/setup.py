@@ -29,7 +29,7 @@ class BuildExecutor:
     **poll**: This is responsible for invoking ``poll`` method for corresponding executor from the builder object by checking job state
     """
 
-    def __init__(self, site_config):
+    def __init__(self, site_config, max_pend_time=None):
         """Initialize executors, meaning that we provide the buildtest
         configuration that are validated, and can instantiate
         each executor to be available.
@@ -56,6 +56,7 @@ class BuildExecutor:
                     f"{site_config.name}.slurm.{name}",
                     site_config.target_config["executors"]["slurm"][name],
                     site_config,
+                    max_pend_time,
                 )
 
         if site_config.lsfexecutors:
@@ -64,6 +65,7 @@ class BuildExecutor:
                     f"{site_config.name}.lsf.{name}",
                     site_config.target_config["executors"]["lsf"][name],
                     site_config,
+                    max_pend_time,
                 )
 
         if site_config.cobaltexecutors:
@@ -72,6 +74,7 @@ class BuildExecutor:
                     f"{site_config.name}.cobalt.{name}",
                     site_config.target_config["executors"]["cobalt"][name],
                     site_config,
+                    max_pend_time,
                 )
 
         if site_config.pbsexecutors:
@@ -80,6 +83,7 @@ class BuildExecutor:
                     f"{site_config.name}.pbs.{name}",
                     site_config.target_config["executors"]["pbs"][name],
                     site_config,
+                    max_pend_time,
                 )
         self.setup()
 
@@ -224,7 +228,10 @@ class BuildExecutor:
         # poll LSF job
         elif executor.type == "lsf":
             # only poll job if its in PENDING or RUNNING state
-            if builder.job_state in ["PEND", "RUN"] or not builder.job_state:
+            if (
+                builder.job_state in ["PEND", "RUN", "PSUSP", "USUSP", "SSUSP"]
+                or not builder.job_state
+            ):
                 executor.poll(builder)
             # only gather result when job state in DONE. This implies job is complete
             elif builder.job_state == "DONE":
@@ -261,11 +268,6 @@ class BuildExecutor:
             elif builder.job_state in ["F"]:
                 executor.gather(builder)
                 poll_info["job_complete"] = True
-            # if job is on hold we cancel it asap
-            elif builder.job_state in ["H"]:
-                executor.cancel(builder)
-                poll_info["job_complete"] = True
-                poll_info["ignore_job"] = True
             else:
                 poll_info["job_complete"] = True
                 poll_info["ignore_job"] = True
