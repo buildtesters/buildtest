@@ -50,6 +50,7 @@ class BuildTest:
         buildtest_system=None,
         report_file=None,
         max_pend_time=None,
+        poll_interval=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -77,11 +78,13 @@ class BuildTest:
         :type  buildtest_system: BuildTestSystem
         :param report_file: Specify location where report file is written
         :type report_file: str, optional
-        :param max_pend_time: Maximum Pend Time for batch job submission
-        :type report_file: float, optional
+        :param max_pend_time: Maximum Pend Time (sec) for batch job submission
+        :type max_pend_time: int, optional
+        :param poll_interval: Poll Interval (sec) for polling batch jobs
+        :type poll_interval: int, optional
+
         """
 
-        print(logging.__dict__)
         if buildspecs and not isinstance(buildspecs, list):
             raise BuildTestError(f"{buildspecs} is not of type list")
 
@@ -118,6 +121,7 @@ class BuildTest:
         self.tags = tags
         self.executors = executors
         self.max_pend_time = max_pend_time
+        self.poll_interval = poll_interval
 
         # get real path to log directory which accounts for variable expansion, user expansion, and symlinks
         self.logdir = resolve_path(
@@ -927,12 +931,15 @@ class BuildTest:
         :param valid_builders: list of valid builders
         :type valid_builders: list, required
         """
+        # default interval is 30sec for polling jobs if poll interval not set in configuration file or command line
+        default_interval = 30
 
-        interval = deep_get(
+        interval = self.poll_interval or deep_get(
             self.configuration.target_config, "executors", "defaults", "pollinterval"
         )
-        # if no items in poll_queue terminate, this will happen as jobs complete polling
-        # and they are removed from queue.
+
+        if not interval:
+            interval = default_interval
 
         # keep track of ignored jobs by job scheduler these include jobs that failed abnormally or cancelled by scheduler
         ignore_jobs = set()
