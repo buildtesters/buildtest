@@ -234,10 +234,10 @@ class BuilderBase(ABC):
         self.metadata["testpath"] = os.path.expandvars(self.metadata["testpath"])
 
         # copy all files relative to buildspec file into stage directory
-        for fname in Path(os.path.dirname(self.buildspec)).glob("*.*"):
-            if os.path.isdir(fname):
-                shutil.copytree(fname, os.path.join(self.stage_dir, fname))
-            else:
+        for fname in Path(os.path.dirname(self.buildspec)).glob("*"):
+            if fname.is_dir():
+                shutil.copytree(fname, os.path.join(self.stage_dir, os.path.basename(fname)))
+            elif fname.is_file():
                 shutil.copy2(fname, self.stage_dir)
 
     def _get_scheduler_directives(self, bsub, sbatch, cobalt, pbs, batch):
