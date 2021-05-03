@@ -81,6 +81,7 @@ class BuildTest:
         :type report_file: float, optional
         """
 
+        print(logging.__dict__)
         if buildspecs and not isinstance(buildspecs, list):
             raise BuildTestError(f"{buildspecs} is not of type list")
 
