@@ -1,8 +1,6 @@
 """Entry point for buildtest"""
 
-import logging
 import os
-import sys
 import webbrowser
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import (
@@ -68,6 +66,7 @@ def main():
             buildtest_system=system,
             report_file=args.report_file,
             max_pend_time=args.max_pend_time,
+            poll_interval=args.poll_interval,
         )
         cmd.build()
 

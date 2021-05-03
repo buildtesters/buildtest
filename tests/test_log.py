@@ -1,6 +1,5 @@
-import logging
 import tempfile
-from buildtest.log import init_logfile, LOG_FORMATTER
+from buildtest.log import init_logfile
 from buildtest.utils.file import read_file
 
 

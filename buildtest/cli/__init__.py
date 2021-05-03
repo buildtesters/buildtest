@@ -198,6 +198,11 @@ def build_menu(subparsers):
         type=positive_number,
         help="Specify Maximum Pending Time (sec) for job before cancelling job. This only applies for batch job submission.",
     )
+    parser_build.add_argument(
+        "--poll-interval",
+        type=positive_number,
+        help="Specify Poll Interval (sec) for polling batch jobs",
+    )
 
 
 def buildspec_menu(subparsers):
