@@ -235,7 +235,10 @@ class BuilderBase(ABC):
 
         # copy all files relative to buildspec file into stage directory
         for fname in Path(os.path.dirname(self.buildspec)).glob("*.*"):
-            shutil.copy2(fname, self.stage_dir)
+            if os.path.isdir(fname):
+                shutil.copytree(fname, os.path.join(self.stage_dir, fname))
+            else:
+                shutil.copy2(fname, self.stage_dir)
 
     def _get_scheduler_directives(self, bsub, sbatch, cobalt, pbs, batch):
         """Get Scheduler Directives for LSF, Slurm or Cobalt if we are processing
