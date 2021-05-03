@@ -92,12 +92,7 @@ def get_parser():
         action="version",
         version=f"%(prog)s version {BUILDTEST_VERSION}",
     )
-    parser.add_argument(
-        "-d",
-        "--debug",
-        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
-        help="Enable debugging messages.",
-    )
+
     parser.add_argument(
         "-c", "--config_file", help="Specify alternate configuration file"
     )

@@ -1,6 +1,8 @@
 """Entry point for buildtest"""
 
+import logging
 import os
+import sys
 import webbrowser
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import (
@@ -12,7 +14,7 @@ from buildtest.defaults import (
 from buildtest.cli import get_parser
 from buildtest.cli.build import BuildTest
 from buildtest.system import BuildTestSystem
-from buildtest.log import buildtest_logger
+from buildtest.log import init_logfile
 from buildtest.utils.file import create_dir, resolve_path
 
 # column width for linewrap for argparse library
@@ -28,16 +30,12 @@ def main():
     parser = get_parser()
     args, extras = parser.parse_known_args()
 
+    logger = init_logfile()
+
     # if no commands just print the help message and return.
     if not args.subcommands:
         print(parser.print_help())
         return
-
-    if args.debug:
-        buildtest_logger.add_streamhandler(level=args.debug)
-
-    logger = buildtest_logger
-    logger.info("Starting buildtest log")
 
     create_dir(BUILDTEST_USER_HOME)
     create_dir(BUILDTEST_VAR_DIR)
