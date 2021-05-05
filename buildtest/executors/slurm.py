@@ -3,15 +3,19 @@ This module implements the SlurmExecutor class responsible for submitting
 jobs to Slurm Scheduler. This class is called in class BuildExecutor
 when initializing the executors.
 """
+import logging
 import os
 import re
 import shutil
 
 from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
+from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import read_file
 from buildtest.utils.tools import deep_get
+
+logger = logging.getLogger(__name__)
 
 
 class SlurmExecutor(BaseExecutor):
@@ -284,3 +288,78 @@ class SlurmExecutor(BaseExecutor):
         msg = f"Cancelling Job: {builder.metadata['name']} running command: {query}"
         print(msg)
         self.logger.debug(msg)
+
+
+class SlurmJob(Job):
+    def __init__(self, jobID, cluster=None):
+        super().__init__(jobID)
+        self.cluster = cluster
+
+    def is_pending(self):
+        return self._state == "PENDING"
+
+    def is_running(self):
+        return self._state == "RUNNING"
+
+    def is_suspended(self):
+        return self._state == "SUSPENDED"
+
+    def is_cancelled(self):
+        return self._state == "CANCELLED"
+
+    def is_complete(self):
+        return self._state == "COMPLETED"
+
+    def is_failed(self):
+        return self._state == "FAILED"
+
+    def is_out_of_memory(self):
+        return self._state == "OUT_OF_MEMORY"
+
+    def is_timeout(self):
+        return self._state == "TIMEOUT"
+
+    def cancel(self):
+        query = f"scancel {self.jobid}"
+        if self.cluster:
+            query = f"scancel {self.jobid} --clusters={self.cluster}"
+
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        logger.debug(f"Cancelling Job: {self.jobid} by running: {query}")
+
+        self.poll()
+        # output in form CANCELLED by <uid>
+        if re.match("^(CANCELLED)", self.state):
+            self._state = "CANCELLED"
+
+    def poll(self):
+
+        query = f"sacct -j {self.jobid} -o State -n -X -P"
+        if self.cluster:
+            query = f"sacct -j {self.jobid} -o State -n -X -P --clusters={self.cluster}"
+
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+
+        job_state = cmd.get_output()
+        self._state = "".join(job_state).rstrip()
+
+        query = f"sacct -j {self.jobid} -X -n -P -o ExitCode,Workdir"
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        out = "".join(cmd.get_output()).rstrip()
+        print(out)
+        exitcode, workdir = out.split("|")
+        # Exit code in form <returncode>:<signal>
+        self._exitcode = exitcode.split(":")[0]
+        self._workdir = workdir
+
+    def state(self):
+        return self._state
+
+    def workdir(self):
+        return self._workdir
+
+    def exitcode(self):
+        return self._exitcode

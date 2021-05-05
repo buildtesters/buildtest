@@ -227,6 +227,21 @@ class BuildExecutor:
 
         # poll LSF job
         elif executor.type == "lsf":
+            if (
+                builder.job.is_pending()
+                or builder.job.is_running()
+                or builder.job.is_suspended()
+                or not builder.job.state()
+            ):
+                executor.poll(builder)
+            elif builder.job.is_complete():
+                executor.gather(builder)
+                poll_info["job_complete"] = True
+            else:
+                poll_info["job_complete"] = True
+                poll_info["ignore_job"] = True
+
+            """ --- REMOVE LINES BELOW
             # only poll job if its in PENDING or RUNNING state
             if (
                 builder.job_state in ["PEND", "RUN", "PSUSP", "USUSP", "SSUSP"]
@@ -242,6 +257,7 @@ class BuildExecutor:
             else:
                 poll_info["job_complete"] = True
                 poll_info["ignore_job"] = True
+            """
 
         elif executor.type == "cobalt":
 

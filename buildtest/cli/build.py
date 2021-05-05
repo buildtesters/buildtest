@@ -995,13 +995,15 @@ class BuildTest:
                 completed_jobs_table["name"].append(job.name)
                 completed_jobs_table["executor"].append(job.executor)
                 completed_jobs_table["jobID"].append(job.metadata["jobid"])
-                completed_jobs_table["jobstate"].append(job.job_state)
+                # completed_jobs_table["jobstate"].append(job.job_state)
+                completed_jobs_table["jobstate"].append(job.job.state())
 
             for job in poll_queue:
                 pending_jobs_table["name"].append(job.name)
                 pending_jobs_table["executor"].append(job.executor)
                 pending_jobs_table["jobID"].append(job.metadata["jobid"])
-                pending_jobs_table["jobstate"].append(job.job_state)
+                # pending_jobs_table["jobstate"].append(job.job_state)
+                pending_jobs_table["jobstate"].append(job.job.state())
 
             print("\n")
             print("Completed Jobs")

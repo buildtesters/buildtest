@@ -1,14 +1,18 @@
 """This module implements PBSExecutor class that defines how executors submit
 job to PBS Scheduler"""
+import logging
 import json
 import os
 
 
 from buildtest.executors.base import BaseExecutor
 from buildtest.exceptions import ExecutorError
+from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import read_file
 from buildtest.utils.tools import deep_get
+
+logger = logging.getLogger(__name__)
 
 
 class PBSExecutor(BaseExecutor):
@@ -225,3 +229,55 @@ class PBSExecutor(BaseExecutor):
         msg = f"Cancelling Job: {builder.metadata['name']} running command: {query}"
         print(msg)
         self.logger.debug(msg)
+
+
+class PBSJob(Job):
+    def __init__(self, jobID):
+        super().__init__(jobID)
+
+    def is_pending(self):
+        return self._state == "Q"
+
+    def is_running(self):
+        return self._state == "R"
+
+    def is_complete(self):
+        return self._state == "F"
+
+    def is_suspended(self):
+        return self._state in ["PSUSP", "USUSP", "SSUSP"]
+
+    def is_failed(self):
+        return self._state == "EXIT"
+
+    def poll(self):
+        query = f"qstat -x -f -F json {self.jobid}"
+
+        logger.debug(query)
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        output = " ".join(cmd.get_output())
+        job_data = json.loads(output)
+
+        self._state = job_data["Jobs"][self.jobid]["job_state"]
+        # output in the form of pbs:<path>
+        self._outfile = job_data["Jobs"][self.jobid]["Output_Path"].split(":")[1]
+        self._errfile = job_data["Jobs"][self.jobid]["Error_Path"].split(":")[1]
+
+        # The Exit_status property will be available when job is finished
+        self._exitcode = job_data["Jobs"][self.jobid].get("Exit_status")
+
+    def cancel(self):
+        query = f"qdel {self.jobid}"
+        logger.debug(f"Cancelling job {self.jobid} by running: {query}")
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+
+    def output_file(self):
+        return self._outfile
+
+    def error_file(self):
+        return self._errfile
+
+    def exitcode(self):
+        return self._exitcode

@@ -4,15 +4,20 @@ jobs to LSF Scheduler. This class is called in class BuildExecutor
 when initializing the executors.
 """
 
+import logging
 import json
 import os
 import subprocess
 import time
+from pprint import pprint
 from buildtest.executors.base import BaseExecutor
+from buildtest.executors.job import Job
 from buildtest.exceptions import ExecutorError
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import read_file
 from buildtest.utils.tools import deep_get
+
+logger = logging.getLogger(__name__)
 
 
 class LSFExecutor(BaseExecutor):
@@ -85,9 +90,6 @@ class LSFExecutor(BaseExecutor):
         :type builder: BuilderBase, required
         """
 
-        # The job_id variable is used to store the JobID retrieved by bjobs
-        self.job_id = 0
-
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to stage directory {builder.stage_dir}")
 
@@ -129,9 +131,11 @@ class LSFExecutor(BaseExecutor):
         # get last job ID
         self.logger.debug(f"[Acquire Job ID]: {cmd}")
         output = subprocess.check_output(cmd, shell=True, universal_newlines=True)
-        self.job_id = int(output.strip())
+        job_id = int(output.strip())
 
-        builder.metadata["jobid"] = self.job_id
+        builder.job = LSFJob(job_id)
+
+        builder.metadata["jobid"] = job_id
 
         msg = f"[{builder.metadata['name']}] JobID: {builder.metadata['jobid']} dispatched to scheduler"
         self.logger.debug(msg)
@@ -146,7 +150,27 @@ class LSFExecutor(BaseExecutor):
         :type builder: BuilderBase, required
         """
 
+        builder.job.poll()
+
+        if builder.job.is_suspended() or builder.job.is_pending():
+            builder.stop()
+            self.logger.debug(f"Time Duration: {builder.duration}")
+            self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
+
+            # if timer time is more than requested pend time then cancel job
+            if int(builder.duration) > self.max_pend_time:
+                builder.job.cancel()
+
+                print(
+                    "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
+                        builder.duration, self.max_pend_time
+                    )
+                )
+            builder.start()
+
+        """
         self.logger.debug(f"Query Job: {builder.metadata['jobid']}")
+
 
         query = f"{self.poll_cmd} -noheader -o 'stat' {builder.metadata['jobid']}"
 
@@ -179,6 +203,7 @@ class LSFExecutor(BaseExecutor):
                 )
 
             builder.start()
+        """
 
     def gather(self, builder):
         """Gather Job detail after completion of job. This method will retrieve output
@@ -248,3 +273,68 @@ class LSFExecutor(BaseExecutor):
         msg = f"Cancelling Job: {builder.metadata['name']} running command: {query}"
         print(msg)
         self.logger.debug(msg)
+
+
+class LSFJob(Job):
+    def __init__(self, jobID):
+        super().__init__(jobID)
+
+    def is_pending(self):
+        return self._state == "PEND"
+
+    def is_running(self):
+        return self._state == "RUN"
+
+    def is_complete(self):
+        return self._state == "DONE"
+
+    def is_suspended(self):
+        return self._state in ["PSUSP", "USUSP", "SSUSP"]
+
+    def is_failed(self):
+        return self._state == "EXIT"
+
+    def poll(self):
+        query = f"bjobs -noheader -o 'stat' {self.jobid}"
+
+        logger.debug(query)
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        job_state = cmd.get_output()
+        self._state = "".join(job_state).rstrip()
+
+        query = f"bjobs -noheader -o 'output_file' {self.jobid} "
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        self._outfile = "".join(cmd.get_output()).rstrip()
+
+        query = f"bjobs -noheader -o 'error_file' {self.jobid} "
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        self._errfile = "".join(cmd.get_output()).rstrip()
+
+        query = f"bjobs -noheader -o 'EXIT_CODE' {self.jobid} "
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        output = "".join(cmd.get_output()).rstrip()
+
+        # for 0 or negative exit code output is in form "-" otherwise set value retrieved by bjobs
+        try:
+            self.exitcode = int(output)
+        except ValueError:
+            self.exitcode = 0
+
+    def cancel(self):
+        query = f"bkill {self.jobid}"
+        logger.debug(f"Cancelling job {self.jobid} by running: {query}")
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+
+    def output_file(self):
+        return self._outfile
+
+    def error_file(self):
+        return self._errfile
+
+    def exitcode(self):
+        return self._exitcode
