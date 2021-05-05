@@ -146,7 +146,7 @@ class SlurmExecutor(BaseExecutor):
         else:
             builder.metadata["jobid"] = int(parse_jobid)
 
-        builder.job = SlurmJob(self.metata["jobid"], self.cluster)
+        builder.job = SlurmJob(builder.metadata["jobid"], self.cluster)
 
         msg = f"[{builder.metadata['name']}] JobID: {builder.metadata['jobid']} dispatched to scheduler"
         print(msg)
@@ -276,7 +276,6 @@ class SlurmExecutor(BaseExecutor):
             builder.job.workdir(), builder.metadata["name"] + ".err"
         )
 
-        builder.job.workdir()
 
         """
         builder.metadata["outfile"] = os.path.join(
@@ -381,9 +380,7 @@ class SlurmJob(Job):
         logger.debug(f"Cancelling Job: {self.jobid} by running: {query}")
 
         self.poll()
-        # output in form CANCELLED by <uid>
-        if re.match("^(CANCELLED)", self.state):
-            self._state = "CANCELLED"
+        self._state = "CANCELLED"
 
     def poll(self):
 
@@ -443,16 +440,15 @@ class SlurmJob(Job):
         if self.cluster:
             query += f" --clusters={self.cluster}"
 
-        self.logger.debug(f"Gather slurm job data by running: {query}")
-        cmd = BuildTestCommand(gather_cmd)
+        logger.debug(f"Gather slurm job data by running: {query}")
+        cmd = BuildTestCommand(query)
         cmd.execute()
         out = "".join(cmd.get_output())
         # split by | since
         out = out.split("|")
         job_data = {}
 
-        logger.debug(f"[{builder.name}] Job Results:")
-        for field, value in zip(self.sacct_fields, out):
+        for field, value in zip(sacct_fields, out):
             job_data[field] = value
 
         return job_data

@@ -214,7 +214,7 @@ class BuildExecutor:
                 or builder.job.is_running()
                 or not builder.job.state()
             ):
-                executor.poll()
+                executor.poll(builder)
             elif builder.job.complete():
                 executor.gather(builder)
                 poll_info["job_complete"] = True
