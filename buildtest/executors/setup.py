@@ -208,6 +208,21 @@ class BuildExecutor:
 
         # poll Slurm job
         if executor.type == "slurm":
+            if (
+                builder.job.is_pending()
+                or builder.job.is_suspended()
+                or builder.job.is_running()
+                or not builder.job.state()
+            ):
+                executor.poll()
+            elif builder.job.complete():
+                executor.gather(builder)
+                poll_info["job_complete"] = True
+            else:
+                poll_info["job_complete"] = True
+                poll_info["ignore_job"] = True
+
+            """
             # only poll job if its in PENDING or RUNNING state
             if builder.job_state in ["PENDING", "RUNNING"] or not builder.job_state:
                 executor.poll(builder)
@@ -224,6 +239,7 @@ class BuildExecutor:
             else:
                 poll_info["job_complete"] = True
                 poll_info["ignore_job"] = True
+            """
 
         # poll LSF job
         elif executor.type == "lsf":
