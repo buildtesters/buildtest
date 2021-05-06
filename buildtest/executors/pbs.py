@@ -106,10 +106,13 @@ class PBSExecutor(BaseExecutor):
 
         builder.metadata["jobid"] = self.job_id
 
+        builder.job = PBSJob(builder.metadata["jobid"])
+
         msg = f"[{builder.metadata['name']}] JobID: {builder.metadata['jobid']} dispatched to scheduler"
         print(msg)
         self.logger.debug(msg)
 
+        """
         qstat_cmd = f"{self.poll_cmd} -f -F json {builder.metadata['jobid']}"
         cmd = BuildTestCommand(qstat_cmd)
         cmd.execute()
@@ -124,6 +127,7 @@ class PBSExecutor(BaseExecutor):
         builder.metadata["errfile"] = job_data["Jobs"][self.job_id]["Error_Path"].split(
             ":"
         )[1]
+        """
 
     def poll(self, builder):
         """This method is responsible for polling Cobalt job, we check the
@@ -137,6 +141,30 @@ class PBSExecutor(BaseExecutor):
         :type builder: BuilderBase, required
         """
 
+        builder.job.poll()
+
+        builder.metadata["outfile"] = builder.job.output_file()
+        builder.metadata["errfile"] = builder.job.error_file()
+
+        # if job in pending state (Q) check if it exceeds max_pend_time if so cancel job
+        if builder.job.is_pending() or builder.job.is_suspended():
+            builder.stop()
+            self.logger.debug(f"Time Duration: {builder.duration}")
+            self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
+
+            # if timer time is more than requested pend time then cancel job
+            if int(builder.duration) > self.max_pend_time:
+                builder.job.cancel()
+                builder.job_state = "CANCELLED"
+                print(
+                    "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
+                        builder.duration, self.max_pend_time
+                    )
+                )
+
+            builder.start()
+
+        """
         self.logger.debug(f"Query Job: {builder.metadata['jobid']}")
         # run qstat -f -F json <jobid>
         qstat_cmd = f"{self.poll_cmd} -x -f -F json {builder.metadata['jobid']}"
@@ -150,7 +178,7 @@ class PBSExecutor(BaseExecutor):
 
         self.logger.debug("Job record")
         self.logger.debug(json.dumps(job_data, indent=2))
-
+        
         job_state = job_data["Jobs"][builder.metadata["jobid"]]["job_state"]
 
         if job_state:
@@ -162,7 +190,7 @@ class PBSExecutor(BaseExecutor):
             builder.metadata["jobid"],
             builder.job_state,
         )
-
+      
         # if job in pending state (Q) check if it exceeds max_pend_time if so cancel job
         if builder.job_state == "Q":
             builder.stop()
@@ -180,6 +208,7 @@ class PBSExecutor(BaseExecutor):
                 )
 
             builder.start()
+          """
 
     def gather(self, builder):
         """This method is responsible for getting output of job using `qstat -x -f -F json <jobID>`
@@ -232,6 +261,8 @@ class PBSExecutor(BaseExecutor):
 
 
 class PBSJob(Job):
+    """See https://www.altair.com/pdfs/pbsworks/PBSReferenceGuide2021.1.pdf section 8.1 for Job State Codes"""
+
     def __init__(self, jobID):
         super().__init__(jobID)
 
@@ -245,10 +276,21 @@ class PBSJob(Job):
         return self._state == "F"
 
     def is_suspended(self):
-        return self._state in ["PSUSP", "USUSP", "SSUSP"]
+        return self._state in ["H", "U", "S"]
 
-    def is_failed(self):
-        return self._state == "EXIT"
+    def success(self):
+        """This method determines if job was completed successfully. According to https://www.altair.com/pdfs/pbsworks/PBSAdminGuide2021.1.pdf
+        section 14.9 Job Exit Status Codes we have the following:
+            Exit Code:  X < 0         - Job could not be executed
+            Exit Code: 0 <= X < 128   -  Exit value of Shell or top-level process
+            Exit Code: X >= 128       - Job was killed by signal
+
+            Exit Code 0 is a success
+        """
+        return self._exitcode == 0
+
+    def fail(self):
+        return not self.success()
 
     def poll(self):
         query = f"qstat -x -f -F json {self.jobid}"

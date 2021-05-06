@@ -100,9 +100,9 @@ class CobaltExecutor(BaseExecutor):
         parse_jobid = " ".join(parse_jobid)
 
         # convert JobID into integer
-        self.job_id = int(parse_jobid)
+        builder.metadata["jobid"] = int(parse_jobid)
 
-        builder.metadata["jobid"] = self.job_id
+        builder.job = CobaltJob(builder.metadata["jobid"])
 
         msg = f"[{builder.metadata['name']}] JobID: {builder.metadata['jobid']} dispatched to scheduler"
         print(msg)
@@ -111,10 +111,18 @@ class CobaltExecutor(BaseExecutor):
         # output and error file in format <JOBID>.output and <JOBID>.error we set full path to file. By
         # default Cobalt will write file into current directory where job is submitted. We assume output and error
         # file names are not set in job script
+        """ DELETE THIS SECTION
         outfile = str(builder.metadata["jobid"]) + ".output"
         errfile = str(builder.metadata["jobid"]) + ".error"
         builder.metadata["outfile"] = os.path.join(builder.stage_dir, outfile)
         builder.metadata["errfile"] = os.path.join(builder.stage_dir, errfile)
+        """
+        builder.metadata["outfile"] = os.path.join(
+            builder.stage_dir, builder.job.output_file()
+        )
+        builder.metadata["errfile"] = os.path.join(
+            builder.stage_dir, builder.job.error_file()
+        )
 
         self.logger.debug(
             f"Output file will be written to: {builder.metadata['outfile']}"
@@ -122,7 +130,7 @@ class CobaltExecutor(BaseExecutor):
         self.logger.debug(
             f"Error file will be written to: {builder.metadata['errfile']}"
         )
-
+        """
         # 'qstat -lf <jobid>' will get all fields of Job.
         qstat_cmd = f"{self.poll_cmd} -lf {builder.metadata['jobid']}"
         self.logger.debug(f"Executing command: {qstat_cmd}")
@@ -137,9 +145,11 @@ class CobaltExecutor(BaseExecutor):
             key = key.strip()
             value = value.strip()
             job_record[key] = value
-
         self.logger.debug(json.dumps(job_record, indent=2))
         builder.metadata["job"] = job_record
+        """
+        builder.metadata["job"] = builder.job.gather()
+        self.logger.debug(json.dumps(builder.metadata["job"], indent=2))
 
     def poll(self, builder):
         """This method is responsible for polling Cobalt job, we check the
@@ -153,6 +163,31 @@ class CobaltExecutor(BaseExecutor):
         :type builder: BuilderBase, required
         """
 
+        builder.job.poll()
+        # Cobalt job can disappear if job is complete so we check if either outputfile exists
+        # or job is complete to mark job finished.
+        if shutil.which(builder.metadata["outfile"]) or builder.job.is_complete():
+            builder.job_state = "exiting"
+            self.gather(builder)
+            return
+
+        if builder.job.is_pending() or builder.job.is_suspended():
+            builder.stop()
+            self.logger.debug(f"Time Duration: {builder.duration}")
+            self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
+
+            # if timer time is more than requested pend time then cancel job
+            if int(builder.duration) > self.max_pend_time:
+                builder.job.cancel()
+                builder.job_state = builder.job.state()
+                print(
+                    "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
+                        builder.duration, self.max_pend_time
+                    )
+                )
+
+            builder.start()
+        """
         self.logger.debug(f"Query Job: {builder.metadata['jobid']}")
 
         # get Job State by running 'qstat -l --header <jobid>'
@@ -176,7 +211,8 @@ class CobaltExecutor(BaseExecutor):
             builder.metadata["jobid"],
             builder.job_state,
         )
-
+        
+        
         # additional check to see if job outputfile is written to file system.
         # If job is in 'exiting' state we assume job is now finished, qstat will remove
         # completed job and it can't be polled so it is likely self.job_state is undefined
@@ -201,6 +237,7 @@ class CobaltExecutor(BaseExecutor):
                 )
 
             builder.start()
+        """
 
     def gather(self, builder):
         """This method is responsible for moving output and error file in the run
@@ -215,10 +252,7 @@ class CobaltExecutor(BaseExecutor):
 
         builder.metadata["output"] = read_file(builder.metadata["outfile"])
         builder.metadata["error"] = read_file(builder.metadata["errfile"])
-
-        cobaltlog = os.path.join(
-            builder.stage_dir, str(builder.metadata["jobid"]) + ".cobaltlog"
-        )
+        cobaltlog = os.path.join(builder.stage_dir, builder.job.cobalt_log())
 
         self.end_time(builder)
 
@@ -251,3 +285,85 @@ class CobaltExecutor(BaseExecutor):
         msg = f"Cancelling Job: {builder.metadata['name']} running command: {query}"
         print(msg)
         self.logger.debug(msg)
+
+
+class CobaltJob(Job):
+    def __init__(self, jobID):
+        super().__init__(jobID)
+        self._outfile = str(jobID) + ".output"
+        self._errfile = str(jobID) + ".error"
+        self._cobaltlog = str(jobID) + ".cobaltlog"
+
+    def is_pending(self):
+        return self._state == "queued"
+
+    def is_running(self):
+        return self._state == "running"
+
+    def is_complete(self):
+        return self._state == "exiting"
+
+    def is_suspended(self):
+        return self._state == "user_hold"
+
+    def is_cancelled(self):
+        return self._state == "cancelled"
+
+    def poll(self):
+
+        # get Job State by running 'qstat -l --header <jobid>'
+        query = f"{self.poll_cmd} -l --header State {builder.metadata['jobid']}"
+        logger.debug(f"Executing command: {query}")
+        cmd = BuildTestCommand(qstat_cmd)
+        cmd.execute()
+        output = cmd.get_output()
+
+        output = " ".join(output).strip()
+
+        # Output in format State: <state> so we need to get value of state
+        job_state = output.partition(":")[2].strip()
+
+        if job_state:
+            builder.job_state = job_state
+
+    def gather(self):
+        # 'qstat -lf <jobid>' will get all fields of Job.
+        qstat_cmd = f"qstat -lf {self.jobid}"
+        logger.debug(f"Executing command: {qstat_cmd}")
+        cmd = BuildTestCommand(qstat_cmd)
+        cmd.execute()
+        output = cmd.get_output()
+
+        job_record = {}
+        # The output if in format KEY: VALUE so we store all records in a dictionary
+        for line in output:
+            key, sep, value = line.partition(":")
+            key = key.strip()
+            value = value.strip()
+            job_record[key] = value
+
+        return job_record
+
+    def cancel(self):
+        """Cancel Cobalt job. Upon cancelling job, we can't retrieve job record via `qstat` to get its state therefore, we
+        make up an arbitrary state name ``cancelled`` and assign this to `self._state`.
+        """
+
+        query = f"qdel {self.jobid}"
+        logger.debug(f"Cancelling job {self.jobid} by running: {query}")
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+
+        self._state = "cancelled"
+
+    def cobalt_log(self):
+        return self._cobaltlog
+
+    def output_file(self):
+        return self._outfile
+
+    def error_file(self):
+        return self._errfile
+
+    def exitcode(self):
+        return self._exitcode
