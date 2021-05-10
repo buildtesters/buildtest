@@ -32,29 +32,6 @@ class LSFExecutor(BaseExecutor):
 
     type = "lsf"
 
-    poll_cmd = "bjobs"
-    # format fields we retrieve in gather step
-    format_fields = [
-        "job_name",
-        "stat",
-        "user",
-        "user_group",
-        "queue",
-        "proj_name",
-        "pids",
-        "exit_code",
-        "from_host",
-        "exec_host",
-        "submit_time",
-        "start_time",
-        "finish_time",
-        "nthreads",
-        "exec_home",
-        "exec_cwd",
-        "output_file",
-        "error_file",
-    ]
-
     def __init__(self, name, settings, site_configs, max_pend_time=None):
 
         self.maxpendtime = max_pend_time
@@ -176,41 +153,16 @@ class LSFExecutor(BaseExecutor):
         :type builder: BuilderBase, required
         """
 
-        # bjobs gather command to extract format fields and convert output to JSON
-        gather_cmd = f"{self.poll_cmd} -o '{' '.join(self.format_fields)}' {builder.metadata['jobid']} -json"
-
-        self.logger.debug(f"Gather LSF job data by running: {gather_cmd}")
-        cmd = BuildTestCommand(gather_cmd)
-        cmd.execute()
-        out = cmd.get_output()
-        out = "".join(out).rstrip()
-
-        out = json.loads(out)
-
-        job_data = {}
-
-        self.logger.debug(f"[{builder.name}] Job Results:")
-        records = out["RECORDS"][0]
-        for field, value in records.items():
-            job_data[field] = value
-            self.logger.debug(f"field: {field}   value: {value}")
-
-        builder.metadata["job"] = job_data
-
-        # Exit Code field is in format <ExitCode>:<Signal> for now we care only
-        # about first number
-        if job_data["EXIT_CODE"] == "":
-            builder.metadata["result"]["returncode"] = 0
-        else:
-            builder.metadata["result"]["returncode"] = int(job_data["EXIT_CODE"])
+        builder.metadata["job"] = builder.job.gather()
+        builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
         self.end_time(builder)
 
         builder.metadata["outfile"] = os.path.join(
-            builder.stage_dir, job_data["OUTPUT_FILE"]
+            builder.stage_dir, builder.job.output_file()
         )
         builder.metadata["errfile"] = os.path.join(
-            builder.stage_dir, job_data["ERROR_FILE"]
+            builder.stage_dir, builder.job.error_file()
         )
 
         builder.metadata["output"] = read_file(builder.metadata["outfile"])
@@ -221,23 +173,8 @@ class LSFExecutor(BaseExecutor):
         )
         self.check_test_state(builder)
 
-    def cancel(self, builder):
-        """Cancel LSF job, this is required if job exceeds max pending time in queue.
-
-        :param builder: builder object
-        :type builder: BuilderBase, required
-        """
-
-        query = f"bkill {builder.metadata['jobid']}"
-
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        msg = f"Cancelling Job: {builder.metadata['name']} running command: {query}"
-        print(msg)
-        self.logger.debug(msg)
-
-
 class LSFJob(Job):
+
     def __init__(self, jobID):
         super().__init__(jobID)
 
@@ -255,6 +192,15 @@ class LSFJob(Job):
 
     def is_failed(self):
         return self._state == "EXIT"
+
+    def output_file(self):
+        return self._outfile
+
+    def error_file(self):
+        return self._errfile
+
+    def exitcode(self):
+        return self._exitcode
 
     def poll(self):
         query = f"bjobs -noheader -o 'stat' {self.jobid}"
@@ -282,21 +228,51 @@ class LSFJob(Job):
 
         # for 0 or negative exit code output is in form "-" otherwise set value retrieved by bjobs
         try:
-            self.exitcode = int(output)
+            self._exitcode = int(output)
         except ValueError:
-            self.exitcode = 0
+            self._exitcode = 0
+
+    def gather(self):
+        format_fields = [
+            "job_name",
+            "stat",
+            "user",
+            "user_group",
+            "queue",
+            "proj_name",
+            "pids",
+            "exit_code",
+            "from_host",
+            "exec_host",
+            "submit_time",
+            "start_time",
+            "finish_time",
+            "nthreads",
+            "exec_home",
+            "exec_cwd",
+            "output_file",
+            "error_file",
+        ]
+        query = f"bjobs -o '{' '.join(format_fields)}' {self.jobid} -json"
+
+        logger.debug(f"Gather LSF job data by running: {query}")
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        out = cmd.get_output()
+        out = "".join(out).rstrip()
+
+        out = json.loads(out)
+
+        job_data = {}
+
+        records = out["RECORDS"][0]
+        for field, value in records.items():
+            job_data[field] = value
+
+        return job_data
 
     def cancel(self):
         query = f"bkill {self.jobid}"
         logger.debug(f"Cancelling job {self.jobid} by running: {query}")
         cmd = BuildTestCommand(query)
         cmd.execute()
-
-    def output_file(self):
-        return self._outfile
-
-    def error_file(self):
-        return self._errfile
-
-    def exitcode(self):
-        return self._exitcode

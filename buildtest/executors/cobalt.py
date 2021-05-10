@@ -223,6 +223,18 @@ class CobaltJob(Job):
     def is_cancelled(self):
         return self._state == "cancelled"
 
+    def cobalt_log(self):
+        return self._cobaltlog
+
+    def output_file(self):
+        return self._outfile
+
+    def error_file(self):
+        return self._errfile
+
+    def exitcode(self):
+        return self._exitcode
+
     def poll(self):
 
         # get Job State by running 'qstat -l --header <jobid>'
@@ -269,15 +281,3 @@ class CobaltJob(Job):
         cmd.execute()
 
         self._state = "cancelled"
-
-    def cobalt_log(self):
-        return self._cobaltlog
-
-    def output_file(self):
-        return self._outfile
-
-    def error_file(self):
-        return self._errfile
-
-    def exitcode(self):
-        return self._exitcode

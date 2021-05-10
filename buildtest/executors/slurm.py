@@ -239,6 +239,15 @@ class SlurmJob(Job):
             ]
         )
 
+    def state(self):
+        return self._state
+
+    def workdir(self):
+        return self._workdir
+
+    def exitcode(self):
+        return self._exitcode
+
     def cancel(self):
         query = f"scancel {self.jobid}"
         if self.cluster:
@@ -321,12 +330,3 @@ class SlurmJob(Job):
             job_data[field] = value
 
         return job_data
-
-    def state(self):
-        return self._state
-
-    def workdir(self):
-        return self._workdir
-
-    def exitcode(self):
-        return self._exitcode

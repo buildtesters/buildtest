@@ -160,24 +160,11 @@ class PBSExecutor(BaseExecutor):
         :type builder: BuilderBase, required
         """
 
-        qstat_cmd = f"{self.poll_cmd} -x -f -F json {builder.metadata['jobid']}"
-
-        self.logger.debug(f"Executing command: {qstat_cmd}")
-        cmd = BuildTestCommand(qstat_cmd)
-        cmd.execute()
-        output = cmd.get_output()
-        output = " ".join(output)
-
-        job_data = json.loads(output)
-
-        builder.metadata["result"]["returncode"] = job_data["Jobs"][
-            builder.metadata["jobid"]
-        ]["Exit_status"]
+        builder.metadata["job"] = builder.job.gather()
+        builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
         # record endtime in builder object
         self.end_time(builder)
-
-        builder.metadata["job"] = job_data
 
         builder.metadata["output"] = read_file(builder.metadata["outfile"])
         builder.metadata["error"] = read_file(builder.metadata["errfile"])
@@ -185,7 +172,7 @@ class PBSExecutor(BaseExecutor):
         self.check_test_state(builder)
 
 
- class PBSJob(Job):
+class PBSJob(Job):
     """See https://www.altair.com/pdfs/pbsworks/PBSReferenceGuide2021.1.pdf section 8.1 for Job State Codes"""
 
     def __init__(self, jobID):
@@ -202,6 +189,16 @@ class PBSExecutor(BaseExecutor):
 
     def is_suspended(self):
         return self._state in ["H", "U", "S"]
+
+
+    def output_file(self):
+        return self._outfile
+
+    def error_file(self):
+        return self._errfile
+
+    def exitcode(self):
+        return self._exitcode
 
     def success(self):
         """This method determines if job was completed successfully. According to https://www.altair.com/pdfs/pbsworks/PBSAdminGuide2021.1.pdf
@@ -234,17 +231,26 @@ class PBSExecutor(BaseExecutor):
         # The Exit_status property will be available when job is finished
         self._exitcode = job_data["Jobs"][self.jobid].get("Exit_status")
 
+    def gather(self):
+        query = f"qstat -x -f -F json {self.jobid}"
+
+        logger.debug(f"Executing command: {query}")
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        output = cmd.get_output()
+        output = " ".join(output)
+
+        job_data = json.loads(output)
+        # if job is complete but terminated or deleted we won't have exit status in that case we ignore this file
+        try:
+            self._exitcode = job_data["Jobs"][self.jobid]["Exit_status"]
+        except KeyError:
+            self._exitcode = -1
+        return job_data
+
+
     def cancel(self):
         query = f"qdel {self.jobid}"
         logger.debug(f"Cancelling job {self.jobid} by running: {query}")
         cmd = BuildTestCommand(query)
         cmd.execute()
-
-    def output_file(self):
-        return self._outfile
-
-    def error_file(self):
-        return self._errfile
-
-    def exitcode(self):
-        return self._exitcode
