@@ -9,7 +9,6 @@ import json
 import os
 import subprocess
 import time
-from pprint import pprint
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.exceptions import ExecutorError
@@ -167,43 +166,6 @@ class LSFExecutor(BaseExecutor):
                     )
                 )
             builder.start()
-
-        """
-        self.logger.debug(f"Query Job: {builder.metadata['jobid']}")
-
-
-        query = f"{self.poll_cmd} -noheader -o 'stat' {builder.metadata['jobid']}"
-
-        self.logger.debug(query)
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        job_state = cmd.get_output()
-        builder.job_state = "".join(job_state).rstrip()
-        self.logger.debug(
-            "[%s]: JobID %s in %s state ",
-            builder.metadata["name"],
-            builder.metadata["jobid"],
-            builder.job_state,
-        )
-
-        # if job state in PEND check if we need to cancel job by checking internal timer
-        if builder.job_state in ["PEND", "PSUSP", "USUSP", "SSUSP"]:
-            builder.stop()
-            self.logger.debug(f"Time Duration: {builder.duration}")
-            self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
-
-            # if timer time is more than requested pend time then cancel job
-            if int(builder.duration) > self.max_pend_time:
-                self.cancel(builder)
-                builder.job_state = "CANCELLED"
-                print(
-                    "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
-                        builder.duration, self.max_pend_time
-                    )
-                )
-
-            builder.start()
-        """
 
     def gather(self, builder):
         """Gather Job detail after completion of job. This method will retrieve output

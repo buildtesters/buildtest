@@ -222,25 +222,6 @@ class BuildExecutor:
                 poll_info["job_complete"] = True
                 poll_info["ignore_job"] = True
 
-            """
-            # only poll job if its in PENDING or RUNNING state
-            if builder.job_state in ["PENDING", "RUNNING"] or not builder.job_state:
-                executor.poll(builder)
-            # conditions for gathering job results when job is in FAILED or COMPLETED state
-            elif builder.job_state in [
-                "FAILED",
-                "COMPLETED",
-                "TIMEOUT",
-                "OUT_OF_MEMORY",
-            ]:
-                executor.gather(builder)
-                poll_info["job_complete"] = True
-
-            else:
-                poll_info["job_complete"] = True
-                poll_info["ignore_job"] = True
-            """
-
         # poll LSF job
         elif executor.type == "lsf":
             if (
@@ -257,28 +238,11 @@ class BuildExecutor:
                 poll_info["job_complete"] = True
                 poll_info["ignore_job"] = True
 
-            """ --- REMOVE LINES BELOW
-            # only poll job if its in PENDING or RUNNING state
-            if (
-                builder.job_state in ["PEND", "RUN", "PSUSP", "USUSP", "SSUSP"]
-                or not builder.job_state
-            ):
-                executor.poll(builder)
-            # only gather result when job state in DONE. This implies job is complete
-            elif builder.job_state == "DONE":
-                executor.gather(builder)
-                poll_info["job_complete"] = True
-            # any other job state (PSUSP, EXIT, USUSP, SSUSP) implies job failed
-            # abnormally so we consider job complete but set this to cancelled job so its ignored
-            else:
-                poll_info["job_complete"] = True
-                poll_info["ignore_job"] = True
-            """
-
         elif executor.type == "cobalt":
             if (
                 builder.job.is_pending()
                 or builder.job.is_running()
+                or builder.job.is_suspended()
                 or not builder.job.state()
             ):
                 executor.poll(builder)
@@ -287,22 +251,7 @@ class BuildExecutor:
             elif builder.job.is_cancelled():
                 poll_info["job_complete"] = True
                 poll_info["ignore_job"] = True
-            """
-            # only poll job if its in starting, queued, or running state
-            if (
-                builder.job_state in ["starting", "queued", "running"]
-                or not builder.job_state
-            ):
-                executor.poll(builder)
 
-            # if job is done or exiting state we mark job_complete as True to indicate
-            # we dont want to poll anymore.
-            elif builder.job_state in ["done", "exiting"]:
-                poll_info["job_complete"] = True
-            elif builder.job_state in ["CANCELLED", "killing"]:
-                poll_info["job_complete"] = True
-                poll_info["ignore_job"] = True
-            """
         elif executor.type == "pbs":
             if (
                 builder.job.is_pending()
@@ -317,16 +266,5 @@ class BuildExecutor:
             else:
                 poll_info["job_complete"] = True
                 poll_info["ignore_job"] = True
-            """
-            # pending or running job requires polling
-            if builder.job_state in ["Q", "R"] or not builder.job_state:
-                executor.poll(builder)
-            # if job is finished we gather results
-            elif builder.job_state in ["F"]:
-                executor.gather(builder)
-                poll_info["job_complete"] = True
-            else:
-                poll_info["job_complete"] = True
-                poll_info["ignore_job"] = True
-            """
+
         return poll_info

@@ -2,6 +2,7 @@ import os
 import pytest
 import socket
 from buildtest.cli.build import BuildTest
+from buildtest.utils.file import walk_tree
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
 from buildtest.system import BuildTestSystem
@@ -23,10 +24,10 @@ def test_jlse():
     bc.get_current_system()
     bc.validate()
 
-    buildspec_files = os.path.join(here, "examples", "jlse", "hostname.yml")
+    buildspec_files = walk_tree(os.path.join(here, "examples", "jlse"))
 
     cmd = BuildTest(
-        configuration=bc, buildspecs=[buildspec_files], buildtest_system=system
+        configuration=bc, buildspecs=buildspec_files, buildtest_system=system
     )
     cmd.build()
 

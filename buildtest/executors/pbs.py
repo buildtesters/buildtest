@@ -112,22 +112,7 @@ class PBSExecutor(BaseExecutor):
         print(msg)
         self.logger.debug(msg)
 
-        """
-        qstat_cmd = f"{self.poll_cmd} -f -F json {builder.metadata['jobid']}"
-        cmd = BuildTestCommand(qstat_cmd)
-        cmd.execute()
-        output = cmd.get_output()
-        output = " ".join(output)
-        job_data = json.loads(output)
 
-        # output in the form of <server>:<file>
-        builder.metadata["outfile"] = job_data["Jobs"][self.job_id][
-            "Output_Path"
-        ].split(":")[1]
-        builder.metadata["errfile"] = job_data["Jobs"][self.job_id]["Error_Path"].split(
-            ":"
-        )[1]
-        """
 
     def poll(self, builder):
         """This method is responsible for polling Cobalt job, we check the
@@ -146,7 +131,7 @@ class PBSExecutor(BaseExecutor):
         builder.metadata["outfile"] = builder.job.output_file()
         builder.metadata["errfile"] = builder.job.error_file()
 
-        # if job in pending state (Q) check if it exceeds max_pend_time if so cancel job
+        # if job in pending or suspended, check if it exceeds max_pend_time if so cancel job
         if builder.job.is_pending() or builder.job.is_suspended():
             builder.stop()
             self.logger.debug(f"Time Duration: {builder.duration}")
@@ -164,51 +149,6 @@ class PBSExecutor(BaseExecutor):
 
             builder.start()
 
-        """
-        self.logger.debug(f"Query Job: {builder.metadata['jobid']}")
-        # run qstat -f -F json <jobid>
-        qstat_cmd = f"{self.poll_cmd} -x -f -F json {builder.metadata['jobid']}"
-        self.logger.debug(f"Executing command: {qstat_cmd}")
-        cmd = BuildTestCommand(qstat_cmd)
-        cmd.execute()
-        output = cmd.get_output()
-        output = " ".join(output)
-
-        job_data = json.loads(output)
-
-        self.logger.debug("Job record")
-        self.logger.debug(json.dumps(job_data, indent=2))
-        
-        job_state = job_data["Jobs"][builder.metadata["jobid"]]["job_state"]
-
-        if job_state:
-            builder.job_state = job_state
-
-        self.logger.debug(
-            "[%s]: JobID %s in %s state ",
-            builder.metadata["name"],
-            builder.metadata["jobid"],
-            builder.job_state,
-        )
-      
-        # if job in pending state (Q) check if it exceeds max_pend_time if so cancel job
-        if builder.job_state == "Q":
-            builder.stop()
-            self.logger.debug(f"Time Duration: {builder.duration}")
-            self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
-
-            # if timer time is more than requested pend time then cancel job
-            if int(builder.duration) > self.max_pend_time:
-                self.cancel(builder)
-                builder.job_state = "CANCELLED"
-                print(
-                    "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
-                        builder.duration, self.max_pend_time
-                    )
-                )
-
-            builder.start()
-          """
 
     def gather(self, builder):
         """This method is responsible for getting output of job using `qstat -x -f -F json <jobID>`
@@ -244,23 +184,8 @@ class PBSExecutor(BaseExecutor):
 
         self.check_test_state(builder)
 
-    def cancel(self, builder):
-        """Cancel Cobalt job using qdel, this operation is performed if job exceeds its max_pend_time.
 
-        :param builder: builder object
-        :type builder: BuilderBase, required
-        """
-
-        query = f"qdel {builder.metadata['jobid']}"
-
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        msg = f"Cancelling Job: {builder.metadata['name']} running command: {query}"
-        print(msg)
-        self.logger.debug(msg)
-
-
-class PBSJob(Job):
+ class PBSJob(Job):
     """See https://www.altair.com/pdfs/pbsworks/PBSReferenceGuide2021.1.pdf section 8.1 for Job State Codes"""
 
     def __init__(self, jobID):

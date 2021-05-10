@@ -1,0 +1,7 @@
+version: "1.0"
+buildspecs:
+  pbs_sleep:
+    type: script
+    executor: generic.pbs.workq
+    pbs: ["-l nodes=1", "-l walltime=00:02:00"]
+    run: sleep 10
