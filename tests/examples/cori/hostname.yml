@@ -1,8 +1,16 @@
 version: "1.0"
 buildspecs:
-  hostname:
+  hostname_knl:
     type: script
     executor: cori.slurm.knl_debug
-    description: "Run hostname through slurm queue"
+    description: "Run hostname via KNL debug queue"
     sbatch: ["-t 5", "-N 1"]
     run: hostname
+
+  hostname_bigmem:
+    type: script
+    executor: cori.slurm.bigmem
+    description: "Run hostname via bigmem queue"
+    sbatch: ["-t 5", "-N 1"]
+    run: hostname
+

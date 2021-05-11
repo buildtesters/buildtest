@@ -995,37 +995,45 @@ class BuildTest:
                 completed_jobs_table["name"].append(job.name)
                 completed_jobs_table["executor"].append(job.executor)
                 completed_jobs_table["jobID"].append(job.metadata["jobid"])
-                completed_jobs_table["jobstate"].append(job.job_state)
+                # completed_jobs_table["jobstate"].append(job.job_state)
+                completed_jobs_table["jobstate"].append(job.job.state())
 
             for job in poll_queue:
                 pending_jobs_table["name"].append(job.name)
                 pending_jobs_table["executor"].append(job.executor)
                 pending_jobs_table["jobID"].append(job.metadata["jobid"])
-                pending_jobs_table["jobstate"].append(job.job_state)
+                # pending_jobs_table["jobstate"].append(job.job_state)
+                pending_jobs_table["jobstate"].append(job.job.state())
 
-            print("\n")
-            print("Completed Jobs")
-            print("{:_<40}".format(""))
-            print("\n")
-            print(
-                tabulate(
-                    completed_jobs_table,
-                    headers=completed_jobs_table.keys(),
-                    tablefmt="fancy_grid",
-                )
-            )
 
-            print("\n")
-            print("Pending Jobs")
-            print("{:_<40}".format(""))
-            print("\n")
-            print(
-                tabulate(
-                    pending_jobs_table,
-                    headers=pending_jobs_table.keys(),
-                    tablefmt="fancy_grid",
+            # only print table if their is an element in the table. We check for 'name' property
+            if completed_jobs_table["name"]:
+                print("\n")
+                print("Completed Jobs")
+                print("{:_<40}".format(""))
+                print("\n")
+                print(completed_jobs_table)
+
+                print(
+                    tabulate(
+                        completed_jobs_table,
+                        headers=completed_jobs_table.keys(),
+                        tablefmt="pretty",
+                    )
                 )
-            )
+
+            if pending_jobs_table["name"]:
+                print("\n")
+                print("Pending Jobs")
+                print("{:_<40}".format(""))
+                print("\n")
+                print(
+                    tabulate(
+                        pending_jobs_table,
+                        headers=pending_jobs_table.keys(),
+                        tablefmt="pretty",
+                    )
+                )
 
         # remove any builders where for jobs that need to be ignored
         if ignore_jobs:

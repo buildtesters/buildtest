@@ -3,15 +3,19 @@ This module implements the SlurmExecutor class responsible for submitting
 jobs to Slurm Scheduler. This class is called in class BuildExecutor
 when initializing the executors.
 """
+import logging
 import os
 import re
 import shutil
 
 from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
+from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import read_file
 from buildtest.utils.tools import deep_get
+
+logger = logging.getLogger(__name__)
 
 
 class SlurmExecutor(BaseExecutor):
@@ -26,33 +30,6 @@ class SlurmExecutor(BaseExecutor):
     """
 
     type = "slurm"
-
-    poll_cmd = "sacct"
-    sacct_fields = [
-        "Account",
-        "AllocNodes",
-        "AllocTRES",
-        "ConsumedEnergyRaw",
-        "CPUTimeRaw",
-        "Elapsed",
-        "End",
-        "ExitCode",
-        "JobID",
-        "JobName",
-        "NCPUS",
-        "NNodes",
-        "QOS",
-        "ReqGRES",
-        "ReqMem",
-        "ReqNodes",
-        "ReqTRES",
-        "Start",
-        "State",
-        "Submit",
-        "UID",
-        "User",
-        "WorkDir",
-    ]
 
     def __init__(self, name, settings, site_configs, max_pend_time=None):
 
@@ -142,6 +119,8 @@ class SlurmExecutor(BaseExecutor):
         else:
             builder.metadata["jobid"] = int(parse_jobid)
 
+        builder.job = SlurmJob(builder.metadata["jobid"], self.cluster)
+
         msg = f"[{builder.metadata['name']}] JobID: {builder.metadata['jobid']} dispatched to scheduler"
         print(msg)
         self.logger.debug(msg)
@@ -156,40 +135,17 @@ class SlurmExecutor(BaseExecutor):
         :type builder: BuilderBase, required
         """
 
-        self.logger.debug(f"Query Job: {builder.metadata['jobid']}")
-
-        slurm_query = (
-            f"{self.poll_cmd} -j {builder.metadata['jobid']} -o State -n -X -P"
-        )
-
-        # to query jobs from another cluster we must add -M <cluster> to sacct
-        if self.cluster:
-            slurm_query += f" --clusters={self.cluster}"
-
-        self.logger.debug(slurm_query)
-        cmd = BuildTestCommand(slurm_query)
-        cmd.execute()
-
-        job_state = cmd.get_output()
-        builder.job_state = "".join(job_state).rstrip()
-
-        self.logger.debug(
-            "[%s]: JobID %s in %s state ",
-            builder.metadata["name"],
-            builder.metadata["jobid"],
-            builder.job_state,
-        )
+        builder.job.poll()
 
         # if job state in PENDING check if we need to cancel job by checking internal timer
-        if builder.job_state == "PENDING":
+        if builder.job.is_pending() or builder.job.is_suspended():
             builder.stop()
             self.logger.debug(f"Time Duration: {builder.duration}")
             self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
 
             # if timer time is more than requested pend time then cancel job
             if int(builder.duration) > self.max_pend_time:
-                self.cancel(builder)
-                builder.job_state = "CANCELLED"
+                builder.job.cancel()
                 print(
                     "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
                         builder.duration, self.max_pend_time
@@ -205,45 +161,17 @@ class SlurmExecutor(BaseExecutor):
         :type builder: BuilderBase (subclass), required
         """
 
-        gather_cmd = f"{self.poll_cmd} -j {builder.metadata['jobid']} -X -n -P -o {','.join(self.sacct_fields)}"
+        builder.metadata["job"] = builder.job.gather()
 
-        # to query jobs from another cluster we must add -M <cluster> to sacct
-        if self.cluster:
-            gather_cmd += f" --clusters={self.cluster}"
-
-        self.logger.debug(f"Gather slurm job data by running: {gather_cmd}")
-        cmd = BuildTestCommand(gather_cmd)
-        cmd.execute()
-        out = "".join(cmd.get_output())
-        # split by | since
-        out = out.split("|")
-        job_data = {}
-
-        self.logger.debug(f"[{builder.name}] Job Results:")
-        for field, value in zip(self.sacct_fields, out):
-            job_data[field] = value
-            self.logger.debug(f"field: {field}   value: {value}")
-
-        builder.metadata["job"] = job_data
-
-        # Exit Code field is in format <ExitCode>:<Signal> for now we care only
-        # about first number
-        builder.metadata["result"]["returncode"] = int(
-            job_data["ExitCode"].split(":")[0]
-        )
+        builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
         self.end_time(builder)
 
-        if builder.job_state == "CANCELLED":
-            return
-
         builder.metadata["outfile"] = os.path.join(
-            job_data["WorkDir"].rstrip(),
-            f"{builder.metadata['name']}.out",
+            builder.job.workdir(), builder.metadata["name"] + ".out"
         )
         builder.metadata["errfile"] = os.path.join(
-            job_data["WorkDir"].rstrip(),
-            f"{builder.metadata['name']}.err",
+            builder.job.workdir(), builder.metadata["name"] + ".err"
         )
 
         shutil.copy2(
@@ -267,20 +195,138 @@ class SlurmExecutor(BaseExecutor):
 
         self.check_test_state(builder)
 
-    def cancel(self, builder):
-        """Cancel slurm job, this operation is performed if job exceeds pending or runtime.
 
-        :param builder: Instance of BuilderBase
-        :type builder: BuilderBase (subclass), required
+class SlurmJob(Job):
+    def __init__(self, jobID, cluster=None):
+        super().__init__(jobID)
+        self.cluster = cluster
+
+    def is_pending(self):
+        return self._state == "PENDING"
+
+    def is_running(self):
+        return self._state == "RUNNING"
+
+    def is_suspended(self):
+        return self._state == "SUSPENDED"
+
+    def is_cancelled(self):
+        return self._state == "CANCELLED"
+
+    def is_complete(self):
+        return self._state == "COMPLETED"
+
+    def is_failed(self):
+        return self._state == "FAILED"
+
+    def is_out_of_memory(self):
+        return self._state == "OUT_OF_MEMORY"
+
+    def is_timeout(self):
+        return self._state == "TIMEOUT"
+
+    def complete(self):
+        """This method is used for gathering job result we assume job is complete if it's
+        in any of the following state: COMPLETED, FAILED, OUT_OF_MEMORY, TIMEOUT
         """
 
-        query = f"scancel {builder.metadata['jobid']}"
-        # cancel by slurm cluster if required to cancel job from remote slurm cluster
+        return any(
+            [
+                self.is_complete(),
+                self.is_failed(),
+                self.is_out_of_memory(),
+                self.is_timeout(),
+            ]
+        )
+
+    def state(self):
+        return self._state
+
+    def workdir(self):
+        return self._workdir
+
+    def exitcode(self):
+        return self._exitcode
+
+    def cancel(self):
+        query = f"scancel {self.jobid}"
+        if self.cluster:
+            query = f"scancel {self.jobid} --clusters={self.cluster}"
+
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        logger.debug(f"Cancelling Job: {self.jobid} by running: {query}")
+
+        self.poll()
+        self._state = "CANCELLED"
+
+    def poll(self):
+
+        query = f"sacct -j {self.jobid} -o State -n -X -P"
         if self.cluster:
             query += f" --clusters={self.cluster}"
 
         cmd = BuildTestCommand(query)
         cmd.execute()
-        msg = f"Cancelling Job: {builder.metadata['name']} running command: {query}"
-        print(msg)
-        self.logger.debug(msg)
+
+        job_state = cmd.get_output()
+        self._state = "".join(job_state).rstrip()
+
+        query = f"sacct -j {self.jobid} -X -n -P -o ExitCode,Workdir"
+        if self.cluster:
+            query += f" --clusters={self.cluster}"
+
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        out = "".join(cmd.get_output()).rstrip()
+
+        exitcode, workdir = out.split("|")
+        # Exit Code field is in format <ExitCode>:<Signal> for now we care only about first number
+        self._exitcode = exitcode.split(":")[0]
+        self._workdir = workdir
+
+    def gather(self):
+
+        sacct_fields = [
+            "Account",
+            "AllocNodes",
+            "AllocTRES",
+            "ConsumedEnergyRaw",
+            "CPUTimeRaw",
+            "Elapsed",
+            "End",
+            "ExitCode",
+            "JobID",
+            "JobName",
+            "NCPUS",
+            "NNodes",
+            "QOS",
+            "ReqGRES",
+            "ReqMem",
+            "ReqNodes",
+            "ReqTRES",
+            "Start",
+            "State",
+            "Submit",
+            "UID",
+            "User",
+            "WorkDir",
+        ]
+        query = f"sacct -j {self.jobid} -X -n -P -o {','.join(sacct_fields)}"
+
+        # to query jobs from another cluster we must add -M <cluster> to sacct
+        if self.cluster:
+            query += f" --clusters={self.cluster}"
+
+        logger.debug(f"Gather slurm job data by running: {query}")
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        out = "".join(cmd.get_output())
+        # split by | since
+        out = out.split("|")
+        job_data = {}
+
+        for field, value in zip(sacct_fields, out):
+            job_data[field] = value
+
+        return job_data

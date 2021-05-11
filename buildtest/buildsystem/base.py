@@ -62,6 +62,9 @@ class BuilderBase(ABC):
 
         self.executor = executor
 
+        # For batch jobs this variable is an instance of Job class which would be one of the subclass
+        self.job = None
+
         # keeps track of job state as job progress through queuing system. This is
         # applicable for builders using batch executor.
         self.job_state = None
@@ -236,7 +239,9 @@ class BuilderBase(ABC):
         # copy all files relative to buildspec file into stage directory
         for fname in Path(os.path.dirname(self.buildspec)).glob("*"):
             if fname.is_dir():
-                shutil.copytree(fname, os.path.join(self.stage_dir, os.path.basename(fname)))
+                shutil.copytree(
+                    fname, os.path.join(self.stage_dir, os.path.basename(fname))
+                )
             elif fname.is_file():
                 shutil.copy2(fname, self.stage_dir)
 
