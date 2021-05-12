@@ -24,7 +24,7 @@ class BuildExecutor:
     file which provides a list of executors. This class keeps track of all executors and provides
     the following methods:
 
-    **setup**: This method will  write executor's ``before_script.sh`` and ``after_script.sh`` file that is sourced in each test upon calling executor.
+    **setup**: This method will  write executor's ``before_script.sh``  that is sourced in each test upon calling executor.
     **run**: Responsible for invoking executor's **run** method based on builder object which is of type BuilderBase.
     **poll**: This is responsible for invoking ``poll`` method for corresponding executor from the builder object by checking job state
     """
@@ -124,8 +124,8 @@ class BuildExecutor:
     def setup(self):
         """This method creates directory ``var/executors/<executor-name>``
         for every executor defined in buildtest configuration and write scripts
-        before_script.sh and after_script.sh if the fields ``before_script``
-        and ``after_script`` are specified in executor section. This method
+        before_script.sh if the field ``before_script``
+        is specified in executor section. This method
         is called after executors are initialized in the class **__init__**
         method.
         """
@@ -139,13 +139,6 @@ class BuildExecutor:
                 BUILDTEST_EXECUTOR_DIR, executor_name, "before_script.sh"
             )
             content = executor_settings.get("before_script") or ""
-            write_file(file, content)
-
-            # after_script field defined in executor section write content to var/executors/<executor>/after_script.sh
-            file = os.path.join(
-                BUILDTEST_EXECUTOR_DIR, executor_name, "after_script.sh"
-            )
-            content = executor_settings.get("after_script") or ""
             write_file(file, content)
 
     def run(self, builder):

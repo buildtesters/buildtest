@@ -77,9 +77,6 @@ class ScriptBuilder(BuilderBase):
         if self.shell.name == "python":
             self.logger.debug(f"[{self.name}]: Detected python shell")
             lines += self.write_python_script()
-            lines += [
-                f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'after_script.sh')}"
-            ]
 
             return lines
 
@@ -93,9 +90,5 @@ class ScriptBuilder(BuilderBase):
 
         # Add run section
         lines += [self.recipe.get("run")]
-
-        lines += [
-            f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'after_script.sh')}"
-        ]
 
         return lines

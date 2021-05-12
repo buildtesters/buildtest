@@ -238,9 +238,6 @@ class CompilerBuilder(BuilderBase):
         if self.post_run:
             lines.append(self.post_run)
 
-        lines += [
-            f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'after_script.sh')}"
-        ]
         return lines
 
     def _resolve_source(self):

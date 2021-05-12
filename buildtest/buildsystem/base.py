@@ -175,7 +175,6 @@ class BuilderBase(ABC):
         :rtype: str
         """
 
-        self.logger.debug("Setting test extension to 'sh'")
         return "sh"
 
     def start(self):
