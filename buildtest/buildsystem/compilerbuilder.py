@@ -3,7 +3,6 @@ import os
 import shutil
 
 from buildtest.buildsystem.base import BuilderBase
-from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
 from buildtest.exceptions import BuildTestError
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.utils.file import resolve_path
@@ -206,10 +205,6 @@ class CompilerBuilder(BuilderBase):
 
         if data_warp_lines:
             lines += data_warp_lines
-
-        lines += [
-            f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"
-        ]
 
         lines += [self.exec_variable]
 

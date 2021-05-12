@@ -16,6 +16,7 @@ import stat
 import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
+from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
 from buildtest.buildsystem.batch import (
     SlurmBatchScript,
     LSFBatchScript,
@@ -200,6 +201,13 @@ class BuilderBase(ABC):
         self._write_test()
         self._write_build_script()
 
+    def run_command(self):
+        """Command used to run the build script. buildtest will change into the stage directory (self.stage_dir)
+           before running the test.
+        """
+
+        return f"sh {self.build_script}"
+
     def _build_setup(self):
         """This method is the setup operation to get ready to build test which
         includes getting unique build id, setting up metadata object to store
@@ -255,7 +263,7 @@ class BuilderBase(ABC):
 
         if self.buildexecutor.executors[self.executor].type != "local":
             launcher = self.buildexecutor.executors[self.executor].launcher_command()
-            lines += " ".join(launcher + [f"{os.path.basename(self.metadata['testpath'])}"])
+            lines += [" ".join(launcher) + " " + f"{os.path.basename(self.metadata['testpath'])}"]
         else:
             lines += [f"sh {os.path.basename(self.metadata['testpath'])}"]
 
@@ -265,6 +273,8 @@ class BuilderBase(ABC):
         lines = "\n".join(lines)
         write_file(self.build_script, lines)
         self.logger.debug(f"Writing build script: {self.build_script}")
+        self._set_execute_perm(self.build_script)
+
         dest = os.path.join(self.run_dir, os.path.basename(self.build_script))
         shutil.copy2(self.build_script, dest)
         self.logger.debug(f"Copying build script to run directory: {dest}")
@@ -289,7 +299,7 @@ class BuilderBase(ABC):
 
         self.metadata["test_content"] = lines
 
-        self._set_execute_perm()
+        self._set_execute_perm(self.metadata["testpath"])
         # copy testpath to run_dir
         shutil.copy2(
             self.metadata["testpath"],
@@ -377,16 +387,17 @@ class BuilderBase(ABC):
 
         return lines
 
-    def _set_execute_perm(self):
+    def _set_execute_perm(self, fname):
+        """Apply chmod 755 to input file name. The path must be an absolute path to script"""
         """Set permission to 755 on executable"""
 
         # Change permission of the file to executable
         os.chmod(
-            self.metadata["testpath"],
+            fname,
             stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
         )
         self.logger.debug(
-            f"Applying permission 755 to {self.metadata['testpath']} so that test can be executed"
+            f"Applying permission 755 to {fname} so that test can be executed"
         )
 
     def _get_environment(self, env):

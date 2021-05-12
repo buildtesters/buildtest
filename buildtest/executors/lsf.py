@@ -86,20 +86,7 @@ class LSFExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to stage directory {builder.stage_dir}")
 
-        bsub_cmd = [self.launcher]
-
-        if self.queue:
-            bsub_cmd += [f"-q {self.queue}"]
-
-        if self.account:
-            bsub_cmd += [f"-P {self.account}"]
-
-        if self.launcher_opts:
-            bsub_cmd += [" ".join(self.launcher_opts)]
-
-        bsub_cmd.append(builder.metadata["testpath"])
-
-        builder.metadata["command"] = " ".join(bsub_cmd)
+        builder.metadata["command"] = builder.run_command()
         self.logger.debug(f"Running Test via command: {builder.metadata['command']}")
 
         command = BuildTestCommand(builder.metadata["command"])
@@ -109,7 +96,6 @@ class LSFExecutor(BaseExecutor):
         # if job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
             err = f"[{builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
-            err += f"[{builder.metadata['name']}] running command: {bsub_cmd}"
             raise ExecutorError(err)
 
         interval = 5

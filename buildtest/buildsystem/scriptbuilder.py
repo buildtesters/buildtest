@@ -2,7 +2,6 @@ import os
 import shutil
 
 from buildtest.buildsystem.base import BuilderBase
-from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
 from buildtest.utils.file import write_file
 
 
@@ -68,10 +67,6 @@ class ScriptBuilder(BuilderBase):
         data_warp_lines = self._get_data_warp(self.recipe.get("DW"))
         if data_warp_lines:
             lines += data_warp_lines
-
-        lines += [
-            f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"
-        ]
 
         # for python scripts we generate python script and return lines
         if self.shell.name == "python":
