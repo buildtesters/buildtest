@@ -58,6 +58,20 @@ class PBSExecutor(BaseExecutor):
             )
         )
 
+    def launcher_command(self):
+        batch_cmd = [self.launcher]
+
+        if self.queue:
+            batch_cmd += [f"-q {self.queue}"]
+
+        if self.account:
+            batch_cmd += [f"-P {self.account}"]
+
+        if self.launcher_opts:
+            batch_cmd += [" ".join(self.launcher_opts)]
+
+        return batch_cmd
+
     def dispatch(self, builder):
         """This method is responsible for dispatching PBS job, get JobID
         and start record metadata in builder object. If job failed to submit
@@ -73,25 +87,7 @@ class PBSExecutor(BaseExecutor):
 
         os.chdir(builder.stage_dir)
 
-        batch_cmd = [self.launcher]
-
-        if self.queue:
-            batch_cmd += [f"-q {self.queue}"]
-
-        if self.account:
-            batch_cmd += [f"-P {self.account}"]
-
-        if self.launcher_opts:
-            batch_cmd += [" ".join(self.launcher_opts)]
-
-        batch_cmd += [builder.metadata["testpath"]]
-        builder.metadata["command"] = " ".join(batch_cmd)
-        self.logger.debug(f"Running Test via command: {builder.metadata['command']}")
-        command = BuildTestCommand(builder.metadata["command"])
-        command.execute()
-        # record start time in builder object
-        self.start_time(builder)
-        builder.start()
+        command = builder.run()
 
         # if qsub job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
@@ -160,11 +156,10 @@ class PBSExecutor(BaseExecutor):
         :type builder: BuilderBase, required
         """
 
+        builder.endtime()
+
         builder.metadata["job"] = builder.job.gather()
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
-
-        # record endtime in builder object
-        self.end_time(builder)
 
         builder.metadata["output"] = read_file(builder.metadata["outfile"])
         builder.metadata["error"] = read_file(builder.metadata["errfile"])

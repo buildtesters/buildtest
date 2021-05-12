@@ -352,8 +352,7 @@
           "description": "Specify the shell launcher you want to use when running tests locally",
           "pattern": "^(/bin/bash|/bin/sh|/bin/csh|/bin/tcsh|/bin/zsh|sh|bash|csh|tcsh|zsh|python).*"
         },
-        "before_script": { "#ref": "#/definitions/script" },
-        "after_script": { "#ref": "#/definitions/script" }
+        "before_script": { "#ref": "#/definitions/script" }
       }
     },
     "slurm": {

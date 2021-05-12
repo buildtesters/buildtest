@@ -2,7 +2,6 @@ import os
 import shutil
 
 from buildtest.buildsystem.base import BuilderBase
-from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
 from buildtest.utils.file import write_file
 
 
@@ -69,33 +68,22 @@ class ScriptBuilder(BuilderBase):
         if data_warp_lines:
             lines += data_warp_lines
 
-        lines += [
-            f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"
-        ]
-
         # for python scripts we generate python script and return lines
         if self.shell.name == "python":
             self.logger.debug(f"[{self.name}]: Detected python shell")
             lines += self.write_python_script()
-            lines += [
-                f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'after_script.sh')}"
-            ]
 
             return lines
 
         # section below is for shell-scripts (bash, sh, csh, zsh, tcsh, zsh)
 
         # Add environment variables
-        lines += self.get_environment(self.recipe.get("env"))
+        lines += self._get_environment(self.recipe.get("env"))
 
         # Add variables
-        lines += self.get_variables(self.recipe.get("vars"))
+        lines += self._get_variables(self.recipe.get("vars"))
 
         # Add run section
         lines += [self.recipe.get("run")]
-
-        lines += [
-            f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'after_script.sh')}"
-        ]
 
         return lines

@@ -478,6 +478,7 @@ def update_report(valid_builders, report_file=BUILD_REPORT):
         entry["error"] = builder.metadata["error"]
 
         entry["job"] = builder.metadata["job"]
+        entry["build_script"] = builder.build_script
         report[buildspec][name].append(entry)
 
     with open(report_file, "w") as fd:

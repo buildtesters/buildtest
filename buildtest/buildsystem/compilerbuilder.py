@@ -3,7 +3,6 @@ import os
 import shutil
 
 from buildtest.buildsystem.base import BuilderBase
-from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
 from buildtest.exceptions import BuildTestError
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.utils.file import resolve_path
@@ -207,15 +206,11 @@ class CompilerBuilder(BuilderBase):
         if data_warp_lines:
             lines += data_warp_lines
 
-        lines += [
-            f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"
-        ]
-
         lines += [self.exec_variable]
 
-        lines += self.get_environment(self.envvars)
+        lines += self._get_environment(self.envvars)
         # get variables
-        lines += self.get_variables(self.vars)
+        lines += self._get_variables(self.vars)
 
         # if 'module' defined in Buildspec add modules to test
         if self.modules:
@@ -238,9 +233,6 @@ class CompilerBuilder(BuilderBase):
         if self.post_run:
             lines.append(self.post_run)
 
-        lines += [
-            f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'after_script.sh')}"
-        ]
         return lines
 
     def _resolve_source(self):

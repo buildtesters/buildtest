@@ -59,6 +59,23 @@ class LSFExecutor(BaseExecutor):
         )
         self.queue = self._settings.get("queue")
 
+    def launcher_command(self):
+        """This command returns the launcher command and any options specified in configuration file. This
+         is useful when generating the build script in the BuilderBase class
+         """
+        cmd = [self.launcher]
+
+        if self.queue:
+            cmd += [f"-q {self.queue}"]
+
+        if self.account:
+            cmd += [f"-P {self.account}"]
+
+        if self.launcher_opts:
+            cmd += [" ".join(self.launcher_opts)]
+
+        return cmd
+
     def dispatch(self, builder):
         """This method is responsible for dispatching job to scheduler.
 
@@ -69,30 +86,11 @@ class LSFExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to stage directory {builder.stage_dir}")
 
-        bsub_cmd = [self.launcher]
+        command = builder.run()
 
-        if self.queue:
-            bsub_cmd += [f"-q {self.queue}"]
-
-        if self.account:
-            bsub_cmd += [f"-P {self.account}"]
-
-        if self.launcher_opts:
-            bsub_cmd += [" ".join(self.launcher_opts)]
-
-        bsub_cmd.append(builder.metadata["testpath"])
-
-        builder.metadata["command"] = " ".join(bsub_cmd)
-        self.logger.debug(f"Running Test via command: {builder.metadata['command']}")
-
-        command = BuildTestCommand(builder.metadata["command"])
-        command.execute()
-        self.start_time(builder)
-        builder.start()
         # if job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
             err = f"[{builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
-            err += f"[{builder.metadata['name']}] running command: {bsub_cmd}"
             raise ExecutorError(err)
 
         interval = 5
@@ -153,10 +151,13 @@ class LSFExecutor(BaseExecutor):
         :type builder: BuilderBase, required
         """
 
+        builder.endtime()
+
         builder.metadata["job"] = builder.job.gather()
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
-        self.end_time(builder)
+
+        #self.end_time(builder)
 
         builder.metadata["outfile"] = os.path.join(
             builder.stage_dir, builder.job.output_file()

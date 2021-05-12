@@ -9,7 +9,6 @@ import shutil
 import sys
 
 from buildtest.executors.base import BaseExecutor
-from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import write_file
 
 
@@ -61,16 +60,9 @@ class LocalExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to directory {builder.stage_dir}")
 
-        cmd = [builder.metadata["testpath"]]
-
-        builder.metadata["command"] = " ".join(cmd)
-        self.logger.debug(f"Running Test via command: {builder.metadata['command']}")
-
-        command = BuildTestCommand(builder.metadata["command"])
-
-        self.start_time(builder)
+        command = builder.run()
         out, err = command.execute()
-        self.end_time(builder)
+        builder.endtime()
 
         self.logger.debug(
             f"Return code: {command.returncode} for test: {builder.metadata['testpath']}"

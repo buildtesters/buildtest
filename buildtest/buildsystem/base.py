@@ -6,6 +6,7 @@ is implemented as separate Builder.
 ScriptBuilder class implements 'type: script'
 CompilerBuilder class implements 'type: compiler'
 """
+import datetime
 import getpass
 import logging
 import os
@@ -16,6 +17,7 @@ import stat
 import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
+from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
 from buildtest.buildsystem.batch import (
     SlurmBatchScript,
     LSFBatchScript,
@@ -23,6 +25,7 @@ from buildtest.buildsystem.batch import (
     PBSBatchScript,
 )
 from buildtest.schemas.defaults import schema_table
+from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir, write_file, read_file
 from buildtest.utils.timer import Timer
 from buildtest.utils.shell import Shell
@@ -165,6 +168,7 @@ class BuilderBase(ABC):
         self.metadata["full_id"] = self._generate_unique_id()
         self.metadata["id"] = self.metadata["full_id"][:8]
 
+
     def get_test_extension(self):
         """Return the test extension, which depends on the shell used. Based
         on the value of ``shell`` key we return the shell extension.
@@ -175,7 +179,6 @@ class BuilderBase(ABC):
         :rtype: str
         """
 
-        self.logger.debug("Setting test extension to 'sh'")
         return "sh"
 
     def start(self):
@@ -199,6 +202,48 @@ class BuilderBase(ABC):
 
         self._build_setup()
         self._write_test()
+        self._write_build_script()
+
+    def run(self):
+        """ Run the test and record the starttime and start timer. We also return the instance
+            object of type BuildTestCommand which is used by Executors for processing output and error
+        """
+
+        self.starttime()
+        self.start()
+        command = BuildTestCommand(self.runcmd)
+        command.execute()
+        self.logger.debug(f"Running Test via command: {self.runcmd}")
+        return command
+
+    def starttime(self):
+        """This method will record the starttime when job starts execution by using ``datetime.datetime.now()``"""
+        self._starttime = datetime.datetime.now()
+
+        # this is recorded in the report file
+        self.metadata["result"]["starttime"] = self._starttime.strftime("%Y/%m/%d %X")
+
+    def endtime(self):
+        """This method is called upon termination of job, we get current time using ``datetime.datetime.now()`` and calculate runtime of job"""
+        self._endtime = datetime.datetime.now()
+
+        # this is recorded in the report file
+        self.metadata["result"]["endtime"] = self._endtime.strftime("%Y/%m/%d %X")
+
+        self.runtime()
+
+    def runtime(self):
+        # Calculate runtime of job by calculating delta between endtime and starttime.
+
+        runtime = self._endtime - self._starttime
+        self.metadata["result"]["runtime"] = runtime.total_seconds()
+
+    def run_command(self):
+        """Command used to run the build script. buildtest will change into the stage directory (self.stage_dir)
+           before running the test.
+        """
+
+        return f"sh {os.path.basename(self.build_script)}"
 
     def _build_setup(self):
         """This method is the setup operation to get ready to build test which
@@ -234,6 +279,8 @@ class BuilderBase(ABC):
             os.path.join(self.stage_dir, self.name),
             self.get_test_extension(),
         )
+        self.build_script = f"{os.path.join(self.stage_dir, self.name)}_build.sh"
+
         self.metadata["testpath"] = os.path.expandvars(self.metadata["testpath"])
 
         # copy all files relative to buildspec file into stage directory
@@ -244,6 +291,60 @@ class BuilderBase(ABC):
                 )
             elif fname.is_file():
                 shutil.copy2(fname, self.stage_dir)
+
+    def _write_build_script(self):
+        """This method will write the build script used for running the test"""
+
+        lines = ["#!/bin/bash"]
+        lines += [f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"]
+
+        if self.buildexecutor.executors[self.executor].type != "local":
+            launcher = self.buildexecutor.executors[self.executor].launcher_command()
+            lines += [" ".join(launcher) + " " + f"{os.path.basename(self.metadata['testpath'])}"]
+        else:
+            lines += [f"sh {os.path.basename(self.metadata['testpath'])}"]
+
+        lines += ["returncode=$?"]
+        lines += ["exit $returncode"]
+
+        lines = "\n".join(lines)
+        write_file(self.build_script, lines)
+        self.logger.debug(f"Writing build script: {self.build_script}")
+        self._set_execute_perm(self.build_script)
+
+        dest = os.path.join(self.run_dir, os.path.basename(self.build_script))
+        shutil.copy2(self.build_script, dest)
+        self.logger.debug(f"Copying build script to run directory: {dest}")
+
+        self.runcmd = self.run_command()
+        self.metadata["command"] = self.runcmd
+
+    def _write_test(self):
+        """This method is responsible for invoking ``generate_script`` that
+        formulates content of testscript which is implemented in each subclass.
+        Next we write content to file and apply 755 permission on script so
+        it has executable permission.
+        """
+
+        # Implementation to write file generate.sh
+        lines = []
+
+        lines += self.generate_script()
+
+        lines = "\n".join(lines)
+
+        self.logger.info(f"Opening Test File for Writing: {self.metadata['testpath']}")
+
+        write_file(self.metadata["testpath"], lines)
+
+        self.metadata["test_content"] = lines
+
+        self._set_execute_perm(self.metadata["testpath"])
+        # copy testpath to run_dir
+        shutil.copy2(
+            self.metadata["testpath"],
+            os.path.join(self.run_dir, os.path.basename(self.metadata["testpath"])),
+        )
 
     def _get_scheduler_directives(self, bsub, sbatch, cobalt, pbs, batch):
         """Get Scheduler Directives for LSF, Slurm or Cobalt if we are processing
@@ -326,46 +427,20 @@ class BuilderBase(ABC):
 
         return lines
 
-    def _set_execute_perm(self):
+    def _set_execute_perm(self, fname):
+        """Apply chmod 755 to input file name. The path must be an absolute path to script"""
         """Set permission to 755 on executable"""
 
         # Change permission of the file to executable
         os.chmod(
-            self.metadata["testpath"],
+            fname,
             stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
         )
         self.logger.debug(
-            f"Applying permission 755 to {self.metadata['testpath']} so that test can be executed"
+            f"Applying permission 755 to {fname} so that test can be executed"
         )
 
-    def _write_test(self):
-        """This method is responsible for invoking ``generate_script`` that
-        formulates content of testscript which is implemented in each subclass.
-        Next we write content to file and apply 755 permission on script so
-        it has executable permission.
-        """
-
-        # Implementation to write file generate.sh
-        lines = []
-
-        lines += self.generate_script()
-
-        lines = "\n".join(lines)
-
-        self.logger.info(f"Opening Test File for Writing: {self.metadata['testpath']}")
-
-        write_file(self.metadata["testpath"], lines)
-
-        self.metadata["test_content"] = lines
-
-        self._set_execute_perm()
-        # copy testpath to run_dir
-        shutil.copy2(
-            self.metadata["testpath"],
-            os.path.join(self.run_dir, os.path.basename(self.metadata["testpath"])),
-        )
-
-    def get_environment(self, env):
+    def _get_environment(self, env):
         """Retrieve a list of environment variables defined in buildspec and
         return them as list with the shell equivalent command
 
@@ -396,7 +471,7 @@ class BuilderBase(ABC):
 
         return lines
 
-    def get_variables(self, variables):
+    def _get_variables(self, variables):
         """Retrieve a list of  variables defined in buildspec and
         return them as list with the shell equivalent command.
 

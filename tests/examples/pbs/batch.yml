@@ -1,7 +1,8 @@
 version: "1.0"
 buildspecs:
-  pbs_sleep:
+  pbs_batch_sleep:
     type: script
+    description: using batch property for submitting pbs job
     executor: generic.pbs.workq
     batch:
       nodecount: "1"
@@ -9,4 +10,4 @@ buildspecs:
       memory: "500mb"
       email-address: "shahzebmsiddiqui@gmail.com"
       timelimit: "00:02:00"
-    run: sleep 15
+    run: sleep 10
