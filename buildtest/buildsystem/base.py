@@ -206,7 +206,7 @@ class BuilderBase(ABC):
            before running the test.
         """
 
-        return f"sh {self.build_script}"
+        return f"sh {os.path.basename(self.build_script)}"
 
     def _build_setup(self):
         """This method is the setup operation to get ready to build test which

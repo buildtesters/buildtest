@@ -175,7 +175,7 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
                     test["status"] = "failed"
                 test["description"] = test_data["description"]
                 test["command"] = test_data["command"]
-                test["path"] = test_data["testpath"]
+                test["testpath"] = test_data["testpath"]
                 test["test_content"] = test_data["test_content"]
                 test["output"] = test_data["output"]
                 test["runtime"] = test_data["runtime"]
@@ -190,6 +190,7 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
                 test["compiler"] = test_data["compiler"]
                 test["starttime"] = test_data["starttime"]
                 test["endtime"] = test_data["endtime"]
+                test["build_script"] = test_data["build_script"]
 
                 # extra preformatted output fields
                 test["buildspec_content"] = test_data["buildspec_content"]
@@ -199,12 +200,12 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
                 # tags == labels
                 test["tags"] = test_data["tags"]
 
-                # ignored for now
+
                 # testroot = test_data['testroot']
-                # stagedir = test_data['stagedir']
-                # rundir = test_data['rundir']
-                # outfile = test_data['outfile']
-                # errfile = test_data['errfile']
+                test['stagedir'] = test_data['stagedir']
+                test['rundir'] = test_data['rundir']
+                test['outfile'] = test_data['outfile']
+                test['errfile'] = test_data['errfile']
 
                 # test start and end time.
                 starttime = test_data["starttime"]
@@ -239,7 +240,7 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
     for test in tests:
         test_element = ET.SubElement(testing_element, "Test", Status=test["status"])
         ET.SubElement(test_element, "Name").text = test["name"]
-        ET.SubElement(test_element, "Path").text = test["path"]
+        ET.SubElement(test_element, "Description").text = test["description"]
         ET.SubElement(test_element, "FullCommandLine").text = test["command"]
         results_element = ET.SubElement(test_element, "Results")
 
@@ -264,6 +265,14 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
         )
         ET.SubElement(returncode_measurement, "Value").text = str(test["returncode"])
 
+        for field in ["user", "description", "hostname", "executor", "tags", "build_script", "testpath", "stagedir", "rundir", "outfile", "errfile", "starttime", "endtime", "compiler", "schemafile"]:
+            measurement = ET.SubElement(
+                results_element, "NamedMeasurement", type="text/string",
+                name=field
+            )
+            ET.SubElement(measurement, "Value").text = test[
+                field]
+        """ ---DELETE CONTENT BELOW    
         description_measurement = ET.SubElement(
             results_element, "NamedMeasurement", type="text/string", name="description"
         )
@@ -273,7 +282,7 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
             results_element, "NamedMeasurement", type="text/string", name="User"
         )
         ET.SubElement(user_measurement, "Value").text = test["user"]
-
+        
         hostname_measurement = ET.SubElement(
             results_element, "NamedMeasurement", type="text/string", name="Hostname"
         )
@@ -288,11 +297,43 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
             results_element, "NamedMeasurement", type="text/string", name="Tags"
         )
         ET.SubElement(tags_measurement, "Value").text = test["tags"]
+        
+        buildscript_measurement = ET.SubElement(
+            results_element, "NamedMeasurement", type="text/string",
+            name="buildscript"
+        )
+        ET.SubElement(buildscript_measurement, "Value").text = test["build_script"]
 
         testpath_measurement = ET.SubElement(
             results_element, "NamedMeasurement", type="text/string", name="testpath"
         )
+
         ET.SubElement(testpath_measurement, "Value").text = test["path"]
+
+        stagedir_measurement = ET.SubElement(
+            results_element, "NamedMeasurement", type="text/string", name="stagedir"
+        )
+
+        ET.SubElement(stagedir_measurement, "Value").text = test["stagedir"]
+
+        rundir_measurement = ET.SubElement(
+            results_element, "NamedMeasurement", type="text/string", name="rundir"
+        )
+
+        ET.SubElement(rundir_measurement, "Value").text = test["rundir"]
+
+        outfile_measurement = ET.SubElement(
+            results_element, "NamedMeasurement", type="text/string", name="outfile"
+        )
+
+        ET.SubElement(outfile_measurement, "Value").text = test["outfile"]
+
+        errfile_measurement = ET.SubElement(
+            results_element, "NamedMeasurement", type="text/string", name="errfile"
+        )
+
+        ET.SubElement(errfile_measurement, "Value").text = test["errfile"]
+
 
         starttime_measurement = ET.SubElement(
             results_element, "NamedMeasurement", type="text/string", name="starttime"
@@ -313,6 +354,8 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
             results_element, "NamedMeasurement", type="text/string", name="schemafile"
         )
         ET.SubElement(schema_measurement, "Value").text = test["schemafile"]
+        """
+
 
         error_content = ET.SubElement(
             results_element, "NamedMeasurement", type="text/preformatted", name="Error"

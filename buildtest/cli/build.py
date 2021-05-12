@@ -673,7 +673,7 @@ class BuildTest:
             table[builder.type]["type"].append(builder.recipe["type"])
             table[builder.type]["executor"].append(builder.executor)
             table[builder.type]["tags"].append(builder.recipe.get("tags"))
-            table[builder.type]["testpath"].append(builder.metadata["testpath"])
+            table[builder.type]["testpath"].append(builder.build_script)
 
             if builder.type == "compiler":
                 table[builder.type]["compiler"].append(builder.compiler)
