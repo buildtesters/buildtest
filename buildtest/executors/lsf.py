@@ -86,13 +86,10 @@ class LSFExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to stage directory {builder.stage_dir}")
 
-        builder.metadata["command"] = builder.run_command()
-        self.logger.debug(f"Running Test via command: {builder.metadata['command']}")
 
-        command = BuildTestCommand(builder.metadata["command"])
-        command.execute()
-        self.start_time(builder)
-        builder.start()
+        self.logger.debug(f"Running Test via command: {builder.runcmd}")
+        command = builder.run()
+
         # if job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
             err = f"[{builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
@@ -156,10 +153,13 @@ class LSFExecutor(BaseExecutor):
         :type builder: BuilderBase, required
         """
 
+        builder.endtime()
+
         builder.metadata["job"] = builder.job.gather()
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
-        self.end_time(builder)
+
+        #self.end_time(builder)
 
         builder.metadata["outfile"] = os.path.join(
             builder.stage_dir, builder.job.output_file()

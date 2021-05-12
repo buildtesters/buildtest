@@ -18,9 +18,6 @@ system:
           before_script: |
             time
             echo "commands run before job"
-          after_script: |
-            time
-            echo "commands run after job"
         test:
           description: "LSF Executor name 'test' that submits jobs to 'test' queue"
           launcher: bsub

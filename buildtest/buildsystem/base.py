@@ -6,6 +6,7 @@ is implemented as separate Builder.
 ScriptBuilder class implements 'type: script'
 CompilerBuilder class implements 'type: compiler'
 """
+import datetime
 import getpass
 import logging
 import os
@@ -24,6 +25,7 @@ from buildtest.buildsystem.batch import (
     PBSBatchScript,
 )
 from buildtest.schemas.defaults import schema_table
+from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir, write_file, read_file
 from buildtest.utils.timer import Timer
 from buildtest.utils.shell import Shell
@@ -166,6 +168,7 @@ class BuilderBase(ABC):
         self.metadata["full_id"] = self._generate_unique_id()
         self.metadata["id"] = self.metadata["full_id"][:8]
 
+
     def get_test_extension(self):
         """Return the test extension, which depends on the shell used. Based
         on the value of ``shell`` key we return the shell extension.
@@ -200,6 +203,39 @@ class BuilderBase(ABC):
         self._build_setup()
         self._write_test()
         self._write_build_script()
+
+    def run(self):
+        """ Run the test and record the starttime and start timer. We also return the instance
+            object of type BuildTestCommand which is used by Executors for processing output and error
+        """
+
+        self.starttime()
+        self.start()
+        command = BuildTestCommand(self.runcmd)
+        command.execute()
+        return command
+
+    def starttime(self):
+        """This method will record the starttime when job starts execution by using ``datetime.datetime.now()``"""
+        self._starttime = datetime.datetime.now()
+
+        # this is recorded in the report file
+        self.metadata["result"]["starttime"] = self._starttime.strftime("%Y/%m/%d %X")
+
+    def endtime(self):
+        """This method is called upon termination of job, we get current time using ``datetime.datetime.now()`` and calculate runtime of job"""
+        self._endtime = datetime.datetime.now()
+
+        # this is recorded in the report file
+        self.metadata["result"]["endtime"] = self._endtime.strftime("%Y/%m/%d %X")
+
+        self.runtime()
+
+    def runtime(self):
+        # Calculate runtime of job by calculating delta between endtime and starttime.
+
+        runtime = self._endtime - self._starttime
+        self.metadata["result"]["runtime"] = runtime.total_seconds()
 
     def run_command(self):
         """Command used to run the build script. buildtest will change into the stage directory (self.stage_dir)
@@ -278,6 +314,9 @@ class BuilderBase(ABC):
         dest = os.path.join(self.run_dir, os.path.basename(self.build_script))
         shutil.copy2(self.build_script, dest)
         self.logger.debug(f"Copying build script to run directory: {dest}")
+
+        self.runcmd = self.run_command()
+        self.metadata["command"] = self.runcmd
 
     def _write_test(self):
         """This method is responsible for invoking ``generate_script`` that
