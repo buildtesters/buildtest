@@ -254,7 +254,8 @@ class BuilderBase(ABC):
         lines += [f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"]
 
         if self.buildexecutor.executors[self.executor].type != "local":
-            lines += self.buildexecutor.executors[self.executor].launcher_command()
+            launcher = self.buildexecutor.executors[self.executor].launcher_command()
+            lines += " ".join(launcher + [f"{os.path.basename(self.metadata['testpath'])}"])
         else:
             lines += [f"sh {os.path.basename(self.metadata['testpath'])}"]
 
