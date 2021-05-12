@@ -56,6 +56,20 @@ class CobaltExecutor(BaseExecutor):
                 "max_pend_time",
             )
         )
+    def launcher_command(self):
+
+        batch_cmd = [self.launcher]
+
+        if self.queue:
+            batch_cmd += [f"-q {self.queue}"]
+
+        if self.account:
+            batch_cmd += [f"--project {self.account}"]
+
+        if self.launcher_opts:
+            batch_cmd += [" ".join(self.launcher_opts)]
+
+        return batch_cmd
 
     def dispatch(self, builder):
         """This method is responsible for dispatching Cobalt job, get JobID
@@ -70,25 +84,7 @@ class CobaltExecutor(BaseExecutor):
 
         os.chdir(builder.stage_dir)
 
-        batch_cmd = [self.launcher]
-
-        if self.queue:
-            batch_cmd += [f"-q {self.queue}"]
-
-        if self.account:
-            batch_cmd += [f"--project {self.account}"]
-
-        if self.launcher_opts:
-            batch_cmd += [" ".join(self.launcher_opts)]
-
-        batch_cmd += [builder.metadata["testpath"]]
-        builder.metadata["command"] = " ".join(batch_cmd)
-        self.logger.debug(f"Running Test via command: {builder.metadata['command']}")
-
-        command = BuildTestCommand(builder.metadata["command"])
-        command.execute()
-        self.start_time(builder)
-        builder.start()
+        command = builder.run()
 
         # if qsub job submission returns non-zero exit that means we have failure, exit immediately
         if command.returncode != 0:
@@ -177,6 +173,8 @@ class CobaltExecutor(BaseExecutor):
         :param builder: builder object
         :type builder: BuilderBase, required
         """
+
+        builder.endtime()
 
         builder.metadata["output"] = read_file(builder.metadata["outfile"])
         builder.metadata["error"] = read_file(builder.metadata["errfile"])

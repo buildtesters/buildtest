@@ -60,10 +60,6 @@ class LocalExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to directory {builder.stage_dir}")
 
-        self.logger.debug(f"Running Test via command: {builder.runcmd}")
-        # command = BuildTestCommand(builder.runcmd)
-
-
         command = builder.run()
         out, err = command.execute()
         builder.endtime()

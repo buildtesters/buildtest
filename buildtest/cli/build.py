@@ -1012,7 +1012,6 @@ class BuildTest:
                 print("Completed Jobs")
                 print("{:_<40}".format(""))
                 print("\n")
-                print(completed_jobs_table)
 
                 print(
                     tabulate(

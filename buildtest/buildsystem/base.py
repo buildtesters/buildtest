@@ -213,6 +213,7 @@ class BuilderBase(ABC):
         self.start()
         command = BuildTestCommand(self.runcmd)
         command.execute()
+        self.logger.debug(f"Running Test via command: {self.runcmd}")
         return command
 
     def starttime(self):

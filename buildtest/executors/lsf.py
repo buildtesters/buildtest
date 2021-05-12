@@ -86,8 +86,6 @@ class LSFExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to stage directory {builder.stage_dir}")
 
-
-        self.logger.debug(f"Running Test via command: {builder.runcmd}")
         command = builder.run()
 
         # if job submission returns non-zero exit that means we have failure, exit immediately
