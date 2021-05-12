@@ -198,6 +198,7 @@ class BuilderBase(ABC):
 
         self._build_setup()
         self._write_test()
+        self._write_build_script()
 
     def _build_setup(self):
         """This method is the setup operation to get ready to build test which
@@ -233,6 +234,8 @@ class BuilderBase(ABC):
             os.path.join(self.stage_dir, self.name),
             self.get_test_extension(),
         )
+        self.build_script = f"{os.path.join(self.stage_dir, self.name)}_build.sh"
+
         self.metadata["testpath"] = os.path.expandvars(self.metadata["testpath"])
 
         # copy all files relative to buildspec file into stage directory
@@ -243,6 +246,54 @@ class BuilderBase(ABC):
                 )
             elif fname.is_file():
                 shutil.copy2(fname, self.stage_dir)
+
+    def _write_build_script(self):
+        """This method will write the build script used for running the test"""
+
+        lines = ["#!/bin/bash"]
+        lines += [f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"]
+
+        if self.buildexecutor.executors[self.executor].type != "local":
+            lines += self.buildexecutor.executors[self.executor].launcher_command()
+        else:
+            lines += [f"sh {os.path.basename(self.metadata['testpath'])}"]
+
+        lines += ["returncode=$?"]
+        lines += ["exit $returncode"]
+
+        lines = "\n".join(lines)
+        write_file(self.build_script, lines)
+        self.logger.debug(f"Writing build script: {self.build_script}")
+        dest = os.path.join(self.run_dir, os.path.basename(self.build_script))
+        shutil.copy2(self.build_script, dest)
+        self.logger.debug(f"Copying build script to run directory: {dest}")
+
+    def _write_test(self):
+        """This method is responsible for invoking ``generate_script`` that
+        formulates content of testscript which is implemented in each subclass.
+        Next we write content to file and apply 755 permission on script so
+        it has executable permission.
+        """
+
+        # Implementation to write file generate.sh
+        lines = []
+
+        lines += self.generate_script()
+
+        lines = "\n".join(lines)
+
+        self.logger.info(f"Opening Test File for Writing: {self.metadata['testpath']}")
+
+        write_file(self.metadata["testpath"], lines)
+
+        self.metadata["test_content"] = lines
+
+        self._set_execute_perm()
+        # copy testpath to run_dir
+        shutil.copy2(
+            self.metadata["testpath"],
+            os.path.join(self.run_dir, os.path.basename(self.metadata["testpath"])),
+        )
 
     def _get_scheduler_directives(self, bsub, sbatch, cobalt, pbs, batch):
         """Get Scheduler Directives for LSF, Slurm or Cobalt if we are processing
@@ -337,34 +388,7 @@ class BuilderBase(ABC):
             f"Applying permission 755 to {self.metadata['testpath']} so that test can be executed"
         )
 
-    def _write_test(self):
-        """This method is responsible for invoking ``generate_script`` that
-        formulates content of testscript which is implemented in each subclass.
-        Next we write content to file and apply 755 permission on script so
-        it has executable permission.
-        """
-
-        # Implementation to write file generate.sh
-        lines = []
-
-        lines += self.generate_script()
-
-        lines = "\n".join(lines)
-
-        self.logger.info(f"Opening Test File for Writing: {self.metadata['testpath']}")
-
-        write_file(self.metadata["testpath"], lines)
-
-        self.metadata["test_content"] = lines
-
-        self._set_execute_perm()
-        # copy testpath to run_dir
-        shutil.copy2(
-            self.metadata["testpath"],
-            os.path.join(self.run_dir, os.path.basename(self.metadata["testpath"])),
-        )
-
-    def get_environment(self, env):
+    def _get_environment(self, env):
         """Retrieve a list of environment variables defined in buildspec and
         return them as list with the shell equivalent command
 
@@ -395,7 +419,7 @@ class BuilderBase(ABC):
 
         return lines
 
-    def get_variables(self, variables):
+    def _get_variables(self, variables):
         """Retrieve a list of  variables defined in buildspec and
         return them as list with the shell equivalent command.
 

@@ -213,9 +213,9 @@ class CompilerBuilder(BuilderBase):
 
         lines += [self.exec_variable]
 
-        lines += self.get_environment(self.envvars)
+        lines += self._get_environment(self.envvars)
         # get variables
-        lines += self.get_variables(self.vars)
+        lines += self._get_variables(self.vars)
 
         # if 'module' defined in Buildspec add modules to test
         if self.modules:

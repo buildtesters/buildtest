@@ -20,7 +20,8 @@ system:
         sh:
           description: submit jobs on local machine using sh shell
           shell: sh
-
+          before_script: |
+            cat xyz
         csh:
           description: submit jobs on local machine using csh shell
           shell: csh

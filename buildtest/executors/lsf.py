@@ -59,6 +59,23 @@ class LSFExecutor(BaseExecutor):
         )
         self.queue = self._settings.get("queue")
 
+    def launcher_command(self):
+        """This command returns the launcher command and any options specified in configuration file. This
+         is useful when generating the build script in the BuilderBase class
+         """
+        cmd = [self.launcher]
+
+        if self.queue:
+            cmd += [f"-q {self.queue}"]
+
+        if self.account:
+            cmd += [f"-P {self.account}"]
+
+        if self.launcher_opts:
+            cmd += [" ".join(self.launcher_opts)]
+
+        return cmd
+
     def dispatch(self, builder):
         """This method is responsible for dispatching job to scheduler.
 

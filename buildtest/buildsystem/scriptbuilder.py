@@ -83,10 +83,10 @@ class ScriptBuilder(BuilderBase):
         # section below is for shell-scripts (bash, sh, csh, zsh, tcsh, zsh)
 
         # Add environment variables
-        lines += self.get_environment(self.recipe.get("env"))
+        lines += self._get_environment(self.recipe.get("env"))
 
         # Add variables
-        lines += self.get_variables(self.recipe.get("vars"))
+        lines += self._get_variables(self.recipe.get("vars"))
 
         # Add run section
         lines += [self.recipe.get("run")]

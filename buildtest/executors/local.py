@@ -63,7 +63,8 @@ class LocalExecutor(BaseExecutor):
 
         cmd = [builder.metadata["testpath"]]
 
-        builder.metadata["command"] = " ".join(cmd)
+        # builder.metadata["command"] = " ".join(cmd)
+        builder.metadata["command"] = f"bash {os.path.basename(builder.build_script)}"
         self.logger.debug(f"Running Test via command: {builder.metadata['command']}")
 
         command = BuildTestCommand(builder.metadata["command"])
