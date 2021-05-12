@@ -4,7 +4,7 @@ import logging
 import json
 import os
 import re
-
+import time
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.exceptions import ExecutorError
@@ -138,7 +138,6 @@ class CobaltExecutor(BaseExecutor):
         :param builder: builder object
         :type builder: BuilderBase, required
         """
-
         builder.job.poll()
         # Cobalt job can disappear if job is complete so we check when outputfile exists as an indicator when job is finished
         if is_file(builder.metadata["outfile"]) or builder.job.is_complete():
@@ -175,12 +174,19 @@ class CobaltExecutor(BaseExecutor):
         """
 
         builder.endtime()
+        # The cobalt job will write output and error file after job completes, there is a few second delay before file comes. Hence
+        # stay in while loop and sleep for every 5 second until we find both files in filesystem
+        while True:
+            interval=5
+            if is_file(builder.metadata['outfile']) and is_file(builder.metadata['errfile']):
+                break
+            self.logger.debug(f"Sleeping {interval} seconds and waiting for Cobalt Scheduler to write output and error file")
+            time.sleep(interval)
 
+        print(f"Checking file path: {builder.metadata['outfile']} exists: {is_file(builder.metadata['outfile'])}")
         builder.metadata["output"] = read_file(builder.metadata["outfile"])
         builder.metadata["error"] = read_file(builder.metadata["errfile"])
         cobaltlog = os.path.join(builder.stage_dir, builder.job.cobalt_log())
-
-        self.end_time(builder)
 
         self.logger.debug(f"Cobalt Log File written to {cobaltlog}")
 
