@@ -14,6 +14,7 @@ import re
 import shutil
 import socket
 import stat
+import sys
 import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -179,7 +180,12 @@ class BuilderBase(ABC):
         :rtype: str
         """
 
-        return "sh"
+        # for python shell or bash shell type we return 'sh' extension
+        if self.shell_type == "python" or self.shell_type == "bash":
+            return "sh"
+
+        if self.shell_type == "csh":
+            return "csh"
 
     def start(self):
         """Keep internal time for start of test. We start timer by calling
@@ -292,17 +298,37 @@ class BuilderBase(ABC):
             elif fname.is_file():
                 shutil.copy2(fname, self.stage_dir)
 
+    def _emit_command(self):
+        """This method will return a shell command used to invoke the script that is used for tests that
+           use local executors"""
+
+        if not self.recipe.get("shell") or self.recipe.get("shell") == "python":
+            return [self.metadata['testpath']]
+
+        if not self.shell.opts:
+            return [self.shell.name, self.metadata['testpath']]
+
+        return [self.shell.name, self.shell.opts, self.metadata['testpath']]
     def _write_build_script(self):
         """This method will write the build script used for running the test"""
 
         lines = ["#!/bin/bash"]
         lines += [f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"]
 
-        if self.buildexecutor.executors[self.executor].type != "local":
-            launcher = self.buildexecutor.executors[self.executor].launcher_command()
-            lines += [" ".join(launcher) + " " + f"{os.path.basename(self.metadata['testpath'])}"]
+        # local executor
+        if self.buildexecutor.executors[self.executor].type == "local":
+            cmd = self._emit_command()
+            print(cmd)
+
+            lines += [" ".join(cmd)]
+            # filter out any None objects
+            # lines += [i for i in cmd if i ]
+
+        # batch executor
         else:
-            lines += [f"sh {os.path.basename(self.metadata['testpath'])}"]
+            launcher = self.buildexecutor.executors[self.executor].launcher_command()
+            lines += [" ".join(launcher) + " " + f"{self.metadata['testpath']}"]
+
 
         lines += ["returncode=$?"]
         lines += ["exit $returncode"]

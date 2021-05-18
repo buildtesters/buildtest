@@ -60,7 +60,9 @@ class SlurmExecutor(BaseExecutor):
                 "max_pend_time",
             )
         )
+
     def launcher_command(self):
+        """Return sbatch launcher command with options used to submit job"""
         sbatch_cmd = [self.launcher, "--parsable"]
 
         if self.partition:
@@ -91,32 +93,6 @@ class SlurmExecutor(BaseExecutor):
 
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to directory {builder.stage_dir}")
-        """
-        sbatch_cmd = [self.launcher, "--parsable"]
-
-        if self.partition:
-            sbatch_cmd += [f"-p {self.partition}"]
-
-        if self.qos:
-            sbatch_cmd += [f"-q {self.qos}"]
-
-        if self.cluster:
-            sbatch_cmd += [f"--clusters={self.cluster}"]
-
-        if self.account:
-            sbatch_cmd += [f"--account={self.account}"]
-
-        if self.launcher_opts:
-            sbatch_cmd += [" ".join(self.launcher_opts)]
-
-        sbatch_cmd.append(builder.metadata["testpath"])
-
-        builder.metadata["command"] = " ".join(sbatch_cmd)
-        self.logger.debug(f"Running Test via command: {builder.metadata['command']}")
-        
-        command = BuildTestCommand(builder.metadata["command"])
-        command.execute()
-        """
 
         command = builder.run()
         # if sbatch job submission returns non-zero exit that means we have failure, exit immediately

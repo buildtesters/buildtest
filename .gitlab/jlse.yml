@@ -29,7 +29,6 @@ jlse_pr_regression_test:
     - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
       when: manual
   script:
-    - module load python/2020.09.15.001
     - whoami
     - git branch
     - conda create -p $CI_PROJECT_DIR/.conda python=3.8 -y

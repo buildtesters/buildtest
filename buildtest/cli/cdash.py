@@ -14,7 +14,7 @@ from datetime import datetime
 from urllib.request import urlopen, Request
 from urllib.parse import urlencode, urljoin
 from buildtest.defaults import BUILD_REPORT
-from buildtest.utils.file import resolve_path
+from buildtest.utils.file import resolve_path, read_file
 from buildtest.utils.tools import deep_get
 
 
@@ -265,7 +265,7 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
         )
         ET.SubElement(returncode_measurement, "Value").text = str(test["returncode"])
 
-        for field in ["user", "description", "hostname", "executor", "tags", "build_script", "testpath", "stagedir", "rundir", "outfile", "errfile", "starttime", "endtime", "compiler", "schemafile"]:
+        for field in ["user", "description", "hostname", "command", "executor", "tags", "build_script", "testpath", "stagedir", "rundir", "outfile", "errfile", "starttime", "endtime", "compiler", "schemafile"]:
             measurement = ET.SubElement(
                 results_element, "NamedMeasurement", type="text/string",
                 name=field
@@ -377,6 +377,14 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
             name="Test Content",
         )
         ET.SubElement(test_content, "Value").text = test["test_content"]
+
+        build_script_content = ET.SubElement(
+            results_element,
+            "NamedMeasurement",
+            type="text/preformatted",
+            name="Build Script Content",
+        )
+        ET.SubElement(build_script_content, "Value").text = read_file(test["build_script"])
 
         output_measurement = ET.SubElement(results_element, "Measurement")
 
