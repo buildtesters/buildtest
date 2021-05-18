@@ -8,7 +8,6 @@ import os
 import re
 import shutil
 
-from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
@@ -60,7 +59,9 @@ class SlurmExecutor(BaseExecutor):
                 "max_pend_time",
             )
         )
+
     def launcher_command(self):
+        """Return sbatch launcher command with options used to submit job"""
         sbatch_cmd = [self.launcher, "--parsable"]
 
         if self.partition:
@@ -91,44 +92,14 @@ class SlurmExecutor(BaseExecutor):
 
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to directory {builder.stage_dir}")
-        """
-        sbatch_cmd = [self.launcher, "--parsable"]
-
-        if self.partition:
-            sbatch_cmd += [f"-p {self.partition}"]
-
-        if self.qos:
-            sbatch_cmd += [f"-q {self.qos}"]
-
-        if self.cluster:
-            sbatch_cmd += [f"--clusters={self.cluster}"]
-
-        if self.account:
-            sbatch_cmd += [f"--account={self.account}"]
-
-        if self.launcher_opts:
-            sbatch_cmd += [" ".join(self.launcher_opts)]
-
-        sbatch_cmd.append(builder.metadata["testpath"])
-
-        builder.metadata["command"] = " ".join(sbatch_cmd)
-        self.logger.debug(f"Running Test via command: {builder.metadata['command']}")
-        
-        command = BuildTestCommand(builder.metadata["command"])
-        command.execute()
-        """
 
         command = builder.run()
-        # if sbatch job submission returns non-zero exit that means we have failure, exit immediately
-        if command.returncode != 0:
-            err = f"[{builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
-            raise ExecutorError(err)
 
         # it is possible user can specify a before_script for Slurm executor which is run in build script. In order to get
         # slurm job it would be the last element in array. If before_script is not specified the last element should be the only
         # element in output
         parse_jobid = command.get_output()[-1]
-        #parse_jobid = " ".join(parse_jobid)
+        # parse_jobid = " ".join(parse_jobid)
 
         # output of sbatch --parsable could be in format 'JobID;cluster' if so we split by colon to extract JobID
         if re.search(";", parse_jobid):

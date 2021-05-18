@@ -2,7 +2,6 @@
 BuildExecutor: manager for test executors
 """
 
-import datetime
 import logging
 import os
 import re
@@ -45,6 +44,7 @@ class BaseExecutor:
         so we are sure that the builder is defined. This is also where
         we set the result to return.
         """
+
     def __str__(self):
         return "%s.%s" % (self.type, self.name)
 

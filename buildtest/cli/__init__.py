@@ -398,7 +398,7 @@ def report_menu(subparsers):
 
 
 def inspect_menu(subparsers):
-    """This method builds argument for `buildtest inspect` command """
+    """This method builds argument for `buildtest inspect` command"""
 
     parser_inspect = subparsers.add_parser("inspect")
     parser_inspect.add_argument(

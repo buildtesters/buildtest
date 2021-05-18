@@ -11,7 +11,6 @@ import subprocess
 import time
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
-from buildtest.exceptions import ExecutorError
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import read_file
 from buildtest.utils.tools import deep_get
@@ -61,8 +60,8 @@ class LSFExecutor(BaseExecutor):
 
     def launcher_command(self):
         """This command returns the launcher command and any options specified in configuration file. This
-         is useful when generating the build script in the BuilderBase class
-         """
+        is useful when generating the build script in the BuilderBase class
+        """
         cmd = [self.launcher]
 
         if self.queue:
@@ -86,12 +85,7 @@ class LSFExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to stage directory {builder.stage_dir}")
 
-        command = builder.run()
-
-        # if job submission returns non-zero exit that means we have failure, exit immediately
-        if command.returncode != 0:
-            err = f"[{builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
-            raise ExecutorError(err)
+        builder.run()
 
         interval = 5
 
@@ -156,8 +150,7 @@ class LSFExecutor(BaseExecutor):
         builder.metadata["job"] = builder.job.gather()
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
-
-        #self.end_time(builder)
+        # self.end_time(builder)
 
         builder.metadata["outfile"] = os.path.join(
             builder.stage_dir, builder.job.output_file()
@@ -174,8 +167,8 @@ class LSFExecutor(BaseExecutor):
         )
         self.check_test_state(builder)
 
-class LSFJob(Job):
 
+class LSFJob(Job):
     def __init__(self, jobID):
         super().__init__(jobID)
 

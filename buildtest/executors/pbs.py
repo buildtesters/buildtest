@@ -4,9 +4,7 @@ import logging
 import json
 import os
 
-
 from buildtest.executors.base import BaseExecutor
-from buildtest.exceptions import ExecutorError
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import read_file
@@ -89,14 +87,6 @@ class PBSExecutor(BaseExecutor):
 
         command = builder.run()
 
-        # if qsub job submission returns non-zero exit that means we have failure, exit immediately
-        if command.returncode != 0:
-            err = f"[{builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
-            err += (
-                f"[{builder.metadata['name']}] running command: {' '.join(batch_cmd)}"
-            )
-            raise ExecutorError(err)
-
         parse_jobid = command.get_output()
         self.job_id = " ".join(parse_jobid).strip()
 
@@ -107,8 +97,6 @@ class PBSExecutor(BaseExecutor):
         msg = f"[{builder.metadata['name']}] JobID: {builder.metadata['jobid']} dispatched to scheduler"
         print(msg)
         self.logger.debug(msg)
-
-
 
     def poll(self, builder):
         """This method is responsible for polling Cobalt job, we check the
@@ -144,7 +132,6 @@ class PBSExecutor(BaseExecutor):
                 )
 
             builder.start()
-
 
     def gather(self, builder):
         """This method is responsible for getting output of job using `qstat -x -f -F json <jobID>`
@@ -184,7 +171,6 @@ class PBSJob(Job):
 
     def is_suspended(self):
         return self._state in ["H", "U", "S"]
-
 
     def output_file(self):
         return self._outfile
@@ -242,7 +228,6 @@ class PBSJob(Job):
         except KeyError:
             self._exitcode = -1
         return job_data
-
 
     def cancel(self):
         query = f"qdel {self.jobid}"

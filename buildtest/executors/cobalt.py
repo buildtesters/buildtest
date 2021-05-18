@@ -7,7 +7,6 @@ import re
 import time
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
-from buildtest.exceptions import ExecutorError
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import read_file, is_file
 from buildtest.utils.tools import deep_get
@@ -56,6 +55,7 @@ class CobaltExecutor(BaseExecutor):
                 "max_pend_time",
             )
         )
+
     def launcher_command(self):
 
         batch_cmd = [self.launcher]
@@ -85,14 +85,6 @@ class CobaltExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
 
         command = builder.run()
-
-        # if qsub job submission returns non-zero exit that means we have failure, exit immediately
-        if command.returncode != 0:
-            err = f"[{builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
-            err += (
-                f"[{builder.metadata['name']}] running command: {' '.join(batch_cmd)}"
-            )
-            raise ExecutorError(err)
 
         parse_jobid = command.get_output()
         parse_jobid = " ".join(parse_jobid)
@@ -177,13 +169,19 @@ class CobaltExecutor(BaseExecutor):
         # The cobalt job will write output and error file after job completes, there is a few second delay before file comes. Hence
         # stay in while loop and sleep for every 5 second until we find both files in filesystem
         while True:
-            interval=5
-            if is_file(builder.metadata['outfile']) and is_file(builder.metadata['errfile']):
+            interval = 5
+            if is_file(builder.metadata["outfile"]) and is_file(
+                builder.metadata["errfile"]
+            ):
                 break
-            self.logger.debug(f"Sleeping {interval} seconds and waiting for Cobalt Scheduler to write output and error file")
+            self.logger.debug(
+                f"Sleeping {interval} seconds and waiting for Cobalt Scheduler to write output and error file"
+            )
             time.sleep(interval)
 
-        print(f"Checking file path: {builder.metadata['outfile']} exists: {is_file(builder.metadata['outfile'])}")
+        print(
+            f"Checking file path: {builder.metadata['outfile']} exists: {is_file(builder.metadata['outfile'])}"
+        )
         builder.metadata["output"] = read_file(builder.metadata["outfile"])
         builder.metadata["error"] = read_file(builder.metadata["errfile"])
         cobaltlog = os.path.join(builder.stage_dir, builder.job.cobalt_log())

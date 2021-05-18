@@ -3,13 +3,13 @@ import pytest
 import shutil
 from buildtest.cli.build import BuildTest
 from buildtest.utils.file import walk_tree
-from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
 from buildtest.system import BuildTestSystem
 
+
 def test_pbs():
 
-    """Need to figure out a PBS environment where to run this regression test. """
+    """Need to figure out a PBS environment where to run this regression test."""
     if not shutil.which("pbsnodes"):
         pytest.skip("Test runs only on PBS Cluster, must have pbsnodes command")
 

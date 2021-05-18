@@ -18,6 +18,7 @@ import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
+from buildtest.exceptions import ExecutorError
 from buildtest.buildsystem.batch import (
     SlurmBatchScript,
     LSFBatchScript,
@@ -168,7 +169,6 @@ class BuilderBase(ABC):
         self.metadata["full_id"] = self._generate_unique_id()
         self.metadata["id"] = self.metadata["full_id"][:8]
 
-
     def get_test_extension(self):
         """Return the test extension, which depends on the shell used. Based
         on the value of ``shell`` key we return the shell extension.
@@ -179,7 +179,12 @@ class BuilderBase(ABC):
         :rtype: str
         """
 
-        return "sh"
+        # for python shell or bash shell type we return 'sh' extension
+        if self.shell_type == "python" or self.shell_type == "bash":
+            return "sh"
+
+        if self.shell_type == "csh":
+            return "csh"
 
     def start(self):
         """Keep internal time for start of test. We start timer by calling
@@ -205,15 +210,21 @@ class BuilderBase(ABC):
         self._write_build_script()
 
     def run(self):
-        """ Run the test and record the starttime and start timer. We also return the instance
-            object of type BuildTestCommand which is used by Executors for processing output and error
+        """Run the test and record the starttime and start timer. We also return the instance
+        object of type BuildTestCommand which is used by Executors for processing output and error
         """
 
         self.starttime()
         self.start()
         command = BuildTestCommand(self.runcmd)
         command.execute()
+
         self.logger.debug(f"Running Test via command: {self.runcmd}")
+
+        if command.returncode != 0:
+            err = f"[{self.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
+            raise ExecutorError(err)
+
         return command
 
     def starttime(self):
@@ -240,7 +251,7 @@ class BuilderBase(ABC):
 
     def run_command(self):
         """Command used to run the build script. buildtest will change into the stage directory (self.stage_dir)
-           before running the test.
+        before running the test.
         """
 
         return f"sh {os.path.basename(self.build_script)}"
@@ -292,17 +303,35 @@ class BuilderBase(ABC):
             elif fname.is_file():
                 shutil.copy2(fname, self.stage_dir)
 
+    def _emit_command(self):
+        """This method will return a shell command used to invoke the script that is used for tests that
+        use local executors"""
+
+        if not self.recipe.get("shell") or self.recipe.get("shell") == "python":
+            return [self.metadata["testpath"]]
+
+        if not self.shell.opts:
+            return [self.shell.name, self.metadata["testpath"]]
+
+        return [self.shell.name, self.shell.opts, self.metadata["testpath"]]
+
     def _write_build_script(self):
         """This method will write the build script used for running the test"""
 
         lines = ["#!/bin/bash"]
-        lines += [f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"]
+        lines += [
+            f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"
+        ]
 
-        if self.buildexecutor.executors[self.executor].type != "local":
-            launcher = self.buildexecutor.executors[self.executor].launcher_command()
-            lines += [" ".join(launcher) + " " + f"{os.path.basename(self.metadata['testpath'])}"]
+        # local executor
+        if self.buildexecutor.executors[self.executor].type == "local":
+            cmd = self._emit_command()
+
+            lines += [" ".join(cmd)]
+        # batch executor
         else:
-            lines += [f"sh {os.path.basename(self.metadata['testpath'])}"]
+            launcher = self.buildexecutor.executors[self.executor].launcher_command()
+            lines += [" ".join(launcher) + " " + f"{self.metadata['testpath']}"]
 
         lines += ["returncode=$?"]
         lines += ["exit $returncode"]
