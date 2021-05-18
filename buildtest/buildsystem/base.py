@@ -169,7 +169,6 @@ class BuilderBase(ABC):
         self.metadata["full_id"] = self._generate_unique_id()
         self.metadata["id"] = self.metadata["full_id"][:8]
 
-
     def get_test_extension(self):
         """Return the test extension, which depends on the shell used. Based
         on the value of ``shell`` key we return the shell extension.
@@ -211,8 +210,8 @@ class BuilderBase(ABC):
         self._write_build_script()
 
     def run(self):
-        """ Run the test and record the starttime and start timer. We also return the instance
-            object of type BuildTestCommand which is used by Executors for processing output and error
+        """Run the test and record the starttime and start timer. We also return the instance
+        object of type BuildTestCommand which is used by Executors for processing output and error
         """
 
         self.starttime()
@@ -252,7 +251,7 @@ class BuilderBase(ABC):
 
     def run_command(self):
         """Command used to run the build script. buildtest will change into the stage directory (self.stage_dir)
-           before running the test.
+        before running the test.
         """
 
         return f"sh {os.path.basename(self.build_script)}"
@@ -306,21 +305,23 @@ class BuilderBase(ABC):
 
     def _emit_command(self):
         """This method will return a shell command used to invoke the script that is used for tests that
-           use local executors"""
+        use local executors"""
 
         if not self.recipe.get("shell") or self.recipe.get("shell") == "python":
-            return [self.metadata['testpath']]
+            return [self.metadata["testpath"]]
 
         if not self.shell.opts:
-            return [self.shell.name, self.metadata['testpath']]
+            return [self.shell.name, self.metadata["testpath"]]
 
-        return [self.shell.name, self.shell.opts, self.metadata['testpath']]
+        return [self.shell.name, self.shell.opts, self.metadata["testpath"]]
 
     def _write_build_script(self):
         """This method will write the build script used for running the test"""
 
         lines = ["#!/bin/bash"]
-        lines += [f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"]
+        lines += [
+            f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"
+        ]
 
         # local executor
         if self.buildexecutor.executors[self.executor].type == "local":
@@ -331,7 +332,6 @@ class BuilderBase(ABC):
         else:
             launcher = self.buildexecutor.executors[self.executor].launcher_command()
             lines += [" ".join(launcher) + " " + f"{self.metadata['testpath']}"]
-
 
         lines += ["returncode=$?"]
         lines += ["exit $returncode"]

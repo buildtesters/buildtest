@@ -541,7 +541,7 @@ class CompilerBuilder(BuilderBase):
         return self.ldflags
 
     def get_path(self):
-        """ This method returns the full path for C, C++, Fortran compilers"""
+        """This method returns the full path for C, C++, Fortran compilers"""
 
         path = {
             self.cc: shutil.which(self.cc),

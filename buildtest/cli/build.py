@@ -171,7 +171,7 @@ class BuildTest:
         print("Configuration File: ", self.configuration.file)
 
     def build(self):
-        """This method is responsible for implementating stages: parse, build, run, update. """
+        """This method is responsible for implementating stages: parse, build, run, update."""
 
         self.discover_buildspecs(printTable=True)
 
@@ -1004,7 +1004,6 @@ class BuildTest:
                 pending_jobs_table["jobID"].append(job.metadata["jobid"])
                 # pending_jobs_table["jobstate"].append(job.job_state)
                 pending_jobs_table["jobstate"].append(job.job.state())
-
 
             # only print table if their is an element in the table. We check for 'name' property
             if completed_jobs_table["name"]:

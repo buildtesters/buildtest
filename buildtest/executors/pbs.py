@@ -98,8 +98,6 @@ class PBSExecutor(BaseExecutor):
         print(msg)
         self.logger.debug(msg)
 
-
-
     def poll(self, builder):
         """This method is responsible for polling Cobalt job, we check the
         job state and existence of output file. If file exists or job is in
@@ -134,7 +132,6 @@ class PBSExecutor(BaseExecutor):
                 )
 
             builder.start()
-
 
     def gather(self, builder):
         """This method is responsible for getting output of job using `qstat -x -f -F json <jobID>`
@@ -174,7 +171,6 @@ class PBSJob(Job):
 
     def is_suspended(self):
         return self._state in ["H", "U", "S"]
-
 
     def output_file(self):
         return self._outfile
@@ -232,7 +228,6 @@ class PBSJob(Job):
         except KeyError:
             self._exitcode = -1
         return job_data
-
 
     def cancel(self):
         query = f"qdel {self.jobid}"

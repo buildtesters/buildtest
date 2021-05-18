@@ -200,12 +200,11 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
                 # tags == labels
                 test["tags"] = test_data["tags"]
 
-
                 # testroot = test_data['testroot']
-                test['stagedir'] = test_data['stagedir']
-                test['rundir'] = test_data['rundir']
-                test['outfile'] = test_data['outfile']
-                test['errfile'] = test_data['errfile']
+                test["stagedir"] = test_data["stagedir"]
+                test["rundir"] = test_data["rundir"]
+                test["outfile"] = test_data["outfile"]
+                test["errfile"] = test_data["errfile"]
 
                 # test start and end time.
                 starttime = test_data["starttime"]
@@ -265,14 +264,28 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
         )
         ET.SubElement(returncode_measurement, "Value").text = str(test["returncode"])
 
-        for field in ["user", "hostname", "description", "command", "executor", "tags", "build_script", "testpath", "stagedir", "rundir", "outfile", "errfile", "starttime", "endtime", "compiler", "schemafile"]:
+        for field in [
+            "user",
+            "hostname",
+            "description",
+            "command",
+            "executor",
+            "tags",
+            "build_script",
+            "testpath",
+            "stagedir",
+            "rundir",
+            "outfile",
+            "errfile",
+            "starttime",
+            "endtime",
+            "compiler",
+            "schemafile",
+        ]:
             measurement = ET.SubElement(
-                results_element, "NamedMeasurement", type="text/string",
-                name=field
+                results_element, "NamedMeasurement", type="text/string", name=field
             )
-            ET.SubElement(measurement, "Value").text = test[
-                field]
-
+            ET.SubElement(measurement, "Value").text = test[field]
 
         error_content = ET.SubElement(
             results_element, "NamedMeasurement", type="text/preformatted", name="Error"
@@ -301,7 +314,9 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
             type="text/preformatted",
             name="Build Script Content",
         )
-        ET.SubElement(build_script_content, "Value").text = read_file(test["build_script"])
+        ET.SubElement(build_script_content, "Value").text = read_file(
+            test["build_script"]
+        )
 
         output_measurement = ET.SubElement(results_element, "Measurement")
 

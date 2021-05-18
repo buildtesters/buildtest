@@ -99,7 +99,7 @@ class SlurmExecutor(BaseExecutor):
         # slurm job it would be the last element in array. If before_script is not specified the last element should be the only
         # element in output
         parse_jobid = command.get_output()[-1]
-        #parse_jobid = " ".join(parse_jobid)
+        # parse_jobid = " ".join(parse_jobid)
 
         # output of sbatch --parsable could be in format 'JobID;cluster' if so we split by colon to extract JobID
         if re.search(";", parse_jobid):

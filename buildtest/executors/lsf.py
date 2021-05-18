@@ -60,8 +60,8 @@ class LSFExecutor(BaseExecutor):
 
     def launcher_command(self):
         """This command returns the launcher command and any options specified in configuration file. This
-         is useful when generating the build script in the BuilderBase class
-         """
+        is useful when generating the build script in the BuilderBase class
+        """
         cmd = [self.launcher]
 
         if self.queue:
@@ -150,8 +150,7 @@ class LSFExecutor(BaseExecutor):
         builder.metadata["job"] = builder.job.gather()
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
-
-        #self.end_time(builder)
+        # self.end_time(builder)
 
         builder.metadata["outfile"] = os.path.join(
             builder.stage_dir, builder.job.output_file()
@@ -168,8 +167,8 @@ class LSFExecutor(BaseExecutor):
         )
         self.check_test_state(builder)
 
-class LSFJob(Job):
 
+class LSFJob(Job):
     def __init__(self, jobID):
         super().__init__(jobID)
 

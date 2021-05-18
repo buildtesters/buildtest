@@ -177,7 +177,7 @@ It is currently setup to run for python 3.7 version as follows::
 
     language_version: python3.7
 
-Alter this value based on python version you are using or refer to `black version control integration <https://black.readthedocs.io/en/stable/version_control_integration.html>`_.
+Alter this value based on python version you are using or refer to `black version control integration <https://black.readthedocs.io/en/stable/integrations/source_version_control.html>`_.
 
 To install the pre-commit hook run:
 
