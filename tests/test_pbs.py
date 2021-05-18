@@ -3,7 +3,6 @@ import pytest
 import shutil
 from buildtest.cli.build import BuildTest
 from buildtest.utils.file import walk_tree
-from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
 from buildtest.system import BuildTestSystem
 

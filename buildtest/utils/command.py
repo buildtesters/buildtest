@@ -172,3 +172,6 @@ class BuildTestCommand:
         :rtype: str
         """
         return self.err
+
+    def get_command(self):
+        return " ".join(self.cmd)

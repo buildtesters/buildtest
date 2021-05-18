@@ -2,7 +2,6 @@
 BuildExecutor: manager for test executors
 """
 
-import datetime
 import logging
 import os
 import re

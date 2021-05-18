@@ -265,96 +265,13 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
         )
         ET.SubElement(returncode_measurement, "Value").text = str(test["returncode"])
 
-        for field in ["user", "description", "hostname", "command", "executor", "tags", "build_script", "testpath", "stagedir", "rundir", "outfile", "errfile", "starttime", "endtime", "compiler", "schemafile"]:
+        for field in ["user", "hostname", "description", "command", "executor", "tags", "build_script", "testpath", "stagedir", "rundir", "outfile", "errfile", "starttime", "endtime", "compiler", "schemafile"]:
             measurement = ET.SubElement(
                 results_element, "NamedMeasurement", type="text/string",
                 name=field
             )
             ET.SubElement(measurement, "Value").text = test[
                 field]
-        """ ---DELETE CONTENT BELOW    
-        description_measurement = ET.SubElement(
-            results_element, "NamedMeasurement", type="text/string", name="description"
-        )
-        ET.SubElement(description_measurement, "Value").text = test["description"]
-
-        user_measurement = ET.SubElement(
-            results_element, "NamedMeasurement", type="text/string", name="User"
-        )
-        ET.SubElement(user_measurement, "Value").text = test["user"]
-        
-        hostname_measurement = ET.SubElement(
-            results_element, "NamedMeasurement", type="text/string", name="Hostname"
-        )
-        ET.SubElement(hostname_measurement, "Value").text = test["hostname"]
-
-        executor_measurement = ET.SubElement(
-            results_element, "NamedMeasurement", type="text/string", name="executor"
-        )
-        ET.SubElement(executor_measurement, "Value").text = test["executor"]
-
-        tags_measurement = ET.SubElement(
-            results_element, "NamedMeasurement", type="text/string", name="Tags"
-        )
-        ET.SubElement(tags_measurement, "Value").text = test["tags"]
-        
-        buildscript_measurement = ET.SubElement(
-            results_element, "NamedMeasurement", type="text/string",
-            name="buildscript"
-        )
-        ET.SubElement(buildscript_measurement, "Value").text = test["build_script"]
-
-        testpath_measurement = ET.SubElement(
-            results_element, "NamedMeasurement", type="text/string", name="testpath"
-        )
-
-        ET.SubElement(testpath_measurement, "Value").text = test["path"]
-
-        stagedir_measurement = ET.SubElement(
-            results_element, "NamedMeasurement", type="text/string", name="stagedir"
-        )
-
-        ET.SubElement(stagedir_measurement, "Value").text = test["stagedir"]
-
-        rundir_measurement = ET.SubElement(
-            results_element, "NamedMeasurement", type="text/string", name="rundir"
-        )
-
-        ET.SubElement(rundir_measurement, "Value").text = test["rundir"]
-
-        outfile_measurement = ET.SubElement(
-            results_element, "NamedMeasurement", type="text/string", name="outfile"
-        )
-
-        ET.SubElement(outfile_measurement, "Value").text = test["outfile"]
-
-        errfile_measurement = ET.SubElement(
-            results_element, "NamedMeasurement", type="text/string", name="errfile"
-        )
-
-        ET.SubElement(errfile_measurement, "Value").text = test["errfile"]
-
-
-        starttime_measurement = ET.SubElement(
-            results_element, "NamedMeasurement", type="text/string", name="starttime"
-        )
-        ET.SubElement(starttime_measurement, "Value").text = test["starttime"]
-
-        endtime_measurement = ET.SubElement(
-            results_element, "NamedMeasurement", type="text/string", name="endtime"
-        )
-        ET.SubElement(endtime_measurement, "Value").text = test["endtime"]
-
-        compiler_measurement = ET.SubElement(
-            results_element, "NamedMeasurement", type="text/string", name="compiler"
-        )
-        ET.SubElement(compiler_measurement, "Value").text = test["compiler"]
-
-        schema_measurement = ET.SubElement(
-            results_element, "NamedMeasurement", type="text/string", name="schemafile"
-        )
-        ET.SubElement(schema_measurement, "Value").text = test["schemafile"]
-        """
 
 
         error_content = ET.SubElement(

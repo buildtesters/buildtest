@@ -14,11 +14,11 @@ import re
 import shutil
 import socket
 import stat
-import sys
 import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
+from buildtest.exceptions import ExecutorError
 from buildtest.buildsystem.batch import (
     SlurmBatchScript,
     LSFBatchScript,
@@ -219,7 +219,13 @@ class BuilderBase(ABC):
         self.start()
         command = BuildTestCommand(self.runcmd)
         command.execute()
+
         self.logger.debug(f"Running Test via command: {self.runcmd}")
+
+        if command.returncode != 0:
+            err = f"[{self.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
+            raise ExecutorError(err)
+
         return command
 
     def starttime(self):
@@ -309,6 +315,7 @@ class BuilderBase(ABC):
             return [self.shell.name, self.metadata['testpath']]
 
         return [self.shell.name, self.shell.opts, self.metadata['testpath']]
+
     def _write_build_script(self):
         """This method will write the build script used for running the test"""
 
@@ -318,12 +325,8 @@ class BuilderBase(ABC):
         # local executor
         if self.buildexecutor.executors[self.executor].type == "local":
             cmd = self._emit_command()
-            print(cmd)
 
             lines += [" ".join(cmd)]
-            # filter out any None objects
-            # lines += [i for i in cmd if i ]
-
         # batch executor
         else:
             launcher = self.buildexecutor.executors[self.executor].launcher_command()

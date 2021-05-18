@@ -8,7 +8,6 @@ import os
 import re
 import shutil
 
-from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
@@ -95,10 +94,6 @@ class SlurmExecutor(BaseExecutor):
         self.logger.debug(f"Changing to directory {builder.stage_dir}")
 
         command = builder.run()
-        # if sbatch job submission returns non-zero exit that means we have failure, exit immediately
-        if command.returncode != 0:
-            err = f"[{builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
-            raise ExecutorError(err)
 
         # it is possible user can specify a before_script for Slurm executor which is run in build script. In order to get
         # slurm job it would be the last element in array. If before_script is not specified the last element should be the only

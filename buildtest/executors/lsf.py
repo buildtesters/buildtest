@@ -11,7 +11,6 @@ import subprocess
 import time
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
-from buildtest.exceptions import ExecutorError
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import read_file
 from buildtest.utils.tools import deep_get
@@ -86,12 +85,7 @@ class LSFExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to stage directory {builder.stage_dir}")
 
-        command = builder.run()
-
-        # if job submission returns non-zero exit that means we have failure, exit immediately
-        if command.returncode != 0:
-            err = f"[{builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
-            raise ExecutorError(err)
+        builder.run()
 
         interval = 5
 

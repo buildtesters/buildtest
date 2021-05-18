@@ -7,7 +7,6 @@ import re
 import time
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
-from buildtest.exceptions import ExecutorError
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import read_file, is_file
 from buildtest.utils.tools import deep_get
@@ -85,14 +84,6 @@ class CobaltExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
 
         command = builder.run()
-
-        # if qsub job submission returns non-zero exit that means we have failure, exit immediately
-        if command.returncode != 0:
-            err = f"[{builder.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
-            err += (
-                f"[{builder.metadata['name']}] running command: {' '.join(batch_cmd)}"
-            )
-            raise ExecutorError(err)
 
         parse_jobid = command.get_output()
         parse_jobid = " ".join(parse_jobid)
