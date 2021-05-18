@@ -35,7 +35,7 @@ def build_helper():
 
 
 def run(query):
-    """The ``run()`` method will execute the command and retrieve the output as part of documentation examples """
+    """The ``run()`` method will execute the command and retrieve the output as part of documentation examples"""
 
     print(f"Executing Command: {query}")
     out = subprocess.check_output(query, shell=True, universal_newlines=True)
