@@ -13,7 +13,7 @@ from buildtest.cli import get_parser
 from buildtest.cli.build import BuildTest
 from buildtest.system import BuildTestSystem
 from buildtest.log import init_logfile
-from buildtest.utils.file import create_dir, resolve_path
+from buildtest.utils.file import create_dir, is_file, resolve_path, remove_file
 
 # column width for linewrap for argparse library
 os.environ["COLUMNS"] = "120"
@@ -28,12 +28,15 @@ def main():
     parser = get_parser()
     args, extras = parser.parse_known_args()
 
-    logger = init_logfile()
-
     # if no commands just print the help message and return.
     if not args.subcommands:
         print(parser.print_help())
         return
+    buildtest_log = os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log")
+    if is_file(buildtest_log):
+        remove_file(buildtest_log)
+
+    logger = init_logfile()
 
     create_dir(BUILDTEST_USER_HOME)
     create_dir(BUILDTEST_VAR_DIR)

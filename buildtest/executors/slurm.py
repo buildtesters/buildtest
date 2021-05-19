@@ -269,7 +269,7 @@ class SlurmJob(Job):
 
         exitcode, workdir = out.split("|")
         # Exit Code field is in format <ExitCode>:<Signal> for now we care only about first number
-        self._exitcode = exitcode.split(":")[0]
+        self._exitcode = int(exitcode.split(":")[0])
         self._workdir = workdir
 
     def gather(self):
