@@ -127,6 +127,11 @@ def resolve_path(path, exist=True):
     if not path:
         return
 
+    if not isinstance(path, str):
+        raise BuildTestError(
+            f"Input must be a string type, {path} is of type {type(path)}"
+        )
+
     # apply shell expansion  when file includes something like $HOME/example
     path = os.path.expandvars(path)
     # apply user expansion when file includes something like  ~/example
@@ -225,6 +230,34 @@ def write_file(filepath, content):
             fd.write(content)
     except IOError as err:
         raise BuildTestError(f"Failed to write: {filepath}: {err}")
+
+
+def remove_file(fpath):
+    """This method is responsible for removing a file. The input path is an absolute path
+    to file. We check for exceptions first, and return immediately before removing file.
+
+    :param fpath: full path to file
+    :type fpath: str, required
+    """
+
+    if not fpath:
+        return
+
+    if not isinstance(fpath, str):
+        raise BuildTestError(
+            f"Unable to remove file: {fpath} because we have a type mismatch. It must be a string type"
+        )
+
+    # if its not a file return
+    if not is_file(fpath):
+        raise BuildTestError(
+            f"The filepath: {fpath} must be a file and must exist on file system"
+        )
+
+    try:
+        os.remove(fpath)
+    except OSError:
+        raise BuildTestError(f"Unable to delete file: {fpath}")
 
 
 def load_json(fname):
