@@ -220,9 +220,10 @@ class BuilderBase(ABC):
         command.execute()
 
         self.logger.debug(f"Running Test via command: {self.runcmd}")
+        ret = command.returncode()
 
-        if command.returncode != 0:
-            err = f"[{self.metadata['name']}] failed to submit job with returncode: {command.returncode} \n"
+        if ret != 0:
+            err = f"[{self.metadata['name']}] failed to submit job with returncode: {ret} \n"
             raise ExecutorError(err)
 
         return command

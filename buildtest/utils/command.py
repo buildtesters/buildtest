@@ -75,7 +75,7 @@ class BuildTestCommand:
     def __init__(self, cmd=None):
 
         cmd = cmd or []
-        self.returncode = None
+        self._returncode = None
         self.out = []
         self.err = []
 
@@ -107,7 +107,7 @@ class BuildTestCommand:
         executable = shutil.which(self.cmd[0])
         if not executable:
             self.err = ["%s not found." % self.cmd[0]]
-            self.returncode = 1
+            self._returncode = 1
             return (self.out, self.err)
 
         # remove the original executable
@@ -138,16 +138,16 @@ class BuildTestCommand:
         # self.err += ["%s\n" % x for x in capture.err.split("\n") if x]
         # Cleanup capture files and save final return code
         capture.cleanup()
-        self.returncode = returncode
+        self._returncode = returncode
 
         return (self.out, self.err)
 
-    def returnCode(self):
+    def returncode(self):
         """Returns the return code from shell command
         :rtype: int
         """
 
-        return self.returncode
+        return self._returncode
 
     def decode(self, line):
         """Given a line of output (error or regular) decode using the
