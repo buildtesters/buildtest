@@ -8,8 +8,8 @@ import os
 import re
 import shutil
 import sys
-import time
 import tempfile
+import time
 from datetime import datetime
 from jsonschema.exceptions import ValidationError
 from tabulate import tabulate
@@ -171,7 +171,9 @@ class BuildTest:
         print("Configuration File: ", self.configuration.file)
 
     def build(self):
-        """This method is responsible for implementating stages: parse, build, run, update."""
+        """This method is responsible for discovering buildspecs based on input argument. Then we parse
+        the buildspecs and retrieve builder objects for each test. Each builder object will invoke `build` which
+        will build the test script, and then we run the test and update report."""
 
         self.discover_buildspecs(printTable=True)
 
@@ -267,22 +269,28 @@ class BuildTest:
 
             buildspecs = []
             for name in self.tags:
-                logger.debug(f"Checking {name} is type 'str'")
-                assert isinstance(name, str)
+
+                # if input tag is not of type str we skip the tag name since it is not valid
+                if not isinstance(name, str):
+                    logger.warning(f"Tag: {name} is not of type 'str'")
+                    continue
+
                 tag_dict[name] = self.discover_buildspecs_by_tags(name)
                 buildspecs += tag_dict[name]
 
             self.bp_found += buildspecs
 
             logger.debug(f"Discovered buildspecs based on tags: {self.tags}")
-            logger.debug(self.buildspecs)
+            logger.debug(buildspecs)
 
         # discover buildspecs based on --executor
         if self.executors:
             buildspecs = []
             for name in self.executors:
-                logger.debug(f"Checking {name} is type 'str'")
-                assert isinstance(name, str)
+
+                if not isinstance(name, str):
+                    logger.warning(f"Executor: {name} is not of type 'str'")
+                    continue
 
                 executor_dict[name] = self.discover_buildspecs_by_executor_name(name)
                 buildspecs += executor_dict[name]
@@ -362,43 +370,63 @@ class BuildTest:
 
             print(msg)
 
-            print("Discovered Buildspecs:")
-            for buildspec in self.detected_buildspecs:
-                print(buildspec)
+            table = [[i] for i in self.bp_found]
+            headers = "Discovered Buildspecs"
 
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                headers = colored(headers, "blue", attrs=["bold"])
+
+            print(tabulate(table, headers=[headers], tablefmt="grid"))
+
+            # if any buildspecs removed due to -x option we print them to screen
             if self.bp_removed:
-                print("\nExcluded Buildspecs:")
-                for file in self.bp_removed:
-                    print(file)
+                table = [[i] for i in self.bp_removed]
+                headers = "Excluded Buildspecs"
+
+                if os.getenv("BUILDTEST_COLOR") == "True":
+                    headers = colored(headers, "blue", attrs=["bold"])
+
+                print(tabulate(table, headers=[headers], tablefmt="grid"))
+
+            print("Discovered Buildspecs: ", len(self.bp_found))
+            print("Excluded Buildspecs: ", len(self.bp_removed))
+            print(
+                "Detected Buildspecs after exclusion: ", len(self.detected_buildspecs)
+            )
 
             # print breakdown of buildspecs by tags
             if tag_dict:
-                print("\nBREAKDOWN OF BUILDSPECS BY TAGS\n")
+                print("\nBREAKDOWN OF BUILDSPECS BY TAGS")
+                print("----------------------------------")
 
-                headers = tag_dict.keys()
-                if os.getenv("BUILDTEST_COLOR") == "True":
-                    headers = list(
-                        map(
-                            lambda x: colored(x, "blue", attrs=["bold"]),
-                            tag_dict.keys(),
-                        )
-                    )
-                print(tabulate(tag_dict, headers=headers, tablefmt="simple"))
+                print(f"Detected Tag Names: {list(tag_dict.keys())}")
+
+                for tagname in tag_dict.keys():
+                    headers = tagname
+                    if os.getenv("BUILDTEST_COLOR") == "True":
+                        headers = colored(headers, "blue", attrs=["bold"])
+
+                    # need to convert each element of list into a list type in order to print correctly
+                    rows = [[i] for i in tag_dict[tagname]]
+
+                    print(tabulate(rows, headers=[headers], tablefmt="grid"))
+                    print("\n")
 
             # print breakdown of buildspecs by executors
             if executor_dict:
-                print("\nBREAKDOWN OF BUILDSPECS BY EXECUTORS\n")
+                print("\nBREAKDOWN OF BUILDSPECS BY EXECUTORS")
+                print("--------------------------------------")
 
-                headers = executor_dict.keys()
-                if os.getenv("BUILDTEST_COLOR") == "True":
-                    headers = list(
-                        map(
-                            lambda x: colored(x, "blue", attrs=["bold"]),
-                            executor_dict.keys(),
-                        )
-                    )
+                print(f"Detected Executor Names: {list(executor_dict.keys())}")
 
-                print(tabulate(executor_dict, headers=headers, tablefmt="simple"))
+                for executorname in executor_dict.keys():
+                    headers = executorname
+                    if os.getenv("BUILDTEST_COLOR") == "True":
+                        headers = colored(headers, "blue", attrs=["bold"])
+
+                    rows = [[i] for i in executor_dict[executorname]]
+                    print(tabulate(rows, headers=[headers], tablefmt="grid"))
+                    print("\n")
 
     def discover_buildspecs_by_tags(self, input_tag):
         """This method discovers buildspecs by tags, using ``--tags`` option
@@ -413,6 +441,7 @@ class BuildTest:
         :return: a list of buildspec files that match tag name
         :rtype: list
         """
+
         if not is_file(BUILDSPEC_CACHE_FILE):
             raise BuildTestError(
                 f"Cannot for buildspec cache: {BUILDSPEC_CACHE_FILE}, please run 'buildtest buildspec find' "

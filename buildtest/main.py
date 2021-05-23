@@ -72,7 +72,6 @@ def main():
             poll_interval=args.poll_interval,
         )
         cmd.build()
-
         return
 
     # implementation for 'buildtest buildspec find'
@@ -87,31 +86,37 @@ def main():
     elif args.subcommands == "schemadocs":
         webbrowser.open("https://buildtesters.github.io/buildtest/")
 
+    # running buildtest inspect
     elif args.subcommands == "inspect":
         from buildtest.cli.inspect import inspect_cmd
 
         inspect_cmd(args)
 
+    # running buildtest config compilers
     elif args.subcommands == "config" and args.config == "compilers":
         from buildtest.cli.compilers import compiler_cmd
 
         compiler_cmd(args, configuration)
 
+    # running buildtest config
     elif args.subcommands == "config":
         from buildtest.cli.config import config_cmd
 
         config_cmd(args, configuration)
 
+    # buildtest report
     elif args.subcommands == "report":
         from buildtest.cli.report import report_cmd
 
         report_cmd(args)
 
+    # running bnuildtest schema
     elif args.subcommands == "schema":
         from buildtest.cli.schema import schema_cmd
 
         schema_cmd(args)
 
+    # running buildtest cdash
     elif args.subcommands == "cdash":
         from buildtest.cli.cdash import cdash_cmd
 
