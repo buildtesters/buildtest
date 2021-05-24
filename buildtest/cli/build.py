@@ -8,8 +8,8 @@ import os
 import re
 import shutil
 import sys
-import time
 import tempfile
+import time
 from datetime import datetime
 from jsonschema.exceptions import ValidationError
 from tabulate import tabulate
@@ -31,6 +31,345 @@ from buildtest.utils.file import walk_tree, resolve_path, is_file, create_dir, l
 from buildtest.utils.tools import Hasher, deep_get
 
 logger = logging.getLogger(__name__)
+
+
+def discover_buildspecs(
+    buildspecs=None, exclude_buildspecs=None, executors=None, tags=None
+):
+    """This method discovers all buildspecs based on --buildspecs, --tags, --executor
+    and excluding buildspecs (--exclude).
+
+    :param buildspecs: List of input buildspecs passed by argument `buildtest build --buildspec`
+    :type buildspecs: list
+    :param exclude_buildspecs: List of excluded buildspecs by argument `buildtest build --exclude`
+    :type exclude_buildspecs: list
+    :param tags: List of input tags for discovering buildspecs by argument `buildtest build --tags`
+    :type tags: list
+    :param executors: List of input executors for discovering buildspecs by argument `buildtest build --executor`
+    :type executors: list
+    """
+
+    # a dictionary used to keep track of included, excluded and detected buildspecs.
+    buildspec_dict = {}
+    buildspec_dict["included"] = []
+    buildspec_dict["excluded"] = []
+    buildspec_dict["detected"] = []
+    buildspec_dict["tags"] = {}
+    buildspec_dict["executors"] = {}
+
+    logger.debug(
+        f"Discovering buildspecs based on tags={tags}, executor={executors}, buildspec={buildspecs}, excluded buildspec={exclude_buildspecs}"
+    )
+    # discover buildspecs based on --tags
+    if tags:
+        found_buildspecs, buildspec_dict["tags"] = discover_buildspecs_by_tags(tags)
+
+        buildspec_dict["included"] += found_buildspecs
+
+        logger.debug(f"Discovered buildspecs based on tags: {tags}")
+        logger.debug(found_buildspecs)
+
+    # discover buildspecs based on --executor
+    if executors:
+        found_buildspecs, buildspec_dict["executors"] = discover_buildspecs_by_executor(
+            executors
+        )
+
+        buildspec_dict["included"] += found_buildspecs
+        logger.debug(f"Discovered buildspecs based on executors: {executors}")
+        logger.debug(found_buildspecs)
+
+    # discover buildspecs based on --buildspec
+    if buildspecs:
+        # Discover list of one or more Buildspec files based on path provided. Since --buildspec can be provided multiple
+        # times we need to invoke discover_buildspecs once per argument.
+        for option in buildspecs:
+            bp = discover_by_buildspecs(option)
+
+            # only add buildspecs if its not None
+            if bp:
+                buildspec_dict["included"] += bp
+
+    # remove any duplicate Buildspec from list by converting list to set and then back to list
+    buildspec_dict["included"] = list(set(buildspec_dict["included"]))
+
+    # if no files discovered let's stop now
+    if not buildspec_dict["included"]:
+        msg = "There are no config files to process."
+        sys.exit(msg)
+
+    logger.debug(
+        f"buildtest discovered the following Buildspecs: {buildspec_dict['included']}"
+    )
+
+    buildspec_dict["detected"] = buildspec_dict["included"].copy()
+
+    # if user pass buildspecs to be excluded (buildtest build -x <buildspec>) then
+    # discover all excluded buildspecs and remove from discovered list
+    if exclude_buildspecs:
+
+        # discover all excluded buildspecs, if its file add to list,
+        # if its directory traverse all .yml files
+        for name in exclude_buildspecs:
+            bp = discover_by_buildspecs(name)
+            if bp:
+                buildspec_dict["excluded"] += bp
+
+        # remove any duplicates from list
+        buildspec_dict["excluded"] = list(set(buildspec_dict["excluded"]))
+
+        logger.debug(
+            f"The exclude pattern is the following: {buildspec_dict['excluded']}"
+        )
+
+        # detected buildspecs are any buildspecs in included buildspecs not in excluded buildspecs
+        buildspec_dict["detected"] = [
+            file
+            for file in buildspec_dict["included"]
+            if file not in buildspec_dict["excluded"]
+        ]
+
+        logger.debug(
+            f"Buildspec list after applying exclusion: {buildspec_dict['detected']}"
+        )
+
+    # if no files remain after exclusion let's stop now.
+    if not buildspec_dict["detected"]:
+        msg = "There are no Buildspec files to process."
+        sys.exit(msg)
+
+    print_discovered_buildspecs(buildspec_dict=buildspec_dict)
+
+    return buildspec_dict["detected"]
+
+
+def print_discovered_buildspecs(buildspec_dict):
+    """This method will print the discovered buildspecs in the table format"""
+
+    msg = """
++-------------------------------+
+| Stage: Discovering Buildspecs |
++-------------------------------+ 
+"""
+    if os.getenv("BUILDTEST_COLOR") == "True":
+        msg = colored(msg, "red", attrs=["bold"])
+
+    print(msg)
+
+    table = [[i] for i in buildspec_dict["included"]]
+    headers = "Discovered Buildspecs"
+
+    if os.getenv("BUILDTEST_COLOR") == "True":
+        headers = colored(headers, "blue", attrs=["bold"])
+
+    print(tabulate(table, headers=[headers], tablefmt="grid"))
+
+    # if any buildspecs removed due to -x option we print them to screen
+    if buildspec_dict["excluded"]:
+        table = [[i] for i in buildspec_dict["excluded"]]
+        headers = "Excluded Buildspecs"
+
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            headers = colored(headers, "blue", attrs=["bold"])
+
+        print(tabulate(table, headers=[headers], tablefmt="grid"))
+
+    print("Discovered Buildspecs: ", len(buildspec_dict["included"]))
+    print("Excluded Buildspecs: ", len(buildspec_dict["excluded"]))
+    print("Detected Buildspecs after exclusion: ", len(buildspec_dict["detected"]))
+
+    # print breakdown of buildspecs by tags
+    if buildspec_dict.get("tags"):
+        print("\nBREAKDOWN OF BUILDSPECS BY TAGS")
+        print("----------------------------------")
+
+        print(f"Detected Tag Names: {list(buildspec_dict['tags'].keys())}")
+
+        for tagname in buildspec_dict["tags"].keys():
+            headers = tagname
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                headers = colored(headers, "blue", attrs=["bold"])
+
+            # need to convert each element of list into a list type in order to print correctly
+            rows = [[i] for i in buildspec_dict["tags"][tagname]]
+
+            print(tabulate(rows, headers=[headers], tablefmt="grid"))
+            print("\n")
+
+    # print breakdown of buildspecs by executors
+    if buildspec_dict.get("executors"):
+        print("\nBREAKDOWN OF BUILDSPECS BY EXECUTORS")
+        print("--------------------------------------")
+
+        print(f"Detected Executor Names: {list(buildspec_dict['executors'].keys())}")
+
+        for executorname in buildspec_dict["executors"].keys():
+            headers = executorname
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                headers = colored(headers, "blue", attrs=["bold"])
+
+            rows = [[i] for i in buildspec_dict["executors"][executorname]]
+            print(tabulate(rows, headers=[headers], tablefmt="grid"))
+            print("\n")
+
+
+def discover_buildspecs_by_tags(tagnames):
+    """This method discovers buildspecs by tags, using ``--tags`` option
+    from ``buildtest build`` command. This method will read BUILDSPEC_CACHE_FILE
+    and search for ``tags`` key in buildspec recipe and match with input
+    tag. Since ``tags`` field is a list, we check if input tag is in ``list``
+    and if so we add the entire buildspec into a list. The return is a list
+    of buildspec files to process.
+
+    :param input_tag: List of input tags from command line argument ``buildtest build --tags <tags>``
+    :type input_tag: list
+    :return: a list of buildspec files that match tag name
+    :rtype: list
+    """
+
+    tag_dict = {}
+
+    if not is_file(BUILDSPEC_CACHE_FILE):
+        raise BuildTestError(
+            f"Cannot for buildspec cache: {BUILDSPEC_CACHE_FILE}, please run 'buildtest buildspec find' "
+        )
+
+    cache = load_json(BUILDSPEC_CACHE_FILE)
+
+    buildspecs = []
+    # query all buildspecs from BUILDSPEC_CACHE_FILE for tags keyword and
+    # if it matches input_tag we add buildspec to list
+
+    for name in tagnames:
+        tag_dict[name] = set()
+
+        for buildspecfile in cache["buildspecs"].keys():
+            for test in cache["buildspecs"][buildspecfile].keys():
+
+                # if input tag is not of type str we skip the tag name since it is not valid
+                if not isinstance(name, str):
+                    logger.warning(f"Tag: {name} is not of type 'str'")
+                    continue
+
+                # if tags is not declared we set to empty list
+                tag = cache["buildspecs"][buildspecfile][test].get("tags") or []
+
+                if name in tag:
+                    buildspecs.append(buildspecfile)
+                    tag_dict[name].add(buildspecfile)
+
+    # remove any duplicates and return back a list
+    buildspecs = list(set(buildspecs))
+
+    return buildspecs, tag_dict
+
+
+def discover_buildspecs_by_executor(executors):
+    """This method discovers buildspecs by executor name, using ``buildtest build --executor``
+    command. This method will read BUILDSPEC_CACHE_FILE and search for ``executor`` key
+    in buildspec recipe and match with input executor name. The return is a list of matching
+    buildspec with executor name to process.
+
+    :param executors: List of input executor name from command line argument ``buildtest build --executor <name>``
+    :type executors: list
+    :return: a list of buildspec files that match tag name
+    :rtype: list
+    """
+
+    executor_dict = {}
+
+    if not is_file(BUILDSPEC_CACHE_FILE):
+        raise BuildTestError(
+            f"Cannot for buildspec cache: {BUILDSPEC_CACHE_FILE}, please run 'buildtest buildspec find' "
+        )
+
+    cache = load_json(BUILDSPEC_CACHE_FILE)
+
+    buildspecs = []
+    # query all buildspecs from BUILDSPEC_CACHE_FILE for tags keyword and
+    # if it matches input_tag we add buildspec to list
+
+    for name in executors:
+        executor_dict[name] = set()
+
+        for buildspecfile in cache["buildspecs"].keys():
+            for test in cache["buildspecs"][buildspecfile].keys():
+
+                # check if executor in buildspec matches one in argument (buildtest build --executor <EXECUTOR>)
+                if name == cache["buildspecs"][buildspecfile][test].get("executor"):
+                    buildspecs.append(buildspecfile)
+                    executor_dict[name].add(buildspecfile)
+
+    # remove any duplicates and return back a list
+    buildspecs = list(set(buildspecs))
+
+    return buildspecs, executor_dict
+
+
+def discover_by_buildspecs(buildspec):
+    """Given a buildspec file specified by the user with ``buildtest build --buildspec``,
+    discover one or more files and return a list for buildtest to process.
+    This method is called once per argument of ``--buildspec`` or ``--exclude``
+    option. If its a directory path we recursively find all buildspecs with
+    option. If its a directory path we recursively find all buildspecs with
+    .yml extension. If filepath doesn't exist or file extension is not .yml we
+    return None and capture error in log.
+
+    # file path
+    buildtest build --buildspec tutorials/hello.sh.yml
+
+    # directory path
+    buildtest build --buildspec tutorials
+
+    :param buildspec: Input argument from ``buildtest build --buildspec``
+    :type buildspec: str
+    :return: A list of discovered buildspec with resolved path, if its invalid we return None
+    :rtype: list or None
+    """
+
+    buildspecs = []
+
+    # if buildspec doesn't exist print message and log error and return
+    if not os.path.exists(os.path.abspath(buildspec)):
+        msg = (
+            f"Unable to find any buildspecs with name: {os.path.abspath(buildspec)} "
+            + "Please provide an absolute or relative path to a directory or file relative to current directory."
+        )
+        print(msg)
+        logger.error(msg)
+        return
+
+    # Now handle path based on being a directory or file path
+    if os.path.isdir(buildspec):
+        logger.debug(
+            f"Buildspec File: {buildspec} is a directory so traversing directory tree to find all Buildspec files with .yml extension"
+        )
+        buildspecs = walk_tree(buildspec, ".yml")
+    elif os.path.isfile(buildspec):
+        # if buildspec doesn't end in .yml extension we print message and return None
+        if not re.search(".yml$", buildspec):
+            msg = f"{buildspec} does not end in file extension .yml"
+            print(msg)
+            logger.error(msg)
+            return
+
+        buildspecs = [buildspec]
+        logger.debug(f"Buildspec: {buildspec} is a file")
+
+    # If we don't have any files discovered
+    if not buildspecs:
+        msg = "No Buildspec files found with input: %s." % buildspec
+        print(msg)
+        logger.error(msg)
+        return
+
+    # return all buildspec by resolving path, this gets the real canonical path and address shell expansion and user expansion
+    buildspecs = [resolve_path(file) for file in buildspecs]
+
+    logger.info(
+        f"Based on input argument we discovered the following buildspecs: {buildspecs}"
+    )
+    return buildspecs
 
 
 class BuildTest:
@@ -146,10 +485,6 @@ class BuildTest:
         self.filtertags = filter_tags
         self.rebuild = rebuild
 
-        # contains a list of buildspecs found from tags, executors, buildspecs argument
-        self.bp_found = None
-        # contains a list of buildspecs removed after discovery
-        self.bp_removed = None
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
 
@@ -171,9 +506,18 @@ class BuildTest:
         print("Configuration File: ", self.configuration.file)
 
     def build(self):
-        """This method is responsible for implementating stages: parse, build, run, update."""
+        """This method is responsible for discovering buildspecs based on input argument. Then we parse
+        the buildspecs and retrieve builder objects for each test. Each builder object will invoke `build` which
+        will build the test script, and then we run the test and update report."""
 
-        self.discover_buildspecs(printTable=True)
+        self.detected_buildspecs = discover_buildspecs(
+            buildspecs=self.buildspecs,
+            exclude_buildspecs=self.exclude_buildspecs,
+            tags=self.tags,
+            executors=self.executors,
+        )
+
+        # self.discover_buildspecs(printTable=True)
 
         # Parse all buildspecs and skip any buildspecs that fail validation, return type
         # is a builder object used for building test.
@@ -244,301 +588,6 @@ class BuildTest:
         create_dir(test_directory)
 
         return test_directory
-
-    def discover_buildspecs(self, printTable=False):
-        """This method discovers all buildspecs based on --buildspecs, --tags, --executor
-        and excluding buildspecs (--exclude).
-
-        :param printTable: Boolean to control print messages to stdout
-        :type printTable: boolean, optional
-        """
-
-        self.bp_found = []
-        self.bp_removed = []
-
-        tag_dict = {}
-        executor_dict = {}
-
-        logger.debug(
-            f"Discovering buildspecs based on tags={self.tags}, executor={self.executors}, buildspec={self.buildspecs}, excluded buildspec={self.exclude_buildspecs}"
-        )
-        # discover buildspecs based on --tags
-        if self.tags:
-
-            buildspecs = []
-            for name in self.tags:
-                logger.debug(f"Checking {name} is type 'str'")
-                assert isinstance(name, str)
-                tag_dict[name] = self.discover_buildspecs_by_tags(name)
-                buildspecs += tag_dict[name]
-
-            self.bp_found += buildspecs
-
-            logger.debug(f"Discovered buildspecs based on tags: {self.tags}")
-            logger.debug(self.buildspecs)
-
-        # discover buildspecs based on --executor
-        if self.executors:
-            buildspecs = []
-            for name in self.executors:
-                logger.debug(f"Checking {name} is type 'str'")
-                assert isinstance(name, str)
-
-                executor_dict[name] = self.discover_buildspecs_by_executor_name(name)
-                buildspecs += executor_dict[name]
-
-            self.bp_found += buildspecs
-
-            logger.debug(f"Discovered buildspecs based on executors: {self.executors}")
-            logger.debug(buildspecs)
-
-        # discover buildspecs based on --buildspec
-        if self.buildspecs:
-            # Discover list of one or more Buildspec files based on path provided. Since --buildspec can be provided multiple
-            # times we need to invoke discover_buildspecs once per argument.
-            buildspecs = []
-            for option in self.buildspecs:
-                bp = self.discover_by_buildspecs(option)
-
-                # only add buildspecs if its not None
-                if bp:
-                    buildspecs += bp
-
-            self.bp_found += buildspecs
-
-        # remove any None objects from list since there is possibility they got added if 'tags', 'executors', 'buildspecs' is None
-        self.bp_found = list(filter(None, self.bp_found))
-
-        # remove any duplicate Buildspec from list by converting list to set and then back to list
-        self.bp_found = list(set(self.bp_found))
-
-        # if no files discovered let's stop now
-        if not self.bp_found:
-            msg = "There are no config files to process."
-            sys.exit(msg)
-
-        logger.debug(f"buildtest discovered the following Buildspecs: {self.bp_found}")
-
-        self.detected_buildspecs = self.bp_found.copy()
-
-        # if user pass buildspecs to be excluded (buildtest build -x <buildspec>) then
-        # discover all excluded buildspecs and remove from discovered list
-        if self.exclude_buildspecs:
-
-            excludes = []
-            # discover all excluded buildspecs, if its file add to list,
-            # if its directory traverse all .yml files
-            for name in self.exclude_buildspecs:
-                bp = self.discover_by_buildspecs(name)
-                if bp:
-                    excludes += bp
-
-            self.bp_removed = list(set(excludes))
-
-            logger.debug(f"The exclude pattern is the following: {self.bp_removed}")
-
-            # exclude files that are found in excluded_buildspecs list
-            self.detected_buildspecs = [
-                file for file in self.bp_found if file not in self.bp_removed
-            ]
-
-            logger.debug(
-                f"Buildspec list after applying exclusion: {self.detected_buildspecs}"
-            )
-
-        # if no files remain after exclusion let's stop now.
-        if not self.detected_buildspecs:
-            msg = "There are no Buildspec files to process."
-            sys.exit(msg)
-
-        if printTable:
-            msg = """
-+-------------------------------+
-| Stage: Discovering Buildspecs |
-+-------------------------------+ 
-"""
-            if os.getenv("BUILDTEST_COLOR") == "True":
-                msg = colored(msg, "red", attrs=["bold"])
-
-            print(msg)
-
-            print("Discovered Buildspecs:")
-            for buildspec in self.detected_buildspecs:
-                print(buildspec)
-
-            if self.bp_removed:
-                print("\nExcluded Buildspecs:")
-                for file in self.bp_removed:
-                    print(file)
-
-            # print breakdown of buildspecs by tags
-            if tag_dict:
-                print("\nBREAKDOWN OF BUILDSPECS BY TAGS\n")
-
-                headers = tag_dict.keys()
-                if os.getenv("BUILDTEST_COLOR") == "True":
-                    headers = list(
-                        map(
-                            lambda x: colored(x, "blue", attrs=["bold"]),
-                            tag_dict.keys(),
-                        )
-                    )
-                print(tabulate(tag_dict, headers=headers, tablefmt="simple"))
-
-            # print breakdown of buildspecs by executors
-            if executor_dict:
-                print("\nBREAKDOWN OF BUILDSPECS BY EXECUTORS\n")
-
-                headers = executor_dict.keys()
-                if os.getenv("BUILDTEST_COLOR") == "True":
-                    headers = list(
-                        map(
-                            lambda x: colored(x, "blue", attrs=["bold"]),
-                            executor_dict.keys(),
-                        )
-                    )
-
-                print(tabulate(executor_dict, headers=headers, tablefmt="simple"))
-
-    def discover_buildspecs_by_tags(self, input_tag):
-        """This method discovers buildspecs by tags, using ``--tags`` option
-        from ``buildtest build`` command. This method will read BUILDSPEC_CACHE_FILE
-        and search for ``tags`` key in buildspec recipe and match with input
-        tag. Since ``tags`` field is a list, we check if input tag is in ``list``
-        and if so we add the entire buildspec into a list. The return is a list
-        of buildspec files to process.
-
-        :param input_tag: Input tags from command line argument ``buildtest build --tags <tags>``
-        :type input_tag: str
-        :return: a list of buildspec files that match tag name
-        :rtype: list
-        """
-        if not is_file(BUILDSPEC_CACHE_FILE):
-            raise BuildTestError(
-                f"Cannot for buildspec cache: {BUILDSPEC_CACHE_FILE}, please run 'buildtest buildspec find' "
-            )
-
-        cache = load_json(BUILDSPEC_CACHE_FILE)
-
-        buildspecs = []
-        # query all buildspecs from BUILDSPEC_CACHE_FILE for tags keyword and
-        # if it matches input_tag we add buildspec to list
-
-        for buildspecfile in cache["buildspecs"].keys():
-            for test in cache["buildspecs"][buildspecfile].keys():
-
-                # if tags is not declared we set to empty list
-                tag = cache["buildspecs"][buildspecfile][test].get("tags") or []
-
-                if input_tag in tag:
-                    buildspecs.append(buildspecfile)
-
-        # remove any duplicates and return back a list
-        buildspecs = list(set(buildspecs))
-
-        return buildspecs
-
-    def discover_buildspecs_by_executor_name(self, executor_name):
-        """This method discovers buildspecs by executor name, using ``buildtest build --executor``
-        command. This method will read BUILDSPEC_CACHE_FILE and search for ``executor`` key
-        in buildspec recipe and match with input executor name. The return is a list of matching
-        buildspec with executor name to process.
-
-        :param executor_name: Input executor name from command line argument ``buildtest build --executor <name>``
-        :type executor_name: string
-        :return: a list of buildspec files that match tag name
-        :rtype: list
-        """
-
-        if not is_file(BUILDSPEC_CACHE_FILE):
-            raise BuildTestError(
-                f"Cannot for buildspec cache: {BUILDSPEC_CACHE_FILE}, please run 'buildtest buildspec find' "
-            )
-
-        cache = load_json(BUILDSPEC_CACHE_FILE)
-
-        buildspecs = []
-        # query all buildspecs from BUILDSPEC_CACHE_FILE for tags keyword and
-        # if it matches input_tag we add buildspec to list
-
-        for buildspecfile in cache["buildspecs"].keys():
-            for test in cache["buildspecs"][buildspecfile].keys():
-
-                # check if executor in buildspec matches one in argument (buildtest build --executor <EXECUTOR>)
-                if executor_name == cache["buildspecs"][buildspecfile][test].get(
-                    "executor"
-                ):
-                    buildspecs.append(buildspecfile)
-
-        # remove any duplicates and return back a list
-        buildspecs = list(set(buildspecs))
-
-        return buildspecs
-
-    def discover_by_buildspecs(self, buildspec):
-        """Given a buildspec file specified by the user with ``buildtest build --buildspec``,
-        discover one or more files and return a list for buildtest to process.
-        This method is called once per argument of ``--buildspec`` or ``--exclude``
-        option. If its a directory path we recursively find all buildspecs with
-        option. If its a directory path we recursively find all buildspecs with
-        .yml extension. If filepath doesn't exist or file extension is not .yml we
-        return None and capture error in log.
-
-        # file path
-        buildtest build --buildspec tutorials/hello.sh.yml
-
-        # directory path
-        buildtest build --buildspec tutorials
-
-        :param buildspec: Input argument from ``buildtest build --buildspec``
-        :type buildspec: str
-        :return: A list of discovered buildspec with resolved path, if its invalid we return None
-        :rtype: list or None
-        """
-
-        buildspecs = []
-
-        # if buildspec doesn't exist print message and log error and return
-        if not os.path.exists(os.path.abspath(buildspec)):
-            msg = (
-                f"Unable to find any buildspecs with name: {os.path.abspath(buildspec)} "
-                + "Please provide an absolute or relative path to a directory or file relative to current directory."
-            )
-            print(msg)
-            logger.error(msg)
-            return
-
-        # Now handle path based on being a directory or file path
-        if os.path.isdir(buildspec):
-            logger.debug(
-                f"Buildspec File: {buildspec} is a directory so traversing directory tree to find all Buildspec files with .yml extension"
-            )
-            buildspecs = walk_tree(buildspec, ".yml")
-        elif os.path.isfile(buildspec):
-            # if buildspec doesn't end in .yml extension we print message and return None
-            if not re.search(".yml$", buildspec):
-                msg = f"{buildspec} does not end in file extension .yml"
-                print(msg)
-                logger.error(msg)
-                return
-
-            buildspecs = [buildspec]
-            logger.debug(f"Buildspec: {buildspec} is a file")
-
-        # If we don't have any files discovered
-        if not buildspecs:
-            msg = "No Buildspec files found with input: %s." % buildspec
-            print(msg)
-            logger.error(msg)
-            return
-
-        # return all buildspec by resolving path, this gets the real canonical path and address shell expansion and user expansion
-        buildspecs = [resolve_path(file) for file in buildspecs]
-
-        logger.info(
-            f"Based on input argument we discovered the following buildspecs: {buildspecs}"
-        )
-        return buildspecs
 
     def parse_buildspecs(self, printTable=False):
         """Parse all buildspecs by invoking class ``BuildspecParser``. If buildspec

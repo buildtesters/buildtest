@@ -5,7 +5,7 @@ import tempfile
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 from buildtest.config import SiteConfiguration
-from buildtest.cli.build import BuildTest
+from buildtest.cli.build import BuildTest, discover_buildspecs
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.utils.file import walk_tree
 from buildtest.system import BuildTestSystem
@@ -241,38 +241,28 @@ def test_discover():
     # test single buildspec file
     buildspec = [os.path.join(valid_buildspecs, "environment.yml")]
 
-    cmd = BuildTest(
-        configuration=configuration, buildspecs=buildspec, buildtest_system=system
-    )
-    cmd.discover_buildspecs()
-    assert buildspec == cmd.detected_buildspecs
+    detected_buildspecs = discover_buildspecs(buildspecs=buildspec)
 
-    # testing buildspecs in directory
-    cmd = BuildTest(
-        configuration=configuration,
-        buildspecs=[valid_buildspecs],
-        buildtest_system=system,
-    )
-    cmd.discover_buildspecs()
-    assert cmd.detected_buildspecs
+    assert buildspec == detected_buildspecs
+
+    detected_buildspecs = discover_buildspecs(buildspecs=[valid_buildspecs])
+    assert detected_buildspecs
 
     buildspec = [os.path.join(root, "README.rst")]
     # testing invalid extension this will raise an error
-    cmd = BuildTest(configuration=configuration, buildspecs=buildspec)
+
     with pytest.raises(SystemExit):
-        cmd.discover_buildspecs()
+        discover_buildspecs(buildspecs=buildspec)
 
     tempdir = tempfile.TemporaryDirectory()
     # passing an empty directory will raise an error because no .yml extensions found
-    cmd = BuildTest(configuration=configuration, buildspecs=[tempdir.name])
     with pytest.raises(SystemExit):
-        cmd.discover_buildspecs()
+        discover_buildspecs(buildspecs=[tempdir.name])
 
     buildspec = []
     # passing no buildspecs will result in error
-    cmd = BuildTest(configuration=configuration, buildspecs=buildspec)
     with pytest.raises(SystemExit):
-        cmd.discover_buildspecs()
+        discover_buildspecs(buildspecs=[])
 
 
 def test_BuildTest_type():
