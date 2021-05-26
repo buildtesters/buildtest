@@ -165,6 +165,8 @@ class LSFExecutor(BaseExecutor):
         self.logger.debug(
             f"[{builder.name}] returncode: {builder.metadata['result']['returncode']}"
         )
+        builder.copy_stage_files()
+
         self.check_test_state(builder)
 
 

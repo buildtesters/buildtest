@@ -203,6 +203,12 @@ def build_menu(subparsers):
         type=positive_number,
         help="Specify Poll Interval (sec) for polling batch jobs",
     )
+    parser_build.add_argument(
+        "-k",
+        "--keep-stage-dir",
+        action="store_true",
+        help="Keep stage directory after job completion.",
+    )
 
 
 def buildspec_menu(subparsers):

@@ -6,7 +6,6 @@ when initializing the executors.
 import logging
 import os
 import re
-import shutil
 
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
@@ -155,24 +154,14 @@ class SlurmExecutor(BaseExecutor):
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
         builder.metadata["outfile"] = os.path.join(
-            builder.job.workdir(), builder.metadata["name"] + ".out"
+            builder.job.workdir(), builder.name + ".out"
         )
         builder.metadata["errfile"] = os.path.join(
-            builder.job.workdir(), builder.metadata["name"] + ".err"
+            builder.job.workdir(), builder.name + ".err"
         )
 
-        shutil.copy2(
-            builder.metadata["outfile"],
-            os.path.join(
-                builder.run_dir, os.path.basename(builder.metadata["outfile"])
-            ),
-        )
-        shutil.copy2(
-            builder.metadata["errfile"],
-            os.path.join(
-                builder.run_dir, os.path.basename(builder.metadata["errfile"])
-            ),
-        )
+        builder.copy_stage_files()
+
         self.logger.debug(
             f"[{builder.name}] returncode: {builder.metadata['result']['returncode']}"
         )

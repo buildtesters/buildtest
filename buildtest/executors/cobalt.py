@@ -184,6 +184,8 @@ class CobaltExecutor(BaseExecutor):
         )
         builder.metadata["output"] = read_file(builder.metadata["outfile"])
         builder.metadata["error"] = read_file(builder.metadata["errfile"])
+        builder.copy_stage_files()
+
         cobaltlog = os.path.join(builder.stage_dir, builder.job.cobalt_log())
 
         self.logger.debug(f"Cobalt Log File written to {cobaltlog}")

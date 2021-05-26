@@ -121,6 +121,7 @@ def test_build_multi_executors():
     cmd.build()
 
 
+@pytest.mark.cli
 def test_run_only():
 
     system = BuildTestSystem()
@@ -139,6 +140,7 @@ def test_run_only():
     cmd.build()
 
 
+@pytest.mark.cli
 def test_skip_field():
 
     system = BuildTestSystem()
@@ -196,6 +198,7 @@ def test_build_rebuild():
     cmd.build()
 
 
+@pytest.mark.cli
 def test_invalid_buildspes():
 
     system = BuildTestSystem()
@@ -216,19 +219,45 @@ def test_invalid_buildspes():
     cmd.build()
 
 
-def test_build_disable_BUILDTEST_COLOR():
+@pytest.mark.cli
+def test_build_with_without_color():
 
     system = BuildTestSystem()
     system.check()
 
     buildspec_file = [os.path.join(BUILDTEST_ROOT, "tutorials", "python-shell.yml")]
-    os.environ["BUILDTEST_COLOR"] = "True"
+    os.environ["BUILDTEST_COLOR"] = "False"
 
     # BUILDTEST_COLOR=False buildtest build -b tutorials/python-shell.yml
     cmd = BuildTest(
         configuration=configuration,
         buildspecs=buildspec_file,
         buildtest_system=system,
+    )
+    cmd.build()
+
+    os.environ["BUILDTEST_COLOR"] = "True"
+
+    # BUILDTEST_COLOR=True buildtest build -b tutorials/python-shell.yml
+    cmd = BuildTest(
+        configuration=configuration,
+        buildspecs=buildspec_file,
+        buildtest_system=system,
+    )
+    cmd.build()
+
+
+@pytest.mark.cli
+def test_keep_stage():
+
+    system = BuildTestSystem()
+    system.check()
+    buildspec_file = [os.path.join(BUILDTEST_ROOT, "tutorials", "python-shell.yml")]
+    cmd = BuildTest(
+        configuration=configuration,
+        buildspecs=buildspec_file,
+        buildtest_system=system,
+        keep_stage_dir=True,
     )
     cmd.build()
 

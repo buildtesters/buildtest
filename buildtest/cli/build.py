@@ -19,7 +19,11 @@ from buildtest import BUILDTEST_VERSION
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.report import update_report
-from buildtest.defaults import BUILDSPEC_CACHE_FILE, BUILDTEST_USER_HOME, BUILD_REPORT
+from buildtest.defaults import (
+    BUILDSPEC_CACHE_FILE,
+    BUILD_REPORT,
+    BUILDTEST_DEFAULT_TESTDIR,
+)
 from buildtest.exceptions import (
     BuildTestError,
     BuildspecError,
@@ -390,6 +394,7 @@ class BuildTest:
         report_file=None,
         max_pend_time=None,
         poll_interval=None,
+        keep_stage_dir=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -421,6 +426,8 @@ class BuildTest:
         :type max_pend_time: int, optional
         :param poll_interval: Poll Interval (sec) for polling batch jobs
         :type poll_interval: int, optional
+        :param keep_stage_dir: Keep stage directory after job completion
+        :type keep_stage_dir: bool, optional
 
         """
 
@@ -453,7 +460,7 @@ class BuildTest:
                 raise BuildTestError(
                     f"--rebuild {rebuild} exceeds maximum rebuild limit of 50"
                 )
-
+        self.keep_stage_dir = keep_stage_dir
         self.configuration = configuration
         self.buildspecs = buildspecs
         self.exclude_buildspecs = exclude_buildspecs
@@ -540,6 +547,11 @@ class BuildTest:
         for builder in self.builders:
             builder.metadata["logpath"] = self.logfile.name
 
+        if not self.keep_stage_dir:
+            logger.debug("Removing stage directory for all tests")
+            for builder in self.builders:
+                shutil.rmtree(builder.stage_dir)
+
         # only update report if we have a list of valid builders returned from run_phase
         if self.builders:
             update_report(self.builders, self.report_file)
@@ -578,12 +590,8 @@ class BuildTest:
         # Order of precedence when detecting test directory
         # 1. Command line option --testdir
         # 2. Configuration option specified by 'testdir'
-        # 3. Defaults to $HOME/.buildtest/var/tests
-        test_directory = (
-            cli_testdir
-            or prefix_testdir
-            or os.path.join(BUILDTEST_USER_HOME, "var", "tests")
-        )
+        # 3. Defaults to $HOME/.buildtest/tests
+        test_directory = cli_testdir or prefix_testdir or BUILDTEST_DEFAULT_TESTDIR
 
         create_dir(test_directory)
 
