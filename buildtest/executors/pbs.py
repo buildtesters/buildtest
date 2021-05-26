@@ -151,6 +151,8 @@ class PBSExecutor(BaseExecutor):
         builder.metadata["output"] = read_file(builder.metadata["outfile"])
         builder.metadata["error"] = read_file(builder.metadata["errfile"])
 
+        builder.copy_stage_files()
+
         self.check_test_state(builder)
 
 

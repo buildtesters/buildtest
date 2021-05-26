@@ -202,7 +202,6 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
 
                 # testroot = test_data['testroot']
                 test["stagedir"] = test_data["stagedir"]
-                test["rundir"] = test_data["rundir"]
                 test["outfile"] = test_data["outfile"]
                 test["errfile"] = test_data["errfile"]
 
@@ -274,7 +273,6 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
             "build_script",
             "testpath",
             "stagedir",
-            "rundir",
             "outfile",
             "errfile",
             "starttime",

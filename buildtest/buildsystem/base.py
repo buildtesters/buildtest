@@ -141,8 +141,7 @@ class BuilderBase(ABC):
         self.metadata["testroot"] = None
         # location of stage directory in test root
         self.metadata["stagedir"] = None
-        # location of run directory in test root
-        self.metadata["rundir"] = None
+
         self.metadata["description"] = self.recipe.get("description")
 
         # location of test script
@@ -257,6 +256,26 @@ class BuilderBase(ABC):
 
         return f"sh {os.path.basename(self.build_script)}"
 
+    def copy_stage_files(self):
+        """Copy output and error file into test root directory since stage directory will be removed."""
+
+        shutil.copy2(
+            self.metadata["outfile"],
+            os.path.join(self.test_root, os.path.basename(self.metadata["outfile"])),
+        )
+        shutil.copy2(
+            self.metadata["errfile"],
+            os.path.join(self.test_root, os.path.basename(self.metadata["errfile"])),
+        )
+
+        # update outfile and errfile metadata records which show up in report file
+        self.metadata["outfile"] = os.path.join(
+            self.test_root, os.path.basename(self.metadata["outfile"])
+        )
+        self.metadata["errfile"] = os.path.join(
+            self.test_root, os.path.basename(self.metadata["errfile"])
+        )
+
     def _build_setup(self):
         """This method is the setup operation to get ready to build test which
         includes getting unique build id, setting up metadata object to store
@@ -270,30 +289,29 @@ class BuilderBase(ABC):
         # length of all files in testdir and creating a directory. Subsequent
         # runs will increment this counter
 
-        self.metadata["testroot"] = os.path.join(self.testdir, str(num_content))
-        create_dir(self.metadata["testroot"])
+        self.test_root = os.path.join(self.testdir, str(num_content))
 
-        self.stage_dir = os.path.join(self.metadata["testroot"], "stage")
-        self.run_dir = os.path.join(self.metadata["testroot"], "run")
+        create_dir(self.test_root)
+        self.metadata["testroot"] = self.test_root
+
+        self.stage_dir = os.path.join(self.test_root, "stage")
 
         # create stage and run directories
         create_dir(self.stage_dir)
         self.logger.debug("Creating the stage directory: %s ", self.stage_dir)
 
-        create_dir(self.run_dir)
-        self.logger.debug("Creating the run directory: %s", self.run_dir)
-
         self.metadata["stagedir"] = self.stage_dir
-        self.metadata["rundir"] = self.run_dir
 
         # Derive the path to the test script
-        self.metadata["testpath"] = "%s.%s" % (
+        self.testpath = "%s.%s" % (
             os.path.join(self.stage_dir, self.name),
             self.get_test_extension(),
         )
-        self.build_script = f"{os.path.join(self.stage_dir, self.name)}_build.sh"
+        self.testpath = os.path.expandvars(self.testpath)
 
-        self.metadata["testpath"] = os.path.expandvars(self.metadata["testpath"])
+        self.metadata["testpath"] = self.testpath
+
+        self.build_script = f"{os.path.join(self.stage_dir, self.name)}_build.sh"
 
         # copy all files relative to buildspec file into stage directory
         for fname in Path(os.path.dirname(self.buildspec)).glob("*"):
@@ -342,9 +360,12 @@ class BuilderBase(ABC):
         self.logger.debug(f"Writing build script: {self.build_script}")
         self._set_execute_perm(self.build_script)
 
-        dest = os.path.join(self.run_dir, os.path.basename(self.build_script))
+        # copying build script into test_root directory since stage directory will be removed
+        dest = os.path.join(self.test_root, os.path.basename(self.build_script))
         shutil.copy2(self.build_script, dest)
-        self.logger.debug(f"Copying build script to run directory: {dest}")
+        self.logger.debug(f"Copying build script to: {dest}")
+
+        self.build_script = dest
 
         self.runcmd = self.run_command()
         self.metadata["command"] = self.runcmd
@@ -373,7 +394,7 @@ class BuilderBase(ABC):
         # copy testpath to run_dir
         shutil.copy2(
             self.metadata["testpath"],
-            os.path.join(self.run_dir, os.path.basename(self.metadata["testpath"])),
+            os.path.join(self.test_root, os.path.basename(self.metadata["testpath"])),
         )
 
     def _get_scheduler_directives(self, bsub, sbatch, cobalt, pbs, batch):

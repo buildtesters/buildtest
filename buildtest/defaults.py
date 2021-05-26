@@ -26,7 +26,7 @@ BUILDTEST_USER_HOME = os.path.join(userhome, ".buildtest")
 # dictionary used for storing status of builds
 USER_SETTINGS_FILE = os.path.join(BUILDTEST_USER_HOME, "config.yml")
 
-BUILDTEST_VAR_DIR = os.path.join(BUILDTEST_USER_HOME, "var")
+BUILDTEST_DEFAULT_TESTDIR = os.path.join(BUILDTEST_USER_HOME, "tests")
 BUILDTEST_EXECUTOR_DIR = os.path.join(BUILDTEST_USER_HOME, "executor")
 BUILDTEST_BUILDSPEC_DIR = os.path.join(BUILDTEST_USER_HOME, "buildspecs")
 

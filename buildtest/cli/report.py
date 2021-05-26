@@ -452,7 +452,6 @@ def update_report(valid_builders, report_file=BUILD_REPORT):
             "testroot",
             "testpath",
             "stagedir",
-            "rundir",
             "command",
             "outfile",
             "errfile",

@@ -20,10 +20,10 @@ class ScriptBuilder(BuilderBase):
         write_file(script_path, python_content)
         self.logger.debug(f"[{self.name}]: Writing python script to: {script_path}")
         shutil.copy2(
-            script_path, os.path.join(self.run_dir, os.path.basename(script_path))
+            script_path, os.path.join(self.test_root, os.path.basename(script_path))
         )
         self.logger.debug(
-            f"[{self.name}]: Copying file: {script_path} to: {os.path.join(self.run_dir, os.path.basename(script_path))}"
+            f"[{self.name}]: Copying file: {script_path} to: {os.path.join(self.test_root, os.path.basename(script_path))}"
         )
 
         lines = [f"python {script_path}"]

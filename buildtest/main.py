@@ -4,7 +4,6 @@ import os
 import webbrowser
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import (
-    BUILDTEST_VAR_DIR,
     BUILDTEST_USER_HOME,
     BUILDTEST_EXECUTOR_DIR,
     BUILDTEST_BUILDSPEC_DIR,
@@ -39,7 +38,6 @@ def main():
     logger = init_logfile()
 
     create_dir(BUILDTEST_USER_HOME)
-    create_dir(BUILDTEST_VAR_DIR)
     create_dir(BUILDTEST_EXECUTOR_DIR)
     create_dir(BUILDTEST_BUILDSPEC_DIR)
 
@@ -70,6 +68,7 @@ def main():
             report_file=args.report_file,
             max_pend_time=args.max_pend_time,
             poll_interval=args.poll_interval,
+            keep_stage_dir=args.keep_stage_dir,
         )
         cmd.build()
         return
