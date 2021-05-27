@@ -936,7 +936,7 @@ Jobs exceeds `max_pend_time`
 
 Recall from :ref:`configuring_buildtest` that `max_pend_time` will cancel jobs if
 job exceed timelimit. buildtest will start a timer for each job right after job
-submission and keep track of time duration, and if job is in **pending** state and it exceepds `max_pend_time`,
+submission and keep track of time duration, and if job is in **pending** state and it exceeds `max_pend_time`,
 then job will be cancelled.
 
 To demonstrate, here is an example where job ``shared_qos_haswell_hostname`` was cancelled after `max_pend_time` of 10
@@ -1087,6 +1087,9 @@ buildtest will terminate after run stage.
     shared_qos_haswell_hostname
     After polling all jobs we found no valid builders to process
 
+
+
+The `max_pend_time` value in configuration file can be overidden at command line using ``buildtest build --max-pend-time``
 
 Cray Burst Buffer & Data Warp
 -------------------------------
