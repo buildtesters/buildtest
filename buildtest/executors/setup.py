@@ -96,6 +96,21 @@ class BuildExecutor:
     def list_executors(self):
         return list(self.executors.keys())
 
+    def is_local(self, executor_type):
+        return executor_type == "local"
+
+    def is_slurm(self, executor_type):
+        return executor_type == "slurm"
+
+    def is_lsf(self, executor_type):
+        return executor_type == "lsf"
+
+    def is_pbs(self, executor_type):
+        return executor_type == "pbs"
+
+    def is_cobalt(self, executor_type):
+        return executor_type == "cobalt"
+
     def get(self, name):
         """Given the name of an executor return the executor for running
         a buildtest build, or get the default.
@@ -162,7 +177,7 @@ class BuildExecutor:
                 f"Invalid executor type: {executor.type} for executor: {executor.name}. Please check your configuration file"
             )
 
-    def poll(self, builder):
+    def poll(self, builders):
         """Poll all jobs for batch executors (LSF, Slurm, Cobalt, PBS). For slurm we poll
         until job is in ``PENDING`` or ``RUNNING`` state. If Slurm job is in
         ``FAILED`` or ``COMPLETED`` state we assume job is finished and we gather
@@ -182,8 +197,8 @@ class BuildExecutor:
         to ``Q`` and ``R`` in job stage. If job is finished (``F``) we gather results. If job
         is in ``H`` stage we automatically cancel job otherwise we ignore job and mark job complete.
 
-        :param builder: an instance of BuilderBase (subclass)
-        :type builder: BuilderBase (subclass), required
+        :param builder: a list of builder objects for polling. Each element is an instance of BuilderBase (subclass)
+        :type builder: list , required
         :return: Return a dictionary containing poll information
         :rtype: dict
         """
@@ -192,72 +207,89 @@ class BuildExecutor:
             "job_complete": False,  # indicate job is not complete and requires polling
             "ignore_job": False,  # indicate job should be ignored
         }
-        executor = self._choose_executor(builder)
-        # if builder is local executor we shouldn't be polling so we set job to
-        # complete and return
-        if executor.type == "local":
-            poll_info["job_complete"] = True
-            return poll_info
 
-        # poll Slurm job
-        if executor.type == "slurm":
-            if (
-                builder.job.is_pending()
-                or builder.job.is_suspended()
-                or builder.job.is_running()
-                or not builder.job.state()
-            ):
-                executor.poll(builder)
-            elif builder.job.complete():
-                executor.gather(builder)
-                poll_info["job_complete"] = True
-            else:
-                poll_info["job_complete"] = True
-                poll_info["ignore_job"] = True
+        for builder in builders:
 
-        # poll LSF job
-        elif executor.type == "lsf":
-            if (
-                builder.job.is_pending()
-                or builder.job.is_running()
-                or builder.job.is_suspended()
-                or not builder.job.state()
-            ):
-                executor.poll(builder)
-            elif builder.job.is_complete():
-                executor.gather(builder)
+            executor = self._choose_executor(builder)
+            # if builder is local executor we shouldn't be polling so we set job to
+            # complete and return
+            if executor.type == "local":
                 poll_info["job_complete"] = True
-            else:
-                poll_info["job_complete"] = True
-                poll_info["ignore_job"] = True
+                builder.complete()
+                # return poll_info
 
-        elif executor.type == "cobalt":
-            if (
-                builder.job.is_pending()
-                or builder.job.is_running()
-                or builder.job.is_suspended()
-                or not builder.job.state()
-            ):
-                executor.poll(builder)
-            elif builder.job.is_complete():
-                poll_info["job_complete"] = True
-            elif builder.job.is_cancelled():
-                poll_info["job_complete"] = True
-                poll_info["ignore_job"] = True
+            # if executor is a Slurm Executor poll Slurm Job
+            if self.is_slurm(executor.type):
+                if (
+                    builder.job.is_pending()
+                    or builder.job.is_suspended()
+                    or builder.job.is_running()
+                    or not builder.job.state()
+                ):
+                    executor.poll(builder)
+                elif builder.job.complete():
+                    executor.gather(builder)
+                    builder.complete()
 
-        elif executor.type == "pbs":
-            if (
-                builder.job.is_pending()
-                or builder.job.is_running()
-                or builder.job.is_suspended()
-                or not builder.job.state()
-            ):
-                executor.poll(builder)
-            elif builder.job.is_complete():
-                executor.gather(builder)
-                poll_info["job_complete"] = True
-            else:
-                poll_info["job_complete"] = True
-                poll_info["ignore_job"] = True
+                    poll_info["job_complete"] = True
+                else:
+                    builder.incomplete()
 
-        return poll_info
+                    poll_info["job_complete"] = True
+                    poll_info["ignore_job"] = True
+
+            # poll LSF job
+            elif self.is_lsf(executor.type):
+                if (
+                    builder.job.is_pending()
+                    or builder.job.is_running()
+                    or builder.job.is_suspended()
+                    or not builder.job.state()
+                ):
+                    executor.poll(builder)
+                elif builder.job.is_complete():
+                    executor.gather(builder)
+                    builder.complete()
+
+                    poll_info["job_complete"] = True
+                else:
+                    builder.incomplete()
+                    poll_info["job_complete"] = True
+                    poll_info["ignore_job"] = True
+
+            elif self.is_cobalt(executor.type):
+                if (
+                    builder.job.is_pending()
+                    or builder.job.is_running()
+                    or builder.job.is_suspended()
+                    or not builder.job.state()
+                ):
+                    executor.poll(builder)
+                elif builder.job.is_complete():
+                    builder.complete()
+                    poll_info["job_complete"] = True
+                elif builder.job.is_cancelled():
+                    builder.incomplete()
+
+                    poll_info["job_complete"] = True
+                    poll_info["ignore_job"] = True
+
+            elif self.is_pbs(executor.type):
+                if (
+                    builder.job.is_pending()
+                    or builder.job.is_running()
+                    or builder.job.is_suspended()
+                    or not builder.job.state()
+                ):
+                    executor.poll(builder)
+                elif builder.job.is_complete():
+                    executor.gather(builder)
+                    builder.complete()
+                    poll_info["job_complete"] = True
+                else:
+                    builder.incomplete()
+                    poll_info["job_complete"] = True
+                    poll_info["ignore_job"] = True
+
+        return builders
+        # return poll_info

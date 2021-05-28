@@ -469,6 +469,10 @@ class BuildTest:
         self.max_pend_time = max_pend_time
         self.poll_interval = poll_interval
 
+        self.passed_tests = 0
+        self.failed_tests = 0
+        self.total_tests = 0
+
         # get real path to log directory which accounts for variable expansion, user expansion, and symlinks
         self.logdir = resolve_path(
             self.configuration.target_config.get("logdir"), exist=False
@@ -541,7 +545,7 @@ class BuildTest:
         if self.stage == "build":
             return
 
-        self.builders = self.run_phase(printTable=True)
+        self.builders = self.run_phase()
 
         # store path to logfile in each builder object. There is a single logfile per build.
         for builder in self.builders:
@@ -795,7 +799,7 @@ class BuildTest:
                 "Unable to create any test during build phase. Please check buildtest.log for more details"
             )
 
-    def run_phase(self, printTable=False):
+    def run_phase(self):
         """This method will run all builders with the appropriate executor.
         The executor argument is an instance of ``BuildExecutor`` that is responsible
         for orchestrating builder execution to the appropriate executor class. The
@@ -812,31 +816,26 @@ class BuildTest:
         The `valid_builders` contains the test meta-data that is used for updating
         test report in next stage.
 
-        :param printTable: boolean to control print statement for run phase
-        :type printTable: bool
         :return: A list of valid builders
         :rtype: list
         """
 
         valid_builders = []
         # run all the tests
-        passed_tests = 0
-        failed_tests = 0
-        total_tests = 0
+
         errmsg = []
 
         poll = False
 
-        if printTable:
-            msg = """
+        msg = """
 +---------------------+
 | Stage: Running Test |
 +---------------------+ 
 """
-            if os.getenv("BUILDTEST_COLOR") == "True":
-                msg = colored(msg, "red", attrs=["bold"])
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            msg = colored(msg, "red", attrs=["bold"])
 
-            print(msg)
+        print(msg)
 
         table = {
             "name": [],
@@ -872,20 +871,17 @@ class BuildTest:
                 continue
 
             if builder.metadata["result"]["state"] == "PASS":
-                passed_tests += 1
+                self.passed_tests += 1
             else:
-                failed_tests += 1
+                self.failed_tests += 1
 
-            total_tests += 1
+            self.total_tests += 1
 
-        if printTable:
-            headers = table.keys()
-            if os.getenv("BUILDTEST_COLOR") == "True":
-                headers = list(
-                    map(lambda x: colored(x, "blue", attrs=["bold"]), headers)
-                )
+        headers = table.keys()
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
 
-            print(tabulate(table, headers=headers, tablefmt="presto"))
+        print(tabulate(table, headers=headers, tablefmt="presto"))
 
         if errmsg:
             print("\n\n")
@@ -899,120 +895,135 @@ class BuildTest:
         if poll:
             valid_builders = self.poll_jobs(poll_queue, valid_builders)
 
-            table = {
-                "name": [],
-                "id": [],
-                "executor": [],
-                "status": [],
-                "returncode": [],
-            }
-
-            if printTable:
-                msg = """
-+---------------------------------------------+
-| Stage: Final Results after Polling all Jobs |
-+---------------------------------------------+ 
-"""
-                if os.getenv("BUILDTEST_COLOR") == "True":
-                    msg = colored(msg, "red", attrs=["bold"])
-
-                print(msg)
-
-            # regenerate test results after poll
-            passed_tests = 0
-            failed_tests = 0
-            total_tests = 0
-
-            for builder in valid_builders:
-                if builder.metadata["result"]["state"] == "PASS":
-                    passed_tests += 1
-                else:
-                    failed_tests += 1
-
-                table["name"].append(builder.name)
-                table["id"].append(builder.metadata["id"])
-                table["executor"].append(builder.executor)
-                table["status"].append(builder.metadata["result"]["state"])
-                table["returncode"].append(builder.metadata["result"]["returncode"])
-
-                total_tests += 1
-
-            if printTable:
-                headers = table.keys()
-                if os.getenv("BUILDTEST_COLOR") == "True":
-                    headers = list(
-                        map(lambda x: colored(x, "blue", attrs=["bold"]), headers)
-                    )
-
-                print(tabulate(table, headers=headers, tablefmt="presto"))
+            self._print_jobs_after_poll(valid_builders)
 
         ########## TEST SUMMARY ####################
-        if total_tests == 0:
+        if self.total_tests == 0:
             print("No tests were executed")
             return
 
-        if printTable:
-            msg = """
-+----------------------+
-| Stage: Test Summary  |
-+----------------------+ 
-"""
-            if os.getenv("BUILDTEST_COLOR") == "True":
-                msg = colored(msg, "red", attrs=["bold"])
-
-            print(msg)
-
-            pass_rate = passed_tests * 100 / total_tests
-            fail_rate = failed_tests * 100 / total_tests
-
-            msg1 = f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate:.3f}%"
-            msg2 = f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate:.3f}%"
-            if os.getenv("BUILDTEST_COLOR") == "True":
-                msg1 = colored(msg1, "green")
-                msg2 = colored(msg2, "red")
-
-            print(msg1)
-            print(msg2)
-            print("\n")
+        self._print_test_summary()
 
         return valid_builders
 
-    def poll_jobs(self, poll_queue, valid_builders):
-        """This method will poll jobs by processing all jobs in ``poll_queue``. If
-        job is cancelled by scheduler, we remove this from valid_builders list.
-        This method will return a list of valid_builders after polling. If there
-        are no valid_builders after polling, the method will return None
+    def _print_jobs_after_poll(self):
+        """ Print table of all tests after polling"""
 
-        :param poll_queue: a list of jobs that need to be polled. The jobs will poll using poll method from executor
-        :type poll_queue: list, required
-        :param valid_builders: list of valid builders
-        :type valid_builders: list, required
+        table = {
+            "name": [],
+            "id": [],
+            "executor": [],
+            "status": [],
+            "returncode": [],
+        }
+
+        msg = """
+        +---------------------------------------------+
+        | Stage: Final Results after Polling all Jobs |
+        +---------------------------------------------+ 
         """
-        # default interval is 30sec for polling jobs if poll interval not set in configuration file or command line
-        default_interval = 30
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            msg = colored(msg, "red", attrs=["bold"])
 
-        interval = self.poll_interval or deep_get(
-            self.configuration.target_config, "executors", "defaults", "pollinterval"
-        )
+        print(msg)
 
-        if not interval:
-            interval = default_interval
+        # regenerate test results after poll
 
-        # keep track of ignored jobs by job scheduler these include jobs that failed abnormally or cancelled by scheduler
-        ignore_jobs = set()
-        completed_jobs = set()
+        passed_tests = 0
+        failed_tests = 0
+        total_tests = 0
 
-        # loop until poll_queue is empty which means all jobs have finished
-        while poll_queue:
+        for builder in valid_builders:
+            if builder.metadata["result"]["state"] == "PASS":
+                passed_tests += 1
+            else:
+                failed_tests += 1
 
-            print("\n")
-            print(f"Polling Jobs in {interval} seconds")
-            print("{:_<40}".format(""))
+            table["name"].append(builder.name)
+            table["id"].append(builder.metadata["id"])
+            table["executor"].append(builder.executor)
+            table["status"].append(builder.metadata["result"]["state"])
+            table["returncode"].append(builder.metadata["result"]["returncode"])
 
-            logger.debug(f"Sleeping for {interval} seconds")
-            time.sleep(interval)
-            logger.debug(f"Polling Jobs: {poll_queue}")
+            total_tests += 1
 
+        headers = table.keys()
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
+
+        print(tabulate(table, headers=headers, tablefmt="presto"))
+
+    def _print_test_summary(self):
+        """Print a summary of total pass and fail test with percentage breakdown."""
+
+        msg = """
+    +----------------------+
+    | Stage: Test Summary  |
+    +----------------------+ 
+    """
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            msg = colored(msg, "red", attrs=["bold"])
+
+        print(msg)
+
+        pass_rate = self.passed_tests * 100 / self.total_tests
+        fail_rate = self.failed_tests * 100 / self.total_tests
+
+        msg1 = f"Passed Tests: {self.passed_tests}/{self.total_tests} Percentage: {pass_rate:.3f}%"
+        msg2 = f"Failed Tests: {self.failed_tests}/{self.total_tests} Percentage: {fail_rate:.3f}%"
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            msg1 = colored(msg1, "green")
+            msg2 = colored(msg2, "red")
+
+        print(msg1)
+        print(msg2)
+        print("\n")
+
+
+def poll_jobs(self, poll_queue, valid_builders):
+    """This method will poll jobs by processing all jobs in ``poll_queue``. If
+    job is cancelled by scheduler, we remove this from valid_builders list.
+    This method will return a list of valid_builders after polling. If there
+    are no valid_builders after polling, the method will return None
+
+    :param poll_queue: a list of jobs that need to be polled. The jobs will poll using poll method from executor
+    :type poll_queue: list, required
+    :param valid_builders: list of valid builders
+    :type valid_builders: list, required
+    """
+    # default interval is 30sec for polling jobs if poll interval not set in configuration file or command line
+    default_interval = 30
+
+    interval = self.poll_interval or deep_get(
+        self.configuration.target_config, "executors", "defaults", "pollinterval"
+    )
+
+    if not interval:
+        interval = default_interval
+
+    # keep track of ignored jobs by job scheduler these include jobs that failed abnormally or cancelled by scheduler
+    ignore_jobs = set()
+    completed_jobs = set()
+
+    # loop until poll_queue is empty which means all jobs have finished
+    while poll_queue:
+
+        print("\n")
+        print(f"Polling Jobs in {interval} seconds")
+        print("{:_<40}".format(""))
+
+        logger.debug(f"Sleeping for {interval} seconds")
+        time.sleep(interval)
+        logger.debug(f"Polling Jobs: {poll_queue}")
+
+        poll_queue = self.buildexecutor.poll(poll_queue)
+        for builder in poll_queue:
+            if builder.is_complete():
+                completed_jobs.add(builder)
+            else:
+                ignore_jobs.add(builder)
+
+        """
             for builder in poll_queue:
                 poll_info = self.buildexecutor.poll(builder)
 
@@ -1028,82 +1039,81 @@ class BuildTest:
                 # and not updated in report
                 if poll_info["ignore_job"]:
                     ignore_jobs.add(builder)
-                    completed_jobs.add(builder)
+            """
+        jobIDs = []
 
-            jobIDs = []
+        for job in poll_queue:
+            jobIDs.append(job.metadata["jobid"])
+        print("Job Queue:", jobIDs)
 
-            for job in poll_queue:
-                jobIDs.append(job.metadata["jobid"])
-            print("Job Queue:", jobIDs)
+        completed_jobs_table = {
+            "name": [],
+            "executor": [],
+            "jobID": [],
+            "jobstate": [],
+        }
+        pending_jobs_table = {
+            "name": [],
+            "executor": [],
+            "jobID": [],
+            "jobstate": [],
+        }
+        for job in completed_jobs:
+            completed_jobs_table["name"].append(job.name)
+            completed_jobs_table["executor"].append(job.executor)
+            completed_jobs_table["jobID"].append(job.metadata["jobid"])
+            # completed_jobs_table["jobstate"].append(job.job_state)
+            completed_jobs_table["jobstate"].append(job.job.state())
 
-            completed_jobs_table = {
-                "name": [],
-                "executor": [],
-                "jobID": [],
-                "jobstate": [],
-            }
-            pending_jobs_table = {
-                "name": [],
-                "executor": [],
-                "jobID": [],
-                "jobstate": [],
-            }
-            for job in completed_jobs:
-                completed_jobs_table["name"].append(job.name)
-                completed_jobs_table["executor"].append(job.executor)
-                completed_jobs_table["jobID"].append(job.metadata["jobid"])
-                # completed_jobs_table["jobstate"].append(job.job_state)
-                completed_jobs_table["jobstate"].append(job.job.state())
+        for job in poll_queue:
+            pending_jobs_table["name"].append(job.name)
+            pending_jobs_table["executor"].append(job.executor)
+            pending_jobs_table["jobID"].append(job.metadata["jobid"])
+            # pending_jobs_table["jobstate"].append(job.job_state)
+            pending_jobs_table["jobstate"].append(job.job.state())
 
-            for job in poll_queue:
-                pending_jobs_table["name"].append(job.name)
-                pending_jobs_table["executor"].append(job.executor)
-                pending_jobs_table["jobID"].append(job.metadata["jobid"])
-                # pending_jobs_table["jobstate"].append(job.job_state)
-                pending_jobs_table["jobstate"].append(job.job.state())
+        # only print table if their is an element in the table. We check for 'name' property
+        if completed_jobs_table["name"]:
+            print("\n")
+            print("Completed Jobs")
+            print("{:_<40}".format(""))
+            print("\n")
 
-            # only print table if their is an element in the table. We check for 'name' property
-            if completed_jobs_table["name"]:
-                print("\n")
-                print("Completed Jobs")
-                print("{:_<40}".format(""))
-                print("\n")
-
-                print(
-                    tabulate(
-                        completed_jobs_table,
-                        headers=completed_jobs_table.keys(),
-                        tablefmt="pretty",
-                    )
+            print(
+                tabulate(
+                    completed_jobs_table,
+                    headers=completed_jobs_table.keys(),
+                    tablefmt="pretty",
                 )
+            )
 
-            if pending_jobs_table["name"]:
-                print("\n")
-                print("Pending Jobs")
-                print("{:_<40}".format(""))
-                print("\n")
-                print(
-                    tabulate(
-                        pending_jobs_table,
-                        headers=pending_jobs_table.keys(),
-                        tablefmt="pretty",
-                    )
+        if pending_jobs_table["name"]:
+            print("\n")
+            print("Pending Jobs")
+            print("{:_<40}".format(""))
+            print("\n")
+            print(
+                tabulate(
+                    pending_jobs_table,
+                    headers=pending_jobs_table.keys(),
+                    tablefmt="pretty",
                 )
+            )
 
-        # remove any builders where for jobs that need to be ignored
-        if ignore_jobs:
-            # convert set to list
-            ignore_jobs = list(ignore_jobs)
-            for builder in ignore_jobs:
-                valid_builders.remove(builder)
+    # remove any builders where for jobs that need to be ignored
+    if ignore_jobs:
+        # convert set to list
+        ignore_jobs = list(ignore_jobs)
+        for builder in ignore_jobs:
+            valid_builders.remove(builder)
 
-            print("Cancelled Tests:")
-            for builder in ignore_jobs:
-                print(builder.metadata["name"])
+        print("Cancelled Tests:")
+        for builder in ignore_jobs:
+            print(builder.name)
 
-        # after removing jobs from valid_builders list there is chance we have no jobs to report
-        # in that case we return from method
-        if not valid_builders:
-            sys.exit("After polling all jobs we found no valid builders to process")
+    # after removing jobs from valid_builders list there is chance we have no jobs to report
+    # in that case we return from method
+    if not valid_builders:
+        sys.exit("After polling all jobs we found no valid builders to process")
 
-        return valid_builders
+    return valid_builders
