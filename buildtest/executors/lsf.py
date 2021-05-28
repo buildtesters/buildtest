@@ -7,8 +7,10 @@ when initializing the executors.
 import logging
 import json
 import os
+import re
 import subprocess
 import time
+from buildtest.exceptions import BuildTestError
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
@@ -85,21 +87,28 @@ class LSFExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to stage directory {builder.stage_dir}")
 
-        builder.run()
+        command = builder.run()
+        out = command.get_output()
+        out = " ".join(out)
+        pattern = "(\d+)"
+        # output in the form:  'Job <58654> is submitted to queue <batch>' and applying regular expression to get job ID
+        m = re.search(pattern, out)
+        self.logger.debug(f"Applying regular expression '{pattern}' to output: '{out}'")
 
-        interval = 5
+        # if there is no match we raise error
+        if not m:
+            self.logger.debug(f"Unable to find LSF Job ID in output: '{out}'")
+            builder.incomplete()
+            return
 
-        # wait a few seconds before querying for jobID. It can take a few seconds
-        # between job submission and running bjobs to get output.
-        time.sleep(interval)
-
-        # get last jobid from bjobs
-        cmd = "bjobs -u $USER -o 'JobID' -noheader | tail -n 1"
-
-        # get last job ID
-        self.logger.debug(f"[Acquire Job ID]: {cmd}")
-        output = subprocess.check_output(cmd, shell=True, universal_newlines=True)
-        job_id = int(output.strip())
+        try:
+            job_id = int(m.group(0))
+        except ValueError:
+            self.logger.debug(
+                f"Unable to convert '{m.group(0)}' to int to extract Job ID"
+            )
+            builder.incomplete()
+            return
 
         builder.job = LSFJob(job_id)
 
