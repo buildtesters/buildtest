@@ -24,11 +24,11 @@ class LSFExecutor(BaseExecutor):
     """The LSFExecutor class is responsible for submitting jobs to LSF Scheduler.
     The LSFExecutor performs the following steps
 
-    load: load lsf configuration from buildtest configuration file
-    dispatch: dispatch job to scheduler and acquire job ID
-    poll: wait for LSF jobs to finish
-    gather: Once job is complete, gather job data
-    cancel: Cancel job if it exceeds max pending time
+    - load: load lsf configuration from buildtest configuration file
+    - dispatch: dispatch job to scheduler and acquire job ID
+    - poll: wait for LSF jobs to finish
+    - gather: Once job is complete, gather job data
+    - cancel: Cancel job if it exceeds max pending time
     """
 
     type = "lsf"
@@ -78,7 +78,11 @@ class LSFExecutor(BaseExecutor):
         return cmd
 
     def dispatch(self, builder):
-        """This method is responsible for dispatching job to scheduler.
+        """This method is responsible for dispatching job to scheduler and extracting job ID by applying a ``re.search`` against
+        output at onset of job submission. If job id is not retrieved due to job failure or unable to match regular expression we
+        mark job incomplete by invoking ``builder.incomplete()`` method and return from method.
+
+        If we have a valid job ID we invoke ``LSFJob`` class given the job id to poll job and store this into ``builder.job`` attribute.
 
         :param builder: builder object
         :type builder: BuilderBase, required
@@ -119,9 +123,9 @@ class LSFExecutor(BaseExecutor):
         print(msg)
 
     def poll(self, builder):
-        """This method will poll for job by using bjobs and return state of job.
-        The command to be run is ``bjobs -noheader -o 'stat' <JOBID>`` which
-        returns job state.
+        """Given a builder object we poll the job by invoking builder method ``builder.job.poll()`` return state of job. If
+        job is suspended or pending we stop timer and check if timer exceeds max_pend_time value which could be defined in configuration
+        file or passed via command line ``--max-pend-time``
 
         :param builder: builder object
         :type builder: BuilderBase, required
@@ -146,9 +150,8 @@ class LSFExecutor(BaseExecutor):
             builder.start()
 
     def gather(self, builder):
-        """Gather Job detail after completion of job. This method will retrieve output
-        fields defined for ``self.format_fields``. buildtest will run
-        ``bjobs -o '<field1> ... <fieldN>' <JOBID> -json``.
+        """Gather Job detail after completion of job by invoking the builder method ``builder.job.gather()``.
+        We retrieve exit code, output file, error file and update builder metadata.
 
         :param builder: builder object
         :type builder: BuilderBase, required
@@ -158,8 +161,6 @@ class LSFExecutor(BaseExecutor):
 
         builder.metadata["job"] = builder.job.gather()
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
-
-        # self.end_time(builder)
 
         builder.metadata["outfile"] = os.path.join(
             builder.stage_dir, builder.job.output_file()
@@ -184,49 +185,93 @@ class LSFJob(Job):
         super().__init__(jobID)
 
     def is_pending(self):
+        """Check if Job is pending which is reported by LSF as ``PEND``. Return ``True`` if there is a match otherwise returns ``False``"""
+
         return self._state == "PEND"
 
     def is_running(self):
+        """Check if Job is running which is reported by LSF as ``RUN``. Return ``True`` if there is a match otherwise returns ``False``"""
+
         return self._state == "RUN"
 
     def is_complete(self):
+        """Check if Job is complete which is in ``DONE`` state. Return ``True`` if there is a match otherwise return ``False``"""
+
         return self._state == "DONE"
 
     def is_suspended(self):
+        """Check if Job is in suspended state which could be in any of the following states: [``PSUSP``, ``USUSP``, ``SSUSP``].
+        We return ``True`` if job is in one of the states otherwise return ``False``
+        """
+
         return self._state in ["PSUSP", "USUSP", "SSUSP"]
 
     def is_failed(self):
+        """Check if Job failed. We return ``True`` if job is in ``EXIT`` state otherwise return ``False``"""
+
         return self._state == "EXIT"
 
     def output_file(self):
+        """Return job output file"""
+
         return self._outfile
 
     def error_file(self):
+        """Return job error file """
+
         return self._errfile
 
     def exitcode(self):
+        """Return job exit code"""
+
         return self._exitcode
 
     def poll(self):
-        query = f"bjobs -noheader -o 'stat' {self.jobid}"
+        """Given a job id we poll the LSF Job by retrieving its job state, output file, error file and exit code.
+        We run the following commands to retrieve following states
 
+        - Job State: ``bjobs -noheader -o 'stat' <JOBID>``
+        - Output File: ``bjobs -noheader -o 'output_file' <JOBID>'``
+        - Error File: ``bjobs -noheader -o 'error_file' <JOBID>'``
+        - Exit Code  File: ``bjobs -noheader -o 'EXIT_CODE' <JOBID>'``
+        """
+
+        # get job state
+        query = f"bjobs -noheader -o 'stat' {self.jobid}"
         logger.debug(query)
+        logger.debug(
+            f"Extracting Job State for job: {self.jobid} by running  '{query}'"
+        )
         cmd = BuildTestCommand(query)
         cmd.execute()
         job_state = cmd.get_output()
         self._state = "".join(job_state).rstrip()
+        logger.debug(f"Job State: {self._state}")
 
+        # get path to output file
         query = f"bjobs -noheader -o 'output_file' {self.jobid} "
+        logger.debug(
+            f"Extracting OUTPUT FILE for job: {self.jobid} by running  '{query}'"
+        )
         cmd = BuildTestCommand(query)
         cmd.execute()
         self._outfile = "".join(cmd.get_output()).rstrip()
+        logger.debug(f"Output File: {self._outfile}")
 
+        # get path to error file
         query = f"bjobs -noheader -o 'error_file' {self.jobid} "
+        logger.debug(
+            f"Extracting ERROR FILE for job: {self.jobid} by running  '{query}'"
+        )
         cmd = BuildTestCommand(query)
         cmd.execute()
         self._errfile = "".join(cmd.get_output()).rstrip()
+        logger.debug(f"Error File: {self._errfile}")
 
         query = f"bjobs -noheader -o 'EXIT_CODE' {self.jobid} "
+        logger.debug(
+            f"Extracting EXIT CODE for job: {self.jobid} by running  '{query}'"
+        )
         cmd = BuildTestCommand(query)
         cmd.execute()
         output = "".join(cmd.get_output()).rstrip()
@@ -237,7 +282,32 @@ class LSFJob(Job):
         except ValueError:
             self._exitcode = 0
 
+        logger.debug(f"Exit Code: {self._exitcode}")
+
     def gather(self):
+        """Gather Job record at onset of job completion by running ``bjobs -o '<format1> <format2>' <jobid> -json``. The format
+        fields extracted from job are the following:
+
+           - "job_name"
+           - "stat"
+           - "user"
+           - "user_group"
+           - "queue"
+           - "proj_name"
+           - "pids"
+           - "exit_code"
+           - "from_host"
+           - "exec_host"
+           - "submit_time"
+           - "start_time"
+           - "finish_time"
+           - "nthreads"
+           - "exec_home"
+           - "exec_cwd"
+           - "output_file"
+           - "error_file"
+        """
+
         format_fields = [
             "job_name",
             "stat",
@@ -258,6 +328,7 @@ class LSFJob(Job):
             "output_file",
             "error_file",
         ]
+
         query = f"bjobs -o '{' '.join(format_fields)}' {self.jobid} -json"
 
         logger.debug(f"Gather LSF job data by running: {query}")
@@ -277,6 +348,9 @@ class LSFJob(Job):
         return job_data
 
     def cancel(self):
+        """Cancel LSF Job by running ``bkill <jobid>``. This is called if job has exceeded
+        `max_pend_time` limit during poll stage."""
+
         query = f"bkill {self.jobid}"
         logger.debug(f"Cancelling job {self.jobid} by running: {query}")
         cmd = BuildTestCommand(query)

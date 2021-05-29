@@ -112,15 +112,13 @@ class BuildExecutor:
         return executor_type == "cobalt"
 
     def get(self, name):
-        """Given the name of an executor return the executor for running
-        a buildtest build, or get the default.
-        """
+        """Given the name of an executor return the executor object which is of subclass of `BaseExecutor`"""
         return self.executors.get(name)
 
     def _choose_executor(self, builder):
-        """Choose executor is called at the onset of a run or poll stage. We
-        look at the builder metadata to determine if a default
-        is set for the executor, and fall back to the default.
+        """Choose executor is called at the onset of a run and poll stage. Given a builder
+        object we retrieve the executor property ``builder.executor`` of the builder and check if
+        there is an executor object and of type `BaseExecutor`.
 
         :param builder: the builder with the loaded Buildspec.
         :type builder: BuilderBase (subclass), required.
@@ -133,7 +131,6 @@ class BuildExecutor:
                 f"{executor} is not a valid executor because it is not of type BaseExecutor class."
             )
 
-        executor.builder = builder
         return executor
 
     def setup(self):
@@ -157,10 +154,10 @@ class BuildExecutor:
             write_file(file, content)
 
     def run(self, builder):
-        """Given a BuilderBase (subclass) go through the
-        steps defined for the executor to run the build. This should
-        be instantiated by the subclass. For a simple script run, we expect a
-        setup, build, and finish.
+        """This method implements the executor run implementation. Given a builder object
+        we first detect the correct executor object to use and invoke its ``run`` method. The
+        executor object is a sub-class of BaseExecutor (i.e LocalExecutor, SlurmExecutor, LSFExecutor,...).
+
 
         :param builder: the builder with the loaded test configuration.
         :type builder: BuilderBase (subclass), required.
@@ -178,7 +175,16 @@ class BuildExecutor:
             )
 
     def poll(self, builders):
-        """Poll all jobs for batch executors (LSF, Slurm, Cobalt, PBS). For slurm we poll
+        """The poll stage is called after the `run` stage for builders that require job submission through
+        a batch executor. Given a set of builders object which are instance of BuilderBase, we select the executor
+        object and invoke the `poll` method for the executor.
+
+        1. If job is pending, running, suspended we poll job
+        2. If job is complete we gather job results and mark job complete
+        3. Otherwise we mark job incomplete and it will be ignored by buildtest in reporting
+
+
+        Poll all jobs for batch executors (LSF, Slurm, Cobalt, PBS). For slurm we poll
         until job is in ``PENDING`` or ``RUNNING`` state. If Slurm job is in
         ``FAILED`` or ``COMPLETED`` state we assume job is finished and we gather
         results. If its in any other state we ignore job and return out of method.
@@ -199,14 +205,9 @@ class BuildExecutor:
 
         :param builder: a list of builder objects for polling. Each element is an instance of BuilderBase (subclass)
         :type builder: list , required
-        :return: Return a dictionary containing poll information
-        :rtype: dict
+        :return: Return a list of builders
+        :rtype: list
         """
-
-        poll_info = {
-            "job_complete": False,  # indicate job is not complete and requires polling
-            "ignore_job": False,  # indicate job should be ignored
-        }
 
         for builder in builders:
 
@@ -214,9 +215,7 @@ class BuildExecutor:
             # if builder is local executor we shouldn't be polling so we set job to
             # complete and return
             if executor.type == "local":
-                poll_info["job_complete"] = True
                 builder.complete()
-                # return poll_info
 
             # if executor is a Slurm Executor poll Slurm Job
             if self.is_slurm(executor.type):
@@ -231,12 +230,8 @@ class BuildExecutor:
                     executor.gather(builder)
                     builder.complete()
 
-                    poll_info["job_complete"] = True
                 else:
                     builder.incomplete()
-
-                    poll_info["job_complete"] = True
-                    poll_info["ignore_job"] = True
 
             # poll LSF job
             elif self.is_lsf(executor.type):
@@ -251,12 +246,10 @@ class BuildExecutor:
                     executor.gather(builder)
                     builder.complete()
 
-                    poll_info["job_complete"] = True
                 else:
                     builder.incomplete()
-                    poll_info["job_complete"] = True
-                    poll_info["ignore_job"] = True
 
+            # poll Cobalt Job
             elif self.is_cobalt(executor.type):
                 if (
                     builder.job.is_pending()
@@ -267,13 +260,10 @@ class BuildExecutor:
                     executor.poll(builder)
                 elif builder.job.is_complete():
                     builder.complete()
-                    poll_info["job_complete"] = True
                 elif builder.job.is_cancelled():
                     builder.incomplete()
 
-                    poll_info["job_complete"] = True
-                    poll_info["ignore_job"] = True
-
+            # poll PBS Job
             elif self.is_pbs(executor.type):
                 if (
                     builder.job.is_pending()
@@ -285,11 +275,8 @@ class BuildExecutor:
                 elif builder.job.is_complete():
                     executor.gather(builder)
                     builder.complete()
-                    poll_info["job_complete"] = True
+
                 else:
                     builder.incomplete()
-                    poll_info["job_complete"] = True
-                    poll_info["ignore_job"] = True
 
         return builders
-        # return poll_info

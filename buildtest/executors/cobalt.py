@@ -18,11 +18,10 @@ class CobaltExecutor(BaseExecutor):
     """The CobaltExecutor class is responsible for submitting jobs to Cobalt Scheduler.
     The class implements the following methods:
 
-    load: load Cobalt executors from configuration file
-    dispatch: submit Cobalt job to scheduler
-    poll: poll Cobalt job via qstat and retrieve job state
-    gather: gather job result
-    cancel: cancel job if it exceeds max pending time
+    - **load**: load Cobalt executors from configuration file
+    - **dispatch**: submit Cobalt job to scheduler
+    - **poll**: poll Cobalt job via qstat and retrieve job state
+    - **gather**: gather job record including output, error, exit code
     """
 
     type = "cobalt"
