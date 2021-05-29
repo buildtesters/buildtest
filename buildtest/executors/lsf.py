@@ -8,9 +8,6 @@ import logging
 import json
 import os
 import re
-import subprocess
-import time
-from buildtest.exceptions import BuildTestError
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
@@ -24,11 +21,10 @@ class LSFExecutor(BaseExecutor):
     """The LSFExecutor class is responsible for submitting jobs to LSF Scheduler.
     The LSFExecutor performs the following steps
 
-    - load: load lsf configuration from buildtest configuration file
-    - dispatch: dispatch job to scheduler and acquire job ID
-    - poll: wait for LSF jobs to finish
-    - gather: Once job is complete, gather job data
-    - cancel: Cancel job if it exceeds max pending time
+    - **load**: load lsf configuration from buildtest configuration file
+    - **dispatch**: dispatch job to scheduler and acquire job ID
+    - **poll**: wait for LSF jobs to finish
+    - **gather**: Once job is complete, gather job data
     """
 
     type = "lsf"
@@ -306,6 +302,38 @@ class LSFJob(Job):
            - "exec_cwd"
            - "output_file"
            - "error_file"
+
+        Shown below is the output format and we retrieve the job records defined in **RECORDS** property
+
+        .. code-block:: console
+
+            $ bjobs -o 'job_name stat user user_group queue proj_name pids exit_code from_host exec_host submit_time start_time finish_time nthreads exec_home exec_cwd output_file error_file' 58652 -json
+            {
+              "COMMAND":"bjobs",
+              "JOBS":1,
+              "RECORDS":[
+                {
+                  "JOB_NAME":"hold_job",
+                  "STAT":"PSUSP",
+                  "USER":"shahzebsiddiqui",
+                  "USER_GROUP":"GEN014ECPCI",
+                  "QUEUE":"batch",
+                  "PROJ_NAME":"GEN014ECPCI",
+                  "PIDS":"",
+                  "EXIT_CODE":"",
+                  "FROM_HOST":"login1",
+                  "EXEC_HOST":"",
+                  "SUBMIT_TIME":"May 28 12:45",
+                  "START_TIME":"",
+                  "FINISH_TIME":"",
+                  "NTHREADS":"",
+                  "EXEC_HOME":"",
+                  "EXEC_CWD":"",
+                  "OUTPUT_FILE":"hold_job.out",
+                  "ERROR_FILE":"hold_job.err"
+                }
+              ]
+            }
         """
 
         format_fields = [

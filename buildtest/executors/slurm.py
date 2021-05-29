@@ -345,6 +345,14 @@ class SlurmJob(Job):
             - "UID"
             - "User"
             - "WorkDir"
+
+        The output of sacct is parseable using the pipe symbol (**|**) and stored into a dict
+
+        .. code-block:: console
+
+            $ sacct -j 42909266 -X -n -P -o Account,AllocNodes,AllocTRES,ConsumedEnergyRaw,CPUTimeRaw,Elapsed,End,ExitCode,JobID,JobName,NCPUS,NNodes,QOS,ReqGRES,ReqMem,ReqNodes,ReqTRES,Start,State,Submit,UID,User,WorkDir --clusters=cori
+            nstaff|1|billing=272,cpu=272,energy=262,mem=87G,node=1|262|2176|00:00:08|2021-05-27T18:47:49|0:0|42909266|slurm_metadata|272|1|debug_knl|PER_NODE:craynetwork:1|87Gn|1|billing=1,cpu=1,node=1|2021-05-27T18:47:41|COMPLETED|2021-05-27T18:44:07|92503|siddiq90|/global/u1/s/siddiq90/.buildtest/tests/cori.slurm.knl_debug/metadata/slurm_metadata/0/stage
+
         """
 
         sacct_fields = [
