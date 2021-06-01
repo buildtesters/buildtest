@@ -212,4 +212,4 @@ class BaseExecutor:
                 builder.metadata["result"]["state"] = "PASS"
 
         # Return to starting directory for next test
-        os.chdir(self.builder.pwd)
+        os.chdir(builder.pwd)

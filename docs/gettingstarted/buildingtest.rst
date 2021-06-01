@@ -280,10 +280,17 @@ If you try to exceed this bound you will get an error such as::
     buildtest [options] [COMMANDS] build: error: argument --rebuild: 51 must be a positive number between [1-50]
 
 
-Use Alternate Settings file
-----------------------------
+Use Alternate Configuration file
+---------------------------------
 
 If you want to use an alternate configuration file when building test you can use ``buildtest -c <config> build``.
 buildtest will prefer configuration file on command line over the user configuration (``$HOME/.buildtest/config.yml``). For more
 details see :ref:`which_configuration_file_buildtest_reads`.
 
+Keeping Stage Directory
+------------------------
+
+buildtest will create setup the test environment in the `stage` directory where test will be executed. Once
+test is complete, buildtest will remove the `stage` directory. If you
+want to preserve the stage directory you can use ``buildtest build --keep-stage-dir``, this
+is only useful if you want to run the test manually

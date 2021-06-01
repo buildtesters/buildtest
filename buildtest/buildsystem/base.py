@@ -69,6 +69,10 @@ class BuilderBase(ABC):
         # For batch jobs this variable is an instance of Job class which would be one of the subclass
         self.job = None
 
+        # Controls the state of the builder object, a complete job  will set
+        # this value to True. A job cancellation or job failure in submission will set this to False
+        self.state = None
+
         # keeps track of job state as job progress through queuing system. This is
         # applicable for builders using batch executor.
         self.job_state = None
@@ -248,6 +252,16 @@ class BuilderBase(ABC):
 
         runtime = self._endtime - self._starttime
         self.metadata["result"]["runtime"] = runtime.total_seconds()
+
+    def complete(self):
+        """This method is invoked to indicate that builder job is complete after polling job."""
+        self.state = "COMPLETE"
+
+    def incomplete(self):
+        """This method indicates that builder job is not complete after polling job either job was
+        cancelled by scheduler or job failed to run.
+        """
+        self.state = "INCOMPLETE"
 
     def run_command(self):
         """Command used to run the build script. buildtest will change into the stage directory (self.stage_dir)

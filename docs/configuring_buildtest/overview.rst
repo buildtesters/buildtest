@@ -355,18 +355,28 @@ example
 The `launcher` field is applicable for batch executors in this
 case, ``launcher: sbatch`` inherits **sbatch** as the job launcher for all slurm executors.
 
-The ``pollinterval`` field is used  to poll jobs at set interval in seconds
-when job is active in queue. The ``max_pend_time`` is **maximum** time job can be pending
-within an executor, if it exceeds the limit buildtest will cancel the job. For more details
-on `max_pend_time` click :ref:`here <max_pend_time>`.
-
-`pollinterval`, `launcher` and `max_pend_time` have no effect on local executors.
 The ``account: nstaff`` will instruct buildtest to charge all jobs to account
 ``nstaff`` from Slurm Executors. The ``account`` option can be set in ``defaults``
 field to all executors or defined per executor instance which overrides the default value.
 
+Poll Interval
+----------------
+
+The ``pollinterval`` field is used  to poll jobs at set interval in seconds
+when job is active in queue. The poll interval can be configured on command line
+using ``buildtest build --poll-interval`` which overrides the configuration value.
+
+
+
+
+`pollinterval`, `launcher` and `max_pend_time` have no effect on local executors.
+
+
 Max Pend Time
 ---------------
+
+The ``max_pend_time`` is **maximum** time job can be pending
+within an executor, if it exceeds the limit buildtest will cancel the job.
 
 The **max_pend_time** option can be overridden per executor level for example the
 section below overrides the default to 300 seconds:
@@ -380,16 +390,14 @@ section below overrides the default to 300 seconds:
           max_pend_time: 300
 
 The ``max_pend_time`` is used to cancel job only if job is pending in queue, it has
-no impact if job is running. buildtest starts a timer at job submission and every poll interval (``pollinterval`` field)
-checks if job has exceeded **max_pend_time** only if job is in **PENDING** (SLURM)
+no impact if job is running. buildtest starts a timer at job submission and every poll interval
+(``pollinterval`` field) checks if job has exceeded **max_pend_time** only if job is in **PENDING** (SLURM)
 or **PEND** (LSF) state. If job pendtime exceeds `max_pend_time` limit, buildtest will
 cancel job using ``scancel`` or ``bkill`` depending on the scheduler. Buildtest
 will remove cancelled jobs from poll queue, in addition cancelled jobs won't be
 reported in test report.
 
-You may specify a ``description`` in each executor instance for documentation purpose.
-This field has no impact on buildtest
-
+For more details on `max_pend_time` click :ref:`here <max_pend_time>`.
 
 Specifying QoS (Slurm)
 -----------------------
