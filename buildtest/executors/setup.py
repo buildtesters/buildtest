@@ -18,6 +18,8 @@ from buildtest.executors.pbs import PBSExecutor
 from buildtest.exceptions import ExecutorError
 from buildtest.utils.file import create_dir, write_file
 
+logger = logging.getLogger(__name__)
+
 
 class BuildExecutor:
     """A BuildExecutor is responsible for initialing executors from buildtest configuration
@@ -39,8 +41,7 @@ class BuildExecutor:
         """
 
         self.executors = {}
-        self.logger = logging.getLogger(__name__)
-        self.logger.debug("Getting Executors from buildtest settings")
+        logger.debug("Getting Executors from buildtest settings")
 
         if site_config.localexecutors:
             for name in site_config.localexecutors:

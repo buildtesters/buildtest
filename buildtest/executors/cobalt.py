@@ -95,7 +95,7 @@ class CobaltExecutor(BaseExecutor):
 
         msg = f"[{builder.metadata['name']}] JobID: {builder.metadata['jobid']} dispatched to scheduler"
         print(msg)
-        self.logger.debug(msg)
+        logger.debug(msg)
 
         # output and error file in format <JOBID>.output and <JOBID>.error we set full path to file. By
         # default Cobalt will write file into current directory where job is submitted. We assume output and error
@@ -108,15 +108,11 @@ class CobaltExecutor(BaseExecutor):
             builder.stage_dir, builder.job.error_file()
         )
 
-        self.logger.debug(
-            f"Output file will be written to: {builder.metadata['outfile']}"
-        )
-        self.logger.debug(
-            f"Error file will be written to: {builder.metadata['errfile']}"
-        )
+        logger.debug(f"Output file will be written to: {builder.metadata['outfile']}")
+        logger.debug(f"Error file will be written to: {builder.metadata['errfile']}")
 
         builder.metadata["job"] = builder.job.gather()
-        self.logger.debug(json.dumps(builder.metadata["job"], indent=2))
+        logger.debug(json.dumps(builder.metadata["job"], indent=2))
 
     def poll(self, builder):
         """This method is responsible for polling Cobalt job by invoking the builder method
@@ -138,8 +134,8 @@ class CobaltExecutor(BaseExecutor):
         # if job is pending or suspended check if builder timer duration exceeds max_pend_time if so cancel job
         if builder.job.is_pending() or builder.job.is_suspended():
             builder.stop()
-            self.logger.debug(f"Time Duration: {builder.duration}")
-            self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
+            logger.debug(f"Time Duration: {builder.duration}")
+            logger.debug(f"Max Pend Time: {self.max_pend_time}")
 
             # if timer time is more than requested pend time then cancel job
             if int(builder.duration) > self.max_pend_time:
@@ -172,7 +168,7 @@ class CobaltExecutor(BaseExecutor):
                 builder.metadata["errfile"]
             ):
                 break
-            self.logger.debug(
+            logger.debug(
                 f"Sleeping {interval} seconds and waiting for Cobalt Scheduler to write output and error file"
             )
             time.sleep(interval)
@@ -182,7 +178,7 @@ class CobaltExecutor(BaseExecutor):
 
         cobaltlog = os.path.join(builder.stage_dir, builder.job.cobalt_log())
 
-        self.logger.debug(f"Cobalt Log File written to {cobaltlog}")
+        logger.debug(f"Cobalt Log File written to {cobaltlog}")
 
         # if os.path.exists(cobaltlog):
         content = read_file(cobaltlog)
@@ -192,18 +188,18 @@ class CobaltExecutor(BaseExecutor):
         if m:
             rc = int(m.group(2))
             builder.metadata["result"]["returncode"] = rc
-            self.logger.debug(
+            logger.debug(
                 f"Test: {builder.name} got returncode: {rc} from JobID: {builder.job.jobid}"
             )
         else:
-            self.logger.debug(
+            logger.debug(
                 f"Error in regular expression: '{pattern}'. Unable to find returncode please check your cobalt log file"
             )
 
         shutil.copy2(
             cobaltlog, os.path.join(builder.test_root, os.path.basename(cobaltlog))
         )
-        self.logger.debug(
+        logger.debug(
             f"Copying cobalt log file: {cobaltlog} to {os.path.join(builder.test_root,os.path.basename(cobaltlog))}"
         )
 

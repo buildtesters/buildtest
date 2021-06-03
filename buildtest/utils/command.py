@@ -1,4 +1,4 @@
-import locale
+# import locale
 import os
 import subprocess
 import shlex
@@ -153,10 +153,10 @@ class BuildTestCommand:
         """Given a line of output (error or regular) decode using the
         system default, if appropriate
         """
-        loc = locale.getdefaultlocale()[1]
+        # loc = locale.getdefaultlocale()[1]
 
         try:
-            line = line.decode(loc)
+            line = line.decode("utf-8")
         except Exception:
             pass
         return line
@@ -174,4 +174,7 @@ class BuildTestCommand:
         return self.err
 
     def get_command(self):
+        """Returns the executed command
+        :rtype: str
+        """
         return " ".join(self.cmd)

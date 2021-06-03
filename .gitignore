@@ -37,3 +37,6 @@ env/
 venv/
 ENV/
 env.bak/
+
+# ignore .packages directory
+.packages/
