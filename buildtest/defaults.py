@@ -26,14 +26,18 @@ BUILDTEST_USER_HOME = os.path.join(userhome, ".buildtest")
 # dictionary used for storing status of builds
 USER_SETTINGS_FILE = os.path.join(BUILDTEST_USER_HOME, "config.yml")
 
-BUILDTEST_DEFAULT_TESTDIR = os.path.join(BUILDTEST_USER_HOME, "tests")
-BUILDTEST_EXECUTOR_DIR = os.path.join(BUILDTEST_USER_HOME, "executor")
-BUILDTEST_BUILDSPEC_DIR = os.path.join(BUILDTEST_USER_HOME, "buildspecs")
+
+VAR_DIR = os.path.join(BUILDTEST_ROOT, "var")
+
+BUILDTEST_DEFAULT_TESTDIR = os.path.join(VAR_DIR, "tests")
+BUILDTEST_EXECUTOR_DIR = os.path.join(VAR_DIR, "executor")
+
+BUILDTEST_BUILDSPEC_DIR = os.path.join(VAR_DIR, "buildspecs")
 
 BUILDSPEC_CACHE_FILE = os.path.join(BUILDTEST_BUILDSPEC_DIR, "cache.json")
 BUILDSPEC_ERROR_FILE = os.path.join(BUILDTEST_BUILDSPEC_DIR, "error.txt")
 
-BUILD_REPORT = os.path.join(BUILDTEST_USER_HOME, "report.json")
+BUILD_REPORT = os.path.join(VAR_DIR, "report.json")
 
 BUILDSPEC_DEFAULT_PATH = [
     os.path.join(BUILDTEST_ROOT, "tutorials"),
