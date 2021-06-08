@@ -213,7 +213,7 @@ class LSFJob(Job):
         return self._outfile
 
     def error_file(self):
-        """Return job error file """
+        """Return job error file"""
 
         return self._errfile
 

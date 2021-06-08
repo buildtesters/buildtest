@@ -893,7 +893,7 @@ class BuildTest:
             )
 
     def _print_jobs_after_poll(self, valid_builders):
-        """ Print table of all tests after polling"""
+        """Print table of all tests after polling"""
 
         table = {
             "name": [],

@@ -221,7 +221,8 @@ def buildspec_menu(subparsers):
     )
 
     subparsers_buildspec = parser_buildspec.add_subparsers(
-        description="Buildspec Commands ", title="TITLE"
+        description="Find buildspec from cache file",
+        metavar="",
     )
     buildspec_find = subparsers_buildspec.add_parser("find", help="find all buildspecs")
     buildspec_find.add_argument(
