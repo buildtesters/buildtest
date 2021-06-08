@@ -102,9 +102,6 @@ class SiteConfiguration:
         if self.target_config["executors"].get("local"):
             self.localexecutors = list(self.target_config["executors"]["local"].keys())
 
-        print(self.systems)
-        print(self._name)
-
     def validate(self, validate_executors=True):
         """This method validates the site configuration with schema"""
 

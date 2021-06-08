@@ -18,7 +18,6 @@ from termcolor import colored
 from buildtest import BUILDTEST_VERSION
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
-from buildtest.cli.report import update_report
 from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
     BUILD_REPORT,
@@ -1129,7 +1128,7 @@ class BuildTest:
             "user": self.system.system["user"],
             "hostname": self.system.system["host"],
             "platform": self.system.system["platform"],
-            "current-time": datetime.now().strftime("%Y/%m/%d %X"),
+            "date": datetime.now().strftime("%Y/%m/%d %X"),
             "buildtest": shutil.which("buildtest"),
             "python": self.system.system["python"],
             "python-ver": self.system.system["pyver"],
@@ -1156,3 +1155,77 @@ class BuildTest:
 
         with open(build_history_file, "w") as fd:
             fd.write(json.dumps(history_data, indent=2))
+
+
+def update_report(valid_builders, report_file=BUILD_REPORT):
+    """This method will update BUILD_REPORT after every test run performed
+    by ``buildtest build``. If BUILD_REPORT is not created, we will create
+    file and update json file by extracting contents from builder.metadata
+
+    :param valid_builders: builder object that were successful during build and able to execute test
+    :type valid_builders: instance of BuilderBase (subclass)
+    :param report_file: specify location to report file
+    :type report_file: str
+    """
+
+    if not is_file(os.path.dirname(report_file)):
+        create_dir(os.path.dirname(report_file))
+
+    report = {}
+
+    # if file exists, read json file
+    if is_file(report_file):
+        report = load_json(report_file)
+
+    for builder in valid_builders:
+        buildspec = builder.buildspec
+        name = builder.name
+        entry = {}
+
+        report[buildspec] = report.get(buildspec) or {}
+        report[buildspec][name] = report.get(buildspec, {}).get(name) or []
+
+        # query over attributes found in builder.metadata, we only assign
+        # keys that we care about for reporting
+        for item in [
+            "id",
+            "full_id",
+            "description",
+            "schemafile",
+            "executor",
+            "compiler",
+            "hostname",
+            "user",
+            "testroot",
+            "testpath",
+            "stagedir",
+            "command",
+            "outfile",
+            "errfile",
+            "buildspec_content",
+            "test_content",
+            "logpath",
+        ]:
+            entry[item] = builder.metadata[item]
+
+        entry["tags"] = ""
+        # convert tags to string if defined in buildspec
+        if builder.metadata["tags"]:
+            if isinstance(builder.metadata["tags"], list):
+                entry["tags"] = " ".join(builder.metadata["tags"])
+            else:
+                entry["tags"] = builder.metadata["tags"]
+
+        # query over result attributes, we only assign some keys of interest
+        for item in ["starttime", "endtime", "runtime", "state", "returncode"]:
+            entry[item] = builder.metadata["result"][item]
+
+        entry["output"] = builder.metadata["output"]
+        entry["error"] = builder.metadata["error"]
+
+        entry["job"] = builder.metadata["job"]
+        entry["build_script"] = builder.build_script
+        report[buildspec][name].append(entry)
+
+    with open(report_file, "w") as fd:
+        json.dump(report, fd, indent=2)

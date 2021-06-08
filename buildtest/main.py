@@ -12,6 +12,7 @@ from buildtest.defaults import (
 )
 from buildtest.cli import get_parser
 from buildtest.cli.build import BuildTest
+from buildtest.cli.history import build_history
 from buildtest.system import BuildTestSystem
 from buildtest.log import init_logfile
 from buildtest.utils.file import create_dir, is_file, resolve_path, remove_file
@@ -55,7 +56,8 @@ def main():
 
     logger.info(f"Processing buildtest configuration file: {configuration.file}")
 
-    if args.subcommands == "build":
+    # buildtest build command
+    if args.subcommands == "build" and not args.history:
 
         cmd = BuildTest(
             configuration=configuration,
@@ -76,8 +78,12 @@ def main():
         cmd.build()
         return
 
+    # buildtest build history
+    elif args.subcommands == "build" and args.history == "history":
+        build_history()
+
     # implementation for 'buildtest buildspec find'
-    if args.subcommands == "buildspec":
+    elif args.subcommands == "buildspec":
         from buildtest.cli.buildspec import buildspec_find
 
         buildspec_find(args=args, configuration=configuration)
