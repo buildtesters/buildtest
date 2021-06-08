@@ -4,20 +4,27 @@ $ buildtest build -b tutorials/runtime_status_test.yml
 User:  siddiq90
 Hostname:  DOE-7086392.local
 Platform:  Darwin
-Current Time:  2021/04/28 15:41:08
+Current Time:  2021/06/08 18:07:26
 buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
 buildtest version:  0.9.5
 python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
 python version:  3.7.3
-Test Directory:  /Users/siddiq90/.buildtest/var/tests
+Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
 Configuration File:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml
+Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b tutorials/runtime_status_test.yml
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
 
-Discovered Buildspecs:
-/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/runtime_status_test.yml
++-------------------------------------------------------------------------------------+
+| Discovered Buildspecs                                                               |
++=====================================================================================+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/runtime_status_test.yml |
++-------------------------------------------------------------------------------------+
+Discovered Buildspecs:  1
+Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
@@ -42,12 +49,12 @@ timelimit_max_fail  This test fails because it exceeds maxtime of 1.0 second
 +----------------------+ 
 
  name               | id       | type   | executor         | tags          | testpath
---------------------+----------+--------+------------------+---------------+------------------------------------------------------------------------------------------------------------------
- timelimit_min_max  | 1cc51c8a | script | generic.local.sh | ['tutorials'] | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/runtime_status_test/timelimit_min_max/3/stage/generate.sh
- timelimit_min      | c9e9f9e6 | script | generic.local.sh | ['tutorials'] | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/runtime_status_test/timelimit_min/3/stage/generate.sh
- timelimit_max      | 3d174ef8 | script | generic.local.sh | ['tutorials'] | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/runtime_status_test/timelimit_max/3/stage/generate.sh
- timelimit_min_fail | 489df5e9 | script | generic.local.sh | ['tutorials'] | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/runtime_status_test/timelimit_min_fail/3/stage/generate.sh
- timelimit_max_fail | 7c41637d | script | generic.local.sh | ['tutorials'] | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/runtime_status_test/timelimit_max_fail/3/stage/generate.sh
+--------------------+----------+--------+------------------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------
+ timelimit_min_max  | a2f1b135 | script | generic.local.sh | ['tutorials'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/runtime_status_test/timelimit_min_max/3/timelimit_min_max_build.sh
+ timelimit_min      | 8312e5a2 | script | generic.local.sh | ['tutorials'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/runtime_status_test/timelimit_min/3/timelimit_min_build.sh
+ timelimit_max      | f7839b98 | script | generic.local.sh | ['tutorials'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/runtime_status_test/timelimit_max/3/timelimit_max_build.sh
+ timelimit_min_fail | 1453f441 | script | generic.local.sh | ['tutorials'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/runtime_status_test/timelimit_min_fail/3/timelimit_min_fail_build.sh
+ timelimit_max_fail | f13e691a | script | generic.local.sh | ['tutorials'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/runtime_status_test/timelimit_max_fail/3/timelimit_max_fail_build.sh
 
 
 
@@ -57,19 +64,19 @@ timelimit_max_fail  This test fails because it exceeds maxtime of 1.0 second
 
  name               | id       | executor         | status   |   returncode
 --------------------+----------+------------------+----------+--------------
- timelimit_min_max  | 1cc51c8a | generic.local.sh | PASS     |            0
- timelimit_min      | c9e9f9e6 | generic.local.sh | PASS     |            0
- timelimit_max      | 3d174ef8 | generic.local.sh | PASS     |            0
- timelimit_min_fail | 489df5e9 | generic.local.sh | FAIL     |            0
- timelimit_max_fail | 7c41637d | generic.local.sh | FAIL     |            0
+ timelimit_min_max  | a2f1b135 | generic.local.sh | PASS     |            0
+ timelimit_min      | 8312e5a2 | generic.local.sh | PASS     |            0
+ timelimit_max      | f7839b98 | generic.local.sh | PASS     |            0
+ timelimit_min_fail | 1453f441 | generic.local.sh | FAIL     |            0
+ timelimit_max_fail | f13e691a | generic.local.sh | FAIL     |            0
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
-
+    
 Passed Tests: 3/5 Percentage: 60.000%
 Failed Tests: 2/5 Percentage: 40.000%
 
 
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_pi5y2ns_.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_81xq7lf4.log
 A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log

@@ -305,9 +305,9 @@ def config_menu(subparsers):
     )
 
     subparsers_config = parser_config.add_subparsers(
-        description="query information from buildtest configuration file",
+        description="Query information from buildtest configuration file",
         dest="config",
-        title="COMMAND",
+        metavar="",
     )
 
     executors = subparsers_config.add_parser(
@@ -372,7 +372,7 @@ def report_menu(subparsers):
     parser_report = subparsers.add_parser("report", help="Query test report")
     subparsers = parser_report.add_subparsers(
         description="Fetch test results from report file and print them in table format",
-        title="COMMAND",
+        metavar="",
         dest="report",
     )
     subparsers.add_parser("clear", help="delete report file")
@@ -423,7 +423,9 @@ def inspect_menu(subparsers):
         "-r", "--report-file", help="Specify a report file to load when inspecting test"
     )
     subparser = parser_inspect.add_subparsers(
-        help="subcommands", description="Inspect Test result", dest="inspect"
+        description="Inspect Test result based on Test ID or Test Name",
+        dest="inspect",
+        metavar="",
     )
     name = subparser.add_parser("name", help="Specify name of test")
     name.add_argument("name", nargs="*", help="Name of test")
@@ -465,7 +467,7 @@ def cdash_menu(subparsers):
     parser_cdash = subparsers.add_parser("cdash", help="Upload test to CDASH server")
 
     subparser = parser_cdash.add_subparsers(
-        help="subcommands", description="CDASH operations", dest="cdash"
+        description="buildtest CDASH integeration", dest="cdash", metavar=""
     )
     view = subparser.add_parser("view", help="Open CDASH project in webbrowser")
     view.add_argument("--url", help="Specify a url to CDASH project")

@@ -1,38 +1,35 @@
 $ buildtest --help
 usage: buildtest [options] [COMMANDS]
 
-buildtest is a HPC testing framework for writing acceptance tests.
+buildtest is a HPC testing framework for building and running tests.
 
 optional arguments:
   -h, --help            show this help message and exit
   -V, --version         show program's version number and exit
-  -d {DEBUG,INFO,WARNING,ERROR,CRITICAL}, --debug {DEBUG,INFO,WARNING,ERROR,CRITICAL}
-                        Enable debugging messages.
   -c CONFIG_FILE, --config_file CONFIG_FILE
                         Specify alternate configuration file
 
 COMMANDS:
   
-   build                          Options for building test scripts
-   buildspec                      Options for querying buildspec cache
-   report                         Options for querying test results
-   schema                         Commands for viewing buildtest schemas
-   config                         Buildtest Configuration Menu  
-   inspect                        Inspect details for test from test report
-   docs                           Open buildtest docs in browser
-   schemadocs                     Open buildtest schema docs in browser
-   cdash                          Options to interact with CDASH server
+    build               Build and Run test
+    history             Query build history
+    buildspec           Options for querying buildspec cache
+    config              Query buildtest configuration
+    report              Query test report
+    inspect             Inspect a test based on NAME or ID
+    schema              List schema contents and examples
+    cdash               Upload test to CDASH server
+    docs                Open buildtest docs in browser
+    schemadocs          Open buildtest schema docs in browser
 
-  {docs,schemadocs,build,buildspec,config,report,inspect,schema,cdash}
+References
+_______________________________________________________________________________________
+GitHub:                  https://github.com/buildtesters/buildtest 
+Documentation:           https://buildtest.readthedocs.io/en/latest/index.html             
+Schema Documentation:    https://buildtesters.github.io/buildtest/
+Slack:                   http://hpcbuildtest.slack.com/
 
-    References
-    _______________________________________________________________________________________
-    GitHub:                  https://github.com/buildtesters/buildtest 
-    Documentation:           https://buildtest.readthedocs.io/en/latest/index.html             
-    Schema Documentation:    https://buildtesters.github.io/buildtest/
-    Slack:                   http://hpcbuildtest.slack.com/
+Please report issues at https://github.com/buildtesters/buildtest/issues
 
-    Please report issues at https://github.com/buildtesters/buildtest/issues
-
-    Copyright (c) 2021, The Regents of the University of California, through Lawrence Berkeley National Laboratory (subject to receipt of any required approvals from the U.S. Dept. of Energy), Shahzeb Siddiqui, and Vanessa Sochat. All rights reserved.
+Copyright (c) 2021, The Regents of the University of California, through Lawrence Berkeley National Laboratory (subject to receipt of any required approvals from the U.S. Dept. of Energy), Shahzeb Siddiqui, and Vanessa Sochat. All rights reserved.
     

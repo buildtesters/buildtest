@@ -168,7 +168,7 @@ Executor Declaration
 
 The ``executors`` is a JSON `object`, that defines one or more executors. The executors
 are grouped by their type followed by executor name. In this example we define two
-local executors ``bash``, ``sh`` and one slurm executor called ``regular```:
+local executors ``bash``, ``sh`` and one slurm executor called ``regular``:
 
 .. code-block:: yaml
 
@@ -524,8 +524,11 @@ file provides a CDASH configuration for buildtest project is the following::
 The cdash section can be summarized as follows:
 
  - ``url``: URL to CDASH server
+
  - ``project``: Project Name in CDASH server
+
  - ``site``: Site name that shows up in CDASH entry. This should be name of your system name
+
  - ``buildname``: Build Name that shows up in CDASH, this can be any name you want.
 
 The cdash settings can be used with ``buildtest cdash`` command. For more details

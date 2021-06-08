@@ -75,7 +75,6 @@ def main():
             keep_stage_dir=args.keep_stage_dir,
         )
         cmd.build()
-        return
 
     # buildtest build history
     elif args.subcommands == "history":

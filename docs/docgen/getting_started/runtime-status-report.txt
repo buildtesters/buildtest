@@ -1,16 +1,16 @@
 $ buildtest report --filter buildspec=tutorials/runtime_status_test.yml --format name,id,state,runtime --latest 
-Reading report file: /Users/siddiq90/.buildtest/report.json 
+Reading report file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/report.json 
 
 +--------------------+----------+---------+-----------+
 | name               | id       | state   |   runtime |
 +====================+==========+=========+===========+
-| timelimit_min_max  | 1cc51c8a | PASS    |   2.06694 |
+| timelimit_min_max  | a2f1b135 | PASS    |   2.07623 |
 +--------------------+----------+---------+-----------+
-| timelimit_min      | c9e9f9e6 | PASS    |   2.06637 |
+| timelimit_min      | 8312e5a2 | PASS    |   2.08588 |
 +--------------------+----------+---------+-----------+
-| timelimit_max      | 3d174ef8 | PASS    |   2.15458 |
+| timelimit_max      | f7839b98 | PASS    |   2.08676 |
 +--------------------+----------+---------+-----------+
-| timelimit_min_fail | 489df5e9 | FAIL    |   2.06377 |
+| timelimit_min_fail | 1453f441 | FAIL    |   2.0901  |
 +--------------------+----------+---------+-----------+
-| timelimit_max_fail | 7c41637d | FAIL    |   2.07245 |
+| timelimit_max_fail | f13e691a | FAIL    |   2.09021 |
 +--------------------+----------+---------+-----------+

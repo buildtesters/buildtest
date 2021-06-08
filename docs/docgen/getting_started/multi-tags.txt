@@ -4,29 +4,51 @@ $ buildtest build --tags pass --tags python
 User:  siddiq90
 Hostname:  DOE-7086392.local
 Platform:  Darwin
-Current Time:  2021/04/28 15:40:26
+Current Time:  2021/06/08 18:06:35
 buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
 buildtest version:  0.9.5
 python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
 python version:  3.7.3
-Test Directory:  /Users/siddiq90/.buildtest/var/tests
+Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
 Configuration File:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml
+Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build --tags pass --tags python
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
 
-Discovered Buildspecs:
-/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml
-/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml
-/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-shell.yml
++---------------------------------------------------------------------------------+
+| Discovered Buildspecs                                                           |
++=================================================================================+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml    |
++---------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-shell.yml    |
++---------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml |
++---------------------------------------------------------------------------------+
+Discovered Buildspecs:  3
+Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  3
 
 BREAKDOWN OF BUILDSPECS BY TAGS
+----------------------------------
+Detected Tag Names: ['pass', 'python']
++---------------------------------------------------------------------------------+
+| pass                                                                            |
++=================================================================================+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml |
++---------------------------------------------------------------------------------+
 
-pass                                                                             python
--------------------------------------------------------------------------------  ----------------------------------------------------------------------------
-/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml  /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-shell.yml
-                                                                                 /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml
+
++------------------------------------------------------------------------------+
+| python                                                                       |
++==============================================================================+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-shell.yml |
++------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml |
++------------------------------------------------------------------------------+
+
+
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
@@ -34,33 +56,33 @@ pass                                                                            
 
  schemafile              | validstate   | buildspec
 -------------------------+--------------+---------------------------------------------------------------------------------
- script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml
  script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-shell.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml
 
 
 
 name                      description
 ------------------------  ---------------------------------------------------
+python_hello              Hello World python
+circle_area               Calculate circle of area given a radius
 exit1_fail                exit 1 by default is FAIL
 exit1_pass                report exit 1 as PASS
 returncode_list_mismatch  exit 2 failed since it failed to match returncode 1
 returncode_int_match      exit 128 matches returncode 128
-python_hello              Hello World python
-circle_area               Calculate circle of area given a radius
 
 +----------------------+
 | Stage: Building Test |
 +----------------------+ 
 
  name                     | id       | type   | executor             | tags                    | testpath
---------------------------+----------+--------+----------------------+-------------------------+--------------------------------------------------------------------------------------------------------------------
- exit1_fail               | a2be1c16 | script | generic.local.sh     | ['tutorials', 'fail']   | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/1/stage/generate.sh
- exit1_pass               | 2cce4769 | script | generic.local.sh     | ['tutorials', 'pass']   | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/1/stage/generate.sh
- returncode_list_mismatch | 80658744 | script | generic.local.sh     | ['tutorials', 'fail']   | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/1/stage/generate.sh
- returncode_int_match     | 0273a57c | script | generic.local.sh     | ['tutorials', 'pass']   | /Users/siddiq90/.buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/1/stage/generate.sh
- python_hello             | b659593f | script | generic.local.bash   | python                  | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/python-hello/python_hello/0/stage/generate.sh
- circle_area              | 7f2e34f6 | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/.buildtest/var/tests/generic.local.python/python-shell/circle_area/1/stage/generate.sh
+--------------------------+----------+--------+----------------------+-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+ python_hello             | ec83383d | script | generic.local.bash   | python                  | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/python-hello/python_hello/0/python_hello_build.sh
+ circle_area              | 29fc597d | script | generic.local.python | ['tutorials', 'python'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.python/python-shell/circle_area/1/circle_area_build.sh
+ exit1_fail               | d4c19e0e | script | generic.local.sh     | ['tutorials', 'fail']   | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/1/exit1_fail_build.sh
+ exit1_pass               | c65ae4ea | script | generic.local.sh     | ['tutorials', 'pass']   | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/1/exit1_pass_build.sh
+ returncode_list_mismatch | 7b831db4 | script | generic.local.sh     | ['tutorials', 'fail']   | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/1/returncode_list_mismatch_build.sh
+ returncode_int_match     | d8c7c16c | script | generic.local.sh     | ['tutorials', 'pass']   | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/1/returncode_int_match_build.sh
 
 
 
@@ -70,20 +92,20 @@ circle_area               Calculate circle of area given a radius
 
  name                     | id       | executor             | status   |   returncode
 --------------------------+----------+----------------------+----------+--------------
- exit1_fail               | a2be1c16 | generic.local.sh     | FAIL     |            1
- exit1_pass               | 2cce4769 | generic.local.sh     | PASS     |            1
- returncode_list_mismatch | 80658744 | generic.local.sh     | FAIL     |            2
- returncode_int_match     | 0273a57c | generic.local.sh     | PASS     |          128
- python_hello             | b659593f | generic.local.bash   | PASS     |            0
- circle_area              | 7f2e34f6 | generic.local.python | PASS     |            0
+ python_hello             | ec83383d | generic.local.bash   | PASS     |            0
+ circle_area              | 29fc597d | generic.local.python | PASS     |            0
+ exit1_fail               | d4c19e0e | generic.local.sh     | FAIL     |            1
+ exit1_pass               | c65ae4ea | generic.local.sh     | PASS     |            1
+ returncode_list_mismatch | 7b831db4 | generic.local.sh     | FAIL     |            2
+ returncode_int_match     | d8c7c16c | generic.local.sh     | PASS     |          128
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
-
+    
 Passed Tests: 4/6 Percentage: 66.667%
 Failed Tests: 2/6 Percentage: 33.333%
 
 
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_bkio8oqj.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_qcfh_38h.log
 A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log

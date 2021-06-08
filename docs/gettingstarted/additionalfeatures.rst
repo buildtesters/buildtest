@@ -1,6 +1,31 @@
 Additional Features
 =====================
 
+Accessing build history
+-------------------------
+
+buildtest keeps track of all builds (``buildtest build``) that can be retrieved using ``buildtest history`` command
+which can be useful when you want to analyze or troubleshoot past builds. The `buildtest history` command comes with two
+subcommands ``buildtest history list`` and ``buildtest history query``.
+
+If you want to list all builds you should run **buildtest history list** which will report a table style
+format of all builds with corresponding build ID to differentiate each build. Shown below is an example output. The build
+IDs start at **0** and increment as you run **buildtest build** command.
+
+.. program-output:: cat docgen/buildtest_history_list.txt
+
+The ``buildtest history query`` command is particularly useful when you want to inspect a particular build. This command
+expects a *Build Identifier* which can be found by inspecting output column `id` in `buildtest history list`.
+
+Shown below is an output of build ID 0 which reports relevant detail for the build such as input command, username, hostname,
+platform, date, etc...
+
+
+.. program-output:: cat docgen/buildtest_history_query.txt
+
+Please use the `--help` option for command usage.
+
+
 .. _buildtest_schemas:
 
 buildtest schemas
@@ -32,30 +57,6 @@ option with a schema. For example to view all example schemas for
 
 To learn more about schema files and and examples click :ref:`here <schema_examples>`.
 
-
-Debug Mode
-------------
-
-buildtest can stream logs to ``stdout`` stream for debugging. You can use ``buildtest -d <DEBUGLEVEL>``
-or long option ``--debug`` with any buildtest commands. The DEBUGLEVEL are the following:
-
-- DEBUG
-- INFO
-- WARNING
-- ERROR
-- CRITICAL
-
-buildtest is using `logging.setLevel <https://docs.python.org/3/library/logging.html#logging.Logger.setLevel>`_
-to control log level. The content is logged in file **buildtest.log** in your current
-directory with default log level of ``DEBUG``. If you want to get all logs use
-``-d DEBUG`` with your buildtest command::
-
-    buildtest -d DEBUG <command>
-
-The debug mode can be useful when troubleshooting builds, in this example we
-set debug level to ``DEBUG`` for an invalid buildspec.
-
-.. program-output:: cat docgen/getting_started/debug-mode.txt
 
 Accessing buildtest documentation
 ----------------------------------
