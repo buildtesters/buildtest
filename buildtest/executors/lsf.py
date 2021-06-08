@@ -90,7 +90,7 @@ class LSFExecutor(BaseExecutor):
         command = builder.run()
         out = command.get_output()
         out = " ".join(out)
-        pattern = "(\d+)"
+        pattern = r"(\d+)"
         # output in the form:  'Job <58654> is submitted to queue <batch>' and applying regular expression to get job ID
         m = re.search(pattern, out)
         self.logger.debug(f"Applying regular expression '{pattern}' to output: '{out}'")

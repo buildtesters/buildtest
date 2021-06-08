@@ -125,7 +125,10 @@ def history_menu(subparsers):
     )
     query.add_argument("id", type=int, help="Select a build ID")
     query.add_argument(
-        "--log", action="store_true", help="Display logfile for corresponding build id"
+        "-l",
+        "--log",
+        action="store_true",
+        help="Display logfile for corresponding build id",
     )
 
 
