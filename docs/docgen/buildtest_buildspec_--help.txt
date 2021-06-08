@@ -1,11 +1,11 @@
 $ buildtest buildspec --help
-usage: buildtest [options] [COMMANDS] buildspec [-h] {find} ...
+usage: buildtest [options] [COMMANDS] buildspec [-h]  ...
 
 optional arguments:
   -h, --help  show this help message and exit
 
 subcommands:
-  Commands options for Buildspecs
+  Find buildspec from cache file
 
-  {find}
+  
     find      find all buildspecs

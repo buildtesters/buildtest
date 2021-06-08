@@ -9,7 +9,7 @@ here = os.path.dirname(os.path.abspath(__file__))
 
 class TestBuildtestCompilers:
     configuration = SiteConfiguration()
-    configuration.get_current_system()
+    configuration.detect_system()
     configuration.validate()
     bc = BuildtestCompilers(configuration)
 
@@ -28,7 +28,7 @@ class TestBuildtestCompilers:
         print(f"Using settings file: {settings_file} for loading compilers")
 
         configuration = SiteConfiguration(settings_file)
-        configuration.get_current_system()
+        configuration.detect_system()
         configuration.validate()
 
         bc = BuildtestCompilers(configuration=configuration)
@@ -44,7 +44,7 @@ class TestBuildtestCompilers:
         # we don't run validate method because it may fail upon moduletool. On GitHub
         # CI it will fail because it doesn't have lmod
         configuration = SiteConfiguration(settings_file)
-        configuration.get_current_system()
+        configuration.detect_system()
 
         bc = BuildtestCompilers(configuration=configuration)
 

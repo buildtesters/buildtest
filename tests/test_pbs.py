@@ -19,7 +19,7 @@ def test_pbs():
     system.check()
 
     bc = SiteConfiguration(settings_file)
-    bc.get_current_system()
+    bc.detect_system()
     bc.validate()
 
     buildspec_files = walk_tree(os.path.join(here, "examples", "pbs"))

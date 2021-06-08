@@ -22,7 +22,7 @@ from buildtest.utils.file import walk_tree
 pytest_root = os.path.dirname(os.path.dirname(__file__))
 
 configuration = SiteConfiguration()
-configuration.get_current_system()
+configuration.detect_system()
 configuration.validate()
 
 

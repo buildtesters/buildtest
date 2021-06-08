@@ -20,7 +20,7 @@ here = os.path.dirname(os.path.abspath(__file__))
 
 def test_BuildspecParser(tmp_path):
     config = SiteConfiguration(DEFAULT_SETTINGS_FILE)
-    config.get_current_system()
+    config.detect_system()
     config.validate()
     executors = BuildExecutor(config)
 

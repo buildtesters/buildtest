@@ -4,7 +4,7 @@ from buildtest.cli.cdash import cdash_cmd
 from buildtest.config import SiteConfiguration
 
 configuration = SiteConfiguration()
-configuration.get_current_system()
+configuration.detect_system()
 configuration.validate()
 
 
@@ -42,7 +42,7 @@ def test_cdash_upload_exceptions():
     bc = SiteConfiguration(
         os.path.abspath(os.path.join(here, "cdash_examples", "invalid_url.yml"))
     )
-    bc.get_current_system()
+    bc.detect_system()
 
     class args:
         cdash = "upload"
@@ -57,7 +57,7 @@ def test_cdash_upload_exceptions():
     bc = SiteConfiguration(
         os.path.abspath(os.path.join(here, "cdash_examples", "invalid_project.yml"))
     )
-    bc.get_current_system()
+    bc.detect_system()
 
     class args:
         cdash = "upload"

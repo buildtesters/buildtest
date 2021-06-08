@@ -4,20 +4,27 @@ $ buildtest build -b tutorials/compilers/gnu_hello_fortran.yml
 User:  siddiq90
 Hostname:  DOE-7086392.local
 Platform:  Darwin
-Current Time:  2021/04/28 15:41:22
+Current Time:  2021/06/08 18:07:41
 buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
 buildtest version:  0.9.5
 python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
 python version:  3.7.3
-Test Directory:  /Users/siddiq90/.buildtest/var/tests
+Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
 Configuration File:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml
+Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b tutorials/compilers/gnu_hello_fortran.yml
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
 
-Discovered Buildspecs:
-/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/gnu_hello_fortran.yml
++---------------------------------------------------------------------------------------------+
+| Discovered Buildspecs                                                                       |
++=============================================================================================+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/gnu_hello_fortran.yml |
++---------------------------------------------------------------------------------------------+
+Discovered Buildspecs:  1
+Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
@@ -40,8 +47,8 @@ hello_f  Hello World Fortran Compilation
 
 
  name    | id       | type     | executor           | tags                     | compiler    | testpath
----------+----------+----------+--------------------+--------------------------+-------------+-------------------------------------------------------------------------------------------------------
- hello_f | c48069d8 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/2/stage/generate.sh
+---------+----------+----------+--------------------+--------------------------+-------------+-----------------------------------------------------------------------------------------------------------------------------
+ hello_f | bc6e5a31 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/2/hello_f_build.sh
 
 +---------------------+
 | Stage: Running Test |
@@ -49,15 +56,15 @@ hello_f  Hello World Fortran Compilation
 
  name    | id       | executor           | status   |   returncode
 ---------+----------+--------------------+----------+--------------
- hello_f | c48069d8 | generic.local.bash | PASS     |            0
+ hello_f | bc6e5a31 | generic.local.bash | FAIL     |          127
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
+    
+Passed Tests: 0/1 Percentage: 0.000%
+Failed Tests: 1/1 Percentage: 100.000%
 
-Passed Tests: 1/1 Percentage: 100.000%
-Failed Tests: 0/1 Percentage: 0.000%
 
-
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_y868ygxi.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_xywwn1df.log
 A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log

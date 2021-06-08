@@ -92,7 +92,7 @@ class BuildtestCompilers:
         # and set self.configuration to loaded configuration
         if settings_file:
             bc = SiteConfiguration(settings_file)
-            bc.get_current_system()
+            bc.detect_system()
             bc.validate()
             self.configuration = bc
 

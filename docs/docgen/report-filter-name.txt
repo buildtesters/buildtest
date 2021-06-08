@@ -1,24 +1,24 @@
 $ buildtest report --filter name=exit1_pass --format=name,id,returncode,state
-Reading report file: /Users/siddiq90/.buildtest/report.json 
+Reading report file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/report.json 
 
 +------------+----------+--------------+---------+
 | name       | id       |   returncode | state   |
 +============+==========+==============+=========+
-| exit1_pass | 64647c49 |            1 | PASS    |
+| exit1_pass | 6c963b6b |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | 2cce4769 |            1 | PASS    |
+| exit1_pass | c65ae4ea |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | c2247116 |            1 | PASS    |
+| exit1_pass | 3eb152b1 |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | 28dd18ea |            1 | PASS    |
+| exit1_pass | 87042181 |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | 3c8649af |            1 | PASS    |
+| exit1_pass | 5fcd43e3 |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | e7dfe82c |            1 | PASS    |
+| exit1_pass | 5dc645cb |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | 5334331e |            1 | PASS    |
+| exit1_pass | f21dcd55 |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | d4c4d364 |            1 | PASS    |
+| exit1_pass | 0dfdfb67 |            1 | PASS    |
 +------------+----------+--------------+---------+
-| exit1_pass | 3afc7970 |            1 | PASS    |
+| exit1_pass | bec4050d |            1 | PASS    |
 +------------+----------+--------------+---------+

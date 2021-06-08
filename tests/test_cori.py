@@ -24,7 +24,7 @@ def test_cori():
     )
 
     bc = SiteConfiguration(settings_file)
-    bc.get_current_system()
+    bc.detect_system()
     bc.validate()
 
     system = BuildTestSystem()
@@ -42,7 +42,7 @@ def test_compiler_find_cori():
 
     settings_file = os.path.join(here, "settings", "cori.yml")
     bc = SiteConfiguration(settings_file)
-    bc.get_current_system()
+    bc.detect_system()
     bc.validate()
 
     # testing buildtest config compilers find

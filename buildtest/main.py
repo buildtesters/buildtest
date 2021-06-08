@@ -7,9 +7,11 @@ from buildtest.defaults import (
     BUILDTEST_USER_HOME,
     BUILDTEST_EXECUTOR_DIR,
     BUILDTEST_BUILDSPEC_DIR,
+    BUILD_HISTORY_DIR,
 )
 from buildtest.cli import get_parser
 from buildtest.cli.build import BuildTest
+from buildtest.cli.history import build_history
 from buildtest.system import BuildTestSystem
 from buildtest.log import init_logfile
 from buildtest.utils.file import create_dir, is_file, resolve_path, remove_file
@@ -40,6 +42,7 @@ def main():
     create_dir(BUILDTEST_USER_HOME)
     create_dir(BUILDTEST_EXECUTOR_DIR)
     create_dir(BUILDTEST_BUILDSPEC_DIR)
+    create_dir(BUILD_HISTORY_DIR)
 
     # Create a build test system, and check requirements
     system = BuildTestSystem()
@@ -47,11 +50,12 @@ def main():
 
     config_file = resolve_path(args.config_file) or None
     configuration = SiteConfiguration(config_file)
-    configuration.get_current_system()
+    configuration.detect_system()
     configuration.validate()
 
     logger.info(f"Processing buildtest configuration file: {configuration.file}")
 
+    # buildtest build command
     if args.subcommands == "build":
 
         cmd = BuildTest(
@@ -71,10 +75,13 @@ def main():
             keep_stage_dir=args.keep_stage_dir,
         )
         cmd.build()
-        return
+
+    # buildtest build history
+    elif args.subcommands == "history":
+        build_history(args)
 
     # implementation for 'buildtest buildspec find'
-    if args.subcommands == "buildspec":
+    elif args.subcommands == "buildspec":
         from buildtest.cli.buildspec import buildspec_find
 
         buildspec_find(args=args, configuration=configuration)

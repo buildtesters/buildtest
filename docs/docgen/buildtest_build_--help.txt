@@ -1,7 +1,8 @@
 $ buildtest build --help
 usage: buildtest [options] [COMMANDS] build [-h] [-b BUILDSPEC] [-x EXCLUDE] [-t TAGS] [-ft FILTER_TAGS] [-e EXECUTOR]
                                             [-s {parse,build}] [--testdir TESTDIR] [--rebuild REBUILD]
-                                            [-r REPORT_FILE]
+                                            [-r REPORT_FILE] [--max-pend-time MAX_PEND_TIME]
+                                            [--poll-interval POLL_INTERVAL] [-k]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -22,3 +23,9 @@ optional arguments:
   --rebuild REBUILD     Rebuild test X number of times. Must be a positive number between [1-50]
   -r REPORT_FILE, --report_file REPORT_FILE
                         Specify a report file where tests will be written.
+  --max-pend-time MAX_PEND_TIME
+                        Specify Maximum Pending Time (sec) for job before cancelling job. This only applies for batch
+                        job submission.
+  --poll-interval POLL_INTERVAL
+                        Specify Poll Interval (sec) for polling batch jobs
+  -k, --keep-stage-dir  Keep stage directory after job completion.

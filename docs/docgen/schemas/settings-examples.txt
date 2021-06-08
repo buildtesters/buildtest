@@ -28,9 +28,6 @@ system:
           before_script: |
             time
             echo "commands run before job"
-          after_script: |
-            time
-            echo "commands run after job"
 
         sh:
           description: submit jobs on local machine using sh shell
@@ -189,8 +186,6 @@ system:
           before_script: |
             time
             echo "commands run before job"
-          after_script: |
-            time
 
     compilers:
       compiler:
@@ -264,9 +259,6 @@ system:
           before_script: |
             time
             echo "commands run before job"
-          after_script: |
-            time
-            echo "commands run after job"
         test:
           description: "LSF Executor name 'test' that submits jobs to 'test' queue"
           launcher: bsub

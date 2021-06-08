@@ -6,7 +6,7 @@ from buildtest.exceptions import BuildTestError
 from buildtest.cli.buildspec import BuildspecCache
 
 configuration = SiteConfiguration()
-configuration.get_current_system()
+configuration.detect_system()
 configuration.validate()
 
 

@@ -4,20 +4,27 @@ $ buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml
 User:  siddiq90
 Hostname:  DOE-7086392.local
 Platform:  Darwin
-Current Time:  2021/04/28 15:40:05
+Current Time:  2021/06/08 18:06:11
 buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
 buildtest version:  0.9.5
 python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
 python version:  3.7.3
-Test Directory:  /Users/siddiq90/.buildtest/var/tests
+Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
 Configuration File:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml
+Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/vars.yml
 
 +-------------------------------+
 | Stage: Discovering Buildspecs |
 +-------------------------------+ 
 
-Discovered Buildspecs:
-/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/vars.yml
++----------------------------------------------------------------------+
+| Discovered Buildspecs                                                |
++======================================================================+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/vars.yml |
++----------------------------------------------------------------------+
+Discovered Buildspecs:  1
+Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
 
 +---------------------------+
 | Stage: Parsing Buildspecs |
@@ -38,8 +45,8 @@ variables_bash  Declare shell variables in bash
 +----------------------+ 
 
  name           | id       | type   | executor           | tags          | testpath
-----------------+----------+--------+--------------------+---------------+-------------------------------------------------------------------------------------------------
- variables_bash | caeeee2a | script | generic.local.bash | ['tutorials'] | /Users/siddiq90/.buildtest/var/tests/generic.local.bash/vars/variables_bash/0/stage/generate.sh
+----------------+----------+--------+--------------------+---------------+------------------------------------------------------------------------------------------------------------------------------
+ variables_bash | 9dd0145d | script | generic.local.bash | ['tutorials'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/vars/variables_bash/0/variables_bash_build.sh
 
 
 
@@ -49,15 +56,15 @@ variables_bash  Declare shell variables in bash
 
  name           | id       | executor           | status   |   returncode
 ----------------+----------+--------------------+----------+--------------
- variables_bash | caeeee2a | generic.local.bash | PASS     |            0
+ variables_bash | 9dd0145d | generic.local.bash | PASS     |            0
 
 +----------------------+
 | Stage: Test Summary  |
 +----------------------+ 
-
+    
 Passed Tests: 1/1 Percentage: 100.000%
 Failed Tests: 0/1 Percentage: 0.000%
 
 
-Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_r2f85pew.log
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_khwo_zrb.log
 A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log

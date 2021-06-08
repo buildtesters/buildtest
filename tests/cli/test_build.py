@@ -15,7 +15,7 @@ root = os.path.dirname(test_root)
 valid_buildspecs = os.path.join(test_root, "buildsystem", "valid_buildspecs")
 
 configuration = SiteConfiguration()
-configuration.get_current_system()
+configuration.detect_system()
 configuration.validate()
 
 
@@ -272,10 +272,10 @@ def test_discover():
 
     detected_buildspecs = discover_buildspecs(buildspecs=buildspec)
 
-    assert buildspec == detected_buildspecs
+    assert buildspec == detected_buildspecs["detected"]
 
     detected_buildspecs = discover_buildspecs(buildspecs=[valid_buildspecs])
-    assert detected_buildspecs
+    assert detected_buildspecs["detected"]
 
     buildspec = [os.path.join(root, "README.rst")]
     # testing invalid extension this will raise an error

@@ -88,8 +88,8 @@ There are 100 tests in buildspec cache
 
 
 
-Updating buildspec cache file: /Users/siddiq90/.buildtest/buildspecs/cache.json
-Writing invalid buildspecs to file: /Users/siddiq90/.buildtest/buildspecs/error.txt 
+Updating buildspec cache file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/buildspecs/cache.json
+Writing invalid buildspecs to file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/buildspecs/error.txt 
 
 
 

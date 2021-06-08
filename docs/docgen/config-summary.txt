@@ -18,7 +18,7 @@ Buildtest Settings
 ________________________________________________________________________________
 Buildtest Settings: /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml
 Executors:  ['local.bash', 'local.sh', 'local.csh', 'local.zsh', 'local.python']
-Buildspec Cache File: /Users/siddiq90/.buildtest/buildspecs/cache.json
+Buildspec Cache File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/buildspecs/cache.json
 
 
 Buildtest Schemas
