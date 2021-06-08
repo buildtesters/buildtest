@@ -60,28 +60,24 @@ def positive_number(value):
 def get_parser():
 
     epilog_str = f"""
-    References
-    _______________________________________________________________________________________
-    GitHub:                  https://github.com/buildtesters/buildtest 
-    Documentation:           https://buildtest.readthedocs.io/en/latest/index.html             
-    Schema Documentation:    https://buildtesters.github.io/buildtest/
-    Slack:                   http://hpcbuildtest.slack.com/
+References
+_______________________________________________________________________________________
+GitHub:                  https://github.com/buildtesters/buildtest 
+Documentation:           https://buildtest.readthedocs.io/en/latest/index.html             
+Schema Documentation:    https://buildtesters.github.io/buildtest/
+Slack:                   http://hpcbuildtest.slack.com/
 
-    Please report issues at https://github.com/buildtesters/buildtest/issues
+Please report issues at https://github.com/buildtesters/buildtest/issues
 
-    {BUILDTEST_COPYRIGHT}
+{BUILDTEST_COPYRIGHT}
     """
     if os.getenv("BUILDTEST_COLOR") == "True":
         epilog_str = colored(epilog_str, "blue", attrs=["bold"])
 
-    description_str = (
-        "buildtest is a HPC testing framework for writing acceptance tests."
-    )
-
     parser = argparse.ArgumentParser(
         prog="buildtest",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description=description_str,
+        description="buildtest is a HPC testing framework for building and running tests.",
         usage="%(prog)s [options] [COMMANDS]",
         epilog=epilog_str,
     )
@@ -96,28 +92,8 @@ def get_parser():
     parser.add_argument(
         "-c", "--config_file", help="Specify alternate configuration file"
     )
-    subparser_dict = {
-        "build": "Options for building test scripts",
-        "buildspec": "Options for querying buildspec cache",
-        "report": "Options for querying test results",
-        "schema": "Commands for viewing buildtest schemas",
-        "config": "Buildtest Configuration Menu",
-        "inspect": "Inspect details for test from test report",
-        "docs": "Open buildtest docs in browser",
-        "schemadocs": "Open buildtest schema docs in browser",
-        "cdash": "Options to interact with CDASH server",
-    }
 
-    command_description = ""
-    for k, v in subparser_dict.items():
-        command_description += "\n {:<30} {:<30}".format(k, v)
-
-    subparsers = parser.add_subparsers(
-        title="COMMANDS", description=command_description, dest="subcommands"
-    )
-
-    subparsers.add_parser("docs")
-    subparsers.add_parser("schemadocs")
+    subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 
     build_menu(subparsers)
     buildspec_menu(subparsers)
@@ -127,13 +103,21 @@ def get_parser():
     schema_menu(subparsers)
     cdash_menu(subparsers)
 
+    subparsers.add_parser("docs", help="Open buildtest docs in browser")
+    subparsers.add_parser("schemadocs", help="Open buildtest schema docs in browser")
+
     return parser
 
 
 def build_menu(subparsers):
     """This method implements command line menu for ``buildtest build`` command."""
 
-    parser_build = subparsers.add_parser("build")
+    parser_build = subparsers.add_parser("build", help="Build and Run test")
+
+    build_subparser = parser_build.add_subparsers(
+        help="subcommands", description="build history", dest="history", title="build"
+    )
+    build_subparser.add_parser("history", help="Report a history of all builds")
 
     parser_build.add_argument(
         "-b",
@@ -214,10 +198,12 @@ def build_menu(subparsers):
 def buildspec_menu(subparsers):
     """This method implements ``buildtest buildspec`` command"""
 
-    parser_buildspec = subparsers.add_parser("buildspec")
+    parser_buildspec = subparsers.add_parser(
+        "buildspec", help="Options for querying buildspec cache"
+    )
 
     subparsers_buildspec = parser_buildspec.add_subparsers(
-        description="Commands options for Buildspecs"
+        description="Buildspec Commands ", title="TITLE"
     )
     buildspec_find = subparsers_buildspec.add_parser("find", help="find all buildspecs")
     buildspec_find.add_argument(
@@ -295,7 +281,9 @@ def buildspec_menu(subparsers):
 def config_menu(subparsers):
     """This method adds argparse argument for ``buildtest config``"""
 
-    parser_config = subparsers.add_parser("config")
+    parser_config = subparsers.add_parser(
+        "config", help="Query buildtest configuration"
+    )
 
     subparsers_config = parser_config.add_subparsers(
         description="query information from buildtest configuration file",
@@ -362,28 +350,31 @@ def config_menu(subparsers):
 def report_menu(subparsers):
     """This method implements the ``buildtest report`` command options"""
 
-    parser_report = subparsers.add_parser("report")
+    parser_report = subparsers.add_parser("report", help="Query test report")
     subparsers = parser_report.add_subparsers(
-        description="query information from buildtest configuration file", dest="report"
+        description="Fetch test results from report file and print them in table format",
+        title="COMMAND",
+        dest="report",
     )
     subparsers.add_parser("clear", help="delete report file")
     parser_report.add_argument(
         "--helpformat", action="store_true", help="List of available format fields"
     )
     parser_report.add_argument(
+        "--helpfilter",
+        action="store_true",
+        help="List available filter fields to be used with --filter option",
+    )
+    parser_report.add_argument(
         "--format",
-        help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (--format <field1>,<field2>,...)",
+        help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
     )
     parser_report.add_argument(
         "--filter",
         type=handle_kv_string,
-        help="Filter report by filter fields. The filter fields must be set in format: --filter key1=val1,key2=val2,...",
+        help="Filter report by filter fields. The filter fields must be a key=value pair and multiple fields can be comma separated in the following format: --filter key1=val1,key2=val2 . For list of filter fields run: --helpfilter.",
     )
-    parser_report.add_argument(
-        "--helpfilter",
-        action="store_true",
-        help="Report a list of filter fields to be used with --filter option",
-    )
+
     parser_report.add_argument(
         "--latest",
         help="Retrieve latest record of particular test",
@@ -406,7 +397,9 @@ def report_menu(subparsers):
 def inspect_menu(subparsers):
     """This method builds argument for `buildtest inspect` command"""
 
-    parser_inspect = subparsers.add_parser("inspect")
+    parser_inspect = subparsers.add_parser(
+        "inspect", help="Inspect a test based on NAME or ID "
+    )
     parser_inspect.add_argument(
         "-r", "--report-file", help="Specify a report file to load when inspecting test"
     )
@@ -425,7 +418,9 @@ def inspect_menu(subparsers):
 def schema_menu(subparsers):
     """This method builds menu for ``buildtest schema``"""
 
-    parser_schema = subparsers.add_parser("schema")
+    parser_schema = subparsers.add_parser(
+        "schema", help="List schema contents and examples"
+    )
 
     parser_schema.add_argument(
         "-n",
@@ -448,7 +443,7 @@ def schema_menu(subparsers):
 def cdash_menu(subparsers):
     """This method builds arguments for `buildtest cdash` command."""
 
-    parser_cdash = subparsers.add_parser("cdash")
+    parser_cdash = subparsers.add_parser("cdash", help="Upload test to CDASH server")
 
     subparser = parser_cdash.add_subparsers(
         help="subcommands", description="CDASH operations", dest="cdash"

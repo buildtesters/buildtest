@@ -42,19 +42,19 @@ class BuildExecutor:
 
         self.executors = {}
         logger.debug("Getting Executors from buildtest settings")
-
+        active_system = site_config.name()
         if site_config.localexecutors:
             for name in site_config.localexecutors:
-                self.executors[f"{site_config.name}.local.{name}"] = LocalExecutor(
-                    f"{site_config.name}.local.{name}",
+                self.executors[f"{active_system}.local.{name}"] = LocalExecutor(
+                    f"{active_system}.local.{name}",
                     site_config.target_config["executors"]["local"][name],
                     site_config,
                 )
 
         if site_config.slurmexecutors:
             for name in site_config.slurmexecutors:
-                self.executors[f"{site_config.name}.slurm.{name}"] = SlurmExecutor(
-                    f"{site_config.name}.slurm.{name}",
+                self.executors[f"{active_system}.slurm.{name}"] = SlurmExecutor(
+                    f"{active_system}.slurm.{name}",
                     site_config.target_config["executors"]["slurm"][name],
                     site_config,
                     max_pend_time,
@@ -62,8 +62,8 @@ class BuildExecutor:
 
         if site_config.lsfexecutors:
             for name in site_config.lsfexecutors:
-                self.executors[f"{site_config.name}.lsf.{name}"] = LSFExecutor(
-                    f"{site_config.name}.lsf.{name}",
+                self.executors[f"{active_system}.lsf.{name}"] = LSFExecutor(
+                    f"{active_system}.lsf.{name}",
                     site_config.target_config["executors"]["lsf"][name],
                     site_config,
                     max_pend_time,
@@ -71,8 +71,8 @@ class BuildExecutor:
 
         if site_config.cobaltexecutors:
             for name in site_config.cobaltexecutors:
-                self.executors[f"{site_config.name}.cobalt.{name}"] = CobaltExecutor(
-                    f"{site_config.name}.cobalt.{name}",
+                self.executors[f"{active_system}.cobalt.{name}"] = CobaltExecutor(
+                    f"{active_system}.cobalt.{name}",
                     site_config.target_config["executors"]["cobalt"][name],
                     site_config,
                     max_pend_time,
@@ -80,8 +80,8 @@ class BuildExecutor:
 
         if site_config.pbsexecutors:
             for name in site_config.pbsexecutors:
-                self.executors[f"{site_config.name}.pbs.{name}"] = PBSExecutor(
-                    f"{site_config.name}.pbs.{name}",
+                self.executors[f"{site_config.name()}.pbs.{name}"] = PBSExecutor(
+                    f"{active_system}.pbs.{name}",
                     site_config.target_config["executors"]["pbs"][name],
                     site_config,
                     max_pend_time,

@@ -29,6 +29,7 @@ USER_SETTINGS_FILE = os.path.join(BUILDTEST_USER_HOME, "config.yml")
 
 VAR_DIR = os.path.join(BUILDTEST_ROOT, "var")
 
+BUILD_HISTORY_DIR = os.path.join(VAR_DIR, ".history")
 BUILDTEST_DEFAULT_TESTDIR = os.path.join(VAR_DIR, "tests")
 BUILDTEST_EXECUTOR_DIR = os.path.join(VAR_DIR, "executor")
 

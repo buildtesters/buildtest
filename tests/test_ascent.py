@@ -19,7 +19,7 @@ def test_ascent():
     settings_file = os.path.join(here, "settings", "ascent.yml")
 
     bc = SiteConfiguration(settings_file)
-    bc.get_current_system()
+    bc.detect_system()
     bc.validate()
 
     system = BuildTestSystem()
@@ -51,7 +51,7 @@ def test_compilers_find_ascent():
     settings_file = os.path.join(here, "settings", "ascent.yml")
 
     bc = SiteConfiguration(settings_file)
-    bc.get_current_system()
+    bc.detect_system()
     bc.validate()
 
     # testing buildtest config compilers find

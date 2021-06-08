@@ -15,7 +15,7 @@ root = os.path.dirname(test_root)
 valid_buildspecs = os.path.join(test_root, "buildsystem", "valid_buildspecs")
 
 configuration = SiteConfiguration()
-configuration.get_current_system()
+configuration.detect_system()
 configuration.validate()
 
 

@@ -1,12 +1,14 @@
 """Entry point for buildtest"""
 
 import os
+import sys
 import webbrowser
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import (
     BUILDTEST_USER_HOME,
     BUILDTEST_EXECUTOR_DIR,
     BUILDTEST_BUILDSPEC_DIR,
+    BUILD_HISTORY_DIR,
 )
 from buildtest.cli import get_parser
 from buildtest.cli.build import BuildTest
@@ -40,6 +42,7 @@ def main():
     create_dir(BUILDTEST_USER_HOME)
     create_dir(BUILDTEST_EXECUTOR_DIR)
     create_dir(BUILDTEST_BUILDSPEC_DIR)
+    create_dir(BUILD_HISTORY_DIR)
 
     # Create a build test system, and check requirements
     system = BuildTestSystem()
@@ -47,7 +50,7 @@ def main():
 
     config_file = resolve_path(args.config_file) or None
     configuration = SiteConfiguration(config_file)
-    configuration.get_current_system()
+    configuration.detect_system()
     configuration.validate()
 
     logger.info(f"Processing buildtest configuration file: {configuration.file}")

@@ -2,7 +2,7 @@
 This module contains all the methods related to "buildtest build" which is used
 for building test scripts from a Buildspec
 """
-
+import json
 import logging
 import os
 import re
@@ -23,6 +23,7 @@ from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
     BUILD_REPORT,
     BUILDTEST_DEFAULT_TESTDIR,
+    BUILD_HISTORY_DIR,
 )
 from buildtest.exceptions import (
     BuildTestError,
@@ -144,7 +145,7 @@ def discover_buildspecs(
 
     print_discovered_buildspecs(buildspec_dict=buildspec_dict)
 
-    return buildspec_dict["detected"]
+    return buildspec_dict
 
 
 def print_discovered_buildspecs(buildspec_dict):
@@ -468,6 +469,7 @@ class BuildTest:
         self.executors = executors
         self.max_pend_time = max_pend_time
         self.poll_interval = poll_interval
+        self.invalid_buildspecs = None
 
         self.passed_tests = 0
         self.failed_tests = 0
@@ -515,31 +517,31 @@ class BuildTest:
         print("python version: ", self.system.system["pyver"])
         print("Test Directory: ", self.testdir)
         print("Configuration File: ", self.configuration.file)
+        print("Command:", " ".join(sys.argv))
 
     def build(self):
         """This method is responsible for discovering buildspecs based on input argument. Then we parse
         the buildspecs and retrieve builder objects for each test. Each builder object will invoke `build` which
         will build the test script, and then we run the test and update report."""
 
-        self.detected_buildspecs = discover_buildspecs(
+        self.discovered_bp = discover_buildspecs(
             buildspecs=self.buildspecs,
             exclude_buildspecs=self.exclude_buildspecs,
             tags=self.tags,
             executors=self.executors,
         )
 
-        # self.discover_buildspecs(printTable=True)
+        self.detected_buildspecs = self.discovered_bp["detected"]
 
         # Parse all buildspecs and skip any buildspecs that fail validation, return type
         # is a builder object used for building test.
-
-        self.parse_buildspecs(printTable=True)
+        self.parse_buildspecs()
 
         # if no builders found or  --stage=parse set we return from method
         if not self.builders or self.stage == "parse":
             return
 
-        self.build_phase(printTable=True)
+        self.build_phase()
 
         # if --stage=build is set  we return from method
         if self.stage == "build":
@@ -571,6 +573,8 @@ class BuildTest:
             os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log"),
         )
 
+        self._update_build_history()
+
     def resolve_testdirectory(self, cli_testdir=None):
         """This method resolves which test directory to select. For example, one
         can specify test directory via command line ``buildtest build --testdir <path>``
@@ -601,33 +605,27 @@ class BuildTest:
 
         return test_directory
 
-    def parse_buildspecs(self, printTable=False):
-        """Parse all buildspecs by invoking class ``BuildspecParser``. If buildspec
-        fails validation we add it to ``skipped_tests`` list and print all skipped
-        tests at end. If buildspec passes validation we get all builders by invoking
-        ``get_builders`` method in BuildspecParser class which gets all tests from
-        buildspec file.
+    def parse_buildspecs(self):
+        """Parse all buildspecs by passing buildspec file to ``BuildspecParser`` class. If buildspec
+        fails validation we skip the buildspec and print all skipped buildspecs.
+        If buildspec passes validation we get all builders by invoking ``Builder`` class that
+        is responsible for creating builder objects for each test.
 
-        :param printTable: a boolean to control if parse table is printed
-        :type printTable: bool, optional
         :return: A list of builder objects which are instances of ``BuilderBase`` class
         :rtype: list
         """
 
         self.builders = []
         table = {"schemafile": [], "validstate": [], "buildspec": []}
-        invalid_buildspecs = []
+        self.invalid_buildspecs = []
         # build all the tests
         for buildspec in self.detected_buildspecs:
-
             valid_state = True
             try:
                 # Read in Buildspec file here, loading each will validate the buildspec file
                 bp = BuildspecParser(buildspec, self.buildexecutor)
             except (BuildTestError, BuildspecError, ValidationError) as err:
-                invalid_buildspecs.append(
-                    f"Skipping {buildspec} since it failed to validate"
-                )
+                self.invalid_buildspecs.append(buildspec)
                 logger.error(err)
                 continue
 
@@ -647,10 +645,10 @@ class BuildTest:
             self.builders += builder.get_builders()
 
         # print any skipped buildspecs if they failed to validate during build stage
-        if len(invalid_buildspecs) > 0:
+        if len(self.invalid_buildspecs) > 0:
             print("\n\nError Messages from Stage: Parse")
             print("{:_<80}".format(""))
-            for test in invalid_buildspecs:
+            for test in self.invalid_buildspecs:
                 print(test)
 
         # if no builders found we return from this method
@@ -658,48 +656,34 @@ class BuildTest:
             print("No buildspecs to process because there are no valid buildspecs")
             return
 
-        if printTable:
-            msg = """
+        msg = """
 +---------------------------+
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
 """
-            headers = table.keys()
+        headers = table.keys()
 
-            if os.getenv("BUILDTEST_COLOR") == "True":
-                msg = colored(msg, "red", attrs=["bold"])
-                headers = list(
-                    map(lambda x: colored(x, "blue", attrs=["bold"]), headers)
-                )
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            msg = colored(msg, "red", attrs=["bold"])
+            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
 
-            print(msg)
-            print(tabulate(table, headers=headers, tablefmt="presto"))
+        print(msg)
+        print(tabulate(table, headers=headers, tablefmt="presto"))
 
-            testnames = list(map(lambda x: x.name, self.builders))
-            description = list(
-                map(lambda x: x.recipe.get("description"), self.builders)
-            )
+        testnames = list(map(lambda x: x.name, self.builders))
+        description = list(map(lambda x: x.recipe.get("description"), self.builders))
 
-            print("\n\n")
+        print("\n\n")
 
-            headers = ["name", "description"]
-            if os.getenv("BUILDTEST_COLOR") == "True":
-                headers = list(
-                    map(lambda x: colored(x, "blue", attrs=["bold"]), headers)
-                )
+        headers = ["name", "description"]
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
 
-            print(
-                tabulate(
-                    zip(testnames, description), headers=headers, tablefmt="simple"
-                )
-            )
+        print(tabulate(zip(testnames, description), headers=headers, tablefmt="simple"))
 
-    def build_phase(self, printTable=False):
+    def build_phase(self):
         """This method will build all tests by invoking class method ``build`` for
         each builder that generates testscript in the test directory.
-
-        :param printTable: Print builder table
-        :type printTable: boolean
         """
 
         invalid_builders = []
@@ -739,55 +723,7 @@ class BuildTest:
             if builder.type == "compiler":
                 table[builder.type]["compiler"].append(builder.compiler)
 
-        if printTable:
-            # print any skipped buildspecs if they failed to validate during build stage
-            if invalid_builders:
-                print("\n\nError Messages from Stage: Build")
-                print("{:_<80}".format(""))
-                for test in invalid_builders:
-                    print(test)
-
-            # if we have any tests using 'script' schema we print all tests together since table columns are different
-            if len(table["script"]["name"]) > 0:
-
-                headers = table["script"].keys()
-                if os.getenv("BUILDTEST_COLOR") == "True":
-                    headers = list(
-                        map(
-                            lambda x: colored(x, "blue", attrs=["bold"]),
-                            table["script"].keys(),
-                        )
-                    )
-
-                print(
-                    tabulate(
-                        table["script"],
-                        headers=headers,
-                        tablefmt="presto",
-                    )
-                )
-
-            print("\n")
-
-            # if we have any tests using 'compiler' schema we print all tests together since table columns are different
-            if len(table["compiler"]["name"]) > 0:
-
-                headers = table["compiler"].keys()
-                if os.getenv("BUILDTEST_COLOR") == "True":
-                    headers = list(
-                        map(
-                            lambda x: colored(x, "blue", attrs=["bold"]),
-                            table["compiler"].keys(),
-                        )
-                    )
-
-                print(
-                    tabulate(
-                        table["compiler"],
-                        headers=headers,
-                        tablefmt="presto",
-                    )
-                )
+        self._print_build_phase(invalid_builders, table)
 
         # remove builders if any invalid builders detected in build phase
         if invalid_builders:
@@ -906,6 +842,57 @@ class BuildTest:
 
         return valid_builders
 
+    def _print_build_phase(self, invalid_builders, table):
+
+        # print any skipped buildspecs if they failed to validate during build stage
+        if invalid_builders:
+            print("\n\nError Messages from Stage: Build")
+            print("{:_<80}".format(""))
+            for test in invalid_builders:
+                print(test)
+
+        # if we have any tests using 'script' schema we print all tests together since table columns are different
+        if len(table["script"]["name"]) > 0:
+
+            headers = table["script"].keys()
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                headers = list(
+                    map(
+                        lambda x: colored(x, "blue", attrs=["bold"]),
+                        table["script"].keys(),
+                    )
+                )
+
+            print(
+                tabulate(
+                    table["script"],
+                    headers=headers,
+                    tablefmt="presto",
+                )
+            )
+
+        print("\n")
+
+        # if we have any tests using 'compiler' schema we print all tests together since table columns are different
+        if len(table["compiler"]["name"]) > 0:
+
+            headers = table["compiler"].keys()
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                headers = list(
+                    map(
+                        lambda x: colored(x, "blue", attrs=["bold"]),
+                        table["compiler"].keys(),
+                    )
+                )
+
+            print(
+                tabulate(
+                    table["compiler"],
+                    headers=headers,
+                    tablefmt="presto",
+                )
+            )
+
     def _print_jobs_after_poll(self, valid_builders):
         """ Print table of all tests after polling"""
 
@@ -967,10 +954,12 @@ class BuildTest:
         print(msg)
 
         pass_rate = self.passed_tests * 100 / self.total_tests
+        pass_rate = format(pass_rate, ".3f")
         fail_rate = self.failed_tests * 100 / self.total_tests
+        fail_rate = format(fail_rate, ".3f")
 
-        msg1 = f"Passed Tests: {self.passed_tests}/{self.total_tests} Percentage: {pass_rate:.3f}%"
-        msg2 = f"Failed Tests: {self.failed_tests}/{self.total_tests} Percentage: {fail_rate:.3f}%"
+        msg1 = f"Passed Tests: {self.passed_tests}/{self.total_tests} Percentage: {pass_rate}%"
+        msg2 = f"Failed Tests: {self.failed_tests}/{self.total_tests} Percentage: {fail_rate}%"
         if os.getenv("BUILDTEST_COLOR") == "True":
             msg1 = colored(msg1, "green")
             msg2 = colored(msg2, "red")
@@ -978,6 +967,14 @@ class BuildTest:
         print(msg1)
         print(msg2)
         print("\n")
+
+        self.test_summary = {
+            "total": str(self.total_tests),
+            "pass": str(self.passed_tests),
+            "fail": str(self.failed_tests),
+            "pass_rate": pass_rate,
+            "fail_rate": fail_rate,
+        }
 
     def poll_jobs(self, poll_queue, valid_builders):
         """This method will poll jobs by processing all jobs in ``poll_queue``. If
@@ -1108,3 +1105,54 @@ class BuildTest:
             sys.exit("After polling all jobs we found no valid builders to process")
 
         return valid_builders
+
+    def _update_build_history(self):
+        """Write a build history file that is stored in **$BUILDTEST_ROOT/var/.history** directory summarizing output of build. The history
+        file is a json file named `build.json` which contains a copy of the build log for troubleshooting. buildtest will create a sub-directory
+        that is incremented such as 0, 1, 2 in **$BUILDTEST_ROOT/var/.history** which is used to differentiate builds.
+        """
+
+        num_files = len(os.listdir(BUILD_HISTORY_DIR))
+        # create a sub-directory in $BUILDTEST_ROOT/var/.history/ that is incremented for every build starting with 0, 1, 2, ...
+        build_history_dir = os.path.join(BUILD_HISTORY_DIR, str(num_files))
+        create_dir(build_history_dir)
+        build_history_file = os.path.join(build_history_dir, "build.json")
+
+        # copy the logfile into the history directory
+        shutil.copy2(
+            self.logfile.name,
+            os.path.join(build_history_dir, os.path.basename(self.logfile.name)),
+        )
+
+        history_data = {
+            "command": " ".join(sys.argv),
+            "user": self.system.system["user"],
+            "hostname": self.system.system["host"],
+            "platform": self.system.system["platform"],
+            "current-time": datetime.now().strftime("%Y/%m/%d %X"),
+            "buildtest": shutil.which("buildtest"),
+            "python": self.system.system["python"],
+            "python-ver": self.system.system["pyver"],
+            "testdir": self.testdir,
+            "configfile": self.configuration.file,
+            "system": self.configuration.name(),
+            "logpath": os.path.join(
+                build_history_dir, os.path.basename(self.logfile.name)
+            ),
+            "invalid_buildspecs": self.invalid_buildspecs,
+            "buildspecs": {
+                "detected": self.discovered_bp["detected"],
+                "included": self.discovered_bp["included"],
+                "excluded": self.discovered_bp["excluded"],
+            },
+            "test_summary": {
+                "pass": self.test_summary["pass"],
+                "fail": self.test_summary["fail"],
+                "total": self.test_summary["total"],
+                "pass_rate": self.test_summary["pass_rate"],
+                "fail_rate": self.test_summary["fail_rate"],
+            },
+        }
+
+        with open(build_history_file, "w") as fd:
+            fd.write(json.dumps(history_data, indent=2))

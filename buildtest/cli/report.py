@@ -432,7 +432,7 @@ def update_report(valid_builders, report_file=BUILD_REPORT):
 
     for builder in valid_builders:
         buildspec = builder.metadata["buildspec"]
-        name = builder.metadata["name"]
+        name = builder.name
         entry = {}
 
         report[buildspec] = report.get(buildspec) or {}

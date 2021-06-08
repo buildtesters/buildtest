@@ -24,6 +24,7 @@ class SiteConfiguration:
     def __init__(self, settings_file=None):
         self._file = settings_file
         self.config = None
+        self._name = None
         # self.target_config stores value for target system. The configuration may define multiple system,
         # but only one system can be active depending on which host buildtest is run
         self.target_config = None
@@ -62,13 +63,17 @@ class SiteConfiguration:
             or DEFAULT_SETTINGS_FILE
         )
 
-    def get_current_system(self):
+    def name(self):
+        """Return name of matched system from configuration file"""
+        return self._name
+
+    def detect_system(self):
         """This method gets current system by setting ``self.target`` by matching ``hostnames`` entry
         in each system list with actual system. We retrieve target hostname and determine which system configuration to use.
         If no system is found we raise an error.
         """
 
-        self.systems = self.config["system"].keys()
+        self.systems = list(self.config["system"].keys())
 
         host_lookup = {}
 
@@ -78,13 +83,13 @@ class SiteConfiguration:
         hostname = " ".join(cmd.get_output())
 
         # for every system record we lookup 'hostnames' entry and apply re.match against current hostname. If found we break from loop
-        for name in self.config["system"].keys():
+        for name in self.systems:
             host_lookup[name] = self.config["system"][name]["hostnames"]
 
             for host_entry in self.config["system"][name]["hostnames"]:
                 if re.match(host_entry, hostname):
                     self.target_config = self.config["system"][name]
-                    self.name = name
+                    self._name = name
                     break
 
         if not self.target_config:
@@ -96,6 +101,9 @@ class SiteConfiguration:
 
         if self.target_config["executors"].get("local"):
             self.localexecutors = list(self.target_config["executors"]["local"].keys())
+
+        print(self.systems)
+        print(self._name)
 
     def validate(self, validate_executors=True):
         """This method validates the site configuration with schema"""
