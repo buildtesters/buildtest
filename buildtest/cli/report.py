@@ -1,11 +1,10 @@
-import json
 import os
 import sys
 from termcolor import colored
 from tabulate import tabulate
 from buildtest.defaults import BUILD_REPORT
 from buildtest.exceptions import BuildTestError
-from buildtest.utils.file import create_dir, is_file, load_json, resolve_path
+from buildtest.utils.file import is_file, load_json, resolve_path
 
 
 def is_int(val):

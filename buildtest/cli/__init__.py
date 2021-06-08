@@ -96,6 +96,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 
     build_menu(subparsers)
+    history_menu(subparsers)
     buildspec_menu(subparsers)
     config_menu(subparsers)
     report_menu(subparsers)
@@ -109,15 +110,29 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     return parser
 
 
+def history_menu(subparsers):
+    """This method builds the command line menu for ``buildtest history`` command"""
+
+    history_subcmd = subparsers.add_parser("history", help="Query build history")
+
+    history_subparser = history_subcmd.add_subparsers(
+        metavar="", description="Query build history file", dest="history"
+    )
+
+    history_subparser.add_parser("list", help="List a summary of all builds")
+    query = history_subparser.add_parser(
+        "query", help="Query information for a particular build"
+    )
+    query.add_argument("id", type=int, help="Select a build ID")
+    query.add_argument(
+        "--log", action="store_true", help="Display logfile for corresponding build id"
+    )
+
+
 def build_menu(subparsers):
     """This method implements command line menu for ``buildtest build`` command."""
 
     parser_build = subparsers.add_parser("build", help="Build and Run test")
-
-    build_subparser = parser_build.add_subparsers(
-        help="subcommands", description="build history", dest="history", title="build"
-    )
-    build_subparser.add_parser("history", help="Report a history of all builds")
 
     parser_build.add_argument(
         "-b",

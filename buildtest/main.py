@@ -1,7 +1,6 @@
 """Entry point for buildtest"""
 
 import os
-import sys
 import webbrowser
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import (
@@ -57,7 +56,7 @@ def main():
     logger.info(f"Processing buildtest configuration file: {configuration.file}")
 
     # buildtest build command
-    if args.subcommands == "build" and not args.history:
+    if args.subcommands == "build":
 
         cmd = BuildTest(
             configuration=configuration,
@@ -79,8 +78,8 @@ def main():
         return
 
     # buildtest build history
-    elif args.subcommands == "build" and args.history == "history":
-        build_history()
+    elif args.subcommands == "history":
+        build_history(args)
 
     # implementation for 'buildtest buildspec find'
     elif args.subcommands == "buildspec":
