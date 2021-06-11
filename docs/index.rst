@@ -36,25 +36,16 @@ Status
 Useful Links
 -------------
 
-- Source Code: https://github.com/buildtesters/buildtest
-
-- Documentation: http://buildtest.rtfd.io/
-
-- Schema Docs: https://buildtesters.github.io/buildtest/
-
-- ReadTheDocs: https://readthedocs.org/projects/buildtest/
-
-- CodeCov: https://codecov.io/gh/buildtesters/buildtest
-
-- Slack Channel: http://hpcbuildtest.slack.com
-
-- Slack Invite: https://hpcbuildtest.herokuapp.com
-
-- CodeFactor: https://www.codefactor.io/repository/github/buildtesters/buildtest
-
-- Snyk: https://app.snyk.io/org/buildtesters/
-
-- Cori Test Repository: https://github.com/buildtesters/buildtest-cori
+1. Source Code: https://github.com/buildtesters/buildtest
+2. Documentation: http://buildtest.rtfd.io/
+3. Schema Docs: https://buildtesters.github.io/buildtest/
+4. ReadTheDocs: https://readthedocs.org/projects/buildtest/
+5. CodeCov: https://codecov.io/gh/buildtesters/buildtest
+6. Slack Channel: http://hpcbuildtest.slack.com
+7. Slack Invite: https://hpcbuildtest.herokuapp.com
+8. CodeFactor: https://www.codefactor.io/repository/github/buildtesters/buildtest
+9. Snyk: https://app.snyk.io/org/buildtesters/
+10. Cori Test Repository: https://github.com/buildtesters/buildtest-cori
 
 Description
 ------------
