@@ -69,9 +69,8 @@ configuration file.  Shown below is the command usage
 
 .. program-output:: cat docgen/buildtest_config_executors_--help.txt
 
-You can run ``buildtest config executors`` without any options and it will display the output in
-YAML format. If you prefer json format you can use ``--json`` option. Shown below is an example output of
-`executors` defined in your buildtest configuration.
+You can run ``buildtest config executors`` without any options and it will report a list of named executors that
+you would reference in buildspec using the ``executor`` property. If you prefer json or yaml format you can use ``--json`` or ``--yaml`` option.
 
 .. program-output:: cat docgen/config_executors.txt
    :shell:

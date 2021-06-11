@@ -1,14 +1,21 @@
 .. _buildspec_overview:
 
-Buildspecs Overview
+Buildspec Overview
 ========================
 
-buildspec is your test recipe that buildtest processes to generate a test script.
-A buildspec can be composed of several test sections. The buildspec file is
-validated with the :ref:`global_schema` and each test section is validated with
-a sub-schema defined by the ``type`` field.
+What is a buildspec?
+---------------------
 
-Let's start off with a simple example declaring variables:
+In buildtest, we refer to **buildspec** as a YAML file that defines your test that
+buildtest will parse using the provided schemas and build a shell script from the buildspec file. Every buildspec is
+validated with a global schema which you can find more if you click :ref:`here <global_schema>`.
+
+.. _buildspec_example:
+
+Example
+--------
+
+Let's start off with a simple example buildspec that declares variables `X` and `Y` and adds the two numbers together:
 
 .. code-block:: yaml
 
@@ -36,36 +43,6 @@ Currently all sub-schemas are at version ``1.0`` where buildtest will validate
 with a schema ``script-v1.0.schema.json``. In future, we can support multiple versions
 of subschema for backwards compatibility.
 
-
-Shown below is schema header for script-v1.0.schema.json.
-
-.. code-block:: json
-
-
-      "$id": "script-v1.0.schema.json",
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "script schema version 1.0",
-      "description": "The script schema is of ``type: script`` in sub-schema which is used for running shell scripts",
-      "type": "object",
-      "required": ["type", "run", "executor"],
-      "additionalProperties": false,
-
-
-The ``"type": "object"`` means sub-schema is a JSON `object <http://json-schema.org/understanding-json-schema/reference/object.html>`_
-where we define a list of key/value pair. The sub-schemas are of type ``object``
-and have a list of required fields that must be provided when using the schema.
-The ``"required"`` field specifies a list of fields that must be specified in
-order to validate the Buildspec. In this example, ``type``, ``run``, and ``executor``
-are required fields. The ``additionalProperties: false`` informs schema to reject
-any extra properties not defined in the schema. In our previous example, the JSON
-object is ``variables``.
-
-The **executor** key is required for all sub-schemas which instructs buildtest
-which executor to use when running the test. The executors are defined in
-:ref:`configuring_buildtest`. In this example we define variables using the
-``vars`` property which is a Key/Value pair for variable assignment.
-The **run** section is required for script schema which defines the content of
-the test script.
 
 Let's look at a more interesting example, shown below is a multi line run
 example using the `script` schema with test name called
@@ -129,6 +106,34 @@ The script schema is used for writing simple scripts (bash, sh, python) in Build
 To use this schema you must set ``type: script``. The ``run`` field is responsible
 for writing the content of test.
 
+
+Shown below is schema header for `script-v1.0.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/script-v1.0.schema.json>`_.
+
+.. code-block:: json
+
+      "$id": "script-v1.0.schema.json",
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "script schema version 1.0",
+      "description": "The script schema is of ``type: script`` in sub-schema which is used for running shell scripts",
+      "type": "object",
+      "required": ["type", "run", "executor"],
+      "additionalProperties": false,
+
+
+The ``"type": "object"`` means sub-schema is a JSON `object <http://json-schema.org/understanding-json-schema/reference/object.html>`_
+where we define a list of key/value pair. The ``"required"`` field specifies a list of
+fields that must be specified in order to validate the Buildspec. In this example, ``type``, ``run``, and ``executor``
+are required fields. The ``additionalProperties: false`` informs schema to reject
+any extra properties not defined in the schema. In our previous example, the JSON
+object is ``variables``.
+
+The **executor** key is required for all sub-schemas which instructs buildtest
+which executor to use when running the test. The executors are defined in
+:ref:`configuring_buildtest`. In our :ref:`first example <buildspec_example>` we define variables using the
+``vars`` property which is a Key/Value pair for variable assignment.
+The **run** section is required for script schema which defines the content of
+the test script.
+
 For more details on script schema see schema docs at https://buildtesters.github.io/buildtest/
 
 
@@ -148,7 +153,6 @@ To demonstrate we will build this test and pay close attention to the **status**
 column in output.
 
 .. program-output:: cat docgen/schemas/pass_returncode.txt
-
 
 The ``returncode`` field can be an integer or list of integers but it may not accept
 duplicate values. If you specify a list of exit codes, buildtest will check actual returncode
@@ -205,8 +209,8 @@ If we run this test and inspect the logs we will see an error message in schema 
 If tags is a list, it must contain one item, therefore an empty list (i.e ``tags: []``)
 is invalid.
 
-Setting environment variables
-------------------------------
+Declaring Environment Variables
+--------------------------------
 
 You can define environment variables using the ``env`` property, this is compatible
 with shells: ``bash``, ``sh``, ``zsh``, ``csh`` and ``tcsh``. It does not work with
@@ -215,16 +219,28 @@ variable with default shell (bash), csh, and tcsh
 
 .. program-output:: cat tutorials/environment.yml
 
-Environment variables are defined using ``export`` in bash, sh, zsh while csh and
-tcsh use ``setenv``. Shown below is a generated test script for csh test:
+This test can be run by issuing the following command: ``buildtest build -b tutorials/environment.yml``.
+If we inspect one of the test script we will see that buildtest generates a build script that invokes the test using the
+shell wrapper `/bin/csh` for the csh test and gets the returncode.
+
+.. code-block:: shell
+
+    #!/bin/bash
+    source /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/executor/generic.local.csh/before_script.sh
+    /bin/csh /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.csh/environment/csh_env_declaration/2/stage/csh_env_declaration.csh
+    returncode=$?
+    exit $returncode
+
+This generated test looks something like this
 
 .. code-block:: shell
 
     #!/bin/csh
-    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.csh/before_script.sh
     setenv SHELL_NAME csh
     echo "This is running $SHELL_NAME"
-    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.csh/after_script.sh
+
+Environment variables are defined using ``export`` in bash, sh, zsh while csh and
+tcsh use ``setenv``.
 
 Variable Declaration
 ----------------------
@@ -272,7 +288,6 @@ Shown below is the generated testscript:
 .. code-block:: shell
 
     #!/bin/bash
-    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.bash/before_script.sh
     X=1
     Y=2
     literalstring="this is a literal string ':' "
@@ -288,7 +303,6 @@ Shown below is the generated testscript:
 
     echo $current_user
     echo $files_homedir
-    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.bash/after_script.sh
 
 
 Customize Shell
@@ -318,23 +332,21 @@ The generated test-script for buildspec **_bin_sh_shell** will specify shebang
 .. code-block:: shell
 
     #!/bin/sh
-    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.sh/before_script.sh
     bzip2 --help
-    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.sh/after_script.sh
 
 If you don't specify a shell path such as ``shell: sh``, then buildtest will resolve
 path by looking in $PATH and build the shebang line.
 
 In test **shell_options** we specify ``shell: "sh -x"``, buildtest will tack on the
-shell options into the shebang line. The generated test for this script is the following:
+shell options into the called script as follows:
 
 .. code-block:: shell
 
-    #!/bin/sh -x
-    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.sh/before_script.sh
-    echo $SHELL
-    hostname
-    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.sh/after_script.sh
+    #!/bin/bash
+    source /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/executor/generic.local.sh/before_script.sh
+    sh -x /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/3/stage/shell_options.sh
+    returncode=$?
+    exit $returncode
 
 
 If you prefer **csh** or **tcsh** for writing scripts just set ``shell: csh`` or
@@ -370,9 +382,7 @@ is passed into the script:
 .. code-block:: shell
 
     #!/bin/bash -l
-    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.bash/before_script.sh
     shopt -q login_shell && echo 'Login Shell' || echo 'Not Login Shell'
-    source /Users/siddiq90/Documents/buildtest/var/executors/generic.bash/after_script.sh
 
 Python Shell
 ---------------
@@ -402,15 +412,13 @@ Skipping test
 -------------
 
 By default, buildtest will run all tests defined in ``buildspecs`` section, if you
-want to skip a test use the ``skip:`` field which expects a boolean value. Shown
+want to skip a test use the ``skip`` field which expects a boolean value. Shown
 below is an example test.
 
 .. program-output:: cat ../tutorials/skip_tests.yml
 
 The first test **skip** will be ignored by buildtest because ``skip: true`` is defined
 while **unskipped** will be processed as usual.
-
-.. Note:: Omitting line ``skip: No`` from test **unskipped** will result in same behavior
 
 .. Note::
 
@@ -476,9 +484,9 @@ run_only - scheduler
 
 buildtest can run test if a particular scheduler is available. In this example,
 we introduce a new field ``scheduler`` that is part of ``run_only`` property. This
-field expects ``lsf``, ``slurm``, ``cobalt`` as valid values and buildtest will check if target
-system supports the scheduler. In this example we require **lsf** scheduler because
-this test runs **bmgroup** which is a LSF binary.
+field expects one of the following values: [``lsf``, ``slurm``, ``cobalt``,``pbs``]
+and buildtest will check if target system supports detects the scheduler. In this example we require
+**lsf** scheduler because this test runs **bmgroup** which is a LSF binary.
 
 .. note:: buildtest assumes scheduler binaries are available in $PATH, if no scheduler is found buildtest sets this to an empty list
 
@@ -524,7 +532,7 @@ If we build this test, notice that there are two tests, one for each executor.
 .. program-output:: cat docgen/getting_started/regex-executor-script.txt
 
 
-Passing Test based on test runtime
+Passing Test based on runtime
 -----------------------------------
 
 buildtest can determine state of test based on `runtime` property which is part of

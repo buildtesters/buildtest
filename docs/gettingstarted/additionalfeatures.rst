@@ -23,9 +23,6 @@ platform, date, etc...
 
 .. program-output:: cat docgen/buildtest_history_query.txt
 
-Please use the `--help` option for command usage.
-
-
 .. _buildtest_schemas:
 
 buildtest schemas
@@ -85,9 +82,9 @@ text output.
 CDASH Integration
 -------------------
 
-The ``buildtest cdash`` is responsible for uploading tests to CDASH server. You will
-need to specify :ref:`cdash_configuration` in your configuration file. The command line options
-are the following
+The ``buildtest cdash`` command is responsible for uploading tests to CDASH server. You will
+need to specify :ref:`cdash_configuration` in your configuration file. Shown below is the command
+usage.
 
 .. program-output:: cat docgen/buildtest_cdash_--help.txt
 

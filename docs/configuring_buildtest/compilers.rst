@@ -37,10 +37,8 @@ options for this command.
 
 .. program-output:: cat docgen/buildtest_config_compilers_--help.txt
 
-buildtest can represent compiler output in JSON, YAML or list using the ``--json``,
-``--yaml``, and ``--list`` option. Depending on your preference one can view
-compiler section with any of these options. Shown below is an example output with
-these options::
+buildtest can represent compiler output in JSON, YAML using the ``--json`` and ``--yaml``.
+Shown below is an example output with these options::
 
     $ buildtest config compilers --json
     {
@@ -71,9 +69,8 @@ Detect Compilers (Experimental Feature)
 buildtest can detect compilers based on modulefiles and generate compiler section
 that way you don't have to specify each compiler manually.
 This can be done via ``buildtest config compilers find`` command. Buildtest expects
-a key/value mapping when searching compiler names and regular expression (``re.match``)
-is used for discovering compiler modules.
-
+a key/value mapping when searching compiler names and regular expression using `re.match <https://docs.python.org/3/library/re.html#re.match>`_
+for discovering compiler modules.
 
 This can be demonstrated, by defining search pattern in the ``find`` section
 that expects a dictionary of key/value mapping between compiler names and their module names.
@@ -81,7 +78,7 @@ that expects a dictionary of key/value mapping between compiler names and their 
 In example, below we define a pattern for gcc modules as ``^(gcc)`` which will
 find all modules that start with name `gcc`.
 
-::
+.. code-block:: yaml
 
     compilers:
       find:
@@ -97,7 +94,7 @@ find all modules that start with name `gcc`.
 In this system, we have two gcc modules installed via `spack <https://spack.readthedocs.io/en/latest/>`_
 package manager, we will attempt to add both modules as compiler instance in buildtest.
 
-::
+.. code-block:: console
 
     $ module -t av gcc
     /Users/siddiq90/projects/spack/share/spack/lmod/darwin-catalina-x86_64/Core:
@@ -113,7 +110,7 @@ instance. Depending on the compiler group, buildtest will apply the compiler wra
 is generated with the module to load. One can further tweak the module behavior
 along with purging or swap modules.
 
-::
+.. code-block:: console
 
     $ buildtest config compilers find
     MODULEPATH: /Users/siddiq90/projects/spack/share/spack/lmod/darwin-catalina-x86_64/Core:/usr/local/Cellar/lmod/8.4.12/modulefiles/Darwin:/usr/local/Cellar/lmod/8.4.12/modulefiles/Core

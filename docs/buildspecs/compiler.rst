@@ -12,7 +12,7 @@ Compilation Examples
 ----------------------
 
 We assume the reader has basic understanding of :ref:`global_schema`
-validation. Shown below is the schema header definition for compiler schema:
+validation. Shown below is the schema header definition for `compiler-v1.0.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/compiler-v1.0.schema.json>`_:
 
 .. code-block:: json
 
@@ -53,11 +53,9 @@ The generated test for test name **hello_f** is the following:
 .. code-block:: shell
 
     #!/bin/bash
-    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.bash/before_script.sh
     _EXEC=hello.f90.exe
-    /usr/local/bin/gfortran -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.f90
+    gfortran -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.f90
     ./$_EXEC
-    source /Users/siddiq90/Documents/buildtest/var/executors/generic.local.bash/after_script.sh
 
 
 buildtest will use compiler wrappers specified in your settings
@@ -77,12 +75,13 @@ The ``builtin_gcc`` compiler is defined below this can be retrieved by running
         fc: /usr/bin/gfortran
 
 buildtest will compile and run the code depending on the compiler flags. buildtest,
-will detect the file extension of source file (`source` property) to detect
+will detect the file extension of source file (``source`` property) to detect
 programming language and finally generate the appropriate C, C++, or Fortran
 compilation based on language detected. In this example, buildtest detects a
-**.f90** file extension and buildtest infers this is a Fortran program.
+**.f90** file extension and determines this is a Fortran program.
 
-Shown below is the file extension table for your reference
+Shown below is the file extension table buildtest uses for determining the programming
+language.
 
 .. csv-table:: File Extension Language Mapping
     :header: "Language", "File Extension"
@@ -122,22 +121,47 @@ build, notice we have three tests for ``vecadd_gnu`` one for each compiler:
 
     $ buildtest build -b tutorials/compilers/vecadd.yml
 
+
+    User:  siddiq90
+    Hostname:  DOE-7086392.local
+    Platform:  Darwin
+    Current Time:  2021/06/10 21:52:32
+    buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
+    buildtest version:  0.9.5
+    python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
+    python version:  3.7.3
+    Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
+    Configuration File:  /Users/siddiq90/.buildtest/config.yml
+    Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b tutorials/compilers/vecadd.yml
+
     +-------------------------------+
     | Stage: Discovering Buildspecs |
     +-------------------------------+
 
-
-    Discovered Buildspecs:
-
-    /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
+    +----------------------------------------------------------------------------------+
+    | Discovered Buildspecs                                                            |
+    +==================================================================================+
+    | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/vecadd.yml |
+    +----------------------------------------------------------------------------------+
+    Discovered Buildspecs:  1
+    Excluded Buildspecs:  0
+    Detected Buildspecs after exclusion:  1
 
     +---------------------------+
     | Stage: Parsing Buildspecs |
     +---------------------------+
 
      schemafile                | validstate   | buildspec
-    ---------------------------+--------------+--------------------------------------------------------------------
-     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/vecadd.yml
+    ---------------------------+--------------+----------------------------------------------------------------------------------
+     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/vecadd.yml
+
+
+
+    name        description
+    ----------  -----------------------------------------
+    vecadd_gnu  Vector Addition example with GNU compiler
+    vecadd_gnu  Vector Addition example with GNU compiler
+    vecadd_gnu  Vector Addition example with GNU compiler
 
     +----------------------+
     | Stage: Building Test |
@@ -146,32 +170,31 @@ build, notice we have three tests for ``vecadd_gnu`` one for each compiler:
 
 
      name       | id       | type     | executor           | tags                     | compiler           | testpath
-    ------------+----------+----------+--------------------+--------------------------+--------------------+---------------------------------------------------------------------------------------------------------
-     vecadd_gnu | dcc353a6 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc        | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/10/stage/generate.sh
-     vecadd_gnu | 7de6d9b4 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/11/stage/generate.sh
-     vecadd_gnu | 92af1a6d | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/12/stage/generate.sh
+    ------------+----------+----------+--------------------+--------------------------+--------------------+------------------------------------------------------------------------------------------------------------------------
+     vecadd_gnu | 6f6b16e1 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc        | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/2/vecadd_gnu_build.sh
+     vecadd_gnu | a76dd163 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/3/vecadd_gnu_build.sh
+     vecadd_gnu | 82360702 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/4/vecadd_gnu_build.sh
 
-    +----------------------+
-    | Stage: Running Test  |
-    +----------------------+
+    +---------------------+
+    | Stage: Running Test |
+    +---------------------+
 
-     name       | id       | executor           | status   |   returncode | testpath
-    ------------+----------+--------------------+----------+--------------+---------------------------------------------------------------------------------------------------------
-     vecadd_gnu | dcc353a6 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/10/stage/generate.sh
-     vecadd_gnu | 7de6d9b4 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/11/stage/generate.sh
-     vecadd_gnu | 92af1a6d | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/12/stage/generate.sh
+     name       | id       | executor           | status   |   returncode
+    ------------+----------+--------------------+----------+--------------
+     vecadd_gnu | 6f6b16e1 | generic.local.bash | PASS     |            0
+     vecadd_gnu | a76dd163 | generic.local.bash | PASS     |            0
+     vecadd_gnu | 82360702 | generic.local.bash | PASS     |            0
 
     +----------------------+
     | Stage: Test Summary  |
     +----------------------+
 
-    Executed 3 tests
     Passed Tests: 3/3 Percentage: 100.000%
     Failed Tests: 0/3 Percentage: 0.000%
 
 
-
-    Writing Logfile to: /private/tmp/buildtest/buildtest_86u19rf2.log
+    Writing Logfile to: /Users/siddiq90/buildtest/buildtest_b0jwyoyv.log
+    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log
 
 buildtest will use compiler settings including module configuration from buildtest
 settings (``config.yml``). In example below we show the compiler definitions for the
@@ -191,9 +214,9 @@ Shown below is the compiler configuration.
       compiler:
         gcc:
           builtin_gcc:
-            cc: /usr/bin/gcc
-            fc: /usr/bin/gfortran
-            cxx: /usr/bin/g++
+            cc: gcc
+            fc: gfortran
+            cxx: g++
           gcc/9.3.0-n7p74fd:
             cc: gcc
             cxx: g++
@@ -211,32 +234,28 @@ Shown below is the compiler configuration.
               - gcc/10.2.0-37fmsw7
               purge: false
 
-If we take a closer look at the generated test we see the modules are loaded into the test script.
+If we take a closer look at the generated test we see the `module load` command in the test script.
 
 .. code-block:: shell
-    :emphasize-lines: 4
+    :emphasize-lines: 3
     :linenos:
 
     #!/bin/bash
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
     _EXEC=vecAdd.c.exe
     module load gcc/10.2.0-37fmsw7
     gcc -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/vecAdd.c
     ./$_EXEC
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
 
 
 .. code-block:: shell
-    :emphasize-lines: 4
+    :emphasize-lines: 3
     :linenos:
 
     #!/bin/bash
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
     _EXEC=vecAdd.c.exe
     module load gcc/9.3.0-n7p74fd
     gcc -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/vecAdd.c
     ./$_EXEC
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
 
 Excluding Compilers
 --------------------
@@ -255,18 +274,35 @@ and test is not created during build phase.
 
 .. code-block:: console
     :linenos:
-    :emphasize-lines: 11
+    :emphasize-lines: 28
 
     $ buildtest build -b tutorials/compilers/compiler_exclude.yml
+
+
+    User:  siddiq90
+    Hostname:  DOE-7086392.local
+    Platform:  Darwin
+    Current Time:  2021/06/10 21:56:11
+    buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
+    buildtest version:  0.9.5
+    python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
+    python version:  3.7.3
+    Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
+    Configuration File:  /Users/siddiq90/.buildtest/config.yml
+    Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b tutorials/compilers/compiler_exclude.yml
 
     +-------------------------------+
     | Stage: Discovering Buildspecs |
     +-------------------------------+
 
-
-    Discovered Buildspecs:
-
-    /Users/siddiq90/Documents/buildtest/tutorials/compilers/compiler_exclude.yml
+    +--------------------------------------------------------------------------------------------+
+    | Discovered Buildspecs                                                                      |
+    +============================================================================================+
+    | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_exclude.yml |
+    +--------------------------------------------------------------------------------------------+
+    Discovered Buildspecs:  1
+    Excluded Buildspecs:  0
+    Detected Buildspecs after exclusion:  1
     Excluding compiler: gcc/10.2.0-37fmsw7 from test generation
 
     +---------------------------+
@@ -274,8 +310,14 @@ and test is not created during build phase.
     +---------------------------+
 
      schemafile                | validstate   | buildspec
-    ---------------------------+--------------+------------------------------------------------------------------------------
-     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/compiler_exclude.yml
+    ---------------------------+--------------+--------------------------------------------------------------------------------------------
+     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_exclude.yml
+
+
+
+    name                description
+    ------------------  -----------------------------------------------------------------
+    vecadd_gnu_exclude  Vector Addition example with GNU compilers but exclude gcc@10.2.0
 
     +----------------------+
     | Stage: Building Test |
@@ -284,29 +326,27 @@ and test is not created during build phase.
 
 
      name               | id       | type     | executor           | tags                     | compiler          | testpath
-    --------------------+----------+----------+--------------------+--------------------------+-------------------+--------------------------------------------------------------------------------------------------------------------------
-     vecadd_gnu_exclude | 0a418f09 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/7/stage/generate.sh
+    --------------------+----------+----------+--------------------+--------------------------+-------------------+--------------------------------------------------------------------------------------------------------------------------------------------------
+     vecadd_gnu_exclude | a7373d09 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/0/vecadd_gnu_exclude_build.sh
 
-    +----------------------+
-    | Stage: Running Test  |
-    +----------------------+
+    +---------------------+
+    | Stage: Running Test |
+    +---------------------+
 
-     name               | id       | executor           | status   |   returncode | testpath
-    --------------------+----------+--------------------+----------+--------------+--------------------------------------------------------------------------------------------------------------------------
-     vecadd_gnu_exclude | 0a418f09 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/7/stage/generate.sh
+     name               | id       | executor           | status   |   returncode
+    --------------------+----------+--------------------+----------+--------------
+     vecadd_gnu_exclude | a7373d09 | generic.local.bash | PASS     |            0
 
     +----------------------+
     | Stage: Test Summary  |
     +----------------------+
 
-    Executed 1 tests
     Passed Tests: 1/1 Percentage: 100.000%
     Failed Tests: 0/1 Percentage: 0.000%
 
 
-
-    Writing Logfile to: /private/tmp/buildtest/buildtest_o2j5acna.log
-
+    Writing Logfile to: /Users/siddiq90/buildtest/buildtest_4szlay_j.log
+    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log
 
 Compiler Defaults and Override Default Settings
 -------------------------------------------------
@@ -329,22 +369,47 @@ Next we run this test, and we get three tests for test name **hello_c**.
 
     $ buildtest build -b tutorials/compilers/gnu_hello_c.yml
 
+
+    User:  siddiq90
+    Hostname:  DOE-7086392.local
+    Platform:  Darwin
+    Current Time:  2021/06/10 22:00:08
+    buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
+    buildtest version:  0.9.5
+    python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
+    python version:  3.7.3
+    Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
+    Configuration File:  /Users/siddiq90/.buildtest/config.yml
+    Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b tutorials/compilers/gnu_hello_c.yml
+
     +-------------------------------+
     | Stage: Discovering Buildspecs |
     +-------------------------------+
 
-
-    Discovered Buildspecs:
-
-    /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_c.yml
+    +---------------------------------------------------------------------------------------+
+    | Discovered Buildspecs                                                                 |
+    +=======================================================================================+
+    | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/gnu_hello_c.yml |
+    +---------------------------------------------------------------------------------------+
+    Discovered Buildspecs:  1
+    Excluded Buildspecs:  0
+    Detected Buildspecs after exclusion:  1
 
     +---------------------------+
     | Stage: Parsing Buildspecs |
     +---------------------------+
 
      schemafile                | validstate   | buildspec
-    ---------------------------+--------------+-------------------------------------------------------------------------
-     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/gnu_hello_c.yml
+    ---------------------------+--------------+---------------------------------------------------------------------------------------
+     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/gnu_hello_c.yml
+
+
+
+    name     description
+    -------  -------------------------
+    hello_c  Hello World C Compilation
+    hello_c  Hello World C Compilation
+    hello_c  Hello World C Compilation
 
     +----------------------+
     | Stage: Building Test |
@@ -353,28 +418,31 @@ Next we run this test, and we get three tests for test name **hello_c**.
 
 
      name    | id       | type     | executor           | tags                     | compiler           | testpath
-    ---------+----------+----------+--------------------+--------------------------+--------------------+----------------------------------------------------------------------------------------------------------
-     hello_c | 6b7d4d9f | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc        | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/2/stage/generate.sh
-     hello_c | 94709d19 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/3/stage/generate.sh
-     hello_c | 21dd9a34 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/4/stage/generate.sh
+    ---------+----------+----------+--------------------+--------------------------+--------------------+-----------------------------------------------------------------------------------------------------------------------
+     hello_c | afa92b9d | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc        | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/2/hello_c_build.sh
+     hello_c | 498010d3 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/3/hello_c_build.sh
+     hello_c | ee753488 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/4/hello_c_build.sh
 
-    +----------------------+
-    | Stage: Running Test  |
-    +----------------------+
+    +---------------------+
+    | Stage: Running Test |
+    +---------------------+
 
-     name    | id       | executor           | status   |   returncode | testpath
-    ---------+----------+--------------------+----------+--------------+----------------------------------------------------------------------------------------------------------
-     hello_c | 6b7d4d9f | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/2/stage/generate.sh
-     hello_c | 94709d19 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/3/stage/generate.sh
-     hello_c | 21dd9a34 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/4/stage/generate.sh
+     name    | id       | executor           | status   |   returncode
+    ---------+----------+--------------------+----------+--------------
+     hello_c | afa92b9d | generic.local.bash | PASS     |            0
+     hello_c | 498010d3 | generic.local.bash | PASS     |            0
+     hello_c | ee753488 | generic.local.bash | PASS     |            0
 
     +----------------------+
     | Stage: Test Summary  |
     +----------------------+
 
-    Executed 3 tests
     Passed Tests: 3/3 Percentage: 100.000%
     Failed Tests: 0/3 Percentage: 0.000%
+
+
+    Writing Logfile to: /Users/siddiq90/buildtest/buildtest_dtyx0ags.log
+    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log
 
 
 
@@ -388,36 +456,31 @@ is for `builtin_gcc` which use the default ``-O1`` compiler flag as shown below.
     :linenos:
 
     #!/bin/bash
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
     _EXEC=hello.c.exe
-    /usr/bin/gcc -O1 -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.c
+    gcc -O1 -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.c
     ./$_EXEC
 
 The test for **gcc/10.2.0-37fmsw7** and **gcc/9.3.0-n7p74fd** have cflags ``-O3`` and ``-O2`` set in their respective tests.
 
 .. code-block:: shell
-    :emphasize-lines: 5
+    :emphasize-lines: 4
     :linenos:
 
     #!/bin/bash
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
     _EXEC=hello.c.exe
     module load gcc/10.2.0-37fmsw7
     gcc -O3 -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.c
     ./$_EXEC
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
 
 .. code-block:: shell
-    :emphasize-lines: 5
+    :emphasize-lines: 4
     :linenos:
 
     #!/bin/bash
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
     _EXEC=hello.c.exe
     module load gcc/9.3.0-n7p74fd
     gcc -O2 -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.c
     ./$_EXEC
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
 
 Setting environment variables
 ------------------------------
@@ -439,13 +502,11 @@ environment variable.
     :linenos:
 
     #!/bin/bash
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/before_script.sh
     _EXEC=hello_omp.c.exe
     export OMP_NUM_THREADS=2
     module load gcc/10.2.0-37fmsw7
     gcc -fopenmp -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello_omp.c
     ./$_EXEC
-    source /Users/siddiq90/Documents/buildtest/var/executors/local.bash/after_script.sh
 
 
 Similarly, one can define environment variables at the compiler level in ``config`` section.
@@ -462,20 +523,46 @@ Next we build this test as follows:
 
     $ buildtest build -b tutorials/compilers/envvar_override.yml
 
+
+    User:  siddiq90
+    Hostname:  DOE-7086392.local
+    Platform:  Darwin
+    Current Time:  2021/06/10 22:04:19
+    buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
+    buildtest version:  0.9.5
+    python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
+    python version:  3.7.3
+    Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
+    Configuration File:  /Users/siddiq90/.buildtest/config.yml
+    Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b tutorials/compilers/envvar_override.yml
+
     +-------------------------------+
     | Stage: Discovering Buildspecs |
     +-------------------------------+
 
-    Discovered Buildspecs:
-    /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/envvar_override.yml
+    +-------------------------------------------------------------------------------------------+
+    | Discovered Buildspecs                                                                     |
+    +===========================================================================================+
+    | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/envvar_override.yml |
+    +-------------------------------------------------------------------------------------------+
+    Discovered Buildspecs:  1
+    Excluded Buildspecs:  0
+    Detected Buildspecs after exclusion:  1
 
     +---------------------------+
     | Stage: Parsing Buildspecs |
     +---------------------------+
 
      schemafile                | validstate   | buildspec
-    ---------------------------+--------------+------------------------------------------------------------------------------------
-     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/envvar_override.yml
+    ---------------------------+--------------+-------------------------------------------------------------------------------------------
+     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/envvar_override.yml
+
+
+
+    name                      description
+    ------------------------  --------------------------------------
+    override_environmentvars  override default environment variables
+    override_environmentvars  override default environment variables
 
     +----------------------+
     | Stage: Building Test |
@@ -484,18 +571,18 @@ Next we build this test as follows:
 
 
      name                     | id       | type     | executor           | tags                     | compiler           | testpath
-    --------------------------+----------+----------+--------------------+--------------------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------
-     override_environmentvars | bc4a4769 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/stage/generate.sh
-     override_environmentvars | e18b5e7d | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/stage/generate.sh
+    --------------------------+----------+----------+--------------------+--------------------------+--------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+     override_environmentvars | 72619a4b | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/override_environmentvars_build.sh
+     override_environmentvars | 31098506 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/override_environmentvars_build.sh
 
     +---------------------+
     | Stage: Running Test |
     +---------------------+
 
-     name                     | id       | executor           | status   |   returncode | testpath
-    --------------------------+----------+--------------------+----------+--------------+--------------------------------------------------------------------------------------------------------------------------------------
-     override_environmentvars | bc4a4769 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/stage/generate.sh
-     override_environmentvars | e18b5e7d | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/stage/generate.sh
+     name                     | id       | executor           | status   |   returncode
+    --------------------------+----------+--------------------+----------+--------------
+     override_environmentvars | 72619a4b | generic.local.bash | PASS     |            0
+     override_environmentvars | 31098506 | generic.local.bash | PASS     |            0
 
     +----------------------+
     | Stage: Test Summary  |
@@ -505,7 +592,8 @@ Next we build this test as follows:
     Failed Tests: 0/2 Percentage: 0.000%
 
 
-    Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_6vrmp6v8.log
+    Writing Logfile to: /Users/siddiq90/buildtest/buildtest_p3wdnl1t.log
+    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log
 
 Now let's inspect the test by running ``buildtest inspect name`` and we notice there are two test records for `override_environmentvars` using
 **gcc/9.3.0-n7p74fd** and **gcc/10.2.0-37fmsw7**.
@@ -513,64 +601,70 @@ Now let's inspect the test by running ``buildtest inspect name`` and we notice t
 
 .. code-block:: console
     :linenos:
-    :emphasize-lines: 9,36
+    :emphasize-lines: 12,41
 
     $ buildtest inspect name override_environmentvars
+    Reading Report File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/report.json
+
     {
       "override_environmentvars": [
         {
-          "id": "bc4a4769",
-          "full_id": "bc4a4769-99cc-404c-be36-fd39c4179d92",
+          "id": "72619a4b",
+          "full_id": "72619a4b-3ed2-489c-aebd-2e0cacbf2d6a",
+          "description": "override default environment variables",
           "schemafile": "compiler-v1.0.schema.json",
           "executor": "generic.local.bash",
           "compiler": "gcc/9.3.0-n7p74fd",
           "hostname": "DOE-7086392.local",
           "user": "siddiq90",
-          "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0",
-          "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/stage/generate.sh",
-          "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/stage",
-          "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/run",
-          "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/stage/generate.sh",
-          "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/run/override_environmentvars.out",
-          "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/run/override_environmentvars.err",
+          "testroot": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0",
+          "testpath": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/stage/override_environmentvars.sh",
+          "stagedir": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/stage",
+          "command": "sh override_environmentvars_build.sh",
+          "outfile": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/override_environmentvars.out",
+          "errfile": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/override_environmentvars.err",
           "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  override_environmentvars:\n    type: compiler\n    description: override default environment variables\n    executor: generic.local.bash\n    tags: [tutorials, compile]\n    source: \"src/hello_omp.c\"\n    compilers:\n      name: [\"^(gcc)\"]\n      default:\n        gcc:\n          cflags: -fopenmp\n          env:\n            OMP_NUM_THREADS: 2\n      config:\n        gcc/10.2.0-37fmsw7:\n          env:\n            OMP_NUM_THREADS: 4",
-          "test_content": "#!/bin/bash \nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.bash/before_script.sh\n_EXEC=hello_omp.c.exe\nexport OMP_NUM_THREADS=2\nmodule load gcc/9.3.0-n7p74fd\ngcc -fopenmp -o $_EXEC /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/src/hello_omp.c\n./$_EXEC\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.bash/after_script.sh",
+          "test_content": "#!/bin/bash \n_EXEC=hello_omp.c.exe\nexport OMP_NUM_THREADS=2\nmodule load gcc/9.3.0-n7p74fd\ngcc -fopenmp -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/hello_omp.c\n./$_EXEC",
+          "logpath": "/Users/siddiq90/buildtest/buildtest_p3wdnl1t.log",
           "tags": "tutorials compile",
-          "starttime": "2021/03/31 12:11:13",
-          "endtime": "2021/03/31 12:11:13",
-          "runtime": 0.485775,
+          "starttime": "2021/06/10 22:04:19",
+          "endtime": "2021/06/10 22:04:20",
+          "runtime": 0.727095,
           "state": "PASS",
           "returncode": 0,
           "output": "Hello World from thread = 0\nHello World from thread = 1\n",
-          "error": "",
-          "job": null
+          "error": "The following have been reloaded with a version change:\n  1) gcc/10.2.0-37fmsw7 => gcc/9.3.0-n7p74fd\n",
+          "job": null,
+          "build_script": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/override_environmentvars_build.sh"
         },
         {
-          "id": "e18b5e7d",
-          "full_id": "e18b5e7d-c9dc-4834-a55a-f1dbb1a02ce1",
+          "id": "31098506",
+          "full_id": "31098506-2bbf-4a50-8386-2fcd5bcddff5",
+          "description": "override default environment variables",
           "schemafile": "compiler-v1.0.schema.json",
           "executor": "generic.local.bash",
           "compiler": "gcc/10.2.0-37fmsw7",
           "hostname": "DOE-7086392.local",
           "user": "siddiq90",
-          "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1",
-          "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/stage/generate.sh",
-          "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/stage",
-          "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/run",
-          "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/stage/generate.sh",
-          "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/run/override_environmentvars.out",
-          "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/run/override_environmentvars.err",
+          "testroot": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1",
+          "testpath": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/stage/override_environmentvars.sh",
+          "stagedir": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/stage",
+          "command": "sh override_environmentvars_build.sh",
+          "outfile": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/override_environmentvars.out",
+          "errfile": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/override_environmentvars.err",
           "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  override_environmentvars:\n    type: compiler\n    description: override default environment variables\n    executor: generic.local.bash\n    tags: [tutorials, compile]\n    source: \"src/hello_omp.c\"\n    compilers:\n      name: [\"^(gcc)\"]\n      default:\n        gcc:\n          cflags: -fopenmp\n          env:\n            OMP_NUM_THREADS: 2\n      config:\n        gcc/10.2.0-37fmsw7:\n          env:\n            OMP_NUM_THREADS: 4",
-          "test_content": "#!/bin/bash \nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.bash/before_script.sh\n_EXEC=hello_omp.c.exe\nexport OMP_NUM_THREADS=4\nmodule load gcc/10.2.0-37fmsw7\ngcc -fopenmp -o $_EXEC /Users/siddiq90/Documents/github/buildtest/tutorials/compilers/src/hello_omp.c\n./$_EXEC\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.bash/after_script.sh",
+          "test_content": "#!/bin/bash \n_EXEC=hello_omp.c.exe\nexport OMP_NUM_THREADS=4\nmodule load gcc/10.2.0-37fmsw7\ngcc -fopenmp -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/hello_omp.c\n./$_EXEC",
+          "logpath": "/Users/siddiq90/buildtest/buildtest_p3wdnl1t.log",
           "tags": "tutorials compile",
-          "starttime": "2021/03/31 12:11:13",
-          "endtime": "2021/03/31 12:11:14",
-          "runtime": 0.397184,
+          "starttime": "2021/06/10 22:04:20",
+          "endtime": "2021/06/10 22:04:20",
+          "runtime": 0.482645,
           "state": "PASS",
           "returncode": 0,
-          "output": "Hello World from thread = 0\nHello World from thread = 2\nHello World from thread = 1\nHello World from thread = 3\n",
+          "output": "Hello World from thread = 1\nHello World from thread = 3\nHello World from thread = 2\nHello World from thread = 0\n",
           "error": "",
-          "job": null
+          "job": null,
+          "build_script": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/override_environmentvars_build.sh"
         }
       ]
     }
@@ -600,26 +694,52 @@ regular expression even though we have a returncode of 0.
 
 .. code-block:: console
     :linenos:
-    :emphasize-lines: 31,42
+    :emphasize-lines: 68
 
     $ buildtest build -b tutorials/compilers/compiler_status_regex.yml
+
+
+    User:  siddiq90
+    Hostname:  DOE-7086392.local
+    Platform:  Darwin
+    Current Time:  2021/06/10 22:08:03
+    buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
+    buildtest version:  0.9.5
+    python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
+    python version:  3.7.3
+    Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
+    Configuration File:  /Users/siddiq90/.buildtest/config.yml
+    Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b tutorials/compilers/compiler_status_regex.yml
 
     +-------------------------------+
     | Stage: Discovering Buildspecs |
     +-------------------------------+
 
-
-    Discovered Buildspecs:
-
-    /Users/siddiq90/Documents/buildtest/tutorials/compilers/compiler_status_regex.yml
+    +-------------------------------------------------------------------------------------------------+
+    | Discovered Buildspecs                                                                           |
+    +=================================================================================================+
+    | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_status_regex.yml |
+    +-------------------------------------------------------------------------------------------------+
+    Discovered Buildspecs:  1
+    Excluded Buildspecs:  0
+    Detected Buildspecs after exclusion:  1
 
     +---------------------------+
     | Stage: Parsing Buildspecs |
     +---------------------------+
 
      schemafile                | validstate   | buildspec
-    ---------------------------+--------------+-----------------------------------------------------------------------------------
-     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/buildtest/tutorials/compilers/compiler_status_regex.yml
+    ---------------------------+--------------+-------------------------------------------------------------------------------------------------
+     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_status_regex.yml
+
+
+
+    name                   description
+    ---------------------  -----------------------------------------------------------
+    default_status_regex   Regular expression check in stdout for gcc group
+    default_status_regex   Regular expression check in stdout for gcc group
+    override_status_regex  Override regular expression for compiler gcc/10.2.0-37fmsw7
+    override_status_regex  Override regular expression for compiler gcc/10.2.0-37fmsw7
 
     +----------------------+
     | Stage: Building Test |
@@ -628,34 +748,33 @@ regular expression even though we have a returncode of 0.
 
 
      name                  | id       | type     | executor           | tags                     | compiler           | testpath
-    -----------------------+----------+----------+--------------------+--------------------------+--------------------+----------------------------------------------------------------------------------------------------------------------------------
-     default_status_regex  | 240edfd6 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/compiler_status_regex/default_status_regex/0/stage/generate.sh
-     default_status_regex  | 7879910d | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/compiler_status_regex/default_status_regex/1/stage/generate.sh
-     override_status_regex | bde9c117 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/0/stage/generate.sh
-     override_status_regex | 9320ca41 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/1/stage/generate.sh
+    -----------------------+----------+----------+--------------------+--------------------------+--------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+     default_status_regex  | a023a2c2 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/compiler_status_regex/default_status_regex/0/default_status_regex_build.sh
+     default_status_regex  | 155865c3 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/compiler_status_regex/default_status_regex/1/default_status_regex_build.sh
+     override_status_regex | 3411bddf | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/0/override_status_regex_build.sh
+     override_status_regex | 295310a4 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/1/override_status_regex_build.sh
 
-    +----------------------+
-    | Stage: Running Test  |
-    +----------------------+
+    +---------------------+
+    | Stage: Running Test |
+    +---------------------+
 
-     name                  | id       | executor           | status   |   returncode | testpath
-    -----------------------+----------+--------------------+----------+--------------+----------------------------------------------------------------------------------------------------------------------------------
-     default_status_regex  | 240edfd6 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/compiler_status_regex/default_status_regex/0/stage/generate.sh
-     default_status_regex  | 7879910d | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/compiler_status_regex/default_status_regex/1/stage/generate.sh
-     override_status_regex | bde9c117 | generic.local.bash | PASS     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/0/stage/generate.sh
-     override_status_regex | 9320ca41 | generic.local.bash | FAIL     |            0 | /Users/siddiq90/Documents/buildtest/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/1/stage/generate.sh
+     name                  | id       | executor           | status   |   returncode
+    -----------------------+----------+--------------------+----------+--------------
+     default_status_regex  | a023a2c2 | generic.local.bash | PASS     |            0
+     default_status_regex  | 155865c3 | generic.local.bash | PASS     |            0
+     override_status_regex | 3411bddf | generic.local.bash | PASS     |            0
+     override_status_regex | 295310a4 | generic.local.bash | FAIL     |            0
 
     +----------------------+
     | Stage: Test Summary  |
     +----------------------+
 
-    Executed 4 tests
     Passed Tests: 3/4 Percentage: 75.000%
     Failed Tests: 1/4 Percentage: 25.000%
 
 
-
-    Writing Logfile to: /private/tmp/buildtest/buildtest_muj7k9q4.log
+    Writing Logfile to: /Users/siddiq90/buildtest/buildtest_hp7_gpbn.log
+    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log
 
 Single Test Multiple Compilers
 -------------------------------

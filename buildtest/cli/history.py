@@ -22,8 +22,6 @@ def list_builds():
     # only filter filters that are 'build.json'
     history_files = [f for f in history_files if os.path.basename(f) == "build.json"]
 
-    print(sorted(history_files))
-
     table = {
         "id": [],
         "hostname": [],

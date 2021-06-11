@@ -352,6 +352,7 @@ def config_menu(subparsers):
     subparsers_compiler_find = compilers.add_subparsers(
         description="Find new compilers and add them to detected compiler section",
         dest="compilers",
+        metavar="",
     )
 
     compiler_find = subparsers_compiler_find.add_parser(
