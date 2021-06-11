@@ -1,5 +1,5 @@
 $ buildtest config compilers --help
-usage: buildtest [options] [COMMANDS] config compilers [-h] [-j] [-y] {find} ...
+usage: buildtest [options] [COMMANDS] config compilers [-h] [-j] [-y]  ...
 
 optional arguments:
   -h, --help  show this help message and exit
@@ -9,5 +9,5 @@ optional arguments:
 subcommands:
   Find new compilers and add them to detected compiler section
 
-  {find}
+  
     find      Find compilers
