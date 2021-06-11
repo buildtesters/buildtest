@@ -6,8 +6,8 @@ Writing buildspecs
 .. toctree::
    :maxdepth: 1
 
-   buildspecs/global
    buildspecs/buildspec_overview
+   buildspecs/global
    buildspecs/compiler
    buildspecs/batch_support
    buildspecs/schema_examples

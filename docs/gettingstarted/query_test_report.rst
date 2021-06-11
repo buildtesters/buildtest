@@ -4,8 +4,8 @@
 Query Test Report
 ==================
 
-buildtest keeps track of all tests and results in a JSON file that is stored in **$HOME/.buildtest/report.json**. This
-file is read by **buildtest report** command to extract certain fields from JSON file and display
+buildtest keeps track of all tests and results in a JSON file.  This file is read by **buildtest report**
+command to extract certain fields from JSON file and display
 them in table format. We use python `tabulate <https://pypi.org/project/tabulate/>`_ library for
 pretty print data in tables. Shown below is command usage to query test reports.
 
@@ -212,30 +212,40 @@ buildtest will retrieve the first and last record of every test.
 Inspect Tests Records
 ----------------------
 
-buildtest provides an interface via ``buildtest inspect`` to query test details once
-test is recorded in ``var/report.json``. The command usage is the following.
+In previous examples we saw how we can retrieve test records using  ``buildtest report`` which
+is printed in table format. We have limited the output to a limited fields however, if you want to analyze a particular,
+we have a separate command called ``buildtest inspect`` that can be used for inspecting a test record
+based on name or id. Shown below is the command usage for `buildtest inspect` command.
 
 .. program-output:: cat docgen/buildtest_inspect_--help.txt
 
-You can query all test names and corresponding ids using ``buildtest inspect list`` which
-retrieves all test records from ``var/report.json``.
+You can report all test names and corresponding ids using ``buildtest inspect list`` which
+will be used for querying tests by name or id.
 
-.. program-output:: cat docgen/buildtest_inspect_list.txt
+.. program-output:: cat  docgen/buildtest_inspect_list.txt
+   :ellipsis: 20
 
-The ``buildtest inspect name`` command can query test records based on test **name**
-along with all runs for a particular test because a single test may be run multiple times.
-Let's see first example of how it looks. buildtest is querying the appropriate record from
-``var/report.json`` and display output in console
+
+Inspecting Test by Name
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``buildtest inspect name`` expects a list of positional argument that correspond to name
+of test you want to query and buildtest will fetch all records for each named test. Let's see an example to
+illustrate the point. We can see that each test is stored as a JSON format and buildtest keeps track of
+metadata for each test such as `user`, `hostname`, `command`, path to output and error file, content of test,
+state of test, returncode, etc...
 
 .. program-output:: cat docgen/buildtest_inspect_names.txt
 
-You can pass multiple test names to ``buildtest inspect name <test1> <test2>`` and buildtest
-will find all records for given name. In example below we show how one can inspect test records
-for multiple test names in single command.
+You can query multiple tests by specifying them as positional arguments in the format: ``buildtest inspect name <test1> <test2>``
+In example below we see buildtest reports all records for each positional argument.
 
 .. program-output:: cat docgen/buildtest_inspect_multi_names.txt
 
-The ``buildtest inspect id`` works similar to ``buildtest inspect names`` except it
+Inspecting Test by ID
+~~~~~~~~~~~~~~~~~~~~~~
+
+The ``buildtest inspect id`` works similar to ``buildtest inspect name`` except that it
 operates on test id. This can be useful if you want to extract a particular test record and not
 see all test records at once.
 
@@ -362,15 +372,17 @@ You will see similar message if you specify an invalid test name using ``buildte
 Using Alternate Report File
 -----------------------------
 
-The ``buildtest report`` and ``buildtest inspect`` command will read from report file $HOME/.buildtest/report.json
-which is the central report file. This single file can became an issue if you are running jobs through CI where you
-can potentially overwrite same file or remove $HOME/.buildtest as part of CI job that can impact other jobs.
+The ``buildtest report`` and ``buildtest inspect`` command will read from the report file tracked by buildtest which is
+stored in **$BUILDTEST_ROOT/var/report.json**. This single file can became an issue if you are running jobs through CI where you
+can potentially overwrite same file or if you want separate report files for each set of builds. Luckily we have an option to handle
+this using the ``buildtest build -r /path/to/report`` option which can be used to specify an alternate location to report file.
 
-In that case you can write your report file to alternate location using ``buildtest build -r <report>`` and then
-specify the path to report file in ``buildtest report -r <report>`` and ``buildtest inspect -r <report>`` command.
+buildtest will write the report file in the desired location, then you can specify the path to report file via
+``buildtest report -r /path/to/report`` and ``buildtest inspect -r /path/to/report`` to load the report file when reporting tests.
+
 The report file must be valid JSON file that buildtest understands in order to use `buildtest report` and
-`buildtest inspect` command. Shown below are example usage with **-r** option using **buildtest report**
-and **buildtest inspect** command
+`buildtest inspect` command. Shown below are some examples using the alternate report file using ``buildtest report`` and
+``buildtest inspect`` command.
 
 .. code-block:: console
 

@@ -3,15 +3,16 @@
 Global Schema
 ==============
 
-The global schema is validated with for all schema types and is the top-level
+The global schema is validated with for all buildspecs is the top-level
 schema when defining a buildspec file.
 
-For more details see `Global Schema Documentation <https://buildtesters.github.io/buildtest/pages/schemadocs/global.html>`_.
+Please refer to `Global Schema Documentation <https://buildtesters.github.io/buildtest/pages/schemadocs/global.html>`_ that
+provides a summary .
 
-Global Keys in buildspec
+Schema Definition
 --------------------------
 
-Shown below is the start of the global.schema.json
+Shown below is the start of the schema definition for  **global.schema.json**
 
 .. code-block:: json
 
@@ -22,15 +23,16 @@ Shown below is the start of the global.schema.json
   "type": "object",
   "required": ["version","buildspecs"],
 
-The global keys required for any buildspec are ``version`` and ``buildspecs``. The
+This schema requires that every buildspec should have ``version`` and ``buildspecs`` fields. The
 version key is required to lookup an a sub-schema using the ``type`` field.
-The ``buildspecs`` is the start of test declaration. The ``maintainers`` is an optional
-field that is an array test maintainers. To understand
-how buildtest validates the buildspec see :ref:`parse_stage`.
+The ``buildspecs`` is the start of test declaration.
 
 Shown below is an example buildspec.
 
 .. program-output:: cat ../tutorials/hello_world.yml
+
+The ``maintainers`` is an optional field that is an array test maintainers. To understand
+how buildtest validates the buildspec see :ref:`parsing buildspecs <parse_stage>`.
 
 
 In this example, the global schema validates the following section:

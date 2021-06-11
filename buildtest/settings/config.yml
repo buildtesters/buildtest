@@ -48,9 +48,9 @@ system:
       compiler:
         gcc:
           builtin_gcc:
-            cc: /usr/bin/gcc
-            fc: /usr/bin/gfortran
-            cxx: /usr/bin/g++
+            cc: gcc
+            fc: gfortran
+            cxx: g++
 
     # location of log directory
     # logdir: /tmp/

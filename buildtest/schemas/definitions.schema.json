@@ -80,7 +80,8 @@
           "enum": [
             "lsf",
             "slurm",
-            "cobalt"
+            "cobalt",
+            "pbs"
           ]
         },
         "user": {

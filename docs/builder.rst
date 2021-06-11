@@ -3,9 +3,6 @@
 Build and Test Process
 ======================
 
-Pipeline
----------
-
 The `buildtest build` command is responsible for building and running tests. Every buildspec
 goes through a pipeline that discovers buildspecs, validates the buildspec and builds and runs
 the test. The buildspec must go through each stage of the pipeline, if it fails in one of the stage,
@@ -14,7 +11,7 @@ the buildspec will be ignored.
 .. image:: _static/GeneralPipeline.png
 
 Discover Buildspecs
-~~~~~~~~~~~~~~~~~~~~
+---------------------
 
 buildtest will discover buildspecs based on command line arguments since you can
 build by file, directory, executor, or tags.  In **discover** stage, buildtest
@@ -28,7 +25,7 @@ and one of the sub-schemas, check :ref:`parsing buildspecs <parse_stage>` sectio
 .. _parse_stage:
 
 Parse Buildspecs
-~~~~~~~~~~~~~~~~~
+---------------------
 
 A buildspec file may contain one or more test sections specified via ``buildspec``
 field. Each test is validated by a sub-schema specified by ``type`` field.
@@ -43,7 +40,7 @@ Buildspecs will be ignored if it fails validation process for instance you may h
 Invalid buildspecs won't be sent to **build** stage since we can't reliably build a test-script.
 
 Building Buildspecs
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
 buildtest will send all valid buildspecs to **build** phase which is responsible for building
 a shell-script from the buildspec file. In this stage, we create a **Builder** object
@@ -57,7 +54,7 @@ of failure, buildtest will raise an exception and buildspec will be ignored. The
 stage
 
 Running Buildspecs
-~~~~~~~~~~~~~~~~~~~~
+---------------------
 
 In this stage, we run the test based on :ref:`executors <configuring_executors>` defined in configuration file. buildtest will
 select the executor defined by ``executor`` property in buildspec which is responsible for running the test. There is a `BaseExecutor <https://github.com/buildtesters/buildtest/blob/devel/buildtest/executors/base.py>`_
