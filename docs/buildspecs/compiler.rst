@@ -1005,7 +1005,7 @@ shell-script. If no ``run`` field is specified buildtest will run the binary in 
 
 .. code-block:: shell
    :linenos:
-   :emphasize-lines: 6
+   :emphasize-lines: 5
 
     #!/bin/bash
     _EXEC=argc.c.exe

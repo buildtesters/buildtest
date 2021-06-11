@@ -42,7 +42,6 @@ def main():
     create_dir(BUILDTEST_USER_HOME)
     create_dir(BUILDTEST_EXECUTOR_DIR)
     create_dir(BUILDTEST_BUILDSPEC_DIR)
-    create_dir(BUILD_HISTORY_DIR)
 
     # Create a build test system, and check requirements
     system = BuildTestSystem()

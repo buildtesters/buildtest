@@ -1111,6 +1111,7 @@ class BuildTest:
         that is incremented such as 0, 1, 2 in **$BUILDTEST_ROOT/var/.history** which is used to differentiate builds.
         """
 
+        create_dir(BUILD_HISTORY_DIR)
         num_files = len(os.listdir(BUILD_HISTORY_DIR))
         # create a sub-directory in $BUILDTEST_ROOT/var/.history/ that is incremented for every build starting with 0, 1, 2, ...
         build_history_dir = os.path.join(BUILD_HISTORY_DIR, str(num_files))

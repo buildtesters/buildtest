@@ -61,6 +61,11 @@ def query_builds(build_id, log_option):
     :type log_option: bool, required
     """
 
+    if not is_dir(BUILD_HISTORY_DIR):
+        sys.exit(
+            f"Unable to find history directory: {BUILD_HISTORY_DIR}, seems like you have not run any builds using 'buildtest build' command."
+        )
+
     num_ids = list(range(len(os.listdir(BUILD_HISTORY_DIR))))
 
     if not is_dir(os.path.join(BUILD_HISTORY_DIR, str(build_id))):
