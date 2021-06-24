@@ -37,6 +37,16 @@ schema_table["compiler-v1.0.schema.json"]["recipe"] = load_schema(
     schema_table["compiler-v1.0.schema.json"]["path"]
 )
 
+
+schema_table["spack-v1.0.schema.json"] = {}
+schema_table["spack-v1.0.schema.json"]["path"] = os.path.join(
+    here, "spack-v1.0.schema.json"
+)
+schema_table["spack-v1.0.schema.json"]["recipe"] = load_schema(
+    schema_table["spack-v1.0.schema.json"]["path"]
+)
+
+
 schema_table["definitions.schema.json"] = {}
 schema_table["definitions.schema.json"]["path"] = os.path.join(
     here, "definitions.schema.json"
@@ -64,6 +74,9 @@ schema_store = {
     ]["recipe"],
     schema_table["script-v1.0.schema.json"]["recipe"]["$id"]: schema_table[
         "script-v1.0.schema.json"
+    ]["recipe"],
+    schema_table["spack-v1.0.schema.json"]["recipe"]["$id"]: schema_table[
+        "spack-v1.0.schema.json"
     ]["recipe"],
     schema_table["definitions.schema.json"]["recipe"]["$id"]: schema_table[
         "definitions.schema.json"

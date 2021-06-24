@@ -1,0 +1,95 @@
+{
+  "$id": "spack-v1.0.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "spack schema version 1.0",
+  "description": "The spack schema is referenced using ``type: spack`` which is used for generating tests using spack package manager",
+  "type": "object",
+  "required": [
+    "type",
+    "executor",
+    "spack"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "pattern": "^spack$",
+      "description": "Select schema type to use when validating buildspec. This must be set to 'spack'"
+    },
+    "description": {
+      "$ref": "definitions.schema.json#/definitions/description"
+    },
+    "executor": {
+      "$ref": "definitions.schema.json#/definitions/executor"
+    },
+    "sbatch": {
+      "$ref": "definitions.schema.json#/definitions/list_of_strings",
+      "description": "This field is used for specifying #SBATCH options in test script."
+    },
+    "bsub": {
+      "$ref": "definitions.schema.json#/definitions/list_of_strings",
+      "description": "This field is used for specifying #BSUB options in test script."
+    },
+    "cobalt": {
+      "$ref": "definitions.schema.json#/definitions/list_of_strings",
+      "description": "This field is used for specifying #COBALT options in test script."
+    },
+     "pbs": {
+      "$ref": "definitions.schema.json#/definitions/list_of_strings",
+      "description": "This field is used for specifying #PBS directives in test script."
+    },
+    "batch": {
+      "$ref": "definitions.schema.json#/definitions/batch"
+    },
+    "skip": {
+      "$ref": "definitions.schema.json#/definitions/skip"
+    },
+    "tags": {
+      "$ref": "definitions.schema.json#/definitions/tags"
+    },
+    "pre_cmds": {
+      "type": "string",
+      "description": "Shell commands run before spack"
+    },
+    "post_cmds": {
+      "type": "string",
+      "description": "Shell commands run after spack"
+    },
+    "spack":
+    {
+      "type": "object",
+      "required": ["root"],
+      "additionalProperties": false,
+      "properties": {
+        "root": {"type": "string"},
+        "env": {"$ref":  "#definitions/env"},
+        "install": {"$ref":  "#definitions/install"}
+      }
+    }
+  },
+  "definitions": {
+    "env": {
+      "type": "object",
+      "properties": {
+        "create": {
+          "type": "object",
+          "properties": {
+            "name": {"type": "string"},
+            "manifest": {"type": "string"},
+            "options": {"type": "string"},
+            "dir": {"type": "string"}
+          }
+        },
+        "specs": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
+        "concretize": {"type": "boolean"}
+      }
+    },
+    "install": {
+      "type": "object",
+      "properties": {
+        "options": {"type": "string"},
+        "specs": {"$ref": "definitions.schema.json#/definitions/list_of_strings"}
+      }
+    }
+  }
+}
