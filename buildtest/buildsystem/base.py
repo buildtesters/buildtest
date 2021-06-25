@@ -77,6 +77,9 @@ class BuilderBase(ABC):
         # applicable for builders using batch executor.
         self.job_state = None
 
+        # this value holds the 'status' property from the schema which is assigned in the subclass
+        self.status = None
+
         self.buildspec = buildspec
         # strip .yml extension from file name
         file_name = re.sub("[.](yml)", "", os.path.basename(buildspec))
@@ -87,7 +90,7 @@ class BuilderBase(ABC):
         self.logger.debug(f"Processing Buildspec: {self.buildspec}")
         self.logger.debug(f"Processing Buildspec section: {self.name}")
 
-        # get type attribute from Executor class (local, slurm, cobalt, lsf)
+        # get type attribute from Executor class (local, slurm, cobalt, pbs, lsf)
         self.executor_type = buildexecutor.executors[self.executor].type
         self.buildexecutor = buildexecutor
         self._set_metadata_values()

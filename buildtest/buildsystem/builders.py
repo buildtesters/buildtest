@@ -9,6 +9,7 @@ import re
 
 from buildtest.buildsystem.scriptbuilder import ScriptBuilder
 from buildtest.buildsystem.compilerbuilder import CompilerBuilder
+from buildtest.buildsystem.spack import SpackBuilder
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.system import system
 
@@ -95,7 +96,8 @@ class Builder:
                 elif recipe["type"] == "compiler":
 
                     self._build_compilers(name, recipe)
-
+                elif recipe["type"] == "spack":
+                    self.builders += self._generate_builders(recipe, name)
                 else:
                     print(
                         "%s is not recognized by buildtest, skipping." % recipe["type"]
@@ -156,6 +158,19 @@ class Builder:
                     compiler=compiler_name,
                     buildspec=self.bp.buildspec,
                     configuration=self.configuration,
+                    buildexecutor=self.buildexecutor,
+                    testdir=self.testdir,
+                )
+
+            elif (
+                re.fullmatch(recipe.get("executor"), executor)
+                and recipe["type"] == "spack"
+            ):
+                builder = SpackBuilder(
+                    name=name,
+                    recipe=recipe,
+                    executor=executor,
+                    buildspec=self.bp.buildspec,
                     buildexecutor=self.buildexecutor,
                     testdir=self.testdir,
                 )

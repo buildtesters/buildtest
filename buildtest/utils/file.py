@@ -115,12 +115,24 @@ def create_dir(dirname):
 
 def resolve_path(path, exist=True):
     """This method will resolve a file path to account for shell expansion and resolve paths in
-    when a symlink is provided in the file. This method assumes file already exists.
+     when a symlink is provided in the file. This method assumes file already exists.
 
-    :param path: file path to resolve
-    :type path: str, required
-    :return: return realpath to file if found otherwise return None
-    :rtype: str or None
+     :param path: file path to resolve
+     :type path: str, required
+     :param exist: expects a boolean to determine if filepath should be returned or None. By default, `exist` is `True`
+     and file is checked using `os.path.exist` to return full path.
+
+    >>> a = resolve_path("$HOME/.bashrc")
+    >>> assert a
+    >>> b = resolve_path("$HOME/.bashrc1", exist=False)
+    >>> assert b
+    >>> c = resolve_path("$HOME/.bashrc1", exist=True)
+    >>> assert not c
+
+
+     file is checked``os.path.exists`` after getting realpath using ``os.path.realpath()``.   resolve
+     :return: return realpath to file if found otherwise return None
+     :rtype: str or None
     """
 
     # if path not set return None
@@ -138,10 +150,7 @@ def resolve_path(path, exist=True):
     path = os.path.expanduser(path)
 
     real_path = os.path.realpath(path)
-    if os.path.exists(real_path):
-        return real_path
-
-    if not exist:
+    if os.path.exists(real_path) or not exist:
         return real_path
 
 

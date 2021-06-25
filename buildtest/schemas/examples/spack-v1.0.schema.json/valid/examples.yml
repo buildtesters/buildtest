@@ -13,6 +13,19 @@ buildspecs:
           - zlib
       install:
         options: ''
+  env_activate:
+    type: spack
+    executor: generic.local.sh
+    spack:
+      root: $HOME/spack/
+      env:
+        activate:
+          name: myproject
+        specs:
+          - m4
+          - zlib
+      install:
+        options: ''
 
   env_create_directory:
     type: spack
@@ -42,6 +55,7 @@ buildspecs:
 
   env_concretized_install:
     type: spack
+    description: run 'spack concretize -f' in an environment and install specs
     executor: generic.local.sh
     spack:
       root: $HOME/spack/
@@ -53,9 +67,25 @@ buildspecs:
       install:
         options: '--cache-only'
 
+  env_mirror:
+    type: spack
+    executor: generic.local.sh
+    description: declare spack mirror 'spack mirror add h5 /path/to/mirror' in environment
+    spack:
+      root: $HOME/spack/
+      env:
+        mirror:
+          h5: /path/to/mirror
+        create:
+          name: myproject
+          manifest: $HOME/spack.yaml
+      install:
+        options: '--cache-only'
+
   install_without_env:
     type: spack
     executor: generic.local.sh
+    description: install specs without environment
     spack:
       root: $HOME/spack/
       install:
@@ -66,6 +96,7 @@ buildspecs:
   pre_post_cmd_spack_install:
     type: spack
     executor: generic.local.sh
+    description: run commands before and after spack using pre_cmds and post_cmds
     pre_cmds: |
       cd $HOME
       git clone https://github.com/spack/spack
@@ -74,6 +105,5 @@ buildspecs:
       install:
         options: '--cache-only'
         specs: ['m4', 'bzip2']
-
     post_cmds: |
       spack find

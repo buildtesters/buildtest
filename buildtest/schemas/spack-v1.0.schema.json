@@ -55,6 +55,9 @@
       "type": "string",
       "description": "Shell commands run after spack"
     },
+    "status": {
+      "$ref": "definitions.schema.json#/definitions/status"
+    },
     "spack":
     {
       "type": "object",
@@ -62,8 +65,17 @@
       "additionalProperties": false,
       "properties": {
         "root": {"type": "string"},
+        "compiler_find": {
+          "type":  "boolean",
+          "description": "Run ``spack compiler find`` if set to ``True``. This is run right after sourcing spack startup script."
+        },
         "env": {"$ref":  "#definitions/env"},
-        "install": {"$ref":  "#definitions/install"}
+        "install": {"$ref":  "#definitions/install"},
+        "verify_spack": {
+          "type": "boolean",
+          "description": "This boolean will determine if we need to check for file existence where spack is cloned via ``root`` property and file **$SPACK_ROOT/share/spack/setup-env.sh** exists. These checks can be disabled by setting this to ``False`` which can be useful if you dont want buildtest to raise exception during test generation process and test is skipped.",
+          "default": true
+        }
       }
     }
   },
@@ -72,14 +84,25 @@
       "type": "object",
       "properties": {
         "create": {
+          "description": "Create a spack environment via ``spack env create``",
           "type": "object",
           "properties": {
             "name": {"type": "string"},
             "manifest": {"type": "string"},
-            "options": {"type": "string"},
-            "dir": {"type": "string"}
+            "options": {"type": "string", "description": "Options passed to ``spack env create``"},
+            "dir": {"type": "string", "description": "Create a spack environment in a specific directory"}
           }
         },
+        "activate": {
+          "type": "object",
+          "description": "Activate a spack environment via ``spack env activate``",
+          "properties": {
+            "name": {"type": "string", "description": "Name of spack environment to activate."},
+            "options": {"type": "string", "description": "Options passed to ``spack env activate``"},
+            "dir": {"type": "string", "description": "Activate spack environment from directory."}
+          }
+        },
+        "mirror": {"$ref": "definitions.schema.json#/definitions/env"},
         "specs": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
         "concretize": {"type": "boolean"}
       }
@@ -87,8 +110,14 @@
     "install": {
       "type": "object",
       "properties": {
-        "options": {"type": "string"},
-        "specs": {"$ref": "definitions.schema.json#/definitions/list_of_strings"}
+        "options": {
+          "type": "string",
+          "description": "Pass options to ``spack install`` command"
+        },
+        "specs": {
+          "$ref": "definitions.schema.json#/definitions/list_of_strings",
+          "description":  "List of specs to install using ``spack install`` command"
+        }
       }
     }
   }

@@ -5,17 +5,19 @@ from buildtest.schemas.utils import load_schema
 here = os.path.dirname(os.path.abspath(__file__))
 
 schema_table = {}
-schema_table["types"] = ["script", "compiler"]
+schema_table["types"] = ["script", "compiler", "spack"]
 schema_table["names"] = [
     "global.schema.json",
     "definitions.schema.json",
     "settings.schema.json",
     "compiler-v1.0.schema.json",
+    "spack-v1.0.schema.json",
     "script-v1.0.schema.json",
 ]
 schema_table["versions"] = {}
 schema_table["versions"]["script"] = ["1.0"]
 schema_table["versions"]["compiler"] = ["1.0"]
+schema_table["versions"]["spack"] = ["1.0"]
 
 schema_table["global.schema.json"] = {}
 schema_table["global.schema.json"]["path"] = os.path.join(here, "global.schema.json")

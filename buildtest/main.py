@@ -7,7 +7,6 @@ from buildtest.defaults import (
     BUILDTEST_USER_HOME,
     BUILDTEST_EXECUTOR_DIR,
     BUILDTEST_BUILDSPEC_DIR,
-    BUILD_HISTORY_DIR,
 )
 from buildtest.cli import get_parser
 from buildtest.cli.build import BuildTest
