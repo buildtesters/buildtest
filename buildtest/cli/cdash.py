@@ -87,7 +87,7 @@ def cdash_cmd(args, default_configuration=None, open_browser=True):
             build_name=args.buildname,
             configuration=configuration,
             site=args.site,
-            report_file=args.report_file,
+            report=args.report,
         )
 
 
@@ -102,8 +102,8 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
     :type configuration: SiteConfiguration
     :param site: site name that shows up in CDASH
     :type site: str, optional
-    :param report_file: Path to report file when uploading results. This is specified via ``buildtest cdash upload -r`` command
-    :type report_file: str, optional
+    :param report: Path to report file when uploading results. This is specified via ``buildtest cdash upload -r`` command
+    :type report: str, optional
     :return:
     """
 

@@ -394,9 +394,7 @@ def report_cmd(args):
         os.remove(BUILD_REPORT)
         return
 
-    results = Report(
-        args.filter, args.format, args.latest, args.oldest, args.report_file
-    )
+    results = Report(args.filter, args.format, args.latest, args.oldest, args.report)
     if args.helpfilter:
         results.print_filter_fields()
         return

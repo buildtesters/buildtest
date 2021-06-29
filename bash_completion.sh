@@ -35,7 +35,7 @@ _buildtest ()
   case "$next" in
     build)
       local shortoption="-b -x -t -ft -e -s -r -k"
-      local longoption="--buildspec --exclude --tags --filter-tags --executor --stage --report_file --max-pend-time --poll-interval"
+      local longoption="--buildspec --exclude --tags --filter-tags --executor --stage --report --max-pend-time --poll-interval"
       local allopts="${shortoption} ${longoption}"
 
       COMPREPLY=( $( compgen -W "$allopts" -- $cur ) )
@@ -53,7 +53,7 @@ _buildtest ()
       #COMPREPLY=( $( compgen -W "$(_buildtest_schema)" -- $cur ) );;
 
     report)
-      local opts="-h --help --helpformat --helpfilter --format --filter --latest --oldest -r --report_file clear"
+      local opts="-h --help --helpformat --helpfilter --format --filter --latest --oldest -r --report clear"
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) );;
 
     config)
@@ -70,7 +70,7 @@ _buildtest ()
       fi
       ;;
     inspect)
-      local cmds="-h --help -r --report-file name id list"
+      local cmds="-h --help -r --report name id list"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) );;
 
     buildspec)
@@ -93,7 +93,7 @@ _buildtest ()
         local opts="-h --help --url"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       elif [[ "${prev}" == "upload" ]]; then
-        local opts="-h --help --site -r --report-file"
+        local opts="-h --help --site -r --report"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       fi
       ;;
