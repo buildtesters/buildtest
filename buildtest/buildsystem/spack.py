@@ -41,7 +41,8 @@ class SpackBuilder(BuilderBase):
 
     def generate_script(self):
         """Method responsible for generating the content of test script for spack buildsystem"""
-        lines = []
+
+        lines = ["#!/bin/bash"]
 
         if self.recipe.get("sbatch"):
             lines += get_sbatch_lines(
@@ -72,7 +73,11 @@ class SpackBuilder(BuilderBase):
             )
 
         if self.recipe.get("pre_cmds"):
+            lines.append("\n")
+            lines.append("######## START OF PRE COMMANDS ######## ")
             lines += [self.recipe["pre_cmds"]]
+            lines.append("######## END OF PRE COMMANDS   ######## ")
+            lines.append("\n")
 
         spack_configuration = self.recipe["spack"]
         if spack_configuration.get("root"):
@@ -99,7 +104,11 @@ class SpackBuilder(BuilderBase):
                 lines.append(f"spack install {opts}")
 
         if self.recipe.get("post_cmds"):
+            lines.append("\n")
+            lines.append("######## START OF POST COMMANDS ######## ")
             lines += [self.recipe["post_cmds"]]
+            lines.append("######## END OF POST COMMANDS   ######## ")
+            lines.append("\n")
 
         return lines
 
@@ -144,12 +153,13 @@ class SpackBuilder(BuilderBase):
                 cmd += ["-d", env_dir]
 
             if spack_env["create"].get("manifest"):
-                manifest = resolve_path(spack_env["create"]["manifest"])
+                manifest = resolve_path(spack_env["create"]["manifest"], exist=False)
+                """
                 if not manifest:
                     raise BuildTestError(
                         f"Unable to find manifest file based on input: {spack_env['create']['manifest']}"
                     )
-
+                """
                 cmd.append(manifest)
 
             spack_env_create_line = " ".join(cmd)

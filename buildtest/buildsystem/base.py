@@ -351,14 +351,39 @@ class BuilderBase(ABC):
 
         return [self.shell.name, self.shell.opts, self.metadata["testpath"]]
 
+    def _default_test_variables(self):
+        """Return a list of lines inserted in testscript that define buildtest specific variables
+        that can be referenced when writing tests. The buildtest variables all start with BUILDTEST_*
+        """
+
+        lines = []
+        lines.append("\n")
+        lines.append(
+            "############# START VARIABLE DECLARATION ########################"
+        )
+        lines.append(f"export BUILDTEST_TEST_NAME={self.name}")
+        lines.append(f"export BUILDTEST_TEST_ROOT={self.test_root}")
+        lines.append(
+            f"export BUILDTEST_BUILDSPEC_DIR={os.path.dirname(self.buildspec)}"
+        )
+        lines.append(f"export BUILDTEST_STAGE_DIR={self.stage_dir}")
+        lines.append(f"export BUILDTEST_TEST_ID={self.metadata['full_id']}")
+        lines.append(
+            "############# END VARIABLE DECLARATION   ########################"
+        )
+        lines.append("\n")
+        return lines
+
     def _write_build_script(self):
         """This method will write the build script used for running the test"""
 
         lines = ["#!/bin/bash"]
+        lines += self._default_test_variables()
         lines += [
             f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"
         ]
 
+        lines.append("# Run generated script")
         # local executor
         if self.buildexecutor.executors[self.executor].type == "local":
             cmd = self._emit_command()
@@ -369,8 +394,12 @@ class BuilderBase(ABC):
             launcher = self.buildexecutor.executors[self.executor].launcher_command()
             lines += [" ".join(launcher) + " " + f"{self.metadata['testpath']}"]
 
-        lines += ["returncode=$?"]
-        lines += ["exit $returncode"]
+        lines.append("\n")
+        lines.append("# Get return code")
+        lines.append("returncode=$?")
+        lines.append("\n")
+        lines.append("# Exit with return code")
+        lines.append("exit $returncode")
 
         lines = "\n".join(lines)
         write_file(self.build_script, lines)
