@@ -1,0 +1,21 @@
+version: "1.0"
+buildspecs:
+  install_m4_zlib_in_spack_env:
+    type: spack
+    executor: generic.local.sh
+    description: "Install m4 and zlib in a spack environment named m4_zlib"
+    tags: [spack]
+    spack:
+      root: $HOME/spack
+      compiler_find: true
+      env:
+        create:
+          name: 'm4_zlib'
+        specs:
+          - 'm4'
+          - 'zlib'
+        activate:
+          name: m4_zlib
+        concretize: true
+      install:
+        option: '--keep-prefix'

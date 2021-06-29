@@ -165,7 +165,7 @@ class BuildspecParser:
             recipe=self.recipe, schema=schema_table["global.schema.json"]["recipe"]
         )
 
-        self.schema_version = self.recipe.get("version", "latest")
+        self.schema_version = self.recipe.get("version")
 
         assert isinstance(self.recipe.get("buildspecs"), dict)
 

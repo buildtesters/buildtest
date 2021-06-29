@@ -1,0 +1,30 @@
+version: "1.0"
+buildspecs:
+  missing_root_to_spack:
+    type: spack
+    executor: generic.local.sh
+    description: 'root property required to run source $SPACK_ROOT/share/spack/setup-env.sh'
+    spack:
+      env:
+        create:
+          name: myproject
+        specs:
+          - m4
+          - zlib
+      install:
+        options: ''
+
+  specs_must_be_list_of_strings:
+    type: spack
+    executor: generic.local.sh
+    description: 'specs must be a list of strings '
+    spack:
+      root: $HOME/spack
+      env:
+        create:
+          name: myproject
+        specs:
+          - 1
+          - zlib
+      install:
+        options: ''

@@ -1,0 +1,11 @@
+version: "1.0"
+buildspecs:
+  install_zlib:
+    type: spack
+    executor: generic.local.sh
+    description: "Install zlib"
+    tags: [spack]
+    spack:
+      root: $HOME/spack
+      install:
+        specs: ['zlib']

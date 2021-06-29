@@ -1,0 +1,16 @@
+version: "1.0"
+buildspecs:
+  spack_env_create_from_manifest:
+    type: spack
+    executor: generic.local.sh
+    description: "Create spack environment from spack.yaml"
+    tags: [spack]
+    spack:
+      root: $HOME/spack
+      env:
+        create:
+          name: 'manifest_example'
+          manifest: "$BUILDTEST_ROOT/tutorials/spack/example/spack.yaml"
+        activate:
+          name: 'manifest_example'
+        concretize: true

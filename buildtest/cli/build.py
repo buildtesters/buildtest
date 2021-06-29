@@ -700,6 +700,8 @@ class BuildTest:
 
         for field in ["name", "id", "type", "executor", "tags", "testpath"]:
             table["script"][field] = []
+            table["spack"][field] = []
+
         for field in ["name", "id", "type", "executor", "tags", "compiler", "testpath"]:
             table["compiler"][field] = []
 
@@ -872,6 +874,27 @@ class BuildTest:
 
         print("\n")
 
+        # if we have any tests using 'script' schema we print all tests together since table columns are different
+        if len(table["spack"]["name"]) > 0:
+
+            headers = table["spack"].keys()
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                headers = list(
+                    map(
+                        lambda x: colored(x, "blue", attrs=["bold"]),
+                        table["spack"].keys(),
+                    )
+                )
+
+            print(
+                tabulate(
+                    table["spack"],
+                    headers=headers,
+                    tablefmt="presto",
+                )
+            )
+
+        print("\n")
         # if we have any tests using 'compiler' schema we print all tests together since table columns are different
         if len(table["compiler"]["name"]) > 0:
 

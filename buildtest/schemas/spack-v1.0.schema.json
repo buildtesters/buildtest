@@ -1,0 +1,124 @@
+{
+  "$id": "spack-v1.0.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "spack schema version 1.0",
+  "description": "The spack schema is referenced using ``type: spack`` which is used for generating tests using spack package manager",
+  "type": "object",
+  "required": [
+    "type",
+    "executor",
+    "spack"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "pattern": "^spack$",
+      "description": "Select schema type to use when validating buildspec. This must be set to 'spack'"
+    },
+    "description": {
+      "$ref": "definitions.schema.json#/definitions/description"
+    },
+    "executor": {
+      "$ref": "definitions.schema.json#/definitions/executor"
+    },
+    "sbatch": {
+      "$ref": "definitions.schema.json#/definitions/list_of_strings",
+      "description": "This field is used for specifying #SBATCH options in test script."
+    },
+    "bsub": {
+      "$ref": "definitions.schema.json#/definitions/list_of_strings",
+      "description": "This field is used for specifying #BSUB options in test script."
+    },
+    "cobalt": {
+      "$ref": "definitions.schema.json#/definitions/list_of_strings",
+      "description": "This field is used for specifying #COBALT options in test script."
+    },
+     "pbs": {
+      "$ref": "definitions.schema.json#/definitions/list_of_strings",
+      "description": "This field is used for specifying #PBS directives in test script."
+    },
+    "batch": {
+      "$ref": "definitions.schema.json#/definitions/batch"
+    },
+    "skip": {
+      "$ref": "definitions.schema.json#/definitions/skip"
+    },
+    "tags": {
+      "$ref": "definitions.schema.json#/definitions/tags"
+    },
+    "pre_cmds": {
+      "type": "string",
+      "description": "Shell commands run before spack"
+    },
+    "post_cmds": {
+      "type": "string",
+      "description": "Shell commands run after spack"
+    },
+    "status": {
+      "$ref": "definitions.schema.json#/definitions/status"
+    },
+    "spack":
+    {
+      "type": "object",
+      "required": ["root"],
+      "additionalProperties": false,
+      "properties": {
+        "root": {"type": "string"},
+        "compiler_find": {
+          "type":  "boolean",
+          "description": "Run ``spack compiler find`` if set to ``True``. This is run right after sourcing spack startup script."
+        },
+        "env": {"$ref":  "#definitions/env"},
+        "install": {"$ref":  "#definitions/install"},
+        "verify_spack": {
+          "type": "boolean",
+          "description": "This boolean will determine if we need to check for file existence where spack is cloned via ``root`` property and file **$SPACK_ROOT/share/spack/setup-env.sh** exists. These checks can be disabled by setting this to ``False`` which can be useful if you dont want buildtest to raise exception during test generation process and test is skipped.",
+          "default": true
+        }
+      }
+    }
+  },
+  "definitions": {
+    "env": {
+      "type": "object",
+      "properties": {
+        "create": {
+          "description": "Create a spack environment via ``spack env create``",
+          "type": "object",
+          "properties": {
+            "name": {"type": "string"},
+            "manifest": {"type": "string"},
+            "options": {"type": "string", "description": "Options passed to ``spack env create``"},
+            "dir": {"type": "string", "description": "Create a spack environment in a specific directory"}
+          }
+        },
+        "activate": {
+          "type": "object",
+          "description": "Activate a spack environment via ``spack env activate``",
+          "properties": {
+            "name": {"type": "string", "description": "Name of spack environment to activate."},
+            "options": {"type": "string", "description": "Options passed to ``spack env activate``"},
+            "dir": {"type": "string", "description": "Activate spack environment from directory."}
+          }
+        },
+        "mirror": {"$ref": "definitions.schema.json#/definitions/env"},
+        "specs": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
+        "concretize": {"type": "boolean"}
+      }
+    },
+    "install": {
+      "type": "object",
+      "properties": {
+        "options": {
+          "type": "string",
+          "description": "Pass options to ``spack install`` command"
+        },
+        "specs": {
+          "$ref": "definitions.schema.json#/definitions/list_of_strings",
+          "description":  "List of specs to install using ``spack install`` command"
+        }
+      }
+    }
+  }
+}
