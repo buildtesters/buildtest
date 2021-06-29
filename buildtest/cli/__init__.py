@@ -192,7 +192,7 @@ def build_menu(subparsers):
 
     parser_build.add_argument(
         "-r",
-        "--report_file",
+        "--report",
         help="Specify a report file where tests will be written.",
     )
     parser_build.add_argument(
@@ -408,7 +408,7 @@ def report_menu(subparsers):
 
     parser_report.add_argument(
         "-r",
-        "--report_file",
+        "--report",
         help="Specify a report file to read",
         default=BUILD_REPORT,
     )
@@ -421,7 +421,7 @@ def inspect_menu(subparsers):
         "inspect", help="Inspect a test based on NAME or ID "
     )
     parser_inspect.add_argument(
-        "-r", "--report-file", help="Specify a report file to load when inspecting test"
+        "-r", "--report", help="Specify a report file to load when inspecting test"
     )
     subparser = parser_inspect.add_subparsers(
         description="Inspect Test result based on Test ID or Test Name",
@@ -477,5 +477,5 @@ def cdash_menu(subparsers):
     upload.add_argument("--site", help="Specify site name reported in CDASH")
     upload.add_argument("buildname", help="Specify Build Name reported in CDASH")
     upload.add_argument(
-        "-r", "--report-file", help="Path to report file to upload test results"
+        "-r", "--report", help="Path to report file to upload test results"
     )

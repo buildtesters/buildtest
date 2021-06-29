@@ -67,7 +67,7 @@ def main():
             stage=args.stage,
             testdir=args.testdir,
             buildtest_system=system,
-            report_file=args.report_file,
+            report_file=args.report,
             max_pend_time=args.max_pend_time,
             poll_interval=args.poll_interval,
             keep_stage_dir=args.keep_stage_dir,
@@ -84,14 +84,13 @@ def main():
 
         buildspec_find(args=args, configuration=configuration)
 
-    elif args.subcommands == "docs":
-        webbrowser.open("https://buildtest.readthedocs.io/")
-
-    elif args.subcommands == "schemadocs":
-        webbrowser.open("https://buildtesters.github.io/buildtest/")
-
     # running buildtest inspect
     elif args.subcommands == "inspect":
+
+        # if no sub-commands specified return immediately.
+        if not args.inspect:
+            return
+
         from buildtest.cli.inspect import inspect_cmd
 
         inspect_cmd(args)
@@ -125,6 +124,12 @@ def main():
         from buildtest.cli.cdash import cdash_cmd
 
         cdash_cmd(args, default_configuration=configuration)
+
+    elif args.subcommands == "docs":
+        webbrowser.open("https://buildtest.readthedocs.io/")
+
+    elif args.subcommands == "schemadocs":
+        webbrowser.open("https://buildtesters.github.io/buildtest/")
 
 
 if __name__ == "__main__":

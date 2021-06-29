@@ -14,7 +14,10 @@ from buildtest.utils.file import load_json, resolve_path
 def inspect_cmd(args):
     """Entry point for ``buildtest inspect`` command"""
 
-    report_file = resolve_path(args.report_file) or BUILD_REPORT
+    report_file = BUILD_REPORT
+    if args.report:
+
+        report_file = resolve_path(args.report)
 
     report = load_json(report_file)
 
