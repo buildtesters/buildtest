@@ -6,6 +6,12 @@ schema definition 'spack-v1.0.schema.json' that defines how buildspecs are writt
 import os
 
 from buildtest.buildsystem.base import BuilderBase
+from buildtest.buildsystem.batch import (
+    get_sbatch_lines,
+    get_bsub_lines,
+    get_cobalt_lines,
+    get_pbs_lines,
+)
 from buildtest.utils.file import resolve_path
 from buildtest.exceptions import BuildTestError
 
@@ -36,15 +42,35 @@ class SpackBuilder(BuilderBase):
     def generate_script(self):
         """Method responsible for generating the content of test script for spack buildsystem"""
         lines = []
-        """
-        lines += self._get_scheduler_directives(
-            bsub=self.recipe.get("bsub"),
-            sbatch=self.recipe.get("sbatch"),
-            cobalt=self.recipe.get("cobalt"),
-            pbs=self.recipe.get("pbs"),
-            batch=self.recipe.get("batch"),
-        )
-        """
+
+        if self.recipe.get("sbatch"):
+            lines += get_sbatch_lines(
+                name=self.name,
+                sbatch=self.recipe.get("sbatch"),
+                batch=self.recipe.get("batch"),
+            )
+
+        if self.recipe.get("bsub"):
+            lines += get_bsub_lines(
+                name=self.name,
+                bsub=self.recipe.get("bsub"),
+                batch=self.recipe.get("batch"),
+            )
+
+        if self.recipe.get("pbs"):
+            lines += get_pbs_lines(
+                name=self.name,
+                pbs=self.recipe.get("pbs"),
+                batch=self.recipe.get("batch"),
+            )
+
+        if self.recipe.get("cobalt"):
+            lines += get_cobalt_lines(
+                name=self.name,
+                cobalt=self.recipe.get("cobalt"),
+                batch=self.recipe.get("batch"),
+            )
+
         if self.recipe.get("pre_cmds"):
             lines += [self.recipe["pre_cmds"]]
 
@@ -65,6 +91,7 @@ class SpackBuilder(BuilderBase):
 
         if spack_configuration.get("install"):
             opts = spack_configuration["install"].get("option") or ""
+            print(opts, spack_configuration["install"].get("option"))
             if spack_configuration["install"].get("specs"):
                 for spec in spack_configuration["install"]["specs"]:
                     lines.append(f"spack install {opts} {spec}")
@@ -97,6 +124,10 @@ class SpackBuilder(BuilderBase):
         return sourced_script
 
     def _spack_environment(self, spack_env):
+        """This method is responsible for  creating a spack environment, activate an existing
+        spack environment, create a spack environment from a directory and a manifest file (spack.yaml, spack.lock)
+        """
+
         # create spack environment ('spack env create')
         lines = []
         if spack_env.get("create"):

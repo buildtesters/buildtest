@@ -9,4 +9,3 @@ buildspecs:
       root: $HOME/spack
       install:
         specs: ['zlib']
-        option: '-v'
