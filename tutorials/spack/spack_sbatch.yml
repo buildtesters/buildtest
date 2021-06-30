@@ -1,0 +1,19 @@
+version: "1.0"
+buildspecs:
+  spack_sbatch_example:
+    type: spack
+    executor: generic.local.sh
+    description: "sbatch directives can be defined in spack schema"
+    tags: [spack]
+    sbatch: ["-N 1"]
+    batch:
+      cpucount: "8"
+      timelimit: "30"
+    spack:
+      root: $HOME/spack
+      env:
+        specs:
+          - 'm4'
+        activate:
+          name: m4
+        concretize: true
