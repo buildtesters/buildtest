@@ -69,8 +69,9 @@
           "type":  "boolean",
           "description": "Run ``spack compiler find`` if set to ``True``. This is run right after sourcing spack startup script."
         },
-        "env": {"$ref":  "#definitions/env"},
-        "install": {"$ref":  "#definitions/install"},
+        "mirror": {"$ref": "definitions.schema.json#/definitions/env", "description": "Add mirror by running ``spack mirror add``" },
+        "env": {"$ref":  "#definitions/env", "description": "Manage spack environments via ``spack env`` command"},
+        "install": {"$ref":  "#definitions/install", "description": "Install spack packages by running ``spack install``. "},
         "verify_spack": {
           "type": "boolean",
           "description": "This boolean will determine if we need to check for file existence where spack is cloned via ``root`` property and file **$SPACK_ROOT/share/spack/setup-env.sh** exists. These checks can be disabled by setting this to ``False`` which can be useful if you dont want buildtest to raise exception during test generation process and test is skipped.",
@@ -87,8 +88,8 @@
           "description": "Create a spack environment via ``spack env create``",
           "type": "object",
           "properties": {
-            "name": {"type": "string"},
-            "manifest": {"type": "string"},
+            "name": {"type": "string", "description": "Name of spack environment"},
+            "manifest": {"type": "string", "description": "Specify path to spack manifest file (spack.yaml or spack.lock) when creating environment"},
             "options": {"type": "string", "description": "Options passed to ``spack env create``"},
             "dir": {"type": "string", "description": "Create a spack environment in a specific directory"}
           }
@@ -102,9 +103,9 @@
             "dir": {"type": "string", "description": "Activate spack environment from directory."}
           }
         },
-        "mirror": {"$ref": "definitions.schema.json#/definitions/env"},
-        "specs": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
-        "concretize": {"type": "boolean"}
+        "mirror": {"$ref": "definitions.schema.json#/definitions/env", "description": "Add mirror in spack environment by running ``spack mirror add``" },
+        "specs": {"$ref": "definitions.schema.json#/definitions/list_of_strings", "description": "Add specs to environment by running ``spack add <specs>``. The ``specs`` is a list of string which expect the argument to be name of spack package."},
+        "concretize": {"type": "boolean", "description": "Concretize spack environment by running ``spack concretize -f``"}
       }
     },
     "install": {

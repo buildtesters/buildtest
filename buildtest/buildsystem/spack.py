@@ -71,6 +71,11 @@ class SpackBuilder(BuilderBase):
         if spack_configuration.get("compiler_find"):
             lines.append("spack compiler find")
 
+        # add spack mirror if mirror field is specified
+        if spack_configuration.get("mirror"):
+            for mirror_name, mirror_location in spack_configuration["mirror"].items():
+                lines.append(f"spack mirror add {mirror_name} {mirror_location}")
+
         if spack_configuration.get("env"):
             lines += self._spack_environment(spack_configuration["env"])
 
@@ -165,6 +170,11 @@ class SpackBuilder(BuilderBase):
 
             spack_env_activate_line = " ".join(cmd)
             lines.append(spack_env_activate_line)
+
+        # add spack mirror if mirror field is specified
+        if spack_env.get("mirror"):
+            for mirror_name, mirror_location in spack_env["mirror"].items():
+                lines.append(f"spack mirror add {mirror_name} {mirror_location}")
 
         if spack_env.get("specs"):
             for spec in spack_env["specs"]:

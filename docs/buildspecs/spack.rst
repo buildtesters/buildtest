@@ -294,7 +294,9 @@ files based on name of test. If we build this test, and inspect the generated te
 **#SBATCH** directives are written based on the **sbatch** and **batch** field.
 
 .. code-block:: shell
-    :emphasize-lines: 1-8
+    :emphasize-lines: 3-10
+
+    #!/bin/bash
 
     ####### START OF SCHEDULER DIRECTIVES #######
     #SBATCH -N 1
@@ -310,3 +312,48 @@ files based on name of test. If we build this test, and inspect the generated te
     spack env activate  m4
     spack add m4
     spack concretize -f
+
+Configuring Spack Mirrors
+--------------------------
+
+We can add `mirrors <https://spack.readthedocs.io/en/latest/mirrors.html>`_ in the
+spack instance or spack environment using the ``mirror`` property which is an available field
+for the `spack`` and ``env`` property. If the ``mirrror`` field is part of the ``env`` object, the
+mirror will be added to spack environment. The ``mirror`` is an object that expects a Key/Value pair where
+the key is the name of mirror and value is location of the spack mirror.
+
+In this next example,  we will define a mirror name **e4s** that points to https://cache.e4s.io as the mirror location.
+Internally, this translates to ``spack mirror add e4s https://cache.e4s.io`` command.
+
+.. program-output:: cat ../tutorials/spack/mirror_example.yml
+
+
+If we look at the generated script for both tests, we see that mirror is added for both tests. Note that
+one can have mirrors defined in their ``spack.yaml`` or one of the `configuration scopes <https://spack.readthedocs.io/en/latest/configuration.html#configuration-scopes>`_
+defined by spack.
+
+.. code-block:: shell
+    :emphasize-lines: 3
+
+    #!/bin/bash
+    source /Users/siddiq90/spack/share/spack/setup-env.sh
+    spack mirror add e4s https://cache.e4s.io
+
+
+    ######## START OF POST COMMANDS ########
+    spack mirror list
+    ######## END OF POST COMMANDS   ########
+
+.. code-block:: shell
+    :emphasize-lines: 5
+
+    #!/bin/bash
+    source /Users/siddiq90/spack/share/spack/setup-env.sh
+    spack env create  spack_mirror
+    spack env activate  spack_mirror
+    spack mirror add e4s https://cache.e4s.io
+
+
+    ######## START OF POST COMMANDS ########
+    spack mirror list
+    ######## END OF POST COMMANDS   ########
