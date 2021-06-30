@@ -109,4 +109,4 @@ _buildtest ()
   esac
 }
 
-complete -F _buildtest buildtest
+complete -o default -F _buildtest buildtest
