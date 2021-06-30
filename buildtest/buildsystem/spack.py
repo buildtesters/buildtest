@@ -71,6 +71,11 @@ class SpackBuilder(BuilderBase):
         if spack_configuration.get("compiler_find"):
             lines.append("spack compiler find")
 
+        # add spack mirror if mirror field is specified
+        if spack_configuration.get("mirror"):
+            for mirror_name, mirror_location in spack_configuration["mirror"].items():
+                lines.append(f"spack mirror add {mirror_name} {mirror_location}")
+
         if spack_configuration.get("env"):
             lines += self._spack_environment(spack_configuration["env"])
 
@@ -119,12 +124,22 @@ class SpackBuilder(BuilderBase):
 
         # create spack environment ('spack env create')
         lines = []
+
+        if spack_env.get("rm"):
+            lines.append(f"spack env rm -y {spack_env['rm']['name']}")
+
         if spack_env.get("create"):
+
             opts = spack_env["create"].get("options") or ""
             cmd = ["spack env create", opts]
 
             # create spack environment from name
             if spack_env["create"].get("name"):
+
+                # if remove_environment is defined we remove the environment before creating it
+                if spack_env["create"].get("remove_environment"):
+                    lines.append(f"spack env rm -y {spack_env['create']['name']}")
+
                 cmd.append(spack_env["create"]["name"])
 
             # create spack envrionment from directory. Note we don't need to check if directory exist because spack will create the directory via `spack env create -d <dir>`
@@ -165,6 +180,11 @@ class SpackBuilder(BuilderBase):
 
             spack_env_activate_line = " ".join(cmd)
             lines.append(spack_env_activate_line)
+
+        # add spack mirror if mirror field is specified
+        if spack_env.get("mirror"):
+            for mirror_name, mirror_location in spack_env["mirror"].items():
+                lines.append(f"spack mirror add {mirror_name} {mirror_location}")
 
         if spack_env.get("specs"):
             for spec in spack_env["specs"]:

@@ -1,0 +1,31 @@
+version: "1.0"
+buildspecs:
+  add_mirror:
+    type: spack
+    executor: generic.local.sh
+    description: Declare spack mirror
+    tags: [spack]
+    spack:
+      root: $HOME/spack
+      mirror:
+        e4s: https://cache.e4s.io
+    post_cmds: |
+      spack mirror list
+
+
+  add_mirror_in_spack_env:
+    type: spack
+    executor: generic.local.sh
+    description: Declare spack mirror in spack environment
+    tags: [spack]
+    spack:
+      root: $HOME/spack
+      env:
+        create:
+          name: spack_mirror
+        activate:
+          name: spack_mirror
+        mirror:
+          e4s: https://cache.e4s.io
+    post_cmds: |
+      spack mirror list
