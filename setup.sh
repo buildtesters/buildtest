@@ -42,6 +42,9 @@ bin=${buildtest_root}/bin
 export BUILDTEST_ROOT=$buildtest_root
 export PATH=${bin}:$PATH
 
+# enable bash completion script 
+source $BUILDTEST_ROOT/bash_completion.sh
+
 # add PYTHONPATH for $BUILDTEST_ROOT and $BUILDTEST_ROOT/.packages to persist in shell environment
 export PYTHONPATH=${BUILDTEST_ROOT}/.packages:$BUILDTEST_ROOT:$PYTHONPATH
 
