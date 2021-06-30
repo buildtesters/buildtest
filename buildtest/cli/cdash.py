@@ -87,7 +87,7 @@ def cdash_cmd(args, default_configuration=None, open_browser=True):
             build_name=args.buildname,
             configuration=configuration,
             site=args.site,
-            report=args.report,
+            report_file=args.report,
         )
 
 
