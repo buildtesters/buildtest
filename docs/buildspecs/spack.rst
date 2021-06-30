@@ -32,9 +32,9 @@ Install Specs
 Let's start off with a simple example where we create a test that can ``spack install zlib``. Shown below
 is a test named **install_zlib**. The **spack** keyword is a JSON object, in this test we define the root
 of spack using the ``root`` keyword which informs buildtest where spack is located. buildtest will automatically
-check the path and source the startup script. Next we see the keyword ``install`` which is a JSON object which
-contains a field ``specs`` which is a list of spack specs to install. The ``specs`` is property is a list of string types
-and each item will added as a separate command as follows: ``spack install <spec>``
+check the path and source the startup script. The ``install`` field is a JSON object that
+contains a ``specs`` property which is a list of strings types that are name of spack packages to install. Each item in the
+``specs`` property will be added as a separate ``spack install`` command.
 
 The schema is designed to mimic spack commands which will be clear with more examples.
 
@@ -59,7 +59,8 @@ can be useful if you want to install or test specs in an isolated environment.
 
 Currently, we can create spack environment (``spack env create``) via name, directory and manifest file (``spack.yaml``, ``spack.lock``) and pass any
 options to **spack env create** command. Furthermore, we can activate existing spack environment via name or directory using
-``spack env activate`` and pass options to the command.
+``spack env activate`` and pass options to the command. buildtest can remove spack environments automatically before creating spack environment
+or one can explicitly specify by name.
 
 Activate Spack Environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -122,6 +123,7 @@ spack environment `m4_zlib` and activate the environment, add **m4** and **zlib*
 concretize the environment and install the specs.
 
 .. code-block:: shell
+    :emphasize-lines: 4
 
     #!/bin/bash
     source /Users/siddiq90/spack/share/spack/setup-env.sh
@@ -195,11 +197,13 @@ buildtest will create environment first followed by activating the spack environ
 Create Spack Environment from Manifest File (spack.yaml, spack.lock)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Spack can create environments from `spack.yaml` or `spack.lock` which can be useful if you
-already have a spack configuration that works for your system. When you are creating a spack
-environment, you can use the ``manifest`` property to specify path to your ``spack.yaml`` or ``spack.lock``.
-buildtest will not enforce that manifest names be **spack.yaml** or **spack.lock** since spack allows
-one to create spack environment from arbitrary name so long as it is a valid spack configuration.
+Spack can create environments from `spack.yaml` or `spack.lock` which can be used if you
+have a spack configuration that works for your system and want to write a buildspec. While creating a spack environment,
+you can use the ``manifest`` property to specify path to your ``spack.yaml`` or ``spack.lock``.
+
+.. note::
+    buildtest will not enforce that manifest names be **spack.yaml** or **spack.lock** since spack allows
+    one to create spack environment from arbitrary name so long as it is a valid spack configuration.
 
 Shown below is an example buildspec that generates a test from a manifest file. The ``manifest`` property
 is of ``type: string`` and this is only available as part of ``create`` property.
@@ -216,6 +220,45 @@ will create an environment **manifest_example** using the manifest file that we 
     source /Users/siddiq90/spack/share/spack/setup-env.sh
     spack env create  manifest_example /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/spack/example/spack.yaml
     spack env activate  manifest_example
+    spack concretize -f
+
+Removing Spack Environments
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+buildtest can remove spack environments which can be used if you are periodically running the same test where one is
+creating the same environment. buildtest can automatically remove spack environment using the property ``remove_environment``
+which will remove the environment before creating it with same name. This field is part of the ``create`` field and only works if
+one is creating spack environments by name.
+
+Alternately, buildtest provides the ``rm`` field which can be used for removing environment explicitly. In the ``rm``
+field, the ``name`` is a required field which is the name of the spack environment to remove. The ``name`` field is of ``type: string``
+Shown below are two example tests where we remove spack environment using the **remove_environment** and **rm** field.
+
+
+.. program-output:: cat ../tutorials/spack/remove_environment_example.yml
+
+If we look at the generated test, we notice that spack will remove environments names: **remove_environment**, **dummy**.
+
+.. code-block:: shell
+    :emphasize-lines: 3
+
+    #!/bin/bash
+    source /Users/siddiq90/spack/share/spack/setup-env.sh
+    spack env rm -y remove_environment
+    spack env create  remove_environment
+    spack env activate  remove_environment
+    spack add bzip2
+    spack concretize -f
+
+.. code-block:: shell
+    :emphasize-lines: 3
+
+    #!/bin/bash
+    source /Users/siddiq90/spack/share/spack/setup-env.sh
+    spack env rm -y dummy
+    spack env create  dummy
+    spack env activate  dummy
+    spack add bzip2
     spack concretize -f
 
 Pre and Post Commands
@@ -317,8 +360,8 @@ Configuring Spack Mirrors
 --------------------------
 
 We can add `mirrors <https://spack.readthedocs.io/en/latest/mirrors.html>`_ in the
-spack instance or spack environment using the ``mirror`` property which is an available field
-for the `spack`` and ``env`` property. If the ``mirrror`` field is part of the ``env`` object, the
+spack instance or spack environment using the ``mirror`` property which is available
+in the ``spack`` and ``env`` section. If the ``mirrror`` property is part of the ``env`` section, the
 mirror will be added to spack environment. The ``mirror`` is an object that expects a Key/Value pair where
 the key is the name of mirror and value is location of the spack mirror.
 

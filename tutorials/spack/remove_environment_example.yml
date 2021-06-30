@@ -1,0 +1,36 @@
+version: "1.0"
+buildspecs:
+  remove_environment_automatically:
+    type: spack
+    executor: generic.local.sh
+    description: "remove spack environment automatically before creating a new environment"
+    tags: [spack]
+    spack:
+      root: $HOME/spack
+      env:
+        create:
+          remove_environment: true
+          name: remove_environment
+        activate:
+          name: remove_environment
+        specs:
+          - 'bzip2'
+        concretize: true
+
+  remove_environment_explicit:
+    type: spack
+    executor: generic.local.sh
+    description: "remove spack environment explicitly using the 'rm' property"
+    tags: [spack]
+    spack:
+      root: $HOME/spack
+      env:
+        rm:
+          name: dummy
+        create:
+          name: dummy
+        activate:
+          name: dummy
+        specs:
+          - 'bzip2'
+        concretize: true

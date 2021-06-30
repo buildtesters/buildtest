@@ -82,12 +82,19 @@
   },
   "definitions": {
     "env": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "create": {
+          "additionalProperties": false,
           "description": "Create a spack environment via ``spack env create``",
           "type": "object",
           "properties": {
+            "remove_environment": {
+              "type": "boolean",
+              "description": "Remove existing spack environment before creating new environment",
+              "default": false
+            },
             "name": {"type": "string", "description": "Name of spack environment"},
             "manifest": {"type": "string", "description": "Specify path to spack manifest file (spack.yaml or spack.lock) when creating environment"},
             "options": {"type": "string", "description": "Options passed to ``spack env create``"},
@@ -95,6 +102,7 @@
           }
         },
         "activate": {
+          "additionalProperties": false,
           "type": "object",
           "description": "Activate a spack environment via ``spack env activate``",
           "properties": {
@@ -103,12 +111,21 @@
             "dir": {"type": "string", "description": "Activate spack environment from directory."}
           }
         },
+        "rm": {
+          "additionalProperties": false,
+          "type": "object",
+          "required": ["name"],
+          "properties": {
+            "name": {"type": "string", "description": "Remove spack environment by name. This will run ``spack env rm -y <name>``."}
+          }
+        },
         "mirror": {"$ref": "definitions.schema.json#/definitions/env", "description": "Add mirror in spack environment by running ``spack mirror add``" },
         "specs": {"$ref": "definitions.schema.json#/definitions/list_of_strings", "description": "Add specs to environment by running ``spack add <specs>``. The ``specs`` is a list of string which expect the argument to be name of spack package."},
         "concretize": {"type": "boolean", "description": "Concretize spack environment by running ``spack concretize -f``"}
       }
     },
     "install": {
+      "additionalProperties": false,
       "type": "object",
       "properties": {
         "options": {
