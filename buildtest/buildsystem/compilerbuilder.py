@@ -186,7 +186,9 @@ class CompilerBuilder(BuilderBase):
         )
 
         if batch_directives_lines:
+            lines.append("### START OF SCHEDULER DIRECTIVES ###")
             lines += batch_directives_lines
+            lines.append("### END OF SCHEDULER DIRECTIVES   ###")
 
         # get cray burst buffer (BB) and datawarp (DW) fields in order of precedence.
         for name in ["BB", "DW"]:
@@ -199,13 +201,19 @@ class CompilerBuilder(BuilderBase):
         burst_buffer_lines = self._get_burst_buffer(cray_dict["BB"])
 
         if burst_buffer_lines:
+            lines.append("### START OF BURST BUFFER DIRECTIVES ###")
             lines += burst_buffer_lines
+            lines.append("### END OF BURST BUFFER DIRECTIVES   ###")
 
         data_warp_lines = self._get_data_warp(cray_dict["DW"])
 
         if data_warp_lines:
+            lines.append("### START OF DATAWARP DIRECTIVES ###")
             lines += data_warp_lines
+            lines.append("### START OF DATAWARP DIRECTIVES ###")
 
+        lines.append("\n")
+        lines.append("# name of executable")
         lines += [self.exec_variable]
 
         lines += self._get_environment(self.envvars)
@@ -214,24 +222,41 @@ class CompilerBuilder(BuilderBase):
 
         # if 'module' defined in Buildspec add modules to test
         if self.modules:
+            lines.append("# Loading modules")
             lines += self.modules
 
         if self.pre_build:
+            lines.append("### START OF PRE BUILD SECTION ###")
             lines.append(self.pre_build)
+            lines.append("### END OF PRE BUILD SECTION   ###")
+            lines.append("\n")
 
+        lines.append("# Compilation Line")
         lines.append(self.compile_cmd)
+        lines.append("\n")
 
         if self.post_build:
+            lines.append("### START OF POST BUILD SECTION ###")
             lines.append(self.post_build)
+            lines.append("### START OF POST BUILD SECTION ###")
+            lines.append("\n")
 
         if self.pre_run:
+            lines.append("### START OF PRE RUN SECTION ###")
             lines.append(self.pre_run)
+            lines.append("### END OF PRE RUN SECTION   ###")
+            lines.append("\n")
 
         # add run command
+        lines.append("# Run executable")
         lines.append(self.run_cmd)
+        lines.append("\n")
 
         if self.post_run:
+            lines.append("### START OF POST RUN SECTION ###")
             lines.append(self.post_run)
+            lines.append("### END OF POST RUN SECTION   ###")
+            lines.append("\n")
 
         return lines
 

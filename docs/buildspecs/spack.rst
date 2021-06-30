@@ -276,3 +276,37 @@ If we inspect the output, we see that `zlib` is installed as shown in output fro
     [+] /private/tmp/spack/opt/spack/darwin-bigsur-skylake/apple-clang-11.0.3/zlib-1.2.11-2hw3hzdfy7e2ndzojgqoq472m5flsloj
     -- darwin-bigsur-skylake / apple-clang@11.0.3 -------------------
     zlib@1.2.11
+
+Specifying Scheduler Directives
+---------------------------------
+
+The spack schema supports all of the :ref:`scheduler scheduler directives <batch_support>` such
+as ``sbatch``, ``bsub``, ``pbs``, ``cobalt``, and ``batch`` property in the buildspec.
+
+The directives are applied at top of script. Shown below is a toy example that will define
+directives using **sbatch** and **batch** property. Note, this test won't submit job to scheduler
+since we are not using the a slurm executor.
+
+.. program-output:: cat ../tutorials/spack/spack_sbatch.yml
+
+buildtest will generate the shell script with the job directives and set the name, output and error
+files based on name of test. If we build this test, and inspect the generated test we see that
+**#SBATCH** directives are written based on the **sbatch** and **batch** field.
+
+.. code-block:: shell
+    :emphasize-lines: 1-8
+
+    ####### START OF SCHEDULER DIRECTIVES #######
+    #SBATCH -N 1
+    #SBATCH --ntasks=8
+    #SBATCH --time=30
+    #SBATCH --job-name=spack_sbatch_example
+    #SBATCH --output=spack_sbatch_example.out
+    #SBATCH --error=spack_sbatch_example.err
+    ####### END OF SCHEDULER DIRECTIVES   #######
+
+
+    source /Users/siddiq90/spack/share/spack/setup-env.sh
+    spack env activate  m4
+    spack add m4
+    spack concretize -f

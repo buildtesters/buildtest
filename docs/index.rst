@@ -58,7 +58,7 @@ The test template (YAML) is called **buildspec** which can define one or more te
 that is validated by a `json schema <https://json-schema.org/>`_. buildtest supports the following batch schedulers:
 `IBM Spectrum LSF <https://www.ibm.com/support/knowledgecenter/SSWRJV_10.1.0/lsf_welcome/lsf_welcome.html>`_,
 `Slurm <https://slurm.schedmd.com/>`_, `PBS <https://www.openpbs.org/>`_ and
-`Cobalt <https://trac.mcs.anl.gov/projects/cobalt/>`_. We publish the schema documentation, json schemas,
+`Cobalt <https://trac.mcs.anl.gov/projects/cobalt>`_. We publish the schema documentation, json schemas,
 and schema examples at https://buildtesters.github.io/buildtest/ which is useful when you are
 :ref:`writing buildspecs <writing_buildspecs>`.
 

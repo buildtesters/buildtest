@@ -379,6 +379,8 @@ class BuilderBase(ABC):
 
         lines = ["#!/bin/bash"]
         lines += self._default_test_variables()
+        lines.append("# source executor startup script")
+
         lines += [
             f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"
         ]
@@ -394,10 +396,9 @@ class BuilderBase(ABC):
             launcher = self.buildexecutor.executors[self.executor].launcher_command()
             lines += [" ".join(launcher) + " " + f"{self.metadata['testpath']}"]
 
-        lines.append("\n")
         lines.append("# Get return code")
         lines.append("returncode=$?")
-        lines.append("\n")
+
         lines.append("# Exit with return code")
         lines.append("exit $returncode")
 
@@ -443,8 +444,10 @@ class BuilderBase(ABC):
             os.path.join(self.test_root, os.path.basename(self.metadata["testpath"])),
         )
 
-    def _get_scheduler_directives(self, bsub, sbatch, cobalt, pbs, batch):
-        """Get Scheduler Directives for LSF, Slurm or Cobalt if we are processing
+    def _get_scheduler_directives(
+        self, bsub=None, sbatch=None, cobalt=None, pbs=None, batch=None
+    ):
+        """Get Scheduler Directives for LSF, Slurm, PBS or Cobalt if we are processing
         test with one of the executor types. This method will return a list
         of string containing scheduler directives generally found at top of script.
         If test is local executor we return an empty list
@@ -457,36 +460,37 @@ class BuilderBase(ABC):
         """
 
         lines = []
-        if self.executor_type == "local":
-            return
+        # print(self.buildexecutor.is_slurm(self.executor_type), self.executor_type, sbatch, batch)
 
-        if self.executor_type == "lsf":
-            script = LSFBatchScript(batch, bsub)
+        if bsub:
+            script = LSFBatchScript(batch=batch, bsub=bsub)
 
             lines += script.get_headers()
             lines += [f"#BSUB -J {self.name}"]
             lines += [f"#BSUB -o {self.name}.out"]
             lines += [f"#BSUB -e {self.name}.err"]
+            return lines
 
-        elif self.executor_type == "slurm":
+        elif sbatch:
 
-            script = SlurmBatchScript(batch, sbatch)
+            script = SlurmBatchScript(batch=batch, sbatch=sbatch)
             lines += script.get_headers()
             lines += [f"#SBATCH --job-name={self.name}"]
             lines += [f"#SBATCH --output={self.name}.out"]
             lines += [f"#SBATCH --error={self.name}.err"]
+            return lines
 
-        elif self.executor_type == "cobalt":
-            script = CobaltBatchScript(batch, cobalt)
+        elif cobalt:
+            script = CobaltBatchScript(batch=batch, cobalt=cobalt)
             lines += script.get_headers()
             lines += [f"#COBALT --jobname {self.name}"]
+            return lines
 
-        elif self.executor_type == "pbs":
-            script = PBSBatchScript(batch, pbs)
+        elif pbs:
+            script = PBSBatchScript(batch=batch, pbs=pbs)
             lines += script.get_headers()
             lines += [f"#PBS -N {self.name}"]
-
-        return lines
+            return lines
 
     def _get_burst_buffer(self, burstbuffer):
         """Get Burst Buffer directives (#BB) lines specified by BB property
@@ -566,6 +570,9 @@ class BuilderBase(ABC):
                     f"{shell} is not supported, skipping environment variables."
                 )
 
+        if lines:
+            lines.insert(0, "# Declare environment variables")
+            lines.append("\n")
         return lines
 
     def _get_variables(self, variables):
@@ -596,6 +603,10 @@ class BuilderBase(ABC):
                 self.logger.warning(
                     f"{shell} is not supported, skipping environment variables."
                 )
+
+        if lines:
+            lines.insert(0, "# Declare shell variables")
+            lines.append("\n")
         return lines
 
     def _generate_unique_id(self):
