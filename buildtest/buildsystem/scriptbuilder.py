@@ -58,15 +58,24 @@ class ScriptBuilder(BuilderBase):
             batch=self.recipe.get("batch"),
         )
         if batch_directives_lines:
+            lines.append("####### START OF SCHEDULER DIRECTIVES #######")
             lines += batch_directives_lines
+            lines.append("####### END OF SCHEDULER DIRECTIVES   #######")
+            lines.append("\n")
 
         burst_buffer_lines = self._get_burst_buffer(self.recipe.get("BB"))
         if burst_buffer_lines:
+            lines.append("####### START OF BURST BUFFER DIRECTIVES #######")
             lines += burst_buffer_lines
+            lines.append("####### END OF BURST BUFFER DIRECTIVES   #######")
+            lines.append("\n")
 
         data_warp_lines = self._get_data_warp(self.recipe.get("DW"))
         if data_warp_lines:
+            lines.append("####### START OF DATAWARP DIRECTIVES #######")
             lines += data_warp_lines
+            lines.append("####### END OF DATAWARP DIRECTIVES   #######")
+            lines.append("\n")
 
         # for python scripts we generate python script and return lines
         if self.shell.name == "python":
@@ -78,12 +87,19 @@ class ScriptBuilder(BuilderBase):
         # section below is for shell-scripts (bash, sh, csh, zsh, tcsh, zsh)
 
         # Add environment variables
-        lines += self._get_environment(self.recipe.get("env"))
+        env_lines = self._get_environment(self.recipe.get("env"))
+
+        if env_lines:
+            lines += env_lines
 
         # Add variables
-        lines += self._get_variables(self.recipe.get("vars"))
+        var_lines = self._get_variables(self.recipe.get("vars"))
 
+        if var_lines:
+            lines += var_lines
+
+        lines.append("# Content of run section")
         # Add run section
-        lines += [self.recipe.get("run")]
+        lines += [self.recipe["run"]]
 
         return lines

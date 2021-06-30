@@ -6,12 +6,6 @@ schema definition 'spack-v1.0.schema.json' that defines how buildspecs are writt
 import os
 
 from buildtest.buildsystem.base import BuilderBase
-from buildtest.buildsystem.batch import (
-    get_sbatch_lines,
-    get_bsub_lines,
-    get_cobalt_lines,
-    get_pbs_lines,
-)
 from buildtest.utils.file import resolve_path
 from buildtest.exceptions import BuildTestError
 
@@ -44,33 +38,19 @@ class SpackBuilder(BuilderBase):
 
         lines = ["#!/bin/bash"]
 
-        if self.recipe.get("sbatch"):
-            lines += get_sbatch_lines(
-                name=self.name,
-                sbatch=self.recipe.get("sbatch"),
-                batch=self.recipe.get("batch"),
-            )
+        batch_directives_lines = self._get_scheduler_directives(
+            bsub=self.recipe.get("bsub"),
+            sbatch=self.recipe.get("sbatch"),
+            cobalt=self.recipe.get("cobalt"),
+            pbs=self.recipe.get("pbs"),
+            batch=self.recipe.get("batch"),
+        )
 
-        if self.recipe.get("bsub"):
-            lines += get_bsub_lines(
-                name=self.name,
-                bsub=self.recipe.get("bsub"),
-                batch=self.recipe.get("batch"),
-            )
-
-        if self.recipe.get("pbs"):
-            lines += get_pbs_lines(
-                name=self.name,
-                pbs=self.recipe.get("pbs"),
-                batch=self.recipe.get("batch"),
-            )
-
-        if self.recipe.get("cobalt"):
-            lines += get_cobalt_lines(
-                name=self.name,
-                cobalt=self.recipe.get("cobalt"),
-                batch=self.recipe.get("batch"),
-            )
+        if batch_directives_lines:
+            lines.append("####### START OF SCHEDULER DIRECTIVES #######")
+            lines += batch_directives_lines
+            lines.append("####### END OF SCHEDULER DIRECTIVES   #######")
+            lines.append("\n")
 
         if self.recipe.get("pre_cmds"):
             lines.append("\n")
