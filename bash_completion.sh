@@ -19,6 +19,15 @@
 #    echo "${allopts[@]}"
 #}
 
+_avail_schemas ()
+{
+  buildtest schema
+}
+
+_avail_executors ()
+{
+  buildtest config executors
+}
 #  entry point to buildtest bash completion function
 _buildtest ()
 {
@@ -45,12 +54,28 @@ _buildtest ()
       elif [[ "${cur}" == --  ]]; then
         COMPREPLY=( $( compgen -W "$longoption" -- $cur ) )
       fi
+
+      # fill auto-completion for 'buildtest build --executor'
+      if [[ "${prev}" == "-e" ]] || [[ "${prev}" == "--executor"  ]]; then
+        COMPREPLY=( $( compgen -W "$(_avail_executors)" -- $cur ) )
+      fi
+
+      # fill auto-completion for 'buildtest build --stage'
+      if [[ "${prev}" == "-s" ]] || [[ "${prev}" == "--stage"  ]]; then
+        COMPREPLY=( $( compgen -W "stage parse" -- $cur ) )
+      fi
       ;;
 
     schema)
       local opts="-h -n -e -j --name --example --json"
-      COMPREPLY=( $( compgen -W "$opts" -- $cur ) );;
+      COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
       #COMPREPLY=( $( compgen -W "$(_buildtest_schema)" -- $cur ) );;
+
+      # fill auto-completion for 'buildtest schema --name'
+      if [[ "${prev}" == "-n" ]] || [[ "${prev}" == "--name"  ]]; then
+        COMPREPLY=( $( compgen -W "$(_avail_schemas)" -- $cur ) )
+      fi
+      ;;
 
     report)
       local opts="-h --help --helpformat --helpfilter --format --filter --latest --oldest -r --report clear"
