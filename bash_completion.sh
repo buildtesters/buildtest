@@ -19,6 +19,16 @@
 #    echo "${allopts[@]}"
 #}
 
+_avail_tags ()
+{
+  buildtest buildspec find --tags --terse 2>/dev/null
+}
+
+_avail_buildspecs ()
+{
+  buildtest buildspec find --buildspec --terse 2>/dev/null
+}
+
 _avail_schemas ()
 {
   buildtest schema
@@ -63,6 +73,16 @@ _buildtest ()
       # fill auto-completion for 'buildtest build --stage'
       if [[ "${prev}" == "-s" ]] || [[ "${prev}" == "--stage"  ]]; then
         COMPREPLY=( $( compgen -W "stage parse" -- $cur ) )
+      fi
+
+      # fill auto-completion for 'buildtest build --tag'
+      if [[ "${prev}" == "-t" ]] || [[ "${prev}" == "--tag"  ]]; then
+        COMPREPLY=( $( compgen -W "$(_avail_tags)" -- $cur ) )
+      fi
+
+      # fill auto-completion for 'buildtest build --buildspec'
+      if [[ "${prev}" == "-b" ]] || [[ "${prev}" == "--buildspec"  ]]; then
+        COMPREPLY=( $( compgen -W "$(_avail_buildspecs)" -- $cur ) )
       fi
       ;;
 
