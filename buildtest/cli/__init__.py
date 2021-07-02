@@ -295,6 +295,9 @@ def buildspec_menu(subparsers):
         action="store_true",
         help="Show Format fields for --format option for formatting buildspec cache output",
     )
+    buildspec_find.add_argument(
+        "--terse", help="Print output in machine readable format", action="store_true"
+    )
 
 
 def config_menu(subparsers):
