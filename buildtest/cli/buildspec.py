@@ -463,10 +463,20 @@ class BuildspecCache:
                     self.table["tags"].append(tags)
                     self.table["description"].append(description)
 
-    def get_buildspecfiles(self):
-        """This method implements ``buildtest buildspec find --buildspec-files``
+    def get_buildspecfiles(self, terse):
+        """This method implements ``buildtest buildspec find --buildspec``
         which reports all buildspec files in cache.
+
+        :param terse: This argument controls output of ``buildtest buildspec find --buildspec`` which is a boolean. If its ``True`` we print output in raw format otherwise we print in table format
+        :type terse: bool
         """
+
+        if terse:
+
+            for buildspec in self.cache["buildspecs"].keys():
+                print(buildspec)
+
+            return
 
         table = {"buildspecs": self.cache["buildspecs"].keys()}
         if os.getenv("BUILDTEST_COLOR") == "True":
@@ -483,10 +493,21 @@ class BuildspecCache:
 
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
-    def get_tags(self):
+    def get_tags(self, terse):
         """This method implements ``buildtest buildspec find --tags`` which
         reports a list of unique tags from all buildspecs in cache file.
+
+        :param terse: This argument controls output of ``buildtest buildspec find --tags`` which is a boolean. If its ``True`` we print output in raw format otherwise we print in table format
+        :type terse: bool
         """
+
+        # if --terse option specified print list of all tags in machine readable format
+        if terse:
+
+            for tag in self.cache["unique_tags"]:
+                print(tag)
+
+            return
 
         table = {"Tags": self.cache["unique_tags"]}
         headers = ["Tags"]
@@ -495,10 +516,20 @@ class BuildspecCache:
 
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
-    def get_executors(self):
+    def get_executors(self, terse):
         """This method implements ``buildtest buildspec find --executors``
         which reports all executors from cache.
+
+        :param terse: This argument controls output of ``buildtest buildspec find --executor`` which is a boolean. If its ``True`` we print output in raw format otherwise we print in table format
+        :type terse: bool
         """
+
+        if terse:
+
+            for executor in self.cache["unique_executors"]:
+                print(executor)
+
+            return
 
         table = {"executors": self.cache["unique_executors"]}
         headers = ["executors"]
@@ -563,10 +594,20 @@ class BuildspecCache:
             )
         )
 
-    def print_maintainer(self):
+    def print_maintainer(self, terse):
         """This method prints maintainers from buildspec cache file which implements
         ``buildtest buildspec find --maintainers`` command.
+
+        :param terse: This argument controls output of ``buildtest buildspec find --maintainers`` which is a boolean. If its ``True`` we print output in raw format otherwise we print in table format
+        :type terse: bool
         """
+
+        if terse:
+
+            for maintainer in self.cache["maintainers"]:
+                print(maintainer)
+
+            return
 
         table = {"maintainers": []}
         headers = table.keys()
@@ -694,12 +735,12 @@ def buildspec_find(args, configuration):
 
     # buildtest buildspec find --tags
     if args.tags:
-        cache.get_tags()
+        cache.get_tags(terse=args.terse)
         return
 
     # buildtest buildspec find --buildspec
     if args.buildspec:
-        cache.get_buildspecfiles()
+        cache.get_buildspecfiles(terse=args.terse)
         return
 
     # buildtest buildspec find --paths
@@ -709,7 +750,7 @@ def buildspec_find(args, configuration):
 
     # buildtest buildspec find --executors
     if args.executors:
-        cache.get_executors()
+        cache.get_executors(terse=args.terse)
         return
 
     # buildtest buildspec find --group-by-executors
@@ -724,8 +765,9 @@ def buildspec_find(args, configuration):
 
     # buildtest buildspec find --maintainers
     if args.maintainers:
-        cache.print_maintainer()
+        cache.print_maintainer(terse=args.terse)
         return
+
     #  buildtest buildspec find --maintainers-by-buildspecs
     if args.maintainers_by_buildspecs:
         cache.print_maintainers_by_buildspecs()
