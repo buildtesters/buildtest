@@ -80,9 +80,12 @@ def main():
 
     # implementation for 'buildtest buildspec find'
     elif args.subcommands == "buildspec":
-        from buildtest.cli.buildspec import buildspec_find
+        from buildtest.cli.buildspec import buildspec_find, buildspec_validate
 
-        buildspec_find(args=args, configuration=configuration)
+        if args.buildspecs_subcommand == "find":
+            buildspec_find(args=args, configuration=configuration)
+        elif args.buildspecs_subcommand == "validate":
+            buildspec_validate(args, configuration=configuration)
 
     # running buildtest inspect
     elif args.subcommands == "inspect":

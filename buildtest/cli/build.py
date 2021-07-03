@@ -142,8 +142,6 @@ def discover_buildspecs(
         msg = "There are no Buildspec files to process."
         sys.exit(msg)
 
-    print_discovered_buildspecs(buildspec_dict=buildspec_dict)
-
     return buildspec_dict
 
 
@@ -529,6 +527,8 @@ class BuildTest:
             tags=self.tags,
             executors=self.executors,
         )
+
+        print_discovered_buildspecs(buildspec_dict=self.discovered_bp)
 
         self.detected_buildspecs = self.discovered_bp["detected"]
 

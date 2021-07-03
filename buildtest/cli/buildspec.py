@@ -5,6 +5,7 @@ import os
 from tabulate import tabulate
 from termcolor import colored
 from jsonschema.exceptions import ValidationError
+from buildtest.cli.build import discover_buildspecs
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
@@ -720,6 +721,44 @@ class BuildspecCache:
 
         for path in self.paths:
             print(path)
+
+
+def buildspec_validate(args, configuration):
+    """Entry point for ``buildtest buildspec validate``. This method is responsible for discovering buildspec
+    with same options used for building buildspecs that includes ``--buildspec``, ``--exclude``, ``--tag``, and
+    ``--executor``. Upon discovery we pass each buildspec to ``BuildspecParser`` class to validate buildspec and
+    report any errors during validation which is raised as exceptions.
+    """
+
+    buildspecs_dict = discover_buildspecs(
+        buildspecs=args.buildspec,
+        exclude_buildspecs=args.exclude,
+        tags=args.tag,
+        executors=args.executor,
+    )
+    detected_buildspecs = buildspecs_dict["detected"]
+
+    buildexecutor = BuildExecutor(site_config=configuration)
+
+    # counter to keep track of number of exceptions raised during buildspec validation
+    exception_counter = 0
+    for buildspec in detected_buildspecs:
+        try:
+            parse = BuildspecParser(buildspec=buildspec, buildexecutor=buildexecutor)
+        except (BuildTestError, BuildspecError, ValidationError) as err:
+            exception_counter += 1
+            print("\nfile: ", buildspec)
+            print("{:_<80}".format(""))
+            print(err)
+            print("\n")
+
+        finally:
+            print(f"Processing buildspec: {buildspec}")
+
+    if exception_counter > 0:
+        print(f"There were {exception_counter} exceptions raised during validation")
+    else:
+        print("All buildspecs passed validation!!!")
 
 
 def buildspec_find(args, configuration):
