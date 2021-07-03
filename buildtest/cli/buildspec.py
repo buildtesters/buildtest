@@ -756,7 +756,7 @@ def buildspec_validate(args, configuration):
             print(f"Processing buildspec: {buildspec}")
 
     if exception_counter > 0:
-        print(f"There were {exception_counter} exceptions raised during validation")
+        print(f"There were {exception_counter} buildspecs that failed validation")
     else:
         print("All buildspecs passed validation!!!")
 
