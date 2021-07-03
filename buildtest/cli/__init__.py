@@ -413,7 +413,7 @@ def report_menu(subparsers):
     subparsers = parser_report.add_subparsers(
         description="Fetch test results from report file and print them in table format",
         metavar="",
-        dest="report",
+        dest="report_subcommand",
     )
     subparsers.add_parser("clear", help="delete report file")
     parser_report.add_argument(

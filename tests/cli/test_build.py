@@ -96,11 +96,11 @@ def test_buildspec_tag_executor():
     system = BuildTestSystem()
     system.check()
 
-    # testing buildtest build --tags fail --executor generic.local.sh
+    # testing buildtest build --tags fail --executor generic.local.csh
     cmd = BuildTest(
         configuration=configuration,
         tags=["fail"],
-        executors=["generic.local.sh"],
+        executors=["generic.local.csh"],
         buildtest_system=system,
     )
     cmd.build()
@@ -112,10 +112,10 @@ def test_build_multi_executors():
     system = BuildTestSystem()
     system.check()
 
-    # testing buildtest build --executor generic.local.sh --executor generic.local.python
+    # testing buildtest build --executor generic.local.csh --executor generic.local.python
     cmd = BuildTest(
         configuration=configuration,
-        executors=["generic.local.sh", "generic.local.python"],
+        executors=["generic.local.csh", "generic.local.python"],
         buildtest_system=system,
     )
     cmd.build()

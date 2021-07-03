@@ -464,7 +464,7 @@ class BuildspecCache:
                     self.table["tags"].append(tags)
                     self.table["description"].append(description)
 
-    def get_buildspecfiles(self, terse):
+    def get_buildspecfiles(self, terse=None):
         """This method implements ``buildtest buildspec find --buildspec``
         which reports all buildspec files in cache.
 
@@ -494,7 +494,7 @@ class BuildspecCache:
 
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
-    def get_tags(self, terse):
+    def get_tags(self, terse=None):
         """This method implements ``buildtest buildspec find --tags`` which
         reports a list of unique tags from all buildspecs in cache file.
 
@@ -517,7 +517,7 @@ class BuildspecCache:
 
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
-    def get_executors(self, terse):
+    def get_executors(self, terse=None):
         """This method implements ``buildtest buildspec find --executors``
         which reports all executors from cache.
 
@@ -595,7 +595,7 @@ class BuildspecCache:
             )
         )
 
-    def print_maintainer(self, terse):
+    def print_maintainer(self, terse=None):
         """This method prints maintainers from buildspec cache file which implements
         ``buildtest buildspec find --maintainers`` command.
 

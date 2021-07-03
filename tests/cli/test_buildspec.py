@@ -22,26 +22,38 @@ def test_func_buildspec_find():
     cache = BuildspecCache(configuration=configuration)
     cache.print_buildspecs()
 
-    # implements buildtest buildspec find --tags
+    # buildtest buildspec find --tags
     cache.get_tags()
 
-    # implements buildtest buildspec find --buildspec
+    #  buildtest buildspec find --tags --terse
+    cache.get_tags(terse=True)
+
+    # buildtest buildspec find --buildspec
     cache.get_buildspecfiles()
 
-    # implements buildtest buildspec find --paths
+    #  buildtest buildspec find --buildspec
+    cache.get_buildspecfiles(terse=True)
+
+    # buildtest buildspec find --paths
     cache.print_paths()
 
-    # implements buildtest buildspec find --executors
+    # buildtest buildspec find --executors
     cache.get_executors()
 
-    # implements buildtest buildspec find --group-by-executors
+    # buildtest buildspec find --executors --terse
+    cache.get_executors(terse=True)
+
+    # buildtest buildspec find --group-by-executors
     cache.print_by_executors()
 
-    # implements buildtest buildspec find --group-by-tags
+    # buildtest buildspec find --group-by-tags
     cache.print_by_tags()
 
-    # implements buildtest buildspec find --maintainers
+    # buildtest buildspec find --maintainers
     cache.print_maintainer()
+
+    # buildtest buildspec find --maintainers --terse
+    cache.print_maintainer(terse=True)
 
     # implements buildtest buildspec find --maintainers-by-buildspecs
     cache.print_maintainers_by_buildspecs()
