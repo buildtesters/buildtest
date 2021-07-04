@@ -730,6 +730,17 @@ def buildspec_validate(
     with same options used for building buildspecs that includes ``--buildspec``, ``--exclude``, ``--tag``, and
     ``--executor``. Upon discovery we pass each buildspec to ``BuildspecParser`` class to validate buildspec and
     report any errors during validation which is raised as exceptions.
+
+    :param configuration: An instance of SiteConfiguration class which is the loaded buildtest configuration used for validating the buildspecs.
+    :type configuration: instance of SiteConfiguration
+    :param buildspecs: List of paths to buildspec file which can be a file or directory
+    :type buildspecs: List, optional
+    :param excluded_buildspecs:
+    :type excluded_buildspecs: List, optional
+    :param tags: List of tag names to search for buildspec
+    :type excluded_buildspecs: List, optional
+    :param executors: List of executor names to search for buildspecs
+    :type executors: List, optional
     """
 
     buildspecs_dict = discover_buildspecs(
