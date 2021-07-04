@@ -11,7 +11,7 @@ def test_buildtest_inspect_list():
     class args:
         subcommands = "config"
         inspect = "list"
-        report_file = False
+        report = False
 
     inspect_cmd(args)
 
@@ -29,7 +29,7 @@ def test_buildtest_inspect_name():
         subcommands = "config"
         inspect = "name"
         name = [test_name]
-        report_file = None
+        report = None
 
     print(f"Querying test names: {args.name}")
     print(args)
@@ -39,7 +39,7 @@ def test_buildtest_inspect_name():
         subcommands = "config"
         inspect = "name"
         name = ["".join(random.choice(string.ascii_letters) for i in range(10))]
-        report_file = None
+        report = None
 
     print(f"Querying test names: {args.name}")
     with pytest.raises(SystemExit):
@@ -56,7 +56,7 @@ def test_buildtest_inspect_id():
         subcommands = "config"
         inspect = "id"
         id = [identifier]
-        report_file = None
+        report = None
 
     print(f"Querying test identifier: {args.id}")
     inspect_cmd(args)
@@ -65,7 +65,7 @@ def test_buildtest_inspect_id():
         subcommands = "config"
         inspect = "id"
         id = [str(uuid.uuid4())]
-        report_file = None
+        report = None
 
     print(f"Querying test identifier: {args.id}")
     # generate a random unique id which is not a valid test id when searching for tests by id.

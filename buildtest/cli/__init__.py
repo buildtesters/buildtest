@@ -222,9 +222,45 @@ def buildspec_menu(subparsers):
 
     subparsers_buildspec = parser_buildspec.add_subparsers(
         description="Find buildspec from cache file",
+        dest="buildspecs_subcommand",
         metavar="",
     )
     buildspec_find = subparsers_buildspec.add_parser("find", help="find all buildspecs")
+    buildspec_validate = subparsers_buildspec.add_parser(
+        "validate", help="Validate buildspecs"
+    )
+
+    buildspec_validate.add_argument(
+        "-b",
+        "--buildspec",
+        type=str,
+        help="Specify path to buildspec (file, or directory) to validate",
+        action="append",
+    )
+
+    buildspec_validate.add_argument(
+        "-x",
+        "--exclude",
+        type=str,
+        help="Specify path to buildspec to exclude (file or directory) during validation",
+        action="append",
+    )
+    buildspec_validate.add_argument(
+        "-t",
+        "--tag",
+        type=str,
+        action="append",
+        help="Specify buildspecs by tag name to validate",
+    )
+
+    buildspec_validate.add_argument(
+        "-e",
+        "--executor",
+        type=str,
+        action="append",
+        help="Specify buildspecs by executor name to validate",
+    )
+
     buildspec_find.add_argument(
         "--root",
         help="Specify root buildspecs (directory) path to load buildspecs into buildspec cache.",
@@ -377,7 +413,7 @@ def report_menu(subparsers):
     subparsers = parser_report.add_subparsers(
         description="Fetch test results from report file and print them in table format",
         metavar="",
-        dest="report",
+        dest="report_subcommand",
     )
     subparsers.add_parser("clear", help="delete report file")
     parser_report.add_argument(

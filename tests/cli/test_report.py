@@ -21,8 +21,8 @@ def test_report_format():
         filter = None
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # run 'buildtest report'
     report_cmd(args)
@@ -34,8 +34,8 @@ def test_report_format():
         filter = None
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # run 'buildtest report --format name,state,returncode,buildspec'
     report_cmd(args)
@@ -50,8 +50,8 @@ def test_invalid_format():
         format = "XYZ"
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # buildtest report --format XYZ is invalid format field
     with pytest.raises(BuildTestError):
@@ -67,8 +67,8 @@ def test_report_helpformat():
         filter = None
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     report_cmd(args)
 
@@ -82,8 +82,8 @@ def test_report_filter():
         filter = None
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # run 'buildtest report --helpfilter'
     report_cmd(args)
@@ -95,8 +95,8 @@ def test_report_filter():
         format = None
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # run 'buildtest report --filter state=PASS'
     report_cmd(args)
@@ -108,8 +108,8 @@ def test_report_filter():
         format = "name,state"
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # run 'buildtest report --filter state=PASS --format name,state'
     report_cmd(args)
@@ -121,8 +121,8 @@ def test_report_filter():
         format = "name,state"
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # run 'buildtest report --filter state=UNKNOWN --format name,state',
     # this raises error because UNKNOWN is not valid value for state field
@@ -136,8 +136,8 @@ def test_report_filter():
         format = "name,returncode,executor"
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # run 'buildtest report --filter returncode=0,executor=local.bash --format name,returncode,executor
     report_cmd(args)
@@ -153,8 +153,8 @@ def test_report_filter():
         format = "name,returncode,buildspec"
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # run 'buildtest report --filter buildspec=tutorials/pass_returncode.yml --format name,returncode,buildspec
     report_cmd(args)
@@ -166,8 +166,8 @@ def test_report_filter():
         format = "name,returncode,state"
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # run 'buildtest report --filter name=exit1_pass --format name,returncode,state
     report_cmd(args)
@@ -179,8 +179,8 @@ def test_report_filter():
         format = None
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # run 'buildtest report --filter returncode=-999 to ensure _filter_test_by_returncode returns True
     report_cmd(args)
@@ -194,8 +194,8 @@ def test_report_oldest_and_latest():
         format = None
         oldest = False
         latest = True
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # buildtest report --filter tags=tutorials --latest
     report_cmd(args)
@@ -207,8 +207,8 @@ def test_report_oldest_and_latest():
         format = None
         oldest = True
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # buildtest report --filter tags=tutorials --oldest
     report_cmd(args)
@@ -220,8 +220,8 @@ def test_report_oldest_and_latest():
         format = None
         oldest = True
         latest = True
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # buildtest report --filter tags=tutorials --oldest --latest
     report_cmd(args)
@@ -237,8 +237,8 @@ def test_invalid_filters():
         format = "name,returncode,state"
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # the filter argument buildspec is a random string which will be invalid file
     # and we expect an exception to be raised
@@ -252,8 +252,8 @@ def test_invalid_filters():
         format = "name,returncode,state"
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # run 'buildtest report --filter buildspec=$HOME/.bashrc --format name,returncode,state
     # this will raise error even though file is valid it won't be found in cache
@@ -272,8 +272,8 @@ def test_invalid_filters():
         format = "name,returncode,state,executor,tags"
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # run 'buildtest report --filter tags=tutorials,executor=local.bash,state=PASS,returncode=0 --format name,returncode,state,executor,tags
     report_cmd(args)
@@ -287,8 +287,8 @@ def test_invalid_filters():
         format = None
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # buildtest report --filter returncode=1.5 is invalid returncode (must be INT)
     with pytest.raises(BuildTestError):
@@ -304,8 +304,8 @@ def test_invalid_filters():
         format = None
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = None
+        report = BUILD_REPORT
+        report_subcommand = None
 
     # buildtest report --filter XYZ=tutorials is invalid filter field
     with pytest.raises(BuildTestError):
@@ -323,8 +323,8 @@ def test_invalid_report_format():
         format = None
         oldest = False
         latest = False
-        report_file = tf.name
-        report = None
+        report = tf.name
+        report_subcommand = None
 
     # reading a report file not in JSON format will result in exception BuildTestError
     with pytest.raises(BuildTestError):
@@ -339,8 +339,8 @@ def test_report_clear():
         format = None
         oldest = False
         latest = False
-        report_file = BUILD_REPORT
-        report = "clear"
+        report = BUILD_REPORT
+        report_subcommand = None
 
     backupfile = BUILD_REPORT + ".bak"
     shutil.copy2(BUILD_REPORT, backupfile)
@@ -355,8 +355,8 @@ def test_report_clear():
         format = None
         oldest = False
         latest = False
-        report_file = "".join(random.choice(string.ascii_letters) for i in range(10))
-        report = "clear"
+        report = "".join(random.choice(string.ascii_letters) for i in range(10))
+        report_subcommand = "clear"
 
     # buildtest report clear -f <file> will raise an error since file doesn't exist
     with pytest.raises(SystemExit):
@@ -371,8 +371,8 @@ def test_report_missing_file():
         format = None
         oldest = False
         latest = False
-        report_file = "".join(random.choice(string.ascii_letters) for i in range(10))
-        report = None
+        report = "".join(random.choice(string.ascii_letters) for i in range(10))
+        report_subcommand = None
 
     with pytest.raises(SystemExit):
         report_cmd(args)

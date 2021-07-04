@@ -119,11 +119,16 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) );;
 
     buildspec)
-      local cmds="-h --help find"
+      local cmds="-h --help find validate"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
+
       if [[ "${prev}" == "find" ]]; then
         local opts="-h --help --root -r --rebuild -t --tags -b --buildspec -e --executors -p --paths --group-by-tags --group-by-executor -m --maintainers -mb --maintainers-by-buildspecs --filter --format --helpfilter --helpformat"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+
+      elif [[ "${prev}" == "validate" ]]; then
+          local opts="-b --buildspec -t --tag -x --exclude -e --executor"
+          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       fi
       ;;
 
