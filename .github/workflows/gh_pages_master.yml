@@ -72,7 +72,7 @@ jobs:
          ls -R downloads
          
      - name: Deploy to GitHub Pages 🚀
-       uses: JamesIves/github-pages-deploy-action@4.1.1
+       uses: JamesIves/github-pages-deploy-action@4.1.4
        with:
          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
          branch: gh-pages 
