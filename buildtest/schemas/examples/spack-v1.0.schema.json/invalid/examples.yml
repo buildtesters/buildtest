@@ -11,8 +11,6 @@ buildspecs:
         specs:
           - m4
           - zlib
-      install:
-        options: ''
 
   specs_must_be_list_of_strings:
     type: spack
@@ -26,5 +24,29 @@ buildspecs:
         specs:
           - 1
           - zlib
-      install:
-        options: ''
+
+  additionalProperties_spack_field:
+    type: spack
+    executor: generic.local.sh
+    description: additional Properties can't be specified in spack section
+    spack:
+      root: $HOME/spack
+      FOO: BAR
+      env:
+        create:
+          name: myproject
+        specs:
+          - zlib
+
+  invalid_type_mirror_field:
+    type: spack
+    executor: generic.local.sh
+    description: The mirror field must be a key value pair
+    spack:
+      root: $HOME/spack
+      mirror: https://caches.e4s.io
+      env:
+        create:
+          name: myproject
+        specs:
+          - zlib

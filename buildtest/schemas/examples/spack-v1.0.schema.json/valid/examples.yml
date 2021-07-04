@@ -3,6 +3,7 @@ buildspecs:
   env_create_name:
     type: spack
     executor: generic.local.sh
+    description: Create spack environment by name
     spack:
       root: $HOME/spack/
       env:
@@ -13,9 +14,11 @@ buildspecs:
           - zlib
       install:
         options: ''
+
   env_activate:
     type: spack
     executor: generic.local.sh
+    description: Activate spack environment by name
     spack:
       root: $HOME/spack/
       env:
@@ -30,11 +33,12 @@ buildspecs:
   env_create_directory:
     type: spack
     executor: generic.local.sh
+    description: Create spack environment by directory
     spack:
       root: $HOME/spack/
       env:
         create:
-          directory: $HOME/spack-env/myproject
+          dir: $HOME/spack-env/myproject
         specs:
           - 'm4'
           - 'zlib@1.2.11'
@@ -44,6 +48,7 @@ buildspecs:
   env_create_from_manifest:
     type: spack
     executor: generic.local.sh
+    description: Create spack enviromment from manifest file
     spack:
       root: $HOME/spack/
       env:
@@ -107,3 +112,34 @@ buildspecs:
         specs: ['m4', 'bzip2']
     post_cmds: |
       spack find
+
+  remove_spack_environment:
+    type: spack
+    executor: generic.local.sh
+    description: remove spack environment explicitly before creating environment
+    spack:
+      root: $HOME/spack
+      env:
+        rm:
+          name: m4
+        create:
+          name: m4
+        activate:
+          name: m4
+        specs:
+          - 'm4'
+
+  remove_spack_environment_automatically:
+    type: spack
+    executor: generic.local.sh
+    description: remove spack environment automatically
+    spack:
+      root: $HOME/spack
+      env:
+        create:
+          remove_environment: true
+          name: m4
+        activate:
+          name: m4
+        specs:
+          - 'm4'
