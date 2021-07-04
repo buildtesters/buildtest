@@ -134,6 +134,11 @@ def main():
 
         cdash_cmd(args, default_configuration=configuration)
 
+    elif args.subcommands == "help":
+        from buildtest.cli.help import buildtest_help
+
+        buildtest_help()
+
     elif args.subcommands == "docs":
         webbrowser.open("https://buildtest.readthedocs.io/")
 
