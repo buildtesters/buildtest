@@ -757,7 +757,7 @@ def buildspec_validate(
     exception_counter = 0
     for buildspec in detected_buildspecs:
         try:
-            parse = BuildspecParser(buildspec=buildspec, buildexecutor=buildexecutor)
+            BuildspecParser(buildspec=buildspec, buildexecutor=buildexecutor)
         except (BuildTestError, BuildspecError, ValidationError) as err:
             exception_counter += 1
             print("\nfile: ", buildspec)
