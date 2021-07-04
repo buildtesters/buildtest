@@ -3,11 +3,37 @@ import pytest
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
-from buildtest.cli.buildspec import BuildspecCache
+from buildtest.cli.buildspec import BuildspecCache, buildspec_validate
 
 configuration = SiteConfiguration()
 configuration.detect_system()
 configuration.validate()
+
+
+@pytest.mark.cli
+def test_buildspec_validate():
+
+    buildspecs = [
+        os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml"),
+        os.path.join(BUILDTEST_ROOT, "tutorials", "compilers"),
+    ]
+    exclude_buildspecs = [
+        os.path.join(BUILDTEST_ROOT, "tutorials", "compilers", "gnu_hello_c.yml")
+    ]
+    tags = ["pass", "python"]
+    executors = ["generic.local.sh"]
+
+    buildspec_validate(
+        buildspecs=buildspecs,
+        excluded_buildspecs=exclude_buildspecs,
+        tags=tags,
+        executors=executors,
+        configuration=configuration,
+    )
+
+    buildspec = [os.path.join(BUILDTEST_ROOT, "tutorials", "invalid_executor.yml")]
+
+    buildspec_validate(buildspecs=buildspec, configuration=configuration)
 
 
 @pytest.mark.cli

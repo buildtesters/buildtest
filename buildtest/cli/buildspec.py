@@ -723,7 +723,9 @@ class BuildspecCache:
             print(path)
 
 
-def buildspec_validate(args, configuration):
+def buildspec_validate(
+    configuration, buildspecs=None, excluded_buildspecs=None, tags=None, executors=None
+):
     """Entry point for ``buildtest buildspec validate``. This method is responsible for discovering buildspec
     with same options used for building buildspecs that includes ``--buildspec``, ``--exclude``, ``--tag``, and
     ``--executor``. Upon discovery we pass each buildspec to ``BuildspecParser`` class to validate buildspec and
@@ -731,10 +733,10 @@ def buildspec_validate(args, configuration):
     """
 
     buildspecs_dict = discover_buildspecs(
-        buildspecs=args.buildspec,
-        exclude_buildspecs=args.exclude,
-        tags=args.tag,
-        executors=args.executor,
+        buildspecs=buildspecs,
+        exclude_buildspecs=excluded_buildspecs,
+        tags=tags,
+        executors=executors,
     )
     detected_buildspecs = buildspecs_dict["detected"]
 

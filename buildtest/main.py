@@ -85,7 +85,13 @@ def main():
         if args.buildspecs_subcommand == "find":
             buildspec_find(args=args, configuration=configuration)
         elif args.buildspecs_subcommand == "validate":
-            buildspec_validate(args, configuration=configuration)
+            buildspec_validate(
+                buildspecs=args.buildspec,
+                excluded_buildspecs=args.exclude,
+                tags=args.tag,
+                executors=args.executor,
+                configuration=configuration,
+            )
 
     # running buildtest inspect
     elif args.subcommands == "inspect":
