@@ -164,7 +164,7 @@ def schemas():
         "compiler_examples.txt": "buildtest schema -n compiler-v1.0.schema.json --example",
         "compiler_json.txt": "buildtest schema -n compiler-v1.0.schema.json --json",
         "spack_json.txt": "buildtest schema -n spack-v1.0.schema.json --json",
-        "spack_examples.txt": "buildtest schema -n spack-v1.0.schema.json --json",
+        "spack_examples.txt": "buildtest schema -n spack-v1.0.schema.json --example",
     }
     generate_tests(prefix, cmd_dict)
 
