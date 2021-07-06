@@ -1,6 +1,18 @@
 CHANGELOG
 =========
 
+v0.10.0 (TBD)
+---------------
+
+In this release we added support for `spack <https://spack.readthedocs.io/>`_ through a new schema **spack-v1.0.schema.json** which is used by ``type: spack`` to
+write buildspecs using the spack schema. Initial support includes installing specs, managing spack environment, adding mirror, running tests via ``spack test``.
+The relevant PRs for spack support are `#774 <https://github.com/buildtesters/buildtest/pull/774>`_, `#778 <https://github.com/buildtesters/buildtest/pull/778>`_,
+`#786 <https://github.com/buildtesters/buildtest/pull/786>`_, `#788 <https://github.com/buildtesters/buildtest/pull/788>`_.
+
+In this release we added bash completion for buildtest commands this is done in `#773 <https://github.com/buildtesters/buildtest/pull/773>`_. There were few additional
+features added in this release including a new command ``buildtest buildspec validate`` to validate buildspecs on command line see `#785 <https://github.com/buildtesters/buildtest/pull/785>`_.
+The ``buildtest help`` command is another new command that provides an output summary of buildtest commands that one can read as a reference manual see `#787 <https://github.com/buildtesters/buildtest/pull/787>`_.
+
 v0.9.6 (June 11th, 2021)
 -------------------------
 
