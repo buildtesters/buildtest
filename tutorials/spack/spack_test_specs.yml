@@ -1,0 +1,25 @@
+version: "1.0"
+buildspecs:
+  spack_test_results_specs_format:
+    type: spack
+    executor: generic.local.sh
+    description: "Run spack test results with spec format"
+    tags: [spack]
+    pre_cmds: |
+      cd /tmp
+      git clone https://github.com/spack/spack
+    spack:
+      root: /tmp/spack
+      verify_spack: false
+      install:
+        specs: ['bzip2']
+      test:
+        remove_tests: true
+        run:
+          specs: ['bzip2']
+        results:
+          option: '-l'
+          specs: ['bzip2']
+    post_cmds: |
+      spack find
+      rm -rf $SPACK_ROOT

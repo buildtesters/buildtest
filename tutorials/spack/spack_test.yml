@@ -1,0 +1,24 @@
+version: "1.0"
+buildspecs:
+  spack_test:
+    type: spack
+    executor: generic.local.sh
+    description: "Install bzip2 and run spack test and report results"
+    tags: [spack]
+    pre_cmds: |
+      cd /tmp
+      git clone https://github.com/spack/spack
+    spack:
+      root: /tmp/spack
+      verify_spack: false
+      install:
+        specs: ['bzip2']
+      test:
+        run:
+          specs: ['bzip2']
+        results:
+          suite: ['bzip2']
+
+    post_cmds: |
+      spack find
+      rm -rf $SPACK_ROOT
