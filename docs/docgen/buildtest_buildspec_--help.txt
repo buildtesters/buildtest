@@ -9,3 +9,4 @@ subcommands:
 
   
     find      find all buildspecs
+    validate  Validate buildspecs

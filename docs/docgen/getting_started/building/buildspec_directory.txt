@@ -1,0 +1,109 @@
+$ buildtest build -b general_tests/configuration/ 
+
+
+User:  siddiq90
+Hostname:  DOE-7086392.local
+Platform:  Darwin
+Current Time:  2021/07/06 18:53:34
+buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
+buildtest version:  0.9.6
+python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
+python version:  3.7.3
+Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
+Configuration File:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml
+Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b general_tests/configuration/
+
++-------------------------------+
+| Stage: Discovering Buildspecs |
++-------------------------------+ 
+
++----------------------------------------------------------------------------------------------------------+
+| Discovered Buildspecs                                                                                    |
++==========================================================================================================+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ulimits.yml                |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/disk_usage.yml             |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ssh_localhost.yml          |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/kernel_state.yml           |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/systemd-default-target.yml |
++----------------------------------------------------------------------------------------------------------+
+Discovered Buildspecs:  5
+Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  5
+[ssh_localhost_remotecommand][/Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ssh_localhost.yml]: test is skipped because this test is expected to run on platform: Linux but detected platform: Darwin.
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+
+ schemafile              | validstate   | buildspec
+-------------------------+--------------+----------------------------------------------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ulimits.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/disk_usage.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ssh_localhost.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/kernel_state.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/systemd-default-target.yml
+
+
+
+name                          description
+----------------------------  -----------------------------------------------------------
+ulimit_filelock_unlimited     Check if file lock is set to unlimited in ulimits
+ulimit_cputime_unlimited      Check if cputime is set to unlimited in ulimits
+ulimit_stacksize_unlimited    Check if stack size is set to unlimited in ulimits
+ulimit_vmsize_unlimited       Check virtual memory size and check if its set to unlimited
+ulimit_filedescriptor_4096    Check if open file descriptors limit is set to 4096
+ulimit_max_user_process_2048  Check max number of user process limit is set to 2048
+root_disk_usage               Check root disk usage and report if it exceeds threshold
+kernel_swapusage              Retrieve Kernel Swap Usage
+systemd_default_target        check if default target is multi-user.target
+
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ name                         | id       | type   | executor           | tags                      | testpath
+------------------------------+----------+--------+--------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ulimit_filelock_unlimited    | 248733e7 | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/ulimits/ulimit_filelock_unlimited/0/ulimit_filelock_unlimited_build.sh
+ ulimit_cputime_unlimited     | fbaa6825 | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/ulimits/ulimit_cputime_unlimited/0/ulimit_cputime_unlimited_build.sh
+ ulimit_stacksize_unlimited   | 1f4144a4 | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/ulimits/ulimit_stacksize_unlimited/0/ulimit_stacksize_unlimited_build.sh
+ ulimit_vmsize_unlimited      | a61211aa | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/ulimits/ulimit_vmsize_unlimited/0/ulimit_vmsize_unlimited_build.sh
+ ulimit_filedescriptor_4096   | 04344612 | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/ulimits/ulimit_filedescriptor_4096/0/ulimit_filedescriptor_4096_build.sh
+ ulimit_max_user_process_2048 | 6d394fe0 | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/ulimits/ulimit_max_user_process_2048/0/ulimit_max_user_process_2048_build.sh
+ root_disk_usage              | ef3bc5c9 | script | generic.local.bash | ['filesystem', 'storage'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/0/root_disk_usage_build.sh
+ kernel_swapusage             | a0e6b2e3 | script | generic.local.bash | ['configuration']         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/kernel_state/kernel_swapusage/0/kernel_swapusage_build.sh
+ systemd_default_target       | 1f8d673a | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/systemd-default-target/systemd_default_target/0/systemd_default_target_build.sh
+
+
+
+
+
++---------------------+
+| Stage: Running Test |
++---------------------+ 
+
+ name                         | id       | executor           | status   |   returncode
+------------------------------+----------+--------------------+----------+--------------
+ ulimit_filelock_unlimited    | 248733e7 | generic.local.bash | PASS     |            0
+ ulimit_cputime_unlimited     | fbaa6825 | generic.local.bash | PASS     |            0
+ ulimit_stacksize_unlimited   | 1f4144a4 | generic.local.bash | FAIL     |            0
+ ulimit_vmsize_unlimited      | a61211aa | generic.local.bash | PASS     |            0
+ ulimit_filedescriptor_4096   | 04344612 | generic.local.bash | FAIL     |            0
+ ulimit_max_user_process_2048 | 6d394fe0 | generic.local.bash | FAIL     |            0
+ root_disk_usage              | ef3bc5c9 | generic.local.bash | PASS     |            0
+ kernel_swapusage             | a0e6b2e3 | generic.local.bash | FAIL     |            1
+ systemd_default_target       | 1f8d673a | generic.local.bash | FAIL     |            1
+
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
+    
+Passed Tests: 4/9 Percentage: 44.444%
+Failed Tests: 5/9 Percentage: 55.556%
+
+
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_ovj6gyd_.log
+A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log

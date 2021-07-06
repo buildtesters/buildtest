@@ -1,0 +1,75 @@
+$ buildtest build -b tutorials/executor_regex_script.yml 
+
+
+User:  siddiq90
+Hostname:  DOE-7086392.local
+Platform:  Darwin
+Current Time:  2021/07/06 18:54:11
+buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
+buildtest version:  0.9.6
+python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
+python version:  3.7.3
+Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
+Configuration File:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml
+Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b tutorials/executor_regex_script.yml
+
++-------------------------------+
+| Stage: Discovering Buildspecs |
++-------------------------------+ 
+
++---------------------------------------------------------------------------------------+
+| Discovered Buildspecs                                                                 |
++=======================================================================================+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/executor_regex_script.yml |
++---------------------------------------------------------------------------------------+
+Discovered Buildspecs:  1
+Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+
+ schemafile              | validstate   | buildspec
+-------------------------+--------------+---------------------------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/executor_regex_script.yml
+
+
+
+name                          description
+----------------------------  ---------------------------------------------------------
+executor_regex_script_schema  regular expression test with executor using script schema
+executor_regex_script_schema  regular expression test with executor using script schema
+
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ name                         | id       | type   | executor           | tags          | testpath
+------------------------------+----------+--------+--------------------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ executor_regex_script_schema | 225b1101 | script | generic.local.bash | ['tutorials'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/executor_regex_script/executor_regex_script_schema/1/executor_regex_script_schema_build.sh
+ executor_regex_script_schema | bdc3a622 | script | generic.local.sh   | ['tutorials'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/executor_regex_script/executor_regex_script_schema/1/executor_regex_script_schema_build.sh
+
+
+
+
+
++---------------------+
+| Stage: Running Test |
++---------------------+ 
+
+ name                         | id       | executor           | status   |   returncode
+------------------------------+----------+--------------------+----------+--------------
+ executor_regex_script_schema | 225b1101 | generic.local.bash | PASS     |            0
+ executor_regex_script_schema | bdc3a622 | generic.local.sh   | PASS     |            0
+
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
+    
+Passed Tests: 2/2 Percentage: 100.000%
+Failed Tests: 0/2 Percentage: 0.000%
+
+
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_n4z9jpc_.log
+A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log

@@ -1,0 +1,7 @@
+$ buildtest schema 
+global.schema.json
+definitions.schema.json
+settings.schema.json
+compiler-v1.0.schema.json
+spack-v1.0.schema.json
+script-v1.0.schema.json

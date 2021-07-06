@@ -1,0 +1,104 @@
+$ buildtest build --tags fail --rebuild=2 
+
+
+User:  siddiq90
+Hostname:  DOE-7086392.local
+Platform:  Darwin
+Current Time:  2021/07/06 18:54:03
+buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
+buildtest version:  0.9.6
+python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
+python version:  3.7.3
+Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
+Configuration File:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml
+Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build --tags fail --rebuild=2
+
++-------------------------------+
+| Stage: Discovering Buildspecs |
++-------------------------------+ 
+
++---------------------------------------------------------------------------------+
+| Discovered Buildspecs                                                           |
++=================================================================================+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml |
++---------------------------------------------------------------------------------+
+Discovered Buildspecs:  1
+Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
+
+BREAKDOWN OF BUILDSPECS BY TAGS
+----------------------------------
+Detected Tag Names: ['fail']
++---------------------------------------------------------------------------------+
+| fail                                                                            |
++=================================================================================+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml |
++---------------------------------------------------------------------------------+
+
+
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+
+ schemafile              | validstate   | buildspec
+-------------------------+--------------+---------------------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml
+
+
+
+name                      description
+------------------------  ---------------------------------------------------
+exit1_fail                exit 1 by default is FAIL
+exit1_pass                report exit 1 as PASS
+returncode_list_mismatch  exit 2 failed since it failed to match returncode 1
+returncode_int_match      exit 128 matches returncode 128
+exit1_fail                exit 1 by default is FAIL
+exit1_pass                report exit 1 as PASS
+returncode_list_mismatch  exit 2 failed since it failed to match returncode 1
+returncode_int_match      exit 128 matches returncode 128
+
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ name                     | id       | type   | executor         | tags                  | testpath
+--------------------------+----------+--------+------------------+-----------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+ exit1_fail               | 4ee1c93d | script | generic.local.sh | ['tutorials', 'fail'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/3/exit1_fail_build.sh
+ exit1_pass               | 88d22e95 | script | generic.local.sh | ['tutorials', 'pass'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/4/exit1_pass_build.sh
+ returncode_list_mismatch | f6c187d8 | script | generic.local.sh | ['tutorials', 'fail'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/3/returncode_list_mismatch_build.sh
+ returncode_int_match     | da19bd82 | script | generic.local.sh | ['tutorials', 'pass'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/4/returncode_int_match_build.sh
+ exit1_fail               | b3e06e7f | script | generic.local.sh | ['tutorials', 'fail'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_fail/4/exit1_fail_build.sh
+ exit1_pass               | 5108106e | script | generic.local.sh | ['tutorials', 'pass'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/5/exit1_pass_build.sh
+ returncode_list_mismatch | 21b234a1 | script | generic.local.sh | ['tutorials', 'fail'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_list_mismatch/4/returncode_list_mismatch_build.sh
+ returncode_int_match     | e8503b2b | script | generic.local.sh | ['tutorials', 'pass'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/5/returncode_int_match_build.sh
+
+
+
+
+
++---------------------+
+| Stage: Running Test |
++---------------------+ 
+
+ name                     | id       | executor         | status   |   returncode
+--------------------------+----------+------------------+----------+--------------
+ exit1_fail               | 4ee1c93d | generic.local.sh | FAIL     |            1
+ exit1_pass               | 88d22e95 | generic.local.sh | PASS     |            1
+ returncode_list_mismatch | f6c187d8 | generic.local.sh | FAIL     |            2
+ returncode_int_match     | da19bd82 | generic.local.sh | PASS     |          128
+ exit1_fail               | b3e06e7f | generic.local.sh | FAIL     |            1
+ exit1_pass               | 5108106e | generic.local.sh | PASS     |            1
+ returncode_list_mismatch | 21b234a1 | generic.local.sh | FAIL     |            2
+ returncode_int_match     | e8503b2b | generic.local.sh | PASS     |          128
+
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
+    
+Passed Tests: 4/8 Percentage: 50.000%
+Failed Tests: 4/8 Percentage: 50.000%
+
+
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_ue_6fjnn.log
+A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log

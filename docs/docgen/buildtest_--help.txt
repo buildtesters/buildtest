@@ -21,6 +21,7 @@ COMMANDS:
     cdash               Upload test to CDASH server
     docs                Open buildtest docs in browser
     schemadocs          Open buildtest schema docs in browser
+    help                buildtest command guide
 
 References
 _______________________________________________________________________________________

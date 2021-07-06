@@ -1,7 +1,7 @@
 $ buildtest buildspec find --help
 usage: buildtest [options] [COMMANDS] buildspec find [-h] [--root ROOT] [-r] [-t] [-b] [-e] [-p] [--group-by-tags]
                                                      [--group-by-executor] [-m] [-mb] [--filter FILTER]
-                                                     [--format FORMAT] [--helpfilter] [--helpformat]
+                                                     [--format FORMAT] [--helpfilter] [--helpformat] [--terse]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -20,3 +20,4 @@ optional arguments:
   --format FORMAT       Format buildspec cache with format fields in format --format field1,field2,...
   --helpfilter          Show Filter fields for --filter option for filtering buildspec cache output
   --helpformat          Show Format fields for --format option for formatting buildspec cache output
+  --terse               Print output in machine readable format

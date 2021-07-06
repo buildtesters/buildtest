@@ -1,0 +1,38 @@
+$ buildtest config view 
+hostnames:
+- .*
+description: Generic System
+moduletool: N/A
+load_default_buildspecs: true
+executors:
+  local:
+    bash:
+      description: submit jobs on local machine using bash shell
+      shell: bash
+    sh:
+      description: submit jobs on local machine using sh shell
+      shell: sh
+    csh:
+      description: submit jobs on local machine using csh shell
+      shell: csh
+    zsh:
+      description: submit jobs on local machine using zsh shell
+      shell: zsh
+    python:
+      description: submit jobs on local machine using python shell
+      shell: python
+compilers:
+  compiler:
+    gcc:
+      builtin_gcc:
+        cc: gcc
+        fc: gfortran
+        cxx: g++
+cdash:
+  url: https://my.cdash.org/
+  project: buildtest
+  site: generic
+  buildname: tutorials
+
+________________________________________________________________________________
+Settings File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml

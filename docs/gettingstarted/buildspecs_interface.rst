@@ -22,7 +22,7 @@ Finding Buildspecs
 To find all buildspecs run ``buildtest buildspec find`` which will discover
 all buildspecs in all repos by recursively finding all `.yml` extensions.
 
-.. program-output:: cat docgen/getting_started/buildspec-find.txt
+.. program-output:: cat docgen/getting_started/buildspecs/buildspec_find.txt
 
 buildtest will validate each buildspec file with the appropriate
 schema type. buildspecs that pass validation will be displayed on screen.
@@ -37,7 +37,7 @@ run::
 
 If you want to find all buildspec files in cache run ``buildtest buildspec find --buildspec``
 
-.. program-output:: cat docgen/buildspec_find_buildspecfiles.txt
+.. program-output:: cat docgen/getting_started/buildspecs/buildspec_find_buildspecfiles.txt
      :ellipsis: 30
 
 If you want to find root directories of buildspecs loaded in buildspec cache use the
@@ -58,14 +58,14 @@ buildtest will load all valid buildspecs into cache and ignore
 the rest. It's important to add ``--rebuild`` if you want to regenerate buildspec cache.
 
 Filtering buildspec
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
 Once you have a buildspec cache, we can query the buildspec cache for certain attributes.
 When you run **buildtest buildspec find** it will report all buildspecs from cache which can
 be difficult to process. Therefore, we have a filter option (``--filter``) to restrict our search.
 Let's take a look at the available filter fields that are acceptable with filter option.
 
-.. program-output:: cat docgen/buildspec-filter.txt
+.. program-output:: cat docgen/getting_started/buildspecs/buildspec_filter.txt
 
 The ``--filter`` option expects arguments in **key=value** format as follows::
 
@@ -74,22 +74,22 @@ The ``--filter`` option expects arguments in **key=value** format as follows::
 We can filter buildspec cache by ``tags=fail`` which will query all tests with
 associated tag field in test.
 
-.. program-output:: cat docgen/buildspec_filter_tags.txt
+.. program-output:: cat docgen/getting_started/buildspecs/buildspec_filter_tags.txt
 
 In addition, we can query buildspecs by schema type using ``type`` property. In this
 example we query all tests by `type` property
 
-.. program-output:: cat docgen/buildspec_filter_type.txt
+.. program-output:: cat docgen/getting_started/buildspecs/buildspec_filter_type.txt
    :ellipsis: 20
 
 Finally, we can combine multiple filter fields separated by comma, in the next example
 we query all buildspecs with ``tags=tutorials``, ``executor=generic.local.sh``, and ``type=script``
 
-.. program-output:: cat docgen/buildspec_multifield_filter.txt
+.. program-output:: cat docgen/getting_started/buildspecs/buildspec_multifield_filter.txt
 
 
 Format buildspec cache
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
 We have seen how one can filter buildspecs, but we can also configure which columns to display
 in the output of **buildtest buildspec find**. By default, we show few format fields
@@ -98,14 +98,14 @@ in the output, however there are more format fields hidden from the default outp
 The format fields are specified comma separated using format: ``--format <field1>,<field2>,...``.
 You can see a list of all format fields by ``--helpformat`` option as shown below
 
-.. program-output:: cat docgen/buildspec-format.txt
+.. program-output:: cat docgen/getting_started/buildspecs/buildspec_format.txt
 
 
 In the next example, we utilize ``--format`` field with ``--filter`` option to show
 how format fields affect table columns. buildtest will display the table in order of
 format fields specified in command line.
 
-.. program-output:: cat docgen/buildspec_format_example.txt
+.. program-output:: cat docgen/getting_started/buildspecs/buildspec_format_example.txt
 
 buildtest makes use of python library named `tabulate <https://pypi.org/project/tabulate/>`_
 to generate these tables which are found in commands line like ``buildtest buildspec find``
@@ -114,41 +114,41 @@ and ``buildtest report``.
 .. _buildspec_tags:
 
 Querying buildspec tags
-------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want to retrieve all unique tags from all buildspecs you can run
 ``buildtest buildspec find --tags``. This can be useful if you want to know available
 tags in your buildspec cache.
 
-.. program-output:: cat docgen/buildspec_find_tags.txt
+.. program-output:: cat docgen/getting_started/buildspecs/buildspec_find_tags.txt
 
 In addition, buildtest can group tests by tags via ``buildtest buildspec find --group-by-tags``
 which can be useful if you want to know which tests get executed when running ``buildtest build --tags``.
 The output is grouped by tag names, followed by name of test and description.
 
-.. program-output:: cat docgen/buildspec_find_group_by_tags.txt
+.. program-output:: cat docgen/getting_started/buildspecs/buildspec_find_group_by_tags.txt
 
 
 .. _buildspec_executor:
 
 Querying buildspec executor
----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want to know all executors in your buildspec cache use the
 ``buildtest buildspec find --list-executors`` command. This can be useful when
 you want to build by executors (``buildtest build --executor``).
 
-.. program-output:: cat docgen/buildspec_find_executors.txt
+.. program-output:: cat docgen/getting_started/buildspecs/buildspec_find_executors.txt
 
 Similar to ``--group-by-tags``, buildtest has an option to group tests by executor
 using ``--group-by-executor`` option. This will show tests grouped by executor,
 name of test and test description. Shown below is an example output.
 
-.. program-output:: cat docgen/buildspec_find_group_by_executor.txt
+.. program-output:: cat docgen/getting_started/buildspecs/buildspec_find_group_by_executor.txt
 
 
 Query Maintainers in buildspecs
---------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``maintainers`` field can be used for identifying author for buildspec
 file which can be useful if you want to find out who is responsible for the test.
@@ -156,11 +156,43 @@ You can retrieve all buildspec maintainers using ``--maintainers`` option or ``-
 short option. The command below will show all maintainers for buildspecs in buildspec
 cache
 
-.. program-output:: cat docgen/buildspec_find_maintainers.txt
+.. program-output:: cat docgen/getting_started/buildspecs/buildspec_find_maintainers.txt
 
 
 If you want to see a breakdown of maintainers by buildspec file you can use ``--maintainers-by-buildspecs``
 or ``-mb`` short option. This can be useful when tracking maintainers by buildspec files.
 
-.. program-output:: cat docgen/buildspec_find_maintainers_by_buildspecs.txt
+.. program-output:: cat docgen/getting_started/buildspecs/buildspec_find_maintainers_by_buildspecs.txt
 
+Validate Buildspecs
+---------------------
+
+buildtest can validate buildspecs through the ``buildtest buildspec validate`` command which provides
+analogous options for ``buildtest build`` for selecting buildspecs such as ``-b``, ``-e``, ``-t`` and ``-e``.
+This command can be used to validate buildspecs with the JSON Schema which can be useful if you are writing a buildspec
+and want to validate the buildspec without running the test.
+
+Shown below are the available command options.
+
+.. program-output:: cat docgen/buildtest_buildspec_validate_--help.txt
+
+The `-b` option can be used to specify path to buildspec file or directory to validate buildspecs. If its a directory,
+buildtest will traverse all directories recursively and find any **.yml** file extensions and attempt to validate each buildspec.
+Shown below is an example output of what it may look like
+
+.. program-output:: cat docgen/getting_started/buildspecs/validate_buildspec.txt
+
+If buildtest detects an error during validation, the error message will be displayed to screen as we see in this example
+
+.. program-output:: cat docgen/getting_started/buildspecs/invalid_buildspec.txt
+
+Similarly we can search buildspecs based on tags if you want to validate a group of buildspecs using the ``-t`` option. We can
+append ``-t`` option multiple times to search by multiple tag names.
+
+
+
+.. program-output:: cat docgen/getting_started/buildspecs/validate_tags.txt
+
+Finally we can also search by executors using the ``-e`` option.
+
+.. program-output:: cat docgen/getting_started/buildspecs/validate_executors.txt

@@ -46,7 +46,7 @@ configuration applicable to a specific compiler group.
 
 Shown below is an example build for the buildspec example
 
-.. program-output:: cat docgen/schemas/gnu_hello.txt
+.. program-output:: cat docgen/buildspecs/compiler/gnu_hello.txt
 
 The generated test for test name **hello_f** is the following:
 

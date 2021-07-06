@@ -1,0 +1,10 @@
+$ buildtest report --filter buildspec=tutorials/python-hello.yml --format=name,id,state,buildspec 
+Reading report file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/report.json 
+
++--------------+----------+---------+------------------------------------------------------------------------------+
+| name         | id       | state   | buildspec                                                                    |
++==============+==========+=========+==============================================================================+
+| python_hello | 4a6f1dd7 | PASS    | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml |
++--------------+----------+---------+------------------------------------------------------------------------------+
+| python_hello | 4bfc2feb | PASS    | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml |
++--------------+----------+---------+------------------------------------------------------------------------------+

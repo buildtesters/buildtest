@@ -12,7 +12,7 @@ If you want to list all builds you should run **buildtest history list** which w
 format of all builds with corresponding build ID to differentiate each build. Shown below is an example output. The build
 IDs start at **0** and increment as you run **buildtest build** command.
 
-.. program-output:: cat docgen/buildtest_history_list.txt
+.. program-output:: cat docgen/getting_started/features/buildtest_history_list.txt
 
 The ``buildtest history query`` command is particularly useful when you want to inspect a particular build. This command
 expects a *Build Identifier* which can be found by inspecting output column `id` in `buildtest history list`.
@@ -21,7 +21,7 @@ Shown below is an output of build ID 0 which reports relevant detail for the bui
 platform, date, etc...
 
 
-.. program-output:: cat docgen/buildtest_history_query.txt
+.. program-output:: cat docgen/getting_started/features/buildtest_history_query.txt
 
 .. _buildtest_schemas:
 
@@ -32,7 +32,7 @@ buildtest uses JSON Schema for validating buildspecs and :ref:`buildtest configu
 You can use ``buildtest schema`` command to see the list of schemas
 supported by buildtest. The schema files are denoted by ``.schema.json`` file extension.
 
-.. program-output:: cat docgen/schemas/avail-schemas.txt
+.. program-output:: cat docgen/schemas/avail_schemas.txt
 
 Shown below is the command usage of ``buildtest schema``
 
