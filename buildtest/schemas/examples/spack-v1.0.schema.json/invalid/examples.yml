@@ -50,3 +50,71 @@ buildspecs:
           name: myproject
         specs:
           - zlib
+
+  spack_test_additionalProperties:
+    type: spack
+    executor: generic.local.sh
+    description: "Check for additionalProperties in test section. FOO key is not allowed"
+    tags: [spack]
+    pre_cmds: |
+      cd /tmp
+      git clone https://github.com/spack/spack
+    spack:
+      root: /tmp/spack
+      verify_spack: false
+      install:
+        specs: ['m4', 'zlib' ]
+      test:
+        FOO: BAR
+        remove_tests: true
+        run:
+          specs: ['m4', 'zlib']
+
+  spack_test_results_testing_required_oneOf:
+    type: spack
+    executor: generic.local.sh
+    description: "The results property expects one to specify specs, suite, or both"
+    tags: [spack]
+    pre_cmds: |
+      cd /tmp
+      git clone https://github.com/spack/spack
+    spack:
+      root: /tmp/spack
+      verify_spack: false
+      install:
+        specs: ['m4', 'zlib' ]
+      test:
+        remove_tests: true
+        run:
+          specs: ['m4', 'zlib']
+        results:
+          option: '-f'
+    post_cmds: |
+      spack find
+      rm -rf $SPACK_ROOT
+
+  spack_test_run_invalid_spec:
+    type: spack
+    executor: generic.local.sh
+    description: "specs property requires a list of strings. "
+    tags: [spack]
+    pre_cmds: |
+      cd /tmp
+      git clone https://github.com/spack/spack
+    spack:
+      root: /tmp/spack
+      verify_spack: false
+      install:
+        specs: ['m4', 'zlib' ]
+      test:
+        remove_tests: true
+        run:
+          specs: ['m4', 1]
+        results:
+          option: '-f'
+          suite: ['zlib']
+          specs: ['m4']
+
+    post_cmds: |
+      spack find
+      rm -rf $SPACK_ROOT

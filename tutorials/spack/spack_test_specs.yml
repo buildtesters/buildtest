@@ -20,7 +20,6 @@ buildspecs:
         results:
           option: '-l'
           specs: ['bzip2']
-
     post_cmds: |
       spack find
       rm -rf $SPACK_ROOT

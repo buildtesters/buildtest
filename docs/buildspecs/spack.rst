@@ -406,12 +406,14 @@ Spack Test
 
 buildtest can run tests using ``spack test run`` that can be used for testing installed specs with
 tests provided by spack. In order to run tests, you need to declare the ``test`` section
-which is a property that requires ``run`` section to be declared. The ``run`` section maps to ``spack test run``
-where we define specs to run using the ``specs`` property.
+which is of ``type: object`` in JSON and ``run`` is a required property. The ``run`` section maps to ``spack test run``
+that is responsible for running tests for a list of specs that are specified using the ``specs`` property.
 
 Upon running the tests, we can retrieve results using ``spack test results`` which is configured using the ``results``
-property. This property expects the name of suite that is defined by ``suite`` property which is a list of suite names and each
-item must be a string type.
+property. The **results** property expects one to specify the ``specs`` or ``suite`` or both in order to retrieve results.
+
+The ``suite`` property is used to retrieve test results based on suite name, whereas ``specs`` property can be used to retrieve based
+on spec format. Both properties are a list of string types.
 
 In example below we install `bzip2` and run the test using ``spack test run bzip2``.
 
@@ -422,6 +424,7 @@ of suite, otherwise spack will generate a random text for suitename which you wo
 of writing test that is required by ``spack test results`` to fetch the results.
 
 .. code-block:: shell
+    :emphasize-lines: 13-14
 
     #!/bin/bash
 
@@ -443,6 +446,7 @@ of writing test that is required by ``spack test results`` to fetch the results.
     spack find
     rm -rf $SPACK_ROOT
     ######## END OF POST COMMANDS   ########
+
 
 Shown below is the example output of this test.
 
@@ -488,9 +492,9 @@ Shown below is the example output of this test.
 We can search for test results using the spec format instead of suite name. In the ``results`` property we can
 use ``specs`` field instead of ``suite`` property to specify a list of spec names to run. In spack, you can retrieve
 the results using ``spack test results -- <spec>``, note that double dash ``--`` is in front of spec name. We can
-also pass option to ``spack test results`` using the **option** property which is available for the ``results`` and
-``test`` section. Currently, spack will write test results in ``$HOME/.spack/tests`` and one can use ``spack test remove``
-to clear all test results. We can instruct buildtest to remove all test suites using the ``remove_tests`` field which
+pass options to ``spack test results`` using the **option** property which is available for ``results`` and
+``run`` property. Currently, spack will write test results in ``$HOME/.spack/tests`` and we can use ``spack test remove``
+to clear all test results. This can be done in buildspec using the ``remove_tests`` field which
 is a boolean. If this is set to **True** buildtest will run ``spack test remove -y`` to remove all test suites before running
 the tests.
 
