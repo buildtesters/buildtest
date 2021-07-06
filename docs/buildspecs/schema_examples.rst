@@ -11,13 +11,6 @@ as a json schema definition from an ordinary json file. The schema files are loc
 in `buildtest/schemas <https://github.com/buildtesters/buildtest/tree/devel/buildtest/schemas>`_
 directory.
 
-- **definitions.schema.json**: This schema is used for declaring `definitions <https://json-schema.org/understanding-json-schema/structuring.html>`_ that need to be reused in multiple schemas. We use ``$ref`` keyword to reference definitions from this file.
-- **global.schema.json**: This schema is used for validating buildspec file and validates outer level structure of test. This is referred as **Global Schema**.
-- **compiler-v1.0.schema.json**: This is the compiler schema used for validating test instance when ``type: compiler``. This schema is used for compiling source code with applications
-- **script-v1.0.schema.json**: This is the script schema used for writing scripts (bash, csh, sh, zsh, tcsh, python) and this is used for validating test instance when ``type: script`` is specified.
-- **settings.schema.json**: This schema defines how :ref:`buildtest configuration <configuring_buildtest>` file is validated.
-
-
 Schema Examples
 ------------------
 
@@ -30,39 +23,96 @@ In order to view an example you can run::
 
   buildtest schema -n <schema> --example
 
-Schema - definitions.schema.json
----------------------------------------
+Definition Schema
+-------------------
 
-.. program-output:: cat docgen/schemas/definitions-json.txt
+This schema is used for declaring `definitions <https://json-schema.org/understanding-json-schema/structuring.html>`_ that need to be
+reused in multiple schemas. We use ``$ref`` keyword to reference definitions from this file.
 
-Schema - global.schema.json
------------------------------
+Schema Content
+~~~~~~~~~~~~~~
 
-.. program-output:: cat docgen/schemas/global-json.txt
-
-Schema Examples - global.schema.json
--------------------------------------
-
-.. program-output:: cat docgen/schemas/global-examples.txt
-
-Schema - script-v1.0.schema.json
-----------------------------------
-
-.. program-output:: cat docgen/schemas/script-json.txt
-
-Schema Examples - script-v1.0.schema.json
-------------------------------------------
-
-.. program-output:: cat docgen/schemas/script-examples.txt
+.. program-output:: cat docgen/schemas/definitions_json.txt
 
 
-Schema - compiler-v1.0.schema.json
------------------------------------
+Settings Schema
+-----------------
 
-.. program-output:: cat docgen/schemas/compiler-json.txt
+This schema defines how :ref:`buildtest configuration <configuring_buildtest>` file is validated.
+
+Schema Content
+~~~~~~~~~~~~~~~~~
+
+.. program-output:: cat docgen/schemas/settings_json.txt
+
+Schema Examples
+~~~~~~~~~~~~~~~~
+
+.. program-output:: cat docgen/schemas/settings_examples.txt
 
 
-Schema Examples - compiler-v1.0.schema.json
----------------------------------------------
+Global Schema
+--------------
 
-.. program-output:: cat docgen/schemas/compiler-examples.txt
+This schema is used for validating buildspec file and validates outer level structure of test. This is referred as :ref:`global_schema`
+
+
+Schema Content
+~~~~~~~~~~~~~~~~~
+
+.. program-output:: cat docgen/schemas/global_json.txt
+
+Schema Examples
+~~~~~~~~~~~~~~~~
+
+.. program-output:: cat docgen/schemas/global_examples.txt
+
+Script Schema
+---------------
+
+This is the script schema used for writing scripts (bash, csh, sh, zsh, tcsh, python) and this is used for validating test instance when
+``type: script`` is specified. For more details on script schema see :ref:`script_schema`.
+
+Schema Content
+~~~~~~~~~~~~~~~
+
+.. program-output:: cat docgen/schemas/script_json.txt
+
+Schema Examples
+~~~~~~~~~~~~~~~
+
+.. program-output:: cat docgen/schemas/script_examples.txt
+
+
+Compiler Schema
+---------------
+
+This is the compiler schema used for validating buildspecs that define test using ``type: compiler``.
+This schema is used for compiling a single source code. For more details see :ref:`compiler_schema`
+
+Schema Content
+~~~~~~~~~~~~~~~~
+
+.. program-output:: cat docgen/schemas/compiler_json.txt
+
+Schema Examples
+~~~~~~~~~~~~~~~~
+
+.. program-output:: cat docgen/schemas/compiler_examples.txt
+
+Spack Schema
+-------------
+
+This schema is used for writing tests with `spack package manager <https://spack.readthedocs.io/>`_ using ``type: spack`` field. For more details
+see :ref:`spack_schema`.
+
+
+Schema Content
+~~~~~~~~~~~~~~~
+
+.. program-output:: cat docgen/schemas/spack_json.txt
+
+Schema Examples
+~~~~~~~~~~~~~~~
+
+.. program-output:: cat docgen/schemas/spack_examples.txt

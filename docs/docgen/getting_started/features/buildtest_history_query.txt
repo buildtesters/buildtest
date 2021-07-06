@@ -1,0 +1,32 @@
+$ buildtest history query 0 
+{
+  "command": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/vars.yml",
+  "user": "siddiq90",
+  "hostname": "DOE-7086392.local",
+  "platform": "Darwin",
+  "date": "2021/07/06 18:53:34",
+  "buildtest": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest",
+  "python": "/Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python",
+  "python-ver": "3.7.3",
+  "testdir": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests",
+  "configfile": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml",
+  "system": "generic",
+  "logpath": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/.history/0/buildtest_xy6ufwdt.log",
+  "invalid_buildspecs": [],
+  "buildspecs": {
+    "detected": [
+      "/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/vars.yml"
+    ],
+    "included": [
+      "/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/vars.yml"
+    ],
+    "excluded": []
+  },
+  "test_summary": {
+    "pass": "1",
+    "fail": "0",
+    "total": "1",
+    "pass_rate": "100.000",
+    "fail_rate": "0.000"
+  }
+}

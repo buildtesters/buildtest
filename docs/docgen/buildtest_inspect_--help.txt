@@ -1,9 +1,9 @@
 $ buildtest inspect --help
-usage: buildtest [options] [COMMANDS] inspect [-h] [-r REPORT_FILE]  ...
+usage: buildtest [options] [COMMANDS] inspect [-h] [-r REPORT]  ...
 
 optional arguments:
   -h, --help            show this help message and exit
-  -r REPORT_FILE, --report-file REPORT_FILE
+  -r REPORT, --report REPORT
                         Specify a report file to load when inspecting test
 
 subcommands:

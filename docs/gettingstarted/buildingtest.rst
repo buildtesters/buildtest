@@ -35,7 +35,7 @@ In this example, buildtest will :ref:`discover buildspecs <discover_buildspecs>`
 parsing the test with appropriate schema and generate a shell script that is run
 by buildtest. You can learn more about :ref:`build and test process <build_and_test_process>`.
 
-.. program-output:: cat docgen/getting_started/buildspec-abspath.txt
+.. program-output:: cat docgen/getting_started/building/buildspec_abspath.txt
 
 .. Note::
     buildtest will only read buildspecs with ``.yml`` extension, if you specify a
@@ -46,7 +46,7 @@ to build multiple buildspecs in a directory you can specify the directory path
 and buildtest will recursively search for all ``.yml`` files. In the next example,
 we build all tests in directory **general_tests/configuration**.
 
-.. program-output:: cat docgen/getting_started/buildspec-directory.txt
+.. program-output:: cat docgen/getting_started/building/buildspec_directory.txt
 
 Building Multiple Buildspecs
 ------------------------------
@@ -56,7 +56,7 @@ command. Buildtest will discover buildspecs for every argument (``-b``) and accu
 a list of buildspecs to run. In this example, we instruct buildtest to build
 a buildspec file and all buildspecs in a directory path.
 
-.. program-output:: cat docgen/getting_started/multi-buildspecs.txt
+.. program-output:: cat docgen/getting_started/building/multi_buildspecs.txt
 
 .. _exclude_buildspecs:
 
@@ -87,7 +87,7 @@ true if you were to specify files instead of directory.
 In this example, we build all buildspecs in a directory but exclude two files. Buildtest
 will report the excluded buildspecs in the output.
 
-.. program-output:: cat docgen/getting_started/exclude_buildspecs.txt
+.. program-output:: cat docgen/getting_started/building/exclude_buildspecs.txt
 
 .. _build_by_tags:
 
@@ -104,12 +104,12 @@ buildtest will read the cache file ``var/buildspec-cache.json`` and see which
 buildspecs have a matching tag. You should run ``buildtest buildspec find``
 atleast once, in order to detect cache file.
 
-.. program-output::  cat docgen/getting_started/tags.txt
+.. program-output::  cat docgen/getting_started/building/tags.txt
 
 You can build by multiple tags by specifying ``--tags`` multiple times. In next
 example we build all tests with tag name ``pass`` and ``python``.
 
-.. program-output:: cat docgen/getting_started/multi-tags.txt
+.. program-output:: cat docgen/getting_started/building/multi_tags.txt
 
 When multiple tags are specified, we search each tag independently and if it's
 found in the buildspec cache we retrieve the buildspec file and add file to queue.
@@ -126,7 +126,7 @@ tag name. The ``--filter-tags`` is used in conjunction with other options like
 Let's rerun the previous example and filter tests by ``pass``. Now we only see
 tests built with tagname ``pass`` and all remaining tests were ignored.
 
-.. program-output:: cat docgen/getting_started/combine-filter-tags-buildspec.txt
+.. program-output:: cat docgen/getting_started/building/combine_filter_tags_buildspec.txt
 
 The ``--filter-tags`` option can be appended multiple times to filter tests by
 multiple tags. If buildtest detects no tests were found when filtering tests by
@@ -134,13 +134,13 @@ tag name then buildtest will report a message. In example below we see no builds
 were found with tag name ``compile`` in the test.
 
 
-.. program-output:: cat docgen/getting_started/filter-tags-nobuildspecs.txt
+.. program-output:: cat docgen/getting_started/building/filter_tags_nobuildspecs.txt
 
 You can combine ``--tags`` with ``--buildspec`` to discover buildspecs in a single command.
 buildtest will query tags and buildspecs independently and combine all discovered
 buildspecs together.
 
-.. program-output:: cat docgen/getting_started/combine-tags-buildspec.txt
+.. program-output:: cat docgen/getting_started/building/combine_tags_buildspec.txt
 
 As you may see, there are several ways to build buildspecs with buildtest. Tags is
 great way to build a whole collection of tests if you don't know path to all the files. You can
@@ -153,9 +153,9 @@ Building by Executors
 
 Every buildspec is associated to an executor which is responsible for running the test.
 You can instruct buildtest to run all tests by given executor via ``--executor`` option.
-For instance, if you want to build all test associated to executor ``generic.local.sh`` you can run::
+For instance, if you want to build all test associated to executor ``generic.local.python`` you can run::
 
-  $ buildtest build --executor generic.local.sh
+  $ buildtest build --executor generic.local.python
 
 buildtest will query buildspec cache for the executor name and retrieve a list of
 buildspecs with matching executor name. To see a list of available executors in
@@ -165,22 +165,21 @@ buildspec cache see :ref:`querying buildspec executor <buildspec_executor>`.
    buildspecs if one of the test matches the executor name. The ``--executor`` option
    is **not filtering on test level**  like ``--filter-tags`` option.
 
-In this example we run all tests that are associated to ``generic.local.sh`` executor. Notice how
-buildtest skips tests that don't match executor **generic.local.sh** even though they were
-discovered in buildspec file.
+In this example we run all tests that are associated to ``generic.local.python`` executor. Notice how
+buildtest filters tests by executor named **generic.local.sh**.
 
-.. program-output:: cat docgen/getting_started/single-executor.txt
+.. program-output:: cat docgen/getting_started/building/single_executor.txt
 
 We can append arguments to ``--executor`` to search for multiple executors by
 specifying ``--executor <name1> --executor <name2>``. In next example we search
-all tests associated with ``generic.local.sh`` and ``generic.local.bash`` executor.
+all tests associated with ``generic.local.python`` and ``generic.local.csh`` executor.
 
 .. Note:: If you specify multiple executors, buildtest will combine the executors
-   into list, for example ``--executor generic.local.bash --executor generic.local.sh`` is converted
-   into a list - ``[generic.local.bash, generic.local.sh]``, and buildtest will
+   into list, for example ``buildtest build --executor generic.local.python --executor generic.local.csh`` is converted
+   into a list - ``[generic.local.python, generic.local.csh]``, and buildtest will
    discover buildspecs based on ``executor`` field in testname.
 
-.. program-output:: cat docgen/getting_started/multi-executor.txt
+.. program-output:: cat docgen/getting_started/building/multi_executor.txt
 
 .. _discover_buildspecs:
 
@@ -223,14 +222,14 @@ instruct buildtest to stop at parse stage via ``--stage=parse``. This can be use
 when debugging buildspecs that are invalid. In this example below, we instruct
 buildtest to stop after parse stage.
 
-.. program-output:: cat docgen/getting_started/stage_parse.txt
+.. program-output:: cat docgen/getting_started/building/stage_parse.txt
 
 Likewise, if you want to troubleshoot your test script without running them you can
 use ``--stage=build`` which will stop after build phase. This can
 be used when you are writing buildspec to troubleshoot how test is generated.
 In this next example, we inform buildtest to stop after build stage.
 
-.. program-output:: cat docgen/getting_started/stage_build.txt
+.. program-output:: cat docgen/getting_started/building/stage_build.txt
 
 .. _invalid_buildspecs:
 
@@ -241,14 +240,14 @@ buildtest will skip any buildspecs that fail to validate, in that case
 the test script will not be generated. Here is an example where we have an invalid
 buildspec.
 
-.. program-output:: cat docgen/getting_started/invalid-buildspec.txt
+.. program-output:: cat docgen/getting_started/building/invalid_buildspec.txt
 
 buildtest may skip tests from running if buildspec specifies an invalid
 executor name since buildtest needs to know this in order to delegate test
 to Executor class responsible for running the test. Here is an example
 where test failed to run since we provided invalid executor.
 
-.. program-output:: cat docgen/getting_started/invalid-executor.txt
+.. program-output:: cat docgen/getting_started/building/invalid_executor.txt
 
 Rebuild Tests
 --------------
@@ -259,14 +258,14 @@ all discovered buildspecs and create a new test instance (unique id) and test di
 path. To demonstrate we will build ``tutorials/python-shell.yml`` three times using
 ``--rebuild=3``.
 
-.. program-output:: cat docgen/getting_started/rebuild.txt
+.. program-output:: cat docgen/getting_started/building/rebuild.txt
 
 The rebuild works with all options including: ``--buildspec``, ``--exclude``, ``--tags``
 and ``--executors``.
 
 In the next example we rebuild tests by discovering all tags that contain **fail**.
 
-.. program-output:: cat docgen/getting_started/rebuild-tags.txt
+.. program-output:: cat docgen/getting_started/building/rebuild_tags.txt
 
 The rebuild option expects a range between **1-50**, the ``--rebuild=1`` is equivalent
 to running without ``--rebuild`` option. We set a max limit for rebuild option to

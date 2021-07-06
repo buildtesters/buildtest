@@ -152,7 +152,7 @@ will PASS.
 To demonstrate we will build this test and pay close attention to the **status**
 column in output.
 
-.. program-output:: cat docgen/schemas/pass_returncode.txt
+.. program-output:: cat docgen/buildspecs/overview/pass_returncode.txt
 
 The ``returncode`` field can be an integer or list of integers but it may not accept
 duplicate values. If you specify a list of exit codes, buildtest will check actual returncode
@@ -270,7 +270,7 @@ a Linux command.
 
 Next we build this test by running ``buildtest build -b tutorials/vars.yml``.
 
-.. program-output:: cat docgen/schemas/vars.txt
+.. program-output:: cat docgen/buildspecs/overview/vars.txt
 
 If we inspect the output file we see the following result:
 
@@ -287,7 +287,8 @@ Shown below is the generated testscript:
 
 .. code-block:: shell
 
-    #!/bin/bash
+   #!/bin/bash
+    # Declare shell variables
     X=1
     Y=2
     literalstring="this is a literal string ':' "
@@ -296,6 +297,9 @@ Shown below is the generated testscript:
     doublequote="doublequote"
     current_user=$(whoami)
     files_homedir=`find $HOME -type f -maxdepth 1`
+
+
+    # Content of run section
     echo "$X+$Y=" $(($X+$Y))
     echo $literalstring
     echo $singlequote
@@ -374,7 +378,7 @@ with stdout stream.
 
 Now let's run this test as we see the following.
 
-.. program-output:: cat docgen/getting_started/shebang.txt
+.. program-output:: cat docgen/buildspecs/overview/shebang.txt
 
 If we look at the generated test for **bash_login_shebang** we see the shebang line
 is passed into the script:
@@ -432,7 +436,7 @@ while **unskipped** will be processed as usual.
 Here is an example build, notice message ``[skip] test is skipped`` during the build
 stage
 
-.. program-output:: cat docgen/schemas/skip_tests.txt
+.. program-output:: cat docgen/buildspecs/overview/skip_tests.txt
 
 run_only
 ---------
@@ -457,7 +461,7 @@ buildtest will skip test if there is no match.
 Now if we run this test we see buildtest will skip test **run_only_as_root** because
 current user is not root.
 
-.. program-output:: cat docgen/schemas/root_user.txt
+.. program-output:: cat docgen/buildspecs/overview/root_user.txt
 
 run_only - platform
 ~~~~~~~~~~~~~~~~~~~~
@@ -477,7 +481,7 @@ with stdout using regular expression.
 This test was ran on a MacOS (Darwin) so we expect test **run_only_platform_linux**
 to be skipped.
 
-.. program-output:: cat docgen/schemas/run_only_platform.txt
+.. program-output:: cat docgen/buildspecs/overview/run_only_platform.txt
 
 run_only - scheduler
 ~~~~~~~~~~~~~~~~~~~~~
@@ -495,7 +499,7 @@ and buildtest will check if target system supports detects the scheduler. In thi
 If we build this test on a target system without LSF notice that buildtest skips
 test **show_host_groups**.
 
-.. program-output:: cat docgen/schemas/bmgroups.txt
+.. program-output:: cat docgen/buildspecs/overview/bmgroups.txt
 
 
 run_only - linux_distro
@@ -510,7 +514,7 @@ we run test only if host distro is ``darwin``.
 
 This test will run successfully because this was ran on a Mac OS (darwin) system.
 
-.. program-output:: cat docgen/schemas/run_only_distro.txt
+.. program-output:: cat docgen/buildspecs/overview/run_only_distro.txt
 
 
 Running test across multiple executors
@@ -529,7 +533,7 @@ on the regular expression.
 
 If we build this test, notice that there are two tests, one for each executor.
 
-.. program-output:: cat docgen/getting_started/regex-executor-script.txt
+.. program-output:: cat docgen/buildspecs/overview/regex_executor_script.txt
 
 
 Passing Test based on runtime
@@ -551,9 +555,9 @@ In test **timelimit_min**, we sleep for 2 seconds and it will pass because minim
 .. program-output:: cat ../tutorials/runtime_status_test.yml
 
 
-.. program-output:: cat docgen/getting_started/runtime-status.txt
+.. program-output:: cat docgen/buildspecs/overview/runtime_status.txt
 
 If we look at the test results, we expect the first three tests **timelimit_min**, **timelimit_max**, **timelimit_min_max**
 will pass while the last two tests fail because it fails to comply with runtime property.
 
-.. program-output:: cat docgen/getting_started/runtime-status-report.txt
+.. program-output:: cat docgen/buildspecs/overview/runtime_status_report.txt

@@ -1,6 +1,6 @@
 $ buildtest report --help
 usage: buildtest [options] [COMMANDS] report [-h] [--helpformat] [--helpfilter] [--format FORMAT] [--filter FILTER]
-                                             [--latest] [--oldest] [-r REPORT_FILE]
+                                             [--latest] [--oldest] [-r REPORT]
                                              ...
 
 optional arguments:
@@ -14,7 +14,7 @@ optional arguments:
                         filter fields run: --helpfilter.
   --latest              Retrieve latest record of particular test
   --oldest              Retrieve oldest record of particular test
-  -r REPORT_FILE, --report_file REPORT_FILE
+  -r REPORT, --report REPORT
                         Specify a report file to read
 
 subcommands:

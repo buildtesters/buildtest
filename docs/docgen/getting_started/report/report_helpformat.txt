@@ -1,0 +1,23 @@
+$ buildtest report --helpformat 
+Fields      Description
+----------  ----------------------------------------------------------------
+buildspec   Buildspec file
+command     Command executed
+compiler    Retrieve compiler used for test (applicable for compiler schema)
+endtime     End Time for Test in date format
+errfile     Error File
+executor    Executor name
+hostname    Retrieve hostname of machine where job was submitted from
+full_id     Full qualified unique build identifier
+id          Unique Build Identifier (abbreviated)
+name        Name of test defined in buildspec
+outfile     Output file
+returncode  Return Code from Test Execution
+runtime     Total runtime in seconds
+schemafile  Schema file used for validation
+starttime   Start Time of test in date format
+state       Test State reported by buildtest (PASS/FAIL)
+tags        Tag name
+testroot    Root of test directory
+testpath    Path to test
+user        Get user who submitted job

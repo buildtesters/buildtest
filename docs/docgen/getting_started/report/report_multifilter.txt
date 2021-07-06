@@ -1,0 +1,30 @@
+$ buildtest report --filter state=FAIL,executor=generic.local.sh --format=name,id,state,executor 
+Reading report file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/report.json 
+
++--------------------------+----------+---------+------------------+
+| name                     | id       | state   | executor         |
++==========================+==========+=========+==================+
+| exit1_fail               | b470d3cb | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | f8b19739 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | 6bf36128 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | 4ee1c93d | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| exit1_fail               | b3e06e7f | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 62d332b6 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | aa117a0c | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 3fdd508e | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | f6c187d8 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| returncode_list_mismatch | 21b234a1 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| timelimit_min_fail       | 10157790 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+
+| timelimit_max_fail       | ff92ed60 | FAIL    | generic.local.sh |
++--------------------------+----------+---------+------------------+

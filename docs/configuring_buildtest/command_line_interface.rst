@@ -17,7 +17,7 @@ This can be achieved by running ``buildtest config validate``. When you invoke t
 command, buildtest will load the configuration and attempt to validate the file with
 schema **settings.schema.json**. If validation is successful you will get the following message:
 
-.. program-output:: cat docgen/config-validate.txt
+.. program-output:: cat docgen/configuring/config_validate.txt
 
 .. Note:: If you defined a user setting (``~/.buildtest/config.yml``) buildtest will validate this file instead of default one.
 
@@ -55,7 +55,7 @@ View buildtest configuration
 
 If you want to view buildtest configuration you can run the following
 
-.. program-output:: cat docgen/config-view.txt
+.. program-output:: cat docgen/configuring/config_view.txt
 
 .. Note:: ``buildtest config view`` will display contents of user buildtest settings ``~/.buildtest/config.yml`` if found, otherwise it will display the default configuration
 
@@ -72,7 +72,7 @@ configuration file.  Shown below is the command usage
 You can run ``buildtest config executors`` without any options and it will report a list of named executors that
 you would reference in buildspec using the ``executor`` property. If you prefer json or yaml format you can use ``--json`` or ``--yaml`` option.
 
-.. program-output:: cat docgen/config_executors.txt
+.. program-output:: cat docgen/configuring/config_executors.txt
    :shell:
 
 View Registered Systems
@@ -99,7 +99,7 @@ Configuration Summary
 You can get a summary of buildtest using ``buildtest config summary``, this will
 display information from several sources into one single command along.
 
-.. program-output:: cat docgen/config-summary.txt
+.. program-output:: cat docgen/configuring/config_summary.txt
    :shell:
 
 Example Configurations
@@ -110,7 +110,7 @@ can be retrieved by running ``buildtest schema -n settings.schema.json --example
 or short option (``-e``), which will validate each example with schema file
 ``settings.schema.json``.
 
-.. program-output:: cat docgen/schemas/settings-examples.txt
+.. program-output:: cat docgen/schemas/settings_examples.txt
    :shell:
 
 If you want to retrieve full json schema file for buildtest configuration you can

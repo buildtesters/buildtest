@@ -14,7 +14,7 @@ pretty print data in tables. Shown below is command usage to query test reports.
 You may run ``buildtest report`` without any option, and buildtest will display **all** test results
 with default format fields. To see a list of all format fields, click :ref:`here <report_format_fields>`.
 
-.. program-output:: cat docgen/report.txt
+.. program-output:: cat docgen/getting_started/report/report.txt
    :ellipsis: 20
 
 Format Reports
@@ -31,7 +31,7 @@ The **buildtest report** command displays a default format fields that can be ch
 with the **--format** option. To see a list of available format fields you can run ``buildtest report --helpformat``.
 This option will list all format fields and their description.
 
-.. program-output:: cat docgen/report-helpformat.txt
+.. program-output:: cat docgen/getting_started/report/report_helpformat.txt
 
 Format Field Usage
 ~~~~~~~~~~~~~~~~~~~
@@ -40,7 +40,7 @@ The ``--format`` field expects field name separated by comma (i.e ``--format <fi
 In this example we format by fields ``--format id,executor,state,returncode``. Notice how
 buildtest will format table columns in the order format options.
 
-.. program-output:: cat docgen/report-format.txt
+.. program-output:: cat docgen/getting_started/report/report_format.txt
    :ellipsis: 21
 
 Filter Reports
@@ -51,7 +51,7 @@ you want to analyze specific tests. Therefore, we introduce a ``--filter`` optio
 to filter out tests in the output. First, lets see the available filter fields
 by run ``buildtest report --helpfilter``.
 
-.. program-output:: cat docgen/report-helpfilter.txt
+.. program-output:: cat docgen/getting_started/report/report_helpfilter.txt
 
 The ``--filter`` option expects arguments in **key=value** format. You can
 specify multiple filter delimited by comma. buildtest will treat multiple
@@ -64,7 +64,7 @@ Filter by returncode
 If you want to retrieve all tests with a given returncode, we can use the **returncode**
 property. For instance, let's retrieve all tests with returncode of 2 by setting ``--filter returncode=2``.
 
-.. program-output:: cat docgen/report-returncode.txt
+.. program-output:: cat docgen/getting_started/report/report_returncode.txt
 
 .. Note:: buildtest automatically converts returncode to integer when matching returncode, so ``--filter returncode="2"`` will work too
 
@@ -75,7 +75,7 @@ If you want to filter by test name, use the **name** attribute in filter option.
 we want to filter all tests by name ``exit1_pass`` which can be done by
 setting ``--filter name=exit1_pass`` as shown below
 
-.. program-output:: cat docgen/report-filter-name.txt
+.. program-output:: cat docgen/getting_started/report/report_filter_name.txt
 
 Filter by buildspec
 ~~~~~~~~~~~~~~~~~~~~~
@@ -85,7 +85,7 @@ Likewise, we can filter results by buildspec file using **buildspec** attribute 
 relative or absolute path. buildtest will resolve path (absolute path) and find the appropriate
 tests that belong to the buildspec file. If file doesn't exist or is not found in cache it will raise an error.
 
-.. program-output:: cat docgen/report-filter-buildspec.txt
+.. program-output:: cat docgen/getting_started/report/report_filter_buildspec.txt
 
 Filter by test state
 ~~~~~~~~~~~~~~~~~~~~~
@@ -96,7 +96,7 @@ value of ``[PASS|FAIL]`` since these are the two recorded test states marked by 
 We can also pass multiple filter fields for instance if we want to find all **FAIL**
 tests for executor **generic.local.sh** we can do the following.
 
-.. program-output:: cat docgen/report-multifilter.txt
+.. program-output:: cat docgen/getting_started/report/report_multifilter.txt
 
 Filter Exception Cases
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -222,7 +222,7 @@ based on name or id. Shown below is the command usage for `buildtest inspect` co
 You can report all test names and corresponding ids using ``buildtest inspect list`` which
 will be used for querying tests by name or id.
 
-.. program-output:: cat  docgen/buildtest_inspect_list.txt
+.. program-output:: cat  docgen/getting_started/report/buildtest_inspect_list.txt
    :ellipsis: 20
 
 
@@ -235,12 +235,12 @@ illustrate the point. We can see that each test is stored as a JSON format and b
 metadata for each test such as `user`, `hostname`, `command`, path to output and error file, content of test,
 state of test, returncode, etc...
 
-.. program-output:: cat docgen/buildtest_inspect_names.txt
+.. program-output:: cat docgen/getting_started/report/buildtest_inspect_names.txt
 
 You can query multiple tests by specifying them as positional arguments in the format: ``buildtest inspect name <test1> <test2>``
 In example below we see buildtest reports all records for each positional argument.
 
-.. program-output:: cat docgen/buildtest_inspect_multi_names.txt
+.. program-output:: cat docgen/getting_started/report/buildtest_inspect_multi_names.txt
 
 Inspecting Test by ID
 ~~~~~~~~~~~~~~~~~~~~~~

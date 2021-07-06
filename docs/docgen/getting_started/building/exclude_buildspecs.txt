@@ -1,0 +1,95 @@
+$ buildtest build -b general_tests/configuration/ -x general_tests/configuration/ulimits.yml -x general_tests/configuration/ssh_localhost.yml 
+
+
+User:  siddiq90
+Hostname:  DOE-7086392.local
+Platform:  Darwin
+Current Time:  2021/07/06 18:53:37
+buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
+buildtest version:  0.9.6
+python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
+python version:  3.7.3
+Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
+Configuration File:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml
+Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b general_tests/configuration/ -x general_tests/configuration/ulimits.yml -x general_tests/configuration/ssh_localhost.yml
+
++-------------------------------+
+| Stage: Discovering Buildspecs |
++-------------------------------+ 
+
++----------------------------------------------------------------------------------------------------------+
+| Discovered Buildspecs                                                                                    |
++==========================================================================================================+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ulimits.yml                |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/systemd-default-target.yml |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/kernel_state.yml           |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ssh_localhost.yml          |
++----------------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/disk_usage.yml             |
++----------------------------------------------------------------------------------------------------------+
++-------------------------------------------------------------------------------------------------+
+| Excluded Buildspecs                                                                             |
++=================================================================================================+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ssh_localhost.yml |
++-------------------------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/ulimits.yml       |
++-------------------------------------------------------------------------------------------------+
+Discovered Buildspecs:  5
+Excluded Buildspecs:  2
+Detected Buildspecs after exclusion:  3
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+
+ schemafile              | validstate   | buildspec
+-------------------------+--------------+----------------------------------------------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/systemd-default-target.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/kernel_state.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/general_tests/configuration/disk_usage.yml
+
+
+
+name                    description
+----------------------  --------------------------------------------------------
+systemd_default_target  check if default target is multi-user.target
+kernel_swapusage        Retrieve Kernel Swap Usage
+root_disk_usage         Check root disk usage and report if it exceeds threshold
+
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ name                   | id       | type   | executor           | tags                      | testpath
+------------------------+----------+--------+--------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ systemd_default_target | 1820ff87 | script | generic.local.bash | ['system']                | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/systemd-default-target/systemd_default_target/2/systemd_default_target_build.sh
+ kernel_swapusage       | 152e2d51 | script | generic.local.bash | ['configuration']         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/kernel_state/kernel_swapusage/2/kernel_swapusage_build.sh
+ root_disk_usage        | 3bc73a5d | script | generic.local.bash | ['filesystem', 'storage'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/2/root_disk_usage_build.sh
+
+
+
+
+
++---------------------+
+| Stage: Running Test |
++---------------------+ 
+
+ name                   | id       | executor           | status   |   returncode
+------------------------+----------+--------------------+----------+--------------
+ systemd_default_target | 1820ff87 | generic.local.bash | FAIL     |            1
+ kernel_swapusage       | 152e2d51 | generic.local.bash | FAIL     |            1
+ root_disk_usage        | 3bc73a5d | generic.local.bash | PASS     |            0
+
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
+    
+Passed Tests: 1/3 Percentage: 33.333%
+Failed Tests: 2/3 Percentage: 66.667%
+
+
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_61als1l8.log
+A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log

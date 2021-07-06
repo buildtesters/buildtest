@@ -1,0 +1,92 @@
+$ buildtest build --tags pass --filter-tags pass -b tutorials/python-hello.yml 
+
+
+User:  siddiq90
+Hostname:  DOE-7086392.local
+Platform:  Darwin
+Current Time:  2021/07/06 18:53:59
+buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
+buildtest version:  0.9.6
+python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
+python version:  3.7.3
+Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
+Configuration File:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml
+Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build --tags pass --filter-tags pass -b tutorials/python-hello.yml
+
++-------------------------------+
+| Stage: Discovering Buildspecs |
++-------------------------------+ 
+
++---------------------------------------------------------------------------------+
+| Discovered Buildspecs                                                           |
++=================================================================================+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml    |
++---------------------------------------------------------------------------------+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml |
++---------------------------------------------------------------------------------+
+Discovered Buildspecs:  2
+Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  2
+
+BREAKDOWN OF BUILDSPECS BY TAGS
+----------------------------------
+Detected Tag Names: ['pass']
++---------------------------------------------------------------------------------+
+| pass                                                                            |
++=================================================================================+
+| /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml |
++---------------------------------------------------------------------------------+
+
+
+[python_hello][/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml]: test is skipped because it is not in tag filter list: ['pass']
+[exit1_fail][/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml]: test is skipped because it is not in tag filter list: ['pass']
+[returncode_list_mismatch][/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml]: test is skipped because it is not in tag filter list: ['pass']
+
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+
+ schemafile              | validstate   | buildspec
+-------------------------+--------------+---------------------------------------------------------------------------------
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/python-hello.yml
+ script-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml
+
+
+
+name                  description
+--------------------  -------------------------------
+exit1_pass            report exit 1 as PASS
+returncode_int_match  exit 128 matches returncode 128
+
++----------------------+
+| Stage: Building Test |
++----------------------+ 
+
+ name                 | id       | type   | executor         | tags                  | testpath
+----------------------+----------+--------+------------------+-----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------
+ exit1_pass           | fa45bb74 | script | generic.local.sh | ['tutorials', 'pass'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/3/exit1_pass_build.sh
+ returncode_int_match | 6d33d023 | script | generic.local.sh | ['tutorials', 'pass'] | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/returncode_int_match/3/returncode_int_match_build.sh
+
+
+
+
+
++---------------------+
+| Stage: Running Test |
++---------------------+ 
+
+ name                 | id       | executor         | status   |   returncode
+----------------------+----------+------------------+----------+--------------
+ exit1_pass           | fa45bb74 | generic.local.sh | PASS     |            1
+ returncode_int_match | 6d33d023 | generic.local.sh | PASS     |          128
+
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
+    
+Passed Tests: 2/2 Percentage: 100.000%
+Failed Tests: 0/2 Percentage: 0.000%
+
+
+Writing Logfile to: /var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_855rxy52.log
+A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log

@@ -1,0 +1,9 @@
+$ buildtest report --helpfilter 
+Filter Fields    Description                 Expected Value
+---------------  --------------------------  ----------------
+buildspec        Filter by buildspec file    FILE
+name             Filter by test name         STRING
+executor         Filter by executor name     STRING
+state            Filter by test state        PASS/FAIL
+tags             Filter tests by tag name    STRING
+returncode       Filter tests by returncode  INT
