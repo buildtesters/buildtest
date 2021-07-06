@@ -81,12 +81,32 @@ class SpackBuilder(BuilderBase):
 
         if spack_configuration.get("install"):
             opts = spack_configuration["install"].get("option") or ""
-            print(opts, spack_configuration["install"].get("option"))
+
             if spack_configuration["install"].get("specs"):
                 for spec in spack_configuration["install"]["specs"]:
                     lines.append(f"spack install {opts} {spec}")
             else:
                 lines.append(f"spack install {opts}")
+
+        if spack_configuration.get("test"):
+            if spack_configuration["test"].get("remove_testsuites"):
+                lines.append("spack test remove -y")
+
+            opts = spack_configuration["test"]["run"].get("option") or ""
+            for spec in spack_configuration["test"]["run"]["specs"]:
+                lines.append(f"spack test run {opts} --alias {spec} {spec}")
+
+            opts = spack_configuration["test"]["results"].get("option") or ""
+
+            # fetch results using 'spack test results <suite>'
+            if spack_configuration["test"]["results"].get("suite"):
+                for suite in spack_configuration["test"]["results"]["suite"]:
+                    lines.append(f"spack test results {opts} {suite}")
+
+            # fetch results using 'spack test results -- <spec>'
+            if spack_configuration["test"]["results"].get("specs"):
+                for spec in spack_configuration["test"]["results"]["specs"]:
+                    lines.append(f"spack test results {opts} -- {spec}")
 
         if self.recipe.get("post_cmds"):
             lines.append("\n")

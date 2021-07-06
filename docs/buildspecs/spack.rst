@@ -400,3 +400,128 @@ defined by spack.
     ######## START OF POST COMMANDS ########
     spack mirror list
     ######## END OF POST COMMANDS   ########
+
+Spack Test
+-----------
+
+buildtest can run tests using ``spack test run`` that can be used for testing installed specs with
+tests provided by spack. In order to run tests, you need to declare the ``test`` section
+which is a property that requires ``run`` section to be declared. The ``run`` section maps to ``spack test run``
+where we define specs to run using the ``specs`` property.
+
+Upon running the tests, we can retrieve results using ``spack test results`` which is configured using the ``results``
+property. This property expects the name of suite that is defined by ``suite`` property which is a list of suite names and each
+item must be a string type.
+
+In example below we install `bzip2` and run the test using ``spack test run bzip2``.
+
+.. program-output:: cat ../tutorials/spack/spack_test.yml
+
+If we look at the generated test, buildtest will automatically set ``--alias`` option to define name
+of suite, otherwise spack will generate a random text for suitename which you won't know at time
+of writing test that is required by ``spack test results`` to fetch the results.
+
+.. code-block:: shell
+
+    #!/bin/bash
+
+
+    ######## START OF PRE COMMANDS ########
+    cd /tmp
+    git clone https://github.com/spack/spack spack
+
+    ######## END OF PRE COMMANDS   ########
+
+
+    source /private/tmp/spack-test-no-env/share/spack/setup-env.sh
+    spack install  bzip2
+    spack test run  --alias bzip2 bzip2
+    spack test results  bzip2
+
+
+    ######## START OF POST COMMANDS ########
+    spack find
+    rm -rf $SPACK_ROOT
+    ######## END OF POST COMMANDS   ########
+
+Shown below is the example output of this test.
+
+
+.. code-block:: shell
+    :emphasize-lines: 26-29
+
+    ==> libiconv: Executing phase: 'configure'
+    ==> libiconv: Executing phase: 'build'
+    ==> libiconv: Executing phase: 'install'
+    ==> libiconv: Successfully installed libiconv-1.16-xgemfyqy3gsdz3lk7wy3ejudfaksja4x
+      Fetch: 1.54s.  Build: 33.03s.  Total: 34.57s.
+    [+] /private/tmp/spack/opt/spack/darwin-bigsur-skylake/apple-clang-11.0.3/libiconv-1.16-xgemfyqy3gsdz3lk7wy3ejudfaksja4x
+    ==> Installing diffutils-3.7-3dfrh6li733xxcenwyjhwyta7xkh3udq
+    ==> No binary for diffutils-3.7-3dfrh6li733xxcenwyjhwyta7xkh3udq found: installing from source
+    ==> Fetching https://mirror.spack.io/_source-cache/archive/b3/b3a7a6221c3dc916085f0d205abf6b8e1ba443d4dd965118da364a1dc1cb3a26.tar.xz
+    ==> No patches needed for diffutils
+    ==> diffutils: Executing phase: 'autoreconf'
+    ==> diffutils: Executing phase: 'configure'
+    ==> diffutils: Executing phase: 'build'
+    ==> diffutils: Executing phase: 'install'
+    ==> diffutils: Successfully installed diffutils-3.7-3dfrh6li733xxcenwyjhwyta7xkh3udq
+      Fetch: 1.32s.  Build: 52.35s.  Total: 53.67s.
+    [+] /private/tmp/spack/opt/spack/darwin-bigsur-skylake/apple-clang-11.0.3/diffutils-3.7-3dfrh6li733xxcenwyjhwyta7xkh3udq
+    ==> Installing bzip2-1.0.8-avjwvsoaivuflugopwk4ap7rffhejxzu
+    ==> No binary for bzip2-1.0.8-avjwvsoaivuflugopwk4ap7rffhejxzu found: installing from source
+    ==> Fetching https://mirror.spack.io/_source-cache/archive/ab/ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269.tar.gz
+    ==> Ran patch() for bzip2
+    ==> bzip2: Executing phase: 'install'
+    ==> bzip2: Successfully installed bzip2-1.0.8-avjwvsoaivuflugopwk4ap7rffhejxzu
+      Fetch: 1.42s.  Build: 1.84s.  Total: 3.26s.
+    [+] /private/tmp/spack/opt/spack/darwin-bigsur-skylake/apple-clang-11.0.3/bzip2-1.0.8-avjwvsoaivuflugopwk4ap7rffhejxzu
+    ==> Spack test bzip2
+    ==> Testing package bzip2-1.0.8-avjwvso
+    ==> Results for test suite 'bzip2':
+    ==>   bzip2-1.0.8-avjwvso PASSED
+    -- darwin-bigsur-skylake / apple-clang@11.0.3 -------------------
+    bzip2@1.0.8
+    diffutils@3.7
+    libiconv@1.16
+
+
+We can search for test results using the spec format instead of suite name. In the ``results`` property we can
+use ``specs`` field instead of ``suite`` property to specify a list of spec names to run. In spack, you can retrieve
+the results using ``spack test results -- <spec>``, note that double dash ``--`` is in front of spec name. We can
+also pass option to ``spack test results`` using the **option** property which is available for the ``results`` and
+``test`` section. Currently, spack will write test results in ``$HOME/.spack/tests`` and one can use ``spack test remove``
+to clear all test results. We can instruct buildtest to remove all test suites using the ``remove_tests`` field which
+is a boolean. If this is set to **True** buildtest will run ``spack test remove -y`` to remove all test suites before running
+the tests.
+
+.. program-output:: cat ../tutorials/spack/spack_test_specs.yml
+
+In the generated test, we see that buildtest will remove all testsuites using ``spack test remove -y``
+and query results based on spec format. The options are passed into ``spack test results`` based on
+the ``option`` field specified under the ``results`` section.
+
+
+.. code-block:: shell
+    :emphasize-lines: 13-15
+
+    #!/bin/bash
+
+
+    ######## START OF PRE COMMANDS ########
+    cd /tmp
+    git clone https://github.com/spack/spack
+
+    ######## END OF PRE COMMANDS   ########
+
+
+    source /private/tmp/spack/share/spack/setup-env.sh
+    spack install  bzip2
+    spack test remove -y
+    spack test run  --alias bzip2 bzip2
+    spack test results -l -- bzip2
+
+
+    ######## START OF POST COMMANDS ########
+    spack find
+    rm -rf $SPACK_ROOT
+    ######## END OF POST COMMANDS   ########
