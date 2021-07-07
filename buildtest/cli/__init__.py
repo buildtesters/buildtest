@@ -90,7 +90,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     )
 
     parser.add_argument(
-        "-c", "--config_file", help="Specify alternate configuration file"
+        "-c", "--config", dest="configfile", help="Specify Path to Configuration File"
     )
 
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
