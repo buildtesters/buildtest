@@ -1,4 +1,4 @@
-name: Upload JSON Schema to gh-pages on devel
+name: Schema Docs for devel branch
 
 on:
   push:
