@@ -1,9 +1,12 @@
+import logging
 import json
 import os
 import sys
 from tabulate import tabulate
 from buildtest.defaults import BUILD_HISTORY_DIR
 from buildtest.utils.file import walk_tree, load_json, is_dir
+
+logger = logging.getLogger(__name__)
 
 
 def build_history(args):
@@ -19,8 +22,14 @@ def build_history(args):
 def list_builds():
 
     history_files = walk_tree(BUILD_HISTORY_DIR, ".json")
+    logger.debug(f"Searching for all '.json' files in directory: {BUILD_HISTORY_DIR}")
+
     # only filter filters that are 'build.json'
     history_files = [f for f in history_files if os.path.basename(f) == "build.json"]
+
+    logger.info(f"We have detected {len(history_files)} history files")
+    for file in history_files:
+        logger.info(file)
 
     table = {
         "id": [],

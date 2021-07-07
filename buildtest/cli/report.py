@@ -1,3 +1,5 @@
+import logging
+import json
 import os
 import sys
 from termcolor import colored
@@ -6,18 +8,20 @@ from buildtest.defaults import BUILD_REPORT
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, resolve_path
 
+logger = logging.getLogger(__name__)
+
 
 def is_int(val):
-    num = val
+
     try:
-        num = int(num)
+        int(val)
     except ValueError:
         return False
     return True
 
 
 class Report:
-    # all format fields available for --helpformat
+    # list of format fields
     format_fields = [
         "buildspec",
         "command",
@@ -40,6 +44,7 @@ class Report:
         "testpath",
         "user",
     ]
+    # list of filter fields
     filter_fields = ["buildspec", "name", "executor", "state", "tags", "returncode"]
 
     # default table format fields
@@ -77,6 +82,8 @@ class Report:
         # check if filter arguments (--filter) are valid fields
         if self.filter:
 
+            logger.debug(f"Checking filter fields: {self.filter}")
+
             # check if filter keys are accepted filter fields, if not we raise error
             for key in self.filter.keys():
                 if key not in self.filter_fields:
@@ -90,6 +97,8 @@ class Report:
                         f"Invalid returncode:{self.filter[key]} must be an integer"
                     )
 
+                logger.debug(f"filter field: {key} is valid")
+
     def _check_format_fields(self):
         """Check all format arguments (--format) are valid, the arguments are specified
         in format (--format key1=val1,key2=val2). We make sure each key is valid
@@ -101,6 +110,9 @@ class Report:
         # if buildtest report --format specified split field by "," and validate each
         # format field and reassign display_table
         if self.format:
+
+            logger.debug(f"Checking format fields: {self.format}")
+
             self.display_format_fields = self.format.split(",")
             # check all input format fields are valid fields
             for field in self.display_format_fields:
@@ -126,6 +138,8 @@ class Report:
 
         report = load_json(self.reportfile)
 
+        logger.debug(f"Loading report file: {self.reportfile}")
+
         # if report is None or issue with how json.load returns content of file we
         # raise error
         if not report:
@@ -136,10 +150,9 @@ class Report:
         return report
 
     def filter_buildspecs_from_report(self):
-        # filter_buildspecs = self.report.keys()
-        # print (self.filter, filter_buildspecs)
-        # This section filters the buildspec, if its invalid file or not found in cache
-        # we raise error, otherwise we set filter_buildspecs to the filter argument 'buildspec'
+        """This method filters the report table input filter ``--filter buildspec``. If entry found in buildspec
+        cache we add to list
+        """
 
         # by default all keys from report are buildspec files to process
         self.filtered_buildspecs = self.report.keys()
@@ -151,6 +164,8 @@ class Report:
         if self.filter.get("buildspec"):
             # resolve path for buildspec filter key, its possible if file doesn't exist method returns None
             resolved_buildspecs = resolve_path(self.filter["buildspec"])
+
+            logger.debug(f"Filter records by buildspec: {resolved_buildspecs}")
 
             # if file doesn't exist we terminate with message
             if not resolved_buildspecs:
@@ -175,25 +190,40 @@ class Report:
                 )
                 sys.exit(0)
 
-    def _filter_test_by_names(self, name):
+    def _filter_by_names(self, name):
+        """Filter test by name of test. This method will return True if record should be processed,
+        otherwise returns False
+
+        :param name: Name of test
+        :type name: str
+        """
 
         if not self.filter.get("name"):
             return False
 
-        # skip tests that don't equal filter 'name' field
-        if name == self.filter.get("name"):
-            return False
+        logger.debug(
+            f"Checking if test: '{name}' matches filter name: '{self.filter['name']}'"
+        )
 
-        return True
+        return not name == self.filter["name"]
 
-    def _filter_test_by_tags(self, test):
+    def _filter_by_tags(self, test):
+        """This method will return a boolean (True/False) to check if test should be skipped from report. Given an input test, we
+        check if test has 'tags' property in buildspec and if tagnames specified by ``--filter tags`` are found in the test. If
+        there is a match we return ``False``. A ``True`` indicates the test will be filtered out.
+
+        :param test: test record
+        :type test: dict
+        :return: Return True if test is filtered out, otherwise return False
+        :rtype: bool
+        """
 
         if self.filter.get("tags") and self.filter.get("tags") not in test.get("tags"):
             return True
 
         return False
 
-    def _filter_test_by_executor(self, test):
+    def _filter_by_executor(self, test):
 
         if self.filter.get("executor") and self.filter.get("executor") != test.get(
             "executor"
@@ -202,14 +232,14 @@ class Report:
 
         return False
 
-    def _filter_test_by_state(self, test):
+    def _filter_by_state(self, test):
 
         if self.filter.get("state") and self.filter.get("state") != test.get("state"):
             return True
 
         return False
 
-    def _filter_test_by_returncode(self, test):
+    def _filter_by_returncode(self, test):
 
         if self.filter.get("returncode"):
             if int(self.filter["returncode"]) != test.get("returncode"):
@@ -228,7 +258,7 @@ class Report:
             for name in self.report[buildspec].keys():
 
                 if self.filter:
-                    if self._filter_test_by_names(name):
+                    if self._filter_by_names(name):
                         continue
 
                 tests = self.report[buildspec][name]
@@ -252,19 +282,19 @@ class Report:
 
                     if self.filter:
                         # filter by tags, if filter tag not found in test tag list we skip test
-                        if self._filter_test_by_tags(test):
+                        if self._filter_by_tags(test):
                             continue
 
                         # if 'executor' filter defined, skip test that don't match executor key
-                        if self._filter_test_by_executor(test):
+                        if self._filter_by_executor(test):
                             continue
 
                         # if state filter defined, skip any tests that don't match test state
-                        if self._filter_test_by_state(test):
+                        if self._filter_by_state(test):
                             continue
 
                         # if returncode filter defined, skip any tests that don't match returncode
-                        if self._filter_test_by_returncode(test):
+                        if self._filter_by_returncode(test):
                             continue
 
                     if "buildspec" in self.display_table.keys():
@@ -272,6 +302,7 @@ class Report:
 
                     if "name" in self.display_table.keys():
                         self.display_table["name"].append(name)
+
                     for field in self.display_format_fields:
                         # skip fields buildspec or name since they are accounted above and not part
                         # of test dictionary

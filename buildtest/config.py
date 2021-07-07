@@ -98,7 +98,6 @@ class SiteConfiguration:
                 self.file,
                 f"Based on current system hostname: {hostname} we cannot find a matching system  {list(self.systems)} based on current hostnames: {host_lookup} ",
             )
-
         if self.target_config["executors"].get("local"):
             self.localexecutors = list(self.target_config["executors"]["local"].keys())
 
@@ -108,7 +107,9 @@ class SiteConfiguration:
         logger.debug(f"Loading default settings schema: {DEFAULT_SETTINGS_SCHEMA}")
         config_schema = load_schema(DEFAULT_SETTINGS_SCHEMA)
 
-        logger.debug(f"Validating user schema with schema: {DEFAULT_SETTINGS_SCHEMA}")
+        logger.debug(
+            f"Validating configuration file with schema: {DEFAULT_SETTINGS_SCHEMA}"
+        )
         custom_validator(recipe=self.config, schema=config_schema)
         logger.debug("Validation was successful")
 
