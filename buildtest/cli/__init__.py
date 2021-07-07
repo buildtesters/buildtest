@@ -92,6 +92,9 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     parser.add_argument(
         "-c", "--config", dest="configfile", help="Specify Path to Configuration File"
     )
+    parser.add_argument(
+        "-d", "--debug", action="store_true", help="Print debug messages to screen"
+    )
 
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 

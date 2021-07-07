@@ -36,7 +36,7 @@ def main():
     if is_file(buildtest_log):
         remove_file(buildtest_log)
 
-    logger = init_logfile()
+    logger = init_logfile(debug=args.debug)
 
     create_dir(BUILDTEST_USER_HOME)
     create_dir(BUILDTEST_EXECUTOR_DIR)
