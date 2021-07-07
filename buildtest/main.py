@@ -46,7 +46,7 @@ def main():
     system = BuildTestSystem()
     system.check()
 
-    config_file = resolve_path(args.config_file) or None
+    config_file = resolve_path(args.configfile) or None
     configuration = SiteConfiguration(config_file)
     configuration.detect_system()
     configuration.validate()
