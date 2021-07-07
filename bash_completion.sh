@@ -47,7 +47,7 @@ _buildtest ()
   COMPREPLY=()   # Array variable storing the possible completions.
 
   local cmds="build history buildspec schema report inspect config cdash docs schemadocs help"
-  local opts="--help -h --version -V -c --config_file"
+  local opts="--help -h --version -V -c --config -d --debug"
 
   next=${COMP_WORDS[1]}
 
@@ -81,7 +81,7 @@ _buildtest ()
       fi
 
       # fill auto-completion for 'buildtest build --buildspec'
-      if [[ "${prev}" == "-b" ]] || [[ "${prev}" == "--buildspec"  ]]; then
+      if [[ "${prev}" == "-b" ]] || [[ "${prev}" == "--buildspec"  ]] || [[ "${prev}" == "-x" ]] || [[ "${prev}" == "--exclude" ]] ; then
         COMPREPLY=( $( compgen -W "$(_avail_buildspecs)" -- $cur ) )
       fi
       ;;
@@ -102,10 +102,18 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) );;
 
     config)
-      local cmds="-h --help executors view validate summary systems compilers"
-
+      local cmds="executors view validate summary systems compilers"
+      local shortoption="-h"
+      local longoption="--help"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
+
+      if [[ "${cur}" == -  ]]; then
+        COMPREPLY=( $( compgen -W "$shortoption" -- $cur ) )
+      elif [[ "${cur}" == --  ]]; then
+        COMPREPLY=( $( compgen -W "$longoption" -- $cur ) )
+      fi
+
       if [[ "${prev}" == "compilers" ]]; then
         local opts="-h --help -j --json -y --yaml find"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
@@ -115,8 +123,18 @@ _buildtest ()
       fi
       ;;
     inspect)
-      local cmds="-h --help -r --report name id list"
-      COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) );;
+      local cmds="name id list"
+      local shortoption="-h -r"
+      local longoption="--help --report"
+
+      COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
+
+      if [[ "${cur}" == -  ]]; then
+        COMPREPLY=( $( compgen -W "$shortoption" -- $cur ) )
+      elif [[ "${cur}" == --  ]]; then
+        COMPREPLY=( $( compgen -W "$longoption" -- $cur ) )
+      fi
+      ;;
 
     buildspec)
       local cmds="-h --help find validate"
@@ -133,12 +151,32 @@ _buildtest ()
       ;;
 
     history)
-      local cmds="-h --help list query"
-      COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) );;
+      local cmds="list query"
+      local shortoption="-h"
+      local longoption="--help"
+
+      COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
+
+      if [[ "${cur}" == -  ]]; then
+        COMPREPLY=( $( compgen -W "$shortoption" -- $cur ) )
+      elif [[ "${cur}" == --  ]]; then
+        COMPREPLY=( $( compgen -W "$longoption" -- $cur ) )
+      fi
+      ;;
 
     cdash)
-      local cmds="-h --help view upload"
+      local cmds="view upload"
+      local shortoption="-h"
+      local longoption="--help"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
+
+      if [[ "${cur}" == -  ]]; then
+        COMPREPLY=( $( compgen -W "$shortoption" -- $cur ) )
+      elif [[ "${cur}" == --  ]]; then
+        COMPREPLY=( $( compgen -W "$longoption" -- $cur ) )
+      fi
+
+
       if [[ "${prev}" == "view" ]]; then
         local opts="-h --help --url"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
