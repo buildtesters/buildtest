@@ -2,17 +2,22 @@
 
 This repository contains the schemas used by buildtest. 
 
-buildtest schema docs can be found at [https://buildtesters.github.io/buildtest/](https://buildtesters.github.io/buildtest/)
+buildtest schema docs can be found at [https://buildtesters.github.io/buildtest/](https://buildtesters.github.io/buildtest/) which can be used 
+to reference the schema and assist you when you are [Writing Buildspecs](https://buildtest.readthedocs.io/en/devel/writing_buildspecs.html). Please
+refer to official [buildtest documentation](https://buildtest.readthedocs.io) for help with buildtest.
+
 
 Currently, we support the following schemas:
 
-- [definitions](https://buildtesters.github.io/buildtest/pages/devel/schemadocs/definitions.html): This schema definitions JSON definitions that are referenced by other schemas.
-- [global](https://buildtesters.github.io/buildtest/pages/devel/schemadocs/global.html): The global schema inherited by all sub-schemas
-- [compiler-v1.0](https://buildtesters.github.io/buildtest/pages/devel/schemadocs/compiler-v1.html): Compiler sub-schema version 1.0 using ``type: compiler``
-- [script-v1.0](https://buildtesters.github.io/buildtest/pages/devel/schemadocs/script-v1.html): Script sub-schema version 1.0 using ``type: script``
-- [settings](https://buildtesters.github.io/buildtest/pages/devel/schemadocs/settings.html): This schema defines the content of buildtest settings file to configure buildtest.
+- [definitions.schema.json](https://buildtesters.github.io/buildtest/pages/devel/schemadocs/definitions.html): This schema definitions JSON definitions that are referenced by other schemas.
+- [global.schema.json](https://buildtesters.github.io/buildtest/pages/devel/schemadocs/global.html): The global schema inherited by all sub-schemas
+- [compiler-v1.0.schema.json](https://buildtesters.github.io/buildtest/pages/devel/schemadocs/compiler-v1.html): Compiler schema version 1.0 
+- [script-v1.0.schema.json](https://buildtesters.github.io/buildtest/pages/devel/schemadocs/script-v1.html): Script schema version 1.0 
+- [spack-v1.0.schema.json](https://buildtesters.github.io/buildtest/pages/devel/schemadocs/spack-v1.html): Spack schema version 1.0
+- [settings.schema.json](https://buildtesters.github.io/buildtest/pages/devel/schemadocs/settings.html): This schema defines the content of buildtest settings file to configure buildtest.
 
-The schemas are published at [https://github.com/buildtesters/buildtest/tree/gh-pages/pages/devel/schemas](https://github.com/buildtesters/buildtest/tree/gh-pages/pages/devel/schemas)
+The schemas are published in [schemas](https://github.com/buildtesters/buildtest/tree/gh-pages/pages/devel/schemas) folder
+
 
 ## What is a schema?
 
@@ -38,6 +43,10 @@ and examples can be accessed via ``buildtest schema`` command. Shown below is a 
 - [valid-examples](https://buildtesters.github.io/buildtest/pages/devel/examples/compiler-v1.0.schema.json/valid/examples.yml)
 - [invalid-examples](https://buildtesters.github.io/buildtest/pages/devel/examples/compiler-v1.0.schema.json/invalid/examples.yml)
 
+### Examples for spack-v1.0.schema.json
+- [valid-examples](https://buildtesters.github.io/buildtest/pages/devel/examples/spack-v1.0.schema.json/valid/examples.yml)
+- [invalid-examples](https://buildtesters.github.io/buildtest/pages/devel/examples/spack-v1.0.schema.json/invalid/examples.yml)
+
 ### Examples for settings.schema.json
 - [valid-examples](https://github.com/buildtesters/buildtest/tree/gh-pages/pages/devel/examples/settings.schema.json/valid)
 
@@ -46,15 +55,15 @@ and examples can be accessed via ``buildtest schema`` command. Shown below is a 
 
 buildtest stores the schemas in top-level folder [buildtest/schemas](https://github.com/buildtesters/buildtest/tree/devel/buildtest/schemas).
 The schemas [examples](https://github.com/buildtesters/buildtest/tree/devel/buildtest/schemas/examples) are grouped into directories named by
-schemafile so you will see the following
+schemafile so you will see the following:
 
 ```
   $ ls -1 buildtest/schemas/examples 
-
   compiler-v1.0.schema.json
   global.schema.json
   script-v1.0.schema.json
   settings.schema.json
+  spack-v1.0.schema.json
 ```
 
 The format for sub-schema is `<name>-vX.Y.schema.json`.  All schemas must end in **.schema.json**. The schemas and documentation are published
