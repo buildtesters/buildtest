@@ -60,6 +60,7 @@
     },
     "spack": {
       "type": "object",
+      "description": "Entry point to spack configuration",
       "required": [
         "root"
       ],
@@ -90,7 +91,8 @@
           "default": true
         },
         "test": {
-          "$ref": "#definitions/test"
+          "$ref": "#definitions/test",
+          "description": "Entry point to ``spack test``"
         }
       }
     }
@@ -99,6 +101,7 @@
     "env": {
       "additionalProperties": false,
       "type": "object",
+      "description": "Used for managing spack environment using ``spack env`` command. ",
       "properties": {
         "create": {
           "additionalProperties": false,
@@ -107,24 +110,24 @@
           "properties": {
             "remove_environment": {
               "type": "boolean",
-              "description": "Remove existing spack environment before creating new environment",
+              "description": "Remove existing spack environment before creating new environment. If set to ``True`` we will run ``spack env rm -y <name>``.",
               "default": false
             },
             "name": {
               "type": "string",
-              "description": "Name of spack environment"
+              "description": "Name of spack environment to create"
             },
             "manifest": {
               "type": "string",
-              "description": "Specify path to spack manifest file (spack.yaml or spack.lock) when creating environment"
+              "description": "Specify path to spack manifest file (``spack.yaml`` or ``spack.lock``) when creating environment"
             },
             "options": {
               "type": "string",
-              "description": "Options passed to ``spack env create``"
+              "description": "Pass options to ``spack env create`` command"
             },
             "dir": {
               "type": "string",
-              "description": "Create a spack environment in a specific directory"
+              "description": "Create a spack environment in a specific directory. This will run ``spack env create -d <dir>``. Directory path does not have to exist prior to execution however user must have appropriate ACL in-order to create directory."
             }
           }
         },
@@ -135,11 +138,11 @@
           "properties": {
             "name": {
               "type": "string",
-              "description": "Name of spack environment to activate."
+              "description": "Name of spack environment to activate. In order to activate spack environment ``my-project`` you need to run ``spack env activate my-project`` which is specified by ``name: my-project``."
             },
             "options": {
               "type": "string",
-              "description": "Options passed to ``spack env activate``"
+              "description": "Pass options to ``spack env activate`` command"
             },
             "dir": {
               "type": "string",
@@ -149,6 +152,7 @@
         },
         "rm": {
           "additionalProperties": false,
+          "description": "Remove an existing spack environment via ``spack env rm``.",
           "type": "object",
           "required": [
             "name"
@@ -170,11 +174,12 @@
         },
         "concretize": {
           "type": "boolean",
-          "description": "Concretize spack environment by running ``spack concretize -f``"
+          "description": "If ``concretize: true`` is set, we will concretize spack environment by running ``spack concretize -f`` otherwise this line will be ignored."
         }
       }
     },
     "install": {
+      "description": "Install spack packages using ``spack install`` command",
       "additionalProperties": false,
       "type": "object",
       "properties": {
@@ -200,6 +205,7 @@
           "description": "Remove all test suites in spack before running test via ``spack test run``. If set to ``True`` we will run ``spack test remove -y`` which will remove all test suites."
         },
         "run": {
+          "description": "Run tests using spack via ``spack test run`` command. This command requires specs are installed in your spack instance prior to running tests.",
           "type": "object",
           "required": [
             "specs"
@@ -208,7 +214,7 @@
           "properties": {
             "option": {
               "type": "string",
-              "description": "Options passed to ``spack test run``"
+              "description": "Pass options to ``spack test run``"
             },
             "specs": {
               "$ref": "definitions.schema.json#/definitions/list_of_strings",
@@ -218,6 +224,7 @@
         },
         "results": {
           "type": "object",
+          "description": "View test results via ``spack test results`` after running tests via ``spack test run``. Results can be viewed using suitename or installed specs or both.",
           "additionalProperties": false,
           "anyOf": [
                     {"required": ["specs"] },
@@ -227,7 +234,7 @@
           "properties": {
             "option": {
               "type": "string",
-              "description": "Options passed to ``spack test results``"
+              "description": "Pass options to ``spack test results``"
             },
             "suite": {
                   "$ref": "definitions.schema.json#/definitions/list_of_strings",
