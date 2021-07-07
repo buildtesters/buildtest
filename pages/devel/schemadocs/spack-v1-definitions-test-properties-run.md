@@ -4,7 +4,7 @@
 spack-v1.0.schema.json#/definitions/test/properties/run
 ```
 
-
+Run tests using spack via `spack test run` command. This command requires specs are installed in your spack instance prior to running tests.
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                      |
 | :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------ |
@@ -23,7 +23,7 @@ spack-v1.0.schema.json#/definitions/test/properties/run
 
 ## option
 
-Options passed to `spack test run`
+Pass options to `spack test run`
 
 `option`
 

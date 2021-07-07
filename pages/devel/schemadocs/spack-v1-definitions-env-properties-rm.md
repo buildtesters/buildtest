@@ -4,7 +4,7 @@
 spack-v1.0.schema.json#/definitions/env/properties/rm
 ```
 
-
+Remove an existing spack environment via `spack env rm`.
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                      |
 | :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------ |

@@ -4,7 +4,7 @@
 spack-v1.0.schema.json#/definitions/env/properties/create/properties/remove_environment
 ```
 
-Remove existing spack environment before creating new environment
+Remove existing spack environment before creating new environment. If set to `True` we will run `spack env rm -y <name>`.
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                      |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------ |

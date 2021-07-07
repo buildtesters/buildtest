@@ -4,7 +4,7 @@
 spack-v1.0.schema.json#/properties/spack
 ```
 
-
+Entry point to spack configuration
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                      |
 | :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------ |
@@ -86,7 +86,7 @@ One or more key value pairs for an environment (key=value)
 
 ## env
 
-Manage spack environments via `spack env` command
+Used for managing spack environment using `spack env` command.
 
 `env`
 
@@ -104,7 +104,7 @@ Manage spack environments via `spack env` command
 
 ## install
 
-Install spack packages by running `spack install`.
+Install spack packages using `spack install` command
 
 `install`
 
@@ -148,7 +148,7 @@ true
 
 ## test
 
-
+Entry point to `spack test`
 
 `test`
 

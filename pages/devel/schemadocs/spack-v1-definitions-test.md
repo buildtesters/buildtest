@@ -42,7 +42,7 @@ Remove all test suites in spack before running test via `spack test run`. If set
 
 ## run
 
-
+Run tests using spack via `spack test run` command. This command requires specs are installed in your spack instance prior to running tests.
 
 `run`
 
@@ -60,7 +60,7 @@ Remove all test suites in spack before running test via `spack test run`. If set
 
 ## results
 
-
+View test results via `spack test results` after running tests via `spack test run`. Results can be viewed using suitename or installed specs or both.
 
 `results`
 

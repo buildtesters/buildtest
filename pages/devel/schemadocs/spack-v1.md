@@ -313,7 +313,7 @@ The status section describes how buildtest detects PASS/FAIL on test. By default
 
 ## spack
 
-
+Entry point to spack configuration
 
 `spack`
 
@@ -386,7 +386,7 @@ Activate a spack environment via `spack env activate`
 
 ### rm
 
-
+Remove an existing spack environment via `spack env rm`.
 
 `rm`
 
@@ -450,7 +450,7 @@ Add specs to environment by running `spack add <specs>`. The `specs` is a list o
 
 ### concretize
 
-Concretize spack environment by running `spack concretize -f`
+If `concretize: true` is set, we will concretize spack environment by running `spack concretize -f` otherwise this line will be ignored.
 
 `concretize`
 
@@ -555,7 +555,7 @@ Remove all test suites in spack before running test via `spack test run`. If set
 
 ### run
 
-
+Run tests using spack via `spack test run` command. This command requires specs are installed in your spack instance prior to running tests.
 
 `run`
 
@@ -573,7 +573,7 @@ Remove all test suites in spack before running test via `spack test run`. If set
 
 ### results
 
-
+View test results via `spack test results` after running tests via `spack test run`. Results can be viewed using suitename or installed specs or both.
 
 `results`
 

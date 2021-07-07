@@ -4,7 +4,7 @@
 spack-v1.0.schema.json#/definitions/test/properties/run/properties/option
 ```
 
-Options passed to `spack test run`
+Pass options to `spack test run`
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                      |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------ |

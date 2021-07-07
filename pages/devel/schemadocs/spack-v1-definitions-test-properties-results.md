@@ -4,7 +4,7 @@
 spack-v1.0.schema.json#/definitions/test/properties/results
 ```
 
-
+View test results via `spack test results` after running tests via `spack test run`. Results can be viewed using suitename or installed specs or both.
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                      |
 | :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------ |
@@ -32,7 +32,7 @@ any of
 
 ## option
 
-Options passed to `spack test results`
+Pass options to `spack test results`
 
 `option`
 

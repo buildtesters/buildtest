@@ -4,7 +4,7 @@
 spack-v1.0.schema.json#/definitions/env/properties/create/properties/dir
 ```
 
-Create a spack environment in a specific directory
+Create a spack environment in a specific directory. This will run `spack env create -d <dir>`. Directory path does not have to exist prior to execution however user must have appropriate ACL in-order to create directory.
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                      |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------ |

@@ -4,7 +4,7 @@
 spack-v1.0.schema.json#/definitions/env/properties/create/properties/options
 ```
 
-Options passed to `spack env create`
+Pass options to `spack env create` command
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                      |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------ |

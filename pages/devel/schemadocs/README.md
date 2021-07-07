@@ -468,45 +468,45 @@
 
 *   [Untitled object in spack schema version 1.0](./spack-v1-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `spack-v1.0.schema.json#/properties/status`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack.md) – `spack-v1.0.schema.json#/properties/spack`
+*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack.md "Entry point to spack configuration") – `spack-v1.0.schema.json#/properties/spack`
 
 *   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack-properties-mirror.md "One or more key value pairs for an environment (key=value)") – `spack-v1.0.schema.json#/properties/spack/properties/mirror`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack-properties-env.md "Manage spack environments via spack env command") – `spack-v1.0.schema.json#/properties/spack/properties/env`
+*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack-properties-env.md "Used for managing spack environment using spack env command") – `spack-v1.0.schema.json#/properties/spack/properties/env`
 
 *   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-create.md "Create a spack environment via spack env create") – `spack-v1.0.schema.json#/definitions/env/properties/create`
 
 *   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-activate.md "Activate a spack environment via spack env activate") – `spack-v1.0.schema.json#/definitions/env/properties/activate`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-rm.md) – `spack-v1.0.schema.json#/definitions/env/properties/rm`
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-rm.md "Remove an existing spack environment via spack env rm") – `spack-v1.0.schema.json#/definitions/env/properties/rm`
 
 *   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-mirror.md "One or more key value pairs for an environment (key=value)") – `spack-v1.0.schema.json#/definitions/env/properties/mirror`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack-properties-install.md "Install spack packages by running spack install") – `spack-v1.0.schema.json#/properties/spack/properties/install`
+*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack-properties-install.md "Install spack packages using spack install command") – `spack-v1.0.schema.json#/properties/spack/properties/install`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack-properties-test.md) – `spack-v1.0.schema.json#/properties/spack/properties/test`
+*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack-properties-test.md "Entry point to spack test") – `spack-v1.0.schema.json#/properties/spack/properties/test`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test-properties-run.md) – `spack-v1.0.schema.json#/definitions/test/properties/run`
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test-properties-run.md "Run tests using spack via spack test run command") – `spack-v1.0.schema.json#/definitions/test/properties/run`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test-properties-results.md) – `spack-v1.0.schema.json#/definitions/test/properties/results`
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test-properties-results.md "View test results via spack test results after running tests via spack test run") – `spack-v1.0.schema.json#/definitions/test/properties/results`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env.md) – `spack-v1.0.schema.json#/definitions/env`
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env.md "Used for managing spack environment using spack env command") – `spack-v1.0.schema.json#/definitions/env`
 
 *   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-create.md "Create a spack environment via spack env create") – `spack-v1.0.schema.json#/definitions/env/properties/create`
 
 *   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-activate.md "Activate a spack environment via spack env activate") – `spack-v1.0.schema.json#/definitions/env/properties/activate`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-rm.md) – `spack-v1.0.schema.json#/definitions/env/properties/rm`
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-rm.md "Remove an existing spack environment via spack env rm") – `spack-v1.0.schema.json#/definitions/env/properties/rm`
 
 *   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-mirror.md "One or more key value pairs for an environment (key=value)") – `spack-v1.0.schema.json#/definitions/env/properties/mirror`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-install.md) – `spack-v1.0.schema.json#/definitions/install`
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-install.md "Install spack packages using spack install command") – `spack-v1.0.schema.json#/definitions/install`
 
 *   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test.md) – `spack-v1.0.schema.json#/definitions/test`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test-properties-run.md) – `spack-v1.0.schema.json#/definitions/test/properties/run`
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test-properties-run.md "Run tests using spack via spack test run command") – `spack-v1.0.schema.json#/definitions/test/properties/run`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test-properties-results.md) – `spack-v1.0.schema.json#/definitions/test/properties/results`
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test-properties-results.md "View test results via spack test results after running tests via spack test run") – `spack-v1.0.schema.json#/definitions/test/properties/results`
 
 ### Arrays
 

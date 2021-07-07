@@ -4,7 +4,7 @@
 spack-v1.0.schema.json#/definitions/install
 ```
 
-
+Install spack packages using `spack install` command
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                      |
 | :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------ |

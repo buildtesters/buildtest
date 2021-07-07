@@ -4,7 +4,7 @@
 spack-v1.0.schema.json#/definitions/env/properties/create/properties/name
 ```
 
-Name of spack environment
+Name of spack environment to create
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                      |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------ |

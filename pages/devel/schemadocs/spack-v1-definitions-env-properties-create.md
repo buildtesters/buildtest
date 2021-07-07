@@ -26,7 +26,7 @@ Create a spack environment via `spack env create`
 
 ## remove_environment
 
-Remove existing spack environment before creating new environment
+Remove existing spack environment before creating new environment. If set to `True` we will run `spack env rm -y <name>`.
 
 `remove_environment`
 
@@ -44,7 +44,7 @@ Remove existing spack environment before creating new environment
 
 ## name
 
-Name of spack environment
+Name of spack environment to create
 
 `name`
 
@@ -62,7 +62,7 @@ Name of spack environment
 
 ## manifest
 
-Specify path to spack manifest file (spack.yaml or spack.lock) when creating environment
+Specify path to spack manifest file (`spack.yaml` or `spack.lock`) when creating environment
 
 `manifest`
 
@@ -80,7 +80,7 @@ Specify path to spack manifest file (spack.yaml or spack.lock) when creating env
 
 ## options
 
-Options passed to `spack env create`
+Pass options to `spack env create` command
 
 `options`
 
@@ -98,7 +98,7 @@ Options passed to `spack env create`
 
 ## dir
 
-Create a spack environment in a specific directory
+Create a spack environment in a specific directory. This will run `spack env create -d <dir>`. Directory path does not have to exist prior to execution however user must have appropriate ACL in-order to create directory.
 
 `dir`
 

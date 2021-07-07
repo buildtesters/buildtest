@@ -24,7 +24,7 @@ Activate a spack environment via `spack env activate`
 
 ## name
 
-Name of spack environment to activate.
+Name of spack environment to activate. In order to activate spack environment `my-project` you need to run `spack env activate my-project` which is specified by `name: my-project`.
 
 `name`
 
@@ -42,7 +42,7 @@ Name of spack environment to activate.
 
 ## options
 
-Options passed to `spack env activate`
+Pass options to `spack env activate` command
 
 `options`
 
