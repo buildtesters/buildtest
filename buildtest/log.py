@@ -3,8 +3,6 @@ Methods related to buildtest logging
 """
 import logging
 import os
-import sys
-
 
 LOG_FORMATTER = "%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s"
 LOG_NAME = "buildtest"

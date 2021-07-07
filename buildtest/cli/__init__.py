@@ -478,7 +478,10 @@ def inspect_menu(subparsers):
     test_id = subparser.add_parser("id", help="Specify a Test ID")
     test_id.add_argument("id", nargs="*", help="Test ID")
 
-    subparser.add_parser("list", help="List all test ids")
+    inspect_list = subparser.add_parser("list", help="List all test ids")
+    inspect_list.add_argument(
+        "-p", "--parse", action="store_true", help="Print output in parseable format"
+    )
 
 
 def schema_menu(subparsers):

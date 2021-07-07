@@ -24,11 +24,12 @@ def inspect_cmd(args):
     assert isinstance(report, dict)
     test_ids = get_all_ids(report)
 
-    print(f"Reading Report File: {report_file} \n")
+    # if not args.parse:
+    #    print(f"Reading Report File: {report_file} \n")
 
     # implements command 'buildtest inspect list'
     if args.inspect == "list":
-        inspect_list(test_ids)
+        inspect_list(test_ids, parse=args.parse)
         return
 
     # implements command 'buildtest inspect name'
@@ -63,10 +64,14 @@ def get_all_ids(report):
     return test_id
 
 
-def inspect_list(test_ids):
+def inspect_list(test_ids, parse=None):
     """Implements method ``buildtest inspect list``"""
 
     table = {"name": [], "id": []}
+    if parse:
+        for uid, name in test_ids.items():
+            print(f"{uid}|{name}")
+        return
     for identifier, name in test_ids.items():
         table["name"].append(name)
         table["id"].append(identifier)
