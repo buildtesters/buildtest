@@ -1,0 +1,245 @@
+{
+  "$id": "spack-v1.0.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "spack schema version 1.0",
+  "description": "The spack schema is referenced using ``type: spack`` which is used for generating tests using spack package manager",
+  "type": "object",
+  "required": [
+    "type",
+    "executor",
+    "spack"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "pattern": "^spack$",
+      "description": "Select schema type to use when validating buildspec. This must be set to 'spack'"
+    },
+    "description": {
+      "$ref": "definitions.schema.json#/definitions/description"
+    },
+    "executor": {
+      "$ref": "definitions.schema.json#/definitions/executor"
+    },
+    "sbatch": {
+      "$ref": "definitions.schema.json#/definitions/list_of_strings",
+      "description": "This field is used for specifying #SBATCH options in test script."
+    },
+    "bsub": {
+      "$ref": "definitions.schema.json#/definitions/list_of_strings",
+      "description": "This field is used for specifying #BSUB options in test script."
+    },
+    "cobalt": {
+      "$ref": "definitions.schema.json#/definitions/list_of_strings",
+      "description": "This field is used for specifying #COBALT options in test script."
+    },
+    "pbs": {
+      "$ref": "definitions.schema.json#/definitions/list_of_strings",
+      "description": "This field is used for specifying #PBS directives in test script."
+    },
+    "batch": {
+      "$ref": "definitions.schema.json#/definitions/batch"
+    },
+    "skip": {
+      "$ref": "definitions.schema.json#/definitions/skip"
+    },
+    "tags": {
+      "$ref": "definitions.schema.json#/definitions/tags"
+    },
+    "pre_cmds": {
+      "type": "string",
+      "description": "Shell commands run before spack"
+    },
+    "post_cmds": {
+      "type": "string",
+      "description": "Shell commands run after spack"
+    },
+    "status": {
+      "$ref": "definitions.schema.json#/definitions/status"
+    },
+    "spack": {
+      "type": "object",
+      "required": [
+        "root"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "root": {
+          "type": "string"
+        },
+        "compiler_find": {
+          "type": "boolean",
+          "description": "Run ``spack compiler find`` if set to ``True``. This is run right after sourcing spack startup script."
+        },
+        "mirror": {
+          "$ref": "definitions.schema.json#/definitions/env",
+          "description": "Add mirror by running ``spack mirror add``"
+        },
+        "env": {
+          "$ref": "#definitions/env",
+          "description": "Manage spack environments via ``spack env`` command"
+        },
+        "install": {
+          "$ref": "#definitions/install",
+          "description": "Install spack packages by running ``spack install``. "
+        },
+        "verify_spack": {
+          "type": "boolean",
+          "description": "This boolean will determine if we need to check for file existence where spack is cloned via ``root`` property and file **$SPACK_ROOT/share/spack/setup-env.sh** exists. These checks can be disabled by setting this to ``False`` which can be useful if you dont want buildtest to raise exception during test generation process and test is skipped.",
+          "default": true
+        },
+        "test": {
+          "$ref": "#definitions/test"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "env": {
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "create": {
+          "additionalProperties": false,
+          "description": "Create a spack environment via ``spack env create``",
+          "type": "object",
+          "properties": {
+            "remove_environment": {
+              "type": "boolean",
+              "description": "Remove existing spack environment before creating new environment",
+              "default": false
+            },
+            "name": {
+              "type": "string",
+              "description": "Name of spack environment"
+            },
+            "manifest": {
+              "type": "string",
+              "description": "Specify path to spack manifest file (spack.yaml or spack.lock) when creating environment"
+            },
+            "options": {
+              "type": "string",
+              "description": "Options passed to ``spack env create``"
+            },
+            "dir": {
+              "type": "string",
+              "description": "Create a spack environment in a specific directory"
+            }
+          }
+        },
+        "activate": {
+          "additionalProperties": false,
+          "type": "object",
+          "description": "Activate a spack environment via ``spack env activate``",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name of spack environment to activate."
+            },
+            "options": {
+              "type": "string",
+              "description": "Options passed to ``spack env activate``"
+            },
+            "dir": {
+              "type": "string",
+              "description": "Activate spack environment from directory."
+            }
+          }
+        },
+        "rm": {
+          "additionalProperties": false,
+          "type": "object",
+          "required": [
+            "name"
+          ],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Remove spack environment by name. This will run ``spack env rm -y <name>``."
+            }
+          }
+        },
+        "mirror": {
+          "$ref": "definitions.schema.json#/definitions/env",
+          "description": "Add mirror in spack environment by running ``spack mirror add``"
+        },
+        "specs": {
+          "$ref": "definitions.schema.json#/definitions/list_of_strings",
+          "description": "Add specs to environment by running ``spack add <specs>``. The ``specs`` is a list of string which expect the argument to be name of spack package."
+        },
+        "concretize": {
+          "type": "boolean",
+          "description": "Concretize spack environment by running ``spack concretize -f``"
+        }
+      }
+    },
+    "install": {
+      "additionalProperties": false,
+      "type": "object",
+      "properties": {
+        "options": {
+          "type": "string",
+          "description": "Pass options to ``spack install`` command"
+        },
+        "specs": {
+          "$ref": "definitions.schema.json#/definitions/list_of_strings",
+          "description": "List of specs to install using ``spack install`` command"
+        }
+      }
+    },
+    "test": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run"
+      ],
+      "properties": {
+        "remove_tests": {
+          "type": "boolean",
+          "description": "Remove all test suites in spack before running test via ``spack test run``. If set to ``True`` we will run ``spack test remove -y`` which will remove all test suites."
+        },
+        "run": {
+          "type": "object",
+          "required": [
+            "specs"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "option": {
+              "type": "string",
+              "description": "Options passed to ``spack test run``"
+            },
+            "specs": {
+              "$ref": "definitions.schema.json#/definitions/list_of_strings",
+              "description": "List of specs to run tests by running ``spack test run <specs>``."
+            }
+          }
+        },
+        "results": {
+          "type": "object",
+          "additionalProperties": false,
+          "anyOf": [
+                    {"required": ["specs"] },
+                    {"required": ["suite"] },
+                    {"required": ["specs","suite"] }
+          ],
+          "properties": {
+            "option": {
+              "type": "string",
+              "description": "Options passed to ``spack test results``"
+            },
+            "suite": {
+                  "$ref": "definitions.schema.json#/definitions/list_of_strings",
+                  "description": "Report results by  suite name by running ``spack test results <suite>``."
+            },
+            "specs": {
+                  "$ref": "definitions.schema.json#/definitions/list_of_strings",
+                  "description": "Report result by spec name by running ``spack test run -- <specs>``."
+            }
+          }
+        }
+      }
+    }
+  }
+}
