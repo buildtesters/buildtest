@@ -5,6 +5,7 @@ pre-commit
 pyflakes
 pytest
 Sphinx
+sphinx-argparse
 sphinx-autoapi
 sphinx-rtd-theme
 sphinxcontrib-programoutput

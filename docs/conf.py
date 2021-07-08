@@ -46,6 +46,7 @@ extensions = [
     "sphinx.ext.imgmath",
     "sphinxcontrib.programoutput",
     "autoapi.extension",
+    "sphinxarg.ext",
 ]
 
 # Document Python Code
