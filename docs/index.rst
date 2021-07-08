@@ -95,6 +95,7 @@ automate module load testing. For more details on lmodule see https://github.com
 
    contributing
    api
+   command
 
 License
 --------
