@@ -47,12 +47,6 @@ _buildtest ()
 
       COMPREPLY=( $( compgen -W "$allopts" -- $cur ) )
 
-      if [[ "${cur}" == -  ]]; then
-        COMPREPLY=( $( compgen -W "$shortoption" -- $cur ) )
-      elif [[ "${cur}" == --  ]]; then
-        COMPREPLY=( $( compgen -W "$longoption" -- $cur ) )
-      fi
-
       # fill auto-completion for 'buildtest build --executor'
       if [[ "${prev}" == "-e" ]] || [[ "${prev}" == "--executor"  ]]; then
         COMPREPLY=( $( compgen -W "$(_avail_executors)" -- $cur ) )
@@ -89,56 +83,39 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) );;
 
     config)
-      local cmds="executors view validate summary systems compilers"
-      local shortoption="-h"
-      local longoption="--help"
+      local cmds="-h --help executors view validate summary systems compilers"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
-
-      if [[ "${cur}" == -  ]]; then
-        COMPREPLY=( $( compgen -W "$shortoption" -- $cur ) )
-      elif [[ "${cur}" == --  ]]; then
-        COMPREPLY=( $( compgen -W "$longoption" -- $cur ) )
-      fi
-
-      if [[ "${prev}" == "compilers" ]]; then
-        local opts="-h --help -j --json -y --yaml find"
-        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-      elif [[ "${prev}" == "executors" ]]; then
-        local opts="-h --help -j --json -y --yaml"
-        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-      fi
+      # handle completion logic for 'buildtest config <subcommand>' based on subcommands
+      case "${COMP_WORDS[2]}" in
+        compilers)
+          local opts="-h --help -j --json -y --yaml find"
+          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          if [[ "${prev}" == "find" ]]; then
+            local opts="-h --help -d --debug"
+            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          fi
+          ;;
+        executors)
+          local opts="-h --help -j --json -y --yaml"
+          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
+        view|validate|summary|systems)
+          local opts="-h --help"
+          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
+      esac
       ;;
     inspect)
-      local cmds="name id list"
-      local shortoption="-h -r"
-      local longoption="--help --report"
+      local cmds="-h --help --report -r name id list"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
-      if [[ "${cur}" == -  ]]; then
-        COMPREPLY=( $( compgen -W "$shortoption" -- $cur ) )
-      elif [[ "${cur}" == --  ]]; then
-        COMPREPLY=( $( compgen -W "$longoption" -- $cur ) )
-      fi
-
-
       # case statement to handle completion for buildtest inspect [name|id|list] command
-      case "${prev}" in
+      case "${COMP_WORDS[2]}" in
         id)
           COMPREPLY=( $( compgen -W "$(_test_ids)" -- $cur ) );;
         list)
-          local shortoption="-h -p"
-          local longoption="--help --parse"
-
-          COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
-
-          if [[ "${cur}" == -  ]]; then
-            COMPREPLY=( $( compgen -W "$shortoption" -- $cur ) )
-          elif [[ "${cur}" == --  ]]; then
-            COMPREPLY=( $( compgen -W "$longoption" -- $cur ) )
-          fi
-          ;;
+          local opts="-h --help -p --parse"
+          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         name)
           COMPREPLY=( $( compgen -W "$(_test_name)" -- $cur ) );;
       esac
@@ -148,42 +125,36 @@ _buildtest ()
       local cmds="-h --help find validate"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
-      if [[ "${prev}" == "find" ]]; then
-        local opts="-h --help --root -r --rebuild -t --tags -b --buildspec -e --executors -p --paths --group-by-tags --group-by-executor -m --maintainers -mb --maintainers-by-buildspecs --filter --format --helpfilter --helpformat"
-        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+      # switch based on 2nd word 'buildtest buildspec <subcommand>'
+      case ${COMP_WORDS[2]} in
+      find)
+         local opts="-h --help --root -r --rebuild -t --tags -b --buildspec -e --executors -p --paths --group-by-tags --group-by-executor -m --maintainers -mb --maintainers-by-buildspecs --filter --format --helpfilter --helpformat"
+         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+        ;;
+      validate)
+        local opts="-b --buildspec -t --tag -x --exclude -e --executor"
 
-      elif [[ "${prev}" == "validate" ]]; then
-          local opts="-b --buildspec -t --tag -x --exclude -e --executor"
-          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-      fi
+        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+        # auto completion for 'buildtest buildspec validate' options
+        if [[ "${prev}" == "-b" ]] || [[ "${prev}" == "--buildspec" ]] || [[ "${prev}" == "-x" ]] || [[ "${prev}" == "--exclude" ]]; then
+          COMPREPLY=( $( compgen -W "$(_avail_buildspecs)" -- $cur ) )
+        elif [[ "${prev}" == "-t" ]] || [[ "${prev}" == "--tags" ]]; then
+          COMPREPLY=( $( compgen -W "$(_avail_tags)" -- $cur ) )
+        elif [[ "${prev}" == "-e" ]] || [[ "${prev}" == "--executor" ]]; then
+          COMPREPLY=( $( compgen -W "$(_avail_executors)" -- $cur ) )
+        fi
+        ;;
+      esac
       ;;
 
     history)
-      local cmds="list query"
-      local shortoption="-h"
-      local longoption="--help"
-
-      COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
-
-      if [[ "${cur}" == -  ]]; then
-        COMPREPLY=( $( compgen -W "$shortoption" -- $cur ) )
-      elif [[ "${cur}" == --  ]]; then
-        COMPREPLY=( $( compgen -W "$longoption" -- $cur ) )
-      fi
-      ;;
+      local cmds="-h --help list query"
+      COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) );;
 
     cdash)
-      local cmds="view upload"
-      local shortoption="-h"
-      local longoption="--help"
+      local cmds="-h --help view upload"
+
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
-
-      if [[ "${cur}" == -  ]]; then
-        COMPREPLY=( $( compgen -W "$shortoption" -- $cur ) )
-      elif [[ "${cur}" == --  ]]; then
-        COMPREPLY=( $( compgen -W "$longoption" -- $cur ) )
-      fi
-
 
       if [[ "${prev}" == "view" ]]; then
         local opts="-h --help --url"
