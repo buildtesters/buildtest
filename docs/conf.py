@@ -19,6 +19,10 @@ here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, here)
 from buildtest import BUILDTEST_VERSION, BUILDTEST_COPYRIGHT
 
+# set BUILDTEST_ROOT environment that is generally set by 'source setup.sh'
+os.environ["BUILDTEST_ROOT"] = here
+# add $BUILDTEST_ROOT/bin to $PATH to reference 'buildtest' command in docs
+os.environ["PATH"] += "%s%s" % (os.pathsep, os.path.join(here, "bin"))
 
 # -- Project information -----------------------------------------------------
 project = "buildtest"
