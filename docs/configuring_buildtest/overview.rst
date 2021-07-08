@@ -40,7 +40,7 @@ run the following command::
 
 Shown below is the default configuration provided by buildtest.
 
-.. command-output:: buildtest config view
+.. command-output:: cat $BUILDTEST_ROOT/buildtest/settings/config.yml
    :shell:
 
 As you can see the layout of configuration starts with keyword ``system`` which is
