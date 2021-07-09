@@ -1,3 +1,9 @@
 [tool.isort]
 profile = "black"
 src_paths = ["buildtest", "tests"]
+multi_line_output = 3
+include_trailing_comma = True
+force_grid_wrap = 0
+use_parentheses = True
+ensure_newline_before_comments = True
+line_length = 88
