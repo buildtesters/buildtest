@@ -1,8 +1,10 @@
 import logging
 import os
 import sys
-from termcolor import colored
+
 from tabulate import tabulate
+from termcolor import colored
+
 from buildtest.defaults import BUILD_REPORT
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, resolve_path

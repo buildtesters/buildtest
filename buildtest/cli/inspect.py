@@ -4,8 +4,9 @@ to retrieve test record from report file in JSON format."""
 import json
 import os
 import sys
-from termcolor import colored
+
 from tabulate import tabulate
+from termcolor import colored
 
 from buildtest.defaults import BUILD_REPORT
 from buildtest.utils.file import load_json, resolve_path

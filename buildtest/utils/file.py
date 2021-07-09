@@ -10,6 +10,7 @@ include the following:
 
 import json
 import os
+
 from buildtest.exceptions import BuildTestError
 
 

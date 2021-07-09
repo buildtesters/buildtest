@@ -9,9 +9,8 @@ from jsonschema.exceptions import ValidationError
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import SiteConfiguration
-from buildtest.exceptions import BuildTestError, BuildspecError
+from buildtest.exceptions import BuildspecError, BuildTestError
 from buildtest.executors.setup import BuildExecutor
-
 
 pytest_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

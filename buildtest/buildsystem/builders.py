@@ -6,9 +6,8 @@ import logging
 import os
 import re
 
-
-from buildtest.buildsystem.scriptbuilder import ScriptBuilder
 from buildtest.buildsystem.compilerbuilder import CompilerBuilder
+from buildtest.buildsystem.scriptbuilder import ScriptBuilder
 from buildtest.buildsystem.spack import SpackBuilder
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.system import system

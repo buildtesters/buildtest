@@ -1,11 +1,13 @@
 import os
-import pytest
 import random
 import shutil
 import string
 import tempfile
-from buildtest.defaults import BUILD_REPORT, BUILDTEST_ROOT
+
+import pytest
+
 from buildtest.cli.report import report_cmd
+from buildtest.defaults import BUILD_REPORT, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 
 

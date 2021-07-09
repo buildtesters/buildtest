@@ -1,9 +1,10 @@
 # import locale
 import os
-import subprocess
 import shlex
 import shutil
+import subprocess
 import tempfile
+
 from buildtest.utils.file import read_file
 
 

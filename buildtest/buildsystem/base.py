@@ -17,19 +17,20 @@ import stat
 import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
+
+from buildtest.buildsystem.batch import (
+    CobaltBatchScript,
+    LSFBatchScript,
+    PBSBatchScript,
+    SlurmBatchScript,
+)
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
 from buildtest.exceptions import ExecutorError
-from buildtest.buildsystem.batch import (
-    SlurmBatchScript,
-    LSFBatchScript,
-    CobaltBatchScript,
-    PBSBatchScript,
-)
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import create_dir, write_file, read_file
-from buildtest.utils.timer import Timer
+from buildtest.utils.file import create_dir, read_file, write_file
 from buildtest.utils.shell import Shell
+from buildtest.utils.timer import Timer
 
 
 class BuilderBase(ABC):

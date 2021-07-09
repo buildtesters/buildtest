@@ -1,8 +1,9 @@
 import os
 import re
-import pytest
 
+import pytest
 from jsonschema.exceptions import ValidationError
+
 from buildtest.defaults import SCHEMA_ROOT
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_recipe, load_schema

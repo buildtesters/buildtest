@@ -2,19 +2,20 @@ import json
 import logging
 import os
 
+from jsonschema.exceptions import ValidationError
 from tabulate import tabulate
 from termcolor import colored
-from jsonschema.exceptions import ValidationError
-from buildtest.cli.build import discover_buildspecs
+
 from buildtest.buildsystem.parser import BuildspecParser
+from buildtest.cli.build import discover_buildspecs
 from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
-    BUILDSPEC_ERROR_FILE,
     BUILDSPEC_DEFAULT_PATH,
+    BUILDSPEC_ERROR_FILE,
     BUILDTEST_BUILDSPEC_DIR,
 )
+from buildtest.exceptions import BuildspecError, BuildTestError
 from buildtest.executors.setup import BuildExecutor
-from buildtest.exceptions import BuildTestError, BuildspecError
 from buildtest.utils.file import (
     create_dir,
     is_dir,

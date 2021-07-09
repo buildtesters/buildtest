@@ -6,7 +6,8 @@ import argparse
 import os
 
 from termcolor import colored
-from buildtest import BUILDTEST_VERSION, BUILDTEST_COPYRIGHT
+
+from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import BUILD_REPORT
 from buildtest.schemas.defaults import schema_table
 

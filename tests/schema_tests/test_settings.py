@@ -1,4 +1,5 @@
 import os
+
 import pytest
 
 from buildtest.defaults import SCHEMA_ROOT

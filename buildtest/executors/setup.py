@@ -9,13 +9,13 @@ import logging
 import os
 
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
+from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.cobalt import CobaltExecutor
 from buildtest.executors.local import LocalExecutor
 from buildtest.executors.lsf import LSFExecutor
-from buildtest.executors.slurm import SlurmExecutor
 from buildtest.executors.pbs import PBSExecutor
-from buildtest.exceptions import ExecutorError
+from buildtest.executors.slurm import SlurmExecutor
 from buildtest.utils.file import create_dir, write_file
 
 logger = logging.getLogger(__name__)

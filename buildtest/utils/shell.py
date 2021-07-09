@@ -1,4 +1,5 @@
 import shutil
+
 from buildtest.exceptions import BuildTestError
 
 

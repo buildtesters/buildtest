@@ -1,12 +1,14 @@
-import json
 import getpass
+import json
 import os
 import shutil
 import sys
+
 import yaml
 from jsonschema import ValidationError
 from tabulate import tabulate
 from termcolor import colored
+
 from buildtest import BUILDTEST_VERSION
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, supported_schemas
 from buildtest.exceptions import ConfigurationError

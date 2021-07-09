@@ -4,10 +4,11 @@ jobs to LSF Scheduler. This class is called in class BuildExecutor
 when initializing the executors.
 """
 
-import logging
 import json
+import logging
 import os
 import re
+
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand

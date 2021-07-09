@@ -11,6 +11,7 @@ import sys
 import tempfile
 import time
 from datetime import datetime
+
 from jsonschema.exceptions import ValidationError
 from tabulate import tabulate
 from termcolor import colored
@@ -19,19 +20,15 @@ from buildtest import BUILDTEST_VERSION
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.defaults import (
-    BUILDSPEC_CACHE_FILE,
-    BUILD_REPORT,
-    BUILDTEST_DEFAULT_TESTDIR,
     BUILD_HISTORY_DIR,
+    BUILD_REPORT,
+    BUILDSPEC_CACHE_FILE,
+    BUILDTEST_DEFAULT_TESTDIR,
 )
-from buildtest.exceptions import (
-    BuildTestError,
-    BuildspecError,
-    ExecutorError,
-)
+from buildtest.exceptions import BuildspecError, BuildTestError, ExecutorError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.system import system
-from buildtest.utils.file import walk_tree, resolve_path, is_file, create_dir, load_json
+from buildtest.utils.file import create_dir, is_file, load_json, resolve_path, walk_tree
 from buildtest.utils.tools import Hasher, deep_get
 
 logger = logging.getLogger(__name__)

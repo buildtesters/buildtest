@@ -1,8 +1,9 @@
 import os
-import pytest
 import tempfile
 
-from buildtest.schemas.utils import load_schema, load_recipe
+import pytest
+
+from buildtest.schemas.utils import load_recipe, load_schema
 
 root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
