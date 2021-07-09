@@ -23,8 +23,8 @@ buildtest schemas. For a complete list of build options, run ``buildtest build -
 Build Usage
 ------------
 
-.. program-output:: cat docgen/buildtest_build_--help.txt
-
+.. command-output:: buildtest build --help
+   :shell:
 
 Building a Test
 ----------------
@@ -35,7 +35,8 @@ In this example, buildtest will :ref:`discover buildspecs <discover_buildspecs>`
 parsing the test with appropriate schema and generate a shell script that is run
 by buildtest. You can learn more about :ref:`build and test process <build_and_test_process>`.
 
-.. program-output:: cat docgen/getting_started/building/buildspec_abspath.txt
+.. command-output:: buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml
+   :shell:
 
 .. Note::
     buildtest will only read buildspecs with ``.yml`` extension, if you specify a
