@@ -421,6 +421,8 @@ def report_menu(subparsers):
         dest="report_subcommand",
     )
     subparsers.add_parser("clear", help="delete report file")
+    subparsers.add_parser("list", help="List all report files")
+
     parser_report.add_argument(
         "--helpformat", action="store_true", help="List of available format fields"
     )
