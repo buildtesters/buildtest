@@ -170,3 +170,40 @@ buildspecs:
     post_cmds: |
       spack find
       rm -rf $SPACK_ROOT
+
+  batch_field_with_spack:
+    type: spack
+    executor: generic.local.sh
+    description: Specify batch property with spack schema
+    batch:
+      cpucount: "1"
+      memory: "1M"
+      nodecount: "1"
+      qos: "normal"
+    spack:
+      root: $HOME/spack
+      install:
+        specs: ['m4']
+        options: "-v"
+
+  sbatch_field_with_spack:
+    type: spack
+    executor: generic.local.sh
+    description: Specify sbatch field with spack schema
+    sbatch: ["-N1", "-q normal", "-t 10", "-M 30M"]
+    spack:
+      root: $HOME/spack
+      install:
+        specs: ['m4']
+        options: "-v"
+
+  skip_test_in_spack:
+    skip: True
+    type: spack
+    executor: generic.local.sh
+    description: This test will be skipped
+    spack:
+      root: $HOME/spack
+      install:
+        specs: ['m4']
+        options: "-v"

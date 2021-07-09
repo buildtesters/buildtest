@@ -8,13 +8,24 @@ from buildtest.utils.file import load_json
 
 
 def test_buildtest_inspect_list():
+
+    # running buildtest inspect list --parse
     class args:
         subcommands = "config"
         inspect = "list"
         report = False
+        parse = True
 
     inspect_cmd(args)
 
+    # running buildtest inspect list
+    class args:
+        subcommands = "config"
+        inspect = "list"
+        report = False
+        parse = False
+
+    inspect_cmd(args)
 
 def test_buildtest_inspect_name():
 
