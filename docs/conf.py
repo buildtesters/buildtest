@@ -17,7 +17,7 @@ import sys
 
 here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, here)
-from buildtest import BUILDTEST_VERSION, BUILDTEST_COPYRIGHT
+from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 
 # set BUILDTEST_ROOT environment that is generally set by 'source setup.sh'
 os.environ["BUILDTEST_ROOT"] = here
