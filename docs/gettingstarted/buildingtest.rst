@@ -36,7 +36,7 @@ parsing the test with appropriate schema and generate a shell script that is run
 by buildtest. You can learn more about :ref:`build and test process <build_and_test_process>`.
 
 .. command-output:: buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml
-   :shell:
+    :shell:
 
 .. Note::
     buildtest will only read buildspecs with ``.yml`` extension, if you specify a
@@ -47,7 +47,7 @@ to build multiple buildspecs in a directory you can specify the directory path
 and buildtest will recursively search for all ``.yml`` files. In the next example,
 we build all tests in directory **general_tests/configuration**.
 
-.. program-output:: cat docgen/getting_started/building/buildspec_directory.txt
+.. command-output:: buildtest build -b general_tests/configuration/
 
 Building Multiple Buildspecs
 ------------------------------
@@ -57,7 +57,7 @@ command. Buildtest will discover buildspecs for every argument (``-b``) and accu
 a list of buildspecs to run. In this example, we instruct buildtest to build
 a buildspec file and all buildspecs in a directory path.
 
-.. program-output:: cat docgen/getting_started/building/multi_buildspecs.txt
+.. command-output:: buildtest build -b general_tests/configuration/ -b tutorials/vars.yml
 
 .. _exclude_buildspecs:
 
@@ -77,18 +77,18 @@ by running::
 buildtest will discover all buildspecs and then exclude any buildspecs specified
 by ``-x`` option. You can specify ``-x`` multiple times just like ``-b`` option.
 
-For example, we can undo discovery by passing same option to ``-b`` and ``-x``  as follows::
+For example, we can undo discovery by passing same option to ``-b`` and ``-x``  as follows
 
-    $ buildtest build -b tutorials/ -x tutorials/
-    There are no Buildspec files to process.
+.. command-output:: buildtest build -b tutorials/ -x tutorials/
 
 Buildtest will stop immediately if there are no Buildspecs to process, this is
 true if you were to specify files instead of directory.
 
-In this example, we build all buildspecs in a directory but exclude two files. Buildtest
-will report the excluded buildspecs in the output.
+In this example, we build all buildspecs in a directory but exclude a file. Buildtest
+will report the excluded buildspecs in the output and ``-x`` option can be appended multiple times.
+The ``-x`` can be a file or a directory and behaves similar to ``-b`` option.
 
-.. program-output:: cat docgen/getting_started/building/exclude_buildspecs.txt
+.. command-output:: buildtest build -b general_tests/configuration/ -x general_tests/configuration/ulimits.yml
 
 .. _build_by_tags:
 
@@ -97,20 +97,22 @@ Building By Tags
 
 buildtest can perform builds by tags by using ``--tags`` or short option (``-t``).
 In order to use this feature, buildtest must load buildspecs in :ref:`cache <find_buildspecs>` which can be run
-via ``buildtest buildspec find``.
+via ``buildtest buildspec find``. If you are unsure of the available tags you can
+run ``buildtest buildspec find --tags`` or let buildtest tab-complete the available tags. For more details
+see :ref:`buildspec_tags`.
 
-To build all tutorials tests you can perform ``buildtest build --tags tutorials``.
-In buildspec file, there is a field ``tags: [tutorials]`` to classify tests.
-buildtest will read the cache file ``var/buildspec-cache.json`` and see which
-buildspecs have a matching tag. You should run ``buildtest buildspec find``
-atleast once, in order to detect cache file.
 
-.. program-output::  cat docgen/getting_started/building/tags.txt
+Let's assume you want to build by tag name ``network``, buildtest
+will attempt to find all tests that contain ``tags: ['network']`` in the buildspec
+which is loaded in the buildcache cache. If a test matches the tag name, the test
+will be picked up during the discover process.
+
+.. command-output:: buildtest build -t network
 
 You can build by multiple tags by specifying ``--tags`` multiple times. In next
 example we build all tests with tag name ``pass`` and ``python``.
 
-.. program-output:: cat docgen/getting_started/building/multi_tags.txt
+.. command-output:: buildtest build -t python -t pass
 
 When multiple tags are specified, we search each tag independently and if it's
 found in the buildspec cache we retrieve the buildspec file and add file to queue.
@@ -127,21 +129,17 @@ tag name. The ``--filter-tags`` is used in conjunction with other options like
 Let's rerun the previous example and filter tests by ``pass``. Now we only see
 tests built with tagname ``pass`` and all remaining tests were ignored.
 
-.. program-output:: cat docgen/getting_started/building/combine_filter_tags_buildspec.txt
+.. command-output:: buildtest build  --tags pass --filter-tags pass -b tutorials/python-hello.yml
 
 The ``--filter-tags`` option can be appended multiple times to filter tests by
 multiple tags. If buildtest detects no tests were found when filtering tests by
-tag name then buildtest will report a message. In example below we see no buildspecs
-were found with tag name ``compile`` in the test.
-
-
-.. program-output:: cat docgen/getting_started/building/filter_tags_nobuildspecs.txt
+tag name then buildtest will terminate with a message.
 
 You can combine ``--tags`` with ``--buildspec`` to discover buildspecs in a single command.
 buildtest will query tags and buildspecs independently and combine all discovered
 buildspecs together.
 
-.. program-output:: cat docgen/getting_started/building/combine_tags_buildspec.txt
+.. command-output:: buildtest build --tags pass --buildspec tutorials/python-hello.yml
 
 As you may see, there are several ways to build buildspecs with buildtest. Tags is
 great way to build a whole collection of tests if you don't know path to all the files. You can
@@ -153,7 +151,7 @@ Building by Executors
 ---------------------
 
 Every buildspec is associated to an executor which is responsible for running the test.
-You can instruct buildtest to run all tests by given executor via ``--executor`` option.
+You can instruct buildtest to run all tests by given executor via ``--executor`` option or short option ``-e``.
 For instance, if you want to build all test associated to executor ``generic.local.python`` you can run::
 
   $ buildtest build --executor generic.local.python
@@ -166,21 +164,11 @@ buildspec cache see :ref:`querying buildspec executor <buildspec_executor>`.
    buildspecs if one of the test matches the executor name. The ``--executor`` option
    is **not filtering on test level**  like ``--filter-tags`` option.
 
-In this example we run all tests that are associated to ``generic.local.python`` executor. Notice how
-buildtest filters tests by executor named **generic.local.sh**.
+In this example we run all tests that are associated to ``generic.local.python`` executor.
 
-.. program-output:: cat docgen/getting_started/building/single_executor.txt
+.. command-output:: buildtest build --executor generic.local.python
 
-We can append arguments to ``--executor`` to search for multiple executors by
-specifying ``--executor <name1> --executor <name2>``. In next example we search
-all tests associated with ``generic.local.python`` and ``generic.local.csh`` executor.
-
-.. Note:: If you specify multiple executors, buildtest will combine the executors
-   into list, for example ``buildtest build --executor generic.local.python --executor generic.local.csh`` is converted
-   into a list - ``[generic.local.python, generic.local.csh]``, and buildtest will
-   discover buildspecs based on ``executor`` field in testname.
-
-.. program-output:: cat docgen/getting_started/building/multi_executor.txt
+.. Note:: The ``--executor`` option can be appended to discover tests by multiple executors.
 
 .. _discover_buildspecs:
 
@@ -223,14 +211,15 @@ instruct buildtest to stop at parse stage via ``--stage=parse``. This can be use
 when debugging buildspecs that are invalid. In this example below, we instruct
 buildtest to stop after parse stage.
 
-.. program-output:: cat docgen/getting_started/building/stage_parse.txt
+.. command-output:: buildtest build -b tutorials/vars.yml --stage=parse
 
 Likewise, if you want to troubleshoot your test script without running them you can
 use ``--stage=build`` which will stop after build phase. This can
 be used when you are writing buildspec to troubleshoot how test is generated.
 In this next example, we inform buildtest to stop after build stage.
 
-.. program-output:: cat docgen/getting_started/building/stage_build.txt
+
+.. command-output:: buildtest build -b tutorials/vars.yml --stage=build
 
 .. _invalid_buildspecs:
 
@@ -241,14 +230,15 @@ buildtest will skip any buildspecs that fail to validate, in that case
 the test script will not be generated. Here is an example where we have an invalid
 buildspec.
 
-.. program-output:: cat docgen/getting_started/building/invalid_buildspec.txt
+.. command-output:: buildtest build -b tutorials/invalid_buildspec_section.yml
 
 buildtest may skip tests from running if buildspec specifies an invalid
 executor name since buildtest needs to know this in order to delegate test
 to Executor class responsible for running the test. Here is an example
 where test failed to run since we provided invalid executor.
 
-.. program-output:: cat docgen/getting_started/building/invalid_executor.txt
+.. command-output:: buildtest build -b tutorials/invalid_executor.yml
+
 
 Rebuild Tests
 --------------
@@ -259,14 +249,13 @@ all discovered buildspecs and create a new test instance (unique id) and test di
 path. To demonstrate we will build ``tutorials/python-shell.yml`` three times using
 ``--rebuild=3``.
 
-.. program-output:: cat docgen/getting_started/building/rebuild.txt
+.. command-output:: buildtest build -b tutorials/python-shell.yml --rebuild=3
 
 The rebuild works with all options including: ``--buildspec``, ``--exclude``, ``--tags``
-and ``--executors``.
+and ``--executors``. buildtest will perform rebuild for all discovered tests, for instance in
+this next example we will discover all tests by tag name **fail** and each test is rebuild twoce.
 
-In the next example we rebuild tests by discovering all tags that contain **fail**.
-
-.. program-output:: cat docgen/getting_started/building/rebuild_tags.txt
+.. command-output:: buildtest build -t fail --rebuild 2
 
 The rebuild option expects a range between **1-50**, the ``--rebuild=1`` is equivalent
 to running without ``--rebuild`` option. We set a max limit for rebuild option to
@@ -274,10 +263,7 @@ avoid system degredation due to high workload.
 
 If you try to exceed this bound you will get an error such as::
 
-    $ buildtest build -b tutorials/pass_returncode.yml --rebuild 51
-    usage: buildtest [options] [COMMANDS] build [-h] [-b BUILDSPEC] [-x EXCLUDE] [--tags TAGS] [-e EXECUTOR]
-                                                [-s {parse,build}] [-t TESTDIR] [--rebuild REBUILD] [--settings SETTINGS]
-    buildtest [options] [COMMANDS] build: error: argument --rebuild: 51 must be a positive number between [1-50]
+.. command-output:: buildtest build -b tutorials/pass_returncode.yml --rebuild 51
 
 
 Use Alternate Configuration file
