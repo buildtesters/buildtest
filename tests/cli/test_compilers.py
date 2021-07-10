@@ -1,7 +1,6 @@
 import os
 
 import pytest
-
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
 from buildtest.exceptions import ConfigurationError

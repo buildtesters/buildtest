@@ -5,7 +5,6 @@ BuildspecParser: testing functions
 import os
 
 import pytest
-
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import SiteConfiguration

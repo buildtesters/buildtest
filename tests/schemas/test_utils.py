@@ -2,7 +2,6 @@ import os
 import tempfile
 
 import pytest
-
 from buildtest.schemas.utils import load_recipe, load_schema
 
 root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

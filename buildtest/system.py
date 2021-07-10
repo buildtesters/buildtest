@@ -11,7 +11,6 @@ import shutil
 import sys
 
 import distro
-
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.utils.command import BuildTestCommand
 

@@ -1,7 +1,6 @@
 import os
 
 import pytest
-
 from buildtest.cli.buildspec import BuildspecCache, buildspec_validate
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT

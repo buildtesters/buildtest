@@ -1,5 +1,4 @@
 import pytest
-
 from buildtest.utils.command import BuildTestCommand
 
 

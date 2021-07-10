@@ -1,7 +1,6 @@
 import os
 
 import pytest
-
 from buildtest.cli.cdash import cdash_cmd
 from buildtest.config import SiteConfiguration
 

@@ -1,5 +1,4 @@
 import pytest
-
 from buildtest.cli.history import build_history, query_builds
 
 

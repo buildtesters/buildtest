@@ -5,11 +5,10 @@ interact with a global configuration for buildtest.
 import argparse
 import os
 
-from termcolor import colored
-
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import BUILD_REPORT
 from buildtest.schemas.defaults import schema_table
+from termcolor import colored
 
 
 def handle_kv_string(val):

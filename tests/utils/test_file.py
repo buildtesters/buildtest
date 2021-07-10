@@ -6,7 +6,6 @@ import tempfile
 import uuid
 
 import pytest
-
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import (
     create_dir,

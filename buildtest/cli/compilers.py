@@ -4,13 +4,12 @@ import re
 import subprocess
 
 import yaml
-from lmod.module import Module
-from lmod.spider import Spider
-
 from buildtest.config import SiteConfiguration
 from buildtest.exceptions import BuildTestError, ConfigurationError
 from buildtest.schemas.defaults import custom_validator, schema_table
 from buildtest.utils.tools import deep_get
+from lmod.module import Module
+from lmod.spider import Spider
 
 
 def compiler_cmd(args, configuration):

@@ -2,10 +2,6 @@ import json
 import logging
 import os
 
-from jsonschema.exceptions import ValidationError
-from tabulate import tabulate
-from termcolor import colored
-
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.build import discover_buildspecs
 from buildtest.defaults import (
@@ -25,6 +21,9 @@ from buildtest.utils.file import (
     resolve_path,
     walk_tree,
 )
+from jsonschema.exceptions import ValidationError
+from tabulate import tabulate
+from termcolor import colored
 
 logger = logging.getLogger(__name__)
 

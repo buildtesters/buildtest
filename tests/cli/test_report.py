@@ -5,7 +5,6 @@ import string
 import tempfile
 
 import pytest
-
 from buildtest.cli.report import report_cmd
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError

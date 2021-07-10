@@ -13,7 +13,6 @@ from urllib.request import Request, urlopen
 
 import requests
 import yaml
-
 from buildtest.defaults import BUILD_REPORT
 from buildtest.utils.file import read_file, resolve_path
 from buildtest.utils.tools import deep_get

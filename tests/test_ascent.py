@@ -2,7 +2,6 @@ import os
 import socket
 
 import pytest
-
 from buildtest.cli.build import BuildTest
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration

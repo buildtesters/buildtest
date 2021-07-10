@@ -2,7 +2,6 @@ import os
 import tempfile
 
 import pytest
-
 from buildtest.cli.build import BuildTest, discover_buildspecs
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.config import SiteConfiguration

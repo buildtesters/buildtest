@@ -1,7 +1,6 @@
 import argparse
 
 import pytest
-
 from buildtest.cli import get_parser, handle_kv_string, positive_number
 
 

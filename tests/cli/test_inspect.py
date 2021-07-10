@@ -3,7 +3,6 @@ import string
 import uuid
 
 import pytest
-
 from buildtest.cli.inspect import get_all_ids, inspect_cmd
 from buildtest.defaults import BUILD_REPORT
 from buildtest.utils.file import load_json

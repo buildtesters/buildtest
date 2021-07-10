@@ -7,7 +7,6 @@ import os
 import sys
 
 import yaml
-
 from buildtest.utils.file import load_json
 
 here = os.path.dirname(os.path.abspath(__file__))

@@ -5,15 +5,14 @@ import shutil
 import sys
 
 import yaml
-from jsonschema import ValidationError
-from tabulate import tabulate
-from termcolor import colored
-
 from buildtest import BUILDTEST_VERSION
 from buildtest.defaults import BUILDSPEC_CACHE_FILE, supported_schemas
 from buildtest.exceptions import ConfigurationError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.system import system
+from jsonschema import ValidationError
+from tabulate import tabulate
+from termcolor import colored
 
 
 def config_cmd(args, configuration):
