@@ -1,7 +1,8 @@
-import pytest
 import random
 import string
 import uuid
+
+import pytest
 from buildtest.cli.inspect import get_all_ids, inspect_cmd
 from buildtest.defaults import BUILD_REPORT
 from buildtest.utils.file import load_json
@@ -26,6 +27,7 @@ def test_buildtest_inspect_list():
         parse = False
 
     inspect_cmd(args)
+
 
 def test_buildtest_inspect_name():
 

@@ -1,11 +1,12 @@
 import os
-import pytest
 import random
 import shutil
 import string
 import tempfile
-from buildtest.defaults import BUILD_REPORT, BUILDTEST_ROOT, BUILDTEST_REPORT_SUMMARY
+
+import pytest
 from buildtest.cli.report import report_cmd
+from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORT_SUMMARY, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 
 
@@ -185,6 +186,7 @@ def test_report_filter():
     # run 'buildtest report --filter returncode=-999 to ensure _filter_test_by_returncode returns True
     report_cmd(args)
 
+
 @pytest.mark.cli
 def test_report_oldest_and_latest():
     class args:
@@ -225,6 +227,7 @@ def test_report_oldest_and_latest():
 
     # buildtest report --filter tags=tutorials --oldest --latest
     report_cmd(args)
+
 
 @pytest.mark.cli
 def test_invalid_filters():
@@ -311,6 +314,7 @@ def test_invalid_filters():
     with pytest.raises(BuildTestError):
         report_cmd(args)
 
+
 @pytest.mark.cli
 def test_invalid_report_format():
 
@@ -330,9 +334,9 @@ def test_invalid_report_format():
     with pytest.raises(BuildTestError):
         report_cmd(args)
 
+
 @pytest.mark.cli
 def test_report_list():
-
     class args:
         helpformat = False
         helpfilter = False
@@ -348,6 +352,7 @@ def test_report_list():
     # now removing report summary it should print a message
     os.remove(BUILDTEST_REPORT_SUMMARY)
     report_cmd(args)
+
 
 @pytest.mark.cli
 def test_report_clear():

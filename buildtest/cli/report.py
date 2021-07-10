@@ -1,11 +1,12 @@
 import logging
 import os
 import sys
-from termcolor import colored
-from tabulate import tabulate
+
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORT_SUMMARY
 from buildtest.exceptions import BuildTestError
-from buildtest.utils.file import is_file, load_json, resolve_path, read_file
+from buildtest.utils.file import is_file, load_json, read_file, resolve_path
+from tabulate import tabulate
+from termcolor import colored
 
 logger = logging.getLogger(__name__)
 
@@ -426,13 +427,14 @@ def report_cmd(args):
 
     if args.report_subcommand == "list":
         if not is_file(BUILDTEST_REPORT_SUMMARY):
-            print("There are no report files, please run 'buildtest build' to generate a report file.")
+            print(
+                "There are no report files, please run 'buildtest build' to generate a report file."
+            )
             return
 
         content = read_file(BUILDTEST_REPORT_SUMMARY)
         print(content)
         return
-
 
     results = Report(args.filter, args.format, args.latest, args.oldest, args.report)
     if args.helpfilter:

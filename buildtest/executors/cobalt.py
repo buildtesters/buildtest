@@ -1,15 +1,16 @@
 """This method implements CobaltExecutor class which is defines how cobalt executor
 submit job to Cobalt scheduler."""
-import logging
 import json
+import logging
 import os
 import re
-import time
 import shutil
+import time
+
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import read_file, is_file
+from buildtest.utils.file import is_file, read_file
 from buildtest.utils.tools import deep_get
 
 logger = logging.getLogger(__name__)

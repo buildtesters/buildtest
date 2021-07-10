@@ -1,14 +1,14 @@
 import os
-import pytest
 import tempfile
 
-from buildtest.defaults import BUILDTEST_ROOT
-from buildtest.exceptions import BuildTestError
-from buildtest.config import SiteConfiguration
+import pytest
 from buildtest.cli.build import BuildTest, discover_buildspecs
 from buildtest.cli.buildspec import BuildspecCache
-from buildtest.utils.file import walk_tree
+from buildtest.config import SiteConfiguration
+from buildtest.defaults import BUILDTEST_ROOT
+from buildtest.exceptions import BuildTestError
 from buildtest.system import BuildTestSystem
+from buildtest.utils.file import walk_tree
 
 test_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 root = os.path.dirname(test_root)

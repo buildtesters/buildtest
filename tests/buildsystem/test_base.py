@@ -2,15 +2,14 @@
 BuildspecParser: testing functions
 """
 
-import pytest
 import os
 
-
+import pytest
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import DEFAULT_SETTINGS_FILE
-from buildtest.exceptions import BuildTestError, BuildspecError
+from buildtest.exceptions import BuildspecError, BuildTestError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.utils.file import walk_tree
 

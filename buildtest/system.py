@@ -2,16 +2,17 @@
 This module detects System changes defined in class BuildTestSystem.
 """
 
-import distro
 import getpass
-import logging
 import json
+import logging
 import os
 import platform
 import shutil
 import sys
-from buildtest.utils.command import BuildTestCommand
+
+import distro
 from buildtest.defaults import BUILDTEST_ROOT
+from buildtest.utils.command import BuildTestCommand
 
 
 class BuildTestSystem:

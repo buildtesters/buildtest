@@ -1,10 +1,11 @@
-import logging
 import json
+import logging
 import os
 import sys
-from tabulate import tabulate
+
 from buildtest.defaults import BUILD_HISTORY_DIR
-from buildtest.utils.file import walk_tree, load_json, is_dir
+from buildtest.utils.file import is_dir, load_json, walk_tree
+from tabulate import tabulate
 
 logger = logging.getLogger(__name__)
 

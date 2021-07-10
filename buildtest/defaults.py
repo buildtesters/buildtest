@@ -3,8 +3,8 @@ Buildtest defaults, including environment variables and paths, are defined
 or derived here.
 """
 
-import pwd
 import os
+import pwd
 
 supported_type_schemas = ["script-v1.0.schema.json", "compiler-v1.0.schema.json"]
 

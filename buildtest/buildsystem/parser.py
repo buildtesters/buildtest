@@ -9,11 +9,11 @@ import logging
 import os
 import re
 
-from buildtest.exceptions import BuildTestError, BuildspecError
+from buildtest.exceptions import BuildspecError, BuildTestError
 from buildtest.executors.setup import BuildExecutor
+from buildtest.schemas.defaults import custom_validator, schema_table
 from buildtest.schemas.utils import load_recipe
-from buildtest.schemas.defaults import schema_table, custom_validator
-from buildtest.utils.file import resolve_path, is_dir
+from buildtest.utils.file import is_dir, resolve_path
 
 
 class BuildspecParser:

@@ -1,10 +1,11 @@
 import os
-import pytest
 import shutil
+
+import pytest
 from buildtest.cli.build import BuildTest
-from buildtest.utils.file import walk_tree
 from buildtest.config import SiteConfiguration
 from buildtest.system import BuildTestSystem
+from buildtest.utils.file import walk_tree
 
 
 def test_pbs():

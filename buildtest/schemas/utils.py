@@ -5,6 +5,7 @@ Utility and helper functions for schemas.
 import logging
 import os
 import sys
+
 import yaml
 from buildtest.utils.file import load_json
 
