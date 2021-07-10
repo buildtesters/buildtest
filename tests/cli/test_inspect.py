@@ -28,6 +28,7 @@ def test_buildtest_inspect_list():
 
     inspect_cmd(args)
 
+
 def test_buildtest_inspect_name():
 
     report = load_json(BUILD_REPORT)
