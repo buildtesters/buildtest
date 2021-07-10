@@ -32,7 +32,6 @@ from buildtest.utils.file import (
     read_file,
     resolve_path,
     walk_tree,
-    write_file,
 )
 from buildtest.utils.tools import Hasher, deep_get
 from jsonschema.exceptions import ValidationError
