@@ -27,7 +27,7 @@ jlse_pr_regression_test:
   stage: regression
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
-      when: manual
+      when: always
   script:
     - whoami
     - git branch

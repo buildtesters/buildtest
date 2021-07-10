@@ -5,8 +5,9 @@ import string
 import tempfile
 
 import pytest
+
+from buildtest.defaults import BUILD_REPORT, BUILDTEST_ROOT, BUILDTEST_REPORT_SUMMARY
 from buildtest.cli.report import report_cmd
-from buildtest.defaults import BUILD_REPORT, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 
 
@@ -186,7 +187,7 @@ def test_report_filter():
     # run 'buildtest report --filter returncode=-999 to ensure _filter_test_by_returncode returns True
     report_cmd(args)
 
-
+@pytest.mark.cli
 def test_report_oldest_and_latest():
     class args:
         helpformat = False
@@ -227,7 +228,7 @@ def test_report_oldest_and_latest():
     # buildtest report --filter tags=tutorials --oldest --latest
     report_cmd(args)
 
-
+@pytest.mark.cli
 def test_invalid_filters():
     class args:
         helpformat = False
@@ -312,7 +313,7 @@ def test_invalid_filters():
     with pytest.raises(BuildTestError):
         report_cmd(args)
 
-
+@pytest.mark.cli
 def test_invalid_report_format():
 
     tf = tempfile.NamedTemporaryFile()
@@ -331,7 +332,26 @@ def test_invalid_report_format():
     with pytest.raises(BuildTestError):
         report_cmd(args)
 
+@pytest.mark.cli
+def test_report_list():
 
+    class args:
+        helpformat = False
+        helpfilter = False
+        filter = None
+        format = None
+        oldest = False
+        latest = False
+        report = BUILD_REPORT
+        report_subcommand = "list"
+
+    report_cmd(args)
+
+    # now removing report summary it should print a message
+    os.remove(BUILDTEST_REPORT_SUMMARY)
+    report_cmd(args)
+
+@pytest.mark.cli
 def test_report_clear():
     class args:
         helpformat = False
@@ -359,7 +379,7 @@ def test_report_clear():
         report = "".join(random.choice(string.ascii_letters) for i in range(10))
         report_subcommand = "clear"
 
-    # buildtest report clear -f <file> will raise an error since file doesn't exist
+    # buildtest report clear <file> will raise an error since file doesn't exist
     with pytest.raises(SystemExit):
         report_cmd(args)
 

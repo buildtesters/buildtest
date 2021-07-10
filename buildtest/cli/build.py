@@ -19,12 +19,13 @@ from buildtest.defaults import (
     BUILD_HISTORY_DIR,
     BUILD_REPORT,
     BUILDSPEC_CACHE_FILE,
+    BUILDTEST_REPORT_SUMMARY,
     BUILDTEST_DEFAULT_TESTDIR,
 )
 from buildtest.exceptions import BuildspecError, BuildTestError, ExecutorError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.system import system
-from buildtest.utils.file import create_dir, is_file, load_json, resolve_path, walk_tree
+from buildtest.utils.file import walk_tree, resolve_path, is_file, create_dir, load_json, read_file, write_file
 from buildtest.utils.tools import Hasher, deep_get
 from jsonschema.exceptions import ValidationError
 from tabulate import tabulate
@@ -1249,3 +1250,18 @@ def update_report(valid_builders, report_file=BUILD_REPORT):
 
     with open(report_file, "w") as fd:
         json.dump(report, fd, indent=2)
+
+    #  BUILDTEST_REPORT_SUMMARY file keeps track of all report files which
+    #  contains a single line that denotes path to report file. This file only contains unique report files
+
+    content = []
+    if is_file(BUILDTEST_REPORT_SUMMARY):
+        content = read_file(BUILDTEST_REPORT_SUMMARY)
+        content = content.split("\n")
+
+    if report_file not in content:
+        content.append(report_file)
+
+    with open(BUILDTEST_REPORT_SUMMARY, 'w') as fd:
+        fd.write("\n".join(content))
+
