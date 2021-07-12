@@ -109,7 +109,7 @@ specify an alternate report file. First let's see the available help options for
 
 .. command-output:: buildtest cdash upload --help
 
-We can pass an alternate report file using ``--report`` option when uploading tests
+We can pass an alternate report file using ``-r`` option when uploading tests
 to CDASH. This can be useful if you want to map test results to different buildnames in CDASH
 perhaps running a different subset of tests via ``buildtest build --tags`` and upload
 the test results with different buildname assuming you have different paths to report file.

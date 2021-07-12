@@ -6,8 +6,7 @@ Command Line Interface to buildtest configuration
 Once you have implemented your buildtest configuration, you can query the configuration
 details using ``buildtest config`` command. Shown below is the command usage.
 
-.. program-output:: cat docgen/buildtest_config_--help.txt
-
+.. command-output:: buildtest config --help
 
 Validate buildtest configuration
 ---------------------------------
@@ -17,7 +16,7 @@ This can be achieved by running ``buildtest config validate``. When you invoke t
 command, buildtest will load the configuration and attempt to validate the file with
 schema **settings.schema.json**. If validation is successful you will get the following message:
 
-.. program-output:: cat docgen/configuring/config_validate.txt
+.. command-output:: buildtest config validate
 
 .. Note:: If you defined a user setting (``~/.buildtest/config.yml``) buildtest will validate this file instead of default one.
 
@@ -53,9 +52,9 @@ will be displayed in terminal. For example the error below indicates that
 View buildtest configuration
 ------------------------------
 
-If you want to view buildtest configuration you can run the following
+If you want to view buildtest configuration you can run ``buildtest config view`` which will print content of buildtest configuration.
 
-.. program-output:: cat docgen/configuring/config_view.txt
+.. command-output:: buildtest config view
 
 .. Note:: ``buildtest config view`` will display contents of user buildtest settings ``~/.buildtest/config.yml`` if found, otherwise it will display the default configuration
 
@@ -67,13 +66,12 @@ View Executors
 You can use the command ``buildtest config executors`` to view executors from buildtest
 configuration file.  Shown below is the command usage
 
-.. program-output:: cat docgen/buildtest_config_executors_--help.txt
+.. command-output:: buildtest config executors --help
 
 You can run ``buildtest config executors`` without any options and it will report a list of named executors that
 you would reference in buildspec using the ``executor`` property. If you prefer json or yaml format you can use ``--json`` or ``--yaml`` option.
 
-.. program-output:: cat docgen/configuring/config_executors.txt
-   :shell:
+.. command-output:: buildtest config executors
 
 View Registered Systems
 ------------------------
@@ -84,14 +82,7 @@ in a single configuration file to run buildtest for different HPC clusters. You 
 In this example below we should the ``generic`` system. If you have multiple entries, you will see one
 entry per system record.
 
-.. code-block:: console
-
-    $ buildtest config systems
-    +----------+----------------+-------------+--------------+
-    | system   | description    | hostnames   | moduletool   |
-    +==========+================+=============+==============+
-    | generic  | Generic System | ['.*']      | N/A          |
-    +----------+----------------+-------------+--------------+
+.. command-output:: buildtest config systems
 
 Configuration Summary
 ----------------------
@@ -110,8 +101,7 @@ can be retrieved by running ``buildtest schema -n settings.schema.json --example
 or short option (``-e``), which will validate each example with schema file
 ``settings.schema.json``.
 
-.. program-output:: cat docgen/schemas/settings_examples.txt
-   :shell:
+.. command-output:: buildtest schema -n settings.schema.json -e
 
 If you want to retrieve full json schema file for buildtest configuration you can
 run ``buildtest schema -n settings.schema.json --json`` or short option ``-j``.

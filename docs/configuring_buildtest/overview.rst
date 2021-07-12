@@ -297,13 +297,13 @@ This can be found in ``var/executors`` directory as shown below
     $ tree var/executors/
     var/executors/
     |-- local.bash
-    |   |-- after_script.sh
+    |   |-- before_script.sh
     |-- local.e4s
-    |   |-- after_script.sh
+    |   |-- before_script.sh
     |-- local.python
-    |   |-- after_script.sh
+    |   |-- before_script.sh
     |-- local.sh
-    |   |-- after_script.sh
+    |   |-- before_script.sh
 
 
     4 directories, 4 files
@@ -325,7 +325,7 @@ Shown below is the configuration file used at Cori.
 Default Executor Settings
 ---------------------------
 
-One can define default executor configurations for all executors using the ``defaults`` property.
+We can define default configurations for all executors using the ``defaults`` property.
 
 .. code-block:: yaml
 
@@ -350,10 +350,9 @@ The ``pollinterval`` field is used  to poll jobs at set interval in seconds
 when job is active in queue. The poll interval can be configured on command line
 using ``buildtest build --poll-interval`` which overrides the configuration value.
 
+.. Note::
 
-
-
-`pollinterval`, `launcher` and `max_pend_time` have no effect on local executors.
+    ``pollinterval``, ``launcher`` and ``max_pend_time`` have no effect on local executors.
 
 
 Max Pend Time
