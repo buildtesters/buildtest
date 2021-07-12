@@ -80,6 +80,7 @@ by ``-x`` option. You can specify ``-x`` multiple times just like ``-b`` option.
 For example, we can undo discovery by passing same option to ``-b`` and ``-x``  as follows
 
 .. command-output:: buildtest build -b tutorials/ -x tutorials/
+    :returncode: 1
 
 Buildtest will stop immediately if there are no Buildspecs to process, this is
 true if you were to specify files instead of directory.

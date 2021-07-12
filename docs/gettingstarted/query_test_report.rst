@@ -9,12 +9,12 @@ command to extract certain fields from JSON file and display
 them in table format. We use python `tabulate <https://pypi.org/project/tabulate/>`_ library for
 pretty print data in tables. Shown below is command usage to query test reports.
 
-.. program-output:: cat docgen/buildtest_report_--help.txt
+.. command-output:: buildtest report --help
 
 You may run ``buildtest report`` without any option, and buildtest will display **all** test results
 with default format fields. To see a list of all format fields, click :ref:`here <report_format_fields>`.
 
-.. program-output:: cat docgen/getting_started/report/report.txt
+.. command-output:: buildtest report
    :ellipsis: 20
 
 Format Reports
@@ -29,29 +29,28 @@ Available Format Fields
 The **buildtest report** command displays a default format fields that can be changed using the
 ``--format`` option. The report file (JSON) contains many more fields and we expose some of the fields
 with the **--format** option. To see a list of available format fields you can run ``buildtest report --helpformat``.
-This option will list all format fields and their description.
+This option will list all format fields with their description.
 
-.. program-output:: cat docgen/getting_started/report/report_helpformat.txt
+.. command-output:: buildtest report --helpformat
 
 Format Field Usage
 ~~~~~~~~~~~~~~~~~~~
 
-The ``--format`` field expects field name separated by comma (i.e ``--format <field1>,<field2>``).
-In this example we format by fields ``--format id,executor,state,returncode``. Notice how
-buildtest will format table columns in the order format options.
+The ``--format`` field are specified in comma separated format (i.e ``--format <field1>,<field2>``).
+In this example we format table by fields ``--format id,executor,state,returncode``.
 
-.. program-output:: cat docgen/getting_started/report/report_format.txt
+.. command-output:: buildtest report --format name,id,executor,state,returncode
    :ellipsis: 21
 
 Filter Reports
 ---------------
 
-The **buildtest report** command will display all tests results, which may not be relevant when
-you want to analyze specific tests. Therefore, we introduce a ``--filter`` option
-to filter out tests in the output. First, lets see the available filter fields
-by run ``buildtest report --helpfilter``.
+The **buildtest report** command will display all tests results, which can be quite long depending on number of tests
+so therefore we need a mechanism to filter the test results. The ``--filter`` option can be used
+to filter out tests in the output based on filter fields. First, lets see the available filter fields
+by run ``buildtest report --helpfilter`` which shows a list of filter fields and their description.
 
-.. program-output:: cat docgen/getting_started/report/report_helpfilter.txt
+.. command-output:: buildtest report --helpfilter
 
 The ``--filter`` option expects arguments in **key=value** format. You can
 specify multiple filter delimited by comma. buildtest will treat multiple
@@ -64,7 +63,7 @@ Filter by returncode
 If you want to retrieve all tests with a given returncode, we can use the **returncode**
 property. For instance, let's retrieve all tests with returncode of 2 by setting ``--filter returncode=2``.
 
-.. program-output:: cat docgen/getting_started/report/report_returncode.txt
+.. command-output:: buildtest report --filter returncode=2 --format=name,id,returncode
 
 .. Note:: buildtest automatically converts returncode to integer when matching returncode, so ``--filter returncode="2"`` will work too
 
@@ -72,10 +71,11 @@ Filter by test name
 ~~~~~~~~~~~~~~~~~~~~~
 
 If you want to filter by test name, use the **name** attribute in filter option. Let's assume
-we want to filter all tests by name ``exit1_pass`` which can be done by
-setting ``--filter name=exit1_pass`` as shown below
+we want to filter all tests by name ``exit1_pass``, this can be achieved by setting filter
+field as follows: ``--filter name=exit1_pass``. Shown below is an example using **name** filter field
+to filter test results.
 
-.. program-output:: cat docgen/getting_started/report/report_filter_name.txt
+.. command-output:: buildtest report --filter name=exit1_pass --format=name,id,returncode,state
 
 Filter by buildspec
 ~~~~~~~~~~~~~~~~~~~~~
@@ -85,7 +85,8 @@ Likewise, we can filter results by buildspec file using **buildspec** attribute 
 relative or absolute path. buildtest will resolve path (absolute path) and find the appropriate
 tests that belong to the buildspec file. If file doesn't exist or is not found in cache it will raise an error.
 
-.. program-output:: cat docgen/getting_started/report/report_filter_buildspec.txt
+.. command-output:: buildtest report --filter buildspec=tutorials/python-hello.yml --format=name,id,state,buildspec
+
 
 Filter by test state
 ~~~~~~~~~~~~~~~~~~~~~
@@ -96,43 +97,36 @@ value of ``[PASS|FAIL]`` since these are the two recorded test states marked by 
 We can also pass multiple filter fields for instance if we want to find all **FAIL**
 tests for executor **generic.local.sh** we can do the following.
 
-.. program-output:: cat docgen/getting_started/report/report_multifilter.txt
+.. command-output:: buildtest report --filter state=FAIL,executor=generic.local.sh --format=name,id,state,executor
 
 Filter Exception Cases
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``returncode`` filter field expects an integer value, so if you try a non-integer
-returncode you will get the following message::
+returncode you will get the following message
 
-    $ buildtest report --filter returncode=1.5
-    Traceback (most recent call last):
-      File "/Users/siddiq90/Documents/buildtest/bin/buildtest", line 17, in <module>
-        buildtest.main.main()
-      File "/Users/siddiq90/Documents/buildtest/buildtest/main.py", line 45, in main
-        args.func(args)
-      File "/Users/siddiq90/Documents/buildtest/buildtest/menu/report.py", line 128, in func_report
-        raise BuildTestError(f"Invalid returncode:{filter_args[key]} must be an integer")
-    buildtest.exceptions.BuildTestError: 'Invalid returncode:1.5 must be an integer'
+.. command-output:: buildtest report --filter returncode=1.5
+    :returncode: 1
 
 The ``state`` filter field expects value of ``PASS`` or ``FAIL`` so if you specify an
-invalid state you will get an error as follows::
+invalid state you will get an error as follows.
 
-    $ buildtest report --filter state=UNKNOWN
-    filter argument 'state' must be 'PASS' or 'FAIL' got value UNKNOWN
+.. command-output:: buildtest report --filter state=UNKNOWN
+    :returncode: 0
 
 The ``buildspec`` field expects a valid file path, it can be an absolute or relative
 path, buildtest will resolve absolute path and check if file exist and is in the report
-file. If it's an invalid file we get an error such as::
+file. If it's an invalid file we get an error such as
 
-    $ buildtest report --filter buildspec=/path/to/invalid.yml
-    Invalid File Path for filter field 'buildspec': /path/to/invalid.yml
+.. command-output:: buildtest report --filter buildspec=/path/to/invalid.yml
+    :returncode: 0
 
 You may have a valid filepath for buildspec filter field such as
-``tutorials/invalid_executor.yml``, but there is no record in the report cache
-because this test can't be run. In this case you will get the following message::
+``$BUILDTEST_ROOT/tutorials/invalid_executor.yml``, but there is no record of a test in the report cache
+because this test wasn't run. In this case you will get the following message.
 
-    $ buildtest report --filter buildspec=tutorials/invalid_executor.yml
-    buildspec file: /Users/siddiq90/Documents/buildtest/tutorials/invalid_executor.yml not found in cache
+.. command-output:: buildtest report --filter buildspec=$BUILDTEST_ROOT/tutorials/invalid_executor.yml
+    :returncode: 0
 
 Find Latest or Oldest test
 ---------------------------
@@ -217,12 +211,12 @@ is printed in table format. We have limited the output to a limited fields howev
 we have a separate command called ``buildtest inspect`` that can be used for inspecting a test record
 based on name or id. Shown below is the command usage for `buildtest inspect` command.
 
-.. program-output:: cat docgen/buildtest_inspect_--help.txt
+.. command-output:: buildtest inspect --help
 
 You can report all test names and corresponding ids using ``buildtest inspect list`` which
 will be used for querying tests by name or id.
 
-.. program-output:: cat  docgen/getting_started/report/buildtest_inspect_list.txt
+.. command-output:: buildtest inspect list
    :ellipsis: 20
 
 
@@ -233,14 +227,15 @@ The ``buildtest inspect name`` expects a list of positional argument that corres
 of test you want to query and buildtest will fetch all records for each named test. Let's see an example to
 illustrate the point. We can see that each test is stored as a JSON format and buildtest keeps track of
 metadata for each test such as `user`, `hostname`, `command`, path to output and error file, content of test,
-state of test, returncode, etc...
+state of test, returncode, etc... In this example, we will retrieve record for test name **circle_area** which
+will print the raw content of the test in JSON format.
 
-.. program-output:: cat docgen/getting_started/report/buildtest_inspect_names.txt
+.. command-output:: buildtest inspect name circle_area
 
-You can query multiple tests by specifying them as positional arguments in the format: ``buildtest inspect name <test1> <test2>``
-In example below we see buildtest reports all records for each positional argument.
+You can query multiple tests as positional arguments in the format: ``buildtest inspect name <test1> <test2>``
+In this next example, we will retrieve test records for ``bash_shell`` and  ``python_hello``.
 
-.. program-output:: cat docgen/getting_started/report/buildtest_inspect_multi_names.txt
+.. command-output:: buildtest inspect name bash_shell python_hello
 
 Inspecting Test by ID
 ~~~~~~~~~~~~~~~~~~~~~~
