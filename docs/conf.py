@@ -22,6 +22,7 @@ from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import VAR_DIR
+from buildtest.utils.file import is_dir
 
 # set BUILDTEST_ROOT environment that is generally set by 'source setup.sh'
 os.environ["BUILDTEST_ROOT"] = here
@@ -32,7 +33,8 @@ os.environ["PATH"] += "%s%s" % (os.pathsep, os.path.join(here, "bin"))
 os.environ["BUILDTEST_COLOR"] = "False"
 
 # remove $BUILDTEST_ROOT/var which writes variable data
-shutil.rmtree(VAR_DIR)
+if not is_dir(VAR_DIR):
+    shutil.rmtree(VAR_DIR)
 
 
 configuration = SiteConfiguration()
