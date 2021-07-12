@@ -33,7 +33,7 @@ os.environ["PATH"] += "%s%s" % (os.pathsep, os.path.join(here, "bin"))
 os.environ["BUILDTEST_COLOR"] = "False"
 
 # remove $BUILDTEST_ROOT/var which writes variable data
-if not is_dir(VAR_DIR):
+if is_dir(VAR_DIR):
     shutil.rmtree(VAR_DIR)
 
 
