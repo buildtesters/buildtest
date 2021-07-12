@@ -11,29 +11,32 @@ import sys
 import tempfile
 import time
 from datetime import datetime
-from jsonschema.exceptions import ValidationError
-from tabulate import tabulate
-from termcolor import colored
 
 from buildtest import BUILDTEST_VERSION
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.defaults import (
-    BUILDSPEC_CACHE_FILE,
-    BUILD_REPORT,
-    BUILDTEST_REPORT_SUMMARY,
-    BUILDTEST_DEFAULT_TESTDIR,
     BUILD_HISTORY_DIR,
+    BUILD_REPORT,
+    BUILDSPEC_CACHE_FILE,
+    BUILDTEST_DEFAULT_TESTDIR,
+    BUILDTEST_REPORT_SUMMARY,
 )
-from buildtest.exceptions import (
-    BuildTestError,
-    BuildspecError,
-    ExecutorError,
-)
+from buildtest.exceptions import BuildspecError, BuildTestError, ExecutorError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.system import system
-from buildtest.utils.file import walk_tree, resolve_path, is_file, create_dir, load_json, read_file, write_file
+from buildtest.utils.file import (
+    create_dir,
+    is_file,
+    load_json,
+    read_file,
+    resolve_path,
+    walk_tree,
+)
 from buildtest.utils.tools import Hasher, deep_get
+from jsonschema.exceptions import ValidationError
+from tabulate import tabulate
+from termcolor import colored
 
 logger = logging.getLogger(__name__)
 
@@ -1266,6 +1269,5 @@ def update_report(valid_builders, report_file=BUILD_REPORT):
     if report_file not in content:
         content.append(report_file)
 
-    with open(BUILDTEST_REPORT_SUMMARY, 'w') as fd:
+    with open(BUILDTEST_REPORT_SUMMARY, "w") as fd:
         fd.write("\n".join(content))
-

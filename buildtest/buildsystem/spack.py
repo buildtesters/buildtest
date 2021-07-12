@@ -6,8 +6,8 @@ schema definition 'spack-v1.0.schema.json' that defines how buildspecs are writt
 import os
 
 from buildtest.buildsystem.base import BuilderBase
-from buildtest.utils.file import resolve_path
 from buildtest.exceptions import BuildTestError
+from buildtest.utils.file import resolve_path
 
 
 class SpackBuilder(BuilderBase):

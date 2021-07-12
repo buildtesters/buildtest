@@ -1,23 +1,23 @@
-import pytest
 import os
 import random
 import shutil
 import string
-import uuid
 import tempfile
+import uuid
 
+import pytest
+from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import (
+    create_dir,
     is_dir,
     is_file,
-    create_dir,
     load_json,
     read_file,
-    resolve_path,
     remove_file,
+    resolve_path,
     walk_tree,
     write_file,
 )
-from buildtest.exceptions import BuildTestError
 
 here = os.path.dirname(os.path.abspath(__file__))
 

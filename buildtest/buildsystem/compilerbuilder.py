@@ -3,8 +3,8 @@ import os
 import shutil
 
 from buildtest.buildsystem.base import BuilderBase
-from buildtest.exceptions import BuildTestError
 from buildtest.cli.compilers import BuildtestCompilers
+from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import resolve_path
 from buildtest.utils.tools import deep_get
 

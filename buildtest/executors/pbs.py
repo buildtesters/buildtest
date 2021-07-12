@@ -1,7 +1,7 @@
 """This module implements PBSExecutor class that defines how executors submit
 job to PBS Scheduler"""
-import logging
 import json
+import logging
 import os
 
 from buildtest.executors.base import BaseExecutor

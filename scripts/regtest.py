@@ -1,8 +1,9 @@
-import coverage
-import pytest
 import os
 import shutil
 import sys
+
+import coverage
+import pytest
 
 from buildtest.defaults import BUILDTEST_USER_HOME
 from buildtest.utils.file import is_dir

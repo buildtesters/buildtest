@@ -2,10 +2,11 @@
 This file is used for generating documentation tests.
 """
 import os
-import subprocess
 import shutil
+import subprocess
+
+from buildtest.defaults import BUILDTEST_USER_HOME, VAR_DIR
 from buildtest.utils.file import create_dir, write_file
-from buildtest.defaults import VAR_DIR, BUILDTEST_USER_HOME
 
 root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 docgen = os.path.join(root, "docs", "docgen")

@@ -1,7 +1,7 @@
 from buildtest.buildsystem.batch import (
+    CobaltBatchScript,
     LSFBatchScript,
     SlurmBatchScript,
-    CobaltBatchScript,
 )
 
 

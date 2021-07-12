@@ -1,8 +1,9 @@
 import json
 import os
-from buildtest.schemas.utils import here
+
 from buildtest.schemas.defaults import schema_table
-from buildtest.utils.file import walk_tree, read_file
+from buildtest.schemas.utils import here
+from buildtest.utils.file import read_file, walk_tree
 
 
 def schema_cmd(args):

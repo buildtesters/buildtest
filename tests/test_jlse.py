@@ -1,11 +1,12 @@
 import os
-import pytest
 import socket
+
+import pytest
 from buildtest.cli.build import BuildTest
-from buildtest.utils.file import walk_tree
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
 from buildtest.system import BuildTestSystem
+from buildtest.utils.file import walk_tree
 
 hostname = socket.getfqdn()
 

@@ -1,4 +1,5 @@
 import tempfile
+
 from buildtest.log import init_logfile
 from buildtest.utils.file import read_file
 

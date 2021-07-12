@@ -1,6 +1,7 @@
 black==21.6b0
 codecov
 coverage
+isort
 pre-commit
 pyflakes
 pytest
