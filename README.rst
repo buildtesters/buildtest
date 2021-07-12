@@ -1,5 +1,5 @@
-| |license| |docs| |codecov| |slack| |release| |installation| |regressiontest| |gh_pages_master| |gh_pages_devel| |checkurls| |dailyurlcheck| |codefactor| |blackformat|  |black| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
-
+| |license| |docs| |codecov| |slack| |release| |installation| |regressiontest| |gh_pages_master| |gh_pages_devel| |checkurls| |dailyurlcheck| |codefactor| |blackformat|  |black| |isort| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
+   
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
     :scale: 100%
@@ -40,6 +40,9 @@
 
 .. |blackformat| image:: https://github.com/buildtesters/buildtest/workflows/Black%20Formatter/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
+    
+.. |isort| image:: https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336
+    :target: https://pycqa.github.io/isort/
 
 .. |installation| image:: https://github.com/buildtesters/buildtest/workflows/installation/badge.svg
    :target: https://github.com/buildtesters/buildtest/actions
