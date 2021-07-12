@@ -1,7 +1,8 @@
-PyYAML>=5.2
-jsonschema
-tabulate
 distro
+isort
+jsonschema
 lmodule==0.1
-termcolor
+PyYAML>=5.2
 requests
+tabulate
+termcolor

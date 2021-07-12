@@ -13,16 +13,39 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
+import shutil
 import sys
 
 here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, here)
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
+from buildtest.cli.buildspec import BuildspecCache
+from buildtest.config import SiteConfiguration
+from buildtest.defaults import VAR_DIR
+from buildtest.utils.file import is_dir
 
 # set BUILDTEST_ROOT environment that is generally set by 'source setup.sh'
 os.environ["BUILDTEST_ROOT"] = here
 # add $BUILDTEST_ROOT/bin to $PATH to reference 'buildtest' command in docs
 os.environ["PATH"] += "%s%s" % (os.pathsep, os.path.join(here, "bin"))
+
+# need to set BUILDTEST_COLOR="False" in order to avoid printing ANSI color since Sphinx can't render them
+os.environ["BUILDTEST_COLOR"] = "False"
+
+# remove $BUILDTEST_ROOT/var which writes variable data
+if is_dir(VAR_DIR):
+    shutil.rmtree(VAR_DIR)
+
+
+configuration = SiteConfiguration()
+configuration.detect_system()
+configuration.validate()
+# need to create buildspec cache
+
+cache = BuildspecCache(
+    rebuild=True,
+    configuration=configuration,
+)
 
 # -- Project information -----------------------------------------------------
 project = "buildtest"
