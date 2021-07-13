@@ -220,6 +220,54 @@ you can do the following:
 
 The changes will be shown with lines removed or added via ``-`` and ``+``. For more details refer to `black documentation <https://github.com/psf/black>`_.
 
+.. _isort:
+
+isort
+------
+
+`isort <https://pycqa.github.io/isort>`_ is a python utility that will sort python imports alphabetically. We use isort as part of the CI checks, there
+is a `.isort.cfg <https://github.com/buildtesters/buildtest/blob/devel/.isort.cfg>`_ that defines the isort configuration that is compatible with
+`black <https://black.readthedocs.io/en/stable/>`_ utility. We have setup a pre-commit hook that can be used to automatically
+run isort as part of your ``git commit`` process. This is defined in pre-commit configuration file `.pre-commit-config.yaml <https://github.com/buildtesters/buildtest/blob/devel/.pre-commit-config.yaml>`_
+that can be installed by running ``pre-commit install``. Once this is setup, you will see **isort** and **black** checks are run during the commit
+process.
+
+
+.. code-block:: console
+
+    $ git commit
+    isort....................................................................Passed
+    black....................................................................Passed
+    [sphinx_fix 85d9d42c] fix issue with rendering bullet points in sphinx. This is solved by downgrading docutils to version 0.16.
+     2 files changed, 5 insertions(+)
+
+
+Please make sure you run ``pip install -r docs/requirements.txt`` to get the development dependencies that includes isort.
+
+If you want to run isort, you can use the `-c` and `--diff` option to check and see diff between files. For instance in example
+below we see isort reports changes to ``import`` statement
+
+.. code-block:: shell
+
+    $ isort -c --diff profile black  buildtest/main.py
+    ERROR: /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/main.py Imports are incorrectly sorted and/or formatted.
+    --- /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/main.py:before	2021-07-13 16:53:42.722718
+    +++ /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/main.py:after	2021-07-13 16:54:12.135986
+    @@ -1,8 +1,7 @@
+     """Entry point for buildtest"""
+
+    +import os
+     import webbrowser
+    -import os
+    -
+
+     from buildtest.cli import get_parser
+     from buildtest.cli.build import BuildTest
+    Broken 2 paths
+
+If you want to apply the changes you can get rid of ``-c`` and ``--diff`` option and isort will apply the changes. Please
+see https://pycqa.github.io/isort/docs/configuration/black_compatibility.html and https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html#isort
+for documentation regarding black and isort compatibility.
 
 .. _using_pyflakes:
 
