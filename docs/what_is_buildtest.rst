@@ -87,20 +87,20 @@ Timeline
 ---------
 
 .. csv-table::
-    :header: "Date", "Description"
-    :widths: 30, 60
+    :header: "Date", "Version", "Description"
+    :widths: 30, 30, 60
 
-    **Jun 11th 2021**, "`v0.9.6 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.6>`_ Added buildtest CDASH integration using ``buildtest cdash`` to upload test results. In this release we added ``buildtest history`` command to retrieve build history and query logfiles. Add global option ``-c`` in buildtest to specify alternate configuration file."
-    **Mar 31th 2021**, "`v0.9.5 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.5>`_ add support for PBS scheduler and reimplement ``buildtest inspect`` command"
-    **Mar 14th 2021**, "`v0.9.4 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.4>`_ introduced major change in buildtest configuration file (``settings.schema.json``) to define multiple HPC systems in configuration file. This lead to change in how ``executors`` are referenced in buildspec file."
-    **Feb 22nd 2021**, "`v0.9.3 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.3>`_ change Copyright details for project to include `LBNL <https://www.lbl.gov/>`_. We added `dependabot <https://dependabot.com/>`_ for managing dependencies, added OLCF facility pipelines for running regression test."
-    **Jan 12th 2021**, "`v0.9.2 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.2>`_ contains major refactor to ``compiler-v1.0-schema.json`` for writing compiler test using regular expression to search for compilers that are defined in configuration file."
-    **Nov 24st 2020**, "`v0.9.1 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.1>`_ added support for `Cobalt Scheduler <https://trac.mcs.anl.gov/projects/cobalt>`_."
-    **Sep 3rd 2020**, "`v0.8.0 <https://github.com/buildtesters/buildtest/releases/tag/v0.8.0>`_ introduced `JSON Schema <https://json-schema.org/>`_ for validating buildspec. Add support for Slurm and LSF scheduler for job submission. Add support for building buildspecs by file, directory and tagname and command line interface to schema."
-    **Mar 3rd 2020**, "A spin-off project called `lmodule <https://lmodule.readthedocs.io/en/latest/>`_ was formed based on buildtest module features."
-    **Sep 11th 2018**, "In `v0.4.0 <https://github.com/buildtesters/buildtest/releases/tag/v0.4.0>`_ buildtest was ported from Python 2 to 3."
-    **Aug 20th 2017**, "In `v0.1.5 <https://github.com/buildtesters/buildtest/releases/tag/v0.1.5>`_ buildtest was converted from bash to Python and project was moved into github https://github.com/HPC-buildtest/buildtest."
-    **Feb 18th 2017**, "Start of project"
+    **Jul 13th 2021**, "`v0.10.0 <https://github.com/buildtesters/buildtest/releases/tag/v0.10.0>`_", "In this release we added `spack <https://spack.readthedocs.io/>`_ support in buildtest by creating a new schema to write buildspecs that will generate spack commands. For more details see :ref:`spack_schema`. We added bash completion for buildtest commands which is enabled when installing buildtest. We added a new command ``buildtest buildspec validate``  that can be used for validating buildspecs  with JSON Schema."
+    **Jun 11th 2021**, "`v0.9.6 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.6>`_", "Added buildtest CDASH integration using ``buildtest cdash`` to upload test results. In this release we added ``buildtest history`` command to retrieve build history and query logfiles. Add global option ``-c`` in buildtest to specify alternate configuration file."
+    **Mar 31th 2021**, "`v0.9.5 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.5>`_", "Add support for PBS scheduler and reimplement ``buildtest inspect`` command"
+    **Mar 14th 2021**, "`v0.9.4 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.4>`_", "Introduced major change in buildtest configuration file (``settings.schema.json``) to define multiple HPC systems in configuration file. This lead to change in how ``executors`` are referenced in buildspec file."
+    **Feb 22nd 2021**, "`v0.9.3 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.3>`_", "Change Copyright details for project to include `LBNL <https://www.lbl.gov/>`_. We added `dependabot <https://dependabot.com/>`_ for managing dependencies, added OLCF facility pipelines for running regression test."
+    **Jan 12th 2021**, "`v0.9.2 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.2>`_", "Contains major refactor to ``compiler-v1.0-schema.json`` for writing compiler test using regular expression to search for compilers that are defined in configuration file."
+    **Nov 24st 2020**, "`v0.9.1 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.1>`_", "Added support for `Cobalt Scheduler <https://trac.mcs.anl.gov/projects/cobalt>`_."
+    **Sep 3rd 2020**, "`v0.8.0 <https://github.com/buildtesters/buildtest/releases/tag/v0.8.0>`_", "Introduced `JSON Schema <https://json-schema.org/>`_ for validating buildspec. Add support for Slurm and LSF scheduler for job submission. Add support for building buildspecs by file, directory and tagname and command line interface to schema."
+    **Sep 11th 2018**, "`v0.4.0 <https://github.com/buildtesters/buildtest/releases/tag/v0.4.0>`_", "buildtest was ported from Python 2 to 3."
+    **Aug 20th 2017**, "`v0.1.5 <https://github.com/buildtesters/buildtest/releases/tag/v0.1.5>`_", "buildtest was converted from bash to Python and project was moved into github https://github.com/HPC-buildtest/buildtest."
+    **Feb 18th 2017**, "N/A", "Start of project"
 
 
 Related Projects and community efforts
