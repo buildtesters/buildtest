@@ -14,26 +14,17 @@ Compilation Examples
 We assume the reader has basic understanding of :ref:`global_schema`
 validation. Shown below is the schema header definition for `compiler-v1.0.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/compiler-v1.0.schema.json>`_:
 
-.. code-block:: json
-
-      "$id": "compiler-v1.0.schema.json",
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "compiler schema version 1.0",
-      "description": "The compiler schema is of ``type: compiler`` in sub-schema which is used for compiling and running programs",
-      "type": "object",
-      "required": [
-        "type",
-        "source",
-        "compilers",
-        "executor"
-      ],
+.. literalinclude:: ../../buildtest/schemas/compiler-v1.0.schema.json
+   :language: json
+   :lines: 1-12
 
 The required fields for compiler schema are **type**, **compilers**, **source**
 and **executor**.
 
 Shown below is a test name ``hello_f`` that compiles Fortran code with GNU compiler.
 
-.. program-output:: cat ../tutorials/compilers/gnu_hello_fortran.yml
+.. literalinclude:: ../tutorials/compilers/gnu_hello_fortran.yml
+   :language: yaml
 
 The ``source`` property is used to specify input program for
 compilation, this can be a file relative to buildspec file or an absolute path.
@@ -53,10 +44,16 @@ The generated test for test name **hello_f** is the following:
 .. code-block:: shell
 
     #!/bin/bash
-    _EXEC=hello.f90.exe
-    gfortran -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.f90
-    ./$_EXEC
 
+
+    # name of executable
+    _EXEC=hello.f90.exe
+    # Compilation Line
+    gfortran -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/hello.f90
+
+
+    # Run executable
+    ./$_EXEC
 
 buildtest will use compiler wrappers specified in your settings
 to build the test, however these values can be overridden in buildspec file which
@@ -98,7 +95,8 @@ buildtest selects compiler based on ``name`` property which is a list of regular
 applied for available compilers defined in buildtest configuration. In example below
 we select all compilers with regular expression ``^(builtin_gcc|gcc)`` that is specified in line ``name: ["^(builtin_gcc|gcc)"]``
 
-.. program-output:: cat ../tutorials/compilers/vecadd.yml
+.. literalinclude:: ../tutorials/compilers/vecadd.yml
+   :language: yaml
 
 Currently, we have 3 compilers defined in buildtest settings, shown below is a listing
 of all compilers. We used ``buildtest config compilers find`` to :ref:`detect compilers <detect_compilers>`.
@@ -237,25 +235,43 @@ Shown below is the compiler configuration.
 If we take a closer look at the generated test we see the `module load` command in the test script.
 
 .. code-block:: shell
-    :emphasize-lines: 3
+    :emphasize-lines: 7
     :linenos:
 
     #!/bin/bash
+
+
+    # name of executable
     _EXEC=vecAdd.c.exe
+    # Loading modules
     module load gcc/10.2.0-37fmsw7
-    gcc -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/vecAdd.c
+    # Compilation Line
+    gcc -fopenacc -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/vecAdd.c -lm
+
+
+    # Run executable
     ./$_EXEC
 
 
 .. code-block:: shell
-    :emphasize-lines: 3
+    :emphasize-lines: 7
     :linenos:
 
     #!/bin/bash
+
+
+    # name of executable
     _EXEC=vecAdd.c.exe
+    # Loading modules
     module load gcc/9.3.0-n7p74fd
-    gcc -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/vecAdd.c
+    # Compilation Line
+    gcc -fopenacc -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/vecAdd.c -lm
+
+
+    # Run executable
     ./$_EXEC
+
+
 
 Excluding Compilers
 --------------------
@@ -267,7 +283,8 @@ any compilers specified in ``exclude`` if they were found based on regular
 expression in ``name`` field. In this example, we slightly modified previous example
 by excluding ``gcc/10.2.0-37fmsw7`` compiler. This is specified by ``exclude: [gcc/10.2.0-37fmsw7]``.
 
-.. program-output:: cat ../tutorials/compilers/compiler_exclude.yml
+.. literalinclude:: ../tutorials/compilers/compiler_exclude.yml
+    :language: yaml
 
 Notice when we build this test, buildtest will exclude **gcc/10.2.0-37fmsw7** compiler
 and test is not created during build phase.
@@ -361,7 +378,8 @@ The ``default`` field is organized into compiler groups, in example below we set
 In example below we can override compiler settings for ``gcc/9.3.0-n7p74fd`` to use ``-O2``
 and ``gcc/10.2.0-37fmsw7`` to use ``-O3`` for **cflags** .
 
-.. program-output:: cat ../tutorials/compilers/gnu_hello_c.yml
+.. literalinclude:: ../tutorials/compilers/gnu_hello_c.yml
+    :language: yaml
 
 Next we run this test, and we get three tests for test name **hello_c**.
 
@@ -452,35 +470,63 @@ If we inspect the following test, we see the compiler flags are associated with 
 is for `builtin_gcc` which use the default ``-O1`` compiler flag as shown below.
 
 .. code-block:: shell
-    :emphasize-lines: 3
+    :emphasize-lines: 7
     :linenos:
 
     #!/bin/bash
+
+
+    # name of executable
     _EXEC=hello.c.exe
-    gcc -O1 -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.c
+    # Compilation Line
+    gcc -O1 -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/hello.c
+
+
+    # Run executable
     ./$_EXEC
+
+
 
 The test for **gcc/10.2.0-37fmsw7** and **gcc/9.3.0-n7p74fd** have cflags ``-O3`` and ``-O2`` set in their respective tests.
 
 .. code-block:: shell
-    :emphasize-lines: 4
+    :emphasize-lines: 9
     :linenos:
 
     #!/bin/bash
+
+
+    # name of executable
     _EXEC=hello.c.exe
+    # Loading modules
     module load gcc/10.2.0-37fmsw7
-    gcc -O3 -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.c
+    # Compilation Line
+    gcc -O3 -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/hello.c
+
+
+    # Run executable
     ./$_EXEC
+
+
 
 .. code-block:: shell
-    :emphasize-lines: 4
+    :emphasize-lines: 9
     :linenos:
 
     #!/bin/bash
+
+
+    # name of executable
     _EXEC=hello.c.exe
+    # Loading modules
     module load gcc/9.3.0-n7p74fd
-    gcc -O2 -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.c
+    # Compilation Line
+    gcc -O2 -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/hello.c
+
+
+    # Run executable
     ./$_EXEC
+
 
 Setting environment variables
 ------------------------------
@@ -492,22 +538,35 @@ where we define `OMP_NUM_THREADS` environment variable which controls number of 
 threads to use when running program. In this example we use 2 threads for all gcc
 compiler group
 
-.. program-output:: cat ../tutorials/compilers/openmp_hello.yml
+.. literalinclude:: ../tutorials/compilers/openmp_hello.yml
+    :language: yaml
 
 Shown below is one of the generated test and notice that buildtest will set environment
-variable **OMP_NUM_THREADS**
+variable **OMP_NUM_THREADS**.
 
 
 .. code-block:: shell
-    :emphasize-lines: 3
+    :emphasize-lines: 7
     :linenos:
 
     #!/bin/bash
+
+
+    # name of executable
     _EXEC=hello_omp.c.exe
+    # Declare environment variables
     export OMP_NUM_THREADS=2
+
+
+    # Loading modules
     module load gcc/10.2.0-37fmsw7
-    gcc -fopenmp -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello_omp.c
+    # Compilation Line
+    gcc -fopenmp -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/hello_omp.c
+
+
+    # Run executable
     ./$_EXEC
+
 
 
 Similarly, one can define environment variables at the compiler level in ``config`` section.
@@ -515,7 +574,8 @@ buildtest will override value defined in ``default`` section. In this example, w
 make slight modification to the test, so that ``gcc/10.2.0-37fmsw7`` will use 4 threads
 when running program. This will override the default value of 2.
 
-.. program-output:: cat ../tutorials/compilers/envvar_override.yml
+.. literalinclude:: ../tutorials/compilers/envvar_override.yml
+    :language: yaml
 
 Next we build this test as follows:
 
@@ -686,7 +746,8 @@ In second example we override the status ``regex`` property for **gcc/10.2.0-37f
 the test to produce an output of ``final result: 1.000000`` so we expect one failure from
 **gcc/10.2.0-37fmsw7**.
 
-.. program-output:: cat ../tutorials/compilers/compiler_status_regex.yml
+.. literalinclude:: ../tutorials/compilers/compiler_status_regex.yml
+    :language: yaml
 
 
 If we build this test, notice that test id **9320ca41** failed which corresponds to
@@ -997,7 +1058,8 @@ program. buildtest will change directory to the called script before running exe
 executable will be present in local directory which can be accessed via ``./$_EXEC``. In example below
 we pass arguments ``1 3 5`` for gcc group and ``100 200`` for compiler ``gcc/10.2.0-37fmsw7``.
 
-.. program-output:: cat ../tutorials/compilers/custom_run.yml
+.. literalinclude:: ../tutorials/compilers/custom_run.yml
+    :language: yaml
 
 If we build this test and see generated test, we notice buildtest customized the run line
 for launching binary. buildtest will directly replace content in ``run`` section into the
@@ -1005,13 +1067,22 @@ shell-script. If no ``run`` field is specified buildtest will run the binary in 
 
 .. code-block:: shell
    :linenos:
-   :emphasize-lines: 5
+   :emphasize-lines: 13
 
     #!/bin/bash
+
+
+    # name of executable
     _EXEC=argc.c.exe
+    # Loading modules
     module load gcc/10.2.0-37fmsw7
-    gcc -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/argc.c
+    # Compilation Line
+    gcc -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/argc.c
+
+
+    # Run executable
     ./$_EXEC 100 120
+
 
 MPI Example
 ------------
@@ -1214,7 +1285,8 @@ section is where compiled binary is executed.
 
 Shown below is an example buildspec with pre/post section.
 
-.. program-output:: cat ../tutorials/compilers/pre_post_build_run.yml
+.. literalinclude:: ../tutorials/compilers/pre_post_build_run.yml
+    :language: yaml
 
 
 The format of the test structure is as follows.
@@ -1240,15 +1312,40 @@ The generated test for this buildspec is the following:
 .. code-block:: shell
 
     #!/bin/bash
+
+
+    # name of executable
     _EXEC=hello.c.exe
+    ### START OF PRE BUILD SECTION ###
     echo "This is a pre-build section"
     gcc --version
 
-    gcc -o $_EXEC /Users/siddiq90/Documents/buildtest/tutorials/compilers/src/hello.c
+    ### END OF PRE BUILD SECTION   ###
+
+
+    # Compilation Line
+    gcc -Wall -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/hello.c
+
+
+    ### START OF POST BUILD SECTION ###
     echo "This is post-build section"
 
+    ### END OF POST BUILD SECTION ###
+
+
+    ### START OF PRE RUN SECTION ###
     echo "This is pre-run section"
     export FOO=BAR
 
+    ### END OF PRE RUN SECTION   ###
+
+
+    # Run executable
     ./$_EXEC
+
+
+    ### START OF POST RUN SECTION ###
     echo "This is post-run section"
+
+    ### END OF POST RUN SECTION   ###
+

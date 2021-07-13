@@ -210,7 +210,7 @@ class CompilerBuilder(BuilderBase):
         if data_warp_lines:
             lines.append("### START OF DATAWARP DIRECTIVES ###")
             lines += data_warp_lines
-            lines.append("### START OF DATAWARP DIRECTIVES ###")
+            lines.append("### END OF DATAWARP DIRECTIVES ###")
 
         lines.append("\n")
         lines.append("# name of executable")
@@ -238,7 +238,7 @@ class CompilerBuilder(BuilderBase):
         if self.post_build:
             lines.append("### START OF POST BUILD SECTION ###")
             lines.append(self.post_build)
-            lines.append("### START OF POST BUILD SECTION ###")
+            lines.append("### END OF POST BUILD SECTION ###")
             lines.append("\n")
 
         if self.pre_run:
