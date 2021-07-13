@@ -67,6 +67,6 @@ Usage (``buildtest --help``)
 Once you are setup, you can run ``buildtest --help`` for more details on how to
 use buildtest. Shown below is the output
 
-.. program-output:: cat docgen/buildtest_--help.txt
+.. command-output:: buildtest --help
 
 If you have got this far, please go to the next section on :ref:`getting_started`
