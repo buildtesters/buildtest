@@ -165,12 +165,15 @@ class Slurm(Scheduler):
         """Get list of all partitions slurm partitions using ``sinfo -a -h -O partitionname``. The output
         is a list of queue names
 
-         $ sinfo -a -h -O partitionname
-         system
-         system_shared
-         debug_hsw
-         debug_knl
-         jupyter
+        .. code-block:: console
+
+             $ sinfo -a -h -O partitionname
+             system
+             system_shared
+             debug_hsw
+             debug_knl
+             jupyter
+
         """
         # get list of partitions
 
@@ -185,11 +188,14 @@ class Slurm(Scheduler):
 
     def _get_clusters(self):
         """Get list of slurm clusters by running ``sacctmgr list cluster -P -n format=Cluster``.
-        The output is a list of slurm clusters something as follows::
+        The output is a list of slurm clusters something as follows
 
-         $ sacctmgr list cluster -P -n format=Cluster
-         cori
-         escori
+        .. code-block:: console
+
+             $ sacctmgr list cluster -P -n format=Cluster
+             cori
+             escori
+
         """
 
         query = "sacctmgr list cluster -P -n format=Cluster"
@@ -205,12 +211,14 @@ class Slurm(Scheduler):
         """Retrieve a list of all slurm qos by running ``sacctmgr list qos -P -n  format=Name``. The output
         is a list of qos. Shown below is an example output
 
-        $ sacctmgr list qos -P -n  format=Name
-        normal
-        premium
-        low
-        serialize
-        scavenger
+        .. code-block:: console
+
+            $ sacctmgr list qos -P -n  format=Name
+            normal
+            premium
+            low
+            serialize
+            scavenger
 
         """
 
@@ -244,21 +252,24 @@ class LSF(Scheduler):
         """Return json dictionary of available LSF Queues and their queue states.
         The command we run is the following: ``bqueues -o 'queue_name status' -json`` which
         returns a JSON record of all queue details.
-        $ bqueues -o 'queue_name status' -json
-            {
-              "COMMAND":"bqueues",
-              "QUEUES":2,
-              "RECORDS":[
+
+        .. code-block:: console
+
+            $ bqueues -o 'queue_name status' -json
                 {
-                  "QUEUE_NAME":"batch",
-                  "STATUS":"Open:Active"
-                },
-                {
-                  "QUEUE_NAME":"test",
-                  "STATUS":"Open:Active"
+                  "COMMAND":"bqueues",
+                  "QUEUES":2,
+                  "RECORDS":[
+                    {
+                      "QUEUE_NAME":"batch",
+                      "STATUS":"Open:Active"
+                    },
+                    {
+                      "QUEUE_NAME":"test",
+                      "STATUS":"Open:Active"
+                    }
+                  ]
                 }
-              ]
-            }
 
         """
 
