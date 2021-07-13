@@ -1,0 +1,11 @@
+version: "1.0"
+buildspecs:
+  add_numbers:
+    type: script
+    executor: generic.local.bash
+    description: Add X+Y
+    tags: [tutorials]
+    vars:
+      X: 1
+      Y: 2
+    run: echo "$X+$Y=" $(($X+$Y))

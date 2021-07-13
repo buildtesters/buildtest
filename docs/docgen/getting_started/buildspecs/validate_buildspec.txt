@@ -1,3 +1,0 @@
-$ buildtest buildspec validate -b tutorials/vars.yml 
-Processing buildspec: /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/vars.yml
-All buildspecs passed validation!!!

@@ -52,8 +52,11 @@ class SiteConfiguration:
 
     def resolve(self):
         """This method will resolve path to configuration file. The order of precedence is as follows:
+
         1. command line argument - Must be valid path
+
         2. User Configuration: $HOME/.buildtest/config.yml
+
         3. Default Configuration: $BUILDTEST_ROOT/buildtest/settings/config.yml
         """
 

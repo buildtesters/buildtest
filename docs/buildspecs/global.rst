@@ -14,14 +14,9 @@ Schema Definition
 
 Shown below is the start of the schema definition for  **global.schema.json**
 
-.. code-block:: json
-
-  "$id": "global.schema.json",
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "global schema",
-  "description": "buildtest global schema is validated for all buildspecs. The global schema defines top-level structure of buildspec and defintions that are inherited for sub-schemas",
-  "type": "object",
-  "required": ["version","buildspecs"],
+.. literalinclude:: ../../buildtest/schemas/global.schema.json
+   :lines: 1-8
+   :language: json
 
 This schema requires that every buildspec should have ``version`` and ``buildspecs`` fields. The
 version key is required to lookup an a sub-schema using the ``type`` field.
@@ -29,7 +24,8 @@ The ``buildspecs`` is the start of test declaration.
 
 Shown below is an example buildspec.
 
-.. program-output:: cat ../tutorials/hello_world.yml
+.. literalinclude:: ../tutorials/hello_world.yml
+   :language: yaml
 
 The ``maintainers`` is an optional field that is an array test maintainers. To understand
 how buildtest validates the buildspec see :ref:`parsing buildspecs <parse_stage>`.

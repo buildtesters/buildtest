@@ -1,9 +1,0 @@
-$ buildtest schema --help
-usage: buildtest [options] [COMMANDS] schema [-h] [-n Schema Name] [-e] [-j]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -n Schema Name, --name Schema Name
-                        show schema by name (e.g., script)
-  -e, --example         Show schema examples
-  -j, --json            Display json schema file

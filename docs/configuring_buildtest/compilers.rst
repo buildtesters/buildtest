@@ -35,7 +35,7 @@ system compiler that defines C, C++ and Fortran compilers using ``cc``, ``cxx`` 
 One can retrieve all compilers using ``buildtest config compilers``, there are few
 options for this command.
 
-.. program-output:: cat docgen/buildtest_config_compilers_--help.txt
+.. command-output:: buildtest config compilers --help
 
 buildtest can represent compiler output in JSON, YAML using the ``--json`` and ``--yaml``.
 Shown below is an example output with these options::

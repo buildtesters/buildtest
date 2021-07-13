@@ -1,6 +1,0 @@
-$ buildtest buildspec find --helpfilter 
-Field     Description              Type
---------  -----------------------  ------
-executor  Filter by executor name  STRING
-tags      Filter by tag name       STRING
-type      Filter by schema type    STRING

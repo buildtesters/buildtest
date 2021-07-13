@@ -506,7 +506,7 @@ prepopulated from the JSON record provided by **qstat**.
     :emphasize-lines: 22-88
     :linenos:
 
-    [pbsuser@pbs buildtest]$ buildtest inspect 2adfc3c1
+    [pbsuser@pbs buildtest]$ buildtest inspect id 2adfc3c1
     {
       "id": "2adfc3c1",
       "full_id": "2adfc3c1-1c81-43d0-a151-6fa1a9818eb4",

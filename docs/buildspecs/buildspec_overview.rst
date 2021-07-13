@@ -15,23 +15,15 @@ validated with a global schema which you can find more if you click :ref:`here <
 Example
 --------
 
-Let's start off with a simple example buildspec that declares variables `X` and `Y` and adds the two numbers together:
+Let's start off with a simple example that declares two variables **X** and **Y** and
+prints the sum of X+Y.
 
-.. code-block:: yaml
-
-    version: "1.0"
-    buildspecs:
-      variables:
-        type: script
-        executor: generic.local.bash
-        vars:
-          X: 1
-          Y: 2
-        run: echo "$X+$Y=" $(($X+$Y))
+.. literalinclude:: ../tutorials/add_numbers.yml
+   :language: yaml
 
 buildtest will validate the entire file with ``global.schema.json``, the schema
 requires **version** and **buildspec** in order to validate file. The **buildspec**
-is where you define each test. In this example their is one test called **variables**.
+is where you define each test. The name of the test is **add_numbers**.
 The test requires a **type** field which is the sub-schema used to validate the
 test section. In this example ``type: script`` informs buildtest to use the :ref:`script_schema`
 when validating test section.
@@ -48,22 +40,8 @@ Let's look at a more interesting example, shown below is a multi line run
 example using the `script` schema with test name called
 **systemd_default_target**, shown below is the content of test:
 
-.. code-block:: yaml
-
-    version: "1.0"
-    buildspecs:
-      systemd_default_target:
-        executor: generic.local.bash
-        type: script
-        tags: [system]
-        description: check if default target is multi-user.target
-        run: |
-          if [ "multi-user.target" == `systemctl get-default` ]; then
-            echo "multi-user is the default target";
-            exit 0
-          fi
-          echo "multi-user is not the default target";
-          exit 1
+.. literalinclude:: ../../general_tests/configuration/systemd-default-target.yml
+    :language: yaml
 
 The test name **systemd_default_target** defined in **buildspec** section is
 validated with the following pattern ``"^[A-Za-z_][A-Za-z0-9_]*$"``. This test
@@ -109,16 +87,9 @@ for writing the content of test.
 
 Shown below is schema header for `script-v1.0.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/script-v1.0.schema.json>`_.
 
-.. code-block:: json
-
-      "$id": "script-v1.0.schema.json",
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "script schema version 1.0",
-      "description": "The script schema is of ``type: script`` in sub-schema which is used for running shell scripts",
-      "type": "object",
-      "required": ["type", "run", "executor"],
-      "additionalProperties": false,
-
+.. literalinclude:: ../../buildtest/schemas/script-v1.0.schema.json
+   :language: json
+   :lines: 1-8
 
 The ``"type": "object"`` means sub-schema is a JSON `object <http://json-schema.org/understanding-json-schema/reference/object.html>`_
 where we define a list of key/value pair. The ``"required"`` field specifies a list of
@@ -147,12 +118,14 @@ In this example we have four tests called ``exit1_fail``, ``exit1_pass``,
 **returncode_mismatch** to FAIL while **exit1_pass** and **returncode_int_match**
 will PASS.
 
-.. program-output:: cat ../tutorials/pass_returncode.yml
+.. literalinclude:: ../tutorials/pass_returncode.yml
+   :language: yaml
 
 To demonstrate we will build this test and pay close attention to the **status**
 column in output.
 
-.. program-output:: cat docgen/buildspecs/overview/pass_returncode.txt
+.. command-output:: buildtest build -b tutorials/pass_returncode.yml
+   :shell:
 
 The ``returncode`` field can be an integer or list of integers but it may not accept
 duplicate values. If you specify a list of exit codes, buildtest will check actual returncode
@@ -185,12 +158,14 @@ Tags can be defined as a string or list of strings. In this example, the test
 ``string_tag`` defines a tag name **network** while test ``list_of_strings_tags``
 define a list of tags named ``network`` and ``ping``.
 
-.. program-output:: cat ../tutorials/tags_example.yml
+.. literalinclude:: ../tutorials/tags_example.yml
+    :language: yaml
 
 Each item in tags must be a string and no duplicates are allowed, for example in
 this test, we define a duplicate tag **network** which is not allowed.
 
-.. program-output:: cat ../tutorials/invalid_tags.yml
+.. literalinclude:: ../tutorials/invalid_tags.yml
+    :language: yaml
 
 If we run this test and inspect the logs we will see an error message in schema validation:
 
@@ -217,7 +192,8 @@ with shells: ``bash``, ``sh``, ``zsh``, ``csh`` and ``tcsh``. It does not work w
 ``shell: python``. In example below we declare three tests using environment
 variable with default shell (bash), csh, and tcsh
 
-.. program-output:: cat tutorials/environment.yml
+.. literalinclude:: ../tutorials/environment.yml
+   :language: yaml
 
 This test can be run by issuing the following command: ``buildtest build -b tutorials/environment.yml``.
 If we inspect one of the test script we will see that buildtest generates a build script that invokes the test using the
@@ -226,9 +202,24 @@ shell wrapper `/bin/csh` for the csh test and gets the returncode.
 .. code-block:: shell
 
     #!/bin/bash
+
+
+    ############# START VARIABLE DECLARATION ########################
+    export BUILDTEST_TEST_NAME=csh_env_declaration
+    export BUILDTEST_TEST_ROOT=/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.csh/environment/csh_env_declaration/0
+    export BUILDTEST_BUILDSPEC_DIR=/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials
+    export BUILDTEST_STAGE_DIR=/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.csh/environment/csh_env_declaration/0/stage
+    export BUILDTEST_TEST_ID=501ec5d3-e614-4ae8-9c1e-4849ce340c76
+    ############# END VARIABLE DECLARATION   ########################
+
+
+    # source executor startup script
     source /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/executor/generic.local.csh/before_script.sh
-    /bin/csh /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.csh/environment/csh_env_declaration/2/stage/csh_env_declaration.csh
+    # Run generated script
+    /bin/csh /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.csh/environment/csh_env_declaration/0/stage/csh_env_declaration.csh
+    # Get return code
     returncode=$?
+    # Exit with return code
     exit $returncode
 
 This generated test looks something like this
@@ -236,8 +227,13 @@ This generated test looks something like this
 .. code-block:: shell
 
     #!/bin/csh
+    # Declare environment variables
     setenv SHELL_NAME csh
+
+
+    # Content of run section
     echo "This is running $SHELL_NAME"
+
 
 Environment variables are defined using ``export`` in bash, sh, zsh while csh and
 tcsh use ``setenv``.
@@ -266,28 +262,21 @@ a Linux command.
 .. Note:: You can use the escape character ``\`` to set special character, for instance you can declare a variable in string with quotes by using ``\"``.
 
 
-.. program-output:: cat ../tutorials/vars.yml
+.. literalinclude::  ../tutorials/vars.yml
+   :language: yaml
 
-Next we build this test by running ``buildtest build -b tutorials/vars.yml``.
+Next we build this test by running ``buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml``.
 
-.. program-output:: cat docgen/buildspecs/overview/vars.txt
+.. command-output:: buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml
+    :shell:
 
-If we inspect the output file we see the following result:
+Let's check the generated script from the previous build, you will notice that buildtest will define
+the shell variables at top of script followed content defined in ``run`` section.
 
-.. code-block:: shell
-
-    1+2= 3
-    this is a literal string ':'
-    singlequote
-    doublequote
-    siddiq90
-    /Users/siddiq90/.anyconnect /Users/siddiq90/.DS_Store /Users/siddiq90/.serverauth.555 /Users/siddiq90/.CFUserTextEncoding /Users/siddiq90/.wget-hsts /Users/siddiq90/.bashrc /Users/siddiq90/.zshrc /Users/siddiq90/.coverage /Users/siddiq90/.serverauth.87055 /Users/siddiq90/.zsh_history /Users/siddiq90/.lesshst /Users/siddiq90/.git-completion.bash /Users/siddiq90/buildtest.log /Users/siddiq90/darhan.log /Users/siddiq90/ascent.yml /Users/siddiq90/.cshrc /Users/siddiq90/github-tokens /Users/siddiq90/.zcompdump /Users/siddiq90/.serverauth.543 /Users/siddiq90/.bash_profile /Users/siddiq90/.Xauthority /Users/siddiq90/.python_history /Users/siddiq90/.gitconfig /Users/siddiq90/output.txt /Users/siddiq90/.bash_history /Users/siddiq90/.viminfo
-
-Shown below is the generated testscript:
 
 .. code-block:: shell
 
-   #!/bin/bash
+    #!/bin/bash
     # Declare shell variables
     X=1
     Y=2
@@ -308,7 +297,6 @@ Shown below is the generated testscript:
     echo $current_user
     echo $files_homedir
 
-
 Customize Shell
 -----------------
 
@@ -328,7 +316,8 @@ with shell options. The shell will configure the `shebang <https://en.wikipedia.
 in the test-script. In this example, we illustrate a few tests using different shell
 field.
 
-.. program-output:: cat tutorials/shell_examples.yml
+.. literalinclude:: ../tutorials/shell_examples.yml
+   :language: yaml
 
 The generated test-script for buildspec **_bin_sh_shell** will specify shebang
 **/bin/sh** because we specified ``shell: /bin/sh``:
@@ -336,6 +325,7 @@ The generated test-script for buildspec **_bin_sh_shell** will specify shebang
 .. code-block:: shell
 
     #!/bin/sh
+    # Content of run section
     bzip2 --help
 
 If you don't specify a shell path such as ``shell: sh``, then buildtest will resolve
@@ -345,11 +335,27 @@ In test **shell_options** we specify ``shell: "sh -x"``, buildtest will tack on 
 shell options into the called script as follows:
 
 .. code-block:: shell
+    :emphasize-lines: 16
 
     #!/bin/bash
+
+
+    ############# START VARIABLE DECLARATION ########################
+    export BUILDTEST_TEST_NAME=shell_options
+    export BUILDTEST_TEST_ROOT=/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0
+    export BUILDTEST_BUILDSPEC_DIR=/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials
+    export BUILDTEST_STAGE_DIR=/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0/stage
+    export BUILDTEST_TEST_ID=95c11f54-bbb1-4154-849d-44313e4417c2
+    ############# END VARIABLE DECLARATION   ########################
+
+
+    # source executor startup script
     source /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/executor/generic.local.sh/before_script.sh
-    sh -x /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/3/stage/shell_options.sh
+    # Run generated script
+    sh -x /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/shell_examples/shell_options/0/stage/shell_options.sh
+    # Get return code
     returncode=$?
+    # Exit with return code
     exit $returncode
 
 
@@ -358,7 +364,8 @@ If you prefer **csh** or **tcsh** for writing scripts just set ``shell: csh`` or
 use ``executor: generic.local.csh`` to run your csh/tcsh scripts. In this example below
 we define a script using csh, take note of ``run`` section we can write csh style.
 
-.. program-output:: cat tutorials/csh_shell_examples.yml
+.. literalinclude:: ../tutorials/csh_shell_examples.yml
+   :language: yaml
 
 Customize Shebang
 -----------------
@@ -374,18 +381,21 @@ test **bash_nonlogin_shebang** should run in default behavior which is non-login
 shell and expects output ``Not Login Shell``. We match this with regular expression
 with stdout stream.
 
-.. program-output:: cat tutorials/shebang.yml
+.. literalinclude:: ../tutorials/shebang.yml
+    :language: yaml
 
 Now let's run this test as we see the following.
 
-.. program-output:: cat docgen/buildspecs/overview/shebang.txt
+.. command-output:: buildtest build -b tutorials/shebang.yml
 
 If we look at the generated test for **bash_login_shebang** we see the shebang line
 is passed into the script:
 
 .. code-block:: shell
+    :emphasize-lines: 1
 
     #!/bin/bash -l
+    # Content of run section
     shopt -q login_shell && echo 'Login Shell' || echo 'Not Login Shell'
 
 Python Shell
@@ -397,8 +407,8 @@ defined in your buildtest configuration.
 
 Here is a python example calculating area of circle
 
-.. program-output:: cat ../tutorials/python-shell.yml
-
+.. literalinclude:: ../tutorials/python-shell.yml
+   :language: yaml
 
 The ``shell: python`` will let us write python script in the ``run`` section.
 The ``tags`` field can be used to classify test, the field expects an array of
@@ -419,7 +429,8 @@ By default, buildtest will run all tests defined in ``buildspecs`` section, if y
 want to skip a test use the ``skip`` field which expects a boolean value. Shown
 below is an example test.
 
-.. program-output:: cat ../tutorials/skip_tests.yml
+.. literalinclude:: ../tutorials/skip_tests.yml
+   :language: yaml
 
 The first test **skip** will be ignored by buildtest because ``skip: true`` is defined
 while **unskipped** will be processed as usual.
@@ -436,7 +447,7 @@ while **unskipped** will be processed as usual.
 Here is an example build, notice message ``[skip] test is skipped`` during the build
 stage
 
-.. program-output:: cat docgen/buildspecs/overview/skip_tests.txt
+.. command-output:: buildtest build -b tutorials/skip_tests.yml
 
 run_only
 ---------
@@ -456,12 +467,13 @@ We detect current user using ``$USER`` and match with input field ``user``.
 buildtest will skip test if there is no match.
 
 
-.. program-output:: cat ../tutorials/root_user.yml
+.. literalinclude:: ../tutorials/root_user.yml
+   :language: yaml
 
 Now if we run this test we see buildtest will skip test **run_only_as_root** because
 current user is not root.
 
-.. program-output:: cat docgen/buildspecs/overview/root_user.txt
+.. command-output:: buildtest build -b tutorials/root_user.yml
 
 run_only - platform
 ~~~~~~~~~~~~~~~~~~~~
@@ -476,7 +488,8 @@ we define a python shell using ``shell: python`` and run ``platform.system()``. 
 expect the output of each test to have **Darwin** and **Linux** which we match
 with stdout using regular expression.
 
-.. program-output:: cat ../tutorials/run_only_platform.yml
+.. literalinclude:: ../tutorials/run_only_platform.yml
+   :language: yaml
 
 This test was ran on a MacOS (Darwin) so we expect test **run_only_platform_linux**
 to be skipped.
@@ -488,18 +501,19 @@ run_only - scheduler
 
 buildtest can run test if a particular scheduler is available. In this example,
 we introduce a new field ``scheduler`` that is part of ``run_only`` property. This
-field expects one of the following values: [``lsf``, ``slurm``, ``cobalt``,``pbs``]
+field expects one of the following values: [``lsf``, ``slurm``, ``cobalt``, ``pbs``]
 and buildtest will check if target system supports detects the scheduler. In this example we require
 **lsf** scheduler because this test runs **bmgroup** which is a LSF binary.
 
 .. note:: buildtest assumes scheduler binaries are available in $PATH, if no scheduler is found buildtest sets this to an empty list
 
-.. program-output:: cat ../general_tests/sched/lsf/bmgroups.yml
+.. literalinclude:: ../general_tests/sched/lsf/bmgroups.yml
+   :language: yaml
 
 If we build this test on a target system without LSF notice that buildtest skips
 test **show_host_groups**.
 
-.. program-output:: cat docgen/buildspecs/overview/bmgroups.txt
+.. command-output:: buildtest build -b general_tests/sched/lsf/bmgroups.yml
 
 
 run_only - linux_distro
@@ -510,7 +524,8 @@ buildtest can run test if it matches a Linux distro, this is configured using
 `distro.id() <https://distro.readthedocs.io/en/latest/#distro.id>`_. In this example,
 we run test only if host distro is ``darwin``.
 
-.. program-output:: cat ../tutorials/run_only_distro.yml
+.. literalinclude:: ../tutorials/run_only_distro.yml
+   :language: yaml
 
 This test will run successfully because this was ran on a Mac OS (darwin) system.
 
@@ -529,7 +544,8 @@ You can retrieve a list of executors by running ``buildtest config executors``.
 In example below we will run this test on `generic.local.bash` and `generic.local.sh` executor based
 on the regular expression.
 
-.. program-output:: cat ../tutorials/executor_regex_script.yml
+.. literalinclude:: ../tutorials/executor_regex_script.yml
+   :language: yaml
 
 If we build this test, notice that there are two tests, one for each executor.
 
@@ -551,13 +567,12 @@ will be greater than 0 sec.
 In test **timelimit_min**, we sleep for 2 seconds and it will pass because minimum runtime is 1.0 seconds. Similarly,
 **timelimit_max** will pass because we sleep for 2 seconds with a max time of 5.0.
 
+.. literalinclude:: ../tutorials/runtime_status_test.yml
+   :language: yaml
 
-.. program-output:: cat ../tutorials/runtime_status_test.yml
-
-
-.. program-output:: cat docgen/buildspecs/overview/runtime_status.txt
+.. command-output:: buildtest build -b tutorials/runtime_status_test.yml
 
 If we look at the test results, we expect the first three tests **timelimit_min**, **timelimit_max**, **timelimit_min_max**
 will pass while the last two tests fail because it fails to comply with runtime property.
 
-.. program-output:: cat docgen/buildspecs/overview/runtime_status_report.txt
+.. command-output:: buildtest report --filter buildspec=tutorials/runtime_status_test.yml --format name,id,state,runtime --latest

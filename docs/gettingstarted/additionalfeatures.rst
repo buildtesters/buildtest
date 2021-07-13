@@ -21,6 +21,7 @@ Shown below is an output of build ID 0 which reports relevant detail for the bui
 platform, date, etc...
 
 .. command-output:: buildtest history query 0
+    :shell:
 
 .. _buildtest_schemas:
 

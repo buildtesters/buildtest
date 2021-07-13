@@ -24,7 +24,7 @@ all buildspecs by recursively searching all `.yml` extensions. buildtest will va
 buildspec file with the json schema and buildtest will display all valid buildspecs in the output,
 all invalid buildspecs will be stored in a file for post-processing.
 
-.. program-output:: cat docgen/getting_started/buildspecs/buildspec_find.txt
+.. command-output:: buildtest buildspec find
 
 buildtest will load all discovered buildspecs in a cache file (JSON) which is created upon
 running ``buildtest buildspec find``. Any subsequent runs will read from cache and update

@@ -58,7 +58,7 @@ Preview of buildtest
 
 You can run ``buildtest help`` which will provide an overview of buildtest commands.
 
-.. program-output:: cat docgen/buildtest_help.txt
+.. command-output:: buildtest help
 
 Target Audience & Use Case
 ---------------------------

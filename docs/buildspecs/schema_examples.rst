@@ -32,7 +32,7 @@ reused in multiple schemas. We use ``$ref`` keyword to reference definitions fro
 Schema Content
 ~~~~~~~~~~~~~~
 
-.. program-output:: cat docgen/schemas/definitions_json.txt
+.. command-output:: buildtest schema -n definitions.schema.json --json
 
 
 Settings Schema
@@ -43,12 +43,13 @@ This schema defines how :ref:`buildtest configuration <configuring_buildtest>` f
 Schema Content
 ~~~~~~~~~~~~~~~~~
 
-.. program-output:: cat docgen/schemas/settings_json.txt
+.. command-output:: buildtest schema -n settings.schema.json --json
+
 
 Schema Examples
 ~~~~~~~~~~~~~~~~
 
-.. program-output:: cat docgen/schemas/settings_examples.txt
+.. command-output:: buildtest schema -n settings.schema.json --example
 
 
 Global Schema
@@ -60,12 +61,12 @@ This schema is used for validating buildspec file and validates outer level stru
 Schema Content
 ~~~~~~~~~~~~~~~~~
 
-.. program-output:: cat docgen/schemas/global_json.txt
+.. command-output:: buildtest schema -n global.schema.json --json
 
 Schema Examples
 ~~~~~~~~~~~~~~~~
 
-.. program-output:: cat docgen/schemas/global_examples.txt
+.. command-output:: buildtest schema -n global.schema.json --example
 
 Script Schema
 ---------------
@@ -76,12 +77,12 @@ This is the script schema used for writing scripts (bash, csh, sh, zsh, tcsh, py
 Schema Content
 ~~~~~~~~~~~~~~~
 
-.. program-output:: cat docgen/schemas/script_json.txt
+.. command-output:: buildtest schema -n script-v1.0.schema.json --json
 
 Schema Examples
 ~~~~~~~~~~~~~~~
 
-.. program-output:: cat docgen/schemas/script_examples.txt
+.. command-output:: buildtest schema -n script-v1.0.schema.json --example
 
 
 Compiler Schema
@@ -93,12 +94,12 @@ This schema is used for compiling a single source code. For more details see :re
 Schema Content
 ~~~~~~~~~~~~~~~~
 
-.. program-output:: cat docgen/schemas/compiler_json.txt
+.. command-output:: buildtest schema -n compiler-v1.0.schema.json --json
 
 Schema Examples
 ~~~~~~~~~~~~~~~~
 
-.. program-output:: cat docgen/schemas/compiler_examples.txt
+.. command-output:: buildtest schema -n compiler-v1.0.schema.json --example
 
 Spack Schema
 -------------
@@ -110,9 +111,9 @@ see :ref:`spack_schema`.
 Schema Content
 ~~~~~~~~~~~~~~~
 
-.. program-output:: cat docgen/schemas/spack_json.txt
+.. command-output:: buildtest schema -n spack-v1.0.schema.json --json
 
 Schema Examples
 ~~~~~~~~~~~~~~~
 
-.. program-output:: cat docgen/schemas/spack_examples.txt
+.. command-output:: buildtest schema -n spack-v1.0.schema.json --json
