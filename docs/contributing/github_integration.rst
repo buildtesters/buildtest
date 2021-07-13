@@ -1,11 +1,10 @@
 GitHub Integrations
 ====================
 
-buildtest has several github integration, including automated CI checks during PR that maintainers will check
-during the code review. You should check results from the `github actions <https://github.com/buildtesters/buildtest/actions>`_
-that are also typically linked as part of the pull request ci checks. You should make sure code is
-formatted via black as we have automated checks for python formatting. If you have not
-setup the black hook check out :ref:`black_hook`
+buildtest has several CI checks that are run when you create a Pull Request, it is your responsibility to review
+the CI checks and make sure all checks are passing. Each pull request will show the CI checks, you can see the
+`github actions <https://github.com/buildtesters/buildtest/actions>`_ that are also typically linked as part of the
+pull request.
 
 Coverage
 ---------
