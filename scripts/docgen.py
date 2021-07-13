@@ -36,15 +36,7 @@ def buildspecs_page():
 
     cmd_dict = {
         "regex_executor_script.txt": "buildtest build -b tutorials/executor_regex_script.yml",
-        "runtime_status.txt": "buildtest build -b tutorials/runtime_status_test.yml",
-        "runtime_status_report.txt": "buildtest report --filter buildspec=tutorials/runtime_status_test.yml --format name,id,state,runtime --latest",
-        "vars.txt": "buildtest build -b tutorials/vars.yml",
-        "shebang.txt": "buildtest build -b tutorials/shebang.yml",
-        "pass_returncode.txt": "buildtest build -b tutorials/pass_returncode.yml",
-        "skip_tests.txt": "buildtest build -b tutorials/skip_tests.yml",
-        "root_user.txt": "buildtest build -b tutorials/root_user.yml",
         "run_only_platform.txt": "buildtest build -b tutorials/run_only_platform.yml",
-        "bmgroups.txt": "buildtest build -b general_tests/sched/lsf/bmgroups.yml",
         "run_only_distro.txt": "buildtest build -b tutorials/run_only_distro.yml",
     }
 
