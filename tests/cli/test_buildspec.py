@@ -1,4 +1,5 @@
 import os
+import tempfile
 
 import pytest
 from buildtest.cli.buildspec import BuildspecCache, buildspec_validate
@@ -99,9 +100,48 @@ def test_buildspec_find_filter():
     cache = BuildspecCache(filterfields={"tags": "fail"}, configuration=configuration)
     cache.print_buildspecs()
 
+    # testing buildtest buildspec find --filter buildspec=$BUILDTEST_ROOT/tutorials/pass_returncode.yml
+    cache = BuildspecCache(
+        filterfields={
+            "buildspec": os.path.join(
+                BUILDTEST_ROOT, "tutorials", "pass_returncode.yml"
+            )
+        },
+        configuration=configuration,
+    )
+    cache.print_buildspecs()
+
     # testing buildtest buildspec find --filter type=script,executor=generic.local.sh,tags=fail
     cache = BuildspecCache(
         filterfields={"type": "script", "executor": "generic.local.sh", "tags": "fail"},
+        configuration=configuration,
+    )
+    cache.print_buildspecs()
+
+    with pytest.raises(BuildTestError):
+        tf = tempfile.NamedTemporaryFile()
+        # testing for valid filepath for buildspec file but file doesn't exist in cache
+        BuildspecCache(filterfields={"buildspec": tf.name}, configuration=configuration)
+
+    with pytest.raises(BuildTestError):
+        # create temporary file and close file which will delete the file to create invalid filepath
+        tf = tempfile.NamedTemporaryFile(delete=True)
+        tf.close()
+        # testing on invalid file path for buildspec. This should raise an exception
+        BuildspecCache(filterfields={"buildspec": tf.name}, configuration=configuration)
+
+    with pytest.raises(BuildTestError):
+        tf = tempfile.TemporaryDirectory()
+        # if we specify a directory path for buildspec filter this will raise an exception.
+        BuildspecCache(filterfields={"buildspec": tf.name}, configuration=configuration)
+
+    # testing buildtest buildspec find --filter tags=fail
+    cache = BuildspecCache(
+        filterfields={
+            "buildspec": os.path.join(
+                BUILDTEST_ROOT, "tutorials", "pass_returncode.yml"
+            )
+        },
         configuration=configuration,
     )
     cache.print_buildspecs()
@@ -117,9 +157,10 @@ def test_buildspec_find_filter():
 @pytest.mark.cli
 def test_buildspec_find_format():
 
-    # testing buildtest buildspec find --format name,type,executor,description,file
+    # testing buildtest buildspec find --format name,type,executor,description,buildspec
     cache = BuildspecCache(
-        formatfields="name,type,executor,description,file", configuration=configuration
+        formatfields="name,type,executor,description,buildspec",
+        configuration=configuration,
     )
     cache.print_buildspecs()
 

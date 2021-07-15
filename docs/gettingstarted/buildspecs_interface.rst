@@ -82,6 +82,17 @@ we can query all buildspecs with ``tags=tutorials``, ``executor=generic.local.sh
 
 .. command-output:: buildtest buildspec find --filter tags=tutorials,executor=generic.local.sh,type=script
 
+We can filter output of buildspec cache by buildspec using ``--filter buildspec=<path>`` which
+expects a path to buildspec file.  The buildspec must be in the cache and file path must exist in order to
+fetch the result. The path can be absolute or relative path.
+
+In this next example, we will filter cache by file `tutorials/pass_returncode.yml` and use ``--format name,buildspec``
+to format columns. The ``--format buildspec`` will show full path to buildspec and ``name`` refers to name of test.
+For more details on **--format** see :ref:`format_buildspec`.
+
+.. command-output:: buildtest buildspec find --filter buildspec=tutorials/pass_returncode.yml --format name,buildspec
+
+.. _format_buildspec:
 
 Format buildspec cache
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -99,7 +110,7 @@ In the next example, we utilize ``--format`` field with ``--filter`` option to s
 how format fields affect table columns. buildtest will display the table in order of
 format fields specified in command line.
 
-.. command-output:: buildtest buildspec find --format name,description,file --filter tags=tutorials,executor=generic.local.sh
+.. command-output:: buildtest buildspec find --format name,description,buildspec --filter tags=tutorials,executor=generic.local.sh
 
 buildtest makes use of python library named `tabulate <https://pypi.org/project/tabulate/>`_
 to generate these tables which are found in commands line like ``buildtest buildspec find``
