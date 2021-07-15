@@ -5,8 +5,6 @@ import uuid
 import pytest
 from buildtest.cli.inspect import inspect_cmd
 from buildtest.cli.report import Report
-from buildtest.defaults import BUILD_REPORT
-from buildtest.utils.file import load_json
 
 
 def test_buildtest_inspect_list():
