@@ -31,9 +31,9 @@ logger = logging.getLogger(__name__)
 class BuildspecCache:
 
     table = {}
-    filter_fields = ["type", "executor", "tags"]
+    filter_fields = ["type", "executor", "tags", "buildspec"]
     default_format_fields = ["name", "type", "executor", "tags", "description"]
-    format_fields = default_format_fields + ["file"]
+    format_fields = default_format_fields + ["buildspec"]
 
     def __init__(
         self,
@@ -429,7 +429,22 @@ class BuildspecCache:
         a table of tests that will be printed using ``print_buildspecs`` method.
         """
 
-        for buildspecfile in self.cache["buildspecs"].keys():
+        # by default we process all buildspecs
+        filtered_buildspecs = self.cache["buildspecs"].keys()
+
+        # handle logic for filtering tests by buildspec file.
+        if self.filter:
+            if self.filter.get("buildspec"):
+                buildspec = resolve_path(self.filter["buildspec"])
+                if not buildspec:
+                    raise BuildTestError(
+                        f"Invalid file for filtered buildspec: {self.filter['buildspec']}"
+                    )
+
+                filtered_buildspecs = [buildspec]
+
+        for buildspecfile in filtered_buildspecs:
+
             for test in self.cache["buildspecs"][buildspecfile].keys():
 
                 test_recipe = self.cache["buildspecs"][buildspecfile][test]
@@ -449,7 +464,7 @@ class BuildspecCache:
                         if field == "type":
                             self.table[field].append(schema_type)
 
-                        elif field == "file":
+                        elif field == "buildspec":
                             self.table[field].append(buildspecfile)
                         elif field == "name":
                             self.table[field].append(test)
@@ -644,6 +659,7 @@ class BuildspecCache:
         """
 
         filter_field_table = [
+            ["buildspec", "Filter tests by buildspec", "FILE"],
             ["executor", "Filter by executor name", "STRING"],
             ["tags", "Filter by tag name ", "STRING"],
             ["type", "Filter by schema type ", "STRING"],
@@ -688,12 +704,12 @@ class BuildspecCache:
         """
         headers = ["Field", "Description"]
         format_fields = [
-            ["description", "Format by description"],
-            ["executor", "Format by executor type"],
-            ["file", "Format by file"],
-            ["name", "Format by test name"],
-            ["tags", "Format by tag name "],
-            ["type", "Format by schema type"],
+            ["buildspec", "Display name of buildspec file"],
+            ["description", "Show description of test"],
+            ["executor", "Display 'executor' property in test"],
+            ["name", "Display name of test"],
+            ["tags", "Display 'tag' property in test "],
+            ["type", "Display 'type' property in test"],
         ]
 
         if os.getenv("BUILDTEST_COLOR") != "True":
