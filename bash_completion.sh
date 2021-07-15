@@ -105,7 +105,7 @@ _buildtest ()
       esac
       ;;
     inspect)
-      local cmds="-h --help --report -r name id list"
+      local cmds="-h --help --report -r name id list query"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
@@ -118,6 +118,13 @@ _buildtest ()
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         name)
           COMPREPLY=( $( compgen -W "$(_test_name)" -- $cur ) );;
+        query)
+          COMPREPLY=( $( compgen -W "$(_test_name)" -- $cur ) )
+          if [[ $cur == -* ]] ; then
+            local opts="-h --help -t --testpath -o --output -e --error -b --buildscript -d --display"
+            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          fi
+          ;;
       esac
       ;;
 

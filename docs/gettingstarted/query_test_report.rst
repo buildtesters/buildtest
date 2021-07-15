@@ -203,8 +203,8 @@ buildtest will retrieve the first and last record of every test.
 
 .. _inspect_test:
 
-Inspect Tests Records
-----------------------
+Inspect Tests Records via ``buildtest inspect``
+-------------------------------------------------
 
 In previous examples we saw how we can retrieve test records using  ``buildtest report`` which
 is printed in table format. We have limited the output to a limited fields however, if you want to analyze a particular,
@@ -219,9 +219,10 @@ will be used for querying tests by name or id.
 .. command-output:: buildtest inspect list
    :ellipsis: 20
 
+.. _inspect_by_name:
 
-Inspecting Test by Name
-~~~~~~~~~~~~~~~~~~~~~~~~
+Inspecting Test by Name via ``buildtest inspect name``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``buildtest inspect name`` expects a list of positional argument that correspond to name
 of test you want to query and buildtest will fetch all records for each named test. Let's see an example to
@@ -237,8 +238,10 @@ In this next example, we will retrieve test records for ``bash_shell`` and  ``py
 
 .. command-output:: buildtest inspect name bash_shell python_hello
 
-Inspecting Test by ID
-~~~~~~~~~~~~~~~~~~~~~~
+.. _inspect_by_id:
+
+Inspecting Test by ID via ``buildtest inspect id``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``buildtest inspect id`` works similar to ``buildtest inspect name`` except that it
 operates on test id. This can be useful if you want to extract a particular test record and not
@@ -363,6 +366,49 @@ message as follows.
     Unable to find any test records based on id: ['lad'], please run 'buildtest inspect list' to see list of ids.
 
 You will see similar message if you specify an invalid test name using ``buildtest inspect name`` command.
+
+.. _inspect_query:
+
+Query Test Records via ``buildtest inspect query``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``buildtest inspect query`` command can allow you to retrieve query certain fields from
+each test records that can be useful when you are inspecting a test. Currently, we can
+fetch content of output file, error file, testpath, and build script. Shown below are the list
+of available options for ``buildtest inspect query``.
+
+.. command-output:: buildtest inspect query --help
+
+The ``buildtest inspect query`` command expects positional arguments that are name of tests
+which you can get by running :ref:`"buildtest inspect name" <inspect_by_name>`.
+
+For instance, let's query the test ``circle_area`` by running the following:
+
+.. command-output:: buildtest inspect query circle_area
+
+buildtest will display metadata for each test. By default, buildtest will report the latest record
+for each test that is specified as a positional argument. If you want to see all runs for a particular test
+you can use ``-d all`` or ``--display all`` which will report all records. By default, it will use ``-d last`` which
+reports the last record. You can retrieve the first record by running ``-d first`` which is the oldest record.
+
+
+Now as you run test, you want to inspect the output file, this can be done by passing ``-o`` or ``--output``. Let's take
+what we learned and see the following. In this command, we retrieve all records for ``circle_area`` and
+print content of output file
+
+.. command-output:: buildtest inspect query -d all -o circle_area
+
+If you want to see content of error file use the ``-e`` or ``--error`` flag. It would be useful to inspect
+content of build script and generated test, which can be retrieved using ``--testpath`` and ``--buildscript``. Let's
+see query the first record of ``circle_area`` and report all of the content fields
+
+.. command-output:: buildtest inspect query -d first -o -e -t -b circle_area
+
+We can query multiple tests using ``buildtest inspect query`` since each test is a positional argument. Any
+options specified to `buildtest inspect query` will be applied to all test. For instance, let's fetch the output the
+of test names ``root_disk_usage`` and ``python_hello``
+
+.. command-output:: buildtest inspect query -o  root_disk_usage python_hello
 
 Using Alternate Report File
 -----------------------------

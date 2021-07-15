@@ -3,9 +3,8 @@ import string
 import uuid
 
 import pytest
-from buildtest.cli.inspect import get_all_ids, inspect_cmd
-from buildtest.defaults import BUILD_REPORT
-from buildtest.utils.file import load_json
+from buildtest.cli.inspect import inspect_cmd
+from buildtest.cli.report import Report
 
 
 def test_buildtest_inspect_list():
@@ -31,8 +30,9 @@ def test_buildtest_inspect_list():
 
 def test_buildtest_inspect_name():
 
-    report = load_json(BUILD_REPORT)
-    test_ids = get_all_ids(report)
+    report = Report()
+
+    test_ids = report.get_ids()
     # print(test_ids)
 
     # get first element's value from dict. dict in format  { <ID> : <name>, <ID>: <name> }
@@ -60,9 +60,9 @@ def test_buildtest_inspect_name():
 
 
 def test_buildtest_inspect_id():
-    report = load_json(BUILD_REPORT)
-    test_ids = get_all_ids(report)
+    report = Report()
 
+    test_ids = report.get_ids()
     identifier = list(test_ids.keys())[0]
 
     class args:
@@ -82,5 +82,68 @@ def test_buildtest_inspect_id():
 
     print(f"Querying test identifier: {args.id}")
     # generate a random unique id which is not a valid test id when searching for tests by id.
+    with pytest.raises(SystemExit):
+        inspect_cmd(args)
+
+
+def test_buildtest_query():
+
+    report = Report()
+    names = report.get_names()
+
+    class args:
+        subcommands = "config"
+        inspect = "query"
+        name = names
+        report = None
+        output = True
+        error = True
+        testpath = True
+        buildscript = True
+        display = "last"
+
+    # check buildtest inspect query --output --error --testpath --buildscript -d last <name1> <name2> ...
+    inspect_cmd(args)
+
+    class args:
+        subcommands = "config"
+        inspect = "query"
+        name = [names[0]]
+        report = None
+        output = True
+        error = False
+        testpath = False
+        buildscript = False
+        display = "all"
+
+    # check buildtest inspect query --output -d all <name>
+    inspect_cmd(args)
+
+    class args:
+        subcommands = "config"
+        inspect = "query"
+        name = [names[0]]
+        report = None
+        output = True
+        error = False
+        testpath = False
+        buildscript = False
+        display = "first"
+
+    # check buildtest inspect query --output -d first <name>
+    inspect_cmd(args)
+
+    class args:
+        subcommands = "config"
+        inspect = "query"
+        name = ["".join(random.choice(string.ascii_letters) for i in range(10))]
+        report = None
+        output = True
+        error = False
+        testpath = False
+        buildscript = False
+        display = "first"
+
+    # check invalid test name when querying result which will result in exception SystemExit
     with pytest.raises(SystemExit):
         inspect_cmd(args)

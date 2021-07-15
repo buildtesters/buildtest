@@ -5,8 +5,9 @@ import json
 import os
 import sys
 
+from buildtest.cli.report import Report
 from buildtest.defaults import BUILD_REPORT
-from buildtest.utils.file import load_json, resolve_path
+from buildtest.utils.file import read_file, resolve_path
 from tabulate import tabulate
 from termcolor import colored
 
@@ -19,17 +20,14 @@ def inspect_cmd(args):
 
         report_file = resolve_path(args.report)
 
-    report = load_json(report_file)
-
-    assert isinstance(report, dict)
-    test_ids = get_all_ids(report)
+    report = Report(report_file)
 
     # if not args.parse:
     #    print(f"Reading Report File: {report_file} \n")
 
     # implements command 'buildtest inspect list'
     if args.inspect == "list":
-        inspect_list(test_ids, parse=args.parse)
+        inspect_list(report, parse=args.parse)
         return
 
     # implements command 'buildtest inspect name'
@@ -37,35 +35,19 @@ def inspect_cmd(args):
         inspect_by_name(report, args.name)
         return
 
+    if args.inspect == "query":
+        inspect_query(report, args)
+        return
+
     # implements command 'buildtest inspect id'
     if args.inspect == "id":
-        inspect_by_id(test_ids, report, args)
+        inspect_by_id(report, args)
 
 
-def get_all_ids(report):
-    """Return all unique test ids from report cache
-
-    :param report: loaded report file in JSON format
-    :type report: dict
-    :return: a dictionary returning a list of unique test IDs
-    :rtype: dict
-    """
-
-    test_id = {}
-
-    for buildspec in report.keys():
-        # loop over all tests in buildspecs
-        for name in report[buildspec].keys():
-            # loop over each test entry for given test
-            for test in report[buildspec][name]:
-                # test_id.append(test["full_id"])
-                test_id[test["full_id"]] = name
-
-    return test_id
-
-
-def inspect_list(test_ids, parse=None):
+def inspect_list(report, parse=None):
     """Implements method ``buildtest inspect list``"""
+
+    test_ids = report.get_ids()
 
     table = {"name": [], "id": []}
     if parse:
@@ -90,32 +72,147 @@ def inspect_list(test_ids, parse=None):
     print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
 
+def inspect_query(report, args):
+    """Entry point for ``buildtest inspect query`` command."""
+
+    records = {}
+
+    raw_content = report.get()
+    for buildspec in raw_content.keys():
+        for name in args.name:
+            if raw_content[buildspec].get(name):
+                records[name] = raw_content[buildspec][name]
+
+    # if no records based on input name, we raise an error
+    if not records:
+        sys.exit(
+            f"Unable to find any records based on {args.name}. According to report file: {report.reportfile()} we found the following test names: {report.get_names()}."
+        )
+    for name, test_record in records.items():
+
+        # the default is to print the last record (latest record)
+        tests = [test_record[-1]]
+
+        # print the first record if --display first is set
+        if args.display == "first":
+            tests = [test_record[0]]
+        elif args.display == "all":
+            tests = test_record
+
+        for test in tests:
+            print(
+                "{:_<30}".format(""),
+                name,
+                f"(ID: {test['full_id']})",
+                "{:_<30}".format(""),
+            )
+            print("description: ", test["description"])
+            print("state: ", test["state"])
+            print("returncode: ", test["returncode"])
+            print("runtime: ", test["runtime"])
+            print("starttime: ", test["starttime"])
+            print("endtime: ", test["endtime"])
+
+            # print content of output file when 'buildtest inspect display --output' is set
+            if args.output:
+
+                content = read_file(test["outfile"])
+                print(
+                    "{:*<25}".format(""),
+                    f"Start of Output File: {test['outfile']}",
+                    "{:*<25}".format(""),
+                )
+                print(content)
+                print(
+                    "{:*<25}".format(""),
+                    f"End of Output File: {test['outfile']}",
+                    "{:*<25}".format(""),
+                )
+                # print("{:^<40}".format(''), "End of Output File","{:^<40}".format(''))
+                print()
+
+            # print content of error file when 'buildtest inspect display --error' is set
+            if args.error:
+                content = read_file(test["errfile"])
+                print(
+                    "{:*<25}".format(""),
+                    "Start of Error File: ",
+                    test["errfile"],
+                    "{:*<25}".format(""),
+                )
+                print(content)
+                print(
+                    "{:*<25}".format(""),
+                    "End of Error File: ",
+                    test["errfile"],
+                    "{:*<25}".format(""),
+                )
+
+                print()
+
+            # print content of testpath when 'buildtest inspect display --testpath' is set
+            if args.testpath:
+                content = read_file(test["testpath"])
+                print(
+                    "{:*<25}".format(""),
+                    "Start of Test Path: ",
+                    test["testpath"],
+                    "{:*<25}".format(""),
+                )
+                print(content)
+                print(
+                    "{:*<25}".format(""),
+                    "End of Test Path: ",
+                    test["testpath"],
+                    "{:*<25}".format(""),
+                )
+                print()
+
+            # print content of build script when 'buildtest inspect display --buildscript' is set
+            if args.buildscript:
+                content = read_file(test["build_script"])
+                print(
+                    "{:*<25}".format(""),
+                    "Start of Build Script: ",
+                    test["build_script"],
+                    "{:*<25}".format(""),
+                )
+                print(content)
+                print(
+                    "{:*<25}".format(""),
+                    "End of Build Script: ",
+                    test["build_script"],
+                    "{:*<25}".format(""),
+                )
+                print()
+
+
 def inspect_by_name(report, names):
     """Implements command ``buildtest inspect name`` which will print all test records
     by given name in JSON format.
     """
 
     records = {}
-
-    for buildspec in report.keys():
+    raw_content = report.get()
+    for buildspec in raw_content.keys():
         for name in names:
-            if report[buildspec].get(name):
-                records[name] = report[buildspec][name]
+            if raw_content[buildspec].get(name):
+                records[name] = raw_content[buildspec][name]
 
     if not records:
         sys.exit(
-            f"Unable to find any records based on {names}. Please run 'buildtest inspect list' and see list of test names."
+            f"Unable to find any records based on input name {names}. \n"
+            f"Please select one of the following test names: {report.get_names()} \n"
         )
-
     print(json.dumps(records, indent=2))
 
 
-def inspect_by_id(test_ids, report, args):
+def inspect_by_id(report, args):
     discovered_ids = []
     records = {}
 
     # discover all tests based on all unique ids from report cache
-    for identifier in test_ids.keys():
+    for identifier in report.get_ids():
         for input_id in args.id:
             if identifier.startswith(input_id):
                 discovered_ids.append(identifier)
@@ -126,9 +223,11 @@ def inspect_by_id(test_ids, report, args):
             f"Unable to find any test records based on id: {args.id}, please run 'buildtest inspect list' to see list of ids."
         )
 
-    for buildspec in report.keys():
-        for test in report[buildspec].keys():
-            for test_record in report[buildspec][test]:
+    report_content = report.get()
+
+    for buildspec in report_content.keys():
+        for test in report_content[buildspec].keys():
+            for test_record in report_content[buildspec][test]:
                 for identifier in discovered_ids:
                     if test_record["full_id"] == identifier:
                         records[identifier] = test_record
