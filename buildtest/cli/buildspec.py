@@ -436,9 +436,23 @@ class BuildspecCache:
         if self.filter:
             if self.filter.get("buildspec"):
                 buildspec = resolve_path(self.filter["buildspec"])
+
+                # raise exception if there is an issue resolving path
                 if not buildspec:
                     raise BuildTestError(
                         f"Invalid file for filtered buildspec: {self.filter['buildspec']}"
+                    )
+
+                # if user specified a directory path we raise an exception
+                if is_dir(buildspec):
+                    raise BuildTestError(
+                        f"{buildspec} must be a file not a directory path."
+                    )
+
+                # if user specified buildspec not found in buildspec cache we raise error
+                if not buildspec in filtered_buildspecs:
+                    raise BuildTestError(
+                        f"{buildspec} is not found in buildspec cache. "
                     )
 
                 filtered_buildspecs = [buildspec]
