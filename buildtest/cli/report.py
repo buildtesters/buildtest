@@ -61,13 +61,18 @@ class Report:
     }
 
     def __init__(
-        self, filter_args, format_args, latest, oldest, report_file=BUILD_REPORT
+        self,
+        report_file=BUILD_REPORT,
+        filter_args=None,
+        format_args=None,
+        latest=None,
+        oldest=None,
     ):
         self.latest = latest
         self.oldest = oldest
         self.filter = filter_args
         self.format = format_args
-        self.reportfile = resolve_path(report_file)
+        self._reportfile = resolve_path(report_file)
         self.report = self.load()
         self._check_filter_fields()
         self._check_format_fields()
@@ -75,10 +80,19 @@ class Report:
 
         self.process_report()
 
-    def get_report_file(self):
-        return self.reportfile
+    def reportfile(self):
+        """Return full path to report file"""
+        return self._reportfile
+
+    def get(self):
+        """Return raw content of report file"""
+        return self.report
 
     def _check_filter_fields(self):
+        """This method will validate filter fields ``buildtest report --filter`` by checking if field is valid filter field. If one specifies
+        an invalid filter field, we will raise an exception
+        """
+
         # check if filter arguments (--filter) are valid fields
         if self.filter:
 
@@ -133,18 +147,18 @@ class Report:
         entire report of all tests.
         """
 
-        if not is_file(self.reportfile):
-            sys.exit(f"Unable to fetch report no such file found: {self.reportfile}")
+        if not is_file(self._reportfile):
+            sys.exit(f"Unable to fetch report no such file found: {self._reportfile}")
 
-        report = load_json(self.reportfile)
+        report = load_json(self._reportfile)
 
-        logger.debug(f"Loading report file: {self.reportfile}")
+        logger.debug(f"Loading report file: {self._reportfile}")
 
         # if report is None or issue with how json.load returns content of file we
         # raise error
         if not report:
             sys.exit(
-                f"Fail to process {self.reportfile} please check if file is valid json"
+                f"Fail to process {self._reportfile} please check if file is valid json"
                 f"or remove file"
             )
         return report
@@ -414,6 +428,28 @@ class Report:
                 self.display_table, headers=self.display_table.keys(), tablefmt="grid"
             )
         )
+
+    def get_names(self):
+        """Return a list of test names from report file"""
+        test_names = []
+        for buildspec in self.filtered_buildspecs:
+            # process each test in buildspec file
+            for name in self.report[buildspec].keys():
+                test_names.append(name)
+
+        return test_names
+
+    def get_ids(self):
+        """Return a list of test ids from report file"""
+
+        test_ids = {}
+        for buildspec in self.filtered_buildspecs:
+            # process each test in buildspec file
+            for name in self.report[buildspec].keys():
+                for test in self.report[buildspec][name]:
+                    test_ids[test["full_id"]] = name
+
+        return test_ids
 
 
 def report_cmd(args):

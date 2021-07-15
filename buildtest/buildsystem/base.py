@@ -327,7 +327,9 @@ class BuilderBase(ABC):
         )
         self.testpath = os.path.expandvars(self.testpath)
 
-        self.metadata["testpath"] = self.testpath
+        self.metadata["testpath"] = os.path.join(
+            self.test_root, os.path.basename(self.testpath)
+        )
 
         self.build_script = f"{os.path.join(self.stage_dir, self.name)}_build.sh"
 
@@ -345,12 +347,12 @@ class BuilderBase(ABC):
         use local executors"""
 
         if not self.recipe.get("shell") or self.recipe.get("shell") == "python":
-            return [self.metadata["testpath"]]
+            return [self.testpath]
 
         if not self.shell.opts:
-            return [self.shell.name, self.metadata["testpath"]]
+            return [self.shell.name, self.testpath]
 
-        return [self.shell.name, self.shell.opts, self.metadata["testpath"]]
+        return [self.shell.name, self.shell.opts, self.testpath]
 
     def _default_test_variables(self):
         """Return a list of lines inserted in testscript that define buildtest specific variables
@@ -395,7 +397,7 @@ class BuilderBase(ABC):
         # batch executor
         else:
             launcher = self.buildexecutor.executors[self.executor].launcher_command()
-            lines += [" ".join(launcher) + " " + f"{self.metadata['testpath']}"]
+            lines += [" ".join(launcher) + " " + f"{self.testpath}"]
 
         lines.append("# Get return code")
         lines.append("returncode=$?")
@@ -432,17 +434,17 @@ class BuilderBase(ABC):
 
         lines = "\n".join(lines)
 
-        self.logger.info(f"Opening Test File for Writing: {self.metadata['testpath']}")
+        self.logger.info(f"Opening Test File for Writing: {self.testpath}")
 
-        write_file(self.metadata["testpath"], lines)
+        write_file(self.testpath, lines)
 
         self.metadata["test_content"] = lines
 
-        self._set_execute_perm(self.metadata["testpath"])
+        self._set_execute_perm(self.testpath)
         # copy testpath to run_dir
         shutil.copy2(
-            self.metadata["testpath"],
-            os.path.join(self.test_root, os.path.basename(self.metadata["testpath"])),
+            self.testpath,
+            os.path.join(self.test_root, os.path.basename(self.testpath)),
         )
 
     def _get_scheduler_directives(
