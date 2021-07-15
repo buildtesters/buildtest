@@ -62,7 +62,7 @@ class Report:
 
     def __init__(
         self,
-        report_file=BUILD_REPORT,
+        report_file=None,
         filter_args=None,
         format_args=None,
         latest=None,
@@ -72,7 +72,14 @@ class Report:
         self.oldest = oldest
         self.filter = filter_args
         self.format = format_args
-        self._reportfile = resolve_path(report_file)
+        self.input_report = report_file
+
+        # if no report set we read the default report file
+        if report_file:
+            self._reportfile = resolve_path(report_file)
+        else:
+            self._reportfile = BUILD_REPORT
+
         self.report = self.load()
         self._check_filter_fields()
         self._check_format_fields()
@@ -147,8 +154,13 @@ class Report:
         entire report of all tests.
         """
 
+        if not self._reportfile:
+            sys.exit(f"Unable to resolve path to report file: {self.input_report}")
+
         if not is_file(self._reportfile):
-            sys.exit(f"Unable to fetch report no such file found: {self._reportfile}")
+            sys.exit(
+                f"Unable to find report please check if {self._reportfile} is a file"
+            )
 
         report = load_json(self._reportfile)
 
@@ -472,7 +484,13 @@ def report_cmd(args):
         print(content)
         return
 
-    results = Report(args.filter, args.format, args.latest, args.oldest, args.report)
+    results = Report(
+        filter_args=args.filter,
+        format_args=args.format,
+        latest=args.latest,
+        oldest=args.oldest,
+        report_file=args.report,
+    )
     if args.helpfilter:
         results.print_filter_fields()
         return
@@ -481,5 +499,5 @@ def report_cmd(args):
         results.print_format_fields()
         return
 
-    print(f"Reading report file: {results.get_report_file()} \n")
+    print(f"Reading report file: {results.reportfile()} \n")
     results.print_display_table()
