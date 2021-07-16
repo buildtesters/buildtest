@@ -74,8 +74,14 @@ def test_func_buildspec_find():
     # buildtest buildspec find --group-by-executors
     cache.print_by_executors()
 
+    # buildtest buildspec find --group-by-executors --terse
+    cache.print_by_executors(terse=True)
+
     # buildtest buildspec find --group-by-tags
     cache.print_by_tags()
+
+    # buildtest buildspec find --group-by-tags --terse
+    cache.print_by_tags(terse=True)
 
     # buildtest buildspec find --maintainers
     cache.print_maintainer()
@@ -85,6 +91,9 @@ def test_func_buildspec_find():
 
     # implements buildtest buildspec find --maintainers-by-buildspecs
     cache.print_maintainers_by_buildspecs()
+
+    # implements buildtest buildspec find --maintainers-by-buildspecs --terse
+    cache.print_maintainers_by_buildspecs(terse=True)
 
     # implements buildtest buildspec find --helpfilter
     cache.print_filter_fields()

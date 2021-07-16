@@ -568,38 +568,52 @@ class BuildspecCache:
 
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
-    def print_by_executors(self):
+    def print_by_executors(self, terse=None):
         """This method prints executors by tests and implements
         ``buildtest buildspec find --group-by-executor`` command
+
+        :param terse: Print output in machine readable format
+        :type terse: bool
         """
 
-        table = {"executor": [], "name": [], "description": []}
+        table = {"executor": [], "name": []}
         headers = table.keys()
 
         for executor_name in self.cache["executor"].keys():
             for test_name, description in self.cache["executor"][executor_name].items():
                 table["executor"].append(executor_name)
                 table["name"].append(test_name)
-                table["description"].append(description)
+
+        if terse:
+            for executor, name in zip(table["executor"], table["name"]):
+                print(f"{executor}|{name}")
+            return
 
         if os.getenv("BUILDTEST_COLOR") == "True":
             headers = [colored(field, "blue", attrs=["bold"]) for field in table.keys()]
 
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
-    def print_by_tags(self):
+    def print_by_tags(self, terse=None):
         """This method prints tags by tests and implements
         ``buildtest buildspec find --group-by-tags`` command
+
+        :param terse: Print output in machine readable format
+        :type terse: bool
         """
 
-        table = {"tags": [], "name": [], "description": []}
+        table = {"tags": [], "name": []}
         headers = table.keys()
 
         for tagname in self.cache["tags"].keys():
             for test_name, description in self.cache["tags"][tagname].items():
                 table["tags"].append(tagname)
                 table["name"].append(test_name)
-                table["description"].append(description)
+
+        if terse:
+            for tags, name in zip(table["tags"], table["name"]):
+                print(f"{tags}|{name}")
+            return
 
         if os.getenv("BUILDTEST_COLOR") == "True":
             headers = [colored(field, "blue", attrs=["bold"]) for field in table.keys()]
@@ -650,9 +664,12 @@ class BuildspecCache:
 
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
-    def print_maintainers_by_buildspecs(self):
+    def print_maintainers_by_buildspecs(self, terse=None):
         """This method prints maintainers breakdown by buildspecs. This method
         implements ``buildtest buildspec find --maintainers-by-buildspecs``
+
+        :param terse: Print output in machine readable format
+        :type terse: bool
         """
 
         table = {"maintainers": [], "buildspec": []}
@@ -660,6 +677,12 @@ class BuildspecCache:
         for maintainer, buildspec in self.cache["maintainers"].items():
             table["maintainers"].append(maintainer)
             table["buildspec"].append(buildspec)
+
+        if terse:
+            for maintainer, buildspecs in zip(table["maintainers"], table["buildspec"]):
+
+                print(f"{maintainer}|{':'.join(buildspecs)}")
+            return
 
         if os.getenv("BUILDTEST_COLOR") == "True":
             headers = [colored(field, "blue", attrs=["bold"]) for field in table.keys()]
@@ -837,12 +860,12 @@ def buildspec_find(args, configuration):
 
     # buildtest buildspec find --group-by-executors
     if args.group_by_executor:
-        cache.print_by_executors()
+        cache.print_by_executors(terse=args.terse)
         return
 
     # buildtest buildspec find --group-by-tags
     if args.group_by_tags:
-        cache.print_by_tags()
+        cache.print_by_tags(terse=args.terse)
         return
 
     # buildtest buildspec find --maintainers
@@ -852,7 +875,7 @@ def buildspec_find(args, configuration):
 
     #  buildtest buildspec find --maintainers-by-buildspecs
     if args.maintainers_by_buildspecs:
-        cache.print_maintainers_by_buildspecs()
+        cache.print_maintainers_by_buildspecs(terse=args.terse)
         return
 
     # buildtest buildspec find --helpfilter
