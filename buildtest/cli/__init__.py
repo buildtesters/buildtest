@@ -124,7 +124,14 @@ def history_menu(subparsers):
         metavar="", description="Query build history file", dest="history"
     )
 
-    history_subparser.add_parser("list", help="List a summary of all builds")
+    list = history_subparser.add_parser("list", help="List a summary of all builds")
+    list.add_argument(
+        "-t",
+        "--terse",
+        action="store_true",
+        help="Print output in machine readable format",
+    )
+
     query = history_subparser.add_parser(
         "query", help="Query information for a particular build"
     )

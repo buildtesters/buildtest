@@ -14,13 +14,13 @@ def build_history(args):
     """This is the entry point for command ``buildtest build history`` command which reports"""
 
     if args.history == "list":
-        list_builds()
+        list_builds(terse=args.terse)
 
     if args.history == "query":
         query_builds(build_id=args.id, log_option=args.log)
 
 
-def list_builds():
+def list_builds(terse=None):
 
     history_files = walk_tree(BUILD_HISTORY_DIR, ".json")
     logger.debug(f"Searching for all '.json' files in directory: {BUILD_HISTORY_DIR}")
@@ -57,6 +57,38 @@ def list_builds():
         table["total_tests"].append(content["test_summary"]["total"])
         table["pass_rate"].append(content["test_summary"]["pass_rate"])
         table["fail_rate"].append(content["test_summary"]["fail_rate"])
+
+    if terse:
+
+        for (
+            id,
+            hostname,
+            user,
+            system,
+            date,
+            pass_test,
+            fail_tests,
+            total_tests,
+            pass_rate,
+            fail_rate,
+            command,
+        ) in zip(
+            table["id"],
+            table["hostname"],
+            table["user"],
+            table["system"],
+            table["date"],
+            table["pass_tests"],
+            table["fail_tests"],
+            table["total_tests"],
+            table["pass_rate"],
+            table["fail_rate"],
+            table["command"],
+        ):
+            print(
+                f"{id}|{hostname}|{user}|{date}|{pass_test}|{fail_tests}|{total_tests}|{pass_rate}|{fail_rate}|{command}"
+            )
+        return
 
     print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
