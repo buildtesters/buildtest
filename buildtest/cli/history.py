@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import re
 import sys
 
 from buildtest.defaults import BUILD_HISTORY_DIR
@@ -20,6 +21,14 @@ def build_history(args):
         query_builds(build_id=args.id, log_option=args.log)
 
 
+def sorted_alphanumeric(data):
+    """This method is used for alpha numeric sorting of files."""
+
+    convert = lambda text: int(text) if text.isdigit() else text.lower()
+    alphanum_key = lambda key: [convert(c) for c in re.split("([0-9]+)", key)]
+    return sorted(data, key=alphanum_key)
+
+
 def list_builds(terse=None):
 
     history_files = walk_tree(BUILD_HISTORY_DIR, ".json")
@@ -27,6 +36,9 @@ def list_builds(terse=None):
 
     # only filter filters that are 'build.json'
     history_files = [f for f in history_files if os.path.basename(f) == "build.json"]
+
+    # sort all files alpha-numerically
+    history_files = sorted_alphanumeric(history_files)
 
     logger.info(f"We have detected {len(history_files)} history files")
     for file in history_files:
@@ -45,6 +57,7 @@ def list_builds(terse=None):
         "fail_rate": [],
         "command": [],
     }
+
     for fname in history_files:
         content = load_json(fname)
 
@@ -61,7 +74,7 @@ def list_builds(terse=None):
     if terse:
 
         for (
-            id,
+            build_id,
             hostname,
             user,
             system,
@@ -86,7 +99,7 @@ def list_builds(terse=None):
             table["command"],
         ):
             print(
-                f"{id}|{hostname}|{user}|{date}|{pass_test}|{fail_tests}|{total_tests}|{pass_rate}|{fail_rate}|{command}"
+                f"{build_id}|{hostname}|{user}|{date}|{pass_test}|{fail_tests}|{total_tests}|{pass_rate}|{fail_rate}|{command}"
             )
         return
 
