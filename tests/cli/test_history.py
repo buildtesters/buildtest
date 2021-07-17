@@ -5,6 +5,14 @@ from buildtest.cli.history import build_history, query_builds
 def test_build_history():
     class args:
         history = "list"
+        terse = False
+
+    # buildtest build history
+    build_history(args)
+
+    class args:
+        history = "list"
+        terse = True
 
     # buildtest build history
     build_history(args)

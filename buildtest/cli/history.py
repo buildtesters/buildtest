@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import re
 import sys
 
 from buildtest.defaults import BUILD_HISTORY_DIR
@@ -14,19 +15,30 @@ def build_history(args):
     """This is the entry point for command ``buildtest build history`` command which reports"""
 
     if args.history == "list":
-        list_builds()
+        list_builds(terse=args.terse)
 
     if args.history == "query":
         query_builds(build_id=args.id, log_option=args.log)
 
 
-def list_builds():
+def sorted_alphanumeric(data):
+    """This method is used for alpha numeric sorting of files."""
+
+    convert = lambda text: int(text) if text.isdigit() else text.lower()
+    alphanum_key = lambda key: [convert(c) for c in re.split("([0-9]+)", key)]
+    return sorted(data, key=alphanum_key)
+
+
+def list_builds(terse=None):
 
     history_files = walk_tree(BUILD_HISTORY_DIR, ".json")
     logger.debug(f"Searching for all '.json' files in directory: {BUILD_HISTORY_DIR}")
 
     # only filter filters that are 'build.json'
     history_files = [f for f in history_files if os.path.basename(f) == "build.json"]
+
+    # sort all files alpha-numerically
+    history_files = sorted_alphanumeric(history_files)
 
     logger.info(f"We have detected {len(history_files)} history files")
     for file in history_files:
@@ -45,6 +57,7 @@ def list_builds():
         "fail_rate": [],
         "command": [],
     }
+
     for fname in history_files:
         content = load_json(fname)
 
@@ -57,6 +70,38 @@ def list_builds():
         table["total_tests"].append(content["test_summary"]["total"])
         table["pass_rate"].append(content["test_summary"]["pass_rate"])
         table["fail_rate"].append(content["test_summary"]["fail_rate"])
+
+    if terse:
+
+        for (
+            build_id,
+            hostname,
+            user,
+            system,
+            date,
+            pass_test,
+            fail_tests,
+            total_tests,
+            pass_rate,
+            fail_rate,
+            command,
+        ) in zip(
+            table["id"],
+            table["hostname"],
+            table["user"],
+            table["system"],
+            table["date"],
+            table["pass_tests"],
+            table["fail_tests"],
+            table["total_tests"],
+            table["pass_rate"],
+            table["fail_rate"],
+            table["command"],
+        ):
+            print(
+                f"{build_id}|{hostname}|{user}|{date}|{pass_test}|{fail_tests}|{total_tests}|{pass_rate}|{fail_rate}|{command}"
+            )
+        return
 
     print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 

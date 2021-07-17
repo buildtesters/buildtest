@@ -26,6 +26,10 @@ _test_name ()
   buildtest inspect list -p | cut -d '|' -f 2 | uniq | sort
 }
 
+_history_id ()
+{
+  buildtest history list -t | cut -d '|' -f 1 | sort -g
+}
 #  entry point to buildtest bash completion function
 _buildtest ()
 {
@@ -156,8 +160,21 @@ _buildtest ()
 
     history)
       local cmds="-h --help list query"
-      COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) );;
+      COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
+      case ${COMP_WORDS[2]} in
+      list)
+        local opts="-h --help -t --terse"
+        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
+      query)
+        local opts="-h --help -l --log"
+        COMPREPLY=( $( compgen -W "$(_history_id)" -- $cur ) )
+        if [[ $cur == -* ]]; then
+          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+        fi
+        ;;
+      esac
+      ;;
     cdash)
       local cmds="-h --help view upload"
 
