@@ -200,6 +200,16 @@ buildtest will retrieve the first and last record of every test.
     | ulimit_filelock_unlimited    | 56345a43 | 2021/02/11 18:13:18 |
     +------------------------------+----------+---------------------+
 
+Terse Output
+-------------
+
+If you would like to parse the result of ``buildtest report``, you can use the ``--terse`` or ``-t`` option which
+will print the report in machine readable format that shows the name of each column followed by each entry. Each entry
+is delimited by PIPE symbol (``|``). The ``--terse`` option works with ``--format`` and ``--filter`` option. In this
+next example, we report all FAIL tests in terse output.
+
+.. command-output:: buildtest report --filter state=FAIL --format=name,id,state -t
+
 
 .. _inspect_test:
 
