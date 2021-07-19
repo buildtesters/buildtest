@@ -134,6 +134,12 @@ def history_menu(subparsers):
         help="Print output in machine readable format",
     )
 
+    list_parser.add_argument(
+        "-n",
+        "--no-header",
+        action="store_true",
+        help="Do not print header columns in terse output (--terse)",
+    )
     query = history_subparser.add_parser(
         "query", help="Query information for a particular build"
     )
