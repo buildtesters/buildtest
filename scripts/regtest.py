@@ -4,8 +4,7 @@ import sys
 
 import coverage
 import pytest
-
-from buildtest.defaults import BUILDTEST_USER_HOME
+from buildtest.defaults import BUILDTEST_USER_HOME, VAR_DIR
 from buildtest.utils.file import is_dir
 
 if not os.getenv("BUILDTEST_ROOT"):
@@ -16,6 +15,8 @@ html_dir = os.path.join(os.getenv("BUILDTEST_ROOT"), "htmlcov")
 if is_dir(BUILDTEST_USER_HOME):
     shutil.rmtree(BUILDTEST_USER_HOME)
 
+if is_dir(VAR_DIR):
+    shutil.rmtree(VAR_DIR)
 
 cov = coverage.Coverage()
 cov.erase()
