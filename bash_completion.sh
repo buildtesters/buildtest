@@ -28,7 +28,7 @@ _test_name ()
 
 _history_id ()
 {
-  buildtest history list -t | cut -d '|' -f 1 | sort -g
+  buildtest history list -t -n | cut -d '|' -f 1 | sort -g
 }
 #  entry point to buildtest bash completion function
 _buildtest ()
@@ -83,7 +83,7 @@ _buildtest ()
       ;;
 
     report)
-      local opts="-h --help --helpformat --helpfilter --format --filter --latest --oldest -r --report clear"
+      local opts="-h --help --helpformat --helpfilter --format --filter --latest --oldest -r --report clear -t --terse"
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) );;
 
     config)
@@ -164,7 +164,7 @@ _buildtest ()
 
       case ${COMP_WORDS[2]} in
       list)
-        local opts="-h --help -t --terse"
+        local opts="-h --help -t --terse -n --no-header"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
       query)
         local opts="-h --help -l --log"
