@@ -19,11 +19,11 @@ _avail_executors ()
 }
 _test_ids ()
 {
-  buildtest inspect list -p | cut -d '|' -f 1
+  buildtest inspect list -t -n | cut -d '|' -f 1
 }
 _test_name ()
 {
-  buildtest inspect list -p | cut -d '|' -f 2 | uniq | sort
+  buildtest inspect list -t -n | cut -d '|' -f 2 | uniq | sort
 }
 
 _history_id ()
@@ -118,7 +118,7 @@ _buildtest ()
         id)
           COMPREPLY=( $( compgen -W "$(_test_ids)" -- $cur ) );;
         list)
-          local opts="-h --help -p --parse"
+          local opts="-h --help -t --terse"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         name)
           COMPREPLY=( $( compgen -W "$(_test_name)" -- $cur ) );;

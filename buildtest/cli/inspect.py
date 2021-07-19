@@ -27,7 +27,7 @@ def inspect_cmd(args):
 
     # implements command 'buildtest inspect list'
     if args.inspect == "list":
-        inspect_list(report, parse=args.parse)
+        inspect_list(report, terse=args.terse, header=args.no_header)
         return
 
     # implements command 'buildtest inspect name'
@@ -44,16 +44,23 @@ def inspect_cmd(args):
         inspect_by_id(report, args)
 
 
-def inspect_list(report, parse=None):
+def inspect_list(report, terse=None, header=None):
     """Implements method ``buildtest inspect list``"""
 
     test_ids = report.get_ids()
 
     table = {"name": [], "id": []}
-    if parse:
+
+    # print output in terse format
+    if terse:
+        # print column headers if --no-header is not specified
+        if not header:
+            print("|".join(table.keys()))
+
         for uid, name in test_ids.items():
             print(f"{uid}|{name}")
         return
+
     for identifier, name in test_ids.items():
         table["name"].append(name)
         table["id"].append(identifier)
