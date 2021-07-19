@@ -27,7 +27,7 @@ def inspect_cmd(args):
 
     # implements command 'buildtest inspect list'
     if args.inspect == "list":
-        inspect_list(report, parse=args.parse)
+        inspect_list(report, terse=args.terse)
         return
 
     # implements command 'buildtest inspect name'
@@ -44,13 +44,13 @@ def inspect_cmd(args):
         inspect_by_id(report, args)
 
 
-def inspect_list(report, parse=None):
+def inspect_list(report, terse=None):
     """Implements method ``buildtest inspect list``"""
 
     test_ids = report.get_ids()
 
     table = {"name": [], "id": []}
-    if parse:
+    if terse:
         for uid, name in test_ids.items():
             print(f"{uid}|{name}")
         return

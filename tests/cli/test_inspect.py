@@ -9,12 +9,12 @@ from buildtest.cli.report import Report
 
 def test_buildtest_inspect_list():
 
-    # running buildtest inspect list --parse
+    # running buildtest inspect list --terse
     class args:
         subcommands = "config"
         inspect = "list"
         report = False
-        parse = True
+        terse = True
 
     inspect_cmd(args)
 
@@ -23,7 +23,7 @@ def test_buildtest_inspect_list():
         subcommands = "config"
         inspect = "list"
         report = False
-        parse = False
+        terse = False
 
     inspect_cmd(args)
 

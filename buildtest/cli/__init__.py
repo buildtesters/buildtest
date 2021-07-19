@@ -503,7 +503,7 @@ def inspect_menu(subparsers):
 
     inspect_list = subparser.add_parser("list", help="List all test ids")
     inspect_list.add_argument(
-        "-p", "--parse", action="store_true", help="Print output in parseable format"
+        "-t", "--terse", action="store_true", help="Print output in terse format"
     )
 
     query_list = subparser.add_parser("query", help="Query fields from record")
