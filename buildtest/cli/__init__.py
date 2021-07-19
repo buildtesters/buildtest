@@ -355,6 +355,13 @@ def buildspec_menu(subparsers):
         "--terse", help="Print output in machine readable format", action="store_true"
     )
 
+    buildspec_find.add_argument(
+        "-n",
+        "--no-header",
+        action="store_true",
+        help="Print output without header in terse output",
+    )
+
 
 def config_menu(subparsers):
     """This method adds argparse argument for ``buildtest config``"""

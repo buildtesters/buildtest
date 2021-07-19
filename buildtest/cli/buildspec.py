@@ -42,19 +42,22 @@ class BuildspecCache:
         filterfields=None,
         formatfields=None,
         roots=None,
+        header=None,
     ):
         """The initializer method for BuildspecCache class is responsible for
         loading and finding buildspecs into buildspec cache. This method is called
         when using ``buildtest buildspec find`` command.
 
         :param rebuild: rebuild the buildspec cache by validating all buildspecs. The --rebuild is passed to this argument
-        :type rebuild: bool, required
+        :type rebuild: bool, optional
         :param filterfields:  The --filter option contains list of key value pairs for filtering buildspecs
-        :type filterfields: str, required
+        :type filterfields: str, optional
         :param formatfields: The --format option contains list of key value pairs for formating buildspecs
-        :type formatfields: str, required
+        :type formatfields: str, optional
         :param roots:  List of directories to search for buildspecs. This argument contains value of --roots
-        :type roots: list, required
+        :type roots: list, optional
+        :param header: Option to control whether header are printed in terse output. This argument contains value of --no-header
+        :type header: bool, optional
         """
 
         if not is_dir(BUILDTEST_BUILDSPEC_DIR):
@@ -63,6 +66,7 @@ class BuildspecCache:
         self.configuration = configuration
         self.filter = filterfields
         self.format = formatfields
+        self.header = header
         # if --root is not specified we set to empty list instead of None
         self.roots = roots or []
 
@@ -503,6 +507,9 @@ class BuildspecCache:
 
         if terse:
 
+            if not self.header:
+                print("buildspec")
+
             for buildspec in self.cache["buildspecs"].keys():
                 print(buildspec)
 
@@ -534,6 +541,9 @@ class BuildspecCache:
         # if --terse option specified print list of all tags in machine readable format
         if terse:
 
+            if not self.header:
+                print("tag")
+
             for tag in self.cache["unique_tags"]:
                 print(tag)
 
@@ -555,6 +565,9 @@ class BuildspecCache:
         """
 
         if terse:
+
+            if not self.header:
+                print("executor")
 
             for executor in self.cache["unique_executors"]:
                 print(executor)
@@ -585,6 +598,10 @@ class BuildspecCache:
                 table["name"].append(test_name)
 
         if terse:
+
+            if not self.header:
+                print("executor|name")
+
             for executor, name in zip(table["executor"], table["name"]):
                 print(f"{executor}|{name}")
             return
@@ -611,6 +628,10 @@ class BuildspecCache:
                 table["name"].append(test_name)
 
         if terse:
+
+            if not self.header:
+                print("tags|name")
+
             for tags, name in zip(table["tags"], table["name"]):
                 print(f"{tags}|{name}")
             return
@@ -644,9 +665,13 @@ class BuildspecCache:
 
         :param terse: This argument controls output of ``buildtest buildspec find --maintainers`` which is a boolean. If its ``True`` we print output in raw format otherwise we print in table format
         :type terse: bool
+
         """
 
         if terse:
+
+            if self.header:
+                print("maintainers")
 
             for maintainer in self.cache["maintainers"]:
                 print(maintainer)
@@ -836,6 +861,7 @@ def buildspec_find(args, configuration):
         formatfields=args.format,
         roots=args.root,
         configuration=configuration,
+        header=args.no_header,
     )
 
     # buildtest buildspec find --tags
