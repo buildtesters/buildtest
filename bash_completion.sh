@@ -118,7 +118,7 @@ _buildtest ()
         id)
           COMPREPLY=( $( compgen -W "$(_test_ids)" -- $cur ) );;
         list)
-          local opts="-h --help -p --parse"
+          local opts="-h --help -t --terse"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         name)
           COMPREPLY=( $( compgen -W "$(_test_name)" -- $cur ) );;

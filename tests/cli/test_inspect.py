@@ -15,6 +15,17 @@ def test_buildtest_inspect_list():
         inspect = "list"
         report = False
         terse = True
+        no_header = True
+
+    inspect_cmd(args)
+
+    # running buildtest inspect list --terse
+    class args:
+        subcommands = "config"
+        inspect = "list"
+        report = False
+        terse = True
+        no_header = False
 
     inspect_cmd(args)
 
@@ -24,6 +35,7 @@ def test_buildtest_inspect_list():
         inspect = "list"
         report = False
         terse = False
+        no_header = False
 
     inspect_cmd(args)
 

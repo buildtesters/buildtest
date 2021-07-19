@@ -6,6 +6,7 @@ def test_build_history():
     class args:
         history = "list"
         terse = False
+        no_header = False
 
     # buildtest build history
     build_history(args)
@@ -13,8 +14,17 @@ def test_build_history():
     class args:
         history = "list"
         terse = True
+        no_header = False
 
-    # buildtest build history
+    # 'buildtest build history list --terse'
+    build_history(args)
+
+    class args:
+        history = "list"
+        terse = True
+        no_header = True
+
+    # 'buildtest build history list --terse --no-header'
     build_history(args)
 
     class args:
@@ -22,6 +32,7 @@ def test_build_history():
         id = 0
         log = False
 
+    # 'buildtest build history query 0'
     build_history(args)
 
 

@@ -505,6 +505,12 @@ def inspect_menu(subparsers):
     inspect_list.add_argument(
         "-t", "--terse", action="store_true", help="Print output in terse format"
     )
+    inspect_list.add_argument(
+        "-n",
+        "--no-header",
+        action="store_true",
+        help="Print output without header in terse format (--terse)",
+    )
 
     query_list = subparser.add_parser("query", help="Query fields from record")
     query_list.add_argument(
