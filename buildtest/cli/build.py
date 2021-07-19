@@ -1246,7 +1246,7 @@ def update_report(valid_builders, report_file=BUILD_REPORT):
 
         # query over result attributes, we only assign some keys of interest
         for item in ["starttime", "endtime", "runtime", "state", "returncode"]:
-            entry[item] = builder.metadata["result"][item]
+            entry[item] = str(builder.metadata["result"][item])
 
         entry["output"] = builder.metadata["output"]
         entry["error"] = builder.metadata["error"]

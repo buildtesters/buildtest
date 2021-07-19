@@ -467,6 +467,12 @@ def report_menu(subparsers):
         help="Specify a report file to read",
         default=BUILD_REPORT,
     )
+    parser_report.add_argument(
+        "-t",
+        "--terse",
+        action="store_true",
+        help="Print output in machine readable format",
+    )
 
 
 def inspect_menu(subparsers):

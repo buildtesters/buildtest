@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import sys
@@ -268,7 +269,7 @@ class Report:
     def _filter_by_returncode(self, test):
 
         if self.filter.get("returncode"):
-            if int(self.filter["returncode"]) != test.get("returncode"):
+            if int(self.filter["returncode"]) != int(test.get("returncode")):
                 return True
 
         return False
@@ -421,7 +422,28 @@ class Report:
 
         print(tabulate(filter_field_table, headers=headers, tablefmt="simple"))
 
-    def print_display_table(self):
+    def print_report(self, terse=None):
+
+        # if --terse option is specified we print output separated by PIPE symbol (|). Shown below is an example output
+
+        # $ buildtest report --filter name=pbs_sleep --terse --format name,runtime
+        # name|runtime
+        # pbs_sleep|30.156192
+
+        if terse:
+            join_list = []
+
+            for key in self.display_table.keys():
+                join_list.append(self.display_table[key])
+
+            t = [list(i) for i in zip(*join_list)]
+
+            print("|".join(self.display_table.keys()))
+            for i in t:
+                print("|".join(i))
+
+            return
+
         if os.getenv("BUILDTEST_COLOR") == "True":
             print(
                 tabulate(
@@ -499,5 +521,7 @@ def report_cmd(args):
         results.print_format_fields()
         return
 
-    print(f"Reading report file: {results.reportfile()} \n")
-    results.print_display_table()
+    if not args.terse:
+        print(f"Reading report file: {results.reportfile()} \n")
+
+    results.print_report(terse=args.terse)
