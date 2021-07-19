@@ -15,7 +15,7 @@ def build_history(args):
     """This is the entry point for command ``buildtest build history`` command which reports"""
 
     if args.history == "list":
-        list_builds(terse=args.terse)
+        list_builds(header=args.no_header, terse=args.terse)
 
     if args.history == "query":
         query_builds(build_id=args.id, log_option=args.log)
@@ -29,7 +29,16 @@ def sorted_alphanumeric(data):
     return sorted(data, key=alphanum_key)
 
 
-def list_builds(terse=None):
+def list_builds(header=None, terse=None):
+    """This method is entry point for ``buildtest history list`` which prints all previous builds
+    stored in **BUILD_HISTORY_DIR**. Each directory has a ``build.json`` file that stores content
+    of each build that was run by ``buildtest build``.
+
+    :param header: Control whether header columns are displayed with terse format
+    :type header: bool, optional
+    :param terse: Print output in terse format
+    :type terse: bool, optional
+    """
 
     history_files = walk_tree(BUILD_HISTORY_DIR, ".json")
     logger.debug(f"Searching for all '.json' files in directory: {BUILD_HISTORY_DIR}")
@@ -72,6 +81,10 @@ def list_builds(terse=None):
         table["fail_rate"].append(content["test_summary"]["fail_rate"])
 
     if terse:
+
+        # We print the table columns if --no-header is not specified
+        if not header:
+            print("|".join(table.keys()))
 
         for (
             build_id,
