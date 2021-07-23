@@ -497,7 +497,7 @@ class BuildspecCache:
                     self.table["tags"].append(tags)
                     self.table["description"].append(description)
 
-    def get_buildspecfiles(self, terse=None):
+    def get_buildspecfiles(self, terse=None, header=None):
         """This method implements ``buildtest buildspec find --buildspec``
         which reports all buildspec files in cache.
 
@@ -506,6 +506,8 @@ class BuildspecCache:
         """
 
         if terse:
+
+            self.header = header or self.header
 
             if not self.header:
                 print("buildspec")
@@ -530,7 +532,7 @@ class BuildspecCache:
 
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
-    def get_tags(self, terse=None):
+    def get_tags(self, terse=None, header=None):
         """This method implements ``buildtest buildspec find --tags`` which
         reports a list of unique tags from all buildspecs in cache file.
 
@@ -540,6 +542,8 @@ class BuildspecCache:
 
         # if --terse option specified print list of all tags in machine readable format
         if terse:
+
+            self.header = header or self.header
 
             if not self.header:
                 print("tag")
@@ -556,7 +560,7 @@ class BuildspecCache:
 
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
-    def get_executors(self, terse=None):
+    def get_executors(self, terse=None, header=None):
         """This method implements ``buildtest buildspec find --executors``
         which reports all executors from cache.
 
@@ -565,6 +569,8 @@ class BuildspecCache:
         """
 
         if terse:
+
+            self.header = header or self.header
 
             if not self.header:
                 print("executor")
@@ -581,7 +587,7 @@ class BuildspecCache:
 
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
-    def print_by_executors(self, terse=None):
+    def print_by_executors(self, terse=None, header=None):
         """This method prints executors by tests and implements
         ``buildtest buildspec find --group-by-executor`` command
 
@@ -599,6 +605,8 @@ class BuildspecCache:
 
         if terse:
 
+            self.header = header or self.header
+
             if not self.header:
                 print("executor|name")
 
@@ -611,7 +619,7 @@ class BuildspecCache:
 
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
-    def print_by_tags(self, terse=None):
+    def print_by_tags(self, terse=None, header=None):
         """This method prints tags by tests and implements
         ``buildtest buildspec find --group-by-tags`` command
 
@@ -628,6 +636,8 @@ class BuildspecCache:
                 table["name"].append(test_name)
 
         if terse:
+
+            self.header = header or self.header
 
             if not self.header:
                 print("tags|name")
@@ -659,7 +669,7 @@ class BuildspecCache:
             )
         )
 
-    def print_maintainer(self, terse=None):
+    def print_maintainer(self, terse=None, header=None):
         """This method prints maintainers from buildspec cache file which implements
         ``buildtest buildspec find --maintainers`` command.
 
@@ -669,6 +679,8 @@ class BuildspecCache:
         """
 
         if terse:
+
+            self.header = header or self.header
 
             if self.header:
                 print("maintainers")
@@ -689,7 +701,7 @@ class BuildspecCache:
 
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
-    def print_maintainers_by_buildspecs(self, terse=None):
+    def print_maintainers_by_buildspecs(self, terse=None, header=None):
         """This method prints maintainers breakdown by buildspecs. This method
         implements ``buildtest buildspec find --maintainers-by-buildspecs``
 
@@ -704,6 +716,11 @@ class BuildspecCache:
             table["buildspec"].append(buildspec)
 
         if terse:
+
+            self.header = header or self.header
+            if not self.header:
+                print("maintainers|buildspec")
+
             for maintainer, buildspecs in zip(table["maintainers"], table["buildspec"]):
 
                 print(f"{maintainer}|{':'.join(buildspecs)}")
