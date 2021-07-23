@@ -53,14 +53,14 @@ def test_func_buildspec_find():
     # buildtest buildspec find --tags
     cache.get_tags()
 
-    #  buildtest buildspec find --tags --terse
-    cache.get_tags(terse=True)
+    #  buildtest buildspec find --tags --terse --no-header
+    cache.get_tags(terse=True, header=True)
 
     # buildtest buildspec find --buildspec
     cache.get_buildspecfiles()
 
-    #  buildtest buildspec find --buildspec
-    cache.get_buildspecfiles(terse=True)
+    #  buildtest buildspec find --buildspec --terse --no-header
+    cache.get_buildspecfiles(terse=True, header=True)
 
     # buildtest buildspec find --paths
     cache.print_paths()
@@ -68,32 +68,32 @@ def test_func_buildspec_find():
     # buildtest buildspec find --executors
     cache.get_executors()
 
-    # buildtest buildspec find --executors --terse
-    cache.get_executors(terse=True)
+    # buildtest buildspec find --executors --terse --no-header
+    cache.get_executors(terse=True, header=True)
 
     # buildtest buildspec find --group-by-executors
     cache.print_by_executors()
 
-    # buildtest buildspec find --group-by-executors --terse
-    cache.print_by_executors(terse=True)
+    # buildtest buildspec find --group-by-executors --terse --no-header
+    cache.print_by_executors(terse=True, header=True)
 
     # buildtest buildspec find --group-by-tags
     cache.print_by_tags()
 
-    # buildtest buildspec find --group-by-tags --terse
-    cache.print_by_tags(terse=True)
+    # buildtest buildspec find --group-by-tags --terse --no-header
+    cache.print_by_tags(terse=True, header=True)
 
     # buildtest buildspec find --maintainers
     cache.print_maintainer()
 
-    # buildtest buildspec find --maintainers --terse
-    cache.print_maintainer(terse=True)
+    # buildtest buildspec find --maintainers --terse --no-header
+    cache.print_maintainer(terse=True, header=True)
 
     # implements buildtest buildspec find --maintainers-by-buildspecs
     cache.print_maintainers_by_buildspecs()
 
-    # implements buildtest buildspec find --maintainers-by-buildspecs --terse
-    cache.print_maintainers_by_buildspecs(terse=True)
+    # implements buildtest buildspec find --maintainers-by-buildspecs --terse --no-header
+    cache.print_maintainers_by_buildspecs(terse=True, header=True)
 
     # implements buildtest buildspec find --helpfilter
     cache.print_filter_fields()

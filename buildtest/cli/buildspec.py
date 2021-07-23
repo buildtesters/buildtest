@@ -42,19 +42,22 @@ class BuildspecCache:
         filterfields=None,
         formatfields=None,
         roots=None,
+        header=None,
     ):
         """The initializer method for BuildspecCache class is responsible for
         loading and finding buildspecs into buildspec cache. This method is called
         when using ``buildtest buildspec find`` command.
 
         :param rebuild: rebuild the buildspec cache by validating all buildspecs. The --rebuild is passed to this argument
-        :type rebuild: bool, required
+        :type rebuild: bool, optional
         :param filterfields:  The --filter option contains list of key value pairs for filtering buildspecs
-        :type filterfields: str, required
+        :type filterfields: str, optional
         :param formatfields: The --format option contains list of key value pairs for formating buildspecs
-        :type formatfields: str, required
+        :type formatfields: str, optional
         :param roots:  List of directories to search for buildspecs. This argument contains value of --roots
-        :type roots: list, required
+        :type roots: list, optional
+        :param header: Option to control whether header are printed in terse output. This argument contains value of --no-header
+        :type header: bool, optional
         """
 
         if not is_dir(BUILDTEST_BUILDSPEC_DIR):
@@ -63,6 +66,7 @@ class BuildspecCache:
         self.configuration = configuration
         self.filter = filterfields
         self.format = formatfields
+        self.header = header
         # if --root is not specified we set to empty list instead of None
         self.roots = roots or []
 
@@ -493,7 +497,7 @@ class BuildspecCache:
                     self.table["tags"].append(tags)
                     self.table["description"].append(description)
 
-    def get_buildspecfiles(self, terse=None):
+    def get_buildspecfiles(self, terse=None, header=None):
         """This method implements ``buildtest buildspec find --buildspec``
         which reports all buildspec files in cache.
 
@@ -502,6 +506,11 @@ class BuildspecCache:
         """
 
         if terse:
+
+            self.header = header or self.header
+
+            if not self.header:
+                print("buildspec")
 
             for buildspec in self.cache["buildspecs"].keys():
                 print(buildspec)
@@ -523,7 +532,7 @@ class BuildspecCache:
 
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
-    def get_tags(self, terse=None):
+    def get_tags(self, terse=None, header=None):
         """This method implements ``buildtest buildspec find --tags`` which
         reports a list of unique tags from all buildspecs in cache file.
 
@@ -533,6 +542,11 @@ class BuildspecCache:
 
         # if --terse option specified print list of all tags in machine readable format
         if terse:
+
+            self.header = header or self.header
+
+            if not self.header:
+                print("tag")
 
             for tag in self.cache["unique_tags"]:
                 print(tag)
@@ -546,7 +560,7 @@ class BuildspecCache:
 
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
-    def get_executors(self, terse=None):
+    def get_executors(self, terse=None, header=None):
         """This method implements ``buildtest buildspec find --executors``
         which reports all executors from cache.
 
@@ -555,6 +569,11 @@ class BuildspecCache:
         """
 
         if terse:
+
+            self.header = header or self.header
+
+            if not self.header:
+                print("executor")
 
             for executor in self.cache["unique_executors"]:
                 print(executor)
@@ -568,7 +587,7 @@ class BuildspecCache:
 
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
-    def print_by_executors(self, terse=None):
+    def print_by_executors(self, terse=None, header=None):
         """This method prints executors by tests and implements
         ``buildtest buildspec find --group-by-executor`` command
 
@@ -585,6 +604,12 @@ class BuildspecCache:
                 table["name"].append(test_name)
 
         if terse:
+
+            self.header = header or self.header
+
+            if not self.header:
+                print("executor|name")
+
             for executor, name in zip(table["executor"], table["name"]):
                 print(f"{executor}|{name}")
             return
@@ -594,7 +619,7 @@ class BuildspecCache:
 
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
-    def print_by_tags(self, terse=None):
+    def print_by_tags(self, terse=None, header=None):
         """This method prints tags by tests and implements
         ``buildtest buildspec find --group-by-tags`` command
 
@@ -611,6 +636,12 @@ class BuildspecCache:
                 table["name"].append(test_name)
 
         if terse:
+
+            self.header = header or self.header
+
+            if not self.header:
+                print("tags|name")
+
             for tags, name in zip(table["tags"], table["name"]):
                 print(f"{tags}|{name}")
             return
@@ -638,15 +669,21 @@ class BuildspecCache:
             )
         )
 
-    def print_maintainer(self, terse=None):
+    def print_maintainer(self, terse=None, header=None):
         """This method prints maintainers from buildspec cache file which implements
         ``buildtest buildspec find --maintainers`` command.
 
         :param terse: This argument controls output of ``buildtest buildspec find --maintainers`` which is a boolean. If its ``True`` we print output in raw format otherwise we print in table format
         :type terse: bool
+
         """
 
         if terse:
+
+            self.header = header or self.header
+
+            if self.header:
+                print("maintainers")
 
             for maintainer in self.cache["maintainers"]:
                 print(maintainer)
@@ -664,7 +701,7 @@ class BuildspecCache:
 
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
-    def print_maintainers_by_buildspecs(self, terse=None):
+    def print_maintainers_by_buildspecs(self, terse=None, header=None):
         """This method prints maintainers breakdown by buildspecs. This method
         implements ``buildtest buildspec find --maintainers-by-buildspecs``
 
@@ -679,6 +716,11 @@ class BuildspecCache:
             table["buildspec"].append(buildspec)
 
         if terse:
+
+            self.header = header or self.header
+            if not self.header:
+                print("maintainers|buildspec")
+
             for maintainer, buildspecs in zip(table["maintainers"], table["buildspec"]):
 
                 print(f"{maintainer}|{':'.join(buildspecs)}")
@@ -836,6 +878,7 @@ def buildspec_find(args, configuration):
         formatfields=args.format,
         roots=args.root,
         configuration=configuration,
+        header=args.no_header,
     )
 
     # buildtest buildspec find --tags

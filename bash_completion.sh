@@ -1,11 +1,11 @@
 _avail_tags ()
 {
-  buildtest buildspec find --tags --terse 2>/dev/null
+  buildtest buildspec find --tags --terse --no-header 2>/dev/null
 }
 
 _avail_buildspecs ()
 {
-  buildtest buildspec find --buildspec --terse 2>/dev/null
+  buildtest buildspec find --buildspec --terse --no-header 2>/dev/null
 }
 
 _avail_schemas ()
@@ -139,7 +139,7 @@ _buildtest ()
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
       case ${COMP_WORDS[2]} in
       find)
-         local opts="-h --help --root -r --rebuild -t --tags -b --buildspec -e --executors -p --paths --group-by-tags --group-by-executor -m --maintainers -mb --maintainers-by-buildspecs --filter --format --helpfilter --helpformat"
+         local opts="-h --help --root -r --rebuild -t --tags -b --buildspec -e --executors -p --paths --group-by-tags --group-by-executor -m --maintainers -mb --maintainers-by-buildspecs --filter --format --helpfilter --helpformat --terse -n --no-header"
          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
         ;;
       validate)
