@@ -14,6 +14,7 @@ import re
 import shutil
 import socket
 import stat
+import sys
 import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -82,6 +83,12 @@ class BuilderBase(ABC):
         self.status = None
 
         self.buildspec = buildspec
+
+        # used to lookup variables if 'vars' key is defined.
+        self.variable_lookup = {}
+        # used to lookup environment variables if 'envs' key is defined.
+        self.envs_lookup = {}
+
         # strip .yml extension from file name
         file_name = re.sub("[.](yml)", "", os.path.basename(buildspec))
         self.testdir = os.path.join(testdir, self.executor, file_name, self.name)
@@ -163,10 +170,9 @@ class BuilderBase(ABC):
         # used to store compiler name used the test. Only applicable with compiler schema
         self.metadata["compiler"] = None
 
-        self.metadata["result"] = {}
-        self.metadata["result"]["state"] = "N/A"
-        self.metadata["result"]["returncode"] = "-1"
-        self.metadata["result"]["runtime"] = 0
+        self.metadata["result"] = {"state": "N/A", "returncode": "-1", "runtime": 0}
+
+        self.metadata["metrics"] = {}
 
         # used to store job id from batch scheduler
         self.metadata["jobid"] = None
@@ -562,11 +568,13 @@ class BuilderBase(ABC):
             if re.fullmatch("(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", shell):
                 for k, v in env.items():
                     lines.append("export %s=%s" % (k, v))
+                    self.envs_lookup[k] = v
 
             # tcsh, csh,  environment variable declaration is setenv KEY VALUE
             elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", shell):
                 for k, v in env.items():
                     lines.append("setenv %s %s" % (k, v))
+                    self.envs_lookup[k] = v
 
             else:
                 self.logger.warning(
@@ -595,11 +603,13 @@ class BuilderBase(ABC):
             # bash, sh, zsh variable declaration is KEY=VALUE
             if re.fullmatch("(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", shell):
                 for k, v in variables.items():
+                    self.variable_lookup[k] = v
                     lines.append("%s=%s" % (k, v))
 
             # tcsh, csh variable declaration is set KEY=VALUE
             elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", shell):
                 for k, v in variables.items():
+                    self.variable_lookup[k] = v
                     lines.append("set %s=%s" % (k, v))
 
             else:
@@ -617,6 +627,56 @@ class BuilderBase(ABC):
 
         unique_id = str(uuid.uuid4())
         return unique_id
+
+    def add_metrics(self):
+
+        if not self.recipe.get("metrics"):
+            return
+
+        for key in self.recipe["metrics"].keys():
+
+            # default value of metric is empty string
+            self.metadata["metrics"][key] = ""
+
+            # apply regex on stdout/stderr and assign value to metrics
+            if self.recipe["metrics"][key].get("regex"):
+
+                if self.recipe["metrics"][key]["regex"]["stream"] == "stdout":
+                    content = self.read_output()
+                elif self.recipe["metrics"][key]["regex"]["stream"] == "stderr":
+                    content = self.read_error()
+
+                pattern = re.search(
+                    self.recipe["metrics"][key]["regex"]["exp"], content
+                )
+
+                # if pattern match found we assign value to metric
+                if pattern:
+                    self.metadata["metrics"][key] = pattern.group()
+
+            # variable assignment
+            elif self.recipe["metrics"][key].get("vars"):
+                self.metadata["metrics"][key] = self.variable_lookup.get(
+                    self.recipe["metrics"][key]["vars"]
+                )
+
+            # environment variable assignment
+            elif self.recipe["metrics"][key].get("env"):
+                self.metadata["metrics"][key] = self.envs_lookup.get(
+                    self.recipe["metrics"][key]["env"]
+                )
+
+        # convert all metrics to string types
+        for key in self.metadata["metrics"].keys():
+            self.metadata["metrics"][key] = str(self.metadata["metrics"][key])
+
+    def read_output(self):
+        """Return content of output file"""
+        return read_file(self.metadata["outfile"])
+
+    def read_error(self):
+        """Return content of error file"""
+        return read_file(self.metadata["errfile"])
 
     @abstractmethod
     def generate_script(self):

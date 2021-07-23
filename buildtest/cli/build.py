@@ -1233,6 +1233,7 @@ def update_report(valid_builders, report_file=BUILD_REPORT):
             "buildspec_content",
             "test_content",
             "logpath",
+            "metrics",
         ]:
             entry[item] = builder.metadata[item]
 

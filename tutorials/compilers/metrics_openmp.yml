@@ -1,0 +1,19 @@
+version: "1.0"
+buildspecs:
+  metrics_variable_compiler:
+    type: compiler
+    description: override default environment variables
+    executor: generic.local.bash
+    tags: [tutorials, compile]
+    source: "src/hello_omp.c"
+    compilers:
+      name: ["^(gcc)"]
+      default:
+        gcc:
+          cflags: -fopenmp
+          env:
+            OMP_NUM_THREADS: 2
+
+    metrics:
+      openmp_threads:
+        env: "OMP_NUM_THREADS"

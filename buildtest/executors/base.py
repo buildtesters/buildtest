@@ -214,3 +214,5 @@ class BaseExecutor:
 
         # Return to starting directory for next test
         os.chdir(builder.pwd)
+
+        builder.add_metrics()
