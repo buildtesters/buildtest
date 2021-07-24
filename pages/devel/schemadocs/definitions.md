@@ -60,6 +60,64 @@ Reference this group by using
 | Property | Type | Required | Nullable | Defined by |
 | :------- | :--- | :------- | :------- | :--------- |
 
+## Definitions group regex
+
+Reference this group by using
+
+```json
+{"$ref":"definitions.schema.json#/definitions/regex"}
+```
+
+| Property          | Type     | Required | Nullable       | Defined by                                                                                                                                          |
+| :---------------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [stream](#stream) | `string` | Required | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-regex-properties-stream.md "definitions.schema.json#/definitions/regex/properties/stream") |
+| [exp](#exp)       | `string` | Required | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-regex-properties-exp.md "definitions.schema.json#/definitions/regex/properties/exp")       |
+
+### stream
+
+The stream field can be stdout or stderr. buildtest will read the output or error stream after completion of test and check if regex matches in stream
+
+`stream`
+
+*   is required
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-regex-properties-stream.md "definitions.schema.json#/definitions/regex/properties/stream")
+
+#### stream Type
+
+`string`
+
+#### stream Constraints
+
+**enum**: the value of this property must be equal to one of the following values:
+
+| Value      | Explanation |
+| :--------- | :---------- |
+| `"stdout"` |             |
+| `"stderr"` |             |
+
+### exp
+
+Specify a regular expression to run with input stream specified by `stream` field. buildtest uses re.search when performing regex
+
+`exp`
+
+*   is required
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-regex-properties-exp.md "definitions.schema.json#/definitions/regex/properties/exp")
+
+#### exp Type
+
+`string`
+
 ## Definitions group env
 
 Reference this group by using
@@ -114,6 +172,104 @@ Reference this group by using
 
 | Property | Type | Required | Nullable | Defined by |
 | :------- | :--- | :------- | :------- | :--------- |
+
+## Definitions group metrics_field
+
+Reference this group by using
+
+```json
+{"$ref":"definitions.schema.json#/definitions/metrics_field"}
+```
+
+| Property        | Type     | Required | Nullable       | Defined by                                                                                                                                                      |
+| :-------------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [regex](#regex) | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-regex.md "definitions.schema.json#/definitions/metrics_field/properties/regex")                        |
+| [vars](#vars)   | `string` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-metrics_field-properties-vars.md "definitions.schema.json#/definitions/metrics_field/properties/vars") |
+| [env](#env)     | `string` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-metrics_field-properties-env.md "definitions.schema.json#/definitions/metrics_field/properties/env")   |
+
+### regex
+
+Perform regular expression search using `re.search` python module on stdout/stderr stream for reporting if test `PASS`.
+
+`regex`
+
+*   is optional
+
+*   Type: `object` ([Details](definitions-definitions-regex.md))
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-regex.md "definitions.schema.json#/definitions/metrics_field/properties/regex")
+
+#### regex Type
+
+`object` ([Details](definitions-definitions-regex.md))
+
+### vars
+
+
+
+`vars`
+
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-metrics_field-properties-vars.md "definitions.schema.json#/definitions/metrics_field/properties/vars")
+
+#### vars Type
+
+`string`
+
+### env
+
+
+
+`env`
+
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-metrics_field-properties-env.md "definitions.schema.json#/definitions/metrics_field/properties/env")
+
+#### env Type
+
+`string`
+
+## Definitions group metrics
+
+Reference this group by using
+
+```json
+{"$ref":"definitions.schema.json#/definitions/metrics"}
+```
+
+| Property | Type     | Required | Nullable       | Defined by                                                                                                                                       |
+| :------- | :------- | :------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `^.*$`   | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-metrics_field.md "definitions.schema.json#/definitions/metrics/patternProperties/^.*$") |
+
+### Pattern: `^.*$`
+
+
+
+`^.*$`
+
+*   is optional
+
+*   Type: `object` ([Details](definitions-definitions-metrics_field.md))
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-metrics_field.md "definitions.schema.json#/definitions/metrics/patternProperties/^.\*$")
+
+#### ^.\*$ Type
+
+`object` ([Details](definitions-definitions-metrics_field.md))
 
 ## Definitions group run_only
 
@@ -517,7 +673,7 @@ Reference this group by using
 | :---------------------------------- | :------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [slurm_job_state](#slurm_job_state) | `string` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-slurm_job_state.md "definitions.schema.json#/definitions/status/properties/slurm_job_state") |
 | [returncode](#returncode)           | Merged   | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-int_or_list.md "definitions.schema.json#/definitions/status/properties/returncode")                            |
-| [regex](#regex)                     | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-regex.md "definitions.schema.json#/definitions/status/properties/regex")                     |
+| [regex](#regex-1)                   | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-regex.md "definitions.schema.json#/definitions/status/properties/regex")                     |
 | [runtime](#runtime)                 | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-runtime.md "definitions.schema.json#/definitions/status/properties/runtime")                 |
 
 ### slurm_job_state

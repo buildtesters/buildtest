@@ -26,6 +26,7 @@ The compiler schema is of `type: compiler` in sub-schema which is used for compi
 | [run_only](#run_only)       | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-run_only.md "compiler-v1.0.schema.json#/properties/run_only")      |
 | [skip](#skip)               | `boolean` | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-skip.md "compiler-v1.0.schema.json#/properties/skip")               |
 | [tags](#tags)               | Merged    | Optional | cannot be null | [compiler schema version 1.0](compiler-v1-properties-tags.md "compiler-v1.0.schema.json#/properties/tags")               |
+| [metrics](#metrics)         | `object`  | Optional | cannot be null | [compiler schema version 1.0](definitions-definitions-metrics.md "compiler-v1.0.schema.json#/properties/metrics")        |
 
 ## type
 
@@ -190,6 +191,24 @@ one (and only one) of
 *   [Untitled string in JSON Schema Definitions File. ](definitions-definitions-string_or_list-oneof-0.md "check type definition")
 
 *   [Untitled array in JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "check type definition")
+
+## metrics
+
+This field is used for defining one or more metrics that is recorded for each test. A metric must have a unique name which is recorded in the test metadata.
+
+`metrics`
+
+*   is optional
+
+*   Type: `object` ([Details](definitions-definitions-metrics.md))
+
+*   cannot be null
+
+*   defined in: [compiler schema version 1.0](definitions-definitions-metrics.md "compiler-v1.0.schema.json#/properties/metrics")
+
+### metrics Type
+
+`object` ([Details](definitions-definitions-metrics.md))
 
 # compiler schema version 1.0 Definitions
 
