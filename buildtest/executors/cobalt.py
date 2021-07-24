@@ -174,8 +174,8 @@ class CobaltExecutor(BaseExecutor):
             )
             time.sleep(interval)
 
-        builder.metadata["output"] = read_file(builder.metadata["outfile"])
-        builder.metadata["error"] = read_file(builder.metadata["errfile"])
+        # builder.metadata["output"] = read_file(builder.metadata["outfile"])
+        # builder.metadata["error"] = read_file(builder.metadata["errfile"])
 
         cobaltlog = os.path.join(builder.stage_dir, builder.job.cobalt_log())
 
@@ -204,8 +204,9 @@ class CobaltExecutor(BaseExecutor):
             f"Copying cobalt log file: {cobaltlog} to {os.path.join(builder.test_root,os.path.basename(cobaltlog))}"
         )
 
-        builder.copy_stage_files()
-        self.check_test_state(builder)
+        builder.post_run_steps()
+        # builder.copy_stage_files()
+        # self.check_test_state(builder)
 
 
 class CobaltJob(Job):

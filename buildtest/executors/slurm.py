@@ -10,7 +10,6 @@ import re
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import read_file
 from buildtest.utils.tools import deep_get
 
 logger = logging.getLogger(__name__)
@@ -159,6 +158,10 @@ class SlurmExecutor(BaseExecutor):
 
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
+        self.logger.debug(
+            f"[{builder.name}] returncode: {builder.metadata['result']['returncode']}"
+        )
+
         builder.metadata["outfile"] = os.path.join(
             builder.job.workdir(), builder.name + ".out"
         )
@@ -166,16 +169,14 @@ class SlurmExecutor(BaseExecutor):
             builder.job.workdir(), builder.name + ".err"
         )
 
-        builder.copy_stage_files()
+        builder.post_run_steps()
 
-        self.logger.debug(
-            f"[{builder.name}] returncode: {builder.metadata['result']['returncode']}"
-        )
+        # builder.copy_stage_files()
 
-        builder.metadata["output"] = read_file(builder.metadata["outfile"])
-        builder.metadata["error"] = read_file(builder.metadata["errfile"])
+        # builder.metadata["output"] = read_file(builder.metadata["outfile"])
+        # builder.metadata["error"] = read_file(builder.metadata["errfile"])
 
-        self.check_test_state(builder)
+        # self.check_test_state(builder)
 
 
 class SlurmJob(Job):

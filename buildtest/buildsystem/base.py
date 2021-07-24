@@ -14,7 +14,6 @@ import re
 import shutil
 import socket
 import stat
-import sys
 import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -142,6 +141,11 @@ class BuilderBase(ABC):
             schema_table[f"{self.recipe['type']}-v1.0.schema.json"]["path"]
         )
 
+        # used for storing output content
+        self._output = None
+        # used for storing error content
+        self._error = None
+
         # store output content of test
         self.metadata["output"] = None
         # store error content of test
@@ -182,6 +186,12 @@ class BuilderBase(ABC):
         self.metadata["full_id"] = self._generate_unique_id()
         self.metadata["id"] = self.metadata["full_id"][:8]
 
+    def _generate_unique_id(self):
+        """Generate a unique build id using ``uuid.uuid4()``."""
+
+        unique_id = str(uuid.uuid4())
+        return unique_id
+
     def get_test_extension(self):
         """Return the test extension, which depends on the shell used. Based
         on the value of ``shell`` key we return the shell extension.
@@ -208,7 +218,7 @@ class BuilderBase(ABC):
         self.timer.start()
 
     def stop(self):
-        """Stop  timer of test and calculate duration."""
+        """Stop timer of test and calculate duration."""
 
         self.duration += self.timer.stop()
 
@@ -242,14 +252,20 @@ class BuilderBase(ABC):
         return command
 
     def starttime(self):
-        """This method will record the starttime when job starts execution by using ``datetime.datetime.now()``"""
+        """This method will record the starttime when job starts execution by using
+        ``datetime.datetime.now()``
+        """
+
         self._starttime = datetime.datetime.now()
 
         # this is recorded in the report file
         self.metadata["result"]["starttime"] = self._starttime.strftime("%Y/%m/%d %X")
 
     def endtime(self):
-        """This method is called upon termination of job, we get current time using ``datetime.datetime.now()`` and calculate runtime of job"""
+        """This method is called upon termination of job, we get current time using
+        ``datetime.datetime.now()`` and calculate runtime of job
+        """
+
         self._endtime = datetime.datetime.now()
 
         # this is recorded in the report file
@@ -258,10 +274,15 @@ class BuilderBase(ABC):
         self.runtime()
 
     def runtime(self):
-        # Calculate runtime of job by calculating delta between endtime and starttime.
+        """Calculate runtime of job by calculating delta between endtime and starttime. The unit of measure
+        is seconds."""
 
         runtime = self._endtime - self._starttime
-        self.metadata["result"]["runtime"] = runtime.total_seconds()
+        self._runtime = runtime.total_seconds()
+        self.metadata["result"]["runtime"] = self._runtime
+
+    def get_runtime(self):
+        return self._runtime
 
     def complete(self):
         """This method is invoked to indicate that builder job is complete after polling job."""
@@ -538,8 +559,7 @@ class BuilderBase(ABC):
         return lines
 
     def _set_execute_perm(self, fname):
-        """Apply chmod 755 to input file name. The path must be an absolute path to script"""
-        """Set permission to 755 on executable"""
+        """Set permission to 755 for a given file. The filepath must be an absolute path to file"""
 
         # Change permission of the file to executable
         os.chmod(
@@ -622,14 +642,11 @@ class BuilderBase(ABC):
             lines.append("\n")
         return lines
 
-    def _generate_unique_id(self):
-        """Generate a unique build id using ``uuid.uuid4()``."""
-
-        unique_id = str(uuid.uuid4())
-        return unique_id
-
     def add_metrics(self):
-
+        """This method will update the metrics field stored in ``self.metadata['metrics']``. The ``metrics``
+        property can be defined in the buildspdec to assign value to a metrics name based on regular expression,
+        environment or variable assignment.
+        """
         if not self.recipe.get("metrics"):
             return
 
@@ -642,9 +659,9 @@ class BuilderBase(ABC):
             if self.recipe["metrics"][key].get("regex"):
 
                 if self.recipe["metrics"][key]["regex"]["stream"] == "stdout":
-                    content = self.read_output()
+                    content = self._output
                 elif self.recipe["metrics"][key]["regex"]["stream"] == "stderr":
-                    content = self.read_error()
+                    content = self._error
 
                 pattern = re.search(
                     self.recipe["metrics"][key]["regex"]["exp"], content
@@ -670,17 +687,181 @@ class BuilderBase(ABC):
         for key in self.metadata["metrics"].keys():
             self.metadata["metrics"][key] = str(self.metadata["metrics"][key])
 
-    def read_output(self):
-        """Return content of output file"""
-        return read_file(self.metadata["outfile"])
+    def output(self):
+        """Return output content"""
+        return self._output
 
-    def read_error(self):
-        """Return content of error file"""
-        return read_file(self.metadata["errfile"])
+    def error(self):
+        """Return error content"""
+        return self._error
 
     @abstractmethod
     def generate_script(self):
         """Build the testscript content implemented in each subclass"""
+
+    def post_run_steps(self):
+
+        self._output = read_file(self.metadata["outfile"])
+        self._error = read_file(self.metadata["errfile"])
+
+        self.metadata["output"] = self._output
+        self.metadata["error"] = self._error
+
+        self.copy_stage_files()
+        self.check_test_state()
+
+        self.add_metrics()
+
+    def _check_regex(self):
+        """This method conducts a regular expression check using ``re.search``
+        with regular expression defined in Buildspec. User must specify an
+        output stream (stdout, stderr) to select when performing regex. In
+        buildtest, this would read the .out or .err file based on stream and
+        run the regular expression to see if there is a match. This method
+        will return a boolean True indicates there is a match otherwise False
+        if ``regex`` object not defined or ``re.search`` doesn't find a match.
+
+        :param builder: instance of BuilderBase class
+        :type builder: BuilderBase (subclass)
+
+        :return: A boolean return True/False based on if re.search is successful or not
+        :rtype: bool
+        """
+
+        regex_match = False
+
+        if not self.status.get("regex"):
+            return regex_match
+
+        if self.status["regex"]["stream"] == "stdout":
+            self.logger.debug(
+                f"Detected regex stream 'stdout' so reading output file: {self.metadata['outfile']}"
+            )
+            content = self.output()
+
+        elif self.status["regex"]["stream"] == "stderr":
+            self.logger.debug(
+                f"Detected regex stream 'stderr' so reading error file: {self.metadata['errfile']}"
+            )
+            content = self.error()
+
+        self.logger.debug(f"Applying re.search with exp: {self.status['regex']['exp']}")
+
+        # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
+        return re.search(self.status["regex"]["exp"], content) is not None
+
+    def _returncode_check(self):
+        """Check status check of ``returncode`` field if specified in status
+        property.
+        """
+
+        returncode_match = False
+
+        if self.status.get("returncode"):
+            # returncode can be an integer or list of integers
+
+            buildspec_returncode = self.status["returncode"]
+
+            # if buildspec returncode field is integer we convert to list for check
+            if isinstance(buildspec_returncode, int):
+                buildspec_returncode = [buildspec_returncode]
+
+            self.logger.debug("Conducting Return Code check")
+            self.logger.debug(
+                "Status Return Code: %s   Result Return Code: %s"
+                % (
+                    buildspec_returncode,
+                    self.metadata["result"]["returncode"],
+                )
+            )
+            # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
+            returncode_match = (
+                self.metadata["result"]["returncode"] in buildspec_returncode
+            )
+
+        return returncode_match
+
+    def _check_runtime(self):
+        """This method will return a boolean (True/False) based on runtime specified in buildspec and check with test runtime.
+        User can specify both `min` and `max`, or just specify `min` or `max`.
+        """
+
+        if not self.status.get("runtime"):
+            return False
+
+        min_time = self.status["runtime"].get("min") or 0
+        max_time = self.status["runtime"].get("max")
+
+        actual_runtime = self.get_runtime()
+
+        # if both min and max are specified
+        if min_time and max_time:
+            self.logger.debug(
+                f"Checking test: {self.name} runtime: {actual_runtime} is greater than min: {float(min_time)} and less than max: {float(max_time)}"
+            )
+            return float(min_time) < actual_runtime < float(max_time)
+
+        # if min specified
+        if min_time and not max_time:
+            self.logger.debug(
+                f"Checking test: {self.name} runtime: {actual_runtime} is greater than min: {float(min_time)}"
+            )
+            return float(min_time) < actual_runtime
+
+        # if max specified
+        if not min_time and max_time:
+            self.logger.debug(
+                f"Checking test: {self.name} runtime: {actual_runtime} is less than max: {float(max_time)}"
+            )
+            return actual_runtime < float(max_time)
+
+    def check_test_state(self):
+        """This method is responsible for detecting state of test (PASS/FAIL)
+        based on returncode or regular expression.
+        """
+
+        self.metadata["result"]["state"] = "FAIL"
+        # if status is defined in Buildspec, then check for returncode and regex
+        if self.status:
+
+            slurm_job_state_match = False
+
+            # returncode_match is boolean to check if reference returncode matches return code from test
+            returncode_match = self._returncode_check()
+
+            # check regex against output or error stream based on regular expression
+            # defined in status property. Return value is a boolean
+            regex_match = self._check_regex()
+
+            runtime_match = self._check_runtime()
+
+            # if slurm_job_state_codes defined in buildspec.
+            # self.builder.metadata["job"] only defined when job run through SlurmExecutor
+            if self.status.get("slurm_job_state") and self.metadata.get("job"):
+                slurm_job_state_match = (
+                    self.status["slurm_job_state"] == self.metadata["job"]["State"]
+                )
+
+            self.logger.info(
+                "ReturnCode Match: %s Regex Match: %s Slurm Job State Match: %s"
+                % (returncode_match, regex_match, slurm_job_state_match)
+            )
+
+            if (
+                returncode_match
+                or regex_match
+                or slurm_job_state_match
+                or runtime_match
+            ):
+                self.metadata["result"]["state"] = "PASS"
+
+        # if status is not defined we check test returncode, by default 0 is PASS and any other return code is a FAIL
+        else:
+            if self.metadata["result"]["returncode"] == 0:
+                self.metadata["result"]["state"] = "PASS"
+
+        # Return to starting directory for next test
+        os.chdir(self.pwd)
 
     def __str__(self):
         return (
