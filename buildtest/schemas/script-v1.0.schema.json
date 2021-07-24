@@ -75,6 +75,10 @@
     },
     "tags": {
       "$ref": "definitions.schema.json#/definitions/tags"
+    },
+    "metrics": {
+      "$ref": "definitions.schema.json#/definitions/metrics"
+
     }
   }
 }

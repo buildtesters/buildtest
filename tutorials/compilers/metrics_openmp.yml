@@ -1,0 +1,26 @@
+version: "1.0"
+buildspecs:
+  metrics_variable_compiler:
+    type: compiler
+    description: define metrics with compiler schema
+    executor: generic.local.bash
+    tags: [tutorials, compile]
+    source: "src/hello_omp.c"
+    compilers:
+      name: ["^(builtin_gcc|gcc)"]
+      default:
+        gcc:
+          cflags: -fopenmp
+          env:
+            OMP_NUM_THREADS: 4
+      config:
+        builtin_gcc:
+          env:
+            OMP_NUM_THREADS: 1
+        gcc/9.3.0-n7p74fd:
+          env:
+            OMP_NUM_THREADS: 2
+
+    metrics:
+      openmp_threads:
+        env: "OMP_NUM_THREADS"

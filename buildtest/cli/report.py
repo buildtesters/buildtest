@@ -33,6 +33,7 @@ class Report:
         "hostname",
         "id",
         "name",
+        "metrics",
         "outfile",
         "runtime",
         "returncode",
@@ -334,7 +335,17 @@ class Report:
                         # of test dictionary
                         if field in ["buildspec", "name"]:
                             continue
-                        self.display_table[field].append(test[field])
+
+                        # the metrics field is a dict, we will print output as a comma separated list of key/value pair
+                        if field == "metrics":
+                            msg = ""
+                            for key, value in test[field].items():
+                                msg += f"{key}={value},"
+                            msg = msg.rstrip(",")
+
+                            self.display_table[field].append(msg)
+                        else:
+                            self.display_table[field].append(test[field])
 
     def print_format_fields(self):
         """Implements command ``buildtest report --helpformat``"""
@@ -351,6 +362,7 @@ class Report:
             ["hostname", "Retrieve hostname of machine where job was submitted from"],
             ["full_id", "Full qualified unique build identifier"],
             ["id", "Unique Build Identifier (abbreviated)"],
+            ["metrics", "List all metrics if applicable"],
             ["name", "Name of test defined in buildspec"],
             ["outfile", "Output file"],
             ["returncode", "Return Code from Test Execution"],

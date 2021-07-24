@@ -1,0 +1,19 @@
+version: "1.0"
+buildspecs:
+  metric_variable_assignment:
+    executor: generic.local.sh
+    type: script
+    description: capture result metric based on variables and environment variable
+    vars:
+      GFLOPS: "63.6515"
+    env:
+      FOO: BAR
+    run: |
+      echo $GFLOPS
+      echo $FOO
+    tags: tutorials
+    metrics:
+       gflops:
+         vars: "GFLOPS"
+       foo:
+         env: "FOO"

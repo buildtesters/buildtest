@@ -1,0 +1,19 @@
+version: "1.0"
+buildspecs:
+
+  metric_regex_example:
+    executor: generic.local.sh
+    type: script
+    description: capture result metric from output
+    run: echo "HPCG result is VALID with a GFLOP/s rating of=63.6515"
+    tags: tutorials
+    metrics:
+      hpcg_rating:
+        regex:
+          exp: 'rating of=(\d+\.\d+)$'
+          stream: stdout
+
+      hpcg_state:
+        regex:
+          exp: '(VALID)'
+          stream: stdout

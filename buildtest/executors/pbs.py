@@ -7,7 +7,6 @@ import os
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import read_file
 from buildtest.utils.tools import deep_get
 
 logger = logging.getLogger(__name__)
@@ -148,12 +147,14 @@ class PBSExecutor(BaseExecutor):
         builder.metadata["job"] = builder.job.gather()
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
-        builder.metadata["output"] = read_file(builder.metadata["outfile"])
-        builder.metadata["error"] = read_file(builder.metadata["errfile"])
+        builder.post_run_steps()
 
-        builder.copy_stage_files()
+        # builder.metadata["output"] = read_file(builder.metadata["outfile"])
+        # builder.metadata["error"] = read_file(builder.metadata["errfile"])
 
-        self.check_test_state(builder)
+        # builder.copy_stage_files()
+
+        # self.check_test_state(builder)
 
 
 class PBSJob(Job):

@@ -12,7 +12,6 @@ import re
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import read_file
 from buildtest.utils.tools import deep_get
 
 logger = logging.getLogger(__name__)
@@ -159,6 +158,10 @@ class LSFExecutor(BaseExecutor):
         builder.metadata["job"] = builder.job.gather()
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
+        self.logger.debug(
+            f"[{builder.name}] returncode: {builder.metadata['result']['returncode']}"
+        )
+
         builder.metadata["outfile"] = os.path.join(
             builder.stage_dir, builder.job.output_file()
         )
@@ -166,15 +169,14 @@ class LSFExecutor(BaseExecutor):
             builder.stage_dir, builder.job.error_file()
         )
 
-        builder.metadata["output"] = read_file(builder.metadata["outfile"])
-        builder.metadata["error"] = read_file(builder.metadata["errfile"])
+        builder.post_run_steps()
 
-        self.logger.debug(
-            f"[{builder.name}] returncode: {builder.metadata['result']['returncode']}"
-        )
-        builder.copy_stage_files()
+        # builder.metadata["output"] = read_file(builder.metadata["outfile"])
+        # builder.metadata["error"] = read_file(builder.metadata["errfile"])
 
-        self.check_test_state(builder)
+        # builder.copy_stage_files()
+
+        # self.check_test_state(builder)
 
 
 class LSFJob(Job):

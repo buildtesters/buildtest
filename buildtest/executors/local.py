@@ -79,30 +79,24 @@ class LocalExecutor(BaseExecutor):
         )
         builder.metadata["result"]["returncode"] = command.returncode()
 
-        builder.metadata["output"] = "".join(out)
-        builder.metadata["error"] = "".join(err)
+        out = "".join(out)
+        err = "".join(err)
 
-        self.write_testresults(builder)
-        self.check_test_state(builder)
-
-    def write_testresults(self, builder):
-        """Upon execution of tests we write stdout and stderr to output and error file.
-
-        :param builder: builder object
-        :type builder: BuilderBase, required
-        """
+        # --------- write output and error file ------------- #
 
         outfile = os.path.join(builder.stage_dir, builder.name) + ".out"
         errfile = os.path.join(builder.stage_dir, builder.name) + ".err"
 
         self.logger.debug(f"Writing test output to file: {outfile}")
-        write_file(outfile, builder.metadata["output"])
+        write_file(outfile, out)
 
         # write error from test to .err file
         self.logger.debug(f"Writing test error to file: {errfile}")
-        write_file(errfile, builder.metadata["error"])
+        write_file(errfile, err)
 
         builder.metadata["outfile"] = outfile
         builder.metadata["errfile"] = errfile
 
-        builder.copy_stage_files()
+        builder.post_run_steps()
+
+        # self.check_test_state(builder)
