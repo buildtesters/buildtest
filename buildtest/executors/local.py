@@ -97,7 +97,6 @@ class LocalExecutor(BaseExecutor):
         builder.metadata["outfile"] = outfile
         builder.metadata["errfile"] = errfile
 
-        print(dir(builder))
         builder.post_run_steps()
 
         # self.check_test_state(builder)
