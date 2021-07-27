@@ -10,7 +10,9 @@ from buildtest.buildsystem.compilerbuilder import CompilerBuilder
 from buildtest.buildsystem.scriptbuilder import ScriptBuilder
 from buildtest.buildsystem.spack import SpackBuilder
 from buildtest.cli.compilers import BuildtestCompilers
+from buildtest.exceptions import BuildTestError
 from buildtest.system import system
+from buildtest.utils.tools import deep_get
 
 
 class Builder:
@@ -32,7 +34,7 @@ class Builder:
         :type bp: BuildspecParser, required
         :param buildexecutor: an instance of BuildExecutor class defines Executors from configuration file
         :type buildexecutor: BuildExecutor, required
-        :param filters: A dictionary container filter fields for tags and executors passed from command line
+        :param filters: A filter fields for filtering tests.
         :type filters: dict, required
         :param testdir: Test Destination directory, specified by --testdir
         :type testdir: str, required
@@ -60,6 +62,17 @@ class Builder:
         self.bp = bp
         self.filters = filters
 
+        if deep_get(self.filters, "maintainers"):
+            if not self.bp.recipe.get("maintainers"):
+                raise BuildTestError(
+                    f"[{self.bp.buildspec}]: skipping test because maintainers field is not specified when using buildtest build --filter maintainers={self.filters['maintainers'] }"
+                )
+
+            if self.filters["maintainers"] not in self.bp.recipe.get("maintainers"):
+                raise BuildTestError(
+                    f"[{self.bp.buildspec}]: skipping buildspec due to filter by maintainers: {self.filters['maintainers']}"
+                )
+
         self.builders = []
 
         for count in range(self.rebuild):
@@ -72,14 +85,19 @@ class Builder:
                     print(msg)
                     continue
 
-                if self._skip_tests_by_tags(recipe, name):
-                    continue
+                # apply filter by tags or type if --filter option is specified
+                if self.filters:
+                    if self._skip_tests_by_tags(recipe, name):
+                        continue
+
+                    if self._skip_tests_by_type(recipe, name):
+                        continue
 
                 if self._skip_tests_run_only(recipe, name):
                     continue
 
-                # Add the builder based on the type
-                if recipe["type"] == "script":
+                # Add the builder for the script or spack schema
+                if recipe["type"] in ["script", "spack"]:
                     self.builders += self._generate_builders(recipe, name)
                     """
                     self.builders.append(
@@ -95,8 +113,6 @@ class Builder:
                 elif recipe["type"] == "compiler":
 
                     self._build_compilers(name, recipe)
-                elif recipe["type"] == "spack":
-                    self.builders += self._generate_builders(recipe, name)
                 else:
                     print(
                         "%s is not recognized by buildtest, skipping." % recipe["type"]
@@ -228,7 +244,7 @@ class Builder:
 
     def _skip_tests_by_tags(self, recipe, name):
         """This method determines if test should be skipped based on tag names specified
-        in filter field that is specified on command line via ``buildtest build --tags``
+        in filter field that is specified on command line via ``buildtest build --filter tags=<TAGNAME>``
 
 
         :param recipe: loaded buildspec recipe as dictionary
@@ -239,18 +255,43 @@ class Builder:
         :rtype: bool
         """
 
-        if self.filters:
+        if self.filters.get("tags"):
             # if tags field in buildspec is empty, then we skip test only if user filters by tags
             if not recipe.get("tags"):
                 return True
 
             found = False
-            for tagname in self.filters:
-                if tagname in recipe.get("tags"):
-                    found = True
+            # for tagname in self.filters:
+            if self.filters["tags"] in recipe.get("tags"):
+                found = True
 
             if not found:
                 msg = f"[{name}][{self.bp.buildspec}]: test is skipped because it is not in tag filter list: {self.filters}"
+                self.logger.info(msg)
+                print(msg)
+                return True
+
+        return False
+
+    def _skip_tests_by_type(self, recipe, name):
+        """This method determines if test should be skipped based on type field specified
+        in filter field that is specified on command line via ``buildtest build --filter type=<SCHEMATYPE>``
+
+
+        :param recipe: loaded buildspec recipe as dictionary
+        :type recipe: dict
+        :param name: An instance of test from buildspec file
+        :type name: str
+        :return: Returns a boolean True/False which determines if test is skipped.
+        :rtype: bool
+        """
+
+        if self.filters.get("type"):
+
+            found = self.filters["type"] == recipe["type"]
+
+            if not found:
+                msg = f"[{name}][{self.bp.buildspec}]: test is skipped because it is not in type filter list: {self.filters['type']}"
                 self.logger.info(msg)
                 print(msg)
                 return True

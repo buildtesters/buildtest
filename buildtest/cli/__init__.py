@@ -11,6 +11,27 @@ from buildtest.schemas.defaults import schema_table
 from termcolor import colored
 
 
+def single_kv_string(val):
+    """This method is used for filter field in ``buildtest build --filter``.
+    This method returns a dict of key/value pair where input must be a single key/value pair
+
+    :param val: input value
+    :type val: str
+    :return: dictionary of key/value pairs
+    :rtype: dict
+    """
+
+    kv_dict = {}
+
+    if "=" not in val:
+        raise argparse.ArgumentTypeError("Filter field must be in format key=value")
+
+    key, value = val.split("=")[0], val.split("=")[1]
+    kv_dict[key] = value
+
+    return kv_dict
+
+
 def handle_kv_string(val):
     """This method is used as type field in --filter argument in ``buildtest buildspec find``.
     This method returns a dict of key,value pair where input is in format
@@ -18,6 +39,8 @@ def handle_kv_string(val):
 
     :param val: input value
     :type val: str
+    :param multiple_keys: multiple_keys is a boolean to determine if key/value pair accepts multiple key/value arguments
+    :type val: bool
     :return: dictionary of key/value pairs
     :rtype: dict
     """
@@ -33,6 +56,11 @@ def handle_kv_string(val):
             key, value = kv.split("=")[0], kv.split("=")[1]
             kv_dict[key] = value
 
+        if not multiple_keys:
+            if len(kv_dict.keys()) > 1:
+                raise argparse.ArgumentTypeError(
+                    f"The input argument expects one key=value pair. The input argument recieved {len(kv_dict.keys())} keys"
+                )
         return kv_dict
 
     if "=" not in val:
@@ -184,6 +212,12 @@ def build_menu(subparsers):
         action="append",
         type=str,
         help="Filter buildspecs by tags when building tests.",
+    )
+
+    parser_build.add_argument(
+        "--filter",
+        type=single_kv_string,
+        help="Filter buildspec based on tags, type, or maintainers. Usage:  --filter key1=val1,key2=val2",
     )
 
     parser_build.add_argument(
