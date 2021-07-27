@@ -1,4 +1,4 @@
-name: Bug Report
+name: Buildtest Bug Report
 description: File a bug report
 title: "[Bug]: "
 labels: [bug, triage]
@@ -6,12 +6,10 @@ assignees:
   - shahzebsiddiqui
 body:
   - type: markdown
-    value: "## Thank you for contributing to buildtest!"
-  - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report.
-
+        Thanks for taking the time to fill out this bug report!
+  
   - type: textarea
     id: what-happened
     attributes:
@@ -20,7 +18,6 @@ body:
       placeholder: Please provide a detailed description of the bug
     validations:
       required: true
-
   - type: dropdown
     id: version
     attributes:
@@ -48,7 +45,7 @@ body:
     attributes:
       label: Relevant log output
       description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
-      render: shell
+      render: shell  
 
   - type: textarea
     id: reproduce
