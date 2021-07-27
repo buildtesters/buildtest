@@ -1,4 +1,4 @@
-name: Buildtest Bug Report
+name: Bug Report
 description: File a bug report
 title: "[Bug]: "
 labels: [bug, triage]
@@ -60,3 +60,19 @@ body:
       render: bash
     validations:
       required: true
+
+  - type: checkboxes
+    id: slackterms
+    attributes:
+      label: Post question in Slack
+      options:
+        - label: I agree that I posted my question in [slack](https://hpcbuildtest.slack.com/) before creating this issue
+          required: true
+
+  - type: checkboxes
+    id: issueterms
+    attributes:
+      label: Is there an existing issue
+      options:
+        - label: I confirm there is no existing [issue](https://github.com/buildtesters/buildtest/issues) for this issue
+          required: true

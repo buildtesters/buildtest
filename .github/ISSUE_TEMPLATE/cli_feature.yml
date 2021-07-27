@@ -1,26 +1,18 @@
-name: Issue with Documentation 
-description: Issue with buildtest documentation
-title: "[DOCS]: "
-labels: [documentation, triage]
+name: Buildtest Command Line Feature Request
+description: Feature request for buildtest program
+title: "[FEATURE]: "
+labels: [feature, triage]
 assignees:
   - shahzebsiddiqui
 body:
-  - type: input
-    id: link
-    attributes:
-      label: Documentation Link
-      description: Specify link to url that needs attention
-      placeholder: ex. https://buildtest.readthedocs.io/
-    validations:
-      required: true
   - type: textarea
-    id: description
+    id: feature_description
     attributes:
-      label:  Issue Description
-      description: Please provide text and explanation of the issue
+      label: Please describe your feature request
+      description: Please provide a detailed summary of the feature request including name of buildtest command (buildtest build) and options including intended behavior
     validations:
       required: true
-      
+
   - type: checkboxes
     id: slackterms
     attributes:
@@ -28,7 +20,7 @@ body:
       options:
         - label: I agree that I posted my question in [slack](https://hpcbuildtest.slack.com/) before creating this issue
           required: true
- 
+
   - type: checkboxes
     id: issueterms
     attributes:
