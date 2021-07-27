@@ -14,9 +14,9 @@ body:
     validations:
       required: true
  - type: textarea
-    id: description
-    attributes:
-      label: Documentation Issue Description
-      description: Please provide link to url and text that is an issue 
-    validations:
-      required: true
+   id: description
+   attributes:
+     label: Documentation Issue Description
+     description: Please provide link to url and text that is an issue 
+   validations:
+     required: true
