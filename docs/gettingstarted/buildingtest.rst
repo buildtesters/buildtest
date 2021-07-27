@@ -122,19 +122,7 @@ You can :ref:`query tags <buildspec_tags>` from buildspecs cache to see all avai
 tags by running ``buildtest buildspec find --tags``.
 
 .. Note:: The ``--tags`` is used for discovering buildspec file and not filtering tests
-   by tag. If you want to filter tests by tags use ``--filter-tags``.
-
-The ``--filter-tags`` or short option ``-ft`` is used for filtering tests by
-tag name. The ``--filter-tags`` is used in conjunction with other options like
-``--buildspec``, ``--tags``, or ``--executor`` for discovering buildspecs.
-Let's rerun the previous example and filter tests by ``pass``. Now we only see
-tests built with tagname ``pass`` and all remaining tests were ignored.
-
-.. command-output:: buildtest build  --tags pass --filter-tags pass -b tutorials/python-hello.yml
-
-The ``--filter-tags`` option can be appended multiple times to filter tests by
-multiple tags. If buildtest detects no tests were found when filtering tests by
-tag name then buildtest will terminate with a message.
+   by tag.
 
 You can combine ``--tags`` with ``--buildspec`` to discover buildspecs in a single command.
 buildtest will query tags and buildspecs independently and combine all discovered
@@ -171,6 +159,35 @@ In this example we run all tests that are associated to ``generic.local.python``
 
 .. Note:: The ``--executor`` option can be appended to discover tests by multiple executors.
 
+.. _filter_buildspecs_with_buildtest_build:
+
+Filtering Buildspecs
+---------------------
+
+buildtest has support for filtering buildspecs based on certain attributes defined in buildspec file. Upon :ref:`discover_buildspecs`, buildtest
+will filter out tests or entire buildspec files. The ``buildtest build --filter`` option can be used to filter buildspecs which expects a **single**
+key=value pair. Currently, buildtest can filter tests based on ``tags``, ``type`` and ``maintainers``.
+
+
+In this example, we will discover all buildspecs based on tagname ``pass`` and then filter each **test** by tagname **pass** specified by **--filter tags=pass**.
+
+.. command-output:: buildtest build -t pass --filter tags=pass
+
+
+buildtest can run filter tests by :ref:`maintainers <maintainers>`, this can be useful if you want to run tests that you are maintainer. The ``maintainers`` field is
+set per buildspec and not each test. You can filter maintiners via ``--filter maintainers=<MAINTAINER_NAME>``. If the ``maintainers`` field is not specified
+the buildspec will be filtered out if ``--filter maintainers`` is specified. In this next example, we will build all tests for maintainer
+``@shahzebsiddiqui``.
+
+.. command-output:: buildtest build -b tutorials --filter maintainers=@shahzebsiddiqui
+
+Please see :ref:`buildspec_maintainers` on list of maintainers and breakdown of buildspecs by maintainers.
+
+We can also filter tests by ``type`` field in the buildspec which corresponds to the schema type. In this next example, we filter all tests by spack schema type by
+passing option ``--filter type=spack``. We inform buildtest to stop after build stage (``--stage=build``) for more details see :ref:`build_stage`.
+
+.. command-output:: buildtest build -b tutorials --filter type=spack --stage=build
+
 .. _discover_buildspecs:
 
 Discover Buildspecs
@@ -199,9 +216,10 @@ is processed.
 .. image:: ../_static/DiscoverBuildspecs.jpg
    :scale: 75 %
 
+.. _build_stage:
 
-Control builds by Stages
--------------------------
+Configure Build Stages
+-----------------------
 
 We can control behavior of ``buildtest build`` command to stop at certain phase
 using ``--stage`` option. The **--stage** option accepts ``parse`` or ``build``, which

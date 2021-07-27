@@ -1,0 +1,14 @@
+version: "1.0"
+buildspecs:
+  foo_bar:
+    type: script
+    executor: generic.local.sh
+    tags: tutorials
+    description: "prints variable $FOO"
+    vars:
+      FOO: BAR
+    run: echo $FOO
+
+maintainers:
+  - "@johndoe"
+  - "@bobsmith"
