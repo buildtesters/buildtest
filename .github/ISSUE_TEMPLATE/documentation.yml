@@ -22,7 +22,7 @@ body:
       required: true
       
   - type: checkboxes
-    id: terms
+    id: slackterms
     attributes:
       label: Post question in Slack
       options:
@@ -30,7 +30,7 @@ body:
           required: true
  
   - type: checkboxes
-    id: terms
+    id: issueterms
     attributes:
       label: Is there an existing issue
       options:
