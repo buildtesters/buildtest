@@ -366,3 +366,24 @@ buildspecs:
           module:
             swap: [PrgEnv-intel, PrgEnv-cray]
             load: [craype/2.6.2]
+
+  metrics_example:
+    type: compiler
+    description: Recording test metrics with compiler schema
+    executor: local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: [gnu]
+      default:
+        all:
+          vars:
+            OUTFILE: /tmp/file1.txt
+          run: $_EXEC > $OUTFILE
+          status:
+            returncode: 1
+      config:
+        gcc@10.2.0:
+          cxxflags: "-fopenmp"
+    metrics:
+      outfile:
+        vars: "OUTFILE"
