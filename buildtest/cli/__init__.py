@@ -56,11 +56,6 @@ def handle_kv_string(val):
             key, value = kv.split("=")[0], kv.split("=")[1]
             kv_dict[key] = value
 
-        if not multiple_keys:
-            if len(kv_dict.keys()) > 1:
-                raise argparse.ArgumentTypeError(
-                    f"The input argument expects one key=value pair. The input argument recieved {len(kv_dict.keys())} keys"
-                )
         return kv_dict
 
     if "=" not in val:
@@ -205,13 +200,6 @@ def build_menu(subparsers):
         action="append",
         type=str,
         help="Discover buildspecs by tags found in buildspec cache",
-    )
-    parser_build.add_argument(
-        "-ft",
-        "--filter-tags",
-        action="append",
-        type=str,
-        help="Filter buildspecs by tags when building tests.",
     )
 
     parser_build.add_argument(

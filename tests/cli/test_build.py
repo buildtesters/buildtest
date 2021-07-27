@@ -41,14 +41,56 @@ def test_build_by_tags():
     )
     cmd.build()
 
-    #  testing buildtest build --tags pass --tags pass
+    #  testing buildtest build --tags pass --filter tags=pass
     cmd = BuildTest(
         configuration=configuration,
         tags=["pass"],
-        filter_tags=["pass"],
+        filter={"tags": "pass"},
         buildtest_system=system,
     )
     cmd.build()
+
+
+@pytest.mark.cli
+def test_build_filter_check():
+
+    system = BuildTestSystem()
+    system.check()
+
+    #  testing buildtest build --tags pass --filter tags=pass
+    cmd = BuildTest(
+        configuration=configuration,
+        tags=["pass"],
+        filter={"tags": "pass"},
+        buildtest_system=system,
+    )
+    cmd.build()
+
+    #  testing buildtest build --tags tutorials --filter maintainers=@shahzebsiddiqui
+    cmd = BuildTest(
+        configuration=configuration,
+        buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials")],
+        filter={"maintainers": "@shahzebsiddiqui"},
+        buildtest_system=system,
+    )
+    cmd.build()
+
+    #  testing buildtest build --tags tutorials --filter type=script
+    cmd = BuildTest(
+        configuration=configuration,
+        buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials")],
+        filter={"type": "script"},
+        buildtest_system=system,
+    )
+    cmd.build()
+
+    # invalid filter field 'FOO' running 'buildtest build -t pass --filter FOO=BAR
+    with pytest.raises(BuildTestError):
+        BuildTest(configuration=configuration, tags=["pass"], filter={"FOO": "BAR"})
+
+    # invalid value for filter type running 'buildtest build -t pass --filter type=FOO
+    with pytest.raises(BuildTestError):
+        BuildTest(configuration=configuration, tags=["pass"], filter={"type": "FOO"})
 
 
 @pytest.mark.cli
@@ -316,10 +358,6 @@ def test_BuildTest_type():
     # tags must be a list not a string
     with pytest.raises(BuildTestError):
         BuildTest(configuration=configuration, executors="generic.local.bash")
-
-    # filter_tags must be a list not a string
-    with pytest.raises(BuildTestError):
-        BuildTest(configuration=configuration, tags=["pass"], filter_tags="pass")
 
     # invalid type for stage argument, must be a string not list
     with pytest.raises(BuildTestError):

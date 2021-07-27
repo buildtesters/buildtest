@@ -391,7 +391,6 @@ class BuildTest:
         executors=None,
         testdir=None,
         stage=None,
-        filter_tags=None,
         filter=None,
         rebuild=None,
         buildtest_system=None,
@@ -418,8 +417,8 @@ class BuildTest:
         :type testdir: str, optional
         :param stage: contains value of command line argument (--stage)
         :type stage: str, optional
-        :param filter_tags: contains value of command line argument (--filter-tags)
-        :type filter_tags: list, optional
+        :param filter: filters buildspecs and tests based on ``--filter`` argument which is a key/value dictionary that can filter tests based on tags, type, and maintainers
+        :type filter: dict, optional
         :param rebuild: contains value of command line argument (--rebuild)
         :type rebuild: list, optional
         :param buildtest_system: Instance of BuildTestSystem class
@@ -446,9 +445,6 @@ class BuildTest:
 
         if executors and not isinstance(executors, list):
             raise BuildTestError(f"{executors} is not of type list")
-
-        if filter_tags and not isinstance(filter_tags, list):
-            raise BuildTestError(f"{filter_tags} is not of type list")
 
         if testdir and not isinstance(testdir, str):
             raise BuildTestError(f"{testdir} is not of type str")
@@ -498,7 +494,6 @@ class BuildTest:
 
         self.testdir = self.resolve_testdirectory(testdir)
         self.stage = stage
-        self.filtertags = filter_tags
         self.filter = filter
         self.rebuild = rebuild
 
