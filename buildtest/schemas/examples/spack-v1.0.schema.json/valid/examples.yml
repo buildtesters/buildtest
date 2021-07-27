@@ -207,3 +207,36 @@ buildspecs:
       install:
         specs: ['m4']
         options: "-v"
+
+  var_declaration_in_spack:
+    type: spack
+    executor: generic.local.sh
+    description: Define variables and environment variables in spack
+    vars:
+      FOO: "BAR"
+    env:
+      SPACK_GNUPGHOME: "$HOME/.gnupg"
+    spack:
+      root: $HOME/spack
+      install:
+        specs: ['m4']
+        options: "-v"
+
+  metrics_example_vars_envs:
+    type: spack
+    executor: generic.local.sh
+    description: Define metrics variable and environment variable in spack
+    vars:
+      FOO: "BAR"
+    env:
+      SPACK_GNUPGHOME: "$HOME/.gnupg"
+    metrics:
+      foo:
+        vars: "FOO"
+      spack_gpg:
+        env: "SPACK_GNUPGHOME"
+    spack:
+      root: $HOME/spack
+      install:
+        specs: ['m4']
+        options: "-v"

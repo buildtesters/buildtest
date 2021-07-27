@@ -52,6 +52,15 @@ class SpackBuilder(BuilderBase):
             lines.append("####### END OF SCHEDULER DIRECTIVES   #######")
             lines.append("\n")
 
+        var_lines = self._get_variables(self.recipe.get("vars"))
+        env_lines = self._get_environment(self.recipe.get("env"))
+
+        if self.recipe.get("env"):
+            lines += env_lines
+
+        if self.recipe.get("vars"):
+            lines += var_lines
+
         if self.recipe.get("pre_cmds"):
             lines.append("\n")
             lines.append("######## START OF PRE COMMANDS ######## ")

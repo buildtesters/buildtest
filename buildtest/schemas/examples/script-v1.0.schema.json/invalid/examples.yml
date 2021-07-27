@@ -52,6 +52,18 @@ buildspecs:
         stream: file
         exp: "world$"
 
+
+  regex_additionalProperties_test:
+    type: script
+    executor: generic.local.bash
+    description: Testing for additional properties in regex field
+    run: hostname
+    status:
+      regex:
+        stream: stdout
+        exp: "world$"
+        X: 1
+
   missing_regex_exp:
     type: script
     executor: generic.local.bash
@@ -216,3 +228,22 @@ buildspecs:
       python: 3.5
     run: hostname
 
+  invalid_metrics_additional_property:
+    type: script
+    executor: generic.local.bash
+    description: Test for additional property for metrics property
+    vars:
+      FOO: BAR
+    run: echo $FOO
+    metrics:
+      foo:
+        variable: FOO
+
+  invalid_metrics_type:
+    type: script
+    executor: generic.local.bash
+    description: metrics property is an object, testing for type
+    vars:
+      FOO: BAR
+    run: echo $FOO
+    metrics: FOO
