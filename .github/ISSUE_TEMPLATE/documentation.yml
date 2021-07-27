@@ -1,0 +1,22 @@
+name: Issue with Documentation 
+description: Issue with [buildtest documentation](https://buildtest.readthedocs.io/)
+title: "[DOCS]: "
+labels: [documentation, triage]
+assignees:
+  - shahzebsiddiqui
+body:
+  - type: input
+    id: link
+    attributes:
+      label: Documentation Link
+      description: Specify link to url that needs attention
+      placeholder: ex. https://buildtest.readthedocs.io/
+    validations:
+      required: true
+ - type: textarea
+    id: description
+    attributes:
+      label: Documentation Issue Description
+      description: Please provide link to url and text that is an issue 
+    validations:
+      required: true
