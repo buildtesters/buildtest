@@ -268,3 +268,32 @@ buildspecs:
     run: |
       uname -av
       lsinfo
+
+  metrics_regex_example:
+    type: script
+    executor: generic.local.bash
+    description: metrics regular expression example
+    run: echo "HPCG result is VALID with a GFLOP/s rating of=63.6515"
+    metrics:
+      hpcg_rating:
+        regex:
+          exp: 'rating of=(\d+\.\d+)$'
+          stream: stdout
+
+  metric_variable_assignment:
+    executor: generic.local.sh
+    type: script
+    description: capture result metric based on variables and environment variable
+    vars:
+      GFLOPS: "63.6515"
+    env:
+      FOO: BAR
+    run: |
+      echo $GFLOPS
+      echo $FOO
+    tags: tutorials
+    metrics:
+      gflops:
+        vars: "GFLOPS"
+      foo:
+        env: "FOO"

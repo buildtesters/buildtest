@@ -21,6 +21,8 @@ The spack schema is referenced using `type: spack` which is used for generating 
 | [type](#type)               | `string`  | Required | cannot be null | [spack schema version 1.0](spack-v1-properties-type.md "spack-v1.0.schema.json#/properties/type")                   |
 | [description](#description) | `string`  | Optional | cannot be null | [spack schema version 1.0](definitions-definitions-description.md "spack-v1.0.schema.json#/properties/description") |
 | [executor](#executor)       | `string`  | Required | cannot be null | [spack schema version 1.0](definitions-definitions-executor.md "spack-v1.0.schema.json#/properties/executor")       |
+| [env](#env)                 | `object`  | Optional | cannot be null | [spack schema version 1.0](definitions-definitions-env.md "spack-v1.0.schema.json#/properties/env")                 |
+| [vars](#vars)               | `object`  | Optional | cannot be null | [spack schema version 1.0](definitions-definitions-env.md "spack-v1.0.schema.json#/properties/vars")                |
 | [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [spack schema version 1.0](definitions-definitions-list_of_strings.md "spack-v1.0.schema.json#/properties/sbatch")  |
 | [bsub](#bsub)               | `array`   | Optional | cannot be null | [spack schema version 1.0](definitions-definitions-list_of_strings.md "spack-v1.0.schema.json#/properties/bsub")    |
 | [cobalt](#cobalt)           | `array`   | Optional | cannot be null | [spack schema version 1.0](definitions-definitions-list_of_strings.md "spack-v1.0.schema.json#/properties/cobalt")  |
@@ -31,6 +33,7 @@ The spack schema is referenced using `type: spack` which is used for generating 
 | [pre_cmds](#pre_cmds)       | `string`  | Optional | cannot be null | [spack schema version 1.0](spack-v1-properties-pre_cmds.md "spack-v1.0.schema.json#/properties/pre_cmds")           |
 | [post_cmds](#post_cmds)     | `string`  | Optional | cannot be null | [spack schema version 1.0](spack-v1-properties-post_cmds.md "spack-v1.0.schema.json#/properties/post_cmds")         |
 | [status](#status)           | `object`  | Optional | cannot be null | [spack schema version 1.0](definitions-definitions-status.md "spack-v1.0.schema.json#/properties/status")           |
+| [metrics](#metrics)         | `object`  | Optional | cannot be null | [spack schema version 1.0](definitions-definitions-metrics.md "spack-v1.0.schema.json#/properties/metrics")         |
 | [spack](#spack)             | `object`  | Required | cannot be null | [spack schema version 1.0](spack-v1-properties-spack.md "spack-v1.0.schema.json#/properties/spack")                 |
 
 ## type
@@ -100,6 +103,50 @@ Select one of the executor name defined in your configuration file (`config.yml`
 ### executor Type
 
 `string`
+
+## env
+
+One or more key value pairs for an environment (key=value)
+
+`env`
+
+*   is optional
+
+*   Type: `object` ([Details](definitions-definitions-env.md))
+
+*   cannot be null
+
+*   defined in: [spack schema version 1.0](definitions-definitions-env.md "spack-v1.0.schema.json#/properties/env")
+
+### env Type
+
+`object` ([Details](definitions-definitions-env.md))
+
+### env Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+## vars
+
+One or more key value pairs for an environment (key=value)
+
+`vars`
+
+*   is optional
+
+*   Type: `object` ([Details](definitions-definitions-env.md))
+
+*   cannot be null
+
+*   defined in: [spack schema version 1.0](definitions-definitions-env.md "spack-v1.0.schema.json#/properties/vars")
+
+### vars Type
+
+`object` ([Details](definitions-definitions-env.md))
+
+### vars Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
 
 ## sbatch
 
@@ -310,6 +357,24 @@ The status section describes how buildtest detects PASS/FAIL on test. By default
 ### status Type
 
 `object` ([Details](definitions-definitions-status.md))
+
+## metrics
+
+This field is used for defining one or more metrics that is recorded for each test. A metric must have a unique name which is recorded in the test metadata.
+
+`metrics`
+
+*   is optional
+
+*   Type: `object` ([Details](definitions-definitions-metrics.md))
+
+*   cannot be null
+
+*   defined in: [spack schema version 1.0](definitions-definitions-metrics.md "spack-v1.0.schema.json#/properties/metrics")
+
+### metrics Type
+
+`object` ([Details](definitions-definitions-metrics.md))
 
 ## spack
 

@@ -20,7 +20,7 @@ The status section describes how buildtest detects PASS/FAIL on test. By default
 | :---------------------------------- | :------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [slurm_job_state](#slurm_job_state) | `string` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-slurm_job_state.md "definitions.schema.json#/definitions/status/properties/slurm_job_state") |
 | [returncode](#returncode)           | Merged   | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-int_or_list.md "definitions.schema.json#/definitions/status/properties/returncode")                            |
-| [regex](#regex)                     | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-regex.md "definitions.schema.json#/definitions/status/properties/regex")                     |
+| [regex](#regex)                     | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-regex.md "definitions.schema.json#/definitions/status/properties/regex")                                       |
 | [runtime](#runtime)                 | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-runtime.md "definitions.schema.json#/definitions/status/properties/runtime")                 |
 
 ## slurm_job_state
@@ -84,15 +84,15 @@ Perform regular expression search using `re.search` python module on stdout/stde
 
 *   is optional
 
-*   Type: `object` ([Details](definitions-definitions-status-properties-regex.md))
+*   Type: `object` ([Details](definitions-definitions-regex.md))
 
 *   cannot be null
 
-*   defined in: [JSON Schema Definitions File. ](definitions-definitions-status-properties-regex.md "definitions.schema.json#/definitions/status/properties/regex")
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-regex.md "definitions.schema.json#/definitions/status/properties/regex")
 
 ### regex Type
 
-`object` ([Details](definitions-definitions-status-properties-regex.md))
+`object` ([Details](definitions-definitions-regex.md))
 
 ## runtime
 

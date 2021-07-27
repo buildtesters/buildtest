@@ -4,7 +4,7 @@
 definitions.schema.json#/definitions/metrics_field/properties/vars
 ```
 
-
+Assign value to metric based on variable name
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                        |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------------- |

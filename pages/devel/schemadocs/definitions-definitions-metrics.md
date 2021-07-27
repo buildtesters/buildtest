@@ -1,14 +1,14 @@
-# Untitled object in script schema version 1.0 Schema
+# Untitled object in spack schema version 1.0 Schema
 
 ```txt
-script-v1.0.schema.json#/properties/metrics
+spack-v1.0.schema.json#/properties/metrics
 ```
 
 This field is used for defining one or more metrics that is recorded for each test. A metric must have a unique name which is recorded in the test metadata.
 
-| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                        |
-| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [script-v1.0.schema.json*](../out/script-v1.0.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                      |
+| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------ |
+| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [spack-v1.0.schema.json*](../out/spack-v1.0.schema.json "open original schema") |
 
 ## metrics Type
 
@@ -22,7 +22,7 @@ This field is used for defining one or more metrics that is recorded for each te
 
 ## Pattern: `^.*$`
 
-
+Name of metric
 
 `^.*$`
 

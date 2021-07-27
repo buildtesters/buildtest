@@ -41,27 +41,22 @@
       ]
     },
     "regex": {
-          "type": "object",
-          "description": "Perform regular expression search using ``re.search`` python module on stdout/stderr stream for reporting if test ``PASS``. ",
-          "properties": {
-            "stream": {
-              "type": "string",
-              "enum": [
-                "stdout",
-                "stderr"
-              ],
-              "description": "The stream field can be stdout or stderr. buildtest will read the output or error stream after completion of test and check if regex matches in stream"
-            },
-            "exp": {
-              "type": "string",
-              "description": "Specify a regular expression to run with input stream specified by ``stream`` field. buildtest uses re.search when performing regex"
-            }
-          },
-          "required": [
-            "stream",
-            "exp"
-          ]
+      "type": "object",
+      "description": "Perform regular expression search using ``re.search`` python module on stdout/stderr stream for reporting if test ``PASS``. ",
+      "required": ["stream", "exp"],
+      "additionalProperties": false,
+      "properties": {
+        "stream": {
+          "type": "string",
+          "enum": ["stdout", "stderr"],
+          "description": "The stream field can be stdout or stderr. buildtest will read the output or error stream after completion of test and check if regex matches in stream"
         },
+        "exp": {
+          "type": "string",
+          "description": "Specify a regular expression to run with input stream specified by ``stream`` field. buildtest uses re.search when performing regex"
+        }
+      }
+    },
     "env": {
       "type": "object",
       "description": "One or more key value pairs for an environment (key=value)",
@@ -96,15 +91,18 @@
       "additionalProperties": false,
       "properties": {
         "regex": {"$ref": "#/definitions/regex" } ,
-        "vars": {"type": "string"},
-        "env": {"type": "string"}
+        "vars": {"type": "string", "description": "Assign value to metric based on variable name"},
+        "env": {"type": "string", "description": "Assign value to metric based on environment variable"}
       }
     },
     "metrics": {
       "type": "object",
       "description": "This field is used for defining one or more metrics that is recorded for each test. A metric must have a unique name which is recorded in the test metadata.",
       "patternProperties": {
-        "^.*$": { "$ref": "#/definitions/metrics_field" }
+        "^.*$": {
+          "$ref": "#/definitions/metrics_field" ,
+          "description": "Name of metric"
+        }
       }
     },
     "run_only": {
@@ -240,26 +238,8 @@
           "$ref": "#/definitions/int_or_list"
         },
         "regex": {
-          "type": "object",
-          "description": "Perform regular expression search using ``re.search`` python module on stdout/stderr stream for reporting if test ``PASS``. ",
-          "properties": {
-            "stream": {
-              "type": "string",
-              "enum": [
-                "stdout",
-                "stderr"
-              ],
-              "description": "The stream field can be stdout or stderr. buildtest will read the output or error stream after completion of test and check if regex matches in stream"
-            },
-            "exp": {
-              "type": "string",
-              "description": "Specify a regular expression to run with input stream specified by ``stream`` field. buildtest uses re.search when performing regex"
-            }
-          },
-          "required": [
-            "stream",
-            "exp"
-          ]
+          "$ref": "#/definitions/regex",
+          "description": "Determine state (PASS/FAIL) of test based on regular expression on output or error stream"
         },
         "runtime": {
           "type": "object",

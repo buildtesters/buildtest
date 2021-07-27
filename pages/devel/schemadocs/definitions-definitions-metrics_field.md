@@ -4,7 +4,7 @@
 definitions.schema.json#/definitions/metrics/patternProperties/^.*$
 ```
 
-
+Name of metric
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                        |
 | :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------------- |
@@ -42,7 +42,7 @@ Perform regular expression search using `re.search` python module on stdout/stde
 
 ## vars
 
-
+Assign value to metric based on variable name
 
 `vars`
 
@@ -60,7 +60,7 @@ Perform regular expression search using `re.search` python module on stdout/stde
 
 ## env
 
-
+Assign value to metric based on environment variable
 
 `env`
 
