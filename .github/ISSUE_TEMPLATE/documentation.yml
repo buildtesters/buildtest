@@ -26,7 +26,7 @@ body:
     attributes:
       label: Post question in Slack
       options:
-        - label: I agree that I posted my question in slack before creating an issue
+        - label: I agree that I posted my question in [slack](https://hpcbuildtest.slack.com/) before creating an issue
           required: true
  
   - type: checkboxes
