@@ -1192,9 +1192,9 @@ class BuildTest:
             "date": datetime.now().strftime("%Y/%m/%d %X"),
             "buildtest": shutil.which("buildtest"),
             "python": self.system.system["python"],
-            "python-ver": self.system.system["pyver"],
+            "python_version": self.system.system["pyver"],
             "testdir": self.testdir,
-            "configfile": self.configuration.file,
+            "configuration": self.configuration.file,
             "system": self.configuration.name(),
             "logpath": os.path.join(
                 build_history_dir, os.path.basename(self.logfile.name)
@@ -1213,6 +1213,26 @@ class BuildTest:
                 "fail_rate": self.test_summary["fail_rate"],
             },
         }
+
+        history_data["builders"] = {}
+        for builder in self.builders:
+            uid = str(builder.metadata["full_id"])
+            history_data["builders"][uid] = {}
+            history_data["builders"][uid]["name"] = builder.name
+            history_data["builders"][uid]["buildspec"] = builder.buildspec
+            history_data["builders"][uid]["tags"] = builder.metadata["tags"]
+            history_data["builders"][uid]["executors"] = builder.metadata["executor"]
+            history_data["builders"][uid]["state"] = builder.metadata["result"]["state"]
+            history_data["builders"][uid]["returncode"] = builder.metadata["result"][
+                "returncode"
+            ]
+            history_data["builders"][uid]["runtime"] = builder.metadata["result"][
+                "runtime"
+            ]
+            history_data["builders"][uid]["testpath"] = builder.metadata["testpath"]
+            history_data["builders"][uid]["errfile"] = builder.build_script
+            history_data["builders"][uid]["outfile"] = builder.metadata["outfile"]
+            history_data["builders"][uid]["errfile"] = builder.metadata["errfile"]
 
         with open(build_history_file, "w") as fd:
             fd.write(json.dumps(history_data, indent=2))

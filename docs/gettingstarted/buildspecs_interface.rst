@@ -172,6 +172,16 @@ or ``-mb`` short option. This can be useful to get correlation between maintaine
 .. command-output:: buildtest buildspec find -mb
 
 
+Terse Output
+~~~~~~~~~~~~~
+
+You can use the ``--terse`` option to print output of ``buildtest buildspec find`` in terse format that can
+be useful if you want to parse content of file. In example below, we will print output of tags in terse format, the
+first entry ``tags`` is the header followed by list of unique tags.  The ``--no-header`` option
+can be used to disable printing of header title.
+
+.. command-output:: buildtest buildspec find -t --terse
+
 Validate Buildspecs
 ---------------------
 

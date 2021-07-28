@@ -272,7 +272,7 @@ path. To demonstrate we will build ``tutorials/python-shell.yml`` three times us
 
 The rebuild works with all options including: ``--buildspec``, ``--exclude``, ``--tags``
 and ``--executors``. buildtest will perform rebuild for all discovered tests, for instance in
-this next example we will discover all tests by tag name **fail** and each test is rebuild twoce.
+this next example we will discover all tests by tag name **fail** and each test is rebuild twice.
 
 .. command-output:: buildtest build -t fail --rebuild 2
 
@@ -280,7 +280,7 @@ The rebuild option expects a range between **1-50**, the ``--rebuild=1`` is equi
 to running without ``--rebuild`` option. We set a max limit for rebuild option to
 avoid system degredation due to high workload.
 
-If you try to exceed this bound you will get an error such as::
+If you try to exceed this bound you will get an error such as
 
 .. command-output:: buildtest build -b tutorials/pass_returncode.yml --rebuild 51
 
