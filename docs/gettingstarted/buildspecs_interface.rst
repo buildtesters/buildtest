@@ -153,6 +153,8 @@ name of test and test description. Shown below is an example output.
     :ellipsis: 31
 
 
+.. _buildspec_maintainers:
+
 Query Maintainers in buildspecs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

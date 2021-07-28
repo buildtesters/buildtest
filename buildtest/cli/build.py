@@ -24,6 +24,7 @@ from buildtest.defaults import (
 )
 from buildtest.exceptions import BuildspecError, BuildTestError, ExecutorError
 from buildtest.executors.setup import BuildExecutor
+from buildtest.schemas.defaults import schema_table
 from buildtest.system import system
 from buildtest.utils.file import (
     create_dir,
@@ -390,7 +391,7 @@ class BuildTest:
         executors=None,
         testdir=None,
         stage=None,
-        filter_tags=None,
+        filter=None,
         rebuild=None,
         buildtest_system=None,
         report_file=None,
@@ -416,8 +417,8 @@ class BuildTest:
         :type testdir: str, optional
         :param stage: contains value of command line argument (--stage)
         :type stage: str, optional
-        :param filter_tags: contains value of command line argument (--filter-tags)
-        :type filter_tags: list, optional
+        :param filter: filters buildspecs and tests based on ``--filter`` argument which is a key/value dictionary that can filter tests based on tags, type, and maintainers
+        :type filter: dict, optional
         :param rebuild: contains value of command line argument (--rebuild)
         :type rebuild: list, optional
         :param buildtest_system: Instance of BuildTestSystem class
@@ -444,9 +445,6 @@ class BuildTest:
 
         if executors and not isinstance(executors, list):
             raise BuildTestError(f"{executors} is not of type list")
-
-        if filter_tags and not isinstance(filter_tags, list):
-            raise BuildTestError(f"{filter_tags} is not of type list")
 
         if testdir and not isinstance(testdir, str):
             raise BuildTestError(f"{testdir} is not of type str")
@@ -496,7 +494,7 @@ class BuildTest:
 
         self.testdir = self.resolve_testdirectory(testdir)
         self.stage = stage
-        self.filtertags = filter_tags
+        self.filter = filter
         self.rebuild = rebuild
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
@@ -506,6 +504,9 @@ class BuildTest:
         self.buildexecutor = BuildExecutor(self.configuration, self.max_pend_time)
         self.system = buildtest_system or system
         self.report_file = resolve_path(report_file, exist=False) or BUILD_REPORT
+
+        if self.filter:
+            self._validate_filters()
 
         print("\n")
         print("User: ", self.system.system["user"])
@@ -519,6 +520,22 @@ class BuildTest:
         print("Test Directory: ", self.testdir)
         print("Configuration File: ", self.configuration.file)
         print("Command:", " ".join(sys.argv))
+
+    def _validate_filters(self):
+
+        valid_fields = ["tags", "type", "maintainers"]
+
+        for key in self.filter.keys():
+            if key not in valid_fields:
+                raise BuildTestError(
+                    f"Invalid filter field: {key} the available filter fields are: {valid_fields}"
+                )
+
+            if key == "type":
+                if self.filter[key] not in schema_table["types"]:
+                    raise BuildTestError(
+                        f"Invalid value for filter 'type': '{self.filter[key]}', valid schema types are : {schema_table['types']}"
+                    )
 
     def build(self):
         """This method is responsible for discovering buildspecs based on input argument. Then we parse
@@ -621,6 +638,10 @@ class BuildTest:
         self.builders = []
         table = {"schemafile": [], "validstate": [], "buildspec": []}
         self.invalid_buildspecs = []
+
+        # stores a list of buildspecs that are filtered out
+        filtered_buildspecs = []
+
         # build all the tests
         for buildspec in self.detected_buildspecs:
             valid_state = True
@@ -636,22 +657,34 @@ class BuildTest:
             table["validstate"].append(valid_state)
             table["buildspec"].append(buildspec)
 
-            builder = Builder(
-                bp=bp,
-                buildexecutor=self.buildexecutor,
-                filters=self.filtertags,
-                testdir=self.testdir,
-                rebuild=self.rebuild,
-                buildtest_system=self.system,
-                configuration=self.configuration,
-            )
+            try:
+                builder = Builder(
+                    bp=bp,
+                    buildexecutor=self.buildexecutor,
+                    filters=self.filter,
+                    testdir=self.testdir,
+                    rebuild=self.rebuild,
+                    buildtest_system=self.system,
+                    configuration=self.configuration,
+                )
+            except BuildTestError as err:
+                filtered_buildspecs.append(buildspec)
+                logger.error(err)
+                continue
+
             self.builders += builder.get_builders()
 
         # print any skipped buildspecs if they failed to validate during build stage
         if len(self.invalid_buildspecs) > 0:
-            print("\n\nError Messages from Stage: Parse")
+            print("\n\nBuildspecs that failed validation")
             print("{:_<80}".format(""))
             for test in self.invalid_buildspecs:
+                print(test)
+
+        if len(filtered_buildspecs) > 0:
+            print("\nBuildspecs that were filtered out")
+            print("{:_<80}".format(""))
+            for test in filtered_buildspecs:
                 print(test)
 
         # if no builders found we return from this method

@@ -22,44 +22,41 @@ This schema requires that every buildspec should have ``version`` and ``buildspe
 version key is required to lookup an a sub-schema using the ``type`` field.
 The ``buildspecs`` is the start of test declaration.
 
-Shown below is an example buildspec.
+Example Buildspec
+------------------
 
 .. literalinclude:: ../tutorials/hello_world.yml
    :language: yaml
 
-The ``maintainers`` is an optional field that is an array test maintainers. To understand
-how buildtest validates the buildspec see :ref:`parsing buildspecs <parse_stage>`.
-
-
-In this example, the global schema validates the following section:
-
-.. code-block:: yaml
-
-    version: "1.0"
-    buildspecs:
-      hello_world:
-
-    maintainers:
-      - "@shahzebsiddiqui"
-
 The field ``version`` ``buildspecs`` and ``maintainers`` are validated with **global.schema.json**
 using `jsonschema.validate <https://python-jsonschema.readthedocs.io/en/stable/_modules/jsonschema/validators/#validate>`_
 method. The test section within ``hello_world`` is validated by sub-schema by looking up schema based
-on ``type`` field:
+on ``type`` field.
 
-.. code-block:: yaml
-
-    hello_world:
-      executor: generic.local.bash
-      type: script
-      description: "hello world example"
-      run: echo "hello world!"
-
-Every sub-schema requires **type** field in this case, ``type: script`` directs
-buildtest to validate with the script schema. All type schemas have a version,
+Every sub-schema requires **type** field in this case, ``type: script`` informs
+buildtest to validate with the :ref:`script_schema`. All type schemas have a version,
 currently buildtest supports **1.0** version for all type schemas. The
 ``version: "1.0"`` is used to select the version of the sub-schema,
 in this example we validate with the schema `script-v1.0.schema.json <https://buildtesters.github.io/buildtest/pages/schemas/script-v1.0.schema.json>`_.
+
+To understand how buildtest validates the buildspec see :ref:`parsing buildspecs <parse_stage>`.
+
+.. _maintainers:
+
+Maintainers
+--------------
+
+The ``maintainers`` is an optional field that can be used to specify a list of test maintainers for a given buildspec.
+The **maintainers** property is used by buildtest to report :ref:`buildspecs by maintainers <buildspec_maintainers>` when querying
+buildspec cache. You can also :ref:`filter buildspecs <filter_buildspecs_with_buildtest_build>` by maintainers during
+building via ``buildtest build --filter maintainers=<NAME>`` if one wants to filter tests
+
+
+In this example, we have two maintainers ``@johndoe`` and ``@bobsmith``. The maintainers is a list of strings but must
+be unique names, generally this can be your name or preferably a github or gitlab handle.
+
+.. literalinclude:: ../tutorials/maintainers_example.yml
+   :language: yaml
 
 Test Names
 -----------

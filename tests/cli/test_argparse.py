@@ -1,7 +1,12 @@
 import argparse
 
 import pytest
-from buildtest.cli import get_parser, handle_kv_string, positive_number
+from buildtest.cli import (
+    get_parser,
+    handle_kv_string,
+    positive_number,
+    single_kv_string,
+)
 
 
 def test_positive_number():
@@ -22,6 +27,13 @@ def test_handle_kv_string():
     with pytest.raises(argparse.ArgumentTypeError) as err:
         handle_kv_string("tags,type,script")
         print(err)
+
+
+def test_single_kv_string():
+    assert {"tags": "fail"} == single_kv_string("tags=fail")
+
+    with pytest.raises(argparse.ArgumentTypeError):
+        single_kv_string("tags,fail")
 
 
 def test_arg_parse():

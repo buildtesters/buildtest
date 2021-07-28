@@ -63,7 +63,7 @@ def main():
             exclude_buildspecs=args.exclude,
             executors=args.executor,
             tags=args.tags,
-            filter_tags=args.filter_tags,
+            filter=args.filter,
             rebuild=args.rebuild,
             stage=args.stage,
             testdir=args.testdir,

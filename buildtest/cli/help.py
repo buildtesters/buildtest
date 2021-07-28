@@ -16,7 +16,9 @@ buildtest build -b <file> -b <dir> -x <file> -x <dir>       Exclude files and di
 buildtest build -t pass  -t python                          Build buildspecs by tagname 'pass' and 'python'
 buildtest build -e <executor1> -e <executor2>               Building buildspecs by executor
 buildtest build -b <file> -t <tagname1> -e <executor1>      Building buildspecs with file, directory, tags, and executors
-buildtest build -t <tagname1> -ft <filter-tagname1>         Filter tests by tagname
+buildtest build -b tutorials  --filter type=script          Build all tests in directory 'tutorials' and filter tests by type='script'
+buildtest build -b tutorials  --filter tags=pass            Build all tests in directory 'tutorials' and filter tests by tags='pass'
+buildtest build -b tutorials  --filter maintainers=@bob     Build all tests in directory 'tutorials' and filter tests by maintainers='@bob'
 buildtest -c config.yml build -b <file>                     Use buildtest configuration file 'config.yml' 
 buildtest build -b <file> --rebuild 5                       Rebuild a test 5 times
 buildtest build -b <file> --testdir /tmp                    Write tests in /tmp
@@ -30,6 +32,7 @@ Command                                                     Description
 buildtest report                                            Display all tests results
 buildtest report --filter returncode=0                      Filter test results by returncode=0
 buildtest report --filter state=PASS,tags=python            Filter test by multiple filter fields.
+buildtest report --filter buildspec=tutorials/vars.yml      Filter report by buildspec file 'tutorials/vars.yml
 buildtest report --format name,state,buildspec              Format report table by field 'name', 'state', 'buildspec'
 buildtest report --helpfilter                               List all filter fields
 buildtest report --helpformat                               List all format fields
