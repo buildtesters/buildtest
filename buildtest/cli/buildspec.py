@@ -43,6 +43,7 @@ class BuildspecCache:
         formatfields=None,
         roots=None,
         header=None,
+        terse=None,
     ):
         """The initializer method for BuildspecCache class is responsible for
         loading and finding buildspecs into buildspec cache. This method is called
@@ -72,6 +73,7 @@ class BuildspecCache:
 
         # list of buildspec directories to search for .yml files
         self.paths = []
+        self.terse = terse
 
         self.rebuild = rebuild
         self.cache = {}
@@ -132,7 +134,10 @@ class BuildspecCache:
         if self.rebuild and is_file(BUILDSPEC_CACHE_FILE):
             try:
                 os.remove(BUILDSPEC_CACHE_FILE)
-                print(f"Clearing cache file: {BUILDSPEC_CACHE_FILE}")
+
+                if not self.terse:
+                    print(f"Clearing cache file: {BUILDSPEC_CACHE_FILE}")
+
             except OSError as msg:
                 raise BuildTestError(msg)
 
@@ -164,7 +169,8 @@ class BuildspecCache:
                 buildspec = walk_tree(path, ".yml")
                 buildspecs += buildspec
 
-        print(f"\nBuildspec Paths: {self.paths} \n")
+        if not self.terse:
+            print(f"Buildspec Paths: {self.paths}")
 
         return buildspecs
 
@@ -174,8 +180,9 @@ class BuildspecCache:
         with open(BUILDSPEC_CACHE_FILE, "w") as fd:
             json.dump(self.update_cache, fd, indent=2)
 
-        print("\n\n")
-        print(f"Updating buildspec cache file: {BUILDSPEC_CACHE_FILE}")
+        if not self.terse:
+            print(f"Updating buildspec cache file: {BUILDSPEC_CACHE_FILE}")
+
         # write invalid buildspecs to file if any found
         if self.invalid_buildspecs:
 
@@ -194,9 +201,8 @@ class BuildspecCache:
                     fd.write("\n\n")
                     fd.write("{:=<80} \n".format(""))
 
-            print(f"Writing invalid buildspecs to file: {BUILDSPEC_ERROR_FILE} ")
-
-        print("\n\n")
+            if not self.terse:
+                print(f"Writing invalid buildspecs to file: {BUILDSPEC_ERROR_FILE} ")
 
     def _validate_buildspecs(self, buildspecs):
         """Given a list of buildspec files, validate each buildspec using BuildspecParser
@@ -222,11 +228,12 @@ class BuildspecCache:
 
             valid_buildspecs.append(parse)
 
-            if self.count % 5 == 0:
-                print(f"Validated {self.count}/{len(buildspecs)} buildspecs")
+            # if self.count % 5 == 0:
+            #    print(f"Validated {self.count}/{len(buildspecs)} buildspecs")
 
-        print(f"Validated {self.count}/{len(buildspecs)} buildspecs")
+        # print(f"Validated {self.count}/{len(buildspecs)} buildspecs")
 
+        """  
         # print invalid buildspecs if found
         if len(self.invalid_buildspecs) > 0:
             print("\n")
@@ -240,6 +247,7 @@ class BuildspecCache:
 
         print("\n")
         print(f"Adding {len(valid_buildspecs)} buildspec files to cache")
+        """
 
         return valid_buildspecs
 
@@ -248,8 +256,6 @@ class BuildspecCache:
         all .yml files specified by input argument ``paths`` which is a list of directory
         roots. The buildspecs are validated and cache file is updated"
 
-        :param paths: A list of directory roots to process buildspecs files.
-        :type paths: list
         :return: Rebuild cache file
         """
 
@@ -268,6 +274,7 @@ class BuildspecCache:
         #    self.update_cache[path] = {}
 
         buildspecs = self._discover_buildspecs()
+        """
         print("Discovered Buildspecs")
         print("{:_<80}".format(""))
         for file in buildspecs:
@@ -276,6 +283,7 @@ class BuildspecCache:
         print(f"Found {len(buildspecs)} buildspecs ")
         print("{:_<80}".format(""))
         print("\n")
+        """
 
         # validate each buildspec and return a list of valid buildspec parsers that
         # is an instance of BuildspecParser class
@@ -306,7 +314,7 @@ class BuildspecCache:
                 description = recipe[name].get("description")
 
                 if tags:
-
+                    # if tag is string, add to unique_tags list and associate name and description with tag name
                     if isinstance(tags, str):
                         self.update_cache["unique_tags"].append(tags)
 
@@ -342,7 +350,7 @@ class BuildspecCache:
         for file in self.update_cache["buildspecs"].keys():
             count += len(self.update_cache["buildspecs"][file].keys())
 
-        print(f"There are {count} tests in buildspec cache")
+        # print(f"There are {count} tests in buildspec cache")
         self._write_buildspec_cache()
 
     def check_filter_fields(self):
@@ -477,6 +485,10 @@ class BuildspecCache:
                 if self._filter_buildspecs(executor, tags, schema_type):
                     continue
 
+                # convert tags to string if its a list for printing purposes
+                if isinstance(tags, list):
+                    tags = " ".join(tags)
+
                 if self.format:
                     for field in self.table.keys():
                         if field == "type":
@@ -486,11 +498,15 @@ class BuildspecCache:
                             self.table[field].append(buildspecfile)
                         elif field == "name":
                             self.table[field].append(test)
-                        # description, tags, executor have matching format fields with buildspec properties
+
+                        # tags field must be stored as string for printing purposes
+                        elif field == "tags":
+                            self.table[field].append(tags)
                         else:
                             self.table[field].append(test_recipe.get(field))
 
                 else:
+
                     self.table["name"].append(test)
                     self.table["type"].append(schema_type)
                     self.table["executor"].append(executor)
@@ -505,9 +521,9 @@ class BuildspecCache:
         :type terse: bool
         """
 
-        if terse:
-
-            self.header = header or self.header
+        self.terse = terse or self.terse
+        self.header = header or self.header
+        if self.terse:
 
             if not self.header:
                 print("buildspec")
@@ -540,10 +556,11 @@ class BuildspecCache:
         :type terse: bool
         """
 
-        # if --terse option specified print list of all tags in machine readable format
-        if terse:
+        self.terse = terse or self.terse
+        self.header = header or self.header
 
-            self.header = header or self.header
+        # if --terse option specified print list of all tags in machine readable format
+        if self.terse:
 
             if not self.header:
                 print("tag")
@@ -568,9 +585,10 @@ class BuildspecCache:
         :type terse: bool
         """
 
-        if terse:
+        self.terse = terse or self.terse
+        self.header = header or self.header
 
-            self.header = header or self.header
+        if self.terse:
 
             if not self.header:
                 print("executor")
@@ -603,9 +621,10 @@ class BuildspecCache:
                 table["executor"].append(executor_name)
                 table["name"].append(test_name)
 
-        if terse:
+        self.terse = terse or self.terse
+        self.header = header or self.header
 
-            self.header = header or self.header
+        if self.terse:
 
             if not self.header:
                 print("executor|name")
@@ -635,9 +654,10 @@ class BuildspecCache:
                 table["tags"].append(tagname)
                 table["name"].append(test_name)
 
-        if terse:
+        self.terse = terse or self.terse
+        self.header = header or self.header
 
-            self.header = header or self.header
+        if self.terse:
 
             if not self.header:
                 print("tags|name")
@@ -651,8 +671,30 @@ class BuildspecCache:
 
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
-    def print_buildspecs(self):
+    def print_buildspecs(self, terse=None, header=None):
         """Print buildspec table"""
+
+        self.terse = terse or self.terse
+        self.header = header or self.header
+
+        # print terse output
+        if self.terse:
+
+            if not self.header:
+                print("|".join(self.table.keys()))
+
+            join_list = []
+
+            for key in self.table.keys():
+
+                join_list.append(self.table[key])
+
+            t = [list(i) for i in zip(*join_list)]
+
+            for i in t:
+                print("|".join(i))
+
+            return
 
         if os.getenv("BUILDTEST_COLOR") != "True":
             print(tabulate(self.table, headers=self.table.keys(), tablefmt="grid"))
@@ -678,11 +720,12 @@ class BuildspecCache:
 
         """
 
-        if terse:
+        self.terse = terse or self.terse
+        self.header = header or self.header
 
-            self.header = header or self.header
+        if self.terse:
 
-            if self.header:
+            if not self.header:
                 print("maintainers")
 
             for maintainer in self.cache["maintainers"]:
@@ -715,7 +758,10 @@ class BuildspecCache:
             table["maintainers"].append(maintainer)
             table["buildspec"].append(buildspec)
 
-        if terse:
+        self.terse = terse or self.terse
+        self.header = header or self.header
+
+        if self.terse:
 
             self.header = header or self.header
             if not self.header:
@@ -879,16 +925,17 @@ def buildspec_find(args, configuration):
         roots=args.root,
         configuration=configuration,
         header=args.no_header,
+        terse=args.terse,
     )
 
     # buildtest buildspec find --tags
     if args.tags:
-        cache.get_tags(terse=args.terse)
+        cache.get_tags()
         return
 
     # buildtest buildspec find --buildspec
     if args.buildspec:
-        cache.get_buildspecfiles(terse=args.terse)
+        cache.get_buildspecfiles()
         return
 
     # buildtest buildspec find --paths
@@ -898,27 +945,27 @@ def buildspec_find(args, configuration):
 
     # buildtest buildspec find --executors
     if args.executors:
-        cache.get_executors(terse=args.terse)
+        cache.get_executors()
         return
 
     # buildtest buildspec find --group-by-executors
     if args.group_by_executor:
-        cache.print_by_executors(terse=args.terse)
+        cache.print_by_executors()
         return
 
     # buildtest buildspec find --group-by-tags
     if args.group_by_tags:
-        cache.print_by_tags(terse=args.terse)
+        cache.print_by_tags()
         return
 
     # buildtest buildspec find --maintainers
     if args.maintainers:
-        cache.print_maintainer(terse=args.terse)
+        cache.print_maintainer()
         return
 
     #  buildtest buildspec find --maintainers-by-buildspecs
     if args.maintainers_by_buildspecs:
-        cache.print_maintainers_by_buildspecs(terse=args.terse)
+        cache.print_maintainers_by_buildspecs()
         return
 
     # buildtest buildspec find --helpfilter
