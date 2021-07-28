@@ -50,14 +50,14 @@ preference you can use any of the following:
 - `pipenv <https://pipenv.readthedocs.io/en/latest/>`_
 
 buildtest will provide tab completion for bash shell, this is managed by script `bash_completion.sh <https://github.com/buildtesters/buildtest/blob/devel/bash_completion.sh>`_,
-if you encounter any issues with tab completion please raise an issue at https://github.com/buildtesters/buildtest/issues/new/choose.
+if you encounter any issues with tab completion please raise an issue at https://github.com/buildtesters/buildtest/issues/.
 
 
 Development Dependencies (Optional)
 ------------------------------------
 
 If you plan to contribute back to buildtest, you will need to install additional
-dependencies found in the requirements file in ``docs/requirements.txt`` as follows::
+dependencies as follows::
 
     $ pip install -r docs/requirements.txt
 
