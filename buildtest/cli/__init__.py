@@ -203,6 +203,7 @@ def build_menu(subparsers):
     )
 
     parser_build.add_argument(
+        "-f",
         "--filter",
         type=single_kv_string,
         help="Filter buildspec based on tags, type, or maintainers. Usage:  --filter key1=val1,key2=val2",
