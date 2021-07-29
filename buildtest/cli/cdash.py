@@ -196,6 +196,10 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
                 test["buildspec_content"] = test_data["buildspec_content"]
                 test["error"] = test_data["error"]
                 test["test_content"] = test_data["test_content"]
+                # metrics property must be converted to string inorder to push to cdash
+                test["metrics"] = json.dumps(
+                    test_data["metrics"], indent=2, sort_keys=True
+                )
 
                 # tags == labels
                 test["tags"] = test_data["tags"]
@@ -284,6 +288,14 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
                 results_element, "NamedMeasurement", type="text/string", name=field
             )
             ET.SubElement(measurement, "Value").text = test[field]
+
+        metrics = ET.SubElement(
+            results_element,
+            "NamedMeasurement",
+            type="text/preformatted",
+            name="Metrics",
+        )
+        ET.SubElement(metrics, "Value").text = test["metrics"]
 
         error_content = ET.SubElement(
             results_element, "NamedMeasurement", type="text/preformatted", name="Error"
