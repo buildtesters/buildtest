@@ -7,7 +7,6 @@ from buildtest.cli.build import discover_buildspecs
 from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
     BUILDSPEC_DEFAULT_PATH,
-    BUILDSPEC_ERROR_FILE,
     BUILDTEST_BUILDSPEC_DIR,
 )
 from buildtest.exceptions import BuildspecError, BuildTestError
@@ -73,6 +72,10 @@ class BuildspecCache:
 
         # list of buildspec directories to search for .yml files
         self.paths = []
+
+        # stores invalid buildspecs and the error messages
+        self.invalid_buildspecs = {}
+
         self.terse = terse
 
         self.rebuild = rebuild
@@ -183,27 +186,6 @@ class BuildspecCache:
         if not self.terse:
             print(f"Updating buildspec cache file: {BUILDSPEC_CACHE_FILE}")
 
-        # write invalid buildspecs to file if any found
-        if self.invalid_buildspecs:
-
-            with open(BUILDSPEC_ERROR_FILE, "w") as fd:
-                for file, msg in self.invalid_buildspecs.items():
-
-                    fd.write(f"buildspec file: {file} \n")
-                    fd.write("Content of buildspec: \n")
-                    fd.write("{:_<80} \n".format(""))
-                    content = read_file(file)
-                    fd.write(content)
-                    fd.write("{:_<80} \n".format(""))
-                    fd.write("\n")
-                    fd.write("Error Message: \n")
-                    fd.write(f"{msg}")
-                    fd.write("\n\n")
-                    fd.write("{:=<80} \n".format(""))
-
-            if not self.terse:
-                print(f"Writing invalid buildspecs to file: {BUILDSPEC_ERROR_FILE} ")
-
     def _validate_buildspecs(self, buildspecs):
         """Given a list of buildspec files, validate each buildspec using BuildspecParser
         and return a list of valid buildspecs. Any invalid buildspecs are added to
@@ -233,7 +215,7 @@ class BuildspecCache:
 
         # print(f"Validated {self.count}/{len(buildspecs)} buildspecs")
 
-        """  
+        """
         # print invalid buildspecs if found
         if len(self.invalid_buildspecs) > 0:
             print("\n")
@@ -268,8 +250,6 @@ class BuildspecCache:
         self.update_cache["maintainers"] = {}
         self.update_cache["paths"] = self.paths
 
-        self.invalid_buildspecs = {}
-
         # for path in self.paths:
         #    self.update_cache[path] = {}
 
@@ -285,9 +265,17 @@ class BuildspecCache:
         print("\n")
         """
 
+        self.update_cache["invalids"] = {}
+
         # validate each buildspec and return a list of valid buildspec parsers that
         # is an instance of BuildspecParser class
         parsers = self._validate_buildspecs(buildspecs)
+
+        if self.invalid_buildspecs:
+            for buildspec in self.invalid_buildspecs.keys():
+                self.update_cache["invalids"][buildspec] = str(
+                    self.invalid_buildspecs[buildspec]
+                )
 
         # for every parsers (valid buildspecs) we update cache to build an index
         for parser in parsers:
@@ -777,6 +765,34 @@ class BuildspecCache:
 
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
+    def print_invalid_buildspecs(self, error=None):
+        """Print invalid buildspecs from cache file. This method implements command ``buildtest buildspec find invalids``
+        :param error: controls whether error message for each buildspec is printed. If set to `False`, the error messages will be omitted
+        :type error: bool, optional
+        """
+
+        if not error:
+            table = {"buildspecs": []}
+            for key in self.cache["invalids"].keys():
+                table["buildspecs"].append(key)
+
+            headers = table.keys()
+
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                headers = [
+                    colored(field, "blue", attrs=["bold"]) for field in table.keys()
+                ]
+
+            print(tabulate(table, headers=headers, tablefmt="grid"))
+            return
+
+        for key in self.cache["invalids"].keys():
+            print(key)
+            print("{:_<80}".format(""))
+            print(self.cache["invalids"][key])
+            print("{:_<80}".format(""))
+            print("\n\n")
+
     @staticmethod
     def print_filter_fields():
         """This method prints filter fields available for buildspec cache. This
@@ -928,6 +944,10 @@ def buildspec_find(args, configuration):
         terse=args.terse,
     )
 
+    if args.buildspec_find_subcommand == "invalid":
+        cache.print_invalid_buildspecs(error=args.error)
+        return
+
     # buildtest buildspec find --tags
     if args.tags:
         cache.get_tags()
@@ -946,6 +966,11 @@ def buildspec_find(args, configuration):
     # buildtest buildspec find --executors
     if args.executors:
         cache.get_executors()
+        return
+
+    # buildtest buildspec find --invalid
+    if args.invalid:
+        cache.print_invalid_buildspecs()
         return
 
     # buildtest buildspec find --group-by-executors

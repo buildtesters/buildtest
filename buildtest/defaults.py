@@ -36,7 +36,6 @@ BUILDTEST_EXECUTOR_DIR = os.path.join(VAR_DIR, "executor")
 BUILDTEST_BUILDSPEC_DIR = os.path.join(VAR_DIR, "buildspecs")
 
 BUILDSPEC_CACHE_FILE = os.path.join(BUILDTEST_BUILDSPEC_DIR, "cache.json")
-BUILDSPEC_ERROR_FILE = os.path.join(BUILDTEST_BUILDSPEC_DIR, "error.txt")
 
 BUILD_REPORT = os.path.join(VAR_DIR, "report.json")
 
