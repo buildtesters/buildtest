@@ -124,6 +124,15 @@ def test_buildspec_find_terse():
 
 
 @pytest.mark.cli
+def test_buildspec_find_invalid():
+
+    os.environ["BUILDTEST_COLOR"] = "True"
+    cache = BuildspecCache(configuration=configuration)
+    cache.print_invalid_buildspecs(error=True)
+    cache.print_invalid_buildspecs(error=False)
+
+
+@pytest.mark.cli
 def test_buildspec_find_filter():
 
     # testing buildtest buildspec find --filter tags=fail
