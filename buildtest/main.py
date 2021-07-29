@@ -81,14 +81,17 @@ def main():
 
     # implementation for 'buildtest buildspec find'
     elif args.subcommands == "buildspec":
-        from buildtest.cli.buildspec import buildspec_find, buildspec_validate
+        from buildtest.cli.buildspec import (
+            buildspec_find,
+            buildspec_validate,
+            summarize_buildspec_cache,
+        )
 
-        print(args)
-        if (
-            args.buildspecs_subcommand == "find"
-            or args.buildspec_find_subcommand == "invalid"
-        ):
+        if args.buildspecs_subcommand == "find":
             buildspec_find(args=args, configuration=configuration)
+        elif args.buildspecs_subcommand == "summary":
+            summarize_buildspec_cache(configuration)
+
         elif args.buildspecs_subcommand == "validate":
             buildspec_validate(
                 buildspecs=args.buildspec,

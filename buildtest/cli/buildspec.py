@@ -83,8 +83,8 @@ class BuildspecCache:
         self.load_paths()
         self.build()
 
-        self.check_filter_fields()
-        self.check_format_fields()
+        self._check_filter_fields()
+        self._check_format_fields()
         self.find_buildspecs()
 
     def get_cache(self):
@@ -340,7 +340,7 @@ class BuildspecCache:
         # print(f"There are {count} tests in buildspec cache")
         self._write_buildspec_cache()
 
-    def check_filter_fields(self):
+    def _check_filter_fields(self):
         """This method checks filter fields are valid. The filter fields are specified
         as ``buildtest buildspec find --filter <KEY1>=<VAL1>,<KEY2>=<VAL2>,...
         """
@@ -366,9 +366,9 @@ class BuildspecCache:
             self.tags_filter = self.filter.get("tags")
             self.type_filter = self.filter.get("type")
 
-    def check_format_fields(self):
+    def _check_format_fields(self):
         """This method will check if all format fields are valid. Format fields
-        are passed comma separated as --format field1,field2,field3,...
+        are passed as comma separated fields: ``--format field1,field2,field3,...``
         """
 
         for field in self.default_format_fields:
@@ -500,7 +500,56 @@ class BuildspecCache:
                     self.table["tags"].append(tags)
                     self.table["description"].append(description)
 
-    def get_buildspecfiles(self, terse=None, header=None):
+    def get_valid_buildspecs(self):
+        """Return a list of valid buildspecs"""
+        return self.cache["buildspecs"].keys()
+
+    def get_invalid_buildspecs(self):
+        """Return a list of invalid buildspecs"""
+        return self.cache["invalids"].keys()
+
+    def get_unique_tags(self):
+        """Return a list of unique tags."""
+        return self.cache["unique_tags"]
+
+    def get_unique_executors(self):
+        """Return a list of unique executors."""
+        return self.cache["unique_executors"]
+
+    def get_maintainers(self):
+        """Return a list of maintainers."""
+        return list(self.cache["maintainers"].keys())
+
+    def get_paths(self):
+        """Return a list of search paths"""
+        return self.paths
+
+    def tag_breakdown(self):
+        """This method will return a breakdown of tags by test names."""
+        tag_summary = {}
+        for tagname in self.cache["tags"].keys():
+            tag_summary[tagname] = self.cache["tags"][tagname].keys()
+
+        return tag_summary
+
+    def executor_breakdown(self):
+        """This method will return a dictionary with breakdown of executors by test names."""
+        executor_summary = {}
+        for executor in self.cache["executor"].keys():
+            executor_summary[executor] = self.cache["executor"][executor].keys()
+
+        return executor_summary
+
+    def test_breakdown_by_buildspec(self):
+        """This method will return a dictionary with breakdown of buildspecs by test names."""
+
+        buildspec_summary = {}
+        for name in self.cache["buildspecs"].keys():
+            buildspec_summary[name] = self.cache["buildspecs"][name].keys()
+
+        return buildspec_summary
+
+    def print_buildspecfiles(self, terse=None, header=None):
         """This method implements ``buildtest buildspec find --buildspec``
         which reports all buildspec files in cache.
 
@@ -535,7 +584,7 @@ class BuildspecCache:
 
         print(tabulate(table, headers=table.keys(), tablefmt="grid"))
 
-    def get_tags(self, terse=None, header=None):
+    def print_tags(self, terse=None, header=None):
         """This method implements ``buildtest buildspec find --tags`` which
         reports a list of unique tags from all buildspecs in cache file.
 
@@ -564,7 +613,7 @@ class BuildspecCache:
 
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
-    def get_executors(self, terse=None, header=None):
+    def print_executors(self, terse=None, header=None):
         """This method implements ``buildtest buildspec find --executors``
         which reports all executors from cache.
 
@@ -930,6 +979,58 @@ def buildspec_validate(
         print("All buildspecs passed validation!!!")
 
 
+def summarize_buildspec_cache(configuration):
+
+    cache = BuildspecCache(configuration=configuration)
+    print("Reading Buildspec Cache File:", BUILDSPEC_CACHE_FILE)
+    print("\n")
+    print("Search Paths:", cache.get_paths())
+    print("Total Valid Buildspecs: ", len(cache.get_valid_buildspecs()))
+    print("Total Invalid Buildspecs: ", len(cache.get_invalid_buildspecs()))
+    print("Total Unique Tags: ", len(cache.get_unique_tags()))
+    print("Total Unique Executors: ", len(cache.get_unique_executors()))
+    print("Total Maintainers:", len(cache.get_maintainers()))
+    print("Unique Tags: ", cache.get_unique_tags())
+    print("Unique Executors: ", cache.get_unique_executors())
+    print("Unique Maintainers:", cache.get_maintainers())
+
+    print("\n\nTag Breakdowns")
+    print("{:_<30}".format(""))
+    print("\n")
+
+    table = {"name": [], "total": []}
+    tag_summary = cache.tag_breakdown()
+    for key in tag_summary.keys():
+        table["name"].append(key)
+        table["total"].append(len(tag_summary[key]))
+
+    print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+
+    print("\n\nExecutor Breakdowns")
+    print("{:_<30}".format(""))
+    print("\n")
+
+    table = {"name": [], "total": []}
+    executor_summary = cache.executor_breakdown()
+    for key in executor_summary.keys():
+        table["name"].append(key)
+        table["total"].append(len(executor_summary[key]))
+
+    print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+
+    print("\n\nTest Breakdown by buildspecs")
+    print("{:_<30}".format(""))
+    print("\n")
+
+    table = {"buildspec": [], "total": []}
+    buildspec_summary = cache.test_breakdown_by_buildspec()
+    for key in buildspec_summary.keys():
+        table["buildspec"].append(key)
+        table["total"].append(len(buildspec_summary[key]))
+
+    print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+
+
 def buildspec_find(args, configuration):
     """Entry point for ``buildtest buildspec find`` command"""
 
@@ -949,12 +1050,12 @@ def buildspec_find(args, configuration):
 
     # buildtest buildspec find --tags
     if args.tags:
-        cache.get_tags()
+        cache.print_tags()
         return
 
     # buildtest buildspec find --buildspec
     if args.buildspec:
-        cache.get_buildspecfiles()
+        cache.print_buildspecfiles()
         return
 
     # buildtest buildspec find --paths
@@ -964,7 +1065,7 @@ def buildspec_find(args, configuration):
 
     # buildtest buildspec find --executors
     if args.executors:
-        cache.get_executors()
+        cache.print_executors()
         return
 
     # buildtest buildspec find --invalid

@@ -70,16 +70,16 @@ def test_func_buildspec_find():
     cache = BuildspecCache(configuration=configuration)
 
     # buildtest buildspec find --tags
-    cache.get_tags()
+    cache.print_tags()
 
     # buildtest buildspec find --buildspec
-    cache.get_buildspecfiles()
+    cache.print_buildspecfiles()
 
     # buildtest buildspec find --paths
     cache.print_paths()
 
     # buildtest buildspec find --executors
-    cache.get_executors()
+    cache.print_executors()
 
     # buildtest buildspec find --group-by-executors
     cache.print_by_executors()
@@ -105,7 +105,7 @@ def test_func_buildspec_find():
     cache.print_filter_fields()
     cache.print_format_fields()
     cache.print_buildspecs()
-    cache.get_buildspecfiles()
+    cache.print_buildspecfiles()
 
 
 @pytest.mark.cli
@@ -113,9 +113,9 @@ def test_buildspec_find_terse():
 
     cache = BuildspecCache(configuration=configuration, terse=True, header=False)
     cache.print_buildspecs()
-    cache.get_tags()
-    cache.get_executors()
-    cache.get_buildspecfiles()
+    cache.print_tags()
+    cache.print_executors()
+    cache.print_buildspecfiles()
     cache.print_by_executors()
     cache.print_by_tags()
     cache.print_maintainer()
