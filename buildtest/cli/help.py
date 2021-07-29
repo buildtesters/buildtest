@@ -77,7 +77,16 @@ buildtest buildspec find --group-by-tags                    Group tests by tag n
 buildtest buildspec find --group-by-executor                Group tests by executor name            
 buildtest buildspec find --helpfilter                       Show all filter fields
 buildtest buildspec find --helpformat                       Show all format fields
-buildtest buildspec find --terse -t                         Display output in machine readable format
+buildtest buildspec find --terse                            Display output in terse format
+buildtest buildspec find invalid                            Show invalid buildspecs
+buildtest buildspec find invalid --error                    Show invalid buildspecs with error messages
+
+Buildspec Summary
+-------------------
+
+Command                                                     Description
+
+buildtest buildspec summary                                 Show summary of buildspec cache file 
     
 Validate buildspecs
 ---------------------
