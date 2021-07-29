@@ -1,4 +1,4 @@
-name: Issue with Documentation 
+name: Issue with Documentation
 description: Issue with buildtest documentation
 title: "[DOCS]: "
 labels: [documentation, triage]
@@ -20,7 +20,6 @@ body:
       description: Please provide text and explanation of the issue
     validations:
       required: true
-      
   - type: checkboxes
     id: slackterms
     attributes:
@@ -28,7 +27,6 @@ body:
       options:
         - label: I agree that I posted my question in [slack](https://hpcbuildtest.slack.com/) before creating this issue
           required: true
- 
   - type: checkboxes
     id: issueterms
     attributes:

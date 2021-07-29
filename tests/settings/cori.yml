@@ -50,9 +50,7 @@ system:
           options:
             - -C knl
           description: debug queue on KNL partition
-        
         bigmem:
           qos: bigmem
           cluster: escori
           description: large memory jobs
-           

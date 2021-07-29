@@ -32,7 +32,7 @@ jobs:
 
         # Cannot check private GitHub settings
         exclude_patterns: https://github.com/buildtesters/buildtest/settings,https://hpckp.org/past-edition/hpckp-17/,https://hpckp.org/past-edition/hpckp-18,https://sc19.supercomputing.org/presentation/?id=bof195&sess=sess324,https://sc19.supercomputing.org/,https://trac.mcs.anl.gov/projects/cobalt,https://cache.e4s.io
-        
+
   urlcheck_devel:
     runs-on: ubuntu-latest
 

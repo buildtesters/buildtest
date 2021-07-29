@@ -45,7 +45,7 @@ def test_build_by_tags():
     cmd = BuildTest(
         configuration=configuration,
         tags=["pass"],
-        filter={"tags": "pass"},
+        filter_buildspecs={"tags": "pass"},
         buildtest_system=system,
     )
     cmd.build()
@@ -61,7 +61,7 @@ def test_build_filter_check():
     cmd = BuildTest(
         configuration=configuration,
         tags=["pass"],
-        filter={"tags": "pass"},
+        filter_buildspecs={"tags": "pass"},
         buildtest_system=system,
     )
     cmd.build()
@@ -70,7 +70,7 @@ def test_build_filter_check():
     cmd = BuildTest(
         configuration=configuration,
         buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials")],
-        filter={"maintainers": "@shahzebsiddiqui"},
+        filter_buildspecs={"maintainers": "@shahzebsiddiqui"},
         buildtest_system=system,
     )
     cmd.build()
@@ -79,18 +79,24 @@ def test_build_filter_check():
     cmd = BuildTest(
         configuration=configuration,
         buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials")],
-        filter={"type": "script"},
+        filter_buildspecs={"type": "script"},
         buildtest_system=system,
     )
     cmd.build()
 
     # invalid filter field 'FOO' running 'buildtest build -t pass --filter FOO=BAR
     with pytest.raises(BuildTestError):
-        BuildTest(configuration=configuration, tags=["pass"], filter={"FOO": "BAR"})
+        BuildTest(
+            configuration=configuration, tags=["pass"], filter_buildspecs={"FOO": "BAR"}
+        )
 
     # invalid value for filter type running 'buildtest build -t pass --filter type=FOO
     with pytest.raises(BuildTestError):
-        BuildTest(configuration=configuration, tags=["pass"], filter={"type": "FOO"})
+        BuildTest(
+            configuration=configuration,
+            tags=["pass"],
+            filter_buildspecs={"type": "FOO"},
+        )
 
 
 @pytest.mark.cli

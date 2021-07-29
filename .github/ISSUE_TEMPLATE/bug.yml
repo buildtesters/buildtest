@@ -9,7 +9,6 @@ body:
     attributes:
       value: |
         Thanks for taking the time to fill out this bug report!
-  
   - type: textarea
     id: what-happened
     attributes:
@@ -45,7 +44,7 @@ body:
     attributes:
       label: Relevant log output
       description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
-      render: shell  
+      render: shell
 
   - type: textarea
     id: reproduce
