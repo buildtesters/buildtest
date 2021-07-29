@@ -41,26 +41,39 @@ def test_buildspec_validate():
 @pytest.mark.cli
 def test_func_buildspec_find():
 
+    # print with color mode
+    os.environ["BUILDTEST_COLOR"] = "True"
+    assert os.getenv("BUILDTEST_COLOR") == "True"
+
+    # buildtest buildspec find --rebuild --terse --no-header
+    cache = BuildspecCache(
+        rebuild=True, configuration=configuration, terse=True, header=False
+    )
+
+    bp_dict = cache.get_cache()
+    # check top-level keys in buildspec cache are present
+    for key in [
+        "unique_tags",
+        "unique_executors",
+        "buildspecs",
+        "maintainers",
+        "tags",
+        "executor",
+    ]:
+        assert bp_dict[key]
+
     # buildtest buildspec find --rebuild
     cache = BuildspecCache(rebuild=True, configuration=configuration)
-
     cache.print_buildspecs()
 
     # buildtest buildspec find
     cache = BuildspecCache(configuration=configuration)
-    cache.print_buildspecs()
 
     # buildtest buildspec find --tags
     cache.get_tags()
 
-    #  buildtest buildspec find --tags --terse --no-header
-    cache.get_tags(terse=True, header=True)
-
     # buildtest buildspec find --buildspec
     cache.get_buildspecfiles()
-
-    #  buildtest buildspec find --buildspec --terse --no-header
-    cache.get_buildspecfiles(terse=True, header=True)
 
     # buildtest buildspec find --paths
     cache.print_paths()
@@ -68,38 +81,54 @@ def test_func_buildspec_find():
     # buildtest buildspec find --executors
     cache.get_executors()
 
-    # buildtest buildspec find --executors --terse --no-header
-    cache.get_executors(terse=True, header=True)
-
     # buildtest buildspec find --group-by-executors
     cache.print_by_executors()
-
-    # buildtest buildspec find --group-by-executors --terse --no-header
-    cache.print_by_executors(terse=True, header=True)
 
     # buildtest buildspec find --group-by-tags
     cache.print_by_tags()
 
-    # buildtest buildspec find --group-by-tags --terse --no-header
-    cache.print_by_tags(terse=True, header=True)
-
     # buildtest buildspec find --maintainers
     cache.print_maintainer()
 
-    # buildtest buildspec find --maintainers --terse --no-header
-    cache.print_maintainer(terse=True, header=True)
-
     # implements buildtest buildspec find --maintainers-by-buildspecs
     cache.print_maintainers_by_buildspecs()
-
-    # implements buildtest buildspec find --maintainers-by-buildspecs --terse --no-header
-    cache.print_maintainers_by_buildspecs(terse=True, header=True)
 
     # implements buildtest buildspec find --helpfilter
     cache.print_filter_fields()
 
     # implements buildtest buildspec find --helpformat
     cache.print_format_fields()
+
+    # print table without color
+    os.environ["BUILDTEST_COLOR"] = "False"
+    cache = BuildspecCache(configuration=configuration)
+    cache.print_filter_fields()
+    cache.print_format_fields()
+    cache.print_buildspecs()
+    cache.get_buildspecfiles()
+
+
+@pytest.mark.cli
+def test_buildspec_find_terse():
+
+    cache = BuildspecCache(configuration=configuration, terse=True, header=False)
+    cache.print_buildspecs()
+    cache.get_tags()
+    cache.get_executors()
+    cache.get_buildspecfiles()
+    cache.print_by_executors()
+    cache.print_by_tags()
+    cache.print_maintainer()
+    cache.print_maintainers_by_buildspecs()
+
+
+@pytest.mark.cli
+def test_buildspec_find_invalid():
+
+    os.environ["BUILDTEST_COLOR"] = "True"
+    cache = BuildspecCache(configuration=configuration)
+    cache.print_invalid_buildspecs(error=True)
+    cache.print_invalid_buildspecs(error=False)
 
 
 @pytest.mark.cli
@@ -166,9 +195,9 @@ def test_buildspec_find_filter():
 @pytest.mark.cli
 def test_buildspec_find_format():
 
-    # testing buildtest buildspec find --format name,type,executor,description,buildspec
+    # testing buildtest buildspec find --format name,type,tags,executor,description,buildspec
     cache = BuildspecCache(
-        formatfields="name,type,executor,description,buildspec",
+        formatfields="name,type,tags,executor,description,buildspec",
         configuration=configuration,
     )
     cache.print_buildspecs()

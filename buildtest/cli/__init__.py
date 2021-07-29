@@ -268,7 +268,20 @@ def buildspec_menu(subparsers):
         dest="buildspecs_subcommand",
         metavar="",
     )
+
     buildspec_find = subparsers_buildspec.add_parser("find", help="find all buildspecs")
+
+    subparsers_invalid = buildspec_find.add_subparsers(
+        metavar="", dest="buildspec_find_subcommand"
+    )
+    invalid_buildspecs = subparsers_invalid.add_parser(
+        "invalid", help="Show invalid buildspecs"
+    )
+
+    invalid_buildspecs.add_argument(
+        "-e", "--error", action="store_true", help="Show error messages"
+    )
+
     buildspec_validate = subparsers_buildspec.add_parser(
         "validate", help="Validate buildspecs"
     )
