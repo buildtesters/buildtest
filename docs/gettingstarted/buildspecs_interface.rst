@@ -16,8 +16,8 @@ cache. This command is also used for generating the buildspec cache. Shown below
 
 .. _find_buildspecs:
 
-Finding Buildspecs
---------------------
+Finding Buildspecs - ``buildtest buildspec find``
+--------------------------------------------------
 
 To find all buildspecs you can run ``buildtest buildspec find`` which will discover
 all buildspecs by recursively searching all `.yml` extensions. buildtest will validate each
@@ -155,8 +155,8 @@ name of test and test description. Shown below is an example output.
 
 .. _buildspec_maintainers:
 
-Query Maintainers in buildspecs
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Query Maintainers
+~~~~~~~~~~~~~~~~~
 
 When you are writing your buildspecs, you can specify the ``maintainers`` field to assign
 authors to buildspecs. buildtest can query the maintainers from the cache
@@ -182,8 +182,33 @@ can be used to disable printing of header title.
 
 .. command-output:: buildtest buildspec find -t --terse
 
-Validate Buildspecs
----------------------
+
+Invalid Buildspecs - ``buildtest buildspec find invalid``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+buildtest will store invalid buildspecs in the cache file which can be retrieved using ``buildtest buildspec find invalid``. buildtest
+will attempt to parse each buildspec and store error message for every buildspec. If you run without any options it will
+report a list of invalid buildspecs as shown below
+
+.. command-output:: buildtest buildspec find invalid
+
+If you want to see error messages for each buildspec you can pass the ``-e`` or ``--error`` option which will display output of
+each buildspec followed by error message.
+
+.. command-output:: buildtest buildspec find invalid -e
+
+
+Cache Summary - ``buildtest buildspec summary``
+------------------------------------------------
+
+The ``buildtest buildspec summary`` command can be used to provide a summary of the buildspec cache. This command
+can be used assuming your cache is built via ``buildtest buildspec find``. Shown below is a summary of the cache file.
+
+.. command-output:: buildtest buildspec summary
+
+
+Validate Buildspecs - ``buildtest buildspec validate``
+--------------------------------------------------------
 
 buildtest can validate buildspecs through the ``buildtest buildspec validate`` command which provides
 analogous options for ``buildtest build`` for selecting buildspecs such as ``-b``, ``-e``, ``-t`` and ``-e``.

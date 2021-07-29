@@ -1068,11 +1068,6 @@ def buildspec_find(args, configuration):
         cache.print_executors()
         return
 
-    # buildtest buildspec find --invalid
-    if args.invalid:
-        cache.print_invalid_buildspecs()
-        return
-
     # buildtest buildspec find --group-by-executors
     if args.group_by_executor:
         cache.print_by_executors()
