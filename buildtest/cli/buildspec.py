@@ -16,7 +16,6 @@ from buildtest.utils.file import (
     is_dir,
     is_file,
     load_json,
-    read_file,
     resolve_path,
     walk_tree,
 )
