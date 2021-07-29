@@ -139,8 +139,16 @@ _buildtest ()
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
       case ${COMP_WORDS[2]} in
       find)
-         local opts="-h --help --root -r --rebuild -t --tags -b --buildspec -e --executors -p --paths --group-by-tags --group-by-executor -m --maintainers -mb --maintainers-by-buildspecs --filter --format --helpfilter --helpformat --terse -n --no-header"
-         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+         case ${COMP_WORDS[3]} in
+         # completion for 'buildtest buildspec find invalid'
+         invalid)
+           local opts="-h --help -e --error"
+           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
+         # completion for rest of arguments
+         *)
+           local opts="invalid -h --help --root -r --rebuild -t --tags -b --buildspec -e --executors -p --paths --group-by-tags --group-by-executor -m --maintainers -mb --maintainers-by-buildspecs --filter --format --helpfilter --helpformat --terse -n --no-header"
+           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
+         esac
         ;;
       validate)
         local opts="-b --buildspec -t --tag -x --exclude -e --executor"
