@@ -2,7 +2,11 @@ import os
 import tempfile
 
 import pytest
-from buildtest.cli.buildspec import BuildspecCache, buildspec_validate
+from buildtest.cli.buildspec import (
+    BuildspecCache,
+    buildspec_validate,
+    summarize_buildspec_cache,
+)
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
@@ -228,3 +232,9 @@ def test_buildspec_find_roots():
         ],
         configuration=configuration,
     )
+
+
+@pytest.mark.cli
+def test_buildspec_summary():
+    # test buildtest buildspec summary
+    summarize_buildspec_cache(configuration)
