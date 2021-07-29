@@ -2,7 +2,11 @@ import os
 import tempfile
 
 import pytest
-from buildtest.cli.buildspec import BuildspecCache, buildspec_validate
+from buildtest.cli.buildspec import (
+    BuildspecCache,
+    buildspec_validate,
+    summarize_buildspec_cache,
+)
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
@@ -70,16 +74,16 @@ def test_func_buildspec_find():
     cache = BuildspecCache(configuration=configuration)
 
     # buildtest buildspec find --tags
-    cache.get_tags()
+    cache.print_tags()
 
     # buildtest buildspec find --buildspec
-    cache.get_buildspecfiles()
+    cache.print_buildspecfiles()
 
     # buildtest buildspec find --paths
     cache.print_paths()
 
     # buildtest buildspec find --executors
-    cache.get_executors()
+    cache.print_executors()
 
     # buildtest buildspec find --group-by-executors
     cache.print_by_executors()
@@ -105,7 +109,7 @@ def test_func_buildspec_find():
     cache.print_filter_fields()
     cache.print_format_fields()
     cache.print_buildspecs()
-    cache.get_buildspecfiles()
+    cache.print_buildspecfiles()
 
 
 @pytest.mark.cli
@@ -113,9 +117,9 @@ def test_buildspec_find_terse():
 
     cache = BuildspecCache(configuration=configuration, terse=True, header=False)
     cache.print_buildspecs()
-    cache.get_tags()
-    cache.get_executors()
-    cache.get_buildspecfiles()
+    cache.print_tags()
+    cache.print_executors()
+    cache.print_buildspecfiles()
     cache.print_by_executors()
     cache.print_by_tags()
     cache.print_maintainer()
@@ -228,3 +232,9 @@ def test_buildspec_find_roots():
         ],
         configuration=configuration,
     )
+
+
+@pytest.mark.cli
+def test_buildspec_summary():
+    # test buildtest buildspec summary
+    summarize_buildspec_cache(configuration)

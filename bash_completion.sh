@@ -133,7 +133,7 @@ _buildtest ()
       ;;
 
     buildspec)
-      local cmds="-h --help find validate"
+      local cmds="-h --help find validate summary"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # switch based on 2nd word 'buildtest buildspec <subcommand>'

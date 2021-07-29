@@ -283,7 +283,7 @@ avoid system degredation due to high workload.
 If you try to exceed this bound you will get an error such as
 
 .. command-output:: buildtest build -b tutorials/pass_returncode.yml --rebuild 51
-
+    :returncode: 1
 
 Use Alternate Configuration file
 ---------------------------------
