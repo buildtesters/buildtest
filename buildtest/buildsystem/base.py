@@ -501,7 +501,7 @@ class BuilderBase(ABC):
             lines += [f"#BSUB -e {self.name}.err"]
             return lines
 
-        if sbatch:
+        elif sbatch:
 
             script = SlurmBatchScript(batch=batch, sbatch=sbatch)
             lines += script.get_headers()
@@ -510,13 +510,13 @@ class BuilderBase(ABC):
             lines += [f"#SBATCH --error={self.name}.err"]
             return lines
 
-        if cobalt:
+        elif cobalt:
             script = CobaltBatchScript(batch=batch, cobalt=cobalt)
             lines += script.get_headers()
             lines += [f"#COBALT --jobname {self.name}"]
             return lines
 
-        if pbs:
+        elif pbs:
             script = PBSBatchScript(batch=batch, pbs=pbs)
             lines += script.get_headers()
             lines += [f"#PBS -N {self.name}"]

@@ -99,7 +99,17 @@ class Builder:
                 # Add the builder for the script or spack schema
                 if recipe["type"] in ["script", "spack"]:
                     self.builders += self._generate_builders(recipe, name)
-
+                    """
+                    self.builders.append(
+                        ScriptBuilder(
+                            name=name,
+                            recipe=recipe,
+                            buildspec=self.bp.buildspec,
+                            buildexecutor=self.buildexecutor,
+                            testdir=self.testdir,
+                        )
+                    )
+                    """
                 elif recipe["type"] == "compiler":
 
                     self._build_compilers(name, recipe)

@@ -543,12 +543,6 @@ def inspect_menu(subparsers):
         metavar="",
     )
     name = subparser.add_parser("name", help="Specify name of test")
-    name.add_argument(
-        "-a",
-        "--all",
-        action="store_true",
-        help="Fetch all test records for a given test name",
-    )
     name.add_argument("name", nargs="*", help="Name of test")
 
     test_id = subparser.add_parser("id", help="Specify a Test ID")

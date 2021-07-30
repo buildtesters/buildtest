@@ -15,7 +15,7 @@ buildspecs:
     description: build sandbox image from docker image docker://godlovedc/lolcow
     tags: [containers, singularity]
     run: singularity build --sandbox mylolcow_latest_sandbox docker://godlovedc/lolcow
-
+ 
   build_remoteimages:
     type: script
     executor: generic.local.bash

@@ -48,7 +48,7 @@ class LSFBatchScript(BatchScript):
 
             for key, value in self.batch.items():
 
-                if key == "exclusive" and self.batch[key] is True:
+                if key == "exclusive" and self.batch[key] == True:
                     self.headers += [
                         f"{self.directive} {self.batch_translation['exclusive']}"
                     ]
@@ -103,7 +103,7 @@ class SlurmBatchScript(BatchScript):
         # only process if batch field is specified
         if self.batch:
             for key, value in self.batch.items():
-                if key == "exclusive" and self.batch[key] is True:
+                if key == "exclusive" and self.batch[key] == True:
                     self.headers += [
                         f"{self.directive} {self.batch_translation['exclusive']}=user"
                     ]

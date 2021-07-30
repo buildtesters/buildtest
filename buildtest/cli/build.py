@@ -391,7 +391,7 @@ class BuildTest:
         executors=None,
         testdir=None,
         stage=None,
-        filter_buildspecs=None,
+        filter=None,
         rebuild=None,
         buildtest_system=None,
         report_file=None,
@@ -417,8 +417,8 @@ class BuildTest:
         :type testdir: str, optional
         :param stage: contains value of command line argument (--stage)
         :type stage: str, optional
-        :param filter_buildspecs: filters buildspecs and tests based on ``--filter`` argument which is a key/value dictionary that can filter tests based on tags, type, and maintainers
-        :type filter_buildspecs: dict, optional
+        :param filter: filters buildspecs and tests based on ``--filter`` argument which is a key/value dictionary that can filter tests based on tags, type, and maintainers
+        :type filter: dict, optional
         :param rebuild: contains value of command line argument (--rebuild)
         :type rebuild: list, optional
         :param buildtest_system: Instance of BuildTestSystem class
@@ -494,7 +494,7 @@ class BuildTest:
 
         self.testdir = self.resolve_testdirectory(testdir)
         self.stage = stage
-        self.filter_buildspecs = filter_buildspecs
+        self.filter = filter
         self.rebuild = rebuild
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
@@ -505,7 +505,7 @@ class BuildTest:
         self.system = buildtest_system or system
         self.report_file = resolve_path(report_file, exist=False) or BUILD_REPORT
 
-        if self.filter_buildspecs:
+        if self.filter:
             self._validate_filters()
 
         print("\n")
@@ -525,16 +525,16 @@ class BuildTest:
 
         valid_fields = ["tags", "type", "maintainers"]
 
-        for key in self.filter_buildspecs.keys():
+        for key in self.filter.keys():
             if key not in valid_fields:
                 raise BuildTestError(
                     f"Invalid filter field: {key} the available filter fields are: {valid_fields}"
                 )
 
             if key == "type":
-                if self.filter_buildspecs[key] not in schema_table["types"]:
+                if self.filter[key] not in schema_table["types"]:
                     raise BuildTestError(
-                        f"Invalid value for filter 'type': '{self.filter_buildspecs[key]}', valid schema types are : {schema_table['types']}"
+                        f"Invalid value for filter 'type': '{self.filter[key]}', valid schema types are : {schema_table['types']}"
                     )
 
     def build(self):
@@ -661,7 +661,7 @@ class BuildTest:
                 builder = Builder(
                     bp=bp,
                     buildexecutor=self.buildexecutor,
-                    filters=self.filter_buildspecs,
+                    filters=self.filter,
                     testdir=self.testdir,
                     rebuild=self.rebuild,
                     buildtest_system=self.system,

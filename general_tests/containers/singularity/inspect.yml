@@ -8,7 +8,7 @@ buildspecs:
     vars:
       IMAGE: alpine.sif
     run: |
-      singularity pull $IMAGE library://alpine:latest
+      singularity pull $IMAGE library://alpine:latest 
       singularity inspect --all $IMAGE
       singularity inspect -d $IMAGE
       singularity inspect -e $IMAGE

@@ -8,7 +8,7 @@ buildspecs:
     vars:
       IMAGE: lolcow_latest.sif
     run: |
-      singularity pull $IMAGE docker://godlovedc/lolcow
+      singularity pull $IMAGE docker://godlovedc/lolcow 
       singularity inspect $IMAGE
 
   pullImage_sylabscloud:
@@ -25,10 +25,10 @@ buildspecs:
   pullImage_shub:
     type: script
     executor: generic.local.bash
-    description: Pull image shub://vsoch/singularity-images from SingularityHub
+    description: Pull image shub://vsoch/singularity-images from SingularityHub    
     tags: [containers, singularity]
-    vars:
+    vars: 
       IMAGE: singularity-images.sif
     run: |
-      singularity pull $IMAGE shub://vsoch/singularity-images
+      singularity pull $IMAGE shub://vsoch/singularity-images    
       singularity inspect $IMAGE

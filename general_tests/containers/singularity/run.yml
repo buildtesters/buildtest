@@ -8,3 +8,6 @@ buildspecs:
     run: |
       singularity run docker://godlovedc/lolcow
       singularity exec docker://godlovedc/lolcow fortune
+
+
+  
