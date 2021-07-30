@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-v0.10.11 (July 30th, 2021)
+v0.10.1 (July 30th, 2021)
 ---------------------------
 
 - Add command ``buildtest buildspec summary`` to show summary of buildspec cache `#831 <https://github.com/buildtesters/buildtest/pull/831>`_
