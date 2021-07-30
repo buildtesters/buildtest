@@ -32,7 +32,7 @@ def inspect_cmd(args):
 
     # implements command 'buildtest inspect name'
     if args.inspect == "name":
-        inspect_by_name(report, args.name)
+        inspect_by_name(report, args.name, args.all)
         return
 
     if args.inspect == "query":
@@ -194,7 +194,7 @@ def inspect_query(report, args):
                 print()
 
 
-def inspect_by_name(report, names):
+def inspect_by_name(report, names, all_records):
     """Implements command ``buildtest inspect name`` which will print all test records
     by given name in JSON format.
     """
@@ -204,7 +204,12 @@ def inspect_by_name(report, names):
     for buildspec in raw_content.keys():
         for name in names:
             if raw_content[buildspec].get(name):
-                records[name] = raw_content[buildspec][name]
+                # if --all specified we get all records
+                if all_records:
+                    records[name] = raw_content[buildspec][name]
+                # otherwise get last record of each test
+                else:
+                    records[name] = raw_content[buildspec][name][-1]
 
     if not records:
         sys.exit(
