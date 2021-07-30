@@ -121,7 +121,13 @@ _buildtest ()
           local opts="-h --help -t --terse"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         name)
-          COMPREPLY=( $( compgen -W "$(_test_name)" -- $cur ) );;
+          COMPREPLY=( $( compgen -W "$(_test_name)" -- $cur ) )
+          
+          if [[ $cur == -* ]] ; then
+            local opts="-h --help -a --all"
+            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          fi
+          ;;
         query)
           COMPREPLY=( $( compgen -W "$(_test_name)" -- $cur ) )
           if [[ $cur == -* ]] ; then
