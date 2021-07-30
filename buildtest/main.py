@@ -5,7 +5,19 @@ import webbrowser
 
 from buildtest.cli import get_parser
 from buildtest.cli.build import BuildTest
+from buildtest.cli.buildspec import (
+    buildspec_find,
+    buildspec_validate,
+    summarize_buildspec_cache,
+)
+from buildtest.cli.cdash import cdash_cmd
+from buildtest.cli.compilers import compiler_cmd
+from buildtest.cli.config import config_cmd
+from buildtest.cli.help import buildtest_help
 from buildtest.cli.history import build_history
+from buildtest.cli.inspect import inspect_cmd
+from buildtest.cli.report import report_cmd
+from buildtest.cli.schema import schema_cmd
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import (
     BUILDTEST_BUILDSPEC_DIR,
@@ -81,11 +93,6 @@ def main():
 
     # implementation for 'buildtest buildspec find'
     elif args.subcommands == "buildspec":
-        from buildtest.cli.buildspec import (
-            buildspec_find,
-            buildspec_validate,
-            summarize_buildspec_cache,
-        )
 
         if args.buildspecs_subcommand == "find":
             buildspec_find(args=args, configuration=configuration)
@@ -103,48 +110,29 @@ def main():
 
     # running buildtest inspect
     elif args.subcommands == "inspect":
-
-        # if no sub-commands specified return immediately.
-        if not args.inspect:
-            return
-
-        from buildtest.cli.inspect import inspect_cmd
-
         inspect_cmd(args)
 
     # running buildtest config compilers
     elif args.subcommands == "config" and args.config == "compilers":
-        from buildtest.cli.compilers import compiler_cmd
-
         compiler_cmd(args, configuration)
 
     # running buildtest config
     elif args.subcommands == "config":
-        from buildtest.cli.config import config_cmd
-
         config_cmd(args, configuration)
 
     # buildtest report
     elif args.subcommands == "report":
-        from buildtest.cli.report import report_cmd
-
         report_cmd(args)
 
     # running bnuildtest schema
     elif args.subcommands == "schema":
-        from buildtest.cli.schema import schema_cmd
-
         schema_cmd(args)
 
     # running buildtest cdash
     elif args.subcommands == "cdash":
-        from buildtest.cli.cdash import cdash_cmd
-
         cdash_cmd(args, default_configuration=configuration)
 
     elif args.subcommands == "help":
-        from buildtest.cli.help import buildtest_help
-
         buildtest_help()
 
     elif args.subcommands == "docs":

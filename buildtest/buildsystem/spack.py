@@ -178,12 +178,6 @@ class SpackBuilder(BuilderBase):
 
             if spack_env["create"].get("manifest"):
                 manifest = resolve_path(spack_env["create"]["manifest"], exist=False)
-                """
-                if not manifest:
-                    raise BuildTestError(
-                        f"Unable to find manifest file based on input: {spack_env['create']['manifest']}"
-                    )
-                """
                 cmd.append(manifest)
 
             spack_env_create_line = " ".join(cmd)

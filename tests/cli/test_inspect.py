@@ -55,9 +55,19 @@ def test_buildtest_inspect_name():
         inspect = "name"
         name = [test_name]
         report = None
+        all = False
 
     print(f"Querying test names: {args.name}")
-    print(args)
+    inspect_cmd(args)
+
+    class args:
+        subcommands = "config"
+        inspect = "name"
+        name = [test_name]
+        report = None
+        all = True
+
+    print(f"Querying test names: {args.name}")
     inspect_cmd(args)
 
     class args:
@@ -65,6 +75,7 @@ def test_buildtest_inspect_name():
         inspect = "name"
         name = ["".join(random.choice(string.ascii_letters) for i in range(10))]
         report = None
+        all = False
 
     print(f"Querying test names: {args.name}")
     with pytest.raises(SystemExit):
