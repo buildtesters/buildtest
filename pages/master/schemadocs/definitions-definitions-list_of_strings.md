@@ -1,20 +1,20 @@
-# Untitled array in buildtest configuration schema Schema
+# Untitled array in spack schema version 1.0 Schema
 
 ```txt
-settings.schema.json#/definitions/module/properties/load
+spack-v1.0.schema.json#/definitions/test/properties/results/properties/specs
 ```
 
-Load one or more modules via `module load`
+Report result by spec name by running `spack test run -- <specs>`.
 
-| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
-| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                      |
+| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------ |
+| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [spack-v1.0.schema.json*](../out/spack-v1.0.schema.json "open original schema") |
 
-## load Type
+## specs Type
 
 `string[]`
 
-## load Constraints
+## specs Constraints
 
 **minimum number of items**: the minimum number of items for this array is: `1`
 

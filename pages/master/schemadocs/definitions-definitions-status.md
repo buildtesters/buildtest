@@ -1,14 +1,14 @@
-# Untitled object in script schema version 1.0 Schema
+# Untitled object in spack schema version 1.0 Schema
 
 ```txt
-script-v1.0.schema.json#/properties/status
+spack-v1.0.schema.json#/properties/status
 ```
 
 The status section describes how buildtest detects PASS/FAIL on test. By default returncode 0 is a PASS and anything else is a FAIL, however buildtest can support other types of PASS/FAIL conditions.
 
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                        |
-| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [script-v1.0.schema.json*](../out/script-v1.0.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                      |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------ |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [spack-v1.0.schema.json*](../out/spack-v1.0.schema.json "open original schema") |
 
 ## status Type
 
@@ -20,7 +20,8 @@ The status section describes how buildtest detects PASS/FAIL on test. By default
 | :---------------------------------- | :------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [slurm_job_state](#slurm_job_state) | `string` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-slurm_job_state.md "definitions.schema.json#/definitions/status/properties/slurm_job_state") |
 | [returncode](#returncode)           | Merged   | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-int_or_list.md "definitions.schema.json#/definitions/status/properties/returncode")                            |
-| [regex](#regex)                     | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-regex.md "definitions.schema.json#/definitions/status/properties/regex")                     |
+| [regex](#regex)                     | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-regex.md "definitions.schema.json#/definitions/status/properties/regex")                                       |
+| [runtime](#runtime)                 | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-runtime.md "definitions.schema.json#/definitions/status/properties/runtime")                 |
 
 ## slurm_job_state
 
@@ -83,12 +84,30 @@ Perform regular expression search using `re.search` python module on stdout/stde
 
 *   is optional
 
-*   Type: `object` ([Details](definitions-definitions-status-properties-regex.md))
+*   Type: `object` ([Details](definitions-definitions-regex.md))
 
 *   cannot be null
 
-*   defined in: [JSON Schema Definitions File. ](definitions-definitions-status-properties-regex.md "definitions.schema.json#/definitions/status/properties/regex")
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-regex.md "definitions.schema.json#/definitions/status/properties/regex")
 
 ### regex Type
 
-`object` ([Details](definitions-definitions-status-properties-regex.md))
+`object` ([Details](definitions-definitions-regex.md))
+
+## runtime
+
+The runtime section will pass test based on min and max values and compare with actual runtime.
+
+`runtime`
+
+*   is optional
+
+*   Type: `object` ([Details](definitions-definitions-status-properties-runtime.md))
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-status-properties-runtime.md "definitions.schema.json#/definitions/status/properties/runtime")
+
+### runtime Type
+
+`object` ([Details](definitions-definitions-status-properties-runtime.md))

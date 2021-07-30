@@ -37,6 +37,7 @@ The script schema is of `type: script` in sub-schema which is used for running s
 | [status](#status)           | `object`  | Optional | cannot be null | [script schema version 1.0](definitions-definitions-status.md "script-v1.0.schema.json#/properties/status")           |
 | [skip](#skip)               | `boolean` | Optional | cannot be null | [script schema version 1.0](definitions-definitions-skip.md "script-v1.0.schema.json#/properties/skip")               |
 | [tags](#tags)               | Merged    | Optional | cannot be null | [script schema version 1.0](script-v1-properties-tags.md "script-v1.0.schema.json#/properties/tags")                  |
+| [metrics](#metrics)         | `object`  | Optional | cannot be null | [script schema version 1.0](definitions-definitions-metrics.md "script-v1.0.schema.json#/properties/metrics")         |
 
 ## type
 
@@ -453,3 +454,21 @@ one (and only one) of
 *   [Untitled string in JSON Schema Definitions File. ](definitions-definitions-string_or_list-oneof-0.md "check type definition")
 
 *   [Untitled array in JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "check type definition")
+
+## metrics
+
+This field is used for defining one or more metrics that is recorded for each test. A metric must have a unique name which is recorded in the test metadata.
+
+`metrics`
+
+*   is optional
+
+*   Type: `object` ([Details](definitions-definitions-metrics.md))
+
+*   cannot be null
+
+*   defined in: [script schema version 1.0](definitions-definitions-metrics.md "script-v1.0.schema.json#/properties/metrics")
+
+### metrics Type
+
+`object` ([Details](definitions-definitions-metrics.md))

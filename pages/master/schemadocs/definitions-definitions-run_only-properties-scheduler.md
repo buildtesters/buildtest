@@ -23,3 +23,4 @@ Test will run only if scheduler is available. We assume binaries are available i
 | `"lsf"`    |             |
 | `"slurm"`  |             |
 | `"cobalt"` |             |
+| `"pbs"`    |             |

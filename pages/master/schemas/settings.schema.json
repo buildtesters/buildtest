@@ -68,6 +68,21 @@
             "N/A"
           ]
         },
+        "processor": {
+          "type": "object",
+          "description": "Specify processor information",
+          "additionalProperties": false,
+          "properties": {
+            "numcpus": {"type": "integer", "minimum": 1, "description": "Specify Total Number of CPUs"},
+            "sockets": {"type": "integer", "minimum": 1, "description": "Specify Number of CPU Sockets"},
+            "cores": {"type": "integer", "minimum": 1, "description": "Specify Number of Physical Cores"},
+            "threads_per_core": {"type": "integer", "minimum":  1, "description": "Specify Threads per Core" },
+            "core_per_socket": {"type": "integer", "minimum": 1, "description": "Specify Cores per Socket"},
+            "model": {"type": "string", "description": "Specify Processor Model" },
+            "arch": {"type": "string", "description": "Specify processor architecture"},
+            "vendor": {"type": "string", "description": "Vendor Name"}
+          }
+        },
         "compilers": {
           "type": "object",
           "description": "Declare compiler section for defining system compilers that can be referenced in buildspec.",
@@ -232,7 +247,26 @@
                 }
               }
             }
+          },
+        "cdash": {
+          "type": "object",
+          "description": "Specify CDASH configuration used to upload tests via 'buildtest cdash' command",
+          "required": ["url", "project", "site"],
+          "properties": {
+            "url": {
+              "type": "string",
+              "description": "Url to CDASH server"
+            },
+            "project": {
+              "type": "string",
+              "description": "Name of CDASH project"
+            },
+            "site": {
+              "type": "string",
+              "description": "Site Name reported in CDASH"
+            }
           }
+        }
       }
     },
     "cc": {
@@ -318,8 +352,7 @@
           "description": "Specify the shell launcher you want to use when running tests locally",
           "pattern": "^(/bin/bash|/bin/sh|/bin/csh|/bin/tcsh|/bin/zsh|sh|bash|csh|tcsh|zsh|python).*"
         },
-        "before_script": { "#ref": "#/definitions/script" },
-        "after_script": { "#ref": "#/definitions/script" }
+        "before_script": { "#ref": "#/definitions/script" }
       }
     },
     "slurm": {

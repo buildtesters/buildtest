@@ -12,6 +12,8 @@
 
 *   [script schema version 1.0](./script-v1.md "The script schema is of type: script in sub-schema which is used for running shell scripts") – `script-v1.0.schema.json`
 
+*   [spack schema version 1.0](./spack-v1.md "The spack schema is referenced using type: spack which is used for generating tests using spack package manager") – `spack-v1.0.schema.json`
+
 ## Other Schemas
 
 ### Objects
@@ -22,11 +24,7 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
@@ -34,11 +32,7 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
@@ -46,11 +40,7 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
@@ -58,11 +48,7 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
@@ -70,11 +56,7 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
@@ -82,15 +64,75 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics-patternproperties-.md "Name of metric") – `definitions.schema.json#/definitions/metrics/patternProperties/^.*$`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/metrics_field/properties/regex`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/regex`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env.md "One or more key value pairs for an environment (key=value)") – `definitions.schema.json#/definitions/env`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field.md) – `definitions.schema.json#/definitions/metrics_field`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/metrics_field/properties/regex`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics.md "This field is used for defining one or more metrics that is recorded for each test") – `definitions.schema.json#/definitions/metrics`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics-patternproperties-.md "Name of metric") – `definitions.schema.json#/definitions/metrics/patternProperties/^.*$`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/metrics_field/properties/regex`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-run_only.md "A set of conditions to specify when running tests") – `definitions.schema.json#/definitions/run_only`
 
@@ -100,16 +142,44 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics-patternproperties-.md "Name of metric") – `definitions.schema.json#/definitions/metrics/patternProperties/^.*$`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/metrics_field/properties/regex`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics-patternproperties-.md "Name of metric") – `definitions.schema.json#/definitions/metrics/patternProperties/^.*$`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/metrics_field/properties/regex`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
 *   [Untitled object in buildtest configuration schema](./settings-properties-system.md) – `settings.schema.json#/properties/system`
 
 *   [Untitled object in buildtest configuration schema](./settings-properties-system-patternproperties-.md) – `settings.schema.json#/properties/system/patternProperties/^.*$`
 
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-processor.md "Specify processor information") – `settings.schema.json#/definitions/system/properties/processor`
+
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers.md "Declare compiler section for defining system compilers that can be referenced in buildspec") – `settings.schema.json#/definitions/system/properties/compilers`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-find.md "Find compilers by specifying regular expression that is applied to modulefile names") – `settings.schema.json#/definitions/system/properties/compilers/properties/find`
@@ -181,9 +251,13 @@
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-pbs.md "The pbs section is used for declaring PBS executors for running jobs using PBS scheduler") – `settings.schema.json#/definitions/system/properties/executors/properties/pbs`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-pbs-patternproperties-.md "An instance object of cobalt executor") – `settings.schema.json#/definitions/system/properties/executors/properties/pbs/patternProperties/^.*$`
+
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-cdash.md "Specify CDASH configuration used to upload tests via 'buildtest cdash' command") – `settings.schema.json#/definitions/system/properties/cdash`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system.md) – `settings.schema.json#/definitions/system`
 
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-processor.md "Specify processor information") – `settings.schema.json#/definitions/system/properties/processor`
+
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers.md "Declare compiler section for defining system compilers that can be referenced in buildspec") – `settings.schema.json#/definitions/system/properties/compilers`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-find.md "Find compilers by specifying regular expression that is applied to modulefile names") – `settings.schema.json#/definitions/system/properties/compilers/properties/find`
@@ -255,6 +329,8 @@
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-pbs.md "The pbs section is used for declaring PBS executors for running jobs using PBS scheduler") – `settings.schema.json#/definitions/system/properties/executors/properties/pbs`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-pbs-patternproperties-.md "An instance object of cobalt executor") – `settings.schema.json#/definitions/system/properties/executors/properties/pbs/patternProperties/^.*$`
+
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-cdash.md "Specify CDASH configuration used to upload tests via 'buildtest cdash' command") – `settings.schema.json#/definitions/system/properties/cdash`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section.md "A compiler section is composed of cc, cxx and fc wrapper these are required when you need to specify compiler wrapper") – `settings.schema.json#/definitions/compiler_section`
 
@@ -404,6 +480,8 @@
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-run_only.md "A set of conditions to specify when running tests") – `compiler-v1.0.schema.json#/properties/run_only`
 
+*   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-metrics.md "This field is used for defining one or more metrics that is recorded for each test") – `compiler-v1.0.schema.json#/properties/metrics`
+
 *   [Untitled object in global schema](./global-properties-buildspecs.md "This section is used to define one or more tests (buildspecs)") – `global.schema.json#/properties/buildspecs`
 
 *   [Untitled object in script schema version 1.0](./script-v1-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `script-v1.0.schema.json#/properties/batch`
@@ -415,6 +493,58 @@
 *   [Untitled object in script schema version 1.0](./script-v1-properties-run_only.md "A set of conditions to specify when running tests") – `script-v1.0.schema.json#/properties/run_only`
 
 *   [Untitled object in script schema version 1.0](./script-v1-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `script-v1.0.schema.json#/properties/status`
+
+*   [Untitled object in script schema version 1.0](./script-v1-properties-metrics.md "This field is used for defining one or more metrics that is recorded for each test") – `script-v1.0.schema.json#/properties/metrics`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-properties-env.md "One or more key value pairs for an environment (key=value)") – `spack-v1.0.schema.json#/properties/env`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-properties-vars.md "One or more key value pairs for an environment (key=value)") – `spack-v1.0.schema.json#/properties/vars`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `spack-v1.0.schema.json#/properties/batch`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `spack-v1.0.schema.json#/properties/status`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-properties-metrics.md "This field is used for defining one or more metrics that is recorded for each test") – `spack-v1.0.schema.json#/properties/metrics`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack.md "Entry point to spack configuration") – `spack-v1.0.schema.json#/properties/spack`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack-properties-mirror.md "One or more key value pairs for an environment (key=value)") – `spack-v1.0.schema.json#/properties/spack/properties/mirror`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack-properties-env.md "Used for managing spack environment using spack env command") – `spack-v1.0.schema.json#/properties/spack/properties/env`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-create.md "Create a spack environment via spack env create") – `spack-v1.0.schema.json#/definitions/env/properties/create`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-activate.md "Activate a spack environment via spack env activate") – `spack-v1.0.schema.json#/definitions/env/properties/activate`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-rm.md "Remove an existing spack environment via spack env rm") – `spack-v1.0.schema.json#/definitions/env/properties/rm`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-mirror.md "One or more key value pairs for an environment (key=value)") – `spack-v1.0.schema.json#/definitions/env/properties/mirror`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack-properties-install.md "Install spack packages using spack install command") – `spack-v1.0.schema.json#/properties/spack/properties/install`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack-properties-test.md "Entry point to spack test") – `spack-v1.0.schema.json#/properties/spack/properties/test`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test-properties-run.md "Run tests using spack via spack test run command") – `spack-v1.0.schema.json#/definitions/test/properties/run`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test-properties-results.md "View test results via spack test results after running tests via spack test run") – `spack-v1.0.schema.json#/definitions/test/properties/results`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env.md "Used for managing spack environment using spack env command") – `spack-v1.0.schema.json#/definitions/env`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-create.md "Create a spack environment via spack env create") – `spack-v1.0.schema.json#/definitions/env/properties/create`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-activate.md "Activate a spack environment via spack env activate") – `spack-v1.0.schema.json#/definitions/env/properties/activate`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-rm.md "Remove an existing spack environment via spack env rm") – `spack-v1.0.schema.json#/definitions/env/properties/rm`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-mirror.md "One or more key value pairs for an environment (key=value)") – `spack-v1.0.schema.json#/definitions/env/properties/mirror`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-install.md "Install spack packages using spack install command") – `spack-v1.0.schema.json#/definitions/install`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test.md) – `spack-v1.0.schema.json#/definitions/test`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test-properties-run.md "Run tests using spack via spack test run command") – `spack-v1.0.schema.json#/definitions/test/properties/run`
+
+*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test-properties-results.md "View test results via spack test results after running tests via spack test run") – `spack-v1.0.schema.json#/definitions/test/properties/results`
 
 ### Arrays
 
@@ -465,6 +595,10 @@
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
 
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
+
+*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
+
+*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-system-properties-hostnames.md "Specify a list of hostnames to check where buildtest can run for the given system record") – `settings.schema.json#/definitions/system/properties/hostnames`
 
@@ -735,6 +869,34 @@
 *   [Untitled array in script schema version 1.0](./script-v1-properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `script-v1.0.schema.json#/properties/BB`
 
 *   [Untitled array in script schema version 1.0](./script-v1-properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `script-v1.0.schema.json#/properties/DW`
+
+*   [Untitled array in spack schema version 1.0](./spack-v1-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `spack-v1.0.schema.json#/properties/sbatch`
+
+*   [Untitled array in spack schema version 1.0](./spack-v1-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `spack-v1.0.schema.json#/properties/bsub`
+
+*   [Untitled array in spack schema version 1.0](./spack-v1-properties-cobalt.md "This field is used for specifying #COBALT options in test script") – `spack-v1.0.schema.json#/properties/cobalt`
+
+*   [Untitled array in spack schema version 1.0](./spack-v1-properties-pbs.md "This field is used for specifying #PBS directives in test script") – `spack-v1.0.schema.json#/properties/pbs`
+
+*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-env-properties-specs.md "Add specs to environment by running spack add \<specs>") – `spack-v1.0.schema.json#/definitions/env/properties/specs`
+
+*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-install-properties-specs.md "List of specs to install using spack install command") – `spack-v1.0.schema.json#/definitions/install/properties/specs`
+
+*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-test-properties-run-properties-specs.md "List of specs to run tests by running spack test run \<specs>") – `spack-v1.0.schema.json#/definitions/test/properties/run/properties/specs`
+
+*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-test-properties-results-properties-suite.md "Report results by  suite name by running spack test results \<suite>") – `spack-v1.0.schema.json#/definitions/test/properties/results/properties/suite`
+
+*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-test-properties-results-properties-specs.md "Report result by spec name by running spack test run -- \<specs>") – `spack-v1.0.schema.json#/definitions/test/properties/results/properties/specs`
+
+*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-env-properties-specs.md "Add specs to environment by running spack add \<specs>") – `spack-v1.0.schema.json#/definitions/env/properties/specs`
+
+*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-install-properties-specs.md "List of specs to install using spack install command") – `spack-v1.0.schema.json#/definitions/install/properties/specs`
+
+*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-test-properties-run-properties-specs.md "List of specs to run tests by running spack test run \<specs>") – `spack-v1.0.schema.json#/definitions/test/properties/run/properties/specs`
+
+*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-test-properties-results-properties-suite.md "Report results by  suite name by running spack test results \<suite>") – `spack-v1.0.schema.json#/definitions/test/properties/results/properties/suite`
+
+*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-test-properties-results-properties-specs.md "Report result by spec name by running spack test run -- \<specs>") – `spack-v1.0.schema.json#/definitions/test/properties/results/properties/specs`
 
 ## Version Note
 

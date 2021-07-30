@@ -7,6 +7,16 @@ system:
 
     moduletool: N/A
     load_default_buildspecs: False
+    cdash:
+      url: https://my.cdash.org
+      project: buildtest
+      site: laptop
+    processor:
+      numcpus: 8
+      cores: 4
+      threads_per_core: 2
+      sockets: 1
+      model: "Intel(R) Core(TM) i7-8569U CPU @ 2.80GHz"
     executors:
       local:
         bash:
@@ -15,9 +25,6 @@ system:
           before_script: |
             time
             echo "commands run before job"
-          after_script: |
-            time
-            echo "commands run after job"
 
         sh:
           description: submit jobs on local machine using sh shell

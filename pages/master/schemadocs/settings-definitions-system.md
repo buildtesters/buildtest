@@ -25,8 +25,10 @@ settings.schema.json#/definitions/system
 | [testdir](#testdir)                                 | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-testdir.md "settings.schema.json#/definitions/system/properties/testdir")                                 |
 | [logdir](#logdir)                                   | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-logdir.md "settings.schema.json#/definitions/system/properties/logdir")                                   |
 | [moduletool](#moduletool)                           | `string`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-moduletool.md "settings.schema.json#/definitions/system/properties/moduletool")                           |
+| [processor](#processor)                             | `object`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor.md "settings.schema.json#/definitions/system/properties/processor")                             |
 | [compilers](#compilers)                             | `object`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers.md "settings.schema.json#/definitions/system/properties/compilers")                             |
 | [executors](#executors)                             | `object`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors.md "settings.schema.json#/definitions/system/properties/executors")                             |
+| [cdash](#cdash)                                     | `object`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-cdash.md "settings.schema.json#/definitions/system/properties/cdash")                                     |
 
 ## hostnames
 
@@ -164,6 +166,24 @@ Specify modules tool used for interacting with `module` command.
 | `"lmod"`                |             |
 | `"N/A"`                 |             |
 
+## processor
+
+Specify processor information
+
+`processor`
+
+*   is optional
+
+*   Type: `object` ([Details](settings-definitions-system-properties-processor.md))
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-processor.md "settings.schema.json#/definitions/system/properties/processor")
+
+### processor Type
+
+`object` ([Details](settings-definitions-system-properties-processor.md))
+
 ## compilers
 
 Declare compiler section for defining system compilers that can be referenced in buildspec.
@@ -199,3 +219,21 @@ The executor section is used for declaring your executors that are responsible f
 ### executors Type
 
 `object` ([Details](settings-definitions-system-properties-executors.md))
+
+## cdash
+
+Specify CDASH configuration used to upload tests via 'buildtest cdash' command
+
+`cdash`
+
+*   is optional
+
+*   Type: `object` ([Details](settings-definitions-system-properties-cdash.md))
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-cdash.md "settings.schema.json#/definitions/system/properties/cdash")
+
+### cdash Type
+
+`object` ([Details](settings-definitions-system-properties-cdash.md))
