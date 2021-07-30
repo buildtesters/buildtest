@@ -235,7 +235,7 @@ Inspecting Test by Name via ``buildtest inspect name``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``buildtest inspect name`` expects a list of positional argument that correspond to name
-of test you want to query and buildtest will fetch all records for each named test. Let's see an example to
+of test you want to query and buildtest will fetch the **last** record for each named test. Let's see an example to
 illustrate the point. We can see that each test is stored as a JSON format and buildtest keeps track of
 metadata for each test such as `user`, `hostname`, `command`, path to output and error file, content of test,
 state of test, returncode, etc... In this example, we will retrieve record for test name **circle_area** which
@@ -247,6 +247,9 @@ You can query multiple tests as positional arguments in the format: ``buildtest 
 In this next example, we will retrieve test records for ``bash_shell`` and  ``python_hello``.
 
 .. command-output:: buildtest inspect name bash_shell python_hello
+
+If you want to query all test records for a given name you can use the ``--all`` option which is applied to all positional
+arguments.
 
 .. _inspect_by_id:
 
