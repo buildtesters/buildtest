@@ -1,6 +1,19 @@
 CHANGELOG
 =========
 
+v0.10.1 (July 30th, 2021)
+---------------------------
+
+- Add command ``buildtest buildspec summary`` to show summary of buildspec cache `#831 <https://github.com/buildtesters/buildtest/pull/831>`_
+- Add command ``buildtest buildspec invalid`` to show invalid buildspecs from cache `#830 <https://github.com/buildtesters/buildtest/pull/830>`_
+- Add option ``buildtest build --filter`` for filtering buildspecs and remove option ``--filter-tags`` `#828 <https://github.com/buildtesters/buildtest/pull/828>`_
+- Add ``metrics`` property in buildspecs to define arbitrary metrics name that can store values based on variables, environment variables or regular expression on stdout/stderr. See `#819 <https://github.com/buildtesters/buildtest/pull/819>`_ `#824 <https://github.com/buildtesters/buildtest/pull/824>`_ `#832 <https://github.com/buildtesters/buildtest/pull/832>`_.
+- Add option ``--no-header`` to toggle output header with terse format in **buildtest history list**, **buildtest report**, **buildtest buildspec find** see `#815 <https://github.com/buildtesters/buildtest/pull/815/>`_ `#816 <https://github.com/buildtesters/buildtest/pull/816>`_ `#818 <https://github.com/buildtesters/buildtest/pull/818>`_
+- Add terse output ``--terse`` for command **buildtest history list** `#811 <https://github.com/buildtesters/buildtest/pull/811>`_, **buildtest report** command `#814 <https://github.com/buildtesters/buildtest/pull/814>`_ and **buildtest buildspec find** command `#809 <https://github.com/buildtesters/buildtest/pull/809/>`_
+- Change output of ``buildtest help`` `#808 <https://github.com/buildtesters/buildtest/pull/808>`_
+- Add support for ``buildtest buildspec find --filter buildspec`` to filter cache by buildspec file see `#807 <https://github.com/buildtesters/buildtest/pull/807>`_
+- Add new command ``buildtest inspect query`` for querying test records see `#806 <https://github.com/buildtesters/buildtest/pull/806>`_
+
 v0.10.0 (July 13th, 2021)
 --------------------------
 
