@@ -118,6 +118,9 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     parser.add_argument(
         "-d", "--debug", action="store_true", help="Print debug messages to screen"
     )
+    parser.add_argument(
+        "--color", help="Enable or disable color", choices=["on", "off"], default="on"
+    )
 
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 

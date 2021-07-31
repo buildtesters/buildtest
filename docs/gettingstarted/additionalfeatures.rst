@@ -70,10 +70,11 @@ To access `schema docs <https://buildtesters.github.io/buildtest>`_ you can run:
 Color Mode
 ----------
 
-buildtest will display output in color, if you want to disable color you can set
-environment variable ``BUILDTEST_COLOR`` to **False** and buildtest will not display
-the ANSI codes. This can be useful if you don't want to see ANSI color codes in the
-text output.
+buildtest will display output in color by default which can be configured on command line
+via ``buildtest --color [on|off]`` or via environment variable **BUILDTEST_COLOR**. You can disable
+color output via command argument``--color off`` or environment ``BUILDTEST_COLOR=False``.
+If ``--color on`` is set with ``BUILDTEST_COLOR=False``, the value of environment variable will be honored.
+
 
 .. _cdash_integration:
 
