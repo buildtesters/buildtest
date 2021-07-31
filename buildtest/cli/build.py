@@ -379,6 +379,32 @@ def discover_by_buildspecs(buildspec):
     return buildspecs
 
 
+def print_filters():
+
+    headers = ["Field", "Description"]
+    format_fields = [
+        ["tags", "Filter tests by 'tag' field"],
+        ["type", "Filter test by 'type' field"],
+        ["maintainers", "Filter test by 'maintainers' field"],
+    ]
+
+    if os.getenv("BUILDTEST_COLOR") != "True":
+        print(tabulate(format_fields, headers=headers, tablefmt="simple"))
+        return
+
+    table = []
+    for row in format_fields:
+        table.append([colored(row[0], "green", attrs=["bold"]), colored(row[1], "red")])
+
+    print(
+        tabulate(
+            table,
+            headers=[colored(field, "blue", attrs=["bold"]) for field in headers],
+            tablefmt="simple",
+        )
+    )
+
+
 class BuildTest:
     """This class is an interface to building tests via "buildtest build" command."""
 
@@ -398,6 +424,7 @@ class BuildTest:
         max_pend_time=None,
         poll_interval=None,
         keep_stage_dir=None,
+        helpfilter=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -431,7 +458,8 @@ class BuildTest:
         :type poll_interval: int, optional
         :param keep_stage_dir: Keep stage directory after job completion
         :type keep_stage_dir: bool, optional
-
+        :param helpfilter: Display available filter fields used by ``--filter`` option.
+        :type helpfilter: bool, optional
         """
 
         if buildspecs and not isinstance(buildspecs, list):
@@ -460,6 +488,7 @@ class BuildTest:
                 raise BuildTestError(
                     f"--rebuild {rebuild} exceeds maximum rebuild limit of 50"
                 )
+
         self.keep_stage_dir = keep_stage_dir
         self.configuration = configuration
         self.buildspecs = buildspecs
@@ -468,11 +497,16 @@ class BuildTest:
         self.executors = executors
         self.max_pend_time = max_pend_time
         self.poll_interval = poll_interval
+        self.helpfilter = helpfilter
         self.invalid_buildspecs = None
 
         self.passed_tests = 0
         self.failed_tests = 0
         self.total_tests = 0
+
+        if self.helpfilter:
+            print_filters()
+            return
 
         # get real path to log directory which accounts for variable expansion, user expansion, and symlinks
         self.logdir = resolve_path(
@@ -541,6 +575,10 @@ class BuildTest:
         """This method is responsible for discovering buildspecs based on input argument. Then we parse
         the buildspecs and retrieve builder objects for each test. Each builder object will invoke `build` which
         will build the test script, and then we run the test and update report."""
+
+        # if --helpfilter is specified we return from this method
+        if self.helpfilter:
+            return
 
         self.discovered_bp = discover_buildspecs(
             buildspecs=self.buildspecs,

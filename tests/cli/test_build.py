@@ -98,6 +98,10 @@ def test_build_filter_check():
             filter_buildspecs={"type": "FOO"},
         )
 
+    BuildTest(configuration=configuration, helpfilter=True)
+    os.environ["BUILDTEST_COLOR"] = "True"
+    BuildTest(configuration=configuration, helpfilter=True)
+
 
 @pytest.mark.cli
 def test_build_buildspecs():

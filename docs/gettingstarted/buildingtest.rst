@@ -168,6 +168,10 @@ buildtest has support for filtering buildspecs based on certain attributes defin
 will filter out tests or entire buildspec files. The ``buildtest build --filter`` option can be used to filter buildspecs which expects a **single**
 key=value pair. Currently, buildtest can filter tests based on ``tags``, ``type`` and ``maintainers``.
 
+To see all available filter fields you can run ``buildtest build --helpfilter`` and buildtest will
+report the fields followed by description.
+
+.. command-output:: buildtest build --helpfilter
 
 In this example, we will discover all buildspecs based on tagname ``pass`` and then filter each **test** by tagname **pass** specified by **--filter tags=pass**.
 

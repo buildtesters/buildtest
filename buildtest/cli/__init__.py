@@ -254,6 +254,11 @@ def build_menu(subparsers):
         action="store_true",
         help="Keep stage directory after job completion.",
     )
+    parser_build.add_argument(
+        "--helpfilter",
+        action="store_true",
+        help="Show available filter fields used with --filter option",
+    )
 
 
 def buildspec_menu(subparsers):
