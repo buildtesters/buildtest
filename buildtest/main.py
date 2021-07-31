@@ -35,9 +35,6 @@ os.environ["COLUMNS"] = "120"
 def main():
     """Entry point to buildtest."""
 
-    if not os.getenv("BUILDTEST_COLOR"):
-        os.environ["BUILDTEST_COLOR"] = "True"
-
     parser = get_parser()
     args, extras = parser.parse_known_args()
 
@@ -45,6 +42,18 @@ def main():
     if not args.subcommands:
         print(parser.print_help())
         return
+
+    color_mode = None
+
+    if args.color == "off":
+        color_mode = "False"
+    else:
+        color_mode = "True"
+
+    if os.getenv("BUILDTEST_COLOR") == "False":
+        color_mode = "False"
+
+    os.environ["BUILDTEST_COLOR"] = color_mode
     buildtest_log = os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log")
     if is_file(buildtest_log):
         remove_file(buildtest_log)

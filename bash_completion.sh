@@ -39,7 +39,7 @@ _buildtest ()
   COMPREPLY=()   # Array variable storing the possible completions.
 
   local cmds="build history buildspec schema report inspect config cdash docs schemadocs help"
-  local opts="--help -h --version -V -c --config -d --debug"
+  local opts="--help -h --version -V -c --config -d --debug --color"
 
   next=${COMP_WORDS[1]}
 
@@ -209,7 +209,11 @@ _buildtest ()
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
       # print main sub-commands to buildtest
         *)
-          COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) );;
+          COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
+          if [[ "${prev}" == "--color" ]]; then
+            COMPREPLY=( $( compgen -W "on off" -- $cur ) )
+          fi
+          ;;
       esac
   esac
 }
