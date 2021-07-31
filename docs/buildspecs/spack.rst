@@ -38,7 +38,8 @@ contains a ``specs`` property which is a list of strings types that are name of 
 
 The schema is designed to mimic spack commands which will be clear with more examples.
 
-.. program-output:: cat ../tutorials/spack/install_zlib.yml
+.. literalinclude:: ../tutorials/spack/install_zlib.yml
+    :language: yaml
 
 If you build this test and inspect the generated script, buildtest will source spack
 startup script - **source $SPACK_ROOT/share/spack/setup-env.sh** based on the ``root`` property. In this example,
@@ -73,7 +74,8 @@ maps to ``spack add <specs`` instead of ``spack install``.
 The property ``concretize: true`` will run ``spack concretize`` command that is only available as part of the ``env`` object since this command
 is only applicable in spack environments.
 
-.. program-output:: cat ../tutorials/spack/concretize_m4.yml
+.. literalinclude:: ../tutorials/spack/concretize_m4.yml
+    :language: yaml
 
 If we build this test and inspect the generated test we see that spack will activate a spack environment **m4**, add specs in spack
 environment via ``spack add m4`` and concretize the environment. The ``concretize`` is a boolean type, if its ``true`` we will run ``spack concretize -f``,
@@ -116,7 +118,8 @@ buildtest will run **spack compiler find** after sourcing spack.
 The ``option`` field can pass any command line arguments to ``spack install`` command
 and this field is available for other properties.
 
-.. program-output:: cat ../tutorials/spack/env_install.yml
+.. literalinclude:: ../tutorials/spack/env_install.yml
+    :language: yaml
 
 If we build this test and see generated test we see that buildtest will create a
 spack environment `m4_zlib` and activate the environment, add **m4** and **zlib**,
@@ -176,7 +179,8 @@ is available as part of ``create`` and ``activate`` field. In this next example 
 create a spack environment in our $HOME directory and concretize **m4** in the spack
 environment
 
-.. program-output:: cat ../tutorials/spack/env_create_directory.yml
+.. literalinclude:: ../tutorials/spack/env_create_directory.yml
+    :language: yaml
 
 When creating spack environment using directory, buildtest will automatically add the
 ``-d`` option which is required when creating spack environments. However, one can also pass
@@ -208,7 +212,8 @@ you can use the ``manifest`` property to specify path to your ``spack.yaml`` or 
 Shown below is an example buildspec that generates a test from a manifest file. The ``manifest`` property
 is of ``type: string`` and this is only available as part of ``create`` property.
 
-.. program-output:: cat ../tutorials/spack/env_create_manifest.yml
+.. literalinclude:: ../tutorials/spack/env_create_manifest.yml
+    :language: yaml
 
 If we build this test and inspect the generated script we see ``spack env create`` command
 will create an environment **manifest_example** using the manifest file that we provided.
@@ -235,7 +240,8 @@ field, the ``name`` is a required field which is the name of the spack environme
 Shown below are two example tests where we remove spack environment using the **remove_environment** and **rm** field.
 
 
-.. program-output:: cat ../tutorials/spack/remove_environment_example.yml
+.. literalinclude:: ../tutorials/spack/remove_environment_example.yml
+    :language: yaml
 
 If we look at the generated test, we notice that spack will remove environments names: **remove_environment**, **dummy**.
 
@@ -278,7 +284,8 @@ The ``pre_cmds`` are shell commands that are run before sourcing spack, whereas 
 end of the script. In the `post_cmds`, we will ``spack find`` that will be run after ``spack install``.
 We remove spack root (``$SPACK_ROOT``) so that this test can be rerun again.
 
-.. program-output:: cat ../tutorials/spack/pre_post_cmds.yml
+.. literalinclude:: ../tutorials/spack/pre_post_cmds.yml
+    :language: yaml
 
 If we build this test and inspect the generated script we see the following
 
@@ -330,7 +337,8 @@ The directives are applied at top of script. Shown below is a toy example that w
 directives using **sbatch** and **batch** property. Note, this test won't submit job to scheduler
 since we are not using the a slurm executor.
 
-.. program-output:: cat ../tutorials/spack/spack_sbatch.yml
+.. literalinclude:: ../tutorials/spack/spack_sbatch.yml
+    :language: yaml
 
 buildtest will generate the shell script with the job directives and set the name, output and error
 files based on name of test. If we build this test, and inspect the generated test we see that
@@ -368,8 +376,8 @@ the key is the name of mirror and value is location of the spack mirror.
 In this next example,  we will define a mirror name **e4s** that points to https://cache.e4s.io as the mirror location.
 Internally, this translates to ``spack mirror add e4s https://cache.e4s.io`` command.
 
-.. program-output:: cat ../tutorials/spack/mirror_example.yml
-
+.. literalinclude:: ../tutorials/spack/mirror_example.yml
+    :language: yaml
 
 If we look at the generated script for both tests, we see that mirror is added for both tests. Note that
 one can have mirrors defined in their ``spack.yaml`` or one of the `configuration scopes <https://spack.readthedocs.io/en/latest/configuration.html#configuration-scopes>`_
@@ -417,7 +425,8 @@ on spec format. Both properties are a list of string types.
 
 In example below we install `bzip2` and run the test using ``spack test run bzip2``.
 
-.. program-output:: cat ../tutorials/spack/spack_test.yml
+.. literalinclude:: ../tutorials/spack/spack_test.yml
+    :language: yaml
 
 If we look at the generated test, buildtest will automatically set ``--alias`` option to define name
 of suite, otherwise spack will generate a random text for suitename which you won't know at time
@@ -498,7 +507,8 @@ to clear all test results. This can be done in buildspec using the ``remove_test
 is a boolean. If this is set to **True** buildtest will run ``spack test remove -y`` to remove all test suites before running
 the tests.
 
-.. program-output:: cat ../tutorials/spack/spack_test_specs.yml
+.. literalinclude:: ../tutorials/spack/spack_test_specs.yml
+    :language: yaml
 
 In the generated test, we see that buildtest will remove all testsuites using ``spack test remove -y``
 and query results based on spec format. The options are passed into ``spack test results`` based on
