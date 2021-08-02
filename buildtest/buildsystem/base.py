@@ -305,11 +305,11 @@ class BuilderBase(ABC):
         """Copy output and error file into test root directory since stage directory will be removed."""
 
         shutil.copy2(
-            self.metadata["outfile"],
+            os.path.join(self.stage_dir, os.path.basename(self.metadata["outfile"])),
             os.path.join(self.test_root, os.path.basename(self.metadata["outfile"])),
         )
         shutil.copy2(
-            self.metadata["errfile"],
+            os.path.join(self.stage_dir, os.path.basename(self.metadata["errfile"])),
             os.path.join(self.test_root, os.path.basename(self.metadata["errfile"])),
         )
 
