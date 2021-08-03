@@ -3,6 +3,7 @@ import shutil
 
 from buildtest.buildsystem.base import BuilderBase
 from buildtest.utils.file import write_file
+from buildtest.utils.tools import deep_get
 
 
 class ScriptBuilder(BuilderBase):
@@ -50,18 +51,9 @@ class ScriptBuilder(BuilderBase):
         if self.shell.name == "python":
             lines = [self.default_shell.shebang]
 
-        batch_directives_lines = self._get_scheduler_directives(
-            bsub=self.recipe.get("bsub"),
-            sbatch=self.recipe.get("sbatch"),
-            cobalt=self.recipe.get("cobalt"),
-            pbs=self.recipe.get("pbs"),
-            batch=self.recipe.get("batch"),
-        )
-        if batch_directives_lines:
-            lines.append("####### START OF SCHEDULER DIRECTIVES #######")
-            lines += batch_directives_lines
-            lines.append("####### END OF SCHEDULER DIRECTIVES   #######")
-            lines.append("\n")
+        sched_lines = self.get_job_directives()
+        if sched_lines:
+            lines += sched_lines
 
         burst_buffer_lines = self._get_burst_buffer(self.recipe.get("BB"))
         if burst_buffer_lines:
@@ -88,12 +80,22 @@ class ScriptBuilder(BuilderBase):
 
         # Add environment variables
         env_lines = self._get_environment(self.recipe.get("env"))
+        # Add variables
+        var_lines = self._get_variables(self.recipe.get("vars"))
+
+        # if environment section defined within 'executors' field then read this instead
+        if deep_get(self.recipe, "executors", self.executor, "env"):
+            env_lines = self._get_environment(
+                self.recipe["executors"][self.executor]["env"]
+            )
+
+        if deep_get(self.recipe, "executors", self.executor, "vars"):
+            var_lines = self._get_environment(
+                self.recipe["executors"][self.executor]["vars"]
+            )
 
         if env_lines:
             lines += env_lines
-
-        # Add variables
-        var_lines = self._get_variables(self.recipe.get("vars"))
 
         if var_lines:
             lines += var_lines
@@ -102,4 +104,7 @@ class ScriptBuilder(BuilderBase):
         # Add run section
         lines += [self.recipe["run"]]
 
+        print(f"------ id: {self.metadata['full_id']} ----")
+        for line in lines:
+            print(line)
         return lines

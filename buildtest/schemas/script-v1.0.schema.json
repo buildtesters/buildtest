@@ -78,7 +78,9 @@
     },
     "metrics": {
       "$ref": "definitions.schema.json#/definitions/metrics"
-
+    },
+    "executors": {
+       "$ref": "definitions.schema.json#/definitions/executors"
     }
   }
 }

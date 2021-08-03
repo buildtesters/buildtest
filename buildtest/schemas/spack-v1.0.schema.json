@@ -67,6 +67,9 @@
     "metrics": {
       "$ref": "definitions.schema.json#/definitions/metrics"
     },
+    "executors": {
+      "$ref": "definitions.schema.json#/definitions/executors"
+    },
     "spack": {
       "type": "object",
       "description": "Entry point to spack configuration",
