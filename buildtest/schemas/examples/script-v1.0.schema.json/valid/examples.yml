@@ -297,3 +297,70 @@ buildspecs:
         vars: "GFLOPS"
       foo:
         env: "FOO"
+
+  multi_executor_vars:
+    type: script
+    executor: 'generic.local.(sh|bash)'
+    description: single test multiple executor with variable declaration
+    run: |
+      echo $X
+      echo $Y
+    executors:
+      generic.local.sh:
+        vars:
+          X: 1
+          Y: 2
+      generic.local.bash:
+        vars:
+          X: 10
+          Y: 11
+
+  multi_executor_environment:
+    type: script
+    executor: 'generic.local.(sh|bash)'
+    description: single test multiple executor with environment declaration
+    run: echo $SHELL
+    executors:
+      generic.local.sh:
+        env:
+          SHELL: sh
+      generic.local.bash:
+        env:
+          SHELL: bash
+
+  executors_sbatch_declaration:
+    type: script
+    executor: "generic.local.(bash|sh)"
+    description: Declaring sbatch by executors section
+    tags: [tutorials]
+    run: hostname
+    sbatch: ["-N 4"]
+    executors:
+      generic.local.bash:
+        sbatch: ["-n 4", "-N 1", "-t 30"]
+      generic.local.sh:
+        sbatch: ["-n 8", "-N 1", "-t 60"]
+
+  executors_bsub_declaration:
+    type: script
+    executor: "generic.local.(bash|sh)"
+    description: Declaring bsub  by executors section
+    tags: [tutorials]
+    run: hostname
+    executors:
+      generic.local.bash:
+        bsub: ["-n 4", "-W 30"]
+      generic.local.sh:
+        bsub: ["-n 8", "-W 60"]
+
+  executors_pbs_declaration:
+    type: script
+    executor: "generic.local.(bash|sh)"
+    description: Declaring pbs by executors section
+    tags: [tutorials]
+    run: hostname
+    executors:
+      generic.local.bash:
+        pbs: ["-l ncpus=4", "-l walltime=30"]
+      generic.local.sh:
+        pbs: ["-l ncpus=8", "-l walltime=60"]

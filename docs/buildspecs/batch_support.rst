@@ -1122,6 +1122,8 @@ buildtest will terminate after run stage.
     shared_qos_haswell_hostname
     After polling all jobs we found no valid builders to process
 
+.. _cray_burstbuffer_datawarp:
+
 Cray Burst Buffer & Data Warp
 -------------------------------
 

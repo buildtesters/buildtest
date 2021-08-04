@@ -69,12 +69,6 @@ summary of the test. In this example we can a full multi-line run section, this
 is achieved in YAML using ``run: |`` followed by content of run section tab indented
 2 spaces.
 
-In this example we introduce a new field ``status`` that is used for controlling how
-buildtest will mark test state. By default, a returncode of **0** is **PASS** and
-non-zero is a **FAIL**. Currently buildtest reports only two states: ``PASS``, ``FAIL``.
-In this example, buildtest will match the actual returncode with one defined
-in key ``returncode`` in the status section.
-
 .. _script_schema:
 
 Script Schema
@@ -95,8 +89,7 @@ The ``"type": "object"`` means sub-schema is a JSON `object <http://json-schema.
 where we define a list of key/value pair. The ``"required"`` field specifies a list of
 fields that must be specified in order to validate the Buildspec. In this example, ``type``, ``run``, and ``executor``
 are required fields. The ``additionalProperties: false`` informs schema to reject
-any extra properties not defined in the schema. In our previous example, the JSON
-object is ``variables``.
+any extra properties not defined in the schema.
 
 The **executor** key is required for all sub-schemas which instructs buildtest
 which executor to use when running the test. The executors are defined in
@@ -106,83 +99,6 @@ The **run** section is required for script schema which defines the content of
 the test script.
 
 For more details on script schema see schema docs at https://buildtesters.github.io/buildtest/
-
-
-Return Code Matching
----------------------
-
-buildtest can report PASS/FAIL based on returncode, by default a 0 exit code is PASS
-and everything else is FAIL. The returncode can be a list of exit codes to match.
-In this example we have four tests called ``exit1_fail``, ``exit1_pass``,
-``returncode_list_mismatch`` and ``returncode_int_match``.  We expect **exit1_fail** and
-**returncode_mismatch** to FAIL while **exit1_pass** and **returncode_int_match**
-will PASS.
-
-.. literalinclude:: ../tutorials/pass_returncode.yml
-   :language: yaml
-
-To demonstrate we will build this test and pay close attention to the **status**
-column in output.
-
-.. command-output:: buildtest build -b tutorials/pass_returncode.yml
-   :shell:
-
-The ``returncode`` field can be an integer or list of integers but it may not accept
-duplicate values. If you specify a list of exit codes, buildtest will check actual returncode
-with list of expected returncodes specified by `returncode` field.
-
-Shown below are examples of invalid returncodes:
-
-.. code-block:: yaml
-
-      # empty list is not allowed
-      returncode: []
-
-      # floating point is not accepted in list
-      returncode: [1, 1.5]
-
-      # floating point not accepted
-      returncode: 1.5
-
-      # duplicates are not allowed
-      returncode: [1, 2, 5, 5]
-
-.. _define_tags:
-
-Classifying tests with tags
-----------------------------
-
-The ``tags`` field can be used to classify tests which can be used to organize tests
-or if you want to :ref:`build_by_tags` (``buildtest build --tags <TAGNAME>``).
-Tags can be defined as a string or list of strings. In this example, the test
-``string_tag`` defines a tag name **network** while test ``list_of_strings_tags``
-define a list of tags named ``network`` and ``ping``.
-
-.. literalinclude:: ../tutorials/tags_example.yml
-    :language: yaml
-
-Each item in tags must be a string and no duplicates are allowed, for example in
-this test, we define a duplicate tag **network** which is not allowed.
-
-.. literalinclude:: ../tutorials/invalid_tags.yml
-    :language: yaml
-
-If we run this test and inspect the logs we will see an error message in schema validation:
-
-.. code-block:: console
-
-    2020-09-29 10:56:43,175 [parser.py:179 - _validate() ] - [INFO] Validating test - 'duplicate_string_tags' with schemafile: script-v1.0.schema.json
-    2020-09-29 10:56:43,175 [buildspec.py:397 - parse_buildspecs() ] - [ERROR] ['network', 'network'] is not valid under any of the given schemas
-
-    Failed validating 'oneOf' in schema['properties']['tags']:
-        {'oneOf': [{'type': 'string'},
-                   {'$ref': '#/definitions/list_of_strings'}]}
-
-    On instance['tags']:
-        ['network', 'network']
-
-If tags is a list, it must contain one item, therefore an empty list (i.e ``tags: []``)
-is invalid.
 
 .. _environment_variables:
 
@@ -240,13 +156,13 @@ This generated test looks something like this
 Environment variables are defined using ``export`` in bash, sh, zsh while csh and
 tcsh use ``setenv``.
 
-.. _variable_declaration:
+.. _variables:
 
-Variable Declaration
+Declaring Variables
 ----------------------
 
 Variables can be defined using ``vars`` property, this is compatible with all shells
-except for ``python``. The variables are defined slightly different in csh,tcsh as pose
+except for ``python``. The variables are defined slightly different in csh, tcsh as pose
 to bash, sh, and zsh. In example below we define tests with bash and csh.
 
 In YAML strings can be specified with or without quotes however in bash, variables
@@ -301,8 +217,149 @@ the shell variables at top of script followed content defined in ``run`` section
     echo $current_user
     echo $files_homedir
 
+Test State
+-----------
+
+buildtest will record state of each test which can be ``PASS`` or ``FAIL``. By default a 0 exit code is
+PASS and everything else is a FAIL. The ``status`` property can be used to determine how test will report its state.
+Currently, we can match state based on :ref:`returncode <returncode>`, :ref:`runtime <runtime>`, or
+:ref:`regular expression <regex>`.
+
+.. _returncode:
+
+Return Code Matching
+~~~~~~~~~~~~~~~~~~~~~
+
+buildtest can report PASS/FAIL based on returncode, by default a 0 exit code is PASS
+and everything else is FAIL. The returncode can be a list of exit codes to match.
+In this example we have four tests called ``exit1_fail``, ``exit1_pass``,
+``returncode_list_mismatch`` and ``returncode_int_match``.  We expect **exit1_fail** and
+**returncode_mismatch** to ``FAIL`` while **exit1_pass** and **returncode_int_match**
+will ``PASS``.
+
+.. literalinclude:: ../tutorials/pass_returncode.yml
+   :language: yaml
+   :emphasize-lines: 17-18,26-27,35-36
+
+Let's build this test and pay close attention to the **status**
+column in output.
+
+.. command-output:: buildtest build -b tutorials/pass_returncode.yml
+   :shell:
+
+The ``returncode`` field can be an integer or list of integers but it may not accept
+duplicate values. If you specify a list of exit codes, buildtest will check actual returncode
+with list of expected returncodes specified by `returncode` field.
+
+Shown below are examples of invalid returncodes:
+
+.. code-block:: yaml
+
+      # empty list is not allowed
+      returncode: []
+
+      # floating point is not accepted in list
+      returncode: [1, 1.5]
+
+      # floating point not accepted
+      returncode: 1.5
+
+      # duplicates are not allowed
+      returncode: [1, 2, 5, 5]
+
+.. _regex:
+
+Passing Test based on regular expression
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+buildtest can configure PASS/FAIL of test based on regular expression on output or error file. This can be useful
+if you are expecting a certain output from the test as pose to returncode check.
+
+In this example we introduce, the ``regex`` field which is part of **status** that expects
+a regular expression via ``exp``. The ``stream`` property must be  **stdout** or **stderr** which indicates
+buildtest will read output or error file and apply regular expression. If there is a match, buildtest will record the
+test state as **PASS** otherwise it will be a **FAIL**. In this example, we have two tests that will apply regular expression
+on output file.
+
+.. literalinclude:: ../tutorials/status_regex.yml
+   :language: yaml
+   :emphasize-lines: 9-12,20-23
+
+Now if we run this test, we will see first test will pass while second one will fail even though the returncode is
+a 0. Take a close look at the **status** property
+
+.. command-output:: buildtest build -b tutorials/status_regex.yml
+
+.. _runtime:
+
+Passing Test based on runtime
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+buildtest can determine state of test based on `runtime` property which is part of
+``status`` object. This can be used if you want to control how test `PASS` or `FAIL` based on
+execution time of test. In example below we have five tests that make use of **runtime** property
+for passing a test.  The runtime property support ``min`` and ``max`` property that can mark test
+pass based on minimum and maximum runtime. A test will pass if it's execution time is greater than ``min``
+time and less than ``max`` time. If `min` is specified without `max` property the upperbound is not set, likewise
+`max` without `min` will pass if test is less than **max** time. The lower bound is not set, but test runtime
+will be greater than 0 sec.
+
+In test **timelimit_min**, we sleep for 2 seconds and it will pass because minimum runtime is 1.0 seconds. Similarly,
+**timelimit_max** will pass because we sleep for 2 seconds with a max time of 5.0.
+
+.. literalinclude:: ../tutorials/runtime_status_test.yml
+   :language: yaml
+   :emphasize-lines: 9-12,21-23,31-33,42-44,52-54
+
+.. command-output:: buildtest build -b tutorials/runtime_status_test.yml
+
+If we look at the test results, we expect the first three tests **timelimit_min**, **timelimit_max**, **timelimit_min_max**
+will pass while the last two tests fail because it fails to comply with runtime property.
+
+.. command-output:: buildtest report --filter buildspec=tutorials/runtime_status_test.yml --format name,id,state,runtime --latest
+
+.. _define_tags:
+
+Defining Tags
+-------------
+
+The ``tags`` field can be used to classify tests which can be used to organize tests
+or if you want to :ref:`build_by_tags` (``buildtest build --tags <TAGNAME>``).
+Tags can be defined as a string or list of strings. In this example, the test
+``string_tag`` defines a tag name **network** while test ``list_of_strings_tags``
+define a list of tags named ``network`` and ``ping``.
+
+.. literalinclude:: ../tutorials/tags_example.yml
+    :language: yaml
+
+Each item in tags must be a string and no duplicates are allowed, for example in
+this test, we define a duplicate tag **network** which is not allowed.
+
+.. literalinclude:: ../tutorials/invalid_tags.yml
+    :language: yaml
+
+If we run this test and inspect the logs we will see an error message in schema validation:
+
+.. code-block:: console
+
+    2020-09-29 10:56:43,175 [parser.py:179 - _validate() ] - [INFO] Validating test - 'duplicate_string_tags' with schemafile: script-v1.0.schema.json
+    2020-09-29 10:56:43,175 [buildspec.py:397 - parse_buildspecs() ] - [ERROR] ['network', 'network'] is not valid under any of the given schemas
+
+    Failed validating 'oneOf' in schema['properties']['tags']:
+        {'oneOf': [{'type': 'string'},
+                   {'$ref': '#/definitions/list_of_strings'}]}
+
+    On instance['tags']:
+        ['network', 'network']
+
+If tags is a list, it must contain one item, therefore an empty list (i.e ``tags: []``)
+is invalid.
+
 Customize Shell
 -----------------
+
+Shell Type
+~~~~~~~~~~
 
 buildtest will default to ``bash`` shell when running test, but we can configure shell
 option using the ``shell`` field. The shell field is defined in schema as follows:
@@ -372,7 +429,7 @@ we define a script using csh, take note of ``run`` section we can write csh styl
    :language: yaml
 
 Customize Shebang
------------------
+~~~~~~~~~~~~~~~~~~
 
 You may customize the shebang line in testscript using ``shebang`` field. This
 takes precedence over the ``shell`` property which automatically detects the shebang
@@ -403,7 +460,7 @@ is passed into the script:
     shopt -q login_shell && echo 'Login Shell' || echo 'Not Login Shell'
 
 Python Shell
----------------
+~~~~~~~~~~~~~
 
 You can use **script** schema to write python scripts using the **run** property. This
 can be achieved if you use the ``generic.local.python`` executor assuming you have this
@@ -488,7 +545,7 @@ join them together into a single string. Shown below is the metrics for the prev
 
 .. command-output:: buildtest report --filter buildspec=tutorials/metrics_regex.yml --format name,metrics
 
-You can define a metric based on :ref:`variables <variable_declaration>` or :ref:`environment variables <environment_variables>`
+You can define a metric based on :ref:`variables <variables>` or :ref:`environment variables <environment_variables>`
 which requires you have set ``vars`` or ``env`` property in the buildspec. The ``vars`` and
 ``env`` is a property under the metric name that can be used to reference name
 of variable or environment variable. If you reference an invalid name, buildtest will assign the metric an empty string.
@@ -626,7 +683,82 @@ compiler got the value of **4** from the ``default`` section that is inherited f
     | metrics_variable_compiler | gcc/10.2.0-37fmsw7 | openmp_threads=4 |
     +---------------------------+--------------------+------------------+
 
+.. _multiple_executors:
 
+Running test across multiple executors
+----------------------------------------
+
+The `executor` property can support regular expression to search for compatible
+executors, this can be used if you want to run a test across multiple executors. In buildtest,
+we use `re.fullmatch <https://docs.python.org/3/library/re.html#re.fullmatch>`_ with the input
+pattern defined by **executor** property against a list of available executors defined in configuration file.
+You can retrieve a list of executors by running ``buildtest config executors``.
+
+In example below we will run this test on `generic.local.bash` and `generic.local.sh` executor based
+on the regular expression.
+
+.. literalinclude:: ../tutorials/executor_regex_script.yml
+   :language: yaml
+
+If we build this test, notice that there are two tests, one for each executor.
+
+.. command-output:: buildtest build -b tutorials/executor_regex_script.yml
+
+Multiple Executors
+~~~~~~~~~~~~~~~~~~~
+
+.. Note:: This feature is in active development
+
+.. Note:: This feature is compatible with ``type: script`` and ``type: spack``.
+
+The ``executors`` property can be used to define executor specific configuration
+for each test, currently this field can be used with :ref:`vars <variables>`, :ref:`env <environment_variables>`
+, scheduler directives: ``sbatch``, ``bsub``, ``pbs``, ``cobalt`` and :ref:`cray burst buffer/data warp <cray_burstbuffer_datawarp>`.
+The ``executors`` field is a JSON object that expects name of executor followed by property set per executor. In this next example,
+we define variables ``X``, ``Y`` and environment ``SHELL`` based on executors **generic.local.sh** and **generic.local.bash**.
+
+.. literalinclude:: ../tutorials/script/multiple_executors.yml
+   :language: yaml
+
+Let's build this test.
+
+.. command-output:: buildtest build -b tutorials/script/multiple_executors.yml
+
+Now let's look at the generated content of the test as follows. We will see that buildtest will
+set **X=1**, **Y=3** and **SHELL=bash** for ``generic.local.bash`` and **X=2**, **Y=4** and **SHELL=sh** for
+``generic.local.sh``
+
+.. command-output:: buildtest inspect query -d all -t executors_vars_env_declaration
+
+Scheduler Directives
+~~~~~~~~~~~~~~~~~~~~~~
+
+We can also define scheduler directives based on executor type, in this example we define
+``sbatch`` property per executor type. Note that ``sbatch`` property in the ``executors`` section
+will override the ``sbatch`` property defined in the top-level file otherwise it will use the default.
+
+
+.. literalinclude:: ../tutorials/script/executor_scheduler.yml
+   :language: yaml
+
+
+.. command-output:: buildtest build -b tutorials/script/executor_scheduler.yml
+
+If we inspect this test, we will see each each test have different ``#SBATCH`` directives for each test
+based on the ``sbatch`` property defined in the ``executors`` field.
+
+.. command-output:: buildtest inspect query -d all -t executors_sbatch_declaration
+
+Cray Burst Buffer and Data Warp
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also define ``BB`` and ``DW`` directives in the ``executors`` field to override
+cray burst buffer and data warp settings per executor. buildtest will use the fields ``BB``
+and ``DW`` and insert the ``#BB`` and ``#DW`` directives in the job script. For more details
+see :ref:`cray_burstbuffer_datawarp`.
+
+.. literalinclude:: ../tutorials/burstbuffer_datawarp_executors.yml
+    :language: yaml
 
 run_only
 ---------
@@ -709,49 +841,3 @@ we run test only if host distro is ``darwin``.
 This test will run successfully because this was ran on a Mac OS (darwin) system.
 
 .. program-output:: cat docgen/buildspecs/overview/run_only_distro.txt
-
-
-Running test across multiple executors
-----------------------------------------
-
-The `executor` property can support regular expression to search for compatible
-executors, this can be used if you want to run a test across multiple executors. In buildtest,
-we use `re.fullmatch <https://docs.python.org/3/library/re.html#re.fullmatch>`_ with the input
-pattern defined by **executor** property against a list of available executors defined in configuration file.
-You can retrieve a list of executors by running ``buildtest config executors``.
-
-In example below we will run this test on `generic.local.bash` and `generic.local.sh` executor based
-on the regular expression.
-
-.. literalinclude:: ../tutorials/executor_regex_script.yml
-   :language: yaml
-
-If we build this test, notice that there are two tests, one for each executor.
-
-.. program-output:: cat docgen/buildspecs/overview/regex_executor_script.txt
-
-
-Passing Test based on runtime
------------------------------------
-
-buildtest can determine state of test based on `runtime` property which is part of
-``status`` object. This can be used if you want to control how test `PASS` or `FAIL` based on
-execution time of test. In example below we have five tests that make use of **runtime** property
-for passing a test.  The runtime property support ``min`` and ``max`` property that can mark test
-pass based on minimum and maximum runtime. A test will pass if it's execution time is greater than ``min``
-time and less than ``max`` time. If `min` is specified without `max` property the upperbound is not set, likewise
-`max` without `min` will pass if test is less than **max** time. The lower bound is not set, but test runtime
-will be greater than 0 sec.
-
-In test **timelimit_min**, we sleep for 2 seconds and it will pass because minimum runtime is 1.0 seconds. Similarly,
-**timelimit_max** will pass because we sleep for 2 seconds with a max time of 5.0.
-
-.. literalinclude:: ../tutorials/runtime_status_test.yml
-   :language: yaml
-
-.. command-output:: buildtest build -b tutorials/runtime_status_test.yml
-
-If we look at the test results, we expect the first three tests **timelimit_min**, **timelimit_max**, **timelimit_min_max**
-will pass while the last two tests fail because it fails to comply with runtime property.
-
-.. command-output:: buildtest report --filter buildspec=tutorials/runtime_status_test.yml --format name,id,state,runtime --latest

@@ -20,6 +20,5 @@ buildspecs:
       echo $literalstring
       echo $singlequote
       echo $doublequote
-
       echo $current_user
       echo $files_homedir

@@ -177,18 +177,16 @@ class CompilerBuilder(BuilderBase):
                 or deep_get(self.compiler_section, "default", "all", batch)
             )
 
-        batch_directives_lines = self._get_scheduler_directives(
-            bsub=batch_dict["bsub"],
-            sbatch=batch_dict["sbatch"],
-            cobalt=batch_dict["cobalt"],
-            pbs=batch_dict["pbs"],
-            batch=batch_dict["batch"],
-        )
+        # setting these values override values from Builder.sched_init() method
+        self.sbatch = batch_dict["sbatch"]
+        self.lsf = batch_dict["bsub"]
+        self.pbs = batch_dict["pbs"]
+        self.cobalt = batch_dict["cobalt"]
+        self.batch = batch_dict["batch"]
 
-        if batch_directives_lines:
-            lines.append("### START OF SCHEDULER DIRECTIVES ###")
-            lines += batch_directives_lines
-            lines.append("### END OF SCHEDULER DIRECTIVES   ###")
+        sched_lines = self.get_job_directives()
+        if sched_lines:
+            lines += sched_lines
 
         # get cray burst buffer (BB) and datawarp (DW) fields in order of precedence.
         for name in ["BB", "DW"]:

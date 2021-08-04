@@ -31,6 +31,7 @@ from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir, read_file, write_file
 from buildtest.utils.shell import Shell
 from buildtest.utils.timer import Timer
+from buildtest.utils.tools import deep_get
 
 
 class BuilderBase(ABC):
@@ -123,6 +124,8 @@ class BuilderBase(ABC):
         elif self.shell.name in ["python"]:
             self.shell_type = "python"
 
+        self.sched_init()
+
     def _set_metadata_values(self):
         """This method sets self.metadata that contains metadata for each builder object."""
         self.metadata["name"] = self.name
@@ -183,8 +186,9 @@ class BuilderBase(ABC):
         # used to store job metrics for given JobID from batch scheduler
         self.metadata["job"] = None
         # Generate a unique id for the build based on key and unique string
-        self.metadata["full_id"] = self._generate_unique_id()
-        self.metadata["id"] = self.metadata["full_id"][:8]
+        self.test_uid = self._generate_unique_id()
+        self.metadata["full_id"] = self.test_uid
+        self.metadata["id"] = self.test_uid[:8]
 
     def _generate_unique_id(self):
         """Generate a unique build id using ``uuid.uuid4()``."""
@@ -329,12 +333,13 @@ class BuilderBase(ABC):
         """
 
         create_dir(self.testdir)
-        num_content = len(os.listdir(self.testdir))
+
+        # num_content = len(os.listdir(self.testdir))
         # the testid is incremented for every run, this can be done by getting
         # length of all files in testdir and creating a directory. Subsequent
         # runs will increment this counter
 
-        self.test_root = os.path.join(self.testdir, str(num_content))
+        self.test_root = os.path.join(self.testdir, self.test_uid[:8])
 
         create_dir(self.test_root)
         self.metadata["testroot"] = self.test_root
@@ -474,53 +479,94 @@ class BuilderBase(ABC):
             os.path.join(self.test_root, os.path.basename(self.testpath)),
         )
 
-    def _get_scheduler_directives(
-        self, bsub=None, sbatch=None, cobalt=None, pbs=None, batch=None
-    ):
-        """Get Scheduler Directives for LSF, Slurm, PBS or Cobalt if we are processing
-        test with one of the executor types. This method will return a list
-        of string containing scheduler directives generally found at top of script.
-        If test is local executor we return an empty list
+    def sched_init(self):
+        """This method will resolve scheduler fields: 'sbatch', 'pbs', 'bsub', 'cobalt'"""
+        self.sbatch = deep_get(
+            self.recipe, "executors", self.executor, "sbatch"
+        ) or self.recipe.get("sbatch")
+        self.lsf = deep_get(
+            self.recipe, "executors", self.executor, "bsub"
+        ) or self.recipe.get("bsub")
+        self.pbs = deep_get(
+            self.recipe, "executors", self.executor, "pbs"
+        ) or self.recipe.get("pbs")
+        self.cobalt = deep_get(
+            self.recipe, "executors", self.executor, "cobalt"
+        ) or self.recipe.get("cobalt")
+        self.batch = self.recipe.get("batch")
 
-        :param bsub: bsub property from buildspec
-        :param sbatch: sbatch property from buildspec
-        :param cobalt: cobalt property  from buildspec
-        :param pbs: pbs property  from buildspec
-        :param batch: batch property from buildspec
-        """
+        self.burstbuffer = self.recipe.get("BB") or deep_get(
+            self.recipe, "executors", self.executor, "BB"
+        )
+        self.datawarp = self.recipe.get("DW") or deep_get(
+            self.recipe, "executors", self.executor, "DW"
+        )
 
+    def get_slurm_directives(self):
+        """Get #SBATCH lines based on ``sbatch`` property"""
+        jobscript = SlurmBatchScript(sbatch=self.sbatch, batch=self.batch)
+        lines = jobscript.get_headers()
+        lines += [f"#SBATCH --job-name={self.name}"]
+        lines += [f"#SBATCH --output={self.name}.out"]
+        lines += [f"#SBATCH --output={self.name}.err"]
+
+        return lines
+
+    def get_lsf_directives(self):
+        """Get #BSUB lines based on ``bsub`` property"""
+        jobscript = LSFBatchScript(bsub=self.bsub, batch=self.batch)
+        lines = jobscript.get_headers()
+        lines += [f"#BSUB -J {self.name}"]
+        lines += [f"#BSUB -o {self.name}.out"]
+        lines += [f"#BSUB -e {self.name}.err"]
+
+        return lines
+
+    def get_pbs_directives(self):
+        """Get #PBS lines based on ``pbs`` property"""
+        jobscript = PBSBatchScript(pbs=self.pbs, batch=self.batch)
+        lines = jobscript.get_headers()
+        lines += [f"#PBS -N {self.name}"]
+
+        return lines
+
+    def get_cobalt_directives(self):
+        """Get #COBALT lines based on ``cobalt`` property"""
+        jobscript = CobaltBatchScript(cobalt=self.cobalt, batch=self.batch)
+        lines = jobscript.get_headers()
+        lines += [f"#COBALT --jobname {self.name}"]
+
+        return lines
+
+    def get_job_directives(self):
+        """This method returns a list of lines containing the scheduler directives"""
         lines = []
-        # print(self.buildexecutor.is_slurm(self.executor_type), self.executor_type, sbatch, batch)
 
-        if bsub:
-            script = LSFBatchScript(batch=batch, bsub=bsub)
+        if self.sbatch:
+            sbatch_lines = self.get_slurm_directives()
+            lines.append("####### START OF SCHEDULER DIRECTIVES #######")
+            lines += sbatch_lines
+            lines.append("####### END OF SCHEDULER DIRECTIVES   #######")
 
-            lines += script.get_headers()
-            lines += [f"#BSUB -J {self.name}"]
-            lines += [f"#BSUB -o {self.name}.out"]
-            lines += [f"#BSUB -e {self.name}.err"]
-            return lines
+        if self.lsf:
+            bsub_lines = self.get_lsf_directives()
+            lines.append("####### START OF SCHEDULER DIRECTIVES #######")
+            lines += bsub_lines
+            lines.append("####### END OF SCHEDULER DIRECTIVES   #######")
 
-        if sbatch:
+        if self.pbs:
+            pbs_lines = self.get_pbs_directives()
+            lines.append("####### START OF SCHEDULER DIRECTIVES #######")
+            lines += pbs_lines
+            lines.append("####### END OF SCHEDULER DIRECTIVES   #######")
 
-            script = SlurmBatchScript(batch=batch, sbatch=sbatch)
-            lines += script.get_headers()
-            lines += [f"#SBATCH --job-name={self.name}"]
-            lines += [f"#SBATCH --output={self.name}.out"]
-            lines += [f"#SBATCH --error={self.name}.err"]
-            return lines
+        if self.cobalt:
+            cobalt_lines = self.get_cobalt_directives()
+            lines.append("####### START OF SCHEDULER DIRECTIVES #######")
+            lines += cobalt_lines
+            lines.append("####### END OF SCHEDULER DIRECTIVES   #######")
 
-        if cobalt:
-            script = CobaltBatchScript(batch=batch, cobalt=cobalt)
-            lines += script.get_headers()
-            lines += [f"#COBALT --jobname {self.name}"]
-            return lines
-
-        if pbs:
-            script = PBSBatchScript(batch=batch, pbs=pbs)
-            lines += script.get_headers()
-            lines += [f"#PBS -N {self.name}"]
-            return lines
+        return lines
 
     def _get_burst_buffer(self, burstbuffer):
         """Get Burst Buffer directives (#BB) lines specified by BB property
@@ -535,9 +581,11 @@ class BuilderBase(ABC):
             return
 
         lines = []
+        lines.append("####### START OF BURST BUFFER DIRECTIVES #######")
         for arg in burstbuffer:
             lines += [f"#BB {arg} "]
 
+        lines.append("####### END OF BURST BUFFER DIRECTIVES   #######")
         return lines
 
     def _get_data_warp(self, datawarp):
@@ -553,9 +601,11 @@ class BuilderBase(ABC):
             return
 
         lines = []
+        lines.append("####### START OF DATAWARP DIRECTIVES #######")
         for arg in datawarp:
             lines += [f"#DW {arg}"]
 
+        lines.append("####### END OF DATAWARP DIRECTIVES   #######")
         return lines
 
     def _set_execute_perm(self, fname):
