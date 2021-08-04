@@ -235,9 +235,10 @@ def inspect_buildspec(report, input_buildspecs, all_records):
 
     # we stop if there are no buildspecs
     if not search_buildspecs:
-        sys.exit(
-            f"Unable to find any buildspecs in cache, please specify one of the following buildspecs: \n {available_buildspecs}"
-        )
+        msg = "Unable to find any buildspecs in cache, please specify one of the following buildspecs: \n"
+        for buildspec in available_buildspecs:
+            msg += buildspec + "\n"
+        sys.exit(msg)
 
     # dict used to hold records from
     records = {}

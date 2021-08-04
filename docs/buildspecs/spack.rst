@@ -375,16 +375,6 @@ Shown below is an example buildspec that will specify ``sbatch`` directives for
 .. literalinclude:: ../tutorials/spack/spack_multiple_executor_sbatch.yml
   :language: yaml
 
-If we build this test we will see there are two tests one run for each executor.
-
-.. command-output:: buildtest build -b tutorials/spack/spack_multiple_executor_sbatch.yml
-
-If we inspect the test script via ``buildtest inspect query`` we will see that each
-executor type will have the corresponding ``#SBATCH`` directives based on ``sbatch``
-key.
-
-.. command-output:: buildtest inspect query -d all -t spack_sbatch_multi_executors
-
 Configuring Spack Mirrors
 --------------------------
 
