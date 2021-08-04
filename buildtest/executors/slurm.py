@@ -171,13 +171,6 @@ class SlurmExecutor(BaseExecutor):
 
         builder.post_run_steps()
 
-        # builder.copy_stage_files()
-
-        # builder.metadata["output"] = read_file(builder.metadata["outfile"])
-        # builder.metadata["error"] = read_file(builder.metadata["errfile"])
-
-        # self.check_test_state(builder)
-
 
 class SlurmJob(Job):
     def __init__(self, jobID, cluster=None):

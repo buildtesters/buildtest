@@ -486,15 +486,29 @@ class Report:
 
         return test_names
 
+    def get_buildspecs(self):
+        return self.filtered_buildspecs
+
     def get_ids(self):
-        """Return a list of test ids from report file"""
+        """Return a dict in the format
+        ```
+        {
+          <test-id>:
+            {
+              'name': <name test>
+              'buildspec': <buildspec>
+            }
+           ...
+        }
+        ```
+        """
 
         test_ids = {}
         for buildspec in self.filtered_buildspecs:
             # process each test in buildspec file
             for name in self.report[buildspec].keys():
                 for test in self.report[buildspec][name]:
-                    test_ids[test["full_id"]] = name
+                    test_ids[test["full_id"]] = {"name": name, "buildspec": buildspec}
 
         return test_ids
 

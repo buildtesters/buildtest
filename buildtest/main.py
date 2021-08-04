@@ -36,12 +36,7 @@ def main():
     """Entry point to buildtest."""
 
     parser = get_parser()
-    args, extras = parser.parse_known_args()
-
-    # if no commands just print the help message and return.
-    if not args.subcommands:
-        print(parser.print_help())
-        return
+    args = parser.parse_args()
 
     color_mode = None
 
@@ -54,6 +49,12 @@ def main():
         color_mode = "False"
 
     os.environ["BUILDTEST_COLOR"] = color_mode
+
+    # if no commands just print the help message and return.
+    if not args.subcommands:
+        print(parser.print_help())
+        return
+
     buildtest_log = os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log")
     if is_file(buildtest_log):
         remove_file(buildtest_log)

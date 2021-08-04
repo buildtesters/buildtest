@@ -3,12 +3,10 @@ buildtest cli: include functions to build, get test configurations, and
 interact with a global configuration for buildtest.
 """
 import argparse
-import os
 
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import BUILD_REPORT
 from buildtest.schemas.defaults import schema_table
-from termcolor import colored
 
 
 def single_kv_string(val):
@@ -94,8 +92,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
 
 {BUILDTEST_COPYRIGHT}
     """
-    if os.getenv("BUILDTEST_COLOR") == "True":
-        epilog_str = colored(epilog_str, "blue", attrs=["bold"])
 
     parser = argparse.ArgumentParser(
         prog="buildtest",
@@ -130,7 +126,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     config_menu(subparsers)
     report_menu(subparsers)
     inspect_menu(subparsers)
-    query_menu(subparsers)
     schema_menu(subparsers)
     cdash_menu(subparsers)
 
@@ -543,24 +538,8 @@ def report_menu(subparsers):
     )
 
 
-def query_menu(subparsers):
-    parser_query = subparsers.add_parser("query", help="Query records from test report")
-
-    # buildtest query output name
-    # buildtest query output id
-    # buildtest query error name
-    # buildtest query error id
-    # buildtest query get id
-
-    # print paths to testpath
-    # buildtest query location -t name
-    # buildtest query location -o name
-    # buildtest query location -d all -o name
-    # buildtest query location -d first -o name
-
-
 def inspect_menu(subparsers):
-    """This method builds argument for `buildtest inspect` command"""
+    """This method builds argument for ``buildtest inspect`` command"""
 
     parser_inspect = subparsers.add_parser(
         "inspect", help="Inspect a test based on NAME or ID "
@@ -582,6 +561,17 @@ def inspect_menu(subparsers):
     )
     name.add_argument("name", nargs="*", help="Name of test")
 
+    inspect_buildspec = subparser.add_parser(
+        "buildspec", help="Inspect a test based on buildspec"
+    )
+
+    inspect_buildspec.add_argument(
+        "buildspec", nargs="*", help="List of buildspecs to query"
+    )
+    inspect_buildspec.add_argument(
+        "-a", "--all", action="store_true", help="Fetch all records for a given test"
+    )
+
     test_id = subparser.add_parser("id", help="Specify a Test ID")
     test_id.add_argument("id", nargs="*", help="Test ID")
 
@@ -595,7 +585,6 @@ def inspect_menu(subparsers):
         action="store_true",
         help="Print output without header in terse format (--terse)",
     )
-
     query_list = subparser.add_parser("query", help="Query fields from record")
     query_list.add_argument(
         "-t", "--testpath", action="store_true", help="Print content of testpath"
@@ -645,7 +634,7 @@ def schema_menu(subparsers):
 
 
 def cdash_menu(subparsers):
-    """This method builds arguments for `buildtest cdash` command."""
+    """This method builds arguments for ``buildtest cdash`` command."""
 
     parser_cdash = subparsers.add_parser("cdash", help="Upload test to CDASH server")
 

@@ -25,11 +25,15 @@ _test_name ()
 {
   buildtest inspect list -t -n | cut -d '|' -f 2 | uniq | sort
 }
-
+_test_buildspec ()
+{
+  buildtest inspect list -t -n | cut -d '|' -f 3 | uniq | sort
+}
 _history_id ()
 {
   buildtest history list -t -n | cut -d '|' -f 1 | sort -g
 }
+
 #  entry point to buildtest bash completion function
 _buildtest ()
 {
@@ -109,7 +113,7 @@ _buildtest ()
       esac
       ;;
     inspect)
-      local cmds="-h --help --report -r name id list query"
+      local cmds="-h --help --report -r name id list buildspec query"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
@@ -123,6 +127,14 @@ _buildtest ()
         name)
           COMPREPLY=( $( compgen -W "$(_test_name)" -- $cur ) )
           
+          if [[ $cur == -* ]] ; then
+            local opts="-h --help -a --all"
+            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          fi
+          ;;
+        buildspec)
+          COMPREPLY=( $( compgen -W "$(_test_buildspec)" -- $cur ) )
+
           if [[ $cur == -* ]] ; then
             local opts="-h --help -a --all"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )

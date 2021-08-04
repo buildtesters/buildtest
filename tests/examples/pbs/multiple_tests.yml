@@ -1,0 +1,23 @@
+version: "1.0"
+buildspecs:
+  test1:
+    type: script
+    executor: generic.pbs.workq
+    pbs: ["-l nodes=1", "-l walltime=00:02:00"]
+    run: |
+      date
+      whoami
+      sleep 10
+      hostname -f
+
+  test2:
+    type: script
+    executor: generic.pbs.workq
+    pbs: ["-l nodes=1", "-l walltime=00:01:00"]
+    run: echo "This is a sample job 2"
+
+  test3:
+    type: script
+    executor: generic.pbs.workq
+    pbs: ["-l nodes=1", "-l walltime=00:01:00"]
+    run: echo "This is a sample job 3"
