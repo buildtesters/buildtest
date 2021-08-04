@@ -480,7 +480,7 @@ class BuilderBase(ABC):
         )
 
     def sched_init(self):
-        """This method will resolve scheduler fields: 'sbatch', 'pbs', 'bsub', 'cobalt'  """
+        """This method will resolve scheduler fields: 'sbatch', 'pbs', 'bsub', 'cobalt'"""
         self.sbatch = deep_get(
             self.recipe, "executors", self.executor, "sbatch"
         ) or self.recipe.get("sbatch")
