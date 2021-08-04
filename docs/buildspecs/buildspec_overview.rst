@@ -683,6 +683,68 @@ compiler got the value of **4** from the ``default`` section that is inherited f
     | metrics_variable_compiler | gcc/10.2.0-37fmsw7 | openmp_threads=4 |
     +---------------------------+--------------------+------------------+
 
+.. _multiple_executors:
+
+Running test across multiple executors
+----------------------------------------
+
+The `executor` property can support regular expression to search for compatible
+executors, this can be used if you want to run a test across multiple executors. In buildtest,
+we use `re.fullmatch <https://docs.python.org/3/library/re.html#re.fullmatch>`_ with the input
+pattern defined by **executor** property against a list of available executors defined in configuration file.
+You can retrieve a list of executors by running ``buildtest config executors``.
+
+In example below we will run this test on `generic.local.bash` and `generic.local.sh` executor based
+on the regular expression.
+
+.. literalinclude:: ../tutorials/executor_regex_script.yml
+   :language: yaml
+
+If we build this test, notice that there are two tests, one for each executor.
+
+.. command-output:: buildtest build -b tutorials/executor_regex_script.yml
+
+Defining executor specific configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. Note:: This feature is in active development
+
+.. Note:: This feature is compatible with ``type: script`` and ``type: spack``.
+
+The ``executors`` property can be used to define executor specific configuration
+for each test, currently this field can be used with :ref:`vars <variables>`, :ref:`env <environment_variables>`
+and scheduler directives: ``sbatch``, ``bsub``, ``pbs``, ``cobalt``. The ``executors`` field is a JSON object that expects
+name of executor followed by property set per executor. In this next example, we define variables ``X``, ``Y``
+and environment ``SHELL`` based on executors **generic.local.sh** and **generic.local.bash**.
+
+.. literalinclude:: ../tutorials/script/multiple_executors.yml
+   :language: yaml
+
+Let's build this test.
+
+.. command-output:: buildtest build -b tutorials/script/multiple_executors.yml
+
+Now let's look at the generated content of the test as follows. We will see that buildtest will
+set **X=1**, **Y=3** and **SHELL=bash** for ``generic.local.bash`` and **X=2**, **Y=4** and **SHELL=sh** for
+``generic.local.sh``
+
+.. command-output:: buildtest inspect query -d all -t executors_vars_env_declaration
+
+We can also define scheduler directives based on executor type, in this example we define
+``sbatch`` property per executor type. Note that ``sbatch`` property in the ``executors`` section
+will override the ``sbatch`` property defined in the top-level file otherwise it will use the default.
+
+
+.. literalinclude:: ../tutorials/script/executor_scheduler.yml
+   :language: yaml
+
+
+.. command-output:: buildtest build -b tutorials/script/executor_scheduler.yml
+
+If we inspect this test, we will see each each test have different ``#SBATCH`` directives for each test
+based on the ``sbatch`` property defined in the ``executors`` field.
+
+.. command-output:: buildtest inspect query -d all -t executors_sbatch_declaration
 
 
 run_only
@@ -766,65 +828,3 @@ we run test only if host distro is ``darwin``.
 This test will run successfully because this was ran on a Mac OS (darwin) system.
 
 .. program-output:: cat docgen/buildspecs/overview/run_only_distro.txt
-
-
-Running test across multiple executors
-----------------------------------------
-
-The `executor` property can support regular expression to search for compatible
-executors, this can be used if you want to run a test across multiple executors. In buildtest,
-we use `re.fullmatch <https://docs.python.org/3/library/re.html#re.fullmatch>`_ with the input
-pattern defined by **executor** property against a list of available executors defined in configuration file.
-You can retrieve a list of executors by running ``buildtest config executors``.
-
-In example below we will run this test on `generic.local.bash` and `generic.local.sh` executor based
-on the regular expression.
-
-.. literalinclude:: ../tutorials/executor_regex_script.yml
-   :language: yaml
-
-If we build this test, notice that there are two tests, one for each executor.
-
-.. command-output:: buildtest build -b tutorials/executor_regex_script.yml
-
-Defining executor specific configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. Note:: This feature is in active development
-
-.. Note:: This feature is compatible with ``type: script`` and ``type: spack``.
-
-The ``executors`` property can be used to define executor specific configuration
-for each test, currently this field can be used with :ref:`vars <variables>`, :ref:`env <environment_variables>`
-and scheduler directives: ``sbatch``, ``bsub``, ``pbs``, ``cobalt``. The ``executors`` field is a JSON object that expects
-name of executor followed by property set per executor. In this next example, we define variables ``X``, ``Y``
-and environment ``SHELL`` based on executors **generic.local.sh** and **generic.local.bash**.
-
-.. literalinclude:: ../tutorials/script/multiple_executors.yml
-   :language: yaml
-
-Let's build this test.
-
-.. command-output:: buildtest build -b tutorials/script/multiple_executors.yml
-
-Now let's look at the generated content of the test as follows. We will see that buildtest will
-set **X=1**, **Y=3** and **SHELL=bash** for ``generic.local.bash`` and **X=2**, **Y=4** and **SHELL=sh** for
-``generic.local.sh``
-
-.. command-output:: buildtest inspect query -d all -t executors_vars_env_declaration
-
-We can also define scheduler directives based on executor type, in this example we define
-``sbatch`` property per executor type. Note that ``sbatch`` property in the ``executors`` section
-will override the ``sbatch`` property defined in the top-level file otherwise it will use the default.
-
-
-.. literalinclude:: ../tutorials/script/executor_scheduler.yml
-   :language: yaml
-
-
-.. command-output:: buildtest build -b tutorials/script/executor_scheduler.yml
-
-If we inspect this test, we will see each each test have different ``#SBATCH`` directives for each test
-based on the ``sbatch`` property defined in the ``executors`` field.
-
-.. command-output:: buildtest inspect query -d all -t executors_sbatch_declaration

@@ -186,8 +186,9 @@ class BuilderBase(ABC):
         # used to store job metrics for given JobID from batch scheduler
         self.metadata["job"] = None
         # Generate a unique id for the build based on key and unique string
-        self.metadata["full_id"] = self._generate_unique_id()
-        self.metadata["id"] = self.metadata["full_id"][:8]
+        self.test_uid = self._generate_unique_id()
+        self.metadata["full_id"] = self.test_uid
+        self.metadata["id"] = self.test_uid[:8]
 
     def _generate_unique_id(self):
         """Generate a unique build id using ``uuid.uuid4()``."""
@@ -332,12 +333,13 @@ class BuilderBase(ABC):
         """
 
         create_dir(self.testdir)
-        num_content = len(os.listdir(self.testdir))
+
+        # num_content = len(os.listdir(self.testdir))
         # the testid is incremented for every run, this can be done by getting
         # length of all files in testdir and creating a directory. Subsequent
         # runs will increment this counter
 
-        self.test_root = os.path.join(self.testdir, str(num_content))
+        self.test_root = os.path.join(self.testdir, self.test_uid[:8])
 
         create_dir(self.test_root)
         self.metadata["testroot"] = self.test_root

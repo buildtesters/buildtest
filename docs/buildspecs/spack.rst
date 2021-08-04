@@ -364,6 +364,27 @@ files based on name of test. If we build this test, and inspect the generated te
     spack add m4
     spack concretize -f
 
+You can define :ref:`multiple executors <multiple_executors>` in your buildspec
+with spack schema via ``executors``. This can be useful if you need to specify
+different scheduler directives based on executor type since your executor will map to
+a queue.
+
+Shown below is an example buildspec that will specify ``sbatch`` directives for
+``generic.local.sh`` and ``generic.local.bash``
+
+.. literalinclude:: ../tutorials/spack/spack_multiple_executor_sbatch.yml
+  :language: yaml
+
+If we build this test we will see there are two tests one run for each executor.
+
+.. command-output:: buildtest build -b tutorials/spack/spack_multiple_executor_sbatch.yml
+
+If we inspect the test script via ``buildtest inspect query`` we will see that each
+executor type will have the corresponding ``#SBATCH`` directives based on ``sbatch``
+key.
+
+.. command-output:: buildtest inspect query -d all -t spack_sbatch_multi_executors
+
 Configuring Spack Mirrors
 --------------------------
 
@@ -411,6 +432,9 @@ defined by spack.
 
 Spack Test
 -----------
+
+.. Note:: ``spack test`` requires version `0.16.0 <https://github.com/spack/spack/releases/tag/v0.16.0>`_ or higher in order to use
+this feature.
 
 buildtest can run tests using ``spack test run`` that can be used for testing installed specs with
 tests provided by spack. In order to run tests, you need to declare the ``test`` section
