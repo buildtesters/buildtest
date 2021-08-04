@@ -433,7 +433,7 @@ class Report:
 
         print(tabulate(filter_field_table, headers=headers, tablefmt="simple"))
 
-    def print_report(self, terse=None):
+    def print_report(self, terse=None, noheader=None):
 
         # if --terse option is specified we print output separated by PIPE symbol (|). Shown below is an example output
 
@@ -449,7 +449,9 @@ class Report:
 
             t = [list(i) for i in zip(*join_list)]
 
-            print("|".join(self.display_table.keys()))
+            if not noheader:
+                print("|".join(self.display_table.keys()))
+
             for i in t:
                 print("|".join(i))
 
@@ -535,4 +537,4 @@ def report_cmd(args):
     if not args.terse:
         print(f"Reading report file: {results.reportfile()} \n")
 
-    results.print_report(terse=args.terse)
+    results.print_report(terse=args.terse, noheader=args.no_header)

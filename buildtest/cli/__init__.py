@@ -130,6 +130,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     config_menu(subparsers)
     report_menu(subparsers)
     inspect_menu(subparsers)
+    query_menu(subparsers)
     schema_menu(subparsers)
     cdash_menu(subparsers)
 
@@ -534,6 +535,28 @@ def report_menu(subparsers):
         action="store_true",
         help="Print output in machine readable format",
     )
+    parser_report.add_argument(
+        "-n",
+        "--no-header",
+        action="store_true",
+        help="Don't print headers column used with terse option (--terse).",
+    )
+
+
+def query_menu(subparsers):
+    parser_query = subparsers.add_parser("query", help="Query records from test report")
+
+    # buildtest query output name
+    # buildtest query output id
+    # buildtest query error name
+    # buildtest query error id
+    # buildtest query get id
+
+    # print paths to testpath
+    # buildtest query location -t name
+    # buildtest query location -o name
+    # buildtest query location -d all -o name
+    # buildtest query location -d first -o name
 
 
 def inspect_menu(subparsers):
