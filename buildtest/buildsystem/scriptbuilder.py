@@ -104,7 +104,4 @@ class ScriptBuilder(BuilderBase):
         # Add run section
         lines += [self.recipe["run"]]
 
-        print(f"------ id: {self.metadata['full_id']} ----")
-        for line in lines:
-            print(line)
         return lines

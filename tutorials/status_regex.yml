@@ -1,0 +1,23 @@
+version: "1.0"
+buildspecs:
+  status_regex_pass:
+    executor: generic.local.bash
+    type: script
+    tags: [system]
+    description: Pass test based on regular expression
+    run: echo "PASS"
+    status:
+      regex:
+        stream: stdout
+        exp: "^(PASS)$"
+
+  status_regex_fail:
+    executor: generic.local.bash
+    type: script
+    tags: [system]
+    description: Pass test based on regular expression
+    run: echo "FAIL"
+    status:
+      regex:
+        stream: stdout
+        exp: "^(123FAIL)$"

@@ -113,6 +113,7 @@ def inspect_query(report, args):
                 f"(ID: {test['full_id']})",
                 "{:_<30}".format(""),
             )
+            print("executor: ", test["executor"])
             print("description: ", test["description"])
             print("state: ", test["state"])
             print("returncode: ", test["returncode"])
