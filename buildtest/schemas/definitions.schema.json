@@ -281,6 +281,22 @@
       "$ref": "#/definitions/list_of_strings",
       "description": "Specify Data Warp option (#DW) when using burst buffer."
     },
+    "sbatch": {
+      "$ref": "#/definitions/list_of_strings",
+      "description": "This field is used for specifying #SBATCH options in test script."
+    },
+    "bsub": {
+      "$ref": "#/definitions/list_of_strings",
+      "description": "This field is used for specifying #BSUB options in test script."
+    },
+    "cobalt": {
+      "$ref": "#/definitions/list_of_strings",
+      "description": "This field is used for specifying #COBALT options in test script."
+    },
+    "pbs": {
+      "$ref": "#/definitions/list_of_strings",
+      "description": "This field is used for specifying #PBS directives in test script."
+    },
     "executors": {
       "type": "object",
       "description": "Define executor specific configuration",

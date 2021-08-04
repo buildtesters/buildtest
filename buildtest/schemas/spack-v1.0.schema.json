@@ -16,49 +16,22 @@
       "pattern": "^spack$",
       "description": "Select schema type to use when validating buildspec. This must be set to 'spack'"
     },
-    "description": {
-      "$ref": "definitions.schema.json#/definitions/description"
-    },
-    "executor": {
-      "$ref": "definitions.schema.json#/definitions/executor"
-    },
-    "env": {
-      "$ref": "definitions.schema.json#/definitions/env"
-    },
-    "vars": {
-      "$ref": "definitions.schema.json#/definitions/env"
-    },
-    "sbatch": {
-      "$ref": "definitions.schema.json#/definitions/list_of_strings",
-      "description": "This field is used for specifying #SBATCH options in test script."
-    },
-    "bsub": {
-      "$ref": "definitions.schema.json#/definitions/list_of_strings",
-      "description": "This field is used for specifying #BSUB options in test script."
-    },
-    "cobalt": {
-      "$ref": "definitions.schema.json#/definitions/list_of_strings",
-      "description": "This field is used for specifying #COBALT options in test script."
-    },
-    "pbs": {
-      "$ref": "definitions.schema.json#/definitions/list_of_strings",
-      "description": "This field is used for specifying #PBS directives in test script."
-    },
-    "batch": {
-      "$ref": "definitions.schema.json#/definitions/batch"
-    },
-    "BB": {
-      "$ref": "definitions.schema.json#/definitions/BB"
-    },
-    "DW": {
-      "$ref": "definitions.schema.json#/definitions/DW"
-    },
-    "skip": {
-      "$ref": "definitions.schema.json#/definitions/skip"
-    },
-    "tags": {
-      "$ref": "definitions.schema.json#/definitions/tags"
-    },
+    "description": { "$ref": "definitions.schema.json#/definitions/description" },
+    "executor": { "$ref": "definitions.schema.json#/definitions/executor" },
+    "env": { "$ref": "definitions.schema.json#/definitions/env" },
+    "vars": { "$ref": "definitions.schema.json#/definitions/env" },
+    "sbatch": { "$ref": "definitions.schema.json#/definitions/sbatch" },
+    "bsub": { "$ref": "definitions.schema.json#/definitions/bsub" },
+    "cobalt": { "$ref": "definitions.schema.json#/definitions/cobalt" },
+    "pbs": { "$ref": "definitions.schema.json#/definitions/pbs" },
+    "batch": { "$ref": "definitions.schema.json#/definitions/batch" },
+    "BB": { "$ref": "definitions.schema.json#/definitions/BB" },
+    "DW": { "$ref": "definitions.schema.json#/definitions/DW" },
+    "skip": { "$ref": "definitions.schema.json#/definitions/skip" },
+    "tags": { "$ref": "definitions.schema.json#/definitions/tags" },
+    "status": { "$ref": "definitions.schema.json#/definitions/status" },
+    "metrics": { "$ref": "definitions.schema.json#/definitions/metrics" },
+    "executors": { "$ref": "definitions.schema.json#/definitions/executors" },
     "pre_cmds": {
       "type": "string",
       "description": "Shell commands run before spack"
@@ -67,15 +40,7 @@
       "type": "string",
       "description": "Shell commands run after spack"
     },
-    "status": {
-      "$ref": "definitions.schema.json#/definitions/status"
-    },
-    "metrics": {
-      "$ref": "definitions.schema.json#/definitions/metrics"
-    },
-    "executors": {
-      "$ref": "definitions.schema.json#/definitions/executors"
-    },
+
     "spack": {
       "type": "object",
       "description": "Entry point to spack configuration",

@@ -12,46 +12,18 @@
       "pattern": "^script$",
       "description": "Select schema type to use when validating buildspec. This must be of set to 'script'"
     },
-    "description": {
-      "$ref": "definitions.schema.json#/definitions/description"
-    },
-    "sbatch": {
-      "$ref": "definitions.schema.json#/definitions/list_of_strings",
-      "description": "This field is used for specifying #SBATCH options in test script."
-    },
-    "bsub": {
-      "$ref": "definitions.schema.json#/definitions/list_of_strings",
-      "description": "This field is used for specifying #BSUB options in test script."
-    },
-    "cobalt": {
-      "$ref": "definitions.schema.json#/definitions/list_of_strings",
-      "description": "This field is used for specifying #COBALT options in test script."
-    },
-     "pbs": {
-      "$ref": "definitions.schema.json#/definitions/list_of_strings",
-      "description": "This field is used for specifying #PBS directives in test script."
-    },
-    "batch": {
-      "$ref": "definitions.schema.json#/definitions/batch"
-    },
-    "BB": {
-      "$ref": "definitions.schema.json#/definitions/BB"
-    },
-    "DW": {
-      "$ref": "definitions.schema.json#/definitions/DW"
-    },
-    "env": {
-      "$ref": "definitions.schema.json#/definitions/env"
-    },
-    "vars": {
-      "$ref": "definitions.schema.json#/definitions/env"
-    },
-    "executor": {
-      "$ref": "definitions.schema.json#/definitions/executor"
-    },
-    "run_only": {
-      "$ref": "definitions.schema.json#/definitions/run_only"
-    },
+    "description": { "$ref": "definitions.schema.json#/definitions/description" },
+    "batch": { "$ref": "definitions.schema.json#/definitions/batch" },
+    "sbatch": { "$ref": "definitions.schema.json#/definitions/sbatch" },
+    "bsub": { "$ref": "definitions.schema.json#/definitions/bsub" },
+    "cobalt": { "$ref": "definitions.schema.json#/definitions/cobalt" },
+    "pbs": { "$ref": "definitions.schema.json#/definitions/pbs" },
+    "BB": { "$ref": "definitions.schema.json#/definitions/BB" },
+    "DW": { "$ref": "definitions.schema.json#/definitions/DW" },
+    "env": { "$ref": "definitions.schema.json#/definitions/env" },
+    "vars": { "$ref": "definitions.schema.json#/definitions/env" },
+    "executor": { "$ref": "definitions.schema.json#/definitions/executor" },
+    "run_only": { "$ref": "definitions.schema.json#/definitions/run_only" },
     "shell": {
       "type": "string",
       "description": "Specify a shell launcher to use when running jobs. This sets the shebang line in your test script. The ``shell`` key can be used with ``run`` section to describe content of script and how its executed",
@@ -65,20 +37,10 @@
       "type": "string",
       "description": "A script to run using the default shell."
     },
-    "status": {
-      "$ref": "definitions.schema.json#/definitions/status"
-    },
-    "skip": {
-      "$ref": "definitions.schema.json#/definitions/skip"
-    },
-    "tags": {
-      "$ref": "definitions.schema.json#/definitions/tags"
-    },
-    "metrics": {
-      "$ref": "definitions.schema.json#/definitions/metrics"
-    },
-    "executors": {
-       "$ref": "definitions.schema.json#/definitions/executors"
-    }
+    "status": { "$ref": "definitions.schema.json#/definitions/status" },
+    "skip": { "$ref": "definitions.schema.json#/definitions/skip" },
+    "tags": { "$ref": "definitions.schema.json#/definitions/tags" },
+    "metrics": { "$ref": "definitions.schema.json#/definitions/metrics" },
+    "executors": { "$ref": "definitions.schema.json#/definitions/executors" }
   }
 }
