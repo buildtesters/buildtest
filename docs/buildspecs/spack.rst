@@ -433,8 +433,7 @@ defined by spack.
 Spack Test
 -----------
 
-.. Note:: ``spack test`` requires version `0.16.0 <https://github.com/spack/spack/releases/tag/v0.16.0>`_ or higher in order to use
-this feature.
+.. Note:: ``spack test`` requires version `0.16.0 <https://github.com/spack/spack/releases/tag/v0.16.0>`_ or higher in order to use this feature.
 
 buildtest can run tests using ``spack test run`` that can be used for testing installed specs with
 tests provided by spack. In order to run tests, you need to declare the ``test`` section

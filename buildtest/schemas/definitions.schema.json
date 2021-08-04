@@ -273,10 +273,19 @@
         }
       }
     },
+    "BB": {
+      "$ref": "#/definitions/list_of_strings",
+       "description": "Create burst buffer space, this specifies #BB options in your test."
+    },
+    "DW": {
+      "$ref": "#/definitions/list_of_strings",
+      "description": "Specify Data Warp option (#DW) when using burst buffer."
+    },
     "executors": {
       "type": "object",
       "description": "Define executor specific configuration",
       "patternProperties": {
+        "description": "Name of executor to override configuration",
         "^.*$": {
           "additionalProperties": false,
           "properties": {
@@ -285,7 +294,9 @@
             "sbatch": { "$ref": "#/definitions/list_of_strings" },
             "bsub": { "$ref": "#/definitions/list_of_strings" },
             "pbs": { "$ref": "#/definitions/list_of_strings" },
-            "cobalt": { "$ref": "#/definitions/list_of_strings" }
+            "cobalt": { "$ref": "#/definitions/list_of_strings" },
+            "BB":  { "$ref": "#/definitions/BB" },
+            "DW": { "$ref": "#/definitions/DW" }
           }
         }
       }

@@ -1,0 +1,20 @@
+version: "1.0"
+buildspecs:
+  create_burst_buffer_multiple_executors:
+    type: script
+    executor: "generic.local.(sh|bash)"
+    sbatch: ["-N 1", "-t 10", "-C knl"]
+    description: Create a burst buffer for multiple executors
+    tags: [jobs]
+    executors:
+      generic.local.sh:
+        BB:
+          - create_persistent name=buffer1 capacity=10GB access_mode=striped type=scratch
+        DW:
+          - persistentdw name=buffer1
+      generic.local.bash:
+        BB:
+        - create_persistent name=buffer2 capacity=10GB access_mode=striped type=scratch
+        DW:
+          - persistentdw name=buffer2
+    run: hostname

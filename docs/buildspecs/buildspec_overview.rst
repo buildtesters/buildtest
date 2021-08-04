@@ -704,8 +704,8 @@ If we build this test, notice that there are two tests, one for each executor.
 
 .. command-output:: buildtest build -b tutorials/executor_regex_script.yml
 
-Defining executor specific configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Multiple Executors
+~~~~~~~~~~~~~~~~~~~
 
 .. Note:: This feature is in active development
 
@@ -713,9 +713,9 @@ Defining executor specific configuration
 
 The ``executors`` property can be used to define executor specific configuration
 for each test, currently this field can be used with :ref:`vars <variables>`, :ref:`env <environment_variables>`
-and scheduler directives: ``sbatch``, ``bsub``, ``pbs``, ``cobalt``. The ``executors`` field is a JSON object that expects
-name of executor followed by property set per executor. In this next example, we define variables ``X``, ``Y``
-and environment ``SHELL`` based on executors **generic.local.sh** and **generic.local.bash**.
+, scheduler directives: ``sbatch``, ``bsub``, ``pbs``, ``cobalt`` and :ref:`cray burst buffer/data warp <cray_burstbuffer_datawarp>`.
+The ``executors`` field is a JSON object that expects name of executor followed by property set per executor. In this next example,
+we define variables ``X``, ``Y`` and environment ``SHELL`` based on executors **generic.local.sh** and **generic.local.bash**.
 
 .. literalinclude:: ../tutorials/script/multiple_executors.yml
    :language: yaml
@@ -729,6 +729,9 @@ set **X=1**, **Y=3** and **SHELL=bash** for ``generic.local.bash`` and **X=2**, 
 ``generic.local.sh``
 
 .. command-output:: buildtest inspect query -d all -t executors_vars_env_declaration
+
+Scheduler Directives
+~~~~~~~~~~~~~~~~~~~~~~
 
 We can also define scheduler directives based on executor type, in this example we define
 ``sbatch`` property per executor type. Note that ``sbatch`` property in the ``executors`` section
@@ -746,6 +749,16 @@ based on the ``sbatch`` property defined in the ``executors`` field.
 
 .. command-output:: buildtest inspect query -d all -t executors_sbatch_declaration
 
+Cray Burst Buffer and Data Warp
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also define ``BB`` and ``DW`` directives in the ``executors`` field to override
+cray burst buffer and data warp settings per executor. buildtest will use the fields ``BB``
+and ``DW`` and insert the ``#BB`` and ``#DW`` directives in the job script. For more details
+see :ref:`cray_burstbuffer_datawarp`.
+
+.. literalinclude:: ../tutorials/burstbuffer_datawarp_executors.yml
+    :language: yaml
 
 run_only
 ---------

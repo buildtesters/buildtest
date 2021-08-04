@@ -43,6 +43,16 @@ class SpackBuilder(BuilderBase):
         if sched_lines:
             lines += sched_lines
 
+        if self.burstbuffer:
+            burst_buffer_lines = self._get_burst_buffer(self.burstbuffer)
+            if burst_buffer_lines:
+                lines += burst_buffer_lines
+
+        if self.datawarp:
+            data_warp_lines = self._get_data_warp(self.datawarp)
+            if data_warp_lines:
+                lines += data_warp_lines
+
         var_lines = self._get_variables(self.recipe.get("vars"))
         env_lines = self._get_environment(self.recipe.get("env"))
 

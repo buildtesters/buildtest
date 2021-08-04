@@ -35,12 +35,10 @@
       "$ref": "definitions.schema.json#/definitions/batch"
     },
     "BB": {
-      "$ref": "definitions.schema.json#/definitions/list_of_strings",
-       "description": "Create burst buffer space, this specifies #BB options in your test."
+      "$ref": "definitions.schema.json#/definitions/BB"
     },
     "DW": {
-      "$ref": "definitions.schema.json#/definitions/list_of_strings",
-      "description": "Specify Data Warp option (#DW) when using burst buffer."
+      "$ref": "definitions.schema.json#/definitions/DW"
     },
     "env": {
       "$ref": "definitions.schema.json#/definitions/env"

@@ -55,19 +55,17 @@ class ScriptBuilder(BuilderBase):
         if sched_lines:
             lines += sched_lines
 
-        burst_buffer_lines = self._get_burst_buffer(self.recipe.get("BB"))
-        if burst_buffer_lines:
-            lines.append("####### START OF BURST BUFFER DIRECTIVES #######")
-            lines += burst_buffer_lines
-            lines.append("####### END OF BURST BUFFER DIRECTIVES   #######")
-            lines.append("\n")
+        if self.burstbuffer:
 
-        data_warp_lines = self._get_data_warp(self.recipe.get("DW"))
-        if data_warp_lines:
-            lines.append("####### START OF DATAWARP DIRECTIVES #######")
-            lines += data_warp_lines
-            lines.append("####### END OF DATAWARP DIRECTIVES   #######")
-            lines.append("\n")
+            burst_buffer_lines = self._get_burst_buffer(self.burstbuffer)
+            if burst_buffer_lines:
+                lines += burst_buffer_lines
+
+        if self.datawarp:
+            data_warp_lines = self._get_data_warp(self.datawarp)
+
+            if data_warp_lines:
+                lines += data_warp_lines
 
         # for python scripts we generate python script and return lines
         if self.shell.name == "python":

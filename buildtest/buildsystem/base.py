@@ -495,6 +495,13 @@ class BuilderBase(ABC):
         ) or self.recipe.get("cobalt")
         self.batch = self.recipe.get("batch")
 
+        self.burstbuffer = self.recipe.get("BB") or deep_get(
+            self.recipe, "executors", self.executor, "BB"
+        )
+        self.datawarp = self.recipe.get("DW") or deep_get(
+            self.recipe, "executors", self.executor, "DW"
+        )
+
     def get_slurm_directives(self):
         """Get #SBATCH lines based on ``sbatch`` property"""
         jobscript = SlurmBatchScript(sbatch=self.sbatch, batch=self.batch)
@@ -574,9 +581,11 @@ class BuilderBase(ABC):
             return
 
         lines = []
+        lines.append("####### START OF BURST BUFFER DIRECTIVES #######")
         for arg in burstbuffer:
             lines += [f"#BB {arg} "]
 
+        lines.append("####### END OF BURST BUFFER DIRECTIVES   #######")
         return lines
 
     def _get_data_warp(self, datawarp):
@@ -592,9 +601,11 @@ class BuilderBase(ABC):
             return
 
         lines = []
+        lines.append("####### START OF DATAWARP DIRECTIVES #######")
         for arg in datawarp:
             lines += [f"#DW {arg}"]
 
+        lines.append("####### END OF DATAWARP DIRECTIVES   #######")
         return lines
 
     def _set_execute_perm(self, fname):
