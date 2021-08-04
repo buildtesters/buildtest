@@ -283,7 +283,7 @@
             "env": { "$ref": "#/definitions/env" },
             "vars": { "$ref": "#/definitions/env" },
             "sbatch": { "$ref": "#/definitions/list_of_strings" },
-            "lsf": { "$ref": "#/definitions/list_of_strings" },
+            "bsub": { "$ref": "#/definitions/list_of_strings" },
             "pbs": { "$ref": "#/definitions/list_of_strings" },
             "cobalt": { "$ref": "#/definitions/list_of_strings" }
           }
