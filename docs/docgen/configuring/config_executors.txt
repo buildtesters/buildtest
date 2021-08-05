@@ -1,6 +1,0 @@
-$ buildtest config executors 
-generic.local.bash
-generic.local.sh
-generic.local.csh
-generic.local.zsh
-generic.local.python

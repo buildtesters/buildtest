@@ -90,8 +90,7 @@ Configuration Summary
 You can get a summary of buildtest using ``buildtest config summary``, this will
 display information from several sources into one single command along.
 
-.. program-output:: cat docgen/configuring/config_summary.txt
-   :shell:
+.. command-output:: buildtest config summary
 
 Example Configurations
 -----------------------

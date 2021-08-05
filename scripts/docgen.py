@@ -14,28 +14,11 @@ docgen = os.path.join(root, "docs", "docgen")
 os.environ["BUILDTEST_COLOR"] = "False"
 
 
-def getting_started():
-
-    prefix = "getting_started/features"
-    cmd_dict = {
-        "buildtest_history_list.txt": "buildtest history list",
-        "buildtest_history_query.txt": "buildtest history query 0",
-    }
-    generate_tests(prefix, cmd_dict)
-
-    prefix = "configuring"
-    cmd_dict = {
-        "config_summary.txt": "buildtest config summary",
-    }
-    generate_tests(prefix, cmd_dict)
-
-
 def buildspecs_page():
 
     prefix = "buildspecs/overview"
 
     cmd_dict = {
-        "regex_executor_script.txt": "buildtest build -b tutorials/executor_regex_script.yml",
         "run_only_platform.txt": "buildtest build -b tutorials/run_only_platform.yml",
         "run_only_distro.txt": "buildtest build -b tutorials/run_only_distro.yml",
     }
@@ -86,7 +69,6 @@ def main():
     shutil.rmtree(BUILDTEST_USER_HOME)
 
     create_dir(docgen)
-    getting_started()
     buildspecs_page()
 
 
