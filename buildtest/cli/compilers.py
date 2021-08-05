@@ -42,11 +42,11 @@ def compiler_find(args, configuration):
     # configuration["compilers"]["compiler"] = bc.compilers
 
     configuration.target_config["compilers"]["compiler"] = bc.compilers
-
+    system = configuration.name()
     # delete system entry
-    del configuration.config["system"][configuration.name]
+    del configuration.config["system"][system]
 
-    configuration.config["system"][configuration.name] = configuration.target_config
+    configuration.config["system"][system] = configuration.target_config
 
     custom_validator(
         configuration.config, schema_table["settings.schema.json"]["recipe"]
