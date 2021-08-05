@@ -5,7 +5,7 @@ import string
 import tempfile
 
 import pytest
-from buildtest.cli.report import Report, report_cmd
+from buildtest.cli.report import Report, report_cmd, report_summary
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORT_SUMMARY, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 
@@ -159,6 +159,12 @@ def test_invalid_report_files():
     tempdir = tempfile.TemporaryDirectory()
     with pytest.raises(SystemExit):
         Report(report_file=tempdir.name)
+
+
+@pytest.mark.cli
+def test_report_summary():
+    report = Report()
+    report_summary(report)
 
 
 @pytest.mark.cli

@@ -4,7 +4,6 @@ import sys
 
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.executors.setup import BuildExecutor
-from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import is_dir, resolve_path
 
 

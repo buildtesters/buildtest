@@ -489,6 +489,35 @@ class Report:
     def get_buildspecs(self):
         return self.filtered_buildspecs
 
+    def get_testids(self):
+        """Return a list of test ids from the report file"""
+        tests = []
+        for buildspec in self.filtered_buildspecs:
+            for name in self.report[buildspec].keys():
+                for test in self.report[buildspec][name]:
+                    tests.append(test["full_id"])
+        return tests
+
+    def breakdown_by_test_names(self):
+        """Returns a dictionary with number of test runs by testname"""
+        tests = {}
+        for buildspec in self.filtered_buildspecs:
+            for name in self.report[buildspec].keys():
+                pass_tests = 0
+                fail_tests = 0
+                for test in self.report[buildspec][name]:
+                    if test["state"] == "PASS":
+                        pass_tests += 1
+                    else:
+                        fail_tests += 1
+
+                tests[name] = {
+                    "runs": len(self.report[buildspec][name]),
+                    "pass": pass_tests,
+                    "fail": fail_tests,
+                }
+        return tests
+
     def get_ids(self):
         """Return a dict in the format
         ```
@@ -540,6 +569,10 @@ def report_cmd(args):
         oldest=args.oldest,
         report_file=args.report,
     )
+    if args.report_subcommand == "summary":
+        report_summary(results)
+        return
+
     if args.helpfilter:
         results.print_filter_fields()
         return
@@ -552,3 +585,39 @@ def report_cmd(args):
         print(f"Reading report file: {results.reportfile()} \n")
 
     results.print_report(terse=args.terse, noheader=args.no_header)
+
+
+def report_summary(report):
+    """Implements ``buildtest report summary``"""
+
+    print("Report: ", report.reportfile())
+    print("Total Tests:", len(report.get_testids()))
+    print("Total Tests by Names: ", len(report.get_names()))
+    print("Number of buildspecs in report: ", len(report.get_buildspecs()))
+
+    test_breakdown = report.breakdown_by_test_names()
+
+    table = {"name": [], "runs": [], "pass": [], "fail": []}
+    for k in test_breakdown.keys():
+        table["name"].append(k)
+        table["runs"].append(test_breakdown[k]["runs"])
+        table["pass"].append(test_breakdown[k]["pass"])
+        table["fail"].append(test_breakdown[k]["fail"])
+
+    headers = list(table.keys())
+
+    print("\n")
+    print("{:<20}".format(""), "Breakdown by Test")
+    if os.getenv("BUILDTEST_COLOR") == "True":
+        headers = [colored(field, "blue", attrs=["bold"]) for field in headers]
+
+    print(tabulate(table, headers=headers, tablefmt="grid"))
+
+    print("\n")
+    print("{:<40}".format(""), "FAIL test")
+    results = Report(
+        filter_args={"state": "FAIL"},
+        format_args="name,id,executor,state,returncode,runtime",
+        report_file=report.reportfile(),
+    )
+    results.print_report()

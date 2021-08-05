@@ -17,13 +17,13 @@ with default format fields. To see a list of all format fields, click :ref:`here
 .. command-output:: buildtest report
    :ellipsis: 20
 
-Format Reports
----------------
+Format Reports (``buildtest report --format``)
+-----------------------------------------------
 
 .. _report_format_fields:
 
-Available Format Fields
-~~~~~~~~~~~~~~~~~~~~~~~~
+Available Format Fields (``buildtest report --helpformat``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 The **buildtest report** command displays a default format fields that can be changed using the
@@ -34,7 +34,7 @@ This option will list all format fields with their description.
 .. command-output:: buildtest report --helpformat
 
 Format Field Usage
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
 
 The ``--format`` field are specified in comma separated format (i.e ``--format <field1>,<field2>``).
 In this example we format table by fields ``--format id,executor,state,returncode``.
@@ -42,8 +42,8 @@ In this example we format table by fields ``--format id,executor,state,returncod
 .. command-output:: buildtest report --format name,id,executor,state,returncode
    :ellipsis: 21
 
-Filter Reports
----------------
+Filter Reports (``buildtest report --filter``)
+-----------------------------------------------
 
 The **buildtest report** command will display all tests results, which can be quite long depending on number of tests
 so therefore we need a mechanism to filter the test results. The ``--filter`` option can be used
@@ -57,8 +57,8 @@ specify multiple filter delimited by comma. buildtest will treat multiple
 filters as logical **AND** operation. The filter option can be used with
 ``--format`` field. Let's see some examples to illustrate the point.
 
-Filter by returncode
-~~~~~~~~~~~~~~~~~~~~~~
+Filter by returncode (``--filter returncode``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want to retrieve all tests with a given returncode, we can use the **returncode**
 property. For instance, let's retrieve all tests with returncode of 2 by setting ``--filter returncode=2``.
@@ -67,8 +67,8 @@ property. For instance, let's retrieve all tests with returncode of 2 by setting
 
 .. Note:: buildtest automatically converts returncode to integer when matching returncode, so ``--filter returncode="2"`` will work too
 
-Filter by test name
-~~~~~~~~~~~~~~~~~~~~~
+Filter by test name (``--filter name``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want to filter by test name, use the **name** attribute in filter option. Let's assume
 we want to filter all tests by name ``exit1_pass``, this can be achieved by setting filter
@@ -77,8 +77,8 @@ to filter test results.
 
 .. command-output:: buildtest report --filter name=exit1_pass --format=name,id,returncode,state
 
-Filter by buildspec
-~~~~~~~~~~~~~~~~~~~~~
+Filter by buildspec (``--filter buildspec``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Likewise, we can filter results by buildspec file using **buildspec** attribute via
 ``--filter buildspec=<file>``. The **buildspec** attribute must resolve to a file path which can be
@@ -88,8 +88,8 @@ tests that belong to the buildspec file. If file doesn't exist or is not found i
 .. command-output:: buildtest report --filter buildspec=tutorials/python-hello.yml --format=name,id,state,buildspec
 
 
-Filter by test state
-~~~~~~~~~~~~~~~~~~~~~
+Filter by test state (``--filter state``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want to filter results by test state, use the **state** property. This can be
 useful if you want to know all pass or failed tests. The state property expects
@@ -129,7 +129,7 @@ because this test wasn't run. In this case you will get the following message.
     :returncode: 0
 
 Find Latest or Oldest test
----------------------------
+--------------------------
 
 We can search for oldest or latest test for any given test. This can be useful if you
 want to see first or last test run. If you want to retrieve the oldest
@@ -210,6 +210,17 @@ next example, we report all FAIL tests in terse output. The first line is the he
 output, if you want to disable output of header you can use ``--no-header`` option.
 
 .. command-output:: buildtest report --filter state=FAIL --format=name,id,state -t
+
+Report Summary (``buildtest report summary``)
+----------------------------------------------
+
+The ``buildtest report summary`` command can be used to provide a summary of the test report
+with breakdown statistics of tests including all fail tests, number of tests by name, test runs
+and buildspecs in report file.
+
+Shown below is an example output from the report summary.
+
+.. command-output:: buildtest report summary
 
 .. _inspect_test:
 
@@ -420,7 +431,7 @@ of available options for ``buildtest inspect query``.
 .. command-output:: buildtest inspect query --help
 
 The ``buildtest inspect query`` command expects positional arguments that are name of tests
-which you can get by running :ref:`"buildtest inspect name" <inspect_by_name>`.
+which you can get by running ``buildtest inspect list``.
 
 For instance, let's query the test ``circle_area`` by running the following:
 

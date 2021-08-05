@@ -501,6 +501,7 @@ def report_menu(subparsers):
     )
     subparsers.add_parser("clear", help="delete report file")
     subparsers.add_parser("list", help="List all report files")
+    subparsers.add_parser("summary", help="Summarize test report")
 
     # buildtest report
     parser_report.add_argument(
