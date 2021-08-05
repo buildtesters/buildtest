@@ -508,7 +508,7 @@ class BuilderBase(ABC):
         lines = jobscript.get_headers()
         lines += [f"#SBATCH --job-name={self.name}"]
         lines += [f"#SBATCH --output={self.name}.out"]
-        lines += [f"#SBATCH --output={self.name}.err"]
+        lines += [f"#SBATCH --error={self.name}.err"]
 
         return lines
 
