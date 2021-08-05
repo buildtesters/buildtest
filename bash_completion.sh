@@ -42,7 +42,7 @@ _buildtest ()
 
   COMPREPLY=()   # Array variable storing the possible completions.
 
-  local cmds="build history buildspec schema report inspect config cdash docs schemadocs help"
+  local cmds="build buildspec cdash config docs edit help inspect history report schema schemadocs "
   local opts="--help -h --version -V -c --config -d --debug --color"
 
   next=${COMP_WORDS[1]}

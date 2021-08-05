@@ -121,11 +121,13 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 
     build_menu(subparsers)
-    history_menu(subparsers)
+
     buildspec_menu(subparsers)
     config_menu(subparsers)
     report_menu(subparsers)
     inspect_menu(subparsers)
+    history_menu(subparsers)
+    edit_menu(subparsers)
     schema_menu(subparsers)
     cdash_menu(subparsers)
 
@@ -135,6 +137,15 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     subparsers.add_parser("help", help="buildtest command guide")
 
     return parser
+
+
+def edit_menu(subparsers):
+    edit_subcmd = subparsers.add_parser(
+        "edit", help="Edit a buildspec and validate with schema file"
+    )
+    edit_subcmd.add_argument(
+        "buildspec", help="Open buildspec in editor and validate upon closing file"
+    )
 
 
 def history_menu(subparsers):
