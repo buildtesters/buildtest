@@ -13,11 +13,15 @@ buildspecs:
         sbatch: ["-N 1"]
       generic.local.bash:
         sbatch: ["-N 8"]
+    pre_cmds: |
+      cd /tmp
+      git clone https://github.com/spack/spack
     spack:
-      root: $HOME/spack
+      root: /tmp/spack
       env:
         specs:
           - 'm4'
         activate:
           name: m4
         concretize: true
+    post_cmd: rm -rf $SPACK_ROOT

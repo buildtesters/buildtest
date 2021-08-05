@@ -433,7 +433,7 @@ class Report:
 
         print(tabulate(filter_field_table, headers=headers, tablefmt="simple"))
 
-    def print_report(self, terse=None):
+    def print_report(self, terse=None, noheader=None):
 
         # if --terse option is specified we print output separated by PIPE symbol (|). Shown below is an example output
 
@@ -449,7 +449,9 @@ class Report:
 
             t = [list(i) for i in zip(*join_list)]
 
-            print("|".join(self.display_table.keys()))
+            if not noheader:
+                print("|".join(self.display_table.keys()))
+
             for i in t:
                 print("|".join(i))
 
@@ -484,15 +486,29 @@ class Report:
 
         return test_names
 
+    def get_buildspecs(self):
+        return self.filtered_buildspecs
+
     def get_ids(self):
-        """Return a list of test ids from report file"""
+        """Return a dict in the format
+        ```
+        {
+          <test-id>:
+            {
+              'name': <name test>
+              'buildspec': <buildspec>
+            }
+           ...
+        }
+        ```
+        """
 
         test_ids = {}
         for buildspec in self.filtered_buildspecs:
             # process each test in buildspec file
             for name in self.report[buildspec].keys():
                 for test in self.report[buildspec][name]:
-                    test_ids[test["full_id"]] = name
+                    test_ids[test["full_id"]] = {"name": name, "buildspec": buildspec}
 
         return test_ids
 
@@ -535,4 +551,4 @@ def report_cmd(args):
     if not args.terse:
         print(f"Reading report file: {results.reportfile()} \n")
 
-    results.print_report(terse=args.terse)
+    results.print_report(terse=args.terse, noheader=args.no_header)

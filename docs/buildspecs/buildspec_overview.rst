@@ -523,7 +523,7 @@ where we define two metrics named ``hpcg_rating`` and ``hpcg_state``.
 
 .. literalinclude:: ../tutorials/metrics_regex.yml
     :language: yaml
-    :emphasize-lines: 10-19
+    :emphasize-lines: 9-18
 
 The metrics will not impact behavior of test, it will only impact the test report. By default
 a metric will be an empty dictionary if there is no ``metrics`` property. If we fail to match

@@ -42,6 +42,10 @@ def inspect_cmd(args):
     # implements command 'buildtest inspect id'
     if args.inspect == "id":
         inspect_by_id(report, args)
+        return
+
+    if args.inspect == "buildspec":
+        inspect_buildspec(report, input_buildspecs=args.buildspec, all_records=args.all)
 
 
 def inspect_list(report, terse=None, header=None):
@@ -49,7 +53,7 @@ def inspect_list(report, terse=None, header=None):
 
     test_ids = report.get_ids()
 
-    table = {"name": [], "id": []}
+    table = {"name": [], "id": [], "buildspec": []}
 
     # print output in terse format
     if terse:
@@ -57,13 +61,18 @@ def inspect_list(report, terse=None, header=None):
         if not header:
             print("|".join(table.keys()))
 
-        for uid, name in test_ids.items():
-            print(f"{uid}|{name}")
+        for identifier in test_ids.keys():
+            print(
+                f"{identifier}|{test_ids[identifier]['name']}|{test_ids[identifier]['buildspec']}"
+            )
+
         return
 
-    for identifier, name in test_ids.items():
-        table["name"].append(name)
+    for identifier in test_ids.keys():
+        # for name, buildspec in test_ids[identifier]:
         table["id"].append(identifier)
+        table["name"].append(test_ids[identifier]["name"])
+        table["buildspec"].append(test_ids[identifier]["buildspec"])
 
     if os.getenv("BUILDTEST_COLOR") == "True":
         print(
@@ -121,7 +130,7 @@ def inspect_query(report, args):
             print("starttime: ", test["starttime"])
             print("endtime: ", test["endtime"])
 
-            # print content of output file when 'buildtest inspect display --output' is set
+            # print content of output file when 'buildtest inspect query --output' is set
             if args.output:
 
                 content = read_file(test["outfile"])
@@ -136,10 +145,9 @@ def inspect_query(report, args):
                     f"End of Output File: {test['outfile']}",
                     "{:*<25}".format(""),
                 )
-                # print("{:^<40}".format(''), "End of Output File","{:^<40}".format(''))
                 print()
 
-            # print content of error file when 'buildtest inspect display --error' is set
+            # print content of error file when 'buildtest inspect query --error' is set
             if args.error:
                 content = read_file(test["errfile"])
                 print(
@@ -158,7 +166,7 @@ def inspect_query(report, args):
 
                 print()
 
-            # print content of testpath when 'buildtest inspect display --testpath' is set
+            # print content of testpath when 'buildtest inspect query --testpath' is set
             if args.testpath:
                 content = read_file(test["testpath"])
                 print(
@@ -176,7 +184,7 @@ def inspect_query(report, args):
                 )
                 print()
 
-            # print content of build script when 'buildtest inspect display --buildscript' is set
+            # print content of build script when 'buildtest inspect query --buildscript' is set
             if args.buildscript:
                 content = read_file(test["build_script"])
                 print(
@@ -193,6 +201,62 @@ def inspect_query(report, args):
                     "{:*<25}".format(""),
                 )
                 print()
+
+
+def inspect_buildspec(report, input_buildspecs, all_records):
+    """This method implements command ``buildtest inspect buildspec``"""
+
+    search_buildspecs = []
+    for fname in input_buildspecs:
+        abs_fname = resolve_path(fname)
+
+        if not abs_fname:
+            print(f"buildspec: {fname} is not valid file")
+            continue
+
+        search_buildspecs.append(abs_fname)
+
+    if not search_buildspecs:
+        sys.exit(
+            f"There are no buildspecs in cache based on input buildspecs: {input_buildspecs}"
+        )
+
+    # get raw content of test
+    raw_content = report.get()
+    # returns a list of buildspecs from the report cache
+    available_buildspecs = list(report.get_buildspecs())
+
+    # filter out buildspecs not found in report
+    search_buildspecs = [
+        buildspec
+        for buildspec in search_buildspecs
+        if buildspec in available_buildspecs
+    ]
+
+    # we stop if there are no buildspecs
+    if not search_buildspecs:
+        msg = "Unable to find any buildspecs in cache, please specify one of the following buildspecs: \n"
+        for buildspec in available_buildspecs:
+            msg += buildspec + "\n"
+        sys.exit(msg)
+
+    # dict used to hold records from
+    records = {}
+
+    for buildspec in search_buildspecs:
+        records[buildspec] = raw_content[buildspec]
+
+    # dict holding latest record of each test
+    latest_records = {}
+    if not all_records:
+        for buildspec in records.keys():
+            latest_records[buildspec] = {}
+            for test in records[buildspec].keys():
+                # get last element of list
+                latest_records[buildspec][test] = records[buildspec][test][-1]
+
+    records = latest_records or records
+    print(json.dumps(records, indent=2))
 
 
 def inspect_by_name(report, names, all_records):
@@ -221,6 +285,7 @@ def inspect_by_name(report, names, all_records):
 
 
 def inspect_by_id(report, args):
+    """This method implements ``buildtest inspect id`` command"""
     discovered_ids = []
     records = {}
 

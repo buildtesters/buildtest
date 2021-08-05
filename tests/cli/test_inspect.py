@@ -1,10 +1,13 @@
+import os
 import random
 import string
+import tempfile
 import uuid
 
 import pytest
 from buildtest.cli.inspect import inspect_cmd
 from buildtest.cli.report import Report
+from buildtest.defaults import BUILDTEST_ROOT
 
 
 def test_buildtest_inspect_list():
@@ -44,16 +47,14 @@ def test_buildtest_inspect_name():
 
     report = Report()
 
-    test_ids = report.get_ids()
+    # get first two names of list
+    test_names = report.get_names()[0]
     # print(test_ids)
-
-    # get first element's value from dict. dict in format  { <ID> : <name>, <ID>: <name> }
-    test_name = list(test_ids.values())[0]
 
     class args:
         subcommands = "config"
         inspect = "name"
-        name = [test_name]
+        name = [test_names]
         report = None
         all = False
 
@@ -63,7 +64,7 @@ def test_buildtest_inspect_name():
     class args:
         subcommands = "config"
         inspect = "name"
-        name = [test_name]
+        name = [test_names]
         report = None
         all = True
 
@@ -107,6 +108,53 @@ def test_buildtest_inspect_id():
     # generate a random unique id which is not a valid test id when searching for tests by id.
     with pytest.raises(SystemExit):
         inspect_cmd(args)
+
+
+def test_buildspec_inspect_buildspec():
+
+    tf = tempfile.NamedTemporaryFile(delete=True)
+
+    class args:
+        subcommands = "config"
+        inspect = "buildspec"
+        buildspec = [tf.name]
+        report = None
+        all = None
+
+    # if buildspec not in cache we raise error
+    with pytest.raises(SystemExit):
+        inspect_cmd(args)
+
+    # delete file
+    tf.close()
+    # invalid filepath will raise an error
+    with pytest.raises(SystemExit):
+        inspect_cmd(args)
+
+    search_buildspec = [
+        os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml"),
+        os.path.join(BUILDTEST_ROOT, "tutorials", "pass_returncode.yml"),
+    ]
+
+    class args:
+        subcommands = "config"
+        inspect = "buildspec"
+        buildspec = search_buildspec
+        report = None
+        all = False
+
+    # run buildtest inspect buildspec $BUILDTEST_ROOT/tutorials/vars.yml $BUILDTEST_ROOT/tutorials/pass_returncode.yml
+    inspect_cmd(args)
+
+    class args:
+        subcommands = "config"
+        inspect = "buildspec"
+        buildspec = search_buildspec
+        report = None
+        all = True
+
+    # run buildtest inspect buildspec --all $BUILDTEST_ROOT/tutorials/vars.yml $BUILDTEST_ROOT/tutorials/pass_returncode.yml
+    inspect_cmd(args)
 
 
 def test_buildtest_query():

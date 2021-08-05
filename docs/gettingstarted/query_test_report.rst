@@ -206,10 +206,10 @@ Terse Output
 If you would like to parse the result of ``buildtest report``, you can use the ``--terse`` or ``-t`` option which
 will print the report in machine readable format that shows the name of each column followed by each entry. Each entry
 is delimited by PIPE symbol (``|``). The ``--terse`` option works with ``--format`` and ``--filter`` option. In this
-next example, we report all FAIL tests in terse output.
+next example, we report all FAIL tests in terse output. The first line is the header of tables followed by
+output, if you want to disable output of header you can use ``--no-header`` option.
 
 .. command-output:: buildtest report --filter state=FAIL --format=name,id,state -t
-
 
 .. _inspect_test:
 
@@ -250,6 +250,33 @@ In this next example, we will retrieve test records for ``bash_shell`` and  ``py
 
 If you want to query all test records for a given name you can use the ``--all`` option which is applied to all positional
 arguments.
+
+Inspect Test by buildspec via ``buildtest inspect buildspec``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+buildtest can fetch records based on buildspec via ``buildtest inspect buildspec`` which expects
+a list of buildspecs. By default, buildtest will fetch the latest record of each test, but if you
+want to fetch all records you can pass the ``--all`` option.
+
+In example below we will fetch latest record for all tests in **tutorials/vars.yml**
+
+.. command-output:: buildtest inspect buildspec tutorials/vars.yml
+
+buildtest will report an error if an input buildspec is invalid filepath such as one below
+
+.. command-output:: buildtest inspect buildspec /tmp/buildspec.yml
+   :returncode: 1
+
+You can also pass multiple buildspes on the command line and fetch all records for a test. In example
+below we will fetch all records from tests **tutorials/hello_world/yml** and **tutorials/regex_status.yml**
+
+.. command-output:: buildtest inspect buildspec --all tutorials/vars.yml tutorials/status_regex.yml
+
+If you pass a valid filepath but file is not in cache you will get an error as follows
+
+.. command-output:: buildtest inspect buildspec $BUILDTEST_ROOT/README.rst
+   :shell:
+   :returncode: 1
 
 .. _inspect_by_id:
 

@@ -12,5 +12,3 @@ buildspecs:
         sbatch: ["-n 4", "-N 1", "-t 30"]
       generic.local.sh:
         sbatch: ["-n 8", "-N 1", "-t 60"]
-      generic.local.zsh:
-        sbatch: ["-n 16", "-N 2", "-t 120"]

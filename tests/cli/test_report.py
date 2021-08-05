@@ -193,6 +193,7 @@ def test_report_clear():
         report = BUILD_REPORT
         report_subcommand = None
         terse = None
+        no_header = None
 
     backupfile = BUILD_REPORT + ".bak"
     shutil.copy2(BUILD_REPORT, backupfile)
@@ -210,6 +211,7 @@ def test_report_clear():
         report = "".join(random.choice(string.ascii_letters) for i in range(10))
         report_subcommand = "clear"
         terse = None
+        no_header = None
 
     # buildtest report clear <file> will raise an error since file doesn't exist
     with pytest.raises(SystemExit):
