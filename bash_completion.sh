@@ -103,7 +103,7 @@ _buildtest ()
       ;;
 
     report)
-      local opts="--filter --format --help --helpfilter --helpformat --latest --no-header --oldest --report  --terse  -h -n -r -t clear list"
+      local opts="--filter --format --help --helpfilter --helpformat --latest --no-header --oldest --report  --terse  -h -n -r -t clear list summary"
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) );;
 
     config)
