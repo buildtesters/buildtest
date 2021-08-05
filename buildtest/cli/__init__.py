@@ -161,18 +161,18 @@ def history_menu(subparsers):
         "list", help="List a summary of all builds"
     )
     list_parser.add_argument(
+        "-n",
+        "--no-header",
+        action="store_true",
+        help="Do not print header columns in terse output (--terse)",
+    )
+    list_parser.add_argument(
         "-t",
         "--terse",
         action="store_true",
         help="Print output in machine readable format",
     )
 
-    list_parser.add_argument(
-        "-n",
-        "--no-header",
-        action="store_true",
-        help="Do not print header columns in terse output (--terse)",
-    )
     query = history_subparser.add_parser(
         "query", help="Query information for a particular build"
     )
@@ -205,11 +205,11 @@ def build_menu(subparsers):
     )
 
     parser_build.add_argument(
-        "-t",
-        "--tags",
+        "-e",
+        "--executor",
         action="append",
         type=str,
-        help="Discover buildspecs by tags found in buildspec cache",
+        help="Discover buildspecs by executor name found in buildspec cache",
     )
 
     parser_build.add_argument(
@@ -218,35 +218,16 @@ def build_menu(subparsers):
         type=single_kv_string,
         help="Filter buildspec based on tags, type, or maintainers. Usage:  --filter key1=val1,key2=val2",
     )
-
     parser_build.add_argument(
-        "-e",
-        "--executor",
-        action="append",
-        type=str,
-        help="Discover buildspecs by executor name found in buildspec cache",
+        "--helpfilter",
+        action="store_true",
+        help="Show available filter fields used with --filter option",
     )
     parser_build.add_argument(
-        "-s",
-        "--stage",
-        help="control behavior of buildtest build",
-        choices=["parse", "build"],
-    )
-
-    parser_build.add_argument(
-        "--testdir",
-        help="Specify a custom test directory where to write tests. This overrides configuration file and default location.",
-    )
-    parser_build.add_argument(
-        "--rebuild",
-        type=positive_number,
-        help="Rebuild test X number of times. Must be a positive number between [1-50]",
-    )
-
-    parser_build.add_argument(
-        "-r",
-        "--report",
-        help="Specify a report file where tests will be written.",
+        "-k",
+        "--keep-stage-dir",
+        action="store_true",
+        help="Keep stage directory after job completion.",
     )
     parser_build.add_argument(
         "--max-pend-time",
@@ -259,15 +240,32 @@ def build_menu(subparsers):
         help="Specify Poll Interval (sec) for polling batch jobs",
     )
     parser_build.add_argument(
-        "-k",
-        "--keep-stage-dir",
-        action="store_true",
-        help="Keep stage directory after job completion.",
+        "--rebuild",
+        type=positive_number,
+        help="Rebuild test X number of times. Must be a positive number between [1-50]",
     )
     parser_build.add_argument(
-        "--helpfilter",
-        action="store_true",
-        help="Show available filter fields used with --filter option",
+        "-r",
+        "--report",
+        help="Specify a report file where tests will be written.",
+    )
+    parser_build.add_argument(
+        "-s",
+        "--stage",
+        help="control behavior of buildtest build",
+        choices=["parse", "build"],
+    )
+    parser_build.add_argument(
+        "-t",
+        "--tags",
+        action="append",
+        type=str,
+        help="Discover buildspecs by tags found in buildspec cache",
+    )
+
+    parser_build.add_argument(
+        "--testdir",
+        help="Specify a custom test directory where to write tests. This overrides configuration file and default location.",
     )
 
 
@@ -295,16 +293,17 @@ def buildspec_menu(subparsers):
         "invalid", help="Show invalid buildspecs"
     )
 
-    invalid_buildspecs.add_argument(
-        "-e", "--error", action="store_true", help="Show error messages"
-    )
-
     subparsers_buildspec.add_parser("summary", help="Print summary of buildspec cache")
 
     buildspec_validate = subparsers_buildspec.add_parser(
         "validate", help="Validate buildspecs"
     )
+    # buildtest buildspec invalid options
+    invalid_buildspecs.add_argument(
+        "-e", "--error", action="store_true", help="Show error messages"
+    )
 
+    # buildtest buildspec validate options
     buildspec_validate.add_argument(
         "-b",
         "--buildspec",
@@ -320,13 +319,6 @@ def buildspec_menu(subparsers):
         help="Specify path to buildspec to exclude (file or directory) during validation",
         action="append",
     )
-    buildspec_validate.add_argument(
-        "-t",
-        "--tag",
-        type=str,
-        action="append",
-        help="Specify buildspecs by tag name to validate",
-    )
 
     buildspec_validate.add_argument(
         "-e",
@@ -335,23 +327,16 @@ def buildspec_menu(subparsers):
         action="append",
         help="Specify buildspecs by executor name to validate",
     )
-
-    buildspec_find.add_argument(
-        "--root",
-        help="Specify root buildspecs (directory) path to load buildspecs into buildspec cache.",
+    buildspec_validate.add_argument(
+        "-t",
+        "--tag",
         type=str,
         action="append",
+        help="Specify buildspecs by tag name to validate",
     )
 
-    buildspec_find.add_argument(
-        "-r",
-        "--rebuild",
-        help="Rebuild buildspec cache and find all buildspecs again",
-        action="store_true",
-    )
-    buildspec_find.add_argument(
-        "-t", "--tags", help="List all available tags", action="store_true"
-    )
+    # buildtest buildspec find options
+
     buildspec_find.add_argument(
         "-b",
         "--buildspec",
@@ -364,8 +349,15 @@ def buildspec_menu(subparsers):
         help="get all unique executors from buildspecs",
         action="store_true",
     )
+
     buildspec_find.add_argument(
-        "-p", "--paths", help="print all root buildspec paths", action="store_true"
+        "--filter",
+        type=handle_kv_string,
+        help="Filter buildspec cache with filter fields in format --filter key1=val1,key2=val2",
+    )
+    buildspec_find.add_argument(
+        "--format",
+        help="Format buildspec cache with format fields in format --format field1,field2,...",
     )
     buildspec_find.add_argument(
         "--group-by-tags", action="store_true", help="Group tests by tag name"
@@ -374,6 +366,17 @@ def buildspec_menu(subparsers):
         "--group-by-executor",
         action="store_true",
         help="Group tests by executor name",
+    )
+
+    buildspec_find.add_argument(
+        "--helpfilter",
+        action="store_true",
+        help="Show Filter fields for --filter option for filtering buildspec cache output",
+    )
+    buildspec_find.add_argument(
+        "--helpformat",
+        action="store_true",
+        help="Show Format fields for --format option for formatting buildspec cache output",
     )
     buildspec_find.add_argument(
         "-m",
@@ -387,34 +390,34 @@ def buildspec_menu(subparsers):
         help="Show maintainers breakdown by buildspecs",
         action="store_true",
     )
-    buildspec_find.add_argument(
-        "--filter",
-        type=handle_kv_string,
-        help="Filter buildspec cache with filter fields in format --filter key1=val1,key2=val2",
-    )
-    buildspec_find.add_argument(
-        "--format",
-        help="Format buildspec cache with format fields in format --format field1,field2,...",
-    )
-    buildspec_find.add_argument(
-        "--helpfilter",
-        action="store_true",
-        help="Show Filter fields for --filter option for filtering buildspec cache output",
-    )
-    buildspec_find.add_argument(
-        "--helpformat",
-        action="store_true",
-        help="Show Format fields for --format option for formatting buildspec cache output",
-    )
-    buildspec_find.add_argument(
-        "--terse", help="Print output in machine readable format", action="store_true"
-    )
 
     buildspec_find.add_argument(
         "-n",
         "--no-header",
         action="store_true",
         help="Print output without header in terse output",
+    )
+    buildspec_find.add_argument(
+        "-p", "--paths", help="print all root buildspec paths", action="store_true"
+    )
+
+    buildspec_find.add_argument(
+        "-r",
+        "--rebuild",
+        help="Rebuild buildspec cache and find all buildspecs again",
+        action="store_true",
+    )
+    buildspec_find.add_argument(
+        "--root",
+        help="Specify root buildspecs (directory) path to load buildspecs into buildspec cache.",
+        type=str,
+        action="append",
+    )
+    buildspec_find.add_argument(
+        "-t", "--tags", help="List all available tags", action="store_true"
+    )
+    buildspec_find.add_argument(
+        "--terse", help="Print output in machine readable format", action="store_true"
     )
 
 
@@ -431,20 +434,10 @@ def config_menu(subparsers):
         metavar="",
     )
 
+    compilers = subparsers_config.add_parser("compilers", help="Search compilers")
+
     executors = subparsers_config.add_parser(
         "executors", help="Query executors from buildtest configuration"
-    )
-
-    executors.add_argument(
-        "-j", "--json", action="store_true", help="View executor in JSON format"
-    )
-    executors.add_argument(
-        "-y", "--yaml", action="store_true", help="View executors in YAML format"
-    )
-
-    subparsers_config.add_parser("view", help="View Buildtest Configuration File")
-    subparsers_config.add_parser(
-        "validate", help="Validate buildtest settings file with schema."
     )
 
     subparsers_config.add_parser(
@@ -452,11 +445,20 @@ def config_menu(subparsers):
     )
     subparsers_config.add_parser("systems", help="List all available systems")
 
-    compilers = subparsers_config.add_parser(
-        "compilers",
-        help="search or find compilers",
+    subparsers_config.add_parser(
+        "validate", help="Validate buildtest settings file with schema."
+    )
+    subparsers_config.add_parser("view", help="View Buildtest Configuration File")
+
+    # buildtest config executors
+    executors.add_argument(
+        "-j", "--json", action="store_true", help="View executor in JSON format"
+    )
+    executors.add_argument(
+        "-y", "--yaml", action="store_true", help="View executors in YAML format"
     )
 
+    # buildtest config compilers
     compilers.add_argument(
         "-j",
         "--json",
@@ -500,8 +502,16 @@ def report_menu(subparsers):
     subparsers.add_parser("clear", help="delete report file")
     subparsers.add_parser("list", help="List all report files")
 
+    # buildtest report
     parser_report.add_argument(
-        "--helpformat", action="store_true", help="List of available format fields"
+        "--filter",
+        type=handle_kv_string,
+        help="Filter report by filter fields. The filter fields must be a key=value pair and multiple fields can be comma separated in the following format: --filter key1=val1,key2=val2 . For list of filter fields run: --helpfilter.",
+    )
+
+    parser_report.add_argument(
+        "--format",
+        help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
     )
     parser_report.add_argument(
         "--helpfilter",
@@ -509,15 +519,8 @@ def report_menu(subparsers):
         help="List available filter fields to be used with --filter option",
     )
     parser_report.add_argument(
-        "--format",
-        help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
+        "--helpformat", action="store_true", help="List of available format fields"
     )
-    parser_report.add_argument(
-        "--filter",
-        type=handle_kv_string,
-        help="Filter report by filter fields. The filter fields must be a key=value pair and multiple fields can be comma separated in the following format: --filter key1=val1,key2=val2 . For list of filter fields run: --helpfilter.",
-    )
-
     parser_report.add_argument(
         "--latest",
         help="Retrieve latest record of particular test",
@@ -527,6 +530,12 @@ def report_menu(subparsers):
         "--oldest",
         help="Retrieve oldest record of particular test",
         action="store_true",
+    )
+    parser_report.add_argument(
+        "-n",
+        "--no-header",
+        action="store_true",
+        help="Don't print headers column used with terse option (--terse).",
     )
 
     parser_report.add_argument(
@@ -540,12 +549,6 @@ def report_menu(subparsers):
         "--terse",
         action="store_true",
         help="Print output in machine readable format",
-    )
-    parser_report.add_argument(
-        "-n",
-        "--no-header",
-        action="store_true",
-        help="Don't print headers column used with terse option (--terse).",
     )
 
 
@@ -563,7 +566,25 @@ def inspect_menu(subparsers):
         dest="inspect",
         metavar="",
     )
+    inspect_buildspec = subparser.add_parser(
+        "buildspec", help="Inspect a test based on buildspec"
+    )
+    test_id = subparser.add_parser("id", help="Specify a Test ID")
     name = subparser.add_parser("name", help="Specify name of test")
+    query_list = subparser.add_parser("query", help="Query fields from record")
+
+    # buildtest inspect buildspec
+    inspect_buildspec.add_argument(
+        "buildspec", nargs="*", help="List of buildspecs to query"
+    )
+    inspect_buildspec.add_argument(
+        "-a", "--all", action="store_true", help="Fetch all records for a given test"
+    )
+
+    # buildtest inspect id
+    test_id.add_argument("id", nargs="*", help="Test ID")
+
+    # buildtest inspect name
     name.add_argument(
         "-a",
         "--all",
@@ -572,40 +593,19 @@ def inspect_menu(subparsers):
     )
     name.add_argument("name", nargs="*", help="Name of test")
 
-    inspect_buildspec = subparser.add_parser(
-        "buildspec", help="Inspect a test based on buildspec"
-    )
-
-    inspect_buildspec.add_argument(
-        "buildspec", nargs="*", help="List of buildspecs to query"
-    )
-    inspect_buildspec.add_argument(
-        "-a", "--all", action="store_true", help="Fetch all records for a given test"
-    )
-
-    test_id = subparser.add_parser("id", help="Specify a Test ID")
-    test_id.add_argument("id", nargs="*", help="Test ID")
-
+    # buildtest inspect list
     inspect_list = subparser.add_parser("list", help="List all test ids")
-    inspect_list.add_argument(
-        "-t", "--terse", action="store_true", help="Print output in terse format"
-    )
     inspect_list.add_argument(
         "-n",
         "--no-header",
         action="store_true",
         help="Print output without header in terse format (--terse)",
     )
-    query_list = subparser.add_parser("query", help="Query fields from record")
-    query_list.add_argument(
-        "-t", "--testpath", action="store_true", help="Print content of testpath"
+    inspect_list.add_argument(
+        "-t", "--terse", action="store_true", help="Print output in terse format"
     )
-    query_list.add_argument(
-        "-o", "--output", action="store_true", help="Print output file"
-    )
-    query_list.add_argument(
-        "-e", "--error", action="store_true", help="Print error file"
-    )
+
+    # buildtest inspect query
     query_list.add_argument(
         "-b", "--buildscript", action="store_true", help="Print build script"
     )
@@ -616,6 +616,15 @@ def inspect_menu(subparsers):
         choices=["first", "last", "all"],
         default="last",
     )
+    query_list.add_argument(
+        "-e", "--error", action="store_true", help="Print error file"
+    )
+    query_list.add_argument(
+        "-o", "--output", action="store_true", help="Print output file"
+    )
+    query_list.add_argument(
+        "-t", "--testpath", action="store_true", help="Print content of testpath"
+    )
     query_list.add_argument("name", nargs="*", help="Name of test")
 
 
@@ -625,14 +634,6 @@ def schema_menu(subparsers):
     parser_schema = subparsers.add_parser(
         "schema", help="List schema contents and examples"
     )
-
-    parser_schema.add_argument(
-        "-n",
-        "--name",
-        help="show schema by name (e.g., script)",
-        metavar="Schema Name",
-        choices=schema_table["names"],
-    )
     parser_schema.add_argument(
         "-e",
         "--example",
@@ -641,6 +642,13 @@ def schema_menu(subparsers):
     )
     parser_schema.add_argument(
         "-j", "--json", action="store_true", help="Display json schema file"
+    )
+    parser_schema.add_argument(
+        "-n",
+        "--name",
+        help="show schema by name (e.g., script)",
+        metavar="Schema Name",
+        choices=schema_table["names"],
     )
 
 
@@ -656,8 +664,8 @@ def cdash_menu(subparsers):
     view.add_argument("--url", help="Specify a url to CDASH project")
 
     upload = subparser.add_parser("upload", help="Upload Test to CDASH server")
-    upload.add_argument("--site", help="Specify site name reported in CDASH")
-    upload.add_argument("buildname", help="Specify Build Name reported in CDASH")
     upload.add_argument(
         "-r", "--report", help="Path to report file to upload test results"
     )
+    upload.add_argument("--site", help="Specify site name reported in CDASH")
+    upload.add_argument("buildname", help="Specify Build Name reported in CDASH")
