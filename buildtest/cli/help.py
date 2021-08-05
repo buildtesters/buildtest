@@ -39,6 +39,7 @@ buildtest report --helpformat                               List all format fiel
 buildtest report --oldest                                   Retrieve oldest record for all tests 
 buildtest report --latest                                   Retrieve latest record for all tests 
 buildtest report -r <report-file>                           Specify alternate report file to display test results
+buildtest report --terse                                    Print report in terse format
 buildtest report list                                       List all report files
 buildtest report clear                                      Remove content of report file
 
