@@ -1,5 +1,9 @@
 # This pipeline is run at OLCF at gitlab instance: https://code.ornl.gov
 
+
+variables:
+  CUSTOM_CI_BUILDS_DIR: /gpfs/wolf/proj-shared/gen014/ecp-ci/buildtest
+
 stages:
   - regression
 
