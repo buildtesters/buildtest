@@ -48,9 +48,10 @@ Inspecting a Test
 
 Command                                                     Description
 
+buildtest inspect list                                      Display all test names, ids and corresponding buildspec file
 buildtest inspect name hello                                Display all tests results
 buildtest inspect name foo bar                              Display record of test name 'foo' and 'bar'
-buildtest inspect list                                      Display all test names and ids
+buildtest inspect buildspec tutorials/vars.yml              Fetch latest runs for all tests in buildspec file 'tutorials/vars.yml'      
 buildtest inspect id <ID>                                   Display record of test by unique identifer
 buildtest query -o hello                                    Display content of output file for test name 'hello'
 buildtest query -e hello                                    Display content of error file for test name 'hello'
@@ -81,6 +82,14 @@ buildtest buildspec find --helpformat                       Show all format fiel
 buildtest buildspec find --terse                            Display output in terse format
 buildtest buildspec find invalid                            Show invalid buildspecs
 buildtest buildspec find invalid --error                    Show invalid buildspecs with error messages
+
+
+Edit Buildspec
+---------------
+
+Command                                                     Description
+
+buildtest edit tutorials/vars.yml                           Edit buildspec in EDITOR and validate buildspec after closing file
 
 Buildspec Summary
 -------------------
