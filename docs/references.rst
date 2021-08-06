@@ -14,13 +14,13 @@ Talks
     "`ECP Annual Meeting 2021 <https://www.exascaleproject.org/event/buildtest/>`_", "Apr 15, 2021", "`PDF <https://drive.google.com/file/d/134bZIWyp0AL60I1bW4oWywCYW0oV8ckB/view?usp=sharing>`_, `VIDEO <https://youtu.be/-IONWmF8YZs>`_"
     "`High Performance Computing & Simulation 2020 <http://hpcs2020.cisedu.info/>`_ at `HPBench <http://hpcs2020.cisedu.info/2-conference/special-sessions/session02-hpbench>`_", "Mar 26, 2021", "`PDF <https://drive.google.com/file/d/13Otx6w1hBxdW4WwrK4v1QCp2d0dTNiV0/view?usp=sharing>`_"
     "`SEA Improving Scientific Software 2021 <https://sea.ucar.edu/conference/2021>`_ ", "Mar 23, 2021", "`PDF <https://drive.google.com/file/d/1zs-l7a1GF7ws26Oq1zvFp3VaQ8xdHOhG/view?usp=sharing>`_, `VIDEO <https://www.youtube.com/watch?v=QBQCEnlgX3I>`_"
-    "FOSDEM21_", "Feb 7, 2021", "`PDF <https://fosdem.org/2021/schedule/event/buildtest/attachments/slides/4399/export/events/attachments/buildtest/slides/4399/buildtest_fosdem21.pdf>`_"
-    "`6th Easybuild User Meeting <https://easybuild.io/eum/>`_", "Jan 29, 2021", "`PDF <https://easybuild.io/eum/022_eum21_buildtest.pdf>`_, `VIDEO <https://youtu.be/FI3ES9B89Ig>`_"
-    "FOSDEM20_", "Feb 2, 2020", "`PDF <https://archive.fosdem.org/2020/schedule/event/buildtest/attachments/slides/3602/export/events/attachments/buildtest/slides/3602/buildtest_fosdem20.pdf>`_, `VIDEO <https://ftp.heanet.ie/mirrors/fosdem-video/2020/UB5.132/buildtest.webm>`_"
-    "`5th Easybuild User Meeting <https://github.com/easybuilders/easybuild/wiki/5th-EasyBuild-User-Meeting>`_", "Jan 30, 2020","`PDF <https://github.com/buildtesters/buildtest/blob/devel/docs/slides/buildtest-fifth-easybuild-user-meeting.pdf>`_, `VIDEO <https://youtu.be/YcaXjufRRgI>`_"
-    "SC19_ @ HUST_ workshop", "Nov 18, 2019", "`PDF <https://github.com/buildtesters/buildtest/blob/devel/docs/slides/buildtest_hust19.pdf>`_"
-    "`HPCKP'18 <https://hpckp.org/past-edition/hpckp-18/>`_", "June 22, 2018", "`PDF <https://github.com/buildtesters/buildtest/blob/devel/docs/slides/buildtest_hpckp18.pdf>`_"
-    "`HPCKP'17 <https://hpckp.org/past-edition/hpckp-17/>`_", "June 15, 2017", "`PDF <https://github.com/buildtesters/buildtest/blob/devel/docs/slides/buildtest_hpckp17.pdf>`_"
+    "FOSDEM21_", "Feb 7, 2021", "`PDF <https://drive.google.com/file/d/1NqyD8GurivYwFQxj2FpwBAJYCvdz1nOW/view?usp=sharing>`_"
+    "`6th Easybuild User Meeting <https://easybuild.io/eum/>`_", "Jan 29, 2021", "`PDF <https://drive.google.com/file/d/1M_JzTGvROCVGIHjGwdChX-RGt4aKE_xp/view?usp=sharing>`_, `VIDEO <https://youtu.be/FI3ES9B89Ig>`_"
+    "FOSDEM20_", "Feb 2, 2020", "`PDF <https://drive.google.com/file/d/1uWiPS5hnNSxnh-TnjhuYxLTkZMqX6gPp/view?usp=sharing>`_, `VIDEO <https://ftp.heanet.ie/mirrors/fosdem-video/2020/UB5.132/buildtest.webm>`_"
+    "`5th Easybuild User Meeting <https://github.com/easybuilders/easybuild/wiki/5th-EasyBuild-User-Meeting>`_", "Jan 30, 2020","`PDF <https://drive.google.com/file/d/1KZheRp5UKxHsU9TIgfPHXwRAfeyvYShs/view?usp=sharing>`_, `VIDEO <https://youtu.be/YcaXjufRRgI>`_"
+    "SC19_ @ HUST_ workshop", "Nov 18, 2019", "`PDF <https://drive.google.com/file/d/1KwIMHHj90d6qQgRmrzRtagG6EeTX5ZKj/view?usp=sharing>`_"
+    "`HPCKP'18 <https://hpckp.org/past-edition/hpckp-18/>`_", "June 22, 2018", "`PDF <https://drive.google.com/file/d/1KX7rRoJ0KuaqxQfv5fWueADhqUi9L44o/view?usp=sharing>`_"
+    "`HPCKP'17 <https://hpckp.org/past-edition/hpckp-17/>`_", "June 15, 2017", "`PDF <https://drive.google.com/file/d/1_PvGwbNWjblY7OM0wifh0x2SkkZOZEgy/view?usp=sharing>`_"
 
 Publications
 --------------
