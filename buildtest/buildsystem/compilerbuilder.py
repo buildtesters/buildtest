@@ -179,7 +179,7 @@ class CompilerBuilder(BuilderBase):
 
         # setting these values override values from Builder.sched_init() method
         self.sbatch = batch_dict["sbatch"]
-        self.lsf = batch_dict["bsub"]
+        self.bsub = batch_dict["bsub"]
         self.pbs = batch_dict["pbs"]
         self.cobalt = batch_dict["cobalt"]
         self.batch = batch_dict["batch"]

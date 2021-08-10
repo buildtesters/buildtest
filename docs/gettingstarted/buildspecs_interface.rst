@@ -239,3 +239,42 @@ Finally we can also search by executors using the ``-e`` option which can be app
 multiple executors.
 
 .. command-output:: buildtest buildspec validate -e generic.local.csh
+
+Edit buildspecs ``buildtest edit``
+-----------------------------------
+
+The ``buildtest edit`` command can be used to edit buildspec with your preferred editor
+defined by environment **$EDITOR**, if this environment is not set buildtest will resort to ``vim``.
+Once you make change, the file will be written back to disk and validated with the jsonschema.
+If it passes validation you will see a message such as follows:
+
+.. code-block:: console
+
+    $ buildtest edit tutorials/vars.yml
+    Writing file: /Users/siddiq90/Documents/GitHubDesktop/buildtest.tmp/tutorials/vars.yml
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest.tmp/tutorials/vars.yml is valid
+
+If there is an error during validation, buildtest will print the exception to stdout and it is your
+responsibility to fix the buildspec based on error message. In example below, the user provided an invalid
+value for ``type`` field.
+
+
+.. code-block:: console
+    :emphasize-lines: 16
+
+    $ buildtest edit tutorials/vars.yml
+    Writing file: /Users/siddiq90/Documents/GitHubDesktop/buildtest.tmp/tutorials/vars.yml
+    Traceback (most recent call last):
+      File "/Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest", line 17, in <module>
+        buildtest.main.main()
+      File "/Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/main.py", line 103, in main
+        edit_buildspec(args.buildspec, configuration)
+      File "/Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/cli/edit.py", line 23, in edit_buildspec
+        BuildspecParser(buildspec, be)
+      File "/Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/buildsystem/parser.py", line 74, in __init__
+        self._validate()
+      File "/Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/buildsystem/parser.py", line 185, in _validate
+        self._check_schema_type(test)
+      File "/Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/buildsystem/parser.py", line 101, in _check_schema_type
+        raise BuildspecError(self.buildspec, msg)
+    buildtest.exceptions.BuildspecError: '[/Users/siddiq90/Documents/GitHubDesktop/buildtest.tmp/tutorials/vars.yml]: type script123 is not known to buildtest.'

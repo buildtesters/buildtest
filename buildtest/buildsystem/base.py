@@ -173,6 +173,7 @@ class BuilderBase(ABC):
         self.metadata["buildspec_content"] = read_file(self.buildspec)
         # used to store content of test
         self.metadata["test_content"] = None
+        self.metadata["buildscript_content"] = None
 
         # used to store compiler name used the test. Only applicable with compiler schema
         self.metadata["compiler"] = None
@@ -184,7 +185,7 @@ class BuilderBase(ABC):
         # used to store job id from batch scheduler
         self.metadata["jobid"] = None
         # used to store job metrics for given JobID from batch scheduler
-        self.metadata["job"] = None
+        self.metadata["job"] = {}
         # Generate a unique id for the build based on key and unique string
         self.test_uid = self._generate_unique_id()
         self.metadata["full_id"] = self.test_uid
@@ -439,6 +440,7 @@ class BuilderBase(ABC):
 
         lines = "\n".join(lines)
         write_file(self.build_script, lines)
+        self.metadata["buildscript_content"] = lines
         self.logger.debug(f"Writing build script: {self.build_script}")
         self._set_execute_perm(self.build_script)
 
@@ -484,7 +486,7 @@ class BuilderBase(ABC):
         self.sbatch = deep_get(
             self.recipe, "executors", self.executor, "sbatch"
         ) or self.recipe.get("sbatch")
-        self.lsf = deep_get(
+        self.bsub = deep_get(
             self.recipe, "executors", self.executor, "bsub"
         ) or self.recipe.get("bsub")
         self.pbs = deep_get(
@@ -548,7 +550,7 @@ class BuilderBase(ABC):
             lines += sbatch_lines
             lines.append("####### END OF SCHEDULER DIRECTIVES   #######")
 
-        if self.lsf:
+        if self.bsub:
             bsub_lines = self.get_lsf_directives()
             lines.append("####### START OF SCHEDULER DIRECTIVES #######")
             lines += bsub_lines
