@@ -295,6 +295,13 @@ def buildspec_menu(subparsers):
 
     subparsers_buildspec.add_parser("summary", help="Print summary of buildspec cache")
 
+    show_buildspecs = subparsers_buildspec.add_parser(
+        "show", help="Show content of buildspec file"
+    )
+    show_buildspecs.add_argument(
+        "name", help="Show content of buildspec based on test name"
+    )
+
     buildspec_validate = subparsers_buildspec.add_parser(
         "validate", help="Validate buildspecs"
     )
