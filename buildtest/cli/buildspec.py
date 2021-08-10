@@ -235,6 +235,8 @@ class BuildspecCache:
         return valid_buildspecs
 
     def get_names(self):
+        """Return a list of test names found in buildspec cache. We only return test names for valid buildspecs"""
+
         valid_buildspecs = self.get_valid_buildspecs()
 
         test_names = []
@@ -246,6 +248,10 @@ class BuildspecCache:
         return test_names
 
     def lookup_buildspec_by_name(self, name):
+        """Given an input test name, return corresponding buildspec file found in the cache.
+        :param name: Name of test to query in buildspec cache
+        :type name: str, required
+        """
         valid_buildspecs = self.get_valid_buildspecs()
 
         for buildspec in valid_buildspecs:

@@ -278,3 +278,21 @@ value for ``type`` field.
       File "/Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/buildsystem/parser.py", line 101, in _check_schema_type
         raise BuildspecError(self.buildspec, msg)
     buildtest.exceptions.BuildspecError: '[/Users/siddiq90/Documents/GitHubDesktop/buildtest.tmp/tutorials/vars.yml]: type script123 is not known to buildtest.'
+
+Show buildspec ``buildtest buildspec show``
+--------------------------------------------
+
+buildtest can display content of buildspec file given a test name via ``buildtest buildspec show`` command which expects a
+positional argument that is the name of test. This can be quick way to see content of buildspec without remembering the full path
+to the buildspec.
+
+In this next example, we will instruct buildtest to show content of buildspec for test name `python_hello`.
+
+.. command-output:: buildtest buildspec show python_hello
+
+There is bash completion for this command which will show list of test names available in the cache assuming you have run
+``buildtest buildspec find``. If you specify an invalid test name you will get an error followed by list of tests that are available
+in the cache
+
+.. command-output:: buildtest buildspec show XYZ123!
+   :returncode: 1
