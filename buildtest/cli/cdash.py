@@ -191,11 +191,13 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
                 test["starttime"] = test_data["starttime"]
                 test["endtime"] = test_data["endtime"]
                 test["build_script"] = test_data["build_script"]
+                test["job"] = test_data["job"]
 
                 # extra preformatted output fields
                 test["buildspec_content"] = test_data["buildspec_content"]
                 test["error"] = test_data["error"]
                 test["test_content"] = test_data["test_content"]
+                test["buildscript_content"] = test_data["buildscript_content"]
                 # metrics property must be converted to string inorder to push to cdash
                 test["metrics"] = json.dumps(
                     test_data["metrics"], indent=2, sort_keys=True
@@ -289,14 +291,6 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
             )
             ET.SubElement(measurement, "Value").text = test[field]
 
-        metrics = ET.SubElement(
-            results_element,
-            "NamedMeasurement",
-            type="text/preformatted",
-            name="Metrics",
-        )
-        ET.SubElement(metrics, "Value").text = test["metrics"]
-
         error_content = ET.SubElement(
             results_element, "NamedMeasurement", type="text/preformatted", name="Error"
         )
@@ -324,9 +318,7 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
             type="text/preformatted",
             name="Build Script Content",
         )
-        ET.SubElement(build_script_content, "Value").text = read_file(
-            test["build_script"]
-        )
+        ET.SubElement(build_script_content, "Value").text = test["buildspec_content"]
 
         output_measurement = ET.SubElement(results_element, "Measurement")
 
@@ -336,6 +328,24 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
         ET.SubElement(
             output_measurement, "Value", encoding="base64", compression="gzip"
         ).text = base64_zlib_output
+
+        metrics = ET.SubElement(
+            results_element,
+            "NamedMeasurement",
+            type="text/preformatted",
+            name="Metrics",
+        )
+        ET.SubElement(metrics, "Value").text = test["metrics"]
+
+
+        job = ET.SubElement(
+            results_element,
+            "NamedMeasurement",
+            type="text/preformatted",
+            name="Job",
+        )
+        ET.SubElement(job, "Value").text = test["job"]
+
 
         gitlab_job_url = os.getenv("CI_JOB_URL")
         if gitlab_job_url is not None:

@@ -1323,6 +1323,7 @@ def update_report(valid_builders, report_file=BUILD_REPORT):
             "errfile",
             "buildspec_content",
             "test_content",
+            'buildscript_content',
             "logpath",
             "metrics",
         ]:
