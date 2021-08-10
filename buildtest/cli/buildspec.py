@@ -2,7 +2,6 @@ import json
 import logging
 import os
 
-import yaml
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.build import discover_buildspecs
 from buildtest.defaults import (
