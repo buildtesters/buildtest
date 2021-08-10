@@ -1,0 +1,33 @@
+system:
+  generic:
+    hostnames: ['.*']
+
+    moduletool: lmod
+    load_default_buildspecs: False
+    executors:
+      defaults:
+        pollinterval: 10
+        launcher: bsub
+        max_pend_time: 45
+      lsf:
+        batch:
+          description: "LSF Executor name 'batch' that submits jobs to 'batch' queue"
+          queue: batch
+          account: developer
+          options: ["-W 20"]
+          before_script: |
+            time
+            echo "commands run before job"
+        test:
+          description: "LSF Executor name 'test' that submits jobs to 'test' queue"
+          launcher: bsub
+          queue: test
+          account: qa
+          options: ["-W 20"]
+    compilers:
+      compiler:
+        gcc:
+          default:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran

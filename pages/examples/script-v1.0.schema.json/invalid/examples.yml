@@ -1,0 +1,275 @@
+version: "1.0"
+buildspecs:
+  invalid_test_name_&!@#$%:
+    type: script
+    executor: generic.local.bash
+    description: "invalid test name"
+
+  invalid_bash:
+    type: script
+    executor: generic.local.bash
+    shell: "bash-missing-run"
+
+  missing_run_key:
+    type: script
+    executor: generic.local.bash
+    description: invalid key name roon, missing run key
+    roon: |
+        systemctl is-active slurmd
+        systemctl is-enabled slurmd | grep enabled
+
+  invalid_env_type:
+    type: script
+    executor: generic.local.bash
+    description: env key should be a dictionary
+    env:
+      - FOO=BAR
+    run: echo $FOO
+
+  invalid_vars_type:
+    type: script
+    executor: generic.local.bash
+    description: var key should be a dictionary
+    vars:
+      - FOO=BAR
+    run: echo $FOO
+
+
+  invalid_description:
+    type: script
+    executor: generic.local.bash
+    description:
+      - "Multi Line description"
+      - "is not accepted"
+
+  invalid_regex_stream:
+    type: script
+    executor: generic.local.bash
+    description: This test fails because of invalid regex stream
+    run: hostname
+    status:
+      regex:
+        stream: file
+        exp: "world$"
+
+
+  regex_additionalProperties_test:
+    type: script
+    executor: generic.local.bash
+    description: Testing for additional properties in regex field
+    run: hostname
+    status:
+      regex:
+        stream: stdout
+        exp: "world$"
+        X: 1
+
+  missing_regex_exp:
+    type: script
+    executor: generic.local.bash
+    description: This test fails because of missing key 'exp' in regex
+    run: hostname
+    status:
+      regex:
+        stream: stdout
+
+  invalid_returncode_type:
+    type: script
+    executor: generic.local.bash
+    description: This test fails because of invalid return code type
+    run: hostname
+    status:
+      returncode: ["1"]
+
+  empty_returncode_list:
+    type: script
+    executor: generic.local.bash
+    description: An empty returncode list will cause an error
+    run: hostname
+    status:
+      returncode: []
+
+  non_int_returncodes:
+    type: script
+    executor: generic.local.bash
+    description: The returncode must be an int and not a number
+    run: exit 1
+    status:
+      returncode:  1.01
+
+  non_int_returncodes_list:
+    type: script
+    executor: generic.local.bash
+    description: The returncode must be a list of integers and no numbers
+    run: exit 1
+    status:
+      returncode:  [1, 2.230]
+
+  invalid_shell_usr_bin_bash:
+    type: script
+    executor: generic.local.bash
+    description: invalid shell name '/usr/bin/bash'
+    shell: /usr/bin/bash
+    run: hostname
+
+  invalid_shell_type:
+    type: script
+    executor: generic.local.bash
+    description: invalid shell type must be a string
+    shell: ["/bin/bash"]
+    run: hostname
+
+  invalid_type_shell_shebang:
+    type: script
+    executor: generic.local.bash
+    description: invalid type for shell shebang, must be a string
+    shebang: ["#!/bin/bash"]
+    run: hostname
+
+  invalid_skip_value:
+    type: script
+    executor: generic.local.bash
+    description: invalid value for skip, must be boolean
+    skip: 1
+    run: hostname
+
+  empty_tags:
+    type: script
+    executor: generic.local.bash
+    description: tag list can't be empty, requires one item.
+    tags: []
+    run: hostname
+
+  non_unique_tags:
+    type: script
+    executor: local.bash
+    description: tag names must be unique
+    tags: ["network", "network"]
+    run: hostname
+
+  invalid_tags_value:
+    type: script
+    executor: generic.local.bash
+    description: invalid tag value must be all string items
+    tags: ["network", 400 ]
+    run: hostname
+
+  additionalProperties_test:
+    type: script
+    executor: generic.local.bash
+    description: additional properties are not allowed so any invalid key/value pair will result in error
+    FOO: BAR
+    run: hostname
+
+  additionalProperties_status:
+    type: script
+    executor: generic.local.bash
+    description: test additional properties in status object. This is not allowed
+    sbatch: [ "-n 2", "-q normal", "-t 10"]
+    run: hostname
+    status:
+      slurm_job_state: "COMPLETED"
+      FOO: BAR
+
+  invalid_runtime_min:
+    type: script
+    executor: generic.local.sh
+    description: "Invalid type for min property in runtime. Must be an integer or float not a string"
+    run: sleep 2
+    status:
+      runtime:
+        min: "1"
+
+  runtime_min_must_exceed_0:
+    type: script
+    executor: generic.local.sh
+    description: "The runtime must exceed 0"
+    run: sleep 2
+    status:
+      runtime:
+        min: -1
+
+  invalid_slurm_job_state:
+    type: script
+    executor: generic.local.sh
+    description: invalid value for slurm_job_state, should raise error with enum values.
+    sbatch:
+      - "-n 2"
+      - "-q normal"
+      - "-t 10"
+    run: hostname
+    status:
+      slurm_job_state: "FINISH"
+
+  duplicate_linux_distro:
+    type: script
+    executor: generic.local.bash
+    description: Duplicate items in linux_distro is not allowed
+    run_only:
+      linux_distro:
+        - rhel
+        - rhel
+    run: uname -av
+
+  empty_list_linux_distro:
+    type: script
+    executor: generic.local.bash
+    description: Empty List in linux_distro is not allowed. Requires atleast 1 item
+    run_only:
+      linux_distro: []
+    run: uname -av
+
+  additionalProperties_run_only:
+    type: script
+    executor: generic.local.bash
+    description: additional Properties not allowed in run_only field. Invalid field python
+    run_only:
+      user: root
+      python: 3.5
+    run: hostname
+
+  invalid_metrics_additional_property:
+    type: script
+    executor: generic.local.bash
+    description: Test for additional property for metrics property
+    vars:
+      FOO: BAR
+    run: echo $FOO
+    metrics:
+      foo:
+        variable: FOO
+
+  invalid_metrics_type:
+    type: script
+    executor: generic.local.bash
+    description: metrics property is an object, testing for type
+    vars:
+      FOO: BAR
+    run: echo $FOO
+    metrics: FOO
+
+  executors_invalid_var_type:
+    type: script
+    executor: "generic.local.(bash|sh|zsh)"
+    description: Invalid type field for 'vars'
+    tags: [tutorials]
+    run: echo $FOO
+    executors:
+      generic.local.bash:
+        vars: ["FOO=BAR"]
+
+  executors_additionalProperties:
+    type: script
+    executor: "generic.local.(bash|sh|zsh)"
+    description: Testing for additional properties in 'executors'
+    tags: [tutorials]
+    run: hostname
+    sbatch: ["-N 4"]
+    executors:
+      generic.local.bash:
+        sbatch: ["-n 4", "-N 1", "-t 30"]
+        FOO: BAR
+      generic.local.sh:
+        sbatch: ["-n 8", "-N 1", "-t 60"]
+      generic.local.zsh:
+        sbatch: ["-n 16", "-N 2", "-t 120"]
