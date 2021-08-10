@@ -14,7 +14,7 @@ from urllib.request import Request, urlopen
 import requests
 import yaml
 from buildtest.defaults import BUILD_REPORT
-from buildtest.utils.file import read_file, resolve_path
+from buildtest.utils.file import resolve_path
 from buildtest.utils.tools import deep_get
 
 
@@ -337,7 +337,6 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
         )
         ET.SubElement(metrics, "Value").text = test["metrics"]
 
-
         job = ET.SubElement(
             results_element,
             "NamedMeasurement",
@@ -345,7 +344,6 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
             name="Job",
         )
         ET.SubElement(job, "Value").text = test["job"]
-
 
         gitlab_job_url = os.getenv("CI_JOB_URL")
         if gitlab_job_url is not None:

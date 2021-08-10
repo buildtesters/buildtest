@@ -21,3 +21,4 @@ def edit_buildspec(buildspec, configuration):
 
     be = BuildExecutor(configuration)
     BuildspecParser(buildspec, be)
+    print(f"{buildspec} is valid")
