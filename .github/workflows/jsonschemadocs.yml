@@ -1,4 +1,4 @@
-name: Schema Docs for devel branch
+name: Schema Documentation
 
 on:
   push:
@@ -50,12 +50,6 @@ jobs:
        with:
           persist-credentials: false
 
-
-     #- name: Install SSH Client 🔑
-     #   uses: webfactory/ssh-agent@v0.4.1
-     #  with:
-     #    ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
      - name: Download Schemas
        uses: actions/download-artifact@v2
        with:
@@ -85,5 +79,5 @@ jobs:
          # ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
          branch: gh-pages 
          folder: downloads 
-         target-folder: pages/devel
+         target-folder: pages
          clean: true
