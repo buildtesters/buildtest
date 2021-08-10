@@ -173,7 +173,7 @@ class BuilderBase(ABC):
         self.metadata["buildspec_content"] = read_file(self.buildspec)
         # used to store content of test
         self.metadata["test_content"] = None
-        self.metadata['buildscript_content'] = None
+        self.metadata["buildscript_content"] = None
 
         # used to store compiler name used the test. Only applicable with compiler schema
         self.metadata["compiler"] = None
@@ -185,7 +185,7 @@ class BuilderBase(ABC):
         # used to store job id from batch scheduler
         self.metadata["jobid"] = None
         # used to store job metrics for given JobID from batch scheduler
-        self.metadata["job"] = None
+        self.metadata["job"] = {}
         # Generate a unique id for the build based on key and unique string
         self.test_uid = self._generate_unique_id()
         self.metadata["full_id"] = self.test_uid
@@ -440,7 +440,7 @@ class BuilderBase(ABC):
 
         lines = "\n".join(lines)
         write_file(self.build_script, lines)
-        self.metadata['buildscript_content'] = lines
+        self.metadata["buildscript_content"] = lines
         self.logger.debug(f"Writing build script: {self.build_script}")
         self._set_execute_perm(self.build_script)
 

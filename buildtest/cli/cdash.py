@@ -191,7 +191,7 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
                 test["starttime"] = test_data["starttime"]
                 test["endtime"] = test_data["endtime"]
                 test["build_script"] = test_data["build_script"]
-                test["job"] = test_data["job"]
+                test["job"] = json.dumps(test_data["job"], indent=2, sort_keys=True)
 
                 # extra preformatted output fields
                 test["buildspec_content"] = test_data["buildspec_content"]
