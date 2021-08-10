@@ -1,6 +1,0 @@
-version: "1.0"
-maintainers: [shahzebsiddiqui, shahzebsiddiqui]
-buildspecs:
-  hostname:
-    type: script
-    run: "hostname"
