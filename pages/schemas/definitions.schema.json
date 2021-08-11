@@ -312,7 +312,9 @@
             "pbs": { "$ref": "#/definitions/list_of_strings" },
             "cobalt": { "$ref": "#/definitions/list_of_strings" },
             "BB":  { "$ref": "#/definitions/BB" },
-            "DW": { "$ref": "#/definitions/DW" }
+            "DW": { "$ref": "#/definitions/DW" },
+            "status": { "$ref": "#/definitions/status" },
+            "metrics": { "$ref": "#/definitions/metrics" }
           }
         }
       }

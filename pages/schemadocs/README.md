@@ -154,6 +154,18 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/status`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-metrics.md "This field is used for defining one or more metrics that is recorded for each test") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/metrics`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics-patternproperties-.md "Name of metric") – `definitions.schema.json#/definitions/metrics/patternProperties/^.*$`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/metrics_field/properties/regex`
+
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
@@ -174,6 +186,18 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/status`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-metrics.md "This field is used for defining one or more metrics that is recorded for each test") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/metrics`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics-patternproperties-.md "Name of metric") – `definitions.schema.json#/definitions/metrics/patternProperties/^.*$`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/metrics_field/properties/regex`
+
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
@@ -193,6 +217,18 @@
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-vars.md "One or more key value pairs for an environment (key=value)") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/vars`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/status`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-metrics.md "This field is used for defining one or more metrics that is recorded for each test") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/metrics`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics-patternproperties-.md "Name of metric") – `definitions.schema.json#/definitions/metrics/patternProperties/^.*$`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/metrics_field/properties/regex`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
@@ -644,6 +680,8 @@
 
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/DW`
 
+*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
+
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-run_only-properties-linux_distro.md "Specify a list of Linux Distros to check when processing test") – `definitions.schema.json#/definitions/run_only/properties/linux_distro`
 
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
@@ -662,6 +700,8 @@
 
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/DW`
 
+*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
+
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
 
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
@@ -677,6 +717,8 @@
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/BB`
 
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/DW`
+
+*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-system-properties-hostnames.md "Specify a list of hostnames to check where buildtest can run for the given system record") – `settings.schema.json#/definitions/system/properties/hostnames`
 
