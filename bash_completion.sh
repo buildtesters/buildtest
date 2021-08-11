@@ -50,6 +50,10 @@ _history_id ()
   buildtest history list -t -n | cut -d '|' -f 1 | sort -g
 }
 
+_buildspec_cache_test_names()
+{
+  buildtest buildspec find --format name --terse -n | sort
+}
 #  entry point to buildtest bash completion function
 _buildtest ()
 {
@@ -167,7 +171,7 @@ _buildtest ()
       ;;
 
     buildspec)
-      local cmds="-h --help find summary validate"
+      local cmds="-h --help find show summary validate"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
@@ -187,6 +191,8 @@ _buildtest ()
            COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) );;
          esac
         ;;
+      show)
+        COMPREPLY=( $( compgen -W "$(_buildspec_cache_test_names)" -- $cur ) );;
       validate)
         local opts="--buildspec --exclude --executor --tag -b -e -t -x "
 

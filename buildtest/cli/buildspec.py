@@ -16,6 +16,7 @@ from buildtest.utils.file import (
     is_dir,
     is_file,
     load_json,
+    read_file,
     resolve_path,
     walk_tree,
 )
@@ -231,6 +232,30 @@ class BuildspecCache:
         """
 
         return valid_buildspecs
+
+    def get_names(self):
+        """Return a list of test names found in buildspec cache. We only return test names for valid buildspecs"""
+
+        valid_buildspecs = self.get_valid_buildspecs()
+
+        test_names = []
+
+        for buildspec in valid_buildspecs:
+            for name in self.cache["buildspecs"][buildspec]:
+                test_names.append(name)
+
+        return test_names
+
+    def lookup_buildspec_by_name(self, name):
+        """Given an input test name, return corresponding buildspec file found in the cache.
+        :param name: Name of test to query in buildspec cache
+        :type name: str, required
+        """
+        valid_buildspecs = self.get_valid_buildspecs()
+
+        for buildspec in valid_buildspecs:
+            if name in self.cache["buildspecs"][buildspec].keys():
+                return buildspec
 
     def build_cache(self):
         """This method will rebuild the buildspec cache file by recursively searching
@@ -926,6 +951,24 @@ class BuildspecCache:
 
         for path in self.paths:
             print(path)
+
+
+def show_buildspecs(name, configuration):
+    """This is the entry point for ``buildtest buildspec show`` command which will print content of
+    buildspec based on name of test
+    """
+    cache = BuildspecCache(configuration=configuration)
+
+    if name not in cache.get_names():
+        raise BuildTestError(
+            f"{name} not in cache. Please select one of the following test: {cache.get_names()}"
+        )
+
+    buildspec = cache.lookup_buildspec_by_name(name)
+    content = read_file(buildspec)
+    print(content)
+
+    print("\nbuildspec: ", buildspec)
 
 
 def buildspec_validate(

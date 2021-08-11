@@ -8,6 +8,7 @@ from buildtest.cli.build import BuildTest
 from buildtest.cli.buildspec import (
     buildspec_find,
     buildspec_validate,
+    show_buildspecs,
     summarize_buildspec_cache,
 )
 from buildtest.cli.cdash import cdash_cmd
@@ -113,7 +114,8 @@ def main():
             buildspec_find(args=args, configuration=configuration)
         elif args.buildspecs_subcommand == "summary":
             summarize_buildspec_cache(configuration)
-
+        elif args.buildspecs_subcommand == "show":
+            show_buildspecs(name=args.name, configuration=configuration)
         elif args.buildspecs_subcommand == "validate":
             buildspec_validate(
                 buildspecs=args.buildspec,

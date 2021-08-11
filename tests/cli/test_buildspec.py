@@ -1,10 +1,13 @@
 import os
+import random
+import string
 import tempfile
 
 import pytest
 from buildtest.cli.buildspec import (
     BuildspecCache,
     buildspec_validate,
+    show_buildspecs,
     summarize_buildspec_cache,
 )
 from buildtest.config import SiteConfiguration
@@ -238,3 +241,18 @@ def test_buildspec_find_roots():
 def test_buildspec_summary():
     # test buildtest buildspec summary
     summarize_buildspec_cache(configuration)
+
+
+@pytest.mark.cli
+def test_buildspec_show():
+    cache = BuildspecCache(configuration=configuration)
+    # get first test in list
+    test_name = cache.get_names()[0]
+    # run buildtest buildspec show <test>
+    show_buildspecs(test_name, configuration)
+
+    with pytest.raises(BuildTestError):
+        random_testname = "".join(
+            random.choice(string.ascii_letters) for i in range(10)
+        )
+        show_buildspecs(name=random_testname, configuration=configuration)
