@@ -217,7 +217,9 @@ the shell variables at top of script followed content defined in ``run`` section
     echo $current_user
     echo $files_homedir
 
-Test State
+.. _status:
+
+Test Status
 -----------
 
 buildtest will record state of each test which can be ``PASS`` or ``FAIL``. By default a 0 exit code is
@@ -510,6 +512,8 @@ stage
 
 .. command-output:: buildtest build -b tutorials/skip_tests.yml
 
+.. _metrics:
+
 Defining Metrics
 ------------------
 
@@ -759,6 +763,31 @@ see :ref:`cray_burstbuffer_datawarp`.
 
 .. literalinclude:: ../tutorials/burstbuffer_datawarp_executors.yml
     :language: yaml
+
+
+Status and Metrics Field
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The :ref:`status <status>` and :ref:`metrics <metrics>` field are supported in ``executors``
+which can be defined within the named executor. In this next example, we will define `generic.local.bash` to match
+test based on returncode **0** or **2** and define metrics named ``firstname`` that is assigned the value
+from variable **FIRST**. The second test using `generic.local.sh` will match returncode of **1** and
+define a metrics named ``lastname`` that will store the value defined by variable **LAST**.
+
+.. literalinclude:: ../tutorials/script/status_by_executors.yml
+    :language: yaml
+    :emphasize-lines: 13-25
+
+Now let's run this test and we will see the test using **generic.local.sh** will fail because
+we have a returncode mismatch even though both tests got a 0 returncode as its actual value.
+
+.. command-output:: buildtest build -b tutorials/script/status_by_executors.yml
+
+Now let's see the test results by inspecting the metrics field using ``buildtest report``. We see one test
+has the metrics name **firstname=Michael** and second test has **lastname=Jackson**.
+
+.. command-output:: buildtest report --format id,name,metrics --filter name=status_returncode_by_executors
+
 
 run_only
 ---------

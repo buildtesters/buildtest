@@ -9,6 +9,24 @@ from buildtest.utils.tools import deep_get
 class ScriptBuilder(BuilderBase):
     type = "script"
 
+    def __init__(self, name, recipe, buildspec, executor, buildexecutor, testdir):
+
+        super().__init__(
+            name=name,
+            recipe=recipe,
+            buildspec=buildspec,
+            executor=executor,
+            buildexecutor=buildexecutor,
+            testdir=testdir,
+        )
+
+        self.status = deep_get(
+            self.recipe, "executors", self.executor, "status"
+        ) or self.recipe.get("status")
+        self.metrics = deep_get(
+            self.recipe, "executors", self.executor, "metrics"
+        ) or self.recipe.get("metrics")
+
     def write_python_script(self):
         """This method is used for writing python script when ``shell: python``
         is set. The content from ``run`` section is added into a python
@@ -40,8 +58,6 @@ class ScriptBuilder(BuilderBase):
         :return: return content of test script
         :rtype: list
         """
-
-        self.status = self.recipe.get("status")
 
         # start of each test should have the shebang
         lines = [self.shebang]

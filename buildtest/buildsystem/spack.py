@@ -32,6 +32,12 @@ class SpackBuilder(BuilderBase):
             buildexecutor=buildexecutor,
             testdir=testdir,
         )
+        self.status = deep_get(
+            self.recipe, "executors", self.executor, "status"
+        ) or self.recipe.get("status")
+        self.metrics = deep_get(
+            self.recipe, "executors", self.executor, "metrics"
+        ) or self.recipe.get("metrics")
         self.generate_script()
 
     def generate_script(self):
