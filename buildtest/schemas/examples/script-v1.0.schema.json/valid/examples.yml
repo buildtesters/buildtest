@@ -330,7 +330,7 @@ buildspecs:
 
   executors_sbatch_declaration:
     type: script
-    executor: "generic.local.(bash|sh)"
+    executor: 'generic.local.(bash|sh)'
     description: Declaring sbatch by executors section
     tags: [tutorials]
     run: hostname
@@ -343,7 +343,7 @@ buildspecs:
 
   executors_bsub_declaration:
     type: script
-    executor: "generic.local.(bash|sh)"
+    executor: 'generic.local.(bash|sh)'
     description: Declaring bsub  by executors section
     tags: [tutorials]
     run: hostname
@@ -355,7 +355,7 @@ buildspecs:
 
   executors_pbs_declaration:
     type: script
-    executor: "generic.local.(bash|sh)"
+    executor: 'generic.local.(bash|sh)'
     description: Declaring pbs by executors section
     tags: [tutorials]
     run: hostname
@@ -367,34 +367,34 @@ buildspecs:
 
   executors_status_declaration:
     type: script
-      executor: "generic.local.(bash|sh)"
-      description: Declaring status by executors section
-      tags: [tutorials]
-      run: exit 0
-      executors:
-        generic.local.bash:
-          status:
-            returncode: 0
-        generic.local.sh:
-          status:
-            returncode: [1, 2]
+    executor: 'generic.local.(bash|sh)'
+    description: Declaring status by executors section
+    tags: [tutorials]
+    run: exit 0
+    executors:
+      generic.local.bash:
+        status:
+          returncode: 0
+      generic.local.sh:
+        status:
+          returncode: [1, 2]
 
   executors_metrics_declaration:
     type: script
-      executor: "generic.local.(bash|sh)"
-      description: Declaring metrics by executors section
-      tags: [tutorials]
-      run: echo "Hello World"
-      executors:
-        generic.local.bash:
-          metrics:
-            hello:
-              regex:
-                stream: stdout
-                exp: "(Hello)"
-        generic.local.sh:
-          metrics:
-            world:
-              regex:
-                stream: stdout
-                exp: "(World)"
+    executor: 'generic.local.(bash|sh)'
+    description: Declaring metrics by executors section
+    tags: [tutorials]
+    run: echo "Hello World"
+    executors:
+      generic.local.bash:
+        metrics:
+          hello:
+            regex:
+              stream: stdout
+              exp: "(Hello)"
+      generic.local.sh:
+        metrics:
+          world:
+            regex:
+              stream: stdout
+              exp: "(World)"
