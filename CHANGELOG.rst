@@ -1,6 +1,17 @@
 CHANGELOG
 =========
 
+v0.10.2 (TBD)
+--------------
+
+- Add support for defining multiple executors via ``executors`` property see `#842 <https://github.com/buildtesters/buildtest/pull/842>`_
+- Add option ``buildtest --color`` to toggle color mode on command line. The environment ``BUILDTEST_COLOR`` will also work, if environment is set we will use this value. See `#839 <https://github.com/buildtesters/buildtest/pull/839>`_
+- Add option ``buildtest build --helpfilter``  to show filter fields using with ``buildtest build --filter`` command  `#838 <https://github.com/buildtesters/buildtest/pull/838>`_
+- Add new command ``buildtest edit`` to edit buildspecs interactively see `#852 <https://github.com/buildtesters/buildtest/pull/852>`_
+- Add new command ``buildtest report summary`` to show summary of report file `#848 <https://github.com/buildtesters/buildtest/pull/848>`_
+- Add new command ``buildtest inspect buildspec`` to inspect tests by buildspec `#843 <https://github.com/buildtesters/buildtest/pull/843>`_
+- Add new command ``buildtest buildspec show`` to view content of buildspec based on test name `#853 <https://github.com/buildtesters/buildtest/pull/853>`_
+
 v0.10.1 (July 30th, 2021)
 ---------------------------
 
