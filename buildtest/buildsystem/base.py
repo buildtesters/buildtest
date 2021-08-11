@@ -79,8 +79,11 @@ class BuilderBase(ABC):
         # applicable for builders using batch executor.
         self.job_state = None
 
-        # this value holds the 'status' property from the schema which is assigned in the subclass
+        # this value holds the 'status' property from the buildspec
         self.status = None
+
+        # this value hosts the 'metrics' property from the buildspec
+        self.metrics = None
 
         self.buildspec = buildspec
 
@@ -699,40 +702,38 @@ class BuilderBase(ABC):
         property can be defined in the buildspdec to assign value to a metrics name based on regular expression,
         environment or variable assignment.
         """
-        if not self.recipe.get("metrics"):
+        if not self.metrics:
             return
 
-        for key in self.recipe["metrics"].keys():
+        for key in self.metrics.keys():
 
             # default value of metric is empty string
             self.metadata["metrics"][key] = ""
 
             # apply regex on stdout/stderr and assign value to metrics
-            if self.recipe["metrics"][key].get("regex"):
+            if self.metrics[key].get("regex"):
 
-                if self.recipe["metrics"][key]["regex"]["stream"] == "stdout":
+                if self.metrics[key]["regex"]["stream"] == "stdout":
                     content = self._output
-                elif self.recipe["metrics"][key]["regex"]["stream"] == "stderr":
+                elif self.metrics[key]["regex"]["stream"] == "stderr":
                     content = self._error
 
-                pattern = re.search(
-                    self.recipe["metrics"][key]["regex"]["exp"], content
-                )
+                pattern = re.search(self.metrics[key]["regex"]["exp"], content)
 
                 # if pattern match found we assign value to metric
                 if pattern:
                     self.metadata["metrics"][key] = pattern.group()
 
             # variable assignment
-            elif self.recipe["metrics"][key].get("vars"):
+            elif self.metrics[key].get("vars"):
                 self.metadata["metrics"][key] = self.variable_lookup.get(
-                    self.recipe["metrics"][key]["vars"]
+                    self.metrics[key]["vars"]
                 )
 
             # environment variable assignment
-            elif self.recipe["metrics"][key].get("env"):
+            elif self.metrics[key].get("env"):
                 self.metadata["metrics"][key] = self.envs_lookup.get(
-                    self.recipe["metrics"][key]["env"]
+                    self.metrics[key]["env"]
                 )
 
         # convert all metrics to string types
@@ -809,9 +810,10 @@ class BuilderBase(ABC):
 
         returncode_match = False
 
-        if self.status.get("returncode"):
-            # returncode can be an integer or list of integers
+        # if 'returncode' field set for 'status' check the returncode if its not set we return False
+        if "returncode" in self.status.keys():
 
+            # returncode can be an integer or list of integers
             buildspec_returncode = self.status["returncode"]
 
             # if buildspec returncode field is integer we convert to list for check
@@ -899,12 +901,11 @@ class BuilderBase(ABC):
                 % (returncode_match, regex_match, slurm_job_state_match)
             )
 
-            if (
-                returncode_match
-                or regex_match
-                or slurm_job_state_match
-                or runtime_match
-            ):
+            # if any of checks is True we set the 'state' to PASS
+            state = any(
+                [returncode_match, regex_match, slurm_job_state_match, runtime_match]
+            )
+            if state:
                 self.metadata["result"]["state"] = "PASS"
 
         # if status is not defined we check test returncode, by default 0 is PASS and any other return code is a FAIL

@@ -75,7 +75,7 @@ class LocalExecutor(BaseExecutor):
         self.logger.debug(f"Running Test via command: {builder.runcmd}")
 
         self.logger.debug(
-            f"Return code: {command.returncode} for test: {builder.metadata['testpath']}"
+            f"Return code: {command.returncode()} for test: {builder.metadata['testpath']}"
         )
         builder.metadata["result"]["returncode"] = command.returncode()
 
@@ -98,5 +98,3 @@ class LocalExecutor(BaseExecutor):
         builder.metadata["errfile"] = errfile
 
         builder.post_run_steps()
-
-        # self.check_test_state(builder)
