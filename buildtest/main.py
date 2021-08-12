@@ -150,7 +150,7 @@ def main():
         cdash_cmd(args, default_configuration=configuration)
 
     elif args.subcommands == "help":
-        buildtest_help()
+        buildtest_help(command=args.command)
 
     elif args.subcommands == "docs":
         webbrowser.open("https://buildtest.readthedocs.io/")

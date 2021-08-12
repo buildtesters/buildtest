@@ -134,8 +134,27 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     subparsers.add_parser("docs", help="Open buildtest docs in browser")
     subparsers.add_parser("schemadocs", help="Open buildtest schema docs in browser")
 
-    subparsers.add_parser("help", help="buildtest command guide")
-
+    help_subparser = subparsers.add_parser(
+        "help",
+        help="buildtest command guide",
+    )
+    help_subparser.add_argument(
+        "command",
+        choices=[
+            "build",
+            "buildspec",
+            "cdash",
+            "config",
+            "edit",
+            "history",
+            "inspect",
+            "report",
+            "schema",
+        ],
+        help="Show help message for command",
+    )
+    # help_subparser.add_argument('command',
+    #                            help="Show help message for command")
     return parser
 
 

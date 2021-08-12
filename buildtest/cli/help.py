@@ -1,9 +1,7 @@
-def buildtest_help():
-    """Entry point for ``buildtest help`` which display a summary of how to use buildtest commands"""
+def print_build_help():
+    """This method will print help message for command ``buildtest help build``"""
 
-    print(
-        """
-
+    msg = """
 Building Buildspecs
 --------------------
 
@@ -19,45 +17,19 @@ buildtest build -b <file> -t <tagname1> -e <executor1>      Building buildspecs 
 buildtest build -b tutorials  --filter type=script          Build all tests in directory 'tutorials' and filter tests by type='script'
 buildtest build -b tutorials  --filter tags=pass            Build all tests in directory 'tutorials' and filter tests by tags='pass'
 buildtest build -b tutorials  --filter maintainers=@bob     Build all tests in directory 'tutorials' and filter tests by maintainers='@bob'
+buildtest build --helpfilter                                Show list of filter fields used with --filter option
 buildtest -c config.yml build -b <file>                     Use buildtest configuration file 'config.yml' 
 buildtest build -b <file> --rebuild 5                       Rebuild a test 5 times
 buildtest build -b <file> --testdir /tmp                    Write tests in /tmp
+"""
+
+    print(msg)
 
 
-View Test Report 
-----------------
+def print_buildspec_help():
+    """This method will print help message for command ``buildtest help buildspec``"""
 
-Command                                                     Description
-
-buildtest report                                            Display all tests results
-buildtest report --filter returncode=0                      Filter test results by returncode=0
-buildtest report --filter state=PASS,tags=python            Filter test by multiple filter fields.
-buildtest report --filter buildspec=tutorials/vars.yml      Filter report by buildspec file 'tutorials/vars.yml
-buildtest report --format name,state,buildspec              Format report table by field 'name', 'state', 'buildspec'
-buildtest report --helpfilter                               List all filter fields
-buildtest report --helpformat                               List all format fields
-buildtest report --oldest                                   Retrieve oldest record for all tests 
-buildtest report --latest                                   Retrieve latest record for all tests 
-buildtest report -r <report-file>                           Specify alternate report file to display test results
-buildtest report --terse                                    Print report in terse format
-buildtest report list                                       List all report files
-buildtest report clear                                      Remove content of report file
-
-Inspecting a Test
-------------------
-
-Command                                                     Description
-
-buildtest inspect list                                      Display all test names, ids and corresponding buildspec file
-buildtest inspect name hello                                Display all tests results
-buildtest inspect name foo bar                              Display record of test name 'foo' and 'bar'
-buildtest inspect buildspec tutorials/vars.yml              Fetch latest runs for all tests in buildspec file 'tutorials/vars.yml'      
-buildtest inspect id <ID>                                   Display record of test by unique identifer
-buildtest query -o hello                                    Display content of output file for test name 'hello'
-buildtest query -e hello                                    Display content of error file for test name 'hello'
-buildtest query -d -o -e first hello foo  bar               Display first record of tests 'hello', 'foo', 'bar' and show output and error file 
-
-    
+    msg = """ 
 Finding Buildspecs
 ----------------------
 
@@ -83,21 +55,6 @@ buildtest buildspec find --terse                            Display output in te
 buildtest buildspec find invalid                            Show invalid buildspecs
 buildtest buildspec find invalid --error                    Show invalid buildspecs with error messages
 
-
-Edit Buildspec
----------------
-
-Command                                                     Description
-
-buildtest edit tutorials/vars.yml                           Edit buildspec in EDITOR and validate buildspec after closing file
-
-Buildspec Summary
--------------------
-
-Command                                                     Description
-
-buildtest buildspec summary                                 Show summary of buildspec cache file 
-    
 Validate buildspecs
 ---------------------
     
@@ -107,17 +64,29 @@ buildtest buildspec validate -b <file>                      Validate a buildspec
 buildtest buildspec validate -b /tmp/ -x /tmp/network       Validate all buildspecs in directory /tmp but exclude /tmp/network
 buildtest buildspec validate -t python -t mac               Validate all buildspecs for tagname 'python' and 'mac'
 buildtest buildspec validate -e generic.local.bash          Validate all buildspecs for executor 'generic.local.bash'
-   
-Build History
----------------
-    
+
+Buildspec Summary
+-------------------
 
 Command                                                     Description
 
-buildtest history list                                      List all build history files 
-buildtest history query 0                                   Query content of history build identifier '0' 
-buildtest history query 0 --log                             Open logfile for build identifier '0'
+buildtest buildspec summary                                 Show summary of buildspec cache file 
+    
+Show Content of buildspec
+--------------------------
 
+Command                                                     Description
+
+buildtest buildspec show python_hello                       Show content of buildspec based on test name 'python_hello' 
+"""
+
+    print(msg)
+
+
+def print_config_help():
+    """This method will print help message for command ``buildtest help config``"""
+
+    msg = """
 Buildtest Configuration 
 ------------------------
 
@@ -128,7 +97,93 @@ buildtest config validate                                   Validate configurati
 buildtest config executors                                  List all executors from configuration file
 buildtest config systems                                    List all available system entries in configuration file
 buildtest -c /tmp/config.yml config validate                Validate configuration file /tmp/config.yml
+"""
+    print(msg)
 
+
+def print_inspect_help():
+    """This method will print help message for command ``buildtest help inspect``"""
+    msg = """
+    
+Inspecting a Test
+------------------
+
+Command                                                     Description
+
+buildtest inspect list                                      Display all test names, ids and corresponding buildspec file
+buildtest inspect list -t                                   Show output in terse format
+buildtest inspect name hello                                Display all tests results
+buildtest inspect name foo bar                              Display record of test name 'foo' and 'bar'
+buildtest inspect buildspec tutorials/vars.yml              Fetch latest runs for all tests in buildspec file 'tutorials/vars.yml'      
+buildtest inspect id <ID>                                   Display record of test by unique identifer
+buildtest inspect query -o hello                            Display content of output file for test name 'hello'
+buildtest inspect query -e hello                            Display content of error file for test name 'hello'
+buildtest inspect query -d first -o -e foo  bar             Display first record of tests 'foo', 'bar', and show output and error file
+buildtest inspect query -d all foo                          Display all runs for tests 'foo'
+    """
+
+    print(msg)
+
+
+def print_report_help():
+    """This method will print help message for command ``buildtest help report``"""
+    msg = """    
+View Test Report 
+----------------
+
+Command                                                     Description
+
+buildtest report                                            Display all tests results
+buildtest report --filter returncode=0                      Filter test results by returncode=0
+buildtest report --filter state=PASS,tags=python            Filter test by multiple filter fields.
+buildtest report --filter buildspec=tutorials/vars.yml      Filter report by buildspec file 'tutorials/vars.yml
+buildtest report --format name,state,buildspec              Format report table by field 'name', 'state', 'buildspec'
+buildtest report --helpfilter                               List all filter fields
+buildtest report --helpformat                               List all format fields
+buildtest report --oldest                                   Retrieve oldest record for all tests 
+buildtest report --latest                                   Retrieve latest record for all tests 
+buildtest report -r <report-file>                           Specify alternate report file to display test results
+buildtest report --terse                                    Print report in terse format
+buildtest report list                                       List all report files
+buildtest report clear                                      Remove content of report file
+buildtest report summary                                    Show summary of test report
+    """
+    print(msg)
+
+
+def print_edit_help():
+    """This method will print help message for command ``buildtest help edit``"""
+    msg = """
+Edit Buildspec
+---------------
+
+Command                                                     Description
+
+buildtest edit tutorials/vars.yml                           Edit buildspec in your preferred editor defined by environment $EDITOR. Upon closing file, buildtest will validate buildspec with jsonschema 
+"""
+    print(msg)
+
+
+def print_history_help():
+    """This method will print help message for command ``buildtest help history``"""
+    msg = """    
+Build History
+---------------
+    
+
+Command                                                     Description
+
+buildtest history list                                      List all build history files 
+buildtest history query 0                                   Query content of history build identifier '0' 
+buildtest history query 0 --log                             Open logfile for build identifier '0'
+"""
+    print(msg)
+
+
+def print_cdash_help():
+    """This method will print help message for command ``buildtest help cdash``"""
+
+    msg = """   
 CDASH Support
 ---------------------
 
@@ -140,6 +195,42 @@ buildtest cdash upload --site laptop DEMO                   Upload tests to CDAS
 buildtest cdash upload -r /tmp/nightly.json nightly         Upload tests from /tmp/nightly.json to CDASH with buildname 'nightly'
 buildtest cdash view                                        Open CDASH project in web-browser
 buildtest cdash view --url <url>                            Open CDASH project in web-browser with a specified url
+    """
+    print(msg)
 
+
+def print_schema_help():
+    """This method will print help message for command ``buildtest help schema``"""
+    msg = """
+Schema Support
+----------------------
+
+Command                                                     Description
+buildtest schema                                            Report all buildtest schema files 
+buildtest schema -n script-v1.0-schema.json -e              Show example for schema type script-v1.0-schema.json
+buildtest schema -n script-v1.0-schema.json -j              Show content of JSON schema for script-v1.0-schema.json 
 """
-    )
+    print(msg)
+
+
+def buildtest_help(command):
+    """Entry point for ``buildtest help`` which display a summary of how to use buildtest commands"""
+
+    if command == "build":
+        print_build_help()
+    elif command == "buildspec":
+        print_buildspec_help()
+    elif command == "config":
+        print_config_help()
+    elif command == "inspect":
+        print_inspect_help()
+    elif command == "report":
+        print_report_help()
+    elif command == "edit":
+        print_edit_help()
+    elif command == "history":
+        print_history_help()
+    elif command == "cdash":
+        print_cdash_help()
+    elif command == "schema":
+        print_schema_help()
