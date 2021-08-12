@@ -56,9 +56,27 @@ run all the tests which led to `buildtest`.
 Preview of buildtest
 ----------------------
 
-You can run ``buildtest help`` which will provide an overview of buildtest commands.
+You can run ``buildtest help`` followed by name of command and it will provide an overview of the buildtest.
 
-.. command-output:: buildtest help
+Building Test
+~~~~~~~~~~~~~~
+
+.. command-output:: buildtest help build
+
+Buildspec Interface
+~~~~~~~~~~~~~~~~~~~
+
+.. command-output:: buildtest help buildspec
+
+Query Report
+~~~~~~~~~~~~~
+
+.. command-output:: buildtest help report
+
+Inspect Tests
+~~~~~~~~~~~~~~
+
+.. command-output:: buildtest help inspect
 
 Target Audience & Use Case
 ---------------------------
@@ -90,6 +108,7 @@ Timeline
     :header: "Date", "Version", "Description"
     :widths: 30, 30, 60
 
+    **Jul 30th 2021** "`v0.10.1 <https://github.com/buildtesters/buildtest/releases/tag/v0.10.1>`_", "Add new commands ``buildtest buildspec summary``, ``buildtest buildspec invalid`` to show summary of buildspec cache and invalid buildspecs. Add ``buildtest build --filter`` to filter buildspecs during build. Add ``--terse`` option for several commands including **buildtest history list**, **buildtest report**, **buildtest buildspec find**. Add new command ``buildtest inspect query`` for querying test records. Added support for ``metrics`` property for defining arbitrary metrics in buildspec based on environment variable, variables or regular expression on stdout/stderr"
     **Jul 13th 2021**, "`v0.10.0 <https://github.com/buildtesters/buildtest/releases/tag/v0.10.0>`_", "In this release we added `spack <https://spack.readthedocs.io/>`_ support in buildtest by creating a new schema to write buildspecs that will generate spack commands. For more details see :ref:`spack_schema`. We added bash completion for buildtest commands which is enabled when installing buildtest. We added a new command ``buildtest buildspec validate``  that can be used for validating buildspecs  with JSON Schema."
     **Jun 11th 2021**, "`v0.9.6 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.6>`_", "Added buildtest CDASH integration using ``buildtest cdash`` to upload test results. In this release we added ``buildtest history`` command to retrieve build history and query logfiles. Add global option ``-c`` in buildtest to specify alternate configuration file."
     **Mar 31th 2021**, "`v0.9.5 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.5>`_", "Add support for PBS scheduler and reimplement ``buildtest inspect`` command"
