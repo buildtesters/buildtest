@@ -239,6 +239,10 @@ _buildtest ()
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       fi
       ;;
+    help)
+      local cmds="build buildspec cdash config edit history inspect report schema"
+      COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
+      ;;
     *)
       case "${cur}" in
       # print main options to buildtest
