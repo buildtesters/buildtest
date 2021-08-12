@@ -121,7 +121,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 
     build_menu(subparsers)
-
     buildspec_menu(subparsers)
     config_menu(subparsers)
     report_menu(subparsers)
@@ -153,8 +152,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         ],
         help="Show help message for command",
     )
-    # help_subparser.add_argument('command',
-    #                            help="Show help message for command")
     return parser
 
 
@@ -209,72 +206,32 @@ def build_menu(subparsers):
 
     parser_build = subparsers.add_parser("build", help="Build and Run test")
 
-    parser_build.add_argument(
+    discover_group = parser_build.add_argument_group("discover", "select buildspecs")
+    filter_group = parser_build.add_argument_group("filter", "Filter tests")
+    extra_group = parser_build.add_argument_group("extra", "All extra options")
+
+    discover_group.add_argument(
         "-b",
         "--buildspec",
         help="Specify a buildspec (file or directory) to build. A buildspec must end in '.yml' extension.",
         action="append",
     )
 
-    parser_build.add_argument(
+    discover_group.add_argument(
         "-x",
         "--exclude",
         action="append",
         help="Exclude one or more buildspecs (file or directory) from processing. A buildspec must end in '.yml' extension.",
     )
 
-    parser_build.add_argument(
+    discover_group.add_argument(
         "-e",
         "--executor",
         action="append",
         type=str,
         help="Discover buildspecs by executor name found in buildspec cache",
     )
-
-    parser_build.add_argument(
-        "-f",
-        "--filter",
-        type=single_kv_string,
-        help="Filter buildspec based on tags, type, or maintainers. Usage:  --filter key1=val1,key2=val2",
-    )
-    parser_build.add_argument(
-        "--helpfilter",
-        action="store_true",
-        help="Show available filter fields used with --filter option",
-    )
-    parser_build.add_argument(
-        "-k",
-        "--keep-stage-dir",
-        action="store_true",
-        help="Keep stage directory after job completion.",
-    )
-    parser_build.add_argument(
-        "--max-pend-time",
-        type=positive_number,
-        help="Specify Maximum Pending Time (sec) for job before cancelling job. This only applies for batch job submission.",
-    )
-    parser_build.add_argument(
-        "--poll-interval",
-        type=positive_number,
-        help="Specify Poll Interval (sec) for polling batch jobs",
-    )
-    parser_build.add_argument(
-        "--rebuild",
-        type=positive_number,
-        help="Rebuild test X number of times. Must be a positive number between [1-50]",
-    )
-    parser_build.add_argument(
-        "-r",
-        "--report",
-        help="Specify a report file where tests will be written.",
-    )
-    parser_build.add_argument(
-        "-s",
-        "--stage",
-        help="control behavior of buildtest build",
-        choices=["parse", "build"],
-    )
-    parser_build.add_argument(
+    discover_group.add_argument(
         "-t",
         "--tags",
         action="append",
@@ -282,7 +239,51 @@ def build_menu(subparsers):
         help="Discover buildspecs by tags found in buildspec cache",
     )
 
-    parser_build.add_argument(
+    filter_group.add_argument(
+        "-f",
+        "--filter",
+        type=single_kv_string,
+        help="Filter buildspec based on tags, type, or maintainers. Usage:  --filter key1=val1,key2=val2",
+    )
+    filter_group.add_argument(
+        "--helpfilter",
+        action="store_true",
+        help="Show available filter fields used with --filter option",
+    )
+    extra_group.add_argument(
+        "-k",
+        "--keep-stage-dir",
+        action="store_true",
+        help="Keep stage directory after job completion.",
+    )
+    extra_group.add_argument(
+        "--max-pend-time",
+        type=positive_number,
+        help="Specify Maximum Pending Time (sec) for job before cancelling job. This only applies for batch job submission.",
+    )
+    extra_group.add_argument(
+        "--poll-interval",
+        type=positive_number,
+        help="Specify Poll Interval (sec) for polling batch jobs",
+    )
+    extra_group.add_argument(
+        "--rebuild",
+        type=positive_number,
+        help="Rebuild test X number of times. Must be a positive number between [1-50]",
+    )
+    extra_group.add_argument(
+        "-r",
+        "--report",
+        help="Specify a report file where tests will be written.",
+    )
+    extra_group.add_argument(
+        "-s",
+        "--stage",
+        help="control behavior of buildtest build",
+        choices=["parse", "build"],
+    )
+
+    extra_group.add_argument(
         "--testdir",
         help="Specify a custom test directory where to write tests. This overrides configuration file and default location.",
     )
@@ -291,9 +292,7 @@ def build_menu(subparsers):
 def buildspec_menu(subparsers):
     """This method implements ``buildtest buildspec`` command"""
 
-    parser_buildspec = subparsers.add_parser(
-        "buildspec", help="Options for querying buildspec cache"
-    )
+    parser_buildspec = subparsers.add_parser("buildspec", help="Buildspec Interface")
 
     subparsers_buildspec = parser_buildspec.add_subparsers(
         description="Find buildspec from cache file",
@@ -303,6 +302,13 @@ def buildspec_menu(subparsers):
 
     buildspec_find = subparsers_buildspec.add_parser(
         "find", help="Query information from buildspecs cache"
+    )
+    filter_group = buildspec_find.add_argument_group(
+        "filter and format", "filter and format options"
+    )
+    terse_group = buildspec_find.add_argument_group("terse", "terse options")
+    query_group = buildspec_find.add_argument_group(
+        "query", "query options to retrieve from buildspec cache"
     )
 
     subparsers_invalid = buildspec_find.add_subparsers(
@@ -322,7 +328,7 @@ def buildspec_menu(subparsers):
     )
 
     buildspec_validate = subparsers_buildspec.add_parser(
-        "validate", help="Validate buildspecs"
+        "validate", help="Validate buildspecs with JSON Schema"
     )
     # buildtest buildspec invalid options
     invalid_buildspecs.add_argument(
@@ -363,68 +369,75 @@ def buildspec_menu(subparsers):
 
     # buildtest buildspec find options
 
-    buildspec_find.add_argument(
+    query_group.add_argument(
         "-b",
         "--buildspec",
         help="Get all buildspec files from cache",
         action="store_true",
     )
-    buildspec_find.add_argument(
+    query_group.add_argument(
         "-e",
         "--executors",
         help="get all unique executors from buildspecs",
         action="store_true",
     )
 
-    buildspec_find.add_argument(
-        "--filter",
-        type=handle_kv_string,
-        help="Filter buildspec cache with filter fields in format --filter key1=val1,key2=val2",
-    )
-    buildspec_find.add_argument(
-        "--format",
-        help="Format buildspec cache with format fields in format --format field1,field2,...",
-    )
-    buildspec_find.add_argument(
+    query_group.add_argument(
         "--group-by-tags", action="store_true", help="Group tests by tag name"
     )
-    buildspec_find.add_argument(
+    query_group.add_argument(
         "--group-by-executor",
         action="store_true",
         help="Group tests by executor name",
     )
 
-    buildspec_find.add_argument(
-        "--helpfilter",
-        action="store_true",
-        help="Show Filter fields for --filter option for filtering buildspec cache output",
-    )
-    buildspec_find.add_argument(
-        "--helpformat",
-        action="store_true",
-        help="Show Format fields for --format option for formatting buildspec cache output",
-    )
-    buildspec_find.add_argument(
+    query_group.add_argument(
         "-m",
         "--maintainers",
         help="Get all maintainers for all buildspecs",
         action="store_true",
     )
-    buildspec_find.add_argument(
+    query_group.add_argument(
         "-mb",
         "--maintainers-by-buildspecs",
         help="Show maintainers breakdown by buildspecs",
         action="store_true",
     )
+    query_group.add_argument(
+        "-p", "--paths", help="print all root buildspec paths", action="store_true"
+    )
+    query_group.add_argument(
+        "-t", "--tags", help="List all available tags", action="store_true"
+    )
 
-    buildspec_find.add_argument(
+    filter_group.add_argument(
+        "--filter",
+        type=handle_kv_string,
+        help="Filter buildspec cache with filter fields in format --filter key1=val1,key2=val2",
+    )
+    filter_group.add_argument(
+        "--format",
+        help="Format buildspec cache with format fields in format --format field1,field2,...",
+    )
+    filter_group.add_argument(
+        "--helpfilter",
+        action="store_true",
+        help="Show Filter fields for --filter option for filtering buildspec cache output",
+    )
+    filter_group.add_argument(
+        "--helpformat",
+        action="store_true",
+        help="Show Format fields for --format option for formatting buildspec cache output",
+    )
+
+    terse_group.add_argument(
         "-n",
         "--no-header",
         action="store_true",
         help="Print output without header in terse output",
     )
-    buildspec_find.add_argument(
-        "-p", "--paths", help="print all root buildspec paths", action="store_true"
+    terse_group.add_argument(
+        "--terse", help="Print output in machine readable format", action="store_true"
     )
 
     buildspec_find.add_argument(
@@ -438,12 +451,6 @@ def buildspec_menu(subparsers):
         help="Specify root buildspecs (directory) path to load buildspecs into buildspec cache.",
         type=str,
         action="append",
-    )
-    buildspec_find.add_argument(
-        "-t", "--tags", help="List all available tags", action="store_true"
-    )
-    buildspec_find.add_argument(
-        "--terse", help="Print output in machine readable format", action="store_true"
     )
 
 
