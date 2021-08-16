@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-v0.10.2 (TBD)
---------------
+v0.10.2 (Aug 16, 2021)
+----------------------
 
 - Add support for defining multiple executors via ``executors`` property see `#842 <https://github.com/buildtesters/buildtest/pull/842>`_
 - Add option ``buildtest --color`` to toggle color mode on command line. The environment ``BUILDTEST_COLOR`` will also work, if environment is set we will use this value. See `#839 <https://github.com/buildtesters/buildtest/pull/839>`_
