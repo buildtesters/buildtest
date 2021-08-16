@@ -19,8 +19,6 @@ come out and check the `CHANGELOG.rst <https://github.com/buildtesters/buildtest
 
 - Devel Docs: https://buildtest.readthedocs.io/en/devel/index.html
 - Stable Docs: https://buildtest.readthedocs.io/en/latest/
-- v0.9.2 Docs: https://buildtest.readthedocs.io/en/v0.9.2/
-
 
 Configuring buildtest for your site
 ------------------------------------
