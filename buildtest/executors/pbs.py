@@ -69,7 +69,7 @@ class PBSExecutor(BaseExecutor):
 
         return batch_cmd
 
-    def dispatch(self, builder):
+    def dispatch(self, builder, queue=None):
         """This method is responsible for dispatching PBS job, get JobID
         and start record metadata in builder object. If job failed to submit
         we check returncode and exit with failure. After we submit job, we
@@ -87,15 +87,20 @@ class PBSExecutor(BaseExecutor):
         command = builder.run()
 
         parse_jobid = command.get_output()
-        self.job_id = " ".join(parse_jobid).strip()
+        job_id = " ".join(parse_jobid).strip()
 
-        builder.metadata["jobid"] = self.job_id
+        builder.metadata["jobid"] = job_id
 
-        builder.job = PBSJob(builder.metadata["jobid"])
+        builder.job = PBSJob(job_id)
+        # store job id
+        builder.metadata["jobid"] = PBSJob.get()
 
         msg = f"[{builder.metadata['name']}] JobID: {builder.metadata['jobid']} dispatched to scheduler"
         print(msg)
         self.logger.debug(msg)
+
+        # queue.put(builder)
+        return builder
 
     def poll(self, builder):
         """This method is responsible for polling Cobalt job, we check the

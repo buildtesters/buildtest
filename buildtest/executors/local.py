@@ -38,7 +38,7 @@ class LocalExecutor(BaseExecutor):
         elif self.shell in ["python"]:
             self.shell_type = "python"
 
-    def run(self, builder):
+    def run(self, builder, queue=None):
         """This method is responsible for running test for LocalExecutor which
         runs test locally. We keep track of metadata in ``builder.metadata``
         that keeps track of run result. The output and error file
@@ -47,16 +47,25 @@ class LocalExecutor(BaseExecutor):
         :param builder: builder object
         :type builder: BuilderBase, required
         """
+        """
+        print("{:_<30}".format(''))
+        print("Launching test:", builder.name)
+        print("Test ID:", builder.test_uid)
+        print("Process ID:", os.getpid())
+        print("Executor Name:", builder.executor)
+        print("Running Test: ", builder.build_script)
+        """
 
         # we only run the check at time of running the test since that's when we need
         # the binary available
         self.check()
 
+        """
         if self.shell_type != builder.shell_type:
             sys.exit(
                 f"[{builder.name}]: we have a shell mismatch with executor: {self.name}. The executor shell: {self.shell} is not compatible with shell: {builder.shell.name} found in buildspec"
             )
-
+        """
         # Change to the test directory
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to directory {builder.stage_dir}")
@@ -98,3 +107,6 @@ class LocalExecutor(BaseExecutor):
         builder.metadata["errfile"] = errfile
 
         builder.post_run_steps()
+
+        # queue.put(builder)
+        return builder

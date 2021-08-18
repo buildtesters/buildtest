@@ -9,6 +9,13 @@ system:
          pollinterval: 10
          launcher: qsub
          max_pend_time: 30
+      local:
+        bash:
+          description: submit jobs on local machine using bash shell
+          shell: bash
+        sh:
+          description: submit jobs on local machine using sh shell
+          shell: sh
       pbs:
         workq:
           queue: workq

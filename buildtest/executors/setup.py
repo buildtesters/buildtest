@@ -6,8 +6,13 @@ on executor name.
 """
 
 import logging
+import multiprocessing as mp
 import os
+import time
+from multiprocessing import Pool, Process, Queue, TimeoutError
 
+from buildtest.buildsystem.base import BuilderBase
+from buildtest.buildsystem.compilerbuilder import CompilerBuilder
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
 from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
@@ -39,6 +44,9 @@ class BuildExecutor:
         :param site_config: the site configuration for buildtest.
         :type site_config: SiteConfiguration class, required
         """
+
+        # stores a list of builders objects
+        self.builders = []
 
         self.executors = {}
         logger.debug("Getting Executors from buildtest settings")
@@ -153,6 +161,107 @@ class BuildExecutor:
             )
             content = executor_settings.get("before_script") or ""
             write_file(file, content)
+
+    def load_builders(self, builders):
+        """Adds builder objects into self.builders class variable. This method will only add objects that are instance of BuilderBase class"""
+        for builder in builders:
+            # only add items that are of class BuilderBase
+            if not isinstance(builder, BuilderBase):
+                continue
+            self.builders.append(builder)
+
+    def launch2(self, builders):
+
+        # mp.set_start_method('spawn')
+
+        valid_builders = []
+        queue = Queue()
+
+        tasks = []
+        for builder in builders:
+            executor = self._choose_executor(builder)
+            if executor.type == "local":
+                p = Process(target=executor.run, args=(builder, queue))
+            else:
+                p = Process(target=executor.dispatch, args=(builder, queue))
+
+            p.start()
+            tasks.append(p)
+
+        for task in tasks:
+            task.join()
+
+        print("Queue: ", queue.empty())
+        while not queue.empty():
+            t = queue.get()
+            # print(t)
+            valid_builders.append(t)
+            print(f"Test: [{t.name}/{t.test_uid}] is complete")
+
+        return valid_builders
+
+    def launch(self, builders):
+
+        results = []
+        self.valid_builders = []
+        workers = Pool(mp.cpu_count())
+
+        for builder in builders:
+            print("{:_<30}".format(""))
+            print("Launching test:", builder.name)
+            print("Test ID:", builder.test_uid)
+            print("Process ID:", os.getpid())
+            print("Executor Name:", builder.executor)
+            print("Running Test: ", builder.build_script)
+
+            executor = self._choose_executor(builder)
+            if executor.type == "local":
+                # local_builders.append(builder)
+                result = workers.apply_async(executor.run, args=(builder,))
+            else:
+                # batch_builders.append(builder)
+                result = workers.apply_async(executor.dispatch, args=(builder,))
+
+            results.append(result)
+
+        """    
+        if local_builders:
+
+            for task in local_builders:
+                executor = self._choose_executor(builder)
+
+                result = workers.apply_async(executor.run, args=(task,))
+                results.append(result)
+        """
+
+        # loop until all async results  are complete. results is a list of multiprocessing.pool.AsyncResult objects
+
+        while results:
+            async_results_ready = []
+            for result in results:
+                try:
+                    # line below will raise TimeoutError if result is not ready, if its ready we append item to list and break
+                    task = result.get(0.1)
+                except TimeoutError:
+                    continue
+
+                async_results_ready.append(result)
+                print(f"Test: {task.name}/{task.test_uid} is complete")
+                self.valid_builders.append(task)
+
+            # remove result that are complete
+            for result in async_results_ready:
+                results.remove(result)
+
+        print(self.valid_builders)
+        workers.close()
+        workers.join()
+
+        return self.valid_builders
+
+    def get_builders(self):
+        """Return a list of valid builders that were run"""
+        return self.valid_builders
 
     def run(self, builder):
         """This method implements the executor run implementation. Given a builder object

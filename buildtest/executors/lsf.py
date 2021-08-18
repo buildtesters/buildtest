@@ -118,6 +118,8 @@ class LSFExecutor(BaseExecutor):
         self.logger.debug(msg)
         print(msg)
 
+        return builder
+
     def poll(self, builder):
         """Given a builder object we poll the job by invoking builder method ``builder.job.poll()`` return state of job. If
         job is suspended or pending we stop timer and check if timer exceeds max_pend_time value which could be defined in configuration

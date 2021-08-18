@@ -11,6 +11,7 @@ import sys
 import tempfile
 import time
 from datetime import datetime
+from multiprocessing import Process
 
 from buildtest import BUILDTEST_VERSION
 from buildtest.buildsystem.builders import Builder
@@ -616,6 +617,7 @@ class BuildTest:
             for builder in self.builders:
                 shutil.rmtree(builder.stage_dir)
 
+        print(self.builders)
         # only update report if we have a list of valid builders returned from run_phase
         if self.builders:
             update_report(self.builders, self.report_file)
@@ -859,7 +861,11 @@ class BuildTest:
 
         poll_queue = []
 
-        for builder in self.builders:
+        # self.buildexecutor.load_builders(self.builders)
+        builders = self.buildexecutor.launch(self.builders)
+
+        for builder in builders:
+            """
             try:
                 self.buildexecutor.run(builder)
             except ExecutorError as err:
@@ -867,8 +873,9 @@ class BuildTest:
                 errmsg.append(err)
                 logger.error(err)
                 continue
+            """
 
-            valid_builders.append(builder)
+            # valid_builders.append(builder)
             table["name"].append(builder.name)
             table["id"].append(builder.metadata["id"])
             table["executor"].append(builder.executor)
@@ -905,9 +912,9 @@ class BuildTest:
 
         # poll will be True if one of the result State is N/A which is buildtest way to inform job is dispatched to scheduler which requires polling
         if poll:
-            valid_builders = self.poll_jobs(poll_queue, valid_builders)
+            builders = self.poll_jobs(poll_queue, builders)
 
-            self._print_jobs_after_poll(valid_builders)
+            self._print_jobs_after_poll(builders)
 
         ########## TEST SUMMARY ####################
         if self.total_tests == 0:
@@ -916,7 +923,7 @@ class BuildTest:
 
         self._print_test_summary()
 
-        return valid_builders
+        return builders
 
     def _print_build_phase(self, invalid_builders, table):
 

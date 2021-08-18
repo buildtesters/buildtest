@@ -917,11 +917,7 @@ class BuilderBase(ABC):
         os.chdir(self.pwd)
 
     def __str__(self):
-        return (
-            f"builder object created with test name: {self.name} "
-            f"for schema type: {self.type} "
-            f"with ID: {self.metadata['full_id']}"
-        )
+        return f"Name: {self.name}, ID: {self.metadata['full_id']} "
 
     def __repr__(self):
         return self.__str__()
