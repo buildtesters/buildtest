@@ -11,7 +11,6 @@ import sys
 import tempfile
 import time
 from datetime import datetime
-from multiprocessing import Process
 
 from buildtest import BUILDTEST_VERSION
 from buildtest.buildsystem.builders import Builder
@@ -23,7 +22,7 @@ from buildtest.defaults import (
     BUILDTEST_DEFAULT_TESTDIR,
     BUILDTEST_REPORT_SUMMARY,
 )
-from buildtest.exceptions import BuildspecError, BuildTestError, ExecutorError
+from buildtest.exceptions import BuildspecError, BuildTestError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.defaults import schema_table
 from buildtest.system import system
@@ -617,7 +616,6 @@ class BuildTest:
             for builder in self.builders:
                 shutil.rmtree(builder.stage_dir)
 
-        print(self.builders)
         # only update report if we have a list of valid builders returned from run_phase
         if self.builders:
             update_report(self.builders, self.report_file)
@@ -844,8 +842,8 @@ class BuildTest:
 
         print(msg)
 
-        # self.buildexecutor.load_builders(self.builders)
-        builders = self.buildexecutor.launch(self.builders)
+        self.buildexecutor.load_builders(self.builders)
+        builders = self.buildexecutor.launch()
 
         if not builders:
             sys.exit("Unable to run any tests")
@@ -887,6 +885,7 @@ class BuildTest:
         return builders
 
     def _print_build_phase(self, invalid_builders, table):
+        """print build phase table"""
 
         # print any skipped buildspecs if they failed to validate during build stage
         if invalid_builders:
@@ -959,6 +958,7 @@ class BuildTest:
             )
 
     def _print_run_phase(self, builders):
+        """print run phase table"""
 
         table = {
             "name": [],
@@ -982,6 +982,7 @@ class BuildTest:
         if os.getenv("BUILDTEST_COLOR") == "True":
             headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
 
+        print("\n")
         print(tabulate(table, headers=headers, tablefmt="presto"))
 
     def _print_jobs_after_poll(self, valid_builders):

@@ -8,11 +8,9 @@ on executor name.
 import logging
 import multiprocessing as mp
 import os
-import time
-from multiprocessing import Pool, Process, Queue, TimeoutError
+from multiprocessing import Pool, TimeoutError
 
 from buildtest.buildsystem.base import BuilderBase
-from buildtest.buildsystem.compilerbuilder import CompilerBuilder
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
 from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
@@ -170,43 +168,17 @@ class BuildExecutor:
                 continue
             self.builders.append(builder)
 
-    def launch2(self, builders):
-
-        # mp.set_start_method('spawn')
-
-        valid_builders = []
-        queue = Queue()
-
-        tasks = []
-        for builder in builders:
-            executor = self._choose_executor(builder)
-            if executor.type == "local":
-                p = Process(target=executor.run, args=(builder, queue))
-            else:
-                p = Process(target=executor.dispatch, args=(builder, queue))
-
-            p.start()
-            tasks.append(p)
-
-        for task in tasks:
-            task.join()
-
-        print("Queue: ", queue.empty())
-        while not queue.empty():
-            t = queue.get()
-            # print(t)
-            valid_builders.append(t)
-            print(f"Test: [{t.name}/{t.test_uid}] is complete")
-
-        return valid_builders
-
-    def launch(self, builders):
+    def launch(self):
 
         results = []
         self.valid_builders = []
         workers = Pool(mp.cpu_count())
 
-        for builder in builders:
+        # if there are no builders loaded we return from method
+        if not self.builders:
+            return
+
+        for builder in self.builders:
             print("{:_<30}".format(""))
             print("Launching test:", builder.name)
             print("Test ID:", builder.test_uid)
@@ -246,7 +218,10 @@ class BuildExecutor:
             for result in async_results_ready:
                 results.remove(result)
 
+        # close the worker pool by preventing any more tasks from being submitted
         workers.close()
+
+        # terminate all worker processes
         workers.join()
 
         return self.valid_builders

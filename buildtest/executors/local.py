@@ -8,7 +8,6 @@ import os
 import shutil
 import sys
 
-from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import write_file
@@ -39,7 +38,7 @@ class LocalExecutor(BaseExecutor):
         elif self.shell in ["python"]:
             self.shell_type = "python"
 
-    def run(self, builder, queue=None):
+    def run(self, builder):
         """This method is responsible for running test for LocalExecutor which
         runs test locally. We keep track of metadata in ``builder.metadata``
         that keeps track of run result. The output and error file
@@ -64,13 +63,11 @@ class LocalExecutor(BaseExecutor):
         self.logger.debug(f"Changing to directory {builder.stage_dir}")
 
         # ---------- Start of Run ---------- #
-        # if their is a non-zero returncode during submission the function will raise exception ExecutorError so we return None
-        try:
-            command = builder.run()
-        except ExecutorError as err:
-            self.logger.error(err)
-            return
 
+        builder.starttime()
+        builder.start()
+        command = BuildTestCommand(builder.runcmd)
+        command.execute()
         out, err = command.get_output(), command.get_error()
         builder.stop()
         builder.endtime()
@@ -104,5 +101,4 @@ class LocalExecutor(BaseExecutor):
 
         builder.post_run_steps()
 
-        # queue.put(builder)
         return builder
