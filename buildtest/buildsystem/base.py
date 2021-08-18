@@ -920,7 +920,7 @@ class BuilderBase(ABC):
         os.chdir(self.pwd)
 
     def __str__(self):
-        return f"Name: {self.name}, ID: {self.metadata['full_id']} "
+        return f"[{self.name}/{self.metadata['full_id']}]"
 
     def __repr__(self):
         return self.__str__()

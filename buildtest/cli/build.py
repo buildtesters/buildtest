@@ -834,13 +834,6 @@ class BuildTest:
         :rtype: list
         """
 
-        valid_builders = []
-        # run all the tests
-
-        errmsg = []
-
-        poll = False
-
         msg = """
 +---------------------+
 | Stage: Running Test |
@@ -851,42 +844,21 @@ class BuildTest:
 
         print(msg)
 
-        table = {
-            "name": [],
-            "id": [],
-            "executor": [],
-            "status": [],
-            "returncode": [],
-        }
-
-        poll_queue = []
-
         # self.buildexecutor.load_builders(self.builders)
         builders = self.buildexecutor.launch(self.builders)
 
         if not builders:
             sys.exit("Unable to run any tests")
 
+        self._print_run_phase(builders)
+
+        poll = False
+        poll_queue = []
+
         for builder in builders:
-            """
-            try:
-                self.buildexecutor.run(builder)
-            except ExecutorError as err:
-                print("[%s]: Failed to Run Test" % builder.metadata["name"])
-                errmsg.append(err)
-                logger.error(err)
-                continue
-            """
-
-            # valid_builders.append(builder)
-            table["name"].append(builder.name)
-            table["id"].append(builder.metadata["id"])
-            table["executor"].append(builder.executor)
-            table["status"].append(builder.metadata["result"]["state"])
-            table["returncode"].append(builder.metadata["result"]["returncode"])
-
             # for jobs with N/A state we append to poll queue which means job is dispatched to scheduler
             # and we poll job later
+
             if builder.metadata["result"]["state"] == "N/A":
                 poll_queue.append(builder)
                 poll = True
@@ -898,20 +870,6 @@ class BuildTest:
                 self.failed_tests += 1
 
             self.total_tests += 1
-
-        headers = table.keys()
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
-
-        print(tabulate(table, headers=headers, tablefmt="presto"))
-
-        if errmsg:
-            print("\n\n")
-            print("Error Messages from Stage: Run")
-            print("{:_<80}".format(""))
-            for error in errmsg:
-                print(error)
-            print("\n")
 
         # poll will be True if one of the result State is N/A which is buildtest way to inform job is dispatched to scheduler which requires polling
         if poll:
@@ -1000,6 +958,32 @@ class BuildTest:
                 )
             )
 
+    def _print_run_phase(self, builders):
+
+        table = {
+            "name": [],
+            "id": [],
+            "executor": [],
+            "status": [],
+            "returncode": [],
+            "runtime": [],
+        }
+
+        for builder in builders:
+            # valid_builders.append(builder)
+            table["name"].append(builder.name)
+            table["id"].append(builder.metadata["id"])
+            table["executor"].append(builder.executor)
+            table["status"].append(builder.metadata["result"]["state"])
+            table["returncode"].append(builder.metadata["result"]["returncode"])
+            table["runtime"].append(builder.metadata["result"]["runtime"])
+
+        headers = table.keys()
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
+
+        print(tabulate(table, headers=headers, tablefmt="presto"))
+
     def _print_jobs_after_poll(self, valid_builders):
         """Print table of all tests after polling"""
 
@@ -1009,6 +993,7 @@ class BuildTest:
             "executor": [],
             "status": [],
             "returncode": [],
+            "runtime": [],
         }
 
         msg = """
@@ -1038,6 +1023,7 @@ class BuildTest:
             table["executor"].append(builder.executor)
             table["status"].append(builder.metadata["result"]["state"])
             table["returncode"].append(builder.metadata["result"]["returncode"])
+            table["runtime"].append(builder.metadata["result"]["runtime"])
 
             self.total_tests += 1
 
