@@ -224,16 +224,6 @@ class BuildExecutor:
 
             results.append(result)
 
-        """    
-        if local_builders:
-
-            for task in local_builders:
-                executor = self._choose_executor(builder)
-
-                result = workers.apply_async(executor.run, args=(task,))
-                results.append(result)
-        """
-
         # loop until all async results  are complete. results is a list of multiprocessing.pool.AsyncResult objects
 
         while results:
@@ -246,14 +236,16 @@ class BuildExecutor:
                     continue
 
                 async_results_ready.append(result)
-                print(f"Test: {task.name}/{task.test_uid} is complete")
-                self.valid_builders.append(task)
+
+                # the task object could be None if it fails to submit job therefore we only add items that are valid builders
+                if isinstance(task, BuilderBase):
+                    self.valid_builders.append(task)
+                    print(f"Test: {task.name}/{task.test_uid} is complete")
 
             # remove result that are complete
             for result in async_results_ready:
                 results.remove(result)
 
-        print(self.valid_builders)
         workers.close()
         workers.join()
 

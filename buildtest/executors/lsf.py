@@ -9,6 +9,7 @@ import logging
 import os
 import re
 
+from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
@@ -87,7 +88,12 @@ class LSFExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to stage directory {builder.stage_dir}")
 
-        command = builder.run()
+        try:
+            command = builder.run()
+        except ExecutorError as err:
+            self.logger.error(err)
+            return
+
         out = command.get_output()
         out = " ".join(out)
         pattern = r"(\d+)"

@@ -7,6 +7,7 @@ import re
 import shutil
 import time
 
+from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
@@ -83,7 +84,11 @@ class CobaltExecutor(BaseExecutor):
 
         os.chdir(builder.stage_dir)
 
-        command = builder.run()
+        try:
+            command = builder.run()
+        except ExecutorError as err:
+            self.logger.error(err)
+            return
 
         out = command.get_output()
         out = " ".join(out)
@@ -114,6 +119,8 @@ class CobaltExecutor(BaseExecutor):
 
         builder.metadata["job"] = builder.job.gather()
         logger.debug(json.dumps(builder.metadata["job"], indent=2))
+
+        return builder
 
     def poll(self, builder):
         """This method is responsible for polling Cobalt job by invoking the builder method

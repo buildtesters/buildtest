@@ -4,6 +4,7 @@ import json
 import logging
 import os
 
+from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
@@ -84,7 +85,11 @@ class PBSExecutor(BaseExecutor):
 
         os.chdir(builder.stage_dir)
 
-        command = builder.run()
+        try:
+            command = builder.run()
+        except ExecutorError as err:
+            self.logger.error(err)
+            return
 
         parse_jobid = command.get_output()
         job_id = " ".join(parse_jobid).strip()
@@ -93,7 +98,7 @@ class PBSExecutor(BaseExecutor):
 
         builder.job = PBSJob(job_id)
         # store job id
-        builder.metadata["jobid"] = PBSJob.get()
+        builder.metadata["jobid"] = builder.job.get()
 
         msg = f"[{builder.metadata['name']}] JobID: {builder.metadata['jobid']} dispatched to scheduler"
         print(msg)

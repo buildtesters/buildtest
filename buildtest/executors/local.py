@@ -8,6 +8,7 @@ import os
 import shutil
 import sys
 
+from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import write_file
@@ -47,14 +48,6 @@ class LocalExecutor(BaseExecutor):
         :param builder: builder object
         :type builder: BuilderBase, required
         """
-        """
-        print("{:_<30}".format(''))
-        print("Launching test:", builder.name)
-        print("Test ID:", builder.test_uid)
-        print("Process ID:", os.getpid())
-        print("Executor Name:", builder.executor)
-        print("Running Test: ", builder.build_script)
-        """
 
         # we only run the check at time of running the test since that's when we need
         # the binary available
@@ -70,16 +63,19 @@ class LocalExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to directory {builder.stage_dir}")
 
-        # ---------- Run Script ---------- #
+        # ---------- Start of Run ---------- #
+        # if their is a non-zero returncode during submission the function will raise exception ExecutorError so we return None
+        try:
+            command = builder.run()
+        except ExecutorError as err:
+            self.logger.error(err)
+            return
 
-        builder.starttime()
-        builder.start()
-        command = BuildTestCommand(builder.runcmd)
-        out, err = command.execute()
+        out, err = command.get_output(), command.get_error()
         builder.stop()
         builder.endtime()
 
-        # ---------- Run Script ---------- #
+        # ---------- End of Run ---------- #
 
         self.logger.debug(f"Running Test via command: {builder.runcmd}")
 

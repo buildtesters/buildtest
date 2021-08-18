@@ -864,6 +864,9 @@ class BuildTest:
         # self.buildexecutor.load_builders(self.builders)
         builders = self.buildexecutor.launch(self.builders)
 
+        if not builders:
+            sys.exit("Unable to run any tests")
+
         for builder in builders:
             """
             try:
