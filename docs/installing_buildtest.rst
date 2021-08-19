@@ -9,7 +9,7 @@ Requirements
 You need the following packages to install buildtest.
 
 - `git <https://git-scm.com/downloads>`_
-- `Python <https://www.python.org/downloads/>`_ >= 3.6
+- `Python <https://www.python.org/downloads/>`_ >= 3.7
 
 Cloning buildtest
 ------------------
