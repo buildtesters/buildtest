@@ -17,6 +17,10 @@ with default format fields. To see a list of all format fields, click :ref:`here
 .. command-output:: buildtest report
    :ellipsis: 20
 
+
+.. note::
+   ``buildtest rt`` is an alias for ``buildtest report`` command.
+
 Format Reports (``buildtest report --format``)
 -----------------------------------------------
 
@@ -39,7 +43,7 @@ Format Field Usage
 The ``--format`` field are specified in comma separated format (i.e ``--format <field1>,<field2>``).
 In this example we format table by fields ``--format id,executor,state,returncode``.
 
-.. command-output:: buildtest report --format name,id,executor,state,returncode
+.. command-output:: buildtest rt --format name,id,executor,state,returncode
    :ellipsis: 21
 
 Filter Reports (``buildtest report --filter``)
@@ -63,7 +67,7 @@ Filter by returncode (``--filter returncode``)
 If you want to retrieve all tests with a given returncode, we can use the **returncode**
 property. For instance, let's retrieve all tests with returncode of 2 by setting ``--filter returncode=2``.
 
-.. command-output:: buildtest report --filter returncode=2 --format=name,id,returncode
+.. command-output:: buildtest rt --filter returncode=2 --format=name,id,returncode
 
 .. Note:: buildtest automatically converts returncode to integer when matching returncode, so ``--filter returncode="2"`` will work too
 
@@ -75,7 +79,7 @@ we want to filter all tests by name ``exit1_pass``, this can be achieved by sett
 field as follows: ``--filter name=exit1_pass``. Shown below is an example using **name** filter field
 to filter test results.
 
-.. command-output:: buildtest report --filter name=exit1_pass --format=name,id,returncode,state
+.. command-output:: buildtest rt --filter name=exit1_pass --format=name,id,returncode,state
 
 Filter by buildspec (``--filter buildspec``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -85,7 +89,7 @@ Likewise, we can filter results by buildspec file using **buildspec** attribute 
 relative or absolute path. buildtest will resolve path (absolute path) and find the appropriate
 tests that belong to the buildspec file. If file doesn't exist or is not found in cache it will raise an error.
 
-.. command-output:: buildtest report --filter buildspec=tutorials/python-hello.yml --format=name,id,state,buildspec
+.. command-output:: buildtest rt --filter buildspec=tutorials/python-hello.yml --format=name,id,state,buildspec
 
 
 Filter by test state (``--filter state``)
@@ -97,7 +101,7 @@ value of ``[PASS|FAIL]`` since these are the two recorded test states marked by 
 We can also pass multiple filter fields for instance if we want to find all **FAIL**
 tests for executor **generic.local.sh** we can do the following.
 
-.. command-output:: buildtest report --filter state=FAIL,executor=generic.local.sh --format=name,id,state,executor
+.. command-output:: buildtest rt --filter state=FAIL,executor=generic.local.sh --format=name,id,state,executor
 
 Filter Exception Cases
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -105,27 +109,27 @@ Filter Exception Cases
 The ``returncode`` filter field expects an integer value, so if you try a non-integer
 returncode you will get the following message
 
-.. command-output:: buildtest report --filter returncode=1.5
+.. command-output:: buildtest rt --filter returncode=1.5
     :returncode: 1
 
 The ``state`` filter field expects value of ``PASS`` or ``FAIL`` so if you specify an
 invalid state you will get an error as follows.
 
-.. command-output:: buildtest report --filter state=UNKNOWN
+.. command-output:: buildtest rt --filter state=UNKNOWN
     :returncode: 0
 
 The ``buildspec`` field expects a valid file path, it can be an absolute or relative
 path, buildtest will resolve absolute path and check if file exist and is in the report
 file. If it's an invalid file we get an error such as
 
-.. command-output:: buildtest report --filter buildspec=/path/to/invalid.yml
+.. command-output:: buildtest rt --filter buildspec=/path/to/invalid.yml
     :returncode: 0
 
 You may have a valid filepath for buildspec filter field such as
 ``$BUILDTEST_ROOT/tutorials/invalid_executor.yml``, but there is no record of a test in the report cache
 because this test wasn't run. In this case you will get the following message.
 
-.. command-output:: buildtest report --filter buildspec=$BUILDTEST_ROOT/tutorials/invalid_executor.yml
+.. command-output:: buildtest rt --filter buildspec=$BUILDTEST_ROOT/tutorials/invalid_executor.yml
     :returncode: 0
 
 Find Latest or Oldest test
@@ -227,6 +231,9 @@ Shown below is an example output from the report summary.
 Inspect Tests Records via ``buildtest inspect``
 -------------------------------------------------
 
+.. note::
+   ``buildtest it`` is an alias for ``buildtest inspect`` command.
+
 In previous examples we saw how we can retrieve test records using  ``buildtest report`` which
 is printed in table format. We have limited the output to a limited fields however, if you want to analyze a particular,
 we have a separate command called ``buildtest inspect`` that can be used for inspecting a test record
@@ -252,7 +259,7 @@ metadata for each test such as `user`, `hostname`, `command`, path to output and
 state of test, returncode, etc... In this example, we will retrieve record for test name **circle_area** which
 will print the raw content of the test in JSON format.
 
-.. command-output:: buildtest inspect name circle_area
+.. command-output:: buildtest it name circle_area
 
 You can query multiple tests as positional arguments in the format: ``buildtest inspect name <test1> <test2>``
 In this next example, we will retrieve test records for ``bash_shell`` and  ``python_hello``.
@@ -271,21 +278,21 @@ want to fetch all records you can pass the ``--all`` option.
 
 In example below we will fetch latest record for all tests in **tutorials/vars.yml**
 
-.. command-output:: buildtest inspect buildspec tutorials/vars.yml
+.. command-output:: buildtest it buildspec tutorials/vars.yml
 
 buildtest will report an error if an input buildspec is invalid filepath such as one below
 
-.. command-output:: buildtest inspect buildspec /tmp/buildspec.yml
+.. command-output:: buildtest it buildspec /tmp/buildspec.yml
    :returncode: 1
 
 You can also pass multiple buildspes on the command line and fetch all records for a test. In example
 below we will fetch all records from tests **tutorials/hello_world/yml** and **tutorials/regex_status.yml**
 
-.. command-output:: buildtest inspect buildspec --all tutorials/vars.yml tutorials/status_regex.yml
+.. command-output:: buildtest it buildspec --all tutorials/vars.yml tutorials/status_regex.yml
 
 If you pass a valid filepath but file is not in cache you will get an error as follows
 
-.. command-output:: buildtest inspect buildspec $BUILDTEST_ROOT/README.rst
+.. command-output:: buildtest it buildspec $BUILDTEST_ROOT/README.rst
    :shell:
    :returncode: 1
 
@@ -302,108 +309,40 @@ You only need to specify a few characters and buildtest will resolve full test i
 The ``buildtest inspect id`` can operate on single or multiple ids if you want to specify multiple
 ids in single command you can do ``buildtest inspect id <identifier1> <identifier2>``.
 
-Let's see an example where we query a single test record. Notice, that we only specify
-a few characters **fee** and buildtest found a matching record **fee66c67-db4e-4d35-8c6d-28ac5cbbaba0**
-
 .. code-block:: console
 
-    $ buildtest inspect id fee
-    Reading Report File: /Users/siddiq90/.buildtest/report.json
-
+    $ buildtest it id a76
     {
-      "fee66c67-db4e-4d35-8c6d-28ac5cbbaba0": {
-        "id": "fee66c67",
-        "full_id": "fee66c67-db4e-4d35-8c6d-28ac5cbbaba0",
+      "a761ce8f-0442-4ff4-845b-8d7cbd6b563b": {
+        "id": "a761ce8f",
+        "full_id": "a761ce8f-0442-4ff4-845b-8d7cbd6b563b",
+        "description": "hello world example",
         "schemafile": "script-v1.0.schema.json",
         "executor": "generic.local.bash",
         "compiler": null,
         "hostname": "DOE-7086392.local",
         "user": "siddiq90",
-        "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/2",
-        "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/2/stage/generate.sh",
-        "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/2/stage",
-        "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/2/run",
-        "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/2/stage/generate.sh",
-        "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/2/run/python_hello.out",
-        "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/python-hello/python_hello/2/run/python_hello.err",
-        "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  python_hello:\n    type: script\n    description: Hello World python\n    executor: generic.local.bash\n    tags: python\n    run: python hello.py\n\n",
-        "test_content": "#!/bin/bash \nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.bash/before_script.sh\npython hello.py\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.bash/after_script.sh",
-        "tags": "python",
-        "starttime": "2021/03/31 11:18:21",
-        "endtime": "2021/03/31 11:18:21",
-        "runtime": 0.104714,
+        "testroot": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f",
+        "testpath": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f/hello_world.sh",
+        "stagedir": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f/stage",
+        "command": "sh hello_world_build.sh",
+        "outfile": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f/hello_world.out",
+        "errfile": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f/hello_world.err",
+        "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  hello_world:\n    executor: generic.local.bash\n    type: script\n    tags: tutorials\n    description: \"hello world example\"\n    run: echo \"hello world!\"\nmaintainers:\n- \"@shahzebsiddiqui\"\n",
+        "test_content": "#!/bin/bash \n# Content of run section\necho \"hello world!\"",
+        "buildscript_content": "#!/bin/bash\n\n\n############# START VARIABLE DECLARATION ########################\nexport BUILDTEST_TEST_NAME=hello_world\nexport BUILDTEST_TEST_ROOT=/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f\nexport BUILDTEST_BUILDSPEC_DIR=/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials\nexport BUILDTEST_STAGE_DIR=/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f/stage\nexport BUILDTEST_TEST_ID=a761ce8f-0442-4ff4-845b-8d7cbd6b563b\n############# END VARIABLE DECLARATION   ########################\n\n\n# source executor startup script\nsource /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/executor/generic.local.bash/before_script.sh\n# Run generated script\n/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f/stage/hello_world.sh\n# Get return code\nreturncode=$?\n# Exit with return code\nexit $returncode",
+        "logpath": "/var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_fcwkh482.log",
+        "metrics": {},
+        "tags": "tutorials",
+        "starttime": "2021/08/19 11:12:32",
+        "endtime": "2021/08/19 11:12:32",
+        "runtime": "0.103966",
         "state": "PASS",
-        "returncode": 0,
-        "output": "Hello World\n",
+        "returncode": "0",
+        "output": "hello world!\n",
         "error": "",
-        "job": null
-      }
-    }
-
-We can pass multiple IDs to ``buildtest inspect id`` and buildtest will retrieve test
-record if there is a match. You only need to specify a few characters to ensure we have a unique test
-ID and buildtest will retrieve the record.
-
-
-.. code-block:: console
-
-   $ buildtest inspect id 944 a76
-    Reading Report File: /Users/siddiq90/.buildtest/report.json
-
-    {
-      "a76799db-f11e-4050-8dcb-8b147092c536": {
-        "id": "a76799db",
-        "full_id": "a76799db-f11e-4050-8dcb-8b147092c536",
-        "schemafile": "script-v1.0.schema.json",
-        "executor": "generic.local.bash",
-        "compiler": null,
-        "hostname": "DOE-7086392.local",
-        "user": "siddiq90",
-        "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/0",
-        "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/0/stage/generate.sh",
-        "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/0/stage",
-        "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/0/run",
-        "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/0/stage/generate.sh",
-        "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/0/run/root_disk_usage.out",
-        "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/disk_usage/root_disk_usage/0/run/root_disk_usage.err",
-        "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  root_disk_usage:\n    executor: generic.local.bash\n    type: script\n    tags: [filesystem, storage]\n    description: Check root disk usage and report if it exceeds threshold\n    env:\n      threshold: 90\n    run: |\n      root_disk_usage=`df -a / | tail -n 1 |  awk '{print $5'} | sed 's/[^0-9]*//g'`\n      # if root exceeds threshold\n      if [ \"$root_disk_usage\" -gt \"$threshold\" ]; then\n        echo \"[WARNING] Root Disk Usage: $root_disk_usage% exceeded threshold of $threshold%\"\n        exit 1\n      fi\n      echo \"[OK] Root disk is below threshold of $threshold%\"\n",
-        "test_content": "#!/bin/bash \nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.bash/before_script.sh\nexport threshold=90\nroot_disk_usage=`df -a / | tail -n 1 |  awk '{print $5'} | sed 's/[^0-9]*//g'`\n# if root exceeds threshold\nif [ \"$root_disk_usage\" -gt \"$threshold\" ]; then\n  echo \"[WARNING] Root Disk Usage: $root_disk_usage% exceeded threshold of $threshold%\"\n  exit 1\nfi\necho \"[OK] Root disk is below threshold of $threshold%\"\n\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.bash/after_script.sh",
-        "tags": "filesystem storage",
-        "starttime": "2021/03/31 11:17:50",
-        "endtime": "2021/03/31 11:17:50",
-        "runtime": 0.114321,
-        "state": "PASS",
-        "returncode": 0,
-        "output": "[OK] Root disk is below threshold of 90%\n",
-        "error": "",
-        "job": null
-      },
-      "944f6399-b82b-47f9-bb15-8f529dedd4e6": {
-        "id": "944f6399",
-        "full_id": "944f6399-b82b-47f9-bb15-8f529dedd4e6",
-        "schemafile": "script-v1.0.schema.json",
-        "executor": "generic.local.python",
-        "compiler": null,
-        "hostname": "DOE-7086392.local",
-        "user": "siddiq90",
-        "testroot": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0",
-        "testpath": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/stage/generate.sh",
-        "stagedir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/stage",
-        "rundir": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/run",
-        "command": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/stage/generate.sh",
-        "outfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/run/circle_area.out",
-        "errfile": "/Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/run/circle_area.err",
-        "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  circle_area:\n    executor: generic.local.python\n    type: script\n    shell: python\n    description: \"Calculate circle of area given a radius\"\n    tags: [tutorials, python]\n    run: |\n      import math\n      radius = 2\n      area = math.pi * radius * radius\n      print(\"Circle Radius \", radius)\n      print(\"Area of circle \", area)\n",
-        "test_content": "#!/bin/bash\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.python/before_script.sh\npython /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.python/python-shell/circle_area/0/stage/circle_area.py\nsource /Users/siddiq90/Documents/github/buildtest/var/executors/generic.local.python/after_script.sh",
-        "tags": "tutorials python",
-        "starttime": "2021/03/31 11:18:00",
-        "endtime": "2021/03/31 11:18:00",
-        "runtime": 0.144171,
-        "state": "PASS",
-        "returncode": 0,
-        "output": "Circle Radius  2\nArea of circle  12.566370614359172\n",
-        "error": "",
-        "job": null
+        "job": {},
+        "build_script": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f/hello_world_build.sh"
       }
     }
 

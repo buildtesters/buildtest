@@ -1,7 +1,7 @@
 .. _building_test:
 
-Building Test via buildtest
-==============================
+Building Test via buildtest (``buildtest build``)
+=================================================
 
 This guide will get you familiar with buildtest command line interface. Once
 you complete this section, you can proceed to :ref:`writing buildspecs <writing_buildspecs>`
@@ -18,7 +18,10 @@ If you don't see buildtest go back and :ref:`install buildtest <Setup>`.
 When you clone buildtest, you also get a set of buildspecs that you can run on your
 system. The ``buildtest build`` command is used for building and running tests.
 Buildtest will read one or more buildspecs file that adheres to one of the
-buildtest schemas. For a complete list of build options, run ``buildtest build --help``
+buildtest schemas. For a complete list of build options please run ``buildtest build --help``.
+
+.. note::
+   ``buildtest bd`` is an alias for ``buildtest build`` command.
 
 Build Usage
 ------------
@@ -79,7 +82,7 @@ by ``-x`` option. You can specify ``-x`` multiple times just like ``-b`` option.
 
 For example, we can undo discovery by passing same option to ``-b`` and ``-x``  as follows
 
-.. command-output:: buildtest build -b tutorials/ -x tutorials/
+.. command-output:: buildtest bd -b tutorials/ -x tutorials/
     :returncode: 1
 
 Buildtest will stop immediately if there are no Buildspecs to process, this is
@@ -89,7 +92,7 @@ In this example, we build all buildspecs in a directory but exclude a file. Buil
 will report the excluded buildspecs in the output and ``-x`` option can be appended multiple times.
 The ``-x`` can be a file or a directory and behaves similar to ``-b`` option.
 
-.. command-output:: buildtest build -b general_tests/configuration/ -x general_tests/configuration/ulimits.yml
+.. command-output:: buildtest bd -b general_tests/configuration/ -x general_tests/configuration/ulimits.yml
 
 .. _build_by_tags:
 

@@ -8,20 +8,22 @@ query a buildspec cache. In buildtest, one can load all buildspecs which is equi
 to validating all buildspecs with the appropriate schema. Buildtest will ignore all
 invalid buildspecs and store them in a separate file.
 
-The ``buildtest buildspec find`` command is used for finding buildspecs from buildspec
-cache. This command is also used for generating the buildspec cache. Shown below is a list of options for
-``buildtest buildspec find``.
-
-.. command-output:: buildtest buildspec find --help
+.. note::
+   ``buildtest bc`` is an alias for ``buildtest buildspec`` command.
 
 .. _find_buildspecs:
 
 Finding Buildspecs - ``buildtest buildspec find``
 --------------------------------------------------
 
-To find all buildspecs you can run ``buildtest buildspec find`` which will discover
-all buildspecs by recursively searching all `.yml` extensions. buildtest will validate each
-buildspec file with the json schema and buildtest will display all valid buildspecs in the output,
+The ``buildtest buildspec find`` command is used for finding buildspecs from buildspec
+cache. This command is also used for generating the buildspec cache. Shown below is a list of options for
+provided for this command.
+
+.. command-output:: buildtest buildspec find --help
+
+The ``buildtest buildspec find`` command will discover all buildspecs by recursively searching all `.yml` extensions.
+buildtest will validate each buildspec file with the json schema and buildtest will display all valid buildspecs in the output,
 all invalid buildspecs will be stored in a file for post-processing.
 
 .. command-output:: buildtest buildspec find
@@ -242,6 +244,9 @@ multiple executors.
 
 Edit buildspecs ``buildtest edit``
 -----------------------------------
+
+.. note::
+   ``buildtest et`` is an alias for ``buildtest edit`` command.
 
 The ``buildtest edit`` command can be used to edit buildspec with your preferred editor
 defined by environment **$EDITOR**, if this environment is not set buildtest will resort to ``vim``.

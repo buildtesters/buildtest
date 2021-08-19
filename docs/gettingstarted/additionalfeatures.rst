@@ -1,8 +1,11 @@
 Additional Features
 =====================
 
-Accessing build history
--------------------------
+Accessing build history (``buildtest history``)
+------------------------------------------------
+
+.. note::
+   ``buildtest hy`` is an alias for ``buildtest history`` command.
 
 buildtest keeps track of all builds (``buildtest build``) that can be retrieved using ``buildtest history`` command
 which can be useful when you want to analyze or troubleshoot past builds. The `buildtest history` command comes with two
@@ -22,6 +25,25 @@ platform, date, etc...
 
 .. command-output:: buildtest history query 0
     :shell:
+
+If you want to see all available build IDs, you can use the following command. The ``-t`` is terse format and ``--no-header`` will
+omit the headers for each column and pipe the output to **cut** to extract the first column which corresponds to build IDs.
+
+.. command-output:: buildtest hy list -t --no-header | cut -f 1 -d '|'
+   :shell:
+
+buildtest has tab complete on ``buildtest history query`` which reports a list of build IDs which is another way to
+see available IDs to query.
+
+.. code-block:: console
+
+    $ buildtest history query
+    0   1   10  11  12  13  14  15  16  17  18  19  2   20  21  22  23  3   4   5   6   7   8   9
+
+
+If you want to see logfile for build ID 0 you can use ``--log`` option to see logfile in an editor as follows::
+
+  buildtest history query 0 --log
 
 .. _buildtest_schemas:
 
