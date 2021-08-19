@@ -135,6 +135,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
 
     help_subparser = subparsers.add_parser(
         "help",
+        aliases=["h"],
         help="buildtest command guide",
     )
     help_subparser.add_argument(
@@ -157,7 +158,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
 
 def edit_menu(subparsers):
     edit_subcmd = subparsers.add_parser(
-        "edit", help="Edit a buildspec and validate with schema file"
+        "edit", aliases=["et"], help="Edit a buildspec and validate with schema file"
     )
     edit_subcmd.add_argument(
         "buildspec", help="Open buildspec in editor and validate upon closing file"
@@ -167,7 +168,9 @@ def edit_menu(subparsers):
 def history_menu(subparsers):
     """This method builds the command line menu for ``buildtest history`` command"""
 
-    history_subcmd = subparsers.add_parser("history", help="Query build history")
+    history_subcmd = subparsers.add_parser(
+        "history", aliases=["hy"], help="Query build history"
+    )
 
     history_subparser = history_subcmd.add_subparsers(
         metavar="", description="Query build history file", dest="history"
@@ -204,7 +207,9 @@ def history_menu(subparsers):
 def build_menu(subparsers):
     """This method implements command line menu for ``buildtest build`` command."""
 
-    parser_build = subparsers.add_parser("build", help="Build and Run test")
+    parser_build = subparsers.add_parser(
+        "build", aliases=["bd"], help="Build and Run test"
+    )
 
     discover_group = parser_build.add_argument_group("discover", "select buildspecs")
     filter_group = parser_build.add_argument_group("filter", "Filter tests")
@@ -292,7 +297,9 @@ def build_menu(subparsers):
 def buildspec_menu(subparsers):
     """This method implements ``buildtest buildspec`` command"""
 
-    parser_buildspec = subparsers.add_parser("buildspec", help="Buildspec Interface")
+    parser_buildspec = subparsers.add_parser(
+        "buildspec", aliases=["bc"], help="Buildspec Interface"
+    )
 
     subparsers_buildspec = parser_buildspec.add_subparsers(
         description="Find buildspec from cache file",
@@ -458,7 +465,7 @@ def config_menu(subparsers):
     """This method adds argparse argument for ``buildtest config``"""
 
     parser_config = subparsers.add_parser(
-        "config", help="Query buildtest configuration"
+        "config", aliases=["cg"], help="Query buildtest configuration"
     )
 
     subparsers_config = parser_config.add_subparsers(
@@ -526,7 +533,9 @@ def config_menu(subparsers):
 def report_menu(subparsers):
     """This method implements the ``buildtest report`` command options"""
 
-    parser_report = subparsers.add_parser("report", help="Query test report")
+    parser_report = subparsers.add_parser(
+        "report", aliases=["rt"], help="Query test report"
+    )
     subparsers = parser_report.add_subparsers(
         description="Fetch test results from report file and print them in table format",
         metavar="",
@@ -590,7 +599,7 @@ def inspect_menu(subparsers):
     """This method builds argument for ``buildtest inspect`` command"""
 
     parser_inspect = subparsers.add_parser(
-        "inspect", help="Inspect a test based on NAME or ID "
+        "inspect", aliases=["it"], help="Inspect a test based on NAME or ID "
     )
     parser_inspect.add_argument(
         "-r", "--report", help="Specify a report file to load when inspecting test"

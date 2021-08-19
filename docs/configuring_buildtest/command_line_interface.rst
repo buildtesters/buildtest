@@ -8,6 +8,9 @@ details using ``buildtest config`` command. Shown below is the command usage.
 
 .. command-output:: buildtest config --help
 
+.. note::
+  ``buildtest cg`` is an alias for ``buildtest config`` command.
+
 Validate buildtest configuration
 ---------------------------------
 
