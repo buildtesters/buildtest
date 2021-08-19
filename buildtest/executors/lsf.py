@@ -104,7 +104,7 @@ class LSFExecutor(BaseExecutor):
         # if there is no match we raise error
         if not m:
             self.logger.debug(f"Unable to find LSF Job ID in output: '{out}'")
-            builder.incomplete()
+            builder.failure()
             return
 
         try:
@@ -113,7 +113,7 @@ class LSFExecutor(BaseExecutor):
             self.logger.debug(
                 f"Unable to convert '{m.group(0)}' to int to extract Job ID"
             )
-            builder.incomplete()
+            builder.failure()
             return
 
         builder.job = LSFJob(job_id)
@@ -145,7 +145,7 @@ class LSFExecutor(BaseExecutor):
             # if timer time is more than requested pend time then cancel job
             if int(builder.duration) > self.max_pend_time:
                 builder.job.cancel()
-
+                builder.failure()
                 print(
                     "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
                         builder.duration, self.max_pend_time
@@ -178,13 +178,6 @@ class LSFExecutor(BaseExecutor):
         )
 
         builder.post_run_steps()
-
-        # builder.metadata["output"] = read_file(builder.metadata["outfile"])
-        # builder.metadata["error"] = read_file(builder.metadata["errfile"])
-
-        # builder.copy_stage_files()
-
-        # self.check_test_state(builder)
 
 
 class LSFJob(Job):

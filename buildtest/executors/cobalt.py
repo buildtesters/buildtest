@@ -148,6 +148,7 @@ class CobaltExecutor(BaseExecutor):
             # if timer time is more than requested pend time then cancel job
             if int(builder.duration) > self.max_pend_time:
                 builder.job.cancel()
+                builder.failure()
                 builder.job_state = builder.job.state()
                 print(
                     "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(

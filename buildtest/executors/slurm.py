@@ -149,6 +149,7 @@ class SlurmExecutor(BaseExecutor):
                         builder.duration, self.max_pend_time
                     )
                 )
+                builder.failure()
 
             builder.start()
 

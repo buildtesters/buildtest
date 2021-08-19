@@ -4,6 +4,8 @@ BuildExecutor: manager for test executors
 
 import logging
 
+from buildtest.buildsystem.base import BuilderBase
+
 
 class BaseExecutor:
     """The BaseExecutor is an abstract base class for all executors."""
@@ -28,7 +30,16 @@ class BaseExecutor:
         self._settings = settings
         self._buildtestsettings = site_configs
         self.load()
-        self.result = {}
+        self.builders = []
+
+    def add_builder(self, builder):
+        """Add builder object to ``self.builders`` only if its of type BuilderBase"""
+
+        if isinstance(builder, BuilderBase):
+            self.builders.append(builder)
+
+    def get_builder(self):
+        return self.builders
 
     def load(self):
         """Load a particular configuration based on the name. This method

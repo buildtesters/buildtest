@@ -52,12 +52,6 @@ class LocalExecutor(BaseExecutor):
         # the binary available
         self.check()
 
-        """
-        if self.shell_type != builder.shell_type:
-            sys.exit(
-                f"[{builder.name}]: we have a shell mismatch with executor: {self.name}. The executor shell: {self.shell} is not compatible with shell: {builder.shell.name} found in buildspec"
-            )
-        """
         # Change to the test directory
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to directory {builder.stage_dir}")

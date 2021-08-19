@@ -850,18 +850,7 @@ class BuildTest:
 
         self._print_run_phase(builders)
 
-        poll = False
-        poll_queue = []
-
         for builder in builders:
-            # for jobs with N/A state we append to poll queue which means job is dispatched to scheduler
-            # and we poll job later
-
-            if builder.metadata["result"]["state"] == "N/A":
-                poll_queue.append(builder)
-                poll = True
-                continue
-
             if builder.metadata["result"]["state"] == "PASS":
                 self.passed_tests += 1
             else:
@@ -869,8 +858,10 @@ class BuildTest:
 
             self.total_tests += 1
 
-        # poll will be True if one of the result State is N/A which is buildtest way to inform job is dispatched to scheduler which requires polling
-        if poll:
+        # if any builders to poll we poll the jobs
+        if self.buildexecutor.is_poll():
+            poll_queue = self.buildexecutor.poll_queue()
+
             builders = self.poll_jobs(poll_queue, builders)
 
             self._print_jobs_after_poll(builders)
@@ -883,6 +874,138 @@ class BuildTest:
         self._print_test_summary()
 
         return builders
+
+    def poll_jobs(self, poll_queue, valid_builders):
+        """This method will poll jobs by processing all jobs in ``poll_queue``. If
+        job is cancelled by scheduler, we remove this from valid_builders list.
+        This method will return a list of valid_builders after polling. If there
+        are no valid_builders after polling, the method will return None
+
+        :param poll_queue: a list of jobs that need to be polled. The jobs will poll using poll method from executor
+        :type poll_queue: list, required
+        :param valid_builders: list of valid builders
+        :type valid_builders: list, required
+        """
+        # default interval is 30sec for polling jobs if poll interval not set in configuration file or command line
+        default_interval = 30
+
+        interval = self.poll_interval or deep_get(
+            self.configuration.target_config, "executors", "defaults", "pollinterval"
+        )
+
+        if not interval:
+            interval = default_interval
+
+        # keep track of ignored jobs by job scheduler these include jobs that failed abnormally or cancelled by scheduler
+        ignore_jobs = set()
+        completed_jobs = set()
+
+        # loop until poll_queue is empty which means all jobs have finished
+        while poll_queue:
+
+            print("\n")
+            print(f"Polling Jobs in {interval} seconds")
+            print("{:_<40}".format(""))
+
+            logger.debug(f"Sleeping for {interval} seconds")
+            time.sleep(interval)
+            logger.debug(f"Polling Jobs: {poll_queue}")
+
+            # poll all builder jobs and return a list of builders with updated builder state
+            builder_queue = self.buildexecutor.poll(poll_queue)
+
+            # for every builder in queue check if job is complete, add to complete jobs and remove from queue
+            # an incomplete job is also removed from queue
+            for builder in builder_queue:
+                if builder.is_success():
+                    completed_jobs.add(builder)
+                    poll_queue.remove(builder)
+                    logger.debug(
+                        f"{builder} poll complete, removing test from poll queue"
+                    )
+                elif builder.is_failure():
+                    ignore_jobs.add(builder)
+                    poll_queue.remove(builder)
+                elif builder.is_unknown():
+                    continue
+
+            jobIDs = []
+
+            for job in poll_queue:
+                jobIDs.append(job.metadata["jobid"])
+            print("Job Queue:", jobIDs)
+
+            completed_jobs_table = {
+                "name": [],
+                "executor": [],
+                "jobID": [],
+                "jobstate": [],
+            }
+            pending_jobs_table = {
+                "name": [],
+                "executor": [],
+                "jobID": [],
+                "jobstate": [],
+            }
+            for job in completed_jobs:
+                completed_jobs_table["name"].append(job.name)
+                completed_jobs_table["executor"].append(job.executor)
+                completed_jobs_table["jobID"].append(job.metadata["jobid"])
+                # completed_jobs_table["jobstate"].append(job.job_state)
+                completed_jobs_table["jobstate"].append(job.job.state())
+
+            for job in poll_queue:
+                pending_jobs_table["name"].append(job.name)
+                pending_jobs_table["executor"].append(job.executor)
+                pending_jobs_table["jobID"].append(job.metadata["jobid"])
+                # pending_jobs_table["jobstate"].append(job.job_state)
+                pending_jobs_table["jobstate"].append(job.job.state())
+
+            # only print table if their is an element in the table. We check for 'name' property
+            if completed_jobs_table["name"]:
+                print("\n")
+                print("Completed Jobs")
+                print("{:_<40}".format(""))
+                print("\n")
+
+                print(
+                    tabulate(
+                        completed_jobs_table,
+                        headers=completed_jobs_table.keys(),
+                        tablefmt="pretty",
+                    )
+                )
+
+            if pending_jobs_table["name"]:
+                print("\n")
+                print("Pending Jobs")
+                print("{:_<40}".format(""))
+                print("\n")
+                print(
+                    tabulate(
+                        pending_jobs_table,
+                        headers=pending_jobs_table.keys(),
+                        tablefmt="pretty",
+                    )
+                )
+
+        # remove any builders where for jobs that need to be ignored
+        if ignore_jobs:
+            # convert set to list
+            ignore_jobs = list(ignore_jobs)
+            for builder in ignore_jobs:
+                valid_builders.remove(builder)
+
+            print("Cancelled Tests:")
+            for builder in ignore_jobs:
+                print(builder.name)
+
+        # after removing jobs from valid_builders list there is chance we have no jobs to report
+        # in that case we return from method
+        if not valid_builders:
+            sys.exit("After polling all jobs we found no valid builders to process")
+
+        return valid_builders
 
     def _print_build_phase(self, invalid_builders, table):
         """print build phase table"""
@@ -1069,136 +1192,6 @@ class BuildTest:
             "pass_rate": pass_rate,
             "fail_rate": fail_rate,
         }
-
-    def poll_jobs(self, poll_queue, valid_builders):
-        """This method will poll jobs by processing all jobs in ``poll_queue``. If
-        job is cancelled by scheduler, we remove this from valid_builders list.
-        This method will return a list of valid_builders after polling. If there
-        are no valid_builders after polling, the method will return None
-
-        :param poll_queue: a list of jobs that need to be polled. The jobs will poll using poll method from executor
-        :type poll_queue: list, required
-        :param valid_builders: list of valid builders
-        :type valid_builders: list, required
-        """
-        # default interval is 30sec for polling jobs if poll interval not set in configuration file or command line
-        default_interval = 30
-
-        interval = self.poll_interval or deep_get(
-            self.configuration.target_config, "executors", "defaults", "pollinterval"
-        )
-
-        if not interval:
-            interval = default_interval
-
-        # keep track of ignored jobs by job scheduler these include jobs that failed abnormally or cancelled by scheduler
-        ignore_jobs = set()
-        completed_jobs = set()
-
-        # loop until poll_queue is empty which means all jobs have finished
-        while poll_queue:
-
-            print("\n")
-            print(f"Polling Jobs in {interval} seconds")
-            print("{:_<40}".format(""))
-
-            logger.debug(f"Sleeping for {interval} seconds")
-            time.sleep(interval)
-            logger.debug(f"Polling Jobs: {poll_queue}")
-
-            # poll all builder jobs and return a list of builders with updated builder state
-            builder_queue = self.buildexecutor.poll(poll_queue)
-
-            # for every builder in queue check if job is complete, add to complete jobs and remove from queue
-            # an imcomplete job is also removed from queue
-            for builder in builder_queue:
-                if builder.state == "COMPLETE":
-                    completed_jobs.add(builder)
-                    poll_queue.remove(builder)
-                    logger.debug(
-                        f"{builder} poll complete, removing test from poll queue"
-                    )
-                elif builder.state == "INCOMPLETE":
-                    ignore_jobs.add(builder)
-                    poll_queue.remove(builder)
-
-            jobIDs = []
-
-            for job in poll_queue:
-                jobIDs.append(job.metadata["jobid"])
-            print("Job Queue:", jobIDs)
-
-            completed_jobs_table = {
-                "name": [],
-                "executor": [],
-                "jobID": [],
-                "jobstate": [],
-            }
-            pending_jobs_table = {
-                "name": [],
-                "executor": [],
-                "jobID": [],
-                "jobstate": [],
-            }
-            for job in completed_jobs:
-                completed_jobs_table["name"].append(job.name)
-                completed_jobs_table["executor"].append(job.executor)
-                completed_jobs_table["jobID"].append(job.metadata["jobid"])
-                # completed_jobs_table["jobstate"].append(job.job_state)
-                completed_jobs_table["jobstate"].append(job.job.state())
-
-            for job in poll_queue:
-                pending_jobs_table["name"].append(job.name)
-                pending_jobs_table["executor"].append(job.executor)
-                pending_jobs_table["jobID"].append(job.metadata["jobid"])
-                # pending_jobs_table["jobstate"].append(job.job_state)
-                pending_jobs_table["jobstate"].append(job.job.state())
-
-            # only print table if their is an element in the table. We check for 'name' property
-            if completed_jobs_table["name"]:
-                print("\n")
-                print("Completed Jobs")
-                print("{:_<40}".format(""))
-                print("\n")
-
-                print(
-                    tabulate(
-                        completed_jobs_table,
-                        headers=completed_jobs_table.keys(),
-                        tablefmt="pretty",
-                    )
-                )
-
-            if pending_jobs_table["name"]:
-                print("\n")
-                print("Pending Jobs")
-                print("{:_<40}".format(""))
-                print("\n")
-                print(
-                    tabulate(
-                        pending_jobs_table,
-                        headers=pending_jobs_table.keys(),
-                        tablefmt="pretty",
-                    )
-                )
-
-        # remove any builders where for jobs that need to be ignored
-        if ignore_jobs:
-            # convert set to list
-            ignore_jobs = list(ignore_jobs)
-            for builder in ignore_jobs:
-                valid_builders.remove(builder)
-
-            print("Cancelled Tests:")
-            for builder in ignore_jobs:
-                print(builder.name)
-
-        # after removing jobs from valid_builders list there is chance we have no jobs to report
-        # in that case we return from method
-        if not valid_builders:
-            sys.exit("After polling all jobs we found no valid builders to process")
-
-        return valid_builders
 
     def _update_build_history(self):
         """Write a build history file that is stored in **$BUILDTEST_ROOT/var/.history** directory summarizing output of build. The history

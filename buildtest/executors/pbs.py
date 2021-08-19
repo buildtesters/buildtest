@@ -138,7 +138,7 @@ class PBSExecutor(BaseExecutor):
                         builder.duration, self.max_pend_time
                     )
                 )
-
+                builder.failure()
             builder.start()
 
     def gather(self, builder):
@@ -157,13 +157,6 @@ class PBSExecutor(BaseExecutor):
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
         builder.post_run_steps()
-
-        # builder.metadata["output"] = read_file(builder.metadata["outfile"])
-        # builder.metadata["error"] = read_file(builder.metadata["errfile"])
-
-        # builder.copy_stage_files()
-
-        # self.check_test_state(builder)
 
 
 class PBSJob(Job):
