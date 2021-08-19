@@ -8,6 +8,11 @@ sphinx:
 
 build:
   image: latest
+  apt_packages:
+    - iputils-ping
+    - build-essential
+    - csh
+    - zsh
 
 formats: all
 
