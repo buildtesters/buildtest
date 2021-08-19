@@ -7,16 +7,14 @@ on:
 jobs:
 
   pytest:
-
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.7, 3.8, 3.9]
-
+        os: [macos-latest, ubuntu-latest]
+        python-version: [3.7, 3.8]
 
     steps:
-
     - uses: actions/checkout@v2
 
     - name: Setup Python ${{ matrix.python-version }}
@@ -25,14 +23,15 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Run buildtest unittests
+      env:
+        OS: ${{ matrix.os }}
       run: |
-        sudo apt-get install -y tcsh zsh
+        if [ "OS" == "ubuntu-latest" ] ; sudo apt-get install -y tcsh zsh; else brew install tcsh zsh ;  fi
         source setup.sh
         pip install pytest
         pip install coverage
         python $BUILDTEST_ROOT/scripts/regtest.py
         buildtest cdash upload --site=github unittests
-
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2.0.2
