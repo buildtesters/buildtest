@@ -79,7 +79,7 @@ def main():
     logger.info(f"Processing buildtest configuration file: {configuration.file}")
 
     # buildtest build command
-    if args.subcommands == "build":
+    if args.subcommands in ["build", "bd"]:
 
         cmd = BuildTest(
             configuration=configuration,
@@ -100,15 +100,15 @@ def main():
         )
         cmd.build()
 
-    elif args.subcommands == "edit":
+    elif args.subcommands in ["edit", "et"]:
         edit_buildspec(args.buildspec, configuration)
 
     # buildtest build history
-    elif args.subcommands == "history":
+    elif args.subcommands in ["history", "hy"]:
         build_history(args)
 
     # implementation for 'buildtest buildspec find'
-    elif args.subcommands == "buildspec":
+    elif args.subcommands in ["buildspec", "bc"]:
 
         if args.buildspecs_subcommand == "find":
             buildspec_find(args=args, configuration=configuration)
@@ -126,19 +126,19 @@ def main():
             )
 
     # running buildtest inspect
-    elif args.subcommands == "inspect":
+    elif args.subcommands in ["inspect", "it"]:
         inspect_cmd(args)
 
     # running buildtest config compilers
-    elif args.subcommands == "config" and args.config == "compilers":
+    elif args.subcommands in ["config", "cg"] and args.config == "compilers":
         compiler_cmd(args, configuration)
 
     # running buildtest config
-    elif args.subcommands == "config":
+    elif args.subcommands in ["config", "cg"]:
         config_cmd(args, configuration)
 
     # buildtest report
-    elif args.subcommands == "report":
+    elif args.subcommands in ["report", "rt"]:
         report_cmd(args)
 
     # running bnuildtest schema
@@ -149,7 +149,7 @@ def main():
     elif args.subcommands == "cdash":
         cdash_cmd(args, default_configuration=configuration)
 
-    elif args.subcommands == "help":
+    elif args.subcommands in ["help", "h"]:
         buildtest_help(command=args.command)
 
     elif args.subcommands == "docs":

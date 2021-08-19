@@ -62,13 +62,14 @@ _buildtest ()
 
   COMPREPLY=()   # Array variable storing the possible completions.
 
-  local cmds="build buildspec cdash config docs edit help inspect history report schema schemadocs "
+  local cmds="build buildspec cdash config docs edit help inspect history report schema schemadocs"
+  local alias_cmds="bd bc cg it et h hy rt"
   local opts="--color --config --debug --help --version -c -d -h -V"
 
   next=${COMP_WORDS[1]}
 
   case "$next" in
-    build)
+    build|bd)
       local shortoption="-b -e -f -k -r -s -t -x"
       local longoption="--buildspec --executor --exclude --filter --helpfilter --max-pend-time --poll-interval --report --stage --tags"
       local allopts="${longoption} ${shortoption}"
@@ -106,11 +107,11 @@ _buildtest ()
       fi
       ;;
 
-    report)
+    report|rt)
       local opts="--filter --format --help --helpfilter --helpformat --latest --no-header --oldest --report  --terse  -h -n -r -t clear list summary"
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) );;
 
-    config)
+    config|cg)
       local cmds="-h --help compilers executors validate view summary systems"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
@@ -132,7 +133,7 @@ _buildtest ()
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
       esac
       ;;
-    inspect)
+    inspect|it)
       local cmds="--help --report -h -r buildspec id list name query"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
@@ -170,7 +171,7 @@ _buildtest ()
       esac
       ;;
 
-    buildspec)
+    buildspec|bc)
       local cmds="-h --help find show summary validate"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
@@ -209,7 +210,7 @@ _buildtest ()
       esac
       ;;
 
-    history)
+    history|hy)
       local cmds="--help -h list query"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
@@ -239,7 +240,7 @@ _buildtest ()
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       fi
       ;;
-    help)
+    help|h)
       local cmds="build buildspec cdash config edit history inspect report schema"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       ;;
@@ -250,7 +251,7 @@ _buildtest ()
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
       # print main sub-commands to buildtest
         *)
-          COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
+          COMPREPLY=( $( compgen -W "${cmds} ${alias_cmds}" -- $cur ) )
           if [[ "${prev}" == "--color" ]]; then
             COMPREPLY=( $( compgen -W "on off" -- $cur ) )
           fi
