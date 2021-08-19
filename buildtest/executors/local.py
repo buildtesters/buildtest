@@ -52,25 +52,21 @@ class LocalExecutor(BaseExecutor):
         # the binary available
         self.check()
 
-        if self.shell_type != builder.shell_type:
-            sys.exit(
-                f"[{builder.name}]: we have a shell mismatch with executor: {self.name}. The executor shell: {self.shell} is not compatible with shell: {builder.shell.name} found in buildspec"
-            )
-
         # Change to the test directory
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to directory {builder.stage_dir}")
 
-        # ---------- Run Script ---------- #
+        # ---------- Start of Run ---------- #
 
         builder.starttime()
         builder.start()
         command = BuildTestCommand(builder.runcmd)
-        out, err = command.execute()
+        command.execute()
+        out, err = command.get_output(), command.get_error()
         builder.stop()
         builder.endtime()
 
-        # ---------- Run Script ---------- #
+        # ---------- End of Run ---------- #
 
         self.logger.debug(f"Running Test via command: {builder.runcmd}")
 
@@ -98,3 +94,5 @@ class LocalExecutor(BaseExecutor):
         builder.metadata["errfile"] = errfile
 
         builder.post_run_steps()
+
+        return builder

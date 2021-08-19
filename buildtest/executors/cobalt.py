@@ -7,6 +7,7 @@ import re
 import shutil
 import time
 
+from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
@@ -83,7 +84,11 @@ class CobaltExecutor(BaseExecutor):
 
         os.chdir(builder.stage_dir)
 
-        command = builder.run()
+        try:
+            command = builder.run()
+        except ExecutorError as err:
+            self.logger.error(err)
+            return
 
         out = command.get_output()
         out = " ".join(out)
@@ -115,6 +120,8 @@ class CobaltExecutor(BaseExecutor):
         builder.metadata["job"] = builder.job.gather()
         logger.debug(json.dumps(builder.metadata["job"], indent=2))
 
+        return builder
+
     def poll(self, builder):
         """This method is responsible for polling Cobalt job by invoking the builder method
         ``builder.job.poll()``.  We check the job state and existence of output file. If file
@@ -141,6 +148,7 @@ class CobaltExecutor(BaseExecutor):
             # if timer time is more than requested pend time then cancel job
             if int(builder.duration) > self.max_pend_time:
                 builder.job.cancel()
+                builder.failure()
                 builder.job_state = builder.job.state()
                 print(
                     "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(

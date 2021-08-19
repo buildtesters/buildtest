@@ -7,6 +7,7 @@ import logging
 import os
 import re
 
+from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
@@ -97,7 +98,11 @@ class SlurmExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to directory {builder.stage_dir}")
 
-        command = builder.run()
+        try:
+            command = builder.run()
+        except ExecutorError as err:
+            self.logger.error(err)
+            return
 
         # it is possible user can specify a before_script for Slurm executor which is run in build script. In order to get
         # slurm job it would be the last element in array. If before_script is not specified the last element should be the only
@@ -116,6 +121,8 @@ class SlurmExecutor(BaseExecutor):
         msg = f"[{builder.metadata['name']}] JobID: {builder.metadata['jobid']} dispatched to scheduler"
         print(msg)
         self.logger.debug(msg)
+
+        return builder
 
     def poll(self, builder):
         """This method is called during poll stage where we invoke ``builder.job.poll()`` to get updated
@@ -142,6 +149,7 @@ class SlurmExecutor(BaseExecutor):
                         builder.duration, self.max_pend_time
                     )
                 )
+                builder.failure()
 
             builder.start()
 

@@ -6,8 +6,10 @@ on executor name.
 """
 
 import logging
+import multiprocessing as mp
 import os
 
+from buildtest.buildsystem.base import BuilderBase
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
 from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
@@ -39,6 +41,15 @@ class BuildExecutor:
         :param site_config: the site configuration for buildtest.
         :type site_config: SiteConfiguration class, required
         """
+
+        # stores a list of builders objects
+        self.builders = []
+
+        # store a list of valid builders
+        self.valid_builders = []
+
+        # store list of builders for polling
+        self.poll_builders = []
 
         self.executors = {}
         logger.debug("Getting Executors from buildtest settings")
@@ -154,6 +165,104 @@ class BuildExecutor:
             content = executor_settings.get("before_script") or ""
             write_file(file, content)
 
+    def load_builders(self, builders):
+        """Adds builder objects into self.builders class variable. This method will only add objects that are instance of BuilderBase class"""
+        for builder in builders:
+            # only add items that are of class BuilderBase
+            if not isinstance(builder, BuilderBase):
+                continue
+
+            executor = self._choose_executor(builder)
+            executor.add_builder(builder)
+
+            self.builders.append(builder)
+
+    def launch(self):
+        """This method is responsible for running the build script for each builder async and
+        gather the results. We setup a pool of worker settings by invoking ``multiprocessing.pool.Pool``
+        and use ``multiprocessing.pool.Pool.apply_sync()`` method for running test async which returns
+        an object of type ``multiprocessing.pool.AsyncResult`` which holds the result. Next we wait for
+        results to arrive using ``multiprocessing.pool.AsyncResult.get()`` method in a infinite loop until
+        all test results are retrieved. The return type is the same builder object which is added to list
+        of valid builders that is returned at end of method.
+        """
+
+        results = []
+
+        workers = mp.Pool(mp.cpu_count())
+
+        for name in self.executors.keys():
+            print(f"Name: {name}  Builders:  {self.executors[name].get_builder()}")
+
+        # if there are no builders loaded we return from method
+        if not self.builders:
+            return
+
+        for builder in self.builders:
+            print("{:_<30}".format(""))
+            print("Launching test:", builder.name)
+            print("Test ID:", builder.test_uid)
+            print("Executor Name:", builder.executor)
+            print("Running Test: ", builder.build_script)
+
+            executor = self._choose_executor(builder)
+            if executor.type == "local":
+                # local_builders.append(builder)
+                result = workers.apply_async(executor.run, args=(builder,))
+            else:
+                # batch_builders.append(builder)
+                result = workers.apply_async(executor.dispatch, args=(builder,))
+
+            results.append(result)
+
+        # loop until all async results  are complete. results is a list of multiprocessing.pool.AsyncResult objects
+        while results:
+            async_results_ready = []
+            for result in results:
+                try:
+                    # line below will raise TimeoutError if result is not ready, if its ready we append item to list and break
+                    task = result.get(0.1)
+                except mp.TimeoutError:
+                    continue
+
+                async_results_ready.append(result)
+
+                # the task object could be None if it fails to submit job therefore we only add items that are valid builders
+                if isinstance(task, BuilderBase):
+                    self.valid_builders.append(task)
+
+                    print(f"Test: {task} is complete")
+
+            # remove result that are complete
+            for result in async_results_ready:
+                results.remove(result)
+
+        # close the worker pool by preventing any more tasks from being submitted
+        workers.close()
+
+        # terminate all worker processes
+        workers.join()
+
+        for builder in self.valid_builders:
+            if builder.is_unknown():
+                self.poll_builders.append(builder)
+
+        return self.valid_builders
+
+    def is_poll(self):
+        """Return True if any builders to poll otherwise returns False"""
+        if self.poll_builders:
+            return True
+
+        return False
+
+    def poll_queue(self):
+        return self.poll_builders
+
+    def get_builders(self):
+        """Return a list of valid builders that were run"""
+        return self.valid_builders
+
     def run(self, builder):
         """This method implements the executor run implementation. Given a builder object
         we first detect the correct executor object to use and invoke its ``run`` method. The
@@ -229,10 +338,9 @@ class BuildExecutor:
                     executor.poll(builder)
                 elif builder.job.complete():
                     executor.gather(builder)
-                    builder.complete()
-
+                    builder.success()
                 else:
-                    builder.incomplete()
+                    builder.failure()
 
             # poll LSF job
             elif self.is_lsf(executor.type):
@@ -245,10 +353,9 @@ class BuildExecutor:
                     executor.poll(builder)
                 elif builder.job.is_complete():
                     executor.gather(builder)
-                    builder.complete()
-
+                    builder.success()
                 else:
-                    builder.incomplete()
+                    builder.failure()
 
             # poll Cobalt Job
             elif self.is_cobalt(executor.type):
@@ -260,9 +367,9 @@ class BuildExecutor:
                 ):
                     executor.poll(builder)
                 elif builder.job.is_complete():
-                    builder.complete()
+                    builder.success()
                 elif builder.job.is_cancelled():
-                    builder.incomplete()
+                    builder.failure()
 
             # poll PBS Job
             elif self.is_pbs(executor.type):
@@ -275,9 +382,8 @@ class BuildExecutor:
                     executor.poll(builder)
                 elif builder.job.is_complete():
                     executor.gather(builder)
-                    builder.complete()
-
+                    builder.success()
                 else:
-                    builder.incomplete()
+                    builder.failure()
 
         return builders

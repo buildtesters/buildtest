@@ -4,6 +4,7 @@ import json
 import logging
 import os
 
+from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
@@ -84,18 +85,26 @@ class PBSExecutor(BaseExecutor):
 
         os.chdir(builder.stage_dir)
 
-        command = builder.run()
+        try:
+            command = builder.run()
+        except ExecutorError as err:
+            self.logger.error(err)
+            return
 
         parse_jobid = command.get_output()
-        self.job_id = " ".join(parse_jobid).strip()
+        job_id = " ".join(parse_jobid).strip()
 
-        builder.metadata["jobid"] = self.job_id
+        builder.metadata["jobid"] = job_id
 
-        builder.job = PBSJob(builder.metadata["jobid"])
+        builder.job = PBSJob(job_id)
+        # store job id
+        builder.metadata["jobid"] = builder.job.get()
 
         msg = f"[{builder.metadata['name']}] JobID: {builder.metadata['jobid']} dispatched to scheduler"
         print(msg)
         self.logger.debug(msg)
+
+        return builder
 
     def poll(self, builder):
         """This method is responsible for polling Cobalt job, we check the
@@ -129,7 +138,7 @@ class PBSExecutor(BaseExecutor):
                         builder.duration, self.max_pend_time
                     )
                 )
-
+                builder.failure()
             builder.start()
 
     def gather(self, builder):
@@ -148,13 +157,6 @@ class PBSExecutor(BaseExecutor):
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
         builder.post_run_steps()
-
-        # builder.metadata["output"] = read_file(builder.metadata["outfile"])
-        # builder.metadata["error"] = read_file(builder.metadata["errfile"])
-
-        # builder.copy_stage_files()
-
-        # self.check_test_state(builder)
 
 
 class PBSJob(Job):

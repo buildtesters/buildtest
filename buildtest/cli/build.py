@@ -22,7 +22,7 @@ from buildtest.defaults import (
     BUILDTEST_DEFAULT_TESTDIR,
     BUILDTEST_REPORT_SUMMARY,
 )
-from buildtest.exceptions import BuildspecError, BuildTestError, ExecutorError
+from buildtest.exceptions import BuildspecError, BuildTestError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.defaults import schema_table
 from buildtest.system import system
@@ -832,13 +832,6 @@ class BuildTest:
         :rtype: list
         """
 
-        valid_builders = []
-        # run all the tests
-
-        errmsg = []
-
-        poll = False
-
         msg = """
 +---------------------+
 | Stage: Running Test |
@@ -849,39 +842,15 @@ class BuildTest:
 
         print(msg)
 
-        table = {
-            "name": [],
-            "id": [],
-            "executor": [],
-            "status": [],
-            "returncode": [],
-        }
+        self.buildexecutor.load_builders(self.builders)
+        builders = self.buildexecutor.launch()
 
-        poll_queue = []
+        if not builders:
+            sys.exit("Unable to run any tests")
 
-        for builder in self.builders:
-            try:
-                self.buildexecutor.run(builder)
-            except ExecutorError as err:
-                print("[%s]: Failed to Run Test" % builder.metadata["name"])
-                errmsg.append(err)
-                logger.error(err)
-                continue
+        self._print_run_phase(builders)
 
-            valid_builders.append(builder)
-            table["name"].append(builder.name)
-            table["id"].append(builder.metadata["id"])
-            table["executor"].append(builder.executor)
-            table["status"].append(builder.metadata["result"]["state"])
-            table["returncode"].append(builder.metadata["result"]["returncode"])
-
-            # for jobs with N/A state we append to poll queue which means job is dispatched to scheduler
-            # and we poll job later
-            if builder.metadata["result"]["state"] == "N/A":
-                poll_queue.append(builder)
-                poll = True
-                continue
-
+        for builder in builders:
             if builder.metadata["result"]["state"] == "PASS":
                 self.passed_tests += 1
             else:
@@ -889,25 +858,13 @@ class BuildTest:
 
             self.total_tests += 1
 
-        headers = table.keys()
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
+        # if any builders to poll we poll the jobs
+        if self.buildexecutor.is_poll():
+            poll_queue = self.buildexecutor.poll_queue()
 
-        print(tabulate(table, headers=headers, tablefmt="presto"))
+            builders = self.poll_jobs(poll_queue, builders)
 
-        if errmsg:
-            print("\n\n")
-            print("Error Messages from Stage: Run")
-            print("{:_<80}".format(""))
-            for error in errmsg:
-                print(error)
-            print("\n")
-
-        # poll will be True if one of the result State is N/A which is buildtest way to inform job is dispatched to scheduler which requires polling
-        if poll:
-            valid_builders = self.poll_jobs(poll_queue, valid_builders)
-
-            self._print_jobs_after_poll(valid_builders)
+            self._print_jobs_after_poll(builders)
 
         ########## TEST SUMMARY ####################
         if self.total_tests == 0:
@@ -916,162 +873,7 @@ class BuildTest:
 
         self._print_test_summary()
 
-        return valid_builders
-
-    def _print_build_phase(self, invalid_builders, table):
-
-        # print any skipped buildspecs if they failed to validate during build stage
-        if invalid_builders:
-            print("\n\nError Messages from Stage: Build")
-            print("{:_<80}".format(""))
-            for test in invalid_builders:
-                print(test)
-
-        # if we have any tests using 'script' schema we print all tests together since table columns are different
-        if len(table["script"]["name"]) > 0:
-
-            headers = table["script"].keys()
-            if os.getenv("BUILDTEST_COLOR") == "True":
-                headers = list(
-                    map(
-                        lambda x: colored(x, "blue", attrs=["bold"]),
-                        table["script"].keys(),
-                    )
-                )
-
-            print(
-                tabulate(
-                    table["script"],
-                    headers=headers,
-                    tablefmt="presto",
-                )
-            )
-
-        print("\n")
-
-        # if we have any tests using 'script' schema we print all tests together since table columns are different
-        if len(table["spack"]["name"]) > 0:
-
-            headers = table["spack"].keys()
-            if os.getenv("BUILDTEST_COLOR") == "True":
-                headers = list(
-                    map(
-                        lambda x: colored(x, "blue", attrs=["bold"]),
-                        table["spack"].keys(),
-                    )
-                )
-
-            print(
-                tabulate(
-                    table["spack"],
-                    headers=headers,
-                    tablefmt="presto",
-                )
-            )
-
-        print("\n")
-        # if we have any tests using 'compiler' schema we print all tests together since table columns are different
-        if len(table["compiler"]["name"]) > 0:
-
-            headers = table["compiler"].keys()
-            if os.getenv("BUILDTEST_COLOR") == "True":
-                headers = list(
-                    map(
-                        lambda x: colored(x, "blue", attrs=["bold"]),
-                        table["compiler"].keys(),
-                    )
-                )
-
-            print(
-                tabulate(
-                    table["compiler"],
-                    headers=headers,
-                    tablefmt="presto",
-                )
-            )
-
-    def _print_jobs_after_poll(self, valid_builders):
-        """Print table of all tests after polling"""
-
-        table = {
-            "name": [],
-            "id": [],
-            "executor": [],
-            "status": [],
-            "returncode": [],
-        }
-
-        msg = """
-+---------------------------------------------+
-| Stage: Final Results after Polling all Jobs |
-+---------------------------------------------+ 
-        """
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            msg = colored(msg, "red", attrs=["bold"])
-
-        print(msg)
-
-        # regenerate test results after poll
-
-        self.passed_tests = 0
-        self.failed_tests = 0
-        self.total_tests = 0
-
-        for builder in valid_builders:
-            if builder.metadata["result"]["state"] == "PASS":
-                self.passed_tests += 1
-            else:
-                self.failed_tests += 1
-
-            table["name"].append(builder.name)
-            table["id"].append(builder.metadata["id"])
-            table["executor"].append(builder.executor)
-            table["status"].append(builder.metadata["result"]["state"])
-            table["returncode"].append(builder.metadata["result"]["returncode"])
-
-            self.total_tests += 1
-
-        headers = table.keys()
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
-
-        print(tabulate(table, headers=headers, tablefmt="presto"))
-
-    def _print_test_summary(self):
-        """Print a summary of total pass and fail test with percentage breakdown."""
-
-        msg = """
-+----------------------+
-| Stage: Test Summary  |
-+----------------------+ 
-    """
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            msg = colored(msg, "red", attrs=["bold"])
-
-        print(msg)
-
-        pass_rate = self.passed_tests * 100 / self.total_tests
-        pass_rate = format(pass_rate, ".3f")
-        fail_rate = self.failed_tests * 100 / self.total_tests
-        fail_rate = format(fail_rate, ".3f")
-
-        msg1 = f"Passed Tests: {self.passed_tests}/{self.total_tests} Percentage: {pass_rate}%"
-        msg2 = f"Failed Tests: {self.failed_tests}/{self.total_tests} Percentage: {fail_rate}%"
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            msg1 = colored(msg1, "green")
-            msg2 = colored(msg2, "red")
-
-        print(msg1)
-        print(msg2)
-        print("\n")
-
-        self.test_summary = {
-            "total": str(self.total_tests),
-            "pass": str(self.passed_tests),
-            "fail": str(self.failed_tests),
-            "pass_rate": pass_rate,
-            "fail_rate": fail_rate,
-        }
+        return builders
 
     def poll_jobs(self, poll_queue, valid_builders):
         """This method will poll jobs by processing all jobs in ``poll_queue``. If
@@ -1113,17 +915,19 @@ class BuildTest:
             builder_queue = self.buildexecutor.poll(poll_queue)
 
             # for every builder in queue check if job is complete, add to complete jobs and remove from queue
-            # an imcomplete job is also removed from queue
+            # an incomplete job is also removed from queue
             for builder in builder_queue:
-                if builder.state == "COMPLETE":
+                if builder.is_success():
                     completed_jobs.add(builder)
                     poll_queue.remove(builder)
                     logger.debug(
                         f"{builder} poll complete, removing test from poll queue"
                     )
-                elif builder.state == "INCOMPLETE":
+                elif builder.is_failure():
                     ignore_jobs.add(builder)
                     poll_queue.remove(builder)
+                elif builder.is_unknown():
+                    continue
 
             jobIDs = []
 
@@ -1202,6 +1006,192 @@ class BuildTest:
             sys.exit("After polling all jobs we found no valid builders to process")
 
         return valid_builders
+
+    def _print_build_phase(self, invalid_builders, table):
+        """print build phase table"""
+
+        # print any skipped buildspecs if they failed to validate during build stage
+        if invalid_builders:
+            print("\n\nError Messages from Stage: Build")
+            print("{:_<80}".format(""))
+            for test in invalid_builders:
+                print(test)
+
+        # if we have any tests using 'script' schema we print all tests together since table columns are different
+        if len(table["script"]["name"]) > 0:
+
+            headers = table["script"].keys()
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                headers = list(
+                    map(
+                        lambda x: colored(x, "blue", attrs=["bold"]),
+                        table["script"].keys(),
+                    )
+                )
+
+            print(
+                tabulate(
+                    table["script"],
+                    headers=headers,
+                    tablefmt="presto",
+                )
+            )
+
+        print("\n")
+
+        # if we have any tests using 'script' schema we print all tests together since table columns are different
+        if len(table["spack"]["name"]) > 0:
+
+            headers = table["spack"].keys()
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                headers = list(
+                    map(
+                        lambda x: colored(x, "blue", attrs=["bold"]),
+                        table["spack"].keys(),
+                    )
+                )
+
+            print(
+                tabulate(
+                    table["spack"],
+                    headers=headers,
+                    tablefmt="presto",
+                )
+            )
+
+        print("\n")
+        # if we have any tests using 'compiler' schema we print all tests together since table columns are different
+        if len(table["compiler"]["name"]) > 0:
+
+            headers = table["compiler"].keys()
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                headers = list(
+                    map(
+                        lambda x: colored(x, "blue", attrs=["bold"]),
+                        table["compiler"].keys(),
+                    )
+                )
+
+            print(
+                tabulate(
+                    table["compiler"],
+                    headers=headers,
+                    tablefmt="presto",
+                )
+            )
+
+    def _print_run_phase(self, builders):
+        """print run phase table"""
+
+        table = {
+            "name": [],
+            "id": [],
+            "executor": [],
+            "status": [],
+            "returncode": [],
+            "runtime": [],
+        }
+
+        for builder in builders:
+            # valid_builders.append(builder)
+            table["name"].append(builder.name)
+            table["id"].append(builder.metadata["id"])
+            table["executor"].append(builder.executor)
+            table["status"].append(builder.metadata["result"]["state"])
+            table["returncode"].append(builder.metadata["result"]["returncode"])
+            table["runtime"].append(builder.metadata["result"]["runtime"])
+
+        headers = table.keys()
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
+
+        print("\n")
+        print(tabulate(table, headers=headers, tablefmt="presto"))
+
+    def _print_jobs_after_poll(self, valid_builders):
+        """Print table of all tests after polling"""
+
+        table = {
+            "name": [],
+            "id": [],
+            "executor": [],
+            "status": [],
+            "returncode": [],
+            "runtime": [],
+        }
+
+        msg = """
++---------------------------------------------+
+| Stage: Final Results after Polling all Jobs |
++---------------------------------------------+ 
+        """
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            msg = colored(msg, "red", attrs=["bold"])
+
+        print(msg)
+
+        # regenerate test results after poll
+
+        self.passed_tests = 0
+        self.failed_tests = 0
+        self.total_tests = 0
+
+        for builder in valid_builders:
+            if builder.metadata["result"]["state"] == "PASS":
+                self.passed_tests += 1
+            else:
+                self.failed_tests += 1
+
+            table["name"].append(builder.name)
+            table["id"].append(builder.metadata["id"])
+            table["executor"].append(builder.executor)
+            table["status"].append(builder.metadata["result"]["state"])
+            table["returncode"].append(builder.metadata["result"]["returncode"])
+            table["runtime"].append(builder.metadata["result"]["runtime"])
+
+            self.total_tests += 1
+
+        headers = table.keys()
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
+
+        print(tabulate(table, headers=headers, tablefmt="presto"))
+
+    def _print_test_summary(self):
+        """Print a summary of total pass and fail test with percentage breakdown."""
+
+        msg = """
++----------------------+
+| Stage: Test Summary  |
++----------------------+ 
+    """
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            msg = colored(msg, "red", attrs=["bold"])
+
+        print(msg)
+
+        pass_rate = self.passed_tests * 100 / self.total_tests
+        pass_rate = format(pass_rate, ".3f")
+        fail_rate = self.failed_tests * 100 / self.total_tests
+        fail_rate = format(fail_rate, ".3f")
+
+        msg1 = f"Passed Tests: {self.passed_tests}/{self.total_tests} Percentage: {pass_rate}%"
+        msg2 = f"Failed Tests: {self.failed_tests}/{self.total_tests} Percentage: {fail_rate}%"
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            msg1 = colored(msg1, "green")
+            msg2 = colored(msg2, "red")
+
+        print(msg1)
+        print(msg2)
+        print("\n")
+
+        self.test_summary = {
+            "total": str(self.total_tests),
+            "pass": str(self.passed_tests),
+            "fail": str(self.failed_tests),
+            "pass_rate": pass_rate,
+            "fail_rate": fail_rate,
+        }
 
     def _update_build_history(self):
         """Write a build history file that is stored in **$BUILDTEST_ROOT/var/.history** directory summarizing output of build. The history

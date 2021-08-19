@@ -9,6 +9,7 @@ import logging
 import os
 import re
 
+from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
@@ -87,7 +88,12 @@ class LSFExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to stage directory {builder.stage_dir}")
 
-        command = builder.run()
+        try:
+            command = builder.run()
+        except ExecutorError as err:
+            self.logger.error(err)
+            return
+
         out = command.get_output()
         out = " ".join(out)
         pattern = r"(\d+)"
@@ -98,7 +104,7 @@ class LSFExecutor(BaseExecutor):
         # if there is no match we raise error
         if not m:
             self.logger.debug(f"Unable to find LSF Job ID in output: '{out}'")
-            builder.incomplete()
+            builder.failure()
             return
 
         try:
@@ -107,7 +113,7 @@ class LSFExecutor(BaseExecutor):
             self.logger.debug(
                 f"Unable to convert '{m.group(0)}' to int to extract Job ID"
             )
-            builder.incomplete()
+            builder.failure()
             return
 
         builder.job = LSFJob(job_id)
@@ -117,6 +123,8 @@ class LSFExecutor(BaseExecutor):
         msg = f"[{builder.metadata['name']}] JobID: {builder.metadata['jobid']} dispatched to scheduler"
         self.logger.debug(msg)
         print(msg)
+
+        return builder
 
     def poll(self, builder):
         """Given a builder object we poll the job by invoking builder method ``builder.job.poll()`` return state of job. If
@@ -137,7 +145,7 @@ class LSFExecutor(BaseExecutor):
             # if timer time is more than requested pend time then cancel job
             if int(builder.duration) > self.max_pend_time:
                 builder.job.cancel()
-
+                builder.failure()
                 print(
                     "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
                         builder.duration, self.max_pend_time
@@ -170,13 +178,6 @@ class LSFExecutor(BaseExecutor):
         )
 
         builder.post_run_steps()
-
-        # builder.metadata["output"] = read_file(builder.metadata["outfile"])
-        # builder.metadata["error"] = read_file(builder.metadata["errfile"])
-
-        # builder.copy_stage_files()
-
-        # self.check_test_state(builder)
 
 
 class LSFJob(Job):

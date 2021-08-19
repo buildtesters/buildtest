@@ -63,6 +63,9 @@ class BuilderBase(ABC):
 
         self.duration = 0
 
+        # store state of builder which can be True/False. This value is changed by self.success(), self.failure()
+        self._build_state = None
+
         # The type must match the type of the builder
         self.recipe = recipe
 
@@ -252,9 +255,12 @@ class BuilderBase(ABC):
 
         self.logger.debug(f"Running Test via command: {self.runcmd}")
         ret = command.returncode()
+        err_msg = " ".join(command.get_error())
 
         if ret != 0:
-            err = f"[{self.metadata['name']}] failed to submit job with returncode: {ret} \n"
+            err = f"[{self.metadata['name']}/{self.test_uid}] failed to submit job with returncode: {ret} \n"
+            print(err)
+            print(err_msg)
             raise ExecutorError(err)
 
         return command
@@ -292,15 +298,28 @@ class BuilderBase(ABC):
     def get_runtime(self):
         return self._runtime
 
-    def complete(self):
+    def success(self):
         """This method is invoked to indicate that builder job is complete after polling job."""
-        self.state = "COMPLETE"
+        self._build_state = True
 
-    def incomplete(self):
+    def failure(self):
         """This method indicates that builder job is not complete after polling job either job was
         cancelled by scheduler or job failed to run.
         """
-        self.state = "INCOMPLETE"
+        self._build_state = False
+
+    def is_unknown(self):
+        return self._build_state is None
+
+    def is_success(self):
+        """Return True/False depending on state of builder and if it ran to completion it will return
+        ``True`` otherwise returns ``False``. A builder could fail due to job cancellation, failure to
+        submit job or raise exception during the run phase. In those case, this method will return ``False``"""
+        return self._build_state == True
+
+    def is_failure(self):
+        """Return True if builder fails to run test."""
+        return self._build_state == False
 
     def run_command(self):
         """Command used to run the build script. buildtest will change into the stage directory (self.stage_dir)
@@ -765,6 +784,9 @@ class BuilderBase(ABC):
 
         self.add_metrics()
 
+        # mark job is success if it finished all post run steps
+        self.success()
+
     def _check_regex(self):
         """This method conducts a regular expression check using ``re.search``
         with regular expression defined in Buildspec. User must specify an
@@ -917,11 +939,7 @@ class BuilderBase(ABC):
         os.chdir(self.pwd)
 
     def __str__(self):
-        return (
-            f"builder object created with test name: {self.name} "
-            f"for schema type: {self.type} "
-            f"with ID: {self.metadata['full_id']}"
-        )
+        return f"{self.name}/{self.metadata['id']}"
 
     def __repr__(self):
         return self.__str__()
