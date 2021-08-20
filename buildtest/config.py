@@ -13,6 +13,7 @@ from buildtest.schemas.utils import load_recipe, load_schema
 from buildtest.system import LSF, PBS, Cobalt, Slurm, system
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import resolve_path
+from buildtest.utils.shell import Shell
 from buildtest.utils.tools import deep_get
 
 logger = logging.getLogger(__name__)
@@ -130,10 +131,23 @@ class SiteConfiguration:
             )
 
     def _executor_check(self):
+        """Validate executors"""
+        self._validate_local_executors()
         self._validate_slurm_executors()
         self._validate_lsf_executors()
         self._validate_cobalt_executors()
         self._validate_pbs_executors()
+
+    def _validate_local_executors(self):
+        """Check local executor by verifying the 'shell' types are valid"""
+        local_executors = deep_get(self.target_config, "executors", "local")
+        if not local_executors:
+            return
+        # loop over all shell property and see if all shell types are valid path and supported shell. An exception will be raised if there is an issue
+        for executor in local_executors:
+            name = local_executors[executor]["shell"]
+            shell = Shell(name)
+            shell.path = name
 
     def _validate_lsf_executors(self):
         """This method validates all LSF executors. We check if queue is available
