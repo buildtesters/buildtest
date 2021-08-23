@@ -135,23 +135,33 @@ class SlurmExecutor(BaseExecutor):
 
         builder.job.poll()
 
+        # if job is complete gather job data
+        if builder.job.is_complete():
+            self.gather(builder)
+            return
+
+        builder.stop()
+
         # if job state in PENDING check if we need to cancel job by checking internal timer
         if builder.job.is_pending() or builder.job.is_suspended():
-            builder.stop()
+
             self.logger.debug(f"Time Duration: {builder.duration}")
             self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
 
             # if timer exceeds 'max_pend_time' then cancel job
             if int(builder.duration) > self.max_pend_time:
                 builder.job.cancel()
+                builder.failure()
                 print(
-                    "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
-                        builder.duration, self.max_pend_time
+                    "{}: Cancelling Job: {} because job exceeds max pend time: {} sec with current pend time of {} ".format(
+                        builder,
+                        builder.job.get(),
+                        self.max_pend_time,
+                        builder.timer.duration(),
                     )
                 )
-                builder.failure()
 
-            builder.start()
+        builder.start()
 
     def gather(self, builder):
         """Gather Slurm job data after job completion. In this step we call ``builder.job.gather()``,

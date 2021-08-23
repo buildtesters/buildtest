@@ -38,6 +38,9 @@ def test_build_executor(tmp_path):
         assert hasattr(executor, "type")
 
     examples_dir = os.path.join(pytest_root, "buildsystem", "valid_buildspecs")
+
+    valid_builders = []
+
     for buildspec in os.listdir(examples_dir):
         buildspec = os.path.join(examples_dir, buildspec)
         try:
@@ -53,10 +56,12 @@ def test_build_executor(tmp_path):
             filters=bp_filters,
             testdir=tmp_path,
         )
-        valid_builders = builders.get_builders()
+        valid_builders += builders.get_builders()
+    # build each test and then run it
+    for builder in valid_builders:
+        builder.build()
 
-        # build each test and then run it
-        for builder in valid_builders:
-            builder.build()
-            be.run(builder)
-            assert builder.metadata["result"]
+    be.load_builders(valid_builders)
+    builders = be.run()
+    for builder in builders:
+        assert builder.is_complete()

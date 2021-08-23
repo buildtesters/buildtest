@@ -135,13 +135,13 @@ class CobaltExecutor(BaseExecutor):
         builder.job.poll()
         # Cobalt job can disappear if job is complete so we check when outputfile exists as an indicator when job is finished
         if is_file(builder.metadata["outfile"]) or builder.job.is_complete():
-            builder.job_state = "exiting"
+            # builder.job_state = "exiting"
             self.gather(builder)
             return
 
+        builder.stop()
         # if job is pending or suspended check if builder timer duration exceeds max_pend_time if so cancel job
         if builder.job.is_pending() or builder.job.is_suspended():
-            builder.stop()
             logger.debug(f"Time Duration: {builder.duration}")
             logger.debug(f"Max Pend Time: {self.max_pend_time}")
 
@@ -149,14 +149,16 @@ class CobaltExecutor(BaseExecutor):
             if int(builder.duration) > self.max_pend_time:
                 builder.job.cancel()
                 builder.failure()
-                builder.job_state = builder.job.state()
                 print(
-                    "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
-                        builder.duration, self.max_pend_time
+                    "{}: Cancelling Job: {} because job exceeds max pend time: {} sec with current pend time of {} ".format(
+                        builder,
+                        builder.job.get(),
+                        self.max_pend_time,
+                        builder.timer.duration(),
                     )
                 )
 
-            builder.start()
+        builder.start()
 
     def gather(self, builder):
         """This method is responsible for moving output and error file in the run
@@ -213,8 +215,6 @@ class CobaltExecutor(BaseExecutor):
         )
 
         builder.post_run_steps()
-        # builder.copy_stage_files()
-        # self.check_test_state(builder)
 
 
 class CobaltJob(Job):

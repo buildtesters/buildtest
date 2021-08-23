@@ -8,6 +8,7 @@ on executor name.
 import logging
 import multiprocessing as mp
 import os
+import time
 
 from buildtest.buildsystem.base import BuilderBase
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
@@ -47,9 +48,6 @@ class BuildExecutor:
 
         # store a list of valid builders
         self.valid_builders = []
-
-        # store list of builders for polling
-        self.poll_builders = []
 
         self.executors = {}
         logger.debug("Getting Executors from buildtest settings")
@@ -177,7 +175,7 @@ class BuildExecutor:
 
             self.builders.append(builder)
 
-    def launch(self):
+    def run(self):
         """This method is responsible for running the build script for each builder async and
         gather the results. We setup a pool of worker settings by invoking ``multiprocessing.pool.Pool``
         and use ``multiprocessing.pool.Pool.apply_sync()`` method for running test async which returns
@@ -231,8 +229,6 @@ class BuildExecutor:
                 if isinstance(task, BuilderBase):
                     self.valid_builders.append(task)
 
-                    print(f"Test: {task} is complete")
-
             # remove result that are complete
             for result in async_results_ready:
                 results.remove(result)
@@ -243,147 +239,8 @@ class BuildExecutor:
         # terminate all worker processes
         workers.join()
 
-        for builder in self.valid_builders:
-            if builder.is_unknown():
-                self.poll_builders.append(builder)
-
         return self.valid_builders
-
-    def is_poll(self):
-        """Return True if any builders to poll otherwise returns False"""
-        if self.poll_builders:
-            return True
-
-        return False
-
-    def poll_queue(self):
-        return self.poll_builders
 
     def get_builders(self):
         """Return a list of valid builders that were run"""
         return self.valid_builders
-
-    def run(self, builder):
-        """This method implements the executor run implementation. Given a builder object
-        we first detect the correct executor object to use and invoke its ``run`` method. The
-        executor object is a sub-class of BaseExecutor (i.e LocalExecutor, SlurmExecutor, LSFExecutor,...).
-
-
-        :param builder: the builder with the loaded test configuration.
-        :type builder: BuilderBase (subclass), required.
-        """
-        executor = self._choose_executor(builder)
-        # The run stage for LocalExecutor is to invoke run method
-        if executor.type == "local":
-            executor.run(builder)
-        # The run stage for batch executor (Slurm, LSF, Cobalt, PBS) executor is to invoke dispatch method
-        elif executor.type in ["slurm", "lsf", "cobalt", "pbs"]:
-            executor.dispatch(builder)
-        else:
-            raise ExecutorError(
-                f"Invalid executor type: {executor.type} for executor: {executor.name}. Please check your configuration file"
-            )
-
-    def poll(self, builders):
-        """The poll stage is called after the `run` stage for builders that require job submission through
-        a batch executor. Given a set of builders object which are instance of BuilderBase, we select the executor
-        object and invoke the `poll` method for the executor.
-
-        1. If job is pending, running, suspended we poll job
-        2. If job is complete we gather job results and mark job complete
-        3. Otherwise we mark job incomplete and it will be ignored by buildtest in reporting
-
-
-        Poll all jobs for batch executors (LSF, Slurm, Cobalt, PBS). For slurm we poll
-        until job is in ``PENDING`` or ``RUNNING`` state. If Slurm job is in
-        ``FAILED`` or ``COMPLETED`` state we assume job is finished and we gather
-        results. If its in any other state we ignore job and return out of method.
-
-        For LSF jobs we poll job if it's in ``PEND`` or ``RUN`` state, if its in
-        ``DONE`` state we gather results, otherwise we assume job is incomplete
-        and return with ``ignore_job`` set to ``True``. This informs buildtest
-        to ignore job when showing report.
-
-        For Cobalt jobs, we poll if its in ``starting``, ``queued``, or ``running``
-        state. For Cobalt jobs we cannot query job after its complete since JobID
-        is no longer present in queuing system. Therefore, for when job is complete
-        which is ``done`` or ``exiting`` state, we mark job is complete.
-
-        For PBS jobs we poll job if its in queued or running stage which corresponds
-        to ``Q`` and ``R`` in job stage. If job is finished (``F``) we gather results. If job
-        is in ``H`` stage we automatically cancel job otherwise we ignore job and mark job complete.
-
-        :param builder: a list of builder objects for polling. Each element is an instance of BuilderBase (subclass)
-        :type builder: list , required
-        :return: Return a list of builders
-        :rtype: list
-        """
-
-        for builder in builders:
-
-            executor = self._choose_executor(builder)
-            # if builder is local executor we shouldn't be polling so we set job to
-            # complete and return
-            if executor.type == "local":
-                builder.complete()
-
-            # if executor is a Slurm Executor poll Slurm Job
-            if self.is_slurm(executor.type):
-                if (
-                    builder.job.is_pending()
-                    or builder.job.is_suspended()
-                    or builder.job.is_running()
-                    or not builder.job.state()
-                ):
-                    executor.poll(builder)
-                elif builder.job.complete():
-                    executor.gather(builder)
-                    builder.success()
-                else:
-                    builder.failure()
-
-            # poll LSF job
-            elif self.is_lsf(executor.type):
-                if (
-                    builder.job.is_pending()
-                    or builder.job.is_running()
-                    or builder.job.is_suspended()
-                    or not builder.job.state()
-                ):
-                    executor.poll(builder)
-                elif builder.job.is_complete():
-                    executor.gather(builder)
-                    builder.success()
-                else:
-                    builder.failure()
-
-            # poll Cobalt Job
-            elif self.is_cobalt(executor.type):
-                if (
-                    builder.job.is_pending()
-                    or builder.job.is_running()
-                    or builder.job.is_suspended()
-                    or not builder.job.state()
-                ):
-                    executor.poll(builder)
-                elif builder.job.is_complete():
-                    builder.success()
-                elif builder.job.is_cancelled():
-                    builder.failure()
-
-            # poll PBS Job
-            elif self.is_pbs(executor.type):
-                if (
-                    builder.job.is_pending()
-                    or builder.job.is_running()
-                    or builder.job.is_suspended()
-                    or not builder.job.state()
-                ):
-                    executor.poll(builder)
-                elif builder.job.is_complete():
-                    executor.gather(builder)
-                    builder.success()
-                else:
-                    builder.failure()
-
-        return builders

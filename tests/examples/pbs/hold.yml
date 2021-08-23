@@ -1,0 +1,8 @@
+version: "1.0"
+buildspecs:
+  pbs_hold_job:
+    type: script
+    executor: generic.pbs.workq
+    description: PBS Hold Job
+    pbs: ["-l nodes=1", "-l walltime=00:02:00", "-h"]
+    run: hostname

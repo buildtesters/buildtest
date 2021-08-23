@@ -26,6 +26,7 @@ from buildtest.buildsystem.batch import (
 )
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
 from buildtest.exceptions import ExecutorError
+from buildtest.executors.job import Job
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir, read_file, write_file
@@ -63,8 +64,10 @@ class BuilderBase(ABC):
 
         self.duration = 0
 
+        self.timer = Timer()
+
         # store state of builder which can be True/False. This value is changed by self.success(), self.failure()
-        self._build_state = None
+        self._buildstate = None
 
         # The type must match the type of the builder
         self.recipe = recipe
@@ -77,10 +80,6 @@ class BuilderBase(ABC):
         # Controls the state of the builder object, a complete job  will set
         # this value to True. A job cancellation or job failure in submission will set this to False
         self.state = None
-
-        # keeps track of job state as job progress through queuing system. This is
-        # applicable for builders using batch executor.
-        self.job_state = None
 
         # this value holds the 'status' property from the buildspec
         self.status = None
@@ -136,9 +135,6 @@ class BuilderBase(ABC):
         """This method sets self.metadata that contains metadata for each builder object."""
         self.metadata["name"] = self.name
         self.metadata["buildspec"] = self.buildspec
-
-        # store recipe
-        # self.metadata["recipe"] = self.recipe
 
         # store tags
         self.metadata["tags"] = self.recipe.get("tags")
@@ -220,18 +216,26 @@ class BuilderBase(ABC):
         if self.shell_type == "csh":
             return "csh"
 
+    def is_batch_job(self):
+        """Return True/False if builder.job attribute is of type Job instance if not returns False.
+        This method indicates if builder has a job submitted to queue"""
+
+        if isinstance(self.job, Job):
+            return True
+
+        return False
+
     def start(self):
         """Keep internal time for start of test. We start timer by calling
         Timer class
         """
-
-        self.timer = Timer()
+        # self.timer = Timer()
         self.timer.start()
 
     def stop(self):
         """Stop timer of test and calculate duration."""
-
-        self.duration += self.timer.stop()
+        # self.duration += self.timer.stop()
+        self.timer.stop()
 
     def build(self):
         """This method is responsible for invoking setup, creating test
@@ -300,26 +304,26 @@ class BuilderBase(ABC):
 
     def success(self):
         """This method is invoked to indicate that builder job is complete after polling job."""
-        self._build_state = True
+        self._buildstate = True
 
     def failure(self):
         """This method indicates that builder job is not complete after polling job either job was
         cancelled by scheduler or job failed to run.
         """
-        self._build_state = False
+        self._buildstate = False
 
-    def is_unknown(self):
-        return self._build_state is None
-
-    def is_success(self):
+    def is_complete(self):
         """Return True/False depending on state of builder and if it ran to completion it will return
         ``True`` otherwise returns ``False``. A builder could fail due to job cancellation, failure to
         submit job or raise exception during the run phase. In those case, this method will return ``False``"""
-        return self._build_state == True
+        return self._buildstate == True
 
     def is_failure(self):
         """Return True if builder fails to run test."""
-        return self._build_state == False
+        return self._buildstate == False
+
+    def is_unknown(self):
+        return self._buildstate is None
 
     def run_command(self):
         """Command used to run the build script. buildtest will change into the stage directory (self.stage_dir)

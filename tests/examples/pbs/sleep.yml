@@ -4,4 +4,4 @@ buildspecs:
     type: script
     executor: generic.pbs.workq
     pbs: ["-l nodes=1", "-l walltime=00:02:00"]
-    run: sleep 10
+    run: sleep 6
