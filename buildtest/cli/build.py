@@ -424,6 +424,7 @@ class BuildTest:
         max_pend_time=None,
         poll_interval=None,
         keep_stage_dir=None,
+        retry=None,
         helpfilter=None,
     ):
         """The initializer method is responsible for checking input arguments for type
@@ -458,6 +459,8 @@ class BuildTest:
         :type poll_interval: int, optional
         :param keep_stage_dir: Keep stage directory after job completion
         :type keep_stage_dir: bool, optional
+        :param retry: number of retry for failed jobs
+        :type retry: int, optional
         :param helpfilter: Display available filter fields used by ``--filter`` option.
         :type helpfilter: bool, optional
         """
@@ -499,10 +502,7 @@ class BuildTest:
         self.poll_interval = poll_interval
         self.helpfilter = helpfilter
         self.invalid_buildspecs = None
-
-        self.passed_tests = 0
-        self.failed_tests = 0
-        self.total_tests = 0
+        self.retry = retry
 
         if self.helpfilter:
             print_filters()
@@ -556,6 +556,9 @@ class BuildTest:
         print("Command:", " ".join(sys.argv))
 
     def _validate_filters(self):
+        """Check filter fields provided by ``buildtest build --filter`` are valid types and supported. Currently
+        supported filter fields are 'tags', 'type', 'maintainers'
+        """
 
         valid_fields = ["tags", "type", "maintainers"]
 
@@ -574,7 +577,8 @@ class BuildTest:
     def build(self):
         """This method is responsible for discovering buildspecs based on input argument. Then we parse
         the buildspecs and retrieve builder objects for each test. Each builder object will invoke `build` which
-        will build the test script, and then we run the test and update report."""
+        will build the test script, and then we run the test and update report.
+        """
 
         # if --helpfilter is specified we return from this method
         if self.helpfilter:
@@ -633,14 +637,13 @@ class BuildTest:
 
         self._update_build_history(self.builders)
 
-    def resolve_testdirectory(self, cli_testdir=None):
+    def resolve_testdirectory(self, testdir=None):
         """This method resolves which test directory to select. For example, one
         can specify test directory via command line ``buildtest build --testdir <path>``
         or path in configuration file. The default is $HOME/.buildtest/var/tests
 
-
-        :param cli_testdir: test directory from command line ``buildtest build --testdir``
-        :type cli_testdir: str
+        :param testdir: test directory from command line ``buildtest build --testdir``
+        :type testdir: str
         :return: Path to test directory to use
         :rtype: str
         """
@@ -651,13 +654,13 @@ class BuildTest:
         )
 
         # resolve full path for test directory specified by --testdir option
-        cli_testdir = resolve_path(cli_testdir, exist=False)
+        testdir = resolve_path(testdir, exist=False)
 
         # Order of precedence when detecting test directory
         # 1. Command line option --testdir
         # 2. Configuration option specified by 'testdir'
         # 3. Defaults to $HOME/.buildtest/tests
-        test_directory = cli_testdir or prefix_testdir or BUILDTEST_DEFAULT_TESTDIR
+        test_directory = testdir or prefix_testdir or BUILDTEST_DEFAULT_TESTDIR
 
         create_dir(test_directory)
 
@@ -674,8 +677,10 @@ class BuildTest:
         """
 
         self.builders = []
-        table = {"schemafile": [], "validstate": [], "buildspec": []}
+
         self.invalid_buildspecs = []
+        # store list of valid buildspecs that pass after calling BuildspecParser and used only for printing purpose
+        valid_buildspecs = []
 
         # stores a list of buildspecs that are filtered out
         filtered_buildspecs = []
@@ -691,9 +696,7 @@ class BuildTest:
                 logger.error(err)
                 continue
 
-            table["schemafile"].append(bp.schema_file)
-            table["validstate"].append(valid_state)
-            table["buildspec"].append(buildspec)
+            valid_buildspecs.append(buildspec)
 
             try:
                 builder = Builder(
@@ -712,13 +715,6 @@ class BuildTest:
 
             self.builders += builder.get_builders()
 
-        # print any skipped buildspecs if they failed to validate during build stage
-        if len(self.invalid_buildspecs) > 0:
-            print("\n\nBuildspecs that failed validation")
-            print("{:_<80}".format(""))
-            for test in self.invalid_buildspecs:
-                print(test)
-
         if len(filtered_buildspecs) > 0:
             print("\nBuildspecs that were filtered out")
             print("{:_<80}".format(""))
@@ -735,25 +731,47 @@ class BuildTest:
 | Stage: Parsing Buildspecs |
 +---------------------------+ 
 """
-        headers = table.keys()
-
         if os.getenv("BUILDTEST_COLOR") == "True":
             msg = colored(msg, "red", attrs=["bold"])
-            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
 
         print(msg)
-        print(tabulate(table, headers=headers, tablefmt="presto"))
+
+        print("Valid Buildspecs: ", len(valid_buildspecs))
+        print("Invalid Buildspecs: ", len(self.invalid_buildspecs))
+
+        print("Buildspecs that passed validation")
+        print("{:_<80}".format(""))
+        for buildspec in valid_buildspecs:
+            print(buildspec)
+
+        # print any skipped buildspecs if they failed to validate during build stage
+        if len(self.invalid_buildspecs) > 0:
+            print("\n\nBuildspecs that failed validation")
+            print("{:_<80}".format(""))
+            for test in self.invalid_buildspecs:
+                print(test)
 
         testnames = list(map(lambda x: x.name, self.builders))
         description = list(map(lambda x: x.recipe.get("description"), self.builders))
+        buildspecs = list(map(lambda x: x.buildspec, self.builders))
 
         print("\n\n")
 
-        headers = ["name", "description"]
+        headers = ["name", "description", "buildspecs"]
         if os.getenv("BUILDTEST_COLOR") == "True":
             headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
 
-        print(tabulate(zip(testnames, description), headers=headers, tablefmt="simple"))
+        print(
+            tabulate(
+                zip(testnames, description, buildspecs),
+                headers=headers,
+                tablefmt="simple",
+            )
+        )
+
+        print("\n")
+        print("Total builder objects created:", len(self.builders))
+        print("builders:", self.builders)
 
     def build_phase(self):
         """This method will build all tests by invoking class method ``build`` for
