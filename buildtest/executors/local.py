@@ -10,7 +10,6 @@ import sys
 
 from buildtest.exceptions import RuntimeError
 from buildtest.executors.base import BaseExecutor
-from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import write_file
 
 
