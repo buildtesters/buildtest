@@ -25,7 +25,7 @@ from buildtest.buildsystem.batch import (
     SlurmBatchScript,
 )
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
-from buildtest.exceptions import ExecutorError
+from buildtest.exceptions import RuntimeError
 from buildtest.executors.job import Job
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.command import BuildTestCommand
@@ -64,6 +64,7 @@ class BuilderBase(ABC):
 
         self.duration = 0
 
+        self._retry = 1
         self.timer = Timer()
 
         # store state of builder which can be True/False. This value is changed by self.success(), self.failure()
@@ -216,6 +217,17 @@ class BuilderBase(ABC):
         if self.shell_type == "csh":
             return "csh"
 
+    def _is_local_executor(self):
+        """Return True if current builder executor type is LocalExecutor otherwise returns False"""
+
+        # import issue when putting this at top of file
+        from buildtest.executors.local import LocalExecutor
+
+        if isinstance(self.buildexecutor.executors[self.executor], LocalExecutor):
+            return True
+
+        return False
+
     def is_batch_job(self):
         """Return True/False if builder.job attribute is of type Job instance if not returns False.
         This method indicates if builder has a job submitted to queue"""
@@ -247,6 +259,9 @@ class BuilderBase(ABC):
         self._write_test()
         self._write_build_script()
 
+    def retry(self, retry):
+        self._retry = retry
+
     def run(self):
         """Run the test and record the starttime and start timer. We also return the instance
         object of type BuildTestCommand which is used by Executors for processing output and error
@@ -254,6 +269,7 @@ class BuilderBase(ABC):
 
         self.starttime()
         self.start()
+
         command = BuildTestCommand(self.runcmd)
         command.execute()
 
@@ -261,13 +277,36 @@ class BuilderBase(ABC):
         ret = command.returncode()
         err_msg = " ".join(command.get_error())
 
-        if ret != 0:
-            err = f"[{self.metadata['name']}/{self.test_uid}] failed to submit job with returncode: {ret} \n"
+        if ret == 0 or self._is_local_executor():
+            return command
+        else:
+            err = f"{self} failed to submit job with returncode: {ret} \n"
             print(err)
             print(err_msg)
-            raise ExecutorError(err)
 
-        return command
+        ########## Retry for failed tests  ##########
+
+        print(
+            f"{self}: Detected failure in running test, will attempt to retry test: {self._retry} times"
+        )
+        for run in range(1, self._retry + 1):
+            print(f"{self}: Run - {run}/{self._retry}")
+            command = BuildTestCommand(self.runcmd)
+            command.execute()
+
+            self.logger.debug(f"Running Test via command: {self.runcmd}")
+            ret = command.returncode()
+            err_msg = " ".join(command.get_error())
+
+            # if we recieve a returncode of 0 return immediately with the instance of command
+            if ret == 0:
+                return command
+            else:
+                err = f"{self} failed to submit job with returncode: {ret} \n"
+                print(err)
+                print(err_msg)
+
+        raise RuntimeError(err)
 
     def starttime(self):
         """This method will record the starttime when job starts execution by using
@@ -784,6 +823,11 @@ class BuilderBase(ABC):
         self.metadata["error"] = self._error
 
         self.copy_stage_files()
+
+        # need these lines after self.copy_stage_files()
+        print(f"{self}: Writing output file: {self.metadata['outfile']}")
+        print(f"{self}: Writing error file: {self.metadata['errfile']}")
+
         self.check_test_state()
 
         self.add_metrics()

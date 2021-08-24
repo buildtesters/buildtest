@@ -8,6 +8,7 @@ import os
 import shutil
 import sys
 
+from buildtest.exceptions import RuntimeError
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import write_file
@@ -57,7 +58,7 @@ class LocalExecutor(BaseExecutor):
         self.logger.debug(f"Changing to directory {builder.stage_dir}")
 
         # ---------- Start of Run ---------- #
-
+        """
         builder.starttime()
         builder.start()
         command = BuildTestCommand(builder.runcmd)
@@ -65,6 +66,19 @@ class LocalExecutor(BaseExecutor):
         out, err = command.get_output(), command.get_error()
         builder.stop()
         builder.endtime()
+        """
+        try:
+            command = builder.run()
+        except RuntimeError as err:
+            builder.failure()
+            self.logger.error(err)
+            return
+
+        builder.stop()
+        builder.endtime()
+
+        out = command.get_output()
+        err = command.get_error()
 
         # ---------- End of Run ---------- #
 

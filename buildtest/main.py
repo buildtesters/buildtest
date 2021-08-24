@@ -101,6 +101,7 @@ def main():
             max_pend_time=args.max_pend_time,
             poll_interval=args.poll_interval,
             keep_stage_dir=args.keep_stage_dir,
+            retry=args.retry,
             helpfilter=args.helpfilter,
         )
         cmd.build()

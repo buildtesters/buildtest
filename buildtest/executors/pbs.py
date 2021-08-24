@@ -4,7 +4,7 @@ import json
 import logging
 import os
 
-from buildtest.exceptions import ExecutorError
+from buildtest.exceptions import RuntimeError
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
@@ -87,7 +87,7 @@ class PBSExecutor(BaseExecutor):
 
         try:
             command = builder.run()
-        except ExecutorError as err:
+        except RuntimeError as err:
             builder.failure()
             self.logger.error(err)
             return

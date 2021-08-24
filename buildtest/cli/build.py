@@ -535,7 +535,10 @@ class BuildTest:
         self.detected_buildspecs = None
 
         self.builders = None
-        self.buildexecutor = BuildExecutor(self.configuration, self.max_pend_time)
+
+        self.buildexecutor = BuildExecutor(
+            self.configuration, max_pend_time=self.max_pend_time
+        )
         self.system = buildtest_system or system
         self.report_file = resolve_path(report_file, exist=False) or BUILD_REPORT
 
@@ -687,7 +690,6 @@ class BuildTest:
 
         # build all the tests
         for buildspec in self.detected_buildspecs:
-            valid_state = True
             try:
                 # Read in Buildspec file here, loading each will validate the buildspec file
                 bp = BuildspecParser(buildspec, self.buildexecutor)
@@ -752,18 +754,19 @@ class BuildTest:
                 print(test)
 
         testnames = list(map(lambda x: x.name, self.builders))
+        uid = list(map(lambda x: x.metadata["id"], self.builders))
         description = list(map(lambda x: x.recipe.get("description"), self.builders))
         buildspecs = list(map(lambda x: x.buildspec, self.builders))
 
         print("\n\n")
 
-        headers = ["name", "description", "buildspecs"]
+        headers = ["name", "id", "description", "buildspecs"]
         if os.getenv("BUILDTEST_COLOR") == "True":
             headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
 
         print(
             tabulate(
-                zip(testnames, description, buildspecs),
+                zip(testnames, uid, description, buildspecs),
                 headers=headers,
                 tablefmt="simple",
             )
@@ -816,6 +819,9 @@ class BuildTest:
 
             if builder.type == "compiler":
                 table[builder.type]["compiler"].append(builder.compiler)
+
+            # set retry limit for each builder
+            builder.retry(self.retry)
 
         self._print_build_phase(invalid_builders, table)
 

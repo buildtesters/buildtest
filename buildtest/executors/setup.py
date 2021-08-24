@@ -212,7 +212,7 @@ class BuildExecutor:
 
             results.append(result)
 
-        # loop until all async results  are complete. results is a list of multiprocessing.pool.AsyncResult objects
+        # loop until all async results are complete. results is a list of multiprocessing.pool.AsyncResult objects
         while results:
             async_results_ready = []
             for result in results:
