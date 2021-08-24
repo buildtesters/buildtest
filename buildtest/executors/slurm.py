@@ -8,7 +8,7 @@ import os
 import re
 import time
 
-from buildtest.exceptions import ExecutorError
+from buildtest.exceptions import RuntimeError
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
@@ -101,7 +101,7 @@ class SlurmExecutor(BaseExecutor):
 
         try:
             command = builder.run()
-        except ExecutorError as err:
+        except RuntimeError as err:
             self.logger.error(err)
             return
 

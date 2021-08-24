@@ -287,6 +287,9 @@ def build_menu(subparsers):
         help="Specify a report file where tests will be written.",
     )
     extra_group.add_argument(
+        "--retry", help="Retry failed jobs", type=positive_number, default=1
+    )
+    extra_group.add_argument(
         "-s",
         "--stage",
         help="control behavior of buildtest build",
