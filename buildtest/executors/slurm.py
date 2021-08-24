@@ -6,6 +6,7 @@ when initializing the executors.
 import logging
 import os
 import re
+import time
 
 from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
@@ -149,7 +150,7 @@ class SlurmExecutor(BaseExecutor):
             self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
 
             # if timer exceeds 'max_pend_time' then cancel job
-            if int(builder.duration) > self.max_pend_time:
+            if int(builder.timer.duration()) > self.max_pend_time:
                 builder.job.cancel()
                 builder.failure()
                 print(
@@ -294,16 +295,22 @@ class SlurmJob(Job):
          - ExitCode and Workdir: ``sacct -j <jobid> -X -n -P -o ExitCode,Workdir``
         """
 
-        query = f"sacct -j {self.jobid} -o State -n -X -P"
-        if self.cluster:
-            query += f" --clusters={self.cluster}"
+        # if job state not set we loop until we receive job state. There is a lag between job submission and querying job
+        # via sacct. If self._state is still None we sleep for 0.1s and retry again
+        while not self._state:
+            query = f"sacct -j {self.jobid} -o State -n -X -P"
+            if self.cluster:
+                query += f" --clusters={self.cluster}"
 
-        cmd = BuildTestCommand(query)
-        cmd.execute()
+            cmd = BuildTestCommand(query)
+            cmd.execute()
 
-        logger.debug(f"Querying JobID: '{self.jobid}'  Job State by running: '{query}'")
-        job_state = cmd.get_output()
-        self._state = "".join(job_state).rstrip()
+            logger.debug(
+                f"Querying JobID: '{self.jobid}'  Job State by running: '{query}'"
+            )
+            job_state = cmd.get_output()
+            self._state = "".join(job_state).rstrip()
+            time.sleep(0.1)
 
         logger.debug(f"JobID: '{self.jobid}' job state:{self._state}")
 

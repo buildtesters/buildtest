@@ -146,7 +146,7 @@ class CobaltExecutor(BaseExecutor):
             logger.debug(f"Max Pend Time: {self.max_pend_time}")
 
             # if timer time is more than requested pend time then cancel job
-            if int(builder.duration) > self.max_pend_time:
+            if int(builder.timer.duration()) > self.max_pend_time:
                 builder.job.cancel()
                 builder.failure()
                 print(
