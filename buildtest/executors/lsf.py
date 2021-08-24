@@ -136,22 +136,25 @@ class LSFExecutor(BaseExecutor):
         """
 
         builder.job.poll()
-
+        builder.stop()
         if builder.job.is_suspended() or builder.job.is_pending():
-            builder.stop()
+
             self.logger.debug(f"Time Duration: {builder.duration}")
             self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
 
             # if timer time is more than requested pend time then cancel job
-            if int(builder.duration) > self.max_pend_time:
+            if int(builder.timer.duration()) > self.max_pend_time:
                 builder.job.cancel()
                 builder.failure()
                 print(
-                    "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
-                        builder.duration, self.max_pend_time
+                    "{}: Cancelling Job: {} because job exceeds max pend time: {} sec with current pend time of {} ".format(
+                        builder,
+                        builder.job.get(),
+                        self.max_pend_time,
+                        builder.timer.duration(),
                     )
                 )
-            builder.start()
+        builder.start()
 
     def gather(self, builder):
         """Gather Job detail after completion of job by invoking the builder method ``builder.job.gather()``.

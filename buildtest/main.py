@@ -71,10 +71,15 @@ def main():
     system = BuildTestSystem()
     system.check()
 
+    validate_executors = True
+    # if buildtest build --disable-executor-check is specified store the value
+    if hasattr(args, "disable_executor_check"):
+        validate_executors = args.disable_executor_check
+
     config_file = resolve_path(args.configfile) or None
     configuration = SiteConfiguration(config_file)
     configuration.detect_system()
-    configuration.validate()
+    configuration.validate(validate_executors)
 
     logger.info(f"Processing buildtest configuration file: {configuration.file}")
 

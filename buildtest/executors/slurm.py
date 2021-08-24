@@ -6,6 +6,7 @@ when initializing the executors.
 import logging
 import os
 import re
+import time
 
 from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
@@ -135,23 +136,33 @@ class SlurmExecutor(BaseExecutor):
 
         builder.job.poll()
 
+        # if job is complete gather job data
+        if builder.job.is_complete():
+            self.gather(builder)
+            return
+
+        builder.stop()
+
         # if job state in PENDING check if we need to cancel job by checking internal timer
         if builder.job.is_pending() or builder.job.is_suspended():
-            builder.stop()
+
             self.logger.debug(f"Time Duration: {builder.duration}")
             self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
 
             # if timer exceeds 'max_pend_time' then cancel job
-            if int(builder.duration) > self.max_pend_time:
+            if int(builder.timer.duration()) > self.max_pend_time:
                 builder.job.cancel()
+                builder.failure()
                 print(
-                    "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
-                        builder.duration, self.max_pend_time
+                    "{}: Cancelling Job: {} because job exceeds max pend time: {} sec with current pend time of {} ".format(
+                        builder,
+                        builder.job.get(),
+                        self.max_pend_time,
+                        builder.timer.duration(),
                     )
                 )
-                builder.failure()
 
-            builder.start()
+        builder.start()
 
     def gather(self, builder):
         """Gather Slurm job data after job completion. In this step we call ``builder.job.gather()``,
@@ -284,16 +295,22 @@ class SlurmJob(Job):
          - ExitCode and Workdir: ``sacct -j <jobid> -X -n -P -o ExitCode,Workdir``
         """
 
-        query = f"sacct -j {self.jobid} -o State -n -X -P"
-        if self.cluster:
-            query += f" --clusters={self.cluster}"
+        # if job state not set we loop until we receive job state. There is a lag between job submission and querying job
+        # via sacct. If self._state is still None we sleep for 0.1s and retry again
+        while not self._state:
+            query = f"sacct -j {self.jobid} -o State -n -X -P"
+            if self.cluster:
+                query += f" --clusters={self.cluster}"
 
-        cmd = BuildTestCommand(query)
-        cmd.execute()
+            cmd = BuildTestCommand(query)
+            cmd.execute()
 
-        logger.debug(f"Querying JobID: '{self.jobid}'  Job State by running: '{query}'")
-        job_state = cmd.get_output()
-        self._state = "".join(job_state).rstrip()
+            logger.debug(
+                f"Querying JobID: '{self.jobid}'  Job State by running: '{query}'"
+            )
+            job_state = cmd.get_output()
+            self._state = "".join(job_state).rstrip()
+            time.sleep(0.1)
 
         logger.debug(f"JobID: '{self.jobid}' job state:{self._state}")
 

@@ -88,15 +88,17 @@ class PBSExecutor(BaseExecutor):
         try:
             command = builder.run()
         except ExecutorError as err:
+            builder.failure()
             self.logger.error(err)
             return
 
-        parse_jobid = command.get_output()
-        job_id = " ".join(parse_jobid).strip()
+        out = command.get_output()
+        JobID = " ".join(out).strip()
 
-        builder.metadata["jobid"] = job_id
+        builder.metadata["jobid"] = JobID
 
-        builder.job = PBSJob(job_id)
+        builder.job = PBSJob(JobID)
+
         # store job id
         builder.metadata["jobid"] = builder.job.get()
 
@@ -107,12 +109,7 @@ class PBSExecutor(BaseExecutor):
         return builder
 
     def poll(self, builder):
-        """This method is responsible for polling Cobalt job, we check the
-        job state and existence of output file. If file exists or job is in
-        'exiting' stage we set job to 'done' stage and gather results. If job
-        is in 'pending' stage we check if job exceeds 'max_pend_time' time limit
-        by checking with builder timer attribute using ``start`` and ``stop`` method.
-        If job exceeds the time limit job is cancelled.
+        """This method is responsible for polling PBS job.
 
         :param builder: builder object
         :type builder: BuilderBase, required
@@ -120,26 +117,32 @@ class PBSExecutor(BaseExecutor):
 
         builder.job.poll()
 
-        builder.metadata["outfile"] = builder.job.output_file()
-        builder.metadata["errfile"] = builder.job.error_file()
+        # if job is complete gather job data
+        if builder.job.is_complete():
+            self.gather(builder)
+            return
+
+        builder.stop()
 
         # if job in pending or suspended, check if it exceeds max_pend_time if so cancel job
         if builder.job.is_pending() or builder.job.is_suspended():
-            builder.stop()
-            self.logger.debug(f"Time Duration: {builder.duration}")
+            self.logger.debug(f"Time Duration: {builder.timer.duration()}")
             self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
 
             # if timer time is more than requested pend time then cancel job
-            if int(builder.duration) > self.max_pend_time:
+            if int(builder.timer.duration()) > self.max_pend_time:
                 builder.job.cancel()
-                builder.job_state = "CANCELLED"
+                builder.failure()
                 print(
-                    "Cancelling Job because duration time: {:f} sec exceeds max pend time: {} sec".format(
-                        builder.duration, self.max_pend_time
+                    "{}: Cancelling Job: {} because job exceeds max pend time: {} sec with current pend time of {} ".format(
+                        builder,
+                        builder.job.get(),
+                        self.max_pend_time,
+                        builder.timer.duration(),
                     )
                 )
-                builder.failure()
-            builder.start()
+
+        builder.start()
 
     def gather(self, builder):
         """This method is responsible for getting output of job using `qstat -x -f -F json <jobID>`
@@ -152,10 +155,11 @@ class PBSExecutor(BaseExecutor):
         """
 
         builder.endtime()
-
         builder.metadata["job"] = builder.job.gather()
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
+        builder.metadata["outfile"] = builder.job.output_file()
+        builder.metadata["errfile"] = builder.job.error_file()
         builder.post_run_steps()
 
 
@@ -201,6 +205,7 @@ class PBSJob(Job):
         return not self.success()
 
     def poll(self):
+        """This method will poll the PBS Job by running ``qstat -x -f -F json <jobid>``"""
         query = f"qstat -x -f -F json {self.jobid}"
 
         logger.debug(query)
@@ -210,9 +215,6 @@ class PBSJob(Job):
         job_data = json.loads(output)
 
         self._state = job_data["Jobs"][self.jobid]["job_state"]
-        # output in the form of pbs:<path>
-        self._outfile = job_data["Jobs"][self.jobid]["Output_Path"].split(":")[1]
-        self._errfile = job_data["Jobs"][self.jobid]["Error_Path"].split(":")[1]
 
         # The Exit_status property will be available when job is finished
         self._exitcode = job_data["Jobs"][self.jobid].get("Exit_status")
@@ -227,6 +229,11 @@ class PBSJob(Job):
         output = " ".join(output)
 
         job_data = json.loads(output)
+
+        # output in the form of pbs:<path>
+        self._outfile = job_data["Jobs"][self.jobid]["Output_Path"].split(":")[1]
+        self._errfile = job_data["Jobs"][self.jobid]["Error_Path"].split(":")[1]
+
         # if job is complete but terminated or deleted we won't have exit status in that case we ignore this file
         try:
             self._exitcode = job_data["Jobs"][self.jobid]["Exit_status"]

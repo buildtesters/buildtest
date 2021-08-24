@@ -9,7 +9,6 @@ import re
 import shutil
 import sys
 import tempfile
-import time
 from datetime import datetime
 
 from buildtest import BUILDTEST_VERSION
@@ -23,6 +22,7 @@ from buildtest.defaults import (
     BUILDTEST_REPORT_SUMMARY,
 )
 from buildtest.exceptions import BuildspecError, BuildTestError
+from buildtest.executors.poll import PollQueue
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.defaults import schema_table
 from buildtest.system import system
@@ -631,7 +631,7 @@ class BuildTest:
             os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log"),
         )
 
-        self._update_build_history()
+        self._update_build_history(self.builders)
 
     def resolve_testdirectory(self, cli_testdir=None):
         """This method resolves which test directory to select. For example, one
@@ -843,39 +843,35 @@ class BuildTest:
         print(msg)
 
         self.buildexecutor.load_builders(self.builders)
-        builders = self.buildexecutor.launch()
+        builders = self.buildexecutor.run()
 
         if not builders:
             sys.exit("Unable to run any tests")
 
-        self._print_run_phase(builders)
-
+        poll = False
         for builder in builders:
-            if builder.metadata["result"]["state"] == "PASS":
-                self.passed_tests += 1
-            else:
-                self.failed_tests += 1
-
-            self.total_tests += 1
+            if builder.is_batch_job():
+                poll = True
+                break
 
         # if any builders to poll we poll the jobs
-        if self.buildexecutor.is_poll():
-            poll_queue = self.buildexecutor.poll_queue()
+        if poll:
+            builders = self.poll_phase(builders)
 
-            builders = self.poll_jobs(poll_queue, builders)
-
-            self._print_jobs_after_poll(builders)
+        valid_builders = []
+        for builder in builders:
+            if builder.is_complete():
+                valid_builders.append(builder)
 
         ########## TEST SUMMARY ####################
-        if self.total_tests == 0:
-            print("No tests were executed")
-            return
+        if not valid_builders:
+            sys.exit("Unable to run any tests")
 
-        self._print_test_summary()
+        self._print_test_summary(valid_builders)
 
-        return builders
+        return valid_builders
 
-    def poll_jobs(self, poll_queue, valid_builders):
+    def poll_phase(self, builders):
         """This method will poll jobs by processing all jobs in ``poll_queue``. If
         job is cancelled by scheduler, we remove this from valid_builders list.
         This method will return a list of valid_builders after polling. If there
@@ -896,116 +892,28 @@ class BuildTest:
         if not interval:
             interval = default_interval
 
-        # keep track of ignored jobs by job scheduler these include jobs that failed abnormally or cancelled by scheduler
-        ignore_jobs = set()
-        completed_jobs = set()
+        poll_jobs = PollQueue(
+            builders=builders, interval=interval, buildexecutor=self.buildexecutor
+        )
+        poll_jobs.poll()
+        poll_jobs.print_polled_jobs()
 
-        # loop until poll_queue is empty which means all jobs have finished
-        while poll_queue:
+        cancelled_jobs = poll_jobs.cancelled()
+        completed_jobs = poll_jobs.completed()
 
-            print("\n")
-            print(f"Polling Jobs in {interval} seconds")
-            print("{:_<40}".format(""))
+        if completed_jobs:
+            for builder in completed_jobs:
+                builders.remove(builder)
+                builders.append(builder)
 
-            logger.debug(f"Sleeping for {interval} seconds")
-            time.sleep(interval)
-            logger.debug(f"Polling Jobs: {poll_queue}")
+        if cancelled_jobs:
+            print("\nCancelled Jobs:", list(cancelled_jobs))
 
-            # poll all builder jobs and return a list of builders with updated builder state
-            builder_queue = self.buildexecutor.poll(poll_queue)
+            for builder in cancelled_jobs:
+                builders.remove(builder)
+                builders.append(builder)
 
-            # for every builder in queue check if job is complete, add to complete jobs and remove from queue
-            # an incomplete job is also removed from queue
-            for builder in builder_queue:
-                if builder.is_success():
-                    completed_jobs.add(builder)
-                    poll_queue.remove(builder)
-                    logger.debug(
-                        f"{builder} poll complete, removing test from poll queue"
-                    )
-                elif builder.is_failure():
-                    ignore_jobs.add(builder)
-                    poll_queue.remove(builder)
-                elif builder.is_unknown():
-                    continue
-
-            jobIDs = []
-
-            for job in poll_queue:
-                jobIDs.append(job.metadata["jobid"])
-            print("Job Queue:", jobIDs)
-
-            completed_jobs_table = {
-                "name": [],
-                "executor": [],
-                "jobID": [],
-                "jobstate": [],
-            }
-            pending_jobs_table = {
-                "name": [],
-                "executor": [],
-                "jobID": [],
-                "jobstate": [],
-            }
-            for job in completed_jobs:
-                completed_jobs_table["name"].append(job.name)
-                completed_jobs_table["executor"].append(job.executor)
-                completed_jobs_table["jobID"].append(job.metadata["jobid"])
-                # completed_jobs_table["jobstate"].append(job.job_state)
-                completed_jobs_table["jobstate"].append(job.job.state())
-
-            for job in poll_queue:
-                pending_jobs_table["name"].append(job.name)
-                pending_jobs_table["executor"].append(job.executor)
-                pending_jobs_table["jobID"].append(job.metadata["jobid"])
-                # pending_jobs_table["jobstate"].append(job.job_state)
-                pending_jobs_table["jobstate"].append(job.job.state())
-
-            # only print table if their is an element in the table. We check for 'name' property
-            if completed_jobs_table["name"]:
-                print("\n")
-                print("Completed Jobs")
-                print("{:_<40}".format(""))
-                print("\n")
-
-                print(
-                    tabulate(
-                        completed_jobs_table,
-                        headers=completed_jobs_table.keys(),
-                        tablefmt="pretty",
-                    )
-                )
-
-            if pending_jobs_table["name"]:
-                print("\n")
-                print("Pending Jobs")
-                print("{:_<40}".format(""))
-                print("\n")
-                print(
-                    tabulate(
-                        pending_jobs_table,
-                        headers=pending_jobs_table.keys(),
-                        tablefmt="pretty",
-                    )
-                )
-
-        # remove any builders where for jobs that need to be ignored
-        if ignore_jobs:
-            # convert set to list
-            ignore_jobs = list(ignore_jobs)
-            for builder in ignore_jobs:
-                valid_builders.remove(builder)
-
-            print("Cancelled Tests:")
-            for builder in ignore_jobs:
-                print(builder.name)
-
-        # after removing jobs from valid_builders list there is chance we have no jobs to report
-        # in that case we return from method
-        if not valid_builders:
-            sys.exit("After polling all jobs we found no valid builders to process")
-
-        return valid_builders
+        return builders
 
     def _print_build_phase(self, invalid_builders, table):
         """print build phase table"""
@@ -1108,56 +1016,7 @@ class BuildTest:
         print("\n")
         print(tabulate(table, headers=headers, tablefmt="presto"))
 
-    def _print_jobs_after_poll(self, valid_builders):
-        """Print table of all tests after polling"""
-
-        table = {
-            "name": [],
-            "id": [],
-            "executor": [],
-            "status": [],
-            "returncode": [],
-            "runtime": [],
-        }
-
-        msg = """
-+---------------------------------------------+
-| Stage: Final Results after Polling all Jobs |
-+---------------------------------------------+ 
-        """
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            msg = colored(msg, "red", attrs=["bold"])
-
-        print(msg)
-
-        # regenerate test results after poll
-
-        self.passed_tests = 0
-        self.failed_tests = 0
-        self.total_tests = 0
-
-        for builder in valid_builders:
-            if builder.metadata["result"]["state"] == "PASS":
-                self.passed_tests += 1
-            else:
-                self.failed_tests += 1
-
-            table["name"].append(builder.name)
-            table["id"].append(builder.metadata["id"])
-            table["executor"].append(builder.executor)
-            table["status"].append(builder.metadata["result"]["state"])
-            table["returncode"].append(builder.metadata["result"]["returncode"])
-            table["runtime"].append(builder.metadata["result"]["runtime"])
-
-            self.total_tests += 1
-
-        headers = table.keys()
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
-
-        print(tabulate(table, headers=headers, tablefmt="presto"))
-
-    def _print_test_summary(self):
+    def _print_test_summary(self, builders):
         """Print a summary of total pass and fail test with percentage breakdown."""
 
         msg = """
@@ -1170,13 +1029,46 @@ class BuildTest:
 
         print(msg)
 
-        pass_rate = self.passed_tests * 100 / self.total_tests
+        table = {
+            "name": [],
+            "id": [],
+            "executor": [],
+            "status": [],
+            "returncode": [],
+            "runtime": [],
+        }
+        passed_tests = 0
+        failed_tests = 0
+        total_tests = 0
+        for builder in builders:
+            if builder.metadata["result"]["state"] == "PASS":
+                passed_tests += 1
+            else:
+                failed_tests += 1
+
+            table["name"].append(builder.name)
+            table["id"].append(builder.metadata["id"])
+            table["executor"].append(builder.executor)
+            table["status"].append(builder.metadata["result"]["state"])
+            table["returncode"].append(builder.metadata["result"]["returncode"])
+            table["runtime"].append(builder.metadata["result"]["runtime"])
+
+            total_tests += 1
+
+        headers = table.keys()
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
+
+        print(tabulate(table, headers=headers, tablefmt="presto"))
+        print("\n\n")
+
+        pass_rate = passed_tests * 100 / total_tests
         pass_rate = format(pass_rate, ".3f")
-        fail_rate = self.failed_tests * 100 / self.total_tests
+        fail_rate = failed_tests * 100 / total_tests
         fail_rate = format(fail_rate, ".3f")
 
-        msg1 = f"Passed Tests: {self.passed_tests}/{self.total_tests} Percentage: {pass_rate}%"
-        msg2 = f"Failed Tests: {self.failed_tests}/{self.total_tests} Percentage: {fail_rate}%"
+        msg1 = f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate}%"
+        msg2 = f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate}%"
         if os.getenv("BUILDTEST_COLOR") == "True":
             msg1 = colored(msg1, "green")
             msg2 = colored(msg2, "red")
@@ -1186,14 +1078,14 @@ class BuildTest:
         print("\n")
 
         self.test_summary = {
-            "total": str(self.total_tests),
-            "pass": str(self.passed_tests),
-            "fail": str(self.failed_tests),
+            "total": str(total_tests),
+            "pass": str(passed_tests),
+            "fail": str(failed_tests),
             "pass_rate": pass_rate,
             "fail_rate": fail_rate,
         }
 
-    def _update_build_history(self):
+    def _update_build_history(self, builders):
         """Write a build history file that is stored in **$BUILDTEST_ROOT/var/.history** directory summarizing output of build. The history
         file is a json file named `build.json` which contains a copy of the build log for troubleshooting. buildtest will create a sub-directory
         that is incremented such as 0, 1, 2 in **$BUILDTEST_ROOT/var/.history** which is used to differentiate builds.
@@ -1243,7 +1135,7 @@ class BuildTest:
         }
 
         history_data["builders"] = {}
-        for builder in self.builders:
+        for builder in builders:
             uid = str(builder.metadata["full_id"])
             history_data["builders"][uid] = {}
             history_data["builders"][uid]["name"] = builder.name

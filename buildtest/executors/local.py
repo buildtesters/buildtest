@@ -74,6 +74,7 @@ class LocalExecutor(BaseExecutor):
             f"Return code: {command.returncode()} for test: {builder.metadata['testpath']}"
         )
         builder.metadata["result"]["returncode"] = command.returncode()
+        print(f"{builder}: completed with returncode: {command.returncode()}")
 
         out = "".join(out)
         err = "".join(err)
