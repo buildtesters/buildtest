@@ -1,8 +1,6 @@
 import os
-import sys
 import time
 
-from buildtest.executors.local import LocalExecutor
 from tabulate import tabulate
 from termcolor import colored
 

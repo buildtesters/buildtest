@@ -9,7 +9,6 @@ import re
 import shutil
 import sys
 import tempfile
-import time
 from datetime import datetime
 
 from buildtest import BUILDTEST_VERSION

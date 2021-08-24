@@ -8,7 +8,6 @@ on executor name.
 import logging
 import multiprocessing as mp
 import os
-import time
 
 from buildtest.buildsystem.base import BuilderBase
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
