@@ -13,7 +13,6 @@
       "description": "Select schema type to use when validating buildspec. This must be of set to 'script'"
     },
     "description": { "$ref": "definitions.schema.json#/definitions/description" },
-    "batch": { "$ref": "definitions.schema.json#/definitions/batch" },
     "sbatch": { "$ref": "definitions.schema.json#/definitions/sbatch" },
     "bsub": { "$ref": "definitions.schema.json#/definitions/bsub" },
     "cobalt": { "$ref": "definitions.schema.json#/definitions/cobalt" },

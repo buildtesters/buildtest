@@ -1,18 +1,13 @@
 from buildtest.buildsystem.batch import (
     CobaltBatchScript,
     LSFBatchScript,
+    PBSBatchScript,
     SlurmBatchScript,
 )
 
 
 def test_batchscript_example1():
-    batch_cmds = {
-        "account": "biology",
-        "cpucount": "1",
-        "memory": "500MB",
-        "queue": "debug",
-        "timelimit": "10",
-    }
+
     expected_header = [
         "#BSUB -P biology",
         "#BSUB -n 1",
@@ -20,12 +15,20 @@ def test_batchscript_example1():
         "#BSUB -q debug",
         "#BSUB -W 10",
     ]
-    script = LSFBatchScript(batch_cmds)
+    script = LSFBatchScript(["-P biology", "-n 1", "-M 500MB", "-q debug", "-W 10"])
     header = script.get_headers()
     assert expected_header == header
     print("actual header %s and expected header: %s" % (header, expected_header))
 
-    script = SlurmBatchScript(batch_cmds)
+    script = SlurmBatchScript(
+        [
+            "--account=biology",
+            "--ntasks=1",
+            "--mem=500MB",
+            "--partition=debug",
+            "--time=10",
+        ]
+    )
     expected_header = [
         "#SBATCH --account=biology",
         "#SBATCH --ntasks=1",
@@ -37,7 +40,9 @@ def test_batchscript_example1():
     assert expected_header == header
     print("actual header %s and expected header: %s" % (header, expected_header))
 
-    script = CobaltBatchScript(batch_cmds)
+    script = CobaltBatchScript(
+        ["--project biology", "--proccount 1", "--queue debug", "--time 10"]
+    )
     header = script.get_headers()
 
     expected_header = [
@@ -49,37 +54,12 @@ def test_batchscript_example1():
 
     assert header == expected_header
 
-
-def test_batchscript_example2():
-    batch_cmds = {
-        "tasks-per-node": "1",
-        "cpucount": "2",
-    }
-    sbatch_cmd = ["-t 10", "-q normal"]
-    script = SlurmBatchScript(batch_cmds, sbatch_cmd)
-    header = script.get_headers()
+    script = PBSBatchScript(["-A biology", "-q debug", "-l nodes=1", "-l walltime=10"])
+    headers = script.get_headers()
     expected_header = [
-        "#SBATCH -t 10",
-        "#SBATCH -q normal",
-        "#SBATCH --ntasks-per-node=1",
-        "#SBATCH --ntasks=2",
+        "#PBS -A biology",
+        "#PBS -q debug",
+        "#PBS -l nodes=1",
+        "#PBS -l walltime=10",
     ]
-    assert expected_header == header
-
-    bsub_cmds = ["-W 10", "-q normal"]
-    script = LSFBatchScript(batch_cmds, bsub_cmds)
-    header = script.get_headers()
-    # tasks-per-node is not valid option in LSF so this option is skipped. bsub commands are processed first before batch
-    expected_header = ["#BSUB -W 10", "#BSUB -q normal", "#BSUB -n 2"]
-    assert expected_header == header
-
-    qsub_cmd = ["--time 10", "--queue debug"]
-    script = CobaltBatchScript(batch_cmds, qsub_cmd)
-    header = script.get_headers()
-    print(header)
-    expected_header = [
-        "#COBALT --time 10",
-        "#COBALT --queue debug",
-        "#COBALT --proccount 2",
-    ]
-    assert header == expected_header
+    expected_header == headers

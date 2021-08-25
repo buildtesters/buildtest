@@ -172,7 +172,7 @@ class CompilerBuilder(BuilderBase):
 
         # get sbatch, bsub, cobalt, pbs, batch property and store in batch dictionary.
         # The order of lookup is in order of precedence
-        for batch in ["sbatch", "bsub", "cobalt", "pbs", "batch"]:
+        for batch in ["sbatch", "bsub", "cobalt", "pbs"]:
             batch_dict[batch] = (
                 deep_get(self.compiler_section, "config", self.compiler, batch)
                 or deep_get(
@@ -186,7 +186,6 @@ class CompilerBuilder(BuilderBase):
         self.bsub = batch_dict["bsub"]
         self.pbs = batch_dict["pbs"]
         self.cobalt = batch_dict["cobalt"]
-        self.batch = batch_dict["batch"]
 
         sched_lines = self.get_job_directives()
         if sched_lines:

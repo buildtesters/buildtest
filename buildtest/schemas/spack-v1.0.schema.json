@@ -24,7 +24,6 @@
     "bsub": { "$ref": "definitions.schema.json#/definitions/bsub" },
     "cobalt": { "$ref": "definitions.schema.json#/definitions/cobalt" },
     "pbs": { "$ref": "definitions.schema.json#/definitions/pbs" },
-    "batch": { "$ref": "definitions.schema.json#/definitions/batch" },
     "BB": { "$ref": "definitions.schema.json#/definitions/BB" },
     "DW": { "$ref": "definitions.schema.json#/definitions/DW" },
     "skip": { "$ref": "definitions.schema.json#/definitions/skip" },
