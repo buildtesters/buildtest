@@ -4,24 +4,7 @@ class BatchScript:
 
 
 class LSFBatchScript(BatchScript):
-    batch_translation = {
-        "account": "-P",
-        "begintime": "-b",
-        "cpucount": "-n",
-        "email-address": "-u",
-        "exclusive": "-x",
-        "memory": "-M",
-        "network": "-network",
-        "nodecount": "-nnodes",
-        "qos": None,
-        "queue": "-q",
-        "tasks-per-core": None,
-        "tasks-per-node": None,
-        "tasks-per-socket": None,
-        "timelimit": "-W",
-    }
-
-    def __init__(self, batch=None, bsub=None):
+    def __init__(self, bsub=None):
         """
         :param batch: Input from  'batch' field that is scheduler agnostic configuration
         :param bsub: input from 'bsub' field in Buildspec inserted as #BSUB directive
@@ -30,7 +13,6 @@ class LSFBatchScript(BatchScript):
         self.headers = []
         self.directive = "#BSUB"
 
-        self.batch = batch
         self.bsub = bsub
 
         self.build_header()
@@ -43,43 +25,9 @@ class LSFBatchScript(BatchScript):
             for cmd in self.bsub:
                 self.headers += [f"{self.directive} {cmd}"]
 
-        # only process if batch field is specified
-        if self.batch:
-
-            for key, value in self.batch.items():
-
-                if key == "exclusive" and self.batch[key] is True:
-                    self.headers += [
-                        f"{self.directive} {self.batch_translation['exclusive']}"
-                    ]
-                # if batch key is None that means scheduler doesn't support the option
-                elif not self.batch_translation.get(key):
-                    continue
-                else:
-                    self.headers += [
-                        f"{self.directive} {self.batch_translation[key]} {value}"
-                    ]
-
 
 class SlurmBatchScript(BatchScript):
-    batch_translation = {
-        "account": "--account",
-        "begintime": "--begin",
-        "cpucount": "--ntasks",
-        "email-address": "--mail-user",
-        "exclusive": "--exclusive",
-        "memory": "--mem",
-        "network": "--network",
-        "nodecount": "--nodes",
-        "qos": "--qos",
-        "queue": "--partition",
-        "tasks-per-core": "--ntasks-per-core",
-        "tasks-per-node": "--ntasks-per-node",
-        "tasks-per-socket": "--ntasks-per-socket",
-        "timelimit": "--time",
-    }
-
-    def __init__(self, batch=None, sbatch=None):
+    def __init__(self, sbatch=None):
         """
         :param batch: The batch commands specified by batch field. These are scheduler agnostic fields
         :param sbatch: sbatch commands that are inserted with #SBATCH directive
@@ -87,7 +35,6 @@ class SlurmBatchScript(BatchScript):
         self.headers = []
         self.directive = "#SBATCH"
 
-        self.batch = batch
         self.sbatch = sbatch
 
         self.build_header()
@@ -100,49 +47,15 @@ class SlurmBatchScript(BatchScript):
             for cmd in self.sbatch:
                 self.headers += [f"{self.directive} {cmd}"]
 
-        # only process if batch field is specified
-        if self.batch:
-            for key, value in self.batch.items():
-                if key == "exclusive" and self.batch[key] is True:
-                    self.headers += [
-                        f"{self.directive} {self.batch_translation['exclusive']}=user"
-                    ]
-                # if batch key is None that means scheduler doesn't support the option
-                elif not self.batch_translation.get(key):
-                    continue
-                else:
-                    self.headers += [
-                        f"{self.directive} {self.batch_translation[key]}={value}"
-                    ]
-
 
 class CobaltBatchScript(BatchScript):
-    batch_translation = {
-        "account": "--project",
-        "begintime": None,
-        "cpucount": "--proccount",
-        "email-address": "--notify",
-        "exclusive": None,
-        "memory": None,
-        "network": None,
-        "nodecount": "--nodecount",
-        "qos": None,
-        "queue": "--queue",
-        "tasks-per-core": None,
-        "tasks-per-node": None,
-        "tasks-per-socket": None,
-        "timelimit": "--time",
-    }
-
-    def __init__(self, batch=None, cobalt=None):
+    def __init__(self, cobalt=None):
         """
-        :param batch: The batch commands specified by batch field. These are scheduler agnostic fields
-        :param sbatch: sbatch commands that are inserted with #SBATCH directive
+        :param cobalt: cobalt commands that are inserted with #COBALT directive
         """
         self.headers = []
         self.directive = "#COBALT"
 
-        self.batch = batch
         self.cobalt = cobalt
 
         self.build_header()
@@ -153,37 +66,8 @@ class CobaltBatchScript(BatchScript):
             for cmd in self.cobalt:
                 self.headers += [f"{self.directive} {cmd}"]
 
-        # only process if batch field is specified
-        if self.batch:
-            for key, value in self.batch.items():
-
-                # if batch key is None that means scheduler doesn't support the option
-                if self.batch_translation.get(key):
-                    self.headers += [
-                        f"{self.directive} {self.batch_translation[key]} {value}"
-                    ]
-                else:
-                    continue
-
 
 class PBSBatchScript(BatchScript):
-    batch_translation = {
-        "account": "project",
-        "begintime": None,
-        "cpucount": "-l ncpus",
-        "email-address": "-WMail_Users",
-        "exclusive": None,
-        "memory": "-l mem",
-        "network": None,
-        "nodecount": "-l nodes",
-        "qos": None,
-        "queue": "-q",
-        "tasks-per-core": None,
-        "tasks-per-node": None,
-        "tasks-per-socket": None,
-        "timelimit": "-l walltime",
-    }
-
     def __init__(self, batch=None, pbs=None):
         """
         :param batch: The batch commands specified by batch field. These are scheduler agnostic fields
@@ -192,7 +76,6 @@ class PBSBatchScript(BatchScript):
         self.headers = []
         self.directive = "#PBS"
 
-        self.batch = batch
         self.pbs = pbs
 
         self.build_header()
@@ -202,15 +85,3 @@ class PBSBatchScript(BatchScript):
         if self.pbs:
             for cmd in self.pbs:
                 self.headers += [f"{self.directive} {cmd}"]
-
-        # only process if batch field is specified
-        if self.batch:
-            for key, value in self.batch.items():
-
-                # if batch key is None that means scheduler doesn't support the option
-                if self.batch_translation.get(key):
-                    self.headers += [
-                        f"{self.directive} {self.batch_translation[key]}={value}"
-                    ]
-                else:
-                    continue

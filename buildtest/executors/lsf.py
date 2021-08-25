@@ -136,6 +136,12 @@ class LSFExecutor(BaseExecutor):
         """
 
         builder.job.poll()
+
+        # if job is complete gather job data
+        if builder.job.is_complete():
+            self.gather(builder)
+            return
+
         builder.stop()
         if builder.job.is_suspended() or builder.job.is_pending():
 
@@ -234,8 +240,6 @@ class LSFJob(Job):
         We run the following commands to retrieve following states
 
         - Job State: ``bjobs -noheader -o 'stat' <JOBID>``
-        - Output File: ``bjobs -noheader -o 'output_file' <JOBID>'``
-        - Error File: ``bjobs -noheader -o 'error_file' <JOBID>'``
         - Exit Code  File: ``bjobs -noheader -o 'EXIT_CODE' <JOBID>'``
         """
 
@@ -250,26 +254,6 @@ class LSFJob(Job):
         job_state = cmd.get_output()
         self._state = "".join(job_state).rstrip()
         logger.debug(f"Job State: {self._state}")
-
-        # get path to output file
-        query = f"bjobs -noheader -o 'output_file' {self.jobid} "
-        logger.debug(
-            f"Extracting OUTPUT FILE for job: {self.jobid} by running  '{query}'"
-        )
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        self._outfile = "".join(cmd.get_output()).rstrip()
-        logger.debug(f"Output File: {self._outfile}")
-
-        # get path to error file
-        query = f"bjobs -noheader -o 'error_file' {self.jobid} "
-        logger.debug(
-            f"Extracting ERROR FILE for job: {self.jobid} by running  '{query}'"
-        )
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        self._errfile = "".join(cmd.get_output()).rstrip()
-        logger.debug(f"Error File: {self._errfile}")
 
         query = f"bjobs -noheader -o 'EXIT_CODE' {self.jobid} "
         logger.debug(
@@ -288,7 +272,19 @@ class LSFJob(Job):
         logger.debug(f"Exit Code: {self._exitcode}")
 
     def gather(self):
-        """Gather Job record at onset of job completion by running ``bjobs -o '<format1> <format2>' <jobid> -json``. The format
+        """This method will retrieve the output and error file for a given jobID using the following commands.
+
+        .. code-block:: console
+
+            $ bjobs -noheader -o 'output_file' 70910
+            hold_job.out
+
+        .. code-block:: console
+
+            $ bjobs -noheader -o 'error_file' 70910
+            hold_job.err
+
+        We will gather job record at onset of job completion by running ``bjobs -o '<format1> <format2>' <jobid> -json``. The format
         fields extracted from job are the following:
 
            - "job_name"
@@ -342,6 +338,26 @@ class LSFJob(Job):
               ]
             }
         """
+
+        # get path to output file
+        query = f"bjobs -noheader -o 'output_file' {self.jobid} "
+        logger.debug(
+            f"Extracting OUTPUT FILE for job: {self.jobid} by running  '{query}'"
+        )
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        self._outfile = "".join(cmd.get_output()).rstrip()
+        logger.debug(f"Output File: {self._outfile}")
+
+        # get path to error file
+        query = f"bjobs -noheader -o 'error_file' {self.jobid} "
+        logger.debug(
+            f"Extracting ERROR FILE for job: {self.jobid} by running  '{query}'"
+        )
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        self._errfile = "".join(cmd.get_output()).rstrip()
+        logger.debug(f"Error File: {self._errfile}")
 
         format_fields = [
             "job_name",

@@ -173,24 +173,6 @@ buildspecs:
            module:
              swap: [PrgEnv-intel, PrgEnv-gnu/6.1.0]
 
-  batch_example:
-    type: compiler
-    description: example using batch field
-    executor: local.bash
-    source: "src/hello.cpp"
-    compilers:
-      name: [intel]
-      default:
-        all:
-          batch:
-            "timelimit": "30"
-            "nodecount": "2"
-            "queue": "batch"
-            "account": "biology"
-      config:
-        intel@2019:
-          cxxflags: "-O1"
-
   env_example:
     type: compiler
     description: Setting environment variables

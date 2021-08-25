@@ -560,7 +560,6 @@ class BuilderBase(ABC):
         self.cobalt = deep_get(
             self.recipe, "executors", self.executor, "cobalt"
         ) or self.recipe.get("cobalt")
-        self.batch = self.recipe.get("batch")
 
         self.burstbuffer = self.recipe.get("BB") or deep_get(
             self.recipe, "executors", self.executor, "BB"
@@ -571,7 +570,7 @@ class BuilderBase(ABC):
 
     def get_slurm_directives(self):
         """Get #SBATCH lines based on ``sbatch`` property"""
-        jobscript = SlurmBatchScript(sbatch=self.sbatch, batch=self.batch)
+        jobscript = SlurmBatchScript(sbatch=self.sbatch)
         lines = jobscript.get_headers()
         lines += [f"#SBATCH --job-name={self.name}"]
         lines += [f"#SBATCH --output={self.name}.out"]
@@ -581,7 +580,7 @@ class BuilderBase(ABC):
 
     def get_lsf_directives(self):
         """Get #BSUB lines based on ``bsub`` property"""
-        jobscript = LSFBatchScript(bsub=self.bsub, batch=self.batch)
+        jobscript = LSFBatchScript(bsub=self.bsub)
         lines = jobscript.get_headers()
         lines += [f"#BSUB -J {self.name}"]
         lines += [f"#BSUB -o {self.name}.out"]
@@ -591,7 +590,7 @@ class BuilderBase(ABC):
 
     def get_pbs_directives(self):
         """Get #PBS lines based on ``pbs`` property"""
-        jobscript = PBSBatchScript(pbs=self.pbs, batch=self.batch)
+        jobscript = PBSBatchScript(pbs=self.pbs)
         lines = jobscript.get_headers()
         lines += [f"#PBS -N {self.name}"]
 
@@ -599,7 +598,7 @@ class BuilderBase(ABC):
 
     def get_cobalt_directives(self):
         """Get #COBALT lines based on ``cobalt`` property"""
-        jobscript = CobaltBatchScript(cobalt=self.cobalt, batch=self.batch)
+        jobscript = CobaltBatchScript(cobalt=self.cobalt)
         lines = jobscript.get_headers()
         lines += [f"#COBALT --jobname {self.name}"]
 

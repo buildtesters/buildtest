@@ -5,10 +5,7 @@ buildspecs:
     executor: cori.slurm.knl_debug
     tags: [datawarp, jobs]
     description: Stage in data to Burst Buffer
-    batch:
-      timelimit: "10"
-      nodecount: "1"
-      cpucount: "4"
+    sbatch: ["-t 10", "-N 1", "-n 4"]
     DW:
       - "jobdw capacity=1GB access_mode=striped type=scratch"
       - "stage_in source=$SCRATCH/stage_in.txt destination=$DW_JOB_STRIPED/stage_in.txt type=file"
