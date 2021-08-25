@@ -175,12 +175,9 @@ If you want to specify ``"`` or ``'`` in string you can use the escape character
 several variables such as **X**, **Y** that contain numbers, variable **literalstring**
 is a literal string processed by YAML. The variable **singlequote** and **doublequote**
 defines a variable with the special character ``'`` and ``"``. The variables
-**current_user** and **files_homedir** store result of a shell command. This can
+**current_user** and **num_files** store result of a shell command. This can
 be done using ``var=$(<command>)`` or ``var=`<command>``` where ``<command>`` is
 a Linux command.
-
-.. Note:: You can use the escape character ``\`` to set special character, for instance you can declare a variable in string with quotes by using ``\"``.
-
 
 .. literalinclude::  ../tutorials/vars.yml
    :language: yaml
@@ -190,32 +187,10 @@ Next we build this test by running ``buildtest build -b $BUILDTEST_ROOT/tutorial
 .. command-output:: buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml
     :shell:
 
-Let's check the generated script from the previous build, you will notice that buildtest will define
-the shell variables at top of script followed content defined in ``run`` section.
+Let's check the generated script from the previous build, you can run ``buildtest inspect query -o variables_bash`` where
+`-o` refers to output file for testname `variables_bash`. Take note of the output file we
 
-
-.. code-block:: shell
-
-    #!/bin/bash
-    # Declare shell variables
-    X=1
-    Y=2
-    literalstring="this is a literal string ':' "
-
-    singlequote='singlequote'
-    doublequote="doublequote"
-    current_user=$(whoami)
-    files_homedir=`find $HOME -type f -maxdepth 1`
-
-
-    # Content of run section
-    echo "$X+$Y=" $(($X+$Y))
-    echo $literalstring
-    echo $singlequote
-    echo $doublequote
-
-    echo $current_user
-    echo $files_homedir
+.. command-output:: buildtest inspect query -o variables_bash
 
 .. _status:
 
@@ -787,7 +762,6 @@ Now let's see the test results by inspecting the metrics field using ``buildtest
 has the metrics name **firstname=Michael** and second test has **lastname=Jackson**.
 
 .. command-output:: buildtest report --format id,name,metrics --filter name=status_returncode_by_executors
-
 
 run_only
 ---------

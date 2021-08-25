@@ -10,15 +10,15 @@ buildspecs:
       Y: 2
       literalstring: |
         "this is a literal string ':' "
-      singlequote: "'singlequote'"
-      doublequote: "\"doublequote\""
+      singlequote: \'singlequote\'
+      doublequote: \"doublequote\"
       current_user: "$(whoami)"
-      files_homedir: "`find $HOME -type f -maxdepth 1`"
+      num_files: "`find $HOME -type f -maxdepth 1 | wc -l`"
 
     run: |
-      echo "$X+$Y=" $(($X+$Y))
+      echo "$X+$Y="$(($X+$Y))
       echo $literalstring
       echo $singlequote
       echo $doublequote
-      echo $current_user
-      echo $files_homedir
+      echo "current user:" $current_user
+      echo "number of files:" $num_files

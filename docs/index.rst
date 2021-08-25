@@ -75,7 +75,6 @@ automate module load testing. For more details on lmodule see https://github.com
    :caption: Background
 
    what_is_buildtest
-   terminology
 
 .. toctree::
    :maxdepth: 2

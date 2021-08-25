@@ -84,6 +84,10 @@ class CompilerBuilder(BuilderBase):
 
         self._process_compiler_config()
 
+        self.metrics = deep_get(
+            self.recipe, "executors", self.executor, "metrics"
+        ) or self.recipe.get("metrics")
+
         # get environment variables
         self.envvars = (
             deep_get(self.compiler_section, "config", self.compiler, "env")
