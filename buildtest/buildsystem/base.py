@@ -764,6 +764,7 @@ class BuilderBase(ABC):
         property can be defined in the buildspdec to assign value to a metrics name based on regular expression,
         environment or variable assignment.
         """
+
         if not self.metrics:
             return
 
