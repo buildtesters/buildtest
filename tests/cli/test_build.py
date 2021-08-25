@@ -75,14 +75,26 @@ def test_build_filter_check():
     )
     cmd.build()
 
-    #  testing buildtest build --tags tutorials --filter type=script
+    #  testing buildtest build -b tutorials/shell_examples.yml --filter type=script
     cmd = BuildTest(
         configuration=configuration,
-        buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials")],
+        buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "shell_examples.yml")],
         filter_buildspecs={"type": "script"},
         buildtest_system=system,
     )
     cmd.build()
+
+    with pytest.raises(SystemExit):
+        #  testing buildtest build -b tutorials/shell_examples.yml --filter type=spack this will raise an error because there would be no tests using 'type: spack'
+        cmd = BuildTest(
+            configuration=configuration,
+            buildspecs=[
+                os.path.join(BUILDTEST_ROOT, "tutorials", "shell_examples.yml")
+            ],
+            filter_buildspecs={"type": "spack"},
+            buildtest_system=system,
+        )
+        cmd.build()
 
     # invalid filter field 'FOO' running 'buildtest build -t pass --filter FOO=BAR
     with pytest.raises(BuildTestError):
@@ -261,14 +273,14 @@ def test_invalid_buildspes():
         os.path.join(BUILDTEST_ROOT, "tutorials", "invalid_executor.yml"),
     ]
 
-    # rebuild 5 times (buildtest build -b tutorials/python-shell.yml --rebuild=5
-    cmd = BuildTest(
-        configuration=configuration,
-        buildspecs=buildspec_file,
-        rebuild=5,
-        buildtest_system=system,
-    )
-    cmd.build()
+    # buildtest build -b tutorials/invalid_tags.yml -b tutorials/invalid_executor.yml
+    with pytest.raises(SystemExit):
+        cmd = BuildTest(
+            configuration=configuration,
+            buildspecs=buildspec_file,
+            buildtest_system=system,
+        )
+        cmd.build()
 
 
 @pytest.mark.cli
