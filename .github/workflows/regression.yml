@@ -34,5 +34,10 @@ jobs:
         python $BUILDTEST_ROOT/scripts/regtest.py
         buildtest cdash upload --site=github unittests
 
+    - uses: actions/checkout@v2
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
+      timeout-minutes: 60
+
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2.0.2
