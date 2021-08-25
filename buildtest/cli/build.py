@@ -679,6 +679,16 @@ class BuildTest:
         :rtype: list
         """
 
+        msg = """
++---------------------------+
+| Stage: Parsing Buildspecs |
++---------------------------+ 
+"""
+        if os.getenv("BUILDTEST_COLOR") == "True":
+            msg = colored(msg, "red", attrs=["bold"])
+
+        print(msg)
+
         self.builders = []
 
         self.invalid_buildspecs = []
@@ -717,26 +727,6 @@ class BuildTest:
 
             self.builders += builder.get_builders()
 
-        if len(filtered_buildspecs) > 0:
-            print("\nBuildspecs that were filtered out")
-            print("{:_<80}".format(""))
-            for test in filtered_buildspecs:
-                print(test)
-
-        # if no builders found we return from this method
-        if not self.builders:
-            sys.exit("No buildspecs to process because there are no valid buildspecs")
-
-        msg = """
-+---------------------------+
-| Stage: Parsing Buildspecs |
-+---------------------------+ 
-"""
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            msg = colored(msg, "red", attrs=["bold"])
-
-        print(msg)
-
         print("Valid Buildspecs: ", len(valid_buildspecs))
         print("Invalid Buildspecs: ", len(self.invalid_buildspecs))
 
@@ -751,6 +741,16 @@ class BuildTest:
             print("{:_<80}".format(""))
             for test in self.invalid_buildspecs:
                 print(test)
+
+        if len(filtered_buildspecs) > 0:
+            print("\nBuildspecs that were filtered out")
+            print("{:_<80}".format(""))
+            for test in filtered_buildspecs:
+                print(test)
+
+        # if no builders found we return from this method
+        if not self.builders:
+            sys.exit("Unable to create any builder objects")
 
         testnames = list(map(lambda x: x.name, self.builders))
         uid = list(map(lambda x: x.metadata["id"], self.builders))
