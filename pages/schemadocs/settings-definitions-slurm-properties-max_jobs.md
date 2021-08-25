@@ -1,15 +1,19 @@
-# Untitled undefined type in buildtest configuration schema Schema
+# Untitled integer in buildtest configuration schema Schema
 
 ```txt
-settings.schema.json#/definitions/slurm/properties/after_script
+settings.schema.json#/definitions/slurm/properties/max_jobs
 ```
 
-The `after_script` section can be used to specify commands at end of test. The script will be sourced in active shell.
+Maximum number of jobs that can be run at a given time for a particular executor
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
 
-## after_script Type
+## max_jobs Type
 
-unknown
+`integer`
+
+## max_jobs Constraints
+
+**minimum**: the value of this number must greater than or equal to: `1`

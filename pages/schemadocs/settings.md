@@ -303,6 +303,17 @@ Reference this group by using
 | Property | Type | Required | Nullable | Defined by |
 | :------- | :--- | :------- | :------- | :--------- |
 
+## Definitions group max_jobs
+
+Reference this group by using
+
+```json
+{"$ref":"settings.schema.json#/definitions/max_jobs"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | :--- | :------- | :------- | :--------- |
+
 ## Definitions group compiler_section
 
 Reference this group by using
@@ -529,6 +540,7 @@ Reference this group by using
 | [description](#description-1)   | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-description.md "settings.schema.json#/definitions/local/properties/description")     |
 | [shell](#shell)                 | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-shell.md "settings.schema.json#/definitions/local/properties/shell")                 |
 | [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-before_script.md "settings.schema.json#/definitions/local/properties/before_script") |
+| [max_jobs](#max_jobs)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-max_jobs.md "settings.schema.json#/definitions/local/properties/max_jobs")           |
 
 ### description
 
@@ -594,6 +606,28 @@ Specify the shell launcher you want to use when running tests locally
 
 unknown
 
+### max_jobs
+
+Maximum number of jobs that can be run at a given time for a particular executor
+
+`max_jobs`
+
+*   is optional
+
+*   Type: `integer`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-local-properties-max_jobs.md "settings.schema.json#/definitions/local/properties/max_jobs")
+
+#### max_jobs Type
+
+`integer`
+
+#### max_jobs Constraints
+
+**minimum**: the value of this number must greater than or equal to: `1`
+
 ## Definitions group slurm
 
 Reference this group by using
@@ -611,9 +645,9 @@ Reference this group by using
 | [partition](#partition)           | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-partition.md "settings.schema.json#/definitions/slurm/properties/partition")         |
 | [qos](#qos)                       | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-qos.md "settings.schema.json#/definitions/slurm/properties/qos")                     |
 | [before_script](#before_script-1) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-before_script.md "settings.schema.json#/definitions/slurm/properties/before_script") |
-| [after_script](#after_script)     | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-after_script.md "settings.schema.json#/definitions/slurm/properties/after_script")   |
 | [max_pend_time](#max_pend_time)   | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-max_pend_time.md "settings.schema.json#/definitions/slurm/properties/max_pend_time") |
 | [account](#account)               | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-account.md "settings.schema.json#/definitions/slurm/properties/account")             |
+| [max_jobs](#max_jobs-1)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-max_jobs.md "settings.schema.json#/definitions/slurm/properties/max_jobs")           |
 
 ### description
 
@@ -749,24 +783,6 @@ The `before_script` section can be used to specify commands before start of test
 
 unknown
 
-### after_script
-
-The `after_script` section can be used to specify commands at end of test. The script will be sourced in active shell.
-
-`after_script`
-
-*   is optional
-
-*   Type: unknown
-
-*   cannot be null
-
-*   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-after_script.md "settings.schema.json#/definitions/slurm/properties/after_script")
-
-#### after_script Type
-
-unknown
-
 ### max_pend_time
 
 Cancel job if it is still pending in queue beyond max_pend_time
@@ -815,6 +831,28 @@ Specify Job Account for charging resources
 
 `string`
 
+### max_jobs
+
+Maximum number of jobs that can be run at a given time for a particular executor
+
+`max_jobs`
+
+*   is optional
+
+*   Type: `integer`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-max_jobs.md "settings.schema.json#/definitions/slurm/properties/max_jobs")
+
+#### max_jobs Type
+
+`integer`
+
+#### max_jobs Constraints
+
+**minimum**: the value of this number must greater than or equal to: `1`
+
 ## Definitions group lsf
 
 Reference this group by using
@@ -830,9 +868,9 @@ Reference this group by using
 | [options](#options-1)             | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-options.md "settings.schema.json#/definitions/lsf/properties/options")             |
 | [queue](#queue)                   | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-queue.md "settings.schema.json#/definitions/lsf/properties/queue")                 |
 | [before_script](#before_script-2) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-before_script.md "settings.schema.json#/definitions/lsf/properties/before_script") |
-| [after_script](#after_script-1)   | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-after_script.md "settings.schema.json#/definitions/lsf/properties/after_script")   |
 | [max_pend_time](#max_pend_time-1) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-max_pend_time.md "settings.schema.json#/definitions/lsf/properties/max_pend_time") |
 | [account](#account-1)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-account.md "settings.schema.json#/definitions/lsf/properties/account")             |
+| [max_jobs](#max_jobs-2)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-max_jobs.md "settings.schema.json#/definitions/lsf/properties/max_jobs")           |
 
 ### description
 
@@ -932,24 +970,6 @@ The `before_script` section can be used to specify commands before start of test
 
 unknown
 
-### after_script
-
-The `after_script` section can be used to specify commands at end of test. The script will be sourced in active shell.
-
-`after_script`
-
-*   is optional
-
-*   Type: unknown
-
-*   cannot be null
-
-*   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-after_script.md "settings.schema.json#/definitions/lsf/properties/after_script")
-
-#### after_script Type
-
-unknown
-
 ### max_pend_time
 
 Cancel job if it is still pending in queue beyond max_pend_time
@@ -998,6 +1018,28 @@ Specify Job Account for charging resources
 
 `string`
 
+### max_jobs
+
+Maximum number of jobs that can be run at a given time for a particular executor
+
+`max_jobs`
+
+*   is optional
+
+*   Type: `integer`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-max_jobs.md "settings.schema.json#/definitions/lsf/properties/max_jobs")
+
+#### max_jobs Type
+
+`integer`
+
+#### max_jobs Constraints
+
+**minimum**: the value of this number must greater than or equal to: `1`
+
 ## Definitions group cobalt
 
 Reference this group by using
@@ -1013,9 +1055,9 @@ Reference this group by using
 | [options](#options-2)             | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-options.md "settings.schema.json#/definitions/cobalt/properties/options")             |
 | [queue](#queue-1)                 | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-queue.md "settings.schema.json#/definitions/cobalt/properties/queue")                 |
 | [before_script](#before_script-3) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-before_script.md "settings.schema.json#/definitions/cobalt/properties/before_script") |
-| [after_script](#after_script-2)   | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-after_script.md "settings.schema.json#/definitions/cobalt/properties/after_script")   |
 | [max_pend_time](#max_pend_time-2) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-max_pend_time.md "settings.schema.json#/definitions/cobalt/properties/max_pend_time") |
 | [account](#account-2)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-account.md "settings.schema.json#/definitions/cobalt/properties/account")             |
+| [max_jobs](#max_jobs-3)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-max_jobs.md "settings.schema.json#/definitions/cobalt/properties/max_jobs")           |
 
 ### description
 
@@ -1115,24 +1157,6 @@ The `before_script` section can be used to specify commands before start of test
 
 unknown
 
-### after_script
-
-The `after_script` section can be used to specify commands at end of test. The script will be sourced in active shell.
-
-`after_script`
-
-*   is optional
-
-*   Type: unknown
-
-*   cannot be null
-
-*   defined in: [buildtest configuration schema](settings-definitions-cobalt-properties-after_script.md "settings.schema.json#/definitions/cobalt/properties/after_script")
-
-#### after_script Type
-
-unknown
-
 ### max_pend_time
 
 Cancel job if it is still pending in queue beyond max_pend_time
@@ -1181,6 +1205,28 @@ Specify Job Account for charging resources
 
 `string`
 
+### max_jobs
+
+Maximum number of jobs that can be run at a given time for a particular executor
+
+`max_jobs`
+
+*   is optional
+
+*   Type: `integer`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-cobalt-properties-max_jobs.md "settings.schema.json#/definitions/cobalt/properties/max_jobs")
+
+#### max_jobs Type
+
+`integer`
+
+#### max_jobs Constraints
+
+**minimum**: the value of this number must greater than or equal to: `1`
+
 ## Definitions group pbs
 
 Reference this group by using
@@ -1196,9 +1242,9 @@ Reference this group by using
 | [options](#options-3)             | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-options.md "settings.schema.json#/definitions/pbs/properties/options")             |
 | [queue](#queue-2)                 | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-queue.md "settings.schema.json#/definitions/pbs/properties/queue")                 |
 | [before_script](#before_script-4) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-before_script.md "settings.schema.json#/definitions/pbs/properties/before_script") |
-| [after_script](#after_script-3)   | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-after_script.md "settings.schema.json#/definitions/pbs/properties/after_script")   |
 | [max_pend_time](#max_pend_time-3) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-max_pend_time.md "settings.schema.json#/definitions/pbs/properties/max_pend_time") |
 | [account](#account-3)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-account.md "settings.schema.json#/definitions/pbs/properties/account")             |
+| [max_jobs](#max_jobs-4)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-max_jobs.md "settings.schema.json#/definitions/pbs/properties/max_jobs")           |
 
 ### description
 
@@ -1298,24 +1344,6 @@ The `before_script` section can be used to specify commands before start of test
 
 unknown
 
-### after_script
-
-The `after_script` section can be used to specify commands at end of test. The script will be sourced in active shell.
-
-`after_script`
-
-*   is optional
-
-*   Type: unknown
-
-*   cannot be null
-
-*   defined in: [buildtest configuration schema](settings-definitions-pbs-properties-after_script.md "settings.schema.json#/definitions/pbs/properties/after_script")
-
-#### after_script Type
-
-unknown
-
 ### max_pend_time
 
 Cancel job if it is still pending in queue beyond max_pend_time
@@ -1363,3 +1391,25 @@ Specify Job Account for charging resources
 #### account Type
 
 `string`
+
+### max_jobs
+
+Maximum number of jobs that can be run at a given time for a particular executor
+
+`max_jobs`
+
+*   is optional
+
+*   Type: `integer`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-pbs-properties-max_jobs.md "settings.schema.json#/definitions/pbs/properties/max_jobs")
+
+#### max_jobs Type
+
+`integer`
+
+#### max_jobs Constraints
+
+**minimum**: the value of this number must greater than or equal to: `1`

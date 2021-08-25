@@ -25,9 +25,9 @@ An instance object of slurm executor
 | [partition](#partition)         | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-partition.md "settings.schema.json#/definitions/slurm/properties/partition")         |
 | [qos](#qos)                     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-qos.md "settings.schema.json#/definitions/slurm/properties/qos")                     |
 | [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-before_script.md "settings.schema.json#/definitions/slurm/properties/before_script") |
-| [after_script](#after_script)   | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-after_script.md "settings.schema.json#/definitions/slurm/properties/after_script")   |
 | [max_pend_time](#max_pend_time) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-max_pend_time.md "settings.schema.json#/definitions/slurm/properties/max_pend_time")                  |
 | [account](#account)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-account.md "settings.schema.json#/definitions/slurm/properties/account")                              |
+| [max_jobs](#max_jobs)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-max_jobs.md "settings.schema.json#/definitions/slurm/properties/max_jobs")                            |
 
 ## description
 
@@ -163,24 +163,6 @@ The `before_script` section can be used to specify commands before start of test
 
 unknown
 
-## after_script
-
-The `after_script` section can be used to specify commands at end of test. The script will be sourced in active shell.
-
-`after_script`
-
-*   is optional
-
-*   Type: unknown
-
-*   cannot be null
-
-*   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-after_script.md "settings.schema.json#/definitions/slurm/properties/after_script")
-
-### after_script Type
-
-unknown
-
 ## max_pend_time
 
 Cancel job if it is still pending in queue beyond max_pend_time
@@ -228,3 +210,25 @@ Specify Job Account for charging resources
 ### account Type
 
 `string`
+
+## max_jobs
+
+Maximum number of jobs that can be run at a given time for a particular executor
+
+`max_jobs`
+
+*   is optional
+
+*   Type: `integer`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-max_jobs.md "settings.schema.json#/definitions/slurm/properties/max_jobs")
+
+### max_jobs Type
+
+`integer`
+
+### max_jobs Constraints
+
+**minimum**: the value of this number must greater than or equal to: `1`
