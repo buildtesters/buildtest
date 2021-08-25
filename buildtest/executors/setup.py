@@ -186,7 +186,7 @@ class BuildExecutor:
 
         results = []
 
-        workers = mp.Pool(mp.cpu_count())
+        workers = mp.Pool(2)
 
         for name in self.executors.keys():
             print(f"Name: {name}  Builders:  {self.executors[name].get_builder()}")

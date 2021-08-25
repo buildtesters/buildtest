@@ -725,8 +725,7 @@ class BuildTest:
 
         # if no builders found we return from this method
         if not self.builders:
-            print("No buildspecs to process because there are no valid buildspecs")
-            return
+            sys.exit("No buildspecs to process because there are no valid buildspecs")
 
         msg = """
 +---------------------------+
