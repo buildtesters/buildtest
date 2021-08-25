@@ -20,7 +20,6 @@ The script schema is of `type: script` in sub-schema which is used for running s
 | :-------------------------- | :-------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------- |
 | [type](#type)               | `string`  | Required | cannot be null | [script schema version 1.0](script-v1-properties-type.md "script-v1.0.schema.json#/properties/type")                  |
 | [description](#description) | `string`  | Optional | cannot be null | [script schema version 1.0](definitions-definitions-description.md "script-v1.0.schema.json#/properties/description") |
-| [batch](#batch)             | `object`  | Optional | cannot be null | [script schema version 1.0](definitions-definitions-batch.md "script-v1.0.schema.json#/properties/batch")             |
 | [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [script schema version 1.0](script-v1-properties-sbatch.md "script-v1.0.schema.json#/properties/sbatch")              |
 | [bsub](#bsub)               | `array`   | Optional | cannot be null | [script schema version 1.0](script-v1-properties-bsub.md "script-v1.0.schema.json#/properties/bsub")                  |
 | [cobalt](#cobalt)           | `array`   | Optional | cannot be null | [script schema version 1.0](script-v1-properties-cobalt.md "script-v1.0.schema.json#/properties/cobalt")              |
@@ -89,24 +88,6 @@ The `description` field is used to document what the test is doing
 ### description Constraints
 
 **maximum length**: the maximum number of characters for this string is: `80`
-
-## batch
-
-The `batch` field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler. This is an experimental feature that supports a subset of scheduler parameters.
-
-`batch`
-
-*   is optional
-
-*   Type: `object` ([Details](definitions-definitions-batch.md))
-
-*   cannot be null
-
-*   defined in: [script schema version 1.0](definitions-definitions-batch.md "script-v1.0.schema.json#/properties/batch")
-
-### batch Type
-
-`object` ([Details](definitions-definitions-batch.md))
 
 ## sbatch
 

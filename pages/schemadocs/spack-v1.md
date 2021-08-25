@@ -27,7 +27,6 @@ The spack schema is referenced using `type: spack` which is used for generating 
 | [bsub](#bsub)               | `array`   | Optional | cannot be null | [spack schema version 1.0](spack-v1-properties-bsub.md "spack-v1.0.schema.json#/properties/bsub")                   |
 | [cobalt](#cobalt)           | `array`   | Optional | cannot be null | [spack schema version 1.0](spack-v1-properties-cobalt.md "spack-v1.0.schema.json#/properties/cobalt")               |
 | [pbs](#pbs)                 | `array`   | Optional | cannot be null | [spack schema version 1.0](spack-v1-properties-pbs.md "spack-v1.0.schema.json#/properties/pbs")                     |
-| [batch](#batch)             | `object`  | Optional | cannot be null | [spack schema version 1.0](definitions-definitions-batch.md "spack-v1.0.schema.json#/properties/batch")             |
 | [BB](#bb)                   | `array`   | Optional | cannot be null | [spack schema version 1.0](spack-v1-properties-bb.md "spack-v1.0.schema.json#/properties/BB")                       |
 | [DW](#dw)                   | `array`   | Optional | cannot be null | [spack schema version 1.0](spack-v1-properties-dw.md "spack-v1.0.schema.json#/properties/DW")                       |
 | [skip](#skip)               | `boolean` | Optional | cannot be null | [spack schema version 1.0](definitions-definitions-skip.md "spack-v1.0.schema.json#/properties/skip")               |
@@ -246,24 +245,6 @@ This field is used for specifying #PBS directives in test script.
 **minimum number of items**: the minimum number of items for this array is: `1`
 
 **unique items**: all items in this array must be unique. Duplicates are not allowed.
-
-## batch
-
-The `batch` field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler. This is an experimental feature that supports a subset of scheduler parameters.
-
-`batch`
-
-*   is optional
-
-*   Type: `object` ([Details](definitions-definitions-batch.md))
-
-*   cannot be null
-
-*   defined in: [spack schema version 1.0](definitions-definitions-batch.md "spack-v1.0.schema.json#/properties/batch")
-
-### batch Type
-
-`object` ([Details](definitions-definitions-batch.md))
 
 ## BB
 

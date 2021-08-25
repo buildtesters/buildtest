@@ -412,8 +412,6 @@
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all.md "Specify compiler configuration for all compiler groups") – `compiler-v1.0.schema.json#/definitions/default_compiler_all`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/batch`
-
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/env`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/vars`
@@ -422,8 +420,6 @@
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config.md "Specify compiler configuration for group of compilers") – `compiler-v1.0.schema.json#/definitions/default_compiler_config`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/batch`
-
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars`
@@ -431,8 +427,6 @@
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration.md "Specify compiler configuration at compiler level") – `compiler-v1.0.schema.json#/definitions/compiler_declaration`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/batch`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/env`
 
@@ -448,8 +442,6 @@
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-all.md "Specify compiler configuration for all compiler groups") – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/all`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/batch`
-
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/env`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/vars`
@@ -457,8 +449,6 @@
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/status`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-gcc.md "Specify compiler configuration for group of compilers") – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/gcc`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/batch`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env`
 
@@ -468,8 +458,6 @@
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-intel.md "Specify compiler configuration for group of compilers") – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/intel`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/batch`
-
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars`
@@ -477,8 +465,6 @@
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-pgi.md "Specify compiler configuration for group of compilers") – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/pgi`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/batch`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env`
 
@@ -488,8 +474,6 @@
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-cray.md "Specify compiler configuration for group of compilers") – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/cray`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/batch`
-
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars`
@@ -497,8 +481,6 @@
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-clang.md "Specify compiler configuration for group of compilers") – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/clang`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/batch`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env`
 
@@ -508,8 +490,6 @@
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-cuda.md "Specify compiler configuration for group of compilers") – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/cuda`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/batch`
-
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars`
@@ -517,8 +497,6 @@
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-upcxx.md "Specify compiler configuration for group of compilers") – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/upcxx`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/batch`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env`
 
@@ -529,8 +507,6 @@
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-config.md "Specify compiler configuration based on named compilers") – `compiler-v1.0.schema.json#/properties/compilers/properties/config`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-config-patternproperties-.md "Specify compiler configuration at compiler level") – `compiler-v1.0.schema.json#/properties/compilers/properties/config/patternProperties/^.*$`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/batch`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/env`
 
@@ -545,8 +521,6 @@
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-metrics.md "This field is used for defining one or more metrics that is recorded for each test") – `compiler-v1.0.schema.json#/properties/metrics`
 
 *   [Untitled object in global schema](./global-properties-buildspecs.md "This section is used to define one or more tests (buildspecs)") – `global.schema.json#/properties/buildspecs`
-
-*   [Untitled object in script schema version 1.0](./script-v1-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `script-v1.0.schema.json#/properties/batch`
 
 *   [Untitled object in script schema version 1.0](./script-v1-properties-env.md "One or more key value pairs for an environment (key=value)") – `script-v1.0.schema.json#/properties/env`
 
@@ -563,8 +537,6 @@
 *   [Untitled object in spack schema version 1.0](./spack-v1-properties-env.md "One or more key value pairs for an environment (key=value)") – `spack-v1.0.schema.json#/properties/env`
 
 *   [Untitled object in spack schema version 1.0](./spack-v1-properties-vars.md "One or more key value pairs for an environment (key=value)") – `spack-v1.0.schema.json#/properties/vars`
-
-*   [Untitled object in spack schema version 1.0](./spack-v1-properties-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `spack-v1.0.schema.json#/properties/batch`
 
 *   [Untitled object in spack schema version 1.0](./spack-v1-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `spack-v1.0.schema.json#/properties/status`
 

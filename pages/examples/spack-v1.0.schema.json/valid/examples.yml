@@ -171,21 +171,6 @@ buildspecs:
       spack find
       rm -rf $SPACK_ROOT
 
-  batch_field_with_spack:
-    type: spack
-    executor: generic.local.sh
-    description: Specify batch property with spack schema
-    batch:
-      cpucount: "1"
-      memory: "1M"
-      nodecount: "1"
-      qos: "normal"
-    spack:
-      root: $HOME/spack
-      install:
-        specs: ['m4']
-        options: "-v"
-
   sbatch_field_with_spack:
     type: spack
     executor: generic.local.sh
@@ -246,14 +231,11 @@ buildspecs:
     executor: "generic.local.(sh|bash)"
     description: "sbatch directives can be defined in spack schema"
     tags: [spack]
-    batch:
-      cpucount: "8"
-      timelimit: "30"
     executors:
       generic.local.sh:
-        sbatch: ["-N 1"]
+        sbatch: ["-N 1", "-t 20"]
       generic.local.bash:
-        sbatch: ["-N 8"]
+        sbatch: ["-N 8", "-t 10"]
     spack:
       root: $HOME/spack
       env:
