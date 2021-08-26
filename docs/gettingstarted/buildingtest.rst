@@ -257,6 +257,7 @@ the test script will not be generated. Here is an example where we have an inval
 buildspec.
 
 .. command-output:: buildtest build -b tutorials/invalid_buildspec_section.yml
+    :returncode: 1
 
 buildtest may skip tests from running if buildspec specifies an invalid
 executor name since buildtest needs to know this in order to delegate test
@@ -264,7 +265,7 @@ to Executor class responsible for running the test. Here is an example
 where test failed to run since we provided invalid executor.
 
 .. command-output:: buildtest build -b tutorials/invalid_executor.yml
-
+    :returncode: 1
 
 Rebuild Tests
 --------------

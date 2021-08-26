@@ -122,11 +122,12 @@ regression test run locally. Shown below is an example output:
     -------------------------------------------------------------------------------
     TOTAL                                       3179   1005   1246    147    66.19%
 
-4 empty files skipped.
+    4 empty files skipped.
 
 If you want to view the coverage details locally in a browser you can run: ``coverage html`` which will
 write the results to directory **htmlcov**. You can open the file ``open htmlcov/index.html`` and it will show you
-a summary of coverage results that you would see from codecov.
+a summary of coverage results that you would see from codecov. Shown below is a preview of coverage report that
+you would see after running your regression test.
 
 .. image:: coverage_locally.png
 

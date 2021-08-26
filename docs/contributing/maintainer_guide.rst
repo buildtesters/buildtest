@@ -11,22 +11,20 @@ These are just a few points to consider when dealing with incoming pull requests
 
 1. Any incoming Pull Request should be assigned to one or more maintainers for review.
 
-2. Upon approval, the PR should be **Squash and Merge**. If it's important to preserve a few commits during PR then **Rebase and Merge** is acceptable.
+2. Upon approval, the PR should be **Create a merge commit** or **Squash and merge** depending on your preference. To preserve commit history please use **Create a merge commit** though sometimes it can be useful to do Squash commit. For more details on merge request see https://docs.github.com/en/github/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/merging-a-pull-request
 
-3. The final commit PR commit, either Squash Commit or Rebase should have meaningful comments and if possible link to the github issue.
+3. Maintainers can request user to put meaningful commit if author has not provided a meaningful message (i.e ``git commit --amend``)
 
-4. Maintainers can request user to put meaningful commit if author has not provided a meaningful message (i.e ``git commit --amend``)
+4. Maintainers are requested that committer name and email is from a valid Github account. If not please request the committer to fix the author name and email.
 
-5. Maintainers are requested that committer name and email is from a valid Github account. If not please request the committer to fix the author name and email.
-
-6. All incoming PRs should be pushed to ``devel`` branch, if you see any PR sent to any other branch please inform code owner to fix it
+5. All incoming PRs should be pushed to `devel <https://github.com/buildtesters/buildtest/tree/devel>`_ branch, if you see any PR sent to any other branch please inform code owner to fix it
 
 
 Release Process
 -----------------
 
-Every buildtest release will be tagged with a version number using format **X.Y.Z**. Every release will have a git tags
-such as ``v1.2.3`` to correspond to release **1.2.3**. Git tags should be pushed to upstream by **release manager** only.
+Every buildtest release will be tagged with a version number using format **X.Y.Z**. Every release will have a tag that corresponds
+to a release such as ``v1.2.3``. Git tags should be pushed to upstream by **release manager** only.
 The process for pushing git tags can be described in the following article:  `Git Basics - Tagging <https://git-scm.com/book/en/v2/Git-Basics-Tagging>`_
 
 We will create annotated tags as follows::
@@ -54,7 +52,7 @@ branch from devel.
 Default Branch
 ------------------
 
-The default branch should be  ``devel`` which should be protected branch.
+The default branch is `devel <https://github.com/buildtesters/buildtest/tree/devel>`_ and this should be `protected branch <https://docs.github.com/en/github/administering-a-repository/defining-the-mergeability-of-pull-requests/about-protected-branches>`_.
 
 Branch Settings
 ----------------
@@ -70,11 +68,8 @@ below is the expected configuration.
 Merge Settings
 ----------------
 
-We have disabled ``Merge Commits`` for the Merge button in Pull Request.  This was done because we
-wanted a linear history as a requirement for ``devel`` branch. This avoids having a maintainer accidently
-merge a PR with ``Merge Commit`` which adds an extra commit.
-
-Shown below is the recommended configuration.
+We have enabled all commit types i.e (merge commits, squash merging, rebase merging) for merging Pull Request.  Shown below is the
+recommended configuration, if you see a deviation please inform the maintainers.
 
 .. image:: buildtest_merge_options.png
 
@@ -83,16 +78,16 @@ If you notice a deviation, please consult with the maintainers.
 Google Analytics
 -----------------
 
-The buildtest site is tracked via Google Analytics, if you are interested in get access contact **Shahzeb Siddiqui (@shahzebsiddiqui)**
+The buildtest site is tracked via Google Analytics, if you are interested in get access contact **Shahzeb Siddiqui** `@shahzebsiddiqui <https://github.com/shahzebsiddiqui/>`_
 
 Read The Docs Access
 ---------------------
 
 buildtest project for readthedocs can be found at https://readthedocs.org/projects/buildtest/. If you need
-to administer project configuration, please contact **Shahzeb Siddiqui @shahzebsiddiqui** to gain access.
+to administer project configuration, please contact **Shahzeb Siddiqui** `@shahzebsiddiqui <https://github.com/shahzebsiddiqui/>`_ to gain access.
 
 Slack Admin Access
 -------------------
 
-If you need admin access to Slack Channel please contact **Shahzeb Siddiqui @shahzebsiddiqui**. The
+If you need admin access to Slack Channel please contact **Shahzeb Siddiqui** `@shahzebsiddiqui <https://github.com/shahzebsiddiqui/>`_. The
 slack admin link is https://hpcbuildtest.slack.com/admin
