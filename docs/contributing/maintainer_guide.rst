@@ -58,12 +58,12 @@ Branch Settings
 ----------------
 
 All maintainers are encouraged to view branch `settings <https://github.com/buildtesters/buildtest/settings/branches>`_
-for ``devel`` and ``master``. If something is not correct please consult with the maintainers.
-
-The master and devel branches should be protected branches and master should be enabled as default branch. Shown
-below is the expected configuration.
+for ``devel`` and ``master``. The master and devel branches should be protected branches and **devel** branch should
+be set as the default branch. Shown below is the expected configuration.
 
 .. image:: buildtest_branch_settings.png
+
+If something is not correct please consult with the maintainers.
 
 Merge Settings
 ----------------
