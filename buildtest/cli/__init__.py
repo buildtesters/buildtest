@@ -132,6 +132,13 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
 
     subparsers.add_parser("docs", help="Open buildtest docs in browser")
     subparsers.add_parser("schemadocs", help="Open buildtest schema docs in browser")
+    clean = subparsers.add_parser(
+        "clean",
+        help="Remove all generate files from buildtest including test directory, log files, report file, buildspec cache, history files.",
+    )
+    clean.add_argument(
+        "-y", "--yes", action="store_true", help="Confirm yes for all prompts"
+    )
 
     help_subparser = subparsers.add_parser(
         "help",

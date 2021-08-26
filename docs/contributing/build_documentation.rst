@@ -30,7 +30,7 @@ To install your python packages, you can run the following::
 Building docs locally
 -----------------------
 
-To build your documentation simply run the following::
+To build your documentation, navigate to the `docs` directory and run the following::
 
   cd docs
   make clean
@@ -41,16 +41,12 @@ content from previous builds, but it is ok to skip this step if you are
 making minor changes.
 
 Running ``make html`` will build the sphinx project and generate all the html
-files in ``docs/_build/html``. Once this process is complete you may want to view
-the documentation. If you have ``firefox`` in your system you can simply run the
-following::
+files in ``docs/_build/html``. Once this process is complete you can view the html
+pages by running the following::
 
-  make view
+    open _build/html/index.html
 
-This will open a ``firefox`` session to the root of your documentation that was
-recently generated. Make sure you have X11 forwarding in order for firefox to
-work properly. Refer to the ``Makefile`` to see all of the make tags or run
-``make`` or ``make help`` for additional help.
+Please refer to the ``Makefile`` to see list of tags or run ``make`` for additional help.
 
 Automate Documentation Examples
 --------------------------------

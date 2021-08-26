@@ -29,7 +29,36 @@ If you prefer the latest release use the **master** branch::
 Installing buildtest
 -----------------------
 
-To install buildtest, navigate to buildtest repo and source the setup script as follows::
+buildtest requires a python 3.7 or higher, we recommend you setup a python environment in order
+to install buildtest. You can use `venv <https://docs.python.org/3/library/venv.html>`_, `conda <https://conda.io/>`_,
+or `pipenv <https://pipenv.readthedocs.io/en/latest/>`_ to manage your python environment depending on your preference.
+
+venv Setup
+~~~~~~~~~~~
+
+.. code-block::
+
+    python3 -m venv $HOME/buildtest
+    source $HOME/buildtest/activate
+
+Conda Setup
+~~~~~~~~~~~~~
+
+.. code-block::
+
+    conda create -n buildtest python=3.7
+    source activate buildtest
+
+Pipenv Setup
+~~~~~~~~~~~~~
+
+.. code-block::
+
+    pipenv --python 3.7
+    pipenv shell
+
+Once you have your python environment setup, you can install buildtest, by sourcing the setup script
+depending on your shell type::
 
     # BASH users
     $ source setup.sh
@@ -39,15 +68,6 @@ To install buildtest, navigate to buildtest repo and source the setup script as 
 
 This will add ``buildtest`` command in your $PATH and set environment variable
 **$BUILDTEST_ROOT** which points to root of buildtest repo.
-
-You may want to create an isolated python environment of choice depending on your
-preference you can use any of the following:
-
-- `virtualenv <https://virtualenv.pypa.io/en/latest/>`_
-
-- `conda <https://conda.io/>`_
-
-- `pipenv <https://pipenv.readthedocs.io/en/latest/>`_
 
 buildtest will provide tab completion for bash shell, this is managed by script `bash_completion.sh <https://github.com/buildtesters/buildtest/blob/devel/bash_completion.sh>`_,
 if you encounter any issues with tab completion please raise an issue at https://github.com/buildtesters/buildtest/issues/.

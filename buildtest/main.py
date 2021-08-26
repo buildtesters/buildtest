@@ -12,6 +12,7 @@ from buildtest.cli.buildspec import (
     summarize_buildspec_cache,
 )
 from buildtest.cli.cdash import cdash_cmd
+from buildtest.cli.clean import clean
 from buildtest.cli.compilers import compiler_cmd
 from buildtest.cli.config import config_cmd
 from buildtest.cli.edit import edit_buildspec
@@ -157,6 +158,9 @@ def main():
 
     elif args.subcommands in ["help", "h"]:
         buildtest_help(command=args.command)
+
+    elif args.subcommands == "clean":
+        clean(configuration=configuration, yes=args.yes)
 
     elif args.subcommands == "docs":
         webbrowser.open("https://buildtest.readthedocs.io/")

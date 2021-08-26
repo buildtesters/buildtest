@@ -788,6 +788,7 @@ Now if we run this test we see buildtest will skip test **run_only_as_root** bec
 current user is not root.
 
 .. command-output:: buildtest build -b tutorials/root_user.yml
+    :returncode: 1
 
 run_only - platform
 ~~~~~~~~~~~~~~~~~~~~
@@ -828,7 +829,7 @@ If we build this test on a target system without LSF notice that buildtest skips
 test **show_host_groups**.
 
 .. command-output:: buildtest build -b general_tests/sched/lsf/bmgroups.yml
-
+    :returncode: 1
 
 run_only - linux_distro
 ~~~~~~~~~~~~~~~~~~~~~~~~

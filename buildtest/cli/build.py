@@ -42,6 +42,34 @@ from termcolor import colored
 logger = logging.getLogger(__name__)
 
 
+def resolve_testdirectory(configuration, testdir=None):
+    """This method resolves which test directory to select. For example, one
+    can specify test directory via command line ``buildtest build --testdir <path>``
+    or path in configuration file. The default is $HOME/.buildtest/var/tests
+
+    :param testdir: test directory from command line ``buildtest build --testdir``
+    :type testdir: str
+    :return: Path to test directory to use
+    :rtype: str
+    """
+
+    # variable to set test directory if prefix is set
+    config_testdir = resolve_path(
+        configuration.target_config.get("testdir"), exist=False
+    )
+
+    # resolve full path for test directory specified by --testdir option
+    testdir = resolve_path(testdir, exist=False)
+
+    # Order of precedence when detecting test directory
+    # 1. Command line option --testdir
+    # 2. Configuration option specified by 'testdir'
+    # 3. Defaults to $BUILDTEST_ROOT/.var/tests
+    test_directory = testdir or config_testdir or BUILDTEST_DEFAULT_TESTDIR
+
+    return test_directory
+
+
 def discover_buildspecs(
     buildspecs=None, exclude_buildspecs=None, executors=None, tags=None
 ):
@@ -526,7 +554,10 @@ class BuildTest:
                 self.logdir, os.path.basename(self.logfile.name)
             )
 
-        self.testdir = self.resolve_testdirectory(testdir)
+        self.testdir = resolve_testdirectory(self.configuration, testdir)
+
+        create_dir(self.testdir)
+
         self.stage = stage
         self.filter_buildspecs = filter_buildspecs
         self.rebuild = rebuild
@@ -639,35 +670,6 @@ class BuildTest:
         )
 
         self._update_build_history(self.builders)
-
-    def resolve_testdirectory(self, testdir=None):
-        """This method resolves which test directory to select. For example, one
-        can specify test directory via command line ``buildtest build --testdir <path>``
-        or path in configuration file. The default is $HOME/.buildtest/var/tests
-
-        :param testdir: test directory from command line ``buildtest build --testdir``
-        :type testdir: str
-        :return: Path to test directory to use
-        :rtype: str
-        """
-
-        # variable to set test directory if prefix is set
-        prefix_testdir = resolve_path(
-            self.configuration.target_config.get("testdir"), exist=False
-        )
-
-        # resolve full path for test directory specified by --testdir option
-        testdir = resolve_path(testdir, exist=False)
-
-        # Order of precedence when detecting test directory
-        # 1. Command line option --testdir
-        # 2. Configuration option specified by 'testdir'
-        # 3. Defaults to $HOME/.buildtest/tests
-        test_directory = testdir or prefix_testdir or BUILDTEST_DEFAULT_TESTDIR
-
-        create_dir(test_directory)
-
-        return test_directory
 
     def parse_buildspecs(self):
         """Parse all buildspecs by passing buildspec file to ``BuildspecParser`` class. If buildspec
