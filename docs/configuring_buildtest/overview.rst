@@ -225,44 +225,25 @@ tests will be submitted via ``bash --login /path/to/test.sh``.
 Once you define your executors, you can :ref:`query the executors <view_executors>` via ``buildtest config executors``
 command.
 
-Configuring test directory
----------------------------
-
-The default location where tests are written is **$BUILDTEST_ROOT/var/tests** where
-$BUILDTEST_ROOT is the root of buildtest repo. You may specify ``testdir`` in your
-configuration to instruct where tests can be written. For instance, if
-you want to write tests in **/tmp** you can set the following::
-
-    testdir: /tmp
-
-Alternately, one can specify test directory via ``buildtest build --testdir <path>`` which
-has highest precedence and overrides configuration and default value.
-
-Configuring log path
+Disabling an executor
 ----------------------
 
-You can configure where buildtest will write logs using ``logdir`` property. For
-example, in example below buildtest will write log files ``$HOME/Documents/buildtest/var/logs``.
-buildtest will resolve variable expansion to get real path on filesystem.
+buildtest will run checks for every executor instance depending on the executor type, for instance
+local executors such as `bash`, `sh`, `csh` executor will be checked to see if shell is
+valid by checking the path. If shell doesn't exist, buildtest will raise an error. You
+can circumvent this issue by disabling the executor via ``disable`` property. A disabled executor won't
+serve any jobs which means any buildspec that reference the executor won't create a test.
 
+In this next example the executor `zsh` is disabled which can be used if you don't have **zsh** on your system
 
 .. code-block:: yaml
+   :emphasize-lines: 5
 
-    # location of log directory
-    logdir: $HOME/Documents/buildtest/var/logs
-
-
-``logdir`` is not required field in configuration, if it's not specified then buildtest will write logs
-based on `tempfile <https://docs.python.org/3/library/tempfile.html>`_ library which may vary
-based on platform (Linux, Mac).
-
-The buildtest logs will start with **buildtest_** followed by random identifier with
-a **.log** extension.
-
-buildtest will write the same log file in **$BUILDTEST_ROOT/buildtest.log** which can
-be used to fetch last build log. This can be convenient if you don't remember the directory
-path to log file.
-
+    executors:
+      local:
+        zsh:
+          shell: zsh
+          disable: true
 
 before_script for executors
 ----------------------------
@@ -322,6 +303,63 @@ Shown below is the configuration file used at Cori.
 .. command-output:: wget -q -O - https://raw.githubusercontent.com/buildtesters/buildtest-cori/devel/config.yml 2>&1
    :shell:
 
+
+Specifying QoS (Slurm)
+-----------------------
+
+At Cori, jobs are submitted via qos instead of partition so we model a slurm executor
+named by qos. The ``qos`` field instructs which Slurm QOS to use when submitting job. For
+example we defined a slurm executor named **haswell_debug** which will submit jobs to **debug**
+qos on the haswell partition as follows:
+
+.. code-block:: yaml
+
+    executors:
+      slurm:
+        haswell_debug:
+          qos: debug
+          cluster: cori
+          options:
+          - -C haswell
+
+The ``cluster`` field specifies which slurm cluster to use
+(i.e ``sbatch --clusters=<string>``). In-order to use ``bigmem``, ``xfer``,
+or ``gpu`` qos at Cori, we need to specify **escori** cluster (i.e ``sbatch --clusters=escori``).
+
+buildtest will detect slurm configuration and check qos, partition, cluster
+match with buildtest configuration. In addition, buildtest supports multi-cluster
+job submission and monitoring from remote cluster. This means if you specify
+``cluster`` field buildtest will poll jobs using `sacct` with the
+cluster name as follows: ``sacct -M <cluster>``.
+
+The ``options`` field is use to specify any additional options to launcher (``sbatch``)
+on command line. For instance, ``slurm.gpu`` executor, we use the ``options: -C gpu``
+to submit to Cori GPU cluster which requires ``sbatch -M escori -C gpu``.
+Any additional **#SBATCH** options are defined in buildspec for more details see :ref:`batch scheduler support <batch_support>`.
+
+Specify Slurm Partitions
+-------------------------
+
+You can specify slurm partitions instead of qos if your slurm cluster requires jobs to be submitted by partitions. This
+can be done via ``partition`` property. In this next example we define an executor name `regular_hsw` which maps
+to slurm partition **regular_hsw**.
+
+.. code-block:: yaml
+
+    regular_hsw:
+      partition: regular_hsw
+      description: regular haswell queue
+
+buildtest will check if slurm partition is in ``up`` state before adding executor. buildtest will be
+performing these checks when validating configuration file and this avoids creating tests that reference
+a partition that is in **down** state. Internally, we are running the following command for every defined
+defined partition
+
+.. code-block:: console
+
+    $ sinfo -p regular_hsw -h -O available
+    up
+
 Default Executor Settings
 ---------------------------
 
@@ -365,6 +403,7 @@ The **max_pend_time** option can be overridden per executor level for example th
 section below overrides the default to 300 seconds:
 
 .. code-block:: yaml
+    :emphasize-lines: 5
 
         bigmem:
           description: bigmem jobs
@@ -382,43 +421,14 @@ reported in test report.
 
 For more details on `max_pend_time` click :ref:`here <max_pend_time>`.
 
-Specifying QoS (Slurm)
------------------------
-
-At Cori, jobs are submitted via qos instead of partition so we model a slurm executor
-named by qos. The ``qos`` field instructs which Slurm QOS to use when submitting job. For
-example we defined a slurm executor named **haswell_debug** which will submit jobs to **debug**
-qos on the haswell partition as follows:
-
-.. code-block:: yaml
-
-    executors:
-      slurm:
-        haswell_debug:
-          qos: debug
-          cluster: cori
-          options:
-          - -C haswell
-
-The ``cluster`` field specifies which slurm cluster to use
-(i.e ``sbatch --clusters=<string>``). In-order to use ``bigmem``, ``xfer``,
-or ``gpu`` qos at Cori, we need to specify **escori** cluster (i.e ``sbatch --clusters=escori``).
-
-buildtest will detect slurm configuration and check qos, partition, cluster
-match with buildtest configuration. In addition, buildtest supports multi-cluster
-job submission and monitoring from remote cluster. This means if you specify
-``cluster`` field buildtest will poll jobs using `sacct` with the
-cluster name as follows: ``sacct -M <cluster>``.
-
-The ``options`` field is use to specify any additional options to launcher (``sbatch``)
-on command line. For instance, ``slurm.gpu`` executor, we use the ``options: -C gpu``
-to submit to Cori GPU cluster which requires ``sbatch -M escori -C gpu``.
-Any additional **#SBATCH** options are defined in buildspec for more details see :ref:`batch scheduler support <batch_support>`.
-
 .. _pbs_executors:
 
 PBS Executors
 --------------
+
+.. Note:: buildtest PBS support relies on job history set because buildtest needs to query job after completion using `qstat -x`. This
+          can be configured using ``qmgr`` by setting ``set server job_history_enable=True``. For more details see section **13.15.5.1 Enabling Job History** in `PBS 2020.1 Admin Guide <https://www.altair.com/pdfs/pbsworks/PBSAdminGuide2020.1.pdf>`_
+
 
 buildtest supports `PBS <https://www.altair.com/pbs-works-documentation/>`_ scheduler
 which can be defined in the ``executors`` section. Shown below is an example configuration using
@@ -484,15 +494,46 @@ Shown below is an example with one queue **workq** that is ``enabled`` and ``sta
         }
     }
 
-.. _pbs_limitation:
-
-PBS Limitation
-~~~~~~~~~~~~~~~~~~
-
-.. Note:: Please note that buildtest PBS support relies on job history set because buildtest needs to query job after completion using `qstat -x`. This
-          can be configured using ``qmgr`` by setting ``set server job_history_enable=True``. For more details see section **13.15.5.1 Enabling Job History** in `PBS 2020.1 Admin Guide <https://www.altair.com/pdfs/pbsworks/PBSAdminGuide2020.1.pdf>`_
-
 .. _cdash_configuration:
+
+
+Configuring test directory
+---------------------------
+
+The default location where tests are written is **$BUILDTEST_ROOT/var/tests** where
+$BUILDTEST_ROOT is the root of buildtest repo. You may specify ``testdir`` in your
+configuration to instruct where tests can be written. For instance, if
+you want to write tests in **/tmp** you can set the following::
+
+    testdir: /tmp
+
+Alternately, one can specify test directory via ``buildtest build --testdir <path>`` which
+has highest precedence and overrides configuration and default value.
+
+Configuring log path
+----------------------
+
+You can configure where buildtest will write logs using ``logdir`` property. For
+example, in example below buildtest will write log files ``$HOME/Documents/buildtest/var/logs``.
+buildtest will resolve variable expansion to get real path on filesystem.
+
+
+.. code-block:: yaml
+
+    # location of log directory
+    logdir: $HOME/Documents/buildtest/var/logs
+
+
+``logdir`` is not required field in configuration, if it's not specified then buildtest will write logs
+based on `tempfile <https://docs.python.org/3/library/tempfile.html>`_ library which may vary
+based on platform (Linux, Mac).
+
+The buildtest logs will start with **buildtest_** followed by random identifier with
+a **.log** extension.
+
+buildtest will write the same log file in **$BUILDTEST_ROOT/buildtest.log** which can
+be used to fetch last build log. This can be convenient if you don't remember the directory
+path to log file.
 
 CDASH Configuration
 --------------------

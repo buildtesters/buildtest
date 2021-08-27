@@ -361,277 +361,108 @@ Shown below is an example build of the buildspec using PBS scheduler.
 
 .. code-block:: console
 
-    [pbsuser@pbs buildtest]$ buildtest build -b general_tests/sched/pbs/hostname.yml
+    [pbsuser@pbs tests]$ python3.7 ../bin/buildtest -c settings/pbs.yml build -b examples/pbs/sleep.yml --poll-interval=5
+    User:  pbsuser
+    Hostname:  pbs
+    Platform:  Linux
+    Current Time:  2021/08/27 15:56:39
+    buildtest path: /tmp/GitHubDesktop/buildtest/bin/buildtest
+    buildtest version:  0.10.2
+    python path: /bin/python
+    python version:  3.7.0
+    Test Directory:  /tmp/GitHubDesktop/buildtest/var/tests
+    Configuration File:  /tmp/GitHubDesktop/buildtest/tests/settings/pbs.yml
+    Command: ../bin/buildtest -c settings/pbs.yml build -b examples/pbs/sleep.yml --poll-interval=5
 
     +-------------------------------+
     | Stage: Discovering Buildspecs |
     +-------------------------------+
 
-
-    Discovered Buildspecs:
-
-    /tmp/Documents/buildtest/general_tests/sched/pbs/hostname.yml
+    +-----------------------------------------------------------+
+    | Discovered Buildspecs                                     |
+    +===========================================================+
+    | /tmp/GitHubDesktop/buildtest/tests/examples/pbs/sleep.yml |
+    +-----------------------------------------------------------+
+    Discovered Buildspecs:  1
+    Excluded Buildspecs:  0
+    Detected Buildspecs after exclusion:  1
 
     +---------------------------+
     | Stage: Parsing Buildspecs |
     +---------------------------+
 
-     schemafile              | validstate   | buildspec
-    -------------------------+--------------+---------------------------------------------------------------
-     script-v1.0.schema.json | True         | /tmp/Documents/buildtest/general_tests/sched/pbs/hostname.yml
+    Valid Buildspecs:  1
+    Invalid Buildspecs:  0
+    /tmp/GitHubDesktop/buildtest/tests/examples/pbs/sleep.yml: VALID
+
+
+    Total builder objects created: 1
+    builders: [pbs_sleep/2f2268d7]
+
+
+    name       id        description    buildspecs
+    ---------  --------  -------------  ---------------------------------------------------------
+    pbs_sleep  2f2268d7                 /tmp/GitHubDesktop/buildtest/tests/examples/pbs/sleep.yml
 
     +----------------------+
     | Stage: Building Test |
     +----------------------+
 
      name      | id       | type   | executor          | tags   | testpath
-    -----------+----------+--------+-------------------+--------+---------------------------------------------------------------------------------------------
-     pbs_sleep | 2adfc3c1 | script | generic.pbs.workq |        | /tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/generate.sh
+    -----------+----------+--------+-------------------+--------+------------------------------------------------------------------------------------------------------
+     pbs_sleep | 2f2268d7 | script | generic.pbs.workq |        | /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/2f2268d7/pbs_sleep_build.sh
+
+    +---------------------+
+    | Stage: Running Test |
+    +---------------------+
+
+    ______________________________
+    Launching test: pbs_sleep
+    Test ID: 2f2268d7-197c-4e5c-b939-7e687744940d
+    Executor Name: generic.pbs.workq
+    Running Test:  /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/2f2268d7/pbs_sleep_build.sh
+    [pbs_sleep] JobID: 384.pbs dispatched to scheduler
+    Polling Jobs in 5 seconds
 
 
-
-    +----------------------+
-    | Stage: Running Test  |
-    +----------------------+
-
-    [pbs_sleep] JobID: 40.pbs dispatched to scheduler
-     name      | id       | executor          | status   |   returncode | testpath
-    -----------+----------+-------------------+----------+--------------+---------------------------------------------------------------------------------------------
-     pbs_sleep | 2adfc3c1 | generic.pbs.workq | N/A      |           -1 | /tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/generate.sh
+    Current Jobs
+    _______________
 
 
-    Polling Jobs in 10 seconds
-    ________________________________________
-    Job Queue: ['40.pbs']
+    +-----------+----------+-------------------+---------+----------+---------+
+    |   name    |    id    |     executor      |  jobID  | jobstate | runtime |
+    +-----------+----------+-------------------+---------+----------+---------+
+    | pbs_sleep | 2f2268d7 | generic.pbs.workq | 384.pbs |    R     |  5.151  |
+    +-----------+----------+-------------------+---------+----------+---------+
+    Polling Jobs in 5 seconds
+    pbs_sleep/2f2268d7: Job 384.pbs is complete!
+    pbs_sleep/2f2268d7: Writing output file: /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/2f2268d7/pbs_sleep.o384
+    pbs_sleep/2f2268d7: Writing error file: /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/2f2268d7/pbs_sleep.e384
 
+    +-----------------------+
+    | Completed Polled Jobs |
+    +-----------------------+
 
-    Completed Jobs
-    ________________________________________
-
-
-    ╒════════╤════════════╤═════════╤════════════╕
-    │ name   │ executor   │ jobID   │ jobstate   │
-    ╞════════╪════════════╪═════════╪════════════╡
-    ╘════════╧════════════╧═════════╧════════════╛
-
-
-    Pending Jobs
-    ________________________________________
-
-
-    ╒═══════════╤═══════════════════╤═════════╤════════════╕
-    │ name      │ executor          │ jobID   │ jobstate   │
-    ╞═══════════╪═══════════════════╪═════════╪════════════╡
-    │ pbs_sleep │ generic.pbs.workq │ 40.pbs  │ R          │
-    ╘═══════════╧═══════════════════╧═════════╧════════════╛
-
-
-    Polling Jobs in 10 seconds
-    ________________________________________
-    Job Queue: ['40.pbs']
-
-
-    Completed Jobs
-    ________________________________________
-
-
-    ╒════════╤════════════╤═════════╤════════════╕
-    │ name   │ executor   │ jobID   │ jobstate   │
-    ╞════════╪════════════╪═════════╪════════════╡
-    ╘════════╧════════════╧═════════╧════════════╛
-
-
-    Pending Jobs
-    ________________________________________
-
-
-    ╒═══════════╤═══════════════════╤═════════╤════════════╕
-    │ name      │ executor          │ jobID   │ jobstate   │
-    ╞═══════════╪═══════════════════╪═════════╪════════════╡
-    │ pbs_sleep │ generic.pbs.workq │ 40.pbs  │ F          │
-    ╘═══════════╧═══════════════════╧═════════╧════════════╛
-
-
-    Polling Jobs in 10 seconds
-    ________________________________________
-    Job Queue: []
-
-
-    Completed Jobs
-    ________________________________________
-
-
-    ╒═══════════╤═══════════════════╤═════════╤════════════╕
-    │ name      │ executor          │ jobID   │ jobstate   │
-    ╞═══════════╪═══════════════════╪═════════╪════════════╡
-    │ pbs_sleep │ generic.pbs.workq │ 40.pbs  │ F          │
-    ╘═══════════╧═══════════════════╧═════════╧════════════╛
-
-
-    Pending Jobs
-    ________________________________________
-
-
-    ╒════════╤════════════╤═════════╤════════════╕
-    │ name   │ executor   │ jobID   │ jobstate   │
-    ╞════════╪════════════╪═════════╪════════════╡
-    ╘════════╧════════════╧═════════╧════════════╛
-
-    +---------------------------------------------+
-    | Stage: Final Results after Polling all Jobs |
-    +---------------------------------------------+
-
-     name      | id       | executor          | status   |   returncode | testpath
-    -----------+----------+-------------------+----------+--------------+---------------------------------------------------------------------------------------------
-     pbs_sleep | 2adfc3c1 | generic.pbs.workq | PASS     |            0 | /tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/generate.sh
+     name      | id       | executor          | status   |   returncode |   runtime
+    -----------+----------+-------------------+----------+--------------+-----------
+     pbs_sleep | 2f2268d7 | generic.pbs.workq | PASS     |            0 |   10.2016
 
     +----------------------+
     | Stage: Test Summary  |
     +----------------------+
 
-    Executed 1 tests
+     name      | id       | executor          | status   |   returncode |   runtime
+    -----------+----------+-------------------+----------+--------------+-----------
+     pbs_sleep | 2f2268d7 | generic.pbs.workq | PASS     |            0 |   10.2016
+
+
+
     Passed Tests: 1/1 Percentage: 100.000%
     Failed Tests: 0/1 Percentage: 0.000%
 
 
-
-    Writing Logfile to: /tmp/buildtest_mu285m58.log
-
-buildtest will preserve the job record from ``qstat -x -f -F json <jobID>`` in the test report if job was complete.
-If we take a look at the test result using **buildtest inspect** you will see the ``job`` section is
-prepopulated from the JSON record provided by **qstat**.
-
-
-.. code-block:: console
-    :emphasize-lines: 22-88
-    :linenos:
-
-    [pbsuser@pbs buildtest]$ buildtest inspect id 2adfc3c1
-    {
-      "id": "2adfc3c1",
-      "full_id": "2adfc3c1-1c81-43d0-a151-6fa1a9818eb4",
-      "testroot": "/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3",
-      "testpath": "/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/generate.sh",
-      "stagedir": "/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage",
-      "rundir": "/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/run",
-      "command": "qsub -q workq /tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/generate.sh",
-      "outfile": "/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/pbs_sleep.o40",
-      "errfile": "/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/pbs_sleep.e40",
-      "schemafile": "script-v1.0.schema.json",
-      "executor": "generic.pbs.workq",
-      "tags": "",
-      "starttime": "Wed Mar 17 20:36:48 2021",
-      "endtime": "Wed Mar 17 20:36:48 2021",
-      "runtime": "00:00:10",
-      "state": "PASS",
-      "returncode": 0,
-      "output": "",
-      "error": "",
-      "job": {
-        "timestamp": 1616013438,
-        "pbs_version": "19.0.0",
-        "pbs_server": "pbs",
-        "Jobs": {
-          "40.pbs": {
-            "Job_Name": "pbs_sleep",
-            "Job_Owner": "pbsuser@pbs",
-            "resources_used": {
-              "cpupercent": 0,
-              "cput": "00:00:00",
-              "mem": "5620kb",
-              "ncpus": 1,
-              "vmem": "25632kb",
-              "walltime": "00:00:10"
-            },
-            "job_state": "F",
-            "queue": "workq",
-            "server": "pbs",
-            "Checkpoint": "u",
-            "ctime": "Wed Mar 17 20:36:48 2021",
-            "Error_Path": "pbs:/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/pbs_sleep.e40",
-            "exec_host": "pbs/0",
-            "exec_vnode": "(pbs:ncpus=1)",
-            "Hold_Types": "n",
-            "Join_Path": "n",
-            "Keep_Files": "n",
-            "Mail_Points": "a",
-            "mtime": "Wed Mar 17 20:36:58 2021",
-            "Output_Path": "pbs:/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/pbs_sleep.o40",
-            "Priority": 0,
-            "qtime": "Wed Mar 17 20:36:48 2021",
-            "Rerunable": "True",
-            "Resource_List": {
-              "ncpus": 1,
-              "nodect": 1,
-              "nodes": 1,
-              "place": "scatter",
-              "select": "1:ncpus=1",
-              "walltime": "00:02:00"
-            },
-            "stime": "Wed Mar 17 20:36:48 2021",
-            "session_id": 7154,
-            "jobdir": "/home/pbsuser",
-            "substate": 92,
-            "Variable_List": {
-              "PBS_O_HOME": "/home/pbsuser",
-              "PBS_O_LANG": "en_US.utf8",
-              "PBS_O_LOGNAME": "pbsuser",
-              "PBS_O_PATH": "/tmp/Documents/buildtest/bin:/tmp/Documents/github/buildtest/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/pbs/bin:/home/pbsuser/.local/bin:/home/pbsuser/bin",
-              "PBS_O_MAIL": "/var/spool/mail/pbsuser",
-              "PBS_O_SHELL": "/bin/bash",
-              "PBS_O_WORKDIR": "/tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage",
-              "PBS_O_SYSTEM": "Linux",
-              "PBS_O_QUEUE": "workq",
-              "PBS_O_HOST": "pbs"
-            },
-            "comment": "Job run at Wed Mar 17 at 20:36 on (pbs:ncpus=1) and finished",
-            "etime": "Wed Mar 17 20:36:48 2021",
-            "run_count": 1,
-            "Stageout_status": 1,
-            "Exit_status": 0,
-            "Submit_arguments": "-q workq /tmp/Documents/buildtest/var/tests/generic.pbs.workq/hostname/pbs_sleep/3/stage/generate.sh",
-            "history_timestamp": 1616013418,
-            "project": "_pbs_project_default"
-          }
-        }
-      }
-    }
-
-
-
-    Output File
-    ______________________________
-
-
-
-
-    Error File
-    ______________________________
-
-
-
-
-    Test Content
-    ______________________________
-    #!/bin/bash
-    #PBS -l nodes=1
-    #PBS -l walltime=00:02:00
-    #PBS -N pbs_sleep
-    source /tmp/Documents/buildtest/var/executors/generic.pbs.workq/before_script.sh
-    sleep 10
-    source /tmp/Documents/buildtest/var/executors/generic.pbs.workq/after_script.sh
-
-
-
-    buildspec:  /tmp/Documents/buildtest/general_tests/sched/pbs/hostname.yml
-    ______________________________
-    version: "1.0"
-    buildspecs:
-      pbs_sleep:
-        type: script
-        executor: generic.pbs.workq
-        pbs: ["-l nodes=1", "-l walltime=00:02:00"]
-        run: sleep 10
+    Writing Logfile to: /tmp/buildtest_c56vd2rj.log
+    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /tmp/GitHubDesktop/buildtest/buildtest.log
 
 Cobalt
 -------
