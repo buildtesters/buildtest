@@ -7,7 +7,7 @@ from buildtest.defaults import (
     DEFAULT_SETTINGS_SCHEMA,
     USER_SETTINGS_FILE,
 )
-from buildtest.exceptions import ConfigurationError
+from buildtest.exceptions import BuildTestError, ConfigurationError
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_recipe, load_schema
 from buildtest.system import LSF, PBS, Cobalt, Slurm, system
@@ -143,11 +143,20 @@ class SiteConfiguration:
         local_executors = deep_get(self.target_config, "executors", "local")
         if not local_executors:
             return
+
         # loop over all shell property and see if all shell types are valid path and supported shell. An exception will be raised if there is an issue
         for executor in local_executors:
             name = local_executors[executor]["shell"]
-            shell = Shell(name)
-            shell.path = name
+
+            try:
+                Shell(name)
+            except BuildTestError as err:
+                print(err)
+                raise BuildTestError(
+                    f"Executor: {executor} failed to validate because 'shell' property points to {name} which is shell type!"
+                )
+
+            self.localexecutors.append(executor)
 
     def _validate_lsf_executors(self):
         """This method validates all LSF executors. We check if queue is available
@@ -211,10 +220,6 @@ class SiteConfiguration:
             return
 
         slurm = Slurm()
-        # make sure slurm attributes slurm.partitions, slurm.qos, slurm.clusters are set
-        assert hasattr(slurm, "partitions")
-        assert hasattr(slurm, "qos")
-        assert hasattr(slurm, "clusters")
 
         for executor in slurm_executor:
             # if 'partition' key defined check if its valid partition
@@ -241,6 +246,7 @@ class SiteConfiguration:
                         self.file,
                         f"{slurm_executor[executor]['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs",
                     )
+            """ disable qos check for now. Issue with 'regular' qos at Cori where it maps to 'regular_hsw' partition while 'regular' is the valid qos name' 
             # check if 'qos' key is valid qos
             if (
                 slurm_executor[executor].get("qos")
@@ -251,6 +257,7 @@ class SiteConfiguration:
                     self.file,
                     f"{slurm_executor[executor]['qos']} not a valid qos! Please select one of the following qos: {slurm.qos}",
                 )
+            """
 
             # check if 'cluster' key is valid slurm cluster
             if (

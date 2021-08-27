@@ -576,7 +576,6 @@ class BuildTest:
         if self.filter_buildspecs:
             self._validate_filters()
 
-        print("\n")
         print("User: ", self.system.system["user"])
         print("Hostname: ", self.system.system["host"])
         print("Platform: ", self.system.system["platform"])
@@ -732,17 +731,20 @@ class BuildTest:
         print("Valid Buildspecs: ", len(valid_buildspecs))
         print("Invalid Buildspecs: ", len(self.invalid_buildspecs))
 
-        print("Buildspecs that passed validation")
-        print("{:_<80}".format(""))
         for buildspec in valid_buildspecs:
-            print(buildspec)
+
+            msg = f"{buildspec}: VALID"
+            if os.getenv("BUILDTEST_COLOR") == "True":
+                msg = colored(msg, "green")
+            print(msg)
 
         # print any skipped buildspecs if they failed to validate during build stage
         if len(self.invalid_buildspecs) > 0:
-            print("\n\nBuildspecs that failed validation")
-            print("{:_<80}".format(""))
-            for test in self.invalid_buildspecs:
-                print(test)
+            for buildspec in self.invalid_buildspecs:
+                msg = f"{buildspec}: INVALID"
+                if os.getenv("BUILDTEST_COLOR") == "True":
+                    msg = colored(msg, "red")
+                print(msg)
 
         if len(filtered_buildspecs) > 0:
             print("\nBuildspecs that were filtered out")
@@ -759,8 +761,12 @@ class BuildTest:
         description = list(map(lambda x: x.recipe.get("description"), self.builders))
         buildspecs = list(map(lambda x: x.buildspec, self.builders))
 
-        print("\n\n")
+        # print("\n\n")
 
+        print("\n")
+        print("Total builder objects created:", len(self.builders))
+        print("builders:", self.builders)
+        print("\n")
         headers = ["name", "id", "description", "buildspecs"]
         if os.getenv("BUILDTEST_COLOR") == "True":
             headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
@@ -772,10 +778,6 @@ class BuildTest:
                 tablefmt="simple",
             )
         )
-
-        print("\n")
-        print("Total builder objects created:", len(self.builders))
-        print("builders:", self.builders)
 
     def build_phase(self):
         """This method will build all tests by invoking class method ``build`` for
@@ -970,8 +972,6 @@ class BuildTest:
                 )
             )
 
-        print("\n")
-
         # if we have any tests using 'script' schema we print all tests together since table columns are different
         if len(table["spack"]["name"]) > 0:
 
@@ -992,7 +992,6 @@ class BuildTest:
                 )
             )
 
-        print("\n")
         # if we have any tests using 'compiler' schema we print all tests together since table columns are different
         if len(table["compiler"]["name"]) > 0:
 
