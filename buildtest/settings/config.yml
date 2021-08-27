@@ -25,9 +25,10 @@ system:
           description: submit jobs on local machine using csh shell
           shell: csh
 
-        #zsh:
-        #  description: submit jobs on local machine using zsh shell
-        #  shell: zsh
+        zsh:
+          description: submit jobs on local machine using zsh shell
+          shell: zsh
+          disable: true
 
         python:
           description: submit jobs on local machine using python shell

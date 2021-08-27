@@ -30,6 +30,7 @@ class SiteConfiguration:
         # but only one system can be active depending on which host buildtest is run
         self.target_config = None
 
+        self.disabled_executors = []
         self.localexecutors = []
         self.slurmexecutors = []
         self.lsfexecutors = []
@@ -148,6 +149,10 @@ class SiteConfiguration:
         for executor in local_executors:
             name = local_executors[executor]["shell"]
 
+            if local_executors[executor].get("disable"):
+                self.disabled_executors.append(f"{self.name()}.local.{executor}")
+                continue
+
             try:
                 Shell(name)
             except BuildTestError as err:
@@ -179,6 +184,10 @@ class SiteConfiguration:
 
         # check all executors have defined valid queues and check queue state.
         for executor in lsf_executors:
+
+            if lsf_executors[executor].get("disable"):
+                self.disabled_executors.append(f"{self.name()}.lsf.{executor}")
+                continue
 
             queue = lsf_executors[executor].get("queue")
             # if queue field is defined check if its valid queue
@@ -222,6 +231,11 @@ class SiteConfiguration:
         slurm = Slurm()
 
         for executor in slurm_executor:
+
+            if slurm_executor[executor].get("disable"):
+                self.disabled_executors.append(f"{self.name()}.slurm.{executor}")
+                continue
+
             # if 'partition' key defined check if its valid partition
             if slurm_executor[executor].get("partition"):
 
@@ -286,6 +300,11 @@ class SiteConfiguration:
         assert hasattr(cobalt, "queues")
 
         for executor in cobalt_executor:
+
+            if cobalt_executor[executor].get("disable"):
+                self.disabled_executors.append(f"{self.name()}.cobalt.{executor}")
+                continue
+
             queue = cobalt_executor[executor].get("queue")
             # if queue property defined in cobalt executor name check if it exists
             if queue not in cobalt.queues:
@@ -336,6 +355,11 @@ class SiteConfiguration:
         pbs = PBS()
         assert hasattr(pbs, "queues")
         for executor in pbs_executor:
+
+            if pbs_executor[executor].get("disable"):
+                self.disabled_executors.append(f"{self.name()}.pbs.{executor}")
+                continue
+
             queue = pbs_executor[executor].get("queue")
             if queue not in pbs.queues:
                 raise ConfigurationError(

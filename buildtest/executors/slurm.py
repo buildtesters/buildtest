@@ -119,7 +119,7 @@ class SlurmExecutor(BaseExecutor):
 
         builder.job = SlurmJob(builder.metadata["jobid"], self.cluster)
 
-        msg = f"[{builder.metadata['name']}] JobID: {builder.metadata['jobid']} dispatched to scheduler"
+        msg = f"{builder} JobID: {builder.metadata['jobid']} dispatched to scheduler"
         print(msg)
         self.logger.debug(msg)
 
@@ -188,6 +188,7 @@ class SlurmExecutor(BaseExecutor):
             builder.job.workdir(), builder.name + ".err"
         )
 
+        print(f"{builder}: Job {builder.job.get()} is complete! ")
         builder.post_run_steps()
 
 

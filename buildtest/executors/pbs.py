@@ -160,6 +160,9 @@ class PBSExecutor(BaseExecutor):
 
         builder.metadata["outfile"] = builder.job.output_file()
         builder.metadata["errfile"] = builder.job.error_file()
+
+        print(f"{builder}: Job {builder.job.get()} is complete! ")
+
         builder.post_run_steps()
 
 
