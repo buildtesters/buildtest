@@ -11,6 +11,7 @@ from buildtest.cli.buildspec import (
     show_buildspecs,
     summarize_buildspec_cache,
 )
+from buildtest.cli.cd import change_directory
 from buildtest.cli.cdash import cdash_cmd
 from buildtest.cli.clean import clean
 from buildtest.cli.compilers import compiler_cmd
@@ -161,6 +162,9 @@ def main():
 
     elif args.subcommands == "clean":
         clean(configuration=configuration, yes=args.yes)
+
+    elif args.subcommands == "cd":
+        change_directory(args.test)
 
     elif args.subcommands == "docs":
         webbrowser.open("https://buildtest.readthedocs.io/")

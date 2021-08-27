@@ -354,7 +354,7 @@ below is an example buildspec using the `script` schema.
 
 buildtest will poll PBS jobs using ``qstat -x -f -F json <jobID>`` until job is finished. Note that
 we use **-x** option to retrieve finished jobs which is required inorder for buildtest to detect job
-state upon completion. Please see :ref:`pbs_limitation` to ensure your PBS cluster supports job history.
+state upon completion.
 
 Shown below is an example build of the buildspec using PBS scheduler.
 

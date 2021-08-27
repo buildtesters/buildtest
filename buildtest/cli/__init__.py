@@ -130,12 +130,19 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     schema_menu(subparsers)
     cdash_menu(subparsers)
 
-    subparsers.add_parser("docs", help="Open buildtest docs in browser")
-    subparsers.add_parser("schemadocs", help="Open buildtest schema docs in browser")
+    cd_parser = subparsers.add_parser(
+        "cd", help="change directory to root of test given a test name"
+    )
+    cd_parser.add_argument(
+        "test", help="Change directory to root of test for last run of test."
+    )
     clean = subparsers.add_parser(
         "clean",
         help="Remove all generate files from buildtest including test directory, log files, report file, buildspec cache, history files.",
     )
+    subparsers.add_parser("docs", help="Open buildtest docs in browser")
+    subparsers.add_parser("schemadocs", help="Open buildtest schema docs in browser")
+
     clean.add_argument(
         "-y", "--yes", action="store_true", help="Confirm yes for all prompts"
     )
