@@ -26,6 +26,7 @@ An instance object of cobalt executor
 | [max_pend_time](#max_pend_time) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-max_pend_time.md "settings.schema.json#/definitions/pbs/properties/max_pend_time")                |
 | [account](#account)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-account.md "settings.schema.json#/definitions/pbs/properties/account")                            |
 | [max_jobs](#max_jobs)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-max_jobs.md "settings.schema.json#/definitions/pbs/properties/max_jobs")                          |
+| [disable](#disable)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-disable.md "settings.schema.json#/definitions/pbs/properties/disable")                            |
 
 ## description
 
@@ -194,3 +195,21 @@ Maximum number of jobs that can be run at a given time for a particular executor
 ### max_jobs Constraints
 
 **minimum**: the value of this number must greater than or equal to: `1`
+
+## disable
+
+Disable executor
+
+`disable`
+
+*   is optional
+
+*   Type: `boolean`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-disable.md "settings.schema.json#/definitions/pbs/properties/disable")
+
+### disable Type
+
+`boolean`

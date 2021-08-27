@@ -412,6 +412,17 @@ Reference this group by using
 | Property | Type | Required | Nullable | Defined by |
 | :------- | :--- | :------- | :------- | :--------- |
 
+## Definitions group disable
+
+Reference this group by using
+
+```json
+{"$ref":"settings.schema.json#/definitions/disable"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | :--- | :------- | :------- | :--------- |
+
 ## Definitions group module
 
 Reference this group by using
@@ -541,6 +552,7 @@ Reference this group by using
 | [shell](#shell)                 | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-shell.md "settings.schema.json#/definitions/local/properties/shell")                 |
 | [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-before_script.md "settings.schema.json#/definitions/local/properties/before_script") |
 | [max_jobs](#max_jobs)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-max_jobs.md "settings.schema.json#/definitions/local/properties/max_jobs")           |
+| [disable](#disable)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-disable.md "settings.schema.json#/definitions/local/properties/disable")             |
 
 ### description
 
@@ -628,6 +640,24 @@ Maximum number of jobs that can be run at a given time for a particular executor
 
 **minimum**: the value of this number must greater than or equal to: `1`
 
+### disable
+
+Disable executor
+
+`disable`
+
+*   is optional
+
+*   Type: `boolean`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-local-properties-disable.md "settings.schema.json#/definitions/local/properties/disable")
+
+#### disable Type
+
+`boolean`
+
 ## Definitions group slurm
 
 Reference this group by using
@@ -648,6 +678,7 @@ Reference this group by using
 | [max_pend_time](#max_pend_time)   | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-max_pend_time.md "settings.schema.json#/definitions/slurm/properties/max_pend_time") |
 | [account](#account)               | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-account.md "settings.schema.json#/definitions/slurm/properties/account")             |
 | [max_jobs](#max_jobs-1)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-max_jobs.md "settings.schema.json#/definitions/slurm/properties/max_jobs")           |
+| [disable](#disable-1)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-disable.md "settings.schema.json#/definitions/slurm/properties/disable")             |
 
 ### description
 
@@ -853,6 +884,24 @@ Maximum number of jobs that can be run at a given time for a particular executor
 
 **minimum**: the value of this number must greater than or equal to: `1`
 
+### disable
+
+Disable executor
+
+`disable`
+
+*   is optional
+
+*   Type: `boolean`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-disable.md "settings.schema.json#/definitions/slurm/properties/disable")
+
+#### disable Type
+
+`boolean`
+
 ## Definitions group lsf
 
 Reference this group by using
@@ -871,6 +920,7 @@ Reference this group by using
 | [max_pend_time](#max_pend_time-1) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-max_pend_time.md "settings.schema.json#/definitions/lsf/properties/max_pend_time") |
 | [account](#account-1)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-account.md "settings.schema.json#/definitions/lsf/properties/account")             |
 | [max_jobs](#max_jobs-2)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-max_jobs.md "settings.schema.json#/definitions/lsf/properties/max_jobs")           |
+| [disable](#disable-2)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-disable.md "settings.schema.json#/definitions/lsf/properties/disable")             |
 
 ### description
 
@@ -1040,6 +1090,24 @@ Maximum number of jobs that can be run at a given time for a particular executor
 
 **minimum**: the value of this number must greater than or equal to: `1`
 
+### disable
+
+Disable executor
+
+`disable`
+
+*   is optional
+
+*   Type: `boolean`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-disable.md "settings.schema.json#/definitions/lsf/properties/disable")
+
+#### disable Type
+
+`boolean`
+
 ## Definitions group cobalt
 
 Reference this group by using
@@ -1058,6 +1126,7 @@ Reference this group by using
 | [max_pend_time](#max_pend_time-2) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-max_pend_time.md "settings.schema.json#/definitions/cobalt/properties/max_pend_time") |
 | [account](#account-2)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-account.md "settings.schema.json#/definitions/cobalt/properties/account")             |
 | [max_jobs](#max_jobs-3)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-max_jobs.md "settings.schema.json#/definitions/cobalt/properties/max_jobs")           |
+| [disable](#disable-3)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-disable.md "settings.schema.json#/definitions/cobalt/properties/disable")             |
 
 ### description
 
@@ -1227,6 +1296,24 @@ Maximum number of jobs that can be run at a given time for a particular executor
 
 **minimum**: the value of this number must greater than or equal to: `1`
 
+### disable
+
+Disable executor
+
+`disable`
+
+*   is optional
+
+*   Type: `boolean`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-cobalt-properties-disable.md "settings.schema.json#/definitions/cobalt/properties/disable")
+
+#### disable Type
+
+`boolean`
+
 ## Definitions group pbs
 
 Reference this group by using
@@ -1245,6 +1332,7 @@ Reference this group by using
 | [max_pend_time](#max_pend_time-3) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-max_pend_time.md "settings.schema.json#/definitions/pbs/properties/max_pend_time") |
 | [account](#account-3)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-account.md "settings.schema.json#/definitions/pbs/properties/account")             |
 | [max_jobs](#max_jobs-4)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-max_jobs.md "settings.schema.json#/definitions/pbs/properties/max_jobs")           |
+| [disable](#disable-4)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-disable.md "settings.schema.json#/definitions/pbs/properties/disable")             |
 
 ### description
 
@@ -1413,3 +1501,21 @@ Maximum number of jobs that can be run at a given time for a particular executor
 #### max_jobs Constraints
 
 **minimum**: the value of this number must greater than or equal to: `1`
+
+### disable
+
+Disable executor
+
+`disable`
+
+*   is optional
+
+*   Type: `boolean`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-pbs-properties-disable.md "settings.schema.json#/definitions/pbs/properties/disable")
+
+#### disable Type
+
+`boolean`

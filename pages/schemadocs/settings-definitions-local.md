@@ -22,6 +22,7 @@ An instance object of local executor
 | [shell](#shell)                 | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-shell.md "settings.schema.json#/definitions/local/properties/shell")                 |
 | [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-before_script.md "settings.schema.json#/definitions/local/properties/before_script") |
 | [max_jobs](#max_jobs)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-max_jobs.md "settings.schema.json#/definitions/local/properties/max_jobs")                            |
+| [disable](#disable)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-disable.md "settings.schema.json#/definitions/local/properties/disable")                              |
 
 ## description
 
@@ -108,3 +109,21 @@ Maximum number of jobs that can be run at a given time for a particular executor
 ### max_jobs Constraints
 
 **minimum**: the value of this number must greater than or equal to: `1`
+
+## disable
+
+Disable executor
+
+`disable`
+
+*   is optional
+
+*   Type: `boolean`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-disable.md "settings.schema.json#/definitions/local/properties/disable")
+
+### disable Type
+
+`boolean`
