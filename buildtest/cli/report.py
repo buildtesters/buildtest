@@ -476,6 +476,13 @@ class Report:
             )
         )
 
+    def get_testroot_by_name(self, name):
+        for buildspec in self.report.keys():
+            if name not in self.report[buildspec].keys():
+                continue
+
+            return self.report[buildspec][name][-1]["testroot"]
+
     def get_names(self):
         """Return a list of test names from report file"""
         test_names = []
