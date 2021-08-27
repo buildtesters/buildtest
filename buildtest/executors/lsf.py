@@ -185,7 +185,7 @@ class LSFExecutor(BaseExecutor):
         builder.metadata["errfile"] = os.path.join(
             builder.stage_dir, builder.job.error_file()
         )
-
+        print(f"{builder}: Job {builder.job.get()} is complete! ")
         builder.post_run_steps()
 
 

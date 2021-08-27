@@ -188,8 +188,8 @@ class BuildExecutor:
 
         workers = mp.Pool(2)
 
-        for name in self.executors.keys():
-            print(f"Name: {name}  Builders:  {self.executors[name].get_builder()}")
+        # for name in self.executors.keys():
+        #    print(f"Name: {name}  Builders:  {self.executors[name].get_builder()}")
 
         # if there are no builders loaded we return from method
         if not self.builders:

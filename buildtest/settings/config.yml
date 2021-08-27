@@ -28,6 +28,7 @@ system:
         zsh:
           description: submit jobs on local machine using zsh shell
           shell: zsh
+          disable: true
 
         python:
           description: submit jobs on local machine using python shell

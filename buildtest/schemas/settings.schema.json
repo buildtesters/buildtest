@@ -306,6 +306,7 @@
         "type": "string"
       }
     },
+    "disable": {"type": "boolean", "description": "Disable executor"},
     "module": {
       "type": "object",
       "additionalProperties": false,
@@ -359,7 +360,8 @@
           "pattern": "^(/bin/bash|/bin/sh|/bin/csh|/bin/tcsh|/bin/zsh|sh|bash|csh|tcsh|zsh|python).*"
         },
         "before_script": { "#ref": "#/definitions/script" },
-        "max_jobs": {"$ref":  "#/definitions/max_jobs"}
+        "max_jobs": {"$ref":  "#/definitions/max_jobs"},
+        "disable": {"$ref":  "#/definitions/disable"}
       }
     },
     "slurm": {
@@ -405,7 +407,8 @@
           "description": "overrides default ``account`` value",
           "$ref": "#/definitions/account"
         },
-        "max_jobs": {"$ref":  "#/definitions/max_jobs"}
+        "max_jobs": {"$ref":  "#/definitions/max_jobs"},
+        "disable": {"$ref":  "#/definitions/disable"}
       }
     },
     "lsf": {
@@ -444,7 +447,8 @@
           "description": "overrides default ``account`` value",
           "$ref": "#/definitions/account"
         },
-        "max_jobs": {"$ref":  "#/definitions/max_jobs"}
+        "max_jobs": {"$ref":  "#/definitions/max_jobs"},
+        "disable": {"$ref":  "#/definitions/disable"}
       }
     },
     "cobalt": {
@@ -483,7 +487,8 @@
           "description": "overrides default ``account`` value",
           "$ref": "#/definitions/account"
         },
-        "max_jobs": {"$ref":  "#/definitions/max_jobs"}
+        "max_jobs": {"$ref":  "#/definitions/max_jobs"},
+        "disable": {"$ref":  "#/definitions/disable"}
       }
     },
     "pbs": {
@@ -522,7 +527,8 @@
           "description": "overrides default ``account`` value",
           "$ref": "#/definitions/account"
         },
-        "max_jobs": {"$ref":  "#/definitions/max_jobs"}
+        "max_jobs": {"$ref":  "#/definitions/max_jobs"},
+        "disable": {"$ref":  "#/definitions/disable"}
       }
     }
   }

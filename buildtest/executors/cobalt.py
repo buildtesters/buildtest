@@ -214,6 +214,8 @@ class CobaltExecutor(BaseExecutor):
             f"Copying cobalt log file: {cobaltlog} to {os.path.join(builder.test_root,os.path.basename(cobaltlog))}"
         )
 
+        print(f"{builder}: Job {builder.job.get()} is complete! ")
+
         builder.post_run_steps()
 
 
