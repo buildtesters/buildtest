@@ -20,6 +20,7 @@ from buildtest.cli.edit import edit_buildspec
 from buildtest.cli.help import buildtest_help
 from buildtest.cli.history import build_history
 from buildtest.cli.inspect import inspect_cmd
+from buildtest.cli.path import path_cmd
 from buildtest.cli.report import report_cmd
 from buildtest.cli.schema import schema_cmd
 from buildtest.config import SiteConfiguration
@@ -149,6 +150,15 @@ def main():
     elif args.subcommands in ["report", "rt"]:
         report_cmd(args)
 
+    elif args.subcommands == "path":
+        path_cmd(
+            name=args.name,
+            outfile=args.outfile,
+            errfile=args.errfile,
+            testpath=args.testpath,
+            buildscript=args.buildscript,
+            stagedir=args.stagedir,
+        )
     # running bnuildtest schema
     elif args.subcommands == "schema":
         schema_cmd(args)

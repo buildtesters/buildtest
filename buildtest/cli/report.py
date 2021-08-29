@@ -476,6 +476,15 @@ class Report:
             )
         )
 
+    def get_path_by_name(self, name, attr):
+
+        for buildspec in self.report.keys():
+            if name not in self.report[buildspec].keys():
+                continue
+
+            path = self.report[buildspec][name][-1].get(attr)
+            return path
+
     def get_testroot_by_name(self, name):
         for buildspec in self.report.keys():
             if name not in self.report[buildspec].keys():
