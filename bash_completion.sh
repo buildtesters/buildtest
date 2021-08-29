@@ -62,7 +62,7 @@ _buildtest ()
 
   COMPREPLY=()   # Array variable storing the possible completions.
 
-  local cmds="build buildspec cd cdash clean config docs edit help inspect history report schema schemadocs"
+  local cmds="build buildspec cd cdash clean config docs edit help inspect history path report schema schemadocs"
   local alias_cmds="bd bc cg it et h hy rt"
   local opts="--color --config --debug --help --version -c -d -h -V"
 
@@ -102,6 +102,13 @@ _buildtest ()
     clean)
       local opts="-h --help -y --yes"
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+      ;;
+    path)
+      local opts="-b -e -h -o -t --buildscript --errfile --help --outfile --stagedir --testpath"
+      COMPREPLY=( $( compgen -W "$(_test_name)" -- $cur ) )
+      if [[ $cur == -* ]] ; then
+        COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+      fi
       ;;
     schema)
       local opts="-h -n -e -j --name --example --json"
