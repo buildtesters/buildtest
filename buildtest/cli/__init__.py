@@ -140,6 +140,27 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         "clean",
         help="Remove all generate files from buildtest including test directory, log files, report file, buildspec cache, history files.",
     )
+    path = subparsers.add_parser("path", help="Show path attributes for a given test")
+    path_group = path.add_mutually_exclusive_group()
+
+    path_group.add_argument(
+        "-t", "--testpath", action="store_true", help="Show path to test script"
+    )
+    path_group.add_argument(
+        "-o", "--outfile", action="store_true", help="Show path to output file"
+    )
+    path_group.add_argument(
+        "-e", "--errfile", action="store_true", help="Show path to error file"
+    )
+    path_group.add_argument(
+        "-b", "--buildscript", action="store_true", help="Show path to build script"
+    )
+    path_group.add_argument(
+        "--stagedir", action="store_true", help="Show path to stage directory"
+    )
+
+    path.add_argument("name", help="Name of test")
+
     subparsers.add_parser("docs", help="Open buildtest docs in browser")
     subparsers.add_parser("schemadocs", help="Open buildtest schema docs in browser")
 
