@@ -18,19 +18,19 @@ def test_build_executor(tmp_path):
 
     bc = SiteConfiguration()
     bc.detect_system()
-    bc.validate()
+    bc.validate(validate_executors=True)
 
     # Load BuildExecutor
     be = BuildExecutor(bc)
-    # We should have a total of 5 executors (local.bash, local.sh, local.csh, local.zsh, local.python)
-    assert len(be.executors) == 5
-    assert list(be.executors.keys()) == [
+    # ensure we have the following executors valid
+    assert list(be.list_executors()) == [
         "generic.local.bash",
         "generic.local.sh",
         "generic.local.csh",
-        "generic.local.zsh",
         "generic.local.python",
     ]
+    # check if 'generic.local.zsh' is disabled executors
+    assert "generic.local.zsh" in bc.disabled_executors
 
     # Making sure all executors are created properly by inspecting their class attribute.
     # All executors have a class attribute 'type'
