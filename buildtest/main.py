@@ -84,8 +84,6 @@ def main():
     configuration.detect_system()
     configuration.validate(validate_executors)
 
-    print("valid executors:", configuration.valid_executors)
-
     logger.info(f"Processing buildtest configuration file: {configuration.file}")
 
     # buildtest build command
