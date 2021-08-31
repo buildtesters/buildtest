@@ -6,7 +6,6 @@ when initializing the executors.
 import logging
 import os
 import re
-import time
 
 from buildtest.exceptions import RuntimeError
 from buildtest.executors.base import BaseExecutor
