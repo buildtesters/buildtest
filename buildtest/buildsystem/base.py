@@ -25,7 +25,7 @@ from buildtest.buildsystem.batch import (
     SlurmBatchScript,
 )
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
-from buildtest.exceptions import RuntimeError
+from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.job import Job
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.command import BuildTestCommand
@@ -279,10 +279,10 @@ class BuilderBase(ABC):
 
         if ret == 0 or self._is_local_executor():
             return command
-        else:
-            err = f"{self} failed to submit job with returncode: {ret} \n"
-            print(err)
-            print(err_msg)
+
+        err = f"{self} failed to submit job with returncode: {ret} \n"
+        print(err)
+        print(err_msg)
 
         ########## Retry for failed tests  ##########
 
@@ -301,12 +301,12 @@ class BuilderBase(ABC):
             # if we recieve a returncode of 0 return immediately with the instance of command
             if ret == 0:
                 return command
-            else:
-                err = f"{self} failed to submit job with returncode: {ret} \n"
-                print(err)
-                print(err_msg)
 
-        raise RuntimeError(err)
+            err = f"{self} failed to submit job with returncode: {ret} \n"
+            print(err)
+            print(err_msg)
+
+        raise RuntimeFailure(err)
 
     def starttime(self):
         """This method will record the starttime when job starts execution by using
@@ -355,11 +355,11 @@ class BuilderBase(ABC):
         """Return True/False depending on state of builder and if it ran to completion it will return
         ``True`` otherwise returns ``False``. A builder could fail due to job cancellation, failure to
         submit job or raise exception during the run phase. In those case, this method will return ``False``"""
-        return self._buildstate == True
+        return self._buildstate is True
 
     def is_failure(self):
         """Return True if builder fails to run test."""
-        return self._buildstate == False
+        return self._buildstate is False
 
     def is_unknown(self):
         return self._buildstate is None

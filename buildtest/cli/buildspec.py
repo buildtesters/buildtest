@@ -192,12 +192,10 @@ class BuildspecCache:
         separate list
         """
         valid_buildspecs = []
-        self.count = 0
 
         buildexecutor = BuildExecutor(self.configuration)
 
         for buildspec in buildspecs:
-            self.count += 1
 
             try:
                 parse = BuildspecParser(buildspec, buildexecutor)
@@ -209,27 +207,6 @@ class BuildspecCache:
                 continue
 
             valid_buildspecs.append(parse)
-
-            # if self.count % 5 == 0:
-            #    print(f"Validated {self.count}/{len(buildspecs)} buildspecs")
-
-        # print(f"Validated {self.count}/{len(buildspecs)} buildspecs")
-
-        """
-        # print invalid buildspecs if found
-        if len(self.invalid_buildspecs) > 0:
-            print("\n")
-            print("Invalid buildspecs")
-            print("{:_<80}".format(""))
-            for file in self.invalid_buildspecs:
-                print(file)
-
-            print(f"Found {len(self.invalid_buildspecs)} invalid buildspecs")
-            print("{:_<80}".format(""))
-
-        print("\n")
-        print(f"Adding {len(valid_buildspecs)} buildspec files to cache")
-        """
 
         return valid_buildspecs
 
@@ -278,16 +255,6 @@ class BuildspecCache:
         #    self.update_cache[path] = {}
 
         buildspecs = self._discover_buildspecs()
-        """
-        print("Discovered Buildspecs")
-        print("{:_<80}".format(""))
-        for file in buildspecs:
-            print(file)
-
-        print(f"Found {len(buildspecs)} buildspecs ")
-        print("{:_<80}".format(""))
-        print("\n")
-        """
 
         self.update_cache["invalids"] = {}
 
@@ -357,12 +324,7 @@ class BuildspecCache:
         self.update_cache["unique_executors"] = list(
             set(self.update_cache["unique_executors"])
         )
-        count = 0
 
-        for file in self.update_cache["buildspecs"].keys():
-            count += len(self.update_cache["buildspecs"][file].keys())
-
-        # print(f"There are {count} tests in buildspec cache")
         self._write_buildspec_cache()
 
     def _check_filter_fields(self):

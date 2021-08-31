@@ -9,7 +9,7 @@ import logging
 import os
 import re
 
-from buildtest.exceptions import RuntimeError
+from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
 from buildtest.utils.command import BuildTestCommand
@@ -90,7 +90,7 @@ class LSFExecutor(BaseExecutor):
 
         try:
             command = builder.run()
-        except RuntimeError as err:
+        except RuntimeFailure as err:
             self.logger.error(err)
             return
 

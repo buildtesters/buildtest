@@ -2,7 +2,6 @@ import os
 import sys
 
 from buildtest.cli.report import Report
-from buildtest.exceptions import BuildTestError
 
 
 def change_directory(test):
@@ -34,7 +33,8 @@ def change_directory(test):
 
     if not tid:
         print("Please select one of the following builders:")
-        [print(builder) for builder in builders]
+        for builder in builders:
+            print(builder)
         sys.exit(1)
 
     record = report.fetch_records_by_ids([tid])

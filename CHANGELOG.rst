@@ -1,6 +1,23 @@
 CHANGELOG
 =========
 
+v0.11.0
+-----------
+
+In this release we tweaked the core implementation of buildtest for running test. Now we make use of asynchronous test execution and
+job submission to get parallelization of jobs. Previously we were running jobs serially which was quite slow. We are using
+python `multiprocessing <https://docs.python.org/3/library/multiprocessing.html>`_ library to leverage asynchronous job execution. This work
+was done in `#858 <https://github.com/buildtesters/buildtest/pull/858/>`_. In this release we have reimplemented the poll implementation for
+batch job submission which was done in `#863 <https://github.com/buildtesters/buildtest/pull/863/>`_
+
+- Add new command **buildtest cd** to change directory to root of test - `#871 <https://github.com/buildtesters/buildtest/pull/871/>`_ and `#877 <https://github.com/buildtesters/buildtest/pull/877/>`_
+- Add new command **buildtest path** to see path details for a test - `#874 <https://github.com/buildtesters/buildtest/pull/874/>`_, `#876 <https://github.com/buildtesters/buildtest/pull/876/>`_
+- Add new command **buildtest clean** to clean up buildtest generated data - `#869 <https://github.com/buildtesters/buildtest/pull/869/>`_
+- Add option to retry failed tests via ``buildtest build --retry`` - `#864 <https://github.com/buildtesters/buildtest/pull/864/>`_
+- Added alias for subcommands - `#860 <https://github.com/buildtesters/buildtest/pull/860/>`_
+- Remove `batch` property from buildtest - `#868 <https://github.com/buildtesters/buildtest/pull/868/>`_
+- Add support to disable executors in configuration file via ``disable`` property -  `#870 <https://github.com/buildtesters/buildtest/pull/870/>`_
+
 v0.10.2 (Aug 16, 2021)
 ----------------------
 
