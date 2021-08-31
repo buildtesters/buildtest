@@ -31,11 +31,14 @@ class SiteConfiguration:
         self.target_config = None
 
         self.disabled_executors = []
-        self.localexecutors = []
-        self.slurmexecutors = []
-        self.lsfexecutors = []
-        self.cobaltexecutors = []
-        self.pbsexecutors = []
+        self.invalid_executors = []
+        self.valid_executors = {
+            "local": {},
+            "slurm": {},
+            "lsf": {},
+            "pbs": {},
+            "cobalt": {},
+        }
 
         self.resolve()
         self.load()
@@ -131,6 +134,13 @@ class SiteConfiguration:
                 f"Cannot find modules_tool: {self.target_config['moduletool']} from configuration, please confirm if you have environment-modules or lmod and specify the appropriate tool.",
             )
 
+        if self.invalid_executors:
+            raise ConfigurationError(
+                self.config,
+                self.file,
+                f"The following executors are invalid: {self.invalid_executors}",
+            )
+
     def _executor_check(self):
         """Validate executors"""
         self._validate_local_executors()
@@ -141,6 +151,8 @@ class SiteConfiguration:
 
     def _validate_local_executors(self):
         """Check local executor by verifying the 'shell' types are valid"""
+        executor_type = "local"
+
         local_executors = deep_get(self.target_config, "executors", "local")
         if not local_executors:
             return
@@ -150,18 +162,26 @@ class SiteConfiguration:
             name = local_executors[executor]["shell"]
 
             if local_executors[executor].get("disable"):
-                self.disabled_executors.append(f"{self.name()}.local.{executor}")
+                self.disabled_executors.append(
+                    f"{self.name()}.{executor_type}.{executor}"
+                )
                 continue
 
             try:
                 Shell(name)
             except BuildTestError as err:
-                print(err)
-                raise BuildTestError(
-                    f"Executor: {executor} failed to validate because 'shell' property points to {name} which is shell type!"
+                self.invalid_executors.append(
+                    f"{self.name()}.{executor_type}.{executor}"
                 )
+                logger.error(err)
+                continue
+                # raise BuildTestError(
+                #    f"Executor: {executor} failed to validate because 'shell' property points to {name} which is shell type!"
+                # )
 
-            self.localexecutors.append(executor)
+            self.valid_executors[executor_type][
+                f"{self.name()}.{executor_type}.{executor}"
+            ] = {"setting": local_executors[executor]}
 
     def _validate_lsf_executors(self):
         """This method validates all LSF executors. We check if queue is available
@@ -171,6 +191,8 @@ class SiteConfiguration:
         lsf_executors = deep_get(self.target_config, "executors", "lsf")
         if not lsf_executors:
             return
+
+        executor_type = "lsf"
 
         lsf = LSF()
         assert hasattr(lsf, "queues")
@@ -186,18 +208,27 @@ class SiteConfiguration:
         for executor in lsf_executors:
 
             if lsf_executors[executor].get("disable"):
-                self.disabled_executors.append(f"{self.name()}.lsf.{executor}")
+                self.disabled_executors.append(
+                    f"{self.name()}.{executor_type}.{executor}"
+                )
                 continue
 
             queue = lsf_executors[executor].get("queue")
             # if queue field is defined check if its valid queue
             if queue:
                 if queue not in queue_list:
-                    raise ConfigurationError(
-                        self.config,
-                        self.file,
-                        f"{lsf_executors[executor]['queue']} not a valid queue!. Please select one of the following queue: {queue_list}",
+                    self.invalid_executors.append(
+                        f"{self.name()}.{executor_type}.{executor}"
                     )
+                    logger.error(
+                        f"'{queue}' is invalid LSF queue. Please select one of the following queues: {queue_list}"
+                    )
+                    continue
+                    # raise ConfigurationError(
+                    #    self.config,
+                    #    self.file,
+                    #    f"{lsf_executors[executor]['queue']} not a valid queue!. Please select one of the following queue: {queue_list}",
+                    # )
 
                 # check queue record for Status
                 for name in record:
@@ -209,13 +240,21 @@ class SiteConfiguration:
                     queue_state = name["STATUS"]
                     # if state not Open:Active we raise error
                     if not queue_state == valid_queue_state:
-                        raise ConfigurationError(
-                            self.config,
-                            self.file,
-                            f"{lsf_executors[executor]['queue']} is in state: {queue_state}. It must be in {valid_queue_state} state in order to accept jobs",
+                        self.invalid_executors.append(
+                            f"{self.name()}.{executor_type}.{executor}"
                         )
-
-            self.lsfexecutors.append(executor)
+                        logger.error(
+                            f"'{queue}' is in state: {queue_state}. It must be in {valid_queue_state} state in order to accept jobs"
+                        )
+                        break
+                        # raise ConfigurationError(
+                        #    self.config,
+                        #    self.file,
+                        #    f"{lsf_executors[executor]['queue']} is in state: {queue_state}. It must be in {valid_queue_state} state in order to accept jobs",
+                        # )
+            self.valid_executors[executor_type][
+                f"{self.name()}.{executor_type}.{executor}"
+            ] = {"setting": lsf_executors[executor]}
 
     def _validate_slurm_executors(self):
         """This method will validate slurm executors, we check if partition, qos,
@@ -228,23 +267,32 @@ class SiteConfiguration:
         if not slurm_executor:
             return
 
+        executor_type = "slurm"
         slurm = Slurm()
 
         for executor in slurm_executor:
 
             if slurm_executor[executor].get("disable"):
-                self.disabled_executors.append(f"{self.name()}.slurm.{executor}")
+                self.disabled_executors.append(
+                    f"{self.name()}.{executor_type}.{executor}"
+                )
                 continue
 
             # if 'partition' key defined check if its valid partition
             if slurm_executor[executor].get("partition"):
 
                 if slurm_executor[executor]["partition"] not in slurm.partitions:
-                    raise ConfigurationError(
-                        self.config,
-                        self.file,
-                        f"{slurm_executor[executor]['partition']} not a valid partition!. Please select one of the following partitions: {slurm.partitions}",
+                    self.invalid_executors(f"{self.name()}.{executor_type}.{executor}")
+                    logger.error(
+                        f"executor - {executor} has invalid partition name '{slurm_executor[executor]['partition']}'. Please select one of the following partitions: {slurm.partitions}"
                     )
+                    continue
+
+                    # raise ConfigurationError(
+                    #    self.config,
+                    #    self.file,
+                    #    f"{slurm_executor[executor]['partition']} not a valid partition!. Please select one of the following partitions: {slurm.partitions}",
+                    # )
 
                 query = (
                     f"sinfo -p {slurm_executor[executor]['partition']} -h -O available"
@@ -255,11 +303,17 @@ class SiteConfiguration:
                 part_state = part_state.rstrip()
                 # check if partition is in 'up' state. If not we raise an error.
                 if part_state != "up":
-                    raise ConfigurationError(
-                        self.config,
-                        self.file,
-                        f"{slurm_executor[executor]['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs",
+                    self.invalid_executors(f"{self.name()}.{executor_type}.{executor}")
+                    logger.error(
+                        f"partition - {slurm_executor[executor]['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
                     )
+                    continue
+
+                    # raise ConfigurationError(
+                    #    self.config,
+                    #    self.file,
+                    #    f"{slurm_executor[executor]['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs",
+                    # )
             """ disable qos check for now. Issue with 'regular' qos at Cori where it maps to 'regular_hsw' partition while 'regular' is the valid qos name' 
             # check if 'qos' key is valid qos
             if (
@@ -278,13 +332,21 @@ class SiteConfiguration:
                 slurm_executor[executor].get("cluster")
                 and slurm_executor[executor].get("cluster") not in slurm.clusters
             ):
-                raise ConfigurationError(
-                    self.config,
-                    self.file,
-                    f"{slurm_executor[executor]['cluster']} not a valid slurm cluster! Please select one of the following slurm clusters: {slurm.clusters}",
+                self.invalid_executors(f"{self.name()}.{executor_type}.{executor}")
+                logger.error(
+                    f"executor - {executor} has invalid slurm cluster - {slurm_executor[executor]['cluster']}. Please select one of the following slurm clusters: {slurm.clusters}"
                 )
+                continue
 
-            self.slurmexecutors.append(executor)
+                # raise ConfigurationError(
+                #    self.config,
+                #    self.file,
+                #    f"{slurm_executor[executor]['cluster']} not a valid slurm cluster! Please select one of the following slurm clusters: {slurm.clusters}",
+                # )
+
+            self.valid_executors[executor_type][
+                f"{self.name()}.{executor_type}.{executor}"
+            ] = {"setting": slurm_executor[executor]}
 
     def _validate_cobalt_executors(self):
         """Validate cobalt queue property by running ```qstat -Ql <queue>``. If
@@ -296,25 +358,35 @@ class SiteConfiguration:
         if not cobalt_executor:
             return
 
+        executor_type = "cobalt"
+
         cobalt = Cobalt()
         assert hasattr(cobalt, "queues")
 
         for executor in cobalt_executor:
 
             if cobalt_executor[executor].get("disable"):
-                self.disabled_executors.append(f"{self.name()}.cobalt.{executor}")
+                self.disabled_executors.append(
+                    f"{self.name()}.{executor_type}.{executor}"
+                )
                 continue
 
             queue = cobalt_executor[executor].get("queue")
             # if queue property defined in cobalt executor name check if it exists
             if queue not in cobalt.queues:
-                raise ConfigurationError(
-                    self.config,
-                    self.file,
-                    f"Queue: {queue} does not exist! To see available queues you can run 'qstat -Ql'",
+                logger.error(
+                    f"Cobalt queue '{queue}' does not exist. Available Cobalt queues: {cobalt.queues} "
                 )
+                continue
+                # raise ConfigurationError(
+                #    self.config,
+                #    self.file,
+                #    f"Queue: {queue} does not exist! To see available queues you can run 'qstat -Ql'",
+                # )
 
-            self.cobaltexecutors.append(executor)
+            self.valid_executors[executor_type][
+                f"{self.name()}.{executor_type}.{executor}"
+            ] = {"setting": cobalt_executor[executor]}
 
     def _validate_pbs_executors(self):
         """Validate pbs queue property by running by checking if queue is found and
@@ -352,6 +424,8 @@ class SiteConfiguration:
         if not pbs_executor:
             return
 
+        executor_type = "pbs"
+
         pbs = PBS()
         assert hasattr(pbs, "queues")
         for executor in pbs_executor:
@@ -362,20 +436,33 @@ class SiteConfiguration:
 
             queue = pbs_executor[executor].get("queue")
             if queue not in pbs.queues:
-                raise ConfigurationError(
-                    self.config, self.file, f"{queue} not in {pbs.queues}"
+                self.invalid_executors.append(f"{self.name()}.pbs.{queue}")
+                logger.error(
+                    f"PBS queue - '{queue}' not in list of available queues: {pbs.queues} "
                 )
+                continue
+                # raise ConfigurationError(
+                #    self.config, self.file, f"{queue} not in {pbs.queues}"
+                # )
 
             if (
                 pbs.queue_summary["Queue"][queue]["enabled"] != "True"
                 or pbs.queue_summary["Queue"][queue]["started"] != "True"
             ):
-                print("Queue Configuration")
-                print(json.dumps(pbs.queue_summary, indent=2))
-                raise ConfigurationError(
-                    self.config,
-                    self.file,
-                    f"{queue} is not enabled or started properly. Please check your queue configuration",
-                )
 
-            self.pbsexecutors.append(executor)
+                self.invalid_executors.append(f"{self.name()}.pbs.{queue}")
+                logger.info("Queue configuration")
+                logger.info(json.dumps(pbs.queue_summary, indent=2))
+                logger.error(
+                    f"[{self.file}]: '{queue}' not 'enabled' or 'started' properly."
+                )
+                continue
+                # raise ConfigurationError(
+                #    self.config,
+                #    self.file,
+                #    f"{queue} is not enabled or started properly. Please check your queue configuration",
+                # )
+
+            self.valid_executors[executor_type][
+                f"{self.name()}.{executor_type}.{executor}"
+            ] = {"setting": pbs_executor[executor]}

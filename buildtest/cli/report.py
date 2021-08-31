@@ -251,7 +251,12 @@ class Report:
         return False
 
     def _filter_by_executor(self, test):
+        """Filters test by ``executor`` property given input parameter ``buildtest report --filter executor:<executor>``. If there is a match
+        we return ``True`` otherwise returns ``False``.
 
+        :param test: name of test
+        :type test: dict
+        """
         if self.filter.get("executor") and self.filter.get("executor") != test.get(
             "executor"
         ):
@@ -260,13 +265,24 @@ class Report:
         return False
 
     def _filter_by_state(self, test):
+        """This method filters test by ``state`` property based on input parameter ``buildtest report --filter state:<STATE>``. If there is a match we
+        return ``True`` otherwise returns ``False``.
 
+        :param test: name of test
+        :type test: dict
+        """
         if self.filter.get("state") and self.filter.get("state") != test.get("state"):
             return True
 
         return False
 
     def _filter_by_returncode(self, test):
+        """Returns True/False if test is filtered by returncode. We will get input returncode in filter field via ``buildtest report --filter returncode:<CODE>`` with
+        one in test and if there is a match we return ``True`` otherwise returns ``False``.
+
+        :param test: name of test
+        :type test: dict
+        """
 
         if self.filter.get("returncode"):
             if int(self.filter["returncode"]) != int(test.get("returncode")):
@@ -348,7 +364,8 @@ class Report:
                             self.display_table[field].append(test[field])
 
     def print_format_fields(self):
-        """Implements command ``buildtest report --helpformat``"""
+        """Displays list of format field which implements command ``buildtest report --helpformat``"""
+
         format_table = [
             ["buildspec", "Buildspec file"],
             ["command", "Command executed"],
@@ -399,7 +416,7 @@ class Report:
         print(tabulate(format_table, headers=headers, tablefmt="simple"))
 
     def print_filter_fields(self):
-        """Implements command ``buildtest report --helpfilter``"""
+        """Displays list of help filters which implements command ``buildtest report --helpfilter``"""
 
         filter_field_table = [
             ["buildspec", "Filter by buildspec file", "FILE"],
@@ -477,6 +494,13 @@ class Report:
         )
 
     def get_path_by_name(self, name, attr):
+        """return attribute for a specified test. The attribute is specified via ``attr`` argument. The common attributes that will be fetched are path variables
+        that include location to where test is installed.
+        :param name: name of test
+        :type name: str
+        :param attr: an attribute for a given test which is found in the report file
+        :type name: str
+        """
 
         for buildspec in self.report.keys():
             if name not in self.report[buildspec].keys():
@@ -486,11 +510,12 @@ class Report:
             return path
 
     def get_testroot_by_name(self, name):
-        for buildspec in self.report.keys():
-            if name not in self.report[buildspec].keys():
-                continue
+        """return attribute 'testroot' for given test name which is the root of test directory
 
-            return self.report[buildspec][name][-1]["testroot"]
+        :param name: name of test in report file
+        :type name: str
+        """
+        return self.get_path_by_name(name, "testroot")
 
     def get_names(self):
         """Return a list of test names from report file"""
@@ -507,34 +532,11 @@ class Report:
 
     def get_testids(self):
         """Return a list of test ids from the report file"""
-        tests = []
-        for buildspec in self.filtered_buildspecs:
-            for name in self.report[buildspec].keys():
-                for test in self.report[buildspec][name]:
-                    tests.append(test["full_id"])
-        return tests
 
-    def breakdown_by_test_names(self):
-        """Returns a dictionary with number of test runs by testname"""
-        tests = {}
-        for buildspec in self.filtered_buildspecs:
-            for name in self.report[buildspec].keys():
-                pass_tests = 0
-                fail_tests = 0
-                for test in self.report[buildspec][name]:
-                    if test["state"] == "PASS":
-                        pass_tests += 1
-                    else:
-                        fail_tests += 1
+        id_lookup = self._testid_lookup()
+        return list(id_lookup.keys())
 
-                tests[name] = {
-                    "runs": len(self.report[buildspec][name]),
-                    "pass": pass_tests,
-                    "fail": fail_tests,
-                }
-        return tests
-
-    def get_ids(self):
+    def _testid_lookup(self):
         """Return a dict in the format
         ```
         {
@@ -556,6 +558,38 @@ class Report:
                     test_ids[test["full_id"]] = {"name": name, "buildspec": buildspec}
 
         return test_ids
+
+    def breakdown_by_test_names(self):
+        """Returns a dictionary with number of test runs by testname"""
+        tests = {}
+        for buildspec in self.filtered_buildspecs:
+            for name in self.report[buildspec].keys():
+                pass_tests = 0
+                fail_tests = 0
+                for test in self.report[buildspec][name]:
+                    if test["state"] == "PASS":
+                        pass_tests += 1
+                    else:
+                        fail_tests += 1
+
+                tests[name] = {
+                    "runs": len(self.report[buildspec][name]),
+                    "pass": pass_tests,
+                    "fail": fail_tests,
+                }
+        return tests
+
+    def fetch_records_by_ids(self, testids):
+        records = {}
+
+        for buildspec in self.filtered_buildspecs:
+            for test in self.report[buildspec].keys():
+                for test_record in self.report[buildspec][test]:
+                    for identifier in testids:
+                        if test_record["full_id"] == identifier:
+                            records[identifier] = test_record
+
+        return records
 
 
 def report_cmd(args):

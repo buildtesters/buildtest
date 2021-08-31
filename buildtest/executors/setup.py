@@ -50,49 +50,49 @@ class BuildExecutor:
 
         self.executors = {}
         logger.debug("Getting Executors from buildtest settings")
-        active_system = site_config.name()
-        if site_config.localexecutors:
-            for name in site_config.localexecutors:
-                self.executors[f"{active_system}.local.{name}"] = LocalExecutor(
-                    f"{active_system}.local.{name}",
-                    site_config.target_config["executors"]["local"][name],
-                    site_config,
+
+        if site_config.valid_executors["local"]:
+            for name in site_config.valid_executors["local"].keys():
+                self.executors[name] = LocalExecutor(
+                    name=name,
+                    settings=site_config.valid_executors["local"][name]["setting"],
+                    site_configs=site_config,
                 )
 
-        if site_config.slurmexecutors:
-            for name in site_config.slurmexecutors:
-                self.executors[f"{active_system}.slurm.{name}"] = SlurmExecutor(
-                    f"{active_system}.slurm.{name}",
-                    site_config.target_config["executors"]["slurm"][name],
-                    site_config,
-                    max_pend_time,
+        if site_config.valid_executors["slurm"]:
+            for name in site_config.valid_executors["slurm"]:
+                self.executors[name] = SlurmExecutor(
+                    name=name,
+                    settings=site_config.valid_executors["slurm"][name]["setting"],
+                    site_configs=site_config,
+                    max_pend_time=max_pend_time,
                 )
 
-        if site_config.lsfexecutors:
-            for name in site_config.lsfexecutors:
-                self.executors[f"{active_system}.lsf.{name}"] = LSFExecutor(
-                    f"{active_system}.lsf.{name}",
-                    site_config.target_config["executors"]["lsf"][name],
-                    site_config,
-                    max_pend_time,
+        if site_config.valid_executors["lsf"]:
+            for name in site_config.valid_executors["lsf"]:
+                self.executors[name] = LSFExecutor(
+                    name=name,
+                    settings=site_config.valid_executors["lsf"][name]["setting"],
+                    site_configs=site_config,
+                    max_pend_time=max_pend_time,
                 )
 
-        if site_config.cobaltexecutors:
-            for name in site_config.cobaltexecutors:
-                self.executors[f"{active_system}.cobalt.{name}"] = CobaltExecutor(
-                    f"{active_system}.cobalt.{name}",
-                    site_config.target_config["executors"]["cobalt"][name],
-                    site_config,
-                    max_pend_time,
+        if site_config.valid_executors["pbs"]:
+            for name in site_config.valid_executors["pbs"]:
+                self.executors[name] = PBSExecutor(
+                    name=name,
+                    settings=site_config.valid_executors["pbs"][name]["setting"],
+                    site_configs=site_config,
+                    max_pend_time=max_pend_time,
                 )
 
-        if site_config.pbsexecutors:
-            for name in site_config.pbsexecutors:
-                self.executors[f"{site_config.name()}.pbs.{name}"] = PBSExecutor(
-                    f"{active_system}.pbs.{name}",
-                    site_config.target_config["executors"]["pbs"][name],
-                    site_config,
-                    max_pend_time,
+        if site_config.valid_executors["cobalt"]:
+            for name in site_config.valid_executors["cobalt"]:
+                self.executors[name] = CobaltExecutor(
+                    name=name,
+                    settings=site_config.valid_executors["cobalt"][name]["setting"],
+                    site_configs=site_config,
+                    max_pend_time=max_pend_time,
                 )
         self.setup()
 

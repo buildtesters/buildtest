@@ -12,7 +12,7 @@ Talks
 
     "`Facility Testing of E4S via E4S Testsuite, Spack Test, and buildtest <https://www.exascaleproject.org/event/buildtest-21-09/>`_", "Sep 14, 2021", TBD
     "`ECP Annual Meeting 2021 <https://www.exascaleproject.org/event/buildtest/>`_", "Apr 15, 2021", "`PDF <https://drive.google.com/file/d/134bZIWyp0AL60I1bW4oWywCYW0oV8ckB/view?usp=sharing>`_, `VIDEO <https://youtu.be/-IONWmF8YZs>`_"
-    "`High Performance Computing & Simulation 2020 <http://hpcs2020.cisedu.info/>`_ at `HPBench <http://hpcs2020.cisedu.info/2-conference/special-sessions/session02-hpbench>`_", "Mar 26, 2021", "`PDF <https://drive.google.com/file/d/13Otx6w1hBxdW4WwrK4v1QCp2d0dTNiV0/view?usp=sharing>`_"
+    "`High Performance Computing & Simulation 2020 <http://hpcs2020.cisedu.info/>`_", "Mar 26, 2021", "`PDF <https://drive.google.com/file/d/13Otx6w1hBxdW4WwrK4v1QCp2d0dTNiV0/view?usp=sharing>`_"
     "`SEA Improving Scientific Software 2021 <https://sea.ucar.edu/conference/2021>`_ ", "Mar 23, 2021", "`PDF <https://drive.google.com/file/d/1zs-l7a1GF7ws26Oq1zvFp3VaQ8xdHOhG/view?usp=sharing>`_, `VIDEO <https://www.youtube.com/watch?v=QBQCEnlgX3I>`_"
     "FOSDEM21_", "Feb 7, 2021", "`PDF <https://drive.google.com/file/d/1NqyD8GurivYwFQxj2FpwBAJYCvdz1nOW/view?usp=sharing>`_"
     "`6th Easybuild User Meeting <https://easybuild.io/eum/>`_", "Jan 29, 2021", "`PDF <https://drive.google.com/file/d/1M_JzTGvROCVGIHjGwdChX-RGt4aKE_xp/view?usp=sharing>`_, `VIDEO <https://youtu.be/FI3ES9B89Ig>`_"
