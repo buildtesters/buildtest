@@ -177,17 +177,19 @@ Changing Directories (``buildtest cd``)
 ----------------------------------------
 
 The ``buildtest cd`` command can be used to change directory to root of test given
-a test name for the **last test run**. The change will be applied to your shell upon completion of
+a test name. The change will be applied to your shell upon completion of
 command. Let's assume we want to change directory to root of test ``exit1_pass`` we can do this as
-follows
+follows:
 
 .. code-block:: console
 
     $ buildtest cd exit1_pass
-    Changing directory to root of test: exit1_pass
+    Changing directory to root of test: exit1_pass/8c4b6ac9-e94e-40d9-8d96-7aaa3a5d3723
 
     $ pwd
-    /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/409886f5
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/8c4b6ac9
+
+In this previous example, buildtest will use the **latest** run for test ``exit1_pass`` and switch directory to root of test.
 
 We can confirm this directory is from the latest run by running the following command. The ``testroot`` is a property
 in the report table that can be fetch via ``--format`` field. The ``--latest`` option will fetch
@@ -195,14 +197,21 @@ the latest run for the test.
 
 .. code-block:: console
 
-    $ buildtest report --latest --filter name=exit1_pass --format name,testroot
-    Reading report file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/report.json
+    $ buildtest report --latest --filter name=exit1_pass --format testroot --terse --no-header
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/8c4b6ac9
 
-    +------------+------------------------------------------------------------------------------------------------------------------+
-    | name       | testroot                                                                                                         |
-    +============+==================================================================================================================+
-    | exit1_pass | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.sh/pass_returncode/exit1_pass/409886f5 |
-    +------------+------------------------------------------------------------------------------------------------------------------+
+If you switch cd into a particular build you can specify the name followed by backslash and name of test ID. In this example below,
+we will specify test name ``kernel_swapusage/1fa`` and buildtest will attempt to find first record that starts with the test ID and switch
+directory to root of test.
+
+.. code-block:: console
+
+    $ buildtest cd kernel_swapusage/1fa
+    Changing directory to root of test: kernel_swapusage/1fa21875-b099-41b6-8bc7-30e0d2dcc13b
+
+    $ pwd
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/kernel_state/kernel_swapusage/1fa21875
+
 
 Get Path for Test (``buildtest path``)
 ----------------------------------------
