@@ -26,7 +26,7 @@ def path_cmd(
     if not tid:
         print("Please select one of the following builders:")
         [print(builder) for builder in builders]
-        sys.exit(0)
+        sys.exit(1)
 
     record = report.fetch_records_by_ids([tid])
 

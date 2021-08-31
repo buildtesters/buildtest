@@ -207,24 +207,22 @@ the latest run for the test.
 Get Path for Test (``buildtest path``)
 ----------------------------------------
 
-.. note::
-
-    ``buildtest path`` will fetch result for last test run for a given test name
-
-The ``buildtest path`` command can display print path attributes for a test name that is available in the test report.
+The ``buildtest path`` command is used to display path attributes for a test that is available in the test report.
 Shown below are available options for **buildtest path**
 
 .. command-output:: buildtest path -h
+
+If you want to fetch the last run for any given test you can specify the name of the test as follows: ``buildtest path <name>``.
+We can specify a test ID for a test by separating the name and test ID with backslash character (``/``) as follows: ``buildtest path <name>/<ID>``
 
 If you don't specify any option you will get root of test. In this example, we will retrieve ``testroot``
 for test **variables_bash** which is a property of the test found in the report file.
 
 .. command-output:: buildtest path variables_bash
 
-You can get path test via ``-t`` option as show below
+You can get path to testscript via ``-t`` option as show below
 
 .. command-output:: buildtest path -t variables_bash
-
 
 If you want to see content of output file, you can use ``-o`` option with **cat** command as follows:
 
@@ -232,9 +230,24 @@ If you want to see content of output file, you can use ``-o`` option with **cat*
 .. command-output:: cat $(buildtest path -o variables_bash)
     :shell:
 
+In this next example we will query test **circle_area** with build ID **aaa** and buildtest will find the first match record that
+starts with this record and resolves to **aaaa622d** which is the short ID of test.
+
+.. code-block:: console
+
+    # query testroot for circle_area with build ID "aaa"
+    $ buildtest path circle_area/aaa
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.python/python-shell/circle_area/aaaa622d
+
+    # query testroot for latest run of circle_area
+    $ buildtest path circle_area
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.python/python-shell/circle_area/fc221b84
 
 We have setup mutual exclusion to avoid user from passing two option at same time. If you do run
 into this situation you will get the following error.
 
 .. command-output:: buildtest path -o -e variables_bash
     :returncode: 2
+
+If you specify an invalid test name or buildtest can't find the test id, then buildtest will print list of available test names
+with IDs.
