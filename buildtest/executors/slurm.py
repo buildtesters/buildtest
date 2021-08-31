@@ -290,51 +290,21 @@ class SlurmJob(Job):
         self._state = "CANCELLED"
 
     def poll(self):
-        """Poll job to extract job state and exit code. We also retrieve job work directory. We run the following commands
-        to retrieve the following properties.
-         - Job State: ``sacct -j <jobid> -o State -n -X -P``
-         - ExitCode and Workdir: ``sacct -j <jobid> -X -n -P -o ExitCode,Workdir``
+        """This method will poll job via ``sacct`` command to get updated job state by running the
+        following command: ``sacct -j <jobid> -o State -n -X -P``
         """
 
-        # if job state not set we loop until we receive job state. There is a lag between job submission and querying job
-        # via sacct. If self._state is still None we sleep for 0.1s and retry again
-        while not self._state:
-            query = f"sacct -j {self.jobid} -o State -n -X -P"
-            if self.cluster:
-                query += f" --clusters={self.cluster}"
-
-            cmd = BuildTestCommand(query)
-            cmd.execute()
-
-            logger.debug(
-                f"Querying JobID: '{self.jobid}'  Job State by running: '{query}'"
-            )
-            job_state = cmd.get_output()
-            self._state = "".join(job_state).rstrip()
-            time.sleep(0.1)
-
-        logger.debug(f"JobID: '{self.jobid}' job state:{self._state}")
-
-        query = f"sacct -j {self.jobid} -X -n -P -o ExitCode,Workdir"
+        query = f"sacct -j {self.jobid} -o State -n -X -P"
         if self.cluster:
             query += f" --clusters={self.cluster}"
 
         cmd = BuildTestCommand(query)
         cmd.execute()
 
-        logger.debug(
-            f"Querying JobID: '{self.jobid}' ExitCode and Workdir by running: '{query}'"
-        )
-
-        out = "".join(cmd.get_output()).rstrip()
-
-        exitcode, workdir = out.split("|")
-        # Exit Code field is in format <ExitCode>:<Signal> for now we care only about first number
-        self._exitcode = int(exitcode.split(":")[0])
-        self._workdir = workdir
-
-        logger.debug(f"JobID: '{self.jobid}' exit code:{self._exitcode}")
-        logger.debug(f"JobID: '{self.jobid}' work directory:{self._workdir}")
+        logger.debug(f"Querying JobID: '{self.jobid}'  Job State by running: '{query}'")
+        job_state = cmd.get_output()
+        self._state = "".join(job_state).rstrip()
+        logger.debug(f"JobID: '{self.jobid}' job state:{self._state}")
 
     def gather(self):
         """Gather job record which is called after job completion. We use `sacct` to gather
@@ -355,10 +325,8 @@ class SlurmJob(Job):
             - "NCPUS"
             - "NNodes"
             - "QOS"
-            - "ReqGRES"
             - "ReqMem"
             - "ReqNodes"
-            - "ReqTRES"
             - "Start"
             - "State"
             - "Submit"
@@ -373,6 +341,14 @@ class SlurmJob(Job):
             $ sacct -j 42909266 -X -n -P -o Account,AllocNodes,AllocTRES,ConsumedEnergyRaw,CPUTimeRaw,Elapsed,End,ExitCode,JobID,JobName,NCPUS,NNodes,QOS,ReqGRES,ReqMem,ReqNodes,ReqTRES,Start,State,Submit,UID,User,WorkDir --clusters=cori
             nstaff|1|billing=272,cpu=272,energy=262,mem=87G,node=1|262|2176|00:00:08|2021-05-27T18:47:49|0:0|42909266|slurm_metadata|272|1|debug_knl|PER_NODE:craynetwork:1|87Gn|1|billing=1,cpu=1,node=1|2021-05-27T18:47:41|COMPLETED|2021-05-27T18:44:07|92503|siddiq90|/global/u1/s/siddiq90/.buildtest/tests/cori.slurm.knl_debug/metadata/slurm_metadata/0/stage
 
+        We retrieve ExitCode and WorkDir via sacct command to get returncode. Slurm will write output and error file in WorkDir location. We
+        run the following command below and parse the output. The ExitCode is in form ``<exitcode>:<signal>`` which is colon
+        separated list. For more details on Slurm Exit code see https://slurm.schedmd.com/job_exit_code.html
+
+        .. code-block:: console
+
+        $ sacct -j 46294283 --clusters=cori -X -n -P -o ExitCode,Workdir
+        0:0|/global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/hostname/hostname_knl/cd39a853/stage
         """
 
         sacct_fields = [
@@ -389,10 +365,8 @@ class SlurmJob(Job):
             "NCPUS",
             "NNodes",
             "QOS",
-            "ReqGRES",
             "ReqMem",
             "ReqNodes",
-            "ReqTRES",
             "Start",
             "State",
             "Submit",
@@ -400,6 +374,25 @@ class SlurmJob(Job):
             "User",
             "WorkDir",
         ]
+
+        query = f"sacct -j {self.jobid} -X -n -P -o ExitCode,Workdir"
+        if self.cluster:
+            query += f" --clusters={self.cluster}"
+
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+
+        logger.debug(
+            f"Querying JobID: '{self.jobid}' ExitCode and Workdir by running: '{query}'"
+        )
+
+        out = "".join(cmd.get_output()).rstrip()
+
+        exitcode, workdir = out.split("|")
+        # Exit Code field is in format <ExitCode>:<Signal> for now we care only about first number
+        self._exitcode = int(exitcode.split(":")[0])
+        self._workdir = workdir
+
         query = f"sacct -j {self.jobid} -X -n -P -o {','.join(sacct_fields)}"
 
         # to query jobs from another cluster we must add -M <cluster> to sacct
@@ -413,7 +406,6 @@ class SlurmJob(Job):
         # split by | since
         out = out.split("|")
         job_data = {}
-
         for field, value in zip(sacct_fields, out):
             job_data[field] = value
 
