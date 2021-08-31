@@ -39,8 +39,8 @@ class ExecutorError(Exception):
     """This class raises an error with Executor class and its operation"""
 
 
-class RuntimeError(Exception):
-    """The RuntimeError exception is raised when their is an error running test"""
+class RuntimeFailure(Exception):
+    """The RuntimeFailure exception is raised when their is an error running test"""
 
 
 class ConfigurationError(Exception):

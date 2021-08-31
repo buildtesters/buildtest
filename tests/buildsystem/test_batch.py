@@ -62,4 +62,4 @@ def test_batchscript_example1():
         "#PBS -l nodes=1",
         "#PBS -l walltime=10",
     ]
-    expected_header == headers
+    assert expected_header == headers

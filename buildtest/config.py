@@ -288,12 +288,6 @@ class SiteConfiguration:
                     )
                     continue
 
-                    # raise ConfigurationError(
-                    #    self.config,
-                    #    self.file,
-                    #    f"{slurm_executor[executor]['partition']} not a valid partition!. Please select one of the following partitions: {slurm.partitions}",
-                    # )
-
                 query = (
                     f"sinfo -p {slurm_executor[executor]['partition']} -h -O available"
                 )
@@ -309,11 +303,6 @@ class SiteConfiguration:
                     )
                     continue
 
-                    # raise ConfigurationError(
-                    #    self.config,
-                    #    self.file,
-                    #    f"{slurm_executor[executor]['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs",
-                    # )
             """ disable qos check for now. Issue with 'regular' qos at Cori where it maps to 'regular_hsw' partition while 'regular' is the valid qos name' 
             # check if 'qos' key is valid qos
             if (
@@ -337,12 +326,6 @@ class SiteConfiguration:
                     f"executor - {executor} has invalid slurm cluster - {slurm_executor[executor]['cluster']}. Please select one of the following slurm clusters: {slurm.clusters}"
                 )
                 continue
-
-                # raise ConfigurationError(
-                #    self.config,
-                #    self.file,
-                #    f"{slurm_executor[executor]['cluster']} not a valid slurm cluster! Please select one of the following slurm clusters: {slurm.clusters}",
-                # )
 
             self.valid_executors[executor_type][
                 f"{self.name()}.{executor_type}.{executor}"
@@ -378,11 +361,6 @@ class SiteConfiguration:
                     f"Cobalt queue '{queue}' does not exist. Available Cobalt queues: {cobalt.queues} "
                 )
                 continue
-                # raise ConfigurationError(
-                #    self.config,
-                #    self.file,
-                #    f"Queue: {queue} does not exist! To see available queues you can run 'qstat -Ql'",
-                # )
 
             self.valid_executors[executor_type][
                 f"{self.name()}.{executor_type}.{executor}"
@@ -441,9 +419,6 @@ class SiteConfiguration:
                     f"PBS queue - '{queue}' not in list of available queues: {pbs.queues} "
                 )
                 continue
-                # raise ConfigurationError(
-                #    self.config, self.file, f"{queue} not in {pbs.queues}"
-                # )
 
             if (
                 pbs.queue_summary["Queue"][queue]["enabled"] != "True"
@@ -457,11 +432,6 @@ class SiteConfiguration:
                     f"[{self.file}]: '{queue}' not 'enabled' or 'started' properly."
                 )
                 continue
-                # raise ConfigurationError(
-                #    self.config,
-                #    self.file,
-                #    f"{queue} is not enabled or started properly. Please check your queue configuration",
-                # )
 
             self.valid_executors[executor_type][
                 f"{self.name()}.{executor_type}.{executor}"
