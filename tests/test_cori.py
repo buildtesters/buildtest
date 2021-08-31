@@ -38,8 +38,7 @@ def test_cori_burstbuffer():
             )
         ],
         buildtest_system=system,
-        poll_interval=5,
-        max_pend_time=30,
+        stage="build",
     )
     cmd.build()
 

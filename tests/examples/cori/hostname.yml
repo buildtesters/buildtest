@@ -7,10 +7,3 @@ buildspecs:
     sbatch: ["-t 5", "-n 1"]
     run: hostname
 
-  hostname_bigmem:
-    type: script
-    executor: cori.slurm.bigmem
-    description: "Run hostname via bigmem queue"
-    sbatch: ["-t 5", "-n 1"]
-    run: hostname
-
