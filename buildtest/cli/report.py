@@ -493,22 +493,6 @@ class Report:
             )
         )
 
-    def get_path_by_name(self, name, attr):
-        """return attribute for a specified test. The attribute is specified via ``attr`` argument. The common attributes that will be fetched are path variables
-        that include location to where test is installed.
-        :param name: name of test
-        :type name: str
-        :param attr: an attribute for a given test which is found in the report file
-        :type name: str
-        """
-
-        for buildspec in self.report.keys():
-            if name not in self.report[buildspec].keys():
-                continue
-
-            path = self.report[buildspec][name][-1].get(attr)
-            return path
-
     def latest_testid_by_name(self, name):
         """Given a test name return test id of latest run"""
 
@@ -517,14 +501,6 @@ class Report:
                 continue
 
             return self.report[buildspec][name][-1].get("full_id")
-
-    def get_testroot_by_name(self, name):
-        """return attribute 'testroot' for given test name which is the root of test directory
-
-        :param name: name of test in report file
-        :type name: str
-        """
-        return self.get_path_by_name(name, "testroot")
 
     def get_names(self):
         """Return a list of test names from report file"""

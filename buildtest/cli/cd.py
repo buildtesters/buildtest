@@ -1,4 +1,5 @@
 import os
+import sys
 
 from buildtest.cli.report import Report
 from buildtest.exceptions import BuildTestError
@@ -13,12 +14,34 @@ def change_directory(test):
     """
 
     report = Report()
-    names = report.get_names()
-    if test not in names:
-        raise BuildTestError(f"Please specify one of the following test names: {names}")
 
-    testroot = report.get_testroot_by_name(test)
+    builders = report.builder_names()
+
+    tid = None
+    name = None
+    # if input name contains a '/' followed by TEST ID we will match id
+    if test.find("/") != -1:
+        name = test.split("/")[0]
+
+        for builder in builders:
+            if builder.startswith(test):
+                tid = builder.split("/")[1]
+                break
+
+    else:
+        name = test
+        tid = report.latest_testid_by_name(test)
+
+    if not tid:
+        print("Please select one of the following builders:")
+        [print(builder) for builder in builders]
+        sys.exit(1)
+
+    record = report.fetch_records_by_ids([tid])
+
+    testroot = record[tid]["testroot"]
+
     os.chdir(testroot)
-    print(f"Changing directory to root of test: {test}")
+    print(f"Changing directory to root of test: {name}/{tid}")
     shell = os.environ.get("SHELL", "/bin/sh")
     os.execl(shell, shell)
