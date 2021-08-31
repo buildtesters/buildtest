@@ -509,6 +509,15 @@ class Report:
             path = self.report[buildspec][name][-1].get(attr)
             return path
 
+    def latest_testid_by_name(self, name):
+        """Given a test name return test id of latest run"""
+
+        for buildspec in self.report.keys():
+            if name not in self.report[buildspec].keys():
+                continue
+
+            return self.report[buildspec][name][-1].get("full_id")
+
     def get_testroot_by_name(self, name):
         """return attribute 'testroot' for given test name which is the root of test directory
 
@@ -558,6 +567,13 @@ class Report:
                     test_ids[test["full_id"]] = {"name": name, "buildspec": buildspec}
 
         return test_ids
+
+    def builder_names(self):
+        builders = []
+        lookup = self._testid_lookup()
+        for uid in lookup.keys():
+            builders.append(lookup[uid]["name"] + "/" + uid)
+        return builders
 
     def breakdown_by_test_names(self):
         """Returns a dictionary with number of test runs by testname"""

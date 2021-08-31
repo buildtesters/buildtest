@@ -1,5 +1,6 @@
 import random
 import string
+import sys
 
 import pytest
 from buildtest.cli.path import path_cmd
@@ -21,7 +22,11 @@ def test_path():
     path_cmd(name, testpath=True)
     path_cmd(name, buildscript=True)
 
+    builders = report.builder_names()
+    # specify name in format 'buildtest path <name>/<testid>
+    path_cmd(name=builders[0])
+
     random_test_name = "".join(random.choice(string.ascii_letters) for i in range(10))
 
-    with pytest.raises(BuildTestError):
+    with pytest.raises(SystemExit):
         path_cmd(random_test_name)
