@@ -1,7 +1,6 @@
 import sys
 
 from buildtest.cli.report import Report
-from buildtest.exceptions import BuildTestError
 
 
 def path_cmd(

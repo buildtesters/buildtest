@@ -1,11 +1,9 @@
 import random
 import string
-import sys
 
 import pytest
 from buildtest.cli.path import path_cmd
 from buildtest.cli.report import Report
-from buildtest.exceptions import BuildTestError
 
 
 def test_path():
