@@ -51,7 +51,7 @@ def inspect_cmd(args):
 def inspect_list(report, terse=None, header=None):
     """Implements method ``buildtest inspect list``"""
 
-    test_ids = report.get_ids()
+    test_ids = report._testid_lookup()
 
     table = {"name": [], "id": [], "buildspec": []}
 
@@ -287,27 +287,19 @@ def inspect_by_name(report, names, all_records):
 def inspect_by_id(report, args):
     """This method implements ``buildtest inspect id`` command"""
     discovered_ids = []
-    records = {}
 
     # discover all tests based on all unique ids from report cache
-    for identifier in report.get_ids():
+    for identifier in report.get_testids():
         for input_id in args.id:
             if identifier.startswith(input_id):
                 discovered_ids.append(identifier)
 
+    print("Discovered Test IDs: ", discovered_ids)
     # if no test discovered exit with message
     if not discovered_ids:
         sys.exit(
-            f"Unable to find any test records based on id: {args.id}, please run 'buildtest inspect list' to see list of ids."
+            f"Unable to find any test records based on id: {args.id}. We have found the following test ids: {report.get_testids()}"
         )
 
-    report_content = report.get()
-
-    for buildspec in report_content.keys():
-        for test in report_content[buildspec].keys():
-            for test_record in report_content[buildspec][test]:
-                for identifier in discovered_ids:
-                    if test_record["full_id"] == identifier:
-                        records[identifier] = test_record
-
+    records = report.fetch_records_by_ids(discovered_ids)
     print(json.dumps(records, indent=2))

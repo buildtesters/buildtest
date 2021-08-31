@@ -50,7 +50,7 @@ class BuildExecutor:
 
         self.executors = {}
         logger.debug("Getting Executors from buildtest settings")
-        active_system = site_config.name()
+
         if site_config.valid_executors["local"]:
             for name in site_config.valid_executors["local"].keys():
                 self.executors[name] = LocalExecutor(

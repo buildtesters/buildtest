@@ -6,16 +6,11 @@ from buildtest.cli.build import BuildTest
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
 from buildtest.system import BuildTestSystem
-from buildtest.utils.file import walk_tree
 
 hostname = socket.getfqdn()
 here = os.path.dirname(os.path.abspath(__file__))
 
 settings_file = os.path.join(here, "settings", "cori.yml")
-
-bc = SiteConfiguration(settings_file)
-bc.detect_system()
-bc.validate()
 
 system = BuildTestSystem()
 system.check()
@@ -26,6 +21,10 @@ def test_cori_burstbuffer():
 
     if not hostname.startswith("cori"):
         pytest.skip("This test runs on Cori Login nodes ('cori*')")
+
+    bc = SiteConfiguration(settings_file)
+    bc.detect_system()
+    bc.validate()
 
     cmd = BuildTest(
         configuration=bc,
@@ -50,6 +49,10 @@ def test_cori_slurm_hostname():
     if not hostname.startswith("cori"):
         pytest.skip("This test runs on Cori Login nodes ('cori*')")
 
+    bc = SiteConfiguration(settings_file)
+    bc.detect_system()
+    bc.validate()
+
     cmd = BuildTest(
         configuration=bc,
         buildspecs=[
@@ -68,6 +71,10 @@ def test_cori_slurm_max_pend():
 
     if not hostname.startswith("cori"):
         pytest.skip("This test runs on Cori Login nodes ('cori*')")
+
+    bc = SiteConfiguration(settings_file)
+    bc.detect_system()
+    bc.validate()
 
     cmd = BuildTest(
         configuration=bc,
@@ -88,6 +95,10 @@ def test_compiler_find_cori():
 
     if not hostname.startswith("cori"):
         pytest.skip("This test runs on Cori Login nodes ('cori*')")
+
+    bc = SiteConfiguration(settings_file)
+    bc.detect_system()
+    bc.validate()
 
     # testing buildtest config compilers find
     compilers = BuildtestCompilers(configuration=bc)

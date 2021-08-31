@@ -39,11 +39,6 @@ class SiteConfiguration:
             "pbs": {},
             "cobalt": {},
         }
-        # self.localexecutors = []
-        # self.slurmexecutors = []
-        # self.lsfexecutors = []
-        # self.cobaltexecutors = []
-        # self.pbsexecutors = []
 
         self.resolve()
         self.load()
@@ -187,7 +182,6 @@ class SiteConfiguration:
             self.valid_executors[executor_type][
                 f"{self.name()}.{executor_type}.{executor}"
             ] = {"setting": local_executors[executor]}
-            # self.localexecutors.append(f"{self.name()}.{executor_type}.{executor}")
 
     def _validate_lsf_executors(self):
         """This method validates all LSF executors. We check if queue is available
@@ -261,8 +255,6 @@ class SiteConfiguration:
             self.valid_executors[executor_type][
                 f"{self.name()}.{executor_type}.{executor}"
             ] = {"setting": lsf_executors[executor]}
-
-            # self.lsfexecutors.append(executor)
 
     def _validate_slurm_executors(self):
         """This method will validate slurm executors, we check if partition, qos,
@@ -356,8 +348,6 @@ class SiteConfiguration:
                 f"{self.name()}.{executor_type}.{executor}"
             ] = {"setting": slurm_executor[executor]}
 
-            # self.slurmexecutors.append(executor)
-
     def _validate_cobalt_executors(self):
         """Validate cobalt queue property by running ```qstat -Ql <queue>``. If
         its a non-zero exit code then queue doesn't exist otherwise it is a valid
@@ -397,7 +387,6 @@ class SiteConfiguration:
             self.valid_executors[executor_type][
                 f"{self.name()}.{executor_type}.{executor}"
             ] = {"setting": cobalt_executor[executor]}
-            # self.cobaltexecutors.append(executor)
 
     def _validate_pbs_executors(self):
         """Validate pbs queue property by running by checking if queue is found and
@@ -477,5 +466,3 @@ class SiteConfiguration:
             self.valid_executors[executor_type][
                 f"{self.name()}.{executor_type}.{executor}"
             ] = {"setting": pbs_executor[executor]}
-
-            # self.pbsexecutors.append(executor)

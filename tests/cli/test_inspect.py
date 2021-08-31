@@ -86,8 +86,8 @@ def test_buildtest_inspect_name():
 def test_buildtest_inspect_id():
     report = Report()
 
-    test_ids = report.get_ids()
-    identifier = list(test_ids.keys())[0]
+    test_ids = report.get_testids()
+    identifier = test_ids[0]
 
     class args:
         subcommands = "config"
