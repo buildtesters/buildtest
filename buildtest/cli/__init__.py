@@ -680,7 +680,9 @@ def inspect_menu(subparsers):
     name.add_argument("name", nargs="*", help="Name of test")
 
     # buildtest inspect list
-    inspect_list = subparser.add_parser("list", help="List all test ids")
+    inspect_list = subparser.add_parser(
+        "list", help="List all test names, ids, and corresponding buildspecs"
+    )
     inspect_list.add_argument(
         "-n",
         "--no-header",
@@ -689,6 +691,10 @@ def inspect_menu(subparsers):
     )
     inspect_list.add_argument(
         "-t", "--terse", action="store_true", help="Print output in terse format"
+    )
+
+    inspect_list.add_argument(
+        "-b", "--builder", action="store_true", help="List test in builder format"
     )
 
     # buildtest inspect query

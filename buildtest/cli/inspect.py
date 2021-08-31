@@ -27,7 +27,9 @@ def inspect_cmd(args):
 
     # implements command 'buildtest inspect list'
     if args.inspect == "list":
-        inspect_list(report, terse=args.terse, header=args.no_header)
+        inspect_list(
+            report, terse=args.terse, header=args.no_header, builder=args.builder
+        )
         return
 
     # implements command 'buildtest inspect name'
@@ -48,12 +50,19 @@ def inspect_cmd(args):
         inspect_buildspec(report, input_buildspecs=args.buildspec, all_records=args.all)
 
 
-def inspect_list(report, terse=None, header=None):
+def inspect_list(report, terse=None, header=None, builder=None):
     """Implements method ``buildtest inspect list``"""
 
     test_ids = report._testid_lookup()
 
     table = {"name": [], "id": [], "buildspec": []}
+
+    # implement command 'buildtest inspect list --builder'
+    if builder:
+        builders = report.builder_names()
+        for name in builders:
+            print(name)
+        return
 
     # print output in terse format
     if terse:

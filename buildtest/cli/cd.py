@@ -2,7 +2,6 @@ import os
 import sys
 
 from buildtest.cli.report import Report
-from buildtest.exceptions import BuildTestError
 
 
 def change_directory(test):

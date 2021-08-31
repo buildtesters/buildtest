@@ -38,6 +38,11 @@ _test_name ()
   buildtest inspect list -t -n | cut -d '|' -f 2 | uniq | sort
 }
 
+_builder_names()
+{
+  buildtest inspect list -b
+}
+
 # list of buildspecs from report
 _test_buildspec ()
 {
@@ -98,14 +103,14 @@ _buildtest ()
       ;;
 
     cd)
-      COMPREPLY=( $( compgen  -W "$(_test_name)" -- $cur ) );;
+      COMPREPLY=( $( compgen  -W "$(_builder_names)" -- $cur ) );;
     clean)
       local opts="-h --help -y --yes"
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
       ;;
     path)
       local opts="-b -e -h -o -t --buildscript --errfile --help --outfile --stagedir --testpath"
-      COMPREPLY=( $( compgen -W "$(_test_name)" -- $cur ) )
+      COMPREPLY=( $( compgen -W "$(_builder_names)" -- $cur ) )
       if [[ $cur == -* ]] ; then
         COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
       fi
