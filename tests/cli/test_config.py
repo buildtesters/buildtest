@@ -115,3 +115,34 @@ def test_config_executors():
         disabled=False,
         invalid=False,
     )
+
+
+def test_disabled_invalid_executors():
+    here = os.path.dirname(os.path.abspath(__file__))
+
+    configfile = os.path.join(here, "configuration", "invalid_executors.yml")
+    configuration = SiteConfiguration(settings_file=configfile)
+    configuration.detect_system()
+    configuration.validate()
+
+    print("reading config file:", configfile)
+    be = BuildExecutor(configuration)
+    # run buildtest config executors
+    view_executors(
+        configuration=configuration,
+        buildexecutor=be,
+        json_format=False,
+        yaml_format=False,
+        disabled=True,
+        invalid=False,
+    )
+
+    # run buildtest config executors
+    view_executors(
+        configuration=configuration,
+        buildexecutor=be,
+        json_format=False,
+        yaml_format=False,
+        disabled=False,
+        invalid=True,
+    )

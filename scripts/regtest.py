@@ -21,7 +21,12 @@ if is_dir(VAR_DIR):
 cov = coverage.Coverage()
 cov.erase()
 cov.start()
-pytest.main()
+retcode = pytest.main()
+
+# if there is a failure in pytest raise exit 1
+if retcode == pytest.ExitCode.TESTS_FAILED:
+    sys.exit(1)
+
 cov.stop()
 cov.save()
 cov.html_report(directory=html_dir)

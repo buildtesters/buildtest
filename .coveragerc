@@ -6,6 +6,8 @@ omit =
     buildtest/main.py
     buildtest/defaults.py
     buildtest/__init__.py
+    buildtest/cli/edit.py
+    buildtest/cli/cd.py
 
 [report]
 # Regexes for lines to exclude from consideration
@@ -17,6 +19,7 @@ exclude_lines =
     if self.debug
 
     buildspec_find
+    config_cmd
 
     # Don't complain if tests don't hit defensive assertion code:
     raise AssertionError
