@@ -144,7 +144,7 @@ _buildtest ()
           fi
           ;;
         executors)
-          local opts="--help --json --yaml -h -j -y"
+          local opts="--help --disabled --invalid --json --yaml -d -h -i -j -y"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         view|validate|summary|systems)
           local opts="-h --help"

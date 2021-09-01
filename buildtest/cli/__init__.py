@@ -533,12 +533,20 @@ def config_menu(subparsers):
     )
     subparsers_config.add_parser("view", help="View Buildtest Configuration File")
 
+    executor_group = executors.add_mutually_exclusive_group()
+
     # buildtest config executors
-    executors.add_argument(
+    executor_group.add_argument(
         "-j", "--json", action="store_true", help="View executor in JSON format"
     )
-    executors.add_argument(
+    executor_group.add_argument(
         "-y", "--yaml", action="store_true", help="View executors in YAML format"
+    )
+    executor_group.add_argument(
+        "-d", "--disabled", action="store_true", help="Show disabled executors"
+    )
+    executor_group.add_argument(
+        "-i", "--invalid", action="store_true", help="Show invalid executors"
     )
 
     # buildtest config compilers
