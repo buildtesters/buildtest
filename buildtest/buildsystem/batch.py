@@ -4,7 +4,7 @@ class BatchScript:
 
 
 class LSFBatchScript(BatchScript):
-    def __init__(self, bsub=None):
+    def __init__(self, bsub):
         """
         :param batch: Input from  'batch' field that is scheduler agnostic configuration
         :param bsub: input from 'bsub' field in Buildspec inserted as #BSUB directive
@@ -15,19 +15,12 @@ class LSFBatchScript(BatchScript):
 
         self.bsub = bsub
 
-        self.build_header()
-
-    def build_header(self):
-        """Generate BSUB directive that will be part of the script"""
-
-        # only process argument if bsub field is specified
-        if self.bsub:
-            for cmd in self.bsub:
-                self.headers += [f"{self.directive} {cmd}"]
+        for cmd in self.bsub:
+            self.headers += [f"{self.directive} {cmd}"]
 
 
 class SlurmBatchScript(BatchScript):
-    def __init__(self, sbatch=None):
+    def __init__(self, sbatch):
         """
         :param batch: The batch commands specified by batch field. These are scheduler agnostic fields
         :param sbatch: sbatch commands that are inserted with #SBATCH directive
@@ -37,19 +30,12 @@ class SlurmBatchScript(BatchScript):
 
         self.sbatch = sbatch
 
-        self.build_header()
-
-    def build_header(self):
-        """Generate SBATCH directive that will be part of the script"""
-
-        # only process if sbatch field is specified
-        if self.sbatch:
-            for cmd in self.sbatch:
-                self.headers += [f"{self.directive} {cmd}"]
+        for cmd in self.sbatch:
+            self.headers += [f"{self.directive} {cmd}"]
 
 
 class CobaltBatchScript(BatchScript):
-    def __init__(self, cobalt=None):
+    def __init__(self, cobalt):
         """
         :param cobalt: cobalt commands that are inserted with #COBALT directive
         """
@@ -58,19 +44,13 @@ class CobaltBatchScript(BatchScript):
 
         self.cobalt = cobalt
 
-        self.build_header()
-
-    def build_header(self):
-        # only process if sbatch field is specified
-        if self.cobalt:
-            for cmd in self.cobalt:
-                self.headers += [f"{self.directive} {cmd}"]
+        for cmd in self.cobalt:
+            self.headers += [f"{self.directive} {cmd}"]
 
 
 class PBSBatchScript(BatchScript):
-    def __init__(self, batch=None, pbs=None):
+    def __init__(self, pbs=None):
         """
-        :param batch: The batch commands specified by batch field. These are scheduler agnostic fields
         :param pbs: pbs commands that are inserted with #PBS directive
         """
         self.headers = []
@@ -78,10 +58,5 @@ class PBSBatchScript(BatchScript):
 
         self.pbs = pbs
 
-        self.build_header()
-
-    def build_header(self):
-        # only process if sbatch field is specified
-        if self.pbs:
-            for cmd in self.pbs:
-                self.headers += [f"{self.directive} {cmd}"]
+        for cmd in self.pbs:
+            self.headers += [f"{self.directive} {cmd}"]

@@ -72,6 +72,8 @@ def test_config_executors():
         buildexecutor=buildexecutor,
         json_format=True,
         yaml_format=False,
+        disabled=False,
+        invalid=False,
     )
 
     # run buildtest config executors --yaml
@@ -80,6 +82,28 @@ def test_config_executors():
         buildexecutor=buildexecutor,
         json_format=False,
         yaml_format=True,
+        disabled=False,
+        invalid=False,
+    )
+
+    # run buildtest config executors -d
+    view_executors(
+        configuration=configuration,
+        buildexecutor=buildexecutor,
+        json_format=False,
+        yaml_format=False,
+        disabled=True,
+        invalid=False,
+    )
+
+    # run buildtest config executors -i
+    view_executors(
+        configuration=configuration,
+        buildexecutor=buildexecutor,
+        json_format=False,
+        yaml_format=False,
+        disabled=False,
+        invalid=True,
     )
 
     # run buildtest config executors
@@ -88,4 +112,6 @@ def test_config_executors():
         buildexecutor=buildexecutor,
         json_format=False,
         yaml_format=False,
+        disabled=False,
+        invalid=False,
     )

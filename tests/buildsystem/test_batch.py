@@ -6,7 +6,7 @@ from buildtest.buildsystem.batch import (
 )
 
 
-def test_batchscript_example1():
+def test_batchscript_examples():
 
     expected_header = [
         "#BSUB -P biology",
