@@ -22,7 +22,14 @@ def config_cmd(args, configuration):
 
     elif args.config == "executors":
         buildexecutor = BuildExecutor(configuration)
-        view_executors(configuration, buildexecutor, args.json, args.yaml)
+        view_executors(
+            configuration,
+            buildexecutor,
+            args.json,
+            args.yaml,
+            args.disabled,
+            args.invalid,
+        )
 
     elif args.config == "summary":
         view_summary(configuration)
@@ -91,7 +98,14 @@ def view_configuration(configuration):
     print(f"Settings File: {configuration.file}")
 
 
-def view_executors(configuration, buildexecutor, json_format=False, yaml_format=False):
+def view_executors(
+    configuration,
+    buildexecutor,
+    json_format=False,
+    yaml_format=False,
+    disabled=False,
+    invalid=False,
+):
     """Display executors from buildtest configuration. This implements ``buildtest config executors`` command.
     If no option is specified we display output in JSON format
     """
@@ -106,6 +120,26 @@ def view_executors(configuration, buildexecutor, json_format=False, yaml_format=
     # display output in YAML format
     if yaml_format:
         print(yaml.dump(d, default_flow_style=False))
+        return
+
+    if disabled:
+        executors = configuration.disabled_executors
+        if not executors:
+            print("There are no disabled executors")
+            return
+
+        for executor in executors:
+            print(executor)
+        return
+
+    if invalid:
+        executors = configuration.invalid_executors
+        if not executors:
+            print("There are no invalid executors")
+            return
+
+        for executor in executors:
+            print(executor)
         return
 
     names = buildexecutor.list_executors()

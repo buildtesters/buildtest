@@ -1,0 +1,34 @@
+system:
+  generic:
+    hostnames:
+    - .*
+    description: Generic System
+    moduletool: N/A
+    load_default_buildspecs: true
+    cdash:
+      url: https://my.cdash.org
+      project: buildtest
+      site: laptop
+    processor:
+      numcpus: 8
+      threads_per_core: 2
+      model: "Intel(R) Core(TM) i7-8569U CPU @ 2.80GHz"
+
+    executors:
+      local:
+        bash:
+          description: submit jobs on local machine using bash shell
+          shell: bash
+        zsh:
+          description: submit jobs on local machine using zsh shell
+          shell: zsh123
+
+    compilers:
+      find:
+        gcc: "^(gcc)"
+      compiler:
+        gcc:
+          builtin_gcc:
+            cc: gcc
+            fc: gfortran
+            cxx: g++

@@ -133,13 +133,14 @@ class SiteConfiguration:
                 self.file,
                 f"Cannot find modules_tool: {self.target_config['moduletool']} from configuration, please confirm if you have environment-modules or lmod and specify the appropriate tool.",
             )
-
+        """
         if self.invalid_executors:
             raise ConfigurationError(
                 self.config,
                 self.file,
                 f"The following executors are invalid: {self.invalid_executors}",
             )
+        """
 
     def _executor_check(self):
         """Validate executors"""
@@ -175,9 +176,6 @@ class SiteConfiguration:
                 )
                 logger.error(err)
                 continue
-                # raise BuildTestError(
-                #    f"Executor: {executor} failed to validate because 'shell' property points to {name} which is shell type!"
-                # )
 
             self.valid_executors[executor_type][
                 f"{self.name()}.{executor_type}.{executor}"
@@ -224,11 +222,6 @@ class SiteConfiguration:
                         f"'{queue}' is invalid LSF queue. Please select one of the following queues: {queue_list}"
                     )
                     continue
-                    # raise ConfigurationError(
-                    #    self.config,
-                    #    self.file,
-                    #    f"{lsf_executors[executor]['queue']} not a valid queue!. Please select one of the following queue: {queue_list}",
-                    # )
 
                 # check queue record for Status
                 for name in record:
@@ -247,11 +240,7 @@ class SiteConfiguration:
                             f"'{queue}' is in state: {queue_state}. It must be in {valid_queue_state} state in order to accept jobs"
                         )
                         break
-                        # raise ConfigurationError(
-                        #    self.config,
-                        #    self.file,
-                        #    f"{lsf_executors[executor]['queue']} is in state: {queue_state}. It must be in {valid_queue_state} state in order to accept jobs",
-                        # )
+
             self.valid_executors[executor_type][
                 f"{self.name()}.{executor_type}.{executor}"
             ] = {"setting": lsf_executors[executor]}

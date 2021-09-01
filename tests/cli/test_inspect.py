@@ -12,13 +12,14 @@ from buildtest.defaults import BUILDTEST_ROOT
 
 def test_buildtest_inspect_list():
 
-    # running buildtest inspect list --terse
+    # running buildtest inspect list --terse --no-header
     class args:
         subcommands = "config"
         inspect = "list"
         report = False
         terse = True
         no_header = True
+        builder = False
 
     inspect_cmd(args)
 
@@ -29,6 +30,7 @@ def test_buildtest_inspect_list():
         report = False
         terse = True
         no_header = False
+        builder = False
 
     inspect_cmd(args)
 
@@ -39,6 +41,7 @@ def test_buildtest_inspect_list():
         report = False
         terse = False
         no_header = False
+        builder = False
 
     inspect_cmd(args)
 
