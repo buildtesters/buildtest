@@ -185,7 +185,7 @@ class PBSJob(Job):
         return self._state == "F"
 
     def is_suspended(self):
-        """Return ``True`` if job is suspended which would be in one of these states ``H``, ``U``, ``S``. """
+        """Return ``True`` if job is suspended which would be in one of these states ``H``, ``U``, ``S``."""
         return self._state in ["H", "U", "S"]
 
     def output_file(self):
