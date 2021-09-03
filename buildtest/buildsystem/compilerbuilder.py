@@ -10,6 +10,8 @@ from buildtest.utils.tools import deep_get
 
 
 class CompilerBuilder(BuilderBase):
+    """This is a subclass of BuilderBase used for building test that uses ``type: compiler`` in the buildspec."""
+
     type = "compiler"
 
     # Fortran Extensions Links:

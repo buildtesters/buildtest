@@ -4,6 +4,10 @@ class BatchScript:
 
 
 class LSFBatchScript(BatchScript):
+    """This class is responsible for building LSF batch script by taking ``bsub`` property and converting them
+    into #BSUB directives
+    """
+
     def __init__(self, bsub):
         """
         :param batch: Input from  'batch' field that is scheduler agnostic configuration
@@ -20,6 +24,10 @@ class LSFBatchScript(BatchScript):
 
 
 class SlurmBatchScript(BatchScript):
+    """This class is responsible for building Slurm batch script by taking ``sbatch`` property and converting them
+    into #SBATCH directives
+    """
+
     def __init__(self, sbatch):
         """
         :param batch: The batch commands specified by batch field. These are scheduler agnostic fields
@@ -35,6 +43,10 @@ class SlurmBatchScript(BatchScript):
 
 
 class CobaltBatchScript(BatchScript):
+    """This class is responsible for building Cobalt batch script by taking ``cobalt`` property and converting them
+    into #COBALT directives
+    """
+
     def __init__(self, cobalt):
         """
         :param cobalt: cobalt commands that are inserted with #COBALT directive
@@ -49,7 +61,11 @@ class CobaltBatchScript(BatchScript):
 
 
 class PBSBatchScript(BatchScript):
-    def __init__(self, pbs=None):
+    """This class is responsible for building PBS batch script by taking ``pbs`` property and converting them
+    into #PBS directives
+    """
+
+    def __init__(self, pbs):
         """
         :param pbs: pbs commands that are inserted with #PBS directive
         """

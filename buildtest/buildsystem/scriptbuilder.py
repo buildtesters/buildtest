@@ -7,6 +7,8 @@ from buildtest.utils.tools import deep_get
 
 
 class ScriptBuilder(BuilderBase):
+    """This is a subclass of BuilderBase used for building test that uses ``type: script`` in the buildspec."""
+
     type = "script"
 
     def __init__(self, name, recipe, buildspec, executor, buildexecutor, testdir):

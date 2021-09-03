@@ -12,6 +12,7 @@ from buildtest.utils.tools import deep_get
 
 
 class SpackBuilder(BuilderBase):
+    """This is a subclass of BuilderBase used for building test that uses ``type: spack`` in the buildspec."""
 
     type = "spack"
 
