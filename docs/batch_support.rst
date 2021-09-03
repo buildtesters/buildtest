@@ -220,9 +220,11 @@ state of ``FAILED``.
     buildspecs:
       wall_timeout:
         type: script
-        executor: cori.slurm.debug
-        sbatch: [ "-t 2", "-C haswell", "-n 1"]
-        run: sleep 300
+        executor: cori.slurm.haswell_debug
+        sbatch: [ "-t '00:00:10'", "-n 1"]
+        description: "This job simulates job timeout by sleeping for 300sec while requesting 5sec"
+        tags: ["jobs", "fail"]
+        run: sleep 180
         status:
           slurm_job_state: "TIMEOUT"
 
@@ -232,43 +234,126 @@ state matches with expected result defined by field ``slurm_job_state``. This jo
 be TIMEOUT because we requested 2 mins while this job will sleep 300sec (5min).
 
 .. code-block:: console
-    :emphasize-lines: 8,17
 
-       Completed Jobs
-    ________________________________________
+    (buildtest) siddiq90@cori02> buildtest build -b buildspecs/jobs/fail/timeout.yml
+    User:  siddiq90
+    Hostname:  cori02
+    Platform:  Linux
+    Current Time:  2021/09/03 13:34:13
+    buildtest path: /global/homes/s/siddiq90/github/buildtest/bin/buildtest
+    buildtest version:  0.10.2
+    python path: /global/homes/s/siddiq90/.conda/envs/buildtest/bin/python
+    python version:  3.8.8
+    Test Directory:  /global/u1/s/siddiq90/github/buildtest/var/tests
+    Configuration File:  /global/u1/s/siddiq90/.buildtest/config.yml
+    Command: /global/homes/s/siddiq90/github/buildtest/bin/buildtest build -b buildspecs/jobs/fail/timeout.yml
+
+    +-------------------------------+
+    | Stage: Discovering Buildspecs |
+    +-------------------------------+
+
+    +------------------------------------------------------------------------------+
+    | Discovered Buildspecs                                                        |
+    +==============================================================================+
+    | /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/fail/timeout.yml |
+    +------------------------------------------------------------------------------+
+    Discovered Buildspecs:  1
+    Excluded Buildspecs:  0
+    Detected Buildspecs after exclusion:  1
+
+    +---------------------------+
+    | Stage: Parsing Buildspecs |
+    +---------------------------+
+
+    Valid Buildspecs:  1
+    Invalid Buildspecs:  0
+    /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/fail/timeout.yml: VALID
 
 
-    +--------------+--------------------------+----------+----------+
-    |     name     |         executor         |  jobID   | jobstate |
-    +--------------+--------------------------+----------+----------+
-    | wall_timeout | cori.slurm.haswell_debug | 43309265 | TIMEOUT  |
-    +--------------+--------------------------+----------+----------+
+    Total builder objects created: 1
+    builders: [wall_timeout/ae385691]
 
-    +---------------------------------------------+
-    | Stage: Final Results after Polling all Jobs |
-    +---------------------------------------------+
 
-     name         | id       | executor                 | status   |   returncode
-    --------------+----------+--------------------------+----------+--------------
-     wall_timeout | 3b43850c | cori.slurm.haswell_debug | PASS     |            0
+    name          id        description                                                                  buildspecs
+    ------------  --------  ---------------------------------------------------------------------------  ----------------------------------------------------------------------------
+    wall_timeout  ae385691  This job simulates job timeout by sleeping for 300sec while requesting 5sec  /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/fail/timeout.yml
+
+    +----------------------+
+    | Stage: Building Test |
+    +----------------------+
+
+     name         | id       | type   | executor                 | tags             | testpath
+    --------------+----------+--------+--------------------------+------------------+-------------------------------------------------------------------------------------------------------------------------------
+     wall_timeout | ae385691 | script | cori.slurm.haswell_debug | ['jobs', 'fail'] | /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.haswell_debug/timeout/wall_timeout/ae385691/wall_timeout_build.sh
+
+    +---------------------+
+    | Stage: Running Test |
+    +---------------------+
+
+    ______________________________
+    Launching test: wall_timeout
+    Test ID: ae385691-9eb4-413c-ac5b-f2be1bcc449e
+    Executor Name: cori.slurm.haswell_debug
+    Running Test:  /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.haswell_debug/timeout/wall_timeout/ae385691/wall_timeout_build.sh
+    wall_timeout/ae385691 JobID: 46518859 dispatched to scheduler
+    Polling Jobs in 30 seconds
+
+
+    Current Jobs
+    _______________
+
+
+    +--------------+----------+--------------------------+----------+----------+---------+
+    |     name     |    id    |         executor         |  jobID   | jobstate | runtime |
+    +--------------+----------+--------------------------+----------+----------+---------+
+    | wall_timeout | ae385691 | cori.slurm.haswell_debug | 46518859 | RUNNING  |  30.38  |
+    +--------------+----------+--------------------------+----------+----------+---------+
+    Polling Jobs in 30 seconds
+
+
+    Current Jobs
+    _______________
+
+
+    +--------------+----------+--------------------------+----------+----------+---------+
+    |     name     |    id    |         executor         |  jobID   | jobstate | runtime |
+    +--------------+----------+--------------------------+----------+----------+---------+
+    | wall_timeout | ae385691 | cori.slurm.haswell_debug | 46518859 | RUNNING  | 60.521  |
+    +--------------+----------+--------------------------+----------+----------+---------+
+    Polling Jobs in 30 seconds
+    wall_timeout/ae385691: Job 46518859 is complete!
+    wall_timeout/ae385691: Writing output file: /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.haswell_debug/timeout/wall_timeout/ae385691/wall_timeout.out
+    wall_timeout/ae385691: Writing error file: /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.haswell_debug/timeout/wall_timeout/ae385691/wall_timeout.err
+
+    +-----------------------+
+    | Completed Polled Jobs |
+    +-----------------------+
+
+     name         | id       | executor                 |    jobID | jobstate   | status   |   returncode |   runtime
+    --------------+----------+--------------------------+----------+------------+----------+--------------+-----------
+     wall_timeout | ae385691 | cori.slurm.haswell_debug | 46518859 | TIMEOUT    | PASS     |            0 |   90.6563
 
     +----------------------+
     | Stage: Test Summary  |
     +----------------------+
 
+     name         | id       | executor                 | status   | returncode_match   | regex_match   | runtime_match   |   returncode |   runtime
+    --------------+----------+--------------------------+----------+--------------------+---------------+-----------------+--------------+-----------
+     wall_timeout | ae385691 | cori.slurm.haswell_debug | PASS     | False              | False         | False           |            0 |   90.6563
+
+
+
     Passed Tests: 1/1 Percentage: 100.000%
     Failed Tests: 0/1 Percentage: 0.000%
 
 
-    Writing Logfile to: /tmp/buildtest_k6h246yx.log
+    Writing Logfile to: /tmp/buildtest_yr61l5t9.log
     A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /global/homes/s/siddiq90/github/buildtest/buildtest.log
 
 
-If you examine the logfile ``buildtest.log`` you will see an entry of ``sacct`` command run to gather
-results followed by list of field and value output::
 
-    2021-06-11 09:52:27,826 [slurm.py:292 -  poll() ] - [DEBUG] Querying JobID: '43309265'  Job State by running: 'sacct -j 43309265 -o State -n -X -P --clusters=cori'
-    2021-06-11 09:52:27,826 [slurm.py:296 -  poll() ] - [DEBUG] JobID: '43309265' job state:TIMEOUT
+buildtest marked this test ``PASS`` because the jobstate **TIMEOUT** match the value provided by ``slurm_job_state`` in the buildspec.
+
 
 LSF
 ----
@@ -332,18 +417,18 @@ Shown below is an example build of the buildspec using PBS scheduler.
 
 .. code-block:: console
 
-    [pbsuser@pbs tests]$ python3.7 ../bin/buildtest -c settings/pbs.yml build -b examples/pbs/sleep.yml --poll-interval=5
+    [pbsuser@pbs tests]$ python3.7 ./bin/buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/sleep.yml --poll-interval=5
     User:  pbsuser
     Hostname:  pbs
     Platform:  Linux
-    Current Time:  2021/08/27 15:56:39
+    Current Time:  2021/09/03 20:40:24
     buildtest path: /tmp/GitHubDesktop/buildtest/bin/buildtest
     buildtest version:  0.10.2
     python path: /bin/python
     python version:  3.7.0
     Test Directory:  /tmp/GitHubDesktop/buildtest/var/tests
     Configuration File:  /tmp/GitHubDesktop/buildtest/tests/settings/pbs.yml
-    Command: ../bin/buildtest -c settings/pbs.yml build -b examples/pbs/sleep.yml --poll-interval=5
+    Command: ./bin/buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/sleep.yml --poll-interval=5
 
     +-------------------------------+
     | Stage: Discovering Buildspecs |
@@ -368,12 +453,12 @@ Shown below is an example build of the buildspec using PBS scheduler.
 
 
     Total builder objects created: 1
-    builders: [pbs_sleep/2f2268d7]
+    builders: [pbs_sleep/631998a2]
 
 
     name       id        description    buildspecs
     ---------  --------  -------------  ---------------------------------------------------------
-    pbs_sleep  2f2268d7                 /tmp/GitHubDesktop/buildtest/tests/examples/pbs/sleep.yml
+    pbs_sleep  631998a2                 /tmp/GitHubDesktop/buildtest/tests/examples/pbs/sleep.yml
 
     +----------------------+
     | Stage: Building Test |
@@ -381,7 +466,7 @@ Shown below is an example build of the buildspec using PBS scheduler.
 
      name      | id       | type   | executor          | tags   | testpath
     -----------+----------+--------+-------------------+--------+------------------------------------------------------------------------------------------------------
-     pbs_sleep | 2f2268d7 | script | generic.pbs.workq |        | /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/2f2268d7/pbs_sleep_build.sh
+     pbs_sleep | 631998a2 | script | generic.pbs.workq |        | /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/631998a2/pbs_sleep_build.sh
 
     +---------------------+
     | Stage: Running Test |
@@ -389,10 +474,10 @@ Shown below is an example build of the buildspec using PBS scheduler.
 
     ______________________________
     Launching test: pbs_sleep
-    Test ID: 2f2268d7-197c-4e5c-b939-7e687744940d
+    Test ID: 631998a2-dc7c-4407-9b3f-552be9a11161
     Executor Name: generic.pbs.workq
-    Running Test:  /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/2f2268d7/pbs_sleep_build.sh
-    [pbs_sleep] JobID: 384.pbs dispatched to scheduler
+    Running Test:  /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/631998a2/pbs_sleep_build.sh
+    [pbs_sleep] JobID: 394.pbs dispatched to scheduler
     Polling Jobs in 5 seconds
 
 
@@ -403,28 +488,28 @@ Shown below is an example build of the buildspec using PBS scheduler.
     +-----------+----------+-------------------+---------+----------+---------+
     |   name    |    id    |     executor      |  jobID  | jobstate | runtime |
     +-----------+----------+-------------------+---------+----------+---------+
-    | pbs_sleep | 2f2268d7 | generic.pbs.workq | 384.pbs |    R     |  5.151  |
+    | pbs_sleep | 631998a2 | generic.pbs.workq | 394.pbs |    R     |  5.143  |
     +-----------+----------+-------------------+---------+----------+---------+
     Polling Jobs in 5 seconds
-    pbs_sleep/2f2268d7: Job 384.pbs is complete!
-    pbs_sleep/2f2268d7: Writing output file: /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/2f2268d7/pbs_sleep.o384
-    pbs_sleep/2f2268d7: Writing error file: /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/2f2268d7/pbs_sleep.e384
+    pbs_sleep/631998a2: Job 394.pbs is complete!
+    pbs_sleep/631998a2: Writing output file: /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/631998a2/pbs_sleep.o394
+    pbs_sleep/631998a2: Writing error file: /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/631998a2/pbs_sleep.e394
 
     +-----------------------+
     | Completed Polled Jobs |
     +-----------------------+
 
-     name      | id       | executor          | status   |   returncode |   runtime
-    -----------+----------+-------------------+----------+--------------+-----------
-     pbs_sleep | 2f2268d7 | generic.pbs.workq | PASS     |            0 |   10.2016
+     name      | id       | executor          | jobID   | jobstate   | status   |   returncode |   runtime
+    -----------+----------+-------------------+---------+------------+----------+--------------+-----------
+     pbs_sleep | 631998a2 | generic.pbs.workq | 394.pbs | F          | PASS     |            0 |    10.193
 
     +----------------------+
     | Stage: Test Summary  |
     +----------------------+
 
-     name      | id       | executor          | status   |   returncode |   runtime
-    -----------+----------+-------------------+----------+--------------+-----------
-     pbs_sleep | 2f2268d7 | generic.pbs.workq | PASS     |            0 |   10.2016
+     name      | id       | executor          | status   | returncode_match   | regex_match   | runtime_match   |   returncode |   runtime
+    -----------+----------+-------------------+----------+--------------------+---------------+-----------------+--------------+-----------
+     pbs_sleep | 631998a2 | generic.pbs.workq | PASS     | N/A                | N/A           | N/A             |            0 |    10.193
 
 
 
@@ -432,7 +517,7 @@ Shown below is an example build of the buildspec using PBS scheduler.
     Failed Tests: 0/1 Percentage: 0.000%
 
 
-    Writing Logfile to: /tmp/buildtest_c56vd2rj.log
+    Writing Logfile to: /tmp/buildtest_moa4gi1x.log
     A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /tmp/GitHubDesktop/buildtest/buildtest.log
 
 Cobalt
@@ -475,92 +560,6 @@ the following job script.
     hostname
     source /home/shahzebsiddiqui/buildtest/var/executors/cobalt.yarrow/after_script.sh
 
-
-Let's run this test and notice the job states.
-
-.. code-block:: console
-
-    $ buildtest build -b yarrow_hostname.yml
-
-    +-------------------------------+
-    | Stage: Discovering Buildspecs |
-    +-------------------------------+
-
-
-    Discovered Buildspecs:
-
-    /home/shahzebsiddiqui/jlse_tests/yarrow_hostname.yml
-
-    +---------------------------+
-    | Stage: Parsing Buildspecs |
-    +---------------------------+
-
-     schemafile              | validstate   | buildspec
-    -------------------------+--------------+------------------------------------------------------
-     script-v1.0.schema.json | True         | /home/shahzebsiddiqui/jlse_tests/yarrow_hostname.yml
-
-    +----------------------+
-    | Stage: Building Test |
-    +----------------------+
-
-     name            | id       | type   | executor      | tags   | testpath
-    -----------------+----------+--------+---------------+--------+-------------------------------------------------------------------------------------------------------------
-     yarrow_hostname | f86b93f6 | script | cobalt.yarrow |        | /home/shahzebsiddiqui/buildtest/var/tests/cobalt.yarrow/yarrow_hostname/yarrow_hostname/3/stage/generate.sh
-
-    +----------------------+
-    | Stage: Running Test  |
-    +----------------------+
-
-    [yarrow_hostname] JobID: 284752 dispatched to scheduler
-     name            | id       | executor      | status   |   returncode | testpath
-    -----------------+----------+---------------+----------+--------------+-------------------------------------------------------------------------------------------------------------
-     yarrow_hostname | f86b93f6 | cobalt.yarrow | N/A      |           -1 | /home/shahzebsiddiqui/buildtest/var/tests/cobalt.yarrow/yarrow_hostname/yarrow_hostname/3/stage/generate.sh
-
-
-    Polling Jobs in 10 seconds
-    ________________________________________
-    builder: yarrow_hostname in None
-    [yarrow_hostname]: JobID 284752 in starting state
-
-
-    Polling Jobs in 10 seconds
-    ________________________________________
-    builder: yarrow_hostname in starting
-    [yarrow_hostname]: JobID 284752 in starting state
-
-
-    Polling Jobs in 10 seconds
-    ________________________________________
-    builder: yarrow_hostname in starting
-    [yarrow_hostname]: JobID 284752 in running state
-
-
-    Polling Jobs in 10 seconds
-    ________________________________________
-    builder: yarrow_hostname in running
-    [yarrow_hostname]: JobID 284752 in exiting state
-
-
-    Polling Jobs in 10 seconds
-    ________________________________________
-    builder: yarrow_hostname in done
-
-    +---------------------------------------------+
-    | Stage: Final Results after Polling all Jobs |
-    +---------------------------------------------+
-
-     name            | id       | executor      | status   |   returncode | testpath
-    -----------------+----------+---------------+----------+--------------+-------------------------------------------------------------------------------------------------------------
-     yarrow_hostname | f86b93f6 | cobalt.yarrow | PASS     |          0   | /home/shahzebsiddiqui/buildtest/var/tests/cobalt.yarrow/yarrow_hostname/yarrow_hostname/3/stage/generate.sh
-
-    +----------------------+
-    | Stage: Test Summary  |
-    +----------------------+
-
-    Executed 1 tests
-    Passed Tests: 1/1 Percentage: 100.000%
-    Failed Tests: 0/1 Percentage: 0.000%
-
 When job starts, Cobalt will write a cobalt log file ``<JOBID>.cobaltlog`` which
 is provided by scheduler for troubleshooting. The output and error file are generated
 once job finishes. Cobalt job progresses through job state ``starting`` --> ``pending`` --> ``running`` --> ``exiting``.
@@ -582,7 +581,7 @@ such as ::
 
     Thu Nov 05 17:29:30 2020 +0000 (UTC) Info: task completed normally with an exit code of 0; initiating job cleanup and removal
 
-qstat has no job record for capturing returncode so buildtest must rely on Cobalt Log file.:
+qstat has no job record for capturing returncode so buildtest must rely on Cobalt Log file.
 
 .. _max_pend_time:
 
@@ -602,33 +601,29 @@ had one test so upon job cancellation we found there was no tests to report henc
 buildtest will terminate after run stage.
 
 .. code-block:: console
-    :emphasize-lines: 124
-    :linenos:
 
-    $ buildtest build -b buildspecs/queues/shared.yml --max-pend-time 15 --poll-interval 5 -k
-
-
-    User:  siddiq90
-    Hostname:  cori08
+    [pbsuser@pbs buildtest]$ python3.7 ./bin/buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/hold.yml --poll-interval=3 --max-pend-time=5
+    User:  pbsuser
+    Hostname:  pbs
     Platform:  Linux
-    Current Time:  2021/06/11 13:31:46
-    buildtest path: /global/homes/s/siddiq90/github/buildtest/bin/buildtest
-    buildtest version:  0.9.5
-    python path: /global/homes/s/siddiq90/.conda/envs/buildtest/bin/python
-    python version:  3.8.8
-    Test Directory:  /global/u1/s/siddiq90/github/buildtest/var/tests
-    Configuration File:  /global/u1/s/siddiq90/.buildtest/config.yml
-    Command: /global/homes/s/siddiq90/github/buildtest/bin/buildtest build -b buildspecs/queues/shared.yml --max-pend-time 15 --poll-interval 5 -k
+    Current Time:  2021/09/03 20:45:34
+    buildtest path: /tmp/GitHubDesktop/buildtest/bin/buildtest
+    buildtest version:  0.10.2
+    python path: /bin/python
+    python version:  3.7.0
+    Test Directory:  /tmp/GitHubDesktop/buildtest/var/tests
+    Configuration File:  /tmp/GitHubDesktop/buildtest/tests/settings/pbs.yml
+    Command: ./bin/buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/hold.yml --poll-interval=3 --max-pend-time=5
 
     +-------------------------------+
     | Stage: Discovering Buildspecs |
     +-------------------------------+
 
-    +--------------------------------------------------------------------------+
-    | Discovered Buildspecs                                                    |
-    +==========================================================================+
-    | /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/queues/shared.yml |
-    +--------------------------------------------------------------------------+
+    +----------------------------------------------------------+
+    | Discovered Buildspecs                                    |
+    +==========================================================+
+    | /tmp/GitHubDesktop/buildtest/tests/examples/pbs/hold.yml |
+    +----------------------------------------------------------+
     Discovered Buildspecs:  1
     Excluded Buildspecs:  0
     Detected Buildspecs after exclusion:  1
@@ -637,107 +632,55 @@ buildtest will terminate after run stage.
     | Stage: Parsing Buildspecs |
     +---------------------------+
 
-     schemafile              | validstate   | buildspec
-    -------------------------+--------------+--------------------------------------------------------------------------
-     script-v1.0.schema.json | True         | /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/queues/shared.yml
+    Valid Buildspecs:  1
+    Invalid Buildspecs:  0
+    /tmp/GitHubDesktop/buildtest/tests/examples/pbs/hold.yml: VALID
 
 
+    Total builder objects created: 1
+    builders: [pbs_hold_job/db8014c4]
 
-    name                         description
-    ---------------------------  ------------------------------------------
-    shared_qos_haswell_hostname  run hostname through shared qos on Haswell
+
+    name          id        description    buildspecs
+    ------------  --------  -------------  --------------------------------------------------------
+    pbs_hold_job  db8014c4  PBS Hold Job   /tmp/GitHubDesktop/buildtest/tests/examples/pbs/hold.yml
 
     +----------------------+
     | Stage: Building Test |
     +----------------------+
 
-     name                        | id       | type   | executor                  | tags                          | testpath
-    -----------------------------+----------+--------+---------------------------+-------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------
-     shared_qos_haswell_hostname | 94b2de5d | script | cori.slurm.haswell_shared | ['queues', 'jobs', 'reframe'] | /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.haswell_shared/shared/shared_qos_haswell_hostname/2/shared_qos_haswell_hostname_build.sh
-
-
+     name         | id       | type   | executor          | tags   | testpath
+    --------------+----------+--------+-------------------+--------+-----------------------------------------------------------------------------------------------------------
+     pbs_hold_job | db8014c4 | script | generic.pbs.workq |        | /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/hold/pbs_hold_job/db8014c4/pbs_hold_job_build.sh
 
     +---------------------+
     | Stage: Running Test |
     +---------------------+
 
-    [shared_qos_haswell_hostname] JobID: 43313766 dispatched to scheduler
-     name                        | id       | executor                  | status   |   returncode
-    -----------------------------+----------+---------------------------+----------+--------------
-     shared_qos_haswell_hostname | 94b2de5d | cori.slurm.haswell_shared | N/A      |           -1
+    ______________________________
+    Launching test: pbs_hold_job
+    Test ID: db8014c4-547b-487e-9d2e-f3c743addff9
+    Executor Name: generic.pbs.workq
+    Running Test:  /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/hold/pbs_hold_job/db8014c4/pbs_hold_job_build.sh
+    [pbs_hold_job] JobID: 395.pbs dispatched to scheduler
+    Polling Jobs in 3 seconds
 
 
-    Polling Jobs in 5 seconds
-    ________________________________________
-    Job Queue: [43313766]
+    Current Jobs
+    _______________
 
 
-    Pending Jobs
-    ________________________________________
+    +--------------+----------+-------------------+---------+----------+---------+
+    |     name     |    id    |     executor      |  jobID  | jobstate | runtime |
+    +--------------+----------+-------------------+---------+----------+---------+
+    | pbs_hold_job | db8014c4 | generic.pbs.workq | 395.pbs |    H     |  3.167  |
+    +--------------+----------+-------------------+---------+----------+---------+
+    Polling Jobs in 3 seconds
+    pbs_hold_job/db8014c4: Cancelling Job: 395.pbs because job exceeds max pend time: 5 sec with current pend time of 6.214
 
+    Cancelled Jobs: [pbs_hold_job/db8014c4]
+    Unable to run any tests
 
-    +-----------------------------+---------------------------+----------+----------+
-    |            name             |         executor          |  jobID   | jobstate |
-    +-----------------------------+---------------------------+----------+----------+
-    | shared_qos_haswell_hostname | cori.slurm.haswell_shared | 43313766 | PENDING  |
-    +-----------------------------+---------------------------+----------+----------+
-
-
-    Polling Jobs in 5 seconds
-    ________________________________________
-    Job Queue: [43313766]
-
-
-    Pending Jobs
-    ________________________________________
-
-
-    +-----------------------------+---------------------------+----------+----------+
-    |            name             |         executor          |  jobID   | jobstate |
-    +-----------------------------+---------------------------+----------+----------+
-    | shared_qos_haswell_hostname | cori.slurm.haswell_shared | 43313766 | PENDING  |
-    +-----------------------------+---------------------------+----------+----------+
-
-
-    Polling Jobs in 5 seconds
-    ________________________________________
-    Job Queue: [43313766]
-
-
-    Pending Jobs
-    ________________________________________
-
-
-    +-----------------------------+---------------------------+----------+----------+
-    |            name             |         executor          |  jobID   | jobstate |
-    +-----------------------------+---------------------------+----------+----------+
-    | shared_qos_haswell_hostname | cori.slurm.haswell_shared | 43313766 | PENDING  |
-    +-----------------------------+---------------------------+----------+----------+
-
-
-    Polling Jobs in 5 seconds
-    ________________________________________
-    Cancelling Job because duration time: 21.177340 sec exceeds max pend time: 15 sec
-    Job Queue: [43313766]
-
-
-    Pending Jobs
-    ________________________________________
-
-
-    +-----------------------------+---------------------------+----------+-----------+
-    |            name             |         executor          |  jobID   | jobstate  |
-    +-----------------------------+---------------------------+----------+-----------+
-    | shared_qos_haswell_hostname | cori.slurm.haswell_shared | 43313766 | CANCELLED |
-    +-----------------------------+---------------------------+----------+-----------+
-
-
-    Polling Jobs in 5 seconds
-    ________________________________________
-    Job Queue: []
-    Cancelled Tests:
-    shared_qos_haswell_hostname
-    After polling all jobs we found no valid builders to process
 
 .. _cray_burstbuffer_datawarp:
 

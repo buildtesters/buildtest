@@ -15,7 +15,8 @@ build:
     - csh
     - zsh
 
-formats: all
+formats:
+  - pdf
 
 python:
   version: 3.7

@@ -1,14 +1,13 @@
 .. _getting_started:
 
 
-Getting Started
-================
+Buildtest Tutorial
+===================
 
 .. toctree::
    :maxdepth: 2
-   :caption: Getting Started with buildtest
+   :caption: buildtest command line tutorial
 
    gettingstarted/buildingtest
    gettingstarted/buildspecs_interface
    gettingstarted/query_test_report
-   gettingstarted/additionalfeatures
