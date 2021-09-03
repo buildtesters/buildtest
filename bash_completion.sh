@@ -259,7 +259,7 @@ _buildtest ()
       fi
       ;;
     help|h)
-      local cmds="build buildspec cdash config edit history inspect report schema"
+      local cmds="build buildspec cdash config edit history inspect path report schema"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       ;;
     *)

@@ -183,6 +183,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
             "edit",
             "history",
             "inspect",
+            "path",
             "report",
             "schema",
         ],
