@@ -128,4 +128,4 @@ Compiler Schema Examples
 Spack Schema Examples
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. command-output:: buildtest schema -n spack-v1.0.schema.json --json
+.. command-output:: buildtest schema -n spack-v1.0.schema.json --example
