@@ -22,7 +22,11 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
@@ -30,7 +34,11 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
@@ -38,7 +46,11 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
@@ -46,7 +58,11 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
@@ -54,7 +70,11 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
@@ -62,61 +82,13 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
-
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
-
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics-patternproperties-.md "Name of metric") – `definitions.schema.json#/definitions/metrics/patternProperties/^.*$`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/metrics_field/properties/regex`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/regex`
 
@@ -126,13 +98,7 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field.md) – `definitions.schema.json#/definitions/metrics_field`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/metrics_field/properties/regex`
-
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics.md "This field is used for defining one or more metrics that is recorded for each test") – `definitions.schema.json#/definitions/metrics`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics-patternproperties-.md "Name of metric") – `definitions.schema.json#/definitions/metrics/patternProperties/^.*$`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/metrics_field/properties/regex`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-run_only.md "A set of conditions to specify when running tests") – `definitions.schema.json#/definitions/run_only`
 
@@ -140,95 +106,39 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `definitions.schema.json#/definitions/status`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
-
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors.md "Define executor specific configuration") – `definitions.schema.json#/definitions/executors`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-env.md "One or more key value pairs for an environment (key=value)") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/env`
-
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-vars.md "One or more key value pairs for an environment (key=value)") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/vars`
-
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/status`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-metrics.md "This field is used for defining one or more metrics that is recorded for each test") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/metrics`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics-patternproperties-.md "Name of metric") – `definitions.schema.json#/definitions/metrics/patternProperties/^.*$`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/metrics_field/properties/regex`
-
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics-patternproperties-.md "Name of metric") – `definitions.schema.json#/definitions/metrics/patternProperties/^.*$`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/metrics_field/properties/regex`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-env.md "One or more key value pairs for an environment (key=value)") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/env`
-
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-vars.md "One or more key value pairs for an environment (key=value)") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/vars`
-
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/status`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-metrics.md "This field is used for defining one or more metrics that is recorded for each test") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/metrics`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics-patternproperties-.md "Name of metric") – `definitions.schema.json#/definitions/metrics/patternProperties/^.*$`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/metrics_field/properties/regex`
-
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics-patternproperties-.md "Name of metric") – `definitions.schema.json#/definitions/metrics/patternProperties/^.*$`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/metrics_field/properties/regex`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-env.md "One or more key value pairs for an environment (key=value)") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/env`
-
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-vars.md "One or more key value pairs for an environment (key=value)") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/vars`
-
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/status`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/status/properties/regex`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-metrics.md "This field is used for defining one or more metrics that is recorded for each test") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/metrics`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics-patternproperties-.md "Name of metric") – `definitions.schema.json#/definitions/metrics/patternProperties/^.*$`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field-properties-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/metrics_field/properties/regex`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
@@ -237,8 +147,6 @@
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in buildtest configuration schema](./settings-properties-system.md) – `settings.schema.json#/properties/system`
-
-*   [Untitled object in buildtest configuration schema](./settings-properties-system-patternproperties-.md) – `settings.schema.json#/properties/system/patternProperties/^.*$`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-processor.md "Specify processor information") – `settings.schema.json#/definitions/system/properties/processor`
 
@@ -250,45 +158,17 @@
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-gcc.md "Declaration of one or more GNU compilers where we define C, C++ and Fortran compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/gcc`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-gcc-patternproperties-.md "A compiler section is composed of cc, cxx and fc wrapper these are required when you need to specify compiler wrapper") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/gcc/patternProperties/^.*$`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section-properties-module.md) – `settings.schema.json#/definitions/compiler_section/properties/module`
-
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-intel.md "Declaration of one or more Intel compilers where we define C, C++ and Fortran compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/intel`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-intel-patternproperties-.md "A compiler section is composed of cc, cxx and fc wrapper these are required when you need to specify compiler wrapper") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/intel/patternProperties/^.*$`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section-properties-module.md) – `settings.schema.json#/definitions/compiler_section/properties/module`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-cray.md "Declaration of one or more Cray compilers where we define C, C++ and Fortran compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cray`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-cray-patternproperties-.md "A compiler section is composed of cc, cxx and fc wrapper these are required when you need to specify compiler wrapper") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cray/patternProperties/^.*$`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section-properties-module.md) – `settings.schema.json#/definitions/compiler_section/properties/module`
-
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-pgi.md "Declaration of one or more PGI compilers where we define C, C++ and Fortran compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/pgi`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-pgi-patternproperties-.md "A compiler section is composed of cc, cxx and fc wrapper these are required when you need to specify compiler wrapper") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/pgi/patternProperties/^.*$`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section-properties-module.md) – `settings.schema.json#/definitions/compiler_section/properties/module`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-clang.md "Declaration of one or more Clang compilers where we define C, C++ compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/clang`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-clang-patternproperties-.md "A compiler section is composed of cc, cxx and fc wrapper these are required when you need to specify compiler wrapper") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/clang/patternProperties/^.*$`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section-properties-module.md) – `settings.schema.json#/definitions/compiler_section/properties/module`
-
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-cuda.md "Declaration of one or more Cuda compilers where we define C compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cuda`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-cuda-patternproperties-.md "A compiler section is composed of cc, cxx and fc wrapper these are required when you need to specify compiler wrapper") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cuda/patternProperties/^.*$`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section-properties-module.md) – `settings.schema.json#/definitions/compiler_section/properties/module`
-
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-upcxx.md "Declaration of one or more UPCXX compilers where we define C, C++ compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/upcxx`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-upcxx-patternproperties-.md "A compiler section is composed of cc, cxx and fc wrapper these are required when you need to specify compiler wrapper") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/upcxx/patternProperties/^.*$`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section-properties-module.md) – `settings.schema.json#/definitions/compiler_section/properties/module`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors.md "The executor section is used for declaring your executors that are responsible for running jobs") – `settings.schema.json#/definitions/system/properties/executors`
 
@@ -296,23 +176,13 @@
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-local.md "The local section is used for declaring local executors for running jobs on local machine") – `settings.schema.json#/definitions/system/properties/executors/properties/local`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-local-patternproperties-.md "An instance object of local executor") – `settings.schema.json#/definitions/system/properties/executors/properties/local/patternProperties/^.*$`
-
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-lsf.md "The lsf section is used for declaring LSF executors for running jobs using LSF scheduler") – `settings.schema.json#/definitions/system/properties/executors/properties/lsf`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-lsf-patternproperties-.md "An instance object of lsf executor") – `settings.schema.json#/definitions/system/properties/executors/properties/lsf/patternProperties/^.*$`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-slurm.md "The slurm section is used for declaring Slurm executors for running jobs using Slurm scheduler") – `settings.schema.json#/definitions/system/properties/executors/properties/slurm`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-slurm-patternproperties-.md "An instance object of slurm executor") – `settings.schema.json#/definitions/system/properties/executors/properties/slurm/patternProperties/^.*$`
-
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-cobalt.md "The cobalt section is used for declaring Cobalt executors for running jobs using Cobalt scheduler") – `settings.schema.json#/definitions/system/properties/executors/properties/cobalt`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-cobalt-patternproperties-.md "An instance object of cobalt executor") – `settings.schema.json#/definitions/system/properties/executors/properties/cobalt/patternProperties/^.*$`
-
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-pbs.md "The pbs section is used for declaring PBS executors for running jobs using PBS scheduler") – `settings.schema.json#/definitions/system/properties/executors/properties/pbs`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-pbs-patternproperties-.md "An instance object of cobalt executor") – `settings.schema.json#/definitions/system/properties/executors/properties/pbs/patternProperties/^.*$`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-cdash.md "Specify CDASH configuration used to upload tests via 'buildtest cdash' command") – `settings.schema.json#/definitions/system/properties/cdash`
 
@@ -328,45 +198,17 @@
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-gcc.md "Declaration of one or more GNU compilers where we define C, C++ and Fortran compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/gcc`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-gcc-patternproperties-.md "A compiler section is composed of cc, cxx and fc wrapper these are required when you need to specify compiler wrapper") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/gcc/patternProperties/^.*$`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section-properties-module.md) – `settings.schema.json#/definitions/compiler_section/properties/module`
-
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-intel.md "Declaration of one or more Intel compilers where we define C, C++ and Fortran compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/intel`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-intel-patternproperties-.md "A compiler section is composed of cc, cxx and fc wrapper these are required when you need to specify compiler wrapper") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/intel/patternProperties/^.*$`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section-properties-module.md) – `settings.schema.json#/definitions/compiler_section/properties/module`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-cray.md "Declaration of one or more Cray compilers where we define C, C++ and Fortran compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cray`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-cray-patternproperties-.md "A compiler section is composed of cc, cxx and fc wrapper these are required when you need to specify compiler wrapper") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cray/patternProperties/^.*$`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section-properties-module.md) – `settings.schema.json#/definitions/compiler_section/properties/module`
-
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-pgi.md "Declaration of one or more PGI compilers where we define C, C++ and Fortran compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/pgi`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-pgi-patternproperties-.md "A compiler section is composed of cc, cxx and fc wrapper these are required when you need to specify compiler wrapper") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/pgi/patternProperties/^.*$`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section-properties-module.md) – `settings.schema.json#/definitions/compiler_section/properties/module`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-clang.md "Declaration of one or more Clang compilers where we define C, C++ compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/clang`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-clang-patternproperties-.md "A compiler section is composed of cc, cxx and fc wrapper these are required when you need to specify compiler wrapper") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/clang/patternProperties/^.*$`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section-properties-module.md) – `settings.schema.json#/definitions/compiler_section/properties/module`
-
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-cuda.md "Declaration of one or more Cuda compilers where we define C compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cuda`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-cuda-patternproperties-.md "A compiler section is composed of cc, cxx and fc wrapper these are required when you need to specify compiler wrapper") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cuda/patternProperties/^.*$`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section-properties-module.md) – `settings.schema.json#/definitions/compiler_section/properties/module`
-
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-upcxx.md "Declaration of one or more UPCXX compilers where we define C, C++ compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/upcxx`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-upcxx-patternproperties-.md "A compiler section is composed of cc, cxx and fc wrapper these are required when you need to specify compiler wrapper") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/upcxx/patternProperties/^.*$`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section-properties-module.md) – `settings.schema.json#/definitions/compiler_section/properties/module`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors.md "The executor section is used for declaring your executors that are responsible for running jobs") – `settings.schema.json#/definitions/system/properties/executors`
 
@@ -374,29 +216,17 @@
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-local.md "The local section is used for declaring local executors for running jobs on local machine") – `settings.schema.json#/definitions/system/properties/executors/properties/local`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-local-patternproperties-.md "An instance object of local executor") – `settings.schema.json#/definitions/system/properties/executors/properties/local/patternProperties/^.*$`
-
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-lsf.md "The lsf section is used for declaring LSF executors for running jobs using LSF scheduler") – `settings.schema.json#/definitions/system/properties/executors/properties/lsf`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-lsf-patternproperties-.md "An instance object of lsf executor") – `settings.schema.json#/definitions/system/properties/executors/properties/lsf/patternProperties/^.*$`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-slurm.md "The slurm section is used for declaring Slurm executors for running jobs using Slurm scheduler") – `settings.schema.json#/definitions/system/properties/executors/properties/slurm`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-slurm-patternproperties-.md "An instance object of slurm executor") – `settings.schema.json#/definitions/system/properties/executors/properties/slurm/patternProperties/^.*$`
-
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-cobalt.md "The cobalt section is used for declaring Cobalt executors for running jobs using Cobalt scheduler") – `settings.schema.json#/definitions/system/properties/executors/properties/cobalt`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-cobalt-patternproperties-.md "An instance object of cobalt executor") – `settings.schema.json#/definitions/system/properties/executors/properties/cobalt/patternProperties/^.*$`
-
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-pbs.md "The pbs section is used for declaring PBS executors for running jobs using PBS scheduler") – `settings.schema.json#/definitions/system/properties/executors/properties/pbs`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors-properties-pbs-patternproperties-.md "An instance object of cobalt executor") – `settings.schema.json#/definitions/system/properties/executors/properties/pbs/patternProperties/^.*$`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-cdash.md "Specify CDASH configuration used to upload tests via 'buildtest cdash' command") – `settings.schema.json#/definitions/system/properties/cdash`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section.md "A compiler section is composed of cc, cxx and fc wrapper these are required when you need to specify compiler wrapper") – `settings.schema.json#/definitions/compiler_section`
-
-*   [Untitled object in buildtest configuration schema](./settings-definitions-compiler_section-properties-module.md) – `settings.schema.json#/definitions/compiler_section/properties/module`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-module.md) – `settings.schema.json#/definitions/module`
 
@@ -412,27 +242,9 @@
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all.md "Specify compiler configuration for all compiler groups") – `compiler-v1.0.schema.json#/definitions/default_compiler_all`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/env`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/vars`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/status`
-
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config.md "Specify compiler configuration for group of compilers") – `compiler-v1.0.schema.json#/definitions/default_compiler_config`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status`
-
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration.md "Specify compiler configuration at compiler level") – `compiler-v1.0.schema.json#/definitions/compiler_declaration`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/env`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/vars`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/status`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module.md) – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module`
 
@@ -440,127 +252,19 @@
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default.md) – `compiler-v1.0.schema.json#/properties/compilers/properties/default`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-all.md "Specify compiler configuration for all compiler groups") – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/all`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/env`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/vars`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/status`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-gcc.md "Specify compiler configuration for group of compilers") – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/gcc`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-intel.md "Specify compiler configuration for group of compilers") – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/intel`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-pgi.md "Specify compiler configuration for group of compilers") – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/pgi`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-cray.md "Specify compiler configuration for group of compilers") – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/cray`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-clang.md "Specify compiler configuration for group of compilers") – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/clang`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-cuda.md "Specify compiler configuration for group of compilers") – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/cuda`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default-properties-upcxx.md "Specify compiler configuration for group of compilers") – `compiler-v1.0.schema.json#/properties/compilers/properties/default/properties/upcxx`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/env`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/vars`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/status`
-
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-config.md "Specify compiler configuration based on named compilers") – `compiler-v1.0.schema.json#/properties/compilers/properties/config`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-config-patternproperties-.md "Specify compiler configuration at compiler level") – `compiler-v1.0.schema.json#/properties/compilers/properties/config/patternProperties/^.*$`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-env.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/env`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-vars.md "One or more key value pairs for an environment (key=value)") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/vars`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/status`
 
 *   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module.md) – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-run_only.md "A set of conditions to specify when running tests") – `compiler-v1.0.schema.json#/properties/run_only`
-
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-metrics.md "This field is used for defining one or more metrics that is recorded for each test") – `compiler-v1.0.schema.json#/properties/metrics`
-
 *   [Untitled object in global schema](./global-properties-buildspecs.md "This section is used to define one or more tests (buildspecs)") – `global.schema.json#/properties/buildspecs`
 
-*   [Untitled object in script schema version 1.0](./script-v1-properties-env.md "One or more key value pairs for an environment (key=value)") – `script-v1.0.schema.json#/properties/env`
-
-*   [Untitled object in script schema version 1.0](./script-v1-properties-vars.md "One or more key value pairs for an environment (key=value)") – `script-v1.0.schema.json#/properties/vars`
-
-*   [Untitled object in script schema version 1.0](./script-v1-properties-run_only.md "A set of conditions to specify when running tests") – `script-v1.0.schema.json#/properties/run_only`
-
-*   [Untitled object in script schema version 1.0](./script-v1-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `script-v1.0.schema.json#/properties/status`
-
-*   [Untitled object in script schema version 1.0](./script-v1-properties-metrics.md "This field is used for defining one or more metrics that is recorded for each test") – `script-v1.0.schema.json#/properties/metrics`
-
-*   [Untitled object in script schema version 1.0](./script-v1-properties-executors.md "Define executor specific configuration") – `script-v1.0.schema.json#/properties/executors`
-
-*   [Untitled object in spack schema version 1.0](./spack-v1-properties-env.md "One or more key value pairs for an environment (key=value)") – `spack-v1.0.schema.json#/properties/env`
-
-*   [Untitled object in spack schema version 1.0](./spack-v1-properties-vars.md "One or more key value pairs for an environment (key=value)") – `spack-v1.0.schema.json#/properties/vars`
-
-*   [Untitled object in spack schema version 1.0](./spack-v1-properties-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `spack-v1.0.schema.json#/properties/status`
-
-*   [Untitled object in spack schema version 1.0](./spack-v1-properties-metrics.md "This field is used for defining one or more metrics that is recorded for each test") – `spack-v1.0.schema.json#/properties/metrics`
-
-*   [Untitled object in spack schema version 1.0](./spack-v1-properties-executors.md "Define executor specific configuration") – `spack-v1.0.schema.json#/properties/executors`
-
 *   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack.md "Entry point to spack configuration") – `spack-v1.0.schema.json#/properties/spack`
-
-*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack-properties-mirror.md "One or more key value pairs for an environment (key=value)") – `spack-v1.0.schema.json#/properties/spack/properties/mirror`
-
-*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack-properties-env.md "Used for managing spack environment using spack env command") – `spack-v1.0.schema.json#/properties/spack/properties/env`
 
 *   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-create.md "Create a spack environment via spack env create") – `spack-v1.0.schema.json#/definitions/env/properties/create`
 
 *   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-activate.md "Activate a spack environment via spack env activate") – `spack-v1.0.schema.json#/definitions/env/properties/activate`
 
 *   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-rm.md "Remove an existing spack environment via spack env rm") – `spack-v1.0.schema.json#/definitions/env/properties/rm`
-
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-mirror.md "One or more key value pairs for an environment (key=value)") – `spack-v1.0.schema.json#/definitions/env/properties/mirror`
-
-*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack-properties-install.md "Install spack packages using spack install command") – `spack-v1.0.schema.json#/properties/spack/properties/install`
-
-*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack-properties-test.md "Entry point to spack test") – `spack-v1.0.schema.json#/properties/spack/properties/test`
 
 *   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test-properties-run.md "Run tests using spack via spack test run command") – `spack-v1.0.schema.json#/definitions/test/properties/run`
 
@@ -574,8 +278,6 @@
 
 *   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-rm.md "Remove an existing spack environment via spack env rm") – `spack-v1.0.schema.json#/definitions/env/properties/rm`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-mirror.md "One or more key value pairs for an environment (key=value)") – `spack-v1.0.schema.json#/definitions/env/properties/mirror`
-
 *   [Untitled object in spack schema version 1.0](./spack-v1-definitions-install.md "Install spack packages using spack install command") – `spack-v1.0.schema.json#/definitions/install`
 
 *   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test.md) – `spack-v1.0.schema.json#/definitions/test`
@@ -586,141 +288,31 @@
 
 ### Arrays
 
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-run_only-properties-linux_distro.md "Specify a list of Linux Distros to check when processing test") – `definitions.schema.json#/definitions/run_only/properties/linux_distro`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
 
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-list_of_strings.md) – `definitions.schema.json#/definitions/list_of_strings`
 
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
-
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-list_of_ints.md) – `definitions.schema.json#/definitions/list_of_ints`
 
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
-
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-run_only-properties-linux_distro.md "Specify a list of Linux Distros to check when processing test") – `definitions.schema.json#/definitions/run_only/properties/linux_distro`
 
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-bb.md "Create burst buffer space, this specifies #BB options in your test") – `definitions.schema.json#/definitions/BB`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `definitions.schema.json#/definitions/DW`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-sbatch.md "This field is used for specifying #SBATCH options in test script") – `definitions.schema.json#/definitions/sbatch`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-bsub.md "This field is used for specifying #BSUB options in test script") – `definitions.schema.json#/definitions/bsub`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-cobalt.md "This field is used for specifying #COBALT options in test script") – `definitions.schema.json#/definitions/cobalt`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-pbs.md "This field is used for specifying #PBS directives in test script") – `definitions.schema.json#/definitions/pbs`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-sbatch.md) – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/sbatch`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-bsub.md) – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/bsub`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-pbs.md) – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/pbs`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-cobalt.md) – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/cobalt`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/BB`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/DW`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-run_only-properties-linux_distro.md "Specify a list of Linux Distros to check when processing test") – `definitions.schema.json#/definitions/run_only/properties/linux_distro`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-sbatch.md) – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/sbatch`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-bsub.md) – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/bsub`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-pbs.md) – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/pbs`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-cobalt.md) – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/cobalt`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/BB`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/DW`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-string_or_list-oneof-1.md) – `definitions.schema.json#/definitions/string_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-sbatch.md) – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/sbatch`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-bsub.md) – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/bsub`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-pbs.md) – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/pbs`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-cobalt.md) – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/cobalt`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/BB`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-executors-patternproperties--properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/DW`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-int_or_list-oneof-1.md) – `definitions.schema.json#/definitions/int_or_list/oneOf/1`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-system-properties-hostnames.md "Specify a list of hostnames to check where buildtest can run for the given system record") – `settings.schema.json#/definitions/system/properties/hostnames`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-system-properties-buildspec_roots.md "Specify a list of directory paths to search buildspecs") – `settings.schema.json#/definitions/system/properties/buildspec_roots`
 
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-load.md "Load one or more modules via module load") – `settings.schema.json#/definitions/module/properties/load`
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-load.md "Load one or more modules via module load") – `settings.schema.json#/definitions/module/properties/load`
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-load.md "Load one or more modules via module load") – `settings.schema.json#/definitions/module/properties/load`
-
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-load.md "Load one or more modules via module load") – `settings.schema.json#/definitions/module/properties/load`
-
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
-
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-load.md "Load one or more modules via module load") – `settings.schema.json#/definitions/module/properties/load`
-
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
-
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-load.md "Load one or more modules via module load") – `settings.schema.json#/definitions/module/properties/load`
-
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
-
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-load.md "Load one or more modules via module load") – `settings.schema.json#/definitions/module/properties/load`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
@@ -736,31 +328,17 @@
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-system-properties-buildspec_roots.md "Specify a list of directory paths to search buildspecs") – `settings.schema.json#/definitions/system/properties/buildspec_roots`
 
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-load.md "Load one or more modules via module load") – `settings.schema.json#/definitions/module/properties/load`
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-load.md "Load one or more modules via module load") – `settings.schema.json#/definitions/module/properties/load`
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-load.md "Load one or more modules via module load") – `settings.schema.json#/definitions/module/properties/load`
-
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-load.md "Load one or more modules via module load") – `settings.schema.json#/definitions/module/properties/load`
-
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
-
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-load.md "Load one or more modules via module load") – `settings.schema.json#/definitions/module/properties/load`
-
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
-
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-load.md "Load one or more modules via module load") – `settings.schema.json#/definitions/module/properties/load`
-
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
-
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-load.md "Load one or more modules via module load") – `settings.schema.json#/definitions/module/properties/load`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
@@ -771,14 +349,10 @@
 *   [Untitled array in buildtest configuration schema](./settings-definitions-cobalt-properties-options.md "Specify any options for qsub for this executor when running all jobs associated to this executor") – `settings.schema.json#/definitions/cobalt/properties/options`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-pbs-properties-options.md "Specify any options for qsub for this executor when running all jobs associated to this executor") – `settings.schema.json#/definitions/pbs/properties/options`
-
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-load.md "Load one or more modules via module load") – `settings.schema.json#/definitions/module/properties/load`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-unique_string_array.md) – `settings.schema.json#/definitions/unique_string_array`
-
-*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-load.md "Load one or more modules via module load") – `settings.schema.json#/definitions/module/properties/load`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
@@ -792,207 +366,11 @@
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-pbs-properties-options.md "Specify any options for qsub for this executor when running all jobs associated to this executor") – `settings.schema.json#/definitions/pbs/properties/options`
 
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/sbatch`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/bsub`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-cobalt.md "This field is used for specifying #COBALT options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/cobalt`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-pbs.md "This field is used for specifying #PBS directives in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/pbs`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/BB`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/DW`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-cobalt.md "This field is used for specifying #COBALT options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-pbs.md "This field is used for specifying #PBS directives in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pbs`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/sbatch`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/bsub`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-cobalt.md "This field is used for specifying #COBALT options in test script") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cobalt`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-pbs.md "This field is used for specifying #PBS directives in test script") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/pbs`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/BB`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/DW`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module-properties-load.md "Load one or more modules via module load") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/load`
-
 *   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module-properties-swap.md "Swap modules using module swap") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/swap`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-name.md "Specify a list of regular expression to search compiler instance from buildtest settings") – `compiler-v1.0.schema.json#/properties/compilers/properties/name`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-exclude.md "Specify a list of named compilers to exclude when building test based on regular expression specified in name property") – `compiler-v1.0.schema.json#/properties/compilers/properties/exclude`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/sbatch`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/bsub`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-cobalt.md "This field is used for specifying #COBALT options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/cobalt`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-pbs.md "This field is used for specifying #PBS directives in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/pbs`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/BB`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all-properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `compiler-v1.0.schema.json#/definitions/default_compiler_all/properties/DW`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-cobalt.md "This field is used for specifying #COBALT options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-pbs.md "This field is used for specifying #PBS directives in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pbs`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-cobalt.md "This field is used for specifying #COBALT options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-pbs.md "This field is used for specifying #PBS directives in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pbs`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-cobalt.md "This field is used for specifying #COBALT options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-pbs.md "This field is used for specifying #PBS directives in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pbs`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-cobalt.md "This field is used for specifying #COBALT options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-pbs.md "This field is used for specifying #PBS directives in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pbs`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-cobalt.md "This field is used for specifying #COBALT options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-pbs.md "This field is used for specifying #PBS directives in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pbs`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-cobalt.md "This field is used for specifying #COBALT options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-pbs.md "This field is used for specifying #PBS directives in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pbs`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/sbatch`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/bsub`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-cobalt.md "This field is used for specifying #COBALT options in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/cobalt`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-pbs.md "This field is used for specifying #PBS directives in test script") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/pbs`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/BB`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config-properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `compiler-v1.0.schema.json#/definitions/default_compiler_config/properties/DW`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/sbatch`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/bsub`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-cobalt.md "This field is used for specifying #COBALT options in test script") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/cobalt`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-pbs.md "This field is used for specifying #PBS directives in test script") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/pbs`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/BB`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/DW`
-
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module-properties-load.md "Load one or more modules via module load") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/load`
 
 *   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module-properties-swap.md "Swap modules using module swap") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/swap`
 
 *   [Untitled array in global schema](./global-properties-maintainers.md "One or more maintainers or aliases") – `global.schema.json#/properties/maintainers`
-
-*   [Untitled array in script schema version 1.0](./script-v1-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `script-v1.0.schema.json#/properties/sbatch`
-
-*   [Untitled array in script schema version 1.0](./script-v1-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `script-v1.0.schema.json#/properties/bsub`
-
-*   [Untitled array in script schema version 1.0](./script-v1-properties-cobalt.md "This field is used for specifying #COBALT options in test script") – `script-v1.0.schema.json#/properties/cobalt`
-
-*   [Untitled array in script schema version 1.0](./script-v1-properties-pbs.md "This field is used for specifying #PBS directives in test script") – `script-v1.0.schema.json#/properties/pbs`
-
-*   [Untitled array in script schema version 1.0](./script-v1-properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `script-v1.0.schema.json#/properties/BB`
-
-*   [Untitled array in script schema version 1.0](./script-v1-properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `script-v1.0.schema.json#/properties/DW`
-
-*   [Untitled array in spack schema version 1.0](./spack-v1-properties-sbatch.md "This field is used for specifying #SBATCH options in test script") – `spack-v1.0.schema.json#/properties/sbatch`
-
-*   [Untitled array in spack schema version 1.0](./spack-v1-properties-bsub.md "This field is used for specifying #BSUB options in test script") – `spack-v1.0.schema.json#/properties/bsub`
-
-*   [Untitled array in spack schema version 1.0](./spack-v1-properties-cobalt.md "This field is used for specifying #COBALT options in test script") – `spack-v1.0.schema.json#/properties/cobalt`
-
-*   [Untitled array in spack schema version 1.0](./spack-v1-properties-pbs.md "This field is used for specifying #PBS directives in test script") – `spack-v1.0.schema.json#/properties/pbs`
-
-*   [Untitled array in spack schema version 1.0](./spack-v1-properties-bb.md "Create burst buffer space, this specifies #BB options in your test") – `spack-v1.0.schema.json#/properties/BB`
-
-*   [Untitled array in spack schema version 1.0](./spack-v1-properties-dw.md "Specify Data Warp option (#DW) when using burst buffer") – `spack-v1.0.schema.json#/properties/DW`
-
-*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-env-properties-specs.md "Add specs to environment by running spack add \<specs>") – `spack-v1.0.schema.json#/definitions/env/properties/specs`
-
-*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-install-properties-specs.md "List of specs to install using spack install command") – `spack-v1.0.schema.json#/definitions/install/properties/specs`
-
-*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-test-properties-run-properties-specs.md "List of specs to run tests by running spack test run \<specs>") – `spack-v1.0.schema.json#/definitions/test/properties/run/properties/specs`
-
-*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-test-properties-results-properties-suite.md "Report results by  suite name by running spack test results \<suite>") – `spack-v1.0.schema.json#/definitions/test/properties/results/properties/suite`
-
-*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-test-properties-results-properties-specs.md "Report result by spec name by running spack test run -- \<specs>") – `spack-v1.0.schema.json#/definitions/test/properties/results/properties/specs`
-
-*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-env-properties-specs.md "Add specs to environment by running spack add \<specs>") – `spack-v1.0.schema.json#/definitions/env/properties/specs`
-
-*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-install-properties-specs.md "List of specs to install using spack install command") – `spack-v1.0.schema.json#/definitions/install/properties/specs`
-
-*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-test-properties-run-properties-specs.md "List of specs to run tests by running spack test run \<specs>") – `spack-v1.0.schema.json#/definitions/test/properties/run/properties/specs`
-
-*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-test-properties-results-properties-suite.md "Report results by  suite name by running spack test results \<suite>") – `spack-v1.0.schema.json#/definitions/test/properties/results/properties/suite`
-
-*   [Untitled array in spack schema version 1.0](./spack-v1-definitions-test-properties-results-properties-specs.md "Report result by spec name by running spack test run -- \<specs>") – `spack-v1.0.schema.json#/definitions/test/properties/results/properties/specs`
 
 ## Version Note
 
