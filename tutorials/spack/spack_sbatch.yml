@@ -5,10 +5,7 @@ buildspecs:
     executor: generic.local.sh
     description: "sbatch directives can be defined in spack schema"
     tags: [spack]
-    sbatch: ["-N 1"]
-    batch:
-      cpucount: "8"
-      timelimit: "30"
+    sbatch: ["-N 1", "-n 8", "-t 30"]
     spack:
       root: $HOME/spack
       env:

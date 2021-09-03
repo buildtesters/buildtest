@@ -1061,6 +1061,9 @@ class BuildTest:
             "id": [],
             "executor": [],
             "status": [],
+            "returncode_match": [],
+            "regex_match": [],
+            "runtime_match": [],
             "returncode": [],
             "runtime": [],
         }
@@ -1077,6 +1080,10 @@ class BuildTest:
             table["id"].append(builder.metadata["id"])
             table["executor"].append(builder.executor)
             table["status"].append(builder.metadata["result"]["state"])
+            table["returncode_match"].append(builder.metadata["check"]["returncode"])
+            table["regex_match"].append(builder.metadata["check"]["regex"])
+            table["runtime_match"].append(builder.metadata["check"]["runtime"])
+
             table["returncode"].append(builder.metadata["result"]["returncode"])
             table["runtime"].append(builder.metadata["result"]["runtime"])
 
@@ -1235,6 +1242,7 @@ def update_report(valid_builders, report_file=BUILD_REPORT):
             "buildscript_content",
             "logpath",
             "metrics",
+            "check",
         ]:
             entry[item] = builder.metadata[item]
 

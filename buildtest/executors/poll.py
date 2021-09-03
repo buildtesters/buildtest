@@ -114,6 +114,8 @@ class PollQueue:
             "name": [],
             "id": [],
             "executor": [],
+            "jobID": [],
+            "jobstate": [],
             "status": [],
             "returncode": [],
             "runtime": [],
@@ -133,6 +135,8 @@ class PollQueue:
             table["name"].append(builder.name)
             table["id"].append(builder.metadata["id"])
             table["executor"].append(builder.executor)
+            table["jobID"].append(builder.job.get())
+            table["jobstate"].append(builder.job.state())
             table["status"].append(builder.metadata["result"]["state"])
             table["returncode"].append(builder.metadata["result"]["returncode"])
             table["runtime"].append(builder.metadata["result"]["runtime"])

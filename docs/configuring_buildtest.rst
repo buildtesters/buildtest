@@ -8,5 +8,4 @@ Configuring buildtest
 
    configuring_buildtest/overview
    configuring_buildtest/compilers
-   configuring_buildtest/command_line_interface
    configuring_buildtest/site_examples

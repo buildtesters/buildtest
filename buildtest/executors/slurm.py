@@ -136,7 +136,7 @@ class SlurmExecutor(BaseExecutor):
         builder.job.poll()
 
         # if job is complete gather job data
-        if builder.job.is_complete():
+        if builder.job.complete():
             self.gather(builder)
             return
 

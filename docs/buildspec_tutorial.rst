@@ -1,6 +1,6 @@
 .. _writing_buildspecs:
 
-Writing buildspecs
+Buildspec Tutorial
 ====================
 
 .. toctree::
@@ -11,4 +11,3 @@ Writing buildspecs
    buildspecs/compiler
    buildspecs/spack
    buildspecs/batch_support
-   buildspecs/schema_examples
