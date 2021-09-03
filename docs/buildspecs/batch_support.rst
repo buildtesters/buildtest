@@ -30,7 +30,6 @@ insert **#SBATCH** directive in front of each value.
 Shown below is an example buildspec
 
 .. code-block:: yaml
-    :linenos:
     :emphasize-lines: 6,8-10
 
     version: "1.0"
@@ -60,7 +59,6 @@ which is determined by the name of the test.
 
 
 .. code-block:: shell
-    :linenos:
     :emphasize-lines: 2-6
 
     #!/bin/bash
@@ -81,7 +79,6 @@ which is determined by the name of the test.
 The ``cori.slurm.knl_debug`` executor in our configuration file is defined as follows
 
 .. code-block:: yaml
-    :linenos:
     :emphasize-lines: 5-10
 
     system:
@@ -115,14 +112,12 @@ Shown below is an example build for this test
 .. code-block:: console
 
     $ buildtest build -b buildspecs/jobs/metadata.yml
-
-
     User:  siddiq90
     Hostname:  cori02
     Platform:  Linux
-    Current Time:  2021/06/11 09:24:44
+    Current Time:  2021/09/03 10:08:49
     buildtest path: /global/homes/s/siddiq90/github/buildtest/bin/buildtest
-    buildtest version:  0.9.5
+    buildtest version:  0.10.2
     python path: /global/homes/s/siddiq90/.conda/envs/buildtest/bin/python
     python version:  3.8.8
     Test Directory:  /global/u1/s/siddiq90/github/buildtest/var/tests
@@ -146,94 +141,70 @@ Shown below is an example build for this test
     | Stage: Parsing Buildspecs |
     +---------------------------+
 
-     schemafile              | validstate   | buildspec
-    -------------------------+--------------+--------------------------------------------------------------------------
-     script-v1.0.schema.json | True         | /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/metadata.yml
+    Valid Buildspecs:  1
+    Invalid Buildspecs:  0
+    /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/metadata.yml: VALID
 
 
+    Total builder objects created: 1
+    builders: [slurm_metadata/303d1e32]
 
-    name            description
-    --------------  --------------------------------------------------
-    slurm_metadata  Get metadata from compute node when submitting job
+
+    name            id        description                                         buildspecs
+    --------------  --------  --------------------------------------------------  ------------------------------------------------------------------------
+    slurm_metadata  303d1e32  Get metadata from compute node when submitting job  /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/metadata.yml
 
     +----------------------+
     | Stage: Building Test |
     +----------------------+
 
      name           | id       | type   | executor             | tags     | testpath
-    ----------------+----------+--------+----------------------+----------+-------------------------------------------------------------------------------------------------------------------------
-     slurm_metadata | 722b3291 | script | cori.slurm.knl_debug | ['jobs'] | /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/0/slurm_metadata_build.sh
-
-
+    ----------------+----------+--------+----------------------+----------+--------------------------------------------------------------------------------------------------------------------------------
+     slurm_metadata | 303d1e32 | script | cori.slurm.knl_debug | ['jobs'] | /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/303d1e32/slurm_metadata_build.sh
 
     +---------------------+
     | Stage: Running Test |
     +---------------------+
 
-    [slurm_metadata] JobID: 43308838 dispatched to scheduler
-     name           | id       | executor             | status   |   returncode
-    ----------------+----------+----------------------+----------+--------------
-     slurm_metadata | 722b3291 | cori.slurm.knl_debug | N/A      |           -1
-
-
+    ______________________________
+    Launching test: slurm_metadata
+    Test ID: 303d1e32-52eb-4d77-9a36-04a5143c4cbd
+    Executor Name: cori.slurm.knl_debug
+    Running Test:  /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/303d1e32/slurm_metadata_build.sh
+    slurm_metadata/303d1e32 JobID: 46508594 dispatched to scheduler
     Polling Jobs in 30 seconds
-    ________________________________________
-    Job Queue: [43308838]
+    slurm_metadata/303d1e32: Job 46508594 is complete!
+    slurm_metadata/303d1e32: Writing output file: /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/303d1e32/slurm_metadata.out
+    slurm_metadata/303d1e32: Writing error file: /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/303d1e32/slurm_metadata.err
 
+    +-----------------------+
+    | Completed Polled Jobs |
+    +-----------------------+
 
-    Pending Jobs
-    ________________________________________
-
-
-    +----------------+----------------------+----------+-----------+
-    |      name      |       executor       |  jobID   | jobstate  |
-    +----------------+----------------------+----------+-----------+
-    | slurm_metadata | cori.slurm.knl_debug | 43308838 | COMPLETED |
-    +----------------+----------------------+----------+-----------+
-
-
-    Polling Jobs in 30 seconds
-    ________________________________________
-    Job Queue: []
-
-
-    Completed Jobs
-    ________________________________________
-
-
-    +----------------+----------------------+----------+-----------+
-    |      name      |       executor       |  jobID   | jobstate  |
-    +----------------+----------------------+----------+-----------+
-    | slurm_metadata | cori.slurm.knl_debug | 43308838 | COMPLETED |
-    +----------------+----------------------+----------+-----------+
-
-    +---------------------------------------------+
-    | Stage: Final Results after Polling all Jobs |
-    +---------------------------------------------+
-
-     name           | id       | executor             | status   |   returncode
-    ----------------+----------+----------------------+----------+--------------
-     slurm_metadata | 722b3291 | cori.slurm.knl_debug | PASS     |            0
+     name           | id       | executor             | status   |   returncode |   runtime
+    ----------------+----------+----------------------+----------+--------------+-----------
+     slurm_metadata | 303d1e32 | cori.slurm.knl_debug | PASS     |            0 |   30.9923
 
     +----------------------+
     | Stage: Test Summary  |
     +----------------------+
 
+     name           | id       | executor             | status   |   returncode |   runtime
+    ----------------+----------+----------------------+----------+--------------+-----------
+     slurm_metadata | 303d1e32 | cori.slurm.knl_debug | PASS     |            0 |   30.9923
+
+
+
     Passed Tests: 1/1 Percentage: 100.000%
     Failed Tests: 0/1 Percentage: 0.000%
 
 
-    Writing Logfile to: /tmp/buildtest_u8ehladd.log
+    Writing Logfile to: /tmp/buildtest_2159tqkz.log
     A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /global/homes/s/siddiq90/github/buildtest/buildtest.log
 
 The **SlurmExecutor** class is responsible for processing slurm job that may include:
 dispatch, poll, gather, or cancel job. The SlurmExecutor will gather job metrics
-via `sacct <https://slurm.schedmd.com/sacct.html>`_ using the following format fields:
-**Account**, **AllocNodes**, **AllocTRES**, **ConsumedEnergyRaw**, **CPUTimeRaw**, **Elapsed**,
-**End**, **ExitCode**, **JobID**, **JobName**, **NCPUS**, **NNodes**, **QOS**, **ReqGRES**,
-**ReqMem**, **ReqNodes**, **ReqTRES**, **Start**, **State**, **Submit**, **UID**, **User**, **WorkDir**.
-For a complete list of format fields see ``sacct -e``. For now, we support only these fields of interest
-for reporting purpose.
+via `sacct <https://slurm.schedmd.com/sacct.html>`_.
 
 buildtest can check status based on Slurm Job State, this is defined by ``State`` field
 in sacct. In next example, we introduce field ``slurm_job_state`` which

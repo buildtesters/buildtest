@@ -351,8 +351,8 @@ files based on name of test. If we build this test, and inspect the generated te
 
     ####### START OF SCHEDULER DIRECTIVES #######
     #SBATCH -N 1
-    #SBATCH --ntasks=8
-    #SBATCH --time=30
+    #SBATCH -n 8
+    #SBATCH -t 30
     #SBATCH --job-name=spack_sbatch_example
     #SBATCH --output=spack_sbatch_example.out
     #SBATCH --error=spack_sbatch_example.err

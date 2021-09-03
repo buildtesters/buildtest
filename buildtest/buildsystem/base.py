@@ -61,7 +61,7 @@ class BuilderBase(ABC):
 
         self.name = name
         self.pwd = os.getcwd()
-        self.result = {}
+
         self.metadata = {}
 
         self.duration = 0
@@ -184,6 +184,7 @@ class BuilderBase(ABC):
         self.metadata["compiler"] = None
 
         self.metadata["result"] = {"state": "N/A", "returncode": "-1", "runtime": 0}
+        self.metadata["check"] = {"returncode": "N/A", "regex": "N/A", "runtime": "N/A"}
 
         self.metadata["metrics"] = {}
 
@@ -861,11 +862,14 @@ class BuilderBase(ABC):
         if not self.status.get("regex"):
             return regex_match
 
+        file_stream = None
         if self.status["regex"]["stream"] == "stdout":
             self.logger.debug(
                 f"Detected regex stream 'stdout' so reading output file: {self.metadata['outfile']}"
             )
             content = self.output()
+
+            file_stream = self.metadata["outfile"]
 
         elif self.status["regex"]["stream"] == "stderr":
             self.logger.debug(
@@ -873,10 +877,21 @@ class BuilderBase(ABC):
             )
             content = self.error()
 
+            file_stream = self.metadata["errfile"]
         self.logger.debug(f"Applying re.search with exp: {self.status['regex']['exp']}")
 
+        regex = re.search(self.status["regex"]["exp"], content)
+
+        print(
+            f"{self}: performing regular expression - '{self.status['regex']['exp']}' on file: {file_stream} with regular expression  "
+        )
+        if regex:
+            print(f"{self}: Regular Expression Match - Success!")
+        else:
+            print(f"{self}: Regular Expression Match - Failed!")
+
         # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
-        return re.search(self.status["regex"]["exp"], content) is not None
+        return regex is not None
 
     def _returncode_check(self):
         """Check status check of ``returncode`` field if specified in status property."""
@@ -904,6 +919,9 @@ class BuilderBase(ABC):
             # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
             returncode_match = (
                 self.metadata["result"]["returncode"] in buildspec_returncode
+            )
+            print(
+                f"{self}: Checking returncode - {self.metadata['result']['returncode']} is matched in list {buildspec_returncode}"
             )
 
         return returncode_match
@@ -946,6 +964,10 @@ class BuilderBase(ABC):
         """This method is responsible for detecting state of test (PASS/FAIL) based on returncode or regular expression."""
 
         self.metadata["result"]["state"] = "FAIL"
+
+        if self.metadata["result"]["returncode"] == 0:
+            self.metadata["result"]["state"] = "PASS"
+
         # if status is defined in Buildspec, then check for returncode and regex
         if self.status:
 
@@ -959,6 +981,10 @@ class BuilderBase(ABC):
             regex_match = self._check_regex()
 
             runtime_match = self._check_runtime()
+
+            self.metadata["check"]["regex"] = regex_match
+            self.metadata["check"]["runtime"] = runtime_match
+            self.metadata["check"]["returncode"] = returncode_match
 
             # if slurm_job_state_codes defined in buildspec.
             # self.builder.metadata["job"] only defined when job run through SlurmExecutor
@@ -978,12 +1004,8 @@ class BuilderBase(ABC):
             )
             if state:
                 self.metadata["result"]["state"] = "PASS"
-
-        # if status is not defined we check test returncode, by default 0 is PASS and any other return code is a FAIL
-        else:
-            if self.metadata["result"]["returncode"] == 0:
-                self.metadata["result"]["state"] = "PASS"
-
+            else:
+                self.metadata["result"]["state"] = "FAIL"
         # Return to starting directory for next test
         os.chdir(self.pwd)
 

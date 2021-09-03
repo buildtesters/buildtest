@@ -5,14 +5,11 @@ buildspecs:
     executor: "generic.local.(sh|bash)"
     description: "sbatch directives can be defined in spack schema"
     tags: [spack]
-    batch:
-      cpucount: "8"
-      timelimit: "30"
     executors:
       generic.local.sh:
-        sbatch: ["-N 1"]
+        sbatch: ["-N 1", "-t 30"]
       generic.local.bash:
-        sbatch: ["-N 8"]
+        sbatch: ["-N 8", "-t 15"]
     pre_cmds: |
       cd /tmp
       git clone https://github.com/spack/spack
@@ -21,7 +18,9 @@ buildspecs:
       env:
         specs:
           - 'm4'
+        create:
+          name: m4
         activate:
           name: m4
         concretize: true
-    post_cmd: rm -rf $SPACK_ROOT
+    post_cmds: rm -rf $SPACK_ROOT

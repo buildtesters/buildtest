@@ -191,6 +191,7 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
                 test["starttime"] = test_data["starttime"]
                 test["endtime"] = test_data["endtime"]
                 test["build_script"] = test_data["build_script"]
+                test["logpath"] = test_data["logpath"]
                 test["job"] = json.dumps(test_data["job"], indent=2, sort_keys=True)
 
                 # extra preformatted output fields
@@ -206,7 +207,7 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
                 # tags == labels
                 test["tags"] = test_data["tags"]
 
-                # testroot = test_data['testroot']
+                test["testroot"] = test_data["testroot"]
                 test["stagedir"] = test_data["stagedir"]
                 test["outfile"] = test_data["outfile"]
                 test["errfile"] = test_data["errfile"]
@@ -276,13 +277,15 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
             "command",
             "executor",
             "tags",
+            "testroot",
+            "stagedir",
             "build_script",
             "testpath",
-            "stagedir",
             "outfile",
             "errfile",
             "starttime",
             "endtime",
+            "logpath",
             "compiler",
             "schemafile",
         ]:
