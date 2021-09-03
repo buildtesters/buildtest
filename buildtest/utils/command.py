@@ -15,15 +15,14 @@ class Capturing:
     the init of the capture, and then they are closed when we exit. This
     means expected usage looks like:
 
-    with Capturing() as capture:
-        process = subprocess.Popen(...)
+    .. code-block:: python
+
+        with Capturing() as capture:
+            process = subprocess.Popen(...)
 
 
     And then the output and error are retrieved from reading the files:
-    and exposed as properties to the client:
-
-        capture.out
-        capture.err
+    and exposed as properties to the client: capture.out, capture.err
 
     And cleanup means deleting these files, if they exist.
     """
@@ -45,18 +44,14 @@ class Capturing:
 
     @property
     def out(self):
-        """Return output stream. Returns empty string if empty or doesn't exist.
-        Returns (str) : output stream written to file
-        """
+        """Return output stream. Returns empty string if empty or doesn't exist."""
         if os.path.exists(self.stdout.name):
             return read_file(self.stdout.name)
         return ""
 
     @property
     def err(self):
-        """Return error stream. Returns empty string if empty or doesn't exist.
-        Returns (str) : error stream written to file
-        """
+        """Return error stream. Returns empty string if empty or doesn't exist."""
         if os.path.exists(self.stderr.name):
             return read_file(self.stderr.name)
         return ""

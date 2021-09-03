@@ -77,6 +77,7 @@ extensions = [
     "autoapi.extension",
     "sphinxarg.ext",
     "sphinx_rtd_theme",
+    "sphinx.ext.viewcode",
 ]
 
 # Document Python Code

@@ -408,6 +408,9 @@ def discover_by_buildspecs(buildspec):
 
 
 def print_filters():
+    """This method will print list of filters fields used by ``buildtest build --filter``. This method is invoked by
+    running ``buildtest build --helpfilter``.
+    """
 
     headers = ["Field", "Description"]
     format_fields = [

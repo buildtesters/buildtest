@@ -305,20 +305,19 @@ class CobaltJob(Job):
 
     def gather(self):
         """Gather Job state by running **qstat -lf <jobid>** which retrieves all fields.
-            The output is in text format which is parsed into key/value pair and stored in a dictionary. This method will
-            return a dict containing the job record
+        The output is in text format which is parsed into key/value pair and stored in a dictionary. This method will
+        return a dict containing the job record
 
-            .. code-block:: console
+        .. code-block:: console
 
-                 $ qstat -lf 347106
-                    JobID: 347106
-                        JobName           : hold_job
-                        User              : shahzebsiddiqui
-                        WallTime          : 00:10:00
-                        QueuedTime        : 00:13:14
-                        RunTime           : N/A
-                        TimeRemaining     : N/A
-        `
+             $ qstat -lf 347106
+                JobID: 347106
+                    JobName           : hold_job
+                    User              : shahzebsiddiqui
+                    WallTime          : 00:10:00
+                    QueuedTime        : 00:13:14
+                    RunTime           : N/A
+                    TimeRemaining     : N/A
 
         """
 

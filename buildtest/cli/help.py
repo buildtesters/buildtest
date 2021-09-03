@@ -94,9 +94,15 @@ Command                                                     Description
 
 buildtest config view                                       View content of configuration file
 buildtest config validate                                   Validate configuration file with JSON schema
-buildtest config executors                                  List all executors from configuration file
+buildtest config executors                                  List all executors in flat listing from configuration file
+buildtest config executors --yaml                           Show executors configuration in YAML format
+buildtest config executors --json                           Show executors configuration in JSON format
+buildtest config executors --disabled                       List all disabled executors
+buildtest config executors --invalid                        List all invalid executors
 buildtest config systems                                    List all available system entries in configuration file
 buildtest -c /tmp/config.yml config validate                Validate configuration file /tmp/config.yml
+buildtest config compilers                                  List all compilers from configuration file in flat listing
+buildtest config compilers find                             Detect compilers and update configuration file
 """
     print(msg)
 
@@ -206,9 +212,30 @@ Schema Support
 ----------------------
 
 Command                                                     Description
+
 buildtest schema                                            Report all buildtest schema files 
 buildtest schema -n script-v1.0-schema.json -e              Show example for schema type script-v1.0-schema.json
 buildtest schema -n script-v1.0-schema.json -j              Show content of JSON schema for script-v1.0-schema.json 
+"""
+    print(msg)
+
+
+def print_path_help():
+    """This method will print help message for command ``buildtest help schema``"""
+    msg = """
+
+Get Test Path
+-------------
+
+Command                                                     Description
+
+buildtest path circle_area                                  Get test root for test name 'circle_area'
+buildtest path -t circle_area                               Get test script for test name 'circle_area'
+buildtest path -o circle_area                               Get output file for test name 'circle_area'
+buildtest path -e circle_area                               Get error file for test name 'circle_area'
+buildtest path -b circle_area                               Get build script for test name 'circle_area'
+buildtest path --stagedir circle_area                       Get stage directory for test name 'circle_area'
+buildtest path circle_area/abc                              Get test root for test name 'circle_area' starting with test ID 'abc'
 """
     print(msg)
 
@@ -226,6 +253,8 @@ def buildtest_help(command):
         print_inspect_help()
     elif command == "report":
         print_report_help()
+    elif command == "path":
+        print_path_help()
     elif command == "edit":
         print_edit_help()
     elif command == "history":

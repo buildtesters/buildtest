@@ -36,8 +36,10 @@ from buildtest.utils.tools import deep_get
 
 
 class BuilderBase(ABC):
-    """The BuilderBase is an abstract class that implements common functions for
-    any kind of builder.
+    """The BuilderBase is an abstract class that implements common functions used for
+    building and running the test. buildtest will create a builder object which resembles
+    a test. The builder will contains metadata that is unique to each builder which is
+    captured in the report file upon completion of test.
     """
 
     def __init__(self, name, recipe, buildspec, executor, buildexecutor, testdir):
@@ -238,9 +240,8 @@ class BuilderBase(ABC):
         return False
 
     def start(self):
-        """Keep internal time for start of test. We start timer by calling
-        Timer class
-        """
+        """Keep internal time for start of test. We start timer by calling Timer class"""
+
         # self.timer = Timer()
         self.timer.start()
 
@@ -352,9 +353,9 @@ class BuilderBase(ABC):
         self._buildstate = False
 
     def is_complete(self):
-        """Return True/False depending on state of builder and if it ran to completion it will return
-        ``True`` otherwise returns ``False``. A builder could fail due to job cancellation, failure to
-        submit job or raise exception during the run phase. In those case, this method will return ``False``"""
+        """If builder completes execution of test this method will return ``True`` otherwise returns ``False``.
+        A builder could fail due to job cancellation, failure to submit job or raise exception during the run phase.
+        In those case, this method will return ``False``."""
         return self._buildstate is True
 
     def is_failure(self):
@@ -635,7 +636,7 @@ class BuilderBase(ABC):
         return lines
 
     def _get_burst_buffer(self, burstbuffer):
-        """Get Burst Buffer directives (#BB) lines specified by BB property
+        """Get Burst Buffer directives (**#BB**) lines specified by ``BB`` property
 
         :param burstbuffer: Burst Buffer configuration specified by BB property
         :type burstbuffer: dict, required
@@ -655,7 +656,7 @@ class BuilderBase(ABC):
         return lines
 
     def _get_data_warp(self, datawarp):
-        """Get Cray Data Warp directives (#DW) lines specified by DW property.
+        """Get Cray Data Warp directives (**#DW**) lines specified by ``DW`` property.
 
         :param datawarp: Data Warp configuration specified by DW property
         :type datawarp: dict, required
@@ -815,6 +816,9 @@ class BuilderBase(ABC):
         """Build the testscript content implemented in each subclass"""
 
     def post_run_steps(self):
+        """This method is called after test is complete. This method will copy files from stage directory
+        such as output, error and test script. We will check state of test and mark job is complete.
+        """
 
         self._output = read_file(self.metadata["outfile"])
         self._error = read_file(self.metadata["errfile"])
@@ -836,7 +840,8 @@ class BuilderBase(ABC):
         self.success()
 
     def _check_regex(self):
-        """This method conducts a regular expression check using ``re.search``
+        """This method conducts a regular expression check using
+        `re.search <https://docs.python.org/3/library/re.html#re.search>`_
         with regular expression defined in Buildspec. User must specify an
         output stream (stdout, stderr) to select when performing regex. In
         buildtest, this would read the .out or .err file based on stream and
@@ -874,9 +879,7 @@ class BuilderBase(ABC):
         return re.search(self.status["regex"]["exp"], content) is not None
 
     def _returncode_check(self):
-        """Check status check of ``returncode`` field if specified in status
-        property.
-        """
+        """Check status check of ``returncode`` field if specified in status property."""
 
         returncode_match = False
 
@@ -940,9 +943,7 @@ class BuilderBase(ABC):
             return actual_runtime < float(max_time)
 
     def check_test_state(self):
-        """This method is responsible for detecting state of test (PASS/FAIL)
-        based on returncode or regular expression.
-        """
+        """This method is responsible for detecting state of test (PASS/FAIL) based on returncode or regular expression."""
 
         self.metadata["result"]["state"] = "FAIL"
         # if status is defined in Buildspec, then check for returncode and regex
