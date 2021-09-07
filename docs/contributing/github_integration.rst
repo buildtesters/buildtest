@@ -22,7 +22,7 @@ coverage tests see :ref:`coverage_test`.
 CodeCov
 -------
 
-`Codecov <https://docs.codecov.io/docs>`_  report coverage details in web-browser.
+`Codecov <https://docs.codecov.io/docs>`__  report coverage details in web-browser.
 CodeCov can perform `pull request comments <https://docs.codecov.io/docs/pull-request-comments>`_
 after coverage report is uploaded to Codecov which is useful for reviewer and assignee
 to see status of coverage report during PR review process. The codecov file
@@ -71,6 +71,6 @@ buildtest has a few bots to do various operations that are described below.
 
 - `Stale <https://github.com/marketplace/stale>`_  - stale bot is used to close outdated issues. This is configured in ``.github/stale.yml``. If there is no activity on a issue after certain time period, **probot-stale** will mark the issue and project maintainers can close it manually. For more details on Stale refer to the `documentation <https://probot.github.io/>`_
 
-- `CodeCov <https://github.com/marketplace/codecov>`_ - The codecov bot will report codecov report from the issued pull request once coverage report is complete. The configuration for codecov is defined in ``.codecov.yml`` found in root of repo.
+- `CodeCov <https://github.com/marketplace/codecov>`__ - The codecov bot will report codecov report from the issued pull request once coverage report is complete. The configuration for codecov is defined in ``.codecov.yml`` found in root of repo.
 
 - `Pull Request Size <https://github.com/marketplace/pull-request-size>`_ - is a bot that labels Pull Request by number of **changed** lines of code.

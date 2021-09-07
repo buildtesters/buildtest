@@ -9,6 +9,9 @@ dist/
 build/
 var/
 
+# generated docs from sphinx-autoapi
+docs/api
+
 # xml files generated for buildtest cdash
 *.xml
 

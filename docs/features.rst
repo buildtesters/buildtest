@@ -95,7 +95,7 @@ specify a buildname called `tutorials`::
 
 We can see the output of these tests in CDASH if we go to url https://my.cdash.org//viewTest.php?buildid=2004360
 
-.. image:: ../_static/CDASH.png
+.. image:: ./_static/CDASH.png
 
 By default buildtest will read the report file in your **$HOME/.buildtest/report.json**, we can
 specify an alternate report file. First let's see the available help options for

@@ -60,8 +60,6 @@ def walk_tree(root_dir, ext=None):
     based on extension type. This method invokes is_dir() to check if directory
     exists before traversal.
 
-    Parameters:
-
     :param root_dir: directory path to traverse
     :type root_dir: str, required
     :param ext: file extensions to search in traversal
@@ -92,12 +90,12 @@ def walk_tree(root_dir, ext=None):
 def create_dir(dirname):
     """Create a directory if it doesn't exist. If directory contains variable
     expansion ($HOME), user expansion (~) we resolve this before creating directory.
-    If there is an error creating directory we raise an exception
+    If there is an error creating directory we raise an exception BuildTestError
 
     :param dirname: directory path to create
     :type dirname: str, required
     :return: creates the directory or print an exception message upon failure
-    :rtype: Catches exception of type OSError
+    :rtype: Catches exception of type OSError and raise exception BuildTestError or returns None
     """
 
     # these three lines implement same as ``resolve_path`` will return None when it's not a known file. We expect
@@ -116,12 +114,13 @@ def create_dir(dirname):
 
 def resolve_path(path, exist=True):
     """This method will resolve a file path to account for shell expansion and resolve paths in
-     when a symlink is provided in the file. This method assumes file already exists.
+    when a symlink is provided in the file. This method assumes file already exists.
 
-     :param path: file path to resolve
-     :type path: str, required
-     :param exist: expects a boolean to determine if filepath should be returned or None. By default, `exist` is `True`
-     and file is checked using `os.path.exist` to return full path.
+    :param path: file path to resolve
+    :type path: str, required
+    :param exist: expects a boolean to determine if filepath should be returned or None. By default, `exist` is `True` and file is checked using `os.path.exist` to return full path.
+    :return: return realpath to file if found otherwise return None
+    :rtype: str or None
 
     >>> a = resolve_path("$HOME/.bashrc")
     >>> assert a
@@ -129,11 +128,6 @@ def resolve_path(path, exist=True):
     >>> assert b
     >>> c = resolve_path("$HOME/.bashrc1", exist=True)
     >>> assert not c
-
-
-     file is checked``os.path.exists`` after getting realpath using ``os.path.realpath()``.   resolve
-     :return: return realpath to file if found otherwise return None
-     :rtype: str or None
     """
 
     # if path not set return None
@@ -165,9 +159,9 @@ def read_file(filepath):
 
     :param filepath: file name to read
     :type filepath: str, required
-    :raises:
-      BuildTestError: If filepath is not a string
-      BuildTestError: If filepath is not valid file
+    :raises BuildTestError: If filepath is not a string
+    :raises BuildTestError: If filepath is not valid file
+    :raises BuildTestError: When there is issue reading file and python raises exception IOERROR
     :return: return content of file as a string
     :rtype: str
     """
@@ -210,11 +204,9 @@ def write_file(filepath, content):
     :type filepath: str, required
     :param content: content to write to file
     :type content: str, required
-    :raises:
-      BuildTestError: System error if filepath is not string
-      BuildTestError: System error if filepath is a directory
-    :return: Return nothing if write is successful. A system error if ``filepath`` is not str or directory. If
-             argument ``content`` is not str we return ``None``
+    :raises BuildTestError: System error if filepath is not string
+    :raises BuildTestError: System error if filepath is a directory
+    :return: Return nothing if write is successful. A system error if ``filepath`` is not str or directory. If argument ``content`` is not str we return ``None``
     """
 
     # ensure filepath is a string, if not we raise an error
@@ -274,7 +266,12 @@ def load_json(fname):
     """Given a filename, resolves full path to file and loads json file. This method will
     catch exception json.JSONDecodeError and raise an exception with useful message. If there is no
     error we return content of json file
+
+    :param fname: Name of file to read and load json content
+    :type fname: str, required
+    :raises BuildTestError: If there is issue resolving path to file or issue reading JSON file and python raises exception ``json.JSONDecodeError``
     """
+
     abspath_fname = resolve_path(fname)
     # if filename doesn't exist we raise an exception
     if not abspath_fname:

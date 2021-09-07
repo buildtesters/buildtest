@@ -286,15 +286,17 @@ buildtest will report an error if an input buildspec is invalid filepath such as
    :returncode: 1
 
 You can also pass multiple buildspes on the command line and fetch all records for a test. In example
-below we will fetch all records from tests **tutorials/hello_world/yml** and **tutorials/regex_status.yml**
+below we will fetch all records from buildspecs **tutorials/vars.yml** and **tutorials/status_regex.yml**
 
 .. command-output:: buildtest it buildspec --all tutorials/vars.yml tutorials/status_regex.yml
 
-If you pass a valid filepath but file is not in cache you will get an error as follows
+.. note::
 
-.. command-output:: buildtest it buildspec $BUILDTEST_ROOT/README.rst
-   :shell:
-   :returncode: 1
+    If you pass a valid filepath but file is not in cache you will get an error as follows
+
+    .. command-output:: buildtest it buildspec $BUILDTEST_ROOT/README.rst
+       :shell:
+       :returncode: 1
 
 .. _inspect_by_id:
 
@@ -398,7 +400,7 @@ We can query multiple tests using ``buildtest inspect query`` since each test is
 options specified to `buildtest inspect query` will be applied to all test. For instance, let's fetch the output the
 of test names ``root_disk_usage`` and ``python_hello``
 
-.. command-output:: buildtest inspect query -o  root_disk_usage python_hello
+.. command-output:: buildtest inspect query -o root_disk_usage python_hello
 
 Using Alternate Report File
 -----------------------------

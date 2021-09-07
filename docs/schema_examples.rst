@@ -104,7 +104,7 @@ In order to view an example you can run::
   buildtest schema -n <schema> --example
 
 Settings Schema Examples
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. command-output:: buildtest schema -n settings.schema.json --example
 

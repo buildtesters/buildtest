@@ -522,17 +522,9 @@ class Report:
         return list(id_lookup.keys())
 
     def _testid_lookup(self):
-        """Return a dict in the format
-        ```
-        {
-          <test-id>:
-            {
-              'name': <name test>
-              'buildspec': <buildspec>
-            }
-           ...
-        }
-        ```
+        """Return a dict where `key` represents full id of test and value is a dictionary
+        containing two values ``name`` and ``buildspec`` property which contains name of test
+        and path to buildspec file.
         """
 
         test_ids = {}
