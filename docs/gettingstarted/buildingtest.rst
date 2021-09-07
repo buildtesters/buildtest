@@ -154,7 +154,7 @@ buildspec cache see :ref:`querying buildspec executor <buildspec_executor>`.
 
 .. Note:: By default all tests are run in buildspec file.  The ``buildtest build --executor`` option discovers
    buildspecs if one of the test matches the executor name. The ``--executor`` option
-   is **not filtering on test level**  like ``--filter-tags`` option.
+   is **not filtering tests but only discovering buildspecs**.
 
 In this example we run all tests that are associated to ``generic.local.python`` executor.
 
@@ -176,7 +176,7 @@ report the fields followed by description.
 
 .. command-output:: buildtest build --helpfilter
 
-In this example, we will discover all buildspecs based on tagname ``pass`` and then filter each **test** by tagname **pass** specified by **--filter tags=pass**.
+In this example, we will discover all buildspecs based on tagname ``pass`` and then filter each **test** by tagname **pass** specified by ``--filter tags=pass``.
 
 .. command-output:: buildtest build -t pass --filter tags=pass
 
@@ -279,7 +279,7 @@ path. To demonstrate we will build ``tutorials/python-shell.yml`` three times us
 .. command-output:: buildtest build -b tutorials/python-shell.yml --rebuild=3
 
 The rebuild works with all options including: ``--buildspec``, ``--exclude``, ``--tags``
-and ``--executors``. buildtest will perform rebuild for all discovered tests, for instance in
+and ``--executor``. buildtest will perform rebuild for all discovered tests, for instance in
 this next example we will discover all tests by tag name **fail** and each test is rebuild twice.
 
 .. command-output:: buildtest build -t fail --rebuild 2

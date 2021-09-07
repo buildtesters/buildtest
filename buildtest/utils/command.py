@@ -90,6 +90,7 @@ class BuildTestCommand:
 
     def execute(self):
         """Execute a system command and return output and error.
+
         :param cmd: shell command to execute
         :type cmd: str, required
         :return: Output and Error from shell command
@@ -140,6 +141,7 @@ class BuildTestCommand:
 
     def returncode(self):
         """Returns the return code from shell command
+
         :rtype: int
         """
 
@@ -149,6 +151,7 @@ class BuildTestCommand:
         """Given a line of output (error or regular) decode using the
         system default, if appropriate
         """
+
         # loc = locale.getdefaultlocale()[1]
 
         try:
@@ -165,12 +168,16 @@ class BuildTestCommand:
 
     def get_error(self):
         """Returns the error from shell command
+
         :rtype: str
         """
+
         return self.err
 
     def get_command(self):
         """Returns the executed command
+
         :rtype: str
         """
+
         return " ".join(self.cmd)

@@ -225,7 +225,7 @@ The changes will be shown with lines removed or added via ``-`` and ``+``. For m
 isort
 ------
 
-`isort <https://pycqa.github.io/isort>`_ is a python utility that will sort python imports alphabetically. We use isort as part of the CI checks, there
+`isort <https://pycqa.github.io/isort>`__ is a python utility that will sort python imports alphabetically. We use isort as part of the CI checks, there
 is a `.isort.cfg <https://github.com/buildtesters/buildtest/blob/devel/.isort.cfg>`_ that defines the isort configuration that is compatible with
 `black <https://black.readthedocs.io/en/stable/>`_ utility. We have setup a pre-commit hook that can be used to automatically
 run isort as part of your ``git commit`` process. This is defined in pre-commit configuration file `.pre-commit-config.yaml <https://github.com/buildtesters/buildtest/blob/devel/.pre-commit-config.yaml>`_

@@ -10,4 +10,3 @@ Buildspec Tutorial
    buildspecs/global
    buildspecs/compiler
    buildspecs/spack
-   buildspecs/batch_support

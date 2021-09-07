@@ -86,7 +86,9 @@ autoapi_dirs = ["../buildtest"]
 autoapi_add_toctree_entry = True
 autoapi_member_order = "alphabetical"
 autoapi_root = "api"
+autoapi_keep_files = True
 
+suppress_warnings = ["autoapi"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]

@@ -225,6 +225,7 @@ class BuildspecCache:
 
     def lookup_buildspec_by_name(self, name):
         """Given an input test name, return corresponding buildspec file found in the cache.
+
         :param name: Name of test to query in buildspec cache
         :type name: str, required
         """
@@ -985,6 +986,11 @@ def buildspec_validate(
 
 
 def summarize_buildspec_cache(configuration):
+    """Prints summary of buildspec cache which is run via command ``buildtest buildspec summary``
+
+    :param configuration: instance of type SiteConfiguration
+    :type configuration: SiteConfiguration
+    """
 
     cache = BuildspecCache(configuration=configuration)
     print("Reading Buildspec Cache File:", BUILDSPEC_CACHE_FILE)
