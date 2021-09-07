@@ -330,7 +330,7 @@ class BuildspecCache:
 
     def _check_filter_fields(self):
         """This method checks filter fields are valid. The filter fields are specified
-        as ``buildtest buildspec find --filter <KEY1>=<VAL1>,<KEY2>=<VAL2>,...
+        as ``buildtest buildspec find --filter <KEY1>=<VAL1>,<KEY2>=<VAL2>,...``
         """
 
         self.executor_filter = None
