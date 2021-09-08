@@ -10,16 +10,10 @@ def schema_cmd(args):
     """This method implements command ``buildtest schema`` which shows a list
     of schemas, their json content and list of schema examples. The input
     ``args`` is an instance of argparse class that contains
-    user selection via command line. This method can do the following
+    user selection via command line.
 
-    ``buildtest schema`` - Show all schema names
-    ``buildtest schema --name <NAME> -j ``. View json content of a specified schema
-    ``buildtest schema --name <NAME> -e``. Show schema examples
-    Parameters:
-
-    :param args: instance of argparse class
-    :type args: <class 'argparse.Namespace'>
-    :result: output of json schema on console
+    Args:
+        args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
     """
 
     # the default behavior when "buildtest schema" is executed is to show list of all

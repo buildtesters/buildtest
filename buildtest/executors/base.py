@@ -17,12 +17,10 @@ class BaseExecutor:
         by the BuildExecutor base that holds it) and the loaded dictionary
         of config opts to parse.
 
-        :param name: a name for the base executor and key provided in the configuration file
-        :type name: str, required
-        :param settings: executor settings from configuration file for a particular executor instance (``local.bash``)
-        :type settings: dict, required
-        :param site_configs: loaded buildtest configuration
-        :type site_configs: instance of SiteConfiguration, required
+        Args:
+            name (str): name of executor
+            setting (dict): setting for a given executor defined in configuration file
+            site_configs (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
         """
 
         self.logger = logging.getLogger(__name__)
@@ -39,6 +37,7 @@ class BaseExecutor:
             self.builders.append(builder)
 
     def get_builder(self):
+        """Return a list of builders"""
         return self.builders
 
     def load(self):

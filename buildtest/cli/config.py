@@ -16,7 +16,12 @@ from termcolor import colored
 
 
 def config_cmd(args, configuration):
+    """Entry point for ``buildtest config`` command. This method will invoke other methods depending on input argument.
 
+    Args:
+        args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+    """
     if args.config == "view":
         view_configuration(configuration)
 

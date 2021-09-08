@@ -12,6 +12,9 @@ logger = logging.getLogger(__name__)
 
 
 def is_int(val):
+    """Check if input is an integer by running `int() <https://docs.python.org/3/library/functions.html#int>`_. If its successful we
+    return **True** otherwise returns **False**
+    """
 
     try:
         int(val)
@@ -69,6 +72,14 @@ class Report:
         latest=None,
         oldest=None,
     ):
+        """
+        Args:
+            report_file (str, optional): Full path to report file to read
+            filter_args (str, optional): A comma separated list of Key=Value pair for filter arguments via ``buildtest report --filter``
+            format (str, optional): A comma separated list of format fields for altering report table. This is specified via ``buildtest report --format``
+            latest (bool, optional): Fetch latest run for all tests discovered. This is specified via ``buildtest report --latest``
+            oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
+        """
         self.latest = latest
         self.oldest = oldest
         self.filter = filter_args
@@ -99,6 +110,9 @@ class Report:
     def _check_filter_fields(self):
         """This method will validate filter fields ``buildtest report --filter`` by checking if field is valid filter field. If one specifies
         an invalid filter field, we will raise an exception
+
+        Raises:
+            BuildTestError: Raise exception if its in invalid filter field. If returncode is not an integer we raise exception
         """
 
         # check if filter arguments (--filter) are valid fields
@@ -125,6 +139,9 @@ class Report:
         """Check all format arguments (--format) are valid, the arguments are specified
         in format (--format key1=val1,key2=val2). We make sure each key is valid
         format field.
+
+        Raises:
+            BuildTestError: If format field is not valid
         """
 
         self.display_format_fields = self.display_table.keys()
@@ -151,8 +168,11 @@ class Report:
     def load(self):
         """This method is responsible for loading report file. If file not found
         or report is empty dictionary we raise an error. The report file
-        is loaded using ``json.loads`` and return value is a dictionary containing
+        is loaded if its valid JSON file and returns as  dictionary containing
         entire report of all tests.
+
+        Raises:
+            SystemExit: If report file doesn't exist or path is not a file. If the report file is empty upon loading we raise an error.
         """
 
         if not self._reportfile:
@@ -221,8 +241,8 @@ class Report:
         """Filter test by name of test. This method will return True if record should be processed,
         otherwise returns False
 
-        :param name: Name of test
-        :type name: str
+        Args:
+            name (str): Name of test to filter
         """
 
         if not self.filter.get("name"):
@@ -239,10 +259,8 @@ class Report:
         check if test has 'tags' property in buildspec and if tagnames specified by ``--filter tags`` are found in the test. If
         there is a match we return ``False``. A ``True`` indicates the test will be filtered out.
 
-        :param test: test record
-        :type test: dict
-        :return: Return True if test is filtered out, otherwise return False
-        :rtype: bool
+        Args:
+            test (dict): Test recorded loaded as dictionary
         """
 
         if self.filter.get("tags") and self.filter.get("tags") not in test.get("tags"):
@@ -251,12 +269,13 @@ class Report:
         return False
 
     def _filter_by_executor(self, test):
-        """Filters test by ``executor`` property given input parameter ``buildtest report --filter executor:<executor>``. If there is a match
+        """Filters test by ``executor`` property given input parameter ``buildtest report --filter executor:<executor>``. If there is **no** match
         we return ``True`` otherwise returns ``False``.
 
-        :param test: name of test
-        :type test: dict
+        Args:
+            test (dict): Test recorded loaded as dictionary
         """
+
         if self.filter.get("executor") and self.filter.get("executor") != test.get(
             "executor"
         ):
@@ -265,11 +284,11 @@ class Report:
         return False
 
     def _filter_by_state(self, test):
-        """This method filters test by ``state`` property based on input parameter ``buildtest report --filter state:<STATE>``. If there is a match we
-        return ``True`` otherwise returns ``False``.
+        """This method filters test by ``state`` property based on input parameter ``buildtest report --filter state:<STATE>``. If there is **no**
+        match we return ``True`` otherwise returns ``False``.
 
-        :param test: name of test
-        :type test: dict
+        Args:
+            test (dict): Test recorded loaded as dictionary
         """
         if self.filter.get("state") and self.filter.get("state") != test.get("state"):
             return True
@@ -280,8 +299,8 @@ class Report:
         """Returns True/False if test is filtered by returncode. We will get input returncode in filter field via ``buildtest report --filter returncode:<CODE>`` with
         one in test and if there is a match we return ``True`` otherwise returns ``False``.
 
-        :param test: name of test
-        :type test: dict
+        Args:
+            test (dict): Test recorded loaded as dictionary
         """
 
         if self.filter.get("returncode"):
@@ -292,9 +311,6 @@ class Report:
 
     def process_report(self):
         # process all filtered buildspecs and add rows to display_table.
-        # filter_buildspec is either all buildspec or a single buildspec if
-        # 'buildspec' filter field was set
-
         for buildspec in self.filtered_buildspecs:
 
             # process each test in buildspec file
@@ -451,12 +467,50 @@ class Report:
         print(tabulate(filter_field_table, headers=headers, tablefmt="simple"))
 
     def print_report(self, terse=None, noheader=None):
+        """This method will print report table after processing report file. By default we print output in
+        table format but this can be changed to terse format which will print output in parseable format.
 
-        # if --terse option is specified we print output separated by PIPE symbol (|). Shown below is an example output
+        Args:
+            terse (bool, optional): Print output int terse format
+            noheader (bool, optional): Determine whether to print header in terse format
 
-        # $ buildtest report --filter name=pbs_sleep --terse --format name,runtime
-        # name|runtime
-        # pbs_sleep|30.156192
+
+        In this example, we display output in tabular format which works with ``--filter`` and ``--format`` option.
+
+        .. code-block:: console
+
+            bash-3.2$ buildtest report --filter name=root_disk_usage --format name,state,returncode
+            Reading report file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/report.json
+
+            +-----------------+---------+--------------+
+            | name            | state   |   returncode |
+            +=================+=========+==============+
+            | root_disk_usage | PASS    |            0 |
+            +-----------------+---------+--------------+
+            | root_disk_usage | PASS    |            0 |
+            +-----------------+---------+--------------+
+            | root_disk_usage | PASS    |            0 |
+            +-----------------+---------+--------------+
+
+        In terse format each output is separated by PIPE symbol (**|***). The first row contains headers followed by content of the report.
+
+        .. code-block:: console
+
+            bash-3.2$ buildtest report --filter name=root_disk_usage --format name,state,returncode --terse
+            name|state|returncode
+            root_disk_usage|PASS|0
+            root_disk_usage|PASS|0
+            root_disk_usage|PASS|0
+
+        You can avoid printing the header table by specifying `--no-header` option
+
+        .. code-block:: console
+
+            bash-3.2$ buildtest report --filter name=root_disk_usage --format name,state,returncode --terse --no-header
+            root_disk_usage|PASS|0
+            root_disk_usage|PASS|0
+            root_disk_usage|PASS|0
+        """
 
         if terse:
             join_list = []
@@ -494,7 +548,11 @@ class Report:
         )
 
     def latest_testid_by_name(self, name):
-        """Given a test name return test id of latest run"""
+        """Given a test name return test id of latest run
+
+        Args:
+            name (str): Name of test to search in report file and retrieve corresponding test id
+        """
 
         for buildspec in self.report.keys():
             if name not in self.report[buildspec].keys():
@@ -513,6 +571,7 @@ class Report:
         return test_names
 
     def get_buildspecs(self):
+        """Return a list of buildspecs in report file"""
         return self.filtered_buildspecs
 
     def get_testids(self):
@@ -537,6 +596,7 @@ class Report:
         return test_ids
 
     def builder_names(self):
+        """Return a list of builder names in builder format which is in the form: `<NAME>/<TESTID>`."""
         builders = []
         lookup = self._testid_lookup()
         for uid in lookup.keys():
@@ -544,7 +604,7 @@ class Report:
         return builders
 
     def breakdown_by_test_names(self):
-        """Returns a dictionary with number of test runs by testname"""
+        """Returns a dictionary with number of test runs, pass test and fail test by testname"""
         tests = {}
         for buildspec in self.filtered_buildspecs:
             for name in self.report[buildspec].keys():
@@ -564,6 +624,11 @@ class Report:
         return tests
 
     def fetch_records_by_ids(self, testids):
+        """Fetch a test record given a list of test identifier.
+
+        Args:
+            testids (list): A list of test IDs to search in report file and retrieve JSON record for each test.
+        """
         records = {}
 
         for buildspec in self.filtered_buildspecs:
@@ -577,6 +642,7 @@ class Report:
 
 
 def report_cmd(args):
+    """Entry point for ``buildtest report`` command"""
 
     if args.report_subcommand == "clear":
         if not is_file(args.report):
@@ -622,7 +688,7 @@ def report_cmd(args):
 
 
 def report_summary(report):
-    """Implements ``buildtest report summary``"""
+    """This method will print summary for report file which can be retrieved via ``buildtest report summary`` command"""
 
     print("Report: ", report.reportfile())
     print("Total Tests:", len(report.get_testids()))

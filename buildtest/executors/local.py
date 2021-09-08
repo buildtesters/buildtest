@@ -15,9 +15,8 @@ from buildtest.utils.file import write_file
 
 class LocalExecutor(BaseExecutor):
     """The LocalExecutor class is responsible for running tests locally for
-    bash, sh and python shell. The LocalExecutor runs the tests and gathers
-    the output and error results and writes to file. This class implements
-    ``load``, ``check`` and ``run`` method.
+    bash, sh, csh and python shell. The LocalExecutor runs the tests and gathers
+    the output and error results and writes to file.
     """
 
     type = "local"
@@ -27,7 +26,11 @@ class LocalExecutor(BaseExecutor):
         self.shell = self.shell.split()[0]
 
     def check(self):
-        """Check if shell binary is available"""
+        """Check if shell binary is available.
+
+        Raises:
+            SystemExit: If path to shell is invalid
+        """
         if not shutil.which(self.shell):
             sys.exit(f"Unable to find shell: {self.shell}")
 
@@ -44,8 +47,8 @@ class LocalExecutor(BaseExecutor):
         that keeps track of run result. The output and error file
         are written to filesystem.
 
-        :param builder: builder object
-        :type builder: BuilderBase, required
+        Args:
+            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
         # we only run the check at time of running the test since that's when we need

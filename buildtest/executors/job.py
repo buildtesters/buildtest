@@ -7,6 +7,7 @@ class Job:
         self._state = None
 
     def state(self):
+        """Return job state"""
         return self._state
 
     def get(self):
