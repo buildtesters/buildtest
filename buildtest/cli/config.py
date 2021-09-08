@@ -44,6 +44,9 @@ def config_cmd(args, configuration):
 def view_system(configuration):
     """This method implements command ``buildtest config systems`` which displays
     system details from configuration file in table format.
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
     """
 
     table = {"system": [], "description": [], "hostnames": [], "moduletool": []}
@@ -72,8 +75,26 @@ def view_system(configuration):
 
 def validate_config(configuration):
     """This method implements ``buildtest config validate`` which attempts to
-    validate buildtest settings with schema. If it's not validate an exception
-    is raised which could be ValidationError or ConfigurationError.
+    validate buildtest schema file `settings.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/settings.schema.json>`_.
+    If it's not validate an exception is raised which could be
+    `jsonschema.exceptions.ValidationError <https://python-jsonschema.readthedocs.io/en/stable/errors/#jsonschema.exceptions.ValidationError>`_
+    or :class:`buildtest.exceptions.ConfigurationError`.
+
+    If configuration is valid buildtest print something as follows.
+
+    .. code-block:: console
+
+        bash-3.2$ buildtest config validate
+        /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml is valid
+
+
+    If there is an error validating configuration file, buildtest will print error message reported by exception
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+
+    Raises:
+        SystemExit: If exception is raised during validating configuration file.
     """
 
     try:
@@ -86,7 +107,7 @@ def validate_config(configuration):
 
 
 def view_configuration(configuration):
-    """View buildtest configuration file. This implements ``buildtest config view``"""
+    """Display content of buildtest configuration file. This implements command ``buildtest config view``"""
 
     print(
         yaml.dump(
@@ -107,7 +128,14 @@ def view_executors(
     invalid=False,
 ):
     """Display executors from buildtest configuration. This implements ``buildtest config executors`` command.
-    If no option is specified we display output in JSON format
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        buildexecutor (buildtest.executors.setup.BuildExecutor): An instance of BuildExecutor class
+        json_format (bool): Display output in json format which is specified via ``buildtest config executors --json``
+        yaml_format (bool): Display output in yaml format which is specified via ``buildtest config executors --yaml``
+        disabled (bool): Display list of disabled executors which is specified via ``buildtest config executors --disabled``
+        invalid (bool): Display list of invalid executors which is specified via ``buildtest config executors --invalid``
     """
 
     d = {"executors": configuration.target_config["executors"]}
@@ -152,8 +180,9 @@ def view_summary(configuration, buildtestsystem=None):
     we will display a summary of System Details, Buildtest settings, Schemas,
     Repository details, Buildspecs files and test names.
 
-    :parse buildtestsystem: instance of class BuildTestSystem, optional
-    :type buildtestsystem: BuildTestSystem
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        buildexecutor (buildtest.executors.setup.BuildExecutor): An instance of BuildExecutor class
     """
 
     system_details = buildtestsystem or system

@@ -145,7 +145,15 @@ class SpackBuilder(BuilderBase):
         return lines
 
     def _resolve_spack_root(self, path, verify_spack=True):
-        """Given a path find the startup spack setup script to source."""
+        """Given a path find the startup spack setup script to source.
+
+        Args:
+            path (str): Full path to root of spack directory
+            verify_spack (bool, optional): Check for existence of spack setup script `$SPACK_ROOT/share/spack/setup-env.sh` before sourcing file. By default this check is enabled but can be disabled to allow test to run even if spack doesn't exist on filesystem.
+
+        Raises:
+            BuildTestError: Raise exception if root of spack doesn't exist or we are unable to resolve path to setup script `$SPACK_ROOT/share/spack/setup-env.sh`
+        """
 
         spack_root = resolve_path(path, exist=verify_spack)
 
@@ -167,6 +175,9 @@ class SpackBuilder(BuilderBase):
     def _spack_environment(self, spack_env):
         """This method is responsible for  creating a spack environment, activate an existing
         spack environment, create a spack environment from a directory and a manifest file (spack.yaml, spack.lock)
+
+        Args:
+            spack_env (dict): Contains property ``env`` from buildspec dictionary
         """
 
         # create spack environment ('spack env create')

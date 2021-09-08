@@ -1,7 +1,7 @@
 """
-BuildspecParser is intended to read in a Buildspec file with one or
-more test blocks, and then generate builders based on the type
-of each. The BuilderBase is the base class for all builders that
+BuildspecParser is will validate a Buildspec file with the global schema
+and each test will be validated with one of the subschemnas based on the
+type field. The BuilderBase is the base class for all builders that
 expose functions to run builds.
 """
 
@@ -17,28 +17,32 @@ from buildtest.utils.file import is_dir, resolve_path
 
 
 class BuildspecParser:
-    """A BuildspecParser is a base class for loading and validating a Buildspec file.
+    """A BuildspecParser is responsible for validating a Buildspec file with JSON Schema.
+
     The type (e.g., script) and version are derived from reading in
     the file, and then matching to a Buildspec schema.
 
-    The schemas are located in buildtest/schemas, we load the schema dictionary
-    and validate each buildspec with global schema and a sub-schema based on the
+    The schemas are located in folder `buildtest/schemas <https://github.com/buildtesters/buildtest/tree/devel/buildtest/schemas>`_,
+    we load the schema dictionary and validate each buildspec with global schema and a sub-schema based on the
     ``type`` field. If the schema fails validation check, then we stop immediately.
     """
 
     def __init__(self, buildspec, buildexecutor):
         """The init method will run some checks against buildspec before loading
-        buildspec. We retrieve available schemas via method
-        ``get_schemas_available`` and check if ``type`` in buildspec
-        match available schema. We validate the entire buildspec with
-        global.schema.json and validate each test section with the designated
-        type schema. If there is any error during the init method, an
-        exception will be raised.
+        buildspec. buildtest will validate the entire buildspec with
+        `global.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/global.schema.json>`_
+        and validate each test section with the designated
+        type schema. For instance of test includes ``type: script`` we will validate the test with schema
+        `script-v1.0.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/script-v1.0.schema.json>`_.
 
-        :param buildspec: the pull path to the Buildspec file, must exist.
-        :type buildspec: str, required
-        :param buildexecutor: an instance of BuildExecutor class defines Executors from configuration file
-        :type buildexecutor: BuildExecutor, required
+        If there is any error during the init method, an exception will be raised.
+
+        Args:
+            buildspec (str): Full path to buildspec file
+            buildexecutor (buildtest.executors.setup.BuildExecutor): Instance object of class BuildExecutor used for accessing executors which is created based on configuration file
+
+        Raises:
+            BuildTestError: Raise exception if there is issue with buildexecutor, or buildspec is not resolved to file path. If buildspec is a directory path we raise an exception
         """
 
         self.logger = logging.getLogger(__name__)
@@ -80,8 +84,13 @@ class BuildspecParser:
         return "[buildspec-parser]"
 
     def _check_schema_type(self, test):
-        """Check ``type`` field is a valid sub-schema and verify ``type`` + ``version``
-        will resolve to a schema file.
+        """Check ``type`` field is a valid sub-schema and verify ``type`` + ``version`` will resolve to a schema file.
+
+        Args:
+            test (str): Name of test in ``buildspecs`` property of buildspec file
+
+        Raises:
+            BuildspecError: If there is no match with ``type`` property in test with available schema types
         """
 
         # extract type field from test, if not found set to None
@@ -121,8 +130,11 @@ class BuildspecParser:
         """This method checks if ``executor`` property is not None and executor
         value is found in list of available executors.
 
-        :param test: name of test in ``buildspecs`` property in buildspec file
-        :type test: str, required
+        Args:
+            test (str): Name of test in ``buildspecs`` property of buildspec file
+
+        Raises:
+            BuildspecError: If there is no match with ``executor`` property in test with list of available executors
         """
 
         # extract type field from test, if not found

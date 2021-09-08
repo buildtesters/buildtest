@@ -8,8 +8,8 @@ def change_directory(test):
     """Given a test name we will change directory to root of test for last test run. This
     method implements command ``buildtest cd``
 
-    :param test: name of test found in test report
-    :type test: str
+    Args:
+        test (str): Name of test found in test report. The test is specified via ``buildtest cd <test>``
     """
 
     report = Report()

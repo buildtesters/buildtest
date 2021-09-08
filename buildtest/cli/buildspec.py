@@ -44,20 +44,22 @@ class BuildspecCache:
         header=None,
         terse=None,
     ):
-        """The initializer method for BuildspecCache class is responsible for
-        loading and finding buildspecs into buildspec cache. This method is called
-        when using ``buildtest buildspec find`` command.
+        """The initializer method for BuildspecCache class is responsible for loading and finding buildspecs into buildspec cache. First we
+        resolve paths to directory where buildspecs will be searched. This can be specified via ``--roots`` option on command line or one can
+        specify directory paths in the configuration file. Next we build the cache that contains metadata for each buildspec that will be
+        written to file. If any filter or format options are specified we check if they are valid and finally display a content of the cache
+        depending on the argument.
 
-        :param rebuild: rebuild the buildspec cache by validating all buildspecs. The --rebuild is passed to this argument
-        :type rebuild: bool, optional
-        :param filterfields:  The --filter option contains list of key value pairs for filtering buildspecs
-        :type filterfields: str, optional
-        :param formatfields: The --format option contains list of key value pairs for formating buildspecs
-        :type formatfields: str, optional
-        :param roots:  List of directories to search for buildspecs. This argument contains value of --roots
-        :type roots: list, optional
-        :param header: Option to control whether header are printed in terse output. This argument contains value of --no-header
-        :type header: bool, optional
+        This method is called when using ``buildtest buildspec find`` command.
+
+        Args:
+            configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class that is loaded buildtest configuration.
+            rebuild (bool, optional): rebuild the buildspec cache by validating all buildspecs when using ``buildtest buildspec find --rebuild``. Defaults to ``False`` if ``--rebuild`` is not specified
+            filterfields (str, optional): The filter options specified via ``buildtest buildspec find --filter`` that contains list of key value pairs for filtering buildspecs
+            formatfields (str, optional): The format options used for formating table. The format option is a comma separated list of format fields specified via ``buildtest buildspec find --format``
+            roots (list, optional): List of directories to search for buildspecs. This argument contains value of ``buildtest buildspec find --roots``
+            headers (bool, optional):  Option to control whether header are printed in terse output. This argument contains value of ``buildtest buildspec find --no-header``
+            terse (bool, optional): Enable terse mode when printing output. In this mode we don't print output in table format instead output is printed in parseable format. This option can be specified via ``buildtest buildspec find --terse``
         """
 
         if not is_dir(BUILDTEST_BUILDSPEC_DIR):
@@ -97,8 +99,9 @@ class BuildspecCache:
         """Add all paths to search for buildspecs. We must read configuration file
         and check property ``buildspec_roots`` for list of directories to search.
         We check all directories exist, if any fail we don't add them to path.
-        In addition, we add the default buildspec path where we find tutorials
-        and general tests.
+        If ``load_default_buildspecs: True`` is set we will add the default buildspecs  which are
+        `tutorials <https://github.com/buildtesters/buildtest/tree/devel/tutorials>`_
+        and `general_tests <https://github.com/buildtesters/buildtest/tree/devel/general_tests>`_ directory.
         """
 
         buildspec_paths = self.configuration.target_config.get("buildspec_roots") or []
@@ -187,9 +190,11 @@ class BuildspecCache:
             print(f"Updating buildspec cache file: {BUILDSPEC_CACHE_FILE}")
 
     def _validate_buildspecs(self, buildspecs):
-        """Given a list of buildspec files, validate each buildspec using BuildspecParser
-        and return a list of valid buildspecs. Any invalid buildspecs are added to
-        separate list
+        """Given a list of buildspec files, validate each buildspec using :class:`buildtest.buildsystem.parser.BuildspecParser`
+        class and return a list of valid buildspecs. Any invalid buildspecs are added to separate list
+
+        Args:
+            buildspecs: A list of buildspec to validate
         """
         valid_buildspecs = []
 
@@ -226,8 +231,11 @@ class BuildspecCache:
     def lookup_buildspec_by_name(self, name):
         """Given an input test name, return corresponding buildspec file found in the cache.
 
-        :param name: Name of test to query in buildspec cache
-        :type name: str, required
+        Args:
+            name (str): Name of test to query in cache
+
+        Return:
+            Return path to buildspec that contains name of test
         """
         valid_buildspecs = self.get_valid_buildspecs()
 
@@ -238,9 +246,7 @@ class BuildspecCache:
     def build_cache(self):
         """This method will rebuild the buildspec cache file by recursively searching
         all .yml files specified by input argument ``paths`` which is a list of directory
-        roots. The buildspecs are validated and cache file is updated"
-
-        :return: Rebuild cache file
+        roots. The buildspecs are validated and cache file is updated
         """
 
         self.update_cache = {}
@@ -331,6 +337,9 @@ class BuildspecCache:
     def _check_filter_fields(self):
         """This method checks filter fields are valid. The filter fields are specified
         as ``buildtest buildspec find --filter <KEY1>=<VAL1>,<KEY2>=<VAL2>,...``
+
+        Raises:
+            BuildTestError: If there is an invalid filter field
         """
 
         self.executor_filter = None
@@ -357,6 +366,9 @@ class BuildspecCache:
     def _check_format_fields(self):
         """This method will check if all format fields are valid. Format fields
         are passed as comma separated fields: ``--format field1,field2,field3,...``
+
+        Raises:
+            BuildTestError: If there is an invalid format field
         """
 
         for field in self.default_format_fields:
@@ -385,14 +397,13 @@ class BuildspecCache:
         are done based on executor, tags, type field. ``True`` indicates test
         needs to be skipped.
 
-        :param executor:  'executor; field from buildspec recipe
-        :type executor: str, required
-        :param tags: 'tags' field from buildspec recipe
-        :type tags: str or list, required
-        :param schema_type: 'type' field from buildspec recipe
-        :type schema_type: str, required
-        :return: boolean to determine if we need to skip buildspec
-        :rtype: bool
+        Args:
+            executor (str): ``executor`` property from buildspec
+            tags (str): ``tags`` property from buildspec
+            schema_type (str): ``type`` property from buildspec
+
+        Returns:
+            bool: Return True if there is **no** match otherwise returns False
         """
 
         # skip all entries that dont match filtered executor
@@ -414,6 +425,9 @@ class BuildspecCache:
         """This method will find buildspecs based on cache content. We skip any
         tests based on executor filter, tag filter or type filter and build
         a table of tests that will be printed using ``print_buildspecs`` method.
+
+        Raises:
+            BuildTestError: Raises exception if input buildspec for ``buildtest buildspec find --filter buildspec`` is invalid path or directory or buildspec not found in cache.
         """
 
         # by default we process all buildspecs
@@ -538,11 +552,11 @@ class BuildspecCache:
         return buildspec_summary
 
     def print_buildspecfiles(self, terse=None, header=None):
-        """This method implements ``buildtest buildspec find --buildspec``
-        which reports all buildspec files in cache.
+        """This method implements ``buildtest buildspec find --buildspec`` which reports all buildspec files in cache.
 
-        :param terse: This argument controls output of ``buildtest buildspec find --buildspec`` which is a boolean. If its ``True`` we print output in raw format otherwise we print in table format
-        :type terse: bool
+        Args:
+            terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
+            header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
         """
 
         self.terse = terse or self.terse
@@ -576,8 +590,9 @@ class BuildspecCache:
         """This method implements ``buildtest buildspec find --tags`` which
         reports a list of unique tags from all buildspecs in cache file.
 
-        :param terse: This argument controls output of ``buildtest buildspec find --tags`` which is a boolean. If its ``True`` we print output in raw format otherwise we print in table format
-        :type terse: bool
+        Args:
+            terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
+            header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
         """
 
         self.terse = terse or self.terse
@@ -602,11 +617,11 @@ class BuildspecCache:
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
     def print_executors(self, terse=None, header=None):
-        """This method implements ``buildtest buildspec find --executors``
-        which reports all executors from cache.
+        """This method implements ``buildtest buildspec find --executors`` which reports all executors from cache.
 
-        :param terse: This argument controls output of ``buildtest buildspec find --executor`` which is a boolean. If its ``True`` we print output in raw format otherwise we print in table format
-        :type terse: bool
+        Args:
+            terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
+            header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
         """
 
         self.terse = terse or self.terse
@@ -630,11 +645,11 @@ class BuildspecCache:
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
     def print_by_executors(self, terse=None, header=None):
-        """This method prints executors by tests and implements
-        ``buildtest buildspec find --group-by-executor`` command
+        """This method prints executors by tests and implements ``buildtest buildspec find --group-by-executor`` command
 
-        :param terse: Print output in machine readable format
-        :type terse: bool
+        Args:
+            terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
+            header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
         """
 
         table = {"executor": [], "name": []}
@@ -663,11 +678,12 @@ class BuildspecCache:
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
     def print_by_tags(self, terse=None, header=None):
-        """This method prints tags by tests and implements
-        ``buildtest buildspec find --group-by-tags`` command
+        """This method prints tags by tests and implements ``buildtest buildspec find --group-by-tags`` command
 
-        :param terse: Print output in machine readable format
-        :type terse: bool
+        Args:
+            terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
+            header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
+
         """
 
         table = {"tags": [], "name": []}
@@ -696,7 +712,13 @@ class BuildspecCache:
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
     def print_buildspecs(self, terse=None, header=None):
-        """Print buildspec table"""
+        """Print buildspec table. This method is typically called when running ``buildtest buildspec find`` or options
+        with ``--filter`` and ``--format``.
+
+        Args:
+            terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
+            header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
+        """
 
         self.terse = terse or self.terse
         self.header = header or self.header
@@ -736,12 +758,11 @@ class BuildspecCache:
         )
 
     def print_maintainer(self, terse=None, header=None):
-        """This method prints maintainers from buildspec cache file which implements
-        ``buildtest buildspec find --maintainers`` command.
+        """This method prints maintainers from buildspec cache file which implements ``buildtest buildspec find --maintainers`` command.
 
-        :param terse: This argument controls output of ``buildtest buildspec find --maintainers`` which is a boolean. If its ``True`` we print output in raw format otherwise we print in table format
-        :type terse: bool
-
+        Args:
+           terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
+           header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
         """
 
         self.terse = terse or self.terse
@@ -769,11 +790,11 @@ class BuildspecCache:
         print(tabulate(table, headers=headers, tablefmt="grid"))
 
     def print_maintainers_by_buildspecs(self, terse=None, header=None):
-        """This method prints maintainers breakdown by buildspecs. This method
-        implements ``buildtest buildspec find --maintainers-by-buildspecs``
+        """This method prints maintainers breakdown by buildspecs. This method implements ``buildtest buildspec find --maintainers-by-buildspecs``
 
-        :param terse: Print output in machine readable format
-        :type terse: bool
+        Args:
+            terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
+            header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
         """
 
         table = {"maintainers": [], "buildspec": []}
@@ -803,8 +824,9 @@ class BuildspecCache:
 
     def print_invalid_buildspecs(self, error=None):
         """Print invalid buildspecs from cache file. This method implements command ``buildtest buildspec find invalids``
-        :param error: controls whether error message for each buildspec is printed. If set to `False`, the error messages will be omitted
-        :type error: bool, optional
+
+        Args:
+            error (bool, optional): Display error messages for invalid buildspecs. Default is ``False`` where we only print list of invalid buildspecs
         """
 
         if not error:
@@ -908,17 +930,18 @@ class BuildspecCache:
         )
 
     def print_paths(self):
-        """This method print buildspec paths, this implements command
-        ``buildtest buildspec find --paths``
-        """
-
+        """This method print buildspec paths, this implements command ``buildtest buildspec find --paths``"""
         for path in self.paths:
             print(path)
 
 
 def show_buildspecs(name, configuration):
     """This is the entry point for ``buildtest buildspec show`` command which will print content of
-    buildspec based on name of test
+    buildspec based on name of test.
+
+    Args:
+        name (str): Name of test
+        configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
     """
     cache = BuildspecCache(configuration=configuration)
 
@@ -942,16 +965,12 @@ def buildspec_validate(
     ``--executor``. Upon discovery we pass each buildspec to ``BuildspecParser`` class to validate buildspec and
     report any errors during validation which is raised as exceptions.
 
-    :param configuration: An instance of SiteConfiguration class which is the loaded buildtest configuration used for validating the buildspecs.
-    :type configuration: instance of SiteConfiguration
-    :param buildspecs: List of paths to buildspec file which can be a file or directory
-    :type buildspecs: List, optional
-    :param excluded_buildspecs:
-    :type excluded_buildspecs: List, optional
-    :param tags: List of tag names to search for buildspec
-    :type excluded_buildspecs: List, optional
-    :param executors: List of executor names to search for buildspecs
-    :type executors: List, optional
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class which is the loaded buildtest configuration used for validating the buildspecs.
+        buildspecs (list, optional): List of paths to buildspec file which can be a file or directory. This option is specified via ``buildtest buildspec validate --buildspec``
+        excluded_buildspecs (list, optional): List of excluded buildspecs which can be a file or directory. This option is specified via ``buildtest buildspec validate --exclude``
+        tags (list, optional): List of tag names to search for buildspec to validate. This option is specified via ``buildtest buildspec validate --tag``
+        executors (list, optional): List of executor names to search for buildspecs to validate. This option is specified via ``buildtest buildspec validate --executor``
     """
 
     buildspecs_dict = discover_buildspecs(
@@ -988,8 +1007,8 @@ def buildspec_validate(
 def summarize_buildspec_cache(configuration):
     """Prints summary of buildspec cache which is run via command ``buildtest buildspec summary``
 
-    :param configuration: instance of type SiteConfiguration
-    :type configuration: SiteConfiguration
+    Args:
+        configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
     """
 
     cache = BuildspecCache(configuration=configuration)
@@ -1043,7 +1062,12 @@ def summarize_buildspec_cache(configuration):
 
 
 def buildspec_find(args, configuration):
-    """Entry point for ``buildtest buildspec find`` command"""
+    """Entry point for ``buildtest buildspec find`` command
+
+    Args:
+        args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
+        configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
+    """
 
     cache = BuildspecCache(
         rebuild=args.rebuild,

@@ -51,14 +51,16 @@ class ScriptBuilder(BuilderBase):
         return lines
 
     def generate_script(self):
-        """This method builds the testscript content based on the builder type.
-        For ScriptBuilder we need to add the shebang, environment variables
-        and the run section. If shell is python we write a python script and
+        """This method builds the content of the test script which will return a list
+        of shell commands that will be written to file.
+
+        A typical test will contain: shebang line, job directives, environment variables and variable declaration,
+        and content of ``run`` property. For ``shell: python`` we write a python script and
         return immediately. The variables, environment section are not applicable
         for python scripts
 
-        :return: return content of test script
-        :rtype: list
+        Returns:
+            List of shell commands that will be written to file
         """
 
         # start of each test should have the shebang
