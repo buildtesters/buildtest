@@ -1,11 +1,9 @@
 """
 BuilderBase class is an abstract class that defines common
-functions for any types of builders. Each type schema (script, compiler)
-is implemented as separate Builder.
-
-ScriptBuilder class implements 'type: script'
-CompilerBuilder class implements 'type: compiler'
+functions for any types of builders. Each type schema (script, compiler, spack)
+is implemented as separate Builder which extends BuilderBase class.
 """
+
 import datetime
 import getpass
 import logging
@@ -36,10 +34,23 @@ from buildtest.utils.tools import deep_get
 
 
 class BuilderBase(ABC):
-    """The BuilderBase is an abstract class that implements common functions used for
-    building and running the test. buildtest will create a builder object which resembles
-    a test. The builder will contains metadata that is unique to each builder which is
-    captured in the report file upon completion of test.
+    """The BuilderBase is an abstract class that implements common functions used for building and running test.
+
+    buildtest will create a builder object which resembles a test. The builder will contains metadata that is unique
+    to each builder that is captured in the report file upon completion of test.
+
+    Attributes:
+        name (str): name of test
+        metadata (dict): stores metadata for test
+        recipe (dict): stores loaded recipe for test section
+        executor (str): stores name of executor used for running builder
+        job (:obj:`buildtest.executors.job.Job`): Stores Job Data for batch job
+        state (bool): Determines state of builder
+        buildspec (str): Store full path to buildspec file
+        testdir (str): Root of test directory where test will live.
+        buildexecutor (obj:`buildtest.executors.setup.BuildExecutor`): instance of BuildExecutor class used for accessing executors
+        shebang (str): used for writing shebang line in test. This can vary based on shell type or if ``shebang`` property is specified
+        shell (obj:`buildtest.utils.shell.Shell`): An instance of Shell class used for detecting shell type
     """
 
     def __init__(self, name, recipe, buildspec, executor, buildexecutor, testdir):
@@ -47,16 +58,12 @@ class BuilderBase(ABC):
         is an instance of BuilderBase. The initializer method will setup the builder
         attributes based on input test by ``name`` parameter.
 
-        :param name: Name of test in Buildspec recipe
-        :type name: str, required
-        :param recipe: the loaded section from the buildspec for the user.
-        :type recipe: dict, required
-        :param buildspec: the pull path to the Buildspec file, must exist.
-        :type buildspec: str, required
-        :param buildexecutor: an instance of BuildExecutor class defines Executors from configuration file
-        :type buildexecutor: BuildExecutor, required
-        :param testdir: Test Destination directory where to write test
-        :type testdir: str, optional
+        Args:
+            name (str): Name of test in buildspec recipe
+            recipe (str): The loaded test section from the buildspec file
+            buildspec (str): Full path to buildspec file
+            buildexecutor (:obj:`buildtest.executors.setup.BuildExecutor`): An instance of BuildExecutor class used for accessing executors
+            testdir (str): Test directory where tests are written. Must be full path on filesystem.
         """
 
         self.name = name
@@ -135,7 +142,7 @@ class BuilderBase(ABC):
         self.sched_init()
 
     def _set_metadata_values(self):
-        """This method sets self.metadata that contains metadata for each builder object."""
+        """This method sets ``self.metadata`` that contains metadata for each builder object."""
         self.metadata["name"] = self.name
         self.metadata["buildspec"] = self.buildspec
 
@@ -198,30 +205,37 @@ class BuilderBase(ABC):
         self.metadata["id"] = self.test_uid[:8]
 
     def _generate_unique_id(self):
-        """Generate a unique build id using ``uuid.uuid4()``."""
+        """Generate a unique build id using `uuid.uuid4() <https://docs.python.org/3/library/uuid.html#uuid.uuid4>`_.
+
+        Returns:
+            str: unique test id for the builder
+        """
 
         unique_id = str(uuid.uuid4())
         return unique_id
 
     def get_test_extension(self):
-        """Return the test extension, which depends on the shell used. Based
-        on the value of ``shell`` key we return the shell extension.
+        """Return the test extension, which depends on the shell type. By default we return `sh`
+        file extension for all shells except for `csh` which will return "csh" extension.
 
-        shell: bash --> sh (default)
-
-        :return: returns test extension based on shell type
-        :rtype: str
+        Returns
+            str: Returns test extension name for generated test.
         """
 
-        # for python shell or bash shell type we return 'sh' extension
-        if self.shell_type == "python" or self.shell_type == "bash":
-            return "sh"
-
+        # for csh we return shell extension 'csh'
         if self.shell_type == "csh":
             return "csh"
 
+        # for python shell or bash shell type we return 'sh' extension
+        return "sh"
+
     def _is_local_executor(self):
-        """Return True if current builder executor type is LocalExecutor otherwise returns False"""
+        """Return True if current builder executor type is LocalExecutor otherwise returns False.
+
+        Returns:
+            bool: returns True if builder is using executor type LocalExecutor otherwise returns False
+
+        """
 
         # import issue when putting this at top of file
         from buildtest.executors.local import LocalExecutor
@@ -233,7 +247,8 @@ class BuilderBase(ABC):
 
     def is_batch_job(self):
         """Return True/False if builder.job attribute is of type Job instance if not returns False.
-        This method indicates if builder has a job submitted to queue"""
+        This method indicates if builder has a job submitted to queue
+        """
 
         if isinstance(self.job, Job):
             return True
@@ -241,13 +256,13 @@ class BuilderBase(ABC):
         return False
 
     def start(self):
-        """Keep internal time for start of test. We start timer by calling Timer class"""
+        """Keep internal timer for test using class :class:`buildtest.utils.timer.Timer`. This method will start the timer for builder which is invoked upon running test."""
 
         # self.timer = Timer()
         self.timer.start()
 
     def stop(self):
-        """Stop timer of test and calculate duration."""
+        """Stop internal timer for builder."""
         # self.duration += self.timer.stop()
         self.timer.stop()
 
@@ -267,6 +282,12 @@ class BuilderBase(ABC):
     def run(self):
         """Run the test and record the starttime and start timer. We also return the instance
         object of type BuildTestCommand which is used by Executors for processing output and error
+
+        Returns:
+            If success, the return type is an object of type :class:`buildtest.utils.command.BuildTestCommand`
+
+            If their is a failure (non-zero) returncode we retry test and if it doesn't pass we
+            raise exception of :class:`buildtest.exceptions.RuntimeFailure`
         """
 
         self.starttime()
@@ -334,13 +355,15 @@ class BuilderBase(ABC):
 
     def runtime(self):
         """Calculate runtime of job by calculating delta between endtime and starttime. The unit of measure
-        is seconds."""
+        is seconds.
+        """
 
         runtime = self._endtime - self._starttime
         self._runtime = runtime.total_seconds()
         self.metadata["result"]["runtime"] = self._runtime
 
     def get_runtime(self):
+        """Return runtime of test"""
         return self._runtime
 
     def success(self):
@@ -364,6 +387,7 @@ class BuilderBase(ABC):
         return self._buildstate is False
 
     def is_unknown(self):
+        """Returns True if builder state is unknown which is the state if job is still running"""
         return self._buildstate is None
 
     def run_command(self):
@@ -374,7 +398,7 @@ class BuilderBase(ABC):
         return f"sh {os.path.basename(self.build_script)}"
 
     def copy_stage_files(self):
-        """Copy output and error file into test root directory since stage directory will be removed."""
+        """Copy output and error file into test root directory."""
 
         shutil.copy2(
             os.path.join(self.stage_dir, os.path.basename(self.metadata["outfile"])),
@@ -395,9 +419,11 @@ class BuilderBase(ABC):
 
     def _build_setup(self):
         """This method is the setup operation to get ready to build test which
-        includes getting unique build id, setting up metadata object to store
-        test details such as where test will be located and directory of test.
-        This section cannot be reached without a valid, loaded recipe.
+        includes the following:
+
+        1. Creating Test directory and stage directory
+        2. Resolve full path to generated test script and build script
+        3. Copy all files from buildspec directory to stage directory
         """
 
         create_dir(self.testdir)
@@ -444,7 +470,15 @@ class BuilderBase(ABC):
 
     def _emit_command(self):
         """This method will return a shell command used to invoke the script that is used for tests that
-        use local executors"""
+        use local executors
+
+        Returns:
+            list: a list to show generated command used to run test.
+
+            Test can be run without any argument with path to script: ``/path/to/script.sh``
+            Test can be run with shell name followed by path to script: ``bash /path/to/script.sh``
+            Test can be run with shell name, shell options and path to script: ``bash -x /path/to/script.sh``
+        """
 
         if not self.recipe.get("shell") or self.recipe.get("shell") == "python":
             return [self.testpath]
@@ -455,7 +489,7 @@ class BuilderBase(ABC):
         return [self.shell.name, self.shell.opts, self.testpath]
 
     def _default_test_variables(self):
-        """Return a list of lines inserted in testscript that define buildtest specific variables
+        """Return a list of lines inserted in build script that define buildtest specific variables
         that can be referenced when writing tests. The buildtest variables all start with BUILDTEST_*
         """
 
@@ -478,7 +512,10 @@ class BuilderBase(ABC):
         return lines
 
     def _write_build_script(self):
-        """This method will write the build script used for running the test"""
+        """This method will write the content of build script that is run for when invoking
+        the builder run method. Upon creating file we set permission of builder script to 755
+        so test can be run.
+        """
 
         lines = ["#!/bin/bash"]
         lines += self._default_test_variables()
@@ -571,7 +608,7 @@ class BuilderBase(ABC):
         )
 
     def get_slurm_directives(self):
-        """Get #SBATCH lines based on ``sbatch`` property"""
+        """Get #SBATCH lines based on ``sbatch`` property by calling :class:`buildtest.buildsystem.batch.SlurmBatchScript`"""
         jobscript = SlurmBatchScript(sbatch=self.sbatch)
         lines = jobscript.get_headers()
         lines += [f"#SBATCH --job-name={self.name}"]
@@ -581,7 +618,7 @@ class BuilderBase(ABC):
         return lines
 
     def get_lsf_directives(self):
-        """Get #BSUB lines based on ``bsub`` property"""
+        """Get #BSUB lines based on ``bsub`` property by calling :class:`buildtest.buildsystem.batch.LSFBatchScript`"""
         jobscript = LSFBatchScript(bsub=self.bsub)
         lines = jobscript.get_headers()
         lines += [f"#BSUB -J {self.name}"]
@@ -591,7 +628,7 @@ class BuilderBase(ABC):
         return lines
 
     def get_pbs_directives(self):
-        """Get #PBS lines based on ``pbs`` property"""
+        """Get #PBS lines based on ``pbs`` property by calling :class:`buildtest.buildsystem.batch.PBSBatchScript`"""
         jobscript = PBSBatchScript(pbs=self.pbs)
         lines = jobscript.get_headers()
         lines += [f"#PBS -N {self.name}"]
@@ -599,7 +636,7 @@ class BuilderBase(ABC):
         return lines
 
     def get_cobalt_directives(self):
-        """Get #COBALT lines based on ``cobalt`` property"""
+        """Get #COBALT lines based on ``cobalt`` property by calling :class:`buildtest.buildsystem.batch.CobaltBatchScript` """
         jobscript = CobaltBatchScript(cobalt=self.cobalt)
         lines = jobscript.get_headers()
         lines += [f"#COBALT --jobname {self.name}"]
@@ -639,10 +676,11 @@ class BuilderBase(ABC):
     def _get_burst_buffer(self, burstbuffer):
         """Get Burst Buffer directives (**#BB**) lines specified by ``BB`` property
 
-        :param burstbuffer: Burst Buffer configuration specified by BB property
-        :type burstbuffer: dict, required
-        :return: list of burst buffer directives
-        :rtype: list
+        Args:
+            burstbuffer (str): Burst Buffer configuration specified by ``BB`` property in buildspec
+
+        Returns:
+            list: List of string values containing containing ``#BB`` directives written in test
         """
 
         if not burstbuffer:
@@ -659,10 +697,11 @@ class BuilderBase(ABC):
     def _get_data_warp(self, datawarp):
         """Get Cray Data Warp directives (**#DW**) lines specified by ``DW`` property.
 
-        :param datawarp: Data Warp configuration specified by DW property
-        :type datawarp: dict, required
-        :return: list of data warp directives
-        :rtype: list
+        Args:
+            datawarp (str): Data Warp configuration specified by ``DW`` property in buildspec
+
+        Returns:
+            list: List of string values containing containing ``#DW`` directives written in test
         """
 
         if not datawarp:
@@ -692,8 +731,8 @@ class BuilderBase(ABC):
         """Retrieve a list of environment variables defined in buildspec and
         return them as list with the shell equivalent command
 
-        :return: list of environment variable lines to add to test script.
-        :rtype: list
+        Args:
+            env (dict): list of environment variables defined by ``env`` property in buildspec
         """
 
         lines = []
@@ -728,8 +767,8 @@ class BuilderBase(ABC):
         """Retrieve a list of  variables defined in buildspec and
         return them as list with the shell equivalent command.
 
-        :return: list of variables variable lines to add to test script.
-        :rtype: list
+        Args:
+            variables (dict): list of variable defined by ``vars`` property in buildspec
         """
 
         lines = []
@@ -850,11 +889,8 @@ class BuilderBase(ABC):
         will return a boolean True indicates there is a match otherwise False
         if ``regex`` object not defined or ``re.search`` doesn't find a match.
 
-        :param builder: instance of BuilderBase class
-        :type builder: BuilderBase (subclass)
-
-        :return: A boolean return True/False based on if re.search is successful or not
-        :rtype: bool
+        Returns:
+            bool: Returns True if their is a regex match otherwise returns False.
         """
 
         regex_match = False

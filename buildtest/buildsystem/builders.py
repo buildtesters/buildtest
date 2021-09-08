@@ -1,7 +1,8 @@
-"""This file implements the Builder class that is responsible for getting builders
+"""This module implements the Builder class that is responsible for getting builders
 from a buildspec file. The Builder class is invoked once buildspec file has
-parsed validation via BuildspecParser.
+parsed validation via :class:`buildtest.buildsystem.parser.BuildspecParser`.
 """
+
 import logging
 import os
 import re
@@ -16,6 +17,14 @@ from buildtest.utils.tools import deep_get
 
 
 class Builder:
+    """The Builder class creates builder objects based on parsed buildspecs.
+
+    The builder class is created based on the 'type' field in the test. If test contains
+    ``type: script`` we will create builder by calling :class:`buildtest.buildsystem.scriptbuilder.ScriptBuilder`.
+    Likewise for ``type: compiler`` and ``type: spack`` we will call :class:`buildtest.buildsystem.compilerbuilder.CompilerBuilder` and
+    :class:`buildtest.buildsystem.spack.SpackBuilder`.
+    """
+
     def __init__(
         self,
         bp,
@@ -30,20 +39,14 @@ class Builder:
         for each based on the type. Each type is associated with a known
         Builder class.
 
-        :param bp: an instance of BuildspecParser class
-        :type bp: BuildspecParser, required
-        :param buildexecutor: an instance of BuildExecutor class defines Executors from configuration file
-        :type buildexecutor: BuildExecutor, required
-        :param filters: A filter fields for filtering tests.
-        :type filters: dict, required
-        :param testdir: Test Destination directory, specified by --testdir
-        :type testdir: str, required
-        :param configuration: Instance of SiteConfiguration class
-        :type configuration: SiteConfiguration
-        :param buildtest_system: Instance of BuildTestSystem
-        :type buildtest_system: BuildTestSystem
-        :param rebuild: Number of rebuilds for a tesst this is specified by ``buildtest build --rebuild``. Defaults to 1
-        :type rebuild: int, optional
+        Args:
+            bp (buildtest.buildsystem.parser.BuildspecParser): Instance of BuildspecParser class
+            buildexecutor (buildtest.executors.setup.BuildExecutor): Instance of BuildExecutor class
+            filters (dict): List of filter fields specified via ``buildtest build --filter`` for filtering tests
+            testdir (str): Test directory where tests will be written which could be specified via ``buildtest build --testdir`` or configuration file
+            configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
+            buildtest_system (buildtest.system.BuildTestSystem, optional): Instance of BuildTestSystem class
+            rebuild (int, optional): Number of rebuild for test. This is specified via ``buildtest build --rebuild``. Defaults to 1
         """
 
         self.configuration = configuration
@@ -113,19 +116,17 @@ class Builder:
 
     def _generate_builders(self, recipe, name, compiler_name=None):
         """This method is responsible for generating builders by applying regular expression specified by
-        `executor` field in buildspec with list of executors. If their is a match we generate a builder.
+        ``executor`` field in buildspec with list of executors. If their is a match we generate a builder.
 
-        :param name: Name of test in buildspec file
-        :type name: str
-        :param recipe: Loaded test recipe from a test section.
-        :type recipe: dict
-        :param compiler_name: Name of compiler
-        :type compiler_name: str, optional
-        :return: A list of builder objects
-        :type recipe: object
+        Args:
+            name (str): Name of test in buildspec file
+            recipe (dict): Loaded test recipe from buildspec file
+            compiler_name (str, optional): Name of compiler
 
-
+        Returns:
+            List of builder objects
         """
+
         builders = []
         self.logger.debug(
             f"Searching for builders for test: {name} by applying regular expression with available builders: {self.buildexecutor.list_executors()} "
@@ -190,12 +191,11 @@ class Builder:
         """This method will perform regular expression with 'name' field in compilers
         section and retrieve one or more compiler that were defined in buildtest
         configuration. If any compilers were retrieved we return one or more
-        builder objects that call CompilerBuilder
+        builder objects that call :class:`buildtest.buildsystem.compilerbuilder.CompilerBuilder`
 
-        :param bp: an instance of BuilderspecParser class
-        :type bp: BuildspecParser
-        :param recipe: loaded test recipe
-        :type recipe: dict
+        Args:
+            name (str): name of test
+            recipe (dict): Loaded test recipe from buildspec
         """
         self.compilers = {}
 
@@ -236,13 +236,13 @@ class Builder:
         """This method determines if test should be skipped based on tag names specified
         in filter field that is specified on command line via ``buildtest build --filter tags=<TAGNAME>``
 
+        Args:
+            recipe (dict): Loaded test recipe from buildspec
+            name (str): Name of test
 
-        :param recipe: loaded buildspec recipe as dictionary
-        :type recipe: dict
-        :param name: An instance of test from buildspec file
-        :type name: str
-        :return: Returns a boolean True/False which determines if test is skipped.
-        :rtype: bool
+        Returns:
+            bool: False if ``buildtest build --filter tags`` is not specified. If specified we return ``True`` if ``tags`` field is not in test recipe or there is a matching tag.
+
         """
 
         if self.filters.get("tags"):
@@ -267,13 +267,13 @@ class Builder:
         """This method determines if test should be skipped based on type field specified
         in filter field that is specified on command line via ``buildtest build --filter type=<SCHEMATYPE>``
 
+        Args:
+            recipe (dict): Loaded test recipe from buildspec
+            name (str): Name of test
 
-        :param recipe: loaded buildspec recipe as dictionary
-        :type recipe: dict
-        :param name: An instance of test from buildspec file
-        :type name: str
-        :return: Returns a boolean True/False which determines if test is skipped.
-        :rtype: bool
+        Returns:
+            bool: False if ``buildtest build --filter type`` is not specified. If there is a match with input filter and ``type`` field in test we return ``True``
+
         """
 
         if self.filters.get("type"):
@@ -292,12 +292,16 @@ class Builder:
         """This method will skip tests based on ``run_only`` field from buildspec. Checks
         are performed based on conditionals and if any conditional is not met we skip test.
 
-        :param recipe: loaded buildspec recipe as dictionary
-        :type recipe: dict, required
-        :param name: name of test from buildspec file
-        :type name: str, required
-        :return: Returns a boolean to see if test is skipped based on ``run_only`` property
-        :rtype: bool
+        Args:
+            recipe (dict): Loaded test recipe from buildspec
+            name (str): Name of test
+
+        Returns:
+            bool: ``False`` if `run_only` property not specified in buildspec otherwise returns ``True`` based on following condition
+                - True if there is no match with system 'scheduler' and one specified in buildspec
+                - True if there is no match with user specifed by 'user' property and one detected by system using ``os.getenv("USER")``
+                - True if there is no match with specified 'platform' property and one detected by system platform
+                - True if there is no match with specified 'linux_distro' property and one detected by system
         """
         # if run_only field set, check if all conditions match before proceeding with test
         if recipe.get("run_only"):
@@ -341,16 +345,11 @@ class Builder:
         return False
 
     def get_builders(self):
-
+        """Return a list of builder objects"""
         return self.builders
 
     def get_test_names(self):
-        """Return the list of test names for the loaded Buildspec recipe. This can
-        be retrieved by returning a list of keys under 'buildspecs' property
-
-        :return: A list of test names in buildspec file
-        :rtype: list
-        """
+        """Return the list of test names for the loaded Buildspec recipe"""
 
         keys = []
         if self.bp.recipe:
