@@ -321,7 +321,7 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
             type="text/preformatted",
             name="Build Script Content",
         )
-        ET.SubElement(build_script_content, "Value").text = test["buildspec_content"]
+        ET.SubElement(build_script_content, "Value").text = test["buildscript_content"]
 
         output_measurement = ET.SubElement(results_element, "Measurement")
 
