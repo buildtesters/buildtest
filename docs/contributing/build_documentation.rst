@@ -48,6 +48,40 @@ pages by running the following::
 
 Please refer to the ``Makefile`` to see list of tags or run ``make`` for additional help.
 
+Sphinx
+-------
+
+The documentation is built via `Sphinx <https://www.sphinx-doc.org/en/master/>`_ using
+`reStructuredText (rST) <https://docutils.sourceforge.io/rst.html>`_ as its markup language. When
+you run `make` you are running `sphinx-build <https://www.sphinx-doc.org/en/master/man/sphinx-build.html>`_ command
+which will generate the documentation.
+
+Sphinx will read the configuration file `conf.py <https://github.com/buildtesters/buildtest/blob/devel/docs/conf.py>`_ used
+for building the project. We have enabled a couple `sphinx extensions <https://www.sphinx-doc.org/en/master/usage/extensions/index.html>`_
+in our project to customize our documentation
+
+API Generation
+---------------
+
+We make use of `Sphinx AutoAPI <https://sphinx-autoapi.readthedocs.io/en/latest/>`_ to generate
+buildtest API documentation that is hosted on https://buildtest.readthedocs.io/en/devel/api/index.html.
+The Sphinx AutoAPI configuration is configured in sphinx configuration file `conf.py`. For more details
+on configuration options see https://sphinx-autoapi.readthedocs.io/en/latest/reference/config.html
+
+Command Line Documentation
+----------------------------
+
+We make use of `sphinx-argparse <https://sphinx-argparse.readthedocs.io/en/stable/index.html>`_ to generate
+documentation for buildtest command line that is hosted at https://buildtest.readthedocs.io/en/devel/command.html.
+In order to use this tool one must install this package and enable the extension in sphinx configuration.
+
+DocStrings
+-----------
+
+We have enabled `napolean extension <https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html>`_ to support
+Google style docstring. Please follow this format when you are writting docstring for buildtest codebase. For more details
+on google style see: https://google.github.io/styleguide/pyguide.html
+
 Automate Documentation Examples
 --------------------------------
 
