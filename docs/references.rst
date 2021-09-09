@@ -10,7 +10,7 @@ Talks
     :header: "Conference", "Date", "Link"
     :widths:  60, 30, 30
 
-    "`Facility Testing of E4S via E4S Testsuite, Spack Test, and buildtest <https://www.exascaleproject.org/event/buildtest-21-09/>`_", "Sep 14, 2021", TBD
+    "`Facility Testing of E4S via E4S Testsuite, Spack Test, and buildtest <https://www.exascaleproject.org/event/buildtest-21-09/>`_", "Sep 14, 2021", "`PDF <https://drive.google.com/file/d/1nfHm7Y3CXkMgNlMKYtVbwIciD637qhRL/view?usp=sharing>`__, `PPTX <https://docs.google.com/presentation/d/1DeguAqcSE8kZy2Hkzr_HNEssFEwaKXdt/edit?usp=sharing&ouid=115649024792605360450&rtpof=true&sd=true>`__"
     "`ECP Annual Meeting 2021 <https://www.exascaleproject.org/event/buildtest/>`_", "Apr 15, 2021", "`PDF <https://drive.google.com/file/d/134bZIWyp0AL60I1bW4oWywCYW0oV8ckB/view?usp=sharing>`__, `VIDEO <https://youtu.be/-IONWmF8YZs>`__"
     "`High Performance Computing & Simulation 2020 <http://hpcs2020.cisedu.info/>`_", "Mar 26, 2021", "`PDF <https://drive.google.com/file/d/13Otx6w1hBxdW4WwrK4v1QCp2d0dTNiV0/view?usp=sharing>`__"
     "`SEA Improving Scientific Software 2021 <https://sea.ucar.edu/conference/2021>`_ ", "Mar 23, 2021", "`PDF <https://drive.google.com/file/d/1zs-l7a1GF7ws26Oq1zvFp3VaQ8xdHOhG/view?usp=sharing>`__, `VIDEO <https://www.youtube.com/watch?v=QBQCEnlgX3I>`__"
