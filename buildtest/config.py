@@ -20,9 +20,26 @@ logger = logging.getLogger(__name__)
 
 
 class SiteConfiguration:
-    """This class is an interface to buildtest configuration"""
+    """This class is an interface to buildtest configuration
+
+    Attributes:
+        _file (str): Path to configuration file
+        config (dict): Loaded configuration fille
+        target_config (dict): Loaded configuration file for a particular system
+        disabled_executors (list): A list of disabled executors when checking executors
+        invalid_executors (list): A list of invalid executors when checking executors
+        valid_executors (dict): A dict containing executors that are valid for each executor type.
+    """
 
     def __init__(self, settings_file=None):
+        """The initializer will declare class variables in its initial state and resolve path to
+        configuration file. Once file is resolved we will load the configuration using :func:`load`.
+
+        Args:
+            settings_file (str, optional): path to buildtest configuration file
+
+        """
+
         self._file = settings_file
         self.config = None
         self._name = None
@@ -58,11 +75,9 @@ class SiteConfiguration:
     def resolve(self):
         """This method will resolve path to configuration file. The order of precedence is as follows:
 
-        1. command line argument - Must be valid path
-
-        2. User Configuration: $HOME/.buildtest/config.yml
-
-        3. Default Configuration: $BUILDTEST_ROOT/buildtest/settings/config.yml
+        1. command line argument via ``buildtest --config <path>``
+        2. User Configuration: **$HOME/.buildtest/config.yml**
+        3. Default Configuration: **$BUILDTEST_ROOT/buildtest/settings/config.yml**
         """
 
         self._file = (
@@ -76,9 +91,13 @@ class SiteConfiguration:
         return self._name
 
     def detect_system(self):
-        """This method gets current system by setting ``self.target`` by matching ``hostnames`` entry
-        in each system list with actual system. We retrieve target hostname and determine which system configuration to use.
-        If no system is found we raise an error.
+        """This method detects which system configuration to use by checking target hostname with list of hostname entries defined in ``hostnames`` property. If there
+        is a match we set ``self._name`` to map to system name and load the target configuration by setting ``self.target_config`` to the desired system configuration.
+
+        If no system is found we raise an exception.
+
+        Raises:
+            ConfigurationError: If there is no matching system
         """
 
         self.systems = list(self.config["system"].keys())
@@ -110,7 +129,11 @@ class SiteConfiguration:
             self.localexecutors = list(self.target_config["executors"]["local"].keys())
 
     def validate(self, validate_executors=True):
-        """This method validates the site configuration with schema"""
+        """This method validates the site configuration with schema and checks executor setting.
+
+        Args:
+             validate_executors (bool): Check executor settings. This is the default behavior but can be disabled
+        """
 
         logger.debug(f"Loading default settings schema: {DEFAULT_SETTINGS_SCHEMA}")
         config_schema = load_schema(DEFAULT_SETTINGS_SCHEMA)

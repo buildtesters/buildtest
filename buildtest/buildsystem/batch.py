@@ -1,17 +1,21 @@
 class BatchScript:
+    """Base class used for generating Batch directives for Schedulers"""
+
     def get_headers(self):
         return self.headers
 
 
 class LSFBatchScript(BatchScript):
-    """This class is responsible for building LSF batch script by taking ``bsub`` property and converting them
-    into #BSUB directives
-    """
+    """This class is responsible for building LSF batch script by taking ``bsub`` property and converting them into **#BSUB** directives"""
 
     def __init__(self, bsub):
-        """
-        :param batch: Input from  'batch' field that is scheduler agnostic configuration
-        :param bsub: input from 'bsub' field in Buildspec inserted as #BSUB directive
+        """This method will return a list of #BSUB directives used in job script
+
+        Args:
+            bsub (list): List of string items specified by ``bsub`` property in buildspec used for specified #BSUB directive
+
+        Returns:
+            list: A list of **#BSUB** directive that will be inserted for LSF Job Script
         """
 
         self.headers = []
@@ -24,14 +28,16 @@ class LSFBatchScript(BatchScript):
 
 
 class SlurmBatchScript(BatchScript):
-    """This class is responsible for building Slurm batch script by taking ``sbatch`` property and converting them
-    into #SBATCH directives
-    """
+    """This class is responsible for building Slurm batch script by taking ``sbatch`` property and converting them into #SBATCH directives"""
 
     def __init__(self, sbatch):
-        """
-        :param batch: The batch commands specified by batch field. These are scheduler agnostic fields
-        :param sbatch: sbatch commands that are inserted with #SBATCH directive
+        """This method will return a list of #Slurm directives used in job script
+
+         Args:
+             sbatch (list): List of string items specified by ``sbatch`` property in buildspec used for specified #SBATCH directive
+
+        Returns:
+            list: A list of **#SBATCH** directive that will be inserted for Slurm Job Script
         """
         self.headers = []
         self.directive = "#SBATCH"
@@ -43,13 +49,16 @@ class SlurmBatchScript(BatchScript):
 
 
 class CobaltBatchScript(BatchScript):
-    """This class is responsible for building Cobalt batch script by taking ``cobalt`` property and converting them
-    into #COBALT directives
-    """
+    """This class is responsible for building Cobalt batch script by taking ``cobalt`` property and converting them into #COBALT directives"""
 
     def __init__(self, cobalt):
-        """
-        :param cobalt: cobalt commands that are inserted with #COBALT directive
+        """This method will return a list of #Cobalt directives used in job script
+
+         Args:
+             cobalt (list): List of string items specified by ``cobalt`` property in buildspec used for specified **#COBALT** directive
+
+        Returns:
+            list: A list of **#COBALT** directive that will be inserted for Cobalt Job Script
         """
         self.headers = []
         self.directive = "#COBALT"
@@ -61,13 +70,16 @@ class CobaltBatchScript(BatchScript):
 
 
 class PBSBatchScript(BatchScript):
-    """This class is responsible for building PBS batch script by taking ``pbs`` property and converting them
-    into #PBS directives
-    """
+    """This class is responsible for building PBS batch script by taking ``pbs`` property and converting them into #PBS directives"""
 
     def __init__(self, pbs):
-        """
-        :param pbs: pbs commands that are inserted with #PBS directive
+        """This method will return a list of #PBS directives used in job script
+
+        Args:
+            pbs (list): List of string items specified by ``pbs`` property in buildspec used for specified **#PBS** directive
+
+        Returns:
+            list: A list of **#PBS** directive that will be inserted for PBS Job Script
         """
         self.headers = []
         self.directive = "#PBS"

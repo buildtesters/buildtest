@@ -78,15 +78,20 @@ extensions = [
     "sphinxarg.ext",
     "sphinx_rtd_theme",
     "sphinx.ext.viewcode",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.napoleon",
 ]
 
 # Document Python Code
 autoapi_type = "python"
 autoapi_dirs = ["../buildtest"]
 autoapi_add_toctree_entry = True
-autoapi_member_order = "alphabetical"
+autoapi_member_order = "bysource"
 autoapi_root = "api"
 autoapi_keep_files = True
+autoapi_python_class_content = "both"
+
+napoleon_include_init_with_doc = False
 
 suppress_warnings = ["autoapi"]
 
@@ -238,5 +243,6 @@ epub_title = project
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ["search.html"]
 
-
-# -- Extension configuration -------------------------------------------------
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
+}

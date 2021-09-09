@@ -22,13 +22,10 @@ def cdash_cmd(args, default_configuration=None, open_browser=True):
     """This method is entry point for ``buildtest cdash`` command which implements uploading
     results to CDASH server and command line interface to open CDASH project.
 
-    :param args: Instance of ArgumentParser that contains arguments for ``buildtest cdash`` command
-    :type args: ArgumentParser
-    :param default_configuration: The loaded default configuration which is an instance of SiteConfiguration
-    :type default_configuration: SiteConfiguration, optional
-    :param open_browser: boolean to control if we open page in web browser using webbrowser.open. This is enabled by default, but can be turned off especially when running regression test where we don't want to see the page
-    :type open_browser: optional
-
+    Args:
+        args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
+        default_configuration (buildtest.config.SiteConfiguration, optional): The loaded default configuration which is an instance of SiteConfiguration class
+        open_browser (bool, optional): boolean to control if we open page in web browser using `webbrowser.open() <https://docs.python.org/3/library/webbrowser.html#webbrowser.open>`_. This is enabled by default, but can be turned off especially when running regression test where we don't want to see the page
     """
 
     # Shown below is an example cdash setting in configuration file
@@ -96,15 +93,25 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
     server. User can specify cdash settings in configuration file or pass them in command line.
     The command ``buildtest cdash upload`` will upload results to CDASH.
 
-    :param build_name: build name that shows up in CDASH
-    :type site: str
-    :param configuration: Instance of SiteConfiguration class that contains the configuration file
-    :type configuration: SiteConfiguration
-    :param site: site name that shows up in CDASH
-    :type site: str, optional
-    :param report: Path to report file when uploading results. This is specified via ``buildtest cdash upload -r`` command
-    :type report: str, optional
-    :return:
+    Shown below is an example output. In this example **demo** is the build name that shows up in CDASH result.
+
+    .. code-block:: console
+
+        bash-3.2$ buildtest cdash upload demo
+        Reading configuration file:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml
+        Reading report file:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/report.json
+        build name:  demo
+        site:  generic
+        stamp:  20210908-1445-Experimental
+        MD5SUM: 078202fdea13860d50eff19a9ea737db
+        PUT STATUS: 200
+        You can view the results at: https://my.cdash.org//viewTest.php?buildid=2063736
+
+    Args:
+        build_name (str): build name that shows up in CDASH
+        configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class that contains the configuration file
+        site (str): Site name that shows up in CDASH
+        report (str): Path to report file when uploading results. This is specified via ``buildtest cdash upload -r`` command
     """
 
     cdash_url = configuration.target_config["cdash"]["url"]

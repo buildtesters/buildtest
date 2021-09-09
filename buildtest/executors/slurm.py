@@ -87,10 +87,10 @@ class SlurmExecutor(BaseExecutor):
 
     def dispatch(self, builder):
         """This method is responsible for dispatching job to slurm scheduler and extracting job
-        id. If job id is valid we pass the job to `SlurmJob` class and store object in ``builder.job``.
+        id. If job id is valid we pass the job to :class:`buildtest.executors.slurm.SlurmJob` class and store object in ``builder.job``.
 
-        :param builder: builder object
-        :type builder: BuilderBase, required
+        Args:
+            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
         self.result = {}
@@ -127,10 +127,10 @@ class SlurmExecutor(BaseExecutor):
     def poll(self, builder):
         """This method is called during poll stage where we invoke ``builder.job.poll()`` to get updated
         job state. If job is pending or suspended we stop timer and check if job needs to be cancelled if
-        time exceeds `max_pend_time` value.
+        time exceeds ``max_pend_time`` value.
 
-        :param builder: builder object
-        :type builder: BuilderBase, required
+        Args:
+            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
         builder.job.poll()
@@ -167,8 +167,8 @@ class SlurmExecutor(BaseExecutor):
         """Gather Slurm job data after job completion. In this step we call ``builder.job.gather()``,
         and update builder metadata such as returncode, output and error file.
 
-        :param builder: instance of BuilderBase
-        :type builder: BuilderBase (subclass), required
+        Args:
+            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
         builder.endtime()
 
@@ -192,6 +192,12 @@ class SlurmExecutor(BaseExecutor):
 
 
 class SlurmJob(Job):
+    """The SlurmJob class models a Slurm Job ID with helper methods to perform operation against an active slurm job. The SlurmJob class
+    can poll job to get updated job state, gather job data upon completion of test and cancel job if necessary. We can also retrieve job
+    state and determine if job is running, pending, suspended, or cancelled. Jobs are polled via `sacct <https://slurm.schedmd.com/sacct.html>`_
+    command which can retrieve pending, running and complete jobs.
+    """
+
     def __init__(self, jobID, cluster=None):
         super().__init__(jobID)
         self.cluster = cluster
@@ -291,6 +297,14 @@ class SlurmJob(Job):
     def poll(self):
         """This method will poll job via ``sacct`` command to get updated job state by running the
         following command: ``sacct -j <jobid> -o State -n -X -P``
+
+        Slurm will report the job state that can be parsed. Shown below is an example job
+        that is ``PENDING`` state
+
+        .. code-block:: console
+
+            $ sacct -j 46641229 -o State -n -X -P
+            PENDING
         """
 
         query = f"sacct -j {self.jobid} -o State -n -X -P"

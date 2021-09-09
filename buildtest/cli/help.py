@@ -241,7 +241,11 @@ buildtest path circle_area/abc                              Get test root for te
 
 
 def buildtest_help(command):
-    """Entry point for ``buildtest help`` which display a summary of how to use buildtest commands"""
+    """Entry point for ``buildtest help`` which display a summary of how to use buildtest commands
+
+    Args:
+        command (str): Name of buildtest command specified by ``buildtest help <command>``
+    """
 
     if command == "build":
         print_build_help()

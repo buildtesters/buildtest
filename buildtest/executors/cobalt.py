@@ -78,8 +78,8 @@ class CobaltExecutor(BaseExecutor):
         ``CobaltJob`` class. At job submission, cobalt will report the output and error file which can be retrieved
         using **qstat**. We retrieve the cobalt job record using ``builder.job.gather()``.
 
-        :param builder: builder object
-        :type builder: BuilderBase, required
+        Args:
+            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
         os.chdir(builder.stage_dir)
@@ -128,8 +128,8 @@ class CobaltExecutor(BaseExecutor):
         exists or job is complete, we gather the results and return from function. If job
         is pending we check if job time exceeds ``max_pend_time`` time limit and cancel job.
 
-        :param builder: builder object
-        :type builder: BuilderBase, required
+        Args:
+            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
         builder.job.poll()
@@ -166,8 +166,8 @@ class CobaltExecutor(BaseExecutor):
         output of exit code by performing a regular expression ``(exit code of.)(\d+)(\;)``.
         The cobalt log file will contain a line: **task completed normally with an exit code of 0; initiating job cleanup and removal**
 
-        :param builder: builder object
-        :type builder: BuilderBase, required
+        Args:
+            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
         builder.endtime()

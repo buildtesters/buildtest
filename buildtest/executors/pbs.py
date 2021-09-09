@@ -33,7 +33,7 @@ class PBSExecutor(BaseExecutor):
         super().__init__(name, settings, site_configs)
 
     def load(self):
-        """Load the a Cobalt executor configuration from buildtest settings."""
+        """Load the a PBS executor configuration from buildtest settings."""
 
         self.launcher = self._settings.get("launcher") or deep_get(
             self._buildtestsettings.target_config, "executors", "defaults", "launcher"
@@ -77,8 +77,8 @@ class PBSExecutor(BaseExecutor):
         start timer and record when job was submitted and poll job once to get
         job details and store them in builder object.
 
-        :param builder: builder object
-        :type builder: BuilderBase, required
+        Args:
+            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
         self.load()
@@ -109,10 +109,12 @@ class PBSExecutor(BaseExecutor):
         return builder
 
     def poll(self, builder):
-        """This method is responsible for polling PBS job.
+        """This method is responsible for polling PBS job which will update the job state. If job is complete we will
+        gather job result. If job is pending we will stop timer and check if pend time exceeds max pend time for executor.
+        If so we will cancel the job.
 
-        :param builder: builder object
-        :type builder: BuilderBase, required
+        Args:
+            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
         builder.job.poll()
@@ -145,13 +147,12 @@ class PBSExecutor(BaseExecutor):
         builder.start()
 
     def gather(self, builder):
-        """This method is responsible for getting output of job using ``qstat -x -f -F json <jobID>``
-        and storing the result in builder object. We retrieve specific fields such as exit status,
-        start time, end time, runtime and store them in builder object. We read output and error file
-        and store the content in builder object.
+        """This method is responsible for gather job results including output and error file and complete metadata
+        for job which is stored in the builder object. We will retrieve job exitcode which corresponds to test
+        returncode.
 
-        :param builder: builder object
-        :type builder: BuilderBase, required
+        Args:
+            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
         builder.endtime()
@@ -167,7 +168,10 @@ class PBSExecutor(BaseExecutor):
 
 
 class PBSJob(Job):
-    """See https://www.altair.com/pdfs/pbsworks/PBSReferenceGuide2021.1.pdf section 8.1 for Job State Codes"""
+    """The PBSJob models a PBS Job with helper methods to retrieve job state, check if job is running/pending/suspended. We have methods
+    to poll job state, gather job results upon completion and cancel job.
+
+    See https://www.altair.com/pdfs/pbsworks/PBSReferenceGuide2021.1.pdf section 8.1 for list of Job State Codes"""
 
     def __init__(self, jobID):
         super().__init__(jobID)
@@ -203,7 +207,8 @@ class PBSJob(Job):
     def success(self):
         """This method determines if job was completed successfully and returns ``True`` if exit code is 0.
 
-        According to https://www.altair.com/pdfs/pbsworks/PBSAdminGuide2021.1.pdf section 14.9 Job Exit Status Codes we have the following:
+        According to https://www.altair.com/pdfs/pbsworks/PBSAdminGuide2021.1.pdf section 14.9 Job Exit Status Codes we have the following
+
          - Exit Code:  X < 0         - Job could not be executed
          - Exit Code: 0 <= X < 128   -  Exit value of Shell or top-level process
          - Exit Code: X >= 128       - Job was killed by signal

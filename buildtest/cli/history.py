@@ -12,7 +12,11 @@ logger = logging.getLogger(__name__)
 
 
 def build_history(args):
-    """This is the entry point for command ``buildtest build history`` command which reports"""
+    """This is the entry point for command ``buildtest build history`` command which reports
+
+    Args:
+        args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
+    """
 
     if args.history == "list":
         list_builds(header=args.no_header, terse=args.terse)
@@ -22,7 +26,14 @@ def build_history(args):
 
 
 def sorted_alphanumeric(data):
-    """This method is used for alpha numeric sorting of files."""
+    """This method is used for alpha numeric sorting of files.
+
+    Args:
+        data: A list of history files to sort alpha numerically
+
+    Returns:
+        list: sorted list of history files alphanumerically
+    """
 
     convert = lambda text: int(text) if text.isdigit() else text.lower()
     alphanum_key = lambda key: [convert(c) for c in re.split("([0-9]+)", key)]
@@ -34,10 +45,9 @@ def list_builds(header=None, terse=None):
     stored in **BUILD_HISTORY_DIR**. Each directory has a ``build.json`` file that stores content
     of each build that was run by ``buildtest build``.
 
-    :param header: Control whether header columns are displayed with terse format
-    :type header: bool, optional
-    :param terse: Print output in terse format
-    :type terse: bool, optional
+    Args:
+        header (bool, optional): Control whether header columns are displayed with terse format
+        terse (bool, optional): Print output in terse format
     """
 
     history_files = walk_tree(BUILD_HISTORY_DIR, ".json")
@@ -123,10 +133,9 @@ def query_builds(build_id, log_option):
     """This method is called when user runs `buildtest history query` which will
     report the build.json and logfile.
 
-    :param build_id: Input argument `buildtest history query <id>`
-    :type build_id: int, required
-    :param log_option: Input argument `buildtest history query <id> --log`
-    :type log_option: bool, required
+    Args:
+        build_id (int): Build Identifier which is used for querying history file. The indentifier is an integer starting from 0
+        log_option (bool): Option to control whether log file is opened in editor. This is specified via ``buildtest history query -l <id>``
     """
 
     if not is_dir(BUILD_HISTORY_DIR):

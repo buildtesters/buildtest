@@ -28,9 +28,9 @@ class BuildExecutor:
     file which provides a list of executors. This class keeps track of all executors and provides
     the following methods:
 
-    **setup**: This method will  write executor's ``before_script.sh``  that is sourced in each test upon calling executor.
-    **run**: Responsible for invoking executor's **run** method based on builder object which is of type BuilderBase.
-    **poll**: This is responsible for invoking ``poll`` method for corresponding executor from the builder object by checking job state
+    - **setup**: This method will  write executor's ``before_script.sh``  that is sourced in each test upon calling executor.
+    - **run**: Responsible for invoking executor's **run** method based on builder object which is of type BuilderBase.
+    - **poll**: This is responsible for invoking ``poll`` method for corresponding executor from the builder object by checking job state
     """
 
     def __init__(self, site_config, max_pend_time=None):
@@ -38,8 +38,9 @@ class BuildExecutor:
         configuration that are validated, and can instantiate
         each executor to be available.
 
-        :param site_config: the site configuration for buildtest.
-        :type site_config: SiteConfiguration class, required
+        Args:
+            site_config (buildtest.config.SiteConfiguration): instance of SiteConfiguration class that has the buildtest configuration
+            max_pend_time (int, optional): maximum pend time in second until job is cancelled.
         """
 
         # stores a list of builders objects
@@ -129,8 +130,8 @@ class BuildExecutor:
         object we retrieve the executor property ``builder.executor`` of the builder and check if
         there is an executor object and of type `BaseExecutor`.
 
-        :param builder: the builder with the loaded Buildspec.
-        :type builder: BuilderBase (subclass), required.
+        Args:
+            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
         # Get the executor by name, and add the builder to it
@@ -143,12 +144,10 @@ class BuildExecutor:
         return executor
 
     def setup(self):
-        """This method creates directory ``var/executors/<executor-name>``
-        for every executor defined in buildtest configuration and write scripts
-        before_script.sh if the field ``before_script``
-        is specified in executor section. This method
-        is called after executors are initialized in the class **__init__**
-        method.
+        """This method creates directory ``var/executors/<executor-name>`` for every executor defined
+        in buildtest configuration and write scripts `before_script.sh` if the field ``before_script``
+        is specified in executor section. This method is called after executors are initialized in the
+        class **__init__** method.
         """
 
         for executor_name in self.executors.keys():
@@ -163,7 +162,11 @@ class BuildExecutor:
             write_file(file, content)
 
     def load_builders(self, builders):
-        """Adds builder objects into self.builders class variable. This method will only add objects that are instance of BuilderBase class"""
+        """Adds builder objects into self.builders class variable. This method will only add objects that are instance of BuilderBase class.
+
+        Args:
+            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
+        """
         for builder in builders:
             # only add items that are of class BuilderBase
             if not isinstance(builder, BuilderBase):
@@ -177,10 +180,11 @@ class BuildExecutor:
     def run(self):
         """This method is responsible for running the build script for each builder async and
         gather the results. We setup a pool of worker settings by invoking ``multiprocessing.pool.Pool``
-        and use ``multiprocessing.pool.Pool.apply_sync()`` method for running test async which returns
-        an object of type ``multiprocessing.pool.AsyncResult`` which holds the result. Next we wait for
-        results to arrive using ``multiprocessing.pool.AsyncResult.get()`` method in a infinite loop until
-        all test results are retrieved. The return type is the same builder object which is added to list
+        and use `multiprocessing.pool.Pool.apply_sync() <https://docs.python.org/3/library/multiprocessing.html#multiprocessing.pool.Pool.apply_async>`_
+        method for running test async which returns
+        an object of type `multiprocessing.pool.AsyncResult <https://docs.python.org/3/library/multiprocessing.html#multiprocessing.pool.AsyncResult>`_
+        which holds the result. Next we wait for results to arrive using `multiprocessing.pool.AsyncResult.get() <https://docs.python.org/3/library/multiprocessing.html#multiprocessing.pool.AsyncResult.get>`_
+        method in a infinite loop until all test results are retrieved. The return type is the same builder object which is added to list
         of valid builders that is returned at end of method.
         """
 

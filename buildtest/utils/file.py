@@ -15,12 +15,13 @@ from buildtest.exceptions import BuildTestError
 
 
 def is_file(fname):
-    """This method will check if file exist, if so returns True otherwise returns False
+    """Check if file exist and returns True/False
 
-    :param file: file path
-    :type file: str, required
-    :return: returns a boolean True/False depending on if input is a valid file.
-    :rtype: bool
+    Args:
+        fname (str): file path to check
+
+    Returns:
+        bool: True if path is a file and is a realpath otherwise returns False
     """
 
     # resolve_path will return the full canonical filename or return None if file doesn't exist
@@ -35,13 +36,14 @@ def is_file(fname):
 
 
 def is_dir(dirname):
-    """This method will check if a directory exist. If directory found we return
-    True otherwise False.
+    """Check if input directory exist and is a directory. If so return ``True`` otherwise returns ``False``.
+    We resolve path by invoking :func:`resolve_path`
 
-    :param dir: directory path
-    :type dir: str, required
-    :return: returns a boolean True/False depending on if input is a valid directory.
-    :rtype: bool
+    Args:
+        dirname (str): directory path to check
+
+    Returns:
+        bool: True if directory exists otherwise returns False.
     """
 
     # resolve_path will return the full canonical directory name or return None if directory doesn't exist
@@ -57,16 +59,15 @@ def is_dir(dirname):
 
 def walk_tree(root_dir, ext=None):
     """This method will traverse a directory tree and return list of files
-    based on extension type. This method invokes is_dir() to check if directory
+    based on extension type. This method invokes :func:`is_dir` to check if directory
     exists before traversal.
 
-    :param root_dir: directory path to traverse
-    :type root_dir: str, required
-    :param ext: file extensions to search in traversal
-    :type ext: str, optional
+    Args:
+        root_dir (str): directory path to traverse
+        ext (str): File extension to search in traversal
 
-    :return: returns a list of file paths
-    :rtype: list
+    Returns:
+        list: A list of file paths for a directory traversal based on extension type. If ``ext`` is **None** we retrieve all files
     """
 
     list_files = []
@@ -89,7 +90,7 @@ def walk_tree(root_dir, ext=None):
 
 def create_dir(dirname):
     """Create a directory if it doesn't exist. If directory contains variable
-    expansion ($HOME), user expansion (~) we resolve this before creating directory.
+    expansion (**$HOME**) or user expansion (**~**), we resolve this before creating directory.
     If there is an error creating directory we raise an exception BuildTestError
 
     :param dirname: directory path to create
@@ -116,11 +117,15 @@ def resolve_path(path, exist=True):
     """This method will resolve a file path to account for shell expansion and resolve paths in
     when a symlink is provided in the file. This method assumes file already exists.
 
-    :param path: file path to resolve
-    :type path: str, required
-    :param exist: expects a boolean to determine if filepath should be returned or None. By default, `exist` is `True` and file is checked using `os.path.exist` to return full path.
-    :return: return realpath to file if found otherwise return None
-    :rtype: str or None
+    Args:
+        path (str): file path to resolve
+        exist (bool): a boolean to determine if filepath should be returned if filepath doesn't exist on filesystem.
+
+    Returns:
+        str: Full path to file if file exists or ``exist=True`` is set. We could return ``None`` if path is not defined or file path doesn't exist and ``exist=False``
+
+    Raises:
+        BuildTestError: If input path is not of type str
 
     >>> a = resolve_path("$HOME/.bashrc")
     >>> assert a
@@ -150,20 +155,23 @@ def resolve_path(path, exist=True):
 
 
 def read_file(filepath):
-    """This method is used to read a file specified by argument ``filepath``.
-    If filepath is not a string we raise an error. We also run ``resolve_path``
+    """This method is used to read a file and return content of file.
+    If filepath is not a string we raise an error. We run :func:`resolve_path`
     to get realpath to file and account for shell or user expansion. The
-    return from ``resolve_path`` will be a valid file or ``None`` so  we
-    check if input is an invalid file. Finally we read the file and return
-    the content of the file as a string.
+    return will be a valid file or ``None`` so we check if input is an invalid file.
+    Finally we read the file and return the content of the file as a string.
 
-    :param filepath: file name to read
-    :type filepath: str, required
-    :raises BuildTestError: If filepath is not a string
-    :raises BuildTestError: If filepath is not valid file
-    :raises BuildTestError: When there is issue reading file and python raises exception IOERROR
-    :return: return content of file as a string
-    :rtype: str
+    Args:
+        filepath (str): File name to read
+
+    Raises:
+        BuildTestError:
+          - if filepath is invalid
+          - filepath is not an instance of type :class:`str`.
+          - An exception can be raised if there is an issue reading file with an exception of :class:`IOError`
+
+    Returns:
+        str: content of input file
     """
 
     # ensure filepath is a string, if not, we raise an error.
@@ -193,20 +201,23 @@ def read_file(filepath):
 
 def write_file(filepath, content):
     """This method is used to write an input ``content`` to a file specified by
-    ``filepath. Both filepath and content must be a str. An error is raised
+    ``filepath``. Both filepath and content must be a str. An error is raised
     if filepath is not a string or a directory. If ``content`` is not a str,
-    we return ``None`` since we can't process the content for writing.
+    we return ``None`` since we can't write the content to file.
     Finally, we write the content to file and return. A successful write
     will return nothing otherwise an exception will occur during the write
     process.
 
-    :param filepath: file name to write
-    :type filepath: str, required
-    :param content: content to write to file
-    :type content: str, required
-    :raises BuildTestError: System error if filepath is not string
-    :raises BuildTestError: System error if filepath is a directory
-    :return: Return nothing if write is successful. A system error if ``filepath`` is not str or directory. If argument ``content`` is not str we return ``None``
+    Args:
+        filepath (str): file name to write
+        content (str): content to write to file
+
+    Raises:
+        BuildTestError:
+            - filepath is not :class:`str`
+            - filepath is directory via :class:`is_dir`
+            - content of file is not of type :class:`str`
+            - Error writing file with an exception of type :class:`IOError`
     """
 
     # ensure filepath is a string, if not we raise an error
@@ -238,8 +249,14 @@ def remove_file(fpath):
     """This method is responsible for removing a file. The input path is an absolute path
     to file. We check for exceptions first, and return immediately before removing file.
 
-    :param fpath: full path to file
-    :type fpath: str, required
+    Args:
+        fpath (str): full path to file to remove
+
+    Raises:
+          BuildTestError:
+            - If fpath is not instance of :class:`str`
+            - If fpath is not a file using :func:`is_file`
+            - An exception of type :class:`OSError` when removing file via :func:`os.remove`
     """
 
     if not fpath:
@@ -264,12 +281,14 @@ def remove_file(fpath):
 
 def load_json(fname):
     """Given a filename, resolves full path to file and loads json file. This method will
-    catch exception json.JSONDecodeError and raise an exception with useful message. If there is no
+    catch exception :class:`json.JSONDecodeError` and raise an exception with useful message. If there is no
     error we return content of json file
 
-    :param fname: Name of file to read and load json content
-    :type fname: str, required
-    :raises BuildTestError: If there is issue resolving path to file or issue reading JSON file and python raises exception ``json.JSONDecodeError``
+    Args:
+        fname (str): Name of file to read and load json content
+
+    Raises:
+        BuildTestError: Raise exception if file is not resolved via :func:`resolve_path` or failure to load JSON document
     """
 
     abspath_fname = resolve_path(fname)

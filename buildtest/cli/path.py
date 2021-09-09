@@ -6,6 +6,39 @@ from buildtest.cli.report import Report
 def path_cmd(
     name, testpath=None, outfile=None, errfile=None, buildscript=None, stagedir=None
 ):
+    """This is the entry point for ``buildtest path`` command which will display path
+    variables for a given test name. If no options are specified we retrieve the root
+    directory where test is installed for the latest run for test. One can specify
+    a specific test ID by specifying backslash **/** folowed by test identifier.
+
+    Shown below are some examples
+
+    .. code-block::
+
+        # get test root for latest run of 'circle_area'
+        bash-3.2$ buildtest path circle_area
+        /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.python/python-shell/circle_area/ac3d8bd8
+
+        # get test root for identifier that starts with 'e37'
+        bash-3.2$ buildtest path circle_area/e37
+        /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.python/python-shell/circle_area/e371dcb8
+
+        # get output file for test circle_area
+        bash-3.2$ buildtest path -o circle_area
+        /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.python/python-shell/circle_area/ac3d8bd8/circle_area.out
+
+        # get error file for test circle_area
+        bash-3.2$ buildtest path -e circle_area
+        /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.python/python-shell/circle_area/ac3d8bd8/circle_area.err
+
+    Args:
+        name (str): Name of test to search in report file
+        testpath (bool): Retrieve path to testpath for a given test
+        outfile (bool): Retrieve path output file for a given test
+        errfile (bool): Retrieve path to error file for a given test
+        buildscript (bool): Retrieve path to build script for a given test
+        stagedir (bool): Retrieve path to stage directory for a given test
+    """
     report = Report()
 
     tid = None

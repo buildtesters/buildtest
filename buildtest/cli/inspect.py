@@ -13,7 +13,11 @@ from termcolor import colored
 
 
 def inspect_cmd(args):
-    """Entry point for ``buildtest inspect`` command"""
+    """Entry point for ``buildtest inspect`` command
+
+    Args:
+        args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
+    """
 
     report_file = BUILD_REPORT
     if args.report:
@@ -51,7 +55,17 @@ def inspect_cmd(args):
 
 
 def inspect_list(report, terse=None, header=None, builder=None):
-    """Implements method ``buildtest inspect list``"""
+    """This method list an output of test id, name, and buildspec file from the report cache. The default
+    behavior is to display output in table format though this can be changed with terse format which will
+    display in parseable format. This method implements command ``buildtest inspect list``
+
+    Args:
+        report (str): Path to report file
+        terse (bool, optional): Print output in terse format
+        header (bool, optional): Determine whether to print header in terse format.
+        builder (bool, optional): Print output in builder format which can be done via ``buildtest inspect list --builder``
+
+    """
 
     test_ids = report._testid_lookup()
 
@@ -98,7 +112,12 @@ def inspect_list(report, terse=None, header=None, builder=None):
 
 
 def inspect_query(report, args):
-    """Entry point for ``buildtest inspect query`` command."""
+    """Entry point for ``buildtest inspect query`` command.
+
+    Args:
+        args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
+        report (str): Path to report file
+    """
 
     records = {}
 
@@ -213,7 +232,13 @@ def inspect_query(report, args):
 
 
 def inspect_buildspec(report, input_buildspecs, all_records):
-    """This method implements command ``buildtest inspect buildspec``"""
+    """This method implements command ``buildtest inspect buildspec``
+
+    Args:
+        report (str): Path to report file
+        input_buildspecs (list): List of buildspecs to search in report file. This is specified as positional arguments to ``buildtest inspect buildspec``
+        all_records (bool): Determine whether to display all records for every test that matches the buildspec. By default we retrieve the latest record.
+    """
 
     search_buildspecs = []
     for fname in input_buildspecs:
@@ -269,8 +294,12 @@ def inspect_buildspec(report, input_buildspecs, all_records):
 
 
 def inspect_by_name(report, names, all_records):
-    """Implements command ``buildtest inspect name`` which will print all test records
-    by given name in JSON format.
+    """Implements command ``buildtest inspect name`` which will print all test records by given name in JSON format.
+
+    Args:
+        report (str): Path to report file
+        names (list): List of test names to search in report file. This is specified as positional arguments to ``buildtest inspect name``
+        all_records (bool): Determine whether to display all records for every test that matches the buildspec. By default we retrieve the latest record.
     """
 
     records = {}

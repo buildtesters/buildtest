@@ -77,12 +77,13 @@ class LSFExecutor(BaseExecutor):
     def dispatch(self, builder):
         """This method is responsible for dispatching job to scheduler and extracting job ID by applying a ``re.search`` against
         output at onset of job submission. If job id is not retrieved due to job failure or unable to match regular expression we
-        mark job incomplete by invoking ``builder.incomplete()`` method and return from method.
+        mark job incomplete by invoking :func:`buildtest.buildsystem.base.BuilderBase.incomplete`` method and return from method.
 
-        If we have a valid job ID we invoke ``LSFJob`` class given the job id to poll job and store this into ``builder.job`` attribute.
+        If we have a valid job ID we invoke :class:`buildtest.executors.lsf.LSFJob` class given the job id to poll job and store this
+        into ``builder.job`` attribute.
 
-        :param builder: builder object
-        :type builder: BuilderBase, required
+        Args:
+            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
         os.chdir(builder.stage_dir)
@@ -131,8 +132,8 @@ class LSFExecutor(BaseExecutor):
         job is suspended or pending we stop timer and check if timer exceeds max_pend_time value which could be defined in configuration
         file or passed via command line ``--max-pend-time``
 
-        :param builder: builder object
-        :type builder: BuilderBase, required
+        Args:
+            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
         builder.job.poll()
@@ -166,8 +167,8 @@ class LSFExecutor(BaseExecutor):
         """Gather Job detail after completion of job by invoking the builder method ``builder.job.gather()``.
         We retrieve exit code, output file, error file and update builder metadata.
 
-        :param builder: builder object
-        :type builder: BuilderBase, required
+        Args:
+            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
         builder.endtime()
@@ -240,7 +241,7 @@ class LSFJob(Job):
         We run the following commands to retrieve following states
 
         - Job State: ``bjobs -noheader -o 'stat' <JOBID>``
-        - Exit Code  File: ``bjobs -noheader -o 'EXIT_CODE' <JOBID>'``
+        - Exit Code: ``bjobs -noheader -o 'EXIT_CODE' <JOBID>'``
         """
 
         # get job state
