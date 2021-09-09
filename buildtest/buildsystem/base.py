@@ -636,7 +636,7 @@ class BuilderBase(ABC):
         return lines
 
     def get_cobalt_directives(self):
-        """Get #COBALT lines based on ``cobalt`` property by calling :class:`buildtest.buildsystem.batch.CobaltBatchScript` """
+        """Get #COBALT lines based on ``cobalt`` property by calling :class:`buildtest.buildsystem.batch.CobaltBatchScript`"""
         jobscript = CobaltBatchScript(cobalt=self.cobalt)
         lines = jobscript.get_headers()
         lines += [f"#COBALT --jobname {self.name}"]
