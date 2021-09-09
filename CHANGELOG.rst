@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-v0.11.0
------------
+v0.11.0 (Sep 9th, 2021)
+-------------------------
 
 In this release we tweaked the core implementation of buildtest for running test. Now we make use of asynchronous test execution and
 job submission to get parallelization of jobs. Previously we were running jobs serially which was quite slow. We are using
@@ -17,6 +17,7 @@ batch job submission which was done in `#863 <https://github.com/buildtesters/bu
 - Added alias for subcommands - `#860 <https://github.com/buildtesters/buildtest/pull/860/>`_
 - Remove `batch` property from buildtest - `#868 <https://github.com/buildtesters/buildtest/pull/868/>`_
 - Add support to disable executors in configuration file via ``disable`` property -  `#870 <https://github.com/buildtesters/buildtest/pull/870/>`_
+- Add `napolean <https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html>`_ and `intersphinx <https://www.sphinx-doc.org/en/master/usage/extensions/intersphinx.html>`_ extension and rewrite docstring for entire codebase in Google Style see `#885 <https://github.com/buildtesters/buildtest/pull/885>`_
 
 v0.10.2 (Aug 16, 2021)
 ----------------------
