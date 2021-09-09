@@ -96,15 +96,20 @@ resolver = RefResolver.from_schema(
 
 def custom_validator(recipe, schema):
     """This is a custom validator for validating JSON documents. We implement a
-    custom resolver for finding json schemas locally by implementing a schema store.
-    The input arguments ``recipe`` and ``schema`` is your input JSON recipe and schema
-    content for validating the recipe. This method uses Draft7Validator for validating
-    schemas.
+    custom resolver using `RefResolver <https://python-jsonschema.readthedocs.io/en/stable/references/#jsonschema.RefResolver>`_
+    to find schemas locally in order to validate buildspecs with schema files on local filesystem. This ensures changes to
+    schema can be done in sync with change to code base.
 
-    :param recipe: Input recipe as JSON document
-    :type recipe: dict
-    :param schema: Input JSON Schema content to validate JSON document
-    :type schema: dict
+    This method uses `Draft7Validator <https://python-jsonschema.readthedocs.io/en/stable/validate/#jsonschema.Draft7Validator>`_
+    for validating schemas. If there is an error during validation jsonschema will raise an exception of type
+    `jsonschema.exceptions.ValidationError <https://python-jsonschema.readthedocs.io/en/stable/errors/#jsonschema.exceptions.ValidationError>`_
+
+    Args:
+        recipe (dict): Loaded test recipe as YAML document
+        schema (dict): Schema document loaded in JSON format
+
+    Raises:
+        jsonschema.exceptions.ValidationError: if recipe fails to validate with schema
     """
 
     # making sure input recipe and schema are dictionary

@@ -44,19 +44,20 @@ class Capturing:
 
     @property
     def out(self):
-        """Return output stream. Returns empty string if empty or doesn't exist."""
+        """Return content of output stream if file exists otherwise returns empty string"""
         if os.path.exists(self.stdout.name):
             return read_file(self.stdout.name)
         return ""
 
     @property
     def err(self):
-        """Return error stream. Returns empty string if empty or doesn't exist."""
+        """Return content of error stream if file exists otherwise returns empty string."""
         if os.path.exists(self.stderr.name):
             return read_file(self.stderr.name)
         return ""
 
     def cleanup(self):
+        """This method will remove stdout and stderr file upon reading both streams"""
         for filename in [self.stdout.name, self.stderr.name]:
             if os.path.exists(filename):
                 os.remove(filename)
@@ -69,7 +70,12 @@ class BuildTestCommand:
     """
 
     def __init__(self, cmd=None):
+        """The initializer method will initialize class variables and check input argument `cmd` and make sure
+        command is in a list format.
 
+        Args:
+            cmd (str, optional): Input shell command
+        """
         cmd = cmd or []
         self._returncode = None
         self.out = []
@@ -89,13 +95,7 @@ class BuildTestCommand:
         self.cmd = cmd
 
     def execute(self):
-        """Execute a system command and return output and error.
-
-        :param cmd: shell command to execute
-        :type cmd: str, required
-        :return: Output and Error from shell command
-        :rtype: two str objects
-        """
+        """Execute a system command and return output and error."""
         # Reset the output and error records
         self.out = []
         self.err = []
@@ -142,7 +142,8 @@ class BuildTestCommand:
     def returncode(self):
         """Returns the return code from shell command
 
-        :rtype: int
+        Returns:
+            int: returncode of shell command
         """
 
         return self._returncode
@@ -161,23 +162,15 @@ class BuildTestCommand:
         return line
 
     def get_output(self):
-        """Returns the output from shell command
-        :rtype: str
-        """
+        """Returns the output content from shell command"""
         return self.out
 
     def get_error(self):
-        """Returns the error from shell command
-
-        :rtype: str
-        """
+        """Returns the error content from shell command"""
 
         return self.err
 
     def get_command(self):
-        """Returns the executed command
-
-        :rtype: str
-        """
+        """Returns the executed command"""
 
         return " ".join(self.cmd)

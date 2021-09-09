@@ -22,10 +22,8 @@ class Shell:
         """The Shell initializer takes an input shell and shell options and split
         string by shell name and options.
 
-        Parameters:
-
-        :param shell: specify shell program and any options passed to shell
-        :type shell: str
+        Args:
+            shell (str): Specify shell program and any options passed to shell. Defaults to ``bash``
         """
 
         # enforce input argument 'shell' to be a string

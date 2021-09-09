@@ -13,10 +13,16 @@ here = os.path.dirname(os.path.abspath(__file__))
 
 
 def load_schema(path):
-    """Load a json schema file, the file extension must be '.schema.json'
+    """Load a json schema file, the file extension must be **.schema.json**
 
-    :param path: the path to the schema file.
-    :type path: str
+    Args:
+        path (str): Path to schema file
+
+    Return:
+        dict: Return loaded schema as JSON document
+
+    Raises:
+         SystemExit: If filepath doesn't exist or schema file doesn't ends in **.schema.json**
     """
 
     logger = logging.getLogger(__name__)
@@ -36,11 +42,16 @@ def load_schema(path):
 
 
 def load_recipe(path):
-    """Load a yaml recipe file. The file must be in .yml extension
-    for buildtest to load.
+    """Load a yaml recipe file. The file must be in **.yml** extension for buildtest to load.
 
-    :param path: the path to the recipe file.
-    :type path: str
+    Args:
+        path (str): The full path to buildspec recipe
+
+    Returns:
+        dict: a dict containing buildspec that is defined in YAML format
+
+    Raises:
+        SystemExit: If filepath doesn't exist or doesn't end in **.yml** extension
     """
 
     if not os.path.exists(path):

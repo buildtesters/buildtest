@@ -8,10 +8,9 @@ class BuildTestError(Exception):
     def __init__(self, msg, *args):
         """This class is used for printing error message when exception is raised.
 
-        :param msg: message to print
-        :type msg: str, required
-        :param args: extra arguments to class
-        :type args: list
+        Args:
+            msg (str): message to print
+            *args (list): extra arguments to class for printing message
         """
         self.msg = [msg]
         if args:
@@ -25,7 +24,7 @@ class BuildTestError(Exception):
 
 
 class BuildspecError(Exception):
-    """raise exception if there is an issue with Buildspec in parsing or building test"""
+    """Exception if there is an issue with parsing a Buildspec or building test"""
 
     def __init__(self, buildspec, msg):
         self.buildspec = buildspec
@@ -44,7 +43,7 @@ class RuntimeFailure(Exception):
 
 
 class ConfigurationError(Exception):
-    """This will raise an error related with buildtest configuration file"""
+    """ConfigurationError is raised when their is an issue with buildtest configuration file"""
 
     def __init__(self, config, settings_file, msg):
         self.config = config
