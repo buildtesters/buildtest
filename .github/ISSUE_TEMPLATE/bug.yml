@@ -5,16 +5,28 @@ labels: [bug, triage]
 assignees:
   - shahzebsiddiqui
 body:
-  - type: markdown
-    attributes:
-      value: |
-        Thanks for taking the time to fill out this bug report!
   - type: textarea
     id: what-happened
     attributes:
       label: Bug Description
-      description: Also tell us, what did you expect to happen?
-      placeholder: Please provide a detailed description of the bug
+      description: |
+        Please describe the bug you are facing with an output of buildtest command and expected error. In order for us to troubleshoot your issue,
+        we request you provide list of steps to reproduce the error. Please include content of buildspec file if issue is related.
+      placeholder: |
+        ```console
+          $ buildtest <command>
+        ```
+
+        Include content of buildspec if necessary
+        ```yaml
+            version: "1.0"
+            buildspecs:
+              hello_world:
+                type: script
+                executor: generic.local.sh
+                run: echo "hello world"
+        ```
+
     validations:
       required: true
   - type: dropdown
@@ -25,6 +37,9 @@ body:
       options:
         - devel
         - master
+        - v0.11.0
+        - v0.10.2
+        - v0.10.1
         - v0.10.0
         - v0.9.6
         - v0.9.5
@@ -46,20 +61,6 @@ body:
       description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
       render: shell
 
-  - type: textarea
-    id: reproduce
-    attributes:
-      label: Reproduce Bug
-      description: "Please describe how to reproduce this bug."
-      value: |
-        1.
-        2.
-        3.
-        ...
-      render: bash
-    validations:
-      required: true
-
   - type: checkboxes
     id: slackterms
     attributes:
@@ -75,3 +76,11 @@ body:
       options:
         - label: I confirm there is no existing [issue](https://github.com/buildtesters/buildtest/issues) for this issue
           required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        We encourage you provide a detailed explanation of the issue including link to output, logfile, error message and screenshots in order for us troubleshoot the issue.
+        If you have a quick question please post your question in `#general` channel on [buildtest slack](https://hpcbuildtest.slack.com/) first.
+
+        Thanks for taking the time to contribute back to buildtest.
