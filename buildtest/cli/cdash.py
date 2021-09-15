@@ -161,78 +161,79 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
 
     with open(abspath_report_file) as json_file:
         buildtest_data = json.load(json_file)
-        for file_name in buildtest_data.keys():
-            for test_name, tests_data in buildtest_data[file_name].items():
-                test_data = tests_data[0]
+        for buildspec in buildtest_data.keys():
+            for test_name in buildtest_data[buildspec].keys():
+                for test_data in buildtest_data[buildspec][test_name]:
+                    # test_data = tests_data[0]
 
-                test = {}
-                test["name"] = test_name
+                    test = {}
+                    test["name"] = test_name + "/" + test_data["id"]
 
-                state = test_data["state"]
-                if state == "PASS":
-                    test["status"] = "passed"
-                elif state == "FAIL":
-                    test["status"] = "failed"
-                else:
-                    print(
-                        "Unrecognized state {0} for test {1}; marking it as failed".format(
-                            state, test_name
+                    state = test_data["state"]
+                    if state == "PASS":
+                        test["status"] = "passed"
+                    elif state == "FAIL":
+                        test["status"] = "failed"
+                    else:
+                        print(
+                            "Unrecognized state {0} for test {1}; marking it as failed".format(
+                                state, test_name
+                            )
                         )
+                        test["status"] = "failed"
+                    test["description"] = test_data["description"]
+                    test["command"] = test_data["command"]
+                    test["testpath"] = test_data["testpath"]
+                    test["test_content"] = test_data["test_content"]
+                    test["output"] = test_data["output"]
+                    test["runtime"] = test_data["runtime"]
+                    test["returncode"] = test_data["returncode"]
+                    test["full_id"] = test_data["full_id"]
+                    test["user"] = test_data["user"]
+                    test["hostname"] = test_data["hostname"]
+                    test["schemafile"] = test_data["schemafile"]
+
+                    test["tags"] = test_data["tags"]
+                    test["executor"] = test_data["executor"]
+                    test["compiler"] = test_data["compiler"]
+                    test["starttime"] = test_data["starttime"]
+                    test["endtime"] = test_data["endtime"]
+                    test["build_script"] = test_data["build_script"]
+                    test["logpath"] = test_data["logpath"]
+                    test["job"] = json.dumps(test_data["job"], indent=2, sort_keys=True)
+
+                    # extra preformatted output fields
+                    test["buildspec_content"] = test_data["buildspec_content"]
+                    test["error"] = test_data["error"]
+                    test["test_content"] = test_data["test_content"]
+                    test["buildscript_content"] = test_data["buildscript_content"]
+                    # metrics property must be converted to string inorder to push to cdash
+                    test["metrics"] = json.dumps(
+                        test_data["metrics"], indent=2, sort_keys=True
                     )
-                    test["status"] = "failed"
-                test["description"] = test_data["description"]
-                test["command"] = test_data["command"]
-                test["testpath"] = test_data["testpath"]
-                test["test_content"] = test_data["test_content"]
-                test["output"] = test_data["output"]
-                test["runtime"] = test_data["runtime"]
-                test["returncode"] = test_data["returncode"]
-                test["full_id"] = test_data["full_id"]
-                test["user"] = test_data["user"]
-                test["hostname"] = test_data["hostname"]
-                test["schemafile"] = test_data["schemafile"]
 
-                test["tags"] = test_data["tags"]
-                test["executor"] = test_data["executor"]
-                test["compiler"] = test_data["compiler"]
-                test["starttime"] = test_data["starttime"]
-                test["endtime"] = test_data["endtime"]
-                test["build_script"] = test_data["build_script"]
-                test["logpath"] = test_data["logpath"]
-                test["job"] = json.dumps(test_data["job"], indent=2, sort_keys=True)
+                    # tags == labels
+                    test["tags"] = test_data["tags"]
 
-                # extra preformatted output fields
-                test["buildspec_content"] = test_data["buildspec_content"]
-                test["error"] = test_data["error"]
-                test["test_content"] = test_data["test_content"]
-                test["buildscript_content"] = test_data["buildscript_content"]
-                # metrics property must be converted to string inorder to push to cdash
-                test["metrics"] = json.dumps(
-                    test_data["metrics"], indent=2, sort_keys=True
-                )
+                    test["testroot"] = test_data["testroot"]
+                    test["stagedir"] = test_data["stagedir"]
+                    test["outfile"] = test_data["outfile"]
+                    test["errfile"] = test_data["errfile"]
 
-                # tags == labels
-                test["tags"] = test_data["tags"]
-
-                test["testroot"] = test_data["testroot"]
-                test["stagedir"] = test_data["stagedir"]
-                test["outfile"] = test_data["outfile"]
-                test["errfile"] = test_data["errfile"]
-
-                # test start and end time.
-                starttime = test_data["starttime"]
-                test_starttime_datetime = datetime.strptime(
-                    starttime, input_datetime_format
-                )
-                endtime = test_data["endtime"]
-                test_endtime_datetime = datetime.strptime(
-                    endtime, input_datetime_format
-                )
-                if not build_starttime or build_starttime > test_starttime_datetime:
-                    build_starttime = test_starttime_datetime
-                if not build_endtime or build_endtime < test_endtime_datetime:
-                    build_endtime = test_endtime_datetime
-                tests.append(test)
+                    # test start and end time.
+                    starttime = test_data["starttime"]
+                    test_starttime_datetime = datetime.strptime(
+                        starttime, input_datetime_format
+                    )
+                    endtime = test_data["endtime"]
+                    test_endtime_datetime = datetime.strptime(
+                        endtime, input_datetime_format
+                    )
+                    if not build_starttime or build_starttime > test_starttime_datetime:
+                        build_starttime = test_starttime_datetime
+                    if not build_endtime or build_endtime < test_endtime_datetime:
+                        build_endtime = test_endtime_datetime
+                    tests.append(test)
 
     build_stamp = build_starttime.strftime(output_datetime_format)
     build_stamp += "-Experimental"
