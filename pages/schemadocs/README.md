@@ -102,8 +102,6 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-run_only.md "A set of conditions to specify when running tests") – `definitions.schema.json#/definitions/run_only`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-batch.md "The batch field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler") – `definitions.schema.json#/definitions/batch`
-
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `definitions.schema.json#/definitions/status`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`

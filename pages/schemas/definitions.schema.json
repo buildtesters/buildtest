@@ -169,69 +169,6 @@
         }
       }
     },
-    "batch": {
-      "type": "object",
-      "description": "The ``batch`` field is used to specify scheduler agnostic directives that are translated to #SBATCH or #BSUB based on your scheduler. This is an experimental feature that supports a subset of scheduler parameters.",
-      "additionalProperties": false,
-      "properties": {
-        "account": {
-          "type": "string",
-          "description": "Specify Account to charge job"
-        },
-        "begintime": {
-          "type": "string",
-          "description": "Specify begin time when job will start allocation"
-        },
-        "cpucount": {
-          "type": "string",
-          "description": "Specify number of CPU to allocate"
-        },
-        "email-address": {
-          "type": "string",
-          "description": "Email Address to notify on Job State Changes"
-        },
-        "exclusive": {
-          "type": "boolean",
-          "description": "Specify if job needs to run in exclusive mode"
-        },
-        "memory": {
-          "type": "string",
-          "description": "Specify Memory Size for Job"
-        },
-        "network": {
-          "type": "string",
-          "description": "Specify network resource requirement for job"
-        },
-        "nodecount": {
-          "type": "string",
-          "description": "Specify number of Nodes to allocate"
-        },
-        "qos": {
-          "type": "string",
-          "description": "Specify Quality of Service (QOS)"
-        },
-        "queue": {
-          "type": "string",
-          "description": "Specify Job Queue"
-        },
-        "tasks-per-core": {
-          "type": "string",
-          "description": "Request number of tasks to be invoked on each core. "
-        },
-        "tasks-per-node": {
-          "type": "string",
-          "description": "Request number of tasks to be invoked on each node. "
-        },
-        "tasks-per-socket": {
-          "type": "string",
-          "description": "Request the maximum tasks to be invoked on each socket. "
-        },
-        "timelimit": {
-          "type": "string",
-          "description": "Specify Job timelimit"
-        }
-      }
-    },
     "status": {
       "type": "object",
       "description": "The status section describes how buildtest detects PASS/FAIL on test. By default returncode 0 is a PASS and anything else is a FAIL, however buildtest can support other types of PASS/FAIL conditions.",
@@ -270,7 +207,10 @@
               "description": "Specify a maximum runtime in seconds. The test will PASS if actual runtime is less than max time"
             }
           }
-        }
+        },
+        "state": {"type": "string",
+          "description": "explicitly mark state of test regardless of status calculation",
+          "enum": ["PASS", "FAIL"]}
       }
     },
     "BB": {

@@ -22,6 +22,7 @@ The status section describes how buildtest detects PASS/FAIL on test. By default
 | [returncode](#returncode)           | Merged   | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-int_or_list.md "definitions.schema.json#/definitions/status/properties/returncode")                            |
 | [regex](#regex)                     | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-regex.md "definitions.schema.json#/definitions/status/properties/regex")                                       |
 | [runtime](#runtime)                 | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-runtime.md "definitions.schema.json#/definitions/status/properties/runtime")                 |
+| [state](#state)                     | `string` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-state.md "definitions.schema.json#/definitions/status/properties/state")                     |
 
 ## slurm_job_state
 
@@ -111,3 +112,30 @@ The runtime section will pass test based on min and max values and compare with 
 ### runtime Type
 
 `object` ([Details](definitions-definitions-status-properties-runtime.md))
+
+## state
+
+explicitly mark state of test regardless of status calculation
+
+`state`
+
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-status-properties-state.md "definitions.schema.json#/definitions/status/properties/state")
+
+### state Type
+
+`string`
+
+### state Constraints
+
+**enum**: the value of this property must be equal to one of the following values:
+
+| Value    | Explanation |
+| :------- | :---------- |
+| `"PASS"` |             |
+| `"FAIL"` |             |
