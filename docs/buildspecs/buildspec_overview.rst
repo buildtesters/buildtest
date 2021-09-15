@@ -295,6 +295,27 @@ will pass while the last two tests fail because it fails to comply with runtime 
 
 .. command-output:: buildtest report --filter buildspec=tutorials/runtime_status_test.yml --format name,id,state,runtime --latest
 
+Explicitly Declaring Status of Test
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can explicitly define status of test regardless of what buildtest does for checking status of test. This
+can be useful if you want to explicitly mark a test as **PASS** or **FAIL** regardless of how test behaves. This can be done via
+``state`` property which expects one of two types **PASS** or **FAIL**. If ``state`` property is specified, buildtest will ignore any checks
+including returncode, regex, or runtime match.
+
+In this next example we will demonstrate how one can use ``state`` property for marking test state. In this
+example we have four tests. The first test ``always_pass`` will **PASS** even though we have a non-zero returncode. The
+second test ``always_fail`` will **FAIL** even though it has a 0 returncode. The last two test demonstrate how one
+can define state regardless of what is specified for returncode match. buildtest will honor the ``state`` property even if
+their is a match on the returncode.
+
+.. literalinclude:: ../tutorials/explicit_state.yml
+   :language: yaml
+
+If we build this test, we expect buildtest to honor the value of ``state`` property
+
+.. command-output:: buildtest build -b tutorials/explicit_state.yml
+
 .. _define_tags:
 
 Defining Tags
