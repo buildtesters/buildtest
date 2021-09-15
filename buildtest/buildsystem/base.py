@@ -1042,6 +1042,11 @@ class BuilderBase(ABC):
                 self.metadata["result"]["state"] = "PASS"
             else:
                 self.metadata["result"]["state"] = "FAIL"
+
+            # if 'state' property is specified explicitly honor this value regardless of what is calculated
+            if self.status.get("state"):
+                self.metadata["result"]["state"] = self.status["state"]
+
         # Return to starting directory for next test
         os.chdir(self.pwd)
 
