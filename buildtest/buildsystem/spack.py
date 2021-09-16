@@ -116,24 +116,7 @@ class SpackBuilder(BuilderBase):
                 lines.append(f"spack install {opts}")
 
         if spack_configuration.get("test"):
-            if spack_configuration["test"].get("remove_testsuites"):
-                lines.append("spack test remove -y")
-
-            opts = spack_configuration["test"]["run"].get("option") or ""
-            for spec in spack_configuration["test"]["run"]["specs"]:
-                lines.append(f"spack test run {opts} --alias {spec} {spec}")
-
-            opts = spack_configuration["test"]["results"].get("option") or ""
-
-            # fetch results using 'spack test results <suite>'
-            if spack_configuration["test"]["results"].get("suite"):
-                for suite in spack_configuration["test"]["results"]["suite"]:
-                    lines.append(f"spack test results {opts} {suite}")
-
-            # fetch results using 'spack test results -- <spec>'
-            if spack_configuration["test"]["results"].get("specs"):
-                for spec in spack_configuration["test"]["results"]["specs"]:
-                    lines.append(f"spack test results {opts} -- {spec}")
+            lines += self._spack_test(spack_configuration)
 
         if self.recipe.get("post_cmds"):
             lines.append("\n")
@@ -141,6 +124,41 @@ class SpackBuilder(BuilderBase):
             lines += [self.recipe["post_cmds"]]
             lines.append("######## END OF POST COMMANDS   ######## ")
             lines.append("\n")
+
+        return lines
+
+    def _spack_test(self, spack_configuration):
+        """This method will return lines for generating ``spack test run`` and ``spack test results`` command for running tests via
+        spack and getting results.
+        """
+        lines = []
+        if spack_configuration["test"].get("remove_tests"):
+            lines.append("spack test remove -y")
+
+        spack_test_cmd = ["spack test run"]
+
+        if spack_configuration["test"]["run"].get("option"):
+            spack_test_cmd.append(spack_configuration["test"]["run"]["option"])
+
+        run_specs = spack_configuration["test"]["run"]["specs"]
+
+        spack_test_cmd.append(f"--alias {self.name}")
+
+        for spec in run_specs:
+            spack_test_cmd.append(spec)
+
+        lines.append(" ".join(spack_test_cmd))
+
+        opts = spack_configuration["test"]["results"].get("option") or ""
+        # fetch results using 'spack test results <suite>'
+        if spack_configuration["test"]["results"].get("suite"):
+            for suite in spack_configuration["test"]["results"]["suite"]:
+                lines.append(f"spack test results {opts} {suite}")
+
+        # fetch results using 'spack test results -- <spec>'
+        if spack_configuration["test"]["results"].get("specs"):
+            for spec in spack_configuration["test"]["results"]["specs"]:
+                lines.append(f"spack test results {opts} -- {spec}")
 
         return lines
 

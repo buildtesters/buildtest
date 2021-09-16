@@ -436,14 +436,16 @@ property. The **results** property expects one to specify the ``specs`` or ``sui
 The ``suite`` property is used to retrieve test results based on suite name, whereas ``specs`` property can be used to retrieve based
 on spec format. Both properties are a list of string types.
 
-In example below we install `bzip2` and run the test using ``spack test run bzip2``.
+In example below we install `m4` and run the test using ``spack test run m4``.
 
 .. literalinclude:: ../tutorials/spack/spack_test.yml
     :language: yaml
 
-If we look at the generated test, buildtest will automatically set ``--alias`` option to define name
-of suite, otherwise spack will generate a random text for suitename which you won't know at time
-of writing test that is required by ``spack test results`` to fetch the results.
+If we look at the generated test, buildtest will install m4 followed by running the test. The **spack test run --alias**
+option is used to reference name of suitename which can be used to reference suitename when using ``spack test results``
+to search for test results. **buildtest will create the suite name based on name of test.** If `--alias` is not specified,
+spack will generate a random text for suitename which you won't know at time of writing test that is required by
+``spack test results`` to fetch the results.
 
 .. code-block:: shell
     :emphasize-lines: 13-14
@@ -453,62 +455,62 @@ of writing test that is required by ``spack test results`` to fetch the results.
 
     ######## START OF PRE COMMANDS ########
     cd /tmp
-    git clone https://github.com/spack/spack spack
+    git clone --depth=5 https://github.com/spack/spack
 
     ######## END OF PRE COMMANDS   ########
 
 
-    source /private/tmp/spack-test-no-env/share/spack/setup-env.sh
-    spack install  bzip2
-    spack test run  --alias bzip2 bzip2
-    spack test results  bzip2
+    source /private/tmp/spack/share/spack/setup-env.sh
+    spack install  m4
+    spack test run --alias spack_test_m4 m4
+    spack test results  spack_test_m4
 
 
     ######## START OF POST COMMANDS ########
     spack find
     rm -rf $SPACK_ROOT
+
     ######## END OF POST COMMANDS   ########
 
-
-Shown below is the example output of this test.
+Shown below is the example output of this test, we can see spack has installed m4 and run the test after completion.
 
 
 .. code-block:: shell
-    :emphasize-lines: 26-29
+    :emphasize-lines: 27-30
 
-    ==> libiconv: Executing phase: 'configure'
-    ==> libiconv: Executing phase: 'build'
-    ==> libiconv: Executing phase: 'install'
-    ==> libiconv: Successfully installed libiconv-1.16-xgemfyqy3gsdz3lk7wy3ejudfaksja4x
-      Fetch: 1.54s.  Build: 33.03s.  Total: 34.57s.
-    [+] /private/tmp/spack/opt/spack/darwin-bigsur-skylake/apple-clang-11.0.3/libiconv-1.16-xgemfyqy3gsdz3lk7wy3ejudfaksja4x
-    ==> Installing diffutils-3.7-3dfrh6li733xxcenwyjhwyta7xkh3udq
-    ==> No binary for diffutils-3.7-3dfrh6li733xxcenwyjhwyta7xkh3udq found: installing from source
-    ==> Fetching https://mirror.spack.io/_source-cache/archive/b3/b3a7a6221c3dc916085f0d205abf6b8e1ba443d4dd965118da364a1dc1cb3a26.tar.xz
-    ==> No patches needed for diffutils
-    ==> diffutils: Executing phase: 'autoreconf'
-    ==> diffutils: Executing phase: 'configure'
-    ==> diffutils: Executing phase: 'build'
-    ==> diffutils: Executing phase: 'install'
-    ==> diffutils: Successfully installed diffutils-3.7-3dfrh6li733xxcenwyjhwyta7xkh3udq
-      Fetch: 1.32s.  Build: 52.35s.  Total: 53.67s.
-    [+] /private/tmp/spack/opt/spack/darwin-bigsur-skylake/apple-clang-11.0.3/diffutils-3.7-3dfrh6li733xxcenwyjhwyta7xkh3udq
-    ==> Installing bzip2-1.0.8-avjwvsoaivuflugopwk4ap7rffhejxzu
-    ==> No binary for bzip2-1.0.8-avjwvsoaivuflugopwk4ap7rffhejxzu found: installing from source
-    ==> Fetching https://mirror.spack.io/_source-cache/archive/ab/ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269.tar.gz
-    ==> Ran patch() for bzip2
-    ==> bzip2: Executing phase: 'install'
-    ==> bzip2: Successfully installed bzip2-1.0.8-avjwvsoaivuflugopwk4ap7rffhejxzu
-      Fetch: 1.42s.  Build: 1.84s.  Total: 3.26s.
-    [+] /private/tmp/spack/opt/spack/darwin-bigsur-skylake/apple-clang-11.0.3/bzip2-1.0.8-avjwvsoaivuflugopwk4ap7rffhejxzu
-    ==> Spack test bzip2
-    ==> Testing package bzip2-1.0.8-avjwvso
-    ==> Results for test suite 'bzip2':
-    ==>   bzip2-1.0.8-avjwvso PASSED
+    ==> Installing libsigsegv-2.13-r7lvpzzhczpr2bgtadetobprkgramtli
+    ==> No binary for libsigsegv-2.13-r7lvpzzhczpr2bgtadetobprkgramtli found: installing from source
+    ==> Fetching https://mirror.spack.io/_source-cache/archive/be/be78ee4176b05f7c75ff03298d84874db90f4b6c9d5503f0da1226b3a3c48119.tar.gz
+    ==> No patches needed for libsigsegv
+    ==> libsigsegv: Executing phase: 'autoreconf'
+    ==> libsigsegv: Executing phase: 'configure'
+    ==> libsigsegv: Executing phase: 'build'
+    ==> libsigsegv: Executing phase: 'install'
+    ==> libsigsegv: Successfully installed libsigsegv-2.13-r7lvpzzhczpr2bgtadetobprkgramtli
+      Fetch: 2.59s.  Build: 10.37s.  Total: 12.97s.
+    [+] /private/tmp/spack/opt/spack/darwin-bigsur-skylake/apple-clang-11.0.3/libsigsegv-2.13-r7lvpzzhczpr2bgtadetobprkgramtli
+    ==> Installing m4-1.4.19-pibdj557bvkhtlyjhm5giq4p2vt5plsw
+    ==> No binary for m4-1.4.19-pibdj557bvkhtlyjhm5giq4p2vt5plsw found: installing from source
+    ==> Fetching https://mirror.spack.io/_source-cache/archive/3b/3be4a26d825ffdfda52a56fc43246456989a3630093cced3fbddf4771ee58a70.tar.gz
+    ==> Fetching https://mirror.spack.io/_source-cache/archive/bf/bfdffa7c2eb01021d5849b36972c069693654ad826c1a20b53534009a4ec7a89
+    ==> Fetching https://mirror.spack.io/_source-cache/archive/9d/9dc5fbd0d5cb1037ab1e6d0ecc74a30df218d0a94bdd5a02759a97f62daca573
+    ==> Applied patch http://git.savannah.gnu.org/cgit/m4.git/patch/?id=a1354086
+    ==> Applied patch http://git.savannah.gnu.org/cgit/m4.git/patch/?id=cd7f4d15
+    ==> Ran patch() for m4
+    ==> m4: Executing phase: 'autoreconf'
+    ==> m4: Executing phase: 'configure'
+    ==> m4: Executing phase: 'build'
+    ==> m4: Executing phase: 'install'
+    ==> m4: Successfully installed m4-1.4.19-pibdj557bvkhtlyjhm5giq4p2vt5plsw
+      Fetch: 3.23s.  Build: 1m 50.63s.  Total: 1m 53.86s.
+    [+] /private/tmp/spack/opt/spack/darwin-bigsur-skylake/apple-clang-11.0.3/m4-1.4.19-pibdj557bvkhtlyjhm5giq4p2vt5plsw
+    ==> Spack test spack_test_m4
+    ==> Testing package m4-1.4.19-pibdj55
+    ==> Results for test suite 'spack_test_m4':
+    ==>   m4-1.4.19-pibdj55 PASSED
     -- darwin-bigsur-skylake / apple-clang@11.0.3 -------------------
-    bzip2@1.0.8
-    diffutils@3.7
-    libiconv@1.16
+    libsigsegv@2.13
+    m4@1.4.19
 
 
 We can search for test results using the spec format instead of suite name. In the ``results`` property we can
@@ -536,7 +538,7 @@ the ``option`` field specified under the ``results`` section.
 
     ######## START OF PRE COMMANDS ########
     cd /tmp
-    git clone https://github.com/spack/spack
+    git clone --depth=1 https://github.com/spack/spack
 
     ######## END OF PRE COMMANDS   ########
 
@@ -544,7 +546,7 @@ the ``option`` field specified under the ``results`` section.
     source /private/tmp/spack/share/spack/setup-env.sh
     spack install  bzip2
     spack test remove -y
-    spack test run  --alias bzip2 bzip2
+    spack test run --alias spack_test_results_specs_format bzip2
     spack test results -l -- bzip2
 
 
