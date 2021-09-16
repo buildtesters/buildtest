@@ -138,6 +138,7 @@ html_theme = "sphinx_rtd_theme"
 #
 html_theme_options = {
     "prev_next_buttons_location": "both",
+    "sticky_navigation": True,
     # 'vcs_pageview_mode': ''
 }
 

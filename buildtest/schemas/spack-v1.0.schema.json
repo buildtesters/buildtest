@@ -179,7 +179,8 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "run"
+        "run",
+        "results"
       ],
       "properties": {
         "remove_tests": {
