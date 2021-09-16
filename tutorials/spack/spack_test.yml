@@ -1,23 +1,23 @@
 version: "1.0"
 buildspecs:
-  spack_test:
+  spack_test_m4:
     type: spack
     executor: generic.local.sh
-    description: "Install bzip2 and run spack test and report results"
+    description: "Install m4 and run spack test and report results"
     tags: [spack]
     pre_cmds: |
       cd /tmp
-      git clone https://github.com/spack/spack
+      git clone --depth=5 https://github.com/spack/spack
     spack:
       root: /tmp/spack
       verify_spack: false
       install:
-        specs: ['bzip2']
+        specs: ['m4']
       test:
         run:
-          specs: ['bzip2']
+          specs: ['m4']
         results:
-          suite: ['bzip2']
+          suite: ['spack_test_m4']
 
     post_cmds: |
       spack find

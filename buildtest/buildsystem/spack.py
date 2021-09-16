@@ -132,7 +132,7 @@ class SpackBuilder(BuilderBase):
         spack and getting results.
         """
         lines = []
-        if spack_configuration["test"].get("remove_testsuites"):
+        if spack_configuration["test"].get("remove_tests"):
             lines.append("spack test remove -y")
 
         spack_test_cmd = ["spack test run"]

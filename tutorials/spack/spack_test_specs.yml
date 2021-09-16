@@ -7,7 +7,7 @@ buildspecs:
     tags: [spack]
     pre_cmds: |
       cd /tmp
-      git clone https://github.com/spack/spack
+      git clone --depth=1 https://github.com/spack/spack
     spack:
       root: /tmp/spack
       verify_spack: false
