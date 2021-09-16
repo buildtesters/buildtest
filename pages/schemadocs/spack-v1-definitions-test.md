@@ -20,7 +20,7 @@ spack-v1.0.schema.json#/definitions/test
 | :---------------------------- | :-------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [remove_tests](#remove_tests) | `boolean` | Optional | cannot be null | [spack schema version 1.0](spack-v1-definitions-test-properties-remove_tests.md "spack-v1.0.schema.json#/definitions/test/properties/remove_tests") |
 | [run](#run)                   | `object`  | Required | cannot be null | [spack schema version 1.0](spack-v1-definitions-test-properties-run.md "spack-v1.0.schema.json#/definitions/test/properties/run")                   |
-| [results](#results)           | Merged    | Optional | cannot be null | [spack schema version 1.0](spack-v1-definitions-test-properties-results.md "spack-v1.0.schema.json#/definitions/test/properties/results")           |
+| [results](#results)           | Merged    | Required | cannot be null | [spack schema version 1.0](spack-v1-definitions-test-properties-results.md "spack-v1.0.schema.json#/definitions/test/properties/results")           |
 
 ## remove_tests
 
@@ -64,7 +64,7 @@ View test results via `spack test results` after running tests via `spack test r
 
 `results`
 
-*   is optional
+*   is required
 
 *   Type: `object` ([Details](spack-v1-definitions-test-properties-results.md))
 
