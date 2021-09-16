@@ -138,7 +138,7 @@ class SpackBuilder(BuilderBase):
         spack_test_cmd = ["spack test run"]
 
         if spack_configuration["test"]["run"].get("option"):
-            spack_test_cmd.append(opts)
+            spack_test_cmd.append(spack_configuration["test"]["run"]["option"])
 
         run_specs = spack_configuration["test"]["run"]["specs"]
 
