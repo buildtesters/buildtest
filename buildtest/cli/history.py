@@ -4,8 +4,10 @@ import os
 import re
 import sys
 
-from buildtest.defaults import BUILD_HISTORY_DIR
+from buildtest.defaults import BUILD_HISTORY_DIR, console
 from buildtest.utils.file import is_dir, load_json, walk_tree
+from rich.pretty import pprint
+from rich.table import Column, Table
 from tabulate import tabulate
 
 logger = logging.getLogger(__name__)
@@ -126,7 +128,53 @@ def list_builds(header=None, terse=None):
             )
         return
 
-    print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+    history_table = Table(
+        "[blue]id",
+        "[blue]hostname",
+        "[blue]user",
+        "[blue]system",
+        "[blue]date",
+        "[blue]Pass Tests",
+        "[blue]Fail Tests",
+        "[blue]Total Tests",
+        Column("[blue]command", overflow="fold"),
+        title="Build History Details",
+        show_lines=True,
+    )
+
+    for (
+        build_id,
+        hostname,
+        user,
+        system,
+        date,
+        pass_test,
+        fail_tests,
+        total_tests,
+        command,
+    ) in zip(
+        table["id"],
+        table["hostname"],
+        table["user"],
+        table["system"],
+        table["date"],
+        table["pass_tests"],
+        table["fail_tests"],
+        table["total_tests"],
+        table["command"],
+    ):
+        history_table.add_row(
+            build_id,
+            hostname,
+            user,
+            system,
+            date,
+            pass_test,
+            fail_tests,
+            total_tests,
+            command,
+        )
+    console.print(history_table)
 
 
 def query_builds(build_id, log_option):
@@ -157,4 +205,6 @@ def query_builds(build_id, log_option):
         os.system(f"vim {content['logpath']}")
         return
 
-    print(json.dumps(content, indent=2))
+    # print(json.dumps(content, indent=2))
+
+    pprint(content)
