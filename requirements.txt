@@ -6,3 +6,4 @@ PyYAML>=5.2
 requests
 tabulate
 termcolor
+rich

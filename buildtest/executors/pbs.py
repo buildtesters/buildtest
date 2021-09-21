@@ -4,6 +4,7 @@ import json
 import logging
 import os
 
+from buildtest.defaults import console
 from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
@@ -102,8 +103,8 @@ class PBSExecutor(BaseExecutor):
         # store job id
         builder.metadata["jobid"] = builder.job.get()
 
-        msg = f"[{builder.metadata['name']}] JobID: {builder.metadata['jobid']} dispatched to scheduler"
-        print(msg)
+        msg = f"[blue]{self}[/]: JobID: {builder.metadata['jobid']} dispatched to scheduler"
+        console.print(msg)
         self.logger.debug(msg)
 
         return builder
@@ -135,13 +136,8 @@ class PBSExecutor(BaseExecutor):
             if int(builder.timer.duration()) > self.max_pend_time:
                 builder.job.cancel()
                 builder.failure()
-                print(
-                    "{}: Cancelling Job: {} because job exceeds max pend time: {} sec with current pend time of {} ".format(
-                        builder,
-                        builder.job.get(),
-                        self.max_pend_time,
-                        builder.timer.duration(),
-                    )
+                console.print(
+                    f"[blue]{builder}[/]: Cancelling Job: {builder.job.get()} because job exceeds max pend time: {self.max_pend_time} sec with current pend time of {builder.timer.duration()} "
                 )
 
         builder.start()
@@ -162,7 +158,7 @@ class PBSExecutor(BaseExecutor):
         builder.metadata["outfile"] = builder.job.output_file()
         builder.metadata["errfile"] = builder.job.error_file()
 
-        print(f"{builder}: Job {builder.job.get()} is complete! ")
+        console.print(f"[blue]{builder}[/]: Job {builder.job.get()} is complete! ")
 
         builder.post_run_steps()
 

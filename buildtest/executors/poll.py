@@ -1,6 +1,8 @@
 import os
 import time
 
+from buildtest.defaults import console
+from rich.table import Table
 from tabulate import tabulate
 from termcolor import colored
 
@@ -31,7 +33,7 @@ class PollQueue:
         time.sleep(self.interval)
 
     def poll(self):
-        """Poll all pending jobs until all jobs are complete. At each poll interval, we poll each builder
+        """Poll all until all jobs are complete. At each poll interval, we poll each builder
         job state. If job is complete or failed we remove job from pending queue. In each interval we sleep
         and poll jobs until there is no pending jobs."""
         while self._pending:
@@ -72,6 +74,24 @@ class PollQueue:
 
     def print_pending_jobs(self):
         """Print pending jobs in table format during each poll step"""
+        table = Table(
+            "[blue]Builder",
+            "[blue]executor",
+            "[blue]JobID",
+            "[blue]JobState",
+            "[blue]runtime",
+            title="Pending Jobs",
+        )
+        for builder in self._pending:
+            table.add_row(
+                str(builder),
+                builder.executor,
+                builder.job.get(),
+                builder.job.state(),
+                str(builder.timer.duration()),
+            )
+        console.print(table)
+        """
         pending_jobs_table = {
             "name": [],
             "id": [],
@@ -104,12 +124,31 @@ class PollQueue:
                     tablefmt="pretty",
                 )
             )
+            """
 
     def print_polled_jobs(self):
 
         if not self._completed:
             return
 
+        table = Table(
+            "[blue]Builder",
+            "[blue]executor",
+            "[blue]JobID",
+            "[blue]JobState",
+            "[blue]runtime",
+            title="Completed Jobs",
+        )
+        for builder in self._completed:
+            table.add_row(
+                str(builder),
+                builder.executor,
+                builder.job.get(),
+                builder.job.state(),
+                str(builder.metadata["result"]["runtime"]),
+            )
+        console.print(table)
+        """
         table = {
             "name": [],
             "id": [],
@@ -121,11 +160,7 @@ class PollQueue:
             "runtime": [],
         }
 
-        msg = """
-+-----------------------+
-| Completed Polled Jobs |
-+-----------------------+ 
-                """
+        
         if os.getenv("BUILDTEST_COLOR") == "True":
             msg = colored(msg, "red", attrs=["bold"])
 
@@ -146,3 +181,4 @@ class PollQueue:
             headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
 
         print(tabulate(table, headers=headers, tablefmt="presto"))
+        """

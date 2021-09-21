@@ -9,6 +9,7 @@ import logging
 import os
 import re
 
+from buildtest.defaults import console
 from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
@@ -121,9 +122,9 @@ class LSFExecutor(BaseExecutor):
 
         builder.metadata["jobid"] = job_id
 
-        msg = f"[{builder.metadata['name']}] JobID: {builder.metadata['jobid']} dispatched to scheduler"
+        msg = f"[blue]{builder}[/]: JobID: {builder.metadata['jobid']} dispatched to scheduler"
         self.logger.debug(msg)
-        print(msg)
+        console.print(msg)
 
         return builder
 
@@ -153,14 +154,10 @@ class LSFExecutor(BaseExecutor):
             if int(builder.timer.duration()) > self.max_pend_time:
                 builder.job.cancel()
                 builder.failure()
-                print(
-                    "{}: Cancelling Job: {} because job exceeds max pend time: {} sec with current pend time of {} ".format(
-                        builder,
-                        builder.job.get(),
-                        self.max_pend_time,
-                        builder.timer.duration(),
-                    )
+                console.print(
+                    f"[blue]{builder}[/]: Cancelling Job: {builder.job.get()} because job exceeds max pend time: {self.max_pend_time} sec with current pend time of {builder.timer.duration()} "
                 )
+
         builder.start()
 
     def gather(self, builder):
@@ -186,7 +183,7 @@ class LSFExecutor(BaseExecutor):
         builder.metadata["errfile"] = os.path.join(
             builder.stage_dir, builder.job.error_file()
         )
-        print(f"{builder}: Job {builder.job.get()} is complete! ")
+        console.print(f"[blue]{builder}[/]: Job {builder.job.get()} is complete! ")
         builder.post_run_steps()
 
 

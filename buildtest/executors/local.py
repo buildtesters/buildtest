@@ -8,6 +8,7 @@ import os
 import shutil
 import sys
 
+from buildtest.defaults import console
 from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.file import write_file
@@ -81,7 +82,9 @@ class LocalExecutor(BaseExecutor):
             f"Return code: {command.returncode()} for test: {builder.metadata['testpath']}"
         )
         builder.metadata["result"]["returncode"] = command.returncode()
-        print(f"{builder}: completed with returncode: {command.returncode()}")
+        console.print(
+            f"[blue]{builder}[/]: completed with returncode: {command.returncode()}"
+        )
 
         out = "".join(out)
         err = "".join(err)

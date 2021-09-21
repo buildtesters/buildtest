@@ -20,6 +20,7 @@ from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
     BUILDTEST_DEFAULT_TESTDIR,
     BUILDTEST_REPORT_SUMMARY,
+    console,
 )
 from buildtest.exceptions import BuildspecError, BuildTestError
 from buildtest.executors.poll import PollQueue
@@ -36,6 +37,9 @@ from buildtest.utils.file import (
 )
 from buildtest.utils.tools import Hasher, deep_get
 from jsonschema.exceptions import ValidationError
+from rich import box
+from rich.pretty import pprint
+from rich.table import Table
 from tabulate import tabulate
 from termcolor import colored
 
@@ -187,26 +191,40 @@ def print_discovered_buildspecs(buildspec_dict):
         buildspec_dict (dict): A dictionary containing a list of included and excluded buildspecs and breakdown of buildspecs by tags and executors
     """
 
-    msg = """
-+-------------------------------+
-| Stage: Discovering Buildspecs |
-+-------------------------------+ 
-"""
-    if os.getenv("BUILDTEST_COLOR") == "True":
-        msg = colored(msg, "red", attrs=["bold"])
+    console.rule("[bold red] Discovering Buildspecs")
 
-    print(msg)
+    print("Discovered Buildspecs: ", len(buildspec_dict["included"]))
+    print("Excluded Buildspecs: ", len(buildspec_dict["excluded"]))
+    print("Detected Buildspecs after exclusion: ", len(buildspec_dict["detected"]))
 
+    table = Table(
+        "[blue]Buildspecs", title="Discovered buildspecs", box=box.DOUBLE_EDGE
+    )
+
+    for i in buildspec_dict["included"]:
+        table.add_row(f"[red]{i}")
+    console.print(table)
+
+    """
     table = [[i] for i in buildspec_dict["included"]]
     headers = "Discovered Buildspecs"
-
+    
     if os.getenv("BUILDTEST_COLOR") == "True":
         headers = colored(headers, "blue", attrs=["bold"])
 
     print(tabulate(table, headers=[headers], tablefmt="grid"))
+    """
 
     # if any buildspecs removed due to -x option we print them to screen
     if buildspec_dict["excluded"]:
+
+        table = Table(
+            "[blue]Buildspecs", title="Excluded buildspecs", box=box.DOUBLE_EDGE
+        )
+        for i in buildspec_dict["excluded"]:
+            table.add_row(f"[red]{i}")
+        console.print(table)
+        """
         table = [[i] for i in buildspec_dict["excluded"]]
         headers = "Excluded Buildspecs"
 
@@ -214,13 +232,21 @@ def print_discovered_buildspecs(buildspec_dict):
             headers = colored(headers, "blue", attrs=["bold"])
 
         print(tabulate(table, headers=[headers], tablefmt="grid"))
-
-    print("Discovered Buildspecs: ", len(buildspec_dict["included"]))
-    print("Excluded Buildspecs: ", len(buildspec_dict["excluded"]))
-    print("Detected Buildspecs after exclusion: ", len(buildspec_dict["detected"]))
+        """
 
     # print breakdown of buildspecs by tags
     if buildspec_dict.get("tags"):
+
+        for tagname in buildspec_dict["tags"].keys():
+            table = Table(
+                "[blue]Buildspecs",
+                title=f"Buildspecs By Tag={tagname}",
+                box=box.DOUBLE_EDGE,
+            )
+            for row in buildspec_dict["tags"][tagname]:
+                table.add_row(f"[red] {row}")
+            console.print(table)
+        """
         print("\nBREAKDOWN OF BUILDSPECS BY TAGS")
         print("----------------------------------")
 
@@ -236,22 +262,20 @@ def print_discovered_buildspecs(buildspec_dict):
 
             print(tabulate(rows, headers=[headers], tablefmt="grid"))
             print("\n")
-
+        """
     # print breakdown of buildspecs by executors
     if buildspec_dict.get("executors"):
-        print("\nBREAKDOWN OF BUILDSPECS BY EXECUTORS")
-        print("--------------------------------------")
-
-        print(f"Detected Executor Names: {list(buildspec_dict['executors'].keys())}")
 
         for executorname in buildspec_dict["executors"].keys():
-            headers = executorname
-            if os.getenv("BUILDTEST_COLOR") == "True":
-                headers = colored(headers, "blue", attrs=["bold"])
+            table = Table(
+                "[blue]Buildspecs",
+                title=f"Buildspecs by Executor={executorname}",
+                box=box.DOUBLE_EDGE,
+            )
 
-            rows = [[i] for i in buildspec_dict["executors"][executorname]]
-            print(tabulate(rows, headers=[headers], tablefmt="grid"))
-            print("\n")
+            for row in buildspec_dict["executors"][executorname]:
+                table.add_row(f"[red]{row}")
+            console.print(table)
 
 
 def discover_buildspecs_by_tags(tagnames):
@@ -429,28 +453,11 @@ def print_filters():
     running ``buildtest build --helpfilter``.
     """
 
-    headers = ["Field", "Description"]
-    format_fields = [
-        ["tags", "Filter tests by 'tag' field"],
-        ["type", "Filter test by 'type' field"],
-        ["maintainers", "Filter test by 'maintainers' field"],
-    ]
-
-    if os.getenv("BUILDTEST_COLOR") != "True":
-        print(tabulate(format_fields, headers=headers, tablefmt="simple"))
-        return
-
-    table = []
-    for row in format_fields:
-        table.append([colored(row[0], "green", attrs=["bold"]), colored(row[1], "red")])
-
-    print(
-        tabulate(
-            table,
-            headers=[colored(field, "blue", attrs=["bold"]) for field in headers],
-            tablefmt="simple",
-        )
-    )
+    table = Table("[blue]Field", "[blue]Description", title="Buildtest Filters")
+    table.add_row("[green]tags", "[red]Filter tests by 'tag' field")
+    table.add_row("[green]type", "[red]Filter test by 'type' field")
+    table.add_row("[green]maintainers", "[red]Filter test by 'maintainers' field")
+    console.print(table)
 
 
 class BuildTest:
@@ -581,17 +588,34 @@ class BuildTest:
         if self.filter_buildspecs:
             self._validate_filters()
 
-        print("User: ", self.system.system["user"])
-        print("Hostname: ", self.system.system["host"])
-        print("Platform: ", self.system.system["platform"])
-        print("Current Time: ", datetime.now().strftime("%Y/%m/%d %X"))
-        print("buildtest path:", shutil.which("buildtest"))
-        print("buildtest version: ", BUILDTEST_VERSION)
-        print("python path:", self.system.system["python"])
-        print("python version: ", self.system.system["pyver"])
-        print("Test Directory: ", self.testdir)
-        print("Configuration File: ", self.configuration.file)
-        print("Command:", " ".join(sys.argv))
+        console.print(f"User: [cyan]{self.system.system['user']}[/]", style="magenta")
+        console.print(
+            f"Hostname: [cyan]{self.system.system['host']}[/]", style="magenta"
+        )
+        console.print(
+            f"Platform: [cyan]{self.system.system['platform']}[/]", style="magenta"
+        )
+        console.print(
+            f"Current Time: [cyan]{datetime.now().strftime('%Y/%m/%d %X')}[/]",
+            style="magenta",
+        )
+        console.print(
+            f"buildtest path: [cyan]{shutil.which('buildtest')}[/]", style="magenta"
+        )
+        console.print(
+            f"buildtest version: [cyan]{BUILDTEST_VERSION}[/]", style="magenta"
+        )
+        console.print(
+            f"python path: [cyan]{self.system.system['python']}[/]", style="magenta"
+        )
+        console.print(
+            f"python version: [cyan]{self.system.system['pyver']}[/]", style="magenta"
+        )
+        console.print(f"Test Directory: [cyan]{self.testdir}[/]", style="magenta")
+        console.print(
+            f"Configuration File: [cyan]{self.configuration.file}[/]", style="magenta"
+        )
+        console.print(f"Command: [cyan]{' '.join(sys.argv)}[/]", style="magenta")
 
     def _validate_filters(self):
         """Check filter fields provided by ``buildtest build --filter`` are valid types and supported. Currently
@@ -688,16 +712,7 @@ class BuildTest:
             SystemExit: If no builders are created after parsing buildspecs
         """
 
-        msg = """
-+---------------------------+
-| Stage: Parsing Buildspecs |
-+---------------------------+ 
-"""
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            msg = colored(msg, "red", attrs=["bold"])
-
-        print(msg)
-
+        console.rule("[bold red]Parsing Buildspecs")
         self.builders = []
 
         self.invalid_buildspecs = []
@@ -736,29 +751,27 @@ class BuildTest:
 
             self.builders += builder.get_builders()
 
-        print("Valid Buildspecs: ", len(valid_buildspecs))
-        print("Invalid Buildspecs: ", len(self.invalid_buildspecs))
+        console.print(f"Valid Buildspecs: [green]{len(valid_buildspecs)}")
+        console.print(f"Invalid Buildspecs: [red]{len(self.invalid_buildspecs)}")
 
         for buildspec in valid_buildspecs:
 
-            msg = f"{buildspec}: VALID"
-            if os.getenv("BUILDTEST_COLOR") == "True":
-                msg = colored(msg, "green")
-            print(msg)
+            msg = f"[green]{buildspec}: VALID"
+            console.print(msg)
 
         # print any skipped buildspecs if they failed to validate during build stage
         if len(self.invalid_buildspecs) > 0:
             for buildspec in self.invalid_buildspecs:
-                msg = f"{buildspec}: INVALID"
-                if os.getenv("BUILDTEST_COLOR") == "True":
-                    msg = colored(msg, "red")
-                print(msg)
+
+                msg = f"[red]{buildspec}: INVALID"
+                console.print(msg)
 
         if len(filtered_buildspecs) > 0:
-            print("\nBuildspecs that were filtered out")
-            print("{:_<80}".format(""))
+            table = Table("[blue]Buildspecs", title="Buildspecs Filtered out")
+
             for test in filtered_buildspecs:
-                print(test)
+                table.add_row(f"[red]{test}")
+            console.print(table)
 
         # if no builders found we return from this method
         if not self.builders:
@@ -769,23 +782,27 @@ class BuildTest:
         description = list(map(lambda x: x.recipe.get("description"), self.builders))
         buildspecs = list(map(lambda x: x.buildspec, self.builders))
 
-        # print("\n\n")
-
         print("\n")
         print("Total builder objects created:", len(self.builders))
-        print("builders:", self.builders)
+        pprint(f"builders: {self.builders}", expand_all=True)
         print("\n")
-        headers = ["name", "id", "description", "buildspecs"]
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
 
-        print(
-            tabulate(
-                zip(testnames, uid, description, buildspecs),
-                headers=headers,
-                tablefmt="simple",
+        table = Table(title="Builder Details", show_lines=True)
+        table.add_column("[blue]name", style="blue")
+        table.add_column("[blue]id", style="blue")
+        table.add_column("[blue]description", style="blue")
+        table.add_column("[blue]buildspecs", style="blue", overflow="fold")
+
+        for test_entry, uid_entry, desc_entry, bp_entry in zip(
+            testnames, uid, description, buildspecs
+        ):
+            table.add_row(
+                f"[red]{test_entry}",
+                f"[purple]{uid_entry}",
+                f"[turquoise4]{desc_entry}",
+                f"[yellow]{bp_entry}",
             )
-        )
+        console.print(table)
 
     def build_phase(self):
         """This method will build all tests by invoking class method ``build`` for
@@ -797,25 +814,19 @@ class BuildTest:
         """
 
         invalid_builders = []
-        msg = """
-+----------------------+
-| Stage: Building Test |
-+----------------------+ 
-"""
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            msg = colored(msg, "red", attrs=["bold"])
+        console.rule("Building Test")
 
-        print(msg)
-
+        """
         table = Hasher()
-
+        
         for field in ["name", "id", "type", "executor", "tags", "testpath"]:
             table["script"][field] = []
             table["spack"][field] = []
 
         for field in ["name", "id", "type", "executor", "tags", "compiler", "testpath"]:
             table["compiler"][field] = []
-
+        """
+        valid_builders = []
         for builder in self.builders:
             try:
                 builder.build()
@@ -825,6 +836,8 @@ class BuildTest:
                 logger.error(err)
                 continue
 
+            valid_builders.append(builder)
+            """
             table[builder.type]["name"].append(builder.metadata["name"])
             table[builder.type]["id"].append(builder.metadata["id"])
             table[builder.type]["type"].append(builder.recipe["type"])
@@ -834,11 +847,11 @@ class BuildTest:
 
             if builder.type == "compiler":
                 table[builder.type]["compiler"].append(builder.compiler)
-
+            """
             # set retry limit for each builder
             builder.retry(self.retry)
 
-        self._print_build_phase(invalid_builders, table)
+        self._print_build_phase(invalid_builders, valid_builders)
 
         # remove builders if any invalid builders detected in build phase
         if invalid_builders:
@@ -867,15 +880,7 @@ class BuildTest:
             A list of valid builders after running tests
         """
 
-        msg = """
-+---------------------+
-| Stage: Running Test |
-+---------------------+ 
-"""
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            msg = colored(msg, "red", attrs=["bold"])
-
-        print(msg)
+        console.rule("Running Tests")
 
         self.buildexecutor.load_builders(self.builders)
         builders = self.buildexecutor.run()
@@ -953,7 +958,7 @@ class BuildTest:
 
         return builders
 
-    def _print_build_phase(self, invalid_builders, table):
+    def _print_build_phase(self, invalid_builders, valid_builders):
         """print build phase table
 
         Args:
@@ -968,6 +973,25 @@ class BuildTest:
             for test in invalid_builders:
                 print(test)
 
+        table = Table(title="Building Tests", show_lines=True)
+        table.add_column("[blue]Builder")
+        table.add_column("[blue]type")
+        table.add_column("[blue]executor")
+        table.add_column("[blue]tags")
+
+        for builder in valid_builders:
+            tags = builder.recipe.get("tags") or ""
+            if isinstance(tags, list):
+                tags = " ".join(tags)
+            table.add_row(
+                f"[red]{str(builder)}",
+                f"[magenta]{builder.recipe['type']}",
+                f"[cyan]{builder.executor}",
+                f"[green]{tags}",
+            )
+        console.print(table)
+
+        """
         # if we have any tests using 'script' schema we print all tests together since table columns are different
         if len(table["script"]["name"]) > 0:
 
@@ -1027,6 +1051,7 @@ class BuildTest:
                     tablefmt="presto",
                 )
             )
+        """
 
     def _print_run_phase(self, builders):
         """Print run phase table
@@ -1034,31 +1059,27 @@ class BuildTest:
         Args:
             builders (list): List of builders to print in run phase
         """
-
-        table = {
-            "name": [],
-            "id": [],
-            "executor": [],
-            "status": [],
-            "returncode": [],
-            "runtime": [],
-        }
+        table = Table(
+            "[blue]builder",
+            "[blue]executor",
+            "[blue]status",
+            "[blue]returncode",
+            "[blue]runtime",
+            title="Running Tests",
+            show_lines=True,
+        )
 
         for builder in builders:
-            # valid_builders.append(builder)
-            table["name"].append(builder.name)
-            table["id"].append(builder.metadata["id"])
-            table["executor"].append(builder.executor)
-            table["status"].append(builder.metadata["result"]["state"])
-            table["returncode"].append(builder.metadata["result"]["returncode"])
-            table["runtime"].append(builder.metadata["result"]["runtime"])
+            table.add_row(
+                f"{builder}",
+                f"{builder.metadata['id']}",
+                f"{builder.executor}",
+                f"{builder.metadata['result']['state']}",
+                f"{builder.metadata['result']['returncode']}",
+                f"{builder.metadata['result']['runtime']}",
+            )
 
-        headers = table.keys()
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
-
-        print("\n")
-        print(tabulate(table, headers=headers, tablefmt="presto"))
+        console.print(table)
 
     def _print_test_summary(self, builders):
         """Print a summary of total pass and fail test with percentage breakdown.
@@ -1067,16 +1088,15 @@ class BuildTest:
             builders (list): List of builders that ran to completion
         """
 
-        msg = """
-+----------------------+
-| Stage: Test Summary  |
-+----------------------+ 
-    """
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            msg = colored(msg, "red", attrs=["bold"])
+        table = Table(title="Test Summary", show_lines=True)
+        table.add_column("[blue]Builder", overflow="fold")
+        table.add_column("[blue]executor")
+        table.add_column("[blue]status")
+        table.add_column("[blue]Checks (ReturnCode, Regex, Runtime)", overflow="fold")
+        table.add_column("[blue]ReturnCode")
+        table.add_column("[blue]Runtime")
 
-        print(msg)
-
+        """
         table = {
             "name": [],
             "id": [],
@@ -1088,33 +1108,31 @@ class BuildTest:
             "returncode": [],
             "runtime": [],
         }
+        """
+
         passed_tests = 0
         failed_tests = 0
         total_tests = 0
         for builder in builders:
             if builder.metadata["result"]["state"] == "PASS":
                 passed_tests += 1
+                color_row = "green"
             else:
                 failed_tests += 1
+                color_row = "red"
 
-            table["name"].append(builder.name)
-            table["id"].append(builder.metadata["id"])
-            table["executor"].append(builder.executor)
-            table["status"].append(builder.metadata["result"]["state"])
-            table["returncode_match"].append(builder.metadata["check"]["returncode"])
-            table["regex_match"].append(builder.metadata["check"]["regex"])
-            table["runtime_match"].append(builder.metadata["check"]["runtime"])
-
-            table["returncode"].append(builder.metadata["result"]["returncode"])
-            table["runtime"].append(builder.metadata["result"]["runtime"])
+            table.add_row(
+                f"[{color_row}]{builder}",
+                f"[{color_row}]{builder.executor}",
+                f"[{color_row}]{builder.metadata['result']['state']}",
+                f"[{color_row}]{builder.metadata['check']['returncode']} [{color_row}]{builder.metadata['check']['regex']} [{color_row}]{builder.metadata['check']['runtime']}",
+                f"[{color_row}]{builder.metadata['result']['returncode']}",
+                f"[{color_row}]{builder.metadata['result']['runtime']}",
+            )
 
             total_tests += 1
 
-        headers = table.keys()
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
-
-        print(tabulate(table, headers=headers, tablefmt="presto"))
+        console.print(table)
         print("\n\n")
 
         pass_rate = passed_tests * 100 / total_tests
@@ -1122,14 +1140,16 @@ class BuildTest:
         fail_rate = failed_tests * 100 / total_tests
         fail_rate = format(fail_rate, ".3f")
 
-        msg1 = f"Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate}%"
-        msg2 = f"Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate}%"
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            msg1 = colored(msg1, "green")
-            msg2 = colored(msg2, "red")
+        msg1 = f"[green]Passed Tests: {passed_tests}/{total_tests} Percentage: {pass_rate}%"
+        msg2 = (
+            f"[red]Failed Tests: {failed_tests}/{total_tests} Percentage: {fail_rate}%"
+        )
+        # if os.getenv("BUILDTEST_COLOR") == "True":
+        #    msg1 = colored(msg1, "green")
+        #    msg2 = colored(msg2, "red")
 
-        print(msg1)
-        print(msg2)
+        console.print(msg1)
+        console.print(msg2)
         print("\n")
 
         self.test_summary = {

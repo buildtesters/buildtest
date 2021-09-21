@@ -10,7 +10,7 @@ import multiprocessing as mp
 import os
 
 from buildtest.buildsystem.base import BuilderBase
-from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
+from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
 from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.cobalt import CobaltExecutor
@@ -201,10 +201,10 @@ class BuildExecutor:
 
         for builder in self.builders:
             print("{:_<30}".format(""))
-            print("Launching test:", builder.name)
-            print("Test ID:", builder.test_uid)
-            print("Executor Name:", builder.executor)
-            print("Running Test: ", builder.build_script)
+            console.print(f"Launching test: [blue]{builder}[/]")
+            console.print(
+                f"[blue]{builder}[/]: Running Test script [cyan]{builder.metadata['build_script']}"
+            )
 
             executor = self._choose_executor(builder)
             if executor.type == "local":

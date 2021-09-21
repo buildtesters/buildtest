@@ -91,7 +91,7 @@ Slack:                   http://hpcbuildtest.slack.com/
 Please report issues at https://github.com/buildtesters/buildtest/issues
 
 {BUILDTEST_COPYRIGHT}
-    """
+"""
 
     parser = argparse.ArgumentParser(
         prog="buildtest",

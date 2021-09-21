@@ -22,7 +22,7 @@ from buildtest.buildsystem.batch import (
     PBSBatchScript,
     SlurmBatchScript,
 )
-from buildtest.defaults import BUILDTEST_EXECUTOR_DIR
+from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
 from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.job import Job
 from buildtest.schemas.defaults import schema_table
@@ -554,6 +554,7 @@ class BuilderBase(ABC):
         self.logger.debug(f"Copying build script to: {dest}")
 
         self.build_script = dest
+        self.metadata["build_script"] = self.build_script
 
         self.runcmd = self.run_command()
         self.metadata["command"] = self.runcmd
@@ -869,8 +870,12 @@ class BuilderBase(ABC):
         self.copy_stage_files()
 
         # need these lines after self.copy_stage_files()
-        print(f"{self}: Writing output file: {self.metadata['outfile']}")
-        print(f"{self}: Writing error file: {self.metadata['errfile']}")
+        console.print(
+            f"[blue]{self}[/]: Writing output file -  [green1]{self.metadata['outfile']}"
+        )
+        console.print(
+            f"[blue]{self}[/]: Writing error file - [red3]{self.metadata['errfile']}"
+        )
 
         self.check_test_state()
 
@@ -918,13 +923,17 @@ class BuilderBase(ABC):
 
         regex = re.search(self.status["regex"]["exp"], content)
 
-        print(
-            f"{self}: performing regular expression - '{self.status['regex']['exp']}' on file: {file_stream} with regular expression  "
+        console.print(
+            f"[blue]{self}[/]: performing regular expression - '{self.status['regex']['exp']}' on file: {file_stream}"
         )
         if regex:
-            print(f"{self}: Regular Expression Match - Success!")
+            console.print(
+                f"[blue]{self}[/]: Regular Expression Match - [green]Success![/]"
+            )
         else:
-            print(f"{self}: Regular Expression Match - Failed!")
+            console.print(
+                f"[blue]{self}[/]: Regular Expression Match - [red]Failed![/]"
+            )
 
         # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
         return regex is not None
@@ -956,8 +965,8 @@ class BuilderBase(ABC):
             returncode_match = (
                 self.metadata["result"]["returncode"] in buildspec_returncode
             )
-            print(
-                f"{self}: Checking returncode - {self.metadata['result']['returncode']} is matched in list {buildspec_returncode}"
+            console.print(
+                f"[blue]{self}[/]: Checking returncode - {self.metadata['result']['returncode']} is matched in list {buildspec_returncode}"
             )
 
         return returncode_match
