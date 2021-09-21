@@ -2,11 +2,11 @@ import logging
 import os
 import sys
 
-from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORT_SUMMARY
+from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORT_SUMMARY, console
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, read_file, resolve_path
-from tabulate import tabulate
-from termcolor import colored
+from rich import inspect
+from rich.table import Table
 
 logger = logging.getLogger(__name__)
 
@@ -25,31 +25,41 @@ def is_int(val):
 
 class Report:
     # list of format fields
-    format_fields = [
-        "buildspec",
-        "command",
-        "compiler",
-        "endtime",
-        "errfile",
-        "executor",
-        "full_id",
-        "hostname",
-        "id",
-        "name",
-        "metrics",
-        "outfile",
-        "runtime",
-        "returncode",
-        "schemafile",
-        "starttime",
-        "state",
-        "tags",
-        "testroot",
-        "testpath",
-        "user",
-    ]
+    format_field_description = {
+        "buildspec": "Buildspec File",
+        "command": "Command executed",
+        "compiler": "Retrieve compiler used for test (applicable for compiler schema)",
+        "endtime": "End Time for test",
+        "errfile": "Error File",
+        "executor": "Name of executor used for running test",
+        "hostname": "Hostname of machine where job was submitted from",
+        "full_id": "Fully qualified build identifier",
+        "id": "Unique build identifier",
+        "metrics": "List all metrics for test",
+        "name": "Name of test",
+        "outfile": "Output file",
+        "returncode": "Return Code",
+        "runtime": "Total runtime in seconds",
+        "schemafile": "Schema file used for validating test",
+        "starttime": "Start time of test",
+        "state": "State of test (PASS/FAIL)",
+        "tags": "Tag name",
+        "testroot": "Root of test directory",
+        "testpath": "Path to test",
+        "user": "User who ran the test",
+    }
+    filter_field_description = {
+        "buildspec": {"description": "Filter by buildspec file", "type": "FILE"},
+        "name": {"description": "Filter by test name", "type": "STRING"},
+        "executor": {"description": "Filter by executor name", "type": "STRING"},
+        "returncode": {"description": "Filter tests by returncode", "type": "INT"},
+        "state": {"description": "Filter by test state", "type": "PASS/FAIL"},
+        "tags": {"description": "Filter tests by tag name", "type": "STRING"},
+    }
+
+    format_fields = format_field_description.keys()
     # list of filter fields
-    filter_fields = ["buildspec", "name", "executor", "state", "tags", "returncode"]
+    filter_fields = filter_field_description.keys()
 
     # default table format fields
     display_table = {
@@ -381,92 +391,31 @@ class Report:
 
     def print_format_fields(self):
         """Displays list of format field which implements command ``buildtest report --helpformat``"""
+        table = Table("[blue]Field", "[blue]Description", title="Format Fields")
+        for field, description in self.format_field_description.items():
+            table.add_row(f"[red]{field}", f"[green]{description}")
 
-        format_table = [
-            ["buildspec", "Buildspec file"],
-            ["command", "Command executed"],
-            [
-                "compiler",
-                "Retrieve compiler used for test (applicable for compiler schema)",
-            ],
-            ["endtime", "End Time for Test in date format"],
-            ["errfile", "Error File"],
-            ["executor", "Executor name"],
-            ["hostname", "Retrieve hostname of machine where job was submitted from"],
-            ["full_id", "Full qualified unique build identifier"],
-            ["id", "Unique Build Identifier (abbreviated)"],
-            ["metrics", "List all metrics if applicable"],
-            ["name", "Name of test defined in buildspec"],
-            ["outfile", "Output file"],
-            ["returncode", "Return Code from Test Execution"],
-            ["runtime", "Total runtime in seconds"],
-            ["schemafile", "Schema file used for validation"],
-            ["starttime", "Start Time of test in date format"],
-            ["state", "Test State reported by buildtest (PASS/FAIL)"],
-            ["tags", "Tag name"],
-            ["testroot", "Root of test directory"],
-            ["testpath", "Path to test"],
-            ["user", "Get user who submitted job"],
-        ]
-
-        headers = ["Fields", "Description"]
-        table = []
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            # color first column green and second column red
-            for row in format_table:
-                table.append(
-                    [colored(row[0], "green", attrs=["bold"]), colored(row[1], "red")]
-                )
-
-            print(
-                tabulate(
-                    table,
-                    headers=[
-                        colored(field, "blue", attrs=["bold"]) for field in headers
-                    ],
-                    tablefmt="simple",
-                )
-            )
-            return
-
-        print(tabulate(format_table, headers=headers, tablefmt="simple"))
+        console.print(table)
 
     def print_filter_fields(self):
         """Displays list of help filters which implements command ``buildtest report --helpfilter``"""
 
-        filter_field_table = [
-            ["buildspec", "Filter by buildspec file", "FILE"],
-            ["name", "Filter by test name", "STRING"],
-            ["executor", "Filter by executor name", "STRING"],
-            ["state", "Filter by test state ", "PASS/FAIL"],
-            ["tags", "Filter tests by tag name ", "STRING"],
-            ["returncode", "Filter tests by returncode ", "INT"],
-        ]
-        headers = ["Filter Fields", "Description", "Expected Value"]
-        table = []
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            for row in filter_field_table:
-                table.append(
-                    [
-                        colored(row[0], "green", attrs=["bold"]),
-                        colored(row[1], "red"),
-                        colored(row[2], "cyan"),
-                    ]
-                )
-            print(
-                tabulate(
-                    table,
-                    headers=[
-                        colored(field, "blue", attrs=["bold"]) for field in headers
-                    ],
-                    tablefmt="simple",
-                )
+        table = Table(
+            "[blue]Field",
+            "[blue]Description",
+            "[blue]Expected Value",
+            title="Filter Fields",
+        )
+
+        for field, value in self.filter_field_description.items():
+            table.add_row(
+                f"[red]{field}",
+                f"[green]{value['description']}",
+                f"[magenta]{value['type']}",
             )
-            return
+        console.print(table)
 
-        print(tabulate(filter_field_table, headers=headers, tablefmt="simple"))
-
-    def print_report(self, terse=None, noheader=None):
+    def print_report(self, terse=None, noheader=None, title=None):
         """This method will print report table after processing report file. By default we print output in
         table format but this can be changed to terse format which will print output in parseable format.
 
@@ -528,24 +477,18 @@ class Report:
 
             return
 
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            print(
-                tabulate(
-                    self.display_table,
-                    headers=[
-                        colored(field, "blue", attrs=["bold"])
-                        for field in self.display_table.keys()
-                    ],
-                    tablefmt="grid",
-                )
-            )
-            return
+        join_list = []
+        table = Table(title=title, show_lines=True)
+        for field in self.display_table.keys():
+            table.add_column(f"[blue]{field}", overflow="fold")
+            join_list.append(self.display_table[field])
 
-        print(
-            tabulate(
-                self.display_table, headers=self.display_table.keys(), tablefmt="grid"
-            )
-        )
+        transpose_list = [list(i) for i in zip(*join_list)]
+        for row in transpose_list:
+            table.add_row(*row)
+
+        console.print(table)
+        return
 
     def latest_testid_by_name(self, name):
         """Given a test name return test id of latest run
@@ -697,27 +640,27 @@ def report_summary(report):
 
     test_breakdown = report.breakdown_by_test_names()
 
-    table = {"name": [], "runs": [], "pass": [], "fail": []}
+    table = Table(
+        "[blue]Name",
+        "[blue]Total Runs",
+        "[blue]Total Pass",
+        "[blue]Total Fail",
+        title="Breakdown by test",
+    )
     for k in test_breakdown.keys():
-        table["name"].append(k)
-        table["runs"].append(test_breakdown[k]["runs"])
-        table["pass"].append(test_breakdown[k]["pass"])
-        table["fail"].append(test_breakdown[k]["fail"])
-
-    headers = list(table.keys())
-
-    print("\n")
-    print("{:<20}".format(""), "Breakdown by Test")
-    if os.getenv("BUILDTEST_COLOR") == "True":
-        headers = [colored(field, "blue", attrs=["bold"]) for field in headers]
-
-    print(tabulate(table, headers=headers, tablefmt="grid"))
+        table.add_row(
+            k,
+            str(test_breakdown[k]["runs"]),
+            str(test_breakdown[k]["pass"]),
+            str(test_breakdown[k]["fail"]),
+        )
+    console.print(table)
 
     print("\n")
-    print("{:<40}".format(""), "FAIL test")
+
     results = Report(
         filter_args={"state": "FAIL"},
         format_args="name,id,executor,state,returncode,runtime",
         report_file=report.reportfile(),
     )
-    results.print_report()
+    results.print_report(title="FAIL Tests")
