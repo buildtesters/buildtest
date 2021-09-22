@@ -88,40 +88,6 @@ class PollQueue:
                 str(builder.timer.duration()),
             )
         console.print(table)
-        """
-        pending_jobs_table = {
-            "name": [],
-            "id": [],
-            "executor": [],
-            "jobID": [],
-            "jobstate": [],
-            "runtime": [],
-        }
-        headers = pending_jobs_table.keys()
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
-
-        for job in self._pending:
-            pending_jobs_table["name"].append(job.name)
-            pending_jobs_table["id"].append(job.metadata["id"])
-            pending_jobs_table["executor"].append(job.executor)
-            pending_jobs_table["jobID"].append(job.metadata["jobid"])
-            pending_jobs_table["jobstate"].append(job.job.state())
-            pending_jobs_table["runtime"].append(job.timer.duration())
-
-        if pending_jobs_table["name"]:
-            print("\n")
-            print("Current Jobs")
-            print("{:_<15}".format(""))
-            print("\n")
-            print(
-                tabulate(
-                    pending_jobs_table,
-                    headers=headers,
-                    tablefmt="pretty",
-                )
-            )
-            """
 
     def print_polled_jobs(self):
 
@@ -145,37 +111,3 @@ class PollQueue:
                 str(builder.metadata["result"]["runtime"]),
             )
         console.print(table)
-        """
-        table = {
-            "name": [],
-            "id": [],
-            "executor": [],
-            "jobID": [],
-            "jobstate": [],
-            "status": [],
-            "returncode": [],
-            "runtime": [],
-        }
-
-        
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            msg = colored(msg, "red", attrs=["bold"])
-
-        print(msg)
-
-        for builder in self._completed:
-            table["name"].append(builder.name)
-            table["id"].append(builder.metadata["id"])
-            table["executor"].append(builder.executor)
-            table["jobID"].append(builder.job.get())
-            table["jobstate"].append(builder.job.state())
-            table["status"].append(builder.metadata["result"]["state"])
-            table["returncode"].append(builder.metadata["result"]["returncode"])
-            table["runtime"].append(builder.metadata["result"]["runtime"])
-
-        headers = table.keys()
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
-
-        print(tabulate(table, headers=headers, tablefmt="presto"))
-        """
