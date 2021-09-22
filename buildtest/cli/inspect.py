@@ -1,8 +1,6 @@
 """This module implements methods for buildtest inspect command that can be used
 to retrieve test record from report file in JSON format."""
 
-import json
-import os
 import sys
 
 from buildtest.cli.report import Report
@@ -80,7 +78,7 @@ def inspect_list(report, terse=None, header=None, builder=None):
     if terse:
         # print column headers if --no-header is not specified
         if not header:
-            print("|".join(table.keys()))
+            print("name|id|buildspec")
 
         for identifier in test_ids.keys():
             print(

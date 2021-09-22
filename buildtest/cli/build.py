@@ -35,13 +35,11 @@ from buildtest.utils.file import (
     resolve_path,
     walk_tree,
 )
-from buildtest.utils.tools import Hasher, deep_get
+from buildtest.utils.tools import deep_get
 from jsonschema.exceptions import ValidationError
 from rich import box
 from rich.pretty import pprint
 from rich.table import Table
-from tabulate import tabulate
-from termcolor import colored
 
 logger = logging.getLogger(__name__)
 

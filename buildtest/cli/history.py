@@ -1,4 +1,3 @@
-import json
 import logging
 import os
 import re
@@ -8,7 +7,6 @@ from buildtest.defaults import BUILD_HISTORY_DIR, console
 from buildtest.utils.file import is_dir, load_json, walk_tree
 from rich.pretty import pprint
 from rich.table import Column, Table
-from tabulate import tabulate
 
 logger = logging.getLogger(__name__)
 

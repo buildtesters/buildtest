@@ -375,7 +375,9 @@ def buildspec_menu(subparsers):
         "show", help="Show content of buildspec file"
     )
     show_buildspecs.add_argument(
-        "name", help="Show content of buildspec based on test name"
+        "name",
+        help="Show content of buildspec based on test name",
+        nargs="*",
     )
 
     buildspec_validate = subparsers_buildspec.add_parser(

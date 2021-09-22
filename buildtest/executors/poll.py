@@ -1,10 +1,7 @@
-import os
 import time
 
 from buildtest.defaults import console
 from rich.table import Table
-from tabulate import tabulate
-from termcolor import colored
 
 
 class PollQueue:

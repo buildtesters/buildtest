@@ -28,7 +28,6 @@ from buildtest.defaults import (
     BUILDTEST_BUILDSPEC_DIR,
     BUILDTEST_EXECUTOR_DIR,
     BUILDTEST_USER_HOME,
-    console,
 )
 from buildtest.log import init_logfile
 from buildtest.system import BuildTestSystem
@@ -127,7 +126,7 @@ def main():
         elif args.buildspecs_subcommand == "summary":
             summarize_buildspec_cache(configuration)
         elif args.buildspecs_subcommand == "show":
-            show_buildspecs(name=args.name, configuration=configuration)
+            show_buildspecs(test_names=args.name, configuration=configuration)
         elif args.buildspecs_subcommand == "validate":
             buildspec_validate(
                 buildspecs=args.buildspec,

@@ -6,10 +6,11 @@ import sys
 
 import yaml
 from buildtest import BUILDTEST_VERSION
-from buildtest.defaults import BUILDSPEC_CACHE_FILE, supported_schemas
+from buildtest.defaults import BUILDSPEC_CACHE_FILE, console, supported_schemas
 from buildtest.exceptions import ConfigurationError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.system import system
+from buildtest.utils.file import read_file
 from jsonschema import ValidationError
 from tabulate import tabulate
 from termcolor import colored
@@ -114,14 +115,8 @@ def validate_config(configuration):
 def view_configuration(configuration):
     """Display content of buildtest configuration file. This implements command ``buildtest config view``"""
 
-    print(
-        yaml.dump(
-            configuration.target_config, default_flow_style=False, sort_keys=False
-        )
-    )
-
-    print("{:_<80}".format(""))
-    print(f"Settings File: {configuration.file}")
+    console.rule(configuration.file)
+    console.print(read_file(configuration.file))
 
 
 def view_executors(

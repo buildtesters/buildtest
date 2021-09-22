@@ -5,7 +5,6 @@ import sys
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORT_SUMMARY, console
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, read_file, resolve_path
-from rich import inspect
 from rich.table import Table
 
 logger = logging.getLogger(__name__)
@@ -478,6 +477,7 @@ class Report:
             return
 
         join_list = []
+        title = title or f"Report File: {self.reportfile()}"
         table = Table(title=title, show_lines=True)
         for field in self.display_table.keys():
             table.add_column(f"[blue]{field}", overflow="fold")
@@ -624,16 +624,13 @@ def report_cmd(args):
         results.print_format_fields()
         return
 
-    if not args.terse:
-        print(f"Reading report file: {results.reportfile()} \n")
-
     results.print_report(terse=args.terse, noheader=args.no_header)
 
 
 def report_summary(report):
     """This method will print summary for report file which can be retrieved via ``buildtest report summary`` command"""
 
-    print("Report: ", report.reportfile())
+    print("Report File: ", report.reportfile())
     print("Total Tests:", len(report.get_testids()))
     print("Total Tests by Names: ", len(report.get_names()))
     print("Number of buildspecs in report: ", len(report.get_buildspecs()))
