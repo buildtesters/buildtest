@@ -247,7 +247,7 @@ def test_buildspec_summary():
 def test_buildspec_show():
     cache = BuildspecCache(configuration=configuration)
     # get first test in list
-    test_name = cache.get_names()[0]
+    test_name = [cache.get_names()[0]]
     # run buildtest buildspec show <test>
     show_buildspecs(test_name, configuration)
 
@@ -255,4 +255,4 @@ def test_buildspec_show():
         random_testname = "".join(
             random.choice(string.ascii_letters) for i in range(10)
         )
-        show_buildspecs(name=random_testname, configuration=configuration)
+        show_buildspecs(test_names=[random_testname], configuration=configuration)

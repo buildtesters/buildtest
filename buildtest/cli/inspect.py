@@ -6,6 +6,7 @@ import sys
 from buildtest.cli.report import Report
 from buildtest.defaults import BUILD_REPORT, console
 from buildtest.utils.file import read_file, resolve_path
+from rich.panel import Panel
 from rich.pretty import pprint
 from rich.table import Column, Table
 
@@ -133,91 +134,42 @@ def inspect_query(report, args):
             tests = test_record
 
         for test in tests:
-            print(
-                "{:_<30}".format(""),
-                name,
-                f"(ID: {test['full_id']})",
-                "{:_<30}".format(""),
-            )
-            print("executor: ", test["executor"])
-            print("description: ", test["description"])
-            print("state: ", test["state"])
-            print("returncode: ", test["returncode"])
-            print("runtime: ", test["runtime"])
-            print("starttime: ", test["starttime"])
-            print("endtime: ", test["endtime"])
+            console.rule(name + "/" + test["full_id"])
+
+            console.print("executor: ", test["executor"])
+            console.print("description: ", test["description"])
+            console.print("state: ", test["state"])
+            console.print("returncode: ", test["returncode"])
+            console.print("runtime: ", test["runtime"])
+            console.print("starttime: ", test["starttime"])
+            console.print("endtime: ", test["endtime"])
 
             # print content of output file when 'buildtest inspect query --output' is set
             if args.output:
 
                 content = read_file(test["outfile"])
-                print(
-                    "{:*<25}".format(""),
-                    f"Start of Output File: {test['outfile']}",
-                    "{:*<25}".format(""),
-                )
-                print(content)
-                print(
-                    "{:*<25}".format(""),
-                    f"End of Output File: {test['outfile']}",
-                    "{:*<25}".format(""),
-                )
-                print()
+                console.rule(f"Output File: {test['outfile']}")
+
+                console.print(Panel(content))
 
             # print content of error file when 'buildtest inspect query --error' is set
             if args.error:
                 content = read_file(test["errfile"])
-                print(
-                    "{:*<25}".format(""),
-                    "Start of Error File: ",
-                    test["errfile"],
-                    "{:*<25}".format(""),
-                )
-                print(content)
-                print(
-                    "{:*<25}".format(""),
-                    "End of Error File: ",
-                    test["errfile"],
-                    "{:*<25}".format(""),
-                )
+                console.rule(f"Error File: {test['errfile']}")
 
-                print()
+                console.print(Panel(content))
 
             # print content of testpath when 'buildtest inspect query --testpath' is set
             if args.testpath:
                 content = read_file(test["testpath"])
-                print(
-                    "{:*<25}".format(""),
-                    "Start of Test Path: ",
-                    test["testpath"],
-                    "{:*<25}".format(""),
-                )
-                print(content)
-                print(
-                    "{:*<25}".format(""),
-                    "End of Test Path: ",
-                    test["testpath"],
-                    "{:*<25}".format(""),
-                )
-                print()
+                console.rule(f"Test File: {test['testpath']}")
+                console.print(Panel(content))
 
             # print content of build script when 'buildtest inspect query --buildscript' is set
             if args.buildscript:
                 content = read_file(test["build_script"])
-                print(
-                    "{:*<25}".format(""),
-                    "Start of Build Script: ",
-                    test["build_script"],
-                    "{:*<25}".format(""),
-                )
-                print(content)
-                print(
-                    "{:*<25}".format(""),
-                    "End of Build Script: ",
-                    test["build_script"],
-                    "{:*<25}".format(""),
-                )
-                print()
+                console.rule(f"Test File: {test['build_script']}")
+                console.print(Panel(content))
 
 
 def inspect_buildspec(report, input_buildspecs, all_records):

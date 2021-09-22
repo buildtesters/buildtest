@@ -1,6 +1,5 @@
 import getpass
 import json
-import os
 import shutil
 import sys
 
@@ -10,10 +9,9 @@ from buildtest.defaults import BUILDSPEC_CACHE_FILE, console, supported_schemas
 from buildtest.exceptions import ConfigurationError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.system import system
-from buildtest.utils.file import read_file
 from jsonschema import ValidationError
-from tabulate import tabulate
-from termcolor import colored
+from rich.syntax import Syntax
+from rich.table import Column, Table
 
 
 def config_cmd(args, configuration):
@@ -55,28 +53,22 @@ def view_system(configuration):
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
     """
 
-    table = {"system": [], "description": [], "hostnames": [], "moduletool": []}
+    # table = {"system": [], "description": [], "hostnames": [], "moduletool": []}
+    table = Table(
+        "[blue]system",
+        "[blue]description",
+        "[blue]moduletool",
+        Column("[blue]hostnames", overflow="fold"),
+        title=f"System Summary (Configuration={configuration.file})",
+    )
+
     for name in configuration.config["system"].keys():
-        table["system"].append(name)
-        table["description"].append(
-            configuration.config["system"][name].get("description")
-        )
-        table["moduletool"].append(configuration.config["system"][name]["moduletool"])
-        table["hostnames"].append(configuration.config["system"][name]["hostnames"])
+        desc = configuration.config["system"][name].get("description")
+        moduletool = configuration.config["system"][name]["moduletool"]
+        hosts = " ".join(configuration.config["system"][name]["hostnames"])
 
-    if os.getenv("BUILDTEST_COLOR") == "True":
-        print(
-            tabulate(
-                table,
-                headers=[
-                    colored(field, "blue", attrs=["bold"]) for field in table.keys()
-                ],
-                tablefmt="grid",
-            )
-        )
-        return
-
-    print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+        table.add_row(name, desc, moduletool, hosts)
+    console.print(table)
 
 
 def validate_config(configuration):
@@ -116,7 +108,9 @@ def view_configuration(configuration):
     """Display content of buildtest configuration file. This implements command ``buildtest config view``"""
 
     console.rule(configuration.file)
-    console.print(read_file(configuration.file))
+    with open(configuration.file, "r") as bc:
+        syntax = Syntax(bc.read(), "yaml", line_numbers=True, theme="emacs")
+    console.print(syntax)
 
 
 def view_executors(
@@ -142,12 +136,12 @@ def view_executors(
 
     # display output in JSON format
     if json_format:
-        print(json.dumps(d, indent=2))
+        console.print(json.dumps(d, indent=2))
         return
 
     # display output in YAML format
     if yaml_format:
-        print(yaml.dump(d, default_flow_style=False))
+        console.print(yaml.dump(d, default_flow_style=False))
         return
 
     if disabled:
