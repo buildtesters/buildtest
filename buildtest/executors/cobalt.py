@@ -7,6 +7,7 @@ import re
 import shutil
 import time
 
+from buildtest.defaults import console
 from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
@@ -99,8 +100,8 @@ class CobaltExecutor(BaseExecutor):
 
         builder.job = CobaltJob(job_id)
 
-        msg = f"[{builder.metadata['name']}] JobID: {builder.metadata['jobid']} dispatched to scheduler"
-        print(msg)
+        msg = f"[blue]{builder}[/]: JobID: {builder.metadata['jobid']} dispatched to scheduler"
+        console.print(msg)
         logger.debug(msg)
 
         # output and error file in format <JOBID>.output and <JOBID>.error we set full path to file. By
@@ -149,13 +150,8 @@ class CobaltExecutor(BaseExecutor):
             if int(builder.timer.duration()) > self.max_pend_time:
                 builder.job.cancel()
                 builder.failure()
-                print(
-                    "{}: Cancelling Job: {} because job exceeds max pend time: {} sec with current pend time of {} ".format(
-                        builder,
-                        builder.job.get(),
-                        self.max_pend_time,
-                        builder.timer.duration(),
-                    )
+                console.print(
+                    f"[blue]{builder}[/]: Cancelling Job: {builder.job.get()} because job exceeds max pend time: {self.max_pend_time} sec with current pend time of {builder.timer.duration()} "
                 )
 
         builder.start()
@@ -214,7 +210,7 @@ class CobaltExecutor(BaseExecutor):
             f"Copying cobalt log file: {cobaltlog} to {os.path.join(builder.test_root,os.path.basename(cobaltlog))}"
         )
 
-        print(f"{builder}: Job {builder.job.get()} is complete! ")
+        console.print(f"[blue]{builder}[/]: Job {builder.job.get()} is complete! ")
 
         builder.post_run_steps()
 

@@ -7,6 +7,7 @@ import logging
 import os
 import re
 
+from buildtest.defaults import console
 from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.job import Job
@@ -118,8 +119,8 @@ class SlurmExecutor(BaseExecutor):
 
         builder.job = SlurmJob(builder.metadata["jobid"], self.cluster)
 
-        msg = f"{builder} JobID: {builder.metadata['jobid']} dispatched to scheduler"
-        print(msg)
+        msg = f"[blue]{builder}[/blue]: JobID {builder.metadata['jobid']} dispatched to scheduler"
+        console.print(msg)
         self.logger.debug(msg)
 
         return builder
@@ -152,13 +153,8 @@ class SlurmExecutor(BaseExecutor):
             if int(builder.timer.duration()) > self.max_pend_time:
                 builder.job.cancel()
                 builder.failure()
-                print(
-                    "{}: Cancelling Job: {} because job exceeds max pend time: {} sec with current pend time of {} ".format(
-                        builder,
-                        builder.job.get(),
-                        self.max_pend_time,
-                        builder.timer.duration(),
-                    )
+                console.print(
+                    f"[blue]{builder}[/]: Cancelling Job: {builder.job.get()} because job exceeds max pend time: {self.max_pend_time} sec with current pend time of {builder.timer.duration()} "
                 )
 
         builder.start()
@@ -187,7 +183,7 @@ class SlurmExecutor(BaseExecutor):
             builder.job.workdir(), builder.name + ".err"
         )
 
-        print(f"{builder}: Job {builder.job.get()} is complete! ")
+        console.print(f"[blue]{builder}[/]: Job {builder.job.get()} is complete! ")
         builder.post_run_steps()
 
 

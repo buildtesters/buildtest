@@ -91,7 +91,7 @@ Slack:                   http://hpcbuildtest.slack.com/
 Please report issues at https://github.com/buildtesters/buildtest/issues
 
 {BUILDTEST_COPYRIGHT}
-    """
+"""
 
     parser = argparse.ArgumentParser(
         prog="buildtest",
@@ -375,7 +375,9 @@ def buildspec_menu(subparsers):
         "show", help="Show content of buildspec file"
     )
     show_buildspecs.add_argument(
-        "name", help="Show content of buildspec based on test name"
+        "name",
+        help="Show content of buildspec based on test name",
+        nargs="*",
     )
 
     buildspec_validate = subparsers_buildspec.add_parser(

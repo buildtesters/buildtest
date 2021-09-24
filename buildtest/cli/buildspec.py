@@ -8,6 +8,7 @@ from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
     BUILDSPEC_DEFAULT_PATH,
     BUILDTEST_BUILDSPEC_DIR,
+    console,
 )
 from buildtest.exceptions import BuildspecError, BuildTestError
 from buildtest.executors.setup import BuildExecutor
@@ -21,8 +22,10 @@ from buildtest.utils.file import (
     walk_tree,
 )
 from jsonschema.exceptions import ValidationError
-from tabulate import tabulate
-from termcolor import colored
+from rich.layout import Layout
+from rich.panel import Panel
+from rich.pretty import pprint
+from rich.table import Column, Table
 
 logger = logging.getLogger(__name__)
 
@@ -571,32 +574,16 @@ class BuildspecCache:
 
             return
 
-        table = {"buildspecs": self.cache["buildspecs"].keys()}
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            print(
-                tabulate(
-                    table,
-                    headers=[
-                        colored(field, "blue", attrs=["bold"]) for field in table.keys()
-                    ],
-                    tablefmt="grid",
-                )
-            )
-            return
+        table = Table("[blue]Buildspecs", title="List of Buildspecs")
+        for buildspec in self.cache["buildspecs"].keys():
+            table.add_row(buildspec)
 
-        print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+        console.print(table)
 
-    def print_tags(self, terse=None, header=None):
+    def print_tags(self):
         """This method implements ``buildtest buildspec find --tags`` which
         reports a list of unique tags from all buildspecs in cache file.
-
-        Args:
-            terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
-            header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
         """
-
-        self.terse = terse or self.terse
-        self.header = header or self.header
 
         # if --terse option specified print list of all tags in machine readable format
         if self.terse:
@@ -609,23 +596,14 @@ class BuildspecCache:
 
             return
 
-        table = {"Tags": self.cache["unique_tags"]}
-        headers = ["Tags"]
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            headers = [colored("Tags", "blue", attrs=["bold"])]
+        table = Table("[blue]Tags", title="List of Tags")
+        for tagname in self.cache["unique_tags"]:
+            table.add_row(tagname)
 
-        print(tabulate(table, headers=headers, tablefmt="grid"))
+        console.print(table)
 
-    def print_executors(self, terse=None, header=None):
-        """This method implements ``buildtest buildspec find --executors`` which reports all executors from cache.
-
-        Args:
-            terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
-            header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
-        """
-
-        self.terse = terse or self.terse
-        self.header = header or self.header
+    def print_executors(self):
+        """This method implements ``buildtest buildspec find --executors`` which reports all executors from cache."""
 
         if self.terse:
 
@@ -637,79 +615,63 @@ class BuildspecCache:
 
             return
 
-        table = {"executors": self.cache["unique_executors"]}
-        headers = ["executors"]
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            headers = [colored("executors", "blue", attrs=["bold"])]
+        table = Table("[blue]Executors", title="List of Executors")
+        for executor in self.cache["unique_executors"]:
+            table.add_row(executor)
 
-        print(tabulate(table, headers=headers, tablefmt="grid"))
+        console.print(table)
 
-    def print_by_executors(self, terse=None, header=None):
-        """This method prints executors by tests and implements ``buildtest buildspec find --group-by-executor`` command
+    def print_by_executors(self):
+        """This method prints executors by tests and implements ``buildtest buildspec find --group-by-executor`` command"""
 
-        Args:
-            terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
-            header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
-        """
+        if self.terse:
 
-        table = {"executor": [], "name": []}
-        headers = table.keys()
+            if not self.header:
+                print("executor|name|description")
+
+            for executor_name in self.cache["executor"].keys():
+                for test_name, description in self.cache["executor"][
+                    executor_name
+                ].items():
+                    print(f"{executor_name}|{test_name}|{description}")
+            return
+
+        table = Table(
+            "[blue]Executors",
+            "[blue]Name",
+            "[blue]Description",
+            title="Tests by Executors",
+        )
 
         for executor_name in self.cache["executor"].keys():
             for test_name, description in self.cache["executor"][executor_name].items():
-                table["executor"].append(executor_name)
-                table["name"].append(test_name)
+                table.add_row(executor_name, test_name, description)
 
-        self.terse = terse or self.terse
-        self.header = header or self.header
+        console.print(table)
+
+    def print_by_tags(self):
+        """This method prints tags by tests and implements ``buildtest buildspec find --group-by-tags`` command"""
 
         if self.terse:
 
             if not self.header:
-                print("executor|name")
+                print("tags|name|description")
 
-            for executor, name in zip(table["executor"], table["name"]):
-                print(f"{executor}|{name}")
+            for tagname in self.cache["tags"].keys():
+                for test_name, description in self.cache["tags"][tagname].items():
+
+                    print(f"{tagname}|{test_name}|{description}")
             return
 
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            headers = [colored(field, "blue", attrs=["bold"]) for field in table.keys()]
-
-        print(tabulate(table, headers=headers, tablefmt="grid"))
-
-    def print_by_tags(self, terse=None, header=None):
-        """This method prints tags by tests and implements ``buildtest buildspec find --group-by-tags`` command
-
-        Args:
-            terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
-            header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
-
-        """
-
-        table = {"tags": [], "name": []}
-        headers = table.keys()
+        table = Table(
+            "[blue]Tags", "[blue]Name", "[blue]Description", title="Tests by Tags"
+        )
 
         for tagname in self.cache["tags"].keys():
             for test_name, description in self.cache["tags"][tagname].items():
-                table["tags"].append(tagname)
-                table["name"].append(test_name)
+                table.add_row(tagname, test_name, description)
 
-        self.terse = terse or self.terse
-        self.header = header or self.header
-
-        if self.terse:
-
-            if not self.header:
-                print("tags|name")
-
-            for tags, name in zip(table["tags"], table["name"]):
-                print(f"{tags}|{name}")
-            return
-
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            headers = [colored(field, "blue", attrs=["bold"]) for field in table.keys()]
-
-        print(tabulate(table, headers=headers, tablefmt="grid"))
+        console.print(table)
 
     def print_buildspecs(self, terse=None, header=None):
         """Print buildspec table. This method is typically called when running ``buildtest buildspec find`` or options
@@ -723,50 +685,39 @@ class BuildspecCache:
         self.terse = terse or self.terse
         self.header = header or self.header
 
+        table = Table(title="buildspec cache", show_lines=True)
+
+        join_list = []
+
+        for key in self.table.keys():
+            join_list.append(self.table[key])
+
+            table.add_column(f"[blue]{key}", overflow="fold")
+
+        t = [list(i) for i in zip(*join_list)]
+
+        for i in t:
+            table.add_row(*i)
+
         # print terse output
         if self.terse:
 
             if not self.header:
                 print("|".join(self.table.keys()))
 
-            join_list = []
-
-            for key in self.table.keys():
-
-                join_list.append(self.table[key])
-
-            t = [list(i) for i in zip(*join_list)]
-
             for i in t:
                 print("|".join(i))
 
             return
 
-        if os.getenv("BUILDTEST_COLOR") != "True":
-            print(tabulate(self.table, headers=self.table.keys(), tablefmt="grid"))
-            return
+        console.print(table)
 
-        print(
-            tabulate(
-                self.table,
-                headers=[
-                    colored(field, "blue", attrs=["bold"])
-                    for field in self.table.keys()
-                ],
-                tablefmt="grid",
-            )
-        )
+    def list_maintainers(self):
+        """Return a list of maintainers"""
+        return self.cache["maintainers"]
 
-    def print_maintainer(self, terse=None, header=None):
-        """This method prints maintainers from buildspec cache file which implements ``buildtest buildspec find --maintainers`` command.
-
-        Args:
-           terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
-           header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
-        """
-
-        self.terse = terse or self.terse
-        self.header = header or self.header
+    def print_maintainer(self):
+        """This method prints maintainers from buildspec cache file which implements ``buildtest buildspec find --maintainers`` command."""
 
         if self.terse:
 
@@ -778,49 +729,33 @@ class BuildspecCache:
 
             return
 
-        table = {"maintainers": []}
-        headers = table.keys()
+        table = Table("[blue]Maintainers", title="List of Maintainers")
 
         for maintainer in self.cache["maintainers"].keys():
-            table["maintainers"].append(maintainer)
+            table.add_row(maintainer)
 
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            headers = [colored(field, "blue", attrs=["bold"]) for field in table.keys()]
+        console.print(table)
 
-        print(tabulate(table, headers=headers, tablefmt="grid"))
-
-    def print_maintainers_by_buildspecs(self, terse=None, header=None):
-        """This method prints maintainers breakdown by buildspecs. This method implements ``buildtest buildspec find --maintainers-by-buildspecs``
-
-        Args:
-            terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
-            header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
-        """
-
-        table = {"maintainers": [], "buildspec": []}
-        headers = table.keys()
-        for maintainer, buildspec in self.cache["maintainers"].items():
-            table["maintainers"].append(maintainer)
-            table["buildspec"].append(buildspec)
-
-        self.terse = terse or self.terse
-        self.header = header or self.header
-
+    def print_maintainers_by_buildspecs(self):
+        """This method prints maintainers breakdown by buildspecs. This method implements ``buildtest buildspec find --maintainers-by-buildspecs``"""
         if self.terse:
-
-            self.header = header or self.header
             if not self.header:
                 print("maintainers|buildspec")
 
-            for maintainer, buildspecs in zip(table["maintainers"], table["buildspec"]):
-
+            for maintainer, buildspecs in self.cache["maintainers"].items():
                 print(f"{maintainer}|{':'.join(buildspecs)}")
             return
 
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            headers = [colored(field, "blue", attrs=["bold"]) for field in table.keys()]
+        maintainer_table = Table(
+            "[blue]Maintainers",
+            Column("[blue]Buildspec", overflow="fold"),
+            title="Breakdown of buildspecs by maintainers",
+        )
 
-        print(tabulate(table, headers=headers, tablefmt="grid"))
+        for maintainer, buildspecs in self.cache["maintainers"].items():
+            maintainer_table.add_row(maintainer, ":".join(buildspecs))
+
+        console.print(maintainer_table)
 
     def print_invalid_buildspecs(self, error=None):
         """Print invalid buildspecs from cache file. This method implements command ``buildtest buildspec find invalids``
@@ -829,27 +764,17 @@ class BuildspecCache:
             error (bool, optional): Display error messages for invalid buildspecs. Default is ``False`` where we only print list of invalid buildspecs
         """
 
+        table = Table("[blue]Buildspec", title="Invalid Buildspecs")
+
         if not error:
-            table = {"buildspecs": []}
-            for key in self.cache["invalids"].keys():
-                table["buildspecs"].append(key)
-
-            headers = table.keys()
-
-            if os.getenv("BUILDTEST_COLOR") == "True":
-                headers = [
-                    colored(field, "blue", attrs=["bold"]) for field in table.keys()
-                ]
-
-            print(tabulate(table, headers=headers, tablefmt="grid"))
+            for buildspec in self.cache["invalids"].keys():
+                table.add_row(buildspec)
+            console.print(table)
             return
 
-        for key in self.cache["invalids"].keys():
-            print(key)
-            print("{:_<80}".format(""))
-            print(self.cache["invalids"][key])
-            print("{:_<80}".format(""))
-            print("\n\n")
+        for buildspec, value in self.cache["invalids"].items():
+            console.rule(buildspec)
+            pprint(value)
 
     @staticmethod
     def print_filter_fields():
@@ -857,77 +782,35 @@ class BuildspecCache:
         method implements command ``buildtest buildspec find --helpfilter``
         """
 
-        filter_field_table = [
-            ["buildspec", "Filter tests by buildspec", "FILE"],
-            ["executor", "Filter by executor name", "STRING"],
-            ["tags", "Filter by tag name ", "STRING"],
-            ["type", "Filter by schema type ", "STRING"],
-        ]
-
-        if os.getenv("BUILDTEST_COLOR") != "True":
-            print(
-                tabulate(
-                    filter_field_table,
-                    headers=["Field", "Description", "Type"],
-                    tablefmt="simple",
-                )
-            )
-            return
-
-        table = []
-
-        for row in filter_field_table:
-            table.append(
-                [
-                    colored(row[0], "green", attrs=["bold"]),
-                    colored(row[1], "red"),
-                    colored(row[2], "cyan"),
-                ]
-            )
-
-        print(
-            tabulate(
-                table,
-                headers=[
-                    colored(field, "blue", attrs=["bold"])
-                    for field in ["Field", "Description", "Type"]
-                ],
-                tablefmt="simple",
-            )
+        table = Table(
+            "[blue]Field",
+            "[blue]Description",
+            "[blue]Type",
+            title="Filter Field Description",
         )
+        table.add_row(
+            "[red]buildspecs", "[green]Filter tests by buildspec", "[cyan]FILE"
+        )
+        table.add_row("[red]executor", "[green]Filter by executor name", "[cyan]STRING")
+        table.add_row("[red]tags", "[green]Filter by tag name ", "[cyan]STRING")
+        table.add_row("[red]type", "[green]Filter by schema type ", "[cyan]STRING")
+        console.print(table)
 
     @staticmethod
     def print_format_fields():
         """This method prints format fields available for buildspec cache. This
         method implements command ``buildtest buildspec find --helpformat``
         """
-        headers = ["Field", "Description"]
-        format_fields = [
-            ["buildspec", "Display name of buildspec file"],
-            ["description", "Show description of test"],
-            ["executor", "Display 'executor' property in test"],
-            ["name", "Display name of test"],
-            ["tags", "Display 'tag' property in test "],
-            ["type", "Display 'type' property in test"],
-        ]
-
-        if os.getenv("BUILDTEST_COLOR") != "True":
-            print(tabulate(format_fields, headers=headers, tablefmt="simple"))
-            return
-
-        table = []
-        for row in format_fields:
-            table.append(
-                [colored(row[0], "green", attrs=["bold"]), colored(row[1], "red")]
-            )
-
-        print(
-            tabulate(
-                table,
-                headers=[colored(field, "blue", attrs=["bold"]) for field in headers],
-                tablefmt="simple",
-            )
+        table = Table(
+            "[blue]Field", "[blue]Description", title="Format Field Description"
         )
+        table.add_row("[red]buildspec", "[green]Display name of buildspec file")
+        table.add_row("[red]description", "[green]Show description of test")
+        table.add_row("[red]executor", "[green]Display 'executor' property in test")
+        table.add_row("[red]name", "[green]Display name of test")
+        table.add_row("[red]tags", "[green]Display 'tag' property in test ")
+        table.add_row("[red]type", "[green]Display 'type' property in test")
+        console.print(table)
 
     def print_paths(self):
         """This method print buildspec paths, this implements command ``buildtest buildspec find --paths``"""
@@ -935,26 +818,34 @@ class BuildspecCache:
             print(path)
 
 
-def show_buildspecs(name, configuration):
+def show_buildspecs(test_names, configuration):
     """This is the entry point for ``buildtest buildspec show`` command which will print content of
     buildspec based on name of test.
 
     Args:
-        name (str): Name of test
+        test_names (list): List of test names to show content of file
         configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
     """
     cache = BuildspecCache(configuration=configuration)
 
-    if name not in cache.get_names():
+    error = False
+    for name in test_names:
+        if name not in cache.get_names():
+
+            console.print(f"[red]Unable to find test {name} in cache")
+            error = True
+            continue
+
+        buildspec = cache.lookup_buildspec_by_name(name)
+        content = read_file(buildspec)
+        console.rule(buildspec)
+        console.print(Panel.fit(content))
+
+    if error:
         raise BuildTestError(
-            f"{name} not in cache. Please select one of the following test: {cache.get_names()}"
+            f"Please select one of the following test: {cache.get_names()}"
         )
-
-    buildspec = cache.lookup_buildspec_by_name(name)
-    content = read_file(buildspec)
-    print(content)
-
-    print("\nbuildspec: ", buildspec)
+    # print("\nbuildspec: ", buildspec)
 
 
 def buildspec_validate(
@@ -990,18 +881,18 @@ def buildspec_validate(
             BuildspecParser(buildspec=buildspec, buildexecutor=buildexecutor)
         except (BuildTestError, BuildspecError, ValidationError) as err:
             exception_counter += 1
-            print("\nfile: ", buildspec)
-            print("{:_<80}".format(""))
-            print(err)
+            console.rule(buildspec)
+            pprint(err)
+
             print("\n")
 
         finally:
             print(f"Processing buildspec: {buildspec}")
 
     if exception_counter > 0:
-        print(f"There were {exception_counter} buildspecs that failed validation")
+        console.print(f"[red]{exception_counter} buildspecs failed to validate")
     else:
-        print("All buildspecs passed validation!!!")
+        console.print("[green]All buildspecs passed validation!!!")
 
 
 def summarize_buildspec_cache(configuration):
@@ -1012,53 +903,69 @@ def summarize_buildspec_cache(configuration):
     """
 
     cache = BuildspecCache(configuration=configuration)
-    print("Reading Buildspec Cache File:", BUILDSPEC_CACHE_FILE)
-    print("\n")
-    print("Search Paths:", cache.get_paths())
-    print("Total Valid Buildspecs: ", len(cache.get_valid_buildspecs()))
-    print("Total Invalid Buildspecs: ", len(cache.get_invalid_buildspecs()))
-    print("Total Unique Tags: ", len(cache.get_unique_tags()))
-    print("Total Unique Executors: ", len(cache.get_unique_executors()))
-    print("Total Maintainers:", len(cache.get_maintainers()))
-    print("Unique Tags: ", cache.get_unique_tags())
-    print("Unique Executors: ", cache.get_unique_executors())
-    print("Unique Maintainers:", cache.get_maintainers())
+    msg = f"""
+    Reading Buildspec Cache File:   {BUILDSPEC_CACHE_FILE}    
+    Total Valid Buildspecs:         {len(cache.get_valid_buildspecs())}
+    Total Invalid Buildspecs:       {len(cache.get_invalid_buildspecs())}
+    Total Unique Tags:              {len(cache.get_unique_tags())}
+    Total Maintainers:              {len(cache.get_maintainers())}
+"""
+    console.print(Panel.fit(msg))
 
-    print("\n\nTag Breakdowns")
-    print("{:_<30}".format(""))
-    print("\n")
+    layout = Layout()
+    layout.split_row(Layout(name="left"), Layout(name="center"), Layout(name="right"))
 
-    table = {"name": [], "total": []}
+    ################ Tag Breakdown #################
+    tag_table = Table("[blue]tag", "[blue]total tests", title="Tag Breakdown")
+
     tag_summary = cache.tag_breakdown()
-    for key in tag_summary.keys():
-        table["name"].append(key)
-        table["total"].append(len(tag_summary[key]))
+    for tag, tag_count in tag_summary.items():
+        tag_table.add_row(tag, str(len(tag_count)))
 
-    print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+    ################ Executor Breakdown #################
+    executor_table = Table(
+        "[blue]executor", "[blue]total tests", title="Executor Breakdown"
+    )
 
-    print("\n\nExecutor Breakdowns")
-    print("{:_<30}".format(""))
-    print("\n")
-
-    table = {"name": [], "total": []}
     executor_summary = cache.executor_breakdown()
-    for key in executor_summary.keys():
-        table["name"].append(key)
-        table["total"].append(len(executor_summary[key]))
+    for executor, executor_count in executor_summary.items():
+        executor_table.add_row(executor, str(len(executor_count)))
 
-    print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+    ################ Maintainers #################
+    maintainer_table = Table(
+        "[blue]maintainers", "[blue]total buildspecs", title="Maintainers Breakdown"
+    )
 
-    print("\n\nTest Breakdown by buildspecs")
-    print("{:_<30}".format(""))
-    print("\n")
+    for maintainer in cache.list_maintainers():
+        num_buildspecs = len(cache.cache["maintainers"][maintainer])
+        maintainer_table.add_row(maintainer, str(num_buildspecs))
 
-    table = {"buildspec": [], "total": []}
+    buildspec_table = Table(
+        "[blue]Tests",
+        "[blue]Total",
+        Column("[blue]Buildspec", overflow="fold"),
+        title="Test Breakdown by buildspec",
+        show_lines=True,
+    )
+
+    ################ Test Breakdown by Buildspec #################
     buildspec_summary = cache.test_breakdown_by_buildspec()
-    for key in buildspec_summary.keys():
-        table["buildspec"].append(key)
-        table["total"].append(len(buildspec_summary[key]))
+    for buildspec, tests in buildspec_summary.items():
+        buildspec_table.add_row("\n".join(tests), str(len(tests)), buildspec)
 
-    print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+    invalid_buildspecs_table = Table(
+        "[blue]Buildspecs", title="Invalid Buildspecs", show_lines=True
+    )
+    for buildspec in cache.get_invalid_buildspecs():
+        invalid_buildspecs_table.add_row(buildspec)
+
+    layout["left"].update(tag_table)
+    layout["center"].update(executor_table)
+    layout["right"].update(maintainer_table)
+
+    console.print(layout)
+    console.print(invalid_buildspecs_table)
+    console.print(buildspec_table)
 
 
 def buildspec_find(args, configuration):

@@ -11,6 +11,7 @@ from buildtest.buildsystem.compilerbuilder import CompilerBuilder
 from buildtest.buildsystem.scriptbuilder import ScriptBuilder
 from buildtest.buildsystem.spack import SpackBuilder
 from buildtest.cli.compilers import BuildtestCompilers
+from buildtest.defaults import console
 from buildtest.exceptions import BuildTestError
 from buildtest.system import system
 from buildtest.utils.tools import deep_get
@@ -83,9 +84,9 @@ class Builder:
                 recipe = self.bp.recipe["buildspecs"][name]
 
                 if recipe.get("skip"):
-                    msg = f"[{name}]({self.bp.buildspec}): test is skipped."
+                    msg = f"{name}: skipping test due to 'skip' property."
                     self.logger.info(msg)
-                    print(msg)
+                    console.print(msg, style="red")
                     continue
 
                 # apply filter by tags or type if --filter option is specified

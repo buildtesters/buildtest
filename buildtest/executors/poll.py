@@ -1,8 +1,7 @@
-import os
 import time
 
-from tabulate import tabulate
-from termcolor import colored
+from buildtest.defaults import console
+from rich.table import Table
 
 
 class PollQueue:
@@ -31,7 +30,7 @@ class PollQueue:
         time.sleep(self.interval)
 
     def poll(self):
-        """Poll all pending jobs until all jobs are complete. At each poll interval, we poll each builder
+        """Poll all until all jobs are complete. At each poll interval, we poll each builder
         job state. If job is complete or failed we remove job from pending queue. In each interval we sleep
         and poll jobs until there is no pending jobs."""
         while self._pending:
@@ -72,77 +71,43 @@ class PollQueue:
 
     def print_pending_jobs(self):
         """Print pending jobs in table format during each poll step"""
-        pending_jobs_table = {
-            "name": [],
-            "id": [],
-            "executor": [],
-            "jobID": [],
-            "jobstate": [],
-            "runtime": [],
-        }
-        headers = pending_jobs_table.keys()
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
-
-        for job in self._pending:
-            pending_jobs_table["name"].append(job.name)
-            pending_jobs_table["id"].append(job.metadata["id"])
-            pending_jobs_table["executor"].append(job.executor)
-            pending_jobs_table["jobID"].append(job.metadata["jobid"])
-            pending_jobs_table["jobstate"].append(job.job.state())
-            pending_jobs_table["runtime"].append(job.timer.duration())
-
-        if pending_jobs_table["name"]:
-            print("\n")
-            print("Current Jobs")
-            print("{:_<15}".format(""))
-            print("\n")
-            print(
-                tabulate(
-                    pending_jobs_table,
-                    headers=headers,
-                    tablefmt="pretty",
-                )
+        table = Table(
+            "[blue]Builder",
+            "[blue]executor",
+            "[blue]JobID",
+            "[blue]JobState",
+            "[blue]runtime",
+            title="Pending Jobs",
+        )
+        for builder in self._pending:
+            table.add_row(
+                str(builder),
+                builder.executor,
+                builder.job.get(),
+                builder.job.state(),
+                str(builder.timer.duration()),
             )
+        console.print(table)
 
     def print_polled_jobs(self):
 
         if not self._completed:
             return
 
-        table = {
-            "name": [],
-            "id": [],
-            "executor": [],
-            "jobID": [],
-            "jobstate": [],
-            "status": [],
-            "returncode": [],
-            "runtime": [],
-        }
-
-        msg = """
-+-----------------------+
-| Completed Polled Jobs |
-+-----------------------+ 
-                """
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            msg = colored(msg, "red", attrs=["bold"])
-
-        print(msg)
-
+        table = Table(
+            "[blue]Builder",
+            "[blue]executor",
+            "[blue]JobID",
+            "[blue]JobState",
+            "[blue]runtime",
+            title="Completed Jobs",
+        )
         for builder in self._completed:
-            table["name"].append(builder.name)
-            table["id"].append(builder.metadata["id"])
-            table["executor"].append(builder.executor)
-            table["jobID"].append(builder.job.get())
-            table["jobstate"].append(builder.job.state())
-            table["status"].append(builder.metadata["result"]["state"])
-            table["returncode"].append(builder.metadata["result"]["returncode"])
-            table["runtime"].append(builder.metadata["result"]["runtime"])
-
-        headers = table.keys()
-        if os.getenv("BUILDTEST_COLOR") == "True":
-            headers = list(map(lambda x: colored(x, "blue", attrs=["bold"]), headers))
-
-        print(tabulate(table, headers=headers, tablefmt="presto"))
+            table.add_row(
+                str(builder),
+                builder.executor,
+                builder.job.get(),
+                builder.job.state(),
+                str(builder.metadata["result"]["runtime"]),
+            )
+        console.print(table)

@@ -32,6 +32,7 @@ from buildtest.defaults import (
 from buildtest.log import init_logfile
 from buildtest.system import BuildTestSystem
 from buildtest.utils.file import create_dir, is_file, remove_file, resolve_path
+from rich.traceback import install
 
 # column width for linewrap for argparse library
 os.environ["COLUMNS"] = "120"
@@ -43,6 +44,7 @@ def main():
     parser = get_parser()
     args = parser.parse_args()
 
+    install(show_locals=True)
     color_mode = None
 
     if args.color == "off":
@@ -124,7 +126,7 @@ def main():
         elif args.buildspecs_subcommand == "summary":
             summarize_buildspec_cache(configuration)
         elif args.buildspecs_subcommand == "show":
-            show_buildspecs(name=args.name, configuration=configuration)
+            show_buildspecs(test_names=args.name, configuration=configuration)
         elif args.buildspecs_subcommand == "validate":
             buildspec_validate(
                 buildspecs=args.buildspec,

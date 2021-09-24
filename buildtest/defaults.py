@@ -6,6 +6,8 @@ or derived here.
 import os
 import pwd
 
+from rich.console import Console
+
 supported_type_schemas = ["script-v1.0.schema.json", "compiler-v1.0.schema.json"]
 
 # each has a subfolder in buildtest/buildsystem/schemas/ with *.schema.json
@@ -13,6 +15,8 @@ supported_schemas = supported_type_schemas + [
     "global.schema.json",
     "settings.schema.json",
 ]
+
+console = Console()
 
 # Get user home based on effective uid, root of install to copy files
 userhome = pwd.getpwuid(os.getuid())[5]

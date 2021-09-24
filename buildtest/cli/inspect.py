@@ -1,15 +1,14 @@
 """This module implements methods for buildtest inspect command that can be used
 to retrieve test record from report file in JSON format."""
 
-import json
-import os
 import sys
 
 from buildtest.cli.report import Report
-from buildtest.defaults import BUILD_REPORT
+from buildtest.defaults import BUILD_REPORT, console
 from buildtest.utils.file import read_file, resolve_path
-from tabulate import tabulate
-from termcolor import colored
+from rich.panel import Panel
+from rich.pretty import pprint
+from rich.table import Column, Table
 
 
 def inspect_cmd(args):
@@ -69,8 +68,6 @@ def inspect_list(report, terse=None, header=None, builder=None):
 
     test_ids = report._testid_lookup()
 
-    table = {"name": [], "id": [], "buildspec": []}
-
     # implement command 'buildtest inspect list --builder'
     if builder:
         builders = report.builder_names()
@@ -82,7 +79,7 @@ def inspect_list(report, terse=None, header=None, builder=None):
     if terse:
         # print column headers if --no-header is not specified
         if not header:
-            print("|".join(table.keys()))
+            print("name|id|buildspec")
 
         for identifier in test_ids.keys():
             print(
@@ -91,24 +88,17 @@ def inspect_list(report, terse=None, header=None, builder=None):
 
         return
 
+    table = Table(
+        "[blue]name",
+        "[blue]id",
+        Column(header="[blue]buildspec", overflow="fold"),
+        title="Test Summary by name, id, buildspec",
+    )
     for identifier in test_ids.keys():
-        # for name, buildspec in test_ids[identifier]:
-        table["id"].append(identifier)
-        table["name"].append(test_ids[identifier]["name"])
-        table["buildspec"].append(test_ids[identifier]["buildspec"])
-
-    if os.getenv("BUILDTEST_COLOR") == "True":
-        print(
-            tabulate(
-                table,
-                headers=[
-                    colored(field, "blue", attrs=["bold"]) for field in table.keys()
-                ],
-                tablefmt="grid",
-            )
+        table.add_row(
+            identifier, test_ids[identifier]["name"], test_ids[identifier]["buildspec"]
         )
-        return
-    print(tabulate(table, headers=table.keys(), tablefmt="grid"))
+    console.print(table)
 
 
 def inspect_query(report, args):
@@ -144,91 +134,42 @@ def inspect_query(report, args):
             tests = test_record
 
         for test in tests:
-            print(
-                "{:_<30}".format(""),
-                name,
-                f"(ID: {test['full_id']})",
-                "{:_<30}".format(""),
-            )
-            print("executor: ", test["executor"])
-            print("description: ", test["description"])
-            print("state: ", test["state"])
-            print("returncode: ", test["returncode"])
-            print("runtime: ", test["runtime"])
-            print("starttime: ", test["starttime"])
-            print("endtime: ", test["endtime"])
+            console.rule(name + "/" + test["full_id"])
+
+            console.print("executor: ", test["executor"])
+            console.print("description: ", test["description"])
+            console.print("state: ", test["state"])
+            console.print("returncode: ", test["returncode"])
+            console.print("runtime: ", test["runtime"])
+            console.print("starttime: ", test["starttime"])
+            console.print("endtime: ", test["endtime"])
 
             # print content of output file when 'buildtest inspect query --output' is set
             if args.output:
 
                 content = read_file(test["outfile"])
-                print(
-                    "{:*<25}".format(""),
-                    f"Start of Output File: {test['outfile']}",
-                    "{:*<25}".format(""),
-                )
-                print(content)
-                print(
-                    "{:*<25}".format(""),
-                    f"End of Output File: {test['outfile']}",
-                    "{:*<25}".format(""),
-                )
-                print()
+                console.rule(f"Output File: {test['outfile']}")
+
+                console.print(Panel(content))
 
             # print content of error file when 'buildtest inspect query --error' is set
             if args.error:
                 content = read_file(test["errfile"])
-                print(
-                    "{:*<25}".format(""),
-                    "Start of Error File: ",
-                    test["errfile"],
-                    "{:*<25}".format(""),
-                )
-                print(content)
-                print(
-                    "{:*<25}".format(""),
-                    "End of Error File: ",
-                    test["errfile"],
-                    "{:*<25}".format(""),
-                )
+                console.rule(f"Error File: {test['errfile']}")
 
-                print()
+                console.print(Panel(content))
 
             # print content of testpath when 'buildtest inspect query --testpath' is set
             if args.testpath:
                 content = read_file(test["testpath"])
-                print(
-                    "{:*<25}".format(""),
-                    "Start of Test Path: ",
-                    test["testpath"],
-                    "{:*<25}".format(""),
-                )
-                print(content)
-                print(
-                    "{:*<25}".format(""),
-                    "End of Test Path: ",
-                    test["testpath"],
-                    "{:*<25}".format(""),
-                )
-                print()
+                console.rule(f"Test File: {test['testpath']}")
+                console.print(Panel(content))
 
             # print content of build script when 'buildtest inspect query --buildscript' is set
             if args.buildscript:
                 content = read_file(test["build_script"])
-                print(
-                    "{:*<25}".format(""),
-                    "Start of Build Script: ",
-                    test["build_script"],
-                    "{:*<25}".format(""),
-                )
-                print(content)
-                print(
-                    "{:*<25}".format(""),
-                    "End of Build Script: ",
-                    test["build_script"],
-                    "{:*<25}".format(""),
-                )
-                print()
+                console.rule(f"Test File: {test['build_script']}")
+                console.print(Panel(content))
 
 
 def inspect_buildspec(report, input_buildspecs, all_records):
@@ -290,7 +231,8 @@ def inspect_buildspec(report, input_buildspecs, all_records):
                 latest_records[buildspec][test] = records[buildspec][test][-1]
 
     records = latest_records or records
-    print(json.dumps(records, indent=2))
+
+    pprint(records)
 
 
 def inspect_by_name(report, names, all_records):
@@ -319,7 +261,8 @@ def inspect_by_name(report, names, all_records):
             f"Unable to find any records based on input name {names}. \n"
             f"Please select one of the following test names: {report.get_names()} \n"
         )
-    print(json.dumps(records, indent=2))
+
+    pprint(records)
 
 
 def inspect_by_id(report, args):
@@ -340,4 +283,5 @@ def inspect_by_id(report, args):
         )
 
     records = report.fetch_records_by_ids(discovered_ids)
-    print(json.dumps(records, indent=2))
+
+    pprint(records)

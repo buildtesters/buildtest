@@ -1,9 +1,11 @@
 import json
 import os
 
+from buildtest.defaults import console
 from buildtest.schemas.defaults import schema_table
 from buildtest.schemas.utils import here
 from buildtest.utils.file import read_file, walk_tree
+from rich.syntax import Syntax
 
 
 def schema_cmd(args):
@@ -28,7 +30,7 @@ def schema_cmd(args):
         raise SystemExit("Please specify a schema name with -n option")
 
     if args.json:
-        print(json.dumps(schema_table[args.name]["recipe"], indent=2))
+        console.print(json.dumps(schema_table[args.name]["recipe"], indent=2))
         return
 
     # There are no examples for definitions schema
@@ -47,6 +49,6 @@ def schema_cmd(args):
 
         if args.example:
             content = read_file(example)
-            print(f"File: {example}")
-            print("{:_<80}".format(""))
-            print(content)
+            console.rule(example)
+            syntax = Syntax(content, "yaml", theme="emacs")
+            console.print(syntax)

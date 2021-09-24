@@ -4,5 +4,4 @@ jsonschema
 lmodule==0.1
 PyYAML>=5.2
 requests
-tabulate
-termcolor
+rich
