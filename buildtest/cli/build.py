@@ -892,25 +892,6 @@ class BuildTest:
             print("{:_<80}".format(""))
             for test in invalid_builders:
                 print(test)
-        """
-        table = Table(title="Building Tests", show_lines=True)
-        table.add_column("[blue]Builder")
-        table.add_column("[blue]type")
-        table.add_column("[blue]executor")
-        table.add_column("[blue]tags")
-
-        for builder in valid_builders:
-            tags = builder.recipe.get("tags") or ""
-            if isinstance(tags, list):
-                tags = " ".join(tags)
-            table.add_row(
-                f"[red]{str(builder)}",
-                f"[magenta]{builder.recipe['type']}",
-                f"[cyan]{builder.executor}",
-                f"[green]{tags}",
-            )
-        console.print(table)
-        """
 
     def _print_test_summary(self, builders):
         """Print a summary of total pass and fail test with percentage breakdown.

@@ -156,14 +156,6 @@ class SiteConfiguration:
                 self.file,
                 f"Cannot find modules_tool: {self.target_config['moduletool']} from configuration, please confirm if you have environment-modules or lmod and specify the appropriate tool.",
             )
-        """
-        if self.invalid_executors:
-            raise ConfigurationError(
-                self.config,
-                self.file,
-                f"The following executors are invalid: {self.invalid_executors}",
-            )
-        """
 
     def _executor_check(self):
         """Validate executors"""
