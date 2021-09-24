@@ -436,6 +436,9 @@ class BuilderBase(ABC):
         self.test_root = os.path.join(self.testdir, self.test_uid[:8])
 
         create_dir(self.test_root)
+
+        console.log(f"[blue]{self}:[/] Creating test directory - {self.test_root}")
+
         self.metadata["testroot"] = self.test_root
 
         self.stage_dir = os.path.join(self.test_root, "stage")
@@ -443,6 +446,8 @@ class BuilderBase(ABC):
         # create stage and run directories
         create_dir(self.stage_dir)
         self.logger.debug("Creating the stage directory: %s ", self.stage_dir)
+
+        console.log(f"[blue]{self}:[/] Creating stage directory - {self.stage_dir}")
 
         self.metadata["stagedir"] = self.stage_dir
 
@@ -558,6 +563,8 @@ class BuilderBase(ABC):
 
         self.runcmd = self.run_command()
         self.metadata["command"] = self.runcmd
+
+        console.log(f"[blue]{self}:[/] Writing build script: {self.build_script}")
 
     def _write_test(self):
         """This method is responsible for invoking ``generate_script`` that

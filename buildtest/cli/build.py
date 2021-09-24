@@ -38,7 +38,7 @@ from buildtest.utils.file import (
 from buildtest.utils.tools import deep_get
 from jsonschema.exceptions import ValidationError
 from rich import box
-from rich.pretty import pprint
+from rich.panel import Panel
 from rich.table import Table
 
 logger = logging.getLogger(__name__)
@@ -551,34 +551,20 @@ class BuildTest:
         if self.filter_buildspecs:
             self._validate_filters()
 
-        console.print(f"User: [cyan]{self.system.system['user']}[/]", style="magenta")
-        console.print(
-            f"Hostname: [cyan]{self.system.system['host']}[/]", style="magenta"
-        )
-        console.print(
-            f"Platform: [cyan]{self.system.system['platform']}[/]", style="magenta"
-        )
-        console.print(
-            f"Current Time: [cyan]{datetime.now().strftime('%Y/%m/%d %X')}[/]",
-            style="magenta",
-        )
-        console.print(
-            f"buildtest path: [cyan]{shutil.which('buildtest')}[/]", style="magenta"
-        )
-        console.print(
-            f"buildtest version: [cyan]{BUILDTEST_VERSION}[/]", style="magenta"
-        )
-        console.print(
-            f"python path: [cyan]{self.system.system['python']}[/]", style="magenta"
-        )
-        console.print(
-            f"python version: [cyan]{self.system.system['pyver']}[/]", style="magenta"
-        )
-        console.print(f"Test Directory: [cyan]{self.testdir}[/]", style="magenta")
-        console.print(
-            f"Configuration File: [cyan]{self.configuration.file}[/]", style="magenta"
-        )
-        console.print(f"Command: [cyan]{' '.join(sys.argv)}[/]", style="magenta")
+        msg = f"""
+        [magenta]User:[/]               [cyan]{self.system.system['user']}
+        [magenta]Hostname:[/]           [cyan]{self.system.system['host']}"
+        [magenta]Platform:[/]           [cyan]{self.system.system['platform']}
+        [magenta]Current Time:[/]       [cyan]{datetime.now().strftime('%Y/%m/%d %X')}
+        [magenta]buildtest path:[/]     [cyan]{shutil.which('buildtest')}
+        [magenta]buildtest version:[/]  [cyan]{BUILDTEST_VERSION}    
+        [magenta]python path:[/]        [cyan]{self.system.system['python']}
+        [magenta]python version:[/]     [cyan]{self.system.system['pyver']}[/]
+        [magenta]Configuration File:[/] [cyan]{self.configuration.file}[/]
+        [magenta]Test Directory:[/]     [cyan]{self.testdir}[/]
+        [magenta]Command:[/]            [cyan]{' '.join(sys.argv)}[/]
+"""
+        console.print(Panel.fit(msg, title="buildtest summary"), justify="left")
 
     def _validate_filters(self):
         """Check filter fields provided by ``buildtest build --filter`` are valid types and supported. Currently
@@ -740,31 +726,22 @@ class BuildTest:
         if not self.builders:
             sys.exit("Unable to create any builder objects")
 
-        testnames = list(map(lambda x: x.name, self.builders))
-        uid = list(map(lambda x: x.metadata["id"], self.builders))
-        description = list(map(lambda x: x.recipe.get("description"), self.builders))
-        buildspecs = list(map(lambda x: x.buildspec, self.builders))
-
         print("\n")
         print("Total builder objects created:", len(self.builders))
-        pprint(f"builders: {self.builders}", expand_all=True)
         print("\n")
 
         table = Table(title="Builder Details", show_lines=True)
-        table.add_column("[blue]name", style="blue")
-        table.add_column("[blue]id", style="blue")
+        table.add_column("[blue]Builder", style="blue")
         table.add_column("[blue]description", style="blue")
         table.add_column("[blue]buildspecs", style="blue", overflow="fold")
 
-        for test_entry, uid_entry, desc_entry, bp_entry in zip(
-            testnames, uid, description, buildspecs
-        ):
+        for builder in self.builders:
             table.add_row(
-                f"[red]{test_entry}",
-                f"[purple]{uid_entry}",
-                f"[turquoise4]{desc_entry}",
-                f"[yellow]{bp_entry}",
+                f"[red]{builder}",
+                f"[turquoise4]{builder.recipe.get('description')}",
+                f"[yellow]{builder.buildspec}",
             )
+
         console.print(table)
 
     def build_phase(self):
@@ -915,7 +892,7 @@ class BuildTest:
             print("{:_<80}".format(""))
             for test in invalid_builders:
                 print(test)
-
+        """
         table = Table(title="Building Tests", show_lines=True)
         table.add_column("[blue]Builder")
         table.add_column("[blue]type")
@@ -933,6 +910,7 @@ class BuildTest:
                 f"[green]{tags}",
             )
         console.print(table)
+        """
 
     def _print_test_summary(self, builders):
         """Print a summary of total pass and fail test with percentage breakdown.
