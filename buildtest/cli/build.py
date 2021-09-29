@@ -257,10 +257,12 @@ def discover_buildspecs_by_tags(tagnames):
 
     tag_dict = {}
 
+    """
     if not is_file(BUILDSPEC_CACHE_FILE):
         raise BuildTestError(
             f"Cannot for buildspec cache: {BUILDSPEC_CACHE_FILE}, please run 'buildtest buildspec find' "
         )
+    """
 
     cache = load_json(BUILDSPEC_CACHE_FILE)
 
@@ -308,10 +310,12 @@ def discover_buildspecs_by_executor(executors):
 
     executor_dict = {}
 
+    """
     if not is_file(BUILDSPEC_CACHE_FILE):
         raise BuildTestError(
             f"Cannot for buildspec cache: {BUILDSPEC_CACHE_FILE}, please run 'buildtest buildspec find' "
         )
+    """
 
     cache = load_json(BUILDSPEC_CACHE_FILE)
 
@@ -552,17 +556,17 @@ class BuildTest:
             self._validate_filters()
 
         msg = f"""
-        [magenta]User:[/]               [cyan]{self.system.system['user']}
-        [magenta]Hostname:[/]           [cyan]{self.system.system['host']}"
-        [magenta]Platform:[/]           [cyan]{self.system.system['platform']}
-        [magenta]Current Time:[/]       [cyan]{datetime.now().strftime('%Y/%m/%d %X')}
-        [magenta]buildtest path:[/]     [cyan]{shutil.which('buildtest')}
-        [magenta]buildtest version:[/]  [cyan]{BUILDTEST_VERSION}    
-        [magenta]python path:[/]        [cyan]{self.system.system['python']}
-        [magenta]python version:[/]     [cyan]{self.system.system['pyver']}[/]
-        [magenta]Configuration File:[/] [cyan]{self.configuration.file}[/]
-        [magenta]Test Directory:[/]     [cyan]{self.testdir}[/]
-        [magenta]Command:[/]            [cyan]{' '.join(sys.argv)}[/]
+[magenta]User:[/]               [cyan]{self.system.system['user']}
+[magenta]Hostname:[/]           [cyan]{self.system.system['host']}"
+[magenta]Platform:[/]           [cyan]{self.system.system['platform']}
+[magenta]Current Time:[/]       [cyan]{datetime.now().strftime('%Y/%m/%d %X')}
+[magenta]buildtest path:[/]     [cyan]{shutil.which('buildtest')}
+[magenta]buildtest version:[/]  [cyan]{BUILDTEST_VERSION}    
+[magenta]python path:[/]        [cyan]{self.system.system['python']}
+[magenta]python version:[/]     [cyan]{self.system.system['pyver']}[/]
+[magenta]Configuration File:[/] [cyan]{self.configuration.file}[/]
+[magenta]Test Directory:[/]     [cyan]{self.testdir}[/]
+[magenta]Command:[/]            [cyan]{' '.join(sys.argv)}[/]
 """
         console.print(Panel.fit(msg, title="buildtest summary"), justify="left")
 

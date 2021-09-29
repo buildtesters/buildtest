@@ -6,6 +6,7 @@ import webbrowser
 from buildtest.cli import get_parser
 from buildtest.cli.build import BuildTest
 from buildtest.cli.buildspec import (
+    BuildspecCache,
     buildspec_find,
     buildspec_validate,
     show_buildspecs,
@@ -25,6 +26,7 @@ from buildtest.cli.report import report_cmd
 from buildtest.cli.schema import schema_cmd
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import (
+    BUILDSPEC_CACHE_FILE,
     BUILDTEST_BUILDSPEC_DIR,
     BUILDTEST_EXECUTOR_DIR,
     BUILDTEST_USER_HOME,
@@ -88,6 +90,8 @@ def main():
 
     logger.info(f"Processing buildtest configuration file: {configuration.file}")
 
+    if not is_file(BUILDSPEC_CACHE_FILE):
+        BuildspecCache(configuration=configuration)
     # buildtest build command
     if args.subcommands in ["build", "bd"]:
 
