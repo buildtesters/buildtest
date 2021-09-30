@@ -363,23 +363,65 @@ defined partition
 Default Executor Settings
 ---------------------------
 
-We can define default configurations for all executors using the ``defaults`` property.
+We can define default configurations for all executors using the ``defaults`` property. Currently, the
+``defaults`` setting is only applicable to batch executors.
 
 .. code-block:: yaml
 
-    executors:
-      defaults:
-        pollinterval: 10
-        launcher: sbatch
-        max_pend_time: 90
-        account: nstaff
+        executors:
+          defaults:
+            pollinterval: 10
+            launcher: sbatch
+            max_pend_time: 90
+            account: nstaff
 
 The `launcher` field is applicable for batch executors in this
 case, ``launcher: sbatch`` inherits **sbatch** as the job launcher for all slurm executors.
 
-The ``account: nstaff`` will instruct buildtest to charge all jobs to account
-``nstaff`` from Slurm Executors. The ``account`` option can be set in ``defaults``
-field to all executors or defined per executor instance which overrides the default value.
+.. _project_account:
+
+Specifying Project Account
+----------------------------
+
+Batch jobs require project account to charge jobs and depending on your site this could
+be required in order to submit job. Some scheduler like Slurm can detect your default project account
+in that case you don't need to specify on command line.
+
+In your configuration file you can specify ``account`` property which will inherit this
+setting for all executors.
+
+.. code-block:: yaml
+   :emphasize-lines: 6
+
+        executors:
+          defaults:
+            pollinterval: 10
+            launcher: sbatch
+            max_pend_time: 90
+            account: nstaff
+
+You may specify ``account`` property within an executor which will override the default section. For instance we
+have two pbs executors ``testing`` and ``development``. The default account is ``development`` which is inherited
+for all executors however we can specify "testing" executor will use account `qa_test` for the project account
+
+.. code-block:: yaml
+   :emphasize-lines: 6,10
+
+        executors:
+          defaults:
+            pollinterval: 10
+            launcher: sbatch
+            max_pend_time: 90
+            account: development
+          pbs:
+           testing:
+             queue: test
+             account: qa_test
+           development:
+             queue: dev
+
+Alternately, you can override configuration setting via ``buildtest build --account`` command which will be applied
+for all batch jobs.
 
 Poll Interval
 ----------------

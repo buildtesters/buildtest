@@ -307,3 +307,11 @@ buildtest will create setup the test environment in the `stage` directory where 
 test is complete, buildtest will remove the `stage` directory. If you
 want to preserve the stage directory you can use ``buildtest build --keep-stage-dir``, this
 is only useful if you want to run the test manually
+
+Specify Project Account for batch jobs
+----------------------------------------
+
+For batch jobs you typically require one to specify a project account in order to charge jobs depending on your
+scheduler you can use ``buildtest build --account`` option and specify an account name. The command line
+argument ``--account`` will override configuration setting. For more details see :ref:`project_account`
+
