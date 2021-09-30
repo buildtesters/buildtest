@@ -292,6 +292,11 @@ def build_menu(subparsers):
         help="Show available filter fields used with --filter option",
     )
     extra_group.add_argument(
+        "--account",
+        type=str,
+        help="Specify project account used to charge batch jobs (applicable for batch jobs only)",
+    )
+    extra_group.add_argument(
         "--disable-executor-check",
         action="store_false",
         help="Disable executor check during configuration check. By default these checks are enforced for Local, Slurm, PBS, LSF, and Cobalt Executor.",

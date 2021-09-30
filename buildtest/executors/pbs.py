@@ -28,9 +28,10 @@ class PBSExecutor(BaseExecutor):
     type = "pbs"
     poll_cmd = "qstat"
 
-    def __init__(self, name, settings, site_configs, max_pend_time=None):
+    def __init__(self, name, settings, site_configs, account=None, max_pend_time=None):
 
         self.maxpendtime = max_pend_time
+        self.account = account
         super().__init__(name, settings, site_configs)
 
     def load(self):
@@ -42,10 +43,16 @@ class PBSExecutor(BaseExecutor):
         self.launcher_opts = self._settings.get("options")
 
         self.queue = self._settings.get("queue")
-        self.account = self._settings.get("account") or deep_get(
-            self._buildtestsettings.target_config, "executors", "defaults", "account"
+        self.account = (
+            self.account
+            or self._settings.get("account")
+            or deep_get(
+                self._buildtestsettings.target_config,
+                "executors",
+                "defaults",
+                "account",
+            )
         )
-
         self.max_pend_time = (
             self.maxpendtime
             or self._settings.get("max_pend_time")

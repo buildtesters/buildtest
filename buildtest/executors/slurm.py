@@ -29,9 +29,10 @@ class SlurmExecutor(BaseExecutor):
 
     type = "slurm"
 
-    def __init__(self, name, settings, site_configs, max_pend_time=None):
+    def __init__(self, name, settings, site_configs, account=None, max_pend_time=None):
 
         self.maxpendtime = max_pend_time
+        self.account = account
         super().__init__(name, settings, site_configs)
 
     def load(self):
@@ -45,8 +46,15 @@ class SlurmExecutor(BaseExecutor):
         self.cluster = self._settings.get("cluster")
         self.partition = self._settings.get("partition")
         self.qos = self._settings.get("qos")
-        self.account = self._settings.get("account") or deep_get(
-            self._buildtestsettings.target_config, "executors", "defaults", "account"
+        self.account = (
+            self.account
+            or self._settings.get("account")
+            or deep_get(
+                self._buildtestsettings.target_config,
+                "executors",
+                "defaults",
+                "account",
+            )
         )
 
         # the max_pend_time can be defined in executors 'default' section or a named instance or passed via command line.

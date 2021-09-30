@@ -33,13 +33,14 @@ class BuildExecutor:
     - **poll**: This is responsible for invoking ``poll`` method for corresponding executor from the builder object by checking job state
     """
 
-    def __init__(self, site_config, max_pend_time=None):
+    def __init__(self, site_config, account=None, max_pend_time=None):
         """Initialize executors, meaning that we provide the buildtest
         configuration that are validated, and can instantiate
         each executor to be available.
 
         Args:
             site_config (buildtest.config.SiteConfiguration): instance of SiteConfiguration class that has the buildtest configuration
+            account (str, optional): pass account name to charge batch jobs.
             max_pend_time (int, optional): maximum pend time in second until job is cancelled.
         """
 
@@ -64,6 +65,7 @@ class BuildExecutor:
             for name in site_config.valid_executors["slurm"]:
                 self.executors[name] = SlurmExecutor(
                     name=name,
+                    account=account,
                     settings=site_config.valid_executors["slurm"][name]["setting"],
                     site_configs=site_config,
                     max_pend_time=max_pend_time,
@@ -73,6 +75,7 @@ class BuildExecutor:
             for name in site_config.valid_executors["lsf"]:
                 self.executors[name] = LSFExecutor(
                     name=name,
+                    account=account,
                     settings=site_config.valid_executors["lsf"][name]["setting"],
                     site_configs=site_config,
                     max_pend_time=max_pend_time,
@@ -82,6 +85,7 @@ class BuildExecutor:
             for name in site_config.valid_executors["pbs"]:
                 self.executors[name] = PBSExecutor(
                     name=name,
+                    account=account,
                     settings=site_config.valid_executors["pbs"][name]["setting"],
                     site_configs=site_config,
                     max_pend_time=max_pend_time,
@@ -91,6 +95,7 @@ class BuildExecutor:
             for name in site_config.valid_executors["cobalt"]:
                 self.executors[name] = CobaltExecutor(
                     name=name,
+                    account=account,
                     settings=site_config.valid_executors["cobalt"][name]["setting"],
                     site_configs=site_config,
                     max_pend_time=max_pend_time,

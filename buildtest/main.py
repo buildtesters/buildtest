@@ -111,6 +111,7 @@ def main():
             poll_interval=args.poll_interval,
             keep_stage_dir=args.keep_stage_dir,
             retry=args.retry,
+            account=args.account,
             helpfilter=args.helpfilter,
         )
         cmd.build()

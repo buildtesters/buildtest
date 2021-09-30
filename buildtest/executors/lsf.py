@@ -31,8 +31,8 @@ class LSFExecutor(BaseExecutor):
 
     type = "lsf"
 
-    def __init__(self, name, settings, site_configs, max_pend_time=None):
-
+    def __init__(self, name, settings, site_configs, account=None, max_pend_time=None):
+        self.account = account
         self.maxpendtime = max_pend_time
         super().__init__(name, settings, site_configs)
 
@@ -43,8 +43,15 @@ class LSFExecutor(BaseExecutor):
             self._buildtestsettings.target_config, "executors", "defaults", "launcher"
         )
         self.launcher_opts = self._settings.get("options")
-        self.account = self._settings.get("account") or deep_get(
-            self._buildtestsettings.target_config, "executors", "defaults", "account"
+        self.account = (
+            self.account
+            or self._settings.get("account")
+            or deep_get(
+                self._buildtestsettings.target_config,
+                "executors",
+                "defaults",
+                "account",
+            )
         )
         self.max_pend_time = (
             self.maxpendtime

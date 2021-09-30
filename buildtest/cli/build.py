@@ -447,6 +447,7 @@ class BuildTest:
         poll_interval=None,
         keep_stage_dir=None,
         retry=None,
+        account=None,
         helpfilter=None,
     ):
         """The initializer method is responsible for checking input arguments for type
@@ -469,6 +470,7 @@ class BuildTest:
             poll_interval (int, optional): Specify poll interval in seconds for polling batch jobs.
             keep_stage_dir (bool, optional): Keep stage directory after job completion
             retry (int, optional): Number of retry for failed jobs
+            account (str, optional): Project account to charge jobs. This takes input argument ``buildtest build --account``
             helpfilter (bool, optional): Display available filter fields for ``buildtest build --filter`` command. This argument is set to ``True`` if one specifies ``buildtest build --helpfilter``
         """
 
@@ -510,7 +512,7 @@ class BuildTest:
         self.helpfilter = helpfilter
         self.invalid_buildspecs = None
         self.retry = retry
-
+        self.account = account
         if self.helpfilter:
             print_filters()
             return
@@ -547,7 +549,7 @@ class BuildTest:
         self.builders = None
 
         self.buildexecutor = BuildExecutor(
-            self.configuration, max_pend_time=self.max_pend_time
+            self.configuration, max_pend_time=self.max_pend_time, account=self.account
         )
         self.system = buildtest_system or system
         self.report_file = resolve_path(report_file, exist=False) or BUILD_REPORT
