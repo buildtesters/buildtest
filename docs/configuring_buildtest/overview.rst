@@ -393,32 +393,33 @@ setting for all executors.
 .. code-block:: yaml
    :emphasize-lines: 6
 
-        executors:
-          defaults:
-            pollinterval: 10
-            launcher: sbatch
-            max_pend_time: 90
-            account: nstaff
+    executors:
+      defaults:
+        pollinterval: 10
+        launcher: sbatch
+        max_pend_time: 90
+        account: nstaff
 
-You may specify ``account`` property within an executor which will override the default section. For instance we
-have two pbs executors ``testing`` and ``development``. The default account is ``development`` which is inherited
-for all executors however we can specify "testing" executor will use account `qa_test` for the project account
+You can specify ``account`` property within an executor which will override the default section. In the next example,
+we have two pbs executors **testing** and **development**. All pbs jobs will use the project account ``development``
+because this is defined in ``defaults`` section however we can force all jobs using **testing** executor to charge
+jobs to ``qa_test``.
 
 .. code-block:: yaml
    :emphasize-lines: 6,10
 
-        executors:
-          defaults:
-            pollinterval: 10
-            launcher: sbatch
-            max_pend_time: 90
-            account: development
-          pbs:
-           testing:
-             queue: test
-             account: qa_test
-           development:
-             queue: dev
+    executors:
+      defaults:
+        pollinterval: 10
+        launcher: sbatch
+        max_pend_time: 90
+        account: development
+      pbs:
+       testing:
+         queue: test
+         account: qa_test
+       development:
+         queue: dev
 
 Alternately, you can override configuration setting via ``buildtest build --account`` command which will be applied
 for all batch jobs.
