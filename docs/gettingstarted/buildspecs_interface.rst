@@ -114,10 +114,6 @@ format fields specified in command line.
 
 .. command-output:: buildtest buildspec find --format name,description,buildspec --filter tags=tutorials,executor=generic.local.sh
 
-buildtest makes use of python library named `tabulate <https://pypi.org/project/tabulate/>`_
-to generate these tables which are found in commands line like ``buildtest buildspec find``
-and ``buildtest report``.
-
 .. _buildspec_tags:
 
 Querying buildspec tags

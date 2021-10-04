@@ -6,8 +6,7 @@ Query Test Report
 
 buildtest keeps track of all tests and results in a JSON file.  This file is read by **buildtest report**
 command to extract certain fields from JSON file and display
-them in table format. We use python `tabulate <https://pypi.org/project/tabulate/>`_ library for
-pretty print data in tables. Shown below is command usage to query test reports.
+them in table format. Shown below is command usage to query test reports.
 
 .. command-output:: buildtest report --help
 
