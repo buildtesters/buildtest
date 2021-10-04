@@ -30,6 +30,7 @@ from buildtest.defaults import (
     BUILDTEST_BUILDSPEC_DIR,
     BUILDTEST_EXECUTOR_DIR,
     BUILDTEST_USER_HOME,
+    console,
 )
 from buildtest.log import init_logfile
 from buildtest.system import BuildTestSystem
@@ -47,17 +48,13 @@ def main():
     args = parser.parse_args()
 
     install(show_locals=True)
-    color_mode = None
+    no_color = False
 
-    if args.color == "off":
-        color_mode = "False"
-    else:
-        color_mode = "True"
+    # disable color if buildtest --no-color or BUILDTEST_COLOR=False is set
+    if args.no_color or os.getenv("BUILDTEST_COLOR") == "False":
+        no_color = True
 
-    if os.getenv("BUILDTEST_COLOR") == "False":
-        color_mode = "False"
-
-    os.environ["BUILDTEST_COLOR"] = color_mode
+    console.no_color = no_color
 
     # if no commands just print the help message and return.
     if not args.subcommands:

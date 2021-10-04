@@ -35,10 +35,6 @@ def test_report_format():
     report = Report()
     report.print_format_fields()
 
-    # BUILDTEST_COLOR=False buildtest report --helpformat
-    os.environ["BUILDTEST_COLOR"] = "False"
-    report.print_format_fields()
-
     # buildtest report --format XYZ is invalid format field
     with pytest.raises(BuildTestError):
         Report(format_args="XYZ")
@@ -51,11 +47,9 @@ def test_report_filter():
     report = Report()
     report.print_filter_fields()
 
-    # run 'BUILDTEST_COLOR=False buildtest report --helpfilter'
-    os.environ["BUILDTEST_COLOR"] = "False"
+    # run 'buildtest report --helpfilter'
     report.print_format_fields()
 
-    os.environ["BUILDTEST_COLOR"] = "True"
     report = Report(filter_args={"state": "PASS"})
     report.print_report()
 

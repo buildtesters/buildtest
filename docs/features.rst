@@ -59,14 +59,12 @@ To access `schema docs <https://buildtesters.github.io/buildtest>`_ you can run:
 
   buildtest schemadocs
 
-Color Mode
-----------
+Disabling Colored Output
+--------------------------
 
-buildtest will display output in color by default which can be configured on command line
-via ``buildtest --color [on|off]`` or via environment variable **BUILDTEST_COLOR**. You can disable
-color output via command argument``--color off`` or environment ``BUILDTEST_COLOR=False``.
-If ``--color on`` is set with ``BUILDTEST_COLOR=False``, the value of environment variable will be honored.
-
+buildtest will display output in color format using the `rich.Console <https://rich.readthedocs.io/en/stable/reference/console.html#rich.console.Console>`_
+class. You can disable colored output via ``buildtest --no-color`` argument or set this
+persistent via environment variable **BUILDTEST_COLOR=False**.
 
 .. _cdash_integration:
 

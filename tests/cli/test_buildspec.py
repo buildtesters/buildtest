@@ -48,10 +48,6 @@ def test_buildspec_validate():
 @pytest.mark.cli
 def test_func_buildspec_find():
 
-    # print with color mode
-    os.environ["BUILDTEST_COLOR"] = "True"
-    assert os.getenv("BUILDTEST_COLOR") == "True"
-
     # buildtest buildspec find --rebuild --terse --no-header
     cache = BuildspecCache(
         rebuild=True, configuration=configuration, terse=True, header=False
@@ -106,14 +102,6 @@ def test_func_buildspec_find():
     # implements buildtest buildspec find --helpformat
     cache.print_format_fields()
 
-    # print table without color
-    os.environ["BUILDTEST_COLOR"] = "False"
-    cache = BuildspecCache(configuration=configuration)
-    cache.print_filter_fields()
-    cache.print_format_fields()
-    cache.print_buildspecs()
-    cache.print_buildspecfiles()
-
 
 @pytest.mark.cli
 def test_buildspec_find_terse():
@@ -132,7 +120,6 @@ def test_buildspec_find_terse():
 @pytest.mark.cli
 def test_buildspec_find_invalid():
 
-    os.environ["BUILDTEST_COLOR"] = "True"
     cache = BuildspecCache(configuration=configuration)
     cache.print_invalid_buildspecs(error=True)
     cache.print_invalid_buildspecs(error=False)

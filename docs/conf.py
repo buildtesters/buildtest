@@ -31,9 +31,6 @@ os.environ["BUILDTEST_ROOT"] = here
 # add $BUILDTEST_ROOT/bin to $PATH to reference 'buildtest' command in docs
 os.environ["PATH"] += "%s%s" % (os.pathsep, os.path.join(here, "bin"))
 
-# need to set BUILDTEST_COLOR="False" in order to avoid printing ANSI color since Sphinx can't render them
-os.environ["BUILDTEST_COLOR"] = "False"
-
 # remove $BUILDTEST_ROOT/var which writes variable data
 if is_dir(VAR_DIR):
     shutil.rmtree(VAR_DIR)

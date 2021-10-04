@@ -134,8 +134,6 @@ def test_build_filter_check():
         )
 
     BuildTest(configuration=configuration, helpfilter=True)
-    os.environ["BUILDTEST_COLOR"] = "True"
-    BuildTest(configuration=configuration, helpfilter=True)
 
 
 @pytest.mark.cli
@@ -304,34 +302,6 @@ def test_invalid_buildspes():
             buildtest_system=system,
         )
         cmd.build()
-
-
-@pytest.mark.cli
-def test_build_with_without_color():
-
-    system = BuildTestSystem()
-    system.check()
-
-    buildspec_file = [os.path.join(BUILDTEST_ROOT, "tutorials", "python-shell.yml")]
-    os.environ["BUILDTEST_COLOR"] = "False"
-
-    # BUILDTEST_COLOR=False buildtest build -b tutorials/python-shell.yml
-    cmd = BuildTest(
-        configuration=configuration,
-        buildspecs=buildspec_file,
-        buildtest_system=system,
-    )
-    cmd.build()
-
-    os.environ["BUILDTEST_COLOR"] = "True"
-
-    # BUILDTEST_COLOR=True buildtest build -b tutorials/python-shell.yml
-    cmd = BuildTest(
-        configuration=configuration,
-        buildspecs=buildspec_file,
-        buildtest_system=system,
-    )
-    cmd.build()
 
 
 @pytest.mark.cli
