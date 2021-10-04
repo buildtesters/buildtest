@@ -63,7 +63,7 @@ Disabling Colored Output
 --------------------------
 
 buildtest will display output in color format using the `rich.Console <https://rich.readthedocs.io/en/stable/reference/console.html#rich.console.Console>`_
-class. You can disable colored output via``buildtest --no-color`` argument or set this
+class. You can disable colored output via ``buildtest --no-color`` argument or set this
 persistent via environment variable **BUILDTEST_COLOR=False**.
 
 .. _cdash_integration:
