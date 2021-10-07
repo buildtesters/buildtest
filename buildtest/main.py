@@ -3,7 +3,7 @@
 import os
 import webbrowser
 
-from buildtest.cli import BUILDTEST_VERSION, get_parser
+from buildtest.cli import get_parser
 from buildtest.cli.build import BuildTest
 from buildtest.cli.buildspec import (
     BuildspecCache,
