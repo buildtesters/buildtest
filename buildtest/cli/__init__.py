@@ -689,13 +689,6 @@ def inspect_menu(subparsers):
     # buildtest inspect id
     test_id.add_argument("id", nargs="*", help="Test ID")
 
-    # buildtest inspect name
-    name.add_argument(
-        "-a",
-        "--all",
-        action="store_true",
-        help="Fetch all test records for a given test name",
-    )
     name.add_argument("name", nargs="*", help="Name of test")
 
     # buildtest inspect list

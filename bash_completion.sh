@@ -164,7 +164,7 @@ _buildtest ()
           local opts="--help --terse -h -t"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         name)
-          COMPREPLY=( $( compgen -W "$(_test_name)" -- $cur ) )
+          COMPREPLY=( $( compgen -W "$(_builder_names)" -- $cur ) )
           
           if [[ $cur == -* ]] ; then
             local opts="--all --help -a -h"
