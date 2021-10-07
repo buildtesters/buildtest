@@ -17,6 +17,7 @@ from buildtest.cli.cdash import cdash_cmd
 from buildtest.cli.clean import clean
 from buildtest.cli.compilers import compiler_cmd
 from buildtest.cli.config import config_cmd
+from buildtest.cli.debugreport import print_debug_report
 from buildtest.cli.edit import edit_buildspec
 from buildtest.cli.help import buildtest_help
 from buildtest.cli.history import build_history
@@ -185,6 +186,9 @@ def main():
 
     elif args.subcommands == "schemadocs":
         webbrowser.open("https://buildtesters.github.io/buildtest/")
+
+    elif args.subcommands == "debugreport":
+        print_debug_report(system, configuration)
 
 
 if __name__ == "__main__":
