@@ -62,7 +62,7 @@ def positive_number(value):
     2
     """
 
-    if not (isinstance(value, str) or isinstance(value, int)):
+    if not isinstance(value, (str, int)):
         raise argparse.ArgumentTypeError("Input must be a string or integer")
 
     try:
