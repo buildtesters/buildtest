@@ -1,9 +1,12 @@
+import os
+
 from buildtest.cli import BUILDTEST_VERSION
 from buildtest.cli.config import view_configuration
 from buildtest.defaults import console
+from rich.syntax import Syntax
 
 
-def print_system_info(system, configuration):
+def print_debug_report(system, configuration):
 
     console.print("Vendor: ", system.system["vendor"])
     console.print("Machine: ", system.system["machine"])
@@ -17,3 +20,10 @@ def print_system_info(system, configuration):
     console.print("CPU Features:", system.system["features"])
 
     view_configuration(configuration)
+
+    last_log = os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log")
+    if os.path.exists(last_log):
+        console.rule(last_log)
+        with open(last_log, "r") as bc:
+            syntax = Syntax(bc.read(), "log", line_numbers=True, theme="emacs")
+        console.print(syntax)

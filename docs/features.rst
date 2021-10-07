@@ -229,6 +229,15 @@ into this situation you will get the following error.
 If you specify an invalid test name or buildtest can't find the test id, then buildtest will print list of available test names
 with IDs.
 
+Buildtest Debug Report (``buildtest debugreport``)
+---------------------------------------------------
+
+The ``buildtest debugreport`` command is used for debugging especially when you want to raise
+an `issue <https://github.com/buildtesters/buildtest/issues>`_ to buildtest project. This command will provide system details
+along with configuration file and output of log file during the report.
+
+.. command-output:: buildtest debugreport
+
 .. _configuration_cli:
 
 Command Line Interface to buildtest configuration

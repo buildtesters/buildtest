@@ -17,6 +17,7 @@ from buildtest.cli.cdash import cdash_cmd
 from buildtest.cli.clean import clean
 from buildtest.cli.compilers import compiler_cmd
 from buildtest.cli.config import config_cmd
+from buildtest.cli.debugreport import print_debug_report
 from buildtest.cli.edit import edit_buildspec
 from buildtest.cli.help import buildtest_help
 from buildtest.cli.history import build_history
@@ -24,7 +25,6 @@ from buildtest.cli.inspect import inspect_cmd
 from buildtest.cli.path import path_cmd
 from buildtest.cli.report import report_cmd
 from buildtest.cli.schema import schema_cmd
-from buildtest.cli.systeminfo import print_system_info
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
@@ -187,8 +187,8 @@ def main():
     elif args.subcommands == "schemadocs":
         webbrowser.open("https://buildtesters.github.io/buildtest/")
 
-    elif args.subcommands == "systeminfo":
-        print_system_info(system, configuration)
+    elif args.subcommands == "debugreport":
+        print_debug_report(system, configuration)
 
 
 if __name__ == "__main__":

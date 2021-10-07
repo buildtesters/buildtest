@@ -167,8 +167,8 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     )
 
     subparsers.add_parser(
-        "systeminfo",
-        help="Show information about current system which can be useful for debugging",
+        "debugreport",
+        help="Display system information and additional information for debugging purposes.",
     )
 
     help_subparser = subparsers.add_parser(
