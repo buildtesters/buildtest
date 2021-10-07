@@ -6,14 +6,17 @@ on:
 
 jobs:
 
-  pytest:
+  buildtest_regtest:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
 
       matrix:
         os: [macos-latest, ubuntu-latest]
-        python-version: [3.7, 3.8]
+        python-version: [3.7, 3.8, 3.9]
+        exclude:
+        - os: macos-latest
+          python-version: 3.8
 
     steps:
     - uses: actions/checkout@v2
