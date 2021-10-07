@@ -10,6 +10,7 @@ import platform
 import shutil
 import sys
 
+import archspec.cpu
 import distro
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.utils.command import BuildTestCommand
@@ -37,12 +38,19 @@ class BuildTestSystem:
 
         self.logger.debug("Starting System Compatibility Check")
 
+        microarch = archspec.cpu.detect.host()
+        self.system["model"] = archspec.cpu.detect.raw_info_dictionary()["model name"]
+        self.system["arch"] = microarch.name
+        self.system["vendor"] = microarch.vendor
+        self.system["features"] = " ".join(list(microarch.features))
+
         self.system["platform"] = platform.system()
         if self.system["platform"] not in ["Linux", "Darwin"]:
             print("System must be Linux or Darwin")
             sys.exit(1)
 
         self.system["os"] = distro.id()
+        self.system["cpus"] = os.cpu_count()
         self.system["user"] = getpass.getuser()
         self.system["python"] = shutil.which("python")
         self.system["pyver"] = platform.python_version()

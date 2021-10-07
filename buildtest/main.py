@@ -3,7 +3,7 @@
 import os
 import webbrowser
 
-from buildtest.cli import get_parser
+from buildtest.cli import BUILDTEST_VERSION, get_parser
 from buildtest.cli.build import BuildTest
 from buildtest.cli.buildspec import (
     BuildspecCache,
@@ -24,6 +24,7 @@ from buildtest.cli.inspect import inspect_cmd
 from buildtest.cli.path import path_cmd
 from buildtest.cli.report import report_cmd
 from buildtest.cli.schema import schema_cmd
+from buildtest.cli.systeminfo import print_system_info
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
@@ -185,6 +186,9 @@ def main():
 
     elif args.subcommands == "schemadocs":
         webbrowser.open("https://buildtesters.github.io/buildtest/")
+
+    elif args.subcommands == "systeminfo":
+        print_system_info(system, configuration)
 
 
 if __name__ == "__main__":

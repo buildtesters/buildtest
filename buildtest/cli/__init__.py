@@ -9,38 +9,16 @@ from buildtest.defaults import BUILD_REPORT
 from buildtest.schemas.defaults import schema_table
 
 
-def single_kv_string(val):
-    """This method is used for filter field in ``buildtest build --filter``.
-    This method returns a dict of key/value pair where input must be a single key/value pair
-
-    :param val: input value
-    :type val: str
-    :return: dictionary of key/value pairs
-    :rtype: dict
-    """
-
-    kv_dict = {}
-
-    if "=" not in val:
-        raise argparse.ArgumentTypeError("Filter field must be in format key=value")
-
-    key, value = val.split("=")[0], val.split("=")[1]
-    kv_dict[key] = value
-
-    return kv_dict
-
-
 def handle_kv_string(val):
     """This method is used as type field in --filter argument in ``buildtest buildspec find``.
     This method returns a dict of key,value pair where input is in format
     key1=val1,key2=val2,key3=val3
 
-    :param val: input value
-    :type val: str
-    :param multiple_keys: multiple_keys is a boolean to determine if key/value pair accepts multiple key/value arguments
-    :type val: bool
-    :return: dictionary of key/value pairs
-    :rtype: dict
+    Args:
+       val (str): Input string in ``key1=value1,key2=value2`` format that is processed into a dictionary type
+
+    Returns:
+        dict: A dict mapping of key=value pairs
     """
 
     kv_dict = {}
@@ -66,16 +44,36 @@ def handle_kv_string(val):
 
 
 def positive_number(value):
-    """Checks if input value is positive value and within range of 1-50. This method
-    is used for --rebuild option
+    """Checks if input is positive number and returns value as an int type.
+
+    Args:
+        value (str or int): Specify an input number
+
+    Returns:
+        int: Return value as int type
+
+    Raises:
+        argparse.ArgumentTypeError will be raised if input is not positive number or input is not str or int type
+
+    >>> positive_number("1")
+    1
+
+    >>> positive_number(2)
+    2
     """
 
-    value = int(value)
-    if value <= 0:
-        raise argparse.ArgumentTypeError(
-            f"{value} must be a positive number between [1-50]"
-        )
-    return value
+    if not (isinstance(value, str) or isinstance(value, int)):
+        raise argparse.ArgumentTypeError("Input must be a string or integer")
+
+    try:
+        int_val = int(value)
+    except ValueError:
+        print(f"Unable to convert {value} to int ")
+        raise ValueError
+
+    if int_val <= 0:
+        raise argparse.ArgumentTypeError(f"{int_val} must be a positive number")
+    return int_val
 
 
 def get_parser():
@@ -166,6 +164,11 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
 
     clean.add_argument(
         "-y", "--yes", action="store_true", help="Confirm yes for all prompts"
+    )
+
+    subparsers.add_parser(
+        "systeminfo",
+        help="Show information about current system which can be useful for debugging",
     )
 
     help_subparser = subparsers.add_parser(
@@ -283,7 +286,7 @@ def build_menu(subparsers):
     filter_group.add_argument(
         "-f",
         "--filter",
-        type=single_kv_string,
+        type=handle_kv_string,
         help="Filter buildspec based on tags, type, or maintainers. Usage:  --filter key1=val1,key2=val2",
     )
     filter_group.add_argument(
