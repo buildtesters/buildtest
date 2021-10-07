@@ -17,7 +17,7 @@ jobs:
         exclude:
         - os: macos-latest
           python-version: 3.8
-          
+
     steps:
     - uses: actions/checkout@v2
 
@@ -30,7 +30,7 @@ jobs:
       env:
         OS: ${{ matrix.os }}
       run: |
-        if [ $OS = "ubuntu-latest" ] ; then sudo apt-get install -y tcsh zsh; else brew install tcsh zsh ;  fi
+        if [ $OS = "ubuntu-latest" || $OS = "ubuntu-18.04" ] ; then sudo apt-get install -y tcsh zsh; else brew install tcsh zsh ;  fi
         source setup.sh
         pip install pytest
         pip install coverage
