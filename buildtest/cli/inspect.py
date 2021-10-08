@@ -1,6 +1,7 @@
 """This module implements methods for buildtest inspect command that can be used
 to retrieve test record from report file in JSON format."""
 
+import re
 import sys
 
 from buildtest.cli.report import Report
@@ -246,15 +247,6 @@ def inspect_by_name(report, names):
         # get record exit1_fail that starts with id 123
         buildtest inspect name exit1_fail/123
 
-    .. code-block:: console
-        # get first record for test exit1_fail
-        buildtest inspect name exit1_fail[0]
-
-    .. code-block:: console
-        # get records 0-2 for test exit1_fail
-        buildtest inspect name exit1_fail[0:2]
-
-
     Args:
         report (str): Path to report file
         names (list): List of test names to search in report file. This is specified as positional arguments to ``buildtest inspect name``
@@ -262,10 +254,7 @@ def inspect_by_name(report, names):
 
     records = {}
 
-    builders = report.builder_names()
-
     name_lookup = report.lookup()
-
     query_builders = []
 
     for name in names:
@@ -275,21 +264,19 @@ def inspect_by_name(report, names):
             tid = name.split("/")[1]
 
             if test_name not in name_lookup.keys():
+                console.print(f"Unable to find test: {test_name} so skipping test")
                 continue
 
             for full_ids in name_lookup[test_name]:
                 if full_ids.startswith(tid):
                     query_builders.append(f"{test_name}/{full_ids}")
-
-        # get latest id
         else:
             tid = report.latest_testid_by_name(name)
             if tid:
                 query_builders.append(f"{name}/{tid}")
 
     if not query_builders:
-        print("Unable to find any tests, please try again")
-        return
+        sys.exit("Unable to find any tests, please try again")
 
     query_builders = list(set(query_builders))
     console.print(
@@ -303,6 +290,8 @@ def inspect_by_name(report, names):
             records[name] = []
 
         records[name].append(report.fetch_records_by_ids([tid]))
+
+    pprint(records)
 
     """
     for buildspec in raw_content.keys():
@@ -322,13 +311,6 @@ def inspect_by_name(report, names):
                 else:
                     records[name] = raw_content[buildspec][test_name][-1]
     """
-    if not records:
-        sys.exit(
-            f"Unable to find any records based on input name {names}. \n"
-            f"Please select one of the following test names: {report.get_names()} \n"
-        )
-
-    pprint(records)
 
 
 def inspect_by_id(report, args):
