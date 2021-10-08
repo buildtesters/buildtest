@@ -9,6 +9,7 @@ def deep_get(dictionary, *keys):
     )
 
 
+"""
 class Hasher(dict):
     def __missing__(self, key):
         value = self[key] = type(self)()
@@ -34,3 +35,4 @@ class Hasher(dict):
 
     def __str__(self):
         return str(dict(self))
+"""
