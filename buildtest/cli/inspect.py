@@ -257,7 +257,7 @@ def inspect_by_name(report, names):
     query_builders = []
 
     for name in names:
-
+        # if test includes backslash we need to check if their is an ID match
         if name.find("/") != -1:
             test_name = name.split("/")[0]
             tid = name.split("/")[1]
@@ -266,9 +266,13 @@ def inspect_by_name(report, names):
                 console.print(f"Unable to find test: {test_name} so skipping test")
                 continue
 
+            # for list of all TEST IDs corresponding to test, get first test ID that startswith same character as input ID
             for full_ids in name_lookup[test_name]:
                 if full_ids.startswith(tid):
                     query_builders.append(f"{test_name}/{full_ids}")
+                    break
+
+        # get latest test id for given test name
         else:
             tid = report.latest_testid_by_name(name)
             if tid:
@@ -291,25 +295,6 @@ def inspect_by_name(report, names):
         records[name].append(report.fetch_records_by_ids([tid]))
 
     pprint(records)
-
-    """
-    for buildspec in raw_content.keys():
-        for name in names:
-
-            test_name = name
-
-            if name.find("/") != -1:
-                test_name = name.split("/")[0],
-                test_id = name.split("/")[1]
-
-            if raw_content[buildspec].get(test_name):
-                # if --all specified we get all records
-                if all_records:
-                    records[name] = raw_content[buildspec][test_name]
-                # otherwise get last record of each test
-                else:
-                    records[name] = raw_content[buildspec][test_name][-1]
-    """
 
 
 def inspect_by_id(report, args):
