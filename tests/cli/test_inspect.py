@@ -12,6 +12,17 @@ from buildtest.defaults import BUILDTEST_ROOT
 
 def test_buildtest_inspect_list():
 
+    # running buildtest inspect list
+    class args:
+        subcommands = "config"
+        inspect = "list"
+        report = False
+        terse = False
+        no_header = False
+        builder = False
+
+    inspect_cmd(args)
+
     # running buildtest inspect list --terse --no-header
     class args:
         subcommands = "config"
@@ -34,24 +45,24 @@ def test_buildtest_inspect_list():
 
     inspect_cmd(args)
 
-    # running buildtest inspect list
+    # running buildtest inspect list --builder
     class args:
         subcommands = "config"
         inspect = "list"
         report = False
         terse = False
         no_header = False
-        builder = False
+        builder = True
 
     inspect_cmd(args)
 
 
 def test_buildtest_inspect_name():
 
-    report = Report()
+    r = Report()
 
     # get first two names of list
-    test_names = report.get_names()[0]
+    test_names = r.get_names()[0]
     # print(test_ids)
 
     class args:
@@ -59,7 +70,6 @@ def test_buildtest_inspect_name():
         inspect = "name"
         name = [test_names]
         report = None
-        all = False
 
     print(f"Querying test names: {args.name}")
     inspect_cmd(args)
@@ -69,21 +79,34 @@ def test_buildtest_inspect_name():
         inspect = "name"
         name = [test_names]
         report = None
-        all = True
 
     print(f"Querying test names: {args.name}")
     inspect_cmd(args)
 
+    random_test = [
+        "".join(random.choice(string.ascii_letters) for i in range(10)),
+        "".join(random.choice(string.ascii_letters) for i in range(10))
+        + "/"
+        + str(uuid.uuid4()),
+    ]
+
     class args:
         subcommands = "config"
         inspect = "name"
-        name = ["".join(random.choice(string.ascii_letters) for i in range(10))]
+        name = random_test
         report = None
-        all = False
 
     print(f"Querying test names: {args.name}")
     with pytest.raises(SystemExit):
         inspect_cmd(args)
+
+    class args:
+        subcommands = "config"
+        inspect = "name"
+        name = [r.builder_names()[0]]
+        report = None
+
+    inspect_cmd(args)
 
 
 def test_buildtest_inspect_id():

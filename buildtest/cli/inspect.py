@@ -37,7 +37,7 @@ def inspect_cmd(args):
 
     # implements command 'buildtest inspect name'
     if args.inspect == "name":
-        inspect_by_name(report, args.name, args.all)
+        inspect_by_name(report, args.name)
         return
 
     if args.inspect == "query":
@@ -235,32 +235,64 @@ def inspect_buildspec(report, input_buildspecs, all_records):
     pprint(records)
 
 
-def inspect_by_name(report, names, all_records):
+def inspect_by_name(report, names):
     """Implements command ``buildtest inspect name`` which will print all test records by given name in JSON format.
+
+    .. code-block: console
+        # get last run for test exit1_fail
+        buildtest inspect name exit1_fail
+
+    .. code-block:: console
+        # get record exit1_fail that starts with id 123
+        buildtest inspect name exit1_fail/123
 
     Args:
         report (str): Path to report file
         names (list): List of test names to search in report file. This is specified as positional arguments to ``buildtest inspect name``
-        all_records (bool): Determine whether to display all records for every test that matches the buildspec. By default we retrieve the latest record.
     """
 
     records = {}
-    raw_content = report.get()
-    for buildspec in raw_content.keys():
-        for name in names:
-            if raw_content[buildspec].get(name):
-                # if --all specified we get all records
-                if all_records:
-                    records[name] = raw_content[buildspec][name]
-                # otherwise get last record of each test
-                else:
-                    records[name] = raw_content[buildspec][name][-1]
 
-    if not records:
-        sys.exit(
-            f"Unable to find any records based on input name {names}. \n"
-            f"Please select one of the following test names: {report.get_names()} \n"
-        )
+    name_lookup = report.lookup()
+    query_builders = []
+
+    for name in names:
+        # if test includes backslash we need to check if their is an ID match
+        if name.find("/") != -1:
+            test_name = name.split("/")[0]
+            tid = name.split("/")[1]
+
+            if test_name not in name_lookup.keys():
+                console.print(f"Unable to find test: {test_name} so skipping test")
+                continue
+
+            # for list of all TEST IDs corresponding to test, get first test ID that startswith same character as input ID
+            for full_ids in name_lookup[test_name]:
+                if full_ids.startswith(tid):
+                    query_builders.append(f"{test_name}/{full_ids}")
+                    break
+
+        # get latest test id for given test name
+        else:
+            tid = report.latest_testid_by_name(name)
+            if tid:
+                query_builders.append(f"{name}/{tid}")
+
+    if not query_builders:
+        sys.exit("Unable to find any tests, please try again")
+
+    query_builders = list(set(query_builders))
+    console.print(
+        f"We have detected {len(query_builders)} builders with the following names {query_builders}"
+    )
+
+    for builder in query_builders:
+        tid = builder.split("/")[1]
+        name = builder.split("/")[0]
+        if not records.get(name):
+            records[name] = []
+
+        records[name].append(report.fetch_records_by_ids([tid]))
 
     pprint(records)
 

@@ -538,6 +538,27 @@ class Report:
 
         return test_ids
 
+    def lookup(self):
+        """Create a lookup dictionary with keys corresponding to name of test names and values are list of test ids.
+
+        .. code-block:: python
+
+            from buildtest.cli.report import Report
+            r = Report()
+            r.lookup()
+            {'exit1_fail': ['913ce128-f425-488a-829d-d5d898113e8b', '54fc3dfe-50c5-4d2c-93fc-0c26364d215d', '70971081-84f9-462e-809b-a7d438a480bf'], 'exit1_pass': ['775a5545-bac5-468d-994d-85b22544306b', '0e908a64-fc81-4606-8ef4-78360563618e', '17082a05-ba32-4ef1-a38a-c2c6ea125bae', '3f50a73c-e333-4bbb-a722-aa5d72f98ac1', '964cd416-ad91-42be-bc1c-e25119f6df5d']}
+
+
+        """
+        builder = {}
+        for buildspec in self.report.keys():
+            for name in self.report[buildspec].keys():
+                builder[name] = []
+                for test in self.report[buildspec][name]:
+                    builder[name].append(test["full_id"])
+
+        return builder
+
     def builder_names(self):
         """Return a list of builder names in builder format which is in the form: `<NAME>/<TESTID>`."""
         builders = []
