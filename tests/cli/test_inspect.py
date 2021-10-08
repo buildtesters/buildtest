@@ -109,33 +109,6 @@ def test_buildtest_inspect_name():
     inspect_cmd(args)
 
 
-def test_buildtest_inspect_id():
-    report = Report()
-
-    test_ids = report.get_testids()
-    identifier = test_ids[0]
-
-    class args:
-        subcommands = "config"
-        inspect = "id"
-        id = [identifier]
-        report = None
-
-    print(f"Querying test identifier: {args.id}")
-    inspect_cmd(args)
-
-    class args:
-        subcommands = "config"
-        inspect = "id"
-        id = [str(uuid.uuid4())]
-        report = None
-
-    print(f"Querying test identifier: {args.id}")
-    # generate a random unique id which is not a valid test id when searching for tests by id.
-    with pytest.raises(SystemExit):
-        inspect_cmd(args)
-
-
 def test_buildspec_inspect_buildspec():
 
     tf = tempfile.NamedTemporaryFile(delete=True)

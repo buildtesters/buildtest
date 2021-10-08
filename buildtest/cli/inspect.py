@@ -44,11 +44,6 @@ def inspect_cmd(args):
         inspect_query(report, args)
         return
 
-    # implements command 'buildtest inspect id'
-    if args.inspect == "id":
-        inspect_by_id(report, args)
-        return
-
     if args.inspect == "buildspec":
         inspect_buildspec(report, input_buildspecs=args.buildspec, all_records=args.all)
 
@@ -238,11 +233,13 @@ def inspect_buildspec(report, input_buildspecs, all_records):
 def inspect_by_name(report, names):
     """Implements command ``buildtest inspect name`` which will print all test records by given name in JSON format.
 
-    .. code-block: console
+    .. code-block:: console
+
         # get last run for test exit1_fail
         buildtest inspect name exit1_fail
 
     .. code-block:: console
+
         # get record exit1_fail that starts with id 123
         buildtest inspect name exit1_fail/123
 
@@ -293,27 +290,5 @@ def inspect_by_name(report, names):
             records[name] = []
 
         records[name].append(report.fetch_records_by_ids([tid]))
-
-    pprint(records)
-
-
-def inspect_by_id(report, args):
-    """This method implements ``buildtest inspect id`` command"""
-    discovered_ids = []
-
-    # discover all tests based on all unique ids from report cache
-    for identifier in report.get_testids():
-        for input_id in args.id:
-            if identifier.startswith(input_id):
-                discovered_ids.append(identifier)
-
-    print("Discovered Test IDs: ", discovered_ids)
-    # if no test discovered exit with message
-    if not discovered_ids:
-        sys.exit(
-            f"Unable to find any test records based on id: {args.id}. We have found the following test ids: {report.get_testids()}"
-        )
-
-    records = report.fetch_records_by_ids(discovered_ids)
 
     pprint(records)

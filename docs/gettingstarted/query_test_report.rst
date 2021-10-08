@@ -297,67 +297,6 @@ below we will fetch all records from buildspecs **tutorials/vars.yml** and **tut
        :shell:
        :returncode: 1
 
-.. _inspect_by_id:
-
-Inspecting Test by ID via ``buildtest inspect id``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The ``buildtest inspect id`` works similar to ``buildtest inspect name`` except that it
-operates on test id. This can be useful if you want to extract a particular test record and not
-see all test records at once.
-
-You only need to specify a few characters and buildtest will resolve full test id if there is a match.
-The ``buildtest inspect id`` can operate on single or multiple ids if you want to specify multiple
-ids in single command you can do ``buildtest inspect id <identifier1> <identifier2>``.
-
-.. code-block:: console
-
-    $ buildtest it id a76
-    {
-      "a761ce8f-0442-4ff4-845b-8d7cbd6b563b": {
-        "id": "a761ce8f",
-        "full_id": "a761ce8f-0442-4ff4-845b-8d7cbd6b563b",
-        "description": "hello world example",
-        "schemafile": "script-v1.0.schema.json",
-        "executor": "generic.local.bash",
-        "compiler": null,
-        "hostname": "DOE-7086392.local",
-        "user": "siddiq90",
-        "testroot": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f",
-        "testpath": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f/hello_world.sh",
-        "stagedir": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f/stage",
-        "command": "sh hello_world_build.sh",
-        "outfile": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f/hello_world.out",
-        "errfile": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f/hello_world.err",
-        "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  hello_world:\n    executor: generic.local.bash\n    type: script\n    tags: tutorials\n    description: \"hello world example\"\n    run: echo \"hello world!\"\nmaintainers:\n- \"@shahzebsiddiqui\"\n",
-        "test_content": "#!/bin/bash \n# Content of run section\necho \"hello world!\"",
-        "buildscript_content": "#!/bin/bash\n\n\n############# START VARIABLE DECLARATION ########################\nexport BUILDTEST_TEST_NAME=hello_world\nexport BUILDTEST_TEST_ROOT=/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f\nexport BUILDTEST_BUILDSPEC_DIR=/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials\nexport BUILDTEST_STAGE_DIR=/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f/stage\nexport BUILDTEST_TEST_ID=a761ce8f-0442-4ff4-845b-8d7cbd6b563b\n############# END VARIABLE DECLARATION   ########################\n\n\n# source executor startup script\nsource /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/executor/generic.local.bash/before_script.sh\n# Run generated script\n/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f/stage/hello_world.sh\n# Get return code\nreturncode=$?\n# Exit with return code\nexit $returncode",
-        "logpath": "/var/folders/1m/_jjv09h17k37mkktwnmbkmj0002t_q/T/buildtest_fcwkh482.log",
-        "metrics": {},
-        "tags": "tutorials",
-        "starttime": "2021/08/19 11:12:32",
-        "endtime": "2021/08/19 11:12:32",
-        "runtime": "0.103966",
-        "state": "PASS",
-        "returncode": "0",
-        "output": "hello world!\n",
-        "error": "",
-        "job": {},
-        "build_script": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world/a761ce8f/hello_world_build.sh"
-      }
-    }
-
-If you specify an invalid test id using ``buildtest inspect id`` you will get an error
-message as follows.
-
-.. code-block:: console
-
-    $ buildtest inspect id lad
-
-    Unable to find any test records based on id: ['lad'], please run 'buildtest inspect list' to see list of ids.
-
-You will see similar message if you specify an invalid test name using ``buildtest inspect name`` command.
-
 .. _inspect_query:
 
 Query Test Records via ``buildtest inspect query``

@@ -152,16 +152,14 @@ _buildtest ()
       esac
       ;;
     inspect|it)
-      local cmds="--help --report -h -r buildspec id list name query"
+      local cmds="--help --report -h -r buildspec list name query"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # case statement to handle completion for buildtest inspect [name|id|list] command
       case "${COMP_WORDS[2]}" in
-        id)
-          COMPREPLY=( $( compgen -W "$(_test_ids)" -- $cur ) );;
         list)
-          local opts="--help --terse -h -t"
+          local opts="--builder --help --no-header --terse -b -h -n -t"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         name)
           COMPREPLY=( $( compgen -W "$(_builder_names)" -- $cur ) )
