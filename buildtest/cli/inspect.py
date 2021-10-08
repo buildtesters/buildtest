@@ -1,7 +1,6 @@
 """This module implements methods for buildtest inspect command that can be used
 to retrieve test record from report file in JSON format."""
 
-import re
 import sys
 
 from buildtest.cli.report import Report
