@@ -89,7 +89,11 @@ def main():
     logger.info(f"Processing buildtest configuration file: {configuration.file}")
 
     if not is_file(BUILDSPEC_CACHE_FILE):
-        BuildspecCache(configuration=configuration)
+        root_buildspecs = []
+        if hasattr(args, "root"):
+            root_buildspecs = args.root
+
+        BuildspecCache(roots=root_buildspecs, configuration=configuration)
     # buildtest build command
     if args.subcommands in ["build", "bd"]:
 
