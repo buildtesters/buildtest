@@ -1,5 +1,4 @@
 from buildtest.defaults import console
-from rich.panel import Panel
 from rich.table import Table
 
 
