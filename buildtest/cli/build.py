@@ -742,9 +742,11 @@ class BuildTest:
         table.add_column("[blue]buildspecs", style="blue", overflow="fold")
 
         for builder in self.builders:
+            description = builder.recipe.get("description") or ""
+
             table.add_row(
                 f"[red]{builder}",
-                f"[turquoise4]{builder.recipe.get('description')}",
+                f"[turquoise4]{description}",
                 f"[yellow]{builder.buildspec}",
             )
 
