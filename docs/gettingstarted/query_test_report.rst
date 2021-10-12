@@ -307,15 +307,14 @@ The report file must be valid JSON file that buildtest understands in order to u
 .. code-block:: console
 
     $ buildtest report -r python.json --format name,id
-    Reading report file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/docs/python.json
-
-    +--------------+----------+
-    | name         | id       |
-    +==============+==========+
-    | circle_area  | 6be6c404 |
-    +--------------+----------+
-    | python_hello | f21ba744 |
-    +--------------+----------+
+                          Report File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/python.json
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ name                                                               ┃ id                                            ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ circle_area                                                        │ a2814554                                      │
+    ├────────────────────────────────────────────────────────────────────┼───────────────────────────────────────────────┤
+    │ python_hello                                                       │ dd447e43                                      │
+    └────────────────────────────────────────────────────────────────────┴───────────────────────────────────────────────┘
 
 
 .. code-block:: console
