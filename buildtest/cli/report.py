@@ -225,15 +225,15 @@ class Report:
 
             # if file doesn't exist we terminate with message
             if not resolved_buildspecs:
-                print(
+                raise BuildTestError(
                     f"Invalid File Path for filter field 'buildspec': {self.filter['buildspec']}"
                 )
-                sys.exit(0)
 
             # if file not found in cache we exit
             if not resolved_buildspecs in self.report.keys():
-                print(f"buildspec file: {resolved_buildspecs} not found in cache")
-                sys.exit(0)
+                raise BuildTestError(
+                    f"buildspec file: {resolved_buildspecs} not found in cache"
+                )
 
             # need to set as a list since we will loop over all tests
             self.filtered_buildspecs = [resolved_buildspecs]
@@ -241,10 +241,9 @@ class Report:
         # ensure 'state' field in filter is either 'PASS' or 'FAIL', if not raise error
         if self.filter.get("state"):
             if self.filter["state"] not in ["PASS", "FAIL"]:
-                print(
+                raise BuildTestError(
                     f"filter argument 'state' must be 'PASS' or 'FAIL' got value {self.filter['state']}"
                 )
-                sys.exit(0)
 
     def _filter_by_names(self, name):
         """Filter test by name of test. This method will return True if record should be processed,
@@ -478,7 +477,7 @@ class Report:
 
         join_list = []
         title = title or f"Report File: {self.reportfile()}"
-        table = Table(title=title, show_lines=True)
+        table = Table(title=title, show_lines=True, expand=True)
         for field in self.display_table.keys():
             table.add_column(f"[blue]{field}", overflow="fold")
             join_list.append(self.display_table[field])

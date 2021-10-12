@@ -109,18 +109,18 @@ def test_invalid_filters():
 
     # run 'buildtest report --filter state=UNKNOWN --format name,state',
     # this raises error because UNKNOWN is not valid value for state field
-    with pytest.raises(SystemExit):
+    with pytest.raises(BuildTestError):
         Report(filter_args={"state": "UNKNOWN"}, format_args="name,state")
 
     tf = tempfile.NamedTemporaryFile(delete=True)
     tf.close()
     # test invalid buildspec file that doesn't exist in filesystem
-    with pytest.raises(SystemExit):
+    with pytest.raises(BuildTestError):
         Report(filter_args={"buildspec": tf.name}, format_args="name,returncode,state")
 
     # run 'buildtest report --filter buildspec=$HOME/.bashrc --format name,returncode,state
     # this will raise error even though file is valid it won't be found in cache
-    with pytest.raises(SystemExit):
+    with pytest.raises(BuildTestError):
         Report(
             filter_args={"buildspec": "$HOME/.bashrc"},
             format_args="name,returncode,state",
