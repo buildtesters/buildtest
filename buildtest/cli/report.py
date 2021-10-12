@@ -477,7 +477,7 @@ class Report:
 
         join_list = []
         title = title or f"Report File: {self.reportfile()}"
-        table = Table(title=title, show_lines=True)
+        table = Table(title=title, show_lines=True, expand=True)
         for field in self.display_table.keys():
             table.add_column(f"[blue]{field}", overflow="fold")
             join_list.append(self.display_table[field])

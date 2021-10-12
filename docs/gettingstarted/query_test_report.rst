@@ -141,16 +141,16 @@ test you can use ``--oldest`` option, likewise you can retrieve the latest run v
 Let's take a look at this example, we filter by test name ``exit1_pass`` which retrieves all
 test runs. In subsequent example we filter by latest and oldest run.
 
-.. command-output:: buildtest report --filter name=hello_f --format name,id,starttime
+.. command-output:: buildtest report --filter name=exit1_pass --format name,id,starttime
 
-.. command-output:: buildtest report --filter name=hello_f --format name,id,starttime --oldest
+.. command-output:: buildtest report --filter name=exit1_pass --format name,id,starttime --oldest
 
-.. command-output:: buildtest report --filter name=hello_f --format name,id,starttime --latest
+.. command-output:: buildtest report --filter name=exit1_pass --format name,id,starttime --latest
 
 You may combine **--oldest** and **--latest** options in same command, in this case
 buildtest will retrieve the first and last record of every test.
 
-.. command-output:: buildtest report --filter name=hello_f --format name,id,starttime --oldest --latest
+.. command-output:: buildtest report --filter name=exit1_pass --format name,id,starttime --oldest --latest
 
 Terse Output
 -------------
