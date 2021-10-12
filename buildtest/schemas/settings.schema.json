@@ -22,7 +22,6 @@
       "required": [
         "executors",
         "moduletool",
-        "load_default_buildspecs",
         "hostnames",
         "compilers"
       ],
@@ -46,10 +45,6 @@
             "type": "string"
           },
           "description": "Specify a list of directory paths to search buildspecs. This field can be used with ``buildtest buildspec find`` to rebuild buildspec cache or build tests using ``buildtest build`` command"
-        },
-        "load_default_buildspecs": {
-          "type": "boolean",
-          "description": "Specify whether buildtest should automatically load  buildspecs provided in buildtest repo into buildspec cache"
         },
         "testdir": {
           "type": "string",

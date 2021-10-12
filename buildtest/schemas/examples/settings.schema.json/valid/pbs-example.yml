@@ -1,9 +1,7 @@
 system:
   generic:
     hostnames: ['.*']
-
     moduletool: N/A
-    load_default_buildspecs: True
     executors:
       defaults:
          pollinterval: 10

@@ -21,7 +21,6 @@ suitable for your site
     system:
       ascent:
         moduletool: lmod
-        load_default_buildspecs: false
         executors:
           defaults:
             launcher: bsub
@@ -77,7 +76,6 @@ will submit job using ``qsub -q yarrow`` when using this executor.
         hostnames:
         - jlselogin*
         moduletool: environment-modules
-        load_default_buildspecs: false
         executors:
           defaults:
             launcher: qsub

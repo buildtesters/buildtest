@@ -1,9 +1,7 @@
 system:
   generic:
     hostnames: ['.*']
-
     moduletool: lmod
-    load_default_buildspecs: False
     executors:
       defaults:
         pollinterval: 10
