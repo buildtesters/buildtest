@@ -11,8 +11,8 @@ class Job:
         return self._state
 
     def get(self):
-        """Return Job ID"""
-        return self.jobid
+        """Return Job ID as string type"""
+        return str(self.jobid)
 
     def is_pending(self):
         """Check if job is in pending state"""

@@ -2,7 +2,6 @@ system:
   ascent:
     hostnames: [login1.ascent.olcf.ornl.gov]
     moduletool: lmod
-    load_default_buildspecs: false
     executors:
       defaults:
         launcher: bsub
