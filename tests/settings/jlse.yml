@@ -3,7 +3,6 @@ system:
     hostnames:
     - jlselogin*
     moduletool: environment-modules
-    load_default_buildspecs: false
     executors:
       defaults:
         launcher: qsub

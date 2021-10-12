@@ -2,7 +2,6 @@ system:
   generic:
     hostnames: [".*"]
     moduletool: lmod
-    load_default_buildspecs: True
     executors:
       local:
         bash:

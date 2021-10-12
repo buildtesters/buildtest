@@ -83,7 +83,7 @@ class PollQueue:
             table.add_row(
                 str(builder),
                 builder.executor,
-                builder.job.get(),
+                str(builder.job.get()),
                 builder.job.state(),
                 str(builder.timer.duration()),
             )
