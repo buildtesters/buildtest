@@ -115,93 +115,42 @@ The ``state`` filter field expects value of ``PASS`` or ``FAIL`` so if you speci
 invalid state you will get an error as follows.
 
 .. command-output:: buildtest rt --filter state=UNKNOWN
-    :returncode: 0
+    :returncode: 1
 
 The ``buildspec`` field expects a valid file path, it can be an absolute or relative
 path, buildtest will resolve absolute path and check if file exist and is in the report
 file. If it's an invalid file we get an error such as
 
 .. command-output:: buildtest rt --filter buildspec=/path/to/invalid.yml
-    :returncode: 0
+    :returncode: 1
 
 You may have a valid filepath for buildspec filter field such as
 ``$BUILDTEST_ROOT/tutorials/invalid_executor.yml``, but there is no record of a test in the report cache
 because this test wasn't run. In this case you will get the following message.
 
 .. command-output:: buildtest rt --filter buildspec=$BUILDTEST_ROOT/tutorials/invalid_executor.yml
-    :returncode: 0
+    :returncode: 1
 
 Find Latest or Oldest test
 --------------------------
 
 We can search for oldest or latest test for any given test. This can be useful if you
-want to see first or last test run. If you want to retrieve the oldest
-test you can use ``--oldest`` option. buildtest will append tests, therefore last
-record in dictionary will be latest record, similarly first record is the oldest record.
+want to see first or last test run for a particular test. If you want to retrieve the oldest
+test you can use ``--oldest`` option, likewise you can retrieve the latest run via ``--latest`` option.
 
-Let's take a look at this example, we filter by test name ``hello_f`` which retrieves
-three entries. Now let's filter by oldest record by specifying **--oldest** option
-and it will retrieve the first record which is test id **349f3ada**.
+Let's take a look at this example, we filter by test name ``exit1_pass`` which retrieves all
+test runs. In subsequent example we filter by latest and oldest run.
 
-.. code-block:: console
+.. command-output:: buildtest report --filter name=hello_f --format name,id,starttime
 
-   $ buildtest report --filter name=hello_f --format name,id,starttime
-    Reading Report File: /Users/siddiq90/.buildtest/report.json
+.. command-output:: buildtest report --filter name=hello_f --format name,id,starttime --oldest
 
-    +---------+----------+---------------------+
-    | name    | id       | starttime           |
-    +=========+==========+=====================+
-    | hello_f | 349f3ada | 2021/02/11 18:13:08 |
-    +---------+----------+---------------------+
-    | hello_f | ecd4a3f2 | 2021/02/11 18:13:18 |
-    +---------+----------+---------------------+
-    | hello_f | 5c87978b | 2021/02/11 18:13:33 |
-    +---------+----------+---------------------+
-
-    $ buildtest report --filter name=hello_f --format name,id,starttime --oldest
-    Reading Report File: /Users/siddiq90/.buildtest/report.json
-
-    +---------+----------+---------------------+
-    | name    | id       | starttime           |
-    +=========+==========+=====================+
-    | hello_f | 349f3ada | 2021/02/11 18:13:08 |
-    +---------+----------+---------------------+
-
-
-If you want to retrieve the latest test result you can use ``--latest`` option which
-will retrieve the last record, in the same example we will retrieve test id `5c87978b`.
-
-
-.. code-block:: console
-
-    $ buildtest report --filter name=hello_f --format name,id,starttime --latest
-    Reading Report File: /Users/siddiq90/.buildtest/report.json
-
-    +---------+----------+---------------------+
-    | name    | id       | starttime           |
-    +=========+==========+=====================+
-    | hello_f | 5c87978b | 2021/02/11 18:13:33 |
-    +---------+----------+---------------------+
+.. command-output:: buildtest report --filter name=hello_f --format name,id,starttime --latest
 
 You may combine **--oldest** and **--latest** options in same command, in this case
 buildtest will retrieve the first and last record of every test.
 
-.. code-block:: console
-
-    $ buildtest report --format name,id,starttime --oldest --latest | more
-    Reading Report File: /Users/siddiq90/.buildtest/report.json
-
-    +------------------------------+----------+---------------------+
-    | name                         | id       | starttime           |
-    +==============================+==========+=====================+
-    | variables_bash               | 750f48bc | 2021/02/11 18:13:03 |
-    +------------------------------+----------+---------------------+
-    | variables_bash               | 1bdfd403 | 2021/02/11 18:13:32 |
-    +------------------------------+----------+---------------------+
-    | ulimit_filelock_unlimited    | b7b852e4 | 2021/02/11 18:13:03 |
-    +------------------------------+----------+---------------------+
-    | ulimit_filelock_unlimited    | 56345a43 | 2021/02/11 18:13:18 |
-    +------------------------------+----------+---------------------+
+.. command-output:: buildtest report --filter name=hello_f --format name,id,starttime --oldest --latest
 
 Terse Output
 -------------
