@@ -48,19 +48,18 @@ Reference this group by using
 {"$ref":"settings.schema.json#/definitions/system"}
 ```
 
-| Property                                            | Type      | Required | Nullable       | Defined by                                                                                                                                                                        |
-| :-------------------------------------------------- | :-------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [hostnames](#hostnames)                             | `array`   | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-hostnames.md "settings.schema.json#/definitions/system/properties/hostnames")                             |
-| [description](#description)                         | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-description.md "settings.schema.json#/definitions/system/properties/description")                         |
-| [buildspec_roots](#buildspec_roots)                 | `array`   | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-buildspec_roots.md "settings.schema.json#/definitions/system/properties/buildspec_roots")                 |
-| [load_default_buildspecs](#load_default_buildspecs) | `boolean` | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-load_default_buildspecs.md "settings.schema.json#/definitions/system/properties/load_default_buildspecs") |
-| [testdir](#testdir)                                 | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-testdir.md "settings.schema.json#/definitions/system/properties/testdir")                                 |
-| [logdir](#logdir)                                   | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-logdir.md "settings.schema.json#/definitions/system/properties/logdir")                                   |
-| [moduletool](#moduletool)                           | `string`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-moduletool.md "settings.schema.json#/definitions/system/properties/moduletool")                           |
-| [processor](#processor)                             | `object`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor.md "settings.schema.json#/definitions/system/properties/processor")                             |
-| [compilers](#compilers)                             | `object`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers.md "settings.schema.json#/definitions/system/properties/compilers")                             |
-| [executors](#executors)                             | `object`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors.md "settings.schema.json#/definitions/system/properties/executors")                             |
-| [cdash](#cdash)                                     | `object`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-cdash.md "settings.schema.json#/definitions/system/properties/cdash")                                     |
+| Property                            | Type     | Required | Nullable       | Defined by                                                                                                                                                        |
+| :---------------------------------- | :------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [hostnames](#hostnames)             | `array`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-hostnames.md "settings.schema.json#/definitions/system/properties/hostnames")             |
+| [description](#description)         | `string` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-description.md "settings.schema.json#/definitions/system/properties/description")         |
+| [buildspec_roots](#buildspec_roots) | `array`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-buildspec_roots.md "settings.schema.json#/definitions/system/properties/buildspec_roots") |
+| [testdir](#testdir)                 | `string` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-testdir.md "settings.schema.json#/definitions/system/properties/testdir")                 |
+| [logdir](#logdir)                   | `string` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-logdir.md "settings.schema.json#/definitions/system/properties/logdir")                   |
+| [moduletool](#moduletool)           | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-moduletool.md "settings.schema.json#/definitions/system/properties/moduletool")           |
+| [processor](#processor)             | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor.md "settings.schema.json#/definitions/system/properties/processor")             |
+| [compilers](#compilers)             | `object` | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers.md "settings.schema.json#/definitions/system/properties/compilers")             |
+| [executors](#executors)             | `object` | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors.md "settings.schema.json#/definitions/system/properties/executors")             |
+| [cdash](#cdash)                     | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-cdash.md "settings.schema.json#/definitions/system/properties/cdash")                     |
 
 ### hostnames
 
@@ -115,24 +114,6 @@ Specify a list of directory paths to search buildspecs. This field can be used w
 #### buildspec_roots Type
 
 `string[]`
-
-### load_default_buildspecs
-
-Specify whether buildtest should automatically load  buildspecs provided in buildtest repo into buildspec cache
-
-`load_default_buildspecs`
-
-*   is required
-
-*   Type: `boolean`
-
-*   cannot be null
-
-*   defined in: [buildtest configuration schema](settings-definitions-system-properties-load_default_buildspecs.md "settings.schema.json#/definitions/system/properties/load_default_buildspecs")
-
-#### load_default_buildspecs Type
-
-`boolean`
 
 ### testdir
 

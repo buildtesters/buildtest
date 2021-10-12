@@ -1,9 +1,7 @@
 system:
   generic:
     hostnames: ['.*']
-
     moduletool: lmod
-    load_default_buildspecs: True
     buildspec_roots:
       - $HOME/buildtest-cori
     testdir: /tmp/buildtest
