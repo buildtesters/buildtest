@@ -7,8 +7,6 @@ system:
     description: Generic System
     # specify module system used at your site (environment-modules, lmod)
     moduletool: N/A
-    # boolean to determine if buildspecs provided in buildtest repo should be loaded in buildspec cache
-    load_default_buildspecs: True
 
     executors:
       # define local executors for running jobs locally

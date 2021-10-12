@@ -1,12 +1,9 @@
 system:
   generic:
     hostnames: ['.*']
-
     logdir: $BUILDTEST_ROOT/logs
     testdir: $BUILDTEST_ROOT/tests
-
     moduletool: N/A
-    load_default_buildspecs: False
     cdash:
       url: https://my.cdash.org
       project: buildtest

@@ -102,7 +102,7 @@ class BuildspecCache:
         """Add all paths to search for buildspecs. We must read configuration file
         and check property ``buildspec_roots`` for list of directories to search.
         We check all directories exist, if any fail we don't add them to path.
-        If ``load_default_buildspecs: True`` is set we will add the default buildspecs  which are
+        If no root directories are specified we load the default buildspec roots which are
         `tutorials <https://github.com/buildtesters/buildtest/tree/devel/tutorials>`_
         and `general_tests <https://github.com/buildtesters/buildtest/tree/devel/general_tests>`_ directory.
         """
@@ -112,8 +112,8 @@ class BuildspecCache:
         if buildspec_paths:
             self.roots += buildspec_paths
 
-        # only load default buildspecs if 'load_default_buildspecs' set to True
-        if self.configuration.target_config.get("load_default_buildspecs"):
+        # if no roots specified we load the default buildspec roots.
+        if not self.roots:
             self.paths += BUILDSPEC_DEFAULT_PATH
 
         # for every root buildspec defined in configuration or via --root option,
@@ -124,10 +124,10 @@ class BuildspecCache:
             for root in self.roots:
                 path = resolve_path(root, exist=False)
                 if not os.path.exists(path):
-                    print(f"Path: {path} does not exist!")
+                    console.print(f"[red]Path: {path} does not exist!")
 
                 if is_file(path):
-                    print(f"Path: {path} must be a directory not a file")
+                    console.print(f"[red]Path: {path} must be a directory not a file")
 
                 if is_dir(path):
                     self.paths.append(path)
@@ -699,18 +699,23 @@ class BuildspecCache:
         for i in t:
             table.add_row(*i)
 
-        # print terse output
-        if self.terse:
-
-            if not self.header:
-                print("|".join(self.table.keys()))
-
-            for i in t:
-                print("|".join(i))
-
+        if not self.terse:
+            console.print(table)
             return
 
-        console.print(table)
+        # print terse output
+
+        if not self.header:
+            print("|".join(self.table.keys()))
+
+        for row in t:
+
+            if not isinstance(row, list):
+                continue
+
+            # if any entry contains None type we convert to empty string
+            row = ["" if item is None else item for item in row]
+            print("|".join(row))
 
     def list_maintainers(self):
         """Return a list of maintainers"""

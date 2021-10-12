@@ -50,7 +50,7 @@ reference :ref:`executors <configuring_executors>` in buildspecs. In this exampl
 cluster called ``generic`` which is a dummy cluster used for running tutorial examples. The
 **required** fields in the system scope are the following::
 
-    "required": ["executors", "moduletool", "load_default_buildspecs","hostnames", "compilers"]
+    "required": ["executors", "moduletool", "hostnames", "compilers"]
 
 The ``hostnames`` field is a list of nodes that belong to the cluster where buildtest should be run. Generally,
 these hosts should be your login nodes in your cluster. buildtest will process **hostnames** field across
@@ -133,18 +133,10 @@ your buildspec cache via ``--rebuild`` option, buildtest will search for all bui
 directories specified by **buildspec_roots** property. buildtest will recursively
 find all **.yml** extension and validate each buildspec with appropriate schema.
 
-.. _load_default_buildspecs:
-
-Load Default Buildspecs
-------------------------
-
 By default buildtest will add the ``$BUILDTEST_ROOT/tutorials`` and ``$BUILDTEST_ROOT/general_tests``
-to search path when searching for buildspecs with ``buildtest buildspec find`` command.
-This can configured via ``load_default_buildspecs`` property which expects a boolean value.
-
-By default we enable this property, however in practice you would want to disable this
-``load_default_buildspecs: False`` if you only care about running your facility tests.
-
+to search path when searching for buildspecs with ``buildtest buildspec find`` command. This
+is only true if there is no root buildspec directory specified which can be done via `buildspec_roots`
+or `--root` option.
 
 .. _configuring_executors:
 
@@ -480,14 +472,13 @@ the name of PBS queue that is available in your system.
 
 .. code-block:: yaml
     :linenos:
-    :emphasize-lines: 12-14
+    :emphasize-lines: 11-13
 
     system:
       generic:
         hostnames: ['.*']
 
         moduletool: N/A
-        load_default_buildspecs: True
         executors:
           defaults:
              pollinterval: 10
