@@ -12,7 +12,7 @@ Setup
 -------
 
 In order to complete this part of the tutorial you will need `docker` installed on your machine which you can get
-by [installing docker](https://docs.docker.com/get-docker/)
+by `installing docker <https://docs.docker.com/get-docker/>`_.
 
 To get started we will pull a docker container and start interactive shell.
 
@@ -21,7 +21,7 @@ To get started we will pull a docker container and start interactive shell.
     $ docker pull ecpe4s/ubuntu20.04-runner-x86_64:2021-10-01
     $ docker run -it -v $BUILDTEST_ROOT:/tmp ecpe4s/ubuntu20.04-runner-x86_64:2021-10-01 bash
 
-!!! note::
+.. note::
 
     All commands below are run inside the container
 
@@ -44,8 +44,8 @@ following configuration file.
 
     $ export BUILDTEST_CONFIGFILE=$BUILDTEST_ROOT/buildtest/settings/e4s_container_config.yml
 
-Let's confirm the configuration is valid by using `buildtest config validate`. Buildtest will read the configuration
-file pointed by `BUILDTEST_CONFIGFILE` instead of passing this via command line or copying to $HOME/.buildtest/config.yml
+Let's confirm the configuration is valid by using ``buildtest config validate``. Buildtest will read the configuration
+file pointed by ``BUILDTEST_CONFIGFILE`` instead of passing configuration file via command line or copying to **$HOME/.buildtest/config.yml**.
 
 .. code-block:: console
 
@@ -609,8 +609,8 @@ Next let's build this test.
     A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /tmp/buildtest.log
 
 We can see the generated test using ``buildtest inspect query`` which can show output of multiple tests. In example below we see the two test runs
-and take note of ``export OMP_NUM_THREADS`` defined per test. The `-d all` will fetch all records for test name **override_environmentvars** and
-`-t` will fetch the test script.
+and take note of ``export OMP_NUM_THREADS`` defined per test. The ``-d all`` will fetch all records for test name **override_environmentvars** and
+``-t`` will fetch the test script.
 
 .. code-block:: console
 
@@ -694,8 +694,6 @@ test will pass based on returncode 0 based on ``default`` property however for `
 property to check based on regular expression. We will expect both tests to fail if run these test.
 
 .. code-block:: console
-    :linenos:
-    :emphasize-lines: 68
 
     $ buildtest build -b tutorials/compilers/compiler_status_regex.yml
     ╭────────────────────────────────────── buildtest summary ──────────────────────────────────────╮
@@ -822,7 +820,7 @@ the generated binary. By default, buildtest will run the program standalone, but
 may want to customize how job is run. This may include passing arguments or running
 binary through a job/mpi launcher. The ``run`` property can be used to configure how program is executed.
 The compiled executable will be present in local directory which can be accessed via ``./$_EXEC``. In example below
-we pass arguments ``1 3` for **builtin_gcc** compiler and ``100 200`` for **gcc_11.2.0** compiler.
+we pass arguments ``1 3`` for **builtin_gcc** compiler and ``100 200`` for **gcc_11.2.0** compiler.
 
 .. literalinclude:: ../tutorials/compilers/custom_run.yml
     :language: yaml
