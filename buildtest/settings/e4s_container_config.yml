@@ -1,0 +1,57 @@
+system:
+  generic:
+    # specify list of hostnames where buildtest can run for given system record
+    hostnames: [".*"]
+
+    # system description
+    description: Generic System
+    # specify module system used at your site (environment-modules, lmod)
+    moduletool: N/A
+
+    executors:
+      # define local executors for running jobs locally
+      local:
+        bash:
+          description: submit jobs on local machine using bash shell
+          shell: bash
+        sh:
+          description: submit jobs on local machine using sh shell
+          shell: sh
+
+    # compiler block
+    compilers:
+      # regular expression to search for compilers based on module pattern. Used with 'buildtest config compilers find' to generate compiler instance
+      # find:
+      #  gcc: "^(gcc)"
+      #  intel: "^(intel)"
+      #  cray: "^(craype)"
+      #  pgi: "^(pgi)"
+      #  cuda: ^(cuda)"
+      #  clang: "^(clang)"
+
+      # declare compiler instance which can be site-specific. You can let 'buildtest config compilers find' generate compiler section
+      compiler:
+        gcc:
+          builtin_gcc:
+            cc: /usr/bin/gcc
+            fc: /usr/bin/gfortran
+            cxx: /usr/bin/g++
+          gcc_11.2.0:
+            cc: /bootstrap/view/bin/gcc
+            fc: /bootstrap/view/bin/gfortran
+            cxx: /bootstrap/view/bin/g++
+
+    # location of log directory
+    # logdir: /tmp/
+
+    # specify location where buildtest will write tests
+    # testdir: /tmp
+
+    # specify one or more directory where buildtest should load buildspecs
+    # buildspec_roots: []
+
+    cdash:
+      url: https://my.cdash.org/
+      project: buildtest
+      site: generic
+      buildname: tutorials

@@ -39,7 +39,6 @@ class SpackBuilder(BuilderBase):
         self.metrics = deep_get(
             self.recipe, "executors", self.executor, "metrics"
         ) or self.recipe.get("metrics")
-        self.generate_script()
 
     def generate_script(self):
         """Method responsible for generating the content of test script for spack buildsystem"""
@@ -177,7 +176,7 @@ class SpackBuilder(BuilderBase):
 
         if not spack_root:
             raise BuildTestError(
-                f"Unable to find root of spack based on directory: {path}"
+                f"[[blue]{self}[/]]: Unable to find root of spack based on directory: {path}"
             )
 
         setup_script = os.path.join(spack_root, "share", "spack", "setup-env.sh")
@@ -186,7 +185,7 @@ class SpackBuilder(BuilderBase):
 
         if not sourced_script:
             raise BuildTestError(
-                f"Unable to find spack setup-env.sh script: {setup_script}"
+                f"[[blue]{self}[/]]: Unable to find spack setup-env.sh script: {setup_script}"
             )
         return sourced_script
 

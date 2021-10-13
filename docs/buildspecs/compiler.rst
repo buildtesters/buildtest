@@ -8,6 +8,50 @@ single source file compilation. In order to use the compiler schema you must set
 sub-schema. See `compiler schema docs <https://buildtesters.github.io/buildtest/pages/schemadocs/compiler-v1.html>`_
 
 
+Setup
+-------
+
+In order to complete this part of the tutorial you will need `docker` installed on your machine which you can get
+by `installing docker <https://docs.docker.com/get-docker/>`_.
+
+To get started we will pull a docker container and start interactive shell.
+
+.. code-block:: console
+
+    $ docker pull ecpe4s/ubuntu20.04-runner-x86_64:2021-10-01
+    $ docker run -it -v $BUILDTEST_ROOT:/tmp ecpe4s/ubuntu20.04-runner-x86_64:2021-10-01 bash
+
+.. note::
+
+    All commands below are run inside the container
+
+Inside the docker container you will need to install buildtest. We have bind mount our host directory **$BUILDTEST_ROOT** to
+`/tmp` in container. To get started we must navigate to ``/tmp`` and install buildtest
+
+
+.. code-block:: console
+
+    $ cd /tmp
+    $ source setup.sh
+    Installing buildtest dependencies
+    BUILDTEST_ROOT: /tmp
+    buildtest command: /tmp/bin/buildtest
+
+For these examples we will use a custom configuration file for this container. Please set the environment `BUILDTEST_CONFIGFILE` to the
+following configuration file.
+
+.. code-block:: console
+
+    $ export BUILDTEST_CONFIGFILE=$BUILDTEST_ROOT/buildtest/settings/e4s_container_config.yml
+
+Let's confirm the configuration is valid by using ``buildtest config validate``. Buildtest will read the configuration
+file pointed by ``BUILDTEST_CONFIGFILE`` instead of passing configuration file via command line or copying to **$HOME/.buildtest/config.yml**.
+
+.. code-block:: console
+
+    $ buildtest config validate
+    /tmp/buildtest/settings/e4s_container_config.yml is valid
+
 Compilation Examples
 ----------------------
 
@@ -37,30 +81,101 @@ configuration applicable to a specific compiler group.
 
 Shown below is an example build for the buildspec example
 
-.. program-output:: cat docgen/buildspecs/compiler/gnu_hello.txt
+.. code-block:: console
+
+    $ buildtest build -b tutorials/compilers/gnu_hello_fortran.yml
+    ╭──────────────────────────────────── buildtest summary ────────────────────────────────────╮
+    │                                                                                           │
+    │ User:               root                                                                  │
+    │ Hostname:           ec1164c68c64                                                          │
+    │ Platform:           Linux                                                                 │
+    │ Current Time:       2021/10/13 12:05:32                                                   │
+    │ buildtest path:     /tmp/bin/buildtest                                                    │
+    │ buildtest version:  0.11.0                                                                │
+    │ python path:        /usr/bin/python                                                       │
+    │ python version:     3.8.10                                                                │
+    │ Configuration File: /tmp/buildtest/settings/e4s_container_config.yml                      │
+    │ Test Directory:     /tmp/var/tests                                                        │
+    │ Command:            /tmp/bin/buildtest build -b tutorials/compilers/gnu_hello_fortran.yml │
+    │                                                                                           │
+    ╰───────────────────────────────────────────────────────────────────────────────────────────╯
+    ────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────
+    Discovered Buildspecs:  1
+    Excluded Buildspecs:  0
+    Detected Buildspecs after exclusion:  1
+                  Discovered buildspecs
+    ╔════════════════════════════════════════════════╗
+    ║ Buildspecs                                     ║
+    ╟────────────────────────────────────────────────╢
+    ║ /tmp/tutorials/compilers/gnu_hello_fortran.yml ║
+    ╚════════════════════════════════════════════════╝
+    ────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ───────────────────────────────────────────────────────────────────────────────────
+    Valid Buildspecs: 1
+    Invalid Buildspecs: 0
+    /tmp/tutorials/compilers/gnu_hello_fortran.yml: VALID
+
+
+    Total builder objects created: 1
+
+
+                                                          Builder Details
+    ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder          ┃ Executor           ┃ description                     ┃ buildspecs                                     ┃
+    ┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ hello_f/6cbeda04 │ generic.local.bash │ Hello World Fortran Compilation │ /tmp/tutorials/compilers/gnu_hello_fortran.yml │
+    └──────────────────┴────────────────────┴─────────────────────────────────┴────────────────────────────────────────────────┘
+    ───────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────
+    [12:05:32] hello_f/6cbeda04: Creating test directory - /tmp/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/6cbeda04                                                   base.py:440
+               hello_f/6cbeda04: Creating stage directory - /tmp/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/6cbeda04/stage                                            base.py:450
+               hello_f/6cbeda04: Writing build script: /tmp/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/6cbeda04/hello_f_build.sh                                      base.py:567
+    ───────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────
+    ______________________________
+    Launching test: hello_f/6cbeda04
+    hello_f/6cbeda04: Running Test script /tmp/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/6cbeda04/hello_f_build.sh
+    hello_f/6cbeda04: completed with returncode: 0
+    hello_f/6cbeda04: Writing output file -  /tmp/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/6cbeda04/hello_f.out
+    hello_f/6cbeda04: Writing error file - /tmp/var/tests/generic.local.bash/gnu_hello_fortran/hello_f/6cbeda04/hello_f.err
+                                                     Test Summary
+    ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
+    ┃ Builder          ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime ┃
+    ┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
+    │ hello_f/6cbeda04 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.40491 │
+    └──────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴─────────┘
+
+
+
+    Passed Tests: 1/1 Percentage: 100.000%
+    Failed Tests: 0/1 Percentage: 0.000%
+
+
+    Writing Logfile to: /tmp/buildtest_xqglkm0j.log
+    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /tmp/buildtest.log
 
 The generated test for test name **hello_f** is the following:
 
 .. code-block:: shell
 
-    #!/bin/bash
+    $ cat $(buildtest path -t hello_f/d686b23d)
+    #!/usr/bin/bash
 
 
     # name of executable
     _EXEC=hello.f90.exe
     # Compilation Line
-    gfortran -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/hello.f90
+    gfortran -Wall -o $_EXEC /tmp/tutorials/compilers/src/hello.f90
 
 
     # Run executable
     ./$_EXEC
 
+
 buildtest will use compiler wrappers specified in your settings
 to build the test, however these values can be overridden in buildspec file which
 will be discussed later.
 
-The ``builtin_gcc`` compiler is defined below this can be retrieved by running
-``buildtest config compilers``. The ``-y`` will display compilers in YAML format.
+You can see the compiler declaration from our configuration file by running ``buildtest config compilers -y``
+which will display output in YAML format. Note that for each compiler instance one can define name of compiler
+and path to ``cc``, ``fc``, ``cxx`` wrapper.
 
 .. code-block:: console
 
@@ -70,12 +185,14 @@ The ``builtin_gcc`` compiler is defined below this can be retrieved by running
         cc: /usr/bin/gcc
         cxx: /usr/bin/g++
         fc: /usr/bin/gfortran
+      gcc_11.2.0:
+        cc: /bootstrap/view/bin/gcc
+        cxx: /bootstrap/view/bin/g++
+        fc: /bootstrap/view/bin/gfortran
 
-buildtest will compile and run the code depending on the compiler flags. buildtest,
-will detect the file extension of source file (``source`` property) to detect
-programming language and finally generate the appropriate C, C++, or Fortran
-compilation based on language detected. In this example, buildtest detects a
-**.f90** file extension and determines this is a Fortran program.
+buildtest will detect the file extension of source file to detect programming language
+and generate the appropriate C, C++, or Fortran compilation line based on language detected.
+In this example, buildtest detects a **.f90** file extension and determines this is a Fortran program.
 
 Shown below is the file extension table buildtest uses for determining the programming
 language.
@@ -92,186 +209,216 @@ Compiler Selection
 ---------------------
 
 buildtest selects compiler based on ``name`` property which is a list of regular expression
-applied for available compilers defined in buildtest configuration. In example below
-we select all compilers with regular expression ``^(builtin_gcc|gcc)`` that is specified in line ``name: ["^(builtin_gcc|gcc)"]``
+applied for available compilers defined in buildtest configuration. In this next example, we will
+compile an OpenACC code that will compute vector addition. For this test we will use ``gcc_11.2.0`` compiler
+instance specified in the **name** property
 
 .. literalinclude:: ../tutorials/compilers/vecadd.yml
    :language: yaml
 
-Currently, we have 3 compilers defined in buildtest settings, shown below is a listing
-of all compilers. We used ``buildtest config compilers find`` to :ref:`detect compilers <detect_compilers>`.
-
-.. code-block:: console
-
-    $ buildtest config compilers
-    builtin_gcc
-    gcc/9.3.0-n7p74fd
-    gcc/10.2.0-37fmsw7
-
-.. note::
-   This example may vary on your machine depending on compilers available via ``module`` command.
-
-
-We expect buildtest to select all three compilers based on our regular expression. In the following
-build, notice we have three tests for ``vecadd_gnu`` one for each compiler:
+We expect buildtest to select the ``gcc_11.2.0`` compiler based on our regular expression.
 
 .. code-block:: console
 
     $ buildtest build -b tutorials/compilers/vecadd.yml
-
-
-    User:  siddiq90
-    Hostname:  DOE-7086392.local
-    Platform:  Darwin
-    Current Time:  2021/06/10 21:52:32
-    buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
-    buildtest version:  0.9.5
-    python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
-    python version:  3.7.3
-    Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
-    Configuration File:  /Users/siddiq90/.buildtest/config.yml
-    Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b tutorials/compilers/vecadd.yml
-
-    +-------------------------------+
-    | Stage: Discovering Buildspecs |
-    +-------------------------------+
-
-    +----------------------------------------------------------------------------------+
-    | Discovered Buildspecs                                                            |
-    +==================================================================================+
-    | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/vecadd.yml |
-    +----------------------------------------------------------------------------------+
+    ╭────────────────────────────── buildtest summary ───────────────────────────────╮
+    │                                                                                │
+    │ User:               root                                                       │
+    │ Hostname:           ec1164c68c64                                               │
+    │ Platform:           Linux                                                      │
+    │ Current Time:       2021/10/13 13:15:10                                        │
+    │ buildtest path:     /tmp/bin/buildtest                                         │
+    │ buildtest version:  0.11.0                                                     │
+    │ python path:        /usr/bin/python                                            │
+    │ python version:     3.8.10                                                     │
+    │ Configuration File: /tmp/buildtest/settings/e4s_container_config.yml           │
+    │ Test Directory:     /tmp/var/tests                                             │
+    │ Command:            /tmp/bin/buildtest build -b tutorials/compilers/vecadd.yml │
+    │                                                                                │
+    ╰────────────────────────────────────────────────────────────────────────────────╯
+    ────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────
     Discovered Buildspecs:  1
     Excluded Buildspecs:  0
     Detected Buildspecs after exclusion:  1
-
-    +---------------------------+
-    | Stage: Parsing Buildspecs |
-    +---------------------------+
-
-     schemafile                | validstate   | buildspec
-    ---------------------------+--------------+----------------------------------------------------------------------------------
-     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/vecadd.yml
-
-
-
-    name        description
-    ----------  -----------------------------------------
-    vecadd_gnu  Vector Addition example with GNU compiler
-    vecadd_gnu  Vector Addition example with GNU compiler
-    vecadd_gnu  Vector Addition example with GNU compiler
-
-    +----------------------+
-    | Stage: Building Test |
-    +----------------------+
+             Discovered buildspecs
+    ╔═════════════════════════════════════╗
+    ║ Buildspecs                          ║
+    ╟─────────────────────────────────────╢
+    ║ /tmp/tutorials/compilers/vecadd.yml ║
+    ╚═════════════════════════════════════╝
+    ────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ───────────────────────────────────────────────────────────────────────────────────
+    Valid Buildspecs: 1
+    Invalid Buildspecs: 0
+    /tmp/tutorials/compilers/vecadd.yml: VALID
 
 
-
-     name       | id       | type     | executor           | tags                     | compiler           | testpath
-    ------------+----------+----------+--------------------+--------------------------+--------------------+------------------------------------------------------------------------------------------------------------------------
-     vecadd_gnu | 6f6b16e1 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc        | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/2/vecadd_gnu_build.sh
-     vecadd_gnu | a76dd163 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/3/vecadd_gnu_build.sh
-     vecadd_gnu | 82360702 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/vecadd/vecadd_gnu/4/vecadd_gnu_build.sh
-
-    +---------------------+
-    | Stage: Running Test |
-    +---------------------+
-
-     name       | id       | executor           | status   |   returncode
-    ------------+----------+--------------------+----------+--------------
-     vecadd_gnu | 6f6b16e1 | generic.local.bash | PASS     |            0
-     vecadd_gnu | a76dd163 | generic.local.bash | PASS     |            0
-     vecadd_gnu | 82360702 | generic.local.bash | PASS     |            0
-
-    +----------------------+
-    | Stage: Test Summary  |
-    +----------------------+
-
-    Passed Tests: 3/3 Percentage: 100.000%
-    Failed Tests: 0/3 Percentage: 0.000%
+    Total builder objects created: 1
 
 
-    Writing Logfile to: /Users/siddiq90/buildtest/buildtest_b0jwyoyv.log
-    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log
+                                                           Builder Details
+    ┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder             ┃ Executor           ┃ description                               ┃ buildspecs                          ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ vecadd_gnu/3125c7bf │ generic.local.bash │ Vector Addition example with GNU compiler │ /tmp/tutorials/compilers/vecadd.yml │
+    └─────────────────────┴────────────────────┴───────────────────────────────────────────┴─────────────────────────────────────┘
+    ───────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────
+    [13:15:10] vecadd_gnu/3125c7bf: Creating test directory - /tmp/var/tests/generic.local.bash/vecadd/vecadd_gnu/3125c7bf                                                        base.py:440
+               vecadd_gnu/3125c7bf: Creating stage directory - /tmp/var/tests/generic.local.bash/vecadd/vecadd_gnu/3125c7bf/stage                                                 base.py:450
+               vecadd_gnu/3125c7bf: Writing build script: /tmp/var/tests/generic.local.bash/vecadd/vecadd_gnu/3125c7bf/vecadd_gnu_build.sh                                        base.py:567
+    ───────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────
+    ______________________________
+    Launching test: vecadd_gnu/3125c7bf
+    vecadd_gnu/3125c7bf: Running Test script /tmp/var/tests/generic.local.bash/vecadd/vecadd_gnu/3125c7bf/vecadd_gnu_build.sh
+    vecadd_gnu/3125c7bf: completed with returncode: 0
+    vecadd_gnu/3125c7bf: Writing output file -  /tmp/var/tests/generic.local.bash/vecadd/vecadd_gnu/3125c7bf/vecadd_gnu.out
+    vecadd_gnu/3125c7bf: Writing error file - /tmp/var/tests/generic.local.bash/vecadd/vecadd_gnu/3125c7bf/vecadd_gnu.err
+                                                       Test Summary
+    ┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+    ┃ Builder             ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+    │ vecadd_gnu/3125c7bf │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.271582 │
+    └─────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
-buildtest will use compiler settings including module configuration from buildtest
-settings (``config.yml``). In example below we show the compiler definitions for the
-three gcc compilers. The ``module`` section is the declaration of modules to load, by default
-we disable purge (``purge: False``) which instructs buildtest to not insert ``module purge``.
-The ``load`` is a list of modules to load via ``module load``.
 
-Shown below is the compiler configuration.
 
-.. code-block:: yaml
-    :emphasize-lines: 14-17,22-25
-    :linenos:
+    Passed Tests: 1/1 Percentage: 100.000%
+    Failed Tests: 0/1 Percentage: 0.000%
 
-    compilers:
-      find:
-        gcc: ^(gcc)
-      compiler:
-        gcc:
-          builtin_gcc:
-            cc: gcc
-            fc: gfortran
-            cxx: g++
-          gcc/9.3.0-n7p74fd:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            module:
-              load:
-              - gcc/9.3.0-n7p74fd
-              purge: false
-          gcc/10.2.0-37fmsw7:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            module:
-              load:
-              - gcc/10.2.0-37fmsw7
-              purge: false
 
-If we take a closer look at the generated test we see the `module load` command in the test script.
+    Writing Logfile to: /tmp/buildtest_0pfzll80.log
+    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /tmp/buildtest.log
+
+In this next example we will see how one can select multiple compiler instance and specify custom compiler
+options for each compiler instance. This example is a simple Hello World in C using **builtin_gcc** and
+**gcc_11.2.0** compiler since we have defined the regular expression ``name: ["^(builtin_gcc|gcc)"]``.
+
+
+.. literalinclude:: ../tutorials/compilers/gnu_hello_c.yml
+    :language: yaml
+
+Next we run this test, and we get two tests for test name **hello_c** for each compiler.
+
+.. code-block:: console
+
+    $ buildtest build -b tutorials/compilers/gnu_hello_c.yml
+    ╭───────────────────────────────── buildtest summary ─────────────────────────────────╮
+    │                                                                                     │
+    │ User:               root                                                            │
+    │ Hostname:           ec1164c68c64                                                    │
+    │ Platform:           Linux                                                           │
+    │ Current Time:       2021/10/13 13:17:31                                             │
+    │ buildtest path:     /tmp/bin/buildtest                                              │
+    │ buildtest version:  0.11.0                                                          │
+    │ python path:        /usr/bin/python                                                 │
+    │ python version:     3.8.10                                                          │
+    │ Configuration File: /tmp/buildtest/settings/e4s_container_config.yml                │
+    │ Test Directory:     /tmp/var/tests                                                  │
+    │ Command:            /tmp/bin/buildtest build -b tutorials/compilers/gnu_hello_c.yml │
+    │                                                                                     │
+    ╰─────────────────────────────────────────────────────────────────────────────────────╯
+    ────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────
+    Discovered Buildspecs:  1
+    Excluded Buildspecs:  0
+    Detected Buildspecs after exclusion:  1
+               Discovered buildspecs
+    ╔══════════════════════════════════════════╗
+    ║ Buildspecs                               ║
+    ╟──────────────────────────────────────────╢
+    ║ /tmp/tutorials/compilers/gnu_hello_c.yml ║
+    ╚══════════════════════════════════════════╝
+    ────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ───────────────────────────────────────────────────────────────────────────────────
+    Valid Buildspecs: 1
+    Invalid Buildspecs: 0
+    /tmp/tutorials/compilers/gnu_hello_c.yml: VALID
+
+
+    Total builder objects created: 2
+
+
+                                                    Builder Details
+    ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder          ┃ Executor           ┃ description               ┃ buildspecs                               ┃
+    ┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ hello_c/f3bb0e93 │ generic.local.bash │ Hello World C Compilation │ /tmp/tutorials/compilers/gnu_hello_c.yml │
+    ├──────────────────┼────────────────────┼───────────────────────────┼──────────────────────────────────────────┤
+    │ hello_c/65f96c7c │ generic.local.bash │ Hello World C Compilation │ /tmp/tutorials/compilers/gnu_hello_c.yml │
+    └──────────────────┴────────────────────┴───────────────────────────┴──────────────────────────────────────────┘
+    ───────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────
+    [13:17:31] hello_c/f3bb0e93: Creating test directory - /tmp/var/tests/generic.local.bash/gnu_hello_c/hello_c/f3bb0e93                                                         base.py:440
+               hello_c/f3bb0e93: Creating stage directory - /tmp/var/tests/generic.local.bash/gnu_hello_c/hello_c/f3bb0e93/stage                                                  base.py:450
+               hello_c/f3bb0e93: Writing build script: /tmp/var/tests/generic.local.bash/gnu_hello_c/hello_c/f3bb0e93/hello_c_build.sh                                            base.py:567
+               hello_c/65f96c7c: Creating test directory - /tmp/var/tests/generic.local.bash/gnu_hello_c/hello_c/65f96c7c                                                         base.py:440
+               hello_c/65f96c7c: Creating stage directory - /tmp/var/tests/generic.local.bash/gnu_hello_c/hello_c/65f96c7c/stage                                                  base.py:450
+    [13:17:32] hello_c/65f96c7c: Writing build script: /tmp/var/tests/generic.local.bash/gnu_hello_c/hello_c/65f96c7c/hello_c_build.sh                                            base.py:567
+    ───────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────
+    ______________________________
+    Launching test: hello_c/f3bb0e93
+    hello_c/f3bb0e93: Running Test script /tmp/var/tests/generic.local.bash/gnu_hello_c/hello_c/f3bb0e93/hello_c_build.sh
+    ______________________________
+    Launching test: hello_c/65f96c7c
+    hello_c/65f96c7c: Running Test script /tmp/var/tests/generic.local.bash/gnu_hello_c/hello_c/65f96c7c/hello_c_build.sh
+    hello_c/65f96c7c: completed with returncode: 0
+    hello_c/65f96c7c: Writing output file -  /tmp/var/tests/generic.local.bash/gnu_hello_c/hello_c/65f96c7c/hello_c.out
+    hello_c/65f96c7c: Writing error file - /tmp/var/tests/generic.local.bash/gnu_hello_c/hello_c/65f96c7c/hello_c.err
+    hello_c/f3bb0e93: completed with returncode: 0
+    hello_c/f3bb0e93: Writing output file -  /tmp/var/tests/generic.local.bash/gnu_hello_c/hello_c/f3bb0e93/hello_c.out
+    hello_c/f3bb0e93: Writing error file - /tmp/var/tests/generic.local.bash/gnu_hello_c/hello_c/f3bb0e93/hello_c.err
+                                                      Test Summary
+    ┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+    ┃ Builder          ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
+    ┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+    │ hello_c/65f96c7c │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.195124 │
+    ├──────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+    │ hello_c/f3bb0e93 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.313136 │
+    └──────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
+
+
+
+    Passed Tests: 2/2 Percentage: 100.000%
+    Failed Tests: 0/2 Percentage: 0.000%
+
+
+    Writing Logfile to: /tmp/buildtest_dmdm8zga.log
+    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /tmp/buildtest.log
+
+If we inspect the following test, we see the compiler flags are associated with the compiler. The test below
+is for `gcc_11.2.0` which use the flag ``-O2`` compiler flag.
 
 .. code-block:: shell
-    :emphasize-lines: 7
-    :linenos:
+    :emphasize-lines: 8
 
-    #!/bin/bash
+    $ cat $(buildtest path -t hello_c/65f96c7c)
+    #!/usr/bin/bash
 
 
     # name of executable
-    _EXEC=vecAdd.c.exe
-    # Loading modules
-    module load gcc/10.2.0-37fmsw7
+    _EXEC=hello.c.exe
     # Compilation Line
-    gcc -fopenacc -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/vecAdd.c -lm
+    /bootstrap/view/bin/gcc -O2 -o $_EXEC /tmp/tutorials/compilers/src/hello.c
 
 
     # Run executable
     ./$_EXEC
 
+The system compiler will use `-O1` for its compiler flag since this was defined in `default` section which will apply
+compiler options for all *gcc* compilers. Alternately, you may specify compiler setting under ``config`` property which
+is applied per compiler instance.
 
-.. code-block:: shell
-    :emphasize-lines: 7
-    :linenos:
+.. code-block:: console
+    :emphasize-lines: 8
 
-    #!/bin/bash
+    $ cat $(buildtest path -t hello_c/f3bb0e93)
+    #!/usr/bin/bash
 
 
     # name of executable
-    _EXEC=vecAdd.c.exe
-    # Loading modules
-    module load gcc/9.3.0-n7p74fd
+    _EXEC=hello.c.exe
     # Compilation Line
-    gcc -fopenacc -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/vecAdd.c -lm
+    /usr/bin/gcc -O1 -o $_EXEC /tmp/tutorials/compilers/src/hello.c
 
 
     # Run executable
     ./$_EXEC
-
-
 
 Excluding Compilers
 --------------------
@@ -280,455 +427,246 @@ The ``exclude`` property is part of compilers section which allows one to exclud
 upon discovery by ``name`` field. The exclude property is a list of compiler names that
 will be removed from test generation which is done prior to build phase. buildtest will exclude
 any compilers specified in ``exclude`` if they were found based on regular
-expression in ``name`` field. In this example, we slightly modified previous example
-by excluding ``gcc/10.2.0-37fmsw7`` compiler. This is specified by ``exclude: [gcc/10.2.0-37fmsw7]``.
+expression in ``name`` field. In this example we have selected both `gcc_11.2.0` and `builtin_gcc` compiler
+according to regular expression however we will exclude **builtin_gcc** which is configured using
+``exclude: [builtin_gcc]``.
 
 .. literalinclude:: ../tutorials/compilers/compiler_exclude.yml
     :language: yaml
 
-Notice when we build this test, buildtest will exclude **gcc/10.2.0-37fmsw7** compiler
-and test is not created during build phase.
+Now if we run this test, we will notice that there is only one build for this test even though we selected
+both compilers.
 
 .. code-block:: console
-    :linenos:
-    :emphasize-lines: 28
 
     $ buildtest build -b tutorials/compilers/compiler_exclude.yml
-
-
-    User:  siddiq90
-    Hostname:  DOE-7086392.local
-    Platform:  Darwin
-    Current Time:  2021/06/10 21:56:11
-    buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
-    buildtest version:  0.9.5
-    python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
-    python version:  3.7.3
-    Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
-    Configuration File:  /Users/siddiq90/.buildtest/config.yml
-    Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b tutorials/compilers/compiler_exclude.yml
-
-    +-------------------------------+
-    | Stage: Discovering Buildspecs |
-    +-------------------------------+
-
-    +--------------------------------------------------------------------------------------------+
-    | Discovered Buildspecs                                                                      |
-    +============================================================================================+
-    | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_exclude.yml |
-    +--------------------------------------------------------------------------------------------+
+    ╭─────────────────────────────────── buildtest summary ────────────────────────────────────╮
+    │                                                                                          │
+    │ User:               root                                                                 │
+    │ Hostname:           ec1164c68c64                                                         │
+    │ Platform:           Linux                                                                │
+    │ Current Time:       2021/10/13 13:45:53                                                  │
+    │ buildtest path:     /tmp/bin/buildtest                                                   │
+    │ buildtest version:  0.11.0                                                               │
+    │ python path:        /usr/bin/python                                                      │
+    │ python version:     3.8.10                                                               │
+    │ Configuration File: /tmp/buildtest/settings/e4s_container_config.yml                     │
+    │ Test Directory:     /tmp/var/tests                                                       │
+    │ Command:            /tmp/bin/buildtest build -b tutorials/compilers/compiler_exclude.yml │
+    │                                                                                          │
+    ╰──────────────────────────────────────────────────────────────────────────────────────────╯
+    ───────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────
     Discovered Buildspecs:  1
     Excluded Buildspecs:  0
     Detected Buildspecs after exclusion:  1
-    Excluding compiler: gcc/10.2.0-37fmsw7 from test generation
-
-    +---------------------------+
-    | Stage: Parsing Buildspecs |
-    +---------------------------+
-
-     schemafile                | validstate   | buildspec
-    ---------------------------+--------------+--------------------------------------------------------------------------------------------
-     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_exclude.yml
-
-
-
-    name                description
-    ------------------  -----------------------------------------------------------------
-    vecadd_gnu_exclude  Vector Addition example with GNU compilers but exclude gcc@10.2.0
-
-    +----------------------+
-    | Stage: Building Test |
-    +----------------------+
+                  Discovered buildspecs
+    ╔═══════════════════════════════════════════════╗
+    ║ Buildspecs                                    ║
+    ╟───────────────────────────────────────────────╢
+    ║ /tmp/tutorials/compilers/compiler_exclude.yml ║
+    ╚═══════════════════════════════════════════════╝
+    ────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────────────────────────────────────
+    Excluding compiler: builtin_gcc from test generation
+    Valid Buildspecs: 1
+    Invalid Buildspecs: 0
+    /tmp/tutorials/compilers/compiler_exclude.yml: VALID
 
 
+    Total builder objects created: 1
 
-     name               | id       | type     | executor           | tags                     | compiler          | testpath
-    --------------------+----------+----------+--------------------+--------------------------+-------------------+--------------------------------------------------------------------------------------------------------------------------------------------------
-     vecadd_gnu_exclude | a7373d09 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/0/vecadd_gnu_exclude_build.sh
 
-    +---------------------+
-    | Stage: Running Test |
-    +---------------------+
+                                                                                Builder Details
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder                     ┃ Executor           ┃ description                                                       ┃ buildspecs                                    ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ vecadd_gnu_exclude/908ffe39 │ generic.local.bash │ Vector Addition example with GNU compilers but exclude gcc@10.2.0 │ /tmp/tutorials/compilers/compiler_exclude.yml │
+    └─────────────────────────────┴────────────────────┴───────────────────────────────────────────────────────────────────┴───────────────────────────────────────────────┘
+    ──────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────
+    [13:45:53] vecadd_gnu_exclude/908ffe39: Creating test directory - /tmp/var/tests/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/908ffe39                             base.py:440
+               vecadd_gnu_exclude/908ffe39: Creating stage directory - /tmp/var/tests/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/908ffe39/stage                      base.py:450
+               vecadd_gnu_exclude/908ffe39: Writing build script: /tmp/var/tests/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/908ffe39/vecadd_gnu_exclude_build.sh     base.py:567
+    ──────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────
+    ______________________________
+    Launching test: vecadd_gnu_exclude/908ffe39
+    vecadd_gnu_exclude/908ffe39: Running Test script /tmp/var/tests/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/908ffe39/vecadd_gnu_exclude_build.sh
+    vecadd_gnu_exclude/908ffe39: completed with returncode: 0
+    vecadd_gnu_exclude/908ffe39: Writing output file -  /tmp/var/tests/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/908ffe39/vecadd_gnu_exclude.out
+    vecadd_gnu_exclude/908ffe39: Writing error file - /tmp/var/tests/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/908ffe39/vecadd_gnu_exclude.err
+                                                           Test Summary
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+    ┃ Builder                     ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+    │ vecadd_gnu_exclude/908ffe39 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.179337 │
+    └─────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
-     name               | id       | executor           | status   |   returncode
-    --------------------+----------+--------------------+----------+--------------
-     vecadd_gnu_exclude | a7373d09 | generic.local.bash | PASS     |            0
 
-    +----------------------+
-    | Stage: Test Summary  |
-    +----------------------+
 
     Passed Tests: 1/1 Percentage: 100.000%
     Failed Tests: 0/1 Percentage: 0.000%
 
 
-    Writing Logfile to: /Users/siddiq90/buildtest/buildtest_4szlay_j.log
-    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log
-
-Compiler Defaults and Override Default Settings
--------------------------------------------------
-
-Sometimes you may want to set default compiler flags (**cflags**, **fflags**, **cxxflags**),
-preprocessor (**cppflags**) or linker flags (**ldflags**) for compiler group (gcc, intel, pgi, etc...).
-This can be achieved using the ``default`` property that is part of **compilers** section.
-
-The ``default`` field is organized into compiler groups, in example below we set default C compiler flags
-(``cflags: -O1``). In addition, we can override default settings using the
-``config`` property where one must specify the compiler name to override.
-In example below we can override compiler settings for ``gcc/9.3.0-n7p74fd`` to use ``-O2``
-and ``gcc/10.2.0-37fmsw7`` to use ``-O3`` for **cflags** .
-
-.. literalinclude:: ../tutorials/compilers/gnu_hello_c.yml
-    :language: yaml
-
-Next we run this test, and we get three tests for test name **hello_c**.
-
-.. code-block:: console
-
-    $ buildtest build -b tutorials/compilers/gnu_hello_c.yml
-
-
-    User:  siddiq90
-    Hostname:  DOE-7086392.local
-    Platform:  Darwin
-    Current Time:  2021/06/10 22:00:08
-    buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
-    buildtest version:  0.9.5
-    python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
-    python version:  3.7.3
-    Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
-    Configuration File:  /Users/siddiq90/.buildtest/config.yml
-    Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b tutorials/compilers/gnu_hello_c.yml
-
-    +-------------------------------+
-    | Stage: Discovering Buildspecs |
-    +-------------------------------+
-
-    +---------------------------------------------------------------------------------------+
-    | Discovered Buildspecs                                                                 |
-    +=======================================================================================+
-    | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/gnu_hello_c.yml |
-    +---------------------------------------------------------------------------------------+
-    Discovered Buildspecs:  1
-    Excluded Buildspecs:  0
-    Detected Buildspecs after exclusion:  1
-
-    +---------------------------+
-    | Stage: Parsing Buildspecs |
-    +---------------------------+
-
-     schemafile                | validstate   | buildspec
-    ---------------------------+--------------+---------------------------------------------------------------------------------------
-     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/gnu_hello_c.yml
-
-
-
-    name     description
-    -------  -------------------------
-    hello_c  Hello World C Compilation
-    hello_c  Hello World C Compilation
-    hello_c  Hello World C Compilation
-
-    +----------------------+
-    | Stage: Building Test |
-    +----------------------+
-
-
-
-     name    | id       | type     | executor           | tags                     | compiler           | testpath
-    ---------+----------+----------+--------------------+--------------------------+--------------------+-----------------------------------------------------------------------------------------------------------------------
-     hello_c | afa92b9d | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc        | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/2/hello_c_build.sh
-     hello_c | 498010d3 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/3/hello_c_build.sh
-     hello_c | ee753488 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/gnu_hello_c/hello_c/4/hello_c_build.sh
-
-    +---------------------+
-    | Stage: Running Test |
-    +---------------------+
-
-     name    | id       | executor           | status   |   returncode
-    ---------+----------+--------------------+----------+--------------
-     hello_c | afa92b9d | generic.local.bash | PASS     |            0
-     hello_c | 498010d3 | generic.local.bash | PASS     |            0
-     hello_c | ee753488 | generic.local.bash | PASS     |            0
-
-    +----------------------+
-    | Stage: Test Summary  |
-    +----------------------+
-
-    Passed Tests: 3/3 Percentage: 100.000%
-    Failed Tests: 0/3 Percentage: 0.000%
-
-
-    Writing Logfile to: /Users/siddiq90/buildtest/buildtest_dtyx0ags.log
-    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log
-
-
-
-    Writing Logfile to: /private/tmp/buildtest/buildtest_hh9k7vm6.log
-
-If we inspect the following test, we see the compiler flags are associated with the compiler. The test below
-is for `builtin_gcc` which use the default ``-O1`` compiler flag as shown below.
-
-.. code-block:: shell
-    :emphasize-lines: 7
-    :linenos:
-
-    #!/bin/bash
-
-
-    # name of executable
-    _EXEC=hello.c.exe
-    # Compilation Line
-    gcc -O1 -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/hello.c
-
-
-    # Run executable
-    ./$_EXEC
-
-
-
-The test for **gcc/10.2.0-37fmsw7** and **gcc/9.3.0-n7p74fd** have cflags ``-O3`` and ``-O2`` set in their respective tests.
-
-.. code-block:: shell
-    :emphasize-lines: 9
-    :linenos:
-
-    #!/bin/bash
-
-
-    # name of executable
-    _EXEC=hello.c.exe
-    # Loading modules
-    module load gcc/10.2.0-37fmsw7
-    # Compilation Line
-    gcc -O3 -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/hello.c
-
-
-    # Run executable
-    ./$_EXEC
-
-
-
-.. code-block:: shell
-    :emphasize-lines: 9
-    :linenos:
-
-    #!/bin/bash
-
-
-    # name of executable
-    _EXEC=hello.c.exe
-    # Loading modules
-    module load gcc/9.3.0-n7p74fd
-    # Compilation Line
-    gcc -O2 -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/hello.c
-
-
-    # Run executable
-    ./$_EXEC
-
+    Writing Logfile to: /tmp/buildtest_itked2qb.log
+    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /tmp/buildtest.log
 
 Setting environment variables
 ------------------------------
 
 Environment variables can be set using ``env`` property which is a list of
-key/value pair to assign environment variables. This property can be used in ``default``
-section within a compiler group. In example below we have an OpenMP Hello World example in C
-where we define `OMP_NUM_THREADS` environment variable which controls number of OpenMP
+key/value pair to assign environment variables. This property can be used in ``default`` or ``config``
+section within a compiler instance. In this next example we have an OpenMP Hello World example in C
+where we define environment variable `OMP_NUM_THREADS` which controls number of OpenMP
 threads to use when running program. In this example we use 2 threads for all gcc
-compiler group
+compiler group but we have set ``gcc_11.2.0`` to use 4 threads
 
 .. literalinclude:: ../tutorials/compilers/openmp_hello.yml
     :language: yaml
 
-Shown below is one of the generated test and notice that buildtest will set environment
-variable **OMP_NUM_THREADS**.
-
-
-.. code-block:: shell
-    :emphasize-lines: 7
-    :linenos:
-
-    #!/bin/bash
-
-
-    # name of executable
-    _EXEC=hello_omp.c.exe
-    # Declare environment variables
-    export OMP_NUM_THREADS=2
-
-
-    # Loading modules
-    module load gcc/10.2.0-37fmsw7
-    # Compilation Line
-    gcc -fopenmp -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/hello_omp.c
-
-
-    # Run executable
-    ./$_EXEC
-
-
-
-Similarly, one can define environment variables at the compiler level in ``config`` section.
-buildtest will override value defined in ``default`` section. In this example, we
-make slight modification to the test, so that ``gcc/10.2.0-37fmsw7`` will use 4 threads
-when running program. This will override the default value of 2.
-
-.. literalinclude:: ../tutorials/compilers/envvar_override.yml
-    :language: yaml
-
-Next we build this test as follows:
+Next let's build this test.
 
 .. code-block:: console
 
-
     $ buildtest build -b tutorials/compilers/envvar_override.yml
-
-
-    User:  siddiq90
-    Hostname:  DOE-7086392.local
-    Platform:  Darwin
-    Current Time:  2021/06/10 22:04:19
-    buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
-    buildtest version:  0.9.5
-    python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
-    python version:  3.7.3
-    Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
-    Configuration File:  /Users/siddiq90/.buildtest/config.yml
-    Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b tutorials/compilers/envvar_override.yml
-
-    +-------------------------------+
-    | Stage: Discovering Buildspecs |
-    +-------------------------------+
-
-    +-------------------------------------------------------------------------------------------+
-    | Discovered Buildspecs                                                                     |
-    +===========================================================================================+
-    | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/envvar_override.yml |
-    +-------------------------------------------------------------------------------------------+
+    ╭─────────────────────────────────── buildtest summary ───────────────────────────────────╮
+    │                                                                                         │
+    │ User:               root                                                                │
+    │ Hostname:           ec1164c68c64                                                        │
+    │ Platform:           Linux                                                               │
+    │ Current Time:       2021/10/13 14:50:50                                                 │
+    │ buildtest path:     /tmp/bin/buildtest                                                  │
+    │ buildtest version:  0.11.0                                                              │
+    │ python path:        /usr/bin/python                                                     │
+    │ python version:     3.8.10                                                              │
+    │ Configuration File: /tmp/buildtest/settings/e4s_container_config.yml                    │
+    │ Test Directory:     /tmp/var/tests                                                      │
+    │ Command:            /tmp/bin/buildtest build -b tutorials/compilers/envvar_override.yml │
+    │                                                                                         │
+    ╰─────────────────────────────────────────────────────────────────────────────────────────╯
+    ───────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────
     Discovered Buildspecs:  1
     Excluded Buildspecs:  0
     Detected Buildspecs after exclusion:  1
-
-    +---------------------------+
-    | Stage: Parsing Buildspecs |
-    +---------------------------+
-
-     schemafile                | validstate   | buildspec
-    ---------------------------+--------------+-------------------------------------------------------------------------------------------
-     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/envvar_override.yml
-
-
-
-    name                      description
-    ------------------------  --------------------------------------
-    override_environmentvars  override default environment variables
-    override_environmentvars  override default environment variables
-
-    +----------------------+
-    | Stage: Building Test |
-    +----------------------+
+                 Discovered buildspecs
+    ╔══════════════════════════════════════════════╗
+    ║ Buildspecs                                   ║
+    ╟──────────────────────────────────────────────╢
+    ║ /tmp/tutorials/compilers/envvar_override.yml ║
+    ╚══════════════════════════════════════════════╝
+    ────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────────────────────────────────────
+    Valid Buildspecs: 1
+    Invalid Buildspecs: 0
+    /tmp/tutorials/compilers/envvar_override.yml: VALID
 
 
+    Total builder objects created: 2
 
-     name                     | id       | type     | executor           | tags                     | compiler           | testpath
-    --------------------------+----------+----------+--------------------+--------------------------+--------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------
-     override_environmentvars | 72619a4b | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/override_environmentvars_build.sh
-     override_environmentvars | 31098506 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/override_environmentvars_build.sh
 
-    +---------------------+
-    | Stage: Running Test |
-    +---------------------+
+                                                                     Builder Details
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder                           ┃ Executor           ┃ description                            ┃ buildspecs                                   ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ override_environmentvars/0f373822 │ generic.local.bash │ override default environment variables │ /tmp/tutorials/compilers/envvar_override.yml │
+    ├───────────────────────────────────┼────────────────────┼────────────────────────────────────────┼──────────────────────────────────────────────┤
+    │ override_environmentvars/fdbd68af │ generic.local.bash │ override default environment variables │ /tmp/tutorials/compilers/envvar_override.yml │
+    └───────────────────────────────────┴────────────────────┴────────────────────────────────────────┴──────────────────────────────────────────────┘
+    ──────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────
+    [14:50:50] override_environmentvars/0f373822: Creating test directory - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/0f373822                  base.py:440
+               override_environmentvars/0f373822: Creating stage directory - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/0f373822/stage           base.py:450
+    [14:50:51] override_environmentvars/0f373822: Writing build script:                                                                                                          base.py:567
+               /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/0f373822/override_environmentvars_build.sh
+               override_environmentvars/fdbd68af: Creating test directory - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/fdbd68af                  base.py:440
+               override_environmentvars/fdbd68af: Creating stage directory - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/fdbd68af/stage           base.py:450
+               override_environmentvars/fdbd68af: Writing build script:                                                                                                          base.py:567
+               /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/fdbd68af/override_environmentvars_build.sh
+    ──────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────
+    ______________________________
+    Launching test: override_environmentvars/0f373822
+    override_environmentvars/0f373822: Running Test script /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/0f373822/override_environmentvars_build.sh
+    ______________________________
+    Launching test: override_environmentvars/fdbd68af
+    override_environmentvars/fdbd68af: Running Test script /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/fdbd68af/override_environmentvars_build.sh
+    override_environmentvars/fdbd68af: completed with returncode: 0
+    override_environmentvars/0f373822: completed with returncode: 0
+    override_environmentvars/fdbd68af: Writing output file -  /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/fdbd68af/override_environmentvars.out
+    override_environmentvars/fdbd68af: Writing error file - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/fdbd68af/override_environmentvars.err
+    override_environmentvars/0f373822: Writing output file -  /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/0f373822/override_environmentvars.out
+    override_environmentvars/0f373822: Writing error file - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/0f373822/override_environmentvars.err
+                                                              Test Summary
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+    ┃ Builder                           ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+    │ override_environmentvars/fdbd68af │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.259626 │
+    ├───────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+    │ override_environmentvars/0f373822 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.276015 │
+    └───────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
-     name                     | id       | executor           | status   |   returncode
-    --------------------------+----------+--------------------+----------+--------------
-     override_environmentvars | 72619a4b | generic.local.bash | PASS     |            0
-     override_environmentvars | 31098506 | generic.local.bash | PASS     |            0
 
-    +----------------------+
-    | Stage: Test Summary  |
-    +----------------------+
 
     Passed Tests: 2/2 Percentage: 100.000%
     Failed Tests: 0/2 Percentage: 0.000%
 
 
-    Writing Logfile to: /Users/siddiq90/buildtest/buildtest_p3wdnl1t.log
-    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log
+    Writing Logfile to: /tmp/buildtest_dn_8ofyn.log
+    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /tmp/buildtest.log
 
-Now let's inspect the test by running ``buildtest inspect name`` and we notice there are two test records for `override_environmentvars` using
-**gcc/9.3.0-n7p74fd** and **gcc/10.2.0-37fmsw7**.
-
+We can see the generated test using ``buildtest inspect query`` which can show output of multiple tests. In example below we see the two test runs
+and take note of ``export OMP_NUM_THREADS`` defined per test. The ``-d all`` will fetch all records for test name **override_environmentvars** and
+``-t`` will fetch the test script.
 
 .. code-block:: console
-    :linenos:
-    :emphasize-lines: 12,41
 
-    $ buildtest inspect name override_environmentvars
-    Reading Report File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/report.json
-
-    {
-      "override_environmentvars": [
-        {
-          "id": "72619a4b",
-          "full_id": "72619a4b-3ed2-489c-aebd-2e0cacbf2d6a",
-          "description": "override default environment variables",
-          "schemafile": "compiler-v1.0.schema.json",
-          "executor": "generic.local.bash",
-          "compiler": "gcc/9.3.0-n7p74fd",
-          "hostname": "DOE-7086392.local",
-          "user": "siddiq90",
-          "testroot": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0",
-          "testpath": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/stage/override_environmentvars.sh",
-          "stagedir": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/stage",
-          "command": "sh override_environmentvars_build.sh",
-          "outfile": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/override_environmentvars.out",
-          "errfile": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/override_environmentvars.err",
-          "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  override_environmentvars:\n    type: compiler\n    description: override default environment variables\n    executor: generic.local.bash\n    tags: [tutorials, compile]\n    source: \"src/hello_omp.c\"\n    compilers:\n      name: [\"^(gcc)\"]\n      default:\n        gcc:\n          cflags: -fopenmp\n          env:\n            OMP_NUM_THREADS: 2\n      config:\n        gcc/10.2.0-37fmsw7:\n          env:\n            OMP_NUM_THREADS: 4",
-          "test_content": "#!/bin/bash \n_EXEC=hello_omp.c.exe\nexport OMP_NUM_THREADS=2\nmodule load gcc/9.3.0-n7p74fd\ngcc -fopenmp -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/hello_omp.c\n./$_EXEC",
-          "logpath": "/Users/siddiq90/buildtest/buildtest_p3wdnl1t.log",
-          "tags": "tutorials compile",
-          "starttime": "2021/06/10 22:04:19",
-          "endtime": "2021/06/10 22:04:20",
-          "runtime": 0.727095,
-          "state": "PASS",
-          "returncode": 0,
-          "output": "Hello World from thread = 0\nHello World from thread = 1\n",
-          "error": "The following have been reloaded with a version change:\n  1) gcc/10.2.0-37fmsw7 => gcc/9.3.0-n7p74fd\n",
-          "job": null,
-          "build_script": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/0/override_environmentvars_build.sh"
-        },
-        {
-          "id": "31098506",
-          "full_id": "31098506-2bbf-4a50-8386-2fcd5bcddff5",
-          "description": "override default environment variables",
-          "schemafile": "compiler-v1.0.schema.json",
-          "executor": "generic.local.bash",
-          "compiler": "gcc/10.2.0-37fmsw7",
-          "hostname": "DOE-7086392.local",
-          "user": "siddiq90",
-          "testroot": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1",
-          "testpath": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/stage/override_environmentvars.sh",
-          "stagedir": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/stage",
-          "command": "sh override_environmentvars_build.sh",
-          "outfile": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/override_environmentvars.out",
-          "errfile": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/override_environmentvars.err",
-          "buildspec_content": "version: \"1.0\"\nbuildspecs:\n  override_environmentvars:\n    type: compiler\n    description: override default environment variables\n    executor: generic.local.bash\n    tags: [tutorials, compile]\n    source: \"src/hello_omp.c\"\n    compilers:\n      name: [\"^(gcc)\"]\n      default:\n        gcc:\n          cflags: -fopenmp\n          env:\n            OMP_NUM_THREADS: 2\n      config:\n        gcc/10.2.0-37fmsw7:\n          env:\n            OMP_NUM_THREADS: 4",
-          "test_content": "#!/bin/bash \n_EXEC=hello_omp.c.exe\nexport OMP_NUM_THREADS=4\nmodule load gcc/10.2.0-37fmsw7\ngcc -fopenmp -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/hello_omp.c\n./$_EXEC",
-          "logpath": "/Users/siddiq90/buildtest/buildtest_p3wdnl1t.log",
-          "tags": "tutorials compile",
-          "starttime": "2021/06/10 22:04:20",
-          "endtime": "2021/06/10 22:04:20",
-          "runtime": 0.482645,
-          "state": "PASS",
-          "returncode": 0,
-          "output": "Hello World from thread = 1\nHello World from thread = 3\nHello World from thread = 2\nHello World from thread = 0\n",
-          "error": "",
-          "job": null,
-          "build_script": "/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/envvar_override/override_environmentvars/1/override_environmentvars_build.sh"
-        }
-      ]
-    }
+    $ buildtest inspect query -d all -t override_environmentvars
+    ──────────────────────────────────────────────────────────── override_environmentvars/fdbd68af-5ade-4489-a9de-173ca05d9e36 ─────────────────────────────────────────────────────────────
+    executor:  generic.local.bash
+    description:  override default environment variables
+    state:  PASS
+    returncode:  0
+    runtime:  0.259626
+    starttime:  2021/10/13 14:50:51
+    endtime:  2021/10/13 14:50:51
+    ────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/fdbd68af/override_environmentvars.sh ──────────────────────────────
+       1 #!/usr/bin/bash
+       2
+       3
+       4 # name of executable
+       5 _EXEC=hello_omp.c.exe
+       6 # Declare environment variables
+       7 export OMP_NUM_THREADS=4
+       8
+       9
+      10 # Compilation Line
+      11 /bootstrap/view/bin/gcc -fopenmp -o $_EXEC /tmp/tutorials/compilers/src/hello_omp.c
+      12
+      13
+      14 # Run executable
+      15 ./$_EXEC
+      16
+      17
+    ──────────────────────────────────────────────────────────── override_environmentvars/0f373822-82be-4069-bc6a-2f9584ea70c1 ─────────────────────────────────────────────────────────────
+    executor:  generic.local.bash
+    description:  override default environment variables
+    state:  PASS
+    returncode:  0
+    runtime:  0.276015
+    starttime:  2021/10/13 14:50:51
+    endtime:  2021/10/13 14:50:51
+    ────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/0f373822/override_environmentvars.sh ──────────────────────────────
+       1 #!/usr/bin/bash
+       2
+       3
+       4 # name of executable
+       5 _EXEC=hello_omp.c.exe
+       6 # Declare environment variables
+       7 export OMP_NUM_THREADS=2
+       8
+       9
+      10 # Compilation Line
+      11 /usr/bin/gcc -fopenmp -o $_EXEC /tmp/tutorials/compilers/src/hello_omp.c
+      12
+      13
+      14 # Run executable
+      15 ./$_EXEC
+      16
+      17
 
 Tweak how test are passed
 --------------------------
@@ -740,103 +678,334 @@ exitcode 0 as PASS and anything else is FAIL.
 Sometimes, it may be useful check output of test to determine using regular expression. This
 can be done via ``status`` property. In this example, we define two tests, the first one defines ``status``
 property in the default **gcc** group. This means all compilers that belong to gcc
-group will be matched with the regular expression.
+group will be matched based on returncode.
 
-In second example we override the status ``regex`` property for **gcc/10.2.0-37fmsw7**. We expect
-the test to produce an output of ``final result: 1.000000`` so we expect one failure from
-**gcc/10.2.0-37fmsw7**.
+In second test we override the ``status`` property for a given compiler instance under the ``config`` section.
+The test is expected to produce output of ``final result: 1.000000`` but we will specify a different value in order to
+show this test will fail.
 
 .. literalinclude:: ../tutorials/compilers/compiler_status_regex.yml
     :language: yaml
 
 
-If we build this test, notice that test id **9320ca41** failed which corresponds to
-``gcc/10.2.0-37fmsw7`` compiler test. The test fails because it fails to pass on
-regular expression even though we have a returncode of 0.
+If we build this test, we should expect the first test example ``default_status_returncode`` should pass based on
+returncode 0. If the returncode doesn't match buildtest will report failure. For the second test example, we have set that
+test will pass based on returncode 0 based on ``default`` property however for `gcc_11.2.0` test we have defined a ``status``
+property to check based on regular expression. We will expect both tests to fail if run these test.
 
 .. code-block:: console
-    :linenos:
-    :emphasize-lines: 68
 
     $ buildtest build -b tutorials/compilers/compiler_status_regex.yml
-
-
-    User:  siddiq90
-    Hostname:  DOE-7086392.local
-    Platform:  Darwin
-    Current Time:  2021/06/10 22:08:03
-    buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
-    buildtest version:  0.9.5
-    python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
-    python version:  3.7.3
-    Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
-    Configuration File:  /Users/siddiq90/.buildtest/config.yml
-    Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b tutorials/compilers/compiler_status_regex.yml
-
-    +-------------------------------+
-    | Stage: Discovering Buildspecs |
-    +-------------------------------+
-
-    +-------------------------------------------------------------------------------------------------+
-    | Discovered Buildspecs                                                                           |
-    +=================================================================================================+
-    | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_status_regex.yml |
-    +-------------------------------------------------------------------------------------------------+
+    ╭────────────────────────────────────── buildtest summary ──────────────────────────────────────╮
+    │                                                                                               │
+    │ User:               root                                                                      │
+    │ Hostname:           ec1164c68c64                                                              │
+    │ Platform:           Linux                                                                     │
+    │ Current Time:       2021/10/13 14:05:39                                                       │
+    │ buildtest path:     /tmp/bin/buildtest                                                        │
+    │ buildtest version:  0.11.0                                                                    │
+    │ python path:        /usr/bin/python                                                           │
+    │ python version:     3.8.10                                                                    │
+    │ Configuration File: /tmp/buildtest/settings/e4s_container_config.yml                          │
+    │ Test Directory:     /tmp/var/tests                                                            │
+    │ Command:            /tmp/bin/buildtest build -b tutorials/compilers/compiler_status_regex.yml │
+    │                                                                                               │
+    ╰───────────────────────────────────────────────────────────────────────────────────────────────╯
+    ───────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────
     Discovered Buildspecs:  1
     Excluded Buildspecs:  0
     Detected Buildspecs after exclusion:  1
-
-    +---------------------------+
-    | Stage: Parsing Buildspecs |
-    +---------------------------+
-
-     schemafile                | validstate   | buildspec
-    ---------------------------+--------------+-------------------------------------------------------------------------------------------------
-     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/compiler_status_regex.yml
-
-
-
-    name                   description
-    ---------------------  -----------------------------------------------------------
-    default_status_regex   Regular expression check in stdout for gcc group
-    default_status_regex   Regular expression check in stdout for gcc group
-    override_status_regex  Override regular expression for compiler gcc/10.2.0-37fmsw7
-    override_status_regex  Override regular expression for compiler gcc/10.2.0-37fmsw7
-
-    +----------------------+
-    | Stage: Building Test |
-    +----------------------+
+                    Discovered buildspecs
+    ╔════════════════════════════════════════════════════╗
+    ║ Buildspecs                                         ║
+    ╟────────────────────────────────────────────────────╢
+    ║ /tmp/tutorials/compilers/compiler_status_regex.yml ║
+    ╚════════════════════════════════════════════════════╝
+    ────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────────────────────────────────────
+    Valid Buildspecs: 1
+    Invalid Buildspecs: 0
+    /tmp/tutorials/compilers/compiler_status_regex.yml: VALID
 
 
-
-     name                  | id       | type     | executor           | tags                     | compiler           | testpath
-    -----------------------+----------+----------+--------------------+--------------------------+--------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------
-     default_status_regex  | a023a2c2 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/compiler_status_regex/default_status_regex/0/default_status_regex_build.sh
-     default_status_regex  | 155865c3 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/compiler_status_regex/default_status_regex/1/default_status_regex_build.sh
-     override_status_regex | 3411bddf | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/0/override_status_regex_build.sh
-     override_status_regex | 295310a4 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/1/override_status_regex_build.sh
-
-    +---------------------+
-    | Stage: Running Test |
-    +---------------------+
-
-     name                  | id       | executor           | status   |   returncode
-    -----------------------+----------+--------------------+----------+--------------
-     default_status_regex  | a023a2c2 | generic.local.bash | PASS     |            0
-     default_status_regex  | 155865c3 | generic.local.bash | PASS     |            0
-     override_status_regex | 3411bddf | generic.local.bash | PASS     |            0
-     override_status_regex | 295310a4 | generic.local.bash | FAIL     |            0
-
-    +----------------------+
-    | Stage: Test Summary  |
-    +----------------------+
-
-    Passed Tests: 3/4 Percentage: 75.000%
-    Failed Tests: 1/4 Percentage: 25.000%
+    Total builder objects created: 4
 
 
-    Writing Logfile to: /Users/siddiq90/buildtest/buildtest_hp7_gpbn.log
-    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log
+                                                                      Builder Details
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder                            ┃ Executor           ┃ description                      ┃ buildspecs                                         ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ default_status_returncode/dfee4a1e │ generic.local.bash │ status check based on returncode │ /tmp/tutorials/compilers/compiler_status_regex.yml │
+    ├────────────────────────────────────┼────────────────────┼──────────────────────────────────┼────────────────────────────────────────────────────┤
+    │ default_status_returncode/6b725310 │ generic.local.bash │ status check based on returncode │ /tmp/tutorials/compilers/compiler_status_regex.yml │
+    ├────────────────────────────────────┼────────────────────┼──────────────────────────────────┼────────────────────────────────────────────────────┤
+    │ override_status_regex/3e99f85a     │ generic.local.bash │ custom status for gcc_11.2.0     │ /tmp/tutorials/compilers/compiler_status_regex.yml │
+    ├────────────────────────────────────┼────────────────────┼──────────────────────────────────┼────────────────────────────────────────────────────┤
+    │ override_status_regex/e0d47271     │ generic.local.bash │ custom status for gcc_11.2.0     │ /tmp/tutorials/compilers/compiler_status_regex.yml │
+    └────────────────────────────────────┴────────────────────┴──────────────────────────────────┴────────────────────────────────────────────────────┘
+    ──────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────
+    [14:05:39] default_status_returncode/dfee4a1e: Creating test directory - /tmp/var/tests/generic.local.bash/compiler_status_regex/default_status_returncode/dfee4a1e          base.py:440
+               default_status_returncode/dfee4a1e: Creating stage directory - /tmp/var/tests/generic.local.bash/compiler_status_regex/default_status_returncode/dfee4a1e/stage   base.py:450
+               default_status_returncode/dfee4a1e: Writing build script:                                                                                                         base.py:567
+               /tmp/var/tests/generic.local.bash/compiler_status_regex/default_status_returncode/dfee4a1e/default_status_returncode_build.sh
+               default_status_returncode/6b725310: Creating test directory - /tmp/var/tests/generic.local.bash/compiler_status_regex/default_status_returncode/6b725310          base.py:440
+               default_status_returncode/6b725310: Creating stage directory - /tmp/var/tests/generic.local.bash/compiler_status_regex/default_status_returncode/6b725310/stage   base.py:450
+               default_status_returncode/6b725310: Writing build script:                                                                                                         base.py:567
+               /tmp/var/tests/generic.local.bash/compiler_status_regex/default_status_returncode/6b725310/default_status_returncode_build.sh
+               override_status_regex/3e99f85a: Creating test directory - /tmp/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/3e99f85a                  base.py:440
+               override_status_regex/3e99f85a: Creating stage directory - /tmp/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/3e99f85a/stage           base.py:450
+               override_status_regex/3e99f85a: Writing build script:                                                                                                             base.py:567
+               /tmp/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/3e99f85a/override_status_regex_build.sh
+    [14:05:40] override_status_regex/e0d47271: Creating test directory - /tmp/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/e0d47271                  base.py:440
+               override_status_regex/e0d47271: Creating stage directory - /tmp/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/e0d47271/stage           base.py:450
+               override_status_regex/e0d47271: Writing build script:                                                                                                             base.py:567
+               /tmp/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/e0d47271/override_status_regex_build.sh
+    ──────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────
+    ______________________________
+    Launching test: default_status_returncode/dfee4a1e
+    default_status_returncode/dfee4a1e: Running Test script /tmp/var/tests/generic.local.bash/compiler_status_regex/default_status_returncode/dfee4a1e/default_status_returncode_build.sh
+    ______________________________
+    Launching test: default_status_returncode/6b725310
+    default_status_returncode/6b725310: Running Test script /tmp/var/tests/generic.local.bash/compiler_status_regex/default_status_returncode/6b725310/default_status_returncode_build.sh
+    ______________________________
+    Launching test: override_status_regex/3e99f85a
+    override_status_regex/3e99f85a: Running Test script /tmp/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/3e99f85a/override_status_regex_build.sh
+    ______________________________
+    Launching test: override_status_regex/e0d47271
+    override_status_regex/e0d47271: Running Test script /tmp/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/e0d47271/override_status_regex_build.sh
+    default_status_returncode/6b725310: completed with returncode: 0
+    default_status_returncode/6b725310: Writing output file -  /tmp/var/tests/generic.local.bash/compiler_status_regex/default_status_returncode/6b725310/default_status_returncode.out
+    default_status_returncode/6b725310: Writing error file - /tmp/var/tests/generic.local.bash/compiler_status_regex/default_status_returncode/6b725310/default_status_returncode.err
+    default_status_returncode/6b725310: Checking returncode - 0 is matched in list [0]
+    default_status_returncode/dfee4a1e: completed with returncode: 127
+    default_status_returncode/dfee4a1e: Writing output file -  /tmp/var/tests/generic.local.bash/compiler_status_regex/default_status_returncode/dfee4a1e/default_status_returncode.out
+    default_status_returncode/dfee4a1e: Writing error file - /tmp/var/tests/generic.local.bash/compiler_status_regex/default_status_returncode/dfee4a1e/default_status_returncode.err
+    default_status_returncode/dfee4a1e: Checking returncode - 127 is matched in list [0]
+    override_status_regex/e0d47271: completed with returncode: 0
+    override_status_regex/e0d47271: Writing output file -  /tmp/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/e0d47271/override_status_regex.out
+    override_status_regex/e0d47271: Writing error file - /tmp/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/e0d47271/override_status_regex.err
+    override_status_regex/e0d47271: performing regular expression - '^final result: 0.99$' on file:
+    /tmp/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/e0d47271/override_status_regex.out
+    override_status_regex/e0d47271: Regular Expression Match - Failed!
+    override_status_regex/3e99f85a: completed with returncode: 127
+    override_status_regex/3e99f85a: Writing output file -  /tmp/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/3e99f85a/override_status_regex.out
+    override_status_regex/3e99f85a: Writing error file - /tmp/var/tests/generic.local.bash/compiler_status_regex/override_status_regex/3e99f85a/override_status_regex.err
+    override_status_regex/3e99f85a: Checking returncode - 127 is matched in list [0]
+                                                               Test Summary
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+    ┃ Builder                            ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+    │ default_status_returncode/dfee4a1e │ generic.local.bash │ FAIL   │ False False False                   │ 127        │ 0.322336 │
+    ├────────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+    │ default_status_returncode/6b725310 │ generic.local.bash │ PASS   │ True False False                    │ 0          │ 0.272139 │
+    ├────────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+    │ override_status_regex/3e99f85a     │ generic.local.bash │ FAIL   │ False False False                   │ 127        │ 0.332581 │
+    ├────────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+    │ override_status_regex/e0d47271     │ generic.local.bash │ FAIL   │ False False False                   │ 0          │ 0.238165 │
+    └────────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
+
+
+
+    Passed Tests: 1/4 Percentage: 25.000%
+    Failed Tests: 3/4 Percentage: 75.000%
+
+
+    Writing Logfile to: /tmp/buildtest_59954269.log
+    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /tmp/buildtest.log
+
+Customize Run Line
+-------------------
+
+buildtest will define variable ``_EXEC`` in the job script that can be used to reference
+the generated binary. By default, buildtest will run the program standalone, but sometimes you
+may want to customize how job is run. This may include passing arguments or running
+binary through a job/mpi launcher. The ``run`` property can be used to configure how program is executed.
+The compiled executable will be present in local directory which can be accessed via ``./$_EXEC``. In example below
+we pass arguments ``1 3`` for **builtin_gcc** compiler and ``100 200`` for **gcc_11.2.0** compiler.
+
+.. literalinclude:: ../tutorials/compilers/custom_run.yml
+    :language: yaml
+
+You can build this test by running ``buildtest build -b tutorials/compilers/custom_run.yml``. Once test is complete let's inspect the generated
+test. We see that buildtest will insert the line specified by ``run`` property after compilation and run the executable.
+
+.. code-block:: shell
+
+    $ buildtest inspect query -d all -b  -t custom_run_by_compilers
+    ───────────────────────────────────────────────────────────── custom_run_by_compilers/1438d9e1-a472-4759-a3e4-145afd020a3e ─────────────────────────────────────────────────────────────
+    executor:  generic.local.bash
+    description:  Customize binary launch based on compiler
+    state:  PASS
+    returncode:  0
+    runtime:  0.234103
+    starttime:  2021/10/13 14:49:17
+    endtime:  2021/10/13 14:49:17
+    ───────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/1438d9e1/custom_run_by_compilers.sh ──────────────────────────────────
+       1 #!/usr/bin/bash
+       2
+       3
+       4 # name of executable
+       5 _EXEC=argc.c.exe
+       6 # Compilation Line
+       7 /usr/bin/gcc -o $_EXEC /tmp/tutorials/compilers/src/argc.c
+       8
+       9
+      10 # Run executable
+      11 ./$_EXEC 1 3
+      12
+      13
+    ────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/1438d9e1/custom_run_by_compilers_build.sh ───────────────────────────────
+       1 #!/bin/bash
+       2
+       3
+       4 ############# START VARIABLE DECLARATION ########################
+       5 export BUILDTEST_TEST_NAME=custom_run_by_compilers
+       6 export BUILDTEST_TEST_ROOT=/tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/1438d9e1
+       7 export BUILDTEST_BUILDSPEC_DIR=/tmp/tutorials/compilers
+       8 export BUILDTEST_STAGE_DIR=/tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/1438d9e1/stage
+       9 export BUILDTEST_TEST_ID=1438d9e1-a472-4759-a3e4-145afd020a3e
+      10 ############# END VARIABLE DECLARATION   ########################
+      11
+      12
+      13 # source executor startup script
+      14 source /tmp/var/executor/generic.local.bash/before_script.sh
+      15 # Run generated script
+      16 /tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/1438d9e1/stage/custom_run_by_compilers.sh
+      17 # Get return code
+      18 returncode=$?
+      19 # Exit with return code
+      20 exit $returncode
+    ───────────────────────────────────────────────────────────── custom_run_by_compilers/563afffd-6d23-4817-9fed-294363416242 ─────────────────────────────────────────────────────────────
+    executor:  generic.local.bash
+    description:  Customize binary launch based on compiler
+    state:  PASS
+    returncode:  0
+    runtime:  0.24476
+    starttime:  2021/10/13 14:49:17
+    endtime:  2021/10/13 14:49:17
+    ───────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/563afffd/custom_run_by_compilers.sh ──────────────────────────────────
+       1 #!/usr/bin/bash
+       2
+       3
+       4 # name of executable
+       5 _EXEC=argc.c.exe
+       6 # Compilation Line
+       7 /bootstrap/view/bin/gcc -o $_EXEC /tmp/tutorials/compilers/src/argc.c
+       8
+       9
+      10 # Run executable
+      11 ./$_EXEC 100 120
+      12
+      13
+    ────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/563afffd/custom_run_by_compilers_build.sh ───────────────────────────────
+       1 #!/bin/bash
+       2
+       3
+       4 ############# START VARIABLE DECLARATION ########################
+       5 export BUILDTEST_TEST_NAME=custom_run_by_compilers
+       6 export BUILDTEST_TEST_ROOT=/tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/563afffd
+       7 export BUILDTEST_BUILDSPEC_DIR=/tmp/tutorials/compilers
+       8 export BUILDTEST_STAGE_DIR=/tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/563afffd/stage
+       9 export BUILDTEST_TEST_ID=563afffd-6d23-4817-9fed-294363416242
+      10 ############# END VARIABLE DECLARATION   ########################
+      11
+      12
+      13 # source executor startup script
+      14 source /tmp/var/executor/generic.local.bash/before_script.sh
+      15 # Run generated script
+      16 /tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/563afffd/stage/custom_run_by_compilers.sh
+      17 # Get return code
+      18 returncode=$?
+      19 # Exit with return code
+      20 exit $returncode
+
+Pre/Post sections for build and run section
+--------------------------------------------
+
+The compiler schema comes with ``pre_build``, ``post_build``, ``pre_run`` and
+``post_run`` fields where you can insert shell commands before and after  compilation and
+running binary.
+
+Shown below is an example buildspec with pre/post section.
+
+.. literalinclude:: ../tutorials/compilers/pre_post_build_run.yml
+    :language: yaml
+
+
+The format of the test structure is as follows.
+
+.. code-block:: shell
+
+    #!{shebang path} -- defaults to #!/bin/bash depends on executor name (local.bash, local.sh)
+    {job directives} -- sbatch or bsub field
+    {environment variables} -- env field
+    {variable declaration} -- vars field
+    {module commands} -- modules field
+
+    {pre build commands} -- pre_build field
+    {compile program} -- build field
+    {post build commands} -- post_build field
+
+    {pre run commands} -- pre_run field
+    {run executable} -- run field
+    {post run commands} -- post_run field
+
+You can run this example by running the following command::
+
+    buildtest build -b tutorials/compilers/pre_post_build_run.yml
+
+If we inspect the content of test we see that buildtest will insert the shell commands
+for ``pre_build``, ``post_build``, ``pre_run`` and ``post_run`` in its corresponding section.
+
+.. code-block:: shell
+
+    $ buildtest inspect query -d all -t pre_post_build_run
+    ─────────────────────────────────────────────────────────────── pre_post_build_run/72644b22-9cf1-40b9-8357-46e9170649a6 ────────────────────────────────────────────────────────────────
+    executor:  generic.local.bash
+    description:  example using pre_build, post_build, pre_run, post_run example
+    state:  PASS
+    returncode:  0
+    runtime:  0.196161
+    starttime:  2021/10/13 14:31:01
+    endtime:  2021/10/13 14:31:02
+    ────────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/pre_post_build_run/pre_post_build_run/72644b22/pre_post_build_run.sh ───────────────────────────────────
+       1 #!/usr/bin/bash
+       2
+       3
+       4 # name of executable
+       5 _EXEC=hello.c.exe
+       6 ### START OF PRE BUILD SECTION ###
+       7 echo "These are commands run before compilation"
+       8
+       9 ### END OF PRE BUILD SECTION   ###
+      10
+      11
+      12 # Compilation Line
+      13 /usr/bin/gcc -Wall -o $_EXEC /tmp/tutorials/compilers/src/hello.c
+      14
+      15
+      16 ### START OF POST BUILD SECTION ###
+      17 echo "These are commands run after compilation"
+      18
+      19 ### END OF POST BUILD SECTION ###
+      20
+      21
+      22 ### START OF PRE RUN SECTION ###
+      23 echo "These are commands run before running script"
+      24
+      25 ### END OF PRE RUN SECTION   ###
+      26
+      27
+      28 # Run executable
+      29 ./$_EXEC
+      30
+      31
+      32 ### START OF POST RUN SECTION ###
+      33 echo "These are commands run after running script"
+      34 ### END OF POST RUN SECTION   ###
+      35
+      36
+
+
 
 Single Test Multiple Compilers
 -------------------------------
@@ -1021,68 +1190,6 @@ test to run against every gcc, intel and PrgEnv-cray compiler module:
 
     Writing Logfile to: /tmp/buildtest_sq87154s.log
     A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /global/homes/s/siddiq90/github/buildtest/buildtest.log
-
-If we inspect one of these tests from each compiler group (gcc, intel) we will see OMP_NUM_THREADS
-is set in all tests along with the appropriate compiler flag.
-
-.. code-block:: shell
-   :linenos:
-   :emphasize-lines: 3-5
-
-    #!/bin/bash
-    _EXEC=reduction.c.exe
-    export OMP_NUM_THREADS=4
-    module load intel/19.1.3.304
-    icc -qopenmp -o $_EXEC /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/apps/openmp/src/reduction.c
-    ./$_EXEC
-
-.. code-block:: shell
-   :linenos:
-   :emphasize-lines: 3-5
-
-    #!/bin/bash
-    _EXEC=reduction.c.exe
-    export OMP_NUM_THREADS=4
-    module load gcc/6.1.0
-    gcc -fopenmp -o $_EXEC /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/apps/openmp/src/reduction.c
-    ./$_EXEC
-
-Customize Run Line
--------------------
-
-buildtest will define variable ``_EXEC`` in the job script that can be used to reference
-the generated binary. By default, buildtest will run the program standalone, but sometimes you
-may want to customize how job is run. This may include passing arguments or running
-binary through a job/mpi launcher. The ``run`` property expects user to specify how to launch
-program. buildtest will change directory to the called script before running executable. The compiled
-executable will be present in local directory which can be accessed via ``./$_EXEC``. In example below
-we pass arguments ``1 3 5`` for gcc group and ``100 200`` for compiler ``gcc/10.2.0-37fmsw7``.
-
-.. literalinclude:: ../tutorials/compilers/custom_run.yml
-    :language: yaml
-
-If we build this test and see generated test, we notice buildtest customized the run line
-for launching binary. buildtest will directly replace content in ``run`` section into the
-shell-script. If no ``run`` field is specified buildtest will run the binary in standalone mode (``./$_EXEC``).
-
-.. code-block:: shell
-   :linenos:
-   :emphasize-lines: 13
-
-    #!/bin/bash
-
-
-    # name of executable
-    _EXEC=argc.c.exe
-    # Loading modules
-    module load gcc/10.2.0-37fmsw7
-    # Compilation Line
-    gcc -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/argc.c
-
-
-    # Run executable
-    ./$_EXEC 100 120
-
 
 MPI Example
 ------------
@@ -1274,78 +1381,3 @@ option for Slurm jobs in order to get the JobID when this script is invoked so t
     sbatch --parsable -q debug --clusters=cori -C knl,quad,cache /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/laplace_mpi/laplace_mpi/0/stage/laplace_mpi.sh
     returncode=$?
     exit $returncode
-
-Pre/Post sections for build and run section
---------------------------------------------
-
-The compiler schema comes with ``pre_build``, ``post_build``, ``pre_run`` and
-``post_run`` fields where you can insert commands before and after ``build`` or
-``run`` section. The **build** section is where we compile code, and **run**
-section is where compiled binary is executed.
-
-Shown below is an example buildspec with pre/post section.
-
-.. literalinclude:: ../tutorials/compilers/pre_post_build_run.yml
-    :language: yaml
-
-
-The format of the test structure is as follows.
-
-.. code-block:: shell
-
-    #!{shebang path} -- defaults to #!/bin/bash depends on executor name (local.bash, local.sh)
-    {job directives} -- sbatch or bsub field
-    {environment variables} -- env field
-    {variable declaration} -- vars field
-    {module commands} -- modules field
-
-    {pre build commands} -- pre_build field
-    {compile program} -- build field
-    {post build commands} -- post_build field
-
-    {pre run commands} -- pre_run field
-    {run executable} -- run field
-    {post run commands} -- post_run field
-
-The generated test for this buildspec is the following:
-
-.. code-block:: shell
-
-    #!/bin/bash
-
-
-    # name of executable
-    _EXEC=hello.c.exe
-    ### START OF PRE BUILD SECTION ###
-    echo "This is a pre-build section"
-    gcc --version
-
-    ### END OF PRE BUILD SECTION   ###
-
-
-    # Compilation Line
-    gcc -Wall -o $_EXEC /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/src/hello.c
-
-
-    ### START OF POST BUILD SECTION ###
-    echo "This is post-build section"
-
-    ### END OF POST BUILD SECTION ###
-
-
-    ### START OF PRE RUN SECTION ###
-    echo "This is pre-run section"
-    export FOO=BAR
-
-    ### END OF PRE RUN SECTION   ###
-
-
-    # Run executable
-    ./$_EXEC
-
-
-    ### START OF POST RUN SECTION ###
-    echo "This is post-run section"
-
-    ### END OF POST RUN SECTION   ###
-

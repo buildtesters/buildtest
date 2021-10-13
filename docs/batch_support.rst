@@ -111,87 +111,84 @@ Shown below is an example build for this test
 
 .. code-block:: console
 
-    $ buildtest build -b buildspecs/jobs/metadata.yml
-    User:  siddiq90
-    Hostname:  cori02
-    Platform:  Linux
-    Current Time:  2021/09/03 10:08:49
-    buildtest path: /global/homes/s/siddiq90/github/buildtest/bin/buildtest
-    buildtest version:  0.10.2
-    python path: /global/homes/s/siddiq90/.conda/envs/buildtest/bin/python
-    python version:  3.8.8
-    Test Directory:  /global/u1/s/siddiq90/github/buildtest/var/tests
-    Configuration File:  /global/u1/s/siddiq90/.buildtest/config.yml
-    Command: /global/homes/s/siddiq90/github/buildtest/bin/buildtest build -b buildspecs/jobs/metadata.yml
-
-    +-------------------------------+
-    | Stage: Discovering Buildspecs |
-    +-------------------------------+
-
-    +--------------------------------------------------------------------------+
-    | Discovered Buildspecs                                                    |
-    +==========================================================================+
-    | /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/metadata.yml |
-    +--------------------------------------------------------------------------+
+    (buildtest) siddiq90@cori01> buildtest build -b buildspecs/jobs/metadata.yml
+    ╭──────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────╮
+    │                                                                                                                   │
+    │ User:               siddiq90                                                                                      │
+    │ Hostname:           cori01                                                                                        │
+    │ Platform:           Linux                                                                                         │
+    │ Current Time:       2021/10/13 09:23:35                                                                           │
+    │ buildtest path:     /global/homes/s/siddiq90/github/buildtest/bin/buildtest                                       │
+    │ buildtest version:  0.11.0                                                                                        │
+    │ python path:        /global/homes/s/siddiq90/.conda/envs/buildtest/bin/python                                     │
+    │ python version:     3.8.8                                                                                         │
+    │ Configuration File: /global/u1/s/siddiq90/github/buildtest-cori/config.yml                                        │
+    │ Test Directory:     /global/u1/s/siddiq90/github/buildtest/var/tests                                              │
+    │ Command:            /global/homes/s/siddiq90/github/buildtest/bin/buildtest build -b buildspecs/jobs/metadata.yml │
+    │                                                                                                                   │
+    ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+    ──────────────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────────────
     Discovered Buildspecs:  1
     Excluded Buildspecs:  0
     Detected Buildspecs after exclusion:  1
-
-    +---------------------------+
-    | Stage: Parsing Buildspecs |
-    +---------------------------+
-
-    Valid Buildspecs:  1
-    Invalid Buildspecs:  0
+                               Discovered buildspecs
+    ╔══════════════════════════════════════════════════════════════════════════╗
+    ║ Buildspecs                                                               ║
+    ╟──────────────────────────────────────────────────────────────────────────╢
+    ║ /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/metadata.yml ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+    ──────────────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────────────
+    Valid Buildspecs: 1
+    Invalid Buildspecs: 0
     /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/metadata.yml: VALID
 
 
     Total builder objects created: 1
-    builders: [slurm_metadata/303d1e32]
 
 
-    name            id        description                                         buildspecs
-    --------------  --------  --------------------------------------------------  ------------------------------------------------------------------------
-    slurm_metadata  303d1e32  Get metadata from compute node when submitting job  /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/metadata.yml
-
-    +----------------------+
-    | Stage: Building Test |
-    +----------------------+
-
-     name           | id       | type   | executor             | tags     | testpath
-    ----------------+----------+--------+----------------------+----------+--------------------------------------------------------------------------------------------------------------------------------
-     slurm_metadata | 303d1e32 | script | cori.slurm.knl_debug | ['jobs'] | /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/303d1e32/slurm_metadata_build.sh
-
-    +---------------------+
-    | Stage: Running Test |
-    +---------------------+
-
+                                                                           Builder Details
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder                 ┃ Executor             ┃ description                                        ┃ buildspecs                                          ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ slurm_metadata/a45a9f6a │ cori.slurm.knl_debug │ Get metadata from compute node when submitting job │ /global/u1/s/siddiq90/github/buildtest-cori/buildsp │
+    │                         │                      │                                                    │ ecs/jobs/metadata.yml                               │
+    └─────────────────────────┴──────────────────────┴────────────────────────────────────────────────────┴─────────────────────────────────────────────────────┘
+    ─────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────
+    [09:23:35] slurm_metadata/a45a9f6a: Creating test directory -                                                                                     base.py:440
+               /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/a45a9f6a
+               slurm_metadata/a45a9f6a: Creating stage directory -                                                                                    base.py:450
+               /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/a45a9f6a/stage
+               slurm_metadata/a45a9f6a: Writing build script:                                                                                         base.py:567
+               /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/a45a9f6a/slurm_metadata_build.sh
+    ─────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────
     ______________________________
-    Launching test: slurm_metadata
-    Test ID: 303d1e32-52eb-4d77-9a36-04a5143c4cbd
-    Executor Name: cori.slurm.knl_debug
-    Running Test:  /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/303d1e32/slurm_metadata_build.sh
-    slurm_metadata/303d1e32 JobID: 46508594 dispatched to scheduler
+    Launching test: slurm_metadata/a45a9f6a
+    slurm_metadata/a45a9f6a: Running Test script
+    /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/a45a9f6a/slurm_metadata_build.sh
+    slurm_metadata/a45a9f6a: JobID 48410143 dispatched to scheduler
     Polling Jobs in 30 seconds
-    slurm_metadata/303d1e32: Job 46508594 is complete!
-    slurm_metadata/303d1e32: Writing output file: /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/303d1e32/slurm_metadata.out
-    slurm_metadata/303d1e32: Writing error file: /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/303d1e32/slurm_metadata.err
-
-    +-----------------------+
-    | Completed Polled Jobs |
-    +-----------------------+
-
-     name           | id       | executor             | status   |   returncode |   runtime
-    ----------------+----------+----------------------+----------+--------------+-----------
-     slurm_metadata | 303d1e32 | cori.slurm.knl_debug | PASS     |            0 |   30.9923
-
-    +----------------------+
-    | Stage: Test Summary  |
-    +----------------------+
-
-     name           | id       | executor             | status   |   returncode |   runtime
-    ----------------+----------+----------------------+----------+--------------+-----------
-     slurm_metadata | 303d1e32 | cori.slurm.knl_debug | PASS     |            0 |   30.9923
+    slurm_metadata/a45a9f6a: Job 48410143 is complete!
+    slurm_metadata/a45a9f6a: Writing output file -
+    /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/a45a9f6a/slurm_metadata.out
+    slurm_metadata/a45a9f6a: Writing error file -
+    /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/a45a9f6a/slurm_metadata.err
+                       Pending Jobs
+    ┏━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
+    ┃ Builder ┃ executor ┃ JobID ┃ JobState ┃ runtime ┃
+    ┡━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
+    └─────────┴──────────┴───────┴──────────┴─────────┘
+                                       Completed Jobs
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
+    ┃ Builder                 ┃ executor             ┃ JobID    ┃ JobState  ┃ runtime   ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━┩
+    │ slurm_metadata/a45a9f6a │ cori.slurm.knl_debug │ 48410143 │ COMPLETED │ 30.714244 │
+    └─────────────────────────┴──────────────────────┴──────────┴───────────┴───────────┘
+                                                           Test Summary
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┓
+    ┃ Builder                 ┃ executor             ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime   ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━┩
+    │ slurm_metadata/a45a9f6a │ cori.slurm.knl_debug │ PASS   │ N/A N/A N/A                         │ 0          │ 30.714244 │
+    └─────────────────────────┴──────────────────────┴────────┴─────────────────────────────────────┴────────────┴───────────┘
 
 
 
@@ -199,7 +196,7 @@ Shown below is an example build for this test
     Failed Tests: 0/1 Percentage: 0.000%
 
 
-    Writing Logfile to: /tmp/buildtest_2159tqkz.log
+    Writing Logfile to: /tmp/buildtest_8pfljnkx.log
     A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /global/homes/s/siddiq90/github/buildtest/buildtest.log
 
 The **SlurmExecutor** class is responsible for processing slurm job that may include:
@@ -220,9 +217,9 @@ state of ``FAILED``.
     buildspecs:
       wall_timeout:
         type: script
-        executor: cori.slurm.haswell_debug
+        executor: cori.slurm.knl_debug
         sbatch: [ "-t '00:00:10'", "-n 1"]
-        description: "This job simulates job timeout by sleeping for 300sec while requesting 5sec"
+        description: "This job simulates job timeout by sleeping for 180sec while requesting 10sec"
         tags: ["jobs", "fail"]
         run: sleep 180
         status:
@@ -235,111 +232,98 @@ be TIMEOUT because we requested 2 mins while this job will sleep 300sec (5min).
 
 .. code-block:: console
 
-    (buildtest) siddiq90@cori02> buildtest build -b buildspecs/jobs/fail/timeout.yml
-    User:  siddiq90
-    Hostname:  cori02
-    Platform:  Linux
-    Current Time:  2021/09/03 13:34:13
-    buildtest path: /global/homes/s/siddiq90/github/buildtest/bin/buildtest
-    buildtest version:  0.10.2
-    python path: /global/homes/s/siddiq90/.conda/envs/buildtest/bin/python
-    python version:  3.8.8
-    Test Directory:  /global/u1/s/siddiq90/github/buildtest/var/tests
-    Configuration File:  /global/u1/s/siddiq90/.buildtest/config.yml
-    Command: /global/homes/s/siddiq90/github/buildtest/bin/buildtest build -b buildspecs/jobs/fail/timeout.yml
-
-    +-------------------------------+
-    | Stage: Discovering Buildspecs |
-    +-------------------------------+
-
-    +------------------------------------------------------------------------------+
-    | Discovered Buildspecs                                                        |
-    +==============================================================================+
-    | /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/fail/timeout.yml |
-    +------------------------------------------------------------------------------+
+    (buildtest) siddiq90@cori01> buildtest build -b buildspecs/jobs/fail/timeout.yml
+    ╭────────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────╮
+    │                                                                                                                       │
+    │ User:               siddiq90                                                                                          │
+    │ Hostname:           cori01                                                                                            │
+    │ Platform:           Linux                                                                                             │
+    │ Current Time:       2021/10/13 09:38:26                                                                               │
+    │ buildtest path:     /global/homes/s/siddiq90/github/buildtest/bin/buildtest                                           │
+    │ buildtest version:  0.11.0                                                                                            │
+    │ python path:        /global/homes/s/siddiq90/.conda/envs/buildtest/bin/python                                         │
+    │ python version:     3.8.8                                                                                             │
+    │ Configuration File: /global/u1/s/siddiq90/github/buildtest-cori/config.yml                                            │
+    │ Test Directory:     /global/u1/s/siddiq90/github/buildtest/var/tests                                                  │
+    │ Command:            /global/homes/s/siddiq90/github/buildtest/bin/buildtest build -b buildspecs/jobs/fail/timeout.yml │
+    │                                                                                                                       │
+    ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+    ──────────────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────────────
     Discovered Buildspecs:  1
     Excluded Buildspecs:  0
     Detected Buildspecs after exclusion:  1
-
-    +---------------------------+
-    | Stage: Parsing Buildspecs |
-    +---------------------------+
-
-    Valid Buildspecs:  1
-    Invalid Buildspecs:  0
+                                 Discovered buildspecs
+    ╔══════════════════════════════════════════════════════════════════════════════╗
+    ║ Buildspecs                                                                   ║
+    ╟──────────────────────────────────────────────────────────────────────────────╢
+    ║ /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/fail/timeout.yml ║
+    ╚══════════════════════════════════════════════════════════════════════════════╝
+    ──────────────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────────────
+    Valid Buildspecs: 1
+    Invalid Buildspecs: 0
     /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/fail/timeout.yml: VALID
 
 
     Total builder objects created: 1
-    builders: [wall_timeout/ae385691]
 
 
-    name          id        description                                                                  buildspecs
-    ------------  --------  ---------------------------------------------------------------------------  ----------------------------------------------------------------------------
-    wall_timeout  ae385691  This job simulates job timeout by sleeping for 300sec while requesting 5sec  /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/fail/timeout.yml
-
-    +----------------------+
-    | Stage: Building Test |
-    +----------------------+
-
-     name         | id       | type   | executor                 | tags             | testpath
-    --------------+----------+--------+--------------------------+------------------+-------------------------------------------------------------------------------------------------------------------------------
-     wall_timeout | ae385691 | script | cori.slurm.haswell_debug | ['jobs', 'fail'] | /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.haswell_debug/timeout/wall_timeout/ae385691/wall_timeout_build.sh
-
-    +---------------------+
-    | Stage: Running Test |
-    +---------------------+
-
+                                                                           Builder Details
+    ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder               ┃ Executor             ┃ description                                          ┃ buildspecs                                          ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ wall_timeout/13d288ff │ cori.slurm.knl_debug │ This job simulates job timeout by sleeping for       │ /global/u1/s/siddiq90/github/buildtest-cori/buildsp │
+    │                       │                      │ 180sec while requesting 10sec                        │ ecs/jobs/fail/timeout.yml                           │
+    └───────────────────────┴──────────────────────┴──────────────────────────────────────────────────────┴─────────────────────────────────────────────────────┘
+    ─────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────
+    [09:38:26] wall_timeout/13d288ff: Creating test directory -                                                                                       base.py:440
+               /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/timeout/wall_timeout/13d288ff
+               wall_timeout/13d288ff: Creating stage directory -                                                                                      base.py:450
+               /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/timeout/wall_timeout/13d288ff/stage
+               wall_timeout/13d288ff: Writing build script:                                                                                           base.py:567
+               /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/timeout/wall_timeout/13d288ff/wall_timeout_build.sh
+    ─────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────
     ______________________________
-    Launching test: wall_timeout
-    Test ID: ae385691-9eb4-413c-ac5b-f2be1bcc449e
-    Executor Name: cori.slurm.haswell_debug
-    Running Test:  /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.haswell_debug/timeout/wall_timeout/ae385691/wall_timeout_build.sh
-    wall_timeout/ae385691 JobID: 46518859 dispatched to scheduler
+    Launching test: wall_timeout/13d288ff
+    wall_timeout/13d288ff: Running Test script
+    /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/timeout/wall_timeout/13d288ff/wall_timeout_build.sh
+    wall_timeout/13d288ff: JobID 48410498 dispatched to scheduler
     Polling Jobs in 30 seconds
-
-
-    Current Jobs
-    _______________
-
-
-    +--------------+----------+--------------------------+----------+----------+---------+
-    |     name     |    id    |         executor         |  jobID   | jobstate | runtime |
-    +--------------+----------+--------------------------+----------+----------+---------+
-    | wall_timeout | ae385691 | cori.slurm.haswell_debug | 46518859 | RUNNING  |  30.38  |
-    +--------------+----------+--------------------------+----------+----------+---------+
+                                      Pending Jobs
+    ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
+    ┃ Builder               ┃ executor             ┃ JobID    ┃ JobState ┃ runtime ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
+    │ wall_timeout/13d288ff │ cori.slurm.knl_debug │ 48410498 │ RUNNING  │ 30.423  │
+    └───────────────────────┴──────────────────────┴──────────┴──────────┴─────────┘
     Polling Jobs in 30 seconds
-
-
-    Current Jobs
-    _______________
-
-
-    +--------------+----------+--------------------------+----------+----------+---------+
-    |     name     |    id    |         executor         |  jobID   | jobstate | runtime |
-    +--------------+----------+--------------------------+----------+----------+---------+
-    | wall_timeout | ae385691 | cori.slurm.haswell_debug | 46518859 | RUNNING  | 60.521  |
-    +--------------+----------+--------------------------+----------+----------+---------+
+                                      Pending Jobs
+    ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
+    ┃ Builder               ┃ executor             ┃ JobID    ┃ JobState ┃ runtime ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
+    │ wall_timeout/13d288ff │ cori.slurm.knl_debug │ 48410498 │ RUNNING  │ 60.564  │
+    └───────────────────────┴──────────────────────┴──────────┴──────────┴─────────┘
     Polling Jobs in 30 seconds
-    wall_timeout/ae385691: Job 46518859 is complete!
-    wall_timeout/ae385691: Writing output file: /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.haswell_debug/timeout/wall_timeout/ae385691/wall_timeout.out
-    wall_timeout/ae385691: Writing error file: /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.haswell_debug/timeout/wall_timeout/ae385691/wall_timeout.err
-
-    +-----------------------+
-    | Completed Polled Jobs |
-    +-----------------------+
-
-     name         | id       | executor                 |    jobID | jobstate   | status   |   returncode |   runtime
-    --------------+----------+--------------------------+----------+------------+----------+--------------+-----------
-     wall_timeout | ae385691 | cori.slurm.haswell_debug | 46518859 | TIMEOUT    | PASS     |            0 |   90.6563
-
-    +----------------------+
-    | Stage: Test Summary  |
-    +----------------------+
-
-     name         | id       | executor                 | status   | returncode_match   | regex_match   | runtime_match   |   returncode |   runtime
-    --------------+----------+--------------------------+----------+--------------------+---------------+-----------------+--------------+-----------
-     wall_timeout | ae385691 | cori.slurm.haswell_debug | PASS     | False              | False         | False           |            0 |   90.6563
+    wall_timeout/13d288ff: Job 48410498 is complete!
+    wall_timeout/13d288ff: Writing output file -
+    /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/timeout/wall_timeout/13d288ff/wall_timeout.out
+    wall_timeout/13d288ff: Writing error file -
+    /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/timeout/wall_timeout/13d288ff/wall_timeout.err
+                       Pending Jobs
+    ┏━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
+    ┃ Builder ┃ executor ┃ JobID ┃ JobState ┃ runtime ┃
+    ┡━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
+    └─────────┴──────────┴───────┴──────────┴─────────┘
+                                      Completed Jobs
+    ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┓
+    ┃ Builder               ┃ executor             ┃ JobID    ┃ JobState ┃ runtime   ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━┩
+    │ wall_timeout/13d288ff │ cori.slurm.knl_debug │ 48410498 │ TIMEOUT  │ 90.675675 │
+    └───────────────────────┴──────────────────────┴──────────┴──────────┴───────────┘
+                                                          Test Summary
+    ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┓
+    ┃ Builder               ┃ executor             ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime   ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━┩
+    │ wall_timeout/13d288ff │ cori.slurm.knl_debug │ PASS   │ False False False                   │ 0          │ 90.675675 │
+    └───────────────────────┴──────────────────────┴────────┴─────────────────────────────────────┴────────────┴───────────┘
 
 
 
@@ -347,9 +331,8 @@ be TIMEOUT because we requested 2 mins while this job will sleep 300sec (5min).
     Failed Tests: 0/1 Percentage: 0.000%
 
 
-    Writing Logfile to: /tmp/buildtest_yr61l5t9.log
+    Writing Logfile to: /tmp/buildtest_4lvnkxge.log
     A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /global/homes/s/siddiq90/github/buildtest/buildtest.log
-
 
 
 buildtest marked this test ``PASS`` because the jobstate **TIMEOUT** match the value provided by ``slurm_job_state`` in the buildspec.
@@ -409,7 +392,7 @@ below is an example buildspec using the `script` schema.
 
 
 buildtest will poll PBS jobs using ``qstat -x -f -F json <jobID>`` until job is finished. Note that
-we use **-x** option to retrieve finished jobs which is required inorder for buildtest to detect job
+we use **-x** option to retrieve finished jobs which is required in-order for buildtest to detect job
 state upon completion.
 
 Shown below is an example build of the buildspec using PBS scheduler.
@@ -417,99 +400,84 @@ Shown below is an example build of the buildspec using PBS scheduler.
 
 .. code-block:: console
 
-    [pbsuser@pbs tests]$ python3.7 ./bin/buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/sleep.yml --poll-interval=5
-    User:  pbsuser
-    Hostname:  pbs
-    Platform:  Linux
-    Current Time:  2021/09/03 20:40:24
-    buildtest path: /tmp/GitHubDesktop/buildtest/bin/buildtest
-    buildtest version:  0.10.2
-    python path: /bin/python
-    python version:  3.7.0
-    Test Directory:  /tmp/GitHubDesktop/buildtest/var/tests
-    Configuration File:  /tmp/GitHubDesktop/buildtest/tests/settings/pbs.yml
-    Command: ./bin/buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/sleep.yml --poll-interval=5
-
-    +-------------------------------+
-    | Stage: Discovering Buildspecs |
-    +-------------------------------+
-
-    +-----------------------------------------------------------+
-    | Discovered Buildspecs                                     |
-    +===========================================================+
-    | /tmp/GitHubDesktop/buildtest/tests/examples/pbs/sleep.yml |
-    +-----------------------------------------------------------+
+    [pbsuser@pbs tmp]$ buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/sleep.yml --poll-interval=5
+    ╭─────────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────────╮
+    │                                                                                                                          │
+    │ User:               pbsuser                                                                                              │
+    │ Hostname:           pbs                                                                                                  │
+    │ Platform:           Linux                                                                                                │
+    │ Current Time:       2021/10/13 16:59:34                                                                                  │
+    │ buildtest path:     /tmp/bin/buildtest                                                                                   │
+    │ buildtest version:  0.11.0                                                                                               │
+    │ python path:        /bin/python                                                                                          │
+    │ python version:     3.7.11                                                                                               │
+    │ Configuration File: /tmp/tests/settings/pbs.yml                                                                          │
+    │ Test Directory:     /tmp/var/tests                                                                                       │
+    │ Command:            /tmp/bin/buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/sleep.yml --poll-interval=5 │
+    │                                                                                                                          │
+    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+    ─────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────────────────────
     Discovered Buildspecs:  1
     Excluded Buildspecs:  0
     Detected Buildspecs after exclusion:  1
-
-    +---------------------------+
-    | Stage: Parsing Buildspecs |
-    +---------------------------+
-
-    Valid Buildspecs:  1
-    Invalid Buildspecs:  0
-    /tmp/GitHubDesktop/buildtest/tests/examples/pbs/sleep.yml: VALID
+            Discovered buildspecs
+    ╔═══════════════════════════════════╗
+    ║ Buildspecs                        ║
+    ╟───────────────────────────────────╢
+    ║ /tmp/tests/examples/pbs/sleep.yml ║
+    ╚═══════════════════════════════════╝
+    ──────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────
+    Valid Buildspecs: 1
+    Invalid Buildspecs: 0
+    /tmp/tests/examples/pbs/sleep.yml: VALID
 
 
     Total builder objects created: 1
-    builders: [pbs_sleep/631998a2]
 
 
-    name       id        description    buildspecs
-    ---------  --------  -------------  ---------------------------------------------------------
-    pbs_sleep  631998a2                 /tmp/GitHubDesktop/buildtest/tests/examples/pbs/sleep.yml
-
-    +----------------------+
-    | Stage: Building Test |
-    +----------------------+
-
-     name      | id       | type   | executor          | tags   | testpath
-    -----------+----------+--------+-------------------+--------+------------------------------------------------------------------------------------------------------
-     pbs_sleep | 631998a2 | script | generic.pbs.workq |        | /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/631998a2/pbs_sleep_build.sh
-
-    +---------------------+
-    | Stage: Running Test |
-    +---------------------+
-
+                                          Builder Details
+    ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder            ┃ Executor          ┃ description ┃ buildspecs                        ┃
+    ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ pbs_sleep/c7bc6a9c │ generic.pbs.workq │             │ /tmp/tests/examples/pbs/sleep.yml │
+    └────────────────────┴───────────────────┴─────────────┴───────────────────────────────────┘
+    ────────────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────────────
+    [16:59:34] pbs_sleep/c7bc6a9c: Creating test directory - /tmp/var/tests/generic.pbs.workq/sleep/pbs_sleep/c7bc6a9c                                               base.py:440
+               pbs_sleep/c7bc6a9c: Creating stage directory - /tmp/var/tests/generic.pbs.workq/sleep/pbs_sleep/c7bc6a9c/stage                                        base.py:450
+               pbs_sleep/c7bc6a9c: Writing build script: /tmp/var/tests/generic.pbs.workq/sleep/pbs_sleep/c7bc6a9c/pbs_sleep_build.sh                                base.py:567
+    ────────────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────────────
     ______________________________
-    Launching test: pbs_sleep
-    Test ID: 631998a2-dc7c-4407-9b3f-552be9a11161
-    Executor Name: generic.pbs.workq
-    Running Test:  /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/631998a2/pbs_sleep_build.sh
-    [pbs_sleep] JobID: 394.pbs dispatched to scheduler
+    Launching test: pbs_sleep/c7bc6a9c
+    pbs_sleep/c7bc6a9c: Running Test script /tmp/var/tests/generic.pbs.workq/sleep/pbs_sleep/c7bc6a9c/pbs_sleep_build.sh
+    pbs.generic.pbs.workq: JobID: 0.pbs dispatched to scheduler
     Polling Jobs in 5 seconds
-
-
-    Current Jobs
-    _______________
-
-
-    +-----------+----------+-------------------+---------+----------+---------+
-    |   name    |    id    |     executor      |  jobID  | jobstate | runtime |
-    +-----------+----------+-------------------+---------+----------+---------+
-    | pbs_sleep | 631998a2 | generic.pbs.workq | 394.pbs |    R     |  5.143  |
-    +-----------+----------+-------------------+---------+----------+---------+
+                                 Pending Jobs
+    ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
+    ┃ Builder            ┃ executor          ┃ JobID ┃ JobState ┃ runtime ┃
+    ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
+    │ pbs_sleep/c7bc6a9c │ generic.pbs.workq │ 0.pbs │ R        │ 5.138   │
+    └────────────────────┴───────────────────┴───────┴──────────┴─────────┘
     Polling Jobs in 5 seconds
-    pbs_sleep/631998a2: Job 394.pbs is complete!
-    pbs_sleep/631998a2: Writing output file: /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/631998a2/pbs_sleep.o394
-    pbs_sleep/631998a2: Writing error file: /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/631998a2/pbs_sleep.e394
-
-    +-----------------------+
-    | Completed Polled Jobs |
-    +-----------------------+
-
-     name      | id       | executor          | jobID   | jobstate   | status   |   returncode |   runtime
-    -----------+----------+-------------------+---------+------------+----------+--------------+-----------
-     pbs_sleep | 631998a2 | generic.pbs.workq | 394.pbs | F          | PASS     |            0 |    10.193
-
-    +----------------------+
-    | Stage: Test Summary  |
-    +----------------------+
-
-     name      | id       | executor          | status   | returncode_match   | regex_match   | runtime_match   |   returncode |   runtime
-    -----------+----------+-------------------+----------+--------------------+---------------+-----------------+--------------+-----------
-     pbs_sleep | 631998a2 | generic.pbs.workq | PASS     | N/A                | N/A           | N/A             |            0 |    10.193
+    pbs_sleep/c7bc6a9c: Job 0.pbs is complete!
+    pbs_sleep/c7bc6a9c: Writing output file -  /tmp/var/tests/generic.pbs.workq/sleep/pbs_sleep/c7bc6a9c/pbs_sleep.o0
+    pbs_sleep/c7bc6a9c: Writing error file - /tmp/var/tests/generic.pbs.workq/sleep/pbs_sleep/c7bc6a9c/pbs_sleep.e0
+                       Pending Jobs
+    ┏━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
+    ┃ Builder ┃ executor ┃ JobID ┃ JobState ┃ runtime ┃
+    ┡━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
+    └─────────┴──────────┴───────┴──────────┴─────────┘
+                                 Completed Jobs
+    ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┓
+    ┃ Builder            ┃ executor          ┃ JobID ┃ JobState ┃ runtime   ┃
+    ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━┩
+    │ pbs_sleep/c7bc6a9c │ generic.pbs.workq │ 0.pbs │ F        │ 10.173252 │
+    └────────────────────┴───────────────────┴───────┴──────────┴───────────┘
+                                                       Test Summary
+    ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┓
+    ┃ Builder            ┃ executor          ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime   ┃
+    ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━┩
+    │ pbs_sleep/c7bc6a9c │ generic.pbs.workq │ PASS   │ N/A N/A N/A                         │ 0          │ 10.173252 │
+    └────────────────────┴───────────────────┴────────┴─────────────────────────────────────┴────────────┴───────────┘
 
 
 
@@ -517,8 +485,8 @@ Shown below is an example build of the buildspec using PBS scheduler.
     Failed Tests: 0/1 Percentage: 0.000%
 
 
-    Writing Logfile to: /tmp/buildtest_moa4gi1x.log
-    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /tmp/GitHubDesktop/buildtest/buildtest.log
+    Writing Logfile to: /tmp/buildtest_fgm9gtu2.log
+    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /tmp/buildtest.log
 
 Cobalt
 -------
@@ -602,83 +570,72 @@ buildtest will terminate after run stage.
 
 .. code-block:: console
 
-    [pbsuser@pbs buildtest]$ python3.7 ./bin/buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/hold.yml --poll-interval=3 --max-pend-time=5
-    User:  pbsuser
-    Hostname:  pbs
-    Platform:  Linux
-    Current Time:  2021/09/03 20:45:34
-    buildtest path: /tmp/GitHubDesktop/buildtest/bin/buildtest
-    buildtest version:  0.10.2
-    python path: /bin/python
-    python version:  3.7.0
-    Test Directory:  /tmp/GitHubDesktop/buildtest/var/tests
-    Configuration File:  /tmp/GitHubDesktop/buildtest/tests/settings/pbs.yml
-    Command: ./bin/buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/hold.yml --poll-interval=3 --max-pend-time=5
-
-    +-------------------------------+
-    | Stage: Discovering Buildspecs |
-    +-------------------------------+
-
-    +----------------------------------------------------------+
-    | Discovered Buildspecs                                    |
-    +==========================================================+
-    | /tmp/GitHubDesktop/buildtest/tests/examples/pbs/hold.yml |
-    +----------------------------------------------------------+
+    [pbsuser@pbs tmp]$ buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/hold.yml --poll-interval=3 --max-pend-time=5
+    ╭──────────────────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────────────────╮
+    │                                                                                                                                           │
+    │ User:               pbsuser                                                                                                               │
+    │ Hostname:           pbs                                                                                                                   │
+    │ Platform:           Linux                                                                                                                 │
+    │ Current Time:       2021/10/13 17:00:51                                                                                                   │
+    │ buildtest path:     /tmp/bin/buildtest                                                                                                    │
+    │ buildtest version:  0.11.0                                                                                                                │
+    │ python path:        /bin/python                                                                                                           │
+    │ python version:     3.7.11                                                                                                                │
+    │ Configuration File: /tmp/tests/settings/pbs.yml                                                                                           │
+    │ Test Directory:     /tmp/var/tests                                                                                                        │
+    │ Command:            /tmp/bin/buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/hold.yml --poll-interval=3 --max-pend-time=5 │
+    │                                                                                                                                           │
+    ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+    ─────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────────────────────
     Discovered Buildspecs:  1
     Excluded Buildspecs:  0
     Detected Buildspecs after exclusion:  1
-
-    +---------------------------+
-    | Stage: Parsing Buildspecs |
-    +---------------------------+
-
-    Valid Buildspecs:  1
-    Invalid Buildspecs:  0
-    /tmp/GitHubDesktop/buildtest/tests/examples/pbs/hold.yml: VALID
+           Discovered buildspecs
+    ╔══════════════════════════════════╗
+    ║ Buildspecs                       ║
+    ╟──────────────────────────────────╢
+    ║ /tmp/tests/examples/pbs/hold.yml ║
+    ╚══════════════════════════════════╝
+    ──────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────
+    Valid Buildspecs: 1
+    Invalid Buildspecs: 0
+    /tmp/tests/examples/pbs/hold.yml: VALID
 
 
     Total builder objects created: 1
-    builders: [pbs_hold_job/db8014c4]
 
 
-    name          id        description    buildspecs
-    ------------  --------  -------------  --------------------------------------------------------
-    pbs_hold_job  db8014c4  PBS Hold Job   /tmp/GitHubDesktop/buildtest/tests/examples/pbs/hold.yml
-
-    +----------------------+
-    | Stage: Building Test |
-    +----------------------+
-
-     name         | id       | type   | executor          | tags   | testpath
-    --------------+----------+--------+-------------------+--------+-----------------------------------------------------------------------------------------------------------
-     pbs_hold_job | db8014c4 | script | generic.pbs.workq |        | /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/hold/pbs_hold_job/db8014c4/pbs_hold_job_build.sh
-
-    +---------------------+
-    | Stage: Running Test |
-    +---------------------+
-
+                                            Builder Details
+    ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder               ┃ Executor          ┃ description  ┃ buildspecs                       ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ pbs_hold_job/7cbe643c │ generic.pbs.workq │ PBS Hold Job │ /tmp/tests/examples/pbs/hold.yml │
+    └───────────────────────┴───────────────────┴──────────────┴──────────────────────────────────┘
+    ────────────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────────────
+    [17:00:51] pbs_hold_job/7cbe643c: Creating test directory - /tmp/var/tests/generic.pbs.workq/hold/pbs_hold_job/7cbe643c                                          base.py:440
+               pbs_hold_job/7cbe643c: Creating stage directory - /tmp/var/tests/generic.pbs.workq/hold/pbs_hold_job/7cbe643c/stage                                   base.py:450
+               pbs_hold_job/7cbe643c: Writing build script: /tmp/var/tests/generic.pbs.workq/hold/pbs_hold_job/7cbe643c/pbs_hold_job_build.sh                        base.py:567
+    ────────────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────────────
     ______________________________
-    Launching test: pbs_hold_job
-    Test ID: db8014c4-547b-487e-9d2e-f3c743addff9
-    Executor Name: generic.pbs.workq
-    Running Test:  /tmp/GitHubDesktop/buildtest/var/tests/generic.pbs.workq/hold/pbs_hold_job/db8014c4/pbs_hold_job_build.sh
-    [pbs_hold_job] JobID: 395.pbs dispatched to scheduler
+    Launching test: pbs_hold_job/7cbe643c
+    pbs_hold_job/7cbe643c: Running Test script /tmp/var/tests/generic.pbs.workq/hold/pbs_hold_job/7cbe643c/pbs_hold_job_build.sh
+    pbs.generic.pbs.workq: JobID: 1.pbs dispatched to scheduler
     Polling Jobs in 3 seconds
-
-
-    Current Jobs
-    _______________
-
-
-    +--------------+----------+-------------------+---------+----------+---------+
-    |     name     |    id    |     executor      |  jobID  | jobstate | runtime |
-    +--------------+----------+-------------------+---------+----------+---------+
-    | pbs_hold_job | db8014c4 | generic.pbs.workq | 395.pbs |    H     |  3.167  |
-    +--------------+----------+-------------------+---------+----------+---------+
+                                   Pending Jobs
+    ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
+    ┃ Builder               ┃ executor          ┃ JobID ┃ JobState ┃ runtime ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
+    │ pbs_hold_job/7cbe643c │ generic.pbs.workq │ 1.pbs │ H        │ 3.143   │
+    └───────────────────────┴───────────────────┴───────┴──────────┴─────────┘
     Polling Jobs in 3 seconds
-    pbs_hold_job/db8014c4: Cancelling Job: 395.pbs because job exceeds max pend time: 5 sec with current pend time of 6.214
+    pbs_hold_job/7cbe643c: Cancelling Job: 1.pbs because job exceeds max pend time: 5 sec with current pend time of 6.176
+                       Pending Jobs
+    ┏━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
+    ┃ Builder ┃ executor ┃ JobID ┃ JobState ┃ runtime ┃
+    ┡━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
+    └─────────┴──────────┴───────┴──────────┴─────────┘
 
-    Cancelled Jobs: [pbs_hold_job/db8014c4]
+    Cancelled Jobs: [pbs_hold_job/7cbe643c]
     Unable to run any tests
 
 

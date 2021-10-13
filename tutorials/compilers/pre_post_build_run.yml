@@ -11,14 +11,11 @@ buildspecs:
       default:
         gcc:
           cflags: -Wall
-        all:
           pre_build: |
-            echo "This is a pre-build section"
-            gcc --version
+            echo "These are commands run before compilation"
           post_build: |
-            echo "This is post-build section"
+            echo "These are commands run after compilation"
           pre_run: |
-            echo "This is pre-run section"
-            export FOO=BAR
-          post_run: |
-            echo "This is post-run section"
+            echo "These are commands run before running script"
+          post_run:
+            echo "These are commands run after running script"
