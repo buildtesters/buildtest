@@ -559,7 +559,7 @@ class BuildTest:
 
         msg = f"""
 [magenta]User:[/]               [cyan]{self.system.system['user']}
-[magenta]Hostname:[/]           [cyan]{self.system.system['host']}"
+[magenta]Hostname:[/]           [cyan]{self.system.system['host']}
 [magenta]Platform:[/]           [cyan]{self.system.system['platform']}
 [magenta]Current Time:[/]       [cyan]{datetime.now().strftime('%Y/%m/%d %X')}
 [magenta]buildtest path:[/]     [cyan]{shutil.which('buildtest')}
