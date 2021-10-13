@@ -19,6 +19,7 @@ Which configuration file does buildtest read?
 buildtest will read configuration files in the following order:
 
 - Command line ``buildtest -c <config>.yml build``
+- Environment variable - **BUILDTEST_CONFIGFILE**
 - User Configuration - ``$HOME/.buildtest/config.yml``
 - Default Configuration - ``$BUILDTEST_ROOT/buildtest/settings/config.yml``
 

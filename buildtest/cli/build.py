@@ -737,16 +737,18 @@ class BuildTest:
         print("\n")
 
         table = Table(title="Builder Details", show_lines=True)
-        table.add_column("[blue]Builder", style="blue")
-        table.add_column("[blue]description", style="blue")
-        table.add_column("[blue]buildspecs", style="blue", overflow="fold")
+        table.add_column("[blue]Builder", overflow="fold")
+        table.add_column("[blue]Executor", overflow="fold")
+        table.add_column("[blue]description", overflow="fold")
+        table.add_column("[blue]buildspecs", overflow="fold")
 
         for builder in self.builders:
             description = builder.recipe.get("description") or ""
 
             table.add_row(
-                f"[red]{builder}",
-                f"[turquoise4]{description}",
+                f"[blue]{builder}",
+                f"[green]{builder.executor}",
+                f"[magenta]{description}",
                 f"[yellow]{builder.buildspec}",
             )
 
@@ -769,7 +771,7 @@ class BuildTest:
             try:
                 builder.build()
             except BuildTestError as err:
-                print(err)
+                console.print(f"[red]{err}")
                 invalid_builders.append(builder)
                 logger.error(err)
                 continue
@@ -778,8 +780,6 @@ class BuildTest:
 
             # set retry limit for each builder
             builder.retry(self.retry)
-
-        self._print_build_phase(invalid_builders, valid_builders)
 
         # remove builders if any invalid builders detected in build phase
         if invalid_builders:
@@ -885,21 +885,6 @@ class BuildTest:
                 builders.append(builder)
 
         return builders
-
-    def _print_build_phase(self, invalid_builders, valid_builders):
-        """print build phase table
-
-        Args:
-            invalid_builders (list) List of invalid builders
-            table (dict): a dict mapping of builders printed in build phase.
-        """
-
-        # print any skipped buildspecs if they failed to validate during build stage
-        if invalid_builders:
-            print("\n\nError Messages from Stage: Build")
-            print("{:_<80}".format(""))
-            for test in invalid_builders:
-                print(test)
 
     def _print_test_summary(self, builders):
         """Print a summary of total pass and fail test with percentage breakdown.
