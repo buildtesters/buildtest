@@ -7,13 +7,13 @@ buildspecs:
     tags: [tutorials, compile]
     source: "src/hello_omp.c"
     compilers:
-      name: ["^(gcc)"]
+      name: ["^(builtin_gcc|gcc_11.2.0)"]
       default:
         gcc:
           cflags: -fopenmp
           env:
             OMP_NUM_THREADS: 2
       config:
-        gcc/10.2.0-37fmsw7:
+        gcc_11.2.0:
           env:
             OMP_NUM_THREADS: 4

@@ -7,8 +7,8 @@ buildspecs:
     executor: generic.local.bash
     source: src/vecAdd.c
     compilers:
-      name: ["^(gcc)"]
-      exclude: [gcc/10.2.0-37fmsw7]
+      name: ["^(gcc_11.2.0|builtin_gcc)"]
+      exclude: [builtin_gcc]
       default:
         gcc:
           cflags: -fopenacc

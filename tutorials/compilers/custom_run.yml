@@ -7,10 +7,9 @@ buildspecs:
     tags: [tutorials, compile]
     source: "src/argc.c"
     compilers:
-      name: ["^(builtin_gcc|gcc)"]
-      default:
-        gcc:
-          run: ./$_EXEC 1 3 5
+      name: ["^(builtin_gcc|gcc_11.2.0)"]
       config:
-        gcc/10.2.0-37fmsw7:
+        builtin_gcc:
+          run: ./$_EXEC 1 3
+        gcc_11.2.0:
           run: ./$_EXEC 100 120
