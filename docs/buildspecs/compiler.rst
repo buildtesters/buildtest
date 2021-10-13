@@ -531,7 +531,7 @@ Next let's build this test.
     │ User:               root                                                                │
     │ Hostname:           ec1164c68c64                                                        │
     │ Platform:           Linux                                                               │
-    │ Current Time:       2021/10/13 13:50:24                                                 │
+    │ Current Time:       2021/10/13 14:50:50                                                 │
     │ buildtest path:     /tmp/bin/buildtest                                                  │
     │ buildtest version:  0.11.0                                                              │
     │ python path:        /usr/bin/python                                                     │
@@ -564,39 +564,39 @@ Next let's build this test.
     ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
     ┃ Builder                           ┃ Executor           ┃ description                            ┃ buildspecs                                   ┃
     ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-    │ override_environmentvars/41c50459 │ generic.local.bash │ override default environment variables │ /tmp/tutorials/compilers/envvar_override.yml │
+    │ override_environmentvars/0f373822 │ generic.local.bash │ override default environment variables │ /tmp/tutorials/compilers/envvar_override.yml │
     ├───────────────────────────────────┼────────────────────┼────────────────────────────────────────┼──────────────────────────────────────────────┤
-    │ override_environmentvars/f58ecf97 │ generic.local.bash │ override default environment variables │ /tmp/tutorials/compilers/envvar_override.yml │
+    │ override_environmentvars/fdbd68af │ generic.local.bash │ override default environment variables │ /tmp/tutorials/compilers/envvar_override.yml │
     └───────────────────────────────────┴────────────────────┴────────────────────────────────────────┴──────────────────────────────────────────────┘
     ──────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────
-    [13:50:24] override_environmentvars/41c50459: Creating test directory - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/41c50459                  base.py:440
-               override_environmentvars/41c50459: Creating stage directory - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/41c50459/stage           base.py:450
-               override_environmentvars/41c50459: Writing build script:                                                                                                          base.py:567
-               /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/41c50459/override_environmentvars_build.sh
-               override_environmentvars/f58ecf97: Creating test directory - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/f58ecf97                  base.py:440
-               override_environmentvars/f58ecf97: Creating stage directory - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/f58ecf97/stage           base.py:450
-               override_environmentvars/f58ecf97: Writing build script:                                                                                                          base.py:567
-               /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/f58ecf97/override_environmentvars_build.sh
+    [14:50:50] override_environmentvars/0f373822: Creating test directory - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/0f373822                  base.py:440
+               override_environmentvars/0f373822: Creating stage directory - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/0f373822/stage           base.py:450
+    [14:50:51] override_environmentvars/0f373822: Writing build script:                                                                                                          base.py:567
+               /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/0f373822/override_environmentvars_build.sh
+               override_environmentvars/fdbd68af: Creating test directory - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/fdbd68af                  base.py:440
+               override_environmentvars/fdbd68af: Creating stage directory - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/fdbd68af/stage           base.py:450
+               override_environmentvars/fdbd68af: Writing build script:                                                                                                          base.py:567
+               /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/fdbd68af/override_environmentvars_build.sh
     ──────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────
     ______________________________
-    Launching test: override_environmentvars/41c50459
-    override_environmentvars/41c50459: Running Test script /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/41c50459/override_environmentvars_build.sh
+    Launching test: override_environmentvars/0f373822
+    override_environmentvars/0f373822: Running Test script /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/0f373822/override_environmentvars_build.sh
     ______________________________
-    Launching test: override_environmentvars/f58ecf97
-    override_environmentvars/f58ecf97: Running Test script /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/f58ecf97/override_environmentvars_build.sh
-    override_environmentvars/f58ecf97: completed with returncode: 0
-    override_environmentvars/41c50459: completed with returncode: 0
-    override_environmentvars/f58ecf97: Writing output file -  /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/f58ecf97/override_environmentvars.out
-    override_environmentvars/f58ecf97: Writing error file - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/f58ecf97/override_environmentvars.err
-    override_environmentvars/41c50459: Writing output file -  /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/41c50459/override_environmentvars.out
-    override_environmentvars/41c50459: Writing error file - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/41c50459/override_environmentvars.err
+    Launching test: override_environmentvars/fdbd68af
+    override_environmentvars/fdbd68af: Running Test script /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/fdbd68af/override_environmentvars_build.sh
+    override_environmentvars/fdbd68af: completed with returncode: 0
+    override_environmentvars/0f373822: completed with returncode: 0
+    override_environmentvars/fdbd68af: Writing output file -  /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/fdbd68af/override_environmentvars.out
+    override_environmentvars/fdbd68af: Writing error file - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/fdbd68af/override_environmentvars.err
+    override_environmentvars/0f373822: Writing output file -  /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/0f373822/override_environmentvars.out
+    override_environmentvars/0f373822: Writing error file - /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/0f373822/override_environmentvars.err
                                                               Test Summary
     ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
     ┃ Builder                           ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
     ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-    │ override_environmentvars/41c50459 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.245955 │
+    │ override_environmentvars/fdbd68af │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.259626 │
     ├───────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
-    │ override_environmentvars/f58ecf97 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.236394 │
+    │ override_environmentvars/0f373822 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.276015 │
     └───────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
 
@@ -605,7 +605,7 @@ Next let's build this test.
     Failed Tests: 0/2 Percentage: 0.000%
 
 
-    Writing Logfile to: /tmp/buildtest_1_l9rgp0.log
+    Writing Logfile to: /tmp/buildtest_dn_8ofyn.log
     A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /tmp/buildtest.log
 
 We can see the generated test using ``buildtest inspect query`` which can show output of multiple tests. In example below we see the two test runs
@@ -615,63 +615,58 @@ and take note of ``export OMP_NUM_THREADS`` defined per test. The `-d all` will 
 .. code-block:: console
 
     $ buildtest inspect query -d all -t override_environmentvars
-    ──────────────────────────────────────────────────────────── override_environmentvars/41c50459-8f50-47d5-8c9e-32afc220c374 ─────────────────────────────────────────────────────────────
+    ──────────────────────────────────────────────────────────── override_environmentvars/fdbd68af-5ade-4489-a9de-173ca05d9e36 ─────────────────────────────────────────────────────────────
     executor:  generic.local.bash
     description:  override default environment variables
     state:  PASS
     returncode:  0
-    runtime:  0.245955
-    starttime:  2021/10/13 13:50:24
-    endtime:  2021/10/13 13:50:24
-    ────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/41c50459/override_environmentvars.sh ──────────────────────────────
-    ╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-    │ #!/usr/bin/bash                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │ # name of executable                                                                                                                                                                 │
-    │ _EXEC=hello_omp.c.exe                                                                                                                                                                │
-    │ # Declare environment variables                                                                                                                                                      │
-    │ export OMP_NUM_THREADS=2                                                                                                                                                             │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │ # Compilation Line                                                                                                                                                                   │
-    │ /usr/bin/gcc -fopenmp -o $_EXEC /tmp/tutorials/compilers/src/hello_omp.c                                                                                                             │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │ # Run executable                                                                                                                                                                     │
-    │ ./$_EXEC                                                                                                                                                                             │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-    ──────────────────────────────────────────────────────────── override_environmentvars/f58ecf97-9468-4e49-a4ae-f88d24d6e4f5 ─────────────────────────────────────────────────────────────
+    runtime:  0.259626
+    starttime:  2021/10/13 14:50:51
+    endtime:  2021/10/13 14:50:51
+    ────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/fdbd68af/override_environmentvars.sh ──────────────────────────────
+       1 #!/usr/bin/bash
+       2
+       3
+       4 # name of executable
+       5 _EXEC=hello_omp.c.exe
+       6 # Declare environment variables
+       7 export OMP_NUM_THREADS=4
+       8
+       9
+      10 # Compilation Line
+      11 /bootstrap/view/bin/gcc -fopenmp -o $_EXEC /tmp/tutorials/compilers/src/hello_omp.c
+      12
+      13
+      14 # Run executable
+      15 ./$_EXEC
+      16
+      17
+    ──────────────────────────────────────────────────────────── override_environmentvars/0f373822-82be-4069-bc6a-2f9584ea70c1 ─────────────────────────────────────────────────────────────
     executor:  generic.local.bash
     description:  override default environment variables
     state:  PASS
     returncode:  0
-    runtime:  0.236394
-    starttime:  2021/10/13 13:50:24
-    endtime:  2021/10/13 13:50:24
-    ────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/f58ecf97/override_environmentvars.sh ──────────────────────────────
-    ╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-    │ #!/usr/bin/bash                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │ # name of executable                                                                                                                                                                 │
-    │ _EXEC=hello_omp.c.exe                                                                                                                                                                │
-    │ # Declare environment variables                                                                                                                                                      │
-    │ export OMP_NUM_THREADS=4                                                                                                                                                             │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │ # Compilation Line                                                                                                                                                                   │
-    │ /bootstrap/view/bin/gcc -fopenmp -o $_EXEC /tmp/tutorials/compilers/src/hello_omp.c                                                                                                  │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │ # Run executable                                                                                                                                                                     │
-    │ ./$_EXEC                                                                                                                                                                             │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-
+    runtime:  0.276015
+    starttime:  2021/10/13 14:50:51
+    endtime:  2021/10/13 14:50:51
+    ────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/envvar_override/override_environmentvars/0f373822/override_environmentvars.sh ──────────────────────────────
+       1 #!/usr/bin/bash
+       2
+       3
+       4 # name of executable
+       5 _EXEC=hello_omp.c.exe
+       6 # Declare environment variables
+       7 export OMP_NUM_THREADS=2
+       8
+       9
+      10 # Compilation Line
+      11 /usr/bin/gcc -fopenmp -o $_EXEC /tmp/tutorials/compilers/src/hello_omp.c
+      12
+      13
+      14 # Run executable
+      15 ./$_EXEC
+      16
+      17
 
 Tweak how test are passed
 --------------------------
@@ -837,56 +832,93 @@ test. We see that buildtest will insert the line specified by ``run`` property a
 
 .. code-block:: shell
 
-    $ buildtest inspect query -d all  -t custom_run_by_compilers
-    ───────────────────────────────────────────────────────────── custom_run_by_compilers/e9c57554-ebb1-49e8-a381-9f9186f0a4d1 ─────────────────────────────────────────────────────────────
+    $ buildtest inspect query -d all -b  -t custom_run_by_compilers
+    ───────────────────────────────────────────────────────────── custom_run_by_compilers/1438d9e1-a472-4759-a3e4-145afd020a3e ─────────────────────────────────────────────────────────────
     executor:  generic.local.bash
     description:  Customize binary launch based on compiler
     state:  PASS
     returncode:  0
-    runtime:  0.212805
-    starttime:  2021/10/13 14:20:00
-    endtime:  2021/10/13 14:20:00
-    ───────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/e9c57554/custom_run_by_compilers.sh ──────────────────────────────────
-    ╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-    │ #!/usr/bin/bash                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │ # name of executable                                                                                                                                                                 │
-    │ _EXEC=argc.c.exe                                                                                                                                                                     │
-    │ # Compilation Line                                                                                                                                                                   │
-    │ /usr/bin/gcc -o $_EXEC /tmp/tutorials/compilers/src/argc.c                                                                                                                           │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │ # Run executable                                                                                                                                                                     │
-    │ ./$_EXEC 1 3                                                                                                                                                                         │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-    ───────────────────────────────────────────────────────────── custom_run_by_compilers/c2651bc6-e4a9-42a9-89d9-3d0a6b1215c8 ─────────────────────────────────────────────────────────────
+    runtime:  0.234103
+    starttime:  2021/10/13 14:49:17
+    endtime:  2021/10/13 14:49:17
+    ───────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/1438d9e1/custom_run_by_compilers.sh ──────────────────────────────────
+       1 #!/usr/bin/bash
+       2
+       3
+       4 # name of executable
+       5 _EXEC=argc.c.exe
+       6 # Compilation Line
+       7 /usr/bin/gcc -o $_EXEC /tmp/tutorials/compilers/src/argc.c
+       8
+       9
+      10 # Run executable
+      11 ./$_EXEC 1 3
+      12
+      13
+    ────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/1438d9e1/custom_run_by_compilers_build.sh ───────────────────────────────
+       1 #!/bin/bash
+       2
+       3
+       4 ############# START VARIABLE DECLARATION ########################
+       5 export BUILDTEST_TEST_NAME=custom_run_by_compilers
+       6 export BUILDTEST_TEST_ROOT=/tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/1438d9e1
+       7 export BUILDTEST_BUILDSPEC_DIR=/tmp/tutorials/compilers
+       8 export BUILDTEST_STAGE_DIR=/tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/1438d9e1/stage
+       9 export BUILDTEST_TEST_ID=1438d9e1-a472-4759-a3e4-145afd020a3e
+      10 ############# END VARIABLE DECLARATION   ########################
+      11
+      12
+      13 # source executor startup script
+      14 source /tmp/var/executor/generic.local.bash/before_script.sh
+      15 # Run generated script
+      16 /tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/1438d9e1/stage/custom_run_by_compilers.sh
+      17 # Get return code
+      18 returncode=$?
+      19 # Exit with return code
+      20 exit $returncode
+    ───────────────────────────────────────────────────────────── custom_run_by_compilers/563afffd-6d23-4817-9fed-294363416242 ─────────────────────────────────────────────────────────────
     executor:  generic.local.bash
     description:  Customize binary launch based on compiler
     state:  PASS
     returncode:  0
-    runtime:  0.251397
-    starttime:  2021/10/13 14:20:00
-    endtime:  2021/10/13 14:20:00
-    ───────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/c2651bc6/custom_run_by_compilers.sh ──────────────────────────────────
-    ╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-    │ #!/usr/bin/bash                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │ # name of executable                                                                                                                                                                 │
-    │ _EXEC=argc.c.exe                                                                                                                                                                     │
-    │ # Compilation Line                                                                                                                                                                   │
-    │ /bootstrap/view/bin/gcc -o $_EXEC /tmp/tutorials/compilers/src/argc.c                                                                                                                │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │ # Run executable                                                                                                                                                                     │
-    │ ./$_EXEC 100 120                                                                                                                                                                     │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-
+    runtime:  0.24476
+    starttime:  2021/10/13 14:49:17
+    endtime:  2021/10/13 14:49:17
+    ───────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/563afffd/custom_run_by_compilers.sh ──────────────────────────────────
+       1 #!/usr/bin/bash
+       2
+       3
+       4 # name of executable
+       5 _EXEC=argc.c.exe
+       6 # Compilation Line
+       7 /bootstrap/view/bin/gcc -o $_EXEC /tmp/tutorials/compilers/src/argc.c
+       8
+       9
+      10 # Run executable
+      11 ./$_EXEC 100 120
+      12
+      13
+    ────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/563afffd/custom_run_by_compilers_build.sh ───────────────────────────────
+       1 #!/bin/bash
+       2
+       3
+       4 ############# START VARIABLE DECLARATION ########################
+       5 export BUILDTEST_TEST_NAME=custom_run_by_compilers
+       6 export BUILDTEST_TEST_ROOT=/tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/563afffd
+       7 export BUILDTEST_BUILDSPEC_DIR=/tmp/tutorials/compilers
+       8 export BUILDTEST_STAGE_DIR=/tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/563afffd/stage
+       9 export BUILDTEST_TEST_ID=563afffd-6d23-4817-9fed-294363416242
+      10 ############# END VARIABLE DECLARATION   ########################
+      11
+      12
+      13 # source executor startup script
+      14 source /tmp/var/executor/generic.local.bash/before_script.sh
+      15 # Run generated script
+      16 /tmp/var/tests/generic.local.bash/custom_run/custom_run_by_compilers/563afffd/stage/custom_run_by_compilers.sh
+      17 # Get return code
+      18 returncode=$?
+      19 # Exit with return code
+      20 exit $returncode
 
 Pre/Post sections for build and run section
 --------------------------------------------
@@ -924,11 +956,11 @@ You can run this example by running the following command::
     buildtest build -b tutorials/compilers/pre_post_build_run.yml
 
 If we inspect the content of test we see that buildtest will insert the shell commands
-for ``pre_build``, ``post_build``, ``pre_run`` and ``post_run`` in its corresponding section. 
+for ``pre_build``, ``post_build``, ``pre_run`` and ``post_run`` in its corresponding section.
 
 .. code-block:: shell
 
-   $ buildtest inspect query -d all -t pre_post_build_run
+    $ buildtest inspect query -d all -t pre_post_build_run
     ─────────────────────────────────────────────────────────────── pre_post_build_run/72644b22-9cf1-40b9-8357-46e9170649a6 ────────────────────────────────────────────────────────────────
     executor:  generic.local.bash
     description:  example using pre_build, post_build, pre_run, post_run example
@@ -938,44 +970,43 @@ for ``pre_build``, ``post_build``, ``pre_run`` and ``post_run`` in its correspon
     starttime:  2021/10/13 14:31:01
     endtime:  2021/10/13 14:31:02
     ────────────────────────────────── Test File: /tmp/var/tests/generic.local.bash/pre_post_build_run/pre_post_build_run/72644b22/pre_post_build_run.sh ───────────────────────────────────
-    ╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
-    │ #!/usr/bin/bash                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │ # name of executable                                                                                                                                                                 │
-    │ _EXEC=hello.c.exe                                                                                                                                                                    │
-    │ ### START OF PRE BUILD SECTION ###                                                                                                                                                   │
-    │ echo "These are commands run before compilation"                                                                                                                                     │
-    │                                                                                                                                                                                      │
-    │ ### END OF PRE BUILD SECTION   ###                                                                                                                                                   │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │ # Compilation Line                                                                                                                                                                   │
-    │ /usr/bin/gcc -Wall -o $_EXEC /tmp/tutorials/compilers/src/hello.c                                                                                                                    │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │ ### START OF POST BUILD SECTION ###                                                                                                                                                  │
-    │ echo "These are commands run after compilation"                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │ ### END OF POST BUILD SECTION ###                                                                                                                                                    │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │ ### START OF PRE RUN SECTION ###                                                                                                                                                     │
-    │ echo "These are commands run before running script"                                                                                                                                  │
-    │                                                                                                                                                                                      │
-    │ ### END OF PRE RUN SECTION   ###                                                                                                                                                     │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │ # Run executable                                                                                                                                                                     │
-    │ ./$_EXEC                                                                                                                                                                             │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    │ ### START OF POST RUN SECTION ###                                                                                                                                                    │
-    │ echo "These are commands run after running script"                                                                                                                                   │
-    │ ### END OF POST RUN SECTION   ###                                                                                                                                                    │
-    │                                                                                                                                                                                      │
-    │                                                                                                                                                                                      │
-    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+       1 #!/usr/bin/bash
+       2
+       3
+       4 # name of executable
+       5 _EXEC=hello.c.exe
+       6 ### START OF PRE BUILD SECTION ###
+       7 echo "These are commands run before compilation"
+       8
+       9 ### END OF PRE BUILD SECTION   ###
+      10
+      11
+      12 # Compilation Line
+      13 /usr/bin/gcc -Wall -o $_EXEC /tmp/tutorials/compilers/src/hello.c
+      14
+      15
+      16 ### START OF POST BUILD SECTION ###
+      17 echo "These are commands run after compilation"
+      18
+      19 ### END OF POST BUILD SECTION ###
+      20
+      21
+      22 ### START OF PRE RUN SECTION ###
+      23 echo "These are commands run before running script"
+      24
+      25 ### END OF PRE RUN SECTION   ###
+      26
+      27
+      28 # Run executable
+      29 ./$_EXEC
+      30
+      31
+      32 ### START OF POST RUN SECTION ###
+      33 echo "These are commands run after running script"
+      34 ### END OF POST RUN SECTION   ###
+      35
+      36
+
 
 
 Single Test Multiple Compilers

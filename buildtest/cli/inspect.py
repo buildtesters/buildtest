@@ -6,8 +6,8 @@ import sys
 from buildtest.cli.report import Report
 from buildtest.defaults import BUILD_REPORT, console
 from buildtest.utils.file import read_file, resolve_path
-from rich.panel import Panel
 from rich.pretty import pprint
+from rich.syntax import Syntax
 from rich.table import Column, Table
 
 
@@ -145,26 +145,32 @@ def inspect_query(report, args):
                 content = read_file(test["outfile"])
                 console.rule(f"Output File: {test['outfile']}")
 
-                console.print(Panel(content))
+                syntax = Syntax(content, "text")
+                console.print(syntax)
 
             # print content of error file when 'buildtest inspect query --error' is set
             if args.error:
                 content = read_file(test["errfile"])
                 console.rule(f"Error File: {test['errfile']}")
 
-                console.print(Panel(content))
+                syntax = Syntax(content, "text")
+                console.print(syntax)
 
             # print content of testpath when 'buildtest inspect query --testpath' is set
             if args.testpath:
                 content = read_file(test["testpath"])
                 console.rule(f"Test File: {test['testpath']}")
-                console.print(Panel(content))
+
+                syntax = Syntax(content, "shell", line_numbers=True, theme="emacs")
+                console.print(syntax)
 
             # print content of build script when 'buildtest inspect query --buildscript' is set
             if args.buildscript:
                 content = read_file(test["build_script"])
                 console.rule(f"Test File: {test['build_script']}")
-                console.print(Panel(content))
+
+                syntax = Syntax(content, "shell", line_numbers=True, theme="emacs")
+                console.print(syntax)
 
 
 def inspect_buildspec(report, input_buildspecs, all_records):
