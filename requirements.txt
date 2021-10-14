@@ -1,4 +1,3 @@
-archspec
 distro
 isort
 jsonschema
