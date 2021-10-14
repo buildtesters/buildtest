@@ -10,7 +10,6 @@ import platform
 import shutil
 import sys
 
-import archspec.cpu
 import distro
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.utils.command import BuildTestCommand
