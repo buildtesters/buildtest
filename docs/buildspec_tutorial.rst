@@ -10,3 +10,4 @@ Buildspec Tutorial
    buildspecs/global
    buildspecs/compiler
    buildspecs/spack
+   buildspecs/advanced
