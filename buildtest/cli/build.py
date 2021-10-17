@@ -644,23 +644,14 @@ class BuildTest:
         if self.builders:
             update_report(self.builders, self.report_file)
 
-        shutil.copy2(
-            os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log"),
-            self.logfile.name,
-        )
-
         print(f"Writing Logfile to: {self.logfile.name}")
-        print(
-            "A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log - ",
-            os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log"),
-        )
 
         self._update_build_history(self.builders)
 
     def parse_buildspecs(self):
         """Parse all buildspecs by passing buildspec file to :class:`buildtest.buildsystem.parser.BuildspecParser` class.
         If buildspec fails validation we skip the buildspec and print all skipped buildspecs.
-        If buildspec passes validation we get all builders by invoking ``Builder`` class that
+        If buildspec passes validation we get all builders by invoking :class:`buildtest.buildsystem.builders.Builder` class that
         is responsible for creating builder objects for each test.
 
         Raises:
