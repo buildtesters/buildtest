@@ -19,7 +19,6 @@ Specify default executor settings for all executors
 | Property                        | Type      | Required | Nullable       | Defined by                                                                                                                                                                                                                                      |
 | :------------------------------ | :-------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [pollinterval](#pollinterval)   | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-defaults-properties-pollinterval.md "settings.schema.json#/definitions/system/properties/executors/properties/defaults/properties/pollinterval")   |
-| [launcher](#launcher)           | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-defaults-properties-launcher.md "settings.schema.json#/definitions/system/properties/executors/properties/defaults/properties/launcher")           |
 | [max_pend_time](#max_pend_time) | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-defaults-properties-max_pend_time.md "settings.schema.json#/definitions/system/properties/executors/properties/defaults/properties/max_pend_time") |
 | [account](#account)             | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-defaults-properties-account.md "settings.schema.json#/definitions/system/properties/executors/properties/defaults/properties/account")             |
 | [max_jobs](#max_jobs)           | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-defaults-properties-max_jobs.md "settings.schema.json#/definitions/system/properties/executors/properties/defaults/properties/max_jobs")           |
@@ -55,34 +54,6 @@ The default value is:
 ```json
 30
 ```
-
-## launcher
-
-Specify batch launcher to use when submitting jobs, this is applicable for LSF and Slurm Executors.
-
-`launcher`
-
-*   is optional
-
-*   Type: `string`
-
-*   cannot be null
-
-*   defined in: [buildtest configuration schema](settings-definitions-system-properties-executors-properties-defaults-properties-launcher.md "settings.schema.json#/definitions/system/properties/executors/properties/defaults/properties/launcher")
-
-### launcher Type
-
-`string`
-
-### launcher Constraints
-
-**enum**: the value of this property must be equal to one of the following values:
-
-| Value      | Explanation |
-| :--------- | :---------- |
-| `"sbatch"` |             |
-| `"bsub"`   |             |
-| `"qsub"`   |             |
 
 ## max_pend_time
 
