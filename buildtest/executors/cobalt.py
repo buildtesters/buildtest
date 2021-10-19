@@ -29,6 +29,7 @@ class CobaltExecutor(BaseExecutor):
     """
 
     type = "cobalt"
+    launcher = "qsub"
 
     def __init__(self, name, settings, site_configs, account=None, max_pend_time=None):
 
@@ -39,9 +40,11 @@ class CobaltExecutor(BaseExecutor):
     def load(self):
         """Load the a Cobalt executor configuration from buildtest settings."""
 
+        """
         self.launcher = self._settings.get("launcher") or deep_get(
             self._buildtestsettings.target_config, "executors", "defaults", "launcher"
         )
+        """
         self.launcher_opts = self._settings.get("options")
 
         self.queue = self._settings.get("queue")

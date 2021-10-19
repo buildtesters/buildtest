@@ -1,11 +1,9 @@
 system:
   generic:
     hostnames: ['.*']
-
     moduletool: lmod
     executors:
       defaults:
-         launcher: qsub
          max_pend_time: 30
 
       cobalt:

@@ -5,7 +5,6 @@ system:
     executors:
       defaults:
         pollinterval: 10
-        launcher: bsub
         max_pend_time: 45
       lsf:
         batch:

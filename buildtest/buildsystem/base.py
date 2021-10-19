@@ -67,7 +67,6 @@ class BuilderBase(ABC):
         """
 
         self.name = name
-        self.pwd = os.getcwd()
 
         self.metadata = {}
 
@@ -104,19 +103,33 @@ class BuilderBase(ABC):
         # used to lookup environment variables if 'envs' key is defined.
         self.envs_lookup = {}
 
+        # used for storing output content
+        self._output = None
+        # used for storing error content
+        self._error = None
+
         # strip .yml extension from file name
         file_name = re.sub("[.](yml)", "", os.path.basename(buildspec))
         self.testdir = os.path.join(testdir, self.executor, file_name, self.name)
 
         self.logger = logging.getLogger(__name__)
 
-        self.logger.debug(f"Processing Buildspec: {self.buildspec}")
-        self.logger.debug(f"Processing Buildspec section: {self.name}")
+        self.logger.debug(f"Processing Buildspec File: {self.buildspec}")
+        self.logger.debug(f"Processing Test: {self.name}")
 
         # get type attribute from Executor class (local, slurm, cobalt, pbs, lsf)
         self.executor_type = buildexecutor.executors[self.executor].type
         self.buildexecutor = buildexecutor
+
+        # Generate a unique id for the build based
+        self.test_uid = str(uuid.uuid4())
+
         self._set_metadata_values()
+        self.shell_detection()
+        self.sched_init()
+
+    def shell_detection(self):
+        """Detect shell and shebang used for test script"""
 
         # The default shell will be bash
         self.default_shell = Shell()
@@ -139,8 +152,6 @@ class BuilderBase(ABC):
         elif self.shell.name in ["python"]:
             self.shell_type = "python"
 
-        self.sched_init()
-
     def _set_metadata_values(self):
         """This method sets ``self.metadata`` that contains metadata for each builder object."""
         self.metadata["name"] = self.name
@@ -155,11 +166,6 @@ class BuilderBase(ABC):
         self.metadata["schemafile"] = os.path.basename(
             schema_table[f"{self.recipe['type']}-v1.0.schema.json"]["path"]
         )
-
-        # used for storing output content
-        self._output = None
-        # used for storing error content
-        self._error = None
 
         # store output content of test
         self.metadata["output"] = None
@@ -176,7 +182,7 @@ class BuilderBase(ABC):
         # location of stage directory in test root
         self.metadata["stagedir"] = None
 
-        self.metadata["description"] = self.recipe.get("description")
+        self.metadata["description"] = self.recipe.get("description") or ""
 
         # location of test script
         self.metadata["testpath"] = None
@@ -199,20 +205,9 @@ class BuilderBase(ABC):
         self.metadata["jobid"] = None
         # used to store job metrics for given JobID from batch scheduler
         self.metadata["job"] = {}
-        # Generate a unique id for the build based on key and unique string
-        self.test_uid = self._generate_unique_id()
+
         self.metadata["full_id"] = self.test_uid
         self.metadata["id"] = self.test_uid[:8]
-
-    def _generate_unique_id(self):
-        """Generate a unique build id using `uuid.uuid4() <https://docs.python.org/3/library/uuid.html#uuid.uuid4>`_.
-
-        Returns:
-            str: unique test id for the builder
-        """
-
-        unique_id = str(uuid.uuid4())
-        return unique_id
 
     def get_test_extension(self):
         """Return the test extension, which depends on the shell type. By default we return `sh`
@@ -304,8 +299,8 @@ class BuilderBase(ABC):
             return command
 
         err = f"{self} failed to submit job with returncode: {ret} \n"
-        print(err)
-        print(err_msg)
+        console.print(f"[red]{err}")
+        console.print(f"[red]{err_msg}")
 
         ########## Retry for failed tests  ##########
 
@@ -326,8 +321,8 @@ class BuilderBase(ABC):
                 return command
 
             err = f"{self} failed to submit job with returncode: {ret} \n"
-            print(err)
-            print(err_msg)
+            console.print(f"[red]{err}")
+            console.print(f"[red]{err_msg}")
 
         raise RuntimeFailure(err)
 
@@ -437,7 +432,9 @@ class BuilderBase(ABC):
 
         create_dir(self.test_root)
 
-        console.log(f"[blue]{self}:[/] Creating test directory - {self.test_root}")
+        msg = f"Creating test directory: {self.test_root}"
+        self.logger.debug(msg)
+        console.log(f"[blue]{self}:[/] {msg}")
 
         self.metadata["testroot"] = self.test_root
 
@@ -445,9 +442,10 @@ class BuilderBase(ABC):
 
         # create stage and run directories
         create_dir(self.stage_dir)
-        self.logger.debug("Creating the stage directory: %s ", self.stage_dir)
+        msg = f"Creating the stage directory: {self.stage_dir}"
+        self.logger.debug(msg)
 
-        console.log(f"[blue]{self}:[/] Creating stage directory - {self.stage_dir}")
+        console.log(f"[blue]{self}:[/] {msg}")
 
         self.metadata["stagedir"] = self.stage_dir
 
@@ -532,7 +530,7 @@ class BuilderBase(ABC):
 
         lines.append("# Run generated script")
         # local executor
-        if self.buildexecutor.executors[self.executor].type == "local":
+        if self._is_local_executor():
             cmd = self._emit_command()
 
             lines += [" ".join(cmd)]
@@ -1062,9 +1060,6 @@ class BuilderBase(ABC):
             # if 'state' property is specified explicitly honor this value regardless of what is calculated
             if self.status.get("state"):
                 self.metadata["result"]["state"] = self.status["state"]
-
-        # Return to starting directory for next test
-        os.chdir(self.pwd)
 
     def __str__(self):
         return f"{self.name}/{self.metadata['id']}"

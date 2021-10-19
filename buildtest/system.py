@@ -19,6 +19,7 @@ class BuildTestSystem:
     """BuildTestSystem is a class that detects system configuration"""
 
     system = {}
+    supported_platforms = ["Linux", "Darwin"]
 
     def __init__(self):
         """Constructor method for BuildTestSystem(). Defines all system
@@ -45,8 +46,10 @@ class BuildTestSystem:
         """
 
         self.system["platform"] = platform.system()
-        if self.system["platform"] not in ["Linux", "Darwin"]:
-            print("System must be Linux or Darwin")
+        if self.system["platform"] not in self.supported_platforms:
+            print(
+                f"We have detected the following platform: {platform.system()}, however buildtest is supported on following platforms: {self.supported_platforms}."
+            )
             sys.exit(1)
 
         self.system["os"] = distro.id()
@@ -62,6 +65,9 @@ class BuildTestSystem:
         self.logger.debug(f"Host: {self.system['host']}")
         self.logger.debug(f"User: {self.system['user']}")
         self.logger.debug(f"Operating System: {self.system['os']}")
+        self.logger.debug(
+            f"System Kernel: {platform.uname().system} and Kernel Release: {platform.uname().release}"
+        )
         self.logger.debug(f"Python Path: {self.system['python']}")
         self.logger.debug(f"Python Version: {self.system['pyver']}")
         self.logger.debug(f"BUILDTEST_ROOT: {BUILDTEST_ROOT}")
@@ -115,12 +121,13 @@ class BuildTestSystem:
 
         self.system["moduletool"] = None
         lmod_version = os.getenv("LMOD_VERSION")
+        # 3.x module versions define MODULE_VERSION while 4.5 version has MODULES_CMD, it doesn't have MODULE_VERSION set
         environmodules_version = os.getenv("MODULE_VERSION") or os.getenv("MODULES_CMD")
 
         if lmod_version:
             self.system["moduletool"] = "lmod"
             self.logger.debug(f"Detected Lmod with version: {lmod_version}")
-        # 3.x module versions define MODULE_VERSION while 4.5 version has MODULES_CMD, it doesn't have MODULE_VERSION set
+
         if environmodules_version:
             self.system["moduletool"] = "environment-modules"
             self.logger.debug(
@@ -140,11 +147,15 @@ class Scheduler:
     def check(self):
         """Check if binaries exist binary exist in $PATH"""
 
+        self.logger.debug(
+            f"We will check the following binaries {self.binaries} for existence."
+        )
         for command in self.binaries:
             if not shutil.which(command):
                 self.logger.debug(f"Cannot find {command} command in $PATH")
                 return False
 
+            self.logger.debug(f"{command}: {shutil.which(command)}")
         return True
 
 
@@ -350,7 +361,7 @@ class PBS(Scheduler):
         cmd.execute()
         content = cmd.get_output()
 
-        self.logger.debug(f"Get PBS Queues details by running {query}")
+        self.logger.debug(f"Get PBS Queues details by running '{query}'")
         self.queue_summary = json.loads(" ".join(content))
         self.logger.debug(json.dumps(self.queue_summary, indent=2))
 

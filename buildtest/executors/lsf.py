@@ -30,6 +30,7 @@ class LSFExecutor(BaseExecutor):
     """
 
     type = "lsf"
+    launcher = "bsub"
 
     def __init__(self, name, settings, site_configs, account=None, max_pend_time=None):
         self.account = account
@@ -39,9 +40,11 @@ class LSFExecutor(BaseExecutor):
     def load(self):
         """Load the a LSF executor configuration from buildtest settings."""
 
+        """
         self.launcher = self._settings.get("launcher") or deep_get(
             self._buildtestsettings.target_config, "executors", "defaults", "launcher"
         )
+        """
         self.launcher_opts = self._settings.get("options")
         self.account = (
             self.account
