@@ -406,3 +406,5 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
                 print(
                     f"You can view the results at: {cdash_url}/viewTest.php?buildid={buildid}"
                 )
+
+        os.remove(filename)

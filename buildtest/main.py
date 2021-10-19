@@ -90,12 +90,14 @@ def main():
 
     logger.info(f"Processing buildtest configuration file: {configuration.file}")
 
+    # build buildspec cache file automatically if it doesn't exist
     if not is_file(BUILDSPEC_CACHE_FILE):
         root_buildspecs = []
         if hasattr(args, "root"):
             root_buildspecs = args.root
 
         BuildspecCache(roots=root_buildspecs, configuration=configuration)
+
     # buildtest build command
     if args.subcommands in ["build", "bd"]:
 
@@ -149,13 +151,14 @@ def main():
     elif args.subcommands in ["inspect", "it"]:
         inspect_cmd(args)
 
-    # running buildtest config compilers
-    elif args.subcommands in ["config", "cg"] and args.config == "compilers":
-        compiler_cmd(args, configuration)
-
     # running buildtest config
     elif args.subcommands in ["config", "cg"]:
-        config_cmd(args, configuration)
+        print(args)
+        #  running buildtest config compilers
+        if args.config == "compilers":
+            compiler_cmd(args, configuration)
+        else:
+            config_cmd(args, configuration)
 
     # buildtest report
     elif args.subcommands in ["report", "rt"]:

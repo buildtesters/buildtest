@@ -29,6 +29,7 @@ from buildtest.schemas.defaults import schema_table
 from buildtest.system import system
 from buildtest.utils.file import (
     create_dir,
+    is_dir,
     is_file,
     load_json,
     read_file,
@@ -492,6 +493,7 @@ class BuildTest:
         if stage and not isinstance(stage, str):
             raise BuildTestError(f"{stage} is not of type str")
 
+        # if --rebuild is specified check if its an integer and within 50 rebuild limit
         if rebuild:
             if not isinstance(rebuild, int):
                 raise BuildTestError(f"{rebuild} is not of type int")
@@ -510,9 +512,10 @@ class BuildTest:
         self.max_pend_time = max_pend_time
         self.poll_interval = poll_interval
         self.helpfilter = helpfilter
-        self.invalid_buildspecs = None
         self.retry = retry
         self.account = account
+        self.invalid_buildspecs = None
+
         if self.helpfilter:
             print_filters()
             return
@@ -535,9 +538,13 @@ class BuildTest:
                 self.logdir, os.path.basename(self.logfile.name)
             )
 
+        logger.debug(f"The logfile will be stored in {self.logfile.name}")
+
         self.testdir = resolve_testdirectory(self.configuration, testdir)
 
         create_dir(self.testdir)
+
+        logger.debug(f"Tests will be written in {self.testdir}")
 
         self.stage = stage
         self.filter_buildspecs = filter_buildspecs
@@ -554,8 +561,12 @@ class BuildTest:
         self.system = buildtest_system or system
         self.report_file = resolve_path(report_file, exist=False) or BUILD_REPORT
 
-        if self.filter_buildspecs:
-            self._validate_filters()
+        if is_dir(self.report_file):
+            raise BuildTestError(
+                f"{report_file} is a directory please specify a file name where report will be written"
+            )
+
+        self._validate_filters()
 
         msg = f"""
 [magenta]User:[/]               [cyan]{self.system.system['user']}
@@ -582,6 +593,10 @@ class BuildTest:
 
         valid_fields = ["tags", "type", "maintainers"]
 
+        # if filter fields not specified there is no need to check fields
+        if not self.filter_buildspecs:
+            return
+
         for key in self.filter_buildspecs.keys():
             if key not in valid_fields:
                 raise BuildTestError(
@@ -600,7 +615,6 @@ class BuildTest:
         which will build the test script, and then we run the test and update report.
         """
 
-        # if --helpfilter is specified we return from this method
         if self.helpfilter:
             return
 
@@ -734,7 +748,7 @@ class BuildTest:
         table.add_column("[blue]buildspecs", overflow="fold")
 
         for builder in self.builders:
-            description = builder.recipe.get("description") or ""
+            description = builder.recipe.get("description")
 
             table.add_row(
                 f"[blue]{builder}",
@@ -1032,7 +1046,7 @@ class BuildTest:
             fd.write(json.dumps(history_data, indent=2))
 
 
-def update_report(valid_builders, report_file=BUILD_REPORT):
+def update_report(valid_builders, report_file):
     """This method will update BUILD_REPORT after every test run performed
     by ``buildtest build``. If BUILD_REPORT is not created, we will create
     file and update json file by extracting contents from builder metadata
@@ -1042,8 +1056,7 @@ def update_report(valid_builders, report_file=BUILD_REPORT):
         report_file (str): Specify location to report file.
     """
 
-    if not is_file(os.path.dirname(report_file)):
-        create_dir(os.path.dirname(report_file))
+    create_dir(os.path.dirname(report_file))
 
     report = {}
 
@@ -1107,6 +1120,7 @@ def update_report(valid_builders, report_file=BUILD_REPORT):
     with open(report_file, "w") as fd:
         json.dump(report, fd, indent=2)
 
+    logger.debug(f"Updating report file: {report_file}")
     #  BUILDTEST_REPORT_SUMMARY file keeps track of all report files which
     #  contains a single line that denotes path to report file. This file only contains unique report files
 
