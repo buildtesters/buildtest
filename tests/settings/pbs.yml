@@ -6,7 +6,6 @@ system:
     executors:
       defaults:
          pollinterval: 10
-         launcher: qsub
          max_pend_time: 30
       local:
         bash:

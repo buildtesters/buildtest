@@ -5,7 +5,6 @@ system:
     moduletool: environment-modules
     executors:
       defaults:
-        launcher: qsub
         pollinterval: 30
         max_pend_time: 300
       local:

@@ -179,15 +179,6 @@
                     "maximum": 300,
                     "default": 30
                   },
-                  "launcher": {
-                    "type": "string",
-                    "enum": [
-                      "sbatch",
-                      "bsub",
-                      "qsub"
-                    ],
-                    "description": "Specify batch launcher to use when submitting jobs, this is applicable for LSF and Slurm Executors."
-                  },
                   "max_pend_time": {
                     "$ref": "#/definitions/max_pend_time"
                   },
