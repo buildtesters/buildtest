@@ -1,13 +1,13 @@
 $ buildtest inspect query -o -t run_pre_post_commands 
-──────────────────────────────────────────────────────── run_pre_post_commands/30b2fa6e-09f9-40ce-8b7b-2a5a9926efaf ────────────────────────────────────────────────────────
+──────────────────────────────────────────────────────── run_pre_post_commands/66b8c140-03d8-4f40-86e3-f237840c9a47 ────────────────────────────────────────────────────────
 executor:  generic.local.bash
 description:  Install zlib
 state:  PASS
 returncode:  0
-runtime:  1.559038
-starttime:  2021/10/21 15:30:50
-endtime:  2021/10/21 15:30:51
-───────────────────────── Output File: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/30b2fa6e/run_pre_post_commands.out ──────────────────────────
+runtime:  1.735632
+starttime:  2021/10/21 16:28:42
+endtime:  2021/10/21 16:28:43
+───────────────────────── Output File: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/66b8c140/run_pre_post_commands.out ──────────────────────────
 NAME="Ubuntu"                                                                                                                                                               
 VERSION="18.04.5 LTS (Bionic Beaver)"                                                                                                                                       
 ID=ubuntu                                                                                                                                                                   
@@ -25,9 +25,10 @@ Copyright (C) 2017 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO                                                                                                  
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                                                                                                 
 [+] /home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/zlib-1.2.11-smoyzzo2qhzpn6mg6rd3l2p7b23enshg                                                             
+/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/gcc-6.5.0-ol37lodnsnyso6w7gkg5naw7m6kbltxu                                                                   
 0.16.3                                                                                                                                                                      
                                                                                                                                                                             
-─────────────────────────── Test File: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/30b2fa6e/run_pre_post_commands.sh ───────────────────────────
+─────────────────────────── Test File: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/66b8c140/run_pre_post_commands.sh ───────────────────────────
    1 #!/bin/bash                                                                                                                                                            
    2                                                                                                                                                                        
    3                                                                                                                                                                        
@@ -43,7 +44,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
   13                                                                                                                                                                        
   14                                                                                                                                                                        
   15 ######## START OF POST COMMANDS ########                                                                                                                               
-  16 spack find -i gcc@6.5.0                                                                                                                                                
+  16 spack location -i gcc@6.5.0                                                                                                                                            
   17 spack --version                                                                                                                                                        
   18                                                                                                                                                                        
   19 ######## END OF POST COMMANDS   ########                                                                                                                               

@@ -1,13 +1,13 @@
 $ buildtest inspect query -t install_in_spack_env 
-──────────────────────────────────────────────────────── install_in_spack_env/c9c091c2-6197-4878-b267-30cdb244e23c ─────────────────────────────────────────────────────────
+──────────────────────────────────────────────────────── install_in_spack_env/3d8aa59b-aace-42a8-b920-a474f35fc1b0 ─────────────────────────────────────────────────────────
 executor:  generic.local.bash
 description:  Install m4 and zlib in a spack environment named m4_zlib
 state:  PASS
 returncode:  0
-runtime:  5.415999
-starttime:  2021/10/21 15:30:29
-endtime:  2021/10/21 15:30:35
-───────────────────────────── Test File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/c9c091c2/install_in_spack_env.sh ─────────────────────────────
+runtime:  4.784979
+starttime:  2021/10/21 16:28:20
+endtime:  2021/10/21 16:28:25
+───────────────────────────── Test File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/3d8aa59b/install_in_spack_env.sh ─────────────────────────────
   1 #!/bin/bash                                                                                                                                                             
   2 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                       
   3 spack compiler find                                                                                                                                                     

@@ -1,16 +1,16 @@
 $ buildtest inspect query -o -t install_specs_example 
-──────────────────────────────────────────────────────── install_specs_example/a7177f1e-0b8d-4c7b-ad93-1b2a22ba4719 ────────────────────────────────────────────────────────
+──────────────────────────────────────────────────────── install_specs_example/c8ea2a1d-12f2-46d9-b41c-4bf4aced3a23 ────────────────────────────────────────────────────────
 executor:  generic.local.bash
 description:  Install zlib spec
 state:  PASS
 returncode:  0
-runtime:  2.280605
-starttime:  2021/10/21 15:30:25
-endtime:  2021/10/21 15:30:27
-───────────────────────── Output File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/a7177f1e/install_specs_example.out ──────────────────────────
+runtime:  2.300347
+starttime:  2021/10/21 16:28:17
+endtime:  2021/10/21 16:28:19
+───────────────────────── Output File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/c8ea2a1d/install_specs_example.out ──────────────────────────
 [+] /home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/zlib-1.2.11-smoyzzo2qhzpn6mg6rd3l2p7b23enshg                                                             
                                                                                                                                                                             
-─────────────────────────── Test File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/a7177f1e/install_specs_example.sh ───────────────────────────
+─────────────────────────── Test File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/c8ea2a1d/install_specs_example.sh ───────────────────────────
   1 #!/bin/bash                                                                                                                                                             
   2 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                       
   3 spack install  zlib                                                                                                                                                     

@@ -1,13 +1,13 @@
 $ buildtest inspect query -o -t spack_env_directory 
-───────────────────────────────────────────────────────── spack_env_directory/f265439e-15fd-4aa0-b06d-d0a08b0a7b1b ─────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────── spack_env_directory/16d94d57-7569-44fa-a2e9-5bfb78d8079c ─────────────────────────────────────────────────────────
 executor:  generic.local.bash
 description:  create spack environment in directory
 state:  PASS
 returncode:  0
-runtime:  2.501958
-starttime:  2021/10/21 15:30:37
-endtime:  2021/10/21 15:30:39
-──────────────────────── Output File: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/f265439e/spack_env_directory.out ────────────────────────
+runtime:  2.482572
+starttime:  2021/10/21 16:28:27
+endtime:  2021/10/21 16:28:29
+──────────────────────── Output File: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/16d94d57/spack_env_directory.out ────────────────────────
 ==> Updating view at /home/spack/spack-envs/m4/.spack-env/view                                                                                                              
 ==> Created environment in /home/spack/spack-envs/m4                                                                                                                        
 ==> You can activate this environment with:                                                                                                                                 
@@ -27,7 +27,7 @@ m4
 libsigsegv@2.12                                                                                                                                                             
 m4@1.4.18                                                                                                                                                                   
                                                                                                                                                                             
-───────────────────────── Test File: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/f265439e/spack_env_directory.sh ──────────────────────────
+───────────────────────── Test File: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/16d94d57/spack_env_directory.sh ──────────────────────────
    1 #!/bin/bash                                                                                                                                                            
    2 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                      
    3 spack env create  -d /home/spack/spack-envs/m4                                                                                                                         

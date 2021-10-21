@@ -1,13 +1,13 @@
 $ buildtest inspect query -t spack_sbatch_example 
-──────────────────────────────────────────────────────── spack_sbatch_example/e4bfe8a2-e7c3-4b04-95d6-98cb6eb3ffd7 ─────────────────────────────────────────────────────────
+──────────────────────────────────────────────────────── spack_sbatch_example/1fc13c4a-8ae7-4d81-8c33-d01cd5556340 ─────────────────────────────────────────────────────────
 executor:  generic.local.bash
 description:  sbatch directives can be defined in spack schema
 state:  PASS
 returncode:  0
-runtime:  3.994925
-starttime:  2021/10/21 15:31:06
-endtime:  2021/10/21 15:31:10
-──────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/e4bfe8a2/spack_sbatch_example.sh ─────────────────────────────
+runtime:  4.115188
+starttime:  2021/10/21 16:29:00
+endtime:  2021/10/21 16:29:04
+──────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/1fc13c4a/spack_sbatch_example.sh ─────────────────────────────
    1 #!/bin/bash                                                                                                                                                            
    2 ####### START OF SCHEDULER DIRECTIVES #######                                                                                                                          
    3 #SBATCH -N 1                                                                                                                                                           
