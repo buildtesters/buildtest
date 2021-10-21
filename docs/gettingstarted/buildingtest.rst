@@ -190,10 +190,10 @@ the buildspec will be filtered out if ``--filter maintainers`` is specified. In 
 
 Please see :ref:`buildspec_maintainers` on list of maintainers and breakdown of buildspecs by maintainers.
 
-We can also filter tests by ``type`` field in the buildspec which corresponds to the schema type. In this next example, we filter all tests by spack schema type by
-passing option ``--filter type=spack``. We inform buildtest to stop after build stage (``--stage=build``) for more details see :ref:`build_stage`.
+We can also filter tests by ``type`` field in the buildspec which corresponds to the schema type. In this next example, we filter all tests by script schema type by
+passing option ``--filter type=script``. We inform buildtest to stop after build stage (``--stage=build``) for more details see :ref:`build_stage`.
 
-.. command-output:: buildtest build -b tutorials --filter type=spack --stage=build
+.. command-output:: buildtest build -b tutorials --filter type=script --stage=build
 
 .. _discover_buildspecs:
 

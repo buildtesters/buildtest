@@ -80,7 +80,7 @@ def get_parser():
 
     epilog_str = f"""
 References
-_______________________________________________________________________________________
+
 GitHub:                  https://github.com/buildtesters/buildtest 
 Documentation:           https://buildtest.readthedocs.io/en/latest/index.html             
 Schema Documentation:    https://buildtesters.github.io/buildtest/

@@ -245,7 +245,7 @@ If we look at the generated script for both tests, we see that mirror is added f
 one can have mirrors defined in their ``spack.yaml`` or one of the `configuration scopes <https://spack.readthedocs.io/en/latest/configuration.html#configuration-scopes>`_
 defined by spack.
 
-.. program-output:: buildtest_tutorial_examples/inspect/mirror_example.txt
+.. program-output:: cat buildtest_tutorial_examples/inspect/mirror_example.txt
 
 Spack Test
 -----------
@@ -274,9 +274,9 @@ to search for test results. **buildtest will create the suite name based on name
 spack will generate a random text for suitename which you won't know at time of writing test that is required by
 ``spack test results`` to fetch the results.
 
-.. command-output:: cat buildtest_tutorial_examples/build/spack_test.txt
+.. program-output:: cat buildtest_tutorial_examples/build/spack_test.txt
 
-.. command-output:: cat buildtest_tutorial_examples/inspect/spack_test.txt
+.. program-output:: cat buildtest_tutorial_examples/inspect/spack_test.txt
 
 
 We can search for test results using the spec format instead of suite name. In the ``results`` property we can
@@ -296,7 +296,7 @@ log after running test.
 
 We can build this test by running the following
 
-.. command-output:: cat buildtest_tutorial_examples/build/spack_test_specs.txt
+.. program-output:: cat buildtest_tutorial_examples/build/spack_test_specs.txt
 
 
 Now let's check the generated test and output file, we see buildtest will install **libxml2** and **libsigsegv**
@@ -304,7 +304,7 @@ in spack environment followed by removing all testsuites using ``spack test remo
 query results in spec format (``spack test results --l --libxml2``) where spack will try to match a result file that matches the
 corresponding spec.
 
-.. command-output:: cat buildtest_tutorial_examples/inspect/spack_test_specs.txt
+.. program-output:: cat buildtest_tutorial_examples/inspect/spack_test_specs.txt
 
 
 Specifying Scheduler Directives
@@ -334,6 +334,6 @@ a queue.
 Shown below is an example buildspec that will specify ``sbatch`` directives for
 ``generic.local.sh`` and ``generic.local.bash``
 
-.. literalinclude:: ../tutorials/spack/spack_multiple_executor_sbatch.yml
+.. literalinclude:: ../../examples/spack/spack_multiple_executor_sbatch.yml
   :language: yaml
 
