@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   remove_environment_automatically:
     type: spack
-    executor: generic.local.sh
+    executor: generic.local.bash
     description: "remove spack environment automatically before creating a new environment"
     tags: [spack]
     spack:
@@ -19,7 +19,7 @@ buildspecs:
 
   remove_environment_explicit:
     type: spack
-    executor: generic.local.sh
+    executor: generic.local.bash
     description: "remove spack environment explicitly using the 'rm' property"
     tags: [spack]
     spack:

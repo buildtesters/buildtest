@@ -162,7 +162,7 @@
     },
     "install": {
       "description": "Install spack packages using ``spack install`` command",
-      "additionalProperties": false,
+
       "type": "object",
       "properties": {
         "options": {

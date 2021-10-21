@@ -1,0 +1,17 @@
+$ buildtest inspect query -o -t spack_env_create_from_manifest 
+─────────────────────────────────────────────────── spack_env_create_from_manifest/a4fbc468-84e7-47ee-b255-aff460f0c34d ────────────────────────────────────────────────────
+executor:  generic.local.bash
+description:  Create spack environment from spack.yaml
+state:  FAIL
+returncode:  1
+runtime:  1.515548
+starttime:  2021/10/21 15:30:40
+endtime:  2021/10/21 15:30:42
+───────────── Output File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/a4fbc468/spack_env_create_from_manifest.out ──────────────
+                                                                                                                                                                            
+─────────────── Test File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/a4fbc468/spack_env_create_from_manifest.sh ───────────────
+  1 #!/bin/bash                                                                                                                                                             
+  2 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                       
+  3 spack env create  manifest_example /home/spack/buildtest/tutorials/spack/example/spack.yaml                                                                             
+  4 spack env activate  manifest_example                                                                                                                                    
+  5 spack concretize -f                                                                                                                                                     

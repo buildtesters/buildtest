@@ -1,0 +1,43 @@
+system:
+  generic:
+    hostnames:
+    - .*
+    description: Generic System
+    moduletool: lmod
+    testdir: "/home/spack/runs"
+    executors:
+      local:
+        bash:
+          description: submit jobs on local machine using bash shell
+          shell: bash
+        sh:
+          description: submit jobs on local machine using sh shell
+          shell: sh
+    compilers:
+      find:
+        gcc: ^(gcc)
+      compiler:
+        gcc:
+          builtin_gcc:
+            cc: /usr/bin/gcc
+            fc: /usr/bin/gfortran
+            cxx: /usr/bin/g++
+          gcc_6.5.0:
+            cc: gcc
+            fc: gfortran
+            cxx: g++
+            module:
+              load:
+              - gcc/6.5.0-gcc-7.5.0
+          gcc_8.3.0:
+            cc: gcc
+            fc: gfortran
+            cxx: g++
+            module:
+              load:
+              - gcc/8.3.0-gcc-7.5.0
+    cdash:
+      url: https://my.cdash.org/
+      project: buildtest
+      site: generic
+      buildname: tutorials

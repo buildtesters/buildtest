@@ -2,7 +2,7 @@ version: "1.0"
 buildspecs:
   spack_env_create_from_manifest:
     type: spack
-    executor: generic.local.sh
+    executor: generic.local.bash
     description: "Create spack environment from spack.yaml"
     tags: [spack]
     spack:

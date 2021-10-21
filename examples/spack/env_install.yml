@@ -1,8 +1,8 @@
 version: "1.0"
 buildspecs:
-  install_m4_zlib_in_spack_env:
+  install_in_spack_env:
     type: spack
-    executor: generic.local.sh
+    executor: generic.local.bash
     description: "Install m4 and zlib in a spack environment named m4_zlib"
     tags: [spack]
     spack:

@@ -8,9 +8,8 @@ prefix = os.path.dirname(os.path.dirname(buildtest_file))
 
 sys.path.insert(0, prefix)
 
-if sys.version_info[:2] < (3, 7):
-    v_info = sys.version_info[:3]
-    sys.exit("buildtest requires Python 3.7 or higher.")
+if sys.version_info[:3] < (3, 7, 0):
+    sys.exit("buildtest requires Python 3.7.0 or higher.")
 
 import buildtest.main
 

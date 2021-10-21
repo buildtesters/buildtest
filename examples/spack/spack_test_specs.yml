@@ -1,0 +1,23 @@
+version: "1.0"
+buildspecs:
+  spack_test_results_specs_format:
+    type: spack
+    executor: generic.local.bash
+    description: "Run spack test results with spec format"
+    tags: [spack]
+    spack:
+      root: $HOME/spack
+      env:
+        create:
+          name: spack_test_example
+        activate:
+          name: spack_test_example
+      install:
+        specs: ['libxml2', 'libsigsegv']
+      test:
+        remove_tests: true
+        run:
+          specs: ['libxml2', 'libsigsegv']
+        results:
+          option: '-l'
+          specs: ['libxml2', 'libsigsegv']

@@ -1,0 +1,22 @@
+$ buildtest inspect query -t spack_sbatch_example 
+──────────────────────────────────────────────────────── spack_sbatch_example/e4bfe8a2-e7c3-4b04-95d6-98cb6eb3ffd7 ─────────────────────────────────────────────────────────
+executor:  generic.local.bash
+description:  sbatch directives can be defined in spack schema
+state:  PASS
+returncode:  0
+runtime:  3.994925
+starttime:  2021/10/21 15:31:06
+endtime:  2021/10/21 15:31:10
+──────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/e4bfe8a2/spack_sbatch_example.sh ─────────────────────────────
+   1 #!/bin/bash                                                                                                                                                            
+   2 ####### START OF SCHEDULER DIRECTIVES #######                                                                                                                          
+   3 #SBATCH -N 1                                                                                                                                                           
+   4 #SBATCH -n 8                                                                                                                                                           
+   5 #SBATCH -t 30                                                                                                                                                          
+   6 #SBATCH --job-name=spack_sbatch_example                                                                                                                                
+   7 #SBATCH --output=spack_sbatch_example.out                                                                                                                              
+   8 #SBATCH --error=spack_sbatch_example.err                                                                                                                               
+   9 ####### END OF SCHEDULER DIRECTIVES   #######                                                                                                                          
+  10 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                      
+  11 spack install  zlib@1.2.11%clang                                                                                                                                       
+  12 spack install  zlib@1.2.8%clang                                                                                                                                        
