@@ -5,6 +5,38 @@ Spack Schema
 
 .. Note:: This feature is in active development.
 
+Setup
+-------
+
+To get started for this tutorial we will start an interactive shell in spack container for this exercise. We need
+to bind mount $BUILDTEST_ROOT into the container in order to use buildtest inside the container.
+
+.. code-block:: console
+
+    docker run -it -v $BUILDTEST_ROOT:/home/spack/buildtest shahzebsiddiqui/buildtest_spack:latest
+
+
+Next, lets source the setup script required for using buildtest inside the container
+
+.. code-block:: console
+
+    source $HOME/buildtest/scripts/spack_container/setup.sh
+
+If everything is done correctly you will see ``buildtest``, ``spack`` and ``module`` command in your path
+
+.. code-block::
+
+    spack@ef50085c8a81:~/buildtest$ which spack
+    /home/spack/spack/bin/spack
+
+    spack@ef50085c8a81:~/buildtest$ which buildtest
+    /home/spack/buildtest/bin/buildtest
+
+    spack@ef50085c8a81:~/buildtest$ module --version
+
+    Modules based on Lua: Version 8.3  2020-01-27 10:32 -06:00
+        by Robert McLay mclay@tacc.utexas.edu
+
 
 buildtest can generate tests for the `spack <https://spack.readthedocs.io/en/latest/>`_ package manager which can be
 used if you want to install or test packages as part of a repeatable process. You must set ``type: spack`` property
@@ -38,19 +70,18 @@ contains a ``specs`` property which is a list of strings types that are name of 
 
 The schema is designed to mimic spack commands which will be clear with more examples.
 
-.. literalinclude:: ../tutorials/spack/install_zlib.yml
+.. literalinclude:: ../../examples/spack/install_specs.yml
     :language: yaml
 
-If you build this test and inspect the generated script, buildtest will source spack
-startup script - **source $SPACK_ROOT/share/spack/setup-env.sh** based on the ``root`` property. In this example,
-we have spack cloned in **$HOME/spack** which is **/Users/siddiq90/spack** and buildtest will find the
-startup script which is in ``share/spack/setup-env.sh``.
+Let's build this test by running the following
 
-.. code-block:: shell
+.. program-output:: cat buildtest_tutorial_examples/build/install_specs.txt
 
-    #!/bin/bash
-    source /Users/siddiq90/spack/share/spack/setup-env.sh
-    spack install  zlib
+
+Let's inspect the generated script and output file via ``buildtest inspect query`` command. We notice that buildtest
+will source spack setup script and install `zlib` which is automatically installed from the buildcache.
+
+.. program-output:: cat buildtest_tutorial_examples/inspect/install_specs.txt
 
 Spack Environment
 -----------------
@@ -63,48 +94,15 @@ options to **spack env create** command. Furthermore, we can activate existing s
 ``spack env activate`` and pass options to the command. buildtest can remove spack environments automatically before creating spack environment
 or one can explicitly specify by name.
 
-Activate Spack Environment
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-In this next example, we will activate an existing environment ``m4`` and add spec for **m4** and concretize the spack environment.
-The ``env`` is an object that mimics the ``spack env`` command. The ``activate`` field maps to ``spack env activate`` command.
-The **name** property is of ``type: string`` which is name of spack environment you want to activate. The ``specs`` property in **env** section
-maps to ``spack add <specs`` instead of ``spack install``.
-
-The property ``concretize: true`` will run ``spack concretize`` command that is only available as part of the ``env`` object since this command
-is only applicable in spack environments.
-
-.. literalinclude:: ../tutorials/spack/concretize_m4.yml
-    :language: yaml
-
-If we build this test and inspect the generated test we see that spack will activate a spack environment **m4**, add specs in spack
-environment via ``spack add m4`` and concretize the environment. The ``concretize`` is a boolean type, if its ``true`` we will run ``spack concretize -f``,
-if its ``false`` this command will not be in script.
-
-.. code-block:: shell
-
-    #!/bin/bash
-    source /Users/siddiq90/spack/share/spack/setup-env.sh
-    spack env activate  m4
-    spack add m4
-    spack concretize -f
-
-If we inspect the output file we see that m4 was concretized in the spack environment.
-
-.. code-block:: shell
-
-    ==> Package m4 was already added to m4
-    ==> Concretized m4
-    [+]  volmsbn  m4@1.4.19%apple-clang@11.0.3+sigsegv arch=darwin-bigsur-skylake
-    [+]  bc6kuc4      ^libsigsegv@2.13%apple-clang@11.0.3 arch=darwin-bigsur-skylake
-
 Create a Spack Environment by name
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In this next example, we will create a spack environment named ``m4_zlib`` that will install
 `m4` and `zlib` spec. The **create** field is a JSON object that maps to ``spack env create``
 command which can pass some arguments in the form of key/value pairs. The ``name`` property
-in **create** section is used to create a spack environment by name.
+in **create** section is used to create a spack environment by name. The ``activate`` property maps
+to ``spack env activate`` command which is used to activate a spack environment. The **name** property is
+of ``type: string`` which is name of spack environment you want to activate.
 
 The ``compiler_find: true`` is a boolean that determines if we need to find compilers in spack via
 ``spack compiler find``. This can be useful if you need to find compilers so spack can install specs
@@ -118,60 +116,19 @@ buildtest will run **spack compiler find** after sourcing spack.
 The ``option`` field can pass any command line arguments to ``spack install`` command
 and this field is available for other properties.
 
-.. literalinclude:: ../tutorials/spack/env_install.yml
+.. literalinclude:: ../../examples/spack/env_install.yml
     :language: yaml
 
 If we build this test and see generated test we see that buildtest will create a
 spack environment `m4_zlib` and activate the environment, add **m4** and **zlib**,
 concretize the environment and install the specs.
 
-.. code-block:: shell
-    :emphasize-lines: 4
+.. program-output:: cat buildtest_tutorial_examples/build/env_install.txt
 
-    #!/bin/bash
-    source /Users/siddiq90/spack/share/spack/setup-env.sh
-    spack compiler find
-    spack env create  m4_zlib
-    spack env activate  m4_zlib
-    spack add m4
-    spack add zlib
-    spack concretize -f
-    spack install --keep-prefix
+.. program-output:: cat buildtest_tutorial_examples/inspect/env_install.txt
 
 
-Now let's examine the output of this test, shown below is the summary of this test, as you can
-see we have successfully installed **m4** and **zlib** in a spack environment ``m4_zlib``.
-
-.. code-block:: shell
-    :emphasize-lines: 16-24
-
-    ==> Found no new compilers
-    ==> Compilers are defined in the following files:
-        /Users/siddiq90/.spack/darwin/compilers.yaml
-    ==> Updating view at /Users/siddiq90/spack/var/spack/environments/m4_zlib/.spack-env/view
-    ==> Created environment 'm4_zlib' in /Users/siddiq90/spack/var/spack/environments/m4_zlib
-    ==> You can activate this environment with:
-    ==>   spack env activate m4_zlib
-    ==> Adding m4 to environment m4_zlib
-    ==> Adding zlib to environment m4_zlib
-    ==> Concretized m4
-    [+]  volmsbn  m4@1.4.19%apple-clang@11.0.3+sigsegv arch=darwin-bigsur-skylake
-    [+]  bc6kuc4      ^libsigsegv@2.13%apple-clang@11.0.3 arch=darwin-bigsur-skylake
-    ==> Concretized zlib
-     -   2hw3hzd  zlib@1.2.11%apple-clang@11.0.3+optimize+pic+shared arch=darwin-bigsur-skylake
-    ==> Updating view at /Users/siddiq90/spack/var/spack/environments/m4_zlib/.spack-env/view
-    ==> Installing environment m4_zlib
-    ==> Installing zlib-1.2.11-2hw3hzdfy7e2ndzojgqoq472m5flsloj
-    ==> No binary for zlib-1.2.11-2hw3hzdfy7e2ndzojgqoq472m5flsloj found: installing from source
-    ==> Fetching https://mirror.spack.io/_source-cache/archive/c3/c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1.tar.gz
-    ==> No patches needed for zlib
-    ==> zlib: Executing phase: 'install'
-    ==> zlib: Successfully installed zlib-1.2.11-2hw3hzdfy7e2ndzojgqoq472m5flsloj
-      Fetch: 0.84s.  Build: 6.98s.  Total: 7.82s.
-    [+] /Users/siddiq90/spack/opt/spack/darwin-bigsur-skylake/apple-clang-11.0.3/zlib-1.2.11-2hw3hzdfy7e2ndzojgqoq472m5flsloj
-    ==> Updating view at /Users/siddiq90/spack/var/spack/environments/m4_zlib/.spack-env/view
-
-Creating Spack Environment from Directory
+Creating Spack Environment in Directory
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We can create spack environment from a directory using the ``dir`` property that
@@ -179,24 +136,16 @@ is available as part of ``create`` and ``activate`` field. In this next example 
 create a spack environment in our $HOME directory and concretize **m4** in the spack
 environment
 
-.. literalinclude:: ../tutorials/spack/env_create_directory.yml
+.. literalinclude:: ../../examples/spack/env_create_directory.yml
     :language: yaml
 
 When creating spack environment using directory, buildtest will automatically add the
 ``-d`` option which is required when creating spack environments. However, one can also pass
-this using the ``option`` field. Shown below is the generated script for the above test.
+this using the ``option`` field. Shown below is the build and generated script after running test.
 
-.. code-block:: shell
-    :emphasize-lines: 3-4
+.. program-output:: cat buildtest_tutorial_examples/build/env_create_directory.txt
 
-    #!/bin/bash
-    source /Users/siddiq90/spack/share/spack/setup-env.sh
-    spack env create  -d /Users/siddiq90/spack-envs/m4
-    spack env activate  -d /Users/siddiq90/spack-envs/m4
-    spack add m4
-    spack concretize -f
-
-buildtest will create environment first followed by activating the spack environment.
+.. program-output:: cat buildtest_tutorial_examples/inspect/env_create_directory.txt
 
 Create Spack Environment from Manifest File (spack.yaml, spack.lock)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -212,20 +161,15 @@ you can use the ``manifest`` property to specify path to your ``spack.yaml`` or 
 Shown below is an example buildspec that generates a test from a manifest file. The ``manifest`` property
 is of ``type: string`` and this is only available as part of ``create`` property.
 
-.. literalinclude:: ../tutorials/spack/env_create_manifest.yml
+.. literalinclude:: ../../examples/spack/env_create_manifest.yml
     :language: yaml
 
 If we build this test and inspect the generated script we see ``spack env create`` command
-will create an environment **manifest_example** using the manifest file that we provided.
+will create an environment **manifest_example** using the manifest file that we provided from the spack.yaml.
 
-.. code-block:: shell
-    :emphasize-lines: 3
+.. program-output:: cat buildtest_tutorial_examples/build/env_create_manifest.txt
 
-    #!/bin/bash
-    source /Users/siddiq90/spack/share/spack/setup-env.sh
-    spack env create  manifest_example /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/spack/example/spack.yaml
-    spack env activate  manifest_example
-    spack concretize -f
+.. program-output:: cat buildtest_tutorial_examples/inspect/env_create_manifest.txt
 
 Removing Spack Environments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -240,32 +184,17 @@ field, the ``name`` is a required field which is the name of the spack environme
 Shown below are two example tests where we remove spack environment using the **remove_environment** and **rm** field.
 
 
-.. literalinclude:: ../tutorials/spack/remove_environment_example.yml
+.. literalinclude:: ../../examples/spack/remove_environment_example.yml
     :language: yaml
 
-If we look at the generated test, we notice that spack will remove environments names: **remove_environment**, **dummy**.
+Let's build this by running the following
 
-.. code-block:: shell
-    :emphasize-lines: 3
+.. program-output:: cat buildtest_tutorial_examples/build/remove_environment_example.txt
 
-    #!/bin/bash
-    source /Users/siddiq90/spack/share/spack/setup-env.sh
-    spack env rm -y remove_environment
-    spack env create  remove_environment
-    spack env activate  remove_environment
-    spack add bzip2
-    spack concretize -f
 
-.. code-block:: shell
-    :emphasize-lines: 3
+If we build and look at the generated te, we notice that spack will remove environments names: **remove_environment**, **dummy**.
 
-    #!/bin/bash
-    source /Users/siddiq90/spack/share/spack/setup-env.sh
-    spack env rm -y dummy
-    spack env create  dummy
-    spack env activate  dummy
-    spack add bzip2
-    spack concretize -f
+.. program-output:: cat buildtest_tutorial_examples/inspect/remove_environment_example.txt
 
 Pre and Post Commands
 ----------------------
@@ -284,96 +213,14 @@ The ``pre_cmds`` are shell commands that are run before sourcing spack, whereas 
 end of the script. In the `post_cmds`, we will ``spack find`` that will be run after ``spack install``.
 We remove spack root (``$SPACK_ROOT``) so that this test can be rerun again.
 
-.. literalinclude:: ../tutorials/spack/pre_post_cmds.yml
+.. literalinclude:: ../../examples/spack/pre_post_cmds.yml
     :language: yaml
 
-If we build this test and inspect the generated script we see the following
+If we build this test and inspect the generated script we should get the following result.
 
-.. code-block:: shell
-    :emphasize-lines: 4-8,15-18
+.. program-output:: cat buildtest_tutorial_examples/build/pre_post_cmds.txt
 
-    #!/bin/bash
-
-
-    ######## START OF PRE COMMANDS ########
-    cd /tmp
-    git clone https://github.com/spack/spack
-
-    ######## END OF PRE COMMANDS   ########
-
-
-    source /private/tmp/spack/share/spack/setup-env.sh
-    spack install  zlib
-
-
-    ######## START OF POST COMMANDS ########
-    spack find
-    rm -rf $SPACK_ROOT
-    ######## END OF POST COMMANDS   ########
-
-If we inspect the output, we see that `zlib` is installed as shown in output from ``spack find``
-
-.. code-block:: shell
-    :emphasize-lines: 9-10
-
-    ==> Installing zlib-1.2.11-2hw3hzdfy7e2ndzojgqoq472m5flsloj
-    ==> No binary for zlib-1.2.11-2hw3hzdfy7e2ndzojgqoq472m5flsloj found: installing from source
-    ==> Fetching https://mirror.spack.io/_source-cache/archive/c3/c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1.tar.gz
-    ==> No patches needed for zlib
-    ==> zlib: Executing phase: 'install'
-    ==> zlib: Successfully installed zlib-1.2.11-2hw3hzdfy7e2ndzojgqoq472m5flsloj
-      Fetch: 0.50s.  Build: 5.90s.  Total: 6.40s.
-    [+] /private/tmp/spack/opt/spack/darwin-bigsur-skylake/apple-clang-11.0.3/zlib-1.2.11-2hw3hzdfy7e2ndzojgqoq472m5flsloj
-    -- darwin-bigsur-skylake / apple-clang@11.0.3 -------------------
-    zlib@1.2.11
-
-Specifying Scheduler Directives
----------------------------------
-
-The spack schema supports all of the :ref:`scheduler scheduler directives <batch_support>` such
-as ``sbatch``, ``bsub``, ``pbs``, ``cobalt``, and ``batch`` property in the buildspec.
-
-The directives are applied at top of script. Shown below is a toy example that will define
-directives using **sbatch** and **batch** property. Note, this test won't submit job to scheduler
-since we are not using the a slurm executor.
-
-.. literalinclude:: ../tutorials/spack/spack_sbatch.yml
-    :language: yaml
-
-buildtest will generate the shell script with the job directives and set the name, output and error
-files based on name of test. If we build this test, and inspect the generated test we see that
-**#SBATCH** directives are written based on the **sbatch** and **batch** field.
-
-.. code-block:: shell
-    :emphasize-lines: 3-10
-
-    #!/bin/bash
-
-    ####### START OF SCHEDULER DIRECTIVES #######
-    #SBATCH -N 1
-    #SBATCH -n 8
-    #SBATCH -t 30
-    #SBATCH --job-name=spack_sbatch_example
-    #SBATCH --output=spack_sbatch_example.out
-    #SBATCH --error=spack_sbatch_example.err
-    ####### END OF SCHEDULER DIRECTIVES   #######
-
-
-    source /Users/siddiq90/spack/share/spack/setup-env.sh
-    spack env activate  m4
-    spack add m4
-    spack concretize -f
-
-You can define :ref:`multiple executors <multiple_executors>` in your buildspec
-with spack schema via ``executors``. This can be useful if you need to specify
-different scheduler directives based on executor type since your executor will map to
-a queue.
-
-Shown below is an example buildspec that will specify ``sbatch`` directives for
-``generic.local.sh`` and ``generic.local.bash``
-
-.. literalinclude:: ../tutorials/spack/spack_multiple_executor_sbatch.yml
-  :language: yaml
+.. program-output:: cat buildtest_tutorial_examples/inspect/pre_post_cmds.txt
 
 Configuring Spack Mirrors
 --------------------------
@@ -387,38 +234,18 @@ the key is the name of mirror and value is location of the spack mirror.
 In this next example,  we will define a mirror name **e4s** that points to https://cache.e4s.io as the mirror location.
 Internally, this translates to ``spack mirror add e4s https://cache.e4s.io`` command.
 
-.. literalinclude:: ../tutorials/spack/mirror_example.yml
+.. literalinclude:: ../../examples/spack/mirror_example.yml
     :language: yaml
+
+This test can be built by running::
+
+    buildtest build -b $BUILDTEST_ROOT/examples/spack/mirror_example.yml
 
 If we look at the generated script for both tests, we see that mirror is added for both tests. Note that
 one can have mirrors defined in their ``spack.yaml`` or one of the `configuration scopes <https://spack.readthedocs.io/en/latest/configuration.html#configuration-scopes>`_
 defined by spack.
 
-.. code-block:: shell
-    :emphasize-lines: 3
-
-    #!/bin/bash
-    source /Users/siddiq90/spack/share/spack/setup-env.sh
-    spack mirror add e4s https://cache.e4s.io
-
-
-    ######## START OF POST COMMANDS ########
-    spack mirror list
-    ######## END OF POST COMMANDS   ########
-
-.. code-block:: shell
-    :emphasize-lines: 5
-
-    #!/bin/bash
-    source /Users/siddiq90/spack/share/spack/setup-env.sh
-    spack env create  spack_mirror
-    spack env activate  spack_mirror
-    spack mirror add e4s https://cache.e4s.io
-
-
-    ######## START OF POST COMMANDS ########
-    spack mirror list
-    ######## END OF POST COMMANDS   ########
+.. program-output:: cat buildtest_tutorial_examples/inspect/mirror_example.txt
 
 Spack Test
 -----------
@@ -436,9 +263,9 @@ property. The **results** property expects one to specify the ``specs`` or ``sui
 The ``suite`` property is used to retrieve test results based on suite name, whereas ``specs`` property can be used to retrieve based
 on spec format. Both properties are a list of string types.
 
-In example below we install `m4` and run the test using ``spack test run m4``.
+In example below we will test `m4` package by running ``spack test run m4`` and report the results with log file.
 
-.. literalinclude:: ../tutorials/spack/spack_test.yml
+.. literalinclude:: ../../examples/spack/spack_test.yml
     :language: yaml
 
 If we look at the generated test, buildtest will install m4 followed by running the test. The **spack test run --alias**
@@ -447,70 +274,9 @@ to search for test results. **buildtest will create the suite name based on name
 spack will generate a random text for suitename which you won't know at time of writing test that is required by
 ``spack test results`` to fetch the results.
 
-.. code-block:: shell
-    :emphasize-lines: 13-14
+.. program-output:: cat buildtest_tutorial_examples/build/spack_test.txt
 
-    #!/bin/bash
-
-
-    ######## START OF PRE COMMANDS ########
-    cd /tmp
-    git clone --depth=5 https://github.com/spack/spack
-
-    ######## END OF PRE COMMANDS   ########
-
-
-    source /private/tmp/spack/share/spack/setup-env.sh
-    spack install  m4
-    spack test run --alias spack_test_m4 m4
-    spack test results  spack_test_m4
-
-
-    ######## START OF POST COMMANDS ########
-    spack find
-    rm -rf $SPACK_ROOT
-
-    ######## END OF POST COMMANDS   ########
-
-Shown below is the example output of this test, we can see spack has installed m4 and run the test after completion.
-
-
-.. code-block:: shell
-    :emphasize-lines: 27-30
-
-    ==> Installing libsigsegv-2.13-r7lvpzzhczpr2bgtadetobprkgramtli
-    ==> No binary for libsigsegv-2.13-r7lvpzzhczpr2bgtadetobprkgramtli found: installing from source
-    ==> Fetching https://mirror.spack.io/_source-cache/archive/be/be78ee4176b05f7c75ff03298d84874db90f4b6c9d5503f0da1226b3a3c48119.tar.gz
-    ==> No patches needed for libsigsegv
-    ==> libsigsegv: Executing phase: 'autoreconf'
-    ==> libsigsegv: Executing phase: 'configure'
-    ==> libsigsegv: Executing phase: 'build'
-    ==> libsigsegv: Executing phase: 'install'
-    ==> libsigsegv: Successfully installed libsigsegv-2.13-r7lvpzzhczpr2bgtadetobprkgramtli
-      Fetch: 2.59s.  Build: 10.37s.  Total: 12.97s.
-    [+] /private/tmp/spack/opt/spack/darwin-bigsur-skylake/apple-clang-11.0.3/libsigsegv-2.13-r7lvpzzhczpr2bgtadetobprkgramtli
-    ==> Installing m4-1.4.19-pibdj557bvkhtlyjhm5giq4p2vt5plsw
-    ==> No binary for m4-1.4.19-pibdj557bvkhtlyjhm5giq4p2vt5plsw found: installing from source
-    ==> Fetching https://mirror.spack.io/_source-cache/archive/3b/3be4a26d825ffdfda52a56fc43246456989a3630093cced3fbddf4771ee58a70.tar.gz
-    ==> Fetching https://mirror.spack.io/_source-cache/archive/bf/bfdffa7c2eb01021d5849b36972c069693654ad826c1a20b53534009a4ec7a89
-    ==> Fetching https://mirror.spack.io/_source-cache/archive/9d/9dc5fbd0d5cb1037ab1e6d0ecc74a30df218d0a94bdd5a02759a97f62daca573
-    ==> Applied patch http://git.savannah.gnu.org/cgit/m4.git/patch/?id=a1354086
-    ==> Applied patch http://git.savannah.gnu.org/cgit/m4.git/patch/?id=cd7f4d15
-    ==> Ran patch() for m4
-    ==> m4: Executing phase: 'autoreconf'
-    ==> m4: Executing phase: 'configure'
-    ==> m4: Executing phase: 'build'
-    ==> m4: Executing phase: 'install'
-    ==> m4: Successfully installed m4-1.4.19-pibdj557bvkhtlyjhm5giq4p2vt5plsw
-      Fetch: 3.23s.  Build: 1m 50.63s.  Total: 1m 53.86s.
-    [+] /private/tmp/spack/opt/spack/darwin-bigsur-skylake/apple-clang-11.0.3/m4-1.4.19-pibdj557bvkhtlyjhm5giq4p2vt5plsw
-    ==> Spack test spack_test_m4
-    ==> Testing package m4-1.4.19-pibdj55
-    ==> Results for test suite 'spack_test_m4':
-    ==>   m4-1.4.19-pibdj55 PASSED
-    -- darwin-bigsur-skylake / apple-clang@11.0.3 -------------------
-    libsigsegv@2.13
-    m4@1.4.19
+.. program-output:: cat buildtest_tutorial_examples/inspect/spack_test.txt
 
 
 We can search for test results using the spec format instead of suite name. In the ``results`` property we can
@@ -522,35 +288,52 @@ to clear all test results. This can be done in buildspec using the ``remove_test
 is a boolean. If this is set to **True** buildtest will run ``spack test remove -y`` to remove all test suites before running
 the tests.
 
-.. literalinclude:: ../tutorials/spack/spack_test_specs.yml
+In this next example, we will create a spack environment to install `libxml2` and `libsigsegv` and test the package and report
+log after running test.
+
+.. literalinclude:: ../../examples/spack/spack_test_specs.yml
     :language: yaml
 
-In the generated test, we see that buildtest will remove all testsuites using ``spack test remove -y``
-and query results based on spec format. The options are passed into ``spack test results`` based on
-the ``option`` field specified under the ``results`` section.
+We can build this test by running the following
+
+.. program-output:: cat buildtest_tutorial_examples/build/spack_test_specs.txt
 
 
-.. code-block:: shell
-    :emphasize-lines: 13-15
+Now let's check the generated test and output file, we see buildtest will install **libxml2** and **libsigsegv**
+in spack environment followed by removing all testsuites using ``spack test remove -y`` and run the test. Note that we can
+query results in spec format (``spack test results --l --libxml2``) where spack will try to match a result file that matches the
+corresponding spec.
 
-    #!/bin/bash
-
-
-    ######## START OF PRE COMMANDS ########
-    cd /tmp
-    git clone --depth=1 https://github.com/spack/spack
-
-    ######## END OF PRE COMMANDS   ########
+.. program-output:: cat buildtest_tutorial_examples/inspect/spack_test_specs.txt
 
 
-    source /private/tmp/spack/share/spack/setup-env.sh
-    spack install  bzip2
-    spack test remove -y
-    spack test run --alias spack_test_results_specs_format bzip2
-    spack test results -l -- bzip2
+Specifying Scheduler Directives
+---------------------------------
 
+The spack schema supports all of the :ref:`scheduler scheduler directives <batch_support>` such
+as ``sbatch``, ``bsub``, ``pbs``, ``cobalt``, and ``batch`` property in the buildspec.
 
-    ######## START OF POST COMMANDS ########
-    spack find
-    rm -rf $SPACK_ROOT
-    ######## END OF POST COMMANDS   ########
+The directives are applied at top of script. Shown below is a toy example that will define
+directives using **sbatch** property. Note, this test won't submit job to scheduler
+since we are not using the a slurm executor.
+
+.. literalinclude:: ../../examples/spack/spack_sbatch.yml
+    :language: yaml
+
+buildtest will generate the shell script with the job directives and set the name, output and error
+files based on name of test. If we build this test, and inspect the generated test we see that
+**#SBATCH** directives are written based on the **sbatch** field.
+
+.. program-output:: cat buildtest_tutorial_examples/inspect/spack_sbatch.txt
+
+You can define :ref:`multiple executors <multiple_executors>` in your buildspec
+with spack schema via ``executors``. This can be useful if you need to specify
+different scheduler directives based on executor type since your executor will map to
+a queue.
+
+Shown below is an example buildspec that will specify ``sbatch`` directives for
+``generic.local.sh`` and ``generic.local.bash``
+
+.. literalinclude:: ../../examples/spack/spack_multiple_executor_sbatch.yml
+  :language: yaml
+

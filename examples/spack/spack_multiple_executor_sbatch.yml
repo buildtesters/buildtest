@@ -10,17 +10,11 @@ buildspecs:
         sbatch: ["-N 1", "-t 30"]
       generic.local.bash:
         sbatch: ["-N 8", "-t 15"]
-    pre_cmds: |
-      cd /tmp
-      git clone https://github.com/spack/spack
     spack:
-      root: /tmp/spack
-      env:
-        specs:
-          - 'm4'
-        create:
-          name: m4
-        activate:
-          name: m4
-        concretize: true
-    post_cmds: rm -rf $SPACK_ROOT
+      root: $HOME/spack
+      test:
+        run:
+          specs: ['libsigsegv']
+        results:
+          specs: ['libsigsegv']
+          option: "-l"

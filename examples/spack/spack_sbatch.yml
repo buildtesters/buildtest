@@ -2,15 +2,11 @@ version: "1.0"
 buildspecs:
   spack_sbatch_example:
     type: spack
-    executor: generic.local.sh
+    executor: generic.local.bash
     description: "sbatch directives can be defined in spack schema"
     tags: [spack]
     sbatch: ["-N 1", "-n 8", "-t 30"]
     spack:
       root: $HOME/spack
-      env:
-        specs:
-          - 'm4'
-        activate:
-          name: m4
-        concretize: true
+      install:
+        specs: ['zlib@1.2.11%clang', 'zlib@1.2.8%clang']

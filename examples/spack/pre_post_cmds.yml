@@ -2,17 +2,17 @@ version: "1.0"
 buildspecs:
   run_pre_post_commands:
     type: spack
-    executor: generic.local.sh
+    executor: generic.local.bash
     description: "Install zlib"
     tags: [spack]
     pre_cmds: |
-      cd /tmp
-      git clone https://github.com/spack/spack
+      cat /etc/os-release
+      gcc --version
     spack:
-      root: /tmp/spack
-      verify_spack: false
+      root: $HOME/spack
       install:
         specs: ['zlib']
     post_cmds: |
-      spack find
-      rm -rf $SPACK_ROOT
+      spack location -i gcc@6.5.0
+      spack --version
+

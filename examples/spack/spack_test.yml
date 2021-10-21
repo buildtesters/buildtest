@@ -1,0 +1,15 @@
+version: "1.0"
+buildspecs:
+  spack_test_m4:
+    type: spack
+    executor: generic.local.bash
+    description: "Run spack test for m4 package and report results"
+    tags: [spack]
+    spack:
+      root: $HOME/spack
+      test:
+        run:
+          specs: ['m4']
+        results:
+          suite: ['spack_test_m4']
+          option: "-l"

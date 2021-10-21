@@ -7,3 +7,4 @@ spack:
   specs:
     - m4
     - zlib
+    - python

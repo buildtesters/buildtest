@@ -2,8 +2,8 @@ version: "1.0"
 buildspecs:
   spack_env_directory:
     type: spack
-    executor: generic.local.sh
-    description: "Concretize m4 in a spack environment named m4"
+    executor: generic.local.bash
+    description: "create spack environment in directory"
     tags: [spack]
     spack:
       root: $HOME/spack
@@ -14,4 +14,8 @@ buildspecs:
           dir: $HOME/spack-envs/m4
         specs:
           - 'm4'
-        concretize: true
+      install:
+        option: ''
+    post_cmds: |
+      spack find
+      rm -rf $HOME/spack-envs/m4
