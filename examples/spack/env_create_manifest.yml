@@ -10,7 +10,7 @@ buildspecs:
       env:
         create:
           name: 'manifest_example'
-          manifest: "$BUILDTEST_ROOT/tutorials/spack/example/spack.yaml"
+          manifest: "$BUILDTEST_ROOT/examples/spack/example/spack.yaml"
         activate:
           name: 'manifest_example'
         concretize: true

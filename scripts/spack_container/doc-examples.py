@@ -64,9 +64,8 @@ def build_examples():
 
 
 if __name__ == "__main__":
-    user = getpass.getuser()
 
-    if user != "spack" or os.getenv("HOME") != "/home/spack":
+    if getpass.getuser() != "spack" or os.getenv("HOME") != "/home/spack":
         sys.exit(
             "This script can only be run inside container please run the following 'docker run -it -v $BUILDTEST_ROOT:/home/spack/buildtest shahzebsiddiqui/buildtest_spack'"
         )
