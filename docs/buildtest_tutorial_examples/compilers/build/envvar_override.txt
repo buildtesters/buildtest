@@ -1,0 +1,98 @@
+$ buildtest build -b /home/spack/buildtest/examples/compilers/envvar_override.yml 
+╭─────────────────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────────────────╮
+│                                                                                                                                          │
+│ User:               spack                                                                                                                │
+│ Hostname:           bd1cc21cefc6                                                                                                         │
+│ Platform:           Linux                                                                                                                │
+│ Current Time:       2021/10/22 15:56:33                                                                                                  │
+│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                                  │
+│ buildtest version:  0.11.0                                                                                                               │
+│ python path:                                                                                                                             │
+│ /home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/python-3.8.6-szj7jukzoj34lkchuvzrzbh52kgesac7/bin/python                  │
+│ python version:     3.8.6                                                                                                                │
+│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                                         │
+│ Test Directory:     /home/spack/runs                                                                                                     │
+│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/compilers/envvar_override.yml            │
+│                                                                                                                                          │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+─────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────
+Discovered Buildspecs:  1
+Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
+                     Discovered buildspecs                      
+╔══════════════════════════════════════════════════════════════╗
+║ Buildspecs                                                   ║
+╟──────────────────────────────────────────────────────────────╢
+║ /home/spack/buildtest/examples/compilers/envvar_override.yml ║
+╚══════════════════════════════════════════════════════════════╝
+──────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────
+Valid Buildspecs: 1
+Invalid Buildspecs: 0
+/home/spack/buildtest/examples/compilers/envvar_override.yml: VALID
+
+
+Total builder objects created: 2
+
+
+                                                              Builder Details                                                               
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Builder                           ┃ Executor           ┃ description                            ┃ buildspecs                             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ override_environmentvars/d1d76b8b │ generic.local.bash │ override default environment variables │ /home/spack/buildtest/examples/compile │
+│                                   │                    │                                        │ rs/envvar_override.yml                 │
+├───────────────────────────────────┼────────────────────┼────────────────────────────────────────┼────────────────────────────────────────┤
+│ override_environmentvars/be4a1c2f │ generic.local.bash │ override default environment variables │ /home/spack/buildtest/examples/compile │
+│                                   │                    │                                        │ rs/envvar_override.yml                 │
+└───────────────────────────────────┴────────────────────┴────────────────────────────────────────┴────────────────────────────────────────┘
+────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────
+[15:56:33] override_environmentvars/d1d76b8b: Creating test directory:                                                           base.py:437
+           /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/d1d76b8b                                            
+           override_environmentvars/d1d76b8b: Creating the stage directory:                                                      base.py:448
+           /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/d1d76b8b/stage                                      
+           override_environmentvars/d1d76b8b: Writing build script: /home/spack/runs/generic.local.bash/envvar_override/override base.py:565
+           _environmentvars/d1d76b8b/override_environmentvars_build.sh                                                                      
+           override_environmentvars/be4a1c2f: Creating test directory:                                                           base.py:437
+           /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/be4a1c2f                                            
+           override_environmentvars/be4a1c2f: Creating the stage directory:                                                      base.py:448
+           /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/be4a1c2f/stage                                      
+           override_environmentvars/be4a1c2f: Writing build script: /home/spack/runs/generic.local.bash/envvar_override/override base.py:565
+           _environmentvars/be4a1c2f/override_environmentvars_build.sh                                                                      
+────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────
+______________________________
+Launching test: override_environmentvars/d1d76b8b
+override_environmentvars/d1d76b8b: Running Test script 
+/home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/d1d76b8b/override_environmentvars_build.sh
+______________________________
+Launching test: override_environmentvars/be4a1c2f
+override_environmentvars/be4a1c2f: Running Test script 
+/home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/be4a1c2f/override_environmentvars_build.sh
+override_environmentvars/d1d76b8b: completed with returncode: 0
+override_environmentvars/d1d76b8b: Writing output file -  /home/spack/runs/gener
+ic.local.bash/envvar_override/override_environmentvars/d1d76b8b/override_environ
+mentvars.out
+override_environmentvars/d1d76b8b: Writing error file - /home/spack/runs/generic
+.local.bash/envvar_override/override_environmentvars/d1d76b8b/override_environme
+ntvars.err
+override_environmentvars/be4a1c2f: completed with returncode: 0
+override_environmentvars/be4a1c2f: Writing output file -  /home/spack/runs/gener
+ic.local.bash/envvar_override/override_environmentvars/be4a1c2f/override_environ
+mentvars.out
+override_environmentvars/be4a1c2f: Writing error file - /home/spack/runs/generic
+.local.bash/envvar_override/override_environmentvars/be4a1c2f/override_environme
+ntvars.err
+                                                          Test Summary                                                           
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ Builder                           ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ override_environmentvars/be4a1c2f │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.179511 │
+├───────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+│ override_environmentvars/d1d76b8b │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.151785 │
+└───────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
+
+
+
+Passed Tests: 2/2 Percentage: 100.000%
+Failed Tests: 0/2 Percentage: 0.000%
+
+
+Writing Logfile to: /tmp/buildtest_j1_w91z_.log

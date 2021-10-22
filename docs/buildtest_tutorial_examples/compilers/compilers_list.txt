@@ -1,0 +1,21 @@
+$ buildtest config compilers -y 
+gcc:
+  builtin_gcc:
+    cc: /usr/bin/gcc
+    cxx: /usr/bin/g++
+    fc: /usr/bin/gfortran
+  gcc_6.5.0:
+    cc: gcc
+    cxx: g++
+    fc: gfortran
+    module:
+      load:
+      - gcc/6.5.0-gcc-7.5.0
+  gcc_8.3.0:
+    cc: gcc
+    cxx: g++
+    fc: gfortran
+    module:
+      load:
+      - gcc/8.3.0-gcc-7.5.0
+

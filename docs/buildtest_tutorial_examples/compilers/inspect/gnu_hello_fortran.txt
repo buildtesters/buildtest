@@ -1,0 +1,23 @@
+$ buildtest inspect query -t hello_f 
+─────────────────────────────────────────────── hello_f/94d07ff4-72a4-4f19-9848-0cdd220a6b87 ───────────────────────────────────────────────
+executor:  generic.local.bash
+description:  Hello World Fortran Compilation
+state:  PASS
+returncode:  0
+runtime:  0.176092
+starttime:  2021/10/22 15:56:22
+endtime:  2021/10/22 15:56:22
+─────────────────────── Test File: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/94d07ff4/hello_f.sh ───────────────────────
+   1 #!/bin/bash                                                                                                                            
+   2                                                                                                                                        
+   3                                                                                                                                        
+   4 # name of executable                                                                                                                   
+   5 _EXEC=hello.f90.exe                                                                                                                    
+   6 # Compilation Line                                                                                                                     
+   7 /usr/bin/gfortran -Wall -o $_EXEC /home/spack/buildtest/examples/compilers/src/hello.f90                                               
+   8                                                                                                                                        
+   9                                                                                                                                        
+  10 # Run executable                                                                                                                       
+  11 ./$_EXEC                                                                                                                               
+  12                                                                                                                                        
+  13                                                                                                                                        

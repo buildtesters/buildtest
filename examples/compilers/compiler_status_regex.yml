@@ -1,0 +1,37 @@
+version: "1.0"
+buildspecs:
+  default_status_returncode:
+    type: compiler
+    description: status check based on returncode
+    tags: [tutorials, compile]
+    executor: generic.local.bash
+    source: src/vecAdd.c
+    compilers:
+      name: ["^(gcc)"]
+      default:
+        gcc:
+          cflags: -fopenacc
+          ldflags: -lm
+          status:
+            returncode: 0
+
+  override_status_regex:
+    type: compiler
+    description: override 'status' property in compiler gcc_8.3.0 instance
+    tags: [tutorials, compile]
+    executor: generic.local.bash
+    source: src/vecAdd.c
+    compilers:
+      name: ["^(gcc)"]
+      default:
+        gcc:
+          cflags: -fopenacc
+          ldflags: -lm
+          status:
+            returncode: 1
+      config:
+        gcc_8.3.0:
+          status:
+            regex:
+              stream: stdout
+              exp: "^final result: 0.99$"
