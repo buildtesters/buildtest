@@ -5,12 +5,14 @@ buildspecs:
     description: "Hello World C Compilation"
     executor: generic.local.bash
     tags: [tutorials, compile]
-    source: "$BUILDTEST_ROOT/examples/compilers/src/hello.c"
+    source: "src/hello.c"
     compilers:
-      name: ["^(builtin_gcc)"]
+      name: ["^(builtin_gcc|gcc)"]
       default:
         gcc:
           cflags: -O1
       config:
-        builtin_gcc:
+        gcc_6.5.0:
           cflags: -O2
+        gcc_8.3.0:
+          cflags: -O3

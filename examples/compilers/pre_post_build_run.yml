@@ -5,20 +5,17 @@ buildspecs:
     description: example using pre_build, post_build, pre_run, post_run example
     executor: generic.local.bash
     tags: [tutorials, compile]
-    source: "$BUILDTEST_ROOT/examples/compilers/src/hello.c"
+    source: "src/hello.c"
     compilers:
       name: ["^(builtin_gcc)$"]
       default:
         gcc:
           cflags: -Wall
-        all:
           pre_build: |
-            echo "This is a pre-build section"
-            gcc --version
+            echo "These are commands run before compilation"
           post_build: |
-            echo "This is post-build section"
+            echo "These are commands run after compilation"
           pre_run: |
-            echo "This is pre-run section"
-            export FOO=BAR
-          post_run: |
-            echo "This is post-run section"
+            echo "These are commands run before running script"
+          post_run:
+            echo "These are commands run after running script"

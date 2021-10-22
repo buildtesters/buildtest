@@ -27,10 +27,10 @@ def run(query):
     return command.stdout
 
 
-def build_examples():
+def build_spack_examples():
 
-    build_dir = os.path.join(doc_example_dir, "build")
-    inspect_dir = os.path.join(doc_example_dir, "inspect")
+    build_dir = os.path.join(doc_example_dir, "spack", "build")
+    inspect_dir = os.path.join(doc_example_dir, "spack", "inspect")
 
     create_dir(build_dir)
     create_dir(inspect_dir)
@@ -63,6 +63,41 @@ def build_examples():
         write_file(fname, out)
 
 
+def build_compiler_examples():
+
+    compiler_dir = os.path.join(doc_example_dir, "compilers")
+    build_dir = os.path.join(compiler_dir, "build")
+    inspect_dir = os.path.join(compiler_dir, "inspect")
+
+    create_dir(build_dir)
+    create_dir(inspect_dir)
+
+    commands_to_run = {
+        f"{build_dir}/gnu_hello_fortran.txt": f"buildtest build -b {BUILDTEST_ROOT}/examples/compilers/gnu_hello_fortran.yml",
+        f"{inspect_dir}/gnu_hello_fortran.txt": "buildtest inspect query -t hello_f",
+        f"{compiler_dir}/compilers_list.txt": "buildtest config compilers -y",
+        f"{build_dir}/vecadd.txt": f"buildtest build -b {BUILDTEST_ROOT}/examples/compilers/vecadd.yml",
+        f"{build_dir}/gnu_hello_c.txt": f"buildtest build -b {BUILDTEST_ROOT}/examples/compilers/gnu_hello_c.yml",
+        f"{inspect_dir}/gnu_hello_c.txt": "buildtest inspect query -d all -t hello_c",
+        f"{build_dir}/compiler_exclude.txt": f"buildtest build -b {BUILDTEST_ROOT}/examples/compilers/compiler_exclude.yml",
+        f"{build_dir}/openmp_hello.txt": f"buildtest build -b {BUILDTEST_ROOT}/examples/compilers/openmp_hello.yml",
+        f"{inspect_dir}/openmp_hello.txt": "buildtest inspect query -t openmp_hello_c_example",
+        f"{build_dir}/envvar_override.txt": f"buildtest build -b {BUILDTEST_ROOT}/examples/compilers/envvar_override.yml",
+        f"{inspect_dir}/envvar_override.txt": "buildtest inspect query -d all -t override_environmentvars",
+        f"{build_dir}/compiler_status_regex.txt": f"buildtest build -b {BUILDTEST_ROOT}/examples/compilers/compiler_status_regex.yml",
+        f"{inspect_dir}/compiler_status_regex.txt": "buildtest inspect query -d all -o override_status_regex",
+        f"{build_dir}/custom_run.txt": f"buildtest build -b {BUILDTEST_ROOT}/examples/compilers/custom_run.yml",
+        f"{inspect_dir}/custom_run.txt": "buildtest inspect query -d all -b  -t custom_run_by_compilers",
+        f"{build_dir}/pre_post_build_run.txt": f"buildtest build -b {BUILDTEST_ROOT}/examples/compilers/pre_post_build_run.yml",
+        f"{inspect_dir}/pre_post_build_run.txt": "buildtest inspect query -t pre_post_build_run",
+    }
+
+    for fname, command in commands_to_run.items():
+        out = f"$ {command} \n"
+        out += run(command)
+        write_file(fname, out)
+
+
 if __name__ == "__main__":
 
     if getpass.getuser() != "spack" or os.getenv("HOME") != "/home/spack":
@@ -79,4 +114,5 @@ if __name__ == "__main__":
     create_dir(doc_example_dir)
 
     clean(config, yes=True)
-    build_examples()
+    build_spack_examples()
+    build_compiler_examples()

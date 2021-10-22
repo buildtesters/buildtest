@@ -1,0 +1,16 @@
+$ buildtest inspect query -o -t install_specs_example 
+──────────────────────────────────────── install_specs_example/84a6e422-2cd3-4015-943d-31c182cf2b17 ────────────────────────────────────────
+executor:  generic.local.bash
+description:  Install zlib spec
+state:  PASS
+returncode:  0
+runtime:  1.233966
+starttime:  2021/10/22 15:55:30
+endtime:  2021/10/22 15:55:31
+───────── Output File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/84a6e422/install_specs_example.out ──────────
+[+] /home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/zlib-1.2.11-smoyzzo2qhzpn6mg6rd3l2p7b23enshg                             
+                                                                                                                                            
+─────────── Test File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/84a6e422/install_specs_example.sh ───────────
+  1 #!/bin/bash                                                                                                                             
+  2 source /home/spack/spack/share/spack/setup-env.sh                                                                                       
+  3 spack install  zlib                                                                                                                     

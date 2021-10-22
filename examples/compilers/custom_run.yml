@@ -1,0 +1,15 @@
+version: "1.0"
+buildspecs:
+  custom_run_by_compilers:
+    type: compiler
+    description: Customize binary launch based on compiler
+    executor: generic.local.bash
+    tags: [tutorials, compile]
+    source: "src/argc.c"
+    compilers:
+      name: ["^(builtin_gcc|gcc_8.3.0)"]
+      config:
+        builtin_gcc:
+          run: ./$_EXEC 1 3
+        gcc_8.3.0:
+          run: ./$_EXEC 100 120

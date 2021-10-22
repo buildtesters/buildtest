@@ -5,7 +5,7 @@ buildspecs:
     description: "Hello World Fortran Compilation"
     executor: generic.local.bash
     tags: [tutorials, compile]
-    source: "$BUILDTEST_ROOT/tutorials/compilers/src/hello.f90"
+    source: "$BUILDTEST_ROOT/examples/compilers/src/hello.f90"
     compilers:
       name: ["^(builtin_gcc)$"]
       default:

@@ -1,0 +1,73 @@
+$ buildtest build -b /home/spack/buildtest/examples/spack/spack_test.yml 
+╭─────────────────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────────────────╮
+│                                                                                                                                          │
+│ User:               spack                                                                                                                │
+│ Hostname:           bd1cc21cefc6                                                                                                         │
+│ Platform:           Linux                                                                                                                │
+│ Current Time:       2021/10/22 15:56:02                                                                                                  │
+│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                                  │
+│ buildtest version:  0.11.0                                                                                                               │
+│ python path:                                                                                                                             │
+│ /home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/python-3.8.6-szj7jukzoj34lkchuvzrzbh52kgesac7/bin/python                  │
+│ python version:     3.8.6                                                                                                                │
+│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                                         │
+│ Test Directory:     /home/spack/runs                                                                                                     │
+│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/spack/spack_test.yml                     │
+│                                                                                                                                          │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+─────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────
+Discovered Buildspecs:  1
+Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
+                 Discovered buildspecs                 
+╔═════════════════════════════════════════════════════╗
+║ Buildspecs                                          ║
+╟─────────────────────────────────────────────────────╢
+║ /home/spack/buildtest/examples/spack/spack_test.yml ║
+╚═════════════════════════════════════════════════════╝
+──────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────
+Valid Buildspecs: 1
+Invalid Buildspecs: 0
+/home/spack/buildtest/examples/spack/spack_test.yml: VALID
+
+
+Total builder objects created: 1
+
+
+                                                              Builder Details                                                               
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Builder                ┃ Executor           ┃ description                                  ┃ buildspecs                                  ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ spack_test_m4/26a52536 │ generic.local.bash │ Run spack test for m4 package and report     │ /home/spack/buildtest/examples/spack/spack_ │
+│                        │                    │ results                                      │ test.yml                                    │
+└────────────────────────┴────────────────────┴──────────────────────────────────────────────┴─────────────────────────────────────────────┘
+────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────
+[15:56:02] spack_test_m4/26a52536: Creating test directory:                                                                      base.py:437
+           /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/26a52536                                                            
+           spack_test_m4/26a52536: Creating the stage directory:                                                                 base.py:448
+           /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/26a52536/stage                                                      
+           spack_test_m4/26a52536: Writing build script:                                                                         base.py:565
+           /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/26a52536/spack_test_m4_build.sh                                     
+────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────
+______________________________
+Launching test: spack_test_m4/26a52536
+spack_test_m4/26a52536: Running Test script /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/26a52536/spack_test_m4_build.sh
+spack_test_m4/26a52536: completed with returncode: 0
+spack_test_m4/26a52536: Writing output file -  /home/spack/runs/generic.local.ba
+sh/spack_test/spack_test_m4/26a52536/spack_test_m4.out
+spack_test_m4/26a52536: Writing error file - /home/spack/runs/generic.local.bash
+/spack_test/spack_test_m4/26a52536/spack_test_m4.err
+                                                     Test Summary                                                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ Builder                ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ spack_test_m4/26a52536 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 1.941008 │
+└────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
+
+
+
+Passed Tests: 1/1 Percentage: 100.000%
+Failed Tests: 0/1 Percentage: 0.000%
+
+
+Writing Logfile to: /tmp/buildtest_u76ug9yn.log

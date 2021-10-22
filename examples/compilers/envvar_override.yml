@@ -1,0 +1,19 @@
+version: "1.0"
+buildspecs:
+  override_environmentvars:
+    type: compiler
+    description: override default environment variables
+    executor: generic.local.bash
+    tags: [tutorials, compile]
+    source: "src/hello_omp.c"
+    compilers:
+      name: ["^(builtin_gcc|gcc_8.3.0)"]
+      default:
+        gcc:
+          cflags: -fopenmp
+          env:
+            OMP_NUM_THREADS: 2
+      config:
+        gcc_8.3.0:
+          env:
+            OMP_NUM_THREADS: 4

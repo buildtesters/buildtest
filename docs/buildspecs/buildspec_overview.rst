@@ -552,7 +552,7 @@ of variable or environment variable. If you reference an invalid name, buildtest
 In this next example, we define two metrics ``gflop`` and ``foo`` that are assigned to variable ``GFLOPS`` and
 environment variable ``FOO``.
 
-.. literalinclude:: ../tutorials/metrics_variable.yml
+.. literalinclude:: ../../examples/compilers/metrics_variable.yml
     :language: yaml
     :emphasize-lines: 15-19
 
@@ -573,7 +573,7 @@ we have defined ``OMP_NUM_THREADS`` under the ``defaults`` and ``config`` sectio
 environment variable that corresponds to each compiler.
 
 
-.. literalinclude:: ../tutorials/compilers/metrics_openmp.yml
+.. literalinclude:: ../../examples/compilers/metrics_openmp.yml
    :language: yaml
 
 .. Note:: This test uses a custom site configuration that defines gcc multiple compilers.

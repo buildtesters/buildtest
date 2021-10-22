@@ -5,39 +5,6 @@ Spack Schema
 
 .. Note:: This feature is in active development.
 
-Setup
--------
-
-To get started for this tutorial we will start an interactive shell in spack container for this exercise. We need
-to bind mount $BUILDTEST_ROOT into the container in order to use buildtest inside the container.
-
-.. code-block:: console
-
-    docker run -it -v $BUILDTEST_ROOT:/home/spack/buildtest shahzebsiddiqui/buildtest_spack:latest
-
-
-Next, lets source the setup script required for using buildtest inside the container
-
-.. code-block:: console
-
-    source $HOME/buildtest/scripts/spack_container/setup.sh
-
-If everything is done correctly you will see ``buildtest``, ``spack`` and ``module`` command in your path
-
-.. code-block::
-
-    spack@ef50085c8a81:~/buildtest$ which spack
-    /home/spack/spack/bin/spack
-
-    spack@ef50085c8a81:~/buildtest$ which buildtest
-    /home/spack/buildtest/bin/buildtest
-
-    spack@ef50085c8a81:~/buildtest$ module --version
-
-    Modules based on Lua: Version 8.3  2020-01-27 10:32 -06:00
-        by Robert McLay mclay@tacc.utexas.edu
-
-
 buildtest can generate tests for the `spack <https://spack.readthedocs.io/en/latest/>`_ package manager which can be
 used if you want to install or test packages as part of a repeatable process. You must set ``type: spack`` property
 in buildspec to use the spack schema for validating the buildspec test. Currently, we have
@@ -75,13 +42,13 @@ The schema is designed to mimic spack commands which will be clear with more exa
 
 Let's build this test by running the following
 
-.. program-output:: cat buildtest_tutorial_examples/build/install_specs.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/build/install_specs.txt
 
 
 Let's inspect the generated script and output file via ``buildtest inspect query`` command. We notice that buildtest
 will source spack setup script and install `zlib` which is automatically installed from the buildcache.
 
-.. program-output:: cat buildtest_tutorial_examples/inspect/install_specs.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/inspect/install_specs.txt
 
 Spack Environment
 -----------------
@@ -123,9 +90,9 @@ If we build this test and see generated test we see that buildtest will create a
 spack environment `m4_zlib` and activate the environment, add **m4** and **zlib**,
 concretize the environment and install the specs.
 
-.. program-output:: cat buildtest_tutorial_examples/build/env_install.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/build/env_install.txt
 
-.. program-output:: cat buildtest_tutorial_examples/inspect/env_install.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/inspect/env_install.txt
 
 
 Creating Spack Environment in Directory
@@ -167,9 +134,9 @@ is of ``type: string`` and this is only available as part of ``create`` property
 If we build this test and inspect the generated script we see ``spack env create`` command
 will create an environment **manifest_example** using the manifest file that we provided from the spack.yaml.
 
-.. program-output:: cat buildtest_tutorial_examples/build/env_create_manifest.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/build/env_create_manifest.txt
 
-.. program-output:: cat buildtest_tutorial_examples/inspect/env_create_manifest.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/inspect/env_create_manifest.txt
 
 Removing Spack Environments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -189,12 +156,12 @@ Shown below are two example tests where we remove spack environment using the **
 
 Let's build this by running the following
 
-.. program-output:: cat buildtest_tutorial_examples/build/remove_environment_example.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/build/remove_environment_example.txt
 
 
 If we build and look at the generated te, we notice that spack will remove environments names: **remove_environment**, **dummy**.
 
-.. program-output:: cat buildtest_tutorial_examples/inspect/remove_environment_example.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/inspect/remove_environment_example.txt
 
 Pre and Post Commands
 ----------------------
@@ -218,9 +185,9 @@ We remove spack root (``$SPACK_ROOT``) so that this test can be rerun again.
 
 If we build this test and inspect the generated script we should get the following result.
 
-.. program-output:: cat buildtest_tutorial_examples/build/pre_post_cmds.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/build/pre_post_cmds.txt
 
-.. program-output:: cat buildtest_tutorial_examples/inspect/pre_post_cmds.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/inspect/pre_post_cmds.txt
 
 Configuring Spack Mirrors
 --------------------------
@@ -245,7 +212,7 @@ If we look at the generated script for both tests, we see that mirror is added f
 one can have mirrors defined in their ``spack.yaml`` or one of the `configuration scopes <https://spack.readthedocs.io/en/latest/configuration.html#configuration-scopes>`_
 defined by spack.
 
-.. program-output:: cat buildtest_tutorial_examples/inspect/mirror_example.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/inspect/mirror_example.txt
 
 Spack Test
 -----------
@@ -274,9 +241,9 @@ to search for test results. **buildtest will create the suite name based on name
 spack will generate a random text for suitename which you won't know at time of writing test that is required by
 ``spack test results`` to fetch the results.
 
-.. program-output:: cat buildtest_tutorial_examples/build/spack_test.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/build/spack_test.txt
 
-.. program-output:: cat buildtest_tutorial_examples/inspect/spack_test.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/inspect/spack_test.txt
 
 
 We can search for test results using the spec format instead of suite name. In the ``results`` property we can
@@ -304,7 +271,7 @@ in spack environment followed by removing all testsuites using ``spack test remo
 query results in spec format (``spack test results --l --libxml2``) where spack will try to match a result file that matches the
 corresponding spec.
 
-.. program-output:: cat buildtest_tutorial_examples/inspect/spack_test_specs.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/inspect/spack_test_specs.txt
 
 
 Specifying Scheduler Directives
@@ -324,7 +291,7 @@ buildtest will generate the shell script with the job directives and set the nam
 files based on name of test. If we build this test, and inspect the generated test we see that
 **#SBATCH** directives are written based on the **sbatch** field.
 
-.. program-output:: cat buildtest_tutorial_examples/inspect/spack_sbatch.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/inspect/spack_sbatch.txt
 
 You can define :ref:`multiple executors <multiple_executors>` in your buildspec
 with spack schema via ``executors``. This can be useful if you need to specify

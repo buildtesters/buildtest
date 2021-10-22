@@ -1,0 +1,14 @@
+version: "1.0"
+buildspecs:
+  vecadd_gnu:
+    type: compiler
+    description: Vector Addition example with GNU compiler
+    tags: [tutorials, compile]
+    executor: generic.local.bash
+    source: src/vecAdd.c
+    compilers:
+      name: ["^(gcc)"]
+      default:
+        gcc:
+          cflags: -fopenacc
+          ldflags: -lm

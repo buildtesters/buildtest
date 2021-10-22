@@ -1,0 +1,15 @@
+version: "1.0"
+buildspecs:
+  vecadd_gnu_exclude:
+    type: compiler
+    description: Vector Addition example with GNU compilers but exclude gcc_6.5.0
+    tags: [tutorials, compile]
+    executor: generic.local.bash
+    source: src/vecAdd.c
+    compilers:
+      name: ["^(gcc)"]
+      exclude: [gcc_6.5.0]
+      default:
+        gcc:
+          cflags: -fopenacc
+          ldflags: -lm
