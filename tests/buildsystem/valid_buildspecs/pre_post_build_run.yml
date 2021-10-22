@@ -5,7 +5,7 @@ buildspecs:
     description: example using pre_build, post_build, pre_run, post_run example
     executor: generic.local.bash
     tags: [tutorials, compile]
-    source: "$BUILDTEST_ROOT/tutorials/compilers/src/hello.c"
+    source: "$BUILDTEST_ROOT/examples/compilers/src/hello.c"
     compilers:
       name: ["^(builtin_gcc)$"]
       default:
