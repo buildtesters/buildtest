@@ -36,6 +36,7 @@ options like ``cflags``, ``fflags``, ``cxxflags``, ``ldflags`` to customize comp
 
 .. literalinclude:: ../../examples/compilers/gnu_hello_fortran.yml
    :language: yaml
+   :emphasize-lines: 8-13
 
 Shown below is an example build for this test.
 
@@ -49,7 +50,7 @@ How does compiler search work?
 -------------------------------
 
 Compilers are defined in your configuration file that is used by buildtest to search compilers
-via ``name`` property when building test. In :ref:`configuring compilers <compilers>`_ you will
+via ``name`` property when building test. In :ref:`configuring compilers <compilers>` you will
 learn how one can define compiler, each compiler instance will have a unique name and be under one
 of the compiler groups like ``gcc``, ``intel``, ``cray``, ``pgi``, ``cuda``, ``clang``, etc...
 
@@ -57,7 +58,7 @@ You can see the compiler declaration from our configuration file by running ``bu
 which will display compiler settings in YAML format. Note that for each compiler instance one can define name of compiler
 and path to ``cc``, ``fc``, ``cxx`` wrapper. In addition one can specify ``module`` property to map compiler instance
 to modulefile. If `module` property is defined you can specify list of modules to load via ``load`` property and buildtest will
-automatically load these modules when using the compiler
+automatically load these modules when using the compiler.
 
 .. program-output:: cat buildtest_tutorial_examples/compilers/compilers_list.txt
 
@@ -84,8 +85,11 @@ Compiler Selection
 
 buildtest selects compiler based on ``name`` property which is a list of regular expression
 applied for available compilers defined in buildtest configuration. In this next example, we will
-compile an OpenACC code that will compute vector addition. In this test we will specify all `gcc` compilers
-are used for building this test via the **name** property. We can specify linker flags via ``ldflags`` during compilation.
+compile an OpenACC code that will compute vector addition. We specify all `gcc` compilers
+are used for building this test via the **name** property. The ``-fopenacc`` compiler flag
+enables GNU compilers to compile OpenACC code, we can set this via ``fflags`` property.
+We can specify linker flags via ``ldflags`` during compilation, this code requires we specify ``-lm`` flag
+to link with math library.
 
 .. literalinclude:: ../../examples/compilers/vecadd.yml
    :language: yaml
@@ -101,7 +105,7 @@ Customize Compiler Option
 We can specify custom compiler options per compiler instance using the ``config`` property.
 In this next example, we have a Hello World C example that will specify different ``cflags``
 based on compiler name. We can specify default compiler setting via ``default`` property. In this
-example the default is `-O1`. The ``config`` section can be used to specify custom compiler
+example the default is ``-O1``. The ``config`` section can be used to specify custom compiler
 options for each compiler name.
 
 .. literalinclude:: ../../examples/compilers/gnu_hello_c.yml
@@ -127,6 +131,7 @@ found based on regular expression via ``name`` property.  In this next example, 
 
 .. literalinclude:: ../../examples/compilers/compiler_exclude.yml
     :language: yaml
+    :emphasize-lines: 11
 
 Now if we run this test, we will notice that there is only one build for this test even though buildtest
 discovered both ``gcc_6.5.0`` and ``gcc_8.3.0`` compilers.
@@ -145,6 +150,7 @@ we will set ``OMP_NUM_THREADS=2``
 
 .. literalinclude:: ../../examples/compilers/openmp_hello.yml
     :language: yaml
+    :emphasize-lines: 14-15
 
 Now let's build this test.
 
@@ -168,7 +174,8 @@ We can build this test by running::
     buildtest build -b $BUILDTEST_ROOT/examples/compilers/envvar_override.yml
 
 Next, let's see the generated test by running ``buildtest inspect query -d all -t override_environmentvars``. The
-``-d all`` will display all test records for ``override_environmentvars``
+``-d all`` will display all test records for ``override_environmentvars``. Take a note that we have
+``export OMP_NUM_THREADS=4`` for `gcc_8.3.0` test and ``export OMP_NUM_THREADS=2`` for system gcc.
 
 .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/envvar_override.txt
 
@@ -217,9 +224,13 @@ we pass arguments ``1 3`` for **builtin_gcc** compiler and ``100 200`` for **gcc
 
 .. literalinclude:: ../../examples/compilers/custom_run.yml
     :language: yaml
+    :emphasize-lines: 13,15
 
-You can build this test by running ``buildtest build -b $BUILDTEST_ROOT/examples/compilers/custom_run.yml``. Once test is
-complete let's inspect the generated test. We see that buildtest will insert the line specified
+You can build this test by running the following::
+
+    buildtest build -b $BUILDTEST_ROOT/examples/compilers/custom_run.yml
+
+Once test is complete let's inspect the generated test. We see that buildtest will insert the line specified
 by ``run`` property after compilation and run the executable.
 
 .. program-output::  cat buildtest_tutorial_examples/compilers/inspect/custom_run.txt
