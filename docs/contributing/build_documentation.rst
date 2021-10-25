@@ -81,20 +81,3 @@ DocStrings
 We have enabled `napolean extension <https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html>`_ to support
 Google style docstring. Please follow this format when you are writting docstring for buildtest codebase. For more details
 on google style see: https://google.github.io/styleguide/pyguide.html
-
-Automate Documentation Examples
---------------------------------
-
-buildtest has a script in top-level folder ``script/docgen.py`` to automate
-documentation examples. This script can be run as follows::
-
-  python script/docgen.py
-
-This assumes your buildtest environment is setup, the script will write
-documentation test examples in ``docs/docgen``. Consider running this script
-when **adding**, **modifying**, or **removing** documentation examples. Once the
-test are complete, you will want to add the tests, commit and push as follows::
-
-  git add docs/docgen
-  git commit -m <MESSAGE>
-  git push
