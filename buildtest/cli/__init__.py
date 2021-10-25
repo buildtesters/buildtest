@@ -530,6 +530,8 @@ def config_menu(subparsers):
 
     compilers = subparsers_config.add_parser("compilers", help="Search compilers")
 
+    subparsers_config.add_parser("edit", help="Open configuration file in editor")
+
     executors = subparsers_config.add_parser(
         "executors", help="Query executors from buildtest configuration"
     )

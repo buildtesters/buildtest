@@ -1,6 +1,8 @@
 import getpass
 import json
+import os
 import shutil
+import subprocess
 import sys
 
 import yaml
@@ -44,6 +46,24 @@ def config_cmd(args, configuration):
     elif args.config == "systems":
         view_system(configuration)
 
+    elif args.config == "edit":
+        edit_configuration(configuration)
+
+
+def edit_configuration(configuration):
+    """This method will open configuration file in editor. The preferred editor will be determined based on environment
+    variable ``EDITOR`` if found otherwise will resort to ``vim``.
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class used for storing buildtest configuration
+    """
+
+    EDITOR = os.environ.get("EDITOR", "vim")
+
+    subprocess.call([EDITOR, configuration.file])
+
+    print(f"Writing configuration file: {configuration.file}")
+
 
 def view_system(configuration):
     """This method implements command ``buildtest config systems`` which displays
@@ -60,6 +80,7 @@ def view_system(configuration):
         "[blue]moduletool",
         Column("[blue]hostnames", overflow="fold"),
         title=f"System Summary (Configuration={configuration.file})",
+        min_width=120,
     )
 
     for name in configuration.config["system"].keys():

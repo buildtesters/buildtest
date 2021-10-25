@@ -1,7 +1,7 @@
 distro
 isort
 jsonschema
-lmodule==0.1
+lmodule
 PyYAML>=5.2
 requests
 rich
