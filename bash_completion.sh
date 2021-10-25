@@ -130,7 +130,7 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) );;
 
     config|cg)
-      local cmds="-h --help compilers executors validate view summary systems"
+      local cmds="-h --help compilers edit executors validate view summary systems"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
