@@ -56,13 +56,6 @@ def test_config_validate():
 
 
 @pytest.mark.cli
-def test_config_summary():
-    system = BuildTestSystem()
-
-    view_summary(configuration=configuration, buildtestsystem=system)
-
-
-@pytest.mark.cli
 def test_config_executors():
     buildexecutor = BuildExecutor(configuration)
 
