@@ -28,6 +28,8 @@ class BuildTestSystem:
 
         self.logger = logging.getLogger(__name__)
 
+        self.check()
+
     def get(self):
         return self.system
 

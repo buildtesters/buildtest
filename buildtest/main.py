@@ -74,7 +74,6 @@ def main():
 
     # Create a build test system, and check requirements
     system = BuildTestSystem()
-    system.check()
 
     validate_executors = True
     # if buildtest build --disable-executor-check is specified store the value

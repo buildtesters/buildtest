@@ -1,23 +1,76 @@
 import shutil
 
 from buildtest.exceptions import BuildTestError
+from buildtest.utils.command import BuildTestCommand
+from buildtest.utils.file import is_file
+
+
+def get_shells():
+    """Return a list of shell returned from /etc/shells file. If file exist we return a list
+    The command we run is the following which will omit any lines that start with ``#`` which
+    is for comments. If file doesn't exist we return an empty list
+
+    .. code-block:: console
+
+        $ grep '^[^#]' /etc/shells
+        /bin/bash
+        /bin/csh
+        /bin/dash
+        /bin/ksh
+        /bin/sh
+        /bin/tcsh
+        /bin/zsh
+
+    Returns:
+        list: Return a list of shells
+    """
+
+    etc_shell = "/etc/shells"
+    if not is_file(etc_shell):
+        return []
+
+    cmd = BuildTestCommand(f"grep '^[^#]' {etc_shell}")
+    cmd.execute()
+    out = cmd.get_output()
+    out = [item.strip() for item in out]
+
+    return out
+
+
+def get_python_shells():
+    """Return a list of all python shells by running ``which -a python3 python`` which
+    will report full path to all python and python3 wrapper in current $PATH.
+
+    Shown below is an expected output.
+
+    .. code-block:: console
+
+        $ which -a python3 python
+        /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python3
+        /usr/local/bin/python3
+        /usr/bin/python3
+        /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
+        /usr/bin/python
+
+    Returns:
+        list: A list of full path to python shells
+    """
+
+    python_shells = []
+
+    cmd = BuildTestCommand(f"which -a python python3")
+    cmd.execute()
+    out = cmd.get_output()
+    python_shells += [item.strip() for item in out]
+
+    return python_shells
+
+
+python_shells = get_python_shells()
+system_shells = get_shells()
 
 
 class Shell:
-    valid_shells = [
-        "bash",
-        "sh",
-        "zsh",
-        "csh",
-        "tcsh",
-        "/bin/bash",
-        "/bin/csh",
-        "/bin/sh",
-        "/bin/tcsh",
-        "/bin/zsh",
-        "python",
-    ]
-
     def __init__(self, shell="bash"):
         """The Shell initializer takes an input shell and shell options and split
         string by shell name and options.
@@ -33,6 +86,12 @@ class Shell:
             )
 
         self.name = shell.split()[0]
+
+        self.valid_shells = (
+            system_shells
+            + python_shells
+            + ["bash", "csh", "tcsh", "sh", "zsh", "python", "python3"]
+        )
 
         # if input shell is not in list of valid shells we raise error.
         if self.name not in self.valid_shells:

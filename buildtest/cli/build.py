@@ -609,6 +609,10 @@ class BuildTest:
                         f"Invalid value for filter 'type': '{self.filter_buildspecs[key]}', valid schema types are : {schema_table['types']}"
                     )
 
+    def discovered_buildspecs(self):
+        """Return all discovered buildspecs which includes included buildspecs, excluded buildspecs and detected buildspecs."""
+        return self.discovered_bp
+
     def build(self):
         """This method is responsible for discovering buildspecs based on input argument. Then we parse
         the buildspecs and retrieve builder objects for each test. Each builder object will invoke :func:`buildtest.buildsystem.base.BuilderBase.build`

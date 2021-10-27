@@ -19,7 +19,6 @@ def test_jlse():
     here = os.path.dirname(os.path.abspath(__file__))
     settings_file = os.path.join(here, "settings", "jlse.yml")
     system = BuildTestSystem()
-    system.check()
 
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
