@@ -5,7 +5,6 @@ from buildtest.cli.config import (
     validate_config,
     view_configuration,
     view_executors,
-    view_summary,
     view_system,
 )
 from buildtest.config import SiteConfiguration
@@ -13,7 +12,6 @@ from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, SCHEMA_ROOT
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_recipe, load_schema
-from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
 
 pytest_root = os.path.dirname(os.path.dirname(__file__))

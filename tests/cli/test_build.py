@@ -311,8 +311,6 @@ def test_keep_stage():
 
 def test_discover():
 
-    system = BuildTestSystem()
-
     # test single buildspec file
     buildspec = [os.path.join(valid_buildspecs, "environment.yml")]
 

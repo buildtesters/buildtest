@@ -1,16 +1,12 @@
-import getpass
 import json
 import os
-import shutil
 import subprocess
 import sys
 
 import yaml
-from buildtest import BUILDTEST_VERSION
-from buildtest.defaults import BUILDSPEC_CACHE_FILE, console, supported_schemas
+from buildtest.defaults import console
 from buildtest.exceptions import ConfigurationError
 from buildtest.executors.setup import BuildExecutor
-from buildtest.system import system
 from jsonschema import ValidationError
 from rich.syntax import Syntax
 from rich.table import Column, Table

@@ -58,7 +58,7 @@ def get_python_shells():
 
     python_shells = []
 
-    cmd = BuildTestCommand(f"which -a python python3")
+    cmd = BuildTestCommand("which -a python python3")
     cmd.execute()
     out = cmd.get_output()
     python_shells += [item.strip() for item in out]
