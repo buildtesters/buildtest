@@ -32,7 +32,7 @@ jobs:
       env:
         OS: ${{ matrix.os }}
       run: |
-        if [ $OS = "ubuntu-latest" ] ; then sudo apt-get install -y tcsh zsh; else brew install tcsh zsh ;  fi
+        if [ $OS = "ubuntu-latest" ] ; then sudo apt-get install -y csh tcsh zsh; else brew install tcsh zsh ;  fi
         source setup.sh
         pip install pytest
         pip install coverage
@@ -41,8 +41,8 @@ jobs:
 
     - uses: actions/checkout@v2
     - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
       if: ${{ failure() }}
+      uses: mxschmitt/action-tmate@v3
       timeout-minutes: 30
 
     - name: Upload coverage to Codecov
