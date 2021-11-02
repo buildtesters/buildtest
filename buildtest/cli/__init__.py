@@ -589,6 +589,12 @@ def config_menu(subparsers):
         help="Display Debugging output when finding compilers",
         action="store_true",
     )
+    compiler_find.add_argument(
+        "-u",
+        "--update",
+        action="store_true",
+        help="Update configuration file with new compilers",
+    )
 
 
 def report_menu(subparsers):
