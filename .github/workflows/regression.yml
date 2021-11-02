@@ -33,6 +33,7 @@ jobs:
         OS: ${{ matrix.os }}
       run: |
         if [ $OS = "ubuntu-latest" ] ; then sudo apt-get install -y csh tcsh zsh; else brew install tcsh zsh ;  fi
+        cat /etc/shells
         source setup.sh
         pip install pytest
         pip install coverage
