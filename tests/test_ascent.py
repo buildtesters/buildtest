@@ -24,7 +24,6 @@ def test_ascent():
     bc.validate()
 
     system = BuildTestSystem()
-    system.check()
 
     buildspec_files = os.path.join(here, "examples", "ascent", "hostname.yml")
     cmd = BuildTest(

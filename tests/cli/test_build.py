@@ -30,7 +30,7 @@ def test_clean():
     test, report file and build history file so we can delete this afterwards."""
 
     system = BuildTestSystem()
-    system.check()
+
     #  testing buildtest build -b tutorials/shell_examples.yml --filter type=script
     cmd = BuildTest(
         configuration=configuration,
@@ -46,7 +46,6 @@ def test_clean():
 def test_build_by_tags():
 
     system = BuildTestSystem()
-    system.check()
 
     # ensure we rebuild cache file before running any buildspecs commands
     BuildspecCache(rebuild=True, configuration=configuration)
@@ -78,7 +77,6 @@ def test_build_by_tags():
 def test_build_filter_check():
 
     system = BuildTestSystem()
-    system.check()
 
     #  testing buildtest build --tags pass --filter tags=pass
     cmd = BuildTest(
@@ -140,7 +138,6 @@ def test_build_filter_check():
 def test_build_buildspecs():
 
     system = BuildTestSystem()
-    system.check()
 
     buildspec_paths = os.path.join(test_root, "buildsystem", "valid_buildspecs")
 
@@ -179,7 +176,6 @@ def test_build_buildspecs():
 def test_buildspec_tag_executor():
 
     system = BuildTestSystem()
-    system.check()
 
     # testing buildtest build --tags fail --executor generic.local.csh
     cmd = BuildTest(
@@ -195,7 +191,6 @@ def test_buildspec_tag_executor():
 def test_build_multi_executors():
 
     system = BuildTestSystem()
-    system.check()
 
     # testing buildtest build --executor generic.local.csh --executor generic.local.python
     cmd = BuildTest(
@@ -210,7 +205,6 @@ def test_build_multi_executors():
 def test_run_only():
 
     system = BuildTestSystem()
-    system.check()
 
     # Testing run_only fields by running:  buildtest build -b tutorials/root_user.yml -b tutorials/run_only_distro.yml -b tutorials/run_only_platform.yml
     cmd = BuildTest(
@@ -229,7 +223,6 @@ def test_run_only():
 def test_skip_field():
 
     system = BuildTestSystem()
-    system.check()
 
     # Testing run_only fields by running:  buildtest build -b tutorials/skip.yml
     cmd = BuildTest(
@@ -244,7 +237,6 @@ def test_skip_field():
 def test_build_by_stages():
 
     system = BuildTestSystem()
-    system.check()
 
     # testing buildtest build --tags python --stage=parse
     cmd = BuildTest(
@@ -269,7 +261,6 @@ def test_build_by_stages():
 def test_build_rebuild():
 
     system = BuildTestSystem()
-    system.check()
 
     buildspec_file = os.path.join(BUILDTEST_ROOT, "tutorials", "python-shell.yml")
 
@@ -287,7 +278,6 @@ def test_build_rebuild():
 def test_invalid_buildspes():
 
     system = BuildTestSystem()
-    system.check()
 
     buildspec_file = [
         os.path.join(BUILDTEST_ROOT, "tutorials", "invalid_tags.yml"),
@@ -308,7 +298,7 @@ def test_invalid_buildspes():
 def test_keep_stage():
 
     system = BuildTestSystem()
-    system.check()
+
     buildspec_file = [os.path.join(BUILDTEST_ROOT, "tutorials", "python-shell.yml")]
     cmd = BuildTest(
         configuration=configuration,
@@ -320,9 +310,6 @@ def test_keep_stage():
 
 
 def test_discover():
-
-    system = BuildTestSystem()
-    system.check()
 
     # test single buildspec file
     buildspec = [os.path.join(valid_buildspecs, "environment.yml")]

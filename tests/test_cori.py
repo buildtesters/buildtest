@@ -12,15 +12,14 @@ here = os.path.dirname(os.path.abspath(__file__))
 
 settings_file = os.path.join(here, "settings", "cori.yml")
 
-system = BuildTestSystem()
-system.check()
-
 
 def test_cori_burstbuffer():
     # This test must run on Cori Login nodes which are cori[01-20].nersc.gov.
 
     if not hostname.startswith("cori"):
         pytest.skip("This test runs on Cori Login nodes ('cori*')")
+
+    system = BuildTestSystem()
 
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
@@ -48,6 +47,8 @@ def test_cori_slurm_hostname():
     if not hostname.startswith("cori"):
         pytest.skip("This test runs on Cori Login nodes ('cori*')")
 
+    system = BuildTestSystem()
+
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
     bc.validate()
@@ -74,6 +75,8 @@ def test_cori_slurm_max_pend():
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
     bc.validate()
+
+    system = BuildTestSystem()
 
     cmd = BuildTest(
         configuration=bc,

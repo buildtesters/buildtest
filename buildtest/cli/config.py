@@ -1,16 +1,12 @@
-import getpass
 import json
 import os
-import shutil
 import subprocess
 import sys
 
 import yaml
-from buildtest import BUILDTEST_VERSION
-from buildtest.defaults import BUILDSPEC_CACHE_FILE, console, supported_schemas
+from buildtest.defaults import console
 from buildtest.exceptions import ConfigurationError
 from buildtest.executors.setup import BuildExecutor
-from buildtest.system import system
 from jsonschema import ValidationError
 from rich.syntax import Syntax
 from rich.table import Column, Table
@@ -36,9 +32,6 @@ def config_cmd(args, configuration):
             args.disabled,
             args.invalid,
         )
-
-    elif args.config == "summary":
-        view_summary(configuration)
 
     elif args.config == "validate":
         validate_config(configuration)
@@ -188,50 +181,3 @@ def view_executors(
     names = buildexecutor.list_executors()
     for name in names:
         print(name)
-
-
-def view_summary(configuration, buildtestsystem=None):
-    """This method implements ``buildtest config summary`` option. In this method
-    we will display a summary of System Details, Buildtest settings, Schemas,
-    Repository details, Buildspecs files and test names.
-
-    Args:
-        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
-        buildexecutor (buildtest.executors.setup.BuildExecutor): An instance of BuildExecutor class
-    """
-
-    system_details = buildtestsystem or system
-
-    print("buildtest version: ", BUILDTEST_VERSION)
-    print("buildtest Path:", shutil.which("buildtest"))
-
-    print("\n")
-    print("Machine Details")
-    print("{:_<30}".format(""))
-    print("Operating System: ", system_details.system["os"])
-    print("Hostname: ", system_details.system["host"])
-    print("Machine: ", system_details.system["machine"])
-    print("Processor: ", system_details.system["processor"])
-    print("Python Path", system_details.system["python"])
-    print("Python Version:", system_details.system["pyver"])
-    print("User:", getpass.getuser())
-
-    print("\n")
-
-    print("Buildtest Settings")
-    print("{:_<80}".format(""))
-    print(f"Buildtest Settings: {configuration.file}")
-
-    executors = []
-    for executor_type in configuration.target_config.get("executors").keys():
-        for name in configuration.target_config["executors"][executor_type].keys():
-            executors.append(f"{executor_type}.{name}")
-
-    print("Executors: ", executors)
-
-    print("Buildspec Cache File:", BUILDSPEC_CACHE_FILE)
-    print("\n")
-
-    print("Buildtest Schemas")
-    print("{:_<80}".format(""))
-    print("Available Schemas:", supported_schemas)

@@ -1,12 +1,12 @@
 repos:
   - repo: https://github.com/pycqa/isort
-    rev: 5.6.4
+    rev: 5.9.3
     hooks:
       - id: isort
         args: ["--profile", "black", "--filter-files", "buildtest", "tests", "docs"]
 
   - repo: https://github.com/psf/black
-    rev: 20.8b1
+    rev: 21.9b0
     hooks:
       - id: black
         language_version: python3

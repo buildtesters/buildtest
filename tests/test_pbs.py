@@ -17,7 +17,6 @@ def test_pbs():
     here = os.path.dirname(os.path.abspath(__file__))
     settings_file = os.path.join(here, "settings", "pbs.yml")
     system = BuildTestSystem()
-    system.check()
 
     bc = SiteConfiguration(settings_file)
     bc.detect_system()

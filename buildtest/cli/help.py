@@ -165,6 +165,9 @@ def print_config_help():
         "buildtest config validate", "Validate configuration file with JSON schema"
     )
     table.add_row(
+        "buildtest config edit", "Edit configuration file in your preferred editor"
+    )
+    table.add_row(
         "buildtest config executors",
         "List all executors in flat listing from configuration file",
     )

@@ -12,7 +12,6 @@ configuration.validate()
 @pytest.mark.skip("Unable to run this test requires docker container")
 def test_spack_examples():
     system = BuildTestSystem()
-    system.check()
 
     # ensure we rebuild cache file before running any buildspecs commands
     BuildspecCache(rebuild=True, configuration=configuration)

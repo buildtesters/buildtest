@@ -327,14 +327,6 @@ entry per system record.
 
 .. command-output:: buildtest config systems
 
-Configuration Summary
-~~~~~~~~~~~~~~~~~~~~~~
-
-You can get a summary of buildtest using ``buildtest config summary``, this will
-display information from several sources into one single command along.
-
-.. command-output:: buildtest config summary
-
 Example Configurations
 ~~~~~~~~~~~~~~~~~~~~~~~
 

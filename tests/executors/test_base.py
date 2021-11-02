@@ -23,14 +23,7 @@ def test_build_executor(tmp_path):
     # Load BuildExecutor
     be = BuildExecutor(bc)
     # ensure we have the following executors valid
-    assert list(be.list_executors()) == [
-        "generic.local.bash",
-        "generic.local.sh",
-        "generic.local.csh",
-        "generic.local.python",
-    ]
-    # check if 'generic.local.zsh' is disabled executors
-    assert "generic.local.zsh" in bc.disabled_executors
+    assert "generic.local.bash" in list(be.list_executors())
 
     # Making sure all executors are created properly by inspecting their class attribute.
     # All executors have a class attribute 'type'
