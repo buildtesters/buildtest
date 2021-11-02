@@ -342,8 +342,7 @@
         },
         "shell": {
           "type": "string",
-          "description": "Specify the shell launcher you want to use when running tests locally",
-          "pattern": "^(/bin/bash|/bin/sh|/bin/csh|/bin/tcsh|/bin/zsh|sh|bash|csh|tcsh|zsh|python).*"
+          "description": "Specify the shell launcher you want to use when running tests locally"
         },
         "before_script": { "#ref": "#/definitions/script" },
         "max_jobs": {"$ref":  "#/definitions/max_jobs"},
