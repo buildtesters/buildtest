@@ -1,0 +1,18 @@
+name: Regression Test in buildtest tutorial container
+
+on:
+  pull_request:
+    branches: [ devel ]
+
+jobs:
+  buildtest_tutorial_container:
+    steps:
+      - uses: actions/checkout@v2
+      run: |
+        - pwd && ls -l
+      - name: buildtest container
+        container:
+          image: docker://shahzebsiddiqui/buildtest_spack
+        run: |
+          ls -l
+          whoami
