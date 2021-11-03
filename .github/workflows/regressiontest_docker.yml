@@ -6,13 +6,11 @@ on:
 
 jobs:
   buildtest_tutorial_container:
+    runs-on: ubuntu-latest
+    container:
+      image: docker://shahzebsiddiqui/buildtest_spack
     steps:
-      - uses: actions/checkout@v2
-      run: |
-        - pwd && ls -l
-      - name: buildtest container
-        container:
-          image: docker://shahzebsiddiqui/buildtest_spack
+      - name: regressiontest
         run: |
           ls -l
           whoami
