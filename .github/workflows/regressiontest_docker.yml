@@ -9,8 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: docker://shahzebsiddiqui/buildtest_spack
+      volumes:
+        - /home/runner/work/buildtest:/home/spack
     steps:
       - name: regressiontest
         run: |
-          ls -l
-          whoami
+          cd $HOME/buildtest
+          source buildtest/scripts/spack_container/setup.sh
+          module avail
+          git log HEAD
+          python scripts/regtest.py
