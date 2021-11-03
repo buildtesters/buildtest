@@ -412,11 +412,12 @@ Reference this group by using
 {"$ref":"settings.schema.json#/definitions/module"}
 ```
 
-| Property        | Type      | Required | Nullable       | Defined by                                                                                                                                    |
-| :-------------- | :-------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
-| [purge](#purge) | `boolean` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module-properties-purge.md "settings.schema.json#/definitions/module/properties/purge") |
-| [load](#load)   | `array`   | Optional | cannot be null | [buildtest configuration schema](definitions-definitions-list_of_strings.md "settings.schema.json#/definitions/module/properties/load")       |
-| [swap](#swap)   | `array`   | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module-properties-swap.md "settings.schema.json#/definitions/module/properties/swap")   |
+| Property            | Type      | Required | Nullable       | Defined by                                                                                                                                        |
+| :------------------ | :-------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [purge](#purge)     | `boolean` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module-properties-purge.md "settings.schema.json#/definitions/module/properties/purge")     |
+| [load](#load)       | `array`   | Optional | cannot be null | [buildtest configuration schema](definitions-definitions-list_of_strings.md "settings.schema.json#/definitions/module/properties/load")           |
+| [swap](#swap)       | `array`   | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module-properties-swap.md "settings.schema.json#/definitions/module/properties/swap")       |
+| [restore](#restore) | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module-properties-restore.md "settings.schema.json#/definitions/module/properties/restore") |
 
 ### purge
 
@@ -486,6 +487,24 @@ Swap modules using `module swap`. The swap property expects 2 unique modules.
 
 **unique items**: all items in this array must be unique. Duplicates are not allowed.
 
+### restore
+
+Load a collection name via `module restore`
+
+`restore`
+
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-module-properties-restore.md "settings.schema.json#/definitions/module/properties/restore")
+
+#### restore Type
+
+`string`
+
 ## Definitions group script
 
 Reference this group by using
@@ -534,6 +553,7 @@ Reference this group by using
 | [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-before_script.md "settings.schema.json#/definitions/local/properties/before_script") |
 | [max_jobs](#max_jobs)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-max_jobs.md "settings.schema.json#/definitions/local/properties/max_jobs")           |
 | [disable](#disable)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-disable.md "settings.schema.json#/definitions/local/properties/disable")             |
+| [module](#module-1)             | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/local/properties/module")                                |
 
 ### description
 
@@ -629,6 +649,24 @@ Disable executor
 
 `boolean`
 
+### module
+
+
+
+`module`
+
+*   is optional
+
+*   Type: `object` ([Details](settings-definitions-module.md))
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/local/properties/module")
+
+#### module Type
+
+`object` ([Details](settings-definitions-module.md))
+
 ## Definitions group slurm
 
 Reference this group by using
@@ -650,6 +688,7 @@ Reference this group by using
 | [account](#account)               | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-account.md "settings.schema.json#/definitions/slurm/properties/account")             |
 | [max_jobs](#max_jobs-1)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-max_jobs.md "settings.schema.json#/definitions/slurm/properties/max_jobs")           |
 | [disable](#disable-1)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-disable.md "settings.schema.json#/definitions/slurm/properties/disable")             |
+| [module](#module-2)               | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/slurm/properties/module")                                |
 
 ### description
 
@@ -873,6 +912,24 @@ Disable executor
 
 `boolean`
 
+### module
+
+
+
+`module`
+
+*   is optional
+
+*   Type: `object` ([Details](settings-definitions-module.md))
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/slurm/properties/module")
+
+#### module Type
+
+`object` ([Details](settings-definitions-module.md))
+
 ## Definitions group lsf
 
 Reference this group by using
@@ -892,6 +949,7 @@ Reference this group by using
 | [account](#account-1)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-account.md "settings.schema.json#/definitions/lsf/properties/account")             |
 | [max_jobs](#max_jobs-2)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-max_jobs.md "settings.schema.json#/definitions/lsf/properties/max_jobs")           |
 | [disable](#disable-2)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-disable.md "settings.schema.json#/definitions/lsf/properties/disable")             |
+| [module](#module-3)               | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/lsf/properties/module")                              |
 
 ### description
 
@@ -1079,6 +1137,24 @@ Disable executor
 
 `boolean`
 
+### module
+
+
+
+`module`
+
+*   is optional
+
+*   Type: `object` ([Details](settings-definitions-module.md))
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/lsf/properties/module")
+
+#### module Type
+
+`object` ([Details](settings-definitions-module.md))
+
 ## Definitions group cobalt
 
 Reference this group by using
@@ -1098,6 +1174,7 @@ Reference this group by using
 | [account](#account-2)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-account.md "settings.schema.json#/definitions/cobalt/properties/account")             |
 | [max_jobs](#max_jobs-3)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-max_jobs.md "settings.schema.json#/definitions/cobalt/properties/max_jobs")           |
 | [disable](#disable-3)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-disable.md "settings.schema.json#/definitions/cobalt/properties/disable")             |
+| [module](#module-4)               | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/cobalt/properties/module")                                 |
 
 ### description
 
@@ -1285,6 +1362,24 @@ Disable executor
 
 `boolean`
 
+### module
+
+
+
+`module`
+
+*   is optional
+
+*   Type: `object` ([Details](settings-definitions-module.md))
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/cobalt/properties/module")
+
+#### module Type
+
+`object` ([Details](settings-definitions-module.md))
+
 ## Definitions group pbs
 
 Reference this group by using
@@ -1304,6 +1399,7 @@ Reference this group by using
 | [account](#account-3)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-account.md "settings.schema.json#/definitions/pbs/properties/account")             |
 | [max_jobs](#max_jobs-4)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-max_jobs.md "settings.schema.json#/definitions/pbs/properties/max_jobs")           |
 | [disable](#disable-4)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-disable.md "settings.schema.json#/definitions/pbs/properties/disable")             |
+| [module](#module-5)               | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/pbs/properties/module")                              |
 
 ### description
 
@@ -1490,3 +1586,21 @@ Disable executor
 #### disable Type
 
 `boolean`
+
+### module
+
+
+
+`module`
+
+*   is optional
+
+*   Type: `object` ([Details](settings-definitions-module.md))
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/pbs/properties/module")
+
+#### module Type
+
+`object` ([Details](settings-definitions-module.md))

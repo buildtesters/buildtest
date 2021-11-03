@@ -176,7 +176,6 @@
                     "type": "integer",
                     "description": "Specify poll interval in seconds after job submission, where buildtest will sleep and poll all jobs for job states. This field can be configured based on your preference. Excessive polling every few seconds can result in system degradation. ",
                     "minimum": 10,
-                    "maximum": 300,
                     "default": 30
                   },
                   "max_pend_time": {
@@ -312,7 +311,11 @@
           "minItems": 2,
           "maxItems": 2,
           "items": { "type": "string" }
-        }
+        },
+         "restore": {
+           "description": "Load a collection name via ``module restore``",
+           "type": "string"
+         }
       }
     },
     "script": {
@@ -346,7 +349,8 @@
         },
         "before_script": { "#ref": "#/definitions/script" },
         "max_jobs": {"$ref":  "#/definitions/max_jobs"},
-        "disable": {"$ref":  "#/definitions/disable"}
+        "disable": {"$ref":  "#/definitions/disable"},
+        "module": { "$ref": "#/definitions/module" }
       }
     },
     "slurm": {
@@ -393,7 +397,8 @@
           "$ref": "#/definitions/account"
         },
         "max_jobs": {"$ref":  "#/definitions/max_jobs"},
-        "disable": {"$ref":  "#/definitions/disable"}
+        "disable": {"$ref":  "#/definitions/disable"},
+        "module": { "$ref": "#/definitions/module" }
       }
     },
     "lsf": {
@@ -433,7 +438,8 @@
           "$ref": "#/definitions/account"
         },
         "max_jobs": {"$ref":  "#/definitions/max_jobs"},
-        "disable": {"$ref":  "#/definitions/disable"}
+        "disable": {"$ref":  "#/definitions/disable"},
+        "module": { "$ref": "#/definitions/module" }
       }
     },
     "cobalt": {
@@ -473,7 +479,8 @@
           "$ref": "#/definitions/account"
         },
         "max_jobs": {"$ref":  "#/definitions/max_jobs"},
-        "disable": {"$ref":  "#/definitions/disable"}
+        "disable": {"$ref":  "#/definitions/disable"},
+        "module": { "$ref": "#/definitions/module" }
       }
     },
     "pbs": {
@@ -513,7 +520,8 @@
           "$ref": "#/definitions/account"
         },
         "max_jobs": {"$ref":  "#/definitions/max_jobs"},
-        "disable": {"$ref":  "#/definitions/disable"}
+        "disable": {"$ref":  "#/definitions/disable"},
+        "module": { "$ref": "#/definitions/module" }
       }
     }
   }

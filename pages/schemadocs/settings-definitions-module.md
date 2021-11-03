@@ -1,7 +1,7 @@
 # Untitled object in buildtest configuration schema Schema
 
 ```txt
-settings.schema.json#/definitions/module
+settings.schema.json#/definitions/pbs/properties/module
 ```
 
 
@@ -16,11 +16,12 @@ settings.schema.json#/definitions/module
 
 # module Properties
 
-| Property        | Type      | Required | Nullable       | Defined by                                                                                                                                    |
-| :-------------- | :-------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
-| [purge](#purge) | `boolean` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module-properties-purge.md "settings.schema.json#/definitions/module/properties/purge") |
-| [load](#load)   | `array`   | Optional | cannot be null | [buildtest configuration schema](definitions-definitions-list_of_strings.md "settings.schema.json#/definitions/module/properties/load")       |
-| [swap](#swap)   | `array`   | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module-properties-swap.md "settings.schema.json#/definitions/module/properties/swap")   |
+| Property            | Type      | Required | Nullable       | Defined by                                                                                                                                        |
+| :------------------ | :-------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [purge](#purge)     | `boolean` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module-properties-purge.md "settings.schema.json#/definitions/module/properties/purge")     |
+| [load](#load)       | `array`   | Optional | cannot be null | [buildtest configuration schema](definitions-definitions-list_of_strings.md "settings.schema.json#/definitions/module/properties/load")           |
+| [swap](#swap)       | `array`   | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module-properties-swap.md "settings.schema.json#/definitions/module/properties/swap")       |
+| [restore](#restore) | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module-properties-restore.md "settings.schema.json#/definitions/module/properties/restore") |
 
 ## purge
 
@@ -89,3 +90,21 @@ Swap modules using `module swap`. The swap property expects 2 unique modules.
 **minimum number of items**: the minimum number of items for this array is: `2`
 
 **unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+## restore
+
+Load a collection name via `module restore`
+
+`restore`
+
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-module-properties-restore.md "settings.schema.json#/definitions/module/properties/restore")
+
+### restore Type
+
+`string`

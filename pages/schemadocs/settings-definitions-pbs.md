@@ -27,6 +27,7 @@ An instance object of cobalt executor
 | [account](#account)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-account.md "settings.schema.json#/definitions/pbs/properties/account")                            |
 | [max_jobs](#max_jobs)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-max_jobs.md "settings.schema.json#/definitions/pbs/properties/max_jobs")                          |
 | [disable](#disable)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-disable.md "settings.schema.json#/definitions/pbs/properties/disable")                            |
+| [module](#module)               | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/pbs/properties/module")                              |
 
 ## description
 
@@ -213,3 +214,21 @@ Disable executor
 ### disable Type
 
 `boolean`
+
+## module
+
+
+
+`module`
+
+*   is optional
+
+*   Type: `object` ([Details](settings-definitions-module.md))
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/pbs/properties/module")
+
+### module Type
+
+`object` ([Details](settings-definitions-module.md))

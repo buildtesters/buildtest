@@ -314,13 +314,23 @@
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
+
 *   [Untitled array in buildtest configuration schema](./settings-definitions-lsf-properties-options.md "Specify any options for bsub for this executor when running all jobs associated to this executor") – `settings.schema.json#/definitions/lsf/properties/options`
+
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-slurm-properties-options.md "Specify any other options for sbatch used by this executor for running all jobs") – `settings.schema.json#/definitions/slurm/properties/options`
 
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
+
 *   [Untitled array in buildtest configuration schema](./settings-definitions-cobalt-properties-options.md "Specify any options for qsub for this executor when running all jobs associated to this executor") – `settings.schema.json#/definitions/cobalt/properties/options`
 
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
+
 *   [Untitled array in buildtest configuration schema](./settings-definitions-pbs-properties-options.md "Specify any options for qsub for this executor when running all jobs associated to this executor") – `settings.schema.json#/definitions/pbs/properties/options`
+
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-system-properties-hostnames.md "Specify a list of hostnames to check where buildtest can run for the given system record") – `settings.schema.json#/definitions/system/properties/hostnames`
 
@@ -340,13 +350,23 @@
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
+
 *   [Untitled array in buildtest configuration schema](./settings-definitions-lsf-properties-options.md "Specify any options for bsub for this executor when running all jobs associated to this executor") – `settings.schema.json#/definitions/lsf/properties/options`
+
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-slurm-properties-options.md "Specify any other options for sbatch used by this executor for running all jobs") – `settings.schema.json#/definitions/slurm/properties/options`
 
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
+
 *   [Untitled array in buildtest configuration schema](./settings-definitions-cobalt-properties-options.md "Specify any options for qsub for this executor when running all jobs associated to this executor") – `settings.schema.json#/definitions/cobalt/properties/options`
 
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
+
 *   [Untitled array in buildtest configuration schema](./settings-definitions-pbs-properties-options.md "Specify any options for qsub for this executor when running all jobs associated to this executor") – `settings.schema.json#/definitions/pbs/properties/options`
+
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
@@ -356,13 +376,23 @@
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-script.md) – `settings.schema.json#/definitions/script`
 
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
+
 *   [Untitled array in buildtest configuration schema](./settings-definitions-slurm-properties-options.md "Specify any other options for sbatch used by this executor for running all jobs") – `settings.schema.json#/definitions/slurm/properties/options`
+
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-lsf-properties-options.md "Specify any options for bsub for this executor when running all jobs associated to this executor") – `settings.schema.json#/definitions/lsf/properties/options`
 
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
+
 *   [Untitled array in buildtest configuration schema](./settings-definitions-cobalt-properties-options.md "Specify any options for qsub for this executor when running all jobs associated to this executor") – `settings.schema.json#/definitions/cobalt/properties/options`
 
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
+
 *   [Untitled array in buildtest configuration schema](./settings-definitions-pbs-properties-options.md "Specify any options for qsub for this executor when running all jobs associated to this executor") – `settings.schema.json#/definitions/pbs/properties/options`
+
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
 *   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module-properties-swap.md "Swap modules using module swap") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/swap`
 
