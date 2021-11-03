@@ -33,16 +33,12 @@ relative to root of repo. At the start of buildtest execution, buildtest will lo
 the configuration file and validate the configuration with JSON schema ``settings.schema.json``.
 If it's fails to validate, buildtest will raise an error.
 
-We recommend you copy the default configuration as a template to configure buildtest for your site. To get
-started you should copy the file in ``$HOME/.buildtest/config.yml``. Please
-run the following command::
-
-    $ cp $BUILDTEST_ROOT/buildtest/settings/config.yml $HOME/.buildtest/config.yml
+We recommend you copy the default configuration as a template to configure buildtest for your site.
 
 Shown below is the default configuration provided by buildtest.
 
-.. command-output:: cat $BUILDTEST_ROOT/buildtest/settings/config.yml
-   :shell:
+.. literalinclude:: ../../buildtest/settings/config.yml
+   :language: yaml
 
 As you can see the layout of configuration starts with keyword ``system`` which is
 used to define one or more systems. Your HPC site may contain more than one cluster,
@@ -78,7 +74,7 @@ since buildtest needs to detect a system before proceeding.
 
 
 Let's assume you we have a system named ``mycluster`` that should  run on nodes ``login1``, ``login2``, and ``login3``.
-You can specify hostnames as follows.
+You can specify hostnames as a list of strings
 
 .. code-block:: yaml
 
@@ -99,8 +95,9 @@ Alternately, you can use regular expression to condense this list
 Configuring Module Tool
 ------------------------
 
-You should configure the ``moduletool`` property to the module-system installed
-at your site. Valid options are the following:
+If your system supports `environment-modules <https://modules.readthedocs.io/en/latest/>`_ or
+`Lmod <https://lmod.readthedocs.io/en/latest/index.html>`_ for managing user environment then you can
+configure buildtest to use the module tool. This can be defined via ``moduletool`` property.
 
 .. code-block:: yaml
 
@@ -113,6 +110,8 @@ at your site. Valid options are the following:
     # specify N/A if you don't have modules
     moduletool: N/A
 
+
+The `moduletool` property is used for :ref:`detecting compilers <detect_compilers>` when you run ``buildtest config compilers find``.
 
 .. _buildspec_roots:
 
@@ -198,9 +197,9 @@ In our example configuration, we defined a ``bash`` executor as follows:
           description: submit jobs on local machine using bash shell
           shell: bash
 
-The local executors requires the ``shell`` key which takes the pattern
-``"^(/bin/bash|/bin/sh|/bin/csh|/bin/tcsh|/bin/zsh|sh|bash|csh|tcsh|zsh|python).*"``.
-Any buildspec that references this executor will submit job using ``bash`` shell.
+The local executors require the ``shell`` key which is one of supported shells in your system. On Linux/Mac system
+you can find all supported shells in file `/etc/shells`. Any buildspec that references this executor will submit
+job using ``bash`` shell.
 
 You can pass options to shell which will get passed into each job submission.
 For instance if you want all bash scripts to run in login shell you can specify ``bash --login``:
@@ -353,24 +352,6 @@ defined partition
     $ sinfo -p regular_hsw -h -O available
     up
 
-Default Executor Settings
----------------------------
-
-We can define default configurations for all executors using the ``defaults`` property. Currently, the
-``defaults`` setting is only applicable to batch executors.
-
-.. code-block:: yaml
-
-        executors:
-          defaults:
-            pollinterval: 10
-            launcher: sbatch
-            max_pend_time: 90
-            account: nstaff
-
-The `launcher` field is applicable for batch executors in this
-case, ``launcher: sbatch`` inherits **sbatch** as the job launcher for all slurm executors.
-
 .. _project_account:
 
 Specifying Project Account
@@ -381,20 +362,10 @@ be required in order to submit job. Some scheduler like Slurm can detect your de
 in that case you don't need to specify on command line.
 
 In your configuration file you can specify ``account`` property which will inherit this
-setting for all executors.
+setting for all executors. You can specify ``account`` property within an executor which will override the
+default section.
 
-.. code-block:: yaml
-   :emphasize-lines: 6
-
-    executors:
-      defaults:
-        pollinterval: 10
-        launcher: sbatch
-        max_pend_time: 90
-        account: nstaff
-
-You can specify ``account`` property within an executor which will override the default section. In the next example,
-we have two pbs executors **testing** and **development**. All pbs jobs will use the project account ``development``
+In this example, we have two pbs executors **testing** and **development**. All pbs jobs will use the project account ``development``
 because this is defined in ``defaults`` section however we can force all jobs using **testing** executor to charge
 jobs to ``qa_test``.
 
@@ -426,7 +397,7 @@ using ``buildtest build --poll-interval`` which overrides the configuration valu
 
 .. Note::
 
-    ``pollinterval``, ``launcher`` and ``max_pend_time`` have no effect on local executors.
+    ``pollinterval``  and ``max_pend_time`` have no effect on local executors.
 
 
 Max Pend Time
@@ -462,7 +433,7 @@ For more details on `max_pend_time` click :ref:`here <max_pend_time>`.
 PBS Executors
 --------------
 
-.. Note:: buildtest PBS support relies on job history set because buildtest needs to query job after completion using `qstat -x`. This
+.. Note:: buildtest PBS support relies on job history set because buildtest needs to query job after completion using ``qstat -x``. This
           can be configured using ``qmgr`` by setting ``set server job_history_enable=True``. For more details see section **13.15.5.1 Enabling Job History** in `PBS 2020.1 Admin Guide <https://www.altair.com/pdfs/pbsworks/PBSAdminGuide2020.1.pdf>`_
 
 
@@ -473,7 +444,7 @@ the name of PBS queue that is available in your system.
 
 .. code-block:: yaml
     :linenos:
-    :emphasize-lines: 11-13
+    :emphasize-lines: 10-12
 
     system:
       generic:
@@ -483,7 +454,6 @@ the name of PBS queue that is available in your system.
         executors:
           defaults:
              pollinterval: 10
-             launcher: qsub
              max_pend_time: 30
           pbs:
             workq:
@@ -565,10 +535,6 @@ based on platform (Linux, Mac).
 
 The buildtest logs will start with **buildtest_** followed by random identifier with
 a **.log** extension.
-
-buildtest will write the same log file in **$BUILDTEST_ROOT/buildtest.log** which can
-be used to fetch last build log. This can be convenient if you don't remember the directory
-path to log file.
 
 CDASH Configuration
 --------------------

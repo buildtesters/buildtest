@@ -139,7 +139,7 @@ _buildtest ()
           local opts="--help --json --yaml -h -j -y find"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           if [[ "${prev}" == "find" ]]; then
-            local opts="--debug --help -d -h"
+            local opts="--debug --help --update -d -h -u"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           fi
           ;;

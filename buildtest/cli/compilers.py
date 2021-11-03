@@ -1,15 +1,19 @@
+import datetime
 import json
 import os
 import re
 import subprocess
+from shutil import copyfile
 
 import yaml
 from buildtest.config import SiteConfiguration
+from buildtest.defaults import console
 from buildtest.exceptions import BuildTestError, ConfigurationError
 from buildtest.schemas.defaults import custom_validator, schema_table
 from buildtest.utils.tools import deep_get
 from lmod.module import Module
 from lmod.spider import Spider
+from rich.syntax import Syntax
 
 
 def compiler_cmd(args, configuration):
@@ -52,19 +56,30 @@ def compiler_find(args, configuration):
         configuration.config, schema_table["settings.schema.json"]["recipe"]
     )
 
-    print(
-        yaml.safe_dump(configuration.config, default_flow_style=False, sort_keys=False)
+    syntax = Syntax(
+        yaml.safe_dump(configuration.config, default_flow_style=False, sort_keys=False),
+        "yaml",
+        theme="emacs",
     )
-    print("{:_<80}".format(""))
-    print(f"Updating settings file: {configuration.file}")
-
-    with open(configuration.file, "w") as fd:
-        yaml.safe_dump(
-            configuration.config,
-            fd,
-            default_flow_style=False,
-            sort_keys=False,
+    console.print(syntax)
+    # if --update is specified we update existing configuration file and write backup in same directory
+    if args.update:
+        fname = (
+            "buildtest_"
+            + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+            + ".yml"
         )
+        backup_file = os.path.join(os.path.dirname(configuration.file), fname)
+        copyfile(configuration.file, backup_file)
+        print("Writing backup configuration file to: ", backup_file)
+        print(f"Updating configuration file: {configuration.file}")
+        with open(configuration.file, "w") as fd:
+            yaml.safe_dump(
+                configuration.config,
+                fd,
+                default_flow_style=False,
+                sort_keys=False,
+            )
 
 
 class BuildtestCompilers:
