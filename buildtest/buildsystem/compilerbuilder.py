@@ -5,6 +5,7 @@ import shutil
 from buildtest.buildsystem.base import BuilderBase
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.exceptions import BuildTestError
+from buildtest.modules import get_module_commands
 from buildtest.utils.file import resolve_path
 from buildtest.utils.tools import deep_get
 
@@ -112,12 +113,12 @@ class CompilerBuilder(BuilderBase):
         )
 
         # compiler set in compilers 'config' section, we try to get module lines using self._get_modules
-        self.modules = self._get_modules(
+        self.modules = get_module_commands(
             deep_get(self.compiler_section, "config", self.compiler, "module")
         )
 
         if not self.modules:
-            self.modules = self._get_modules(self.bc_compiler.get("module"))
+            self.modules = get_module_commands(self.bc_compiler.get("module"))
 
         self.pre_build = (
             deep_get(self.compiler_section, "config", self.compiler, "pre_build")
@@ -309,37 +310,6 @@ class CompilerBuilder(BuilderBase):
         )
 
         return lang
-
-    def _get_modules(self, modules):
-        """Return a list of module command as a list of instructions based on
-        ``module`` property.
-
-         :param modules: 'module' property specified in buildspec used for loading/swapping modules
-         :type modules: object
-
-        """
-
-        if not modules:
-            return
-
-        module_cmd = []
-
-        assert isinstance(modules, dict)
-
-        # if purge is True and defined add module purge
-        if modules.get("purge"):
-            module_cmd += ["module purge"]
-        #
-        if modules.get("load"):
-            for name in modules.get("load"):
-                module_cmd += [f"module load {name}"]
-
-        if modules.get("swap"):
-            module_cmd += [f"module swap {' '.join(modules.get('swap'))}"]
-
-        if modules.get("restore"):
-            module_cmd += [f"module restore {modules.get('restore')}"]
-        return module_cmd
 
     def _compile_cmd(self):
         """This method generates the compilation line and returns the output as

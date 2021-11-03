@@ -18,6 +18,7 @@ from buildtest.executors.local import LocalExecutor
 from buildtest.executors.lsf import LSFExecutor
 from buildtest.executors.pbs import PBSExecutor
 from buildtest.executors.slurm import SlurmExecutor
+from buildtest.modules import get_module_commands
 from buildtest.utils.file import create_dir, write_file
 
 logger = logging.getLogger(__name__)
@@ -163,7 +164,14 @@ class BuildExecutor:
             file = os.path.join(
                 BUILDTEST_EXECUTOR_DIR, executor_name, "before_script.sh"
             )
-            content = executor_settings.get("before_script") or ""
+            module_cmds = get_module_commands(executor_settings.get("module"))
+
+            content = "#!/bin/bash" + "\n"
+
+            if module_cmds:
+                content += "\n".join(module_cmds) + "\n"
+
+            content += executor_settings.get("before_script") or ""
             write_file(file, content)
 
     def load_builders(self, builders):
