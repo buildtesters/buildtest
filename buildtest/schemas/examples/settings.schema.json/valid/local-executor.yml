@@ -1,8 +1,8 @@
 system:
   generic:
     hostnames: ['.*']
-    logdir: $BUILDTEST_ROOT/logs
-    testdir: $BUILDTEST_ROOT/tests
+    #logdir: $BUILDTEST_ROOT/logs
+    #testdir: $BUILDTEST_ROOT/tests
     moduletool: N/A
     cdash:
       url: https://my.cdash.org
@@ -22,7 +22,10 @@ system:
           before_script: |
             time
             echo "commands run before job"
-
+          module:
+            purge: True
+            restore: "default"
+            load: ["gcc"]
         sh:
           description: submit jobs on local machine using sh shell
           shell: sh
