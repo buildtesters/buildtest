@@ -15,8 +15,16 @@ jobs:
       - name: regressiontest
         run: |
           df -a
-          ls -la
+          ls -lR /github/home
+          ls -lR /github/workflow
           source buildtest/scripts/spack_container/setup.sh
           module avail
           git log HEAD
           python scripts/regtest.py
+          
+      - uses: actions/checkout@v2
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
+        timeout-minutes: 30
+
