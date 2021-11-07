@@ -14,7 +14,8 @@ jobs:
     steps:
       - name: regressiontest
         run: |
-          cd $HOME/buildtest
+          df -a
+          ls -la
           source buildtest/scripts/spack_container/setup.sh
           module avail
           git log HEAD
