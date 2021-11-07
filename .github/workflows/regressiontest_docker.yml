@@ -7,22 +7,19 @@ on:
 jobs:
   buildtest_tutorial_container:
     runs-on: ubuntu-latest
-    container:
-      image: docker://shahzebsiddiqui/buildtest_spack
-      volumes:
-        - /home/runner/work/buildtest:/home/spack
+    container: shahzebsiddiqui/buildtest_spack
     steps:
-      - name: regressiontest
+      - uses: actions/checkout@v2
+      - name: regression test in container
         run: |
-          df -a
-          ls -lR /github/home
-          ls -lR /github/workflow
+          whoami
+          echo $HOME
+          ls -la $HOME
           source buildtest/scripts/spack_container/setup.sh
           module avail
           git log HEAD
           python scripts/regtest.py
-          
-      - uses: actions/checkout@v2
+
       - name: Setup tmate session
         if: ${{ failure() }}
         uses: mxschmitt/action-tmate@v3
