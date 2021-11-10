@@ -9,6 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     container: shahzebsiddiqui/buildtest_spack
     steps:
+      - name: debug in container
+        run: | 
+          env
+          which git
+          git --version
+          cat ~/.bashrc
+          
+        
       - uses: actions/checkout@v2
       - name: regression test in container
         run: |
