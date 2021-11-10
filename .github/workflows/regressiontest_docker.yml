@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     container: 
       image: shahzebsiddiqui/buildtest_spack
+      options: "-e HOME=/home/spack"
       volumes:
         - /home/runner/work:/home/spack/
     steps:
