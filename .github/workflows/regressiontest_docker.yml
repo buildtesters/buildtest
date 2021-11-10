@@ -25,6 +25,7 @@ jobs:
           push: true
     
   buildtest_tutorial_container:
+    needs: build_container
     runs-on: ubuntu-latest
     container: 
       image: shahzebsiddiqui/buildtest_spack
