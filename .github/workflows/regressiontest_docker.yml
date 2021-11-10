@@ -9,21 +9,19 @@ jobs:
     runs-on: ubuntu-latest
     container: 
       image: shahzebsiddiqui/buildtest_spack
-      options: "-e HOME=/home/spack"
-      volumes:
-        - /home/runner/work:/home/spack/
+      options: "-it"
     steps:
       - name: debug in container
         run: | 
           env
+          whoami
+          id
           which git
           git --version        
           ls -la $HOME
           echo $HOME
-          . ~/spack/share/spack/setup-env.sh
-          spack load git@2.29.0
-          which git 
-          git --version
+          # . ~/spack/share/spack/setup-env.sh
+          # spack load git@2.29.0          
       - uses: actions/checkout@v2
       - name: regression test in container
         run: |
