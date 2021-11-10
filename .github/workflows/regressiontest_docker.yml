@@ -20,7 +20,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: scripts/spack_container/
+          tags: shahzebsiddiqui/buildtest_spack:latest
+          context: scripts/spack_container
           push: true
     
   buildtest_tutorial_container:
