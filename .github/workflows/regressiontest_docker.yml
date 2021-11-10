@@ -12,8 +12,10 @@ jobs:
       - name: regression test in container
         run: |
           env
-          cd $GITHUB_WORKSPACE                    
-          source buildtest/scripts/spack_container/setup.sh
+          cd $GITHUB_WORKSPACE
+          ls -la $GITHUB_WORKSPACE
+          ls -la $HOME
+          . buildtest/scripts/spack_container/setup.sh
           module avail
           git log HEAD
           python scripts/regtest.py
