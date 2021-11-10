@@ -9,8 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     container: shahzebsiddiqui/buildtest_spack
     steps:
+      - uses: actions/checkout@v2
       - name: regression test in container
         run: |
+          which git
+          git --version
           env
           cd $GITHUB_WORKSPACE
           ls -la $GITHUB_WORKSPACE
