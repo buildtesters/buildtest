@@ -10,7 +10,7 @@ jobs:
     container: 
       image: shahzebsiddiqui/buildtest_spack
       volumes:
-        - $GITHUB_WORKSPACE:/home/spack/buildtest
+        - /home/runner/work:/home/spack/
     steps:
       - name: debug in container
         run: | 
