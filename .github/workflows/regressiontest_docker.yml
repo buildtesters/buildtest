@@ -5,6 +5,17 @@ on:
     branches: [ devel ]
 
 jobs:
+  debug_job:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: debug job
+      run: |
+        ls -la $GITHUB_WORKSPACE
+        git --version
+        cat /etc/*release
+        
+      
   buildtest_tutorial_container:
     runs-on: ubuntu-latest
     container: shahzebsiddiqui/buildtest_spack
@@ -13,9 +24,7 @@ jobs:
         run: | 
           env
           which git
-          git --version
-          cat ~/.bashrc
-          
+          git --version        
         
       - uses: actions/checkout@v2
       - name: regression test in container
