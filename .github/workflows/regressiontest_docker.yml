@@ -4,28 +4,24 @@ on:
   pull_request:
     branches: [ devel ]
 
-jobs:
-  debug_job:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: debug job
-      run: |
-        ls -la $GITHUB_WORKSPACE
-        git --version
-        cat /etc/*release
-        
-      
+jobs:      
   buildtest_tutorial_container:
     runs-on: ubuntu-latest
-    container: shahzebsiddiqui/buildtest_spack
+    container: 
+      image: shahzebsiddiqui/buildtest_spack
+      volumes:
+        - $GITHUB_WORKSPACE:/home/spack/buildtest
     steps:
       - name: debug in container
         run: | 
           env
           which git
           git --version        
-        
+          ls -la $HOME
+          echo $HOME
+          spack load git@2.29.0
+          which git 
+          git --version
       - uses: actions/checkout@v2
       - name: regression test in container
         run: |
