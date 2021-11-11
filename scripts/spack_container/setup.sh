@@ -1,7 +1,5 @@
-. ~/spack/share/spack/setup-env.sh
-. $(spack location -i lmod)/lmod/lmod/init/bash
-cp $HOME/buildtest/scripts/spack_container/modules.yaml $SPACK_ROOT/etc/spack
-spack module tcl refresh --delete-tree -y
+#cp $HOME/buildtest/scripts/spack_container/modules.yaml $SPACK_ROOT/etc/spack
+# spack module tcl refresh --delete-tree -y
 module load python
 cd $HOME/buildtest
 #rm -rf $HOME/buildtest/.packages

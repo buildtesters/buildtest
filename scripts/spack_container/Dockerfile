@@ -9,4 +9,5 @@ RUN git clone https://github.com/spack/spack ~/spack && \
     spack install python && \
     spack install gcc@6.5.0 gcc@8.3.0
 
-ENTRYPOINT ["bash"]
+COPY spack_setup.sh /etc/profile.d/spack_setup.sh
+COPY modules.yaml   /etc/spack/modules.yaml
