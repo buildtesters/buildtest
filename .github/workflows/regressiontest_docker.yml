@@ -40,6 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     container: 
       image: ghcr.io/buildtesters/buildtest_spack
+      options: "-it"
     steps:
       - name: debug in container
         run: | 
