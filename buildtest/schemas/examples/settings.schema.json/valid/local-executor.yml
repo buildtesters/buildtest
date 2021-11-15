@@ -19,17 +19,16 @@ system:
         bash:
           description: submit jobs on local machine using bash shell
           shell: bash
-          before_script: |
-            time
-            echo "commands run before job"
           module:
             purge: True
-            restore: "default"
+            restore: "Default"
             load: ["gcc"]
         sh:
           description: submit jobs on local machine using sh shell
           shell: sh
-
+          before_script: |
+            date
+            echo "these commands will be run"
         csh:
           description: submit jobs on local machine using csh shell
           shell: csh -x

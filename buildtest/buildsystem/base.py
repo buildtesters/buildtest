@@ -39,18 +39,6 @@ class BuilderBase(ABC):
     buildtest will create a builder object which resembles a test. The builder will contains metadata that is unique
     to each builder that is captured in the report file upon completion of test.
 
-    Attributes:
-        name (str): name of test
-        metadata (dict): stores metadata for test
-        recipe (dict): stores loaded recipe for test section
-        executor (str): stores name of executor used for running builder
-        job (:obj:`buildtest.executors.job.Job`): Stores Job Data for batch job
-        state (bool): Determines state of builder
-        buildspec (str): Store full path to buildspec file
-        testdir (str): Root of test directory where test will live.
-        buildexecutor (obj:`buildtest.executors.setup.BuildExecutor`): instance of BuildExecutor class used for accessing executors
-        shebang (str): used for writing shebang line in test. This can vary based on shell type or if ``shebang`` property is specified
-        shell (obj:`buildtest.utils.shell.Shell`): An instance of Shell class used for detecting shell type
     """
 
     def __init__(self, name, recipe, buildspec, executor, buildexecutor, testdir):
