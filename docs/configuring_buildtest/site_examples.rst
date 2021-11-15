@@ -10,8 +10,7 @@ offices. Currently, NERSC provides two HPC systems including `Perlmutter <https:
 single configuration for both systems. Perlmutter is using `Lmod` while Cori is running `environment-modules`. We define Local executors and
 Slurm executors for each system which are mapped to qos provided by our Slurm cluster.
 
-
-.. rli:: https://github.com/buildtesters/buildtest-cori/blob/devel/config.yml
+.. rli:: https://raw.githubusercontent.com/buildtesters/buildtest-cori/devel/config.yml
    :language: yaml
 
 Ascent @ OLCF

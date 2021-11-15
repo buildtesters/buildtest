@@ -304,9 +304,6 @@ loading commands. The `load` property is a list of modules to `module load`.
 
 .. _slurm_executors:
 
-
-
-
 Specifying QoS (Slurm)
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
