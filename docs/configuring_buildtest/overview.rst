@@ -322,8 +322,7 @@ qos on the haswell partition as follows:
           options: ["-C haswell"]
 
 The ``cluster`` field specifies which slurm cluster to use
-(i.e ``sbatch --clusters=<string>``). In-order to use ``bigmem``, ``xfer``,
-or ``gpu`` qos at Cori, we need to specify **escori** cluster (i.e ``sbatch --clusters=escori``).
+(i.e ``sbatch --clusters=<string>``).
 
 buildtest will detect slurm configuration and check qos, partition, cluster
 match with buildtest configuration. In addition, buildtest supports multi-cluster
@@ -332,9 +331,8 @@ job submission and monitoring from remote cluster. This means if you specify
 cluster name as follows: ``sacct -M <cluster>``.
 
 The ``options`` field is use to specify any additional options to launcher (``sbatch``)
-on command line. For instance, ``slurm.gpu`` executor, we use the ``options: -C gpu``
-to submit to Cori GPU cluster which requires ``sbatch -M escori -C gpu``.
-Any additional **#SBATCH** options are defined in buildspec for more details see :ref:`batch scheduler support <batch_support>`.
+on command line. Any additional **#SBATCH** options are defined in buildspec for more details see
+:ref:`batch scheduler support <batch_support>`.
 
 Specify Slurm Partitions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -10,6 +10,9 @@ offices. Currently, NERSC provides two HPC systems including `Perlmutter <https:
 single configuration for both systems. Perlmutter is using `Lmod` while Cori is running `environment-modules`. We define Local executors and
 Slurm executors for each system which are mapped to qos provided by our Slurm cluster.
 
+In-order to use ``bigmem``, ``xfer``,
+or ``gpu`` qos at Cori, we need to specify **escori** cluster (i.e ``sbatch --clusters=escori``).
+
 .. rli:: https://raw.githubusercontent.com/buildtesters/buildtest-cori/devel/config.yml
    :language: yaml
 
