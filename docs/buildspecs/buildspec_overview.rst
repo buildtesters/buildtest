@@ -552,7 +552,7 @@ of variable or environment variable. If you reference an invalid name, buildtest
 In this next example, we define two metrics ``gflop`` and ``foo`` that are assigned to variable ``GFLOPS`` and
 environment variable ``FOO``.
 
-.. literalinclude:: ../../examples/compilers/metrics_variable.yml
+.. literalinclude:: ../../tutorials/metrics_variable.yml
     :language: yaml
     :emphasize-lines: 15-19
 

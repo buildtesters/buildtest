@@ -20,15 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class SiteConfiguration:
-    """This class is an interface to buildtest configuration
-
-    Attributes:
-        config (dict): Loaded configuration fille
-        target_config (dict): Loaded configuration file for a particular system
-        disabled_executors (list): A list of disabled executors when checking executors
-        invalid_executors (list): A list of invalid executors when checking executors
-        valid_executors (dict): A dict containing executors that are valid for each executor type.
-    """
+    """This class is an interface to buildtest configuration"""
 
     def __init__(self, settings_file=None):
         """The initializer will declare class variables in its initial state and resolve path to

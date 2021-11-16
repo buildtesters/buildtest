@@ -110,9 +110,9 @@ When creating spack environment using directory, buildtest will automatically ad
 ``-d`` option which is required when creating spack environments. However, one can also pass
 this using the ``option`` field. Shown below is the build and generated script after running test.
 
-.. program-output:: cat buildtest_tutorial_examples/build/env_create_directory.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/build/env_create_directory.txt
 
-.. program-output:: cat buildtest_tutorial_examples/inspect/env_create_directory.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/inspect/env_create_directory.txt
 
 Create Spack Environment from Manifest File (spack.yaml, spack.lock)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -263,7 +263,7 @@ log after running test.
 
 We can build this test by running the following
 
-.. program-output:: cat buildtest_tutorial_examples/build/spack_test_specs.txt
+.. program-output:: cat buildtest_tutorial_examples/spack/build/spack_test_specs.txt
 
 
 Now let's check the generated test and output file, we see buildtest will install **libxml2** and **libsigsegv**

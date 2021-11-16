@@ -23,7 +23,7 @@ sys.path.insert(0, here)
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.config import SiteConfiguration
-from buildtest.defaults import VAR_DIR
+from buildtest.defaults import BUILDTEST_ROOT, VAR_DIR
 from buildtest.utils.file import is_dir
 
 # set BUILDTEST_ROOT environment that is generally set by 'source setup.sh'
@@ -70,6 +70,7 @@ release = BUILDTEST_VERSION
 extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.imgmath",
+    "sphinxext.remoteliteralinclude",
     "sphinxcontrib.programoutput",
     "autoapi.extension",
     "sphinxarg.ext",
@@ -81,7 +82,7 @@ extensions = [
 
 # Document Python Code
 autoapi_type = "python"
-autoapi_dirs = ["../buildtest"]
+autoapi_dirs = [os.path.join(BUILDTEST_ROOT, "buildtest")]
 autoapi_add_toctree_entry = True
 autoapi_member_order = "bysource"
 autoapi_root = "api"
@@ -136,7 +137,7 @@ html_theme = "sphinx_rtd_theme"
 html_theme_options = {
     "prev_next_buttons_location": "both",
     "sticky_navigation": True,
-    # 'vcs_pageview_mode': ''
+    "style_external_links": True,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,

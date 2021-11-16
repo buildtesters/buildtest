@@ -12,3 +12,4 @@ sphinx-argparse
 sphinx-autoapi
 sphinx-rtd-theme
 sphinxcontrib-programoutput
+sphinxext-remoteliteralinclude

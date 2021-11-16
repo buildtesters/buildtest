@@ -140,7 +140,7 @@ or `--root` option.
 
 .. _configuring_executors:
 
-What is an executor?
+Configuring Executors
 ----------------------
 
 An executor is responsible for running the test and capture output/error file and
@@ -150,7 +150,7 @@ responsible for **dispatching** job, then **poll** job until its finish, and
 **gather** job metrics from scheduler.
 
 Executor Declaration
---------------------
+~~~~~~~~~~~~~~~~~~~~~~
 
 The ``executors`` is a JSON `object`, that defines one or more executors. The executors
 are grouped by their type followed by executor name. In this example we define two
@@ -217,8 +217,8 @@ tests will be submitted via ``bash --login /path/to/test.sh``.
 Once you define your executors, you can :ref:`query the executors <view_executors>` via ``buildtest config executors``
 command.
 
-Disabling an executor
-----------------------
+Disable an executor
+~~~~~~~~~~~~~~~~~~~~
 
 buildtest will run checks for every executor instance depending on the executor type, for instance
 local executors such as `bash`, `sh`, `csh` executor will be checked to see if shell is
@@ -237,12 +237,11 @@ In this next example the executor `zsh` is disabled which can be used if you don
           shell: zsh
           disable: true
 
-before_script for executors
-----------------------------
+Default commands run per executors
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Often times, you may want to run a set of commands for a group of tests before running a test. We
-can do this using this using the ``before_script`` field which is defined in each executorthat is
-of string type that expects bash commands.
+You can configure an executor to run a set of commands when using an executor. We
+can do this via ``before_script`` field that is a string type that expects bash commands.
 
 This can be demonstrated with an executor name **local.e4s** responsible for
 building `E4S Testsuite <https://github.com/E4S-Project/testsuite>`_
@@ -285,19 +284,28 @@ The ``before_script`` field is available for all executors and
 if its not specified the file will be empty. Every test will source these scripts for
 the appropriate executor.
 
+Specifying Modules
+~~~~~~~~~~~~~~~~~~~~
+
+You can configure executors to load modules, purge or restore from collection which will be run for all tests that use the executor.
+This can be achieved via `module` property that can be defined in the executor definition. In this next example, we create a bash executor
+that will purge modules and load gcc. The `purge` property is a boolean, if set to `True` we will run `module purge` before
+loading commands. The `load` property is a list of modules to `module load`.
+
+.. code-block:: yaml
+
+    executors:
+      local:
+        bash:
+          shell: bash
+          module:
+            purge: True
+            load: ["gcc"]
+
 .. _slurm_executors:
 
-Cori @ NERSC
---------------
-
-Shown below is the configuration file used at Cori.
-
-.. command-output:: wget -q -O - https://raw.githubusercontent.com/buildtesters/buildtest-cori/devel/config.yml 2>&1
-   :shell:
-
-
 Specifying QoS (Slurm)
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 At Cori, jobs are submitted via qos instead of partition so we model a slurm executor
 named by qos. The ``qos`` field instructs which Slurm QOS to use when submitting job. For
@@ -311,12 +319,10 @@ qos on the haswell partition as follows:
         haswell_debug:
           qos: debug
           cluster: cori
-          options:
-          - -C haswell
+          options: ["-C haswell"]
 
 The ``cluster`` field specifies which slurm cluster to use
-(i.e ``sbatch --clusters=<string>``). In-order to use ``bigmem``, ``xfer``,
-or ``gpu`` qos at Cori, we need to specify **escori** cluster (i.e ``sbatch --clusters=escori``).
+(i.e ``sbatch --clusters=<string>``).
 
 buildtest will detect slurm configuration and check qos, partition, cluster
 match with buildtest configuration. In addition, buildtest supports multi-cluster
@@ -325,12 +331,11 @@ job submission and monitoring from remote cluster. This means if you specify
 cluster name as follows: ``sacct -M <cluster>``.
 
 The ``options`` field is use to specify any additional options to launcher (``sbatch``)
-on command line. For instance, ``slurm.gpu`` executor, we use the ``options: -C gpu``
-to submit to Cori GPU cluster which requires ``sbatch -M escori -C gpu``.
-Any additional **#SBATCH** options are defined in buildspec for more details see :ref:`batch scheduler support <batch_support>`.
+on command line. Any additional **#SBATCH** options are defined in buildspec for more details see
+:ref:`batch scheduler support <batch_support>`.
 
 Specify Slurm Partitions
--------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can specify slurm partitions instead of qos if your slurm cluster requires jobs to be submitted by partitions. This
 can be done via ``partition`` property. In this next example we define an executor name `regular_hsw` which maps
@@ -338,9 +343,11 @@ to slurm partition **regular_hsw**.
 
 .. code-block:: yaml
 
-    regular_hsw:
-      partition: regular_hsw
-      description: regular haswell queue
+    executors:
+      slurm:
+        regular_hsw:
+          partition: regular_hsw
+          description: regular haswell queue
 
 buildtest will check if slurm partition is in ``up`` state before adding executor. buildtest will be
 performing these checks when validating configuration file and this avoids creating tests that reference
@@ -355,7 +362,7 @@ defined partition
 .. _project_account:
 
 Specifying Project Account
-----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Batch jobs require project account to charge jobs and depending on your site this could
 be required in order to submit job. Some scheduler like Slurm can detect your default project account
@@ -370,12 +377,11 @@ because this is defined in ``defaults`` section however we can force all jobs us
 jobs to ``qa_test``.
 
 .. code-block:: yaml
-   :emphasize-lines: 6,10
+   :emphasize-lines: 5,9
 
     executors:
       defaults:
         pollinterval: 10
-        launcher: sbatch
         max_pend_time: 90
         account: development
       pbs:
