@@ -105,13 +105,6 @@ buildspecs:
     status:
       returncode:  [1, 2.230]
 
-  invalid_shell_usr_bin_bash:
-    type: script
-    executor: generic.local.bash
-    description: invalid shell name '/usr/bin/bash'
-    shell: /usr/bin/bash
-    run: hostname
-
   invalid_shell_type:
     type: script
     executor: generic.local.bash
