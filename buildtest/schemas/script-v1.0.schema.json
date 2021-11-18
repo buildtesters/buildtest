@@ -25,8 +25,7 @@
     "run_only": { "$ref": "definitions.schema.json#/definitions/run_only" },
     "shell": {
       "type": "string",
-      "description": "Specify a shell launcher to use when running jobs. This sets the shebang line in your test script. The ``shell`` key can be used with ``run`` section to describe content of script and how its executed",
-      "pattern": "^(/bin/bash|/bin/sh|/bin/csh|/bin/tcsh|/bin/zsh|bash|sh|csh|tcsh|zsh|python).*"
+      "description": "Specify a shell launcher to use when running jobs. This sets the shebang line in your test script. The ``shell`` key can be used with ``run`` section to describe content of script and how its executed"
     },
     "shebang": {
       "type": "string",

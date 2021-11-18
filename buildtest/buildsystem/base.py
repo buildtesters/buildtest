@@ -262,7 +262,7 @@ class BuilderBase(ABC):
     def retry(self, retry):
         self._retry = retry
 
-    def run(self):
+    def run(self, cmd):
         """Run the test and record the starttime and start timer. We also return the instance
         object of type BuildTestCommand which is used by Executors for processing output and error
 
@@ -273,13 +273,18 @@ class BuilderBase(ABC):
             raise exception of :class:`buildtest.exceptions.RuntimeFailure`
         """
 
+        # self.runcmd = self.run_command()
+        self.metadata["command"] = cmd
+
+        console.print(f"[blue]{self}[/]: Running Test via command: [cyan]{cmd}[/cyan]")
+
         self.starttime()
         self.start()
 
-        command = BuildTestCommand(self.runcmd)
+        command = BuildTestCommand(cmd)
         command.execute()
 
-        self.logger.debug(f"Running Test via command: {self.runcmd}")
+        self.logger.debug(f"Running Test via command: {cmd}")
         ret = command.returncode()
         err_msg = " ".join(command.get_error())
 
@@ -297,10 +302,10 @@ class BuilderBase(ABC):
         )
         for run in range(1, self._retry + 1):
             print(f"{self}: Run - {run}/{self._retry}")
-            command = BuildTestCommand(self.runcmd)
+            command = BuildTestCommand(cmd)
             command.execute()
 
-            self.logger.debug(f"Running Test via command: {self.runcmd}")
+            self.logger.debug(f"Running Test via command: {cmd}")
             ret = command.returncode()
             err_msg = " ".join(command.get_error())
 
@@ -509,6 +514,7 @@ class BuilderBase(ABC):
         """
 
         lines = ["#!/bin/bash"]
+
         lines += self._default_test_variables()
         lines.append("# source executor startup script")
 
@@ -547,8 +553,8 @@ class BuilderBase(ABC):
         self.build_script = dest
         self.metadata["build_script"] = self.build_script
 
-        self.runcmd = self.run_command()
-        self.metadata["command"] = self.runcmd
+        # self.runcmd = self.run_command()
+        # self.metadata["command"] = self.runcmd
 
         console.log(f"[blue]{self}:[/] Writing build script: {self.build_script}")
 

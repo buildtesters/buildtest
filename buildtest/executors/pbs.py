@@ -95,8 +95,11 @@ class PBSExecutor(BaseExecutor):
 
         os.chdir(builder.stage_dir)
 
+        cmd = self.bash_launch_command() + [os.path.basename(builder.build_script)]
+        cmd = " ".join(cmd)
+
         try:
-            command = builder.run()
+            command = builder.run(cmd)
         except RuntimeFailure as err:
             builder.failure()
             self.logger.error(err)

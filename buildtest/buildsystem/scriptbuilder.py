@@ -1,4 +1,5 @@
 import os
+import shlex
 import shutil
 
 from buildtest.buildsystem.base import BuilderBase
@@ -47,8 +48,8 @@ class ScriptBuilder(BuilderBase):
             f"[{self.name}]: Copying file: {script_path} to: {os.path.join(self.test_root, os.path.basename(script_path))}"
         )
 
-        lines = [f"python {script_path}"]
-        return lines
+        # lines = [f"python {script_path}"]
+        # return lines
 
     def generate_script(self):
         """This method builds the content of the test script which will return a list
@@ -90,8 +91,22 @@ class ScriptBuilder(BuilderBase):
         # for python scripts we generate python script and return lines
         if self.shell.name == "python":
             self.logger.debug(f"[{self.name}]: Detected python shell")
-            lines += self.write_python_script()
+            self.write_python_script()
 
+            py_script = "%s.py" % format(os.path.join(self.stage_dir, self.name))
+
+            python_wrapper = self.buildexecutor.executors[self.executor]._settings[
+                "shell"
+            ]
+            python_wrapper_buildspec = shlex.split(self.recipe.get("shell"))[0]
+
+            # if 'shell' property in buildspec specifies 'shell: python' or 'shell: python3' then we use this instead
+            if python_wrapper_buildspec.endswith(
+                "python"
+            ) or python_wrapper_buildspec.endswith("python3"):
+                python_wrapper = python_wrapper_buildspec
+
+            lines.append(f"{python_wrapper} {py_script}")
             return lines
 
         # section below is for shell-scripts (bash, sh, csh, zsh, tcsh, zsh)

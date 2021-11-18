@@ -30,6 +30,9 @@ class BaseExecutor:
         self.load()
         self.builders = []
 
+    def bash_launch_command(self):
+        return ["bash --norc --noprofile -eo pipefail"]
+
     def add_builder(self, builder):
         """Add builder object to ``self.builders`` only if its of type BuilderBase"""
 
