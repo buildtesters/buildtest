@@ -6,8 +6,6 @@ when initializing the executors.
 
 import os
 import shlex
-import shutil
-import sys
 
 from buildtest.defaults import console
 from buildtest.exceptions import RuntimeFailure
