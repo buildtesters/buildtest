@@ -215,9 +215,9 @@ class BuildExecutor:
         for builder in self.builders:
             print("{:_<30}".format(""))
             console.print(f"Launching test: [blue]{builder}[/]")
-            console.print(
-                f"[blue]{builder}[/]: Running Test script [cyan]{builder.metadata['build_script']}"
-            )
+            # console.print(
+            #    f"[blue]{builder}[/]: Running Test script via command {builder.metadata['command']}[cyan]"
+            # )
 
             executor = self._choose_executor(builder)
             if executor.type == "local":

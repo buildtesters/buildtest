@@ -100,8 +100,11 @@ class LSFExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to stage directory {builder.stage_dir}")
 
+        cmd = self.bash_launch_command() + [os.path.basename(builder.build_script)]
+        cmd = " ".join(cmd)
+
         try:
-            command = builder.run()
+            command = builder.run(cmd)
         except RuntimeFailure as err:
             self.logger.error(err)
             return

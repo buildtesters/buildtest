@@ -5,6 +5,7 @@ when initializing the executors.
 """
 
 import os
+import shlex
 import shutil
 import sys
 
@@ -23,24 +24,26 @@ class LocalExecutor(BaseExecutor):
     type = "local"
 
     def load(self):
-        self.shell = self._settings.get("shell")
-        self.shell = self.shell.split()[0]
 
-    def check(self):
-        """Check if shell binary is available.
+        # shell_settings = shlex.split(self._settings["shell"])
 
-        Raises:
-            SystemExit: If path to shell is invalid
-        """
-        if not shutil.which(self.shell):
-            sys.exit(f"Unable to find shell: {self.shell}")
+        self.shell = shlex.split(self._settings["shell"])[0]
+        self.shell_opts = shlex.split(self._settings["shell"])[1:]
 
-        if self.shell in ["sh", "bash", "zsh", "/bin/sh", "/bin/bash", "/bin/zsh"]:
-            self.shell_type = "bash"
-        elif self.shell in ["csh", "tcsh", "/bin/csh", "/bin/tcsh"]:
-            self.shell_type = "csh"
-        elif self.shell in ["python"]:
-            self.shell_type = "python"
+        if self.shell.endswith("python") or self.shell.endswith("python3"):
+            self.shell = "bash"
+
+        # default shell option for bash is 'bash --norc --noprofile -eo pipefail' if no options are specified
+        if self.shell == "bash" and not self.shell_opts:
+            self.shell_opts = ["--norc", "--noprofile", "-eo pipefail"]
+
+        if self.shell == "sh" and not self.shell_opts:
+            self.shell_opts = ["--norc", "--noprofile", "-eo pipefail"]
+
+        if self.shell == "csh" and not self.shell_opts:
+            self.shell_opts = ["-e"]
+
+        # self.shell_opts = ' '.join(shell_settings[1:])
 
     def run(self, builder):
         """This method is responsible for running test for LocalExecutor which
@@ -54,15 +57,20 @@ class LocalExecutor(BaseExecutor):
 
         # we only run the check at time of running the test since that's when we need
         # the binary available
-        self.check()
+        # self.check()
 
         # Change to the test directory
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to directory {builder.stage_dir}")
 
+        run_cmd = (
+            [self.shell] + self.shell_opts + [os.path.basename(builder.build_script)]
+        )
+        run_cmd = " ".join(run_cmd)
+
         # ---------- Start of Run ---------- #
         try:
-            command = builder.run()
+            command = builder.run(run_cmd)
         except RuntimeFailure as err:
             builder.failure()
             self.logger.error(err)
@@ -76,14 +84,14 @@ class LocalExecutor(BaseExecutor):
 
         # ---------- End of Run ---------- #
 
-        self.logger.debug(f"Running Test via command: {builder.runcmd}")
+        # self.logger.debug(f"Running Test via command: {builder.runcmd}")
 
         self.logger.debug(
             f"Return code: {command.returncode()} for test: {builder.metadata['testpath']}"
         )
         builder.metadata["result"]["returncode"] = command.returncode()
         console.print(
-            f"[blue]{builder}[/]: completed with returncode: {command.returncode()}"
+            f"[blue]{builder}[/]: Test completed with returncode: {command.returncode()}"
         )
 
         out = "".join(out)
