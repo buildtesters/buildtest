@@ -1,4 +1,4 @@
-black==21.9b0
+black==21.11b1
 codecov
 coverage
 # issue with rendering bullet points in sphinx docutils 0.17 or higher see https://stackoverflow.com/questions/67542699/readthedocs-sphinx-not-rendering-bullet-list-from-rst-file
