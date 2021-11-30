@@ -11,6 +11,7 @@ from buildtest.config import SiteConfiguration
 from buildtest.defaults import DEFAULT_SETTINGS_FILE
 from buildtest.exceptions import BuildspecError, BuildTestError
 from buildtest.executors.setup import BuildExecutor
+from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
 
 testroot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,6 +23,8 @@ def test_BuildspecParser(tmp_path):
     config.detect_system()
     config.validate()
     executors = BuildExecutor(config)
+
+    system = BuildTestSystem()
 
     # Invalid path to buildspec file should exit
     with pytest.raises(BuildTestError):
@@ -54,6 +57,7 @@ def test_BuildspecParser(tmp_path):
                 configuration=config,
                 filters=[],
                 testdir=tmp_path,
+                buildtest_system=system,
             )
             builders = builder.get_builders()
             for test in builders:
@@ -82,6 +86,7 @@ def test_BuildspecParser(tmp_path):
             configuration=config,
             filters=filters,
             testdir=tmp_path,
+            buildtest_system=system,
         )
         builders = builders.get_builders()
         assert builders

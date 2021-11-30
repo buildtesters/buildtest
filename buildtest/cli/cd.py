@@ -43,5 +43,6 @@ def change_directory(test):
 
     os.chdir(testroot)
     print(f"Changing directory to root of test: {name}/{tid}")
-    shell = os.environ.get("SHELL", "/bin/sh")
+
+    shell = os.environ.get("SHELL", "/bin/bash")
     os.execl(shell, shell)

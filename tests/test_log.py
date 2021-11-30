@@ -6,12 +6,14 @@ from buildtest.utils.file import read_file
 
 def test_BuildTestLogger():
 
-    logger = init_logfile()
+    tf = tempfile.NamedTemporaryFile()
+
+    logger = init_logfile(tf.name)
 
     # ensure we have effective level of 10 (DEBUG)
     assert logger.getEffectiveLevel() == 10
 
-    tf = tempfile.NamedTemporaryFile()
+    # tf = tempfile.NamedTemporaryFile()
 
     assert logger.name == "buildtest"
 

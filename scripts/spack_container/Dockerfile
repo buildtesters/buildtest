@@ -7,9 +7,10 @@ RUN git clone https://github.com/spack/spack ~/spack && \
     spack tutorial -y && \
     spack install lmod && \
     spack install python && \
-    spack install gcc@6.5.0 gcc@8.3.0
+    spack install gcc@6.5.0 gcc@8.3.0 && \
+    echo "source /etc/profile" >> ~/.bashrc
 
 COPY /spack_setup.sh /etc/profile.d/spack_setup.sh
 COPY /modules.yaml   /etc/spack/modules.yaml
 
-ENTRYPOINT ["bash", "-l"]
+ENTRYPOINT ["bash"]

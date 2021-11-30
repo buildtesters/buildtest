@@ -4,9 +4,11 @@ import tempfile
 import pytest
 from buildtest.cli.build import BuildTest, discover_buildspecs
 from buildtest.cli.buildspec import BuildspecCache
+from buildtest.cli.clean import clean
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
+from buildtest.log import init_logfile
 from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
 
@@ -19,31 +21,16 @@ configuration.detect_system()
 configuration.validate()
 
 
-from buildtest.cli.clean import clean
-
-# from buildtest.config import SiteConfiguration
-
-
 @pytest.mark.cli
 def test_clean():
-    """This test will test ``buildtest clean`` command. First we run a quick test in order to create
-    test, report file and build history file so we can delete this afterwards."""
-
-    system = BuildTestSystem()
-
-    #  testing buildtest build -b tutorials/shell_examples.yml --filter type=script
-    cmd = BuildTest(
-        configuration=configuration,
-        buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "shell_examples.yml")],
-        buildtest_system=system,
-    )
-    cmd.build()
-
+    """This test will check ``buildtest clean`` command."""
     clean(configuration, yes=True)
 
 
 @pytest.mark.cli
 def test_build_by_tags():
+
+    init_logfile()
 
     system = BuildTestSystem()
 

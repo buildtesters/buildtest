@@ -23,7 +23,7 @@ to bind mount $BUILDTEST_ROOT into the container in order to use buildtest insid
 
 .. code-block:: console
 
-    docker run -it -v $BUILDTEST_ROOT:/home/spack/buildtest shahzebsiddiqui/buildtest_spack:latest
+    docker run -it -v $BUILDTEST_ROOT:/home/spack/buildtest ghcr.io/buildtesters/buildtest_spack:latest
 
 
 Next, lets source the setup script required for using buildtest inside the container
