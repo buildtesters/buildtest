@@ -4,18 +4,18 @@ Methods related to buildtest logging
 import logging
 import os
 
-LOG_FORMATTER = "%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s"
-LOG_NAME = "buildtest"
-FILE_LOG = os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log")
+from buildtest.defaults import BUILDTEST_LOGFILE
 
 
-def init_logfile(logfile=FILE_LOG, debug=None):
+def init_logfile(logfile=BUILDTEST_LOGFILE, debug=None):
     """Initialize a log file intended for a builder. This requires
     passing the filename intended for the log (from the builder)
     and returns the logger.
     :param logfile: logfile name
     :type logfile: str
     """
+
+    LOG_FORMATTER = "%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s"
 
     logger = logging.getLogger("buildtest")
     fh = logging.FileHandler(logfile)

@@ -30,6 +30,7 @@ from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
     BUILDTEST_BUILDSPEC_DIR,
     BUILDTEST_EXECUTOR_DIR,
+    BUILDTEST_LOGFILE,
     BUILDTEST_USER_HOME,
     console,
 )
@@ -62,9 +63,8 @@ def main():
         print(parser.print_help())
         return
 
-    buildtest_log = os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log")
-    if is_file(buildtest_log):
-        remove_file(buildtest_log)
+    if is_file(BUILDTEST_LOGFILE):
+        remove_file(BUILDTEST_LOGFILE)
 
     logger = init_logfile(debug=args.debug)
 

@@ -371,7 +371,3 @@ class PBS(Scheduler):
         self.logger.debug(f"Available Queues: {queues}")
 
         self.queues = queues
-
-
-system = BuildTestSystem()
-system.check()

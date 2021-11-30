@@ -13,7 +13,6 @@ from buildtest.buildsystem.spack import SpackBuilder
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import console
 from buildtest.exceptions import BuildTestError
-from buildtest.system import system
 from buildtest.utils.tools import deep_get
 
 
@@ -33,7 +32,7 @@ class Builder:
         filters,
         testdir,
         configuration,
-        buildtest_system=None,
+        buildtest_system,
         rebuild=1,
     ):
         """Based on a loaded Buildspec file, return the correct builder
@@ -46,12 +45,12 @@ class Builder:
             filters (dict): List of filter fields specified via ``buildtest build --filter`` for filtering tests
             testdir (str): Test directory where tests will be written which could be specified via ``buildtest build --testdir`` or configuration file
             configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
-            buildtest_system (buildtest.system.BuildTestSystem, optional): Instance of BuildTestSystem class
+            buildtest_system (buildtest.system.BuildTestSystem): Instance of BuildTestSystem class
             rebuild (int, optional): Number of rebuild for test. This is specified via ``buildtest build --rebuild``. Defaults to 1
         """
 
         self.configuration = configuration
-        self.system = buildtest_system or system
+        self.system = buildtest_system
         self.logger = logging.getLogger(__name__)
         self.testdir = testdir
         self.buildexecutor = buildexecutor

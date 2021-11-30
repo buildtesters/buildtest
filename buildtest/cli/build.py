@@ -19,14 +19,16 @@ from buildtest.defaults import (
     BUILD_REPORT,
     BUILDSPEC_CACHE_FILE,
     BUILDTEST_DEFAULT_TESTDIR,
+    BUILDTEST_LOGFILE,
     BUILDTEST_REPORT_SUMMARY,
+    DEFAULT_LOGDIR,
     console,
 )
 from buildtest.exceptions import BuildspecError, BuildTestError
 from buildtest.executors.poll import PollQueue
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.defaults import schema_table
-from buildtest.system import system
+from buildtest.system import BuildTestSystem
 from buildtest.utils.file import (
     create_dir,
     is_dir,
@@ -521,8 +523,9 @@ class BuildTest:
             return
 
         # get real path to log directory which accounts for variable expansion, user expansion, and symlinks
-        self.logdir = resolve_path(
-            self.configuration.target_config.get("logdir"), exist=False
+        self.logdir = (
+            resolve_path(self.configuration.target_config.get("logdir"), exist=False)
+            or DEFAULT_LOGDIR
         )
 
         # create a temporary file to store logfile and we don't delete file by setting 'delete=False'
@@ -537,8 +540,6 @@ class BuildTest:
             self.logfile.name = os.path.join(
                 self.logdir, os.path.basename(self.logfile.name)
             )
-
-        logger.debug(f"The logfile will be stored in {self.logfile.name}")
 
         self.testdir = resolve_testdirectory(self.configuration, testdir)
 
@@ -558,7 +559,12 @@ class BuildTest:
         self.buildexecutor = BuildExecutor(
             self.configuration, max_pend_time=self.max_pend_time, account=self.account
         )
-        self.system = buildtest_system or system
+
+        self.system = buildtest_system
+
+        if not self.system:
+            self.system = BuildTestSystem()
+
         self.report_file = resolve_path(report_file, exist=False) or BUILD_REPORT
 
         if is_dir(self.report_file):
@@ -990,9 +996,10 @@ class BuildTest:
         create_dir(build_history_dir)
         build_history_file = os.path.join(build_history_dir, "build.json")
 
-        # copy the logfile into the history directory
-        shutil.copy2(
-            self.logfile.name,
+        # copy the log file.
+        shutil.copyfile(BUILDTEST_LOGFILE, self.logfile.name)
+        shutil.copyfile(
+            BUILDTEST_LOGFILE,
             os.path.join(build_history_dir, os.path.basename(self.logfile.name)),
         )
 
