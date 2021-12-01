@@ -5,7 +5,6 @@ import pytest
 from buildtest.cli.build import BuildTest
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
-from buildtest.log import init_logfile
 from buildtest.system import BuildTestSystem
 
 hostname = socket.getfqdn()
@@ -25,8 +24,6 @@ def test_cori_burstbuffer():
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
     bc.validate()
-
-    init_logfile()
 
     cmd = BuildTest(
         configuration=bc,

@@ -5,7 +5,6 @@ import pytest
 from buildtest.cli.build import BuildTest
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
-from buildtest.log import init_logfile
 from buildtest.system import BuildTestSystem
 
 hostname = socket.getfqdn()
@@ -25,8 +24,6 @@ def test_ascent():
     bc.validate()
 
     system = BuildTestSystem()
-
-    init_logfile()
 
     buildspec_files = os.path.join(here, "examples", "ascent", "hostname.yml")
     cmd = BuildTest(
