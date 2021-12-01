@@ -2,7 +2,6 @@
 Methods related to buildtest logging
 """
 import logging
-import os
 
 from buildtest.defaults import BUILDTEST_LOGFILE
 
