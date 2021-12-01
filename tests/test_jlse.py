@@ -5,7 +5,6 @@ import pytest
 from buildtest.cli.build import BuildTest
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
-from buildtest.log import init_logfile
 from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
 
@@ -26,8 +25,6 @@ def test_jlse():
     bc.validate()
 
     buildspec_files = walk_tree(os.path.join(here, "examples", "jlse"))
-
-    init_logfile()
 
     cmd = BuildTest(
         configuration=bc, buildspecs=buildspec_files, buildtest_system=system

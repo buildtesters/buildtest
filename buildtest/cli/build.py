@@ -27,6 +27,7 @@ from buildtest.defaults import (
 from buildtest.exceptions import BuildspecError, BuildTestError
 from buildtest.executors.poll import PollQueue
 from buildtest.executors.setup import BuildExecutor
+from buildtest.log import init_logfile
 from buildtest.schemas.defaults import schema_table
 from buildtest.system import BuildTestSystem
 from buildtest.utils.file import (
@@ -540,6 +541,11 @@ class BuildTest:
             self.logfile.name = os.path.join(
                 self.logdir, os.path.basename(self.logfile.name)
             )
+
+        logger = logging.getLogger(__name__)
+        # if BUILDTEST_LOGFILE is not created we initialize logger. This is relevant when invoking BuildTest class in regression test
+        if not is_file(BUILDTEST_LOGFILE):
+            logger = init_logfile(logfile=BUILDTEST_LOGFILE)
 
         self.testdir = resolve_testdirectory(self.configuration, testdir)
 

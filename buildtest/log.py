@@ -2,8 +2,10 @@
 Methods related to buildtest logging
 """
 import logging
+import os
 
 from buildtest.defaults import BUILDTEST_LOGFILE
+from buildtest.utils.file import create_dir
 
 
 def init_logfile(logfile=BUILDTEST_LOGFILE, debug=None):
@@ -17,6 +19,10 @@ def init_logfile(logfile=BUILDTEST_LOGFILE, debug=None):
     LOG_FORMATTER = "%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s"
 
     logger = logging.getLogger("buildtest")
+
+    parent_dir = os.path.dirname(logfile)
+    create_dir(parent_dir)
+
     fh = logging.FileHandler(logfile)
     formatter = logging.Formatter(LOG_FORMATTER)
     fh.setFormatter(formatter)

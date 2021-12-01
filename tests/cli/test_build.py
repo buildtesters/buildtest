@@ -8,7 +8,6 @@ from buildtest.cli.clean import clean
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
-from buildtest.log import init_logfile
 from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
 
@@ -30,8 +29,6 @@ def test_clean():
 @pytest.mark.cli
 def test_build_by_tags():
 
-    init_logfile()
-
     system = BuildTestSystem()
 
     # ensure we rebuild cache file before running any buildspecs commands
@@ -41,20 +38,10 @@ def test_build_by_tags():
     cmd = BuildTest(configuration=configuration, tags=["pass"], buildtest_system=system)
     cmd.build()
 
-    #  testing buildtest build --tags fail --tags python --buildspec tutorials
+    #  testing multiple tags:  buildtest build --tags fail --tags python
     cmd = BuildTest(
         configuration=configuration,
-        buildspecs=[os.path.join(test_root, "tutorials")],
         tags=["fail", "python"],
-        buildtest_system=system,
-    )
-    cmd.build()
-
-    #  testing buildtest build --tags pass --filter tags=pass
-    cmd = BuildTest(
-        configuration=configuration,
-        tags=["pass"],
-        filter_buildspecs={"tags": "pass"},
         buildtest_system=system,
     )
     cmd.build()
