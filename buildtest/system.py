@@ -12,6 +12,7 @@ import sys
 
 import distro
 from buildtest.defaults import BUILDTEST_ROOT
+from buildtest.exceptions import BuildTestError
 from buildtest.utils.command import BuildTestCommand
 
 
@@ -146,19 +147,23 @@ class Scheduler:
 
     logger = logging.getLogger(__name__)
 
-    def check(self):
+    def check_binaries(self, binaries):
         """Check if binaries exist binary exist in $PATH"""
 
         self.logger.debug(
-            f"We will check the following binaries {self.binaries} for existence."
+            f"We will check the following binaries {binaries} for existence."
         )
-        for command in self.binaries:
+        for command in binaries:
             if not shutil.which(command):
                 self.logger.debug(f"Cannot find {command} command in $PATH")
                 return False
 
             self.logger.debug(f"{command}: {shutil.which(command)}")
         return True
+
+    def active(self):
+        """Returns ``True`` if buildtest is able to retrieve queues from Scheduler otherwises returns ``False``"""
+        return hasattr(self, "queues")
 
 
 class Slurm(Scheduler):
@@ -174,13 +179,19 @@ class Slurm(Scheduler):
 
         self.logger = logging.getLogger(__name__)
 
-        self.state = self.check()
+        self.state = self.check_binaries(self.binaries)
 
         # retrieve slurm partitions, qos, and cluster only if slurm is detected.
         if self.state:
             self.partitions = self._get_partitions()
             self.clusters = self._get_clusters()
             self.qos = self._get_qos()
+
+    def active(self):
+        """Slurm scheduler is active if we are able to retrieve partitions or qos from scheduler. This method
+        will return a boolean type where ``True`` indicates that slurm executors can be validated."""
+
+        return hasattr(self, "partitions") or hasattr(self, "qos")
 
     def _get_partitions(self):
         """Get list of all partitions slurm partitions using ``sinfo -a -h -O partitionname``. The output
@@ -263,7 +274,7 @@ class LSF(Scheduler):
 
         self.logger = logging.getLogger(__name__)
 
-        self.state = self.check()
+        self.state = self.check_binaries(self.binaries)
 
         # retrieve LSF queues if LSF is detected
         if self.state:
@@ -303,7 +314,14 @@ class LSF(Scheduler):
         # if command returns output, we convert to string and return as json object
         if out:
             out = "".join(cmd.get_output()).rstrip()
-            return json.loads(out)
+            try:
+                queues = json.loads(out)
+            except json.JSONDecodeError:
+                raise BuildTestError(
+                    f"Unable to process LSF Queues when running: {query}"
+                )
+
+        return queues
 
 
 class Cobalt(Scheduler):
@@ -315,7 +333,7 @@ class Cobalt(Scheduler):
     def __init__(self):
         self.logger = logging.getLogger(__name__)
 
-        self.state = self.check()
+        self.state = self.check_binaries(self.binaries)
 
         if self.state:
             self.queues = self._get_queues()
@@ -341,18 +359,36 @@ class Cobalt(Scheduler):
 
 
 class PBS(Scheduler):
-    """The PBS class checks for Cobalt binaries and gets a list of Cobalt queues"""
+    """The PBS class checks for PBS binaries and gets a list of available queues"""
 
     # specify a set of PBS commands to check for file existence
     binaries = ["qsub", "qstat", "qdel", "qstart", "qhold", "qmgr"]
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        self.state = None
+        self.state = self.check(self.binaries)
 
-        self.state = self.check()
         if self.state:
-            self._get_queues()
+            self.queues = self._get_queues()
+
+    def check(self, binaries):
+
+        binary_validation = super().check_binaries(binaries)
+
+        if not binary_validation:
+            return False
+
+        # check output of qsub --version to see if it contains string 'pbs_version' I
+        # [pbsuser@pbs tmp]$ qsub --version
+        # pbs_version = 19.0.0
+        cmd = BuildTestCommand("qsub --version")
+        cmd.execute()
+        out = " ".join(cmd.get_output())
+
+        if not out.startswith("pbs_version"):
+            return False
+
+        return True
 
     def _get_queues(self):
         """Get queue configuration using ``qstat -Q -f -F json`` and retrieve a
@@ -364,10 +400,13 @@ class PBS(Scheduler):
         content = cmd.get_output()
 
         self.logger.debug(f"Get PBS Queues details by running '{query}'")
-        self.queue_summary = json.loads(" ".join(content))
+        try:
+            self.queue_summary = json.loads(" ".join(content))
+        except json.JSONDecodeError:
+            raise BuildTestError(f"Unable to process PBS Queues when running: '{query}")
+
         self.logger.debug(json.dumps(self.queue_summary, indent=2))
 
         queues = list(self.queue_summary["Queue"].keys())
         self.logger.debug(f"Available Queues: {queues}")
-
-        self.queues = queues
+        return queues
