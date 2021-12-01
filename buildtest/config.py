@@ -206,7 +206,8 @@ class SiteConfiguration:
         executor_type = "lsf"
 
         lsf = LSF()
-        assert hasattr(lsf, "queues")
+        if not lsf.active():
+            return
 
         queue_list = []
         valid_queue_state = "Open:Active"
@@ -266,6 +267,9 @@ class SiteConfiguration:
 
         executor_type = "slurm"
         slurm = Slurm()
+
+        if not slurm.active():
+            return
 
         for executor in slurm_executor:
 
@@ -341,7 +345,8 @@ class SiteConfiguration:
         executor_type = "cobalt"
 
         cobalt = Cobalt()
-        assert hasattr(cobalt, "queues")
+        if not cobalt.active():
+            return
 
         for executor in cobalt_executor:
             executor_name = f"{self.name()}.{executor_type}.{executor}"
@@ -401,7 +406,9 @@ class SiteConfiguration:
         executor_type = "pbs"
 
         pbs = PBS()
-        assert hasattr(pbs, "queues")
+        if not pbs.active():
+            return
+
         for executor in pbs_executor:
 
             executor_name = f"{self.name()}.{executor_type}.{executor}"
