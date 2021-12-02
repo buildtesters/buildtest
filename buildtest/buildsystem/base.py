@@ -28,7 +28,7 @@ from buildtest.executors.job import Job
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir, read_file, write_file
-from buildtest.utils.shell import Shell
+from buildtest.utils.shell import Shell, is_csh_shell
 from buildtest.utils.timer import Timer
 from buildtest.utils.tools import deep_get
 
@@ -131,15 +131,6 @@ class BuilderBase(ABC):
         self.logger.debug("Using shell %s", self.shell.name)
         self.logger.debug(f"Shebang used for test: {self.shebang}")
 
-        # shell_type is used to classify compatible shells which are matched by executor shell.
-        self.shell_type = None
-        if self.shell.name in ["sh", "bash", "zsh", "/bin/sh", "/bin/bash", "/bin/zsh"]:
-            self.shell_type = "bash"
-        elif self.shell.name in ["csh", "tcsh", "/bin/csh", "/bin/tcsh"]:
-            self.shell_type = "csh"
-        elif self.shell.name in ["python"]:
-            self.shell_type = "python"
-
     def _set_metadata_values(self):
         """This method sets ``self.metadata`` that contains metadata for each builder object."""
         self.metadata["name"] = self.name
@@ -206,10 +197,10 @@ class BuilderBase(ABC):
         """
 
         # for csh we return shell extension 'csh'
-        if self.shell_type == "csh":
+        if is_csh_shell(self.shell.name):
             return "csh"
 
-        # for python shell or bash shell type we return 'sh' extension
+        # default file extension
         return "sh"
 
     def _is_local_executor(self):

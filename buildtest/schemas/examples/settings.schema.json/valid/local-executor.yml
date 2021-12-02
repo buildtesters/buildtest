@@ -41,10 +41,6 @@ system:
           description: submit jobs on local machine using zsh shell
           shell: /bin/zsh
 
-        python:
-          description: submit jobs on local machine using python shell
-          shell: python
-
     compilers:
       find:
         gcc: "^(gcc|GCC|PrgEnv-gnu)"

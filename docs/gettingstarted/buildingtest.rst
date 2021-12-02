@@ -144,9 +144,9 @@ Building by Executors
 
 Every buildspec is associated to an executor which is responsible for running the test.
 You can instruct buildtest to run all tests by given executor via ``--executor`` option or short option ``-e``.
-For instance, if you want to build all test associated to executor ``generic.local.python`` you can run::
+For instance, if you want to build all test associated to executor ``generic.local.csh`` you can run::
 
-  $ buildtest build --executor generic.local.python
+  $ buildtest build --executor generic.local.csh
 
 buildtest will query buildspec cache for the executor name and retrieve a list of
 buildspecs with matching executor name. To see a list of available executors in
@@ -156,9 +156,9 @@ buildspec cache see :ref:`querying buildspec executor <buildspec_executor>`.
    buildspecs if one of the test matches the executor name. The ``--executor`` option
    is **not filtering tests but only discovering buildspecs**.
 
-In this example we run all tests that are associated to ``generic.local.python`` executor.
+In this example we run all tests that are associated to ``generic.local.csh`` executor.
 
-.. command-output:: buildtest build --executor generic.local.python
+.. command-output:: buildtest build --executor generic.local.csh
 
 .. Note:: The ``--executor`` option can be appended to discover tests by multiple executors.
 

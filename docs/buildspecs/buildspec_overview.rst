@@ -460,26 +460,23 @@ is passed into the script:
 Python Shell
 ~~~~~~~~~~~~~
 
-You can use **script** schema to write python scripts using the **run** property. This
-can be achieved if you use the ``generic.local.python`` executor assuming you have this
-defined in your buildtest configuration.
+You can use **script** schema to write python scripts using the ``run`` property. In order to write python code you
+must set ``shell`` property to python interpreter such as ```shell: python`` or some full path to python wrapper such
+as ``shell: /usr/bin/python``.
 
 Here is a python example calculating area of circle
 
 .. literalinclude:: ../tutorials/python-shell.yml
    :language: yaml
 
-The ``shell: python`` will let us write python script in the ``run`` section.
-The ``tags`` field can be used to classify test, the field expects an array of
-string items.
 
 .. note::
     Python scripts are very picky when it comes to formatting, in the ``run`` section
     if you are defining multiline python script you must remember to use 2 space indent
     to register multiline string. buildtest will extract the content from run section
     and inject in your test script. To ensure proper formatting for a more complex python
-    script you may be better off writing a python script in separate file and call it
-    in ``run`` section.
+    script you may be better off writing a python script in separate file and invoke the
+    python script in the ``run`` section.
 
 Skipping test
 -------------

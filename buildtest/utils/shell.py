@@ -58,6 +58,9 @@ def get_python_shells():
 
     python_shells = []
 
+    if not shutil.which("which"):
+        raise BuildTestError("Unable to find program 'which'. Please install 'which' ")
+
     cmd = BuildTestCommand("which -a python python3")
     cmd.execute()
     out = cmd.get_output()
@@ -66,8 +69,55 @@ def get_python_shells():
     return python_shells
 
 
+def shell_lookup():
+    """Return a dictionary of shell types and list of all shell interpreter. If shell is not present the entry will be an empty list
+
+    .. code-block:: python
+
+         >>> shell_lookup()
+         {'bash': ['/usr/bin/bash', '/bin/bash'], 'sh': ['/usr/bin/sh', '/bin/sh'], 'csh': [], 'zsh': []}
+
+    """
+    shells = {
+        "bash": ["bash"],
+        "sh": ["sh"],
+        "csh": ["csh"],
+        "zsh": ["zsh"],
+    }
+
+    for name in shells.keys():
+
+        cmd = BuildTestCommand(f"which -a {name}")
+        cmd.execute()
+        out = cmd.get_output()
+        shells[name] += [item.strip() for item in out]
+
+    return shells
+
+
+def is_bash_shell(name):
+    """Return ``True`` if specified shell is valid bash shell"""
+    return name in shell_dict["bash"]
+
+
+def is_sh_shell(name):
+    """Return ``True`` if specified shell is valid sh shell"""
+    return name in shell_dict["sh"]
+
+
+def is_csh_shell(name):
+    """Return ``True`` if specified shell is valid csh shell"""
+    return name in shell_dict["csh"]
+
+
+def is_zsh_shell(name):
+    """Return ``True`` if specified shell is valid zsh shell"""
+    return name in shell_dict["zsh"]
+
+
 python_shells = get_python_shells()
 system_shells = get_shells()
+shell_dict = shell_lookup()
 
 
 class Shell:
