@@ -52,7 +52,7 @@ buildspecs:
     run: hostname
 
   declare_shell_python:
-    executor: generic.local.python
+    executor: generic.local.bash
     type: script
     description: declare shell name to python
     shell: python

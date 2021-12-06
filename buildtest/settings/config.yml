@@ -23,9 +23,6 @@ system:
         zsh:
           description: submit jobs on local machine using zsh shell
           shell: zsh
-        python:
-          description: submit jobs on local machine using python3
-          shell: python3
 
     # compiler block
     compilers:

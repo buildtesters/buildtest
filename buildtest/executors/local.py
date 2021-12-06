@@ -11,6 +11,7 @@ from buildtest.defaults import console
 from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.file import write_file
+from buildtest.utils.shell import is_bash_shell, is_csh_shell, is_sh_shell, is_zsh_shell
 
 
 class LocalExecutor(BaseExecutor):
@@ -28,20 +29,18 @@ class LocalExecutor(BaseExecutor):
         self.shell = shlex.split(self._settings["shell"])[0]
         self.shell_opts = shlex.split(self._settings["shell"])[1:]
 
-        if self.shell.endswith("python") or self.shell.endswith("python3"):
-            self.shell = "bash"
-
-        # default shell option for bash is 'bash --norc --noprofile -eo pipefail' if no options are specified
-        if self.shell == "bash" and not self.shell_opts:
+        # default options for shell if no shell option specified
+        if is_bash_shell(self.shell) and not self.shell_opts:
             self.shell_opts = ["--norc", "--noprofile", "-eo pipefail"]
 
-        if self.shell == "sh" and not self.shell_opts:
+        elif is_sh_shell(self.shell) and not self.shell_opts:
             self.shell_opts = ["--norc", "--noprofile", "-eo pipefail"]
 
-        if self.shell == "csh" and not self.shell_opts:
+        elif is_csh_shell(self.shell) and not self.shell_opts:
             self.shell_opts = ["-e"]
 
-        # self.shell_opts = ' '.join(shell_settings[1:])
+        elif is_zsh_shell(self.shell) and not self.shell_opts:
+            self.shell_opts = ["-f"]
 
     def run(self, builder):
         """This method is responsible for running test for LocalExecutor which
@@ -52,10 +51,6 @@ class LocalExecutor(BaseExecutor):
         Args:
             builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
-
-        # we only run the check at time of running the test since that's when we need
-        # the binary available
-        # self.check()
 
         # Change to the test directory
         os.chdir(builder.stage_dir)
@@ -82,8 +77,6 @@ class LocalExecutor(BaseExecutor):
 
         # ---------- End of Run ---------- #
 
-        # self.logger.debug(f"Running Test via command: {builder.runcmd}")
-
         self.logger.debug(
             f"Return code: {command.returncode()} for test: {builder.metadata['testpath']}"
         )
@@ -91,7 +84,9 @@ class LocalExecutor(BaseExecutor):
         console.print(
             f"[blue]{builder}[/]: Test completed with returncode: {command.returncode()}"
         )
-
+        console.print(
+            f"[blue]{builder}[/]: Test completed in {builder.metadata['result']['runtime']} seconds"
+        )
         out = "".join(out)
         err = "".join(err)
 

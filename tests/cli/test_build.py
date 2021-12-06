@@ -166,10 +166,10 @@ def test_build_multi_executors():
 
     system = BuildTestSystem()
 
-    # testing buildtest build --executor generic.local.csh --executor generic.local.python
+    # testing buildtest build --executor generic.local.csh
     cmd = BuildTest(
         configuration=configuration,
-        executors=["generic.local.csh", "generic.local.python"],
+        executors=["generic.local.csh"],
         buildtest_system=system,
     )
     cmd.build()
