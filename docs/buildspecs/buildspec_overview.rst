@@ -461,7 +461,7 @@ Python Shell
 ~~~~~~~~~~~~~
 
 You can use **script** schema to write python scripts using the ``run`` property. In order to write python code you
-must set ``shell`` property to python interpreter such as ```shell: python`` or some full path to python wrapper such
+must set ``shell`` property to python interpreter such as ```shell: python`` or full path to python wrapper such
 as ``shell: /usr/bin/python``.
 
 Here is a python example calculating area of circle

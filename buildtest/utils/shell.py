@@ -70,14 +70,7 @@ def get_python_shells():
 
 
 def shell_lookup():
-    """Return a dictionary of shell types and list of all shell interpreter. If shell is not present the entry will be an empty list
-
-    .. code-block:: python
-
-         >>> shell_lookup()
-         {'bash': ['/usr/bin/bash', '/bin/bash'], 'sh': ['/usr/bin/sh', '/bin/sh'], 'csh': [], 'zsh': []}
-
-    """
+    """Return a dictionary of shell types and list of all shell interpreter. If shell is not present the entry will be an empty list."""
     shells = {
         "bash": ["bash"],
         "sh": ["sh"],
@@ -96,12 +89,25 @@ def shell_lookup():
 
 
 def is_bash_shell(name):
-    """Return ``True`` if specified shell is valid bash shell"""
+    """Return ``True`` if specified shell is valid bash shell
+
+    >>> is_bash_shell("bash")
+    True
+    >>> is_bash_shell("/bin/bash")
+    True
+
+    """
     return name in shell_dict["bash"]
 
 
 def is_sh_shell(name):
-    """Return ``True`` if specified shell is valid sh shell"""
+    """Return ``True`` if specified shell is valid sh shell
+
+    >>> is_sh_shell("sh")
+    True
+    >>> is_sh_shell("/bin/sh")
+    True
+    """
     return name in shell_dict["sh"]
 
 

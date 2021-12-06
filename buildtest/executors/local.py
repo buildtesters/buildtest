@@ -29,22 +29,18 @@ class LocalExecutor(BaseExecutor):
         self.shell = shlex.split(self._settings["shell"])[0]
         self.shell_opts = shlex.split(self._settings["shell"])[1:]
 
-        default_bash_opts = ["--norc", "--noprofile", "-eo pipefail"]
-        default_sh_opts = ["--norc", "--noprofile", "-eo pipefail"]
-        default_csh_opts = ["-e"]
-        default_zsh_opts = ["-f"]
-
+        # default options for shell if no shell option specified
         if is_bash_shell(self.shell) and not self.shell_opts:
-            self.shell_opts = default_bash_opts
+            self.shell_opts = ["--norc", "--noprofile", "-eo pipefail"]
 
         elif is_sh_shell(self.shell) and not self.shell_opts:
-            self.shell_opts = default_sh_opts
+            self.shell_opts = ["--norc", "--noprofile", "-eo pipefail"]
 
         elif is_csh_shell(self.shell) and not self.shell_opts:
-            self.shell_opts = default_csh_opts
+            self.shell_opts = ["-e"]
 
         elif is_zsh_shell(self.shell) and not self.shell_opts:
-            self.shell_opts = default_zsh_opts
+            self.shell_opts = ["-f"]
 
     def run(self, builder):
         """This method is responsible for running test for LocalExecutor which
