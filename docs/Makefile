@@ -49,6 +49,9 @@ linkcheck:
 	@echo
 	@echo "Link check complete; look for any errors in the above output " \
 
+view:
+	python -m http.server --directory _build/html/ 9000
+
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile

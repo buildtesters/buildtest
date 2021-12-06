@@ -78,6 +78,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
+    "hoverxref.extension",
 ]
 
 # Document Python Code
@@ -90,6 +91,31 @@ autoapi_keep_files = True
 autoapi_python_class_content = "both"
 
 napoleon_include_init_with_doc = False
+
+intersphinx_mapping = {
+    "readthedocs": ("https://docs.readthedocs.io/en/stable/", None),
+    "sphinx": ("https://www.sphinx-doc.org/en/master/", None),
+    "python": ("https://docs.python.org/3", None),
+}
+
+
+# enable tooltop on all :ref: see https://sphinx-hoverxref.readthedocs.io/en/latest/usage.html#tooltip-on-all-ref-roles
+hoverxref_auto_ref = True
+hoverxref_sphinxtabs = True
+
+hoverxref_intersphinx = [
+    "readthedocs",
+    "sphinx",
+    "python",
+]
+
+# Used when building the documentation from the terminal and using a local Read
+# the Docs instance as backend
+hoverxref_api_host = "http://localhost:9000"
+
+if os.environ.get("READTHEDOCS") == "True":
+    # Building on Read the Docs
+    hoverxref_api_host = "https://readthedocs.org"
 
 suppress_warnings = ["autoapi"]
 
@@ -241,7 +267,3 @@ epub_title = project
 
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ["search.html"]
-
-intersphinx_mapping = {
-    "python": ("https://docs.python.org/3", None),
-}
