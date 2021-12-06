@@ -1,44 +1,44 @@
 $ buildtest inspect query -o -t spack_env_directory 
-───────────────────────────────────────── spack_env_directory/5bc3d01f-d8ad-4728-9838-b8d058284e87 ─────────────────────────────────────────
+───────────────────────────── spack_env_directory/f10d9ea2-aa38-41af-a766-5de47a11916a ──────────────────────────────
 executor:  generic.local.bash
 description:  create spack environment in directory
 state:  PASS
 returncode:  0
-runtime:  2.650827
-starttime:  2021/10/22 15:55:39
-endtime:  2021/10/22 15:55:42
-──────── Output File: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/5bc3d01f/spack_env_directory.out ────────
-==> Updating view at /home/spack/spack-envs/m4/.spack-env/view                                                                              
-==> Created environment in /home/spack/spack-envs/m4                                                                                        
-==> You can activate this environment with:                                                                                                 
-==>   spack env activate /home/spack/spack-envs/m4                                                                                          
-==> Adding m4 to environment /home/spack/spack-envs/m4                                                                                      
-==> Updating view at /home/spack/spack-envs/m4/.spack-env/view                                                                              
-==> Concretized m4                                                                                                                          
-[+]  mkc3u4x  m4@1.4.18%gcc@7.5.0+sigsegv patches=3877ab548f88597ab2327a2230ee048d2d07ace1062efe81fc92e91b7f39cd00,fc9b61654a3ba1a8d6cd78ce0
-[+]  lbrx7ln      ^libsigsegv@2.12%gcc@7.5.0 arch=linux-ubuntu18.04-x86_64                                                                  
-==> Installing environment /home/spack/spack-envs/m4                                                                                        
-==> All of the packages are already installed                                                                                               
-==> Updating view at /home/spack/spack-envs/m4/.spack-env/view                                                                              
-==> In environment /home/spack/spack-envs/m4                                                                                                
-==> Root specs                                                                                                                              
-m4                                                                                                                                          
--- linux-ubuntu18.04-x86_64 / gcc@7.5.0 -------------------------                                                                           
-libsigsegv@2.12                                                                                                                             
-m4@1.4.18                                                                                                                                   
-                                                                                                                                            
-───────── Test File: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/5bc3d01f/spack_env_directory.sh ──────────
-   1 #!/bin/bash                                                                                                                            
-   2 source /home/spack/spack/share/spack/setup-env.sh                                                                                      
-   3 spack env create  -d /home/spack/spack-envs/m4                                                                                         
-   4 spack env activate  -d /home/spack/spack-envs/m4                                                                                       
-   5 spack add m4                                                                                                                           
-   6 spack install                                                                                                                          
-   7                                                                                                                                        
-   8                                                                                                                                        
-   9 ######## START OF POST COMMANDS ########                                                                                               
-  10 spack find                                                                                                                             
-  11 rm -rf $HOME/spack-envs/m4                                                                                                             
-  12 ######## END OF POST COMMANDS   ########                                                                                               
-  13                                                                                                                                        
-  14                                                                                                                                        
+runtime:  1.993829
+starttime:  2021/12/06 18:37:27
+endtime:  2021/12/06 18:37:29
+─ Output File: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/f10d9ea2/spack_env_dir… ─
+==> Updating view at /home/spack/spack-envs/m4/.spack-env/view                                                       
+==> Created environment in /home/spack/spack-envs/m4                                                                 
+==> You can activate this environment with:                                                                          
+==>   spack env activate /home/spack/spack-envs/m4                                                                   
+==> Adding m4 to environment /home/spack/spack-envs/m4                                                               
+==> Updating view at /home/spack/spack-envs/m4/.spack-env/view                                                       
+==> Concretized m4                                                                                                   
+[+]  mkc3u4x  m4@1.4.18%gcc@7.5.0+sigsegv patches=3877ab548f88597ab2327a2230ee048d2d07ace1062efe81fc92e91b7f39cd00,fc
+[+]  lbrx7ln      ^libsigsegv@2.12%gcc@7.5.0 arch=linux-ubuntu18.04-x86_64                                           
+==> Installing environment /home/spack/spack-envs/m4                                                                 
+==> All of the packages are already installed                                                                        
+==> Updating view at /home/spack/spack-envs/m4/.spack-env/view                                                       
+==> In environment /home/spack/spack-envs/m4                                                                         
+==> Root specs                                                                                                       
+m4                                                                                                                   
+-- linux-ubuntu18.04-x86_64 / gcc@7.5.0 -------------------------                                                    
+libsigsegv@2.12                                                                                                      
+m4@1.4.18                                                                                                            
+                                                                                                                     
+─ Test File: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/f10d9ea2/spack_env_direc… ─
+   1 #!/bin/bash                                                                                                     
+   2 source /home/spack/spack/share/spack/setup-env.sh                                                               
+   3 spack env create  -d /home/spack/spack-envs/m4                                                                  
+   4 spack env activate  -d /home/spack/spack-envs/m4                                                                
+   5 spack add m4                                                                                                    
+   6 spack install                                                                                                   
+   7                                                                                                                 
+   8                                                                                                                 
+   9 ######## START OF POST COMMANDS ########                                                                        
+  10 spack find                                                                                                      
+  11 rm -rf $HOME/spack-envs/m4                                                                                      
+  12 ######## END OF POST COMMANDS   ########                                                                        
+  13                                                                                                                 
+  14                                                                                                                 
