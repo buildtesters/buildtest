@@ -64,9 +64,7 @@ release = BUILDTEST_VERSION
 #
 # needs_sphinx = '1.0'
 
-# Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
+# Sphinx extensions
 extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.imgmath",
@@ -75,6 +73,7 @@ extensions = [
     "autoapi.extension",
     "sphinxarg.ext",
     "sphinx_rtd_theme",
+    "sphinx_tabs.tabs",
     "sphinx.ext.viewcode",
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
@@ -93,9 +92,9 @@ autoapi_python_class_content = "both"
 napoleon_include_init_with_doc = False
 
 intersphinx_mapping = {
-    "readthedocs": ("https://docs.readthedocs.io/en/stable/", None),
-    "sphinx": ("https://www.sphinx-doc.org/en/master/", None),
     "python": ("https://docs.python.org/3", None),
+    "sphinx": ("https://www.sphinx-doc.org/en/master/", None),
+    "readthedocs": ("https://docs.readthedocs.io/en/stable/", None),
 }
 
 
@@ -104,10 +103,22 @@ hoverxref_auto_ref = True
 hoverxref_sphinxtabs = True
 
 hoverxref_intersphinx = [
-    "readthedocs",
-    "sphinx",
     "python",
+    "sphinx",
+    "readthedocs",
 ]
+
+hoverxref_intersphinx_types = {
+    "python": "modal",
+    "sphinx": "tooltip",
+    "readthedocs": "tooltip",
+}
+
+
+hoverxref_role_types = {
+    "hoverxref": "tooltip",
+    "ref": "modal",
+}
 
 # Used when building the documentation from the terminal and using a local Read
 # the Docs instance as backend
