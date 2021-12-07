@@ -51,13 +51,13 @@ Please refer to the ``Makefile`` to see list of tags or run ``make`` for additio
 Sphinx
 -------
 
-The documentation is built via :ref:`Sphinx <https://www.sphinx-doc.org/en/master/>`_ using
+The documentation is built via `Sphinx <https://www.sphinx-doc.org/en/master/>`_ using
 `reStructuredText (rST) <https://docutils.sourceforge.io/rst.html>`_ as its markup language. When
-you run `make` you are running :ref:`sphinx-build <https://www.sphinx-doc.org/en/master/man/sphinx-build.html>`_ command
+you run `make` you are running `sphinx-build <https://www.sphinx-doc.org/en/master/man/sphinx-build.html>`_ command
 which will generate the documentation.
 
 Sphinx will read the configuration file `conf.py <https://github.com/buildtesters/buildtest/blob/devel/docs/conf.py>`_ used
-for building the project. We have enabled a couple :ref:`sphinx extensions <https://www.sphinx-doc.org/en/master/usage/extensions/index.html>`_
+for building the project. We have enabled a couple `sphinx extensions <https://www.sphinx-doc.org/en/master/usage/extensions/index.html>`_
 in our project to customize our documentation
 
 API Generation

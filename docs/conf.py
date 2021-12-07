@@ -66,19 +66,22 @@ release = BUILDTEST_VERSION
 
 # Sphinx extensions
 extensions = [
-    "sphinx.ext.coverage",
-    "sphinx.ext.imgmath",
-    "sphinxext.remoteliteralinclude",
-    "sphinxcontrib.programoutput",
     "autoapi.extension",
     "sphinxarg.ext",
+    "sphinxcontrib.programoutput",
+    "sphinxext.remoteliteralinclude",
     "sphinx_rtd_theme",
     "sphinx_tabs.tabs",
-    "sphinx.ext.viewcode",
+    # "sphinx.ext.autosectionlabel",
+    "sphinx.ext.coverage",
+    "sphinx.ext.imgmath",
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
-    "hoverxref.extension",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.viewcode",
 ]
+
+autosummary_generate = True
 
 # Document Python Code
 autoapi_type = "python"
@@ -93,40 +96,7 @@ napoleon_include_init_with_doc = False
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
-    "sphinx": ("https://www.sphinx-doc.org/en/master/", None),
-    "readthedocs": ("https://docs.readthedocs.io/en/stable/", None),
 }
-
-
-# enable tooltop on all :ref: see https://sphinx-hoverxref.readthedocs.io/en/latest/usage.html#tooltip-on-all-ref-roles
-hoverxref_auto_ref = True
-hoverxref_sphinxtabs = True
-
-hoverxref_intersphinx = [
-    "python",
-    "sphinx",
-    "readthedocs",
-]
-
-hoverxref_intersphinx_types = {
-    "python": "modal",
-    "sphinx": "tooltip",
-    "readthedocs": "tooltip",
-}
-
-
-hoverxref_role_types = {
-    "hoverxref": "tooltip",
-    "ref": "modal",
-}
-
-# Used when building the documentation from the terminal and using a local Read
-# the Docs instance as backend
-hoverxref_api_host = "http://localhost:9000"
-
-if os.environ.get("READTHEDOCS") == "True":
-    # Building on Read the Docs
-    hoverxref_api_host = "https://readthedocs.org"
 
 suppress_warnings = ["autoapi"]
 
