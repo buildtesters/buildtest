@@ -18,15 +18,17 @@ To get started, clone the buildtest repository in your local machine as follows
 
 .. tabs::
 
-    .. code-tab:: bash
-       :caption: HTTPS
+    .. tab:: HTTPS
 
-       git clone https://github.com/buildtesters/buildtest.git
+       ::
 
-    .. code-tab:: bash
-       :caption: SSH
+            git clone https://github.com/buildtesters/buildtest.git
 
-       git clone git@github.com:buildtesters/buildtest.git
+    .. tab:: SSH
+
+       ::
+
+            git clone git@github.com:buildtesters/buildtest.git
 
 If you prefer the latest release, you can clone the **master** branch::
 
