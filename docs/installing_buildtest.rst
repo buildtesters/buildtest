@@ -18,17 +18,15 @@ To get started, clone the buildtest repository in your local machine as follows
 
 .. tabs::
 
-    .. tab:: HTTPS
+    .. code-tab:: bash
+       :caption: HTTPS
 
-       .. code-block:: console
+       git clone https://github.com/buildtesters/buildtest.git
 
-          git clone https://github.com/buildtesters/buildtest.git
+    .. code-tab:: bash
+       :caption: SSH
 
-    .. tab:: SSH
-
-       .. code-block:: console
-
-          git clone git@github.com:buildtesters/buildtest.git
+       git clone git@github.com:buildtesters/buildtest.git
 
 If you prefer the latest release, you can clone the **master** branch::
 
@@ -45,25 +43,25 @@ or `pipenv <https://pipenv.readthedocs.io/en/latest/>`_ to manage your python en
 
     .. tab:: Virtual Environment
 
-      .. code-block:: console
+       ::
 
            python3 -m venv $HOME/buildtest
            source $HOME/buildtest/activate
            cd buildtest
            source setup.sh
 
-    .. tab:: conda
+    .. tab:: Conda
 
-       .. code-block:: console
+        ::
 
            conda create -n buildtest python=3.7
            source activate buildtest
            cd buildtest
            source setup.sh
 
-    .. tab:: console pipenv
+    .. tab:: pipenv
 
-       .. code-block:: console
+       ::
 
            pipenv --python 3.7
            pipenv shell

@@ -8,8 +8,6 @@ var/
 
 # generated docs from sphinx-autoapi
 docs/api
-# generated docs from sphinx.ext.autosumamry
-docs/_autosummary
 
 # xml files generated for buildtest cdash
 *.xml

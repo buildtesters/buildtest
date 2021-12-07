@@ -77,11 +77,8 @@ extensions = [
     "sphinx.ext.imgmath",
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
-    "sphinx.ext.autosummary",
     "sphinx.ext.viewcode",
 ]
-
-autosummary_generate = True
 
 # Document Python Code
 autoapi_type = "python"
@@ -91,6 +88,7 @@ autoapi_member_order = "bysource"
 autoapi_root = "api"
 autoapi_keep_files = True
 autoapi_python_class_content = "both"
+autoapi_template_dir = "_templates/autoapi"
 
 napoleon_include_init_with_doc = False
 
