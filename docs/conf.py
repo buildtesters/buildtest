@@ -64,20 +64,20 @@ release = BUILDTEST_VERSION
 #
 # needs_sphinx = '1.0'
 
-# Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
+# Sphinx extensions
 extensions = [
-    "sphinx.ext.coverage",
-    "sphinx.ext.imgmath",
-    "sphinxext.remoteliteralinclude",
-    "sphinxcontrib.programoutput",
     "autoapi.extension",
     "sphinxarg.ext",
+    "sphinxcontrib.programoutput",
+    "sphinxext.remoteliteralinclude",
     "sphinx_rtd_theme",
-    "sphinx.ext.viewcode",
+    "sphinx_tabs.tabs",
+    # "sphinx.ext.autosectionlabel",
+    "sphinx.ext.coverage",
+    "sphinx.ext.imgmath",
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
 ]
 
 # Document Python Code
@@ -88,8 +88,13 @@ autoapi_member_order = "bysource"
 autoapi_root = "api"
 autoapi_keep_files = True
 autoapi_python_class_content = "both"
+autoapi_template_dir = "_templates/autoapi"
 
 napoleon_include_init_with_doc = False
+
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
+}
 
 suppress_warnings = ["autoapi"]
 
@@ -241,7 +246,3 @@ epub_title = project
 
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ["search.html"]
-
-intersphinx_mapping = {
-    "python": ("https://docs.python.org/3", None),
-}

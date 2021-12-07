@@ -1,21 +1,22 @@
 $ buildtest build -b /home/spack/buildtest/examples/spack/mirror_example.yml 
-╭─────────────────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────────────────╮
-│                                                                                                                                          │
-│ User:               spack                                                                                                                │
-│ Hostname:           bd1cc21cefc6                                                                                                         │
-│ Platform:           Linux                                                                                                                │
-│ Current Time:       2021/10/22 15:55:57                                                                                                  │
-│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                                  │
-│ buildtest version:  0.11.0                                                                                                               │
-│ python path:                                                                                                                             │
-│ /home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/python-3.8.6-szj7jukzoj34lkchuvzrzbh52kgesac7/bin/python                  │
-│ python version:     3.8.6                                                                                                                │
-│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                                         │
-│ Test Directory:     /home/spack/runs                                                                                                     │
-│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/spack/mirror_example.yml                 │
-│                                                                                                                                          │
-╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-─────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────
+╭──────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────╮
+│                                                                                                                   │
+│ User:               spack                                                                                         │
+│ Hostname:           9d2191ba3cb2                                                                                  │
+│ Platform:           Linux                                                                                         │
+│ Current Time:       2021/12/06 18:37:42                                                                           │
+│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                           │
+│ buildtest version:  0.11.0                                                                                        │
+│ python path:        /home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/python-3.8.6-szj7jukzoj34lkchu │
+│ vzrzbh52kgesac7/bin/python                                                                                        │
+│ python version:     3.8.6                                                                                         │
+│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                  │
+│ Test Directory:     /home/spack/runs                                                                              │
+│ Command:            /home/spack/buildtest/bin/buildtest build -b                                                  │
+│ /home/spack/buildtest/examples/spack/mirror_example.yml                                                           │
+│                                                                                                                   │
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+──────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────
 Discovered Buildspecs:  1
 Excluded Buildspecs:  0
 Detected Buildspecs after exclusion:  1
@@ -25,7 +26,7 @@ Detected Buildspecs after exclusion:  1
 ╟─────────────────────────────────────────────────────────╢
 ║ /home/spack/buildtest/examples/spack/mirror_example.yml ║
 ╚═════════════════════════════════════════════════════════╝
-──────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────
+──────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
 /home/spack/buildtest/examples/spack/mirror_example.yml: VALID
@@ -34,56 +35,62 @@ Invalid Buildspecs: 0
 Total builder objects created: 2
 
 
-                                                              Builder Details                                                               
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Builder                          ┃ Executor           ┃ description                             ┃ buildspecs                             ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ add_mirror/2fc1eb87              │ generic.local.bash │ Declare spack mirror                    │ /home/spack/buildtest/examples/spack/m │
-│                                  │                    │                                         │ irror_example.yml                      │
-├──────────────────────────────────┼────────────────────┼─────────────────────────────────────────┼────────────────────────────────────────┤
-│ add_mirror_in_spack_env/f7bcc106 │ generic.local.bash │ Declare spack mirror in spack           │ /home/spack/buildtest/examples/spack/m │
-│                                  │                    │ environment                             │ irror_example.yml                      │
-└──────────────────────────────────┴────────────────────┴─────────────────────────────────────────┴────────────────────────────────────────┘
-────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────
-[15:55:57] add_mirror/2fc1eb87: Creating test directory: /home/spack/runs/generic.local.bash/mirror_example/add_mirror/2fc1eb87  base.py:437
-           add_mirror/2fc1eb87: Creating the stage directory:                                                                    base.py:448
-           /home/spack/runs/generic.local.bash/mirror_example/add_mirror/2fc1eb87/stage                                                     
-           add_mirror/2fc1eb87: Writing build script:                                                                            base.py:565
-           /home/spack/runs/generic.local.bash/mirror_example/add_mirror/2fc1eb87/add_mirror_build.sh                                       
-           add_mirror_in_spack_env/f7bcc106: Creating test directory:                                                            base.py:437
-           /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/f7bcc106                                              
-           add_mirror_in_spack_env/f7bcc106: Creating the stage directory:                                                       base.py:448
-           /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/f7bcc106/stage                                        
-           add_mirror_in_spack_env/f7bcc106: Writing build script:                                                               base.py:565
-           /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/f7bcc106/add_mirror_in_spack_env_build.sh             
-────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────
+                                                   Builder Details                                                   
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Builder                       ┃ Executor           ┃ description                  ┃ buildspecs                    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ add_mirror/3392c2a6           │ generic.local.bash │ Declare spack mirror         │ /home/spack/buildtest/example │
+│                               │                    │                              │ s/spack/mirror_example.yml    │
+├───────────────────────────────┼────────────────────┼──────────────────────────────┼───────────────────────────────┤
+│ add_mirror_in_spack_env/fafa3 │ generic.local.bash │ Declare spack mirror in      │ /home/spack/buildtest/example │
+│ 5f3                           │                    │ spack environment            │ s/spack/mirror_example.yml    │
+└───────────────────────────────┴────────────────────┴──────────────────────────────┴───────────────────────────────┘
+─────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────
+[18:37:42] add_mirror/3392c2a6: Creating test directory:                                                  base.py:421
+           /home/spack/runs/generic.local.bash/mirror_example/add_mirror/3392c2a6                                    
+           add_mirror/3392c2a6: Creating the stage directory:                                             base.py:432
+           /home/spack/runs/generic.local.bash/mirror_example/add_mirror/3392c2a6/stage                              
+           add_mirror/3392c2a6: Writing build script:                                                     base.py:550
+           /home/spack/runs/generic.local.bash/mirror_example/add_mirror/3392c2a6/add_mirror_build.sh                
+           add_mirror_in_spack_env/fafa35f3: Creating test directory:                                     base.py:421
+           /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/fafa35f3                       
+           add_mirror_in_spack_env/fafa35f3: Creating the stage directory:                                base.py:432
+           /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/fafa35f3/stage                 
+           add_mirror_in_spack_env/fafa35f3: Writing build script: /home/spack/runs/generic.local.bash/mi base.py:550
+           rror_example/add_mirror_in_spack_env/fafa35f3/add_mirror_in_spack_env_build.sh                            
+─────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────
 ______________________________
-Launching test: add_mirror/2fc1eb87
-add_mirror/2fc1eb87: Running Test script /home/spack/runs/generic.local.bash/mirror_example/add_mirror/2fc1eb87/add_mirror_build.sh
+Launching test: add_mirror/3392c2a6
 ______________________________
-Launching test: add_mirror_in_spack_env/f7bcc106
-add_mirror_in_spack_env/f7bcc106: Running Test script 
-/home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/f7bcc106/add_mirror_in_spack_env_build.sh
-add_mirror/2fc1eb87: completed with returncode: 0
-add_mirror/2fc1eb87: Writing output file -  /home/spack/runs/generic.local.bash/
-mirror_example/add_mirror/2fc1eb87/add_mirror.out
-add_mirror/2fc1eb87: Writing error file - /home/spack/runs/generic.local.bash/mi
-rror_example/add_mirror/2fc1eb87/add_mirror.err
-add_mirror_in_spack_env/f7bcc106: completed with returncode: 0
-add_mirror_in_spack_env/f7bcc106: Writing output file -  /home/spack/runs/generi
-c.local.bash/mirror_example/add_mirror_in_spack_env/f7bcc106/add_mirror_in_spack
+Launching test: add_mirror_in_spack_env/fafa35f3
+add_mirror/3392c2a6: Running Test via command: bash --norc --noprofile -eo 
+pipefail add_mirror_build.sh
+add_mirror_in_spack_env/fafa35f3: Running Test via command: bash --norc 
+--noprofile -eo pipefail add_mirror_in_spack_env_build.sh
+add_mirror/3392c2a6: Test completed with returncode: 0
+add_mirror/3392c2a6: Test completed in 1.5892 seconds
+add_mirror/3392c2a6: Writing output file -  /home/spack/runs/generic.local.bash/
+mirror_example/add_mirror/3392c2a6/add_mirror.out
+add_mirror/3392c2a6: Writing error file - /home/spack/runs/generic.local.bash/mi
+rror_example/add_mirror/3392c2a6/add_mirror.err
+add_mirror_in_spack_env/fafa35f3: Test completed with returncode: 0
+add_mirror_in_spack_env/fafa35f3: Test completed in 2.617189 seconds
+add_mirror_in_spack_env/fafa35f3: Writing output file -  /home/spack/runs/generi
+c.local.bash/mirror_example/add_mirror_in_spack_env/fafa35f3/add_mirror_in_spack
 _env.out
-add_mirror_in_spack_env/f7bcc106: Writing error file - /home/spack/runs/generic.
-local.bash/mirror_example/add_mirror_in_spack_env/f7bcc106/add_mirror_in_spack_e
+add_mirror_in_spack_env/fafa35f3: Writing error file - /home/spack/runs/generic.
+local.bash/mirror_example/add_mirror_in_spack_env/fafa35f3/add_mirror_in_spack_e
 nv.err
-                                                          Test Summary                                                          
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-┃ Builder                          ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ add_mirror/2fc1eb87              │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 2.531101 │
-├──────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
-│ add_mirror_in_spack_env/f7bcc106 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 3.727178 │
-└──────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
+                                                    Test Summary                                                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ Builder                      ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex,   ┃ ReturnCode ┃ Runtime  ┃
+┃                              ┃                    ┃        ┃ Runtime)                     ┃            ┃          ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ add_mirror/3392c2a6          │ generic.local.bash │ PASS   │ N/A N/A N/A                  │ 0          │ 1.5892   │
+├──────────────────────────────┼────────────────────┼────────┼──────────────────────────────┼────────────┼──────────┤
+│ add_mirror_in_spack_env/fafa │ generic.local.bash │ PASS   │ N/A N/A N/A                  │ 0          │ 2.617189 │
+│ 35f3                         │                    │        │                              │            │          │
+└──────────────────────────────┴────────────────────┴────────┴──────────────────────────────┴────────────┴──────────┘
 
 
 
@@ -91,4 +98,4 @@ Passed Tests: 2/2 Percentage: 100.000%
 Failed Tests: 0/2 Percentage: 0.000%
 
 
-Writing Logfile to: /tmp/buildtest_21g2dpg9.log
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_pbxmqrq7.log

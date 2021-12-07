@@ -1,3 +1,6 @@
+| |license| |docs| |codecov| |slack| |regressiontest|
+
+
 buildtest
 ==========
 
@@ -7,11 +10,6 @@ If you are working off a latest release please see  https://buildtest.readthedoc
 If you are working off `devel <https://github.com/buildtesters/buildtest/tree/devel>`_ branch then please refer to
 https://buildtest.readthedocs.io/en/devel/
 which references the `devel` branch.
-
-Status
------------
-
-| |license| |docs| |codecov| |slack| |regressiontest|
 
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -62,7 +60,7 @@ that is validated by a `json schema <https://json-schema.org/>`_. buildtest supp
 and schema examples at https://buildtesters.github.io/buildtest/ which is useful when you are
 :ref:`writing buildspecs <writing_buildspecs>`.
 
-To get started with buildtest, please see :ref:`installing buildtest <Setup>`  and
+To get started with buildtest, please see :ref:`Installing buildtest <installing_buildtest>` and
 :ref:`getting started guide <getting_started>`.
 
 A spin-off project called `lmodule <https://lmodule.readthedocs.io/en/latest/>`_

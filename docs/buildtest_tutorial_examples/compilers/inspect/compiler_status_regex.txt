@@ -1,23 +1,23 @@
 $ buildtest inspect query -d all -o override_status_regex 
-──────────────────────────────────────── override_status_regex/8f1440bb-1ba6-42e2-ac25-86234b4eac00 ────────────────────────────────────────
+──────────────────────────── override_status_regex/af622538-6ef5-4ef6-acbb-c1a381213d20 ─────────────────────────────
 executor:  generic.local.bash
 description:  override 'status' property in compiler gcc_8.3.0 instance
 state:  FAIL
 returncode:  0
-runtime:  0.185459
-starttime:  2021/10/22 15:56:36
-endtime:  2021/10/22 15:56:36
-───── Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/8f1440bb/override_status_regex.out ──────
-final result: 1.000000                                                                                                                      
-                                                                                                                                            
-──────────────────────────────────────── override_status_regex/94ce883d-a8b9-4153-93b7-08ca179783ee ────────────────────────────────────────
+runtime:  0.140041
+starttime:  2021/12/06 18:38:32
+endtime:  2021/12/06 18:38:32
+─ Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/af622538/override_s… ─
+final result: 1.000000                                                                                               
+                                                                                                                     
+──────────────────────────── override_status_regex/c4583d0c-b584-4800-bce7-937ba8c357cd ─────────────────────────────
 executor:  generic.local.bash
 description:  override 'status' property in compiler gcc_8.3.0 instance
 state:  FAIL
 returncode:  0
-runtime:  0.262879
-starttime:  2021/10/22 15:56:36
-endtime:  2021/10/22 15:56:36
-───── Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/94ce883d/override_status_regex.out ──────
-final result: 1.000000                                                                                                                      
-                                                                                                                                            
+runtime:  0.149732
+starttime:  2021/12/06 18:38:32
+endtime:  2021/12/06 18:38:32
+─ Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/c4583d0c/override_s… ─
+final result: 1.000000                                                                                               
+                                                                                                                     

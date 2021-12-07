@@ -12,5 +12,3 @@ RUN git clone https://github.com/spack/spack ~/spack && \
 
 COPY /spack_setup.sh /etc/profile.d/spack_setup.sh
 COPY /modules.yaml   /etc/spack/modules.yaml
-
-ENTRYPOINT ["bash"]

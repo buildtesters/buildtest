@@ -12,7 +12,7 @@ You can check the path to buildtest command by running::
 
       $ which buildtest
 
-If you don't see buildtest go back and :ref:`install buildtest <Setup>`.
+If you don't see buildtest go back and :ref:`install buildtest <installing_buildtest>`.
 
 
 When you clone buildtest, you also get a set of buildspecs that you can run on your

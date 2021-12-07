@@ -1,33 +1,33 @@
 $ buildtest inspect query -t remove_environment_automatically remove_environment_explicit 
-────────────────────────────────── remove_environment_automatically/51796614-774d-4c08-8c56-3056366417a2 ───────────────────────────────────
+─────────────────────── remove_environment_automatically/ea1732f8-4184-4507-8bd3-13b5391bcbe9 ───────────────────────
 executor:  generic.local.bash
 description:  remove spack environment automatically before creating a new environment
 state:  PASS
 returncode:  0
-runtime:  4.389583
-starttime:  2021/10/22 15:55:49
-endtime:  2021/10/22 15:55:53
-─ Test File: /home/spack/runs/generic.local.bash/remove_environment_example/remove_environment_automatically/51796614/remove_environment_… ─
-  1 #!/bin/bash                                                                                                                             
-  2 source /home/spack/spack/share/spack/setup-env.sh                                                                                       
-  3 spack env rm -y remove_environment                                                                                                      
-  4 spack env create  remove_environment                                                                                                    
-  5 spack env activate  remove_environment                                                                                                  
-  6 spack add bzip2                                                                                                                         
-  7 spack concretize -f                                                                                                                     
-───────────────────────────────────── remove_environment_explicit/bc66272c-e6ee-4800-adac-e9c68903a40e ─────────────────────────────────────
+runtime:  4.769938
+starttime:  2021/12/06 18:37:33
+endtime:  2021/12/06 18:37:38
+─ Test File: /home/spack/runs/generic.local.bash/remove_environment_example/remove_environment_automatically/ea173… ─
+  1 #!/bin/bash                                                                                                      
+  2 source /home/spack/spack/share/spack/setup-env.sh                                                                
+  3 spack env rm -y remove_environment                                                                               
+  4 spack env create  remove_environment                                                                             
+  5 spack env activate  remove_environment                                                                           
+  6 spack add bzip2                                                                                                  
+  7 spack concretize -f                                                                                              
+───────────────────────── remove_environment_explicit/6af05bd8-e85c-4b59-975c-fbd3b2d36f28 ──────────────────────────
 executor:  generic.local.bash
 description:  remove spack environment explicitly using the 'rm' property
 state:  PASS
 returncode:  0
-runtime:  4.389911
-starttime:  2021/10/22 15:55:49
-endtime:  2021/10/22 15:55:53
-─ Test File: /home/spack/runs/generic.local.bash/remove_environment_example/remove_environment_explicit/bc66272c/remove_environment_expli… ─
-  1 #!/bin/bash                                                                                                                             
-  2 source /home/spack/spack/share/spack/setup-env.sh                                                                                       
-  3 spack env rm -y dummy                                                                                                                   
-  4 spack env create  dummy                                                                                                                 
-  5 spack env activate  dummy                                                                                                               
-  6 spack add bzip2                                                                                                                         
-  7 spack concretize -f                                                                                                                     
+runtime:  4.910458
+starttime:  2021/12/06 18:37:33
+endtime:  2021/12/06 18:37:38
+─ Test File: /home/spack/runs/generic.local.bash/remove_environment_example/remove_environment_explicit/6af05bd8/r… ─
+  1 #!/bin/bash                                                                                                      
+  2 source /home/spack/spack/share/spack/setup-env.sh                                                                
+  3 spack env rm -y dummy                                                                                            
+  4 spack env create  dummy                                                                                          
+  5 spack env activate  dummy                                                                                        
+  6 spack add bzip2                                                                                                  
+  7 spack concretize -f                                                                                              

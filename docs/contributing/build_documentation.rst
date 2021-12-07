@@ -21,7 +21,7 @@ Setup
 buildtest documentation is located in top-level `docs <https://github.com/buildtesters/buildtest/tree/devel/docs>`_ directory.
 If you want to build the documentation you will need to make sure your python environment
 has all the packages defined in ``docs/requirements.txt``. If your environment
-is already setup as described in :ref:`Setup` then  you can skip this step.
+is already setup as described in :ref:`installing_buildtest` then  you can skip this step.
 
 To install your python packages, you can run the following::
 
