@@ -57,7 +57,7 @@ you run `make` you are running :ref:`sphinx-build <https://www.sphinx-doc.org/en
 which will generate the documentation.
 
 Sphinx will read the configuration file `conf.py <https://github.com/buildtesters/buildtest/blob/devel/docs/conf.py>`_ used
-for building the project. We have enabled a couple `sphinx extensions <https://www.sphinx-doc.org/en/master/usage/extensions/index.html>`_
+for building the project. We have enabled a couple :ref:`sphinx extensions <https://www.sphinx-doc.org/en/master/usage/extensions/index.html>`_
 in our project to customize our documentation
 
 API Generation

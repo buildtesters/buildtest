@@ -20,11 +20,11 @@ To get started, clone the buildtest repository in your local machine as follows
 
     .. tab:: HTTPS
 
-        git clone https://github.com/buildtesters/buildtest.git
+       git clone https://github.com/buildtesters/buildtest.git
 
     .. tab:: SSH
 
-        git clone git@github.com:buildtesters/buildtest.git
+       git clone git@github.com:buildtesters/buildtest.git
 
 If you prefer the latest release, you can clone the **master** branch::
 
@@ -41,26 +41,26 @@ or `pipenv <https://pipenv.readthedocs.io/en/latest/>`_ to manage your python en
 
     .. tab:: Virtual Environment
 
-        python3 -m venv $HOME/buildtest
-        source $HOME/buildtest/activate
-        cd buildtest
-        source setup.sh
+       python3 -m venv $HOME/buildtest
+       source $HOME/buildtest/activate
+       cd buildtest
+       source setup.sh
 
     .. tab:: conda
 
-        conda create -n buildtest python=3.7
-        source activate buildtest
-        cd buildtest
-        source setup.sh
+       conda create -n buildtest python=3.7
+       source activate buildtest
+       cd buildtest
+       source setup.sh
 
     .. tab:: pipenv
 
-        pipenv --python 3.7
-        pipenv shell
-        cd buildtest
-        source setup.sh
+       pipenv --python 3.7
+       pipenv shell
+       cd buildtest
+       source setup.sh
 
-For csh users you will need to `source setup.csh` in order to install buildtest.
+For csh users you will need to ``source setup.csh`` in order to install buildtest.
 
 
 Upon installation, you should see ``buildtest`` in your $PATH and environment variable

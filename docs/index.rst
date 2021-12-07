@@ -60,15 +60,13 @@ that is validated by a `json schema <https://json-schema.org/>`_. buildtest supp
 and schema examples at https://buildtesters.github.io/buildtest/ which is useful when you are
 :ref:`writing buildspecs <writing_buildspecs>`.
 
-To get started with buildtest, please see :ref:`installing_buildtest: Installing buildtest` and
+To get started with buildtest, please see :ref:`Installing buildtest <installing_buildtest>` and
 :ref:`getting started guide <getting_started>`.
 
 A spin-off project called `lmodule <https://lmodule.readthedocs.io/en/latest/>`_
 is a Python API for `Lmod <https://lmod.readthedocs.io/en/latest/>`_. The buildtest
 module features were deprecated and moved to lmodule with the main objective is to
 automate module load testing. For more details on lmodule see https://github.com/buildtesters/lmodule
-
-Show a tooltip for :doc:`Read the Docs automation rules <readthedocs:automation-rules>`.
 
 .. toctree::
    :maxdepth: 2
