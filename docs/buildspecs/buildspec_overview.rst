@@ -827,7 +827,94 @@ with stdout using regular expression.
 This test was ran on a MacOS (Darwin) so we expect test **run_only_platform_linux**
 to be skipped.
 
-.. program-output:: cat docgen/buildspecs/overview/run_only_platform.txt
+.. code-block:: console
+
+     bash-3.2$ buildtest build -b tutorials/run_only_platform.yml
+    ╭───────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────╮
+    │                                                                                                                      │
+    │ User:               siddiq90                                                                                         │
+    │ Hostname:           DOE-7086392.local                                                                                │
+    │ Platform:           Darwin                                                                                           │
+    │ Current Time:       2021/12/07 22:51:45                                                                              │
+    │ buildtest path:     /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest                                  │
+    │ buildtest version:  0.11.0                                                                                           │
+    │ python path:        /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python                           │
+    │ python version:     3.7.3                                                                                            │
+    │ Configuration File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml                  │
+    │ Test Directory:     /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests                                      │
+    │ Command:            /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b                         │
+    │ tutorials/run_only_platform.yml                                                                                      │
+    │                                                                                                                      │
+    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+    ───────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────
+    Discovered Buildspecs:  1
+    Excluded Buildspecs:  0
+    Detected Buildspecs after exclusion:  1
+                                    Discovered buildspecs
+    ╔═══════════════════════════════════════════════════════════════════════════════════╗
+    ║ Buildspecs                                                                        ║
+    ╟───────────────────────────────────────────────────────────────────────────────────╢
+    ║ /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/run_only_platform.yml ║
+    ╚═══════════════════════════════════════════════════════════════════════════════════╝
+    ────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────
+    [run_only_platform_linux][/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/run_only_platform.yml]: test is skipped because this test is expected to run on platform: Linux but detected platform: Darwin.
+    Valid Buildspecs: 1
+    Invalid Buildspecs: 0
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/run_only_platform.yml: VALID
+
+
+    Total builder objects created: 1
+
+
+                                                        Builder Details
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder                        ┃ Executor           ┃ description                   ┃ buildspecs                     ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ run_only_platform_darwin/9bc44 │ generic.local.bash │ This test will only run if    │ /Users/siddiq90/Documents/GitH │
+    │ 2db                            │                    │ target platform is Darwin     │ ubDesktop/buildtest/tutorials/ │
+    │                                │                    │                               │ run_only_platform.yml          │
+    └────────────────────────────────┴────────────────────┴───────────────────────────────┴────────────────────────────────┘
+    ──────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────
+    [22:51:45] run_only_platform_darwin/9bc442db: Creating test directory: /Users/siddiq90/Documents/GitHubDeskt base.py:421
+               op/buildtest/var/tests/generic.local.bash/run_only_platform/run_only_platform_darwin/9bc442db
+               run_only_platform_darwin/9bc442db: Creating the stage directory: /Users/siddiq90/Documents/GitHub base.py:432
+               Desktop/buildtest/var/tests/generic.local.bash/run_only_platform/run_only_platform_darwin/9bc442d
+               b/stage
+               run_only_platform_darwin/9bc442db: Writing build script: /Users/siddiq90/Documents/GitHubDesktop/ base.py:550
+               buildtest/var/tests/generic.local.bash/run_only_platform/run_only_platform_darwin/9bc442db/run_on
+               ly_platform_darwin_build.sh
+    ──────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────
+    ______________________________
+    Launching test: run_only_platform_darwin/9bc442db
+    run_only_platform_darwin/9bc442db: Running Test via command: bash --norc --noprofile -eo pipefail
+    run_only_platform_darwin_build.sh
+    run_only_platform_darwin/9bc442db: Test completed with returncode: 0
+    run_only_platform_darwin/9bc442db: Test completed in 0.281197 seconds
+    run_only_platform_darwin/9bc442db: Writing output file -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/ge
+    neric.local.bash/run_only_platform/run_only_platform_darwin/9bc442db/run_only_platform_darwin.out
+    run_only_platform_darwin/9bc442db: Writing error file - /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/gene
+    ric.local.bash/run_only_platform/run_only_platform_darwin/9bc442db/run_only_platform_darwin.err
+    run_only_platform_darwin/9bc442db: performing regular expression - '^Darwin$' on file: /Users/siddiq90/Documents/GitHubD
+    esktop/buildtest/var/tests/generic.local.bash/run_only_platform/run_only_platform_darwin/9bc442db/run_only_platform_darw
+    in.out
+    run_only_platform_darwin/9bc442db: Regular Expression Match - Success!
+                                                          Test Summary
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+    ┃ Builder                       ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex,     ┃ ReturnCode ┃ Runtime  ┃
+    ┃                               ┃                    ┃        ┃ Runtime)                       ┃            ┃          ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+    │ run_only_platform_darwin/9bc4 │ generic.local.bash │ PASS   │ False True False               │ 0          │ 0.281197 │
+    │ 42db                          │                    │        │                                │            │          │
+    └───────────────────────────────┴────────────────────┴────────┴────────────────────────────────┴────────────┴──────────┘
+
+
+
+    Passed Tests: 1/1 Percentage: 100.000%
+    Failed Tests: 0/1 Percentage: 0.000%
+
+
+    Writing Logfile to: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/logs/buildtest_1edlfmz_.log
+
 
 run_only - scheduler
 ~~~~~~~~~~~~~~~~~~~~~
@@ -862,4 +949,88 @@ we run test only if host distro is ``darwin``.
 
 This test will run successfully because this was ran on a Mac OS (darwin) system.
 
-.. program-output:: cat docgen/buildspecs/overview/run_only_distro.txt
+.. code-block:: console
+
+
+    bash-3.2$ buildtest build -b tutorials/run_only_distro.yml
+    ╭───────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────╮
+    │                                                                                                                      │
+    │ User:               siddiq90                                                                                         │
+    │ Hostname:           DOE-7086392.local                                                                                │
+    │ Platform:           Darwin                                                                                           │
+    │ Current Time:       2021/12/07 22:50:22                                                                              │
+    │ buildtest path:     /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest                                  │
+    │ buildtest version:  0.11.0                                                                                           │
+    │ python path:        /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python                           │
+    │ python version:     3.7.3                                                                                            │
+    │ Configuration File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml                  │
+    │ Test Directory:     /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests                                      │
+    │ Command:            /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest build -b                         │
+    │ tutorials/run_only_distro.yml                                                                                        │
+    │                                                                                                                      │
+    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+    ───────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────
+    Discovered Buildspecs:  1
+    Excluded Buildspecs:  0
+    Detected Buildspecs after exclusion:  1
+                                   Discovered buildspecs
+    ╔═════════════════════════════════════════════════════════════════════════════════╗
+    ║ Buildspecs                                                                      ║
+    ╟─────────────────────────────────────────────────────────────────────────────────╢
+    ║ /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/run_only_distro.yml ║
+    ╚═════════════════════════════════════════════════════════════════════════════════╝
+    ────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────
+    [run_only_linux_distro][/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/run_only_distro.yml]: test is skipped because this test is expected to run on linux distro: ['centos'] but detected linux distro: darwin.
+    Valid Buildspecs: 1
+    Invalid Buildspecs: 0
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/run_only_distro.yml: VALID
+
+
+    Total builder objects created: 1
+
+
+                                                        Builder Details
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder                        ┃ Executor           ┃ description                    ┃ buildspecs                    ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ run_only_macos_distro/6c9a59e7 │ generic.local.bash │ Run test only if distro is     │ /Users/siddiq90/Documents/Git │
+    │                                │                    │ darwin.                        │ HubDesktop/buildtest/tutorial │
+    │                                │                    │                                │ s/run_only_distro.yml         │
+    └────────────────────────────────┴────────────────────┴────────────────────────────────┴───────────────────────────────┘
+    ──────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────
+    [22:50:22] run_only_macos_distro/6c9a59e7: Creating test directory: /Users/siddiq90/Documents/GitHubDesktop/ base.py:421
+               buildtest/var/tests/generic.local.bash/run_only_distro/run_only_macos_distro/6c9a59e7
+               run_only_macos_distro/6c9a59e7: Creating the stage directory: /Users/siddiq90/Documents/GitHubDes base.py:432
+               ktop/buildtest/var/tests/generic.local.bash/run_only_distro/run_only_macos_distro/6c9a59e7/stage
+               run_only_macos_distro/6c9a59e7: Writing build script: /Users/siddiq90/Documents/GitHubDesktop/bui base.py:550
+               ldtest/var/tests/generic.local.bash/run_only_distro/run_only_macos_distro/6c9a59e7/run_only_macos
+               _distro_build.sh
+    ──────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────
+    ______________________________
+    Launching test: run_only_macos_distro/6c9a59e7
+    run_only_macos_distro/6c9a59e7: Running Test via command: bash --norc --noprofile -eo pipefail
+    run_only_macos_distro_build.sh
+    run_only_macos_distro/6c9a59e7: Test completed with returncode: 0
+    run_only_macos_distro/6c9a59e7: Test completed in 0.104622 seconds
+    run_only_macos_distro/6c9a59e7: Writing output file -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/gener
+    ic.local.bash/run_only_distro/run_only_macos_distro/6c9a59e7/run_only_macos_distro.out
+    run_only_macos_distro/6c9a59e7: Writing error file - /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic
+    .local.bash/run_only_distro/run_only_macos_distro/6c9a59e7/run_only_macos_distro.err
+    run_only_macos_distro/6c9a59e7: performing regular expression - '^Darwin$' on file: /Users/siddiq90/Documents/GitHubDesk
+    top/buildtest/var/tests/generic.local.bash/run_only_distro/run_only_macos_distro/6c9a59e7/run_only_macos_distro.out
+    run_only_macos_distro/6c9a59e7: Regular Expression Match - Success!
+                                                          Test Summary
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+    ┃ Builder                        ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex,    ┃ ReturnCode ┃ Runtime  ┃
+    ┃                                ┃                    ┃        ┃ Runtime)                      ┃            ┃          ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+    │ run_only_macos_distro/6c9a59e7 │ generic.local.bash │ PASS   │ False True False              │ 0          │ 0.104622 │
+    └────────────────────────────────┴────────────────────┴────────┴───────────────────────────────┴────────────┴──────────┘
+
+
+
+    Passed Tests: 1/1 Percentage: 100.000%
+    Failed Tests: 0/1 Percentage: 0.000%
+
+
+    Writing Logfile to: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/logs/buildtest_h1bbn_wt.log
