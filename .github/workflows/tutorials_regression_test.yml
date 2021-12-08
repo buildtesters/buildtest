@@ -4,7 +4,8 @@ on:
   pull_request:
     branches: [ devel ]
 
-buildtest_tutorial_container:
+jobs:
+  buildtest_tutorial_container:
     needs: build_container
     runs-on: ubuntu-latest
     container:
