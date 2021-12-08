@@ -4,6 +4,10 @@ import sys
 
 import coverage
 import pytest
+
+here = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, here)
+
 from buildtest.defaults import BUILDTEST_USER_HOME, VAR_DIR
 from buildtest.utils.file import is_dir
 
