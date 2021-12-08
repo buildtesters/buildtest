@@ -1,3 +1,7 @@
+#!/bin/bash
+## This script is used to setup spack container with appropriate environment in-order to perform buildtest tutorial.
+## For more details see spack tutorial: https://spack-tutorial.readthedocs.io/en/latest/
+
 git clone https://github.com/spack/spack ~/spack
 cd ~/spack
 git checkout releases/v0.16

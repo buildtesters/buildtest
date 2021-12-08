@@ -48,7 +48,7 @@ or `pipenv <https://pipenv.readthedocs.io/en/latest/>`_ to manage your python en
        ::
 
            python3 -m venv $HOME/buildtest
-           source $HOME/buildtest/activate
+           source $HOME/buildtest/bin/activate
            cd buildtest
            source setup.sh
 

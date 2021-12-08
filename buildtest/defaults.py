@@ -59,6 +59,9 @@ BUILDSPEC_DEFAULT_PATH = [
 DEFAULT_SETTINGS_FILE = os.path.join(
     BUILDTEST_ROOT, "buildtest", "settings", "config.yml"
 )
+TUTORIALS_SETTINGS_FILE = os.path.join(
+    BUILDTEST_ROOT, "buildtest", "settings", "spack_container.yaml"
+)
 DEFAULT_SETTINGS_SCHEMA = os.path.join(
     BUILDTEST_ROOT, "buildtest", "schemas", "settings.schema.json"
 )

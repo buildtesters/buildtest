@@ -5,6 +5,7 @@ system:
     description: Generic System
     moduletool: lmod
     testdir: "/home/spack/runs"
+    buildspec_roots: [$BUILDTEST_ROOT/examples]
     executors:
       local:
         bash:
@@ -40,4 +41,4 @@ system:
       url: https://my.cdash.org/
       project: buildtest
       site: generic
-      buildname: tutorials
+      buildname: buildtest_spack_tutorial

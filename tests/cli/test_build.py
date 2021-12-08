@@ -1,4 +1,5 @@
 import os
+import shutil
 import tempfile
 
 import pytest
@@ -162,7 +163,10 @@ def test_buildspec_tag_executor():
 
 
 @pytest.mark.cli
-def test_build_multi_executors():
+def test_build_csh_executor():
+
+    if not shutil.which("csh"):
+        pytest.skip("Unable to run this test since it requires 'csh'")
 
     system = BuildTestSystem()
 
