@@ -9,14 +9,17 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/buildtesters/buildtest_spack
+      options: "-u spack"
     steps:
       - name: debug in container
         run: |
+          whoami
           which git
           git --version
       - uses: actions/checkout@v2
       - name: regression test in container
         run: |
+          whoami
           cd $GITHUB_WORKSPACE
           ls -la $GITHUB_WORKSPACE
           ls -la $HOME
