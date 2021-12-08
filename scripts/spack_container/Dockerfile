@@ -1,5 +1,16 @@
 FROM spack/tutorial:ecp21
 
+# upgrade git version see https://github.com/actions/checkout/issues/238 and https://phoenixnap.com/kb/add-apt-repository-command-not-found-ubuntu
+USER root
+RUN apt update && \
+    apt-get update && \
+    # need to install following package in-order to get apt-get-repository
+    apt install -y software-properties-common && \
+    add-apt-repository ppa:git-core/ppa -y && \
+    apt-get update && \
+    apt-get install git -y
+
+USER spack
 RUN git clone https://github.com/spack/spack ~/spack && \
     cd ~/spack && \
     git checkout releases/v0.16 && \
