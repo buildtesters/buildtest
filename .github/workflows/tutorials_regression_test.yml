@@ -6,7 +6,6 @@ on:
 
 jobs:
   buildtest_tutorial_container:
-    needs: build_container
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/buildtesters/buildtest_spack
