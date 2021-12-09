@@ -261,7 +261,7 @@ by all tests.
 buildtest will write a ``before_script.sh`` for every executor.
 This can be found in ``$BUILDTEST_ROOT/var/executors`` directory as shown below
 
-.. command-output:: tree $BUILDTEST_ROOT/var/executors
+.. command-output:: tree $BUILDTEST_ROOT/var/executor
 
 If you run a test using this executor you will see the code is inserted from `before_script.sh` which is sourced
 for all given test.
