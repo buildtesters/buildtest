@@ -1,6 +1,28 @@
 CHANGELOG
 =========
 
+v0.12.0 (TBD)
+--------------
+
+- Make use of `rich <https://rich.readthedocs.io/en/stable/index.html>`_ python library for printing output and utilized this throughout codebase. We have removed ``termcolor`` and ``tabulate`` library used for printing. `#896 <https://github.com/buildtesters/buildtest/pull/896>`_
+- Slight change to `spack test` behavior when generating script. `#893 <https://github.com/buildtesters/buildtest/pull/893>`_
+- Add ``state`` property in **status** section to allow one to explictly mark status of test. This can be useful to explicitly fail test. `#892 <https://github.com/buildtesters/buildtest/pull/892>`_
+- buildtest will automatically build buildspec cache if file not found when running **buildtest build** command. This was an issue when building with tags, executors. `#898 <https://github.com/buildtesters/buildtest/pull/898>`_
+- Add new option ``buildtest build --account`` to specify account name for batch job submissions. `#899 <https://github.com/buildtesters/buildtest/pull/899>`_
+- Add new command to show debug report ``buildtest debugreport`` - `#902 <https://github.com/buildtesters/buildtest/pull/902>`_
+- Change behavior of ``buildtest inspect name`` now one can specify a unique record by hash via ``/`` followed by test ID. Remove ``buildtest inspect name --all`` option. - `#904 <https://github.com/buildtesters/buildtest/pull/904>`_
+- Remove ``buildtest inspect id`` command this can now be done via ``buildtest inspect name`` `#906 <https://github.com/buildtesters/buildtest/pull/906>`_
+- Remove property ``load_default_buildspecs`` from configuration file and default specs are loaded if no root trees are specified. `#909 <https://github.com/buildtesters/buildtest/pull/909>`_
+- Introduce buildtest tutorial that can be run in docker container - `#917 <https://github.com/buildtesters/buildtest/pull/917>`_, `#918  <https://github.com/buildtesters/buildtest/pull/918>`_, `#942 <https://github.com/buildtesters/buildtest/pull/942/>`_
+- Add workflow to build tutorial container to ghcr. `#926 <https://github.com/buildtesters/buildtest/pull/926>`_ 
+- Add command ``buildtest config edit`` to edit configuration file `#920 <https://github.com/buildtesters/buildtest/pull/920>`_
+- Add support for declaring module commands in executor settings via ``module`` property.  `#925 <https://github.com/buildtesters/buildtest/pull/925>`_
+- Remove ``buildtest config summary`` command - `#922 <https://github.com/buildtesters/buildtest/pull/922>`_
+- Change behavior of ``buildtest config compilers find`` to display content of configuration without updating configuration file. One can automatically update config file via ``buildtest config compilers find --update``. `#924 <https://github.com/buildtesters/buildtest/pull/924>`_
+- Change behavior of how test are launched using `bash`, `csh`, `sh` shell when invoking build script. `#929 <https://github.com/buildtesters/buildtest/pull/929/>`_
+- Fix CDASH bug when multiple runs of same test were lost during upload. `#891 <https://github.com/buildtesters/buildtest/pull/891>`_
+- Fix issue where buildtest incorrectly detected Torque as PBS Scheduler even though we don't support Torque at the moment `#936 <https://github.com/buildtesters/buildtest/pull/936>`_
+
 v0.11.0 (Sep 9th, 2021)
 -------------------------
 
