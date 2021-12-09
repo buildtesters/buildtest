@@ -241,48 +241,38 @@ Default commands run per executors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can configure an executor to run a set of commands when using an executor. We
-can do this via ``before_script`` field that is a string type that expects bash commands.
+can do this via ``before_script`` field that is a string type that can be used to specify
+shell commands.
 
-This can be demonstrated with an executor name **local.e4s** responsible for
-building `E4S Testsuite <https://github.com/E4S-Project/testsuite>`_
+In this example below we have a bash executor will define some shell code that will be run when
+using this executor. The content of the `before_script` will be inserted in a shell script that is sourced
+by all tests.
 
 .. code-block:: yaml
 
-    local:
-      e4s:
-        description: "E4S testsuite locally"
-        shell: bash
-        before_script: |
-          cd $SCRATCH
-          git clone https://github.com/E4S-Project/testsuite.git
-          cd testsuite
-          source /global/common/software/spackecp/luke-wyatt-testing/spack/share/spack/setup-env.sh
-          source setup.sh
+      local:
+        bash:
+          description: submit jobs on local machine using bash shell
+          shell: bash
+          before_script: |
+            today=$(date "+%D")
+            echo "Today is $today, running test with user: $(whoami)"
 
-The `e4s` executor attempts to clone E4S Testsuite in $SCRATCH and activate
-a spack environment and run the initialize script ``source setup.sh``. buildtest
-will write a ``before_script.sh`` for every executor.
-This can be found in ``var/executors`` directory as shown below
+buildtest will write a ``before_script.sh`` for every executor.
+This can be found in ``$BUILDTEST_ROOT/var/executors`` directory as shown below
+
+.. command-output:: tree $BUILDTEST_ROOT/var/executor
+
+If you run a test using this executor you will see the code is inserted from `before_script.sh` which is sourced
+for all given test.
 
 .. code-block:: console
 
-    $ tree var/executors/
-    var/executors/
-    |-- local.bash
-    |   |-- before_script.sh
-    |-- local.e4s
-    |   |-- before_script.sh
-    |-- local.python
-    |   |-- before_script.sh
-    |-- local.sh
-    |   |-- before_script.sh
+    $ cat  $BUILDTEST_ROOT/var/executor/generic.local.bash/before_script.sh
+    #!/bin/bash
+    today=$(date "+%D")
+    echo "Today is $today, running test with user: $(whoami)"
 
-
-    4 directories, 4 files
-
-The ``before_script`` field is available for all executors and
-if its not specified the file will be empty. Every test will source these scripts for
-the appropriate executor.
 
 Specifying Modules
 ~~~~~~~~~~~~~~~~~~~~
