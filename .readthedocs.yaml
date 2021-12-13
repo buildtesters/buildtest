@@ -17,7 +17,6 @@ build:
     - gfortran
     - csh
     - zsh
-    - tree
 
 formats:
   - pdf

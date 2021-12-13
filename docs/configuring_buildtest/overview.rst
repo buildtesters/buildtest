@@ -261,7 +261,14 @@ by all tests.
 buildtest will write a ``before_script.sh`` for every executor.
 This can be found in ``$BUILDTEST_ROOT/var/executors`` directory as shown below
 
-.. command-output:: tree $BUILDTEST_ROOT/var/executor
+.. code-block:: console
+
+    $ find $BUILDTEST_ROOT/var/executor -type f
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/executor/generic.local.bash/before_script.sh
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/executor/generic.local.csh/before_script.sh
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/executor/generic.local.zsh/before_script.sh
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/executor/generic.local.sh/before_script.sh
+
 
 If you run a test using this executor you will see the code is inserted from `before_script.sh` which is sourced
 for all given test.
