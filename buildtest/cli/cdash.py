@@ -122,7 +122,7 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
         sys.exit("Please specify a buildname")
 
     try:
-        r = requests.get(cdash_url)
+        requests.get(cdash_url)
     except requests.ConnectionError as err:
         print(
             "\nShown below is the CDASH settings from configuration file:",
@@ -167,7 +167,9 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
                     # test_data = tests_data[0]
 
                     test = {}
-                    test["name"] = test_name + "/" + test_data["id"]
+                    # test["name"] = test_name + "/" + test_data["id"]
+                    test["name"] = test_name
+                    test["id"] = test_data["id"]
 
                     state = test_data["state"]
                     if state == "PASS":
@@ -192,7 +194,6 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
                     test["user"] = test_data["user"]
                     test["hostname"] = test_data["hostname"]
                     test["schemafile"] = test_data["schemafile"]
-
                     test["tags"] = test_data["tags"]
                     test["executor"] = test_data["executor"]
                     test["compiler"] = test_data["compiler"]
@@ -252,6 +253,7 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
 
     for test in tests:
         test_element = ET.SubElement(testing_element, "Test", Status=test["status"])
+        # ET.SubElement(test_element, "id").text = test["id"]
         ET.SubElement(test_element, "Name").text = test["name"]
         ET.SubElement(test_element, "Description").text = test["description"]
         ET.SubElement(test_element, "FullCommandLine").text = test["command"]
@@ -280,6 +282,7 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
 
         for field in [
             "user",
+            "id",
             "hostname",
             "description",
             "command",
