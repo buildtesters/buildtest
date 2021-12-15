@@ -12,7 +12,6 @@ from buildtest.buildsystem.scriptbuilder import ScriptBuilder
 from buildtest.buildsystem.spack import SpackBuilder
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import console
-from buildtest.exceptions import BuildTestError
 from buildtest.utils.tools import deep_get
 
 
