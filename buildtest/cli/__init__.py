@@ -541,7 +541,7 @@ def config_menu(subparsers):
     subparsers_config.add_parser(
         "validate", help="Validate buildtest settings file with schema."
     )
-    subparsers_config.add_parser("view", help="View Buildtest Configuration File")
+    subparsers_config.add_parser("view", help="View configuration file")
 
     executor_group = executors.add_mutually_exclusive_group()
 
