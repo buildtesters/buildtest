@@ -39,9 +39,6 @@ from buildtest.system import BuildTestSystem
 from buildtest.utils.file import create_dir, is_file, remove_file, resolve_path
 from rich.traceback import install
 
-# column width for linewrap for argparse library
-os.environ["COLUMNS"] = "120"
-
 
 def main():
     """Entry point to buildtest."""

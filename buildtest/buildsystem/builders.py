@@ -12,7 +12,6 @@ from buildtest.buildsystem.scriptbuilder import ScriptBuilder
 from buildtest.buildsystem.spack import SpackBuilder
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import console
-from buildtest.exceptions import BuildTestError
 from buildtest.utils.tools import deep_get
 
 
@@ -55,37 +54,39 @@ class Builder:
         self.testdir = testdir
         self.buildexecutor = buildexecutor
 
-        if not rebuild:
-            self.rebuild = 1
-        else:
-            # FIX LINE BELOW
-            self.rebuild = rebuild or 1
-            self.rebuild = int(rebuild)
+        self.rebuild = rebuild or 1
 
         self.bp = bp
         self.filters = filters
 
-        if deep_get(self.filters, "maintainers"):
-            if not self.bp.recipe.get("maintainers"):
-                raise BuildTestError(
-                    f"[{self.bp.buildspec}]: skipping test because maintainers field is not specified when using buildtest build --filter maintainers={self.filters['maintainers'] }"
-                )
-
-            if self.filters["maintainers"] not in self.bp.recipe.get("maintainers"):
-                raise BuildTestError(
-                    f"[{self.bp.buildspec}]: skipping buildspec due to filter by maintainers: {self.filters['maintainers']}"
-                )
-
         self.builders = []
+
+        if deep_get(self.filters, "maintainers") and not self.bp.recipe.get(
+            "maintainers"
+        ):
+            console.print(
+                f"{self.bp.buildspec}: skipping test because [italic]'maintainers'[/italic] field is not specified in buildspec."
+            )
+            return
+
+        if deep_get(self.filters, "maintainers") and self.filters[
+            "maintainers"
+        ] not in self.bp.recipe.get("maintainers"):
+            console.print(
+                f"{self.bp.buildspec}: unable to find maintainer: {self.filters['maintainers']} in buildspec which contains the following maintainers: {self.bp.recipe.get('maintainers')} therefore we skip this test"
+            )
+            return
 
         for count in range(self.rebuild):
             for name in self.get_test_names():
                 recipe = self.bp.recipe["buildspecs"][name]
 
                 if recipe.get("skip"):
-                    msg = f"{name}: skipping test due to 'skip' property."
+                    msg = f"{name}: skipping test due to [italic]'skip'[/italic] property."
                     self.logger.info(msg)
-                    console.print(msg, style="red")
+                    console.print(
+                        f"[red]{name}: skipping test due to [italic]'skip'[/italic] property."
+                    )
                     continue
 
                 # apply filter by tags or type if --filter option is specified
@@ -110,9 +111,6 @@ class Builder:
                     print(
                         "%s is not recognized by buildtest, skipping." % recipe["type"]
                     )
-
-        for builder in self.builders:
-            self.logger.debug(builder)
 
     def _generate_builders(self, recipe, name, compiler_name=None):
         """This method is responsible for generating builders by applying regular expression specified by
@@ -182,7 +180,6 @@ class Builder:
                 )
 
             if builder:
-                self.logger.debug(builder)
                 builders.append(builder)
 
         return builders
@@ -347,6 +344,10 @@ class Builder:
     def get_builders(self):
         """Return a list of builder objects"""
         return self.builders
+
+    def get_filtered_buildspec(self):
+        """Return a list of buildspec that were filtered out"""
+        return self.filtered_buildspecs
 
     def get_test_names(self):
         """Return the list of test names for the loaded Buildspec recipe"""

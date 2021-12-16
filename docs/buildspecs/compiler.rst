@@ -1,3 +1,5 @@
+.. Note:: Please see :ref:`tutorial_setup` before you proceed with this section
+
 .. _compiler_schema:
 
 Compiler Schema

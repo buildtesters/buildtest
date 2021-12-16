@@ -12,27 +12,37 @@ Buildspec Tutorial
    buildspecs/spack
    buildspecs/advanced
 
+Please proceed to :ref:`buildspec_overview` to get an overview of how to write buildspecs. This section can be done on your workstation.
 
 .. _tutorial_setup:
 
 Tutorials Setup
 ----------------
 
-To get started for this tutorial we will start an interactive shell in spack container for this exercise. We need
-to bind mount $BUILDTEST_ROOT into the container in order to use buildtest inside the container.
+.. note::
+
+    The tutorial :ref:`compiler schema <compiler_schema>` and :ref:`spack schema<spack_schema>`.
+
+
+To get started for this tutorial, you will need `docker <https://docs.docker.com/get-docker/>`_ on your machine to pull the container. You can pull the
+container by running the following following::
+
+    docker pull ghcr.io/buildtesters/buildtest_spack:latest
+
+Next we can start an interactive shell into the container as follows::
+
+    docker run -it ghcr.io/buildtesters/buildtest_spack:latest
+
+We need to install buildtest and setup environment for this tutorial. This can be done as follows
 
 .. code-block:: console
 
-    docker run -it -v $BUILDTEST_ROOT:/home/spack/buildtest ghcr.io/buildtesters/buildtest_spack:latest
+    git clone https://github.com/buildtesters/buildtest.git
+    cd buildtest
+    source scripts/spack_container/setup.sh
 
-
-Next, lets source the setup script required for using buildtest inside the container
-
-.. code-block:: console
-
-    source $HOME/buildtest/scripts/spack_container/setup.sh
-
-If everything is done correctly you will see ``buildtest``, ``spack`` and ``module`` command in your path
+This container provides a software stack built with `spack <https://spack.readthedocs.io/en/latest/>`_, you should see
+``buildtest``, ``spack`` and ``module`` command in your path. The configuration file used for this container is set via `BUILDTEST_CONFIGFILE`.
 
 .. code-block::
 
@@ -46,3 +56,6 @@ If everything is done correctly you will see ``buildtest``, ``spack`` and ``modu
 
     Modules based on Lua: Version 8.3  2020-01-27 10:32 -06:00
         by Robert McLay mclay@tacc.utexas.edu
+
+    (buildtest) spack@87354844bbf3:~/buildtest$ echo $BUILDTEST_CONFIGFILE
+    /home/spack/buildtest/buildtest/settings/spack_container.yml

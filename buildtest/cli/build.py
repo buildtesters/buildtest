@@ -710,19 +710,18 @@ class BuildTest:
 
             valid_buildspecs.append(buildspec)
 
-            try:
-                builder = Builder(
-                    bp=bp,
-                    buildexecutor=self.buildexecutor,
-                    filters=self.filter_buildspecs,
-                    testdir=self.testdir,
-                    rebuild=self.rebuild,
-                    buildtest_system=self.system,
-                    configuration=self.configuration,
-                )
-            except BuildTestError as err:
+            builder = Builder(
+                bp=bp,
+                buildexecutor=self.buildexecutor,
+                filters=self.filter_buildspecs,
+                testdir=self.testdir,
+                rebuild=self.rebuild,
+                buildtest_system=self.system,
+                configuration=self.configuration,
+            )
+
+            if not builder.get_builders():
                 filtered_buildspecs.append(buildspec)
-                logger.error(err)
                 continue
 
             self.builders += builder.get_builders()
@@ -736,13 +735,13 @@ class BuildTest:
             console.print(msg)
 
         # print any skipped buildspecs if they failed to validate during build stage
-        if len(self.invalid_buildspecs) > 0:
+        if self.invalid_buildspecs:
             for buildspec in self.invalid_buildspecs:
 
                 msg = f"[red]{buildspec}: INVALID"
                 console.print(msg)
 
-        if len(filtered_buildspecs) > 0:
+        if filtered_buildspecs:
             table = Table("[blue]Buildspecs", title="Buildspecs Filtered out")
 
             for test in filtered_buildspecs:
@@ -751,9 +750,13 @@ class BuildTest:
 
         # if no builders found we return from this method
         if not self.builders:
-            sys.exit("Unable to create any builder objects")
+            console.print(
+                "[red]\nbuildtest is unable to create any tests because there are no valid buildspecs. "
+            )
 
-        print("\n")
+            print(f"\nPlease see logfile: {BUILDTEST_LOGFILE}")
+            sys.exit(1)
+
         print("Total builder objects created:", len(self.builders))
         print("\n")
 
