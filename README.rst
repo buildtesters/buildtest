@@ -62,15 +62,13 @@
 buildtest
 ---------
 
-`buildtest <https://buildtest.rtfd.io/>`_ is a testing framework for HPC facilities to write acceptance test
-for their system. In buildtest, you will write tests in `YAML <https://yaml.org/>`_
-called **Buildspecs** which is a test recipe used by buildtest for generating test scripts.
-buildtest will process *buildspecs* and automatically create shell-scripts and run them
-on your system. buildtest supports `IBM Spectrum LSF <https://www.ibm.com/support/knowledgecenter/SSWRJV_10.1.0/lsf_welcome/lsf_welcome.html>`_,
-`Slurm <https://slurm.schedmd.com/>`_, `PBS <https://www.openpbs.org/>`_ and `Cobalt <https://trac.mcs.anl.gov/projects/cobalt>`_ batch scheduler for job submission.
-buildtest makes use of `jsonschema <https://json-schema.org/>`_ to define structure of buildspecs used for validating buildspecs. 
+`buildtest <https://buildtest.rtfd.io/>`_ is a testing framework that automates build/execution of tests which allows HPC facilities to develop
+test for their system. In buildtest, tests are written as test recipes called **Buildspecs** which is a `YAML <https://yaml.org/>`_
+used by buildtest for generating shell-scripts and run them on your system. Buildtest will validate buildspecs using `jsonschema <https://json-schema.org/>`_
+which helps define structure of buildspec when writing test. buildtest can support batch submission to job schedulers including: `IBM Spectrum LSF <https://www.ibm.com/support/knowledgecenter/SSWRJV_10.1.0/lsf_welcome/lsf_welcome.html>`_,
+`Slurm <https://slurm.schedmd.com/>`_, `PBS <https://www.openpbs.org/>`_ and `Cobalt <https://trac.mcs.anl.gov/projects/cobalt>`_ .
 
-If you want to learn more about buildtest read https://buildtest.readthedocs.io/en/latest/what_is_buildtest.html.
+If you want to learn more about buildtest please read `Summary of Buildtest <https://buildtest.readthedocs.io/en/latest/what_is_buildtest.html>`_.
 
 Installation
 --------------
@@ -116,7 +114,7 @@ Documentation
 buildtest `documentation <http://buildtest.readthedocs.io/en/latest/>`_  is your
 source for getting help with buildtest. If you get stuck check out the
 `current issues <https://github.com/buildtesters/buildtest/issues>`_ to see
-if you face similar issue. If all else fails please create a ticket.
+if you face similar issue. If all else fails please create an `issue <https://buildtest.readthedocs.io/en/devel/what_is_buildtest.html>`_.
 
 Source Code
 ------------
@@ -133,7 +131,7 @@ Slack
 ------
 
 Slack is the **preferred** method for communication and user support with buildtest.
-If you haven't joined slack click the `self invite <https://hpcbuildtest.herokuapp.com/>`_
+If you haven't joined slack click the `link <https://hpcbuildtest.herokuapp.com/>`_
 to register your account. Once you have an account you can access slack channel at https://hpcbuildtest.slack.com and post
 your questions in **#general** channel.
 
