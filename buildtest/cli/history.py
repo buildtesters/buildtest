@@ -4,7 +4,7 @@ import re
 import sys
 
 from buildtest.defaults import BUILD_HISTORY_DIR, console
-from buildtest.utils.file import is_dir, load_json, walk_tree
+from buildtest.utils.file import is_dir, load_json, read_file, walk_tree
 from rich.pretty import pprint
 from rich.table import Column, Table
 
@@ -22,7 +22,7 @@ def build_history(args):
         list_builds(header=args.no_header, terse=args.terse)
 
     if args.history == "query":
-        query_builds(build_id=args.id, log_option=args.log)
+        query_builds(build_id=args.id, log_option=args.log, output=args.output)
 
 
 def sorted_alphanumeric(data):
@@ -175,13 +175,14 @@ def list_builds(header=None, terse=None):
     console.print(history_table)
 
 
-def query_builds(build_id, log_option):
+def query_builds(build_id, log_option, output):
     """This method is called when user runs `buildtest history query` which will
     report the build.json and logfile.
 
     Args:
         build_id (int): Build Identifier which is used for querying history file. The indentifier is an integer starting from 0
         log_option (bool): Option to control whether log file is opened in editor. This is specified via ``buildtest history query -l <id>``
+        output (bool): Display output.txt file which contains output of ``buildtest build`` command. This is passed via ``buildtest history query -o``
     """
 
     if not is_dir(BUILD_HISTORY_DIR):
@@ -203,6 +204,11 @@ def query_builds(build_id, log_option):
         os.system(f"vim {content['logpath']}")
         return
 
-    # print(json.dumps(content, indent=2))
+    if output:
+        output_content = read_file(
+            os.path.join(BUILD_HISTORY_DIR, str(build_id), "output.txt")
+        )
+        print(output_content)
+        return
 
     pprint(content)

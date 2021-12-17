@@ -418,7 +418,7 @@ class BuilderBase(ABC):
 
         msg = f"Creating test directory: {self.test_root}"
         self.logger.debug(msg)
-        console.log(f"[blue]{self}:[/] {msg}")
+        console.print(f"[blue]{self}:[/] {msg}")
 
         self.metadata["testroot"] = self.test_root
 
@@ -429,7 +429,7 @@ class BuilderBase(ABC):
         msg = f"Creating the stage directory: {self.stage_dir}"
         self.logger.debug(msg)
 
-        console.log(f"[blue]{self}:[/] {msg}")
+        console.print(f"[blue]{self}:[/] {msg}")
 
         self.metadata["stagedir"] = self.stage_dir
 
@@ -547,7 +547,7 @@ class BuilderBase(ABC):
         # self.runcmd = self.run_command()
         # self.metadata["command"] = self.runcmd
 
-        console.log(f"[blue]{self}:[/] Writing build script: {self.build_script}")
+        console.print(f"[blue]{self}:[/] Writing build script: {self.build_script}")
 
     def _write_test(self):
         """This method is responsible for invoking ``generate_script`` that

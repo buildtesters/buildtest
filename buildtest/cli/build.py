@@ -48,6 +48,33 @@ from rich.table import Table
 logger = logging.getLogger(__name__)
 
 
+import traceback
+
+
+# Context manager that copies stdout and any exceptions to a log file
+class Tee(object):
+    def __init__(self, filename):
+        self.file = open(filename, "w")
+        self.stdout = sys.stdout
+
+    def __enter__(self):
+        sys.stdout = self
+
+    def __exit__(self, exc_type, exc_value, tb):
+        sys.stdout = self.stdout
+        if exc_type is not None:
+            self.file.write(traceback.format_exc())
+        self.file.close()
+
+    def write(self, data):
+        self.file.write(data)
+        self.stdout.write(data)
+
+    def flush(self):
+        self.file.flush()
+        self.stdout.flush()
+
+
 def resolve_testdirectory(configuration, testdir=None):
     """This method resolves which test directory to select. For example, one
     can specify test directory via command line ``buildtest build --testdir <path>``
@@ -812,7 +839,7 @@ class BuildTest:
 
         if not self.builders:
             raise BuildTestError(
-                "Unable to create any test during build phase. Please check buildtest.log for more details"
+                f"Unable to create any test during build phase. Please check {BUILDTEST_LOGFILE} for more details"
             )
 
     def run_phase(self):
@@ -1001,15 +1028,16 @@ class BuildTest:
         create_dir(BUILD_HISTORY_DIR)
         num_files = len(os.listdir(BUILD_HISTORY_DIR))
         # create a sub-directory in $BUILDTEST_ROOT/var/.history/ that is incremented for every build starting with 0, 1, 2, ...
-        build_history_dir = os.path.join(BUILD_HISTORY_DIR, str(num_files))
-        create_dir(build_history_dir)
-        build_history_file = os.path.join(build_history_dir, "build.json")
+        self.build_history_dir = os.path.join(BUILD_HISTORY_DIR, str(num_files))
+
+        create_dir(self.build_history_dir)
+        build_history_file = os.path.join(self.build_history_dir, "build.json")
 
         # copy the log file.
         shutil.copyfile(BUILDTEST_LOGFILE, self.logfile.name)
         shutil.copyfile(
             BUILDTEST_LOGFILE,
-            os.path.join(build_history_dir, os.path.basename(self.logfile.name)),
+            os.path.join(self.build_history_dir, os.path.basename(self.logfile.name)),
         )
 
         history_data = {
@@ -1025,7 +1053,7 @@ class BuildTest:
             "configuration": self.configuration.file,
             "system": self.configuration.name(),
             "logpath": os.path.join(
-                build_history_dir, os.path.basename(self.logfile.name)
+                self.build_history_dir, os.path.basename(self.logfile.name)
             ),
             "invalid_buildspecs": self.invalid_buildspecs,
             "buildspecs": {
@@ -1064,6 +1092,10 @@ class BuildTest:
 
         with open(build_history_file, "w") as fd:
             fd.write(json.dumps(history_data, indent=2))
+
+    def get_build_history_dir(self):
+        """Return root of build history directory"""
+        return self.build_history_dir
 
 
 def update_report(valid_builders, report_file):
@@ -1141,6 +1173,7 @@ def update_report(valid_builders, report_file):
         json.dump(report, fd, indent=2)
 
     logger.debug(f"Updating report file: {report_file}")
+    console.print(f"Adding {len(valid_builders)} test results to {report_file}")
     #  BUILDTEST_REPORT_SUMMARY file keeps track of all report files which
     #  contains a single line that denotes path to report file. This file only contains unique report files
 

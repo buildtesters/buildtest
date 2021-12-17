@@ -1,27 +1,27 @@
 $ buildtest inspect query -t openmp_hello_c_example 
-──────────────────────────── openmp_hello_c_example/c4230f86-3ad1-459b-b5ff-927be9f6c1d8 ────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────────── openmp_hello_c_example/975c9ccd-de0f-4dfe-bae6-e77c051aabc0 ───────────────────────────────────────────────────────────────────────────────────────
 executor:  generic.local.bash
 description:  OpenMP Hello World C example
 state:  PASS
 returncode:  0
-runtime:  0.084477
-starttime:  2021/12/06 18:38:28
-endtime:  2021/12/06 18:38:28
-─ Test File: /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/c4230f86/openmp_hello_c_examp… ─
-   1 #!/bin/bash                                                                                                     
-   2                                                                                                                 
-   3                                                                                                                 
-   4 # name of executable                                                                                            
-   5 _EXEC=hello_omp.c.exe                                                                                           
-   6 # Declare environment variables                                                                                 
-   7 export OMP_NUM_THREADS=2                                                                                        
-   8                                                                                                                 
-   9                                                                                                                 
-  10 # Compilation Line                                                                                              
-  11 /usr/bin/gcc -fopenmp -o $_EXEC /home/spack/buildtest/examples/compilers/src/hello_omp.c                        
-  12                                                                                                                 
-  13                                                                                                                 
-  14 # Run executable                                                                                                
-  15 ./$_EXEC                                                                                                        
-  16                                                                                                                 
-  17                                                                                                                 
+runtime:  0.059777
+starttime:  2021/12/17 00:11:21
+endtime:  2021/12/17 00:11:21
+────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/975c9ccd/openmp_hello_c_example.sh ──────────────────────────────────────────────────────────
+   1 #!/bin/bash                                                                                                                                                                                                                           
+   2                                                                                                                                                                                                                                       
+   3                                                                                                                                                                                                                                       
+   4 # name of executable                                                                                                                                                                                                                  
+   5 _EXEC=hello_omp.c.exe                                                                                                                                                                                                                 
+   6 # Declare environment variables                                                                                                                                                                                                       
+   7 export OMP_NUM_THREADS=2                                                                                                                                                                                                              
+   8                                                                                                                                                                                                                                       
+   9                                                                                                                                                                                                                                       
+  10 # Compilation Line                                                                                                                                                                                                                    
+  11 /usr/bin/gcc -fopenmp -o $_EXEC /home/spack/buildtest/examples/compilers/src/hello_omp.c                                                                                                                                              
+  12                                                                                                                                                                                                                                       
+  13                                                                                                                                                                                                                                       
+  14 # Run executable                                                                                                                                                                                                                      
+  15 ./$_EXEC                                                                                                                                                                                                                              
+  16                                                                                                                                                                                                                                       
+  17                                                                                                                                                                                                                                       

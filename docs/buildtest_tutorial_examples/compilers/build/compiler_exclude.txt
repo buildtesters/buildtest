@@ -1,22 +1,20 @@
 $ buildtest build -b /home/spack/buildtest/examples/compilers/compiler_exclude.yml 
-╭──────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────╮
-│                                                                                                                   │
-│ User:               spack                                                                                         │
-│ Hostname:           9d2191ba3cb2                                                                                  │
-│ Platform:           Linux                                                                                         │
-│ Current Time:       2021/12/06 18:38:27                                                                           │
-│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                           │
-│ buildtest version:  0.11.0                                                                                        │
-│ python path:        /home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/python-3.8.6-szj7jukzoj34lkchu │
-│ vzrzbh52kgesac7/bin/python                                                                                        │
-│ python version:     3.8.6                                                                                         │
-│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                  │
-│ Test Directory:     /home/spack/runs                                                                              │
-│ Command:            /home/spack/buildtest/bin/buildtest build -b                                                  │
-│ /home/spack/buildtest/examples/compilers/compiler_exclude.yml                                                     │
-│                                                                                                                   │
-╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-──────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────
+╭────────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────────╮                                                                                                         
+│                                                                                                                                │                                                                                                         
+│ User:               spack                                                                                                      │                                                                                                         
+│ Hostname:           a59dcc0ebfc7                                                                                               │                                                                                                         
+│ Platform:           Linux                                                                                                      │                                                                                                         
+│ Current Time:       2021/12/17 00:11:20                                                                                        │                                                                                                         
+│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                        │                                                                                                         
+│ buildtest version:  0.11.0                                                                                                     │                                                                                                         
+│ python path:        /home/spack/pyenv/buildtest/bin/python                                                                     │                                                                                                         
+│ python version:     3.8.6                                                                                                      │                                                                                                         
+│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                               │                                                                                                         
+│ Test Directory:     /home/spack/runs                                                                                           │                                                                                                         
+│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/compilers/compiler_exclude.yml │                                                                                                         
+│                                                                                                                                │                                                                                                         
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                                                         
+─────────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────────────
 Discovered Buildspecs:  1
 Excluded Buildspecs:  0
 Detected Buildspecs after exclusion:  1
@@ -26,49 +24,41 @@ Detected Buildspecs after exclusion:  1
 ╟───────────────────────────────────────────────────────────────╢
 ║ /home/spack/buildtest/examples/compilers/compiler_exclude.yml ║
 ╚═══════════════════════════════════════════════════════════════╝
-──────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Excluding compiler: gcc_6.5.0 from test generation
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
 /home/spack/buildtest/examples/compilers/compiler_exclude.yml: VALID
-
-
 Total builder objects created: 1
 
 
-                                                   Builder Details                                                   
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Builder                     ┃ Executor           ┃ description                   ┃ buildspecs                     ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ vecadd_gnu_exclude/8d03b54a │ generic.local.bash │ Vector Addition example with  │ /home/spack/buildtest/examples │
-│                             │                    │ GNU compilers but exclude     │ /compilers/compiler_exclude.ym │
-│                             │                    │ gcc_6.5.0                     │ l                              │
-└─────────────────────────────┴────────────────────┴───────────────────────────────┴────────────────────────────────┘
-─────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────
-[18:38:27] vecadd_gnu_exclude/8d03b54a: Creating test directory:                                          base.py:421
-           /home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/8d03b54a                          
-           vecadd_gnu_exclude/8d03b54a: Creating the stage directory:                                     base.py:432
-           /home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/8d03b54a/stage                    
-           vecadd_gnu_exclude/8d03b54a: Writing build script: /home/spack/runs/generic.local.bash/compile base.py:550
-           r_exclude/vecadd_gnu_exclude/8d03b54a/vecadd_gnu_exclude_build.sh                                         
-─────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────
+                                                                                    Builder Details                                                                                    
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Builder                     ┃ Executor           ┃ description                                                      ┃ buildspecs                                                    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ vecadd_gnu_exclude/5da6777b │ generic.local.bash │ Vector Addition example with GNU compilers but exclude gcc_6.5.0 │ /home/spack/buildtest/examples/compilers/compiler_exclude.yml │
+└─────────────────────────────┴────────────────────┴──────────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────┘
+────────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+vecadd_gnu_exclude/5da6777b: Creating test directory: /home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/5da6777b
+vecadd_gnu_exclude/5da6777b: Creating the stage directory: /home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/5da6777b/stage
+vecadd_gnu_exclude/5da6777b: Writing build script: /home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/5da6777b/vecadd_gnu_exclude_build.sh
+────────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ______________________________
-Launching test: vecadd_gnu_exclude/8d03b54a
-vecadd_gnu_exclude/8d03b54a: Running Test via command: bash --norc --noprofile 
+Launching test: vecadd_gnu_exclude/5da6777b
+vecadd_gnu_exclude/5da6777b: Running Test via command: bash --norc --noprofile 
 -eo pipefail vecadd_gnu_exclude_build.sh
-vecadd_gnu_exclude/8d03b54a: Test completed with returncode: 0
-vecadd_gnu_exclude/8d03b54a: Test completed in 0.099937 seconds
-vecadd_gnu_exclude/8d03b54a: Writing output file -  /home/spack/runs/generic.loc
-al.bash/compiler_exclude/vecadd_gnu_exclude/8d03b54a/vecadd_gnu_exclude.out
-vecadd_gnu_exclude/8d03b54a: Writing error file - /home/spack/runs/generic.local
-.bash/compiler_exclude/vecadd_gnu_exclude/8d03b54a/vecadd_gnu_exclude.err
-                                                    Test Summary                                                     
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-┃ Builder                     ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex,    ┃ ReturnCode ┃ Runtime  ┃
-┃                             ┃                    ┃        ┃ Runtime)                      ┃            ┃          ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ vecadd_gnu_exclude/8d03b54a │ generic.local.bash │ PASS   │ N/A N/A N/A                   │ 0          │ 0.099937 │
-└─────────────────────────────┴────────────────────┴────────┴───────────────────────────────┴────────────┴──────────┘
+vecadd_gnu_exclude/5da6777b: Test completed with returncode: 0
+vecadd_gnu_exclude/5da6777b: Test completed in 0.091196 seconds
+vecadd_gnu_exclude/5da6777b: Writing output file -  /home/spack/runs/generic.loc
+al.bash/compiler_exclude/vecadd_gnu_exclude/5da6777b/vecadd_gnu_exclude.out
+vecadd_gnu_exclude/5da6777b: Writing error file - /home/spack/runs/generic.local
+.bash/compiler_exclude/vecadd_gnu_exclude/5da6777b/vecadd_gnu_exclude.err
+                                                       Test Summary                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ Builder                     ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ vecadd_gnu_exclude/5da6777b │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.091196 │
+└─────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
 
 
@@ -76,4 +66,5 @@ Passed Tests: 1/1 Percentage: 100.000%
 Failed Tests: 0/1 Percentage: 0.000%
 
 
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_lrtzbw0f.log
+Adding 1 test results to /home/spack/buildtest/var/report.json
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_owrxll7r.log

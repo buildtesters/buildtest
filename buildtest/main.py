@@ -1,10 +1,11 @@
 """Entry point for buildtest"""
 
 import os
+import shutil
 import webbrowser
 
 from buildtest.cli import get_parser
-from buildtest.cli.build import BuildTest
+from buildtest.cli.build import BuildTest, Tee
 from buildtest.cli.buildspec import (
     BuildspecCache,
     buildspec_find,
@@ -32,6 +33,7 @@ from buildtest.defaults import (
     BUILDTEST_EXECUTOR_DIR,
     BUILDTEST_LOGFILE,
     BUILDTEST_USER_HOME,
+    VAR_DIR,
     console,
 )
 from buildtest.log import init_logfile
@@ -96,27 +98,31 @@ def main():
 
     # buildtest build command
     if args.subcommands in ["build", "bd"]:
+        fname = os.path.join(VAR_DIR, "output.txt")
+        with Tee(fname):
+            cmd = BuildTest(
+                configuration=configuration,
+                buildspecs=args.buildspec,
+                exclude_buildspecs=args.exclude,
+                executors=args.executor,
+                tags=args.tags,
+                filter_buildspecs=args.filter,
+                rebuild=args.rebuild,
+                stage=args.stage,
+                testdir=args.testdir,
+                buildtest_system=system,
+                report_file=args.report,
+                max_pend_time=args.max_pend_time,
+                poll_interval=args.poll_interval,
+                keep_stage_dir=args.keep_stage_dir,
+                retry=args.retry,
+                account=args.account,
+                helpfilter=args.helpfilter,
+            )
+            cmd.build()
 
-        cmd = BuildTest(
-            configuration=configuration,
-            buildspecs=args.buildspec,
-            exclude_buildspecs=args.exclude,
-            executors=args.executor,
-            tags=args.tags,
-            filter_buildspecs=args.filter,
-            rebuild=args.rebuild,
-            stage=args.stage,
-            testdir=args.testdir,
-            buildtest_system=system,
-            report_file=args.report,
-            max_pend_time=args.max_pend_time,
-            poll_interval=args.poll_interval,
-            keep_stage_dir=args.keep_stage_dir,
-            retry=args.retry,
-            account=args.account,
-            helpfilter=args.helpfilter,
-        )
-        cmd.build()
+        build_history_dir = cmd.get_build_history_dir()
+        shutil.move(fname, os.path.join(build_history_dir, "output.txt"))
 
     elif args.subcommands in ["edit", "et"]:
         edit_buildspec(args.buildspec, configuration)

@@ -21,7 +21,7 @@ Tutorials Setup
 
 .. note::
 
-    The tutorial :ref:`compiler schema <compiler_schema>` and :ref:`spack schema<spack_schema>`.
+    The tutorial setup is required if you want to run buildspecs using the the :ref:`compiler <compiler_schema>` and :ref:`spack <spack_schema>` schema.
 
 
 To get started for this tutorial, you will need `docker <https://docs.docker.com/get-docker/>`_ on your machine to pull the container. You can pull the
@@ -33,9 +33,7 @@ Next we can start an interactive shell into the container as follows::
 
     docker run -it ghcr.io/buildtesters/buildtest_spack:latest
 
-We need to install buildtest and setup environment for this tutorial. This can be done as follows
-
-.. code-block:: console
+We need to install buildtest and setup environment for this tutorial. This can be done as follows::
 
     git clone https://github.com/buildtesters/buildtest.git
     cd buildtest

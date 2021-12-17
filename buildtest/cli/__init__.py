@@ -241,6 +241,12 @@ def history_menu(subparsers):
         action="store_true",
         help="Display logfile for corresponding build id",
     )
+    query.add_argument(
+        "-o",
+        "--output",
+        action="store_true",
+        help="view raw output from buildtest build command",
+    )
 
 
 def build_menu(subparsers):
@@ -541,7 +547,7 @@ def config_menu(subparsers):
     subparsers_config.add_parser(
         "validate", help="Validate buildtest settings file with schema."
     )
-    subparsers_config.add_parser("view", help="View Buildtest Configuration File")
+    subparsers_config.add_parser("view", help="View configuration file")
 
     executor_group = executors.add_mutually_exclusive_group()
 
