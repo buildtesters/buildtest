@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-v0.12.0 (TBD)
---------------
+v0.12.0 (Dec 17th, 2021)
+-------------------------
 
 - Make use of `rich <https://rich.readthedocs.io/en/stable/index.html>`_ python library for printing output and utilized this throughout codebase. We have removed ``termcolor`` and ``tabulate`` library used for printing. `#896 <https://github.com/buildtesters/buildtest/pull/896>`_
 - Slight change to `spack test` behavior when generating script. `#893 <https://github.com/buildtesters/buildtest/pull/893>`_
