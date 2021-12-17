@@ -1,22 +1,20 @@
 $ buildtest build -b /home/spack/buildtest/examples/spack/pre_post_cmds.yml 
-╭──────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────╮
-│                                                                                                                   │
-│ User:               spack                                                                                         │
-│ Hostname:           9d2191ba3cb2                                                                                  │
-│ Platform:           Linux                                                                                         │
-│ Current Time:       2021/12/06 18:37:39                                                                           │
-│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                           │
-│ buildtest version:  0.11.0                                                                                        │
-│ python path:        /home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/python-3.8.6-szj7jukzoj34lkchu │
-│ vzrzbh52kgesac7/bin/python                                                                                        │
-│ python version:     3.8.6                                                                                         │
-│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                  │
-│ Test Directory:     /home/spack/runs                                                                              │
-│ Command:            /home/spack/buildtest/bin/buildtest build -b                                                  │
-│ /home/spack/buildtest/examples/spack/pre_post_cmds.yml                                                            │
-│                                                                                                                   │
-╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-──────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────
+╭─────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────╮                                                                                                                
+│                                                                                                                         │                                                                                                                
+│ User:               spack                                                                                               │                                                                                                                
+│ Hostname:           a59dcc0ebfc7                                                                                        │                                                                                                                
+│ Platform:           Linux                                                                                               │                                                                                                                
+│ Current Time:       2021/12/17 00:10:36                                                                                 │                                                                                                                
+│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                 │                                                                                                                
+│ buildtest version:  0.11.0                                                                                              │                                                                                                                
+│ python path:        /home/spack/pyenv/buildtest/bin/python                                                              │                                                                                                                
+│ python version:     3.8.6                                                                                               │                                                                                                                
+│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                        │                                                                                                                
+│ Test Directory:     /home/spack/runs                                                                                    │                                                                                                                
+│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/spack/pre_post_cmds.yml │                                                                                                                
+│                                                                                                                         │                                                                                                                
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                                                                
+─────────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────────────
 Discovered Buildspecs:  1
 Excluded Buildspecs:  0
 Detected Buildspecs after exclusion:  1
@@ -26,49 +24,41 @@ Detected Buildspecs after exclusion:  1
 ╟────────────────────────────────────────────────────────╢
 ║ /home/spack/buildtest/examples/spack/pre_post_cmds.yml ║
 ╚════════════════════════════════════════════════════════╝
-──────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
 /home/spack/buildtest/examples/spack/pre_post_cmds.yml: VALID
-
-
 Total builder objects created: 1
 
 
-                                                   Builder Details                                                   
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Builder                        ┃ Executor           ┃ description  ┃ buildspecs                                   ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ run_pre_post_commands/062b24eb │ generic.local.bash │ Install zlib │ /home/spack/buildtest/examples/spack/pre_pos │
-│                                │                    │              │ t_cmds.yml                                   │
-└────────────────────────────────┴────────────────────┴──────────────┴──────────────────────────────────────────────┘
-─────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────
-[18:37:39] run_pre_post_commands/062b24eb: Creating test directory:                                       base.py:421
-           /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/062b24eb                          
-           run_pre_post_commands/062b24eb: Creating the stage directory:                                  base.py:432
-           /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/062b24eb/stage                    
-           run_pre_post_commands/062b24eb: Writing build script: /home/spack/runs/generic.local.bash/pre_ base.py:550
-           post_cmds/run_pre_post_commands/062b24eb/run_pre_post_commands_build.sh                                   
-─────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────
+                                                        Builder Details                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Builder                        ┃ Executor           ┃ description  ┃ buildspecs                                             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ run_pre_post_commands/75433d4d │ generic.local.bash │ Install zlib │ /home/spack/buildtest/examples/spack/pre_post_cmds.yml │
+└────────────────────────────────┴────────────────────┴──────────────┴────────────────────────────────────────────────────────┘
+────────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+run_pre_post_commands/75433d4d: Creating test directory: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/75433d4d
+run_pre_post_commands/75433d4d: Creating the stage directory: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/75433d4d/stage
+run_pre_post_commands/75433d4d: Writing build script: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/75433d4d/run_pre_post_commands_build.sh
+────────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
 ______________________________
-Launching test: run_pre_post_commands/062b24eb
-run_pre_post_commands/062b24eb: Running Test via command: bash --norc 
+Launching test: run_pre_post_commands/75433d4d
+run_pre_post_commands/75433d4d: Running Test via command: bash --norc 
 --noprofile -eo pipefail run_pre_post_commands_build.sh
-run_pre_post_commands/062b24eb: Test completed with returncode: 0
-run_pre_post_commands/062b24eb: Test completed in 1.675794 seconds
-run_pre_post_commands/062b24eb: Writing output file -  /home/spack/runs/generic.
-local.bash/pre_post_cmds/run_pre_post_commands/062b24eb/run_pre_post_commands.ou
+run_pre_post_commands/75433d4d: Test completed with returncode: 0
+run_pre_post_commands/75433d4d: Test completed in 1.837311 seconds
+run_pre_post_commands/75433d4d: Writing output file -  /home/spack/runs/generic.
+local.bash/pre_post_cmds/run_pre_post_commands/75433d4d/run_pre_post_commands.ou
 t
-run_pre_post_commands/062b24eb: Writing error file - /home/spack/runs/generic.lo
-cal.bash/pre_post_cmds/run_pre_post_commands/062b24eb/run_pre_post_commands.err
-                                                    Test Summary                                                     
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-┃ Builder                      ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex,   ┃ ReturnCode ┃ Runtime  ┃
-┃                              ┃                    ┃        ┃ Runtime)                     ┃            ┃          ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ run_pre_post_commands/062b24 │ generic.local.bash │ PASS   │ N/A N/A N/A                  │ 0          │ 1.675794 │
-│ eb                           │                    │        │                              │            │          │
-└──────────────────────────────┴────────────────────┴────────┴──────────────────────────────┴────────────┴──────────┘
+run_pre_post_commands/75433d4d: Writing error file - /home/spack/runs/generic.lo
+cal.bash/pre_post_cmds/run_pre_post_commands/75433d4d/run_pre_post_commands.err
+                                                         Test Summary                                                         
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ Builder                        ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ run_pre_post_commands/75433d4d │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 1.837311 │
+└────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
 
 
@@ -76,4 +66,5 @@ Passed Tests: 1/1 Percentage: 100.000%
 Failed Tests: 0/1 Percentage: 0.000%
 
 
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_24uvgqsd.log
+Adding 1 test results to /home/spack/buildtest/var/report.json
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_7k1jncfr.log

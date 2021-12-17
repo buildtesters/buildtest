@@ -1,71 +1,71 @@
 $ buildtest inspect query -d all -t hello_c 
-─────────────────────────────────── hello_c/a1da7159-7210-4b3c-960a-0ddaa63e457a ────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────────────────────── hello_c/ba67768f-fd9a-49f9-a1a9-ed7ed51bc9ef ───────────────────────────────────────────────────────────────────────────────────────────────
 executor:  generic.local.bash
 description:  Hello World C Compilation
 state:  PASS
 returncode:  0
-runtime:  0.080034
-starttime:  2021/12/06 18:38:25
-endtime:  2021/12/06 18:38:25
-────────────── Test File: /home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/a1da7159/hello_c.sh ───────────────
-   1 #!/bin/bash                                                                                                     
-   2                                                                                                                 
-   3                                                                                                                 
-   4 # name of executable                                                                                            
-   5 _EXEC=hello.c.exe                                                                                               
-   6 # Compilation Line                                                                                              
-   7 /usr/bin/gcc -O1 -o $_EXEC /home/spack/buildtest/examples/compilers/src/hello.c                                 
-   8                                                                                                                 
-   9                                                                                                                 
-  10 # Run executable                                                                                                
-  11 ./$_EXEC                                                                                                        
-  12                                                                                                                 
-  13                                                                                                                 
-─────────────────────────────────── hello_c/be788074-3860-4bff-bb58-4b6692e72166 ────────────────────────────────────
+runtime:  0.087264
+starttime:  2021/12/17 00:11:18
+endtime:  2021/12/17 00:11:18
+───────────────────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/ba67768f/hello_c.sh ──────────────────────────────────────────────────────────────────────────
+   1 #!/bin/bash                                                                                                                                                                                                                           
+   2                                                                                                                                                                                                                                       
+   3                                                                                                                                                                                                                                       
+   4 # name of executable                                                                                                                                                                                                                  
+   5 _EXEC=hello.c.exe                                                                                                                                                                                                                     
+   6 # Loading modules                                                                                                                                                                                                                     
+   7 module load gcc/6.5.0-gcc-7.5.0                                                                                                                                                                                                       
+   8 # Compilation Line                                                                                                                                                                                                                    
+   9 gcc -O2 -o $_EXEC /home/spack/buildtest/examples/compilers/src/hello.c                                                                                                                                                                
+  10                                                                                                                                                                                                                                       
+  11                                                                                                                                                                                                                                       
+  12 # Run executable                                                                                                                                                                                                                      
+  13 ./$_EXEC                                                                                                                                                                                                                              
+  14                                                                                                                                                                                                                                       
+  15                                                                                                                                                                                                                                       
+────────────────────────────────────────────────────────────────────────────────────────────── hello_c/fcb18a8f-12d9-42a3-a16a-5c55376f3563 ───────────────────────────────────────────────────────────────────────────────────────────────
 executor:  generic.local.bash
 description:  Hello World C Compilation
 state:  PASS
 returncode:  0
-runtime:  0.101455
-starttime:  2021/12/06 18:38:25
-endtime:  2021/12/06 18:38:25
-────────────── Test File: /home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/be788074/hello_c.sh ───────────────
-   1 #!/bin/bash                                                                                                     
-   2                                                                                                                 
-   3                                                                                                                 
-   4 # name of executable                                                                                            
-   5 _EXEC=hello.c.exe                                                                                               
-   6 # Loading modules                                                                                               
-   7 module load gcc/6.5.0-gcc-7.5.0                                                                                 
-   8 # Compilation Line                                                                                              
-   9 gcc -O2 -o $_EXEC /home/spack/buildtest/examples/compilers/src/hello.c                                          
-  10                                                                                                                 
-  11                                                                                                                 
-  12 # Run executable                                                                                                
-  13 ./$_EXEC                                                                                                        
-  14                                                                                                                 
-  15                                                                                                                 
-─────────────────────────────────── hello_c/80944226-f8d7-4284-9bfa-8f253828d2ac ────────────────────────────────────
+runtime:  0.069826
+starttime:  2021/12/17 00:11:18
+endtime:  2021/12/17 00:11:18
+───────────────────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/fcb18a8f/hello_c.sh ──────────────────────────────────────────────────────────────────────────
+   1 #!/bin/bash                                                                                                                                                                                                                           
+   2                                                                                                                                                                                                                                       
+   3                                                                                                                                                                                                                                       
+   4 # name of executable                                                                                                                                                                                                                  
+   5 _EXEC=hello.c.exe                                                                                                                                                                                                                     
+   6 # Loading modules                                                                                                                                                                                                                     
+   7 module load gcc/8.3.0-gcc-7.5.0                                                                                                                                                                                                       
+   8 # Compilation Line                                                                                                                                                                                                                    
+   9 gcc -O3 -o $_EXEC /home/spack/buildtest/examples/compilers/src/hello.c                                                                                                                                                                
+  10                                                                                                                                                                                                                                       
+  11                                                                                                                                                                                                                                       
+  12 # Run executable                                                                                                                                                                                                                      
+  13 ./$_EXEC                                                                                                                                                                                                                              
+  14                                                                                                                                                                                                                                       
+  15                                                                                                                                                                                                                                       
+────────────────────────────────────────────────────────────────────────────────────────────── hello_c/1c088f93-4289-45dc-b5d6-d6ed758e28a7 ───────────────────────────────────────────────────────────────────────────────────────────────
 executor:  generic.local.bash
 description:  Hello World C Compilation
 state:  PASS
 returncode:  0
-runtime:  0.06886
-starttime:  2021/12/06 18:38:25
-endtime:  2021/12/06 18:38:25
-────────────── Test File: /home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/80944226/hello_c.sh ───────────────
-   1 #!/bin/bash                                                                                                     
-   2                                                                                                                 
-   3                                                                                                                 
-   4 # name of executable                                                                                            
-   5 _EXEC=hello.c.exe                                                                                               
-   6 # Loading modules                                                                                               
-   7 module load gcc/8.3.0-gcc-7.5.0                                                                                 
-   8 # Compilation Line                                                                                              
-   9 gcc -O3 -o $_EXEC /home/spack/buildtest/examples/compilers/src/hello.c                                          
-  10                                                                                                                 
-  11                                                                                                                 
-  12 # Run executable                                                                                                
-  13 ./$_EXEC                                                                                                        
-  14                                                                                                                 
-  15                                                                                                                 
+runtime:  0.110278
+starttime:  2021/12/17 00:11:18
+endtime:  2021/12/17 00:11:18
+───────────────────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/1c088f93/hello_c.sh ──────────────────────────────────────────────────────────────────────────
+   1 #!/bin/bash                                                                                                                                                                                                                           
+   2                                                                                                                                                                                                                                       
+   3                                                                                                                                                                                                                                       
+   4 # name of executable                                                                                                                                                                                                                  
+   5 _EXEC=hello.c.exe                                                                                                                                                                                                                     
+   6 # Compilation Line                                                                                                                                                                                                                    
+   7 /usr/bin/gcc -O1 -o $_EXEC /home/spack/buildtest/examples/compilers/src/hello.c                                                                                                                                                       
+   8                                                                                                                                                                                                                                       
+   9                                                                                                                                                                                                                                       
+  10 # Run executable                                                                                                                                                                                                                      
+  11 ./$_EXEC                                                                                                                                                                                                                              
+  12                                                                                                                                                                                                                                       
+  13                                                                                                                                                                                                                                       

@@ -1,23 +1,23 @@
 $ buildtest inspect query -d all -o override_status_regex 
-──────────────────────────── override_status_regex/af622538-6ef5-4ef6-acbb-c1a381213d20 ─────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────────── override_status_regex/acb3e077-71f7-46f8-9a8b-226d5b646379 ────────────────────────────────────────────────────────────────────────────────────────
 executor:  generic.local.bash
 description:  override 'status' property in compiler gcc_8.3.0 instance
 state:  FAIL
 returncode:  0
-runtime:  0.140041
-starttime:  2021/12/06 18:38:32
-endtime:  2021/12/06 18:38:32
-─ Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/af622538/override_s… ─
-final result: 1.000000                                                                                               
-                                                                                                                     
-──────────────────────────── override_status_regex/c4583d0c-b584-4800-bce7-937ba8c357cd ─────────────────────────────
+runtime:  0.143336
+starttime:  2021/12/17 00:11:25
+endtime:  2021/12/17 00:11:25
+───────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/acb3e077/override_status_regex.out ─────────────────────────────────────────────────────
+final result: 1.000000                                                                                                                                                                                                                     
+                                                                                                                                                                                                                                           
+─────────────────────────────────────────────────────────────────────────────────────── override_status_regex/526bc394-e0b5-42dc-8b86-b339f75c5b37 ────────────────────────────────────────────────────────────────────────────────────────
 executor:  generic.local.bash
 description:  override 'status' property in compiler gcc_8.3.0 instance
 state:  FAIL
 returncode:  0
-runtime:  0.149732
-starttime:  2021/12/06 18:38:32
-endtime:  2021/12/06 18:38:32
-─ Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/c4583d0c/override_s… ─
-final result: 1.000000                                                                                               
-                                                                                                                     
+runtime:  0.141008
+starttime:  2021/12/17 00:11:25
+endtime:  2021/12/17 00:11:25
+───────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/526bc394/override_status_regex.out ─────────────────────────────────────────────────────
+final result: 1.000000                                                                                                                                                                                                                     
+                                                                                                                                                                                                                                           

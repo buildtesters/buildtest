@@ -1,80 +1,80 @@
 $ buildtest inspect query -o -t spack_test_results_specs_format 
-─────────────────────── spack_test_results_specs_format/0787a1be-651d-4e16-8a3f-132ea10b8294 ────────────────────────
+────────────────────────────────────────────────────────────────────────────────── spack_test_results_specs_format/f667651e-b419-410f-aec0-b8f2a5c9daf4 ───────────────────────────────────────────────────────────────────────────────────
 executor:  generic.local.bash
 description:  Run spack test results with spec format
 state:  PASS
 returncode:  0
-runtime:  4.979197
-starttime:  2021/12/06 18:37:47
-endtime:  2021/12/06 18:37:52
-─ Output File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/0787a1be/spack… ─
-==> Updating view at /home/spack/spack/var/spack/environments/spack_test_example/.spack-env/view                     
-==> Created environment 'spack_test_example' in /home/spack/spack/var/spack/environments/spack_test_example          
-==> You can activate this environment with:                                                                          
-==>   spack env activate spack_test_example                                                                          
-==> All of the packages are already installed                                                                        
-==> All of the packages are already installed                                                                        
-==> Spack test spack_test_results_specs_format                                                                       
-==> Testing package libxml2-2.9.10-yn2r3wf                                                                           
-==> Testing package libsigsegv-2.12-lbrx7ln                                                                          
-==> Results for test suite 'spack_test_results_specs_format', spec matching 'libxml2':                               
-==>   libxml2-2.9.10-yn2r3wf PASSED                                                                                  
-==> Testing package libxml2-2.9.10-yn2r3wf                                                                           
-==> [2021-12-06-18:37:51.143410] test: Performing simple import test                                                 
-==> [2021-12-06-18:37:51.144009] test: xml2-config: expect command status in [0]                                     
-==> [2021-12-06-18:37:51.144338] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3
-2.9.10                                                                                                               
-PASSED                                                                                                               
-==> [2021-12-06-18:37:51.147886] test: xmllint: expect command status in [0]                                         
-==> [2021-12-06-18:37:51.148259] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3
-PASSED                                                                                                               
-==> [2021-12-06-18:37:51.151949] test: xmllint: expect command status in [3]                                         
-==> [2021-12-06-18:37:51.152315] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3
-<?xml version="1.0"?>                                                                                                
-<info>abc</info>                                                                                                     
-validity error : no DTD found!                                                                                       
-Document test.xml does not validate                                                                                  
-PASSED                                                                                                               
-==> [2021-12-06-18:37:51.156568] test: xmllint: expect command status in [3]                                         
-==> [2021-12-06-18:37:51.156846] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3
-<?xml version="1.0"?>                                                                                                
-<info>abc</info>                                                                                                     
-test.xml:2: element info: validity error : Element info content does not follow the DTD, expecting (data), got (CDATA
-Document test.xml does not validate against /home/spack/.spack/test/d6phm2ufma23flnqrts7vw7vidoawdvg/libxml2-2.9.10-y
-PASSED                                                                                                               
-==> [2021-12-06-18:37:51.160945] test: xmllint: expect command status in [0]                                         
-==> [2021-12-06-18:37:51.161276] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3
-<?xml version="1.0"?>                                                                                                
-<info>                                                                                                               
-<data>abc</data>                                                                                                     
-</info>                                                                                                              
-PASSED                                                                                                               
-==> [2021-12-06-18:37:51.165168] test: xmlcatalog: expect command status in [0]                                      
-==> [2021-12-06-18:37:51.165450] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3
-<?xml version="1.0"?>                                                                                                
-<!DOCTYPE catalog PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN" "http://www.oasis-open.org/committees
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"/>                                                       
-PASSED                                                                                                               
-==> Results for test suite 'spack_test_results_specs_format', spec matching 'libsigsegv':                            
-==>   libsigsegv-2.12-lbrx7ln PASSED                                                                                 
-==> Testing package libsigsegv-2.12-lbrx7ln                                                                          
-==> [2021-12-06-18:37:51.542099] test: checking ability to link to the library                                       
-==> [2021-12-06-18:37:51.542600] '/home/spack/spack/lib/spack/env/cc' '-I/home/spack/spack/opt/spack/linux-ubuntu18.0
-PASSED                                                                                                               
-==> [2021-12-06-18:37:51.620881] test: checking ability to use the library                                           
-==> [2021-12-06-18:37:51.621527] './smoke_test'                                                                      
-Caught sigsegv #1                                                                                                    
-Hello World!                                                                                                         
-PASSED                                                                                                               
-                                                                                                                     
-─ Test File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/0787a1be/spack_t… ─
-   1 #!/bin/bash                                                                                                     
-   2 source /home/spack/spack/share/spack/setup-env.sh                                                               
-   3 spack env create  spack_test_example                                                                            
-   4 spack env activate  spack_test_example                                                                          
-   5 spack install  libxml2                                                                                          
-   6 spack install  libsigsegv                                                                                       
-   7 spack test remove -y                                                                                            
-   8 spack test run --alias spack_test_results_specs_format libxml2 libsigsegv                                       
-   9 spack test results -l -- libxml2                                                                                
-  10 spack test results -l -- libsigsegv                                                                             
+runtime:  8.607983
+starttime:  2021/12/17 00:10:45
+endtime:  2021/12/17 00:10:54
+───────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/f667651e/spack_test_results_specs_format.out ──────────────────────────────────────────────
+==> Updating view at /home/spack/spack/var/spack/environments/spack_test_example/.spack-env/view                                                                                                                                           
+==> Created environment 'spack_test_example' in /home/spack/spack/var/spack/environments/spack_test_example                                                                                                                                
+==> You can activate this environment with:                                                                                                                                                                                                
+==>   spack env activate spack_test_example                                                                                                                                                                                                
+==> All of the packages are already installed                                                                                                                                                                                              
+==> All of the packages are already installed                                                                                                                                                                                              
+==> Spack test spack_test_results_specs_format                                                                                                                                                                                             
+==> Testing package libxml2-2.9.10-yn2r3wf                                                                                                                                                                                                 
+==> Testing package libsigsegv-2.12-lbrx7ln                                                                                                                                                                                                
+==> Results for test suite 'spack_test_results_specs_format', spec matching 'libxml2':                                                                                                                                                     
+==>   libxml2-2.9.10-yn2r3wf PASSED                                                                                                                                                                                                        
+==> Testing package libxml2-2.9.10-yn2r3wf                                                                                                                                                                                                 
+==> [2021-12-17-00:10:51.052777] test: Performing simple import test                                                                                                                                                                       
+==> [2021-12-17-00:10:51.053511] test: xml2-config: expect command status in [0]                                                                                                                                                           
+==> [2021-12-17-00:10:51.053870] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3wfhiilelyulh5toteicdtxjhw7d/bin/xml2-config' '--version'                                                              
+2.9.10                                                                                                                                                                                                                                     
+PASSED                                                                                                                                                                                                                                     
+==> [2021-12-17-00:10:51.057767] test: xmllint: expect command status in [0]                                                                                                                                                               
+==> [2021-12-17-00:10:51.058076] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3wfhiilelyulh5toteicdtxjhw7d/bin/xmllint' '--auto' '-o' 'test.xml'                                                     
+PASSED                                                                                                                                                                                                                                     
+==> [2021-12-17-00:10:51.065305] test: xmllint: expect command status in [3]                                                                                                                                                               
+==> [2021-12-17-00:10:51.066402] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3wfhiilelyulh5toteicdtxjhw7d/bin/xmllint' '--postvalid' 'test.xml'                                                     
+<?xml version="1.0"?>                                                                                                                                                                                                                      
+<info>abc</info>                                                                                                                                                                                                                           
+validity error : no DTD found!                                                                                                                                                                                                             
+Document test.xml does not validate                                                                                                                                                                                                        
+PASSED                                                                                                                                                                                                                                     
+==> [2021-12-17-00:10:51.079319] test: xmllint: expect command status in [3]                                                                                                                                                               
+==> [2021-12-17-00:10:51.079758] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3wfhiilelyulh5toteicdtxjhw7d/bin/xmllint' '--dtdvalid' '/home/spack/.spack/test/d6phm2ufma23flnqrts7vw7vidoawdvg/libxml
+<?xml version="1.0"?>                                                                                                                                                                                                                      
+<info>abc</info>                                                                                                                                                                                                                           
+test.xml:2: element info: validity error : Element info content does not follow the DTD, expecting (data), got (CDATA)                                                                                                                     
+Document test.xml does not validate against /home/spack/.spack/test/d6phm2ufma23flnqrts7vw7vidoawdvg/libxml2-2.9.10-yn2r3wf/data/libxml2/info.dtd                                                                                          
+PASSED                                                                                                                                                                                                                                     
+==> [2021-12-17-00:10:51.091013] test: xmllint: expect command status in [0]                                                                                                                                                               
+==> [2021-12-17-00:10:51.091418] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3wfhiilelyulh5toteicdtxjhw7d/bin/xmllint' '--dtdvalid' '/home/spack/.spack/test/d6phm2ufma23flnqrts7vw7vidoawdvg/libxml
+<?xml version="1.0"?>                                                                                                                                                                                                                      
+<info>                                                                                                                                                                                                                                     
+<data>abc</data>                                                                                                                                                                                                                           
+</info>                                                                                                                                                                                                                                    
+PASSED                                                                                                                                                                                                                                     
+==> [2021-12-17-00:10:51.100410] test: xmlcatalog: expect command status in [0]                                                                                                                                                            
+==> [2021-12-17-00:10:51.101640] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3wfhiilelyulh5toteicdtxjhw7d/bin/xmlcatalog' '--create'                                                                
+<?xml version="1.0"?>                                                                                                                                                                                                                      
+<!DOCTYPE catalog PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN" "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">                                                                                     
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"/>                                                                                                                                                                             
+PASSED                                                                                                                                                                                                                                     
+==> Results for test suite 'spack_test_results_specs_format', spec matching 'libsigsegv':                                                                                                                                                  
+==>   libsigsegv-2.12-lbrx7ln PASSED                                                                                                                                                                                                       
+==> Testing package libsigsegv-2.12-lbrx7ln                                                                                                                                                                                                
+==> [2021-12-17-00:10:52.008919] test: checking ability to link to the library                                                                                                                                                             
+==> [2021-12-17-00:10:52.009461] '/home/spack/spack/lib/spack/env/cc' '-I/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libsigsegv-2.12-lbrx7lnfz46ukewxbhxnucmx76g23c6q/include' '/home/spack/.spack/test/d6phm2ufma23flnq
+PASSED                                                                                                                                                                                                                                     
+==> [2021-12-17-00:10:52.183956] test: checking ability to use the library                                                                                                                                                                 
+==> [2021-12-17-00:10:52.184543] './smoke_test'                                                                                                                                                                                            
+Caught sigsegv #1                                                                                                                                                                                                                          
+Hello World!                                                                                                                                                                                                                               
+PASSED                                                                                                                                                                                                                                     
+                                                                                                                                                                                                                                           
+─────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/f667651e/spack_test_results_specs_format.sh ───────────────────────────────────────────────
+   1 #!/bin/bash                                                                                                                                                                                                                           
+   2 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                                                                     
+   3 spack env create  spack_test_example                                                                                                                                                                                                  
+   4 spack env activate  spack_test_example                                                                                                                                                                                                
+   5 spack install  libxml2                                                                                                                                                                                                                
+   6 spack install  libsigsegv                                                                                                                                                                                                             
+   7 spack test remove -y                                                                                                                                                                                                                  
+   8 spack test run --alias spack_test_results_specs_format libxml2 libsigsegv                                                                                                                                                             
+   9 spack test results -l -- libxml2                                                                                                                                                                                                      
+  10 spack test results -l -- libsigsegv                                                                                                                                                                                                   

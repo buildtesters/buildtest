@@ -1,23 +1,23 @@
 $ buildtest inspect query -t hello_f 
-─────────────────────────────────── hello_f/f220c91f-1f3c-47a7-bf9e-e29e5fa4ebe4 ────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────────────────────── hello_f/bb6e7db1-0bb3-4e8d-90be-cd0d2ffb8d87 ───────────────────────────────────────────────────────────────────────────────────────────────
 executor:  generic.local.bash
 description:  Hello World Fortran Compilation
 state:  PASS
 returncode:  0
-runtime:  0.317964
-starttime:  2021/12/06 18:38:20
-endtime:  2021/12/06 18:38:20
-─────────── Test File: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/f220c91f/hello_f.sh ────────────
-   1 #!/bin/bash                                                                                                     
-   2                                                                                                                 
-   3                                                                                                                 
-   4 # name of executable                                                                                            
-   5 _EXEC=hello.f90.exe                                                                                             
-   6 # Compilation Line                                                                                              
-   7 /usr/bin/gfortran -Wall -o $_EXEC /home/spack/buildtest/examples/compilers/src/hello.f90                        
-   8                                                                                                                 
-   9                                                                                                                 
-  10 # Run executable                                                                                                
-  11 ./$_EXEC                                                                                                        
-  12                                                                                                                 
-  13                                                                                                                 
+runtime:  0.080495
+starttime:  2021/12/17 00:11:13
+endtime:  2021/12/17 00:11:13
+────────────────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/bb6e7db1/hello_f.sh ───────────────────────────────────────────────────────────────────────
+   1 #!/bin/bash                                                                                                                                                                                                                           
+   2                                                                                                                                                                                                                                       
+   3                                                                                                                                                                                                                                       
+   4 # name of executable                                                                                                                                                                                                                  
+   5 _EXEC=hello.f90.exe                                                                                                                                                                                                                   
+   6 # Compilation Line                                                                                                                                                                                                                    
+   7 /usr/bin/gfortran -Wall -o $_EXEC /home/spack/buildtest/examples/compilers/src/hello.f90                                                                                                                                              
+   8                                                                                                                                                                                                                                       
+   9                                                                                                                                                                                                                                       
+  10 # Run executable                                                                                                                                                                                                                      
+  11 ./$_EXEC                                                                                                                                                                                                                              
+  12                                                                                                                                                                                                                                       
+  13                                                                                                                                                                                                                                       
