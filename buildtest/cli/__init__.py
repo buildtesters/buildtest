@@ -241,6 +241,12 @@ def history_menu(subparsers):
         action="store_true",
         help="Display logfile for corresponding build id",
     )
+    query.add_argument(
+        "-o",
+        "--output",
+        action="store_true",
+        help="view raw output from buildtest build command",
+    )
 
 
 def build_menu(subparsers):

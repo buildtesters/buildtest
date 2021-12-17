@@ -235,7 +235,7 @@ _buildtest ()
         local opts="--help --no-header --terse -h -n -t"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
       query)
-        local opts="--help --log -h -l"
+        local opts="--help --log --output -h -l -o"
         COMPREPLY=( $( compgen -W "$(_history_id)" -- $cur ) )
         if [[ $cur == -* ]]; then
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
