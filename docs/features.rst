@@ -45,6 +45,11 @@ If you want to see logfile for build ID 0 you can use ``--log`` option to see lo
 
   buildtest history query 0 --log
 
+buildtest will store output of ``buildtest build`` command to file if command ran to completion. You can retrieve output of previous
+builds using the ``--output`` option. In example below we show output of build file
+
+.. command-output:: buildtest history query --output 0
+
 Accessing buildtest documentation
 ----------------------------------
 
