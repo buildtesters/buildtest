@@ -12,7 +12,9 @@ class ScriptBuilder(BuilderBase):
 
     type = "script"
 
-    def __init__(self, name, recipe, buildspec, executor, buildexecutor, testdir):
+    def __init__(
+        self, name, recipe, buildspec, executor, buildexecutor, testdir, numprocs=None
+    ):
 
         super().__init__(
             name=name,
@@ -21,6 +23,7 @@ class ScriptBuilder(BuilderBase):
             executor=executor,
             buildexecutor=buildexecutor,
             testdir=testdir,
+            numprocs=numprocs,
         )
 
         self.status = deep_get(

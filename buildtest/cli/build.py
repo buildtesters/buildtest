@@ -480,6 +480,7 @@ class BuildTest:
         retry=None,
         account=None,
         helpfilter=None,
+        numprocs=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -503,6 +504,7 @@ class BuildTest:
             retry (int, optional): Number of retry for failed jobs
             account (str, optional): Project account to charge jobs. This takes input argument ``buildtest build --account``
             helpfilter (bool, optional): Display available filter fields for ``buildtest build --filter`` command. This argument is set to ``True`` if one specifies ``buildtest build --helpfilter``
+            numprocs (str, optional): List of comma separated process values to run batch jobs specified via ``buildtest build --procs``
         """
 
         if buildspecs and not isinstance(buildspecs, list):
@@ -549,6 +551,8 @@ class BuildTest:
         if self.helpfilter:
             print_filters()
             return
+
+        self.numprocs = numprocs
 
         # get real path to log directory which accounts for variable expansion, user expansion, and symlinks
         self.logdir = (
@@ -745,6 +749,7 @@ class BuildTest:
                 rebuild=self.rebuild,
                 buildtest_system=self.system,
                 configuration=self.configuration,
+                numprocs=self.numprocs,
             )
 
             if not builder.get_builders():

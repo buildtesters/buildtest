@@ -209,3 +209,7 @@ class BuildspecParser:
                     f"{self.schema_type}-v{self.schema_version}.schema.json"
                 ]["recipe"],
             )
+
+    def get_test_names(self):
+        """Return a list of test names from a buildspec file. The test names are defined under the 'buildspecs' property"""
+        return self.recipe["buildspecs"].keys()

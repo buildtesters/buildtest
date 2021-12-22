@@ -118,6 +118,7 @@ def main():
                 retry=args.retry,
                 account=args.account,
                 helpfilter=args.helpfilter,
+                numprocs=args.procs,
             )
             cmd.build()
 

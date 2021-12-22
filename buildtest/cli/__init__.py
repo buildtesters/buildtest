@@ -350,6 +350,12 @@ def build_menu(subparsers):
         "--testdir",
         help="Specify a custom test directory where to write tests. This overrides configuration file and default location.",
     )
+    extra_group.add_argument(
+        "--procs",
+        help="Specify number of processes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
+        nargs="+",
+        type=int,
+    )
 
 
 def buildspec_menu(subparsers):

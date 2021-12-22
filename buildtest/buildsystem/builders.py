@@ -33,6 +33,7 @@ class Builder:
         configuration,
         buildtest_system,
         rebuild=1,
+        numprocs=None,
     ):
         """Based on a loaded Buildspec file, return the correct builder
         for each based on the type. Each type is associated with a known
@@ -55,6 +56,7 @@ class Builder:
         self.buildexecutor = buildexecutor
 
         self.rebuild = rebuild or 1
+        self.numprocs = numprocs
 
         self.bp = bp
         self.filters = filters
@@ -78,7 +80,8 @@ class Builder:
             return
 
         for count in range(self.rebuild):
-            for name in self.get_test_names():
+            # for name in self.get_test_names():
+            for name in self.bp.get_test_names():
                 recipe = self.bp.recipe["buildspecs"][name]
 
                 if recipe.get("skip"):
@@ -130,7 +133,6 @@ class Builder:
             f"Searching for builders for test: {name} by applying regular expression with available builders: {self.buildexecutor.list_executors()} "
         )
         for executor in self.buildexecutor.list_executors():
-            builder = None
 
             if (
                 re.fullmatch(recipe.get("executor"), executor)
@@ -139,6 +141,28 @@ class Builder:
                 self.logger.debug(
                     f"Found a match in buildspec with available executors via re.fullmatch({recipe.get('executor')},{executor})"
                 )
+
+                console.print(
+                    executor, self.buildexecutor.is_local(executor), self.numprocs
+                )
+                # if --procs is specified create builder object for list of proc values
+                if self.numprocs:
+                    for proc in self.numprocs:
+                        builder = ScriptBuilder(
+                            name=name,
+                            recipe=recipe,
+                            executor=executor,
+                            buildspec=self.bp.buildspec,
+                            buildexecutor=self.buildexecutor,
+                            testdir=self.testdir,
+                            numprocs=proc,
+                        )
+                        # only add builder if executor is not LocalExecutor since proc is applicable with BatchExecutors
+                        if not builder._is_local_executor():
+                            builders.append(builder)
+
+                    continue
+
                 builder = ScriptBuilder(
                     name=name,
                     recipe=recipe,
@@ -147,6 +171,7 @@ class Builder:
                     buildexecutor=self.buildexecutor,
                     testdir=self.testdir,
                 )
+                builders.append(builder)
 
             elif (
                 re.fullmatch(recipe.get("executor"), executor)
@@ -165,7 +190,7 @@ class Builder:
                     buildexecutor=self.buildexecutor,
                     testdir=self.testdir,
                 )
-
+                builders.append(builder)
             elif (
                 re.fullmatch(recipe.get("executor"), executor)
                 and recipe["type"] == "spack"
@@ -178,9 +203,10 @@ class Builder:
                     buildexecutor=self.buildexecutor,
                     testdir=self.testdir,
                 )
-
-            if builder:
                 builders.append(builder)
+
+            # if builder:
+            #    builders.append(builder)
 
         return builders
 
