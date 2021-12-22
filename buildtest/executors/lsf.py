@@ -81,7 +81,7 @@ class LSFExecutor(BaseExecutor):
             cmd += [f"-P {self.account}"]
 
         if numprocs:
-            cmd += [f"-n {self.numprocs}"]
+            cmd += [f"-n {numprocs}"]
 
         if self.launcher_opts:
             cmd += [" ".join(self.launcher_opts)]
