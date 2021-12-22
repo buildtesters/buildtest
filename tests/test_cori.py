@@ -61,7 +61,7 @@ def test_cori_slurm_hostname():
         ],
         buildtest_system=system,
         poll_interval=5,
-        max_pend_time=30,
+        max_pend_time=120,
         numprocs=[1, 4],
     )
     cmd.build()
