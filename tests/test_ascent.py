@@ -27,7 +27,10 @@ def test_ascent():
 
     buildspec_files = os.path.join(here, "examples", "ascent", "hostname.yml")
     cmd = BuildTest(
-        configuration=bc, buildspecs=[buildspec_files], buildtest_system=system
+        configuration=bc,
+        buildspecs=[buildspec_files],
+        buildtest_system=system,
+        numprocs=[1, 2],
     )
     cmd.build()
 

@@ -28,3 +28,11 @@ def test_pbs():
         configuration=bc, buildspecs=buildspec_files, buildtest_system=system
     )
     cmd.build()
+
+    cmd = BuildTest(
+        configuration=bc,
+        buildspecs=[os.path.join(here, "examples", "pbs", "sleep.yml")],
+        buildtest_system=system,
+        numprocs=[1, 2, 4],
+    )
+    cmd.build()

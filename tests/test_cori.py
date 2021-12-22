@@ -5,6 +5,7 @@ import pytest
 from buildtest.cli.build import BuildTest
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
+from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.system import BuildTestSystem
 
 hostname = socket.getfqdn()
@@ -56,13 +57,12 @@ def test_cori_slurm_hostname():
     cmd = BuildTest(
         configuration=bc,
         buildspecs=[
-            os.path.join(
-                os.getenv("BUILDTEST_ROOT"), "tests", "examples", "cori", "hostname.yml"
-            )
+            os.path.join(BUILDTEST_ROOT, "tests", "examples", "cori", "hostname.yml")
         ],
         buildtest_system=system,
         poll_interval=5,
         max_pend_time=30,
+        numprocs=[1, 4],
     )
     cmd.build()
 
