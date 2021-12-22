@@ -142,9 +142,6 @@ class Builder:
                     f"Found a match in buildspec with available executors via re.fullmatch({recipe.get('executor')},{executor})"
                 )
 
-                console.print(
-                    executor, self.buildexecutor.is_local(executor), self.numprocs
-                )
                 # if --procs is specified create builder object for list of proc values
                 if self.numprocs:
                     for proc in self.numprocs:
@@ -157,9 +154,13 @@ class Builder:
                             testdir=self.testdir,
                             numprocs=proc,
                         )
-                        # only add builder if executor is not LocalExecutor since proc is applicable with BatchExecutors
-                        if not builder._is_local_executor():
+                        # if builder is using LocalExecutor we add entry and terminate loop since we don't need to add for
+                        # each process value, this is only case if using Batch Executor.
+                        if builder._is_local_executor():
                             builders.append(builder)
+                            break
+
+                        builders.append(builder)
 
                     continue
 
@@ -180,6 +181,28 @@ class Builder:
                 self.logger.debug(
                     f"Found a match in buildspec with available executors via re.fullmatch({recipe.get('executor')},{executor})"
                 )
+                # if --procs is specified create builder object for list of proc values
+                if self.numprocs:
+                    for proc in self.numprocs:
+                        builder = CompilerBuilder(
+                            name=name,
+                            recipe=recipe,
+                            executor=executor,
+                            compiler=compiler_name,
+                            buildspec=self.bp.buildspec,
+                            configuration=self.configuration,
+                            buildexecutor=self.buildexecutor,
+                            testdir=self.testdir,
+                            numprocs=proc,
+                        )
+                        if builder._is_local_executor():
+                            builders.append(builder)
+                            break
+
+                        builders.append(builder)
+
+                    continue
+
                 builder = CompilerBuilder(
                     name=name,
                     recipe=recipe,
@@ -191,10 +214,31 @@ class Builder:
                     testdir=self.testdir,
                 )
                 builders.append(builder)
+
             elif (
                 re.fullmatch(recipe.get("executor"), executor)
                 and recipe["type"] == "spack"
             ):
+                # if --procs is specified create builder object for list of proc values
+                if self.numprocs:
+                    for proc in self.numprocs:
+                        builder = SpackBuilder(
+                            name=name,
+                            recipe=recipe,
+                            executor=executor,
+                            buildspec=self.bp.buildspec,
+                            buildexecutor=self.buildexecutor,
+                            testdir=self.testdir,
+                            numprocs=proc,
+                        )
+                        if builder._is_local_executor():
+                            builders.append(builder)
+                            break
+
+                        builders.append(builder)
+
+                    continue
+
                 builder = SpackBuilder(
                     name=name,
                     recipe=recipe,
@@ -204,9 +248,6 @@ class Builder:
                     testdir=self.testdir,
                 )
                 builders.append(builder)
-
-            # if builder:
-            #    builders.append(builder)
 
         return builders
 
@@ -374,11 +415,3 @@ class Builder:
     def get_filtered_buildspec(self):
         """Return a list of buildspec that were filtered out"""
         return self.filtered_buildspecs
-
-    def get_test_names(self):
-        """Return the list of test names for the loaded Buildspec recipe"""
-
-        keys = []
-        if self.bp.recipe:
-            keys = [x for x in self.bp.recipe["buildspecs"].keys()]
-        return keys

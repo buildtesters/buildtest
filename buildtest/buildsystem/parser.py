@@ -9,6 +9,7 @@ import logging
 import os
 import re
 
+from buildtest.defaults import console
 from buildtest.exceptions import BuildspecError, BuildTestError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.defaults import custom_validator, schema_table
@@ -71,11 +72,14 @@ class BuildspecParser:
             )
 
         self.recipe = load_recipe(self.buildspec)
-        # ensure self.recipe exists after loading recipe
-        assert self.recipe
+
+        if not self.recipe:
+            msg = f"[red]Unable to load buildspec file: {self.buildspec}. The file appears to be invalid"
+            console.print(msg)
+            raise BuildTestError(msg)
 
         # validate each schema defined in the recipes
-        self._validate()
+        self.validate()
 
     def __str__(self):
         return "[buildspec-parser]"
@@ -159,7 +163,7 @@ class BuildspecParser:
             f"Executor: {executor} found in executor list: {self.buildexecutors.list_executors()}"
         )
 
-    def _validate(self):
+    def validate(self):
         """This method will validate the entire buildspec file with global schema
         and each test section with a sub-schema. The global validation ensures
         that the overall structure of the file is sound for further parsing.
@@ -179,20 +183,15 @@ class BuildspecParser:
 
         self.schema_version = self.recipe.get("version")
 
-        assert isinstance(self.recipe.get("buildspecs"), dict)
-
         # validate all test instances in 'buildspecs' property. The validation
         # consist of checking schema type, executor name and validating each section
         # with sub schema
-        for test in self.recipe["buildspecs"].keys():
+
+        for test in self.get_test_names():
 
             self.logger.info(
                 "Validating test - '%s' in recipe: %s" % (test, self.buildspec)
             )
-
-            # the buildspec section must be an dict where test is defined. If
-            # it's not a dict then we should raise an error.
-            assert isinstance(self.recipe["buildspecs"].get(test), dict)
 
             self._check_schema_type(test)
             self._check_executor(test)
@@ -212,4 +211,4 @@ class BuildspecParser:
 
     def get_test_names(self):
         """Return a list of test names from a buildspec file. The test names are defined under the 'buildspecs' property"""
-        return self.recipe["buildspecs"].keys()
+        return self.recipe.get("buildspecs").keys()

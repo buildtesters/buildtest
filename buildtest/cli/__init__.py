@@ -5,7 +5,7 @@ interact with a global configuration for buildtest.
 import argparse
 
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
-from buildtest.defaults import BUILD_REPORT
+from buildtest.defaults import BUILD_REPORT, console
 from buildtest.schemas.defaults import schema_table
 
 
@@ -63,17 +63,27 @@ def positive_number(value):
     """
 
     if not isinstance(value, (str, int)):
-        raise argparse.ArgumentTypeError("Input must be a string or integer")
+        raise argparse.ArgumentTypeError(
+            f"Input must be an integer or string type, you have specified '{value}' which is of type {type(value)}"
+        )
 
     try:
         int_val = int(value)
     except ValueError:
-        print(f"Unable to convert {value} to int ")
+        console.print(f"[red]Unable to convert {value} to int ")
+        console.print_exception()
         raise ValueError
 
     if int_val <= 0:
-        raise argparse.ArgumentTypeError(f"{int_val} must be a positive number")
+        raise argparse.ArgumentTypeError(
+            f"Input: {value} converted to int: {int_val} must be a positive number"
+        )
     return int_val
+
+
+def positive_number_list(values):
+    """Return a list of positive integers"""
+    return [positive_number(val) for val in values]
 
 
 def get_parser():
@@ -354,7 +364,7 @@ def build_menu(subparsers):
         "--procs",
         help="Specify number of processes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
         nargs="+",
-        type=int,
+        type=positive_number_list,
     )
 
 
