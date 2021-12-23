@@ -396,7 +396,7 @@ Poll Interval
 
 The ``pollinterval`` field is used  to poll jobs at set interval in seconds
 when job is active in queue. The poll interval can be configured on command line
-using ``buildtest build --poll-interval`` which overrides the configuration value.
+using ``buildtest build --pollinterval`` which overrides the configuration value.
 
 .. Note::
 
