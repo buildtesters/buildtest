@@ -322,12 +322,12 @@ def build_menu(subparsers):
         help="Keep stage directory after job completion.",
     )
     extra_group.add_argument(
-        "--max-pend-time",
+        "--maxpendtime",
         type=positive_number,
         help="Specify Maximum Pending Time (sec) for job before cancelling job. This only applies for batch job submission.",
     )
     extra_group.add_argument(
-        "--poll-interval",
+        "--pollinterval",
         type=positive_number,
         help="Specify Poll Interval (sec) for polling batch jobs",
     )

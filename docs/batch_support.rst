@@ -400,7 +400,7 @@ Shown below is an example build of the buildspec using PBS scheduler.
 
 .. code-block:: console
 
-    [pbsuser@pbs tmp]$ buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/sleep.yml --poll-interval=5
+    [pbsuser@pbs tmp]$ buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/sleep.yml --pollinterval=5
     ╭─────────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────────╮
     │                                                                                                                          │
     │ User:               pbsuser                                                                                              │
@@ -413,7 +413,7 @@ Shown below is an example build of the buildspec using PBS scheduler.
     │ python version:     3.7.11                                                                                               │
     │ Configuration File: /tmp/tests/settings/pbs.yml                                                                          │
     │ Test Directory:     /tmp/var/tests                                                                                       │
-    │ Command:            /tmp/bin/buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/sleep.yml --poll-interval=5 │
+    │ Command:            /tmp/bin/buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/sleep.yml --pollinterval=5 │
     │                                                                                                                          │
     ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
     ─────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────────────────────
@@ -561,7 +561,7 @@ job exceed timelimit. buildtest will start a timer for each job right after job
 submission and keep track of time duration, and if job is in **pending** state and it exceeds `max_pend_time`,
 then job will be cancelled.
 
-We can also override `max_pend_time` configuration via command line ``--max-pend-time``.
+We can also override `max_pend_time` configuration via command line ``--maxpendtime``.
 To demonstrate, here is an example where job  was cancelled after job was pending and exceeds `max_pend_time`.
 Note that cancelled job is not reported in final output nor updated in report hence
 it won't be present in the report (``buildtest report``). In this example, we only
@@ -570,7 +570,7 @@ buildtest will terminate after run stage.
 
 .. code-block:: console
 
-    [pbsuser@pbs tmp]$ buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/hold.yml --poll-interval=3 --max-pend-time=5
+    [pbsuser@pbs tmp]$ buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/hold.yml --pollinterval=3 --maxpendtime=5
     ╭──────────────────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────────────────╮
     │                                                                                                                                           │
     │ User:               pbsuser                                                                                                               │
@@ -583,7 +583,7 @@ buildtest will terminate after run stage.
     │ python version:     3.7.11                                                                                                                │
     │ Configuration File: /tmp/tests/settings/pbs.yml                                                                                           │
     │ Test Directory:     /tmp/var/tests                                                                                                        │
-    │ Command:            /tmp/bin/buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/hold.yml --poll-interval=3 --max-pend-time=5 │
+    │ Command:            /tmp/bin/buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/hold.yml --pollinterval=3 --maxpendtime=5 │
     │                                                                                                                                           │
     ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
     ─────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────────────────────
