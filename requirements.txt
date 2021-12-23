@@ -5,3 +5,5 @@ lmodule
 PyYAML>=5.2
 requests
 rich
+coverage
+pytest

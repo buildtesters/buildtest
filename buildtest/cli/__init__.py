@@ -197,6 +197,10 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         ],
         help="Show help message for command",
     )
+    subparsers.add_parser(
+        "unittests",
+        help="Run buildtest unit tests",
+    )
     return parser
 
 
