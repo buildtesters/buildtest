@@ -731,13 +731,7 @@ def inspect_menu(subparsers):
     query_list.add_argument(
         "-b", "--buildscript", action="store_true", help="Print build script"
     )
-    query_list.add_argument(
-        "-d",
-        "--display",
-        help="Determine how records are fetched, by default it will report the last record of the test.",
-        choices=["first", "last", "all"],
-        default="last",
-    )
+
     query_list.add_argument(
         "-e", "--error", action="store_true", help="Print error file"
     )
@@ -747,7 +741,9 @@ def inspect_menu(subparsers):
     query_list.add_argument(
         "-t", "--testpath", action="store_true", help="Print content of testpath"
     )
-    query_list.add_argument("name", nargs="*", help="Name of test")
+    query_list.add_argument(
+        "name", nargs="*", help="Name of builder to query in report file"
+    )
 
 
 def schema_menu(subparsers):

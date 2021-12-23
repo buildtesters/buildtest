@@ -725,7 +725,7 @@ Now let's look at the generated content of the test as follows. We will see that
 set **X=1**, **Y=3** and **SHELL=bash** for ``generic.local.bash`` and **X=2**, **Y=4** and **SHELL=sh** for
 ``generic.local.sh``
 
-.. command-output:: buildtest inspect query -d all -t executors_vars_env_declaration
+.. command-output:: buildtest inspect query -t executors_vars_env_declaration/
 
 Scheduler Directives
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -744,7 +744,7 @@ will override the ``sbatch`` property defined in the top-level file otherwise it
 If we inspect this test, we will see each each test have different ``#SBATCH`` directives for each test
 based on the ``sbatch`` property defined in the ``executors`` field.
 
-.. command-output:: buildtest inspect query -d all -t executors_sbatch_declaration
+.. command-output:: buildtest inspect query -t executors_sbatch_declaration/
 
 Cray Burst Buffer and Data Warp
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -548,6 +548,16 @@ class BuildTest:
         self.account = account
         self.invalid_buildspecs = None
 
+        self.stage = stage
+        self.filter_buildspecs = filter_buildspecs
+        self.rebuild = rebuild
+
+        # this variable contains the detected buildspecs that will be processed by buildtest.
+        self.detected_buildspecs = None
+
+        self.builders = None
+        self.finished_builders = None
+
         if self.helpfilter:
             print_filters()
             return
@@ -583,16 +593,6 @@ class BuildTest:
         create_dir(self.testdir)
 
         logger.debug(f"Tests will be written in {self.testdir}")
-
-        self.stage = stage
-        self.filter_buildspecs = filter_buildspecs
-        self.rebuild = rebuild
-
-        # this variable contains the detected buildspecs that will be processed by buildtest.
-        self.detected_buildspecs = None
-
-        self.builders = None
-        self.finished_builders = None
 
         self.buildexecutor = BuildExecutor(
             self.configuration, max_pend_time=self.max_pend_time, account=self.account
