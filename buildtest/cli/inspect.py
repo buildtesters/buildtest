@@ -48,6 +48,46 @@ def inspect_cmd(args):
         inspect_buildspec(report, input_buildspecs=args.buildspec, all_records=args.all)
 
 
+def fetch_test_names(report, names):
+    """Return a list of builders given input test names by search the report file for valid records. If test is found it will be returned as a builder name. If names
+    are specified without test ID then we retrieve latest record for test name. If names are specified with ID we find the first matching test record.
+    """
+    query_builders = []
+    name_lookup = report.lookup()
+
+    for name in names:
+        # if test includes backslash we need to check if their is an ID match
+        if name.find("/") != -1:
+            test_name = name.split("/")[0]
+            tid = name.split("/")[1]
+
+            if test_name not in name_lookup.keys():
+                console.print(f"Unable to find test: {test_name} so skipping test")
+                continue
+
+            # for list of all TEST IDs corresponding to test, get first test ID that startswith same character as input ID
+            for full_ids in name_lookup[test_name]:
+                if full_ids.startswith(tid):
+                    query_builders.append(f"{test_name}/{full_ids}")
+                    break
+
+        # get latest test id for given test name
+        else:
+            tid = report.latest_testid_by_name(name)
+            if tid:
+                query_builders.append(f"{name}/{tid}")
+
+    query_builders = list(set(query_builders))
+
+    if not query_builders:
+        console.print(
+            f"Unable to find any tests by name {names}, please select one of the following tests: {report.get_names()}"
+        )
+        sys.exit(1)
+
+    return query_builders
+
+
 def inspect_list(report, terse=None, header=None, builder=None):
     """This method list an output of test id, name, and buildspec file from the report cache. The default
     behavior is to display output in table format though this can be changed with terse format which will
@@ -116,18 +156,6 @@ def inspect_query(report, args):
         records[name].append(report.fetch_records_by_ids([tid]))
 
     for name, test_record in records.items():
-
-        """
-        # the default is to print the last record (latest record)
-        tests = [test_record[-1]]
-
-        # print the first record if --display first is set
-        if args.display == "first":
-            tests = [test_record[0]]
-        elif args.display == "all":
-            tests = test_record
-        """
-
         for tests in test_record:
             for full_id, test in tests.items():
                 console.rule(f"[cyan]{name}/{full_id}")
@@ -243,39 +271,6 @@ def inspect_buildspec(report, input_buildspecs, all_records):
     pprint(records)
 
 
-def fetch_test_names(report, names):
-    """Return a list of builders given input test names by search the report file for valid records. If test is found it will be returned as a builder name. If names
-    are specified without test ID then we retrieve latest record for test name. If names are specified with ID we find the first matching test record.
-    """
-    query_builders = []
-    name_lookup = report.lookup()
-
-    for name in names:
-        # if test includes backslash we need to check if their is an ID match
-        if name.find("/") != -1:
-            test_name = name.split("/")[0]
-            tid = name.split("/")[1]
-
-            if test_name not in name_lookup.keys():
-                console.print(f"Unable to find test: {test_name} so skipping test")
-                continue
-
-            # for list of all TEST IDs corresponding to test, get first test ID that startswith same character as input ID
-            for full_ids in name_lookup[test_name]:
-                if full_ids.startswith(tid):
-                    query_builders.append(f"{test_name}/{full_ids}")
-                    break
-
-        # get latest test id for given test name
-        else:
-            tid = report.latest_testid_by_name(name)
-            if tid:
-                query_builders.append(f"{name}/{tid}")
-
-    query_builders = list(set(query_builders))
-    return query_builders
-
-
 def inspect_by_name(report, names):
     """Implements command ``buildtest inspect name`` which will print all test records by given name in JSON format.
 
@@ -296,12 +291,6 @@ def inspect_by_name(report, names):
 
     query_builders = fetch_test_names(report=report, names=names)
     records = {}
-
-    if not query_builders:
-        console.print(
-            f"Unable to find any tests by name {names}, please select one of the following tests: {report.get_names()}"
-        )
-        sys.exit(1)
 
     console.print(
         f"We have detected {len(query_builders)} builders with the following names {query_builders}"

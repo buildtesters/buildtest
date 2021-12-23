@@ -180,7 +180,7 @@ _buildtest ()
         query)
           COMPREPLY=( $( compgen -W "$(_builder_names)" -- $cur ) )
           if [[ $cur == -* ]] ; then
-            local opts="--buildscript --display --error --help --output --testpath -b -e -o -d -h  -o -t"
+            local opts="--buildscript --error --help --output --testpath -b -e -o -h -o -t"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           fi
           ;;

@@ -170,37 +170,8 @@ def test_buildtest_query():
         error = True
         testpath = True
         buildscript = True
-        display = "last"
 
     # check buildtest inspect query --output --error --testpath --buildscript -d last <name1> <name2> ...
-    inspect_cmd(args)
-
-    class args:
-        subcommands = "config"
-        inspect = "query"
-        name = [names[0]]
-        report = None
-        output = True
-        error = False
-        testpath = False
-        buildscript = False
-        display = "all"
-
-    # check buildtest inspect query --output -d all <name>
-    inspect_cmd(args)
-
-    class args:
-        subcommands = "config"
-        inspect = "query"
-        name = [names[0]]
-        report = None
-        output = True
-        error = False
-        testpath = False
-        buildscript = False
-        display = "first"
-
-    # check buildtest inspect query --output -d first <name>
     inspect_cmd(args)
 
     class args:
@@ -212,7 +183,6 @@ def test_buildtest_query():
         error = False
         testpath = False
         buildscript = False
-        display = "first"
 
     # check invalid test name when querying result which will result in exception SystemExit
     with pytest.raises(SystemExit):
