@@ -5,7 +5,7 @@ from rich.table import Table
 def print_build_help():
     """This method will print help message for command ``buildtest help build``"""
 
-    table = Table(title="Building buildspecs", show_lines=True)
+    table = Table(title="Building buildspecs", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
     table.add_column("Description", justify="left", style="magenta")
 
@@ -55,6 +55,10 @@ def print_build_help():
     )
     table.add_row("buildtest build -b <file> --rebuild 5", "Rebuild a test 5 times")
     table.add_row("buildtest build -b <file> --testdir /tmp", "Write tests in /tmp")
+    table.add_row(
+        "buildtest build -b /tmp/hostname.yml --maxpendtime 120 --pollinterval 10",
+        "Set Poll Interval to 10sec and Max Pend Time to 120 sec when submitting batch job.",
+    )
 
     console.print(table)
 
@@ -62,7 +66,7 @@ def print_build_help():
 def print_buildspec_help():
     """This method will print help message for command ``buildtest help buildspec``"""
 
-    table = Table(title="Finding Buildspecs", show_lines=True)
+    table = Table(title="Finding Buildspecs", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
     table.add_column("Description", justify="left", style="magenta")
 
@@ -118,7 +122,7 @@ def print_buildspec_help():
     )
     console.print(table)
 
-    table = Table(title="Validating Buildspecs", show_lines=True)
+    table = Table(title="Validating Buildspecs", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
     table.add_column("Description", justify="left", style="magenta")
 
@@ -141,7 +145,7 @@ def print_buildspec_help():
 
     console.print(table)
 
-    table = Table(title="Additional Features of Buildspecs", show_lines=True)
+    table = Table(title="Additional Features of Buildspecs", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
     table.add_column("Description", justify="left", style="magenta")
 
@@ -156,7 +160,7 @@ def print_buildspec_help():
 def print_config_help():
     """This method will print help message for command ``buildtest help config``"""
 
-    table = Table(title="Configuring Buildtest", show_lines=True)
+    table = Table(title="Configuring Buildtest", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
     table.add_column("Description", justify="left", style="magenta")
 
@@ -205,7 +209,7 @@ def print_config_help():
 def print_inspect_help():
     """This method will print help message for command ``buildtest help inspect``"""
 
-    table = Table(title="Inspecting a test", show_lines=True)
+    table = Table(title="Inspecting a test", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
     table.add_column("Description", justify="left", style="magenta")
 
@@ -246,7 +250,7 @@ def print_inspect_help():
 def print_report_help():
     """This method will print help message for command ``buildtest help report``"""
 
-    table = Table(title="Viewing Test Report", show_lines=True)
+    table = Table(title="Viewing Test Report", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
     table.add_column("Description", justify="left", style="magenta")
 
@@ -283,7 +287,7 @@ def print_report_help():
 def print_edit_help():
     """This method will print help message for command ``buildtest help edit``"""
 
-    table = Table(title="Editing buildspec", show_lines=True)
+    table = Table(title="Editing buildspec", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
     table.add_column("Description", justify="left", style="magenta")
 
@@ -297,7 +301,7 @@ def print_edit_help():
 def print_history_help():
     """This method will print help message for command ``buildtest help history``"""
 
-    table = Table(title="Editing buildspec", show_lines=True)
+    table = Table(title="Editing buildspec", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
     table.add_column("Description", justify="left", style="magenta")
 
@@ -316,7 +320,7 @@ def print_history_help():
 def print_cdash_help():
     """This method will print help message for command ``buildtest help cdash``"""
 
-    table = Table(title="Editing buildspec", show_lines=True)
+    table = Table(title="Editing buildspec", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
     table.add_column("Description", justify="left", style="magenta")
 
@@ -348,7 +352,7 @@ def print_cdash_help():
 def print_schema_help():
     """This method will print help message for command ``buildtest help schema``"""
 
-    table = Table(title="Buildtest Schemas", show_lines=True)
+    table = Table(title="Buildtest Schemas", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
     table.add_column("Description", justify="left", style="magenta")
 
@@ -367,7 +371,7 @@ def print_schema_help():
 def print_path_help():
     """This method will print help message for command ``buildtest help schema``"""
 
-    table = Table(title="Get Path to Test", show_lines=True)
+    table = Table(title="Get Path to Test", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
     table.add_column("Description", justify="left", style="magenta")
 
