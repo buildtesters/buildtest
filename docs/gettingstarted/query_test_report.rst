@@ -202,7 +202,7 @@ querying test records via :ref:`buildtest inspect name <inspect_by_name>` or :re
     :ellipsis: 5
 
 If you are interested in parsing output of ``buildtest inspect list``, you can may find the ``--terse`` option useful. The output will show
-headers followed by entries, the headers can be omitted by specifying `--no-header` option.
+headers followed by entries, the headers can be omitted by specifying ``--no-header`` option.
 
 .. command-output:: buildtest inspect list -t
    :ellipsis: 5
@@ -280,7 +280,7 @@ For instance, let's query the test ``circle_area`` by running the following:
 buildtest will display metadata for each test. By default, buildtest will report the last run
 for each test that is specified as a positional argument.
 
-You can retrieve content of output file via ``--output``. In this command, we retrieve the last run for ``circle_area`` and
+You can retrieve content of output file via ``--output`` or short option ``-o``. In this command, we retrieve the last run for ``circle_area`` and
 print content of output file
 
 .. command-output:: buildtest inspect query -o circle_area
@@ -323,6 +323,17 @@ the full ID however tab completion is available to help fill in the names. For e
     Output File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/python-shell/circle_area/8edce927/circle_area.out
     Error File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/python-shell/circle_area/8edce927/circle_area.err
     Log File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/logs/buildtest_c5dnun2l.log
+
+buildtest will search for test ID using `re.match <https://docs.python.org/3/library/re.html#re.match>`_ so it is possible to apply a regular expression to seek
+out multiple test records. The tests must be enclosed in quotes ``"`` in-order to have a valid regular expression. Here are few examples that can be useful
+
+.. code-block::
+
+    # retrieve all test records for name `circle_area`
+    buildtest inspect query circle_area/
+
+    # retrieve test records starting with ID `8a` and `bc` for test name `exit1`
+    buildtest inspect query "exit1/(8a|bc)"
 
 Using Alternate Report File
 -----------------------------
