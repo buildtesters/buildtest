@@ -13,7 +13,14 @@ class ScriptBuilder(BuilderBase):
     type = "script"
 
     def __init__(
-        self, name, recipe, buildspec, executor, buildexecutor, testdir, numprocs=None
+        self,
+        name,
+        recipe,
+        buildspec,
+        executor,
+        buildexecutor,
+        testdir=None,
+        numprocs=None,
     ):
 
         super().__init__(
