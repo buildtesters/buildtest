@@ -592,6 +592,7 @@ class BuildTest:
         self.detected_buildspecs = None
 
         self.builders = None
+        self.finished_builders = None
 
         self.buildexecutor = BuildExecutor(
             self.configuration, max_pend_time=self.max_pend_time, account=self.account
@@ -690,24 +691,24 @@ class BuildTest:
         if self.stage == "build":
             return
 
-        self.builders = self.run_phase()
+        self.finished_builders = self.run_phase()
 
         # store path to logfile in each builder object. There is a single logfile per build.
-        for builder in self.builders:
+        for builder in self.finished_builders:
             builder.metadata["logpath"] = self.logfile.name
 
         if not self.keep_stage_dir:
             logger.debug("Removing stage directory for all tests")
-            for builder in self.builders:
+            for builder in self.finished_builders:
                 shutil.rmtree(builder.stage_dir)
 
         # only update report if we have a list of valid builders returned from run_phase
-        if self.builders:
-            update_report(self.builders, self.report_file)
+        if self.finished_builders:
+            update_report(self.finished_builders, self.report_file)
 
         print(f"Writing Logfile to: {self.logfile.name}")
 
-        self._update_build_history(self.builders)
+        self._update_build_history(self.finished_builders)
 
     def parse_buildspecs(self):
         """Parse all buildspecs by passing buildspec file to :class:`buildtest.buildsystem.parser.BuildspecParser` class.
@@ -941,6 +942,10 @@ class BuildTest:
                 builders.append(builder)
 
         return builders
+
+    def build_success(self):
+        """Returns True if build was successful otherwise returns False"""
+        return True if self.finished_builders else False
 
     def _print_test_summary(self, builders):
         """Print a summary of total pass and fail test with percentage breakdown.

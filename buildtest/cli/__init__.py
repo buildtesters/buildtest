@@ -81,11 +81,6 @@ def positive_number(value):
     return int_val
 
 
-def positive_number_list(values):
-    """Return a list of positive integers"""
-    return [positive_number(val) for val in values]
-
-
 def get_parser():
 
     epilog_str = f"""
@@ -364,7 +359,7 @@ def build_menu(subparsers):
         "--procs",
         help="Specify number of processes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
         nargs="+",
-        type=positive_number_list,
+        type=positive_number,
     )
 
 
