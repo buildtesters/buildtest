@@ -55,6 +55,7 @@ class CompilerBuilder(BuilderBase):
         configuration,
         compiler=None,
         testdir=None,
+        numprocs=None,
     ):
         super().__init__(
             name=name,
@@ -63,6 +64,7 @@ class CompilerBuilder(BuilderBase):
             executor=executor,
             buildexecutor=buildexecutor,
             testdir=testdir,
+            numprocs=numprocs,
         )
         self.compiler = compiler
         self.configuration = configuration

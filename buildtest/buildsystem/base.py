@@ -41,7 +41,9 @@ class BuilderBase(ABC):
 
     """
 
-    def __init__(self, name, recipe, buildspec, executor, buildexecutor, testdir):
+    def __init__(
+        self, name, recipe, buildspec, executor, buildexecutor, testdir, numprocs=None
+    ):
         """The BuilderBase provides common functions for any builder. The builder
         is an instance of BuilderBase. The initializer method will setup the builder
         attributes based on input test by ``name`` parameter.
@@ -60,6 +62,7 @@ class BuilderBase(ABC):
 
         self.duration = 0
 
+        self.numprocs = numprocs
         self._retry = 1
         self.timer = Timer()
 
@@ -521,7 +524,9 @@ class BuilderBase(ABC):
             lines += [" ".join(cmd)]
         # batch executor
         else:
-            launcher = self.buildexecutor.executors[self.executor].launcher_command()
+            launcher = self.buildexecutor.executors[self.executor].launcher_command(
+                self.numprocs
+            )
             lines += [" ".join(launcher) + " " + f"{self.testpath}"]
 
         lines.append("# Get return code")

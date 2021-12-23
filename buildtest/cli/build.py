@@ -480,6 +480,7 @@ class BuildTest:
         retry=None,
         account=None,
         helpfilter=None,
+        numprocs=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -503,6 +504,7 @@ class BuildTest:
             retry (int, optional): Number of retry for failed jobs
             account (str, optional): Project account to charge jobs. This takes input argument ``buildtest build --account``
             helpfilter (bool, optional): Display available filter fields for ``buildtest build --filter`` command. This argument is set to ``True`` if one specifies ``buildtest build --helpfilter``
+            numprocs (str, optional): List of comma separated process values to run batch jobs specified via ``buildtest build --procs``
         """
 
         if buildspecs and not isinstance(buildspecs, list):
@@ -550,6 +552,8 @@ class BuildTest:
             print_filters()
             return
 
+        self.numprocs = numprocs
+
         # get real path to log directory which accounts for variable expansion, user expansion, and symlinks
         self.logdir = (
             resolve_path(self.configuration.target_config.get("logdir"), exist=False)
@@ -588,6 +592,7 @@ class BuildTest:
         self.detected_buildspecs = None
 
         self.builders = None
+        self.finished_builders = None
 
         self.buildexecutor = BuildExecutor(
             self.configuration, max_pend_time=self.max_pend_time, account=self.account
@@ -686,24 +691,24 @@ class BuildTest:
         if self.stage == "build":
             return
 
-        self.builders = self.run_phase()
+        self.finished_builders = self.run_phase()
 
         # store path to logfile in each builder object. There is a single logfile per build.
-        for builder in self.builders:
+        for builder in self.finished_builders:
             builder.metadata["logpath"] = self.logfile.name
 
         if not self.keep_stage_dir:
             logger.debug("Removing stage directory for all tests")
-            for builder in self.builders:
+            for builder in self.finished_builders:
                 shutil.rmtree(builder.stage_dir)
 
         # only update report if we have a list of valid builders returned from run_phase
-        if self.builders:
-            update_report(self.builders, self.report_file)
+        if self.finished_builders:
+            update_report(self.finished_builders, self.report_file)
 
         print(f"Writing Logfile to: {self.logfile.name}")
 
-        self._update_build_history(self.builders)
+        self._update_build_history(self.finished_builders)
 
     def parse_buildspecs(self):
         """Parse all buildspecs by passing buildspec file to :class:`buildtest.buildsystem.parser.BuildspecParser` class.
@@ -745,6 +750,7 @@ class BuildTest:
                 rebuild=self.rebuild,
                 buildtest_system=self.system,
                 configuration=self.configuration,
+                numprocs=self.numprocs,
             )
 
             if not builder.get_builders():
@@ -936,6 +942,10 @@ class BuildTest:
                 builders.append(builder)
 
         return builders
+
+    def build_success(self):
+        """Returns True if build was successful otherwise returns False"""
+        return True if self.finished_builders else False
 
     def _print_test_summary(self, builders):
         """Print a summary of total pass and fail test with percentage breakdown.

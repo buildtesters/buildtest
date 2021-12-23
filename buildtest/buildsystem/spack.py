@@ -24,6 +24,7 @@ class SpackBuilder(BuilderBase):
         buildexecutor,
         executor,
         testdir=None,
+        numprocs=None,
     ):
         super().__init__(
             name=name,
@@ -32,6 +33,7 @@ class SpackBuilder(BuilderBase):
             executor=executor,
             buildexecutor=buildexecutor,
             testdir=testdir,
+            numprocs=numprocs,
         )
         self.status = deep_get(
             self.recipe, "executors", self.executor, "status"

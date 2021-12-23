@@ -99,6 +99,7 @@ def main():
     # buildtest build command
     if args.subcommands in ["build", "bd"]:
         fname = os.path.join(VAR_DIR, "output.txt")
+
         with Tee(fname):
             cmd = BuildTest(
                 configuration=configuration,
@@ -118,11 +119,13 @@ def main():
                 retry=args.retry,
                 account=args.account,
                 helpfilter=args.helpfilter,
+                numprocs=args.procs,
             )
             cmd.build()
 
-        build_history_dir = cmd.get_build_history_dir()
-        shutil.move(fname, os.path.join(build_history_dir, "output.txt"))
+        if cmd.build_success():
+            build_history_dir = cmd.get_build_history_dir()
+            shutil.move(fname, os.path.join(build_history_dir, "output.txt"))
 
     elif args.subcommands in ["edit", "et"]:
         edit_buildspec(args.buildspec, configuration)

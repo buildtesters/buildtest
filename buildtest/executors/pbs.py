@@ -66,7 +66,7 @@ class PBSExecutor(BaseExecutor):
             )
         )
 
-    def launcher_command(self):
+    def launcher_command(self, numprocs=None):
         batch_cmd = [self.launcher]
 
         if self.queue:
@@ -74,6 +74,9 @@ class PBSExecutor(BaseExecutor):
 
         if self.account:
             batch_cmd += [f"-P {self.account}"]
+
+        if numprocs:
+            batch_cmd += [f"-l ncpus={numprocs}"]
 
         if self.launcher_opts:
             batch_cmd += [" ".join(self.launcher_opts)]
