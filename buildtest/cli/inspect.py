@@ -1,6 +1,6 @@
 """This module implements methods for buildtest inspect command that can be used
 to retrieve test record from report file in JSON format."""
-
+import re
 import sys
 
 from buildtest.cli.report import Report
@@ -58,18 +58,17 @@ def fetch_test_names(report, names):
     for name in names:
         # if test includes backslash we need to check if their is an ID match
         if name.find("/") != -1:
-            test_name = name.split("/")[0]
-            tid = name.split("/")[1]
+            test_name, tid = name.split("/")[0], "".join(name.split("/")[1:])
 
             if test_name not in name_lookup.keys():
                 console.print(f"Unable to find test: {test_name} so skipping test")
                 continue
 
-            # for list of all TEST IDs corresponding to test, get first test ID that startswith same character as input ID
+            # for list of all TEST IDs corresponding to test name, apply a re.match to acquire builder names
             for full_ids in name_lookup[test_name]:
-                if full_ids.startswith(tid):
+                # if full_ids.startswith(tid):
+                if re.match(tid, full_ids):
                     query_builders.append(f"{test_name}/{full_ids}")
-                    break
 
         # get latest test id for given test name
         else:
