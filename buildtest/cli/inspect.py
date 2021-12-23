@@ -105,20 +105,19 @@ def inspect_query(report, args):
     """
 
     records = {}
+    query_builders = fetch_test_names(report, args.name)
 
-    raw_content = report.get()
-    for buildspec in raw_content.keys():
-        for name in args.name:
-            if raw_content[buildspec].get(name):
-                records[name] = raw_content[buildspec][name]
+    for builder in query_builders:
+        tid = builder.split("/")[1]
+        name = builder.split("/")[0]
+        if not records.get(name):
+            records[name] = []
 
-    # if no records based on input name, we raise an error
-    if not records:
-        sys.exit(
-            f"Unable to find any records based on {args.name}. According to report file: {report.reportfile()} we found the following test names: {report.get_names()}."
-        )
+        records[name].append(report.fetch_records_by_ids([tid]))
+
     for name, test_record in records.items():
 
+        """
         # the default is to print the last record (latest record)
         tests = [test_record[-1]]
 
@@ -127,50 +126,58 @@ def inspect_query(report, args):
             tests = [test_record[0]]
         elif args.display == "all":
             tests = test_record
+        """
 
-        for test in tests:
-            console.rule(name + "/" + test["full_id"])
+        for tests in test_record:
+            for full_id, test in tests.items():
+                console.rule(f"[cyan]{name}/{full_id}")
 
-            console.print("executor: ", test["executor"])
-            console.print("description: ", test["description"])
-            console.print("state: ", test["state"])
-            console.print("returncode: ", test["returncode"])
-            console.print("runtime: ", test["runtime"])
-            console.print("starttime: ", test["starttime"])
-            console.print("endtime: ", test["endtime"])
+                console.print(f"[blue]Executor: {test['executor']}")
+                console.print(f"[blue]Description: {test['description']}")
+                console.print(f"[blue]State: {test['state']}")
+                console.print(f"[blue]Returncode: {test['returncode']}")
+                console.print(f"[green]Runtime: {test['runtime']} sec")
+                console.print(f"[green]Starttime: {test['starttime']}")
+                console.print(f"[green]Endtime: {test['endtime']}")
+                console.print(f"[green]Command: {test['command']}")
+                console.print(f"[red]Test Script: {test['testpath']}")
+                console.print(f"[red]Build Script: {test['build_script']}")
+                console.print(f"[red]Output File: {test['outfile']}")
+                console.print(f"[red]Error File: {test['errfile']}")
+                console.print(f"[red]Log File: {test['logpath']}")
 
-            # print content of output file when 'buildtest inspect query --output' is set
-            if args.output:
+                # print content of output file when 'buildtest inspect query --output' is set
+                if args.output:
 
-                content = read_file(test["outfile"])
-                console.rule(f"Output File: {test['outfile']}")
+                    content = read_file(test["outfile"])
+                    console.rule(f"Output File: {test['outfile']}")
 
-                syntax = Syntax(content, "text")
-                console.print(syntax)
+                    syntax = Syntax(content, "text")
+                    console.print(syntax)
 
-            # print content of error file when 'buildtest inspect query --error' is set
-            if args.error:
-                content = read_file(test["errfile"])
-                console.rule(f"Error File: {test['errfile']}")
+                # print content of error file when 'buildtest inspect query --error' is set
+                if args.error:
+                    content = read_file(test["errfile"])
+                    console.rule(f"Error File: {test['errfile']}")
 
-                syntax = Syntax(content, "text")
-                console.print(syntax)
+                    syntax = Syntax(content, "text")
+                    console.print(syntax)
 
-            # print content of testpath when 'buildtest inspect query --testpath' is set
-            if args.testpath:
-                content = read_file(test["testpath"])
-                console.rule(f"Test File: {test['testpath']}")
+                # print content of testpath when 'buildtest inspect query --testpath' is set
+                if args.testpath:
+                    content = read_file(test["testpath"])
+                    console.rule(f"Test File: {test['testpath']}")
 
-                syntax = Syntax(content, "shell", line_numbers=True, theme="emacs")
-                console.print(syntax)
+                    syntax = Syntax(content, "shell", line_numbers=True, theme="emacs")
+                    console.print(syntax)
 
-            # print content of build script when 'buildtest inspect query --buildscript' is set
-            if args.buildscript:
-                content = read_file(test["build_script"])
-                console.rule(f"Test File: {test['build_script']}")
+                # print content of build script when 'buildtest inspect query --buildscript' is set
+                if args.buildscript:
+                    content = read_file(test["build_script"])
+                    console.rule(f"Test File: {test['build_script']}")
 
-                syntax = Syntax(content, "shell", line_numbers=True, theme="emacs")
-                console.print(syntax)
+                    syntax = Syntax(content, "shell", line_numbers=True, theme="emacs")
+                    console.print(syntax)
 
 
 def inspect_buildspec(report, input_buildspecs, all_records):
@@ -236,28 +243,12 @@ def inspect_buildspec(report, input_buildspecs, all_records):
     pprint(records)
 
 
-def inspect_by_name(report, names):
-    """Implements command ``buildtest inspect name`` which will print all test records by given name in JSON format.
-
-    .. code-block:: console
-
-        # get last run for test exit1_fail
-        buildtest inspect name exit1_fail
-
-    .. code-block:: console
-
-        # get record exit1_fail that starts with id 123
-        buildtest inspect name exit1_fail/123
-
-    Args:
-        report (str): Path to report file
-        names (list): List of test names to search in report file. This is specified as positional arguments to ``buildtest inspect name``
+def fetch_test_names(report, names):
+    """Return a list of builders given input test names by search the report file for valid records. If test is found it will be returned as a builder name. If names
+    are specified without test ID then we retrieve latest record for test name. If names are specified with ID we find the first matching test record.
     """
-
-    records = {}
-
-    name_lookup = report.lookup()
     query_builders = []
+    name_lookup = report.lookup()
 
     for name in names:
         # if test includes backslash we need to check if their is an ID match
@@ -281,10 +272,37 @@ def inspect_by_name(report, names):
             if tid:
                 query_builders.append(f"{name}/{tid}")
 
-    if not query_builders:
-        sys.exit("Unable to find any tests, please try again")
-
     query_builders = list(set(query_builders))
+    return query_builders
+
+
+def inspect_by_name(report, names):
+    """Implements command ``buildtest inspect name`` which will print all test records by given name in JSON format.
+
+    .. code-block:: console
+
+        # get last run for test exit1_fail
+        buildtest inspect name exit1_fail
+
+    .. code-block:: console
+
+        # get record exit1_fail that starts with id 123
+        buildtest inspect name exit1_fail/123
+
+    Args:
+        report (str): Path to report file
+        names (list): List of test names to search in report file. This is specified as positional arguments to ``buildtest inspect name``
+    """
+
+    query_builders = fetch_test_names(report=report, names=names)
+    records = {}
+
+    if not query_builders:
+        console.print(
+            f"Unable to find any tests by name {names}, please select one of the following tests: {report.get_names()}"
+        )
+        sys.exit(1)
+
     console.print(
         f"We have detected {len(query_builders)} builders with the following names {query_builders}"
     )
