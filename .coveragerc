@@ -2,12 +2,12 @@
 branch = True
 source = buildtest
 omit =
-    buildtest/docgen/*
     buildtest/main.py
     buildtest/defaults.py
     buildtest/__init__.py
     buildtest/cli/edit.py
     buildtest/cli/cd.py
+    buildtest/tools/docs.py
 
 [report]
 # Regexes for lines to exclude from consideration
