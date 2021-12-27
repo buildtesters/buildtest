@@ -7,3 +7,6 @@ requests
 rich
 coverage
 pytest
+isort
+black==21.9b0
+pyflakes
