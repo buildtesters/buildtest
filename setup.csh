@@ -79,6 +79,9 @@ else
         setenv PYTHONPATH ${PYTHONPATH}:$BUILDTEST_ROOT:$BUILDTEST_ROOT/.packages
 endif
 
+# location of bin directory for executables provided by pypi packages
+setenv PATH ${BUILDTEST_ROOT}/.packages/bin:$PATH
+
 echo "BUILDTEST_ROOT: $BUILDTEST_ROOT"
 set buildtest_path=`which buildtest`
 echo "buildtest command: ${buildtest_path}"

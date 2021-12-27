@@ -38,6 +38,7 @@ from buildtest.defaults import (
 )
 from buildtest.log import init_logfile
 from buildtest.system import BuildTestSystem
+from buildtest.tools.unittests import run_unit_tests
 from buildtest.utils.file import create_dir, is_file, remove_file, resolve_path
 from rich.traceback import install
 
@@ -202,6 +203,9 @@ def main():
 
     elif args.subcommands == "debugreport":
         print_debug_report(system, configuration)
+
+    elif args.subcommands == "unittests":
+        run_unit_tests()
 
 
 if __name__ == "__main__":

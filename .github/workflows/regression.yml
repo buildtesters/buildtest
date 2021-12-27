@@ -37,7 +37,7 @@ jobs:
         source setup.sh
         pip install pytest
         pip install coverage
-        python $BUILDTEST_ROOT/scripts/regtest.py
+        python $BUILDTEST_ROOT/buildtest/tools/unittests.py
         buildtest cdash upload --site=github unittests
 
     - uses: actions/checkout@v2
