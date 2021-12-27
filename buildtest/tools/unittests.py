@@ -7,11 +7,12 @@ import pytest
 from buildtest.defaults import BUILDTEST_ROOT, BUILDTEST_USER_HOME, VAR_DIR
 from buildtest.utils.file import is_dir
 
-# here = os.path.dirname(os.path.abspath(__file__))
-# sys.path.insert(0, here)
-
 
 def run_unit_tests():
+    """Entry point for running buildtest unit tests. This method can be invoked via ``buildtest unittests`` or run
+    via command line as standalone program. The unit tests are run via pytest and coverage for measuring coverage report.
+    This method will report coverage results that can be viewable in html or json.
+    """
 
     if not os.getenv("BUILDTEST_ROOT"):
         sys.exit(
@@ -26,20 +27,19 @@ def run_unit_tests():
     if is_dir(VAR_DIR):
         shutil.rmtree(VAR_DIR)
 
-    cov = coverage.Coverage(config_file=os.path.join(BUILDTEST_ROOT, ".coveragerc"))
+    cov = coverage.Coverage(branch=True)
     cov.erase()
     cov.start()
-    retcode = pytest.main([os.path.join(BUILDTEST_ROOT, "tests")])
+    retcode = pytest.main()
 
     # if there is a failure in pytest raise exit 1
     if retcode == pytest.ExitCode.TESTS_FAILED:
         sys.exit(1)
 
     cov.stop()
-    cov.save()
     cov.html_report(title="buildtest unittests coverage report", directory=html_dir)
     cov.json_report(outfile=os.path.join(BUILDTEST_ROOT, "coverage.json"))
-    cov.report(ignore_errors=True, skip_empty=True, sort="cover", precision=2)
+    cov.report(ignore_errors=True, skip_empty=True, sort="-cover", precision=2)
 
     print("\n\n")
     print("Writing coverage results to: ", html_dir)

@@ -8,7 +8,7 @@ omit =
     buildtest/cli/edit.py
     buildtest/cli/cd.py
     buildtest/tools/docs.py
-    buildtest/tools/unittest.py
+    buildtest/tools/unittests.py
 
 [report]
 # Regexes for lines to exclude from consideration
@@ -33,7 +33,7 @@ exclude_lines =
 
 ignore_errors = True
 skip_empty = True
-sort = Cover
+sort = -cover
 precision = 2
 [html]
 directory = htmlcov
