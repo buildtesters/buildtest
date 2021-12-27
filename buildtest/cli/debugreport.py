@@ -23,7 +23,7 @@ def print_debug_report(system, configuration):
 
     view_configuration(configuration)
 
-    last_log = os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log")
+    last_log = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "buildtest.log")
     if os.path.exists(last_log):
         console.rule(last_log)
         with open(last_log, "r") as bc:
