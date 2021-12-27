@@ -72,13 +72,19 @@ or `pipenv <https://pipenv.readthedocs.io/en/latest/>`_ to manage your python en
 
 For csh users you will need to ``source setup.csh`` in order to install buildtest.
 
-
 Upon installation, you should see ``buildtest`` in your $PATH and environment variable
 **$BUILDTEST_ROOT** will point to root of buildtest repo.
 
 buildtest will provide tab completion for bash shell, this is managed by script `bash_completion.sh <https://github.com/buildtesters/buildtest/blob/devel/bash_completion.sh>`_,
 if you encounter any issues with tab completion please raise an issue at https://github.com/buildtesters/buildtest/issues/.
 
+Specify Python Wrapper via BUILDTEST_PYTHON
+-------------------------------------------
+
+The `buildtest <https://github.com/buildtesters/buildtest/blob/devel/bin/buildtest>`_ program will search for
+a python wrapper (`python`, `python3`) to run buildtest, however you can specify an alternate python wrapper by
+setting environment variable ``BUILDTEST_PYTHON`` wrapper. This variable will be set during execution of buildtest,
+please note the python wrapper must be 3.7 or higher in-order for buildtest to function properly.
 
 Development Dependencies (Optional)
 ------------------------------------
