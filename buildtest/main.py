@@ -208,7 +208,7 @@ def main():
     elif args.subcommands == "unittests":
         run_unit_tests()
 
-    elif args.subcommands == "stylecheck":
+    elif args.subcommands in ["stylecheck", "style"]:
         run_style_checks(
             no_black=args.no_black,
             no_isort=args.no_isort,

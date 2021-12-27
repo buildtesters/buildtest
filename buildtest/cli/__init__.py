@@ -202,7 +202,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         help="Run buildtest unit tests",
     )
     stylecheck_parser = subparsers.add_parser(
-        "stylecheck", help="Run buildtest style checks"
+        "stylecheck", aliases=["style"], help="Run buildtest style checks"
     )
 
     stylecheck_parser.add_argument(
