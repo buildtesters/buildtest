@@ -22,7 +22,7 @@ jobs:
           python-version: 3.8
       - uses: jamescurtin/isort-action@master
         with:
-          requirementsFiles: "requirements.txt docs/requirements.txt"
+          #requirementsFiles: "requirements.txt docs/requirements.txt"
           sortPaths: "buildtest tests docs"
       # use black github action see https://black.readthedocs.io/en/stable/integrations/github_actions.html
       - uses: psf/black@stable
