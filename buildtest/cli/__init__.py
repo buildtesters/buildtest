@@ -202,6 +202,12 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         help="Run buildtest unit tests",
     )
     unittests_parser.add_argument(
+        "-c",
+        "--coverage",
+        action="store_true",
+        help="Enable coverage when running regression test",
+    )
+    unittests_parser.add_argument(
         "-p", "--pytestopts", type=str, help="Specify option to pytest"
     )
     unittests_parser.add_argument(

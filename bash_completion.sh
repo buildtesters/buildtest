@@ -262,7 +262,7 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
     unittests)
-      local opts="--help --pytestopts --sourcefiles -h -p -s"
+      local opts="--coverage --help --pytestopts --sourcefiles -c -h -p -s"
 
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;

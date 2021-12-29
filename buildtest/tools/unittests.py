@@ -14,10 +14,15 @@ from buildtest.defaults import (
 from buildtest.utils.file import is_dir, resolve_path
 
 
-def run_unit_tests(pytestopts=None, sourcefiles=None):
+def run_unit_tests(pytestopts=None, sourcefiles=None, enable_coverage=False):
     """Entry point for running buildtest unit tests. This method can be invoked via ``buildtest unittests`` or run
-    via command line as standalone program. The unit tests are run via pytest and coverage for measuring coverage report.
-    This method will report coverage results that can be viewable in html or json.
+    via command line as standalone program. The unit tests are run via `pytest <https://docs.pytest.org/>`_ and `coverage <https://coverage.readthedocs.io/en/6.2/>`_
+    for measuring coverage report. This method will report coverage results that can be viewable in html or json.
+
+    Args:
+        pytestopts (str): Specify options to pytest command.
+        sourcefiles (list): List of source files to run with pytest
+        enable_coverage (bool): Enable coverage when running regression test
     """
 
     if not os.getenv("BUILDTEST_ROOT"):
@@ -44,24 +49,30 @@ def run_unit_tests(pytestopts=None, sourcefiles=None):
         shutil.rmtree(VAR_DIR)
 
     cov = coverage.Coverage(branch=True)
-    cov.erase()
-    cov.start()
+
+    # run regression test with coverage if --coverage is specified
+    if enable_coverage:
+        cov.erase()
+        cov.start()
+
+    # run regression test
     retcode = pytest.main(pytest_cmd)
 
     # if there is a failure in pytest raise exit 1
     if retcode == pytest.ExitCode.TESTS_FAILED:
         sys.exit(1)
 
-    cov.stop()
-    cov.html_report(title="buildtest unittests coverage report", directory=html_dir)
-    cov.json_report(outfile=os.path.join(BUILDTEST_ROOT, "coverage.json"))
-    cov.report(ignore_errors=True, skip_empty=True, sort="-cover", precision=2)
+    if enable_coverage:
+        cov.stop()
+        cov.html_report(title="buildtest unittests coverage report", directory=html_dir)
+        cov.json_report(outfile=os.path.join(BUILDTEST_ROOT, "coverage.json"))
+        cov.report(ignore_errors=True, skip_empty=True, sort="-cover", precision=2)
 
-    print("\n\n")
-    console.print("Writing coverage results to: ", html_dir)
-    coverage_file = os.path.join(html_dir, "index.html")
-    assert os.path.exists(coverage_file)
-    console.print("You can view coverage report by viewing file: ", coverage_file)
+        print("\n\n")
+        console.print("Writing coverage results to: ", html_dir)
+        coverage_file = os.path.join(html_dir, "index.html")
+        assert os.path.exists(coverage_file)
+        console.print("You can view coverage report by viewing file: ", coverage_file)
 
 
 if __name__ == "__main__":
