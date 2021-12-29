@@ -201,6 +201,22 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         "unittests",
         help="Run buildtest unit tests",
     )
+    stylecheck_parser = subparsers.add_parser(
+        "stylecheck", aliases=["style"], help="Run buildtest style checks"
+    )
+
+    stylecheck_parser.add_argument(
+        "--no-black", action="store_true", help="Don't run black style check"
+    )
+    stylecheck_parser.add_argument(
+        "--no-isort", action="store_true", help="Don't run isort style check"
+    )
+    stylecheck_parser.add_argument(
+        "--no-pyflakes", action="store_true", help="Dont' run pyflakes check"
+    )
+    stylecheck_parser.add_argument(
+        "--apply", action="store_true", help="Apply style checks to codebase."
+    )
     return parser
 
 

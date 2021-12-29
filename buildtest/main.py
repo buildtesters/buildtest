@@ -38,6 +38,7 @@ from buildtest.defaults import (
 )
 from buildtest.log import init_logfile
 from buildtest.system import BuildTestSystem
+from buildtest.tools.stylecheck import run_style_checks
 from buildtest.tools.unittests import run_unit_tests
 from buildtest.utils.file import create_dir, is_file, remove_file, resolve_path
 from rich.traceback import install
@@ -206,6 +207,14 @@ def main():
 
     elif args.subcommands == "unittests":
         run_unit_tests()
+
+    elif args.subcommands in ["stylecheck", "style"]:
+        run_style_checks(
+            no_black=args.no_black,
+            no_isort=args.no_isort,
+            no_pyflakes=args.no_pyflakes,
+            apply_stylechecks=args.apply,
+        )
 
 
 if __name__ == "__main__":

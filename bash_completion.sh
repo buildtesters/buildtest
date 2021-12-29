@@ -67,8 +67,8 @@ _buildtest ()
 
   COMPREPLY=()   # Array variable storing the possible completions.
 
-  local cmds="build buildspec cd cdash clean config debugreport docs edit help inspect history path report schema schemadocs unittests"
-  local alias_cmds="bd bc cg it et h hy rt"
+  local cmds="build buildspec cd cdash clean config debugreport docs edit help inspect history path report schema schemadocs stylecheck unittests"
+  local alias_cmds="bd bc cg it et h hy rt style"
   local opts="--color --config --debug --help --version -c -d -h -V"
 
   next=${COMP_WORDS[1]}
@@ -255,6 +255,11 @@ _buildtest ()
         local opts="-h --help --site -r --report"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       fi
+      ;;
+    stylecheck|style)
+     local opts="--help --no-black --no-isort --no-pyflakes --apply -h"
+
+      COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
     help|h)
       local cmds="build buildspec cdash config edit history inspect path report schema"
