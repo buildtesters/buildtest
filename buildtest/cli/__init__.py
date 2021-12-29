@@ -197,10 +197,26 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         ],
         help="Show help message for command",
     )
-    subparsers.add_parser(
+    unittests_parser = subparsers.add_parser(
         "unittests",
         help="Run buildtest unit tests",
     )
+    unittests_parser.add_argument(
+        "-c",
+        "--coverage",
+        action="store_true",
+        help="Enable coverage when running regression test",
+    )
+    unittests_parser.add_argument(
+        "-p", "--pytestopts", type=str, help="Specify option to pytest"
+    )
+    unittests_parser.add_argument(
+        "-s",
+        "--sourcefiles",
+        help="Specify path to file or directory when running regression test",
+        nargs="+",
+    )
+
     stylecheck_parser = subparsers.add_parser(
         "stylecheck", aliases=["style"], help="Run buildtest style checks"
     )

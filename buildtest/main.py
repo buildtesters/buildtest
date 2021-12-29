@@ -206,7 +206,11 @@ def main():
         print_debug_report(system, configuration)
 
     elif args.subcommands == "unittests":
-        run_unit_tests()
+        run_unit_tests(
+            pytestopts=args.pytestopts,
+            sourcefiles=args.sourcefiles,
+            enable_coverage=args.coverage,
+        )
 
     elif args.subcommands in ["stylecheck", "style"]:
         run_style_checks(
