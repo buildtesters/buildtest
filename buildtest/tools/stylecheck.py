@@ -28,13 +28,11 @@ def run_black(source_files, black_opts):
     else:
         console.print("[red]black style check FAILED")
 
-    if out:
-        console.rule("black output message")
-        console.print("".join(out))
+    console.rule("black output message")
+    console.print("".join(out))
 
-    if err:
-        console.rule("black error message")
-        console.print("".join(err))
+    console.rule("black error message")
+    console.print("".join(err))
 
 
 def run_isort(source_files, isort_opts):
@@ -62,13 +60,11 @@ def run_isort(source_files, isort_opts):
     else:
         console.print("[red]Black style check FAILED")
 
-    if out:
-        console.rule("isort output message")
-        console.print("".join(out))
+    console.rule("isort output message")
+    console.print("".join(out))
 
-    if err:
-        console.rule("isort error message")
-        console.print("".join(err))
+    console.rule("isort error message")
+    console.print("".join(err))
 
 
 def run_pyflakes(source_files):
@@ -95,13 +91,11 @@ def run_pyflakes(source_files):
     else:
         console.print("[red]pyflakes style check FAILED")
 
-    if out:
-        console.rule("pyflakes output message")
-        console.print("".join(out))
+    console.rule("pyflakes output message")
+    console.print("".join(out))
 
-    if err:
-        console.rule("pyflakes error message")
-        console.print("".join(err))
+    console.rule("pyflakes error message")
+    console.print("".join(err))
 
 
 def run_style_checks(no_black, no_isort, no_pyflakes, apply_stylechecks):
