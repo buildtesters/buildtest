@@ -6,8 +6,9 @@ from buildtest.utils.command import BuildTestCommand
 
 
 def run_black(source_files, black_opts):
-    """This method will run `black <https://black.readthedocs.io/>`_ check given a set of source files and black options. If black is not
-     available we will return immediately otherwise we run black checks and print output and error message reported by black.
+    """This method will run `black <https://black.readthedocs.io/>`_ check given a set of source files and black options.
+    If black is not available we will return immediately otherwise we run black checks and print output and error message
+    reported by black.
 
     Args:
         source_files (list): List of source files to run black check
@@ -28,13 +29,11 @@ def run_black(source_files, black_opts):
     else:
         console.print("[red]black style check FAILED")
 
-    if out:
-        console.rule("black output message")
-        console.print("".join(out))
+    console.rule("black output message")
+    console.print("".join(out))
 
-    if err:
-        console.rule("black error message")
-        console.print("".join(err))
+    console.rule("black error message")
+    console.print("".join(err))
 
 
 def run_isort(source_files, isort_opts):
@@ -62,13 +61,11 @@ def run_isort(source_files, isort_opts):
     else:
         console.print("[red]Black style check FAILED")
 
-    if out:
-        console.rule("isort output message")
-        console.print("".join(out))
+    console.rule("isort output message")
+    console.print("".join(out))
 
-    if err:
-        console.rule("isort error message")
-        console.print("".join(err))
+    console.rule("isort error message")
+    console.print("".join(err))
 
 
 def run_pyflakes(source_files):
@@ -95,17 +92,22 @@ def run_pyflakes(source_files):
     else:
         console.print("[red]pyflakes style check FAILED")
 
-    if out:
-        console.rule("pyflakes output message")
-        console.print("".join(out))
+    console.rule("pyflakes output message")
+    console.print("".join(out))
 
-    if err:
-        console.rule("pyflakes error message")
-        console.print("".join(err))
+    console.rule("pyflakes error message")
+    console.print("".join(err))
 
 
 def run_style_checks(no_black, no_isort, no_pyflakes, apply_stylechecks):
-    """Run buildtest style checks"""
+    """This method runs buildtest style checks which is invoked via ``buildtest stylecheck`` command.
+
+    Args:
+        no_black (bool): Disable black check if `no_black=True`.
+        no_isort (bool): Disable isort check if `no_isort=True`.
+        no_pyflakes (bool): Disable pyflakes check if `no_pyflakes=True`.
+        apply_stylechecks (bool):  If `apply_stylechecks=True` then black and isort stylecheck will be applied to codebase, by default these checks will report changes to codebase without applying changes.
+    """
 
     source_files = [
         os.path.join(BUILDTEST_ROOT, "buildtest"),
@@ -119,10 +121,10 @@ def run_style_checks(no_black, no_isort, no_pyflakes, apply_stylechecks):
     )
 
     if not no_black:
-        run_black(source_files, black_opts=black_opts)
+        run_black(source_files=source_files, black_opts=black_opts)
 
     if not no_isort:
-        run_isort(source_files, isort_opts=isort_opts)
+        run_isort(source_files=source_files, isort_opts=isort_opts)
 
     if not no_pyflakes:
         run_pyflakes(source_files)
