@@ -4,11 +4,17 @@ import sys
 
 import coverage
 import pytest
-from buildtest.defaults import BUILDTEST_ROOT, BUILDTEST_USER_HOME, VAR_DIR
-from buildtest.utils.file import is_dir
+from buildtest.defaults import (
+    BUILDTEST_ROOT,
+    BUILDTEST_UNITTEST_ROOT,
+    BUILDTEST_USER_HOME,
+    VAR_DIR,
+    console,
+)
+from buildtest.utils.file import is_dir, resolve_path
 
 
-def run_unit_tests():
+def run_unit_tests(pytestopts=None, sourcefiles=None):
     """Entry point for running buildtest unit tests. This method can be invoked via ``buildtest unittests`` or run
     via command line as standalone program. The unit tests are run via pytest and coverage for measuring coverage report.
     This method will report coverage results that can be viewable in html or json.
@@ -18,6 +24,16 @@ def run_unit_tests():
         sys.exit(
             "Please check your buildtest installation by running 'source setup.sh'"
         )
+
+    pytestopts = pytestopts.split() if pytestopts else []
+    sources = []
+
+    # if --sourcefiles specified we resolve path to each argument otherwise default to BUILDTEST_UNITTEST_ROOT which is root of test directory
+    sourcefiles = sourcefiles or [BUILDTEST_UNITTEST_ROOT]
+    for fpath in sourcefiles:
+        sources.append(resolve_path(fpath))
+
+    pytest_cmd = pytestopts + sources
 
     html_dir = os.path.join(BUILDTEST_ROOT, "htmlcov")
 
@@ -30,7 +46,7 @@ def run_unit_tests():
     cov = coverage.Coverage(branch=True)
     cov.erase()
     cov.start()
-    retcode = pytest.main()
+    retcode = pytest.main(pytest_cmd)
 
     # if there is a failure in pytest raise exit 1
     if retcode == pytest.ExitCode.TESTS_FAILED:
@@ -42,11 +58,11 @@ def run_unit_tests():
     cov.report(ignore_errors=True, skip_empty=True, sort="-cover", precision=2)
 
     print("\n\n")
-    print("Writing coverage results to: ", html_dir)
+    console.print("Writing coverage results to: ", html_dir)
     coverage_file = os.path.join(html_dir, "index.html")
     assert os.path.exists(coverage_file)
-    print("You can view coverage report by viewing file: ", coverage_file)
+    console.print("You can view coverage report by viewing file: ", coverage_file)
 
 
 if __name__ == "__main__":
-    run_unit_tests()
+    run_unit_tests(pytestopts=sys.argv[1], sourcefiles=sys.argv[2:])

@@ -257,7 +257,12 @@ _buildtest ()
       fi
       ;;
     stylecheck|style)
-     local opts="--help --no-black --no-isort --no-pyflakes --apply -h"
+      local opts="--help --no-black --no-isort --no-pyflakes --apply -h"
+
+      COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+      ;;
+    unittests)
+      local opts="--help --pytestopts --sourcefiles -h -p -s"
 
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;

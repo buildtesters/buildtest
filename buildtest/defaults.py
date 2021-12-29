@@ -24,6 +24,8 @@ BUILDTEST_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SCHEMA_ROOT = os.path.join(BUILDTEST_ROOT, "buildtest", "schemas")
 
+BUILDTEST_UNITTEST_ROOT = os.path.join(BUILDTEST_ROOT, "tests")
+
 # root of buildtest user home, default shell
 BUILDTEST_USER_HOME = os.path.join(userhome, ".buildtest")
 
