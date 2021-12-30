@@ -38,6 +38,8 @@ def run_unit_tests(pytestopts=None, sourcefiles=None, enable_coverage=False):
     for fpath in sourcefiles:
         sources.append(resolve_path(fpath))
 
+    sources = list(filter(None, sources))
+
     pytest_cmd = pytestopts + sources
 
     html_dir = os.path.join(BUILDTEST_ROOT, "htmlcov")
