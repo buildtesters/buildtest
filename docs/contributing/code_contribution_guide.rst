@@ -241,9 +241,6 @@ process.
     [sphinx_fix 85d9d42c] fix issue with rendering bullet points in sphinx. This is solved by downgrading docutils to version 0.16.
      2 files changed, 5 insertions(+)
 
-
-Please make sure you run ``pip install -r docs/requirements.txt`` to get the development dependencies that includes isort.
-
 If you want to run isort, you can use the `-c` and `--diff` option to check and see diff between files. For instance in example
 below we see isort reports changes to ``import`` statement
 
@@ -283,3 +280,22 @@ You can run pyflakes against any file or directory the ones of importance is run
 buildtest source code and regression test. You can do that by running::
 
     pyflakes buildtest tests
+
+Running stylechecks via ``buildtest stylecheck``
+---------------------------------------------------
+
+The ``buildtest stylecheck`` command can run the stylechecks such as `black`, `isort`, `pyflakes` which can
+should be used before you commit your changes. Shown below are the available options for ``buildtest stylecheck``
+
+.. command-output:: buildtest stylecheck --help
+
+.. Note:: ``buildtest style`` is an alias for **buildtest stylecheck**
+
+By default, all the checks are run when no options are specified however if you want to disable a particular style
+check you can specify on command line such as ``--no-black`` will disable black style check.
+
+Shown below is an example output of what style check will report. By default, black and isort will report changes that
+will need to be fixed, if you want to apply those changes to buildtest codebase you can pass the ``--apply`` option.
+
+.. command-output:: buildtest stylecheck
+

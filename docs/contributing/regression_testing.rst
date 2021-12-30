@@ -49,13 +49,13 @@ below is the help option for ``buildtest unittests`` command.
 
 If you decide to run all regression test you can simply run ``buildtest unittests``. The ``--pytestopts`` can be used to
 specify option to ``pytest`` when running unit test. The ``--sourcefiles`` option can be used to specify list of files or
-directories to run unit test. The ``--coverage`` option can be used to enable coverage when running regression test,
-by default this is disabled.
+directories to run unit test. The `--sourcefiles`` option can be specified multiple times and it can be an absolute or relative path.
+The ``--coverage`` option can be used to enable coverage when running regression test, by default this is disabled.
 
 In example, we can specify options to pytest and specify arbitrary source files which can be useful if you want to run
 a subset of regression test without running all of them.
 
-.. command-output:: buildtest unittests -p "-vrP" --sourcefiles tests/utils/
+.. command-output:: buildtest unittests --pytestopts="-v" --sourcefiles tests/utils/test_shell.py --sourcefiles tests/utils/test_command.py
 
 The `pytest.ini <https://github.com/buildtesters/buildtest/blob/devel/pytest.ini>`_
 found in top-level folder defines pytest configuration for running the unit tests. Some of the unit tests are
@@ -65,7 +65,7 @@ can find all markers by running ``pytest --markers``.
 If you want to run all tests with ``schema`` marker you can do the following::
 
    # run via buildtest unittests
-   buildtest unittests -p "-m schema"
+   buildtest unittests -p="-m schema"
 
    # run via coverage
    coverage run -m pytest -m schema
