@@ -49,13 +49,14 @@ below is the help option for ``buildtest unittests`` command.
 
 If you decide to run all regression test you can simply run ``buildtest unittests``. The ``--pytestopts`` can be used to
 specify option to ``pytest`` when running unit test. The ``--sourcefiles`` option can be used to specify list of files or
-directories to run unit test. The `--sourcefiles`` option can be specified multiple times and it can be an absolute or relative path.
+directories to run unit test. The `--sourcefiles` option can be specified multiple times and it can be an absolute or relative path.
 The ``--coverage`` option can be used to enable coverage when running regression test, by default this is disabled.
 
 In example, we can specify options to pytest and specify arbitrary source files which can be useful if you want to run
 a subset of regression test without running all of them.
 
-.. command-output:: buildtest unittests --pytestopts="-v" --sourcefiles tests/utils/test_shell.py --sourcefiles tests/utils/test_command.py
+.. command-output:: buildtest unittests --pytestopts="-v" -s $BUILDTEST_ROOT/tests/utils/test_shell.py -s $BUILDTEST_ROOT/tests/utils/test_command.py
+   :shell:
 
 The `pytest.ini <https://github.com/buildtesters/buildtest/blob/devel/pytest.ini>`_
 found in top-level folder defines pytest configuration for running the unit tests. Some of the unit tests are
@@ -80,10 +81,10 @@ Running test via coverage
 
 There is a coverage configuration file `.coveragerc <https://github.com/buildtesters/buildtest/blob/devel/.coveragerc>`_ located
 in root of buildtest that is read by **coverage** utility. The `buildtest/tools/unittests.py <https://github.com/buildtesters/buildtest/blob/devel/buildtest/tools/unittests.py>`_  script
-will collect coverage details upon completion of regression test which is equivalent to running `coverage run -m pytest` but we make some additional checks when
+will collect coverage details upon completion of regression test which is equivalent to running ``coverage run -m pytest`` but we make some additional checks when
 running the script.
 
-If you want to view the coverage details locally in a browser you can run: ``coverage html`` which will
+If you want to view the coverage details locally in a browser you can run ``coverage html`` which will
 write the coverage report to directory **htmlcov**. You can open the file ``open htmlcov/index.html`` and it will show you
 a summary of coverage results that you would see from codecov. Shown below is a preview of coverage report that
 you would see after running your regression test.
