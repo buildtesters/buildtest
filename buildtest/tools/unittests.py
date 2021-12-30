@@ -1,3 +1,4 @@
+import argparse
 import os
 import shutil
 import sys
@@ -79,4 +80,29 @@ def run_unit_tests(pytestopts=None, sourcefiles=None, enable_coverage=False):
 
 
 if __name__ == "__main__":
-    run_unit_tests(pytestopts=sys.argv[1], sourcefiles=sys.argv[2:])
+
+    parser = argparse.ArgumentParser(
+        prog="unittest",
+        description="Run buildtest unit tests",
+    )
+    parser.add_argument(
+        "-c",
+        "--coverage",
+        action="store_true",
+        help="Enable coverage when running regression test",
+    )
+    parser.add_argument("-p", "--pytestopts", type=str, help="Specify option to pytest")
+    parser.add_argument(
+        "-s",
+        "--sourcefiles",
+        type=str,
+        help="Specify path to file or directory when running regression test",
+        action="append",
+    )
+    args = parser.parse_args()
+
+    run_unit_tests(
+        pytestopts=args.pytestopts,
+        sourcefiles=args.sourcefiles,
+        enable_coverage=args.coverage,
+    )
