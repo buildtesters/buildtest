@@ -5,21 +5,18 @@ buildtest has a suite of unit tests to verify the state of buildtest. These
 tests are located in the top-level directory `tests <https://github.com/buildtesters/buildtest/tree/devel/tests>`_
 and tests are run via `pytest <https://docs.pytest.org/en/latest/>`_
 
-In order to write regression tests, you will need ``pytest`` and ``coverage``
-installed in your python environment. You can do this by installing development
-dependencies as follows::
-
-    pip install -r docs/requirements.txt
-
+In order to run regression tests, you will need ``pytest`` and ``coverage``
+installed in your python environment. This should be installed when installing buildtest.
 
 Writing Unit Tests
--------------------------
+-------------------
 
 If you want to write a new test, you should be familiar with
 `coverage <https://coverage.readthedocs.io/>`_ report that is pushed to `codecov <https://codecov.io/gh/buildtesters/buildtest>`_.
 The coverage report will give a detailed line-line coverage of source
-code HIT/MISS when running the unit test. Increasing coverage report would
-be great way to write a new regression test.
+code HIT/MISS when running the unit test. We welcome user contribution that
+will help increasing test coverage, in addition new features added to buildtest would require test to
+ensure they are working properly.
 
 The `tests <https://github.com/buildtesters/buildtest/tree/devel/tests>`_ directory is structured in a way
 that each source file has a corresponding test file that starts with ``test_``. For instance,
@@ -44,19 +41,33 @@ For more details on writing tests with pytest see
 Running Unit Test
 ------------------------
 
-You can run the buildtest unit tests by running the following script::
+The **buildtest unittests** command can be used to run buildtest unit test. The script
+is can be run as a standalone python script by running ``python $BUILDTEST_ROOT/tools/unittests.py``. Shown
+below is the help option for ``buildtest unittests`` command.
 
-    $ python $BUILDTEST_ROOT/tools/unittests.py
+.. command-output:: buildtest unittests --help
 
-Alternately, you can invoke ``buildtest unittests`` which will invoke this script.
+If you decide to run all regression test you can simply run ``buildtest unittests``. The ``--pytestopts`` can be used to
+specify option to ``pytest`` when running unit test. The ``--sourcefiles`` option can be used to specify list of files or
+directories to run unit test. The ``--coverage`` option can be used to enable coverage when running regression test,
+by default this is disabled.
 
-This script is a wrapper to `pytest` and `coverage`. The `pytest.ini <https://github.com/buildtesters/buildtest/blob/devel/pytest.ini>`_
+In example, we can specify options to pytest and specify arbitrary source files which can be useful if you want to run
+a subset of regression test without running all of them.
+
+.. command-output:: buildtest unittests -p "-vrP" --sourcefiles tests/utils/
+
+The `pytest.ini <https://github.com/buildtesters/buildtest/blob/devel/pytest.ini>`_
 found in top-level folder defines pytest configuration for running the unit tests. Some of the unit tests are
 assigned a `marker <https://docs.pytest.org/en/6.2.x/example/markers.html>`_ which allows one to run a group of test together. You
-can find all markers by running ``pytest --markers`` and these markers are defined in ``pytest.ini`` file.
+can find all markers by running ``pytest --markers``.
 
 If you want to run all tests with ``schema`` marker you can do the following::
 
+   # run via buildtest unittests
+   buildtest unittests -p "-m schema"
+
+   # run via coverage
    coverage run -m pytest -m schema
 
 For a complete list of options refer to pytest `documentation <https://docs.pytest.org/en/latest/contents.html>`_
@@ -73,7 +84,7 @@ will collect coverage details upon completion of regression test which is equiva
 running the script.
 
 If you want to view the coverage details locally in a browser you can run: ``coverage html`` which will
-write the results to directory **htmlcov**. You can open the file ``open htmlcov/index.html`` and it will show you
+write the coverage report to directory **htmlcov**. You can open the file ``open htmlcov/index.html`` and it will show you
 a summary of coverage results that you would see from codecov. Shown below is a preview of coverage report that
 you would see after running your regression test.
 
