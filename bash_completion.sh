@@ -257,7 +257,7 @@ _buildtest ()
       fi
       ;;
     stylecheck|style)
-      local opts="--help --no-black --no-isort --no-pyflakes --apply -h"
+      local opts="--help --no-black --no-isort --no-pyflakes --apply -a -h"
 
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
