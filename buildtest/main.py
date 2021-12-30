@@ -206,8 +206,6 @@ def main():
         print_debug_report(system, configuration)
 
     elif args.subcommands == "unittests":
-        print(args)
-
         run_unit_tests(
             pytestopts=args.pytestopts,
             sourcefiles=args.sourcefiles,
