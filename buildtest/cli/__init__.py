@@ -213,8 +213,9 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     unittests_parser.add_argument(
         "-s",
         "--sourcefiles",
+        type=str,
         help="Specify path to file or directory when running regression test",
-        nargs="+",
+        action="append",
     )
 
     stylecheck_parser = subparsers.add_parser(
