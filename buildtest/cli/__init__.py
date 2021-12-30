@@ -232,7 +232,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         "--no-pyflakes", action="store_true", help="Dont' run pyflakes check"
     )
     stylecheck_parser.add_argument(
-        "--apply", action="store_true", help="Apply style checks to codebase."
+        "-a", "--apply", action="store_true", help="Apply style checks to codebase."
     )
     return parser
 
