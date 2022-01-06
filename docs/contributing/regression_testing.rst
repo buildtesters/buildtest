@@ -55,8 +55,53 @@ The ``--coverage`` option can be used to enable coverage when running regression
 In example, we can specify options to pytest and specify arbitrary source files which can be useful if you want to run
 a subset of regression test without running all of them.
 
-.. command-output:: buildtest unittests --pytestopts="-v" -s $BUILDTEST_ROOT/tests/utils/test_shell.py -s $BUILDTEST_ROOT/tests/utils/test_command.py
-   :shell:
+
+.. code-block:: console
+
+    (buildtest) bash-3.2$ buildtest unittests --pytestopts="-v" -s $BUILDTEST_ROOT/tests/utils/test_shell.py -s $BUILDTEST_ROOT/tests/utils/test_command.py
+    ========================================================================================================== test session starts ===========================================================================================================
+    platform darwin -- Python 3.7.3, pytest-6.2.5, py-1.11.0, pluggy-1.0.0 -- /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python3
+    cachedir: .pytest_cache
+    rootdir: /Users/siddiq90/Documents/GitHubDesktop/buildtest, configfile: pytest.ini
+    collected 10 items
+
+    ../tests/utils/test_shell.py::TestShell::test_default_shell <- ../../../../../tmp/tests/utils/test_shell.py PASSED                                                                                                                 [ 10%]
+    ../tests/utils/test_shell.py::TestShell::test_sh_shell <- ../../../../../tmp/tests/utils/test_shell.py PASSED                                                                                                                      [ 20%]
+    ../tests/utils/test_shell.py::TestShell::test_bash_shell <- ../../../../../tmp/tests/utils/test_shell.py PASSED                                                                                                                    [ 30%]
+    ../tests/utils/test_shell.py::TestShell::test_zsh_shell <- ../../../../../tmp/tests/utils/test_shell.py SKIPPED (Skipping test for zsh shell)                                                                                      [ 40%]
+    ../tests/utils/test_shell.py::TestShell::test_csh_shell <- ../../../../../tmp/tests/utils/test_shell.py SKIPPED (Skipping test for csh shell)                                                                                      [ 50%]
+    ../tests/utils/test_shell.py::TestShell::test_tcsh_shell <- ../../../../../tmp/tests/utils/test_shell.py SKIPPED (Skipping test for tcsh shell)                                                                                    [ 60%]
+    ../tests/utils/test_shell.py::TestShell::test_update_instance <- ../../../../../tmp/tests/utils/test_shell.py PASSED                                                                                                               [ 70%]
+    ../tests/utils/test_shell.py::TestShell::test_shell_exceptions <- ../../../../../tmp/tests/utils/test_shell.py PASSED                                                                                                              [ 80%]
+    ../tests/utils/test_command.py::TestBuildTestCommand::test_command <- ../../../../../tmp/tests/utils/test_command.py PASSED                                                                                                        [ 90%]
+    ../tests/utils/test_command.py::TestBuildTestCommand::test_error_command <- ../../../../../tmp/tests/utils/test_command.py PASSED                                                                                                  [100%]
+
+    ========================================================================================================== slowest 20 durations ==========================================================================================================
+    0.01s call     tests/utils/test_command.py::TestBuildTestCommand::test_command
+    0.00s setup    tests/utils/test_shell.py::TestShell::test_shell_exceptions
+    0.00s call     tests/utils/test_shell.py::TestShell::test_shell_exceptions
+    0.00s call     tests/utils/test_shell.py::TestShell::test_sh_shell
+    0.00s call     tests/utils/test_shell.py::TestShell::test_bash_shell
+    0.00s setup    tests/utils/test_shell.py::TestShell::test_default_shell
+    0.00s call     tests/utils/test_shell.py::TestShell::test_default_shell
+    0.00s call     tests/utils/test_shell.py::TestShell::test_update_instance
+    0.00s call     tests/utils/test_command.py::TestBuildTestCommand::test_error_command
+    0.00s teardown tests/utils/test_command.py::TestBuildTestCommand::test_error_command
+    0.00s setup    tests/utils/test_shell.py::TestShell::test_bash_shell
+    0.00s teardown tests/utils/test_command.py::TestBuildTestCommand::test_command
+    0.00s call     tests/utils/test_shell.py::TestShell::test_tcsh_shell
+    0.00s call     tests/utils/test_shell.py::TestShell::test_zsh_shell
+    0.00s setup    tests/utils/test_shell.py::TestShell::test_tcsh_shell
+    0.00s teardown tests/utils/test_shell.py::TestShell::test_zsh_shell
+    0.00s teardown tests/utils/test_shell.py::TestShell::test_shell_exceptions
+    0.00s setup    tests/utils/test_shell.py::TestShell::test_zsh_shell
+    0.00s setup    tests/utils/test_shell.py::TestShell::test_update_instance
+    0.00s setup    tests/utils/test_command.py::TestBuildTestCommand::test_error_command
+    ======================================================================================================== short test summary info =========================================================================================================
+    SKIPPED [1] ../../../../../../tmp/tests/utils/test_shell.py:57: Skipping test for zsh shell
+    SKIPPED [1] ../../../../../../tmp/tests/utils/test_shell.py:73: Skipping test for csh shell
+    SKIPPED [1] ../../../../../../tmp/tests/utils/test_shell.py:89: Skipping test for tcsh shell
+    ====================================================================================================== 7 passed, 3 skipped in 0.04s ======================================================================================================
 
 The `pytest.ini <https://github.com/buildtesters/buildtest/blob/devel/pytest.ini>`_
 found in top-level folder defines pytest configuration for running the unit tests. Some of the unit tests are

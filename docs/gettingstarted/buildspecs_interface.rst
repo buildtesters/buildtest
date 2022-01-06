@@ -233,10 +233,6 @@ will validate all buildspecs for **python** and **pass** tags.
 
 .. command-output:: buildtest buildspec validate -t python -t pass
 
-Finally we can also search by executors using the ``-e`` option which can be appended to search by
-multiple executors.
-
-.. command-output:: buildtest buildspec validate -e generic.local.csh
 
 Edit buildspecs ``buildtest edit``
 -----------------------------------

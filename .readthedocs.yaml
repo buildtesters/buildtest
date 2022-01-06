@@ -17,6 +17,7 @@ build:
     - gfortran
     - csh
     - zsh
+    - tcsh
 
 formats:
   - pdf

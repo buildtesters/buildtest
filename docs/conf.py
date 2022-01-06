@@ -152,7 +152,7 @@ html_context = {
     # "github_user": "shahzebmsiddiqui",  # Username
     # "github_repo": "buildtest",  # Repo name
     # "github_version": "master",  # Version
-    "css_files": ["_static/theme_overrides.css"]  # override wide tables in RTD theme
+    # "css_files": ["_static/theme_overrides.css"]  # override wide tables in RTD theme
 }
 
 # Custom sidebar templates, must be a dictionary that maps document names
