@@ -9,3 +9,4 @@ sphinx-rtd-theme
 sphinxcontrib-programoutput
 sphinxext-remoteliteralinclude
 sphinx-tabs
+sphinx-copybutton

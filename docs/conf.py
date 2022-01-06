@@ -76,6 +76,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
+    "sphinx_copybutton",
 ]
 
 # Document Python Code
@@ -98,6 +99,9 @@ suppress_warnings = ["autoapi"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
+
+copybutton_prompt_text = r">>> |\.\.\. |\$ "
+copybutton_prompt_is_regexp = True
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
