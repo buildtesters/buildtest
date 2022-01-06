@@ -1,6 +1,6 @@
 .. _code_contribution_guide:
 
-Code Contribution Guide
+Developers Contributing Guide
 =============================
 
 This guide will walk through the code contribution guide, we expect you have a
