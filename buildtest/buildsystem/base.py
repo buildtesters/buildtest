@@ -495,6 +495,10 @@ class BuilderBase(ABC):
         )
         lines.append(f"export BUILDTEST_STAGE_DIR={self.stage_dir}")
         lines.append(f"export BUILDTEST_TEST_ID={self.metadata['full_id']}")
+
+        if self.numprocs:
+            lines.append(f"export BUILDTEST_NUMPROCS={self.numprocs}")
+
         lines.append(
             "############# END VARIABLE DECLARATION   ########################"
         )
