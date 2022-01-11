@@ -79,7 +79,7 @@ extensions = [
     "sphinx_copybutton",
 ]
 
-# Document Python Code
+# Sphinx AutoApi configuration see https://sphinx-autoapi.readthedocs.io/en/latest/
 autoapi_type = "python"
 autoapi_dirs = [os.path.join(BUILDTEST_ROOT, "buildtest")]
 autoapi_add_toctree_entry = True
@@ -89,6 +89,7 @@ autoapi_keep_files = True
 autoapi_python_class_content = "both"
 autoapi_template_dir = "_templates/autoapi"
 
+# sphinx napoleon setting see https://sphinxcontrib-napoleon.readthedocs.io/en/latest/sphinxcontrib.napoleon.html#module-sphinxcontrib.napoleon
 napoleon_include_init_with_doc = False
 
 intersphinx_mapping = {
@@ -100,6 +101,7 @@ suppress_warnings = ["autoapi"]
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
+# configuration for sphinx-copybutton see https://sphinx-copybutton.readthedocs.io/en/latest/
 copybutton_prompt_text = r">>> |\.\.\. |\$ "
 copybutton_prompt_is_regexp = True
 
@@ -133,7 +135,6 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-# html_theme = 'alabaster'
 html_theme = "sphinx_rtd_theme"
 
 

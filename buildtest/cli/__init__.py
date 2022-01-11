@@ -159,7 +159,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         "-b", "--buildscript", action="store_true", help="Show path to build script"
     )
     path_group.add_argument(
-        "--stagedir", action="store_true", help="Show path to stage directory"
+        "-s", "--stagedir", action="store_true", help="Show path to stage directory"
     )
 
     path.add_argument("name", help="Name of test")
