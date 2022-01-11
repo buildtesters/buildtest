@@ -10,7 +10,7 @@ Buildspec Tutorial
    buildspecs/global
    buildspecs/compiler
    buildspecs/spack
-   buildspecs/advanced
+
 
 Please proceed to :ref:`buildspec_overview` to get an overview of how to write buildspecs. This section can be done on your workstation.
 

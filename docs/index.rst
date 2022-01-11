@@ -91,6 +91,7 @@ automate module load testing. For more details on lmodule see https://github.com
    builder
    features
    schema_examples
+   facility_examples
    buildtest_site
    references
 
