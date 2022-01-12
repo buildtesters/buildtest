@@ -12,7 +12,7 @@ make altinstall
 
 wget https://bootstrap.pypa.io/get-pip.py
 python3.7 get-pip.py
-ln -s $(which python3) /usr/local/bin/python3
+ln -s /usr/local/bin/python3.7 /usr/local/bin/python3
 
 /opt/pbs/bin/qmgr -c "create node pbs"
 /opt/pbs/bin/qmgr -c "set node pbs queue=workq"
