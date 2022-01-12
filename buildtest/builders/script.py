@@ -2,7 +2,7 @@ import os
 import shlex
 import shutil
 
-from buildtest.buildsystem.base import BuilderBase
+from buildtest.builders.base import BuilderBase
 from buildtest.utils.file import write_file
 from buildtest.utils.tools import deep_get
 
@@ -21,6 +21,7 @@ class ScriptBuilder(BuilderBase):
         buildexecutor,
         testdir=None,
         numprocs=None,
+        numnodes=None,
     ):
 
         super().__init__(
@@ -31,6 +32,7 @@ class ScriptBuilder(BuilderBase):
             buildexecutor=buildexecutor,
             testdir=testdir,
             numprocs=numprocs,
+            numnodes=numnodes,
         )
 
         self.status = deep_get(

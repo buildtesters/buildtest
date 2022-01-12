@@ -75,7 +75,7 @@ class SlurmExecutor(BaseExecutor):
             )
         )
 
-    def launcher_command(self, numprocs=None):
+    def launcher_command(self, numprocs=None, numnodes=None):
         """Return sbatch launcher command with options used to submit job"""
         sbatch_cmd = [self.launcher, "--parsable"]
 
@@ -93,6 +93,10 @@ class SlurmExecutor(BaseExecutor):
 
         if numprocs:
             sbatch_cmd += [f"-n {numprocs}"]
+
+        if numnodes:
+            sbatch_cmd += [f"-N {numnodes}"]
+
         if self.launcher_opts:
             sbatch_cmd += [" ".join(self.launcher_opts)]
 

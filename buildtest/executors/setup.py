@@ -9,7 +9,7 @@ import logging
 import multiprocessing as mp
 import os
 
-from buildtest.buildsystem.base import BuilderBase
+from buildtest.builders.base import BuilderBase
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
 from buildtest.exceptions import ExecutorError
 from buildtest.executors.base import BaseExecutor

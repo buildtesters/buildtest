@@ -42,7 +42,15 @@ class BuilderBase(ABC):
     """
 
     def __init__(
-        self, name, recipe, buildspec, executor, buildexecutor, testdir, numprocs=None
+        self,
+        name,
+        recipe,
+        buildspec,
+        executor,
+        buildexecutor,
+        testdir,
+        numprocs=None,
+        numnodes=None,
     ):
         """The BuilderBase provides common functions for any builder. The builder
         is an instance of BuilderBase. The initializer method will setup the builder
@@ -63,6 +71,7 @@ class BuilderBase(ABC):
         self.duration = 0
 
         self.numprocs = numprocs
+        self.numnodes = numnodes
         self._retry = 1
         self.timer = Timer()
 
@@ -498,6 +507,9 @@ class BuilderBase(ABC):
 
         if self.numprocs:
             lines.append(f"export BUILDTEST_NUMPROCS={self.numprocs}")
+
+        if self.numnodes:
+            lines.append(f"export BUILDTEST_NUMNODES={self.numnodes}")
 
         lines.append(
             "############# END VARIABLE DECLARATION   ########################"

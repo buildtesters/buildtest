@@ -481,6 +481,7 @@ class BuildTest:
         account=None,
         helpfilter=None,
         numprocs=None,
+        numnodes=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -505,6 +506,7 @@ class BuildTest:
             account (str, optional): Project account to charge jobs. This takes input argument ``buildtest build --account``
             helpfilter (bool, optional): Display available filter fields for ``buildtest build --filter`` command. This argument is set to ``True`` if one specifies ``buildtest build --helpfilter``
             numprocs (str, optional): List of comma separated process values to run batch jobs specified via ``buildtest build --procs``
+            numnodes (str, optional): List of comma separated nodes values to run batch jobs specified via ``buildtest build --nodes``
         """
 
         if buildspecs and not isinstance(buildspecs, list):
@@ -563,6 +565,7 @@ class BuildTest:
             return
 
         self.numprocs = numprocs
+        self.numnodes = numnodes
 
         # get real path to log directory which accounts for variable expansion, user expansion, and symlinks
         self.logdir = (
@@ -751,6 +754,7 @@ class BuildTest:
                 buildtest_system=self.system,
                 configuration=self.configuration,
                 numprocs=self.numprocs,
+                numnodes=self.numnodes,
             )
 
             if not builder.get_builders():

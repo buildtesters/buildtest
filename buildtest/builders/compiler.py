@@ -2,7 +2,7 @@ import json
 import os
 import shutil
 
-from buildtest.buildsystem.base import BuilderBase
+from buildtest.builders.base import BuilderBase
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.exceptions import BuildTestError
 from buildtest.modules import get_module_commands
@@ -56,6 +56,7 @@ class CompilerBuilder(BuilderBase):
         compiler=None,
         testdir=None,
         numprocs=None,
+        numnodes=None,
     ):
         super().__init__(
             name=name,
@@ -65,6 +66,7 @@ class CompilerBuilder(BuilderBase):
             buildexecutor=buildexecutor,
             testdir=testdir,
             numprocs=numprocs,
+            numnodes=numnodes,
         )
         self.compiler = compiler
         self.configuration = configuration
