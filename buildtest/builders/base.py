@@ -541,7 +541,7 @@ class BuilderBase(ABC):
         # batch executor
         else:
             launcher = self.buildexecutor.executors[self.executor].launcher_command(
-                self.numprocs
+                numprocs=self.numprocs, numnodes=self.numnodes
             )
             lines += [" ".join(launcher) + " " + f"{self.testpath}"]
 
