@@ -399,6 +399,13 @@ def build_menu(subparsers):
         type=positive_number,
     )
 
+    extra_group.add_argument(
+        "--nodes",
+        help="Specify number of nodes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
+        nargs="+",
+        type=positive_number,
+    )
+
 
 def buildspec_menu(subparsers):
     """This method implements ``buildtest buildspec`` command"""

@@ -5,7 +5,7 @@ schema definition 'spack-v1.0.schema.json' that defines how buildspecs are writt
 
 import os
 
-from buildtest.buildsystem.base import BuilderBase
+from buildtest.builders.base import BuilderBase
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import resolve_path
 from buildtest.utils.tools import deep_get
@@ -25,6 +25,7 @@ class SpackBuilder(BuilderBase):
         executor,
         testdir=None,
         numprocs=None,
+        numnodes=None,
     ):
         super().__init__(
             name=name,
@@ -34,6 +35,7 @@ class SpackBuilder(BuilderBase):
             buildexecutor=buildexecutor,
             testdir=testdir,
             numprocs=numprocs,
+            numnodes=numnodes,
         )
         self.status = deep_get(
             self.recipe, "executors", self.executor, "status"

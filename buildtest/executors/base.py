@@ -4,7 +4,7 @@ BuildExecutor: manager for test executors
 
 import logging
 
-from buildtest.buildsystem.base import BuilderBase
+from buildtest.builders.base import BuilderBase
 
 
 class BaseExecutor:

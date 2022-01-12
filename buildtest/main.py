@@ -122,6 +122,7 @@ def main():
                 account=args.account,
                 helpfilter=args.helpfilter,
                 numprocs=args.procs,
+                numnodes=args.nodes,
             )
             cmd.build()
 

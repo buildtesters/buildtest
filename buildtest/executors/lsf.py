@@ -68,7 +68,7 @@ class LSFExecutor(BaseExecutor):
         )
         self.queue = self._settings.get("queue")
 
-    def launcher_command(self, numprocs):
+    def launcher_command(self, numprocs=None, numnodes=None):
         """This command returns the launcher command and any options specified in configuration file. This
         is useful when generating the build script in the BuilderBase class
         """
@@ -82,6 +82,9 @@ class LSFExecutor(BaseExecutor):
 
         if numprocs:
             cmd += [f"-n {numprocs}"]
+
+        if numnodes:
+            cmd += [f"-nnodes {numnodes}"]
 
         if self.launcher_opts:
             cmd += [" ".join(self.launcher_opts)]
