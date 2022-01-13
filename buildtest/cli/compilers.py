@@ -118,11 +118,11 @@ class BuildtestCompilers:
 
         self.compilers = self.configuration.target_config["compilers"]["compiler"]
 
-        self.names = []
+        self._names = []
         self.compiler_name_to_group = {}
         for name in self.compilers:
             if isinstance(self.compilers[name], dict):
-                self.names += self.compilers[name].keys()
+                self._names += self.compilers[name].keys()
                 for compiler in self.compilers[name].keys():
                     self.compiler_name_to_group[compiler] = name
 
@@ -267,13 +267,13 @@ class BuildtestCompilers:
         """Prints compiler section in YAML, this implements ``buildtest config compilers --yaml``"""
         print(yaml.dump(self.compilers, default_flow_style=False))
 
-    def list(self):
-        """Return all compilers defined in buildtest configuration"""
-        return self.names
+    def names(self):
+        """Return a list of compiler names defined in buildtest configuration"""
+        return self._names
 
     def print_compilers(self):
         """This method implements ``buildtest config compilers`` which
         prints all compilers from buildtest configuration
         """
-        for name in self.names:
+        for name in self._names:
             print(name)

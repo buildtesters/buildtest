@@ -14,11 +14,6 @@ class TestBuildtestCompilers:
     configuration.validate()
     bc = BuildtestCompilers(configuration)
 
-    def test_init(self):
-
-        assert hasattr(self.bc, "compilers")
-        assert isinstance(self.bc.names, list)
-
     def test_print(self):
         self.bc.print_yaml()
         self.bc.print_json()
