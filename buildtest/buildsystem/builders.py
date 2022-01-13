@@ -10,7 +10,6 @@ import re
 from buildtest.builders.compiler import CompilerBuilder
 from buildtest.builders.script import ScriptBuilder
 from buildtest.builders.spack import SpackBuilder
-from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import console
 from buildtest.utils.tools import deep_get
 

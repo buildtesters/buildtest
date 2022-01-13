@@ -1221,7 +1221,8 @@ class BuildTest:
                     table.add_row(
                         f"[blue]{builder}",
                         f"[green]{builder.executor}",
-                        f"[cyan]{builder.numprocs}" f"[yellow]{builder.buildspec}",
+                        f"[cyan]{builder.numprocs}",
+                        f"[yellow]{builder.buildspec}",
                     )
 
                 console.print(table)
@@ -1235,13 +1236,14 @@ class BuildTest:
 
                 for builder in batch_builder:
                     # skip builders that dont have attribute builder.numprocs which is set if buildtest build --procs is specified
-                    if not builder.numprocs:
+                    if not builder.numnodes:
                         continue
 
                     table.add_row(
                         f"[blue]{builder}",
                         f"[green]{builder.executor}",
-                        f"[cyan]{builder.nodes}" f"[yellow]{builder.buildspec}",
+                        f"[cyan]{builder.numnodes}",
+                        f"[yellow]{builder.buildspec}",
                     )
 
                 console.print(table)
