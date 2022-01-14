@@ -1,16 +1,22 @@
 $ buildtest inspect query -o -t install_specs_example 
-─────────────────────────────────────────────────────────────────────────────────────── install_specs_example/b10c780f-8434-4617-824e-45c774abc5ba ────────────────────────────────────────────────────────────────────────────────────────
-executor:  generic.local.bash
-description:  Install zlib spec
-state:  PASS
-returncode:  0
-runtime:  1.388446
-starttime:  2021/12/17 00:10:16
-endtime:  2021/12/17 00:10:17
-───────────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/b10c780f/install_specs_example.out ─────────────────────────────────────────────────────────
-[+] /home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/zlib-1.2.11-smoyzzo2qhzpn6mg6rd3l2p7b23enshg                                                                                                                            
-                                                                                                                                                                                                                                           
-────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/b10c780f/install_specs_example.sh ───────────────────────────────────────────────────────────
-  1 #!/bin/bash                                                                                                                                                                                                                            
-  2 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                                                                      
-  3 spack install  zlib                                                                                                                                                                                                                    
+──────────────────────────────────────────────────────────────── install_specs_example/cd2519af-5730-40c6-b386-5ff6d9d9d1e6 ─────────────────────────────────────────────────────────────────
+Executor: generic.local.bash
+Description: Install zlib spec
+State: PASS
+Returncode: 0
+Runtime: 1.141358 sec
+Starttime: 2022/01/14 15:18:42
+Endtime: 2022/01/14 15:18:43
+Command: bash --norc --noprofile -eo pipefail install_specs_example_build.sh
+Test Script: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/cd2519af/install_specs_example.sh
+Build Script: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/cd2519af/install_specs_example_build.sh
+Output File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/cd2519af/install_specs_example.out
+Error File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/cd2519af/install_specs_example.err
+Log File: /home/spack/buildtest/var/logs/buildtest_fev0dxjf.log
+────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/cd2519af/install_specs_example.out ──────────────────────────────────
+[+] /home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/zlib-1.2.11-smoyzzo2qhzpn6mg6rd3l2p7b23enshg                                                                              
+                                                                                                                                                                                             
+─────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/cd2519af/install_specs_example.sh ────────────────────────────────────
+  1 #!/bin/bash                                                                                                                                                                              
+  2 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                        
+  3 spack install  zlib                                                                                                                                                                      

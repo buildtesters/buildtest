@@ -1,22 +1,22 @@
 $ buildtest build -b /home/spack/buildtest/examples/spack/install_specs.yml 
 Buildspec Paths: ['/home/spack/buildtest/examples']
 Updating buildspec cache file: /home/spack/buildtest/var/buildspecs/cache.json
-╭─────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────╮                                                                                                                
-│                                                                                                                         │                                                                                                                
-│ User:               spack                                                                                               │                                                                                                                
-│ Hostname:           a59dcc0ebfc7                                                                                        │                                                                                                                
-│ Platform:           Linux                                                                                               │                                                                                                                
-│ Current Time:       2021/12/17 00:10:16                                                                                 │                                                                                                                
-│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                 │                                                                                                                
-│ buildtest version:  0.11.0                                                                                              │                                                                                                                
-│ python path:        /home/spack/pyenv/buildtest/bin/python                                                              │                                                                                                                
-│ python version:     3.8.6                                                                                               │                                                                                                                
-│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                        │                                                                                                                
-│ Test Directory:     /home/spack/runs                                                                                    │                                                                                                                
-│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/spack/install_specs.yml │                                                                                                                
-│                                                                                                                         │                                                                                                                
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                                                                
-─────────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────────────
+╭─────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────╮                                                                  
+│                                                                                                                         │                                                                  
+│ User:               spack                                                                                               │                                                                  
+│ Hostname:           2d93bd00cb98                                                                                        │                                                                  
+│ Platform:           Linux                                                                                               │                                                                  
+│ Current Time:       2022/01/14 15:18:42                                                                                 │                                                                  
+│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                 │                                                                  
+│ buildtest version:  0.12.0                                                                                              │                                                                  
+│ python path:        /home/spack/pyenv/buildtest/bin/python3                                                             │                                                                  
+│ python version:     3.8.6                                                                                               │                                                                  
+│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                        │                                                                  
+│ Test Directory:     /home/spack/runs                                                                                    │                                                                  
+│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/spack/install_specs.yml │                                                                  
+│                                                                                                                         │                                                                  
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                  
+──────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────────────────────────────
 Discovered Buildspecs:  1
 Excluded Buildspecs:  0
 Detected Buildspecs after exclusion:  1
@@ -26,40 +26,41 @@ Detected Buildspecs after exclusion:  1
 ╟────────────────────────────────────────────────────────╢
 ║ /home/spack/buildtest/examples/spack/install_specs.yml ║
 ╚════════════════════════════════════════════════════════╝
-─────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────────────────────────────
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
 /home/spack/buildtest/examples/spack/install_specs.yml: VALID
 Total builder objects created: 1
-
-
-                                                          Builder Details                                                           
+Total compiler builder: 0
+Total script builder: 0
+Total spack builder: 1
+                                                       Spack Builder Details                                                        
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Builder                        ┃ Executor           ┃ description       ┃ buildspecs                                             ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ install_specs_example/b10c780f │ generic.local.bash │ Install zlib spec │ /home/spack/buildtest/examples/spack/install_specs.yml │
+│ install_specs_example/cd2519af │ generic.local.bash │ Install zlib spec │ /home/spack/buildtest/examples/spack/install_specs.yml │
 └────────────────────────────────┴────────────────────┴───────────────────┴────────────────────────────────────────────────────────┘
-────────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
-install_specs_example/b10c780f: Creating test directory: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/b10c780f
-install_specs_example/b10c780f: Creating the stage directory: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/b10c780f/stage
-install_specs_example/b10c780f: Writing build script: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/b10c780f/install_specs_example_build.sh
-────────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────────────────────
+install_specs_example/cd2519af: Creating test directory: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/cd2519af
+install_specs_example/cd2519af: Creating the stage directory: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/cd2519af/stage
+install_specs_example/cd2519af: Writing build script: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/cd2519af/install_specs_example_build.sh
+─────────────────────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────────────────────
 ______________________________
-Launching test: install_specs_example/b10c780f
-install_specs_example/b10c780f: Running Test via command: bash --norc 
+Launching test: install_specs_example/cd2519af
+install_specs_example/cd2519af: Running Test via command: bash --norc 
 --noprofile -eo pipefail install_specs_example_build.sh
-install_specs_example/b10c780f: Test completed with returncode: 0
-install_specs_example/b10c780f: Test completed in 1.388446 seconds
-install_specs_example/b10c780f: Writing output file -  /home/spack/runs/generic.
-local.bash/install_specs/install_specs_example/b10c780f/install_specs_example.ou
+install_specs_example/cd2519af: Test completed with returncode: 0
+install_specs_example/cd2519af: Test completed in 1.141358 seconds
+install_specs_example/cd2519af: Writing output file -  /home/spack/runs/generic.
+local.bash/install_specs/install_specs_example/cd2519af/install_specs_example.ou
 t
-install_specs_example/b10c780f: Writing error file - /home/spack/runs/generic.lo
-cal.bash/install_specs/install_specs_example/b10c780f/install_specs_example.err
+install_specs_example/cd2519af: Writing error file - /home/spack/runs/generic.lo
+cal.bash/install_specs/install_specs_example/cd2519af/install_specs_example.err
                                                          Test Summary                                                         
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃ Builder                        ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ install_specs_example/b10c780f │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 1.388446 │
+│ install_specs_example/cd2519af │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 1.141358 │
 └────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
 
@@ -69,4 +70,4 @@ Failed Tests: 0/1 Percentage: 0.000%
 
 
 Adding 1 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest__ala45gu.log
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_fev0dxjf.log
