@@ -7,7 +7,7 @@ from buildtest.utils.file import create_dir, write_file
 
 
 def run(query):
-    """The ``run()`` method will execute command for the tutorials examples. If returncode
+    """This method will execute command for the tutorials examples. If returncode
     is non-zero we raise exception otherwise we return output of command.
 
     Args:
@@ -53,7 +53,11 @@ def write_example(fname, command):
 
 
 def build_spack_examples(autogen_dir):
-    """This method will build spack examples for the tutorial"""
+    """This method will build spack examples for the tutorial
+
+    Args:
+        autogen_dir (str): Directory where auto generated documentation examples will be written.
+    """
 
     build_dir = os.path.join(autogen_dir, "spack", "build")
     inspect_dir = os.path.join(autogen_dir, "spack", "inspect")
@@ -90,7 +94,11 @@ def build_spack_examples(autogen_dir):
 
 
 def build_compiler_examples(autogen_dir):
-    """This method will build examples for compiler examples for the tutorial"""
+    """This method will build examples for compiler examples for the tutorial
+
+    Args:
+        autogen_dir (str): Directory where auto generated documentation examples will be written.
+    """
     compiler_dir = os.path.join(autogen_dir, "compilers")
     build_dir = os.path.join(compiler_dir, "build")
     inspect_dir = os.path.join(compiler_dir, "inspect")
@@ -106,16 +114,16 @@ def build_compiler_examples(autogen_dir):
         f"{compiler_dir}/compilers_list.txt": "buildtest config compilers -y",
         f"{build_dir}/vecadd.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/vecadd.yml",
         f"{build_dir}/gnu_hello_c.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/gnu_hello_c.yml",
-        f"{inspect_dir}/gnu_hello_c.txt": "buildtest inspect query -d all -t hello_c",
+        f"{inspect_dir}/gnu_hello_c.txt": "buildtest inspect query -t hello_c/",
         f"{build_dir}/compiler_exclude.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/compiler_exclude.yml",
         f"{build_dir}/openmp_hello.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/openmp_hello.yml",
         f"{inspect_dir}/openmp_hello.txt": "buildtest inspect query -t openmp_hello_c_example",
         f"{build_dir}/envvar_override.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/envvar_override.yml",
-        f"{inspect_dir}/envvar_override.txt": "buildtest inspect query -d all -t override_environmentvars",
+        f"{inspect_dir}/envvar_override.txt": "buildtest inspect query -t override_environmentvars/",
         f"{build_dir}/compiler_status_regex.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/compiler_status_regex.yml",
-        f"{inspect_dir}/compiler_status_regex.txt": "buildtest inspect query -d all -o override_status_regex",
+        f"{inspect_dir}/compiler_status_regex.txt": "buildtest inspect query -o override_status_regex/",
         f"{build_dir}/custom_run.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/custom_run.yml",
-        f"{inspect_dir}/custom_run.txt": "buildtest inspect query -d all -b  -t custom_run_by_compilers",
+        f"{inspect_dir}/custom_run.txt": "buildtest inspect query -b  -t custom_run_by_compilers/",
         f"{build_dir}/pre_post_build_run.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/pre_post_build_run.yml",
         f"{inspect_dir}/pre_post_build_run.txt": "buildtest inspect query -t pre_post_build_run",
     }

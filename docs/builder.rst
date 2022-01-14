@@ -44,10 +44,8 @@ Building Buildspecs
 
 buildtest will send all valid buildspecs to **build** phase which is responsible for building
 a shell-script from the buildspec file. In this stage, we create a **Builder** object
-that is an instance of `BuilderBase <https://github.com/buildtesters/buildtest/blob/devel/buildtest/buildsystem/base.py>`_  class that is a base
-class for building a buildspec. There is a sub-class for `BuilderBase` class such as `ScriptBuilder <https://github.com/buildtesters/buildtest/blob/devel/buildtest/buildsystem/scriptbuilder.py>`_
-and `CompilerBuilder <https://github.com/buildtesters/buildtest/blob/devel/buildtest/buildsystem/compilerbuilder.py>`_ that implements
-how to build a test-script based on the sub-schema selection (``type: compiler``).
+that is an instance of `BuilderBase <https://github.com/buildtesters/buildtest/blob/devel/buildtest/builders/base.py>`_  class that is a base
+class for building a buildspec.
 
 During build phase, there are additional checks on buildspecs to ensure we can generate a test-script. In the event
 of failure, buildtest will raise an exception and buildspec will be ignored. The ignored buildspecs are not sent to **run**

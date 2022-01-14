@@ -85,7 +85,6 @@ autoapi_dirs = [os.path.join(BUILDTEST_ROOT, "buildtest")]
 autoapi_add_toctree_entry = True
 autoapi_member_order = "bysource"
 autoapi_root = "api"
-autoapi_keep_files = True
 autoapi_python_class_content = "both"
 autoapi_template_dir = "_templates/autoapi"
 
