@@ -1,6 +1,23 @@
 CHANGELOG
 =========
 
+v0.13.0
+--------
+
+- Add option for scaling batch jobs with ``buildtest build --procs`` and ``buildtest build --nodes`` which allows one to specify processor and node values to run test with different process and node configuration. See `#957 <https://github.com/buildtesters/buildtest/pull/957>`_, `#977 <https://github.com/buildtesters/buildtest/pull/977>`_
+- Rename command line options ``--max-pend-time`` -> ``--maxpendtime`` and ``--poll-interval`` -> ``--pollinterval`` `#959 <https://github.com/buildtesters/buildtest/pull/959>`_
+- Change behavior of ``buildtest inspect query`` command to support regular expression to query builders. We remove ``buildtest inspect query -d all`` which retrieved all records now this can be done with regex. We print additional metadata for each builder and color code via rich.
+- Add new command **buildtest unittests** to run regression test via buildtest. Added several options including ``--coverage``, ``--pytestopts`` and ``--sourcefiles``  `#962 <https://github.com/buildtesters/buildtest/pull/962>`_, `#966 <https://github.com/buildtesters/buildtest/pull/966>`_
+- Add new command **buildtest stylecheck** to run style checks such as *isort*, *black* and *pyflakes*. We have added options ``--no-black``, ``--no-isort``, ``--no-pyflakes`` to disable a particular check and ``--apply`` to apply changes to buildtest codebase. See `#964 <https://github.com/buildtesters/buildtest/pull/964>`_, `#965 <https://github.com/buildtesters/buildtest/pull/965>`_, `#969 <https://github.com/buildtesters/buildtest/pull/969>`_
+- We can configure buildtest to use a certain python wrapper using environment **BUILDTEST_PYTHON** `#963 <https://github.com/buildtesters/buildtest/pull/963>`_
+- Add argparse options to run buildtest unittest via script **python $BUILDTEST_ROOT/buildtest/tools/unittests.py** which is equivalent to running ``buildtest unittests``. `#968 <https://github.com/buildtesters/buildtest/pull/968>`_
+- Add `sphinx-copybutton <https://sphinx-copybutton.readthedocs.io/en/latest/>`_ extension in sphinx project to enable copy button in user docs `#973 <https://github.com/buildtesters/buildtest/pull/973>`_
+- We have changed behavior of how builders are printed during ``buildtest build`` command now one will see breakdown of builders by each type along with batch builders and builders created via ``--procs`` or ``--nodes`` option. `#978 <https://github.com/buildtesters/buildtest/pull/978>`_
+- Overall improvement in user documentation which included the following:
+    - Documentation for  **buildtest unittests** and **buildtest stylecheck** `#967 <https://github.com/buildtesters/buildtest/pull/967>`_.
+    - Add Facility test page `#976 <https://github.com/buildtesters/buildtest/pull/976>`_
+    - Regenerate tutorial examples `#979 <https://github.com/buildtesters/buildtest/pull/979>`_
+
 v0.12.0 (Dec 17th, 2021)
 -------------------------
 
