@@ -1,9 +1,9 @@
 version: "1.0"
 buildspecs:
   hold_job:
-    executor: jlse.cobalt.iris
+    executor: jlse.cobalt.testing
     type: script
     tags: [jobs]
-    description: Hold Job on iris queue
+    description: Hold Job on testing queue
     cobalt: ["-n 1", "-t 10", "-h"]
     run: hostname

@@ -6,6 +6,7 @@ import os
 
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
+from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
 from buildtest.exceptions import BuildspecError, BuildTestError
 from buildtest.executors.setup import BuildExecutor
@@ -38,6 +39,7 @@ def test_build_executor(tmp_path):
 
     valid_builders = []
 
+    buildtest_compilers = BuildtestCompilers(configuration=bc)
     for buildspec in os.listdir(examples_dir):
         buildspec = os.path.join(examples_dir, buildspec)
         try:
@@ -53,6 +55,7 @@ def test_build_executor(tmp_path):
             filters=bp_filters,
             testdir=tmp_path,
             buildtest_system=system,
+            buildtest_compilers=buildtest_compilers,
         )
         valid_builders += builders.get_builders()
     # build each test and then run it

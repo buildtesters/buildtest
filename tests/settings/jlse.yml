@@ -21,14 +21,8 @@ system:
           description: submit jobs on local machine using python shell
           shell: python
       cobalt:
-        yarrow:
-          queue: yarrow
-        yarrow_debug:
-          queue: yarrow_debug
-        iris:
-          queue: iris
-        iris_debug:
-          queue: iris_debug
+        testing:
+          queue: testing
     compilers:
       find:
         gcc: "^(gcc)"

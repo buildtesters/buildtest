@@ -10,7 +10,6 @@ import re
 from buildtest.builders.compiler import CompilerBuilder
 from buildtest.builders.script import ScriptBuilder
 from buildtest.builders.spack import SpackBuilder
-from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import console
 from buildtest.utils.tools import deep_get
 
@@ -27,6 +26,7 @@ class Builder:
     def __init__(
         self,
         bp,
+        buildtest_compilers,
         buildexecutor,
         filters,
         testdir,
@@ -63,6 +63,7 @@ class Builder:
         self.numnodes = numnodes
 
         self.bp = bp
+        self.bc = buildtest_compilers
         self.filters = filters
 
         self.builders = []
@@ -108,15 +109,15 @@ class Builder:
 
                 # Add the builder for the script or spack schema
                 if recipe["type"] in ["script", "spack"]:
-                    self.builders += self._generate_builders(recipe, name)
+                    builders = self._generate_builders(recipe, name)
+                    if builders:
+                        self.builders += builders
 
                 elif recipe["type"] == "compiler":
 
-                    self._build_compilers(name, recipe)
-                else:
-                    print(
-                        "%s is not recognized by buildtest, skipping." % recipe["type"]
-                    )
+                    builders = self._build_compilers(name, recipe)
+                    if builders:
+                        self.builders += builders
 
     def _create_builders_procs(self, name, executor, recipe, compiler_name=None):
         """This method will create builders for range of process configuration specified via ``buildtest build --procs``. The return
@@ -267,11 +268,11 @@ class Builder:
                 builders.append(builder)
 
             elif (
-                re.fullmatch(recipe.get("executor"), executor)
+                re.fullmatch(recipe["executor"], executor)
                 and recipe["type"] == "compiler"
             ):
                 self.logger.debug(
-                    f"Found a match in buildspec with available executors via re.fullmatch({recipe.get('executor')},{executor})"
+                    f"Found a match in buildspec with available executors via re.fullmatch({recipe['executor']},{executor})"
                 )
                 # if --procs is specified create builder object for list of proc values
                 if self.numprocs or self.numnodes:
@@ -321,16 +322,13 @@ class Builder:
         """This method will perform regular expression with 'name' field in compilers
         section and retrieve one or more compiler that were defined in buildtest
         configuration. If any compilers were retrieved we return one or more
-        builder objects that call :class:`buildtest.buildsystem.compilerbuilder.CompilerBuilder`
+        builder objects that call :class:`buildtest.buildsystem.builders.compiler.CompilerBuilder`
 
         Args:
             name (str): name of test
             recipe (dict): Loaded test recipe from buildspec
         """
-        self.compilers = {}
-
-        bc = BuildtestCompilers(configuration=self.configuration)
-        discovered_compilers = bc.list()
+        discovered_compilers = self.bc.names()
 
         builders = []
         # exclude compiler from search if 'exclude' specified in buildspec
@@ -359,8 +357,7 @@ class Builder:
             self.logger.debug(msg)
             return
 
-        for builder in builders:
-            self.builders.append(builder)
+        return builders
 
     def _skip_tests_by_tags(self, recipe, name):
         """This method determines if test should be skipped based on tag names specified

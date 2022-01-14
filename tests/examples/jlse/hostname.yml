@@ -1,9 +1,9 @@
 version: "1.0"
 buildspecs:
-  iris_hostname:
-    executor: jlse.cobalt.iris
+  hostname_test:
+    executor: jlse.cobalt.testing
     type: script
     tags: [jobs]
-    description: Run hostname on iris queue
+    description: Run hostname on testing queue
     cobalt: ["-n 1", "-t 10"]
     run: hostname

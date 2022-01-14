@@ -69,7 +69,7 @@ class CobaltExecutor(BaseExecutor):
             )
         )
 
-    def launcher_command(self):
+    def launcher_command(self, numprocs, numnodes):
 
         batch_cmd = [self.launcher]
 
@@ -78,6 +78,12 @@ class CobaltExecutor(BaseExecutor):
 
         if self.account:
             batch_cmd += [f"--project {self.account}"]
+
+        if numprocs:
+            batch_cmd += [f"--proccount={self.numprocs}"]
+
+        if numnodes:
+            batch_cmd += [f"--nodecount={self.numnodes}"]
 
         if self.launcher_opts:
             batch_cmd += [" ".join(self.launcher_opts)]

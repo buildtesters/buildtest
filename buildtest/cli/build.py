@@ -12,8 +12,12 @@ import tempfile
 from datetime import datetime
 
 from buildtest import BUILDTEST_VERSION
+from buildtest.builders.compiler import CompilerBuilder
+from buildtest.builders.script import ScriptBuilder
+from buildtest.builders.spack import SpackBuilder
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
+from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import (
     BUILD_HISTORY_DIR,
     BUILD_REPORT,
@@ -733,6 +737,8 @@ class BuildTest:
         # stores a list of buildspecs that are filtered out
         filtered_buildspecs = []
 
+        bc = BuildtestCompilers(configuration=self.configuration)
+
         # build all the tests
         for buildspec in self.detected_buildspecs:
             try:
@@ -747,6 +753,7 @@ class BuildTest:
 
             builder = Builder(
                 bp=bp,
+                buildtest_compilers=bc,
                 buildexecutor=self.buildexecutor,
                 filters=self.filter_buildspecs,
                 testdir=self.testdir,
@@ -794,26 +801,33 @@ class BuildTest:
             print(f"\nPlease see logfile: {BUILDTEST_LOGFILE}")
             sys.exit(1)
 
-        print("Total builder objects created:", len(self.builders))
-        print("\n")
+        console.print("Total builder objects created:", len(self.builders))
 
-        table = Table(title="Builder Details", show_lines=True)
-        table.add_column("[blue]Builder", overflow="fold")
-        table.add_column("[blue]Executor", overflow="fold")
-        table.add_column("[blue]description", overflow="fold")
-        table.add_column("[blue]buildspecs", overflow="fold")
+        script_builders = []
+        compiler_builder = []
+        spack_builder = []
+        batch_builders = []
 
         for builder in self.builders:
-            description = builder.recipe.get("description")
+            if isinstance(builder, ScriptBuilder):
+                script_builders.append(builder)
 
-            table.add_row(
-                f"[blue]{builder}",
-                f"[green]{builder.executor}",
-                f"[magenta]{description}",
-                f"[yellow]{builder.buildspec}",
-            )
+            if isinstance(builder, CompilerBuilder):
+                compiler_builder.append(builder)
 
-        console.print(table)
+            if isinstance(builder, SpackBuilder):
+                spack_builder.append(builder)
+
+            if not builder._is_local_executor():
+                batch_builders.append(builder)
+
+        console.print("Total compiler builder:", len(compiler_builder))
+        console.print("Total script builder:", len(script_builders))
+        console.print("Total spack builder:", len(spack_builder))
+
+        self.print_builders(
+            compiler_builder, spack_builder, script_builders, batch_builders
+        )
 
     def build_phase(self):
         """This method will build all tests by invoking class method ``build`` for
@@ -1110,6 +1124,129 @@ class BuildTest:
     def get_build_history_dir(self):
         """Return root of build history directory"""
         return self.build_history_dir
+
+    def print_builders(
+        self, compiler_builder, spack_builder, script_builder, batch_builder
+    ):
+        """Print detected builders during build phase"""
+
+        if script_builder:
+
+            table = Table(title="Script Builder Details", show_lines=True)
+            table.add_column("[blue]Builder", overflow="fold")
+            table.add_column("[blue]Executor", overflow="fold")
+            table.add_column("[blue]description", overflow="fold")
+            table.add_column("[blue]buildspecs", overflow="fold")
+
+            for builder in script_builder:
+                description = builder.recipe.get("description")
+
+                table.add_row(
+                    f"[blue]{builder}",
+                    f"[green]{builder.executor}",
+                    f"[magenta]{description}",
+                    f"[yellow]{builder.buildspec}",
+                )
+
+            console.print(table)
+
+        if spack_builder:
+
+            table = Table(title="Spack Builder Details", show_lines=True)
+            table.add_column("[blue]Builder", overflow="fold")
+            table.add_column("[blue]Executor", overflow="fold")
+            table.add_column("[blue]description", overflow="fold")
+            table.add_column("[blue]buildspecs", overflow="fold")
+
+            for builder in spack_builder:
+                description = builder.recipe.get("description")
+
+                table.add_row(
+                    f"[blue]{builder}",
+                    f"[green]{builder.executor}",
+                    f"[magenta]{description}",
+                    f"[yellow]{builder.buildspec}",
+                )
+
+            console.print(table)
+
+        if compiler_builder:
+            table = Table(title="Compiler Builder Details", show_lines=True)
+            table.add_column("[blue]Builder", overflow="fold")
+            table.add_column("[blue]Executor", overflow="fold")
+            table.add_column("[blue]Compiler", overflow="fold")
+            table.add_column("[blue]description", overflow="fold")
+            table.add_column("[blue]buildspecs", overflow="fold")
+
+            for builder in compiler_builder:
+                description = builder.recipe.get("description")
+
+                table.add_row(
+                    f"[blue]{builder}",
+                    f"[green]{builder.executor}",
+                    f"[red]{builder.compiler}",
+                    f"[magenta]{description}",
+                    f"[yellow]{builder.buildspec}",
+                )
+
+            console.print(table)
+
+        if batch_builder:
+            table = Table(title="Batch Job Builders", show_lines=True)
+            table.add_column("[blue]Builder", overflow="fold")
+            table.add_column("[blue]Executor", overflow="fold")
+            table.add_column("[blue]buildspecs", overflow="fold")
+
+            for builder in batch_builder:
+                table.add_row(
+                    f"[blue]{builder}",
+                    f"[green]{builder.executor}",
+                    f"[yellow]{builder.buildspec}",
+                )
+
+            console.print(table)
+
+            if self.numprocs:
+                table = Table(title="Batch Job Builders by Processors", show_lines=True)
+                table.add_column("[blue]Builder", overflow="fold")
+                table.add_column("[blue]Executor", overflow="fold")
+                table.add_column("[blue]Processor", overflow="fold")
+                table.add_column("[blue]buildspecs", overflow="fold")
+
+                for builder in batch_builder:
+                    # skip builders that dont have attribute builder.numprocs which is set if buildtest build --procs is specified
+                    if not builder.numprocs:
+                        continue
+
+                    table.add_row(
+                        f"[blue]{builder}",
+                        f"[green]{builder.executor}",
+                        f"[cyan]{builder.numprocs}",
+                        f"[yellow]{builder.buildspec}",
+                    )
+
+                console.print(table)
+
+            if self.numnodes:
+                table = Table(title="Batch Job Builders by Nodes", show_lines=True)
+                table.add_column("[blue]Builder", overflow="fold")
+                table.add_column("[blue]Executor", overflow="fold")
+                table.add_column("[blue]Nodes", overflow="fold")
+                table.add_column("[blue]buildspecs", overflow="fold")
+
+                for builder in batch_builder:
+                    # skip builders that dont have attribute builder.numprocs which is set if buildtest build --procs is specified
+                    if not builder.numnodes:
+                        continue
+
+                    table.add_row(
+                        f"[blue]{builder}",
+                        f"[green]{builder.executor}",
+                        f"[cyan]{builder.numnodes}",
+                        f"[yellow]{builder.buildspec}",
+                    )
+
+                console.print(table)
 
 
 def update_report(valid_builders, report_file):

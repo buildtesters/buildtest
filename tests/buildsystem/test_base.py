@@ -7,6 +7,7 @@ import os
 import pytest
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
+from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import DEFAULT_SETTINGS_FILE
 from buildtest.exceptions import BuildspecError, BuildTestError
@@ -45,6 +46,7 @@ def test_BuildspecParser(tmp_path):
     directory = os.path.join(here, "invalid_builds")
     # invalid builds for compiler schema tests. These tests will raise BuildTestError exception upon building
     # even though they are valid buildspecs.\
+    bc = BuildtestCompilers(configuration=config)
     for buildspec in walk_tree(directory, ".yml"):
         buildspecfile = os.path.join(directory, buildspec)
         print("Processing buildspec", buildspecfile)
@@ -53,6 +55,7 @@ def test_BuildspecParser(tmp_path):
         with pytest.raises(BuildTestError):
             builder = Builder(
                 bp=bp,
+                buildtest_compilers=bc,
                 buildexecutor=executors,
                 configuration=config,
                 filters=[],
@@ -82,6 +85,7 @@ def test_BuildspecParser(tmp_path):
 
         builders = Builder(
             bp=bp,
+            buildtest_compilers=bc,
             buildexecutor=executors,
             configuration=config,
             filters=filters,
