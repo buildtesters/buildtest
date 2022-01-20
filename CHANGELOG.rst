@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-v0.13.0
---------
+v0.13.0 (Jan 20th, 2022)
+-------------------------
 
 - Add option for scaling batch jobs with ``buildtest build --procs`` and ``buildtest build --nodes`` which allows one to specify processor and node values to run test with different process and node configuration. See `#957 <https://github.com/buildtesters/buildtest/pull/957>`_, `#977 <https://github.com/buildtesters/buildtest/pull/977>`_
 - Rename command line options ``--max-pend-time`` -> ``--maxpendtime`` and ``--poll-interval`` -> ``--pollinterval`` `#959 <https://github.com/buildtesters/buildtest/pull/959>`_
