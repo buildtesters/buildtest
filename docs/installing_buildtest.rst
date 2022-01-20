@@ -40,17 +40,25 @@ Installing buildtest
 buildtest requires a python 3.7 or higher, we recommend you setup a python environment in order
 to install buildtest. You can use `venv <https://docs.python.org/3/library/venv.html>`_, `conda <https://conda.io/>`_,
 or `pipenv <https://pipenv.readthedocs.io/en/latest/>`_ to manage your python environment depending on your preference.
+Assuming you have cloned buildtest in your HOME directory you will need to follow these instructions to install buildtest.
 
 .. tabs::
 
-    .. tab:: Virtual Environment
+    .. tab:: Virtual Environment (bash)
 
        ::
 
-           python3 -m venv $HOME/buildtest
-           source $HOME/buildtest/bin/activate
-           cd buildtest
-           source setup.sh
+           python3 -m venv $HOME/.pyenv/buildtest
+           source $HOME/.pyenv/buildtest/bin/activate
+           source $HOME/buildtest/setup.sh
+
+    .. tab:: Virtual Environment (csh)
+
+       ::
+
+           python3 -m venv $HOME/.pyenv/buildtest
+           source $HOME/.pyenv/buildtest/bin/activate.csh
+           source $HOME/buildtest/setup.csh
 
     .. tab:: Conda
 
@@ -58,8 +66,7 @@ or `pipenv <https://pipenv.readthedocs.io/en/latest/>`_ to manage your python en
 
            conda create -n buildtest python=3.7
            source activate buildtest
-           cd buildtest
-           source setup.sh
+           source $HOME/buildtest/setup.sh
 
     .. tab:: pipenv
 
@@ -67,8 +74,7 @@ or `pipenv <https://pipenv.readthedocs.io/en/latest/>`_ to manage your python en
 
            pipenv --python 3.7
            pipenv shell
-           cd buildtest
-           source setup.sh
+           source $HOME/buildtest/setup.sh
 
 For csh users you will need to ``source setup.csh`` in order to install buildtest.
 
