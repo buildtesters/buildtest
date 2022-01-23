@@ -184,8 +184,8 @@
                     "minimum": 10,
                     "default": 30
                   },
-                  "max_pend_time": {
-                    "$ref": "#/definitions/max_pend_time"
+                  "maxpendtime": {
+                    "$ref": "#/definitions/maxpendtime"
                   },
                   "account": {
                     "$ref": "#/definitions/account"

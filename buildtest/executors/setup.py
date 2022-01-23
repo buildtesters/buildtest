@@ -195,7 +195,7 @@ class BuildExecutor:
 
         workers = mp.Pool(num_workers)
 
-        print(f"Spawning {num_workers} processes for processing builders")
+        console.print(f"Spawning {num_workers} processes for processing builders")
 
         for builder in self.builders:
             # console.print(
