@@ -148,7 +148,7 @@ class BuildspecParser:
             raise BuildspecError(self.buildspec, "No 'executor' key found in buildspec")
 
         match = False
-        for name in self.buildexecutors.list_executors():
+        for name in self.buildexecutors.names():
             if re.match(executor, name):
                 match = True
                 break
@@ -156,11 +156,11 @@ class BuildspecParser:
         if not match:
             raise BuildspecError(
                 self.buildspec,
-                f"Unable to find executor: {executor} in {self.buildexecutors.list_executors()}",
+                f"Unable to find executor: {executor} in {self.buildexecutors.names()}",
             )
 
         self.logger.debug(
-            f"Executor: {executor} found in executor list: {self.buildexecutors.list_executors()}"
+            f"Executor: {executor} found in executor list: {self.buildexecutors.names()}"
         )
 
     def validate(self):

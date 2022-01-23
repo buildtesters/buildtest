@@ -31,10 +31,10 @@ class CobaltExecutor(BaseExecutor):
     type = "cobalt"
     launcher = "qsub"
 
-    def __init__(self, name, settings, site_configs, account=None, max_pend_time=None):
+    def __init__(self, name, settings, site_configs, account=None, maxpendtime=None):
 
         self.account = account
-        self.maxpendtime = max_pend_time
+        self.maxpendtime = maxpendtime
         super().__init__(name, settings, site_configs)
 
     def load(self):
@@ -58,14 +58,14 @@ class CobaltExecutor(BaseExecutor):
                 "account",
             )
         )
-        self.max_pend_time = (
+        self.maxpendtime = (
             self.maxpendtime
-            or self._settings.get("max_pend_time")
+            or self._settings.get("maxpendtime")
             or deep_get(
                 self._buildtestsettings.target_config,
                 "executors",
                 "defaults",
-                "max_pend_time",
+                "maxpendtime",
             )
         )
 
@@ -147,7 +147,7 @@ class CobaltExecutor(BaseExecutor):
         """This method is responsible for polling Cobalt job by invoking the builder method
         ``builder.job.poll()``.  We check the job state and existence of output file. If file
         exists or job is complete, we gather the results and return from function. If job
-        is pending we check if job time exceeds ``max_pend_time`` time limit and cancel job.
+        is pending we check if job time exceeds ``maxpendtime`` time limit and cancel job.
 
         Args:
             builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
@@ -161,17 +161,17 @@ class CobaltExecutor(BaseExecutor):
             return
 
         builder.stop()
-        # if job is pending or suspended check if builder timer duration exceeds max_pend_time if so cancel job
+        # if job is pending or suspended check if builder timer duration exceeds maxpendtime if so cancel job
         if builder.job.is_pending() or builder.job.is_suspended():
             logger.debug(f"Time Duration: {builder.duration}")
-            logger.debug(f"Max Pend Time: {self.max_pend_time}")
+            logger.debug(f"Max Pend Time: {self.maxpendtime}")
 
             # if timer time is more than requested pend time then cancel job
-            if int(builder.timer.duration()) > self.max_pend_time:
+            if int(builder.timer.duration()) > self.maxpendtime:
                 builder.job.cancel()
                 builder.failure()
                 console.print(
-                    f"[blue]{builder}[/]: Cancelling Job: {builder.job.get()} because job exceeds max pend time: {self.max_pend_time} sec with current pend time of {builder.timer.duration()} "
+                    f"[blue]{builder}[/]: Cancelling Job: {builder.job.get()} because job exceeds max pend time: {self.maxpendtime} sec with current pend time of {builder.timer.duration()} "
                 )
 
         builder.start()
@@ -356,7 +356,7 @@ class CobaltJob(Job):
 
     def cancel(self):
         """Cancel job by running ``qdel <jobid>``. This method is called if job timer exceeds
-        ``max_pend_time`` if job is pending.
+        ``maxpendtime`` if job is pending.
         """
 
         query = f"qdel {self.jobid}"

@@ -39,6 +39,12 @@
           "type": "string",
           "description": "system description field"
         },
+        "numprocs":
+        {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Specify size of Process Pool for parallel processing"
+        },
         "buildspec_roots": {
           "type": "array",
           "items": {
@@ -178,8 +184,8 @@
                     "minimum": 10,
                     "default": 30
                   },
-                  "max_pend_time": {
-                    "$ref": "#/definitions/max_pend_time"
+                  "maxpendtime": {
+                    "$ref": "#/definitions/maxpendtime"
                   },
                   "account": {
                     "$ref": "#/definitions/account"
@@ -323,9 +329,9 @@
       "additionalProperties": false,
       "items": { "type": "string" }
     },
-    "max_pend_time": {
+    "maxpendtime": {
       "type": "integer",
-      "description": "Cancel job if it is still pending in queue beyond max_pend_time",
+      "description": "Cancel job if it is still pending in queue beyond maxpendtime",
       "minimum": 10,
       "default": 90
     },
@@ -388,9 +394,9 @@
           "description": "The ``before_script`` section can be used to specify commands before start of test. The script will be sourced in active shell.",
           "#ref": "#/definitions/script"
         },
-        "max_pend_time": {
-          "description": "overrides default ``max_pend_time`` value",
-          "$ref": "#/definitions/max_pend_time"
+        "maxpendtime": {
+          "description": "overrides default ``maxpendtime`` value",
+          "$ref": "#/definitions/maxpendtime"
         },
         "account": {
           "description": "overrides default ``account`` value",
@@ -429,9 +435,9 @@
           "description": "The ``before_script`` section can be used to specify commands before start of test. The script will be sourced in active shell.",
           "#ref": "#/definitions/script"
         },
-        "max_pend_time": {
-          "description": "overrides default ``max_pend_time`` value",
-          "$ref": "#/definitions/max_pend_time"
+        "maxpendtime": {
+          "description": "overrides default ``maxpendtime`` value",
+          "$ref": "#/definitions/maxpendtime"
         },
         "account": {
           "description": "overrides default ``account`` value",
@@ -470,9 +476,9 @@
           "description": "The ``before_script`` section can be used to specify commands before start of test. The script will be sourced in active shell.",
           "#ref": "#/definitions/script"
         },
-        "max_pend_time": {
-          "description": "overrides default ``max_pend_time`` value",
-          "$ref": "#/definitions/max_pend_time"
+        "maxpendtime": {
+          "description": "overrides default ``maxpendtime`` value",
+          "$ref": "#/definitions/maxpendtime"
         },
         "account": {
           "description": "overrides default ``account`` value",
@@ -511,9 +517,9 @@
           "description": "The ``before_script`` section can be used to specify commands before start of test. The script will be sourced in active shell.",
           "#ref": "#/definitions/script"
         },
-        "max_pend_time": {
-          "description": "overrides default ``max_pend_time`` value",
-          "$ref": "#/definitions/max_pend_time"
+        "maxpendtime": {
+          "description": "overrides default ``maxpendtime`` value",
+          "$ref": "#/definitions/maxpendtime"
         },
         "account": {
           "description": "overrides default ``account`` value",

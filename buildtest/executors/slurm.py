@@ -23,16 +23,16 @@ class SlurmExecutor(BaseExecutor):
 
       - **load**: load slurm configuration from buildtest configuration file
       - **dispatch**: dispatch job to scheduler and acquire job ID
-      - **poll**: wait for Slurm jobs to finish, if job is pending and exceeds `max_pend_time` then cancel job
+      - **poll**: wait for Slurm jobs to finish, if job is pending and exceeds `maxpendtime` then cancel job
       - **gather**: Once job is complete, gather job data
     """
 
     type = "slurm"
     launcher = "sbatch"
 
-    def __init__(self, name, settings, site_configs, account=None, max_pend_time=None):
+    def __init__(self, name, settings, site_configs, account=None, maxpendtime=None):
 
-        self.maxpendtime = max_pend_time
+        self.maxpendtime = maxpendtime
         self.account = account
         super().__init__(name, settings, site_configs)
 
@@ -59,19 +59,19 @@ class SlurmExecutor(BaseExecutor):
             )
         )
 
-        # the max_pend_time can be defined in executors 'default' section or a named instance or passed via command line.
+        # the maxpendtime can be defined in executors 'default' section or a named instance or passed via command line.
         # The preference is the following:
         # 1. Command line: buildtest build --max-pend-time
-        # 2. 'max_pend_time' in named executor instance
-        # 3. 'max_pend_time' in 'default' executor instance
-        self.max_pend_time = (
+        # 2. 'maxpendtime' in named executor instance
+        # 3. 'maxpendtime' in 'default' executor instance
+        self.maxpendtime = (
             self.maxpendtime
-            or self._settings.get("max_pend_time")
+            or self._settings.get("maxpendtime")
             or deep_get(
                 self._buildtestsettings.target_config,
                 "executors",
                 "defaults",
-                "max_pend_time",
+                "maxpendtime",
             )
         )
 
@@ -147,7 +147,7 @@ class SlurmExecutor(BaseExecutor):
     def poll(self, builder):
         """This method is called during poll stage where we invoke ``builder.job.poll()`` to get updated
         job state. If job is pending or suspended we stop timer and check if job needs to be cancelled if
-        time exceeds ``max_pend_time`` value.
+        time exceeds ``maxpendtime`` value.
 
         Args:
             builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
@@ -166,14 +166,14 @@ class SlurmExecutor(BaseExecutor):
         if builder.job.is_pending() or builder.job.is_suspended():
 
             self.logger.debug(f"Time Duration: {builder.duration}")
-            self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
+            self.logger.debug(f"Max Pend Time: {self.maxpendtime}")
 
-            # if timer exceeds 'max_pend_time' then cancel job
-            if int(builder.timer.duration()) > self.max_pend_time:
+            # if timer exceeds 'maxpendtime' then cancel job
+            if int(builder.timer.duration()) > self.maxpendtime:
                 builder.job.cancel()
                 builder.failure()
                 console.print(
-                    f"[blue]{builder}[/]: Cancelling Job: {builder.job.get()} because job exceeds max pend time: {self.max_pend_time} sec with current pend time of {builder.timer.duration()} "
+                    f"[blue]{builder}[/]: Cancelling Job: {builder.job.get()} because job exceeds max pend time: {self.maxpendtime} sec with current pend time of {builder.timer.duration()} "
                 )
 
         builder.start()
@@ -296,7 +296,7 @@ class SlurmJob(Job):
     def cancel(self):
         """Cancel job by running ``scancel <jobid>``. If job is specified to a slurm
         cluster we cancel job using ``scancel <jobid> --clusters=<cluster>``. This method
-        is called if job exceeds `max_pend_time`."""
+        is called if job exceeds `maxpendtime`."""
 
         query = f"scancel {self.jobid}"
         if self.cluster:

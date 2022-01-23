@@ -34,7 +34,7 @@ class BuildExecutor:
     - **poll**: This is responsible for invoking ``poll`` method for corresponding executor from the builder object by checking job state
     """
 
-    def __init__(self, site_config, account=None, max_pend_time=None):
+    def __init__(self, site_config, account=None, maxpendtime=None):
         """Initialize executors, meaning that we provide the buildtest
         configuration that are validated, and can instantiate
         each executor to be available.
@@ -42,7 +42,7 @@ class BuildExecutor:
         Args:
             site_config (buildtest.config.SiteConfiguration): instance of SiteConfiguration class that has the buildtest configuration
             account (str, optional): pass account name to charge batch jobs.
-            max_pend_time (int, optional): maximum pend time in second until job is cancelled.
+            maxpendtime (int, optional): maximum pend time in second until job is cancelled.
         """
 
         # stores a list of builders objects
@@ -54,52 +54,60 @@ class BuildExecutor:
         self.executors = {}
         logger.debug("Getting Executors from buildtest settings")
 
+        self.configuration = site_config
+
         if site_config.valid_executors["local"]:
-            for name in site_config.valid_executors["local"].keys():
+            for name in self.configuration.valid_executors["local"].keys():
                 self.executors[name] = LocalExecutor(
                     name=name,
-                    settings=site_config.valid_executors["local"][name]["setting"],
-                    site_configs=site_config,
+                    settings=self.configuration.valid_executors["local"][name][
+                        "setting"
+                    ],
+                    site_configs=self.configuration,
                 )
 
         if site_config.valid_executors["slurm"]:
-            for name in site_config.valid_executors["slurm"]:
+            for name in self.configuration.valid_executors["slurm"]:
                 self.executors[name] = SlurmExecutor(
                     name=name,
                     account=account,
-                    settings=site_config.valid_executors["slurm"][name]["setting"],
-                    site_configs=site_config,
-                    max_pend_time=max_pend_time,
+                    settings=self.configuration.valid_executors["slurm"][name][
+                        "setting"
+                    ],
+                    site_configs=self.configuration,
+                    maxpendtime=maxpendtime,
                 )
 
-        if site_config.valid_executors["lsf"]:
-            for name in site_config.valid_executors["lsf"]:
+        if self.configuration.valid_executors["lsf"]:
+            for name in self.configuration.valid_executors["lsf"]:
                 self.executors[name] = LSFExecutor(
                     name=name,
                     account=account,
-                    settings=site_config.valid_executors["lsf"][name]["setting"],
-                    site_configs=site_config,
-                    max_pend_time=max_pend_time,
+                    settings=self.configuration.valid_executors["lsf"][name]["setting"],
+                    site_configs=self.configuration,
+                    maxpendtime=maxpendtime,
                 )
 
-        if site_config.valid_executors["pbs"]:
-            for name in site_config.valid_executors["pbs"]:
+        if self.configuration.valid_executors["pbs"]:
+            for name in self.configuration.valid_executors["pbs"]:
                 self.executors[name] = PBSExecutor(
                     name=name,
                     account=account,
-                    settings=site_config.valid_executors["pbs"][name]["setting"],
-                    site_configs=site_config,
-                    max_pend_time=max_pend_time,
+                    settings=self.configuration.valid_executors["pbs"][name]["setting"],
+                    site_configs=self.configuration,
+                    maxpendtime=maxpendtime,
                 )
 
-        if site_config.valid_executors["cobalt"]:
-            for name in site_config.valid_executors["cobalt"]:
+        if self.configuration.valid_executors["cobalt"]:
+            for name in self.configuration.valid_executors["cobalt"]:
                 self.executors[name] = CobaltExecutor(
                     name=name,
                     account=account,
-                    settings=site_config.valid_executors["cobalt"][name]["setting"],
-                    site_configs=site_config,
-                    max_pend_time=max_pend_time,
+                    settings=self.configuration.valid_executors["cobalt"][name][
+                        "setting"
+                    ],
+                    site_configs=self.configuration,
+                    maxpendtime=maxpendtime,
                 )
         self.setup()
 
@@ -109,23 +117,9 @@ class BuildExecutor:
     def __repr__(self):
         return "[buildtest-executor]"
 
-    def list_executors(self):
+    def names(self):
+        """Return a list of executor names"""
         return list(self.executors.keys())
-
-    def is_local(self, executor_type):
-        return executor_type == "local"
-
-    def is_slurm(self, executor_type):
-        return executor_type == "slurm"
-
-    def is_lsf(self, executor_type):
-        return executor_type == "lsf"
-
-    def is_pbs(self, executor_type):
-        return executor_type == "pbs"
-
-    def is_cobalt(self, executor_type):
-        return executor_type == "cobalt"
 
     def get(self, name):
         """Given the name of an executor return the executor object which is of subclass of `BaseExecutor`"""
@@ -174,23 +168,7 @@ class BuildExecutor:
             content += executor_settings.get("before_script") or ""
             write_file(file, content)
 
-    def load_builders(self, builders):
-        """Adds builder objects into self.builders class variable. This method will only add objects that are instance of BuilderBase class.
-
-        Args:
-            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
-        """
-        for builder in builders:
-            # only add items that are of class BuilderBase
-            if not isinstance(builder, BuilderBase):
-                continue
-
-            executor = self._choose_executor(builder)
-            executor.add_builder(builder)
-
-            self.builders.append(builder)
-
-    def run(self):
+    def run(self, builders):
         """This method is responsible for running the build script for each builder async and
         gather the results. We setup a pool of worker settings by invoking ``multiprocessing.pool.Pool``
         and use `multiprocessing.pool.Pool.apply_sync() <https://docs.python.org/3/library/multiprocessing.html#multiprocessing.pool.Pool.apply_async>`_
@@ -201,20 +179,25 @@ class BuildExecutor:
         of valid builders that is returned at end of method.
         """
 
+        for builder in builders:
+            executor = self._choose_executor(builder)
+            executor.add_builder(builder)
+            self.builders.append(builder)
+
+        for key in self.executors.keys():
+            print(f"executor: {key}", self.executors[key].builders)
+
         results = []
 
-        workers = mp.Pool(2)
+        num_workers = self.configuration.target_config.get("numprocs") or os.cpu_count()
+        # in case user specifies more process than available CPU count use the min of the two numbers
+        num_workers = min(num_workers, os.cpu_count())
 
-        # for name in self.executors.keys():
-        #    print(f"Name: {name}  Builders:  {self.executors[name].get_builder()}")
+        workers = mp.Pool(num_workers)
 
-        # if there are no builders loaded we return from method
-        if not self.builders:
-            return
+        console.print(f"Spawning {num_workers} processes for processing builders")
 
         for builder in self.builders:
-            print("{:_<30}".format(""))
-            console.print(f"Launching test: [blue]{builder}[/]")
             # console.print(
             #    f"[blue]{builder}[/]: Running Test script via command {builder.metadata['command']}[cyan]"
             # )

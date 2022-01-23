@@ -8,7 +8,7 @@ system:
     executors:
       defaults:
         pollinterval: 20
-        max_pend_time: 30
+        maxpendtime: 30
         account: admin
       slurm:
         normal:

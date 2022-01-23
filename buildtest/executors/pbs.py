@@ -28,9 +28,9 @@ class PBSExecutor(BaseExecutor):
     type = "pbs"
     launcher = "qsub"
 
-    def __init__(self, name, settings, site_configs, account=None, max_pend_time=None):
+    def __init__(self, name, settings, site_configs, account=None, maxpendtime=None):
 
-        self.maxpendtime = max_pend_time
+        self.maxpendtime = maxpendtime
         self.account = account
         super().__init__(name, settings, site_configs)
 
@@ -55,14 +55,14 @@ class PBSExecutor(BaseExecutor):
                 "account",
             )
         )
-        self.max_pend_time = (
+        self.maxpendtime = (
             self.maxpendtime
-            or self._settings.get("max_pend_time")
+            or self._settings.get("maxpendtime")
             or deep_get(
                 self._buildtestsettings.target_config,
                 "executors",
                 "defaults",
-                "max_pend_time",
+                "maxpendtime",
             )
         )
 
@@ -145,17 +145,17 @@ class PBSExecutor(BaseExecutor):
 
         builder.stop()
 
-        # if job in pending or suspended, check if it exceeds max_pend_time if so cancel job
+        # if job in pending or suspended, check if it exceeds maxpendtime if so cancel job
         if builder.job.is_pending() or builder.job.is_suspended():
             self.logger.debug(f"Time Duration: {builder.timer.duration()}")
-            self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
+            self.logger.debug(f"Max Pend Time: {self.maxpendtime}")
 
             # if timer time is more than requested pend time then cancel job
-            if int(builder.timer.duration()) > self.max_pend_time:
+            if int(builder.timer.duration()) > self.maxpendtime:
                 builder.job.cancel()
                 builder.failure()
                 console.print(
-                    f"[blue]{builder}[/]: Cancelling Job: {builder.job.get()} because job exceeds max pend time: {self.max_pend_time} sec with current pend time of {builder.timer.duration()} "
+                    f"[blue]{builder}[/]: Cancelling Job: {builder.job.get()} because job exceeds max pend time: {self.maxpendtime} sec with current pend time of {builder.timer.duration()} "
                 )
 
         builder.start()

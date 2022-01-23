@@ -61,7 +61,7 @@ def test_cori_slurm_hostname():
         ],
         buildtest_system=system,
         poll_interval=5,
-        max_pend_time=120,
+        maxpendtime=120,
         numprocs=[1, 4],
     )
     cmd.build()
@@ -87,7 +87,7 @@ def test_cori_slurm_max_pend():
         ],
         buildtest_system=system,
         poll_interval=5,
-        max_pend_time=10,
+        maxpendtime=10,
     )
     with pytest.raises(SystemExit):
         cmd.build()
