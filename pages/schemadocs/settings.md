@@ -48,18 +48,19 @@ Reference this group by using
 {"$ref":"settings.schema.json#/definitions/system"}
 ```
 
-| Property                            | Type     | Required | Nullable       | Defined by                                                                                                                                                        |
-| :---------------------------------- | :------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [hostnames](#hostnames)             | `array`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-hostnames.md "settings.schema.json#/definitions/system/properties/hostnames")             |
-| [description](#description)         | `string` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-description.md "settings.schema.json#/definitions/system/properties/description")         |
-| [buildspec_roots](#buildspec_roots) | `array`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-buildspec_roots.md "settings.schema.json#/definitions/system/properties/buildspec_roots") |
-| [testdir](#testdir)                 | `string` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-testdir.md "settings.schema.json#/definitions/system/properties/testdir")                 |
-| [logdir](#logdir)                   | `string` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-logdir.md "settings.schema.json#/definitions/system/properties/logdir")                   |
-| [moduletool](#moduletool)           | `string` | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-moduletool.md "settings.schema.json#/definitions/system/properties/moduletool")           |
-| [processor](#processor)             | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor.md "settings.schema.json#/definitions/system/properties/processor")             |
-| [compilers](#compilers)             | `object` | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers.md "settings.schema.json#/definitions/system/properties/compilers")             |
-| [executors](#executors)             | `object` | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors.md "settings.schema.json#/definitions/system/properties/executors")             |
-| [cdash](#cdash)                     | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-cdash.md "settings.schema.json#/definitions/system/properties/cdash")                     |
+| Property                            | Type      | Required | Nullable       | Defined by                                                                                                                                                        |
+| :---------------------------------- | :-------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [hostnames](#hostnames)             | `array`   | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-hostnames.md "settings.schema.json#/definitions/system/properties/hostnames")             |
+| [description](#description)         | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-description.md "settings.schema.json#/definitions/system/properties/description")         |
+| [numprocs](#numprocs)               | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-numprocs.md "settings.schema.json#/definitions/system/properties/numprocs")               |
+| [buildspec_roots](#buildspec_roots) | `array`   | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-buildspec_roots.md "settings.schema.json#/definitions/system/properties/buildspec_roots") |
+| [testdir](#testdir)                 | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-testdir.md "settings.schema.json#/definitions/system/properties/testdir")                 |
+| [logdir](#logdir)                   | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-logdir.md "settings.schema.json#/definitions/system/properties/logdir")                   |
+| [moduletool](#moduletool)           | `string`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-moduletool.md "settings.schema.json#/definitions/system/properties/moduletool")           |
+| [processor](#processor)             | `object`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor.md "settings.schema.json#/definitions/system/properties/processor")             |
+| [compilers](#compilers)             | `object`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers.md "settings.schema.json#/definitions/system/properties/compilers")             |
+| [executors](#executors)             | `object`  | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors.md "settings.schema.json#/definitions/system/properties/executors")             |
+| [cdash](#cdash)                     | `object`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-cdash.md "settings.schema.json#/definitions/system/properties/cdash")                     |
 
 ### hostnames
 
@@ -96,6 +97,28 @@ system description field
 #### description Type
 
 `string`
+
+### numprocs
+
+Specify size of Process Pool for parallel processing
+
+`numprocs`
+
+*   is optional
+
+*   Type: `integer`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-numprocs.md "settings.schema.json#/definitions/system/properties/numprocs")
+
+#### numprocs Type
+
+`integer`
+
+#### numprocs Constraints
+
+**minimum**: the value of this number must greater than or equal to: `1`
 
 ### buildspec_roots
 
@@ -516,12 +539,12 @@ Reference this group by using
 | Property | Type | Required | Nullable | Defined by |
 | :------- | :--- | :------- | :------- | :--------- |
 
-## Definitions group max_pend_time
+## Definitions group maxpendtime
 
 Reference this group by using
 
 ```json
-{"$ref":"settings.schema.json#/definitions/max_pend_time"}
+{"$ref":"settings.schema.json#/definitions/maxpendtime"}
 ```
 
 | Property | Type | Required | Nullable | Defined by |
@@ -684,7 +707,7 @@ Reference this group by using
 | [partition](#partition)           | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-partition.md "settings.schema.json#/definitions/slurm/properties/partition")         |
 | [qos](#qos)                       | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-qos.md "settings.schema.json#/definitions/slurm/properties/qos")                     |
 | [before_script](#before_script-1) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-before_script.md "settings.schema.json#/definitions/slurm/properties/before_script") |
-| [max_pend_time](#max_pend_time)   | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-max_pend_time.md "settings.schema.json#/definitions/slurm/properties/max_pend_time") |
+| [maxpendtime](#maxpendtime)       | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-maxpendtime.md "settings.schema.json#/definitions/slurm/properties/maxpendtime")     |
 | [account](#account)               | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-account.md "settings.schema.json#/definitions/slurm/properties/account")             |
 | [max_jobs](#max_jobs-1)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-max_jobs.md "settings.schema.json#/definitions/slurm/properties/max_jobs")           |
 | [disable](#disable-1)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-slurm-properties-disable.md "settings.schema.json#/definitions/slurm/properties/disable")             |
@@ -824,11 +847,11 @@ The `before_script` section can be used to specify commands before start of test
 
 unknown
 
-### max_pend_time
+### maxpendtime
 
-Cancel job if it is still pending in queue beyond max_pend_time
+Cancel job if it is still pending in queue beyond maxpendtime
 
-`max_pend_time`
+`maxpendtime`
 
 *   is optional
 
@@ -836,17 +859,17 @@ Cancel job if it is still pending in queue beyond max_pend_time
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-max_pend_time.md "settings.schema.json#/definitions/slurm/properties/max_pend_time")
+*   defined in: [buildtest configuration schema](settings-definitions-slurm-properties-maxpendtime.md "settings.schema.json#/definitions/slurm/properties/maxpendtime")
 
-#### max_pend_time Type
+#### maxpendtime Type
 
 `integer`
 
-#### max_pend_time Constraints
+#### maxpendtime Constraints
 
 **minimum**: the value of this number must greater than or equal to: `10`
 
-#### max_pend_time Default Value
+#### maxpendtime Default Value
 
 The default value is:
 
@@ -945,7 +968,7 @@ Reference this group by using
 | [options](#options-1)             | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-options.md "settings.schema.json#/definitions/lsf/properties/options")             |
 | [queue](#queue)                   | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-queue.md "settings.schema.json#/definitions/lsf/properties/queue")                 |
 | [before_script](#before_script-2) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-before_script.md "settings.schema.json#/definitions/lsf/properties/before_script") |
-| [max_pend_time](#max_pend_time-1) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-max_pend_time.md "settings.schema.json#/definitions/lsf/properties/max_pend_time") |
+| [maxpendtime](#maxpendtime-1)     | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-maxpendtime.md "settings.schema.json#/definitions/lsf/properties/maxpendtime")     |
 | [account](#account-1)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-account.md "settings.schema.json#/definitions/lsf/properties/account")             |
 | [max_jobs](#max_jobs-2)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-max_jobs.md "settings.schema.json#/definitions/lsf/properties/max_jobs")           |
 | [disable](#disable-2)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-disable.md "settings.schema.json#/definitions/lsf/properties/disable")             |
@@ -1049,11 +1072,11 @@ The `before_script` section can be used to specify commands before start of test
 
 unknown
 
-### max_pend_time
+### maxpendtime
 
-Cancel job if it is still pending in queue beyond max_pend_time
+Cancel job if it is still pending in queue beyond maxpendtime
 
-`max_pend_time`
+`maxpendtime`
 
 *   is optional
 
@@ -1061,17 +1084,17 @@ Cancel job if it is still pending in queue beyond max_pend_time
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-max_pend_time.md "settings.schema.json#/definitions/lsf/properties/max_pend_time")
+*   defined in: [buildtest configuration schema](settings-definitions-lsf-properties-maxpendtime.md "settings.schema.json#/definitions/lsf/properties/maxpendtime")
 
-#### max_pend_time Type
+#### maxpendtime Type
 
 `integer`
 
-#### max_pend_time Constraints
+#### maxpendtime Constraints
 
 **minimum**: the value of this number must greater than or equal to: `10`
 
-#### max_pend_time Default Value
+#### maxpendtime Default Value
 
 The default value is:
 
@@ -1170,7 +1193,7 @@ Reference this group by using
 | [options](#options-2)             | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-options.md "settings.schema.json#/definitions/cobalt/properties/options")             |
 | [queue](#queue-1)                 | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-queue.md "settings.schema.json#/definitions/cobalt/properties/queue")                 |
 | [before_script](#before_script-3) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-before_script.md "settings.schema.json#/definitions/cobalt/properties/before_script") |
-| [max_pend_time](#max_pend_time-2) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-max_pend_time.md "settings.schema.json#/definitions/cobalt/properties/max_pend_time") |
+| [maxpendtime](#maxpendtime-2)     | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-maxpendtime.md "settings.schema.json#/definitions/cobalt/properties/maxpendtime")     |
 | [account](#account-2)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-account.md "settings.schema.json#/definitions/cobalt/properties/account")             |
 | [max_jobs](#max_jobs-3)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-max_jobs.md "settings.schema.json#/definitions/cobalt/properties/max_jobs")           |
 | [disable](#disable-3)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-disable.md "settings.schema.json#/definitions/cobalt/properties/disable")             |
@@ -1274,11 +1297,11 @@ The `before_script` section can be used to specify commands before start of test
 
 unknown
 
-### max_pend_time
+### maxpendtime
 
-Cancel job if it is still pending in queue beyond max_pend_time
+Cancel job if it is still pending in queue beyond maxpendtime
 
-`max_pend_time`
+`maxpendtime`
 
 *   is optional
 
@@ -1286,17 +1309,17 @@ Cancel job if it is still pending in queue beyond max_pend_time
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-definitions-cobalt-properties-max_pend_time.md "settings.schema.json#/definitions/cobalt/properties/max_pend_time")
+*   defined in: [buildtest configuration schema](settings-definitions-cobalt-properties-maxpendtime.md "settings.schema.json#/definitions/cobalt/properties/maxpendtime")
 
-#### max_pend_time Type
+#### maxpendtime Type
 
 `integer`
 
-#### max_pend_time Constraints
+#### maxpendtime Constraints
 
 **minimum**: the value of this number must greater than or equal to: `10`
 
-#### max_pend_time Default Value
+#### maxpendtime Default Value
 
 The default value is:
 
@@ -1395,7 +1418,7 @@ Reference this group by using
 | [options](#options-3)             | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-options.md "settings.schema.json#/definitions/pbs/properties/options")             |
 | [queue](#queue-2)                 | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-queue.md "settings.schema.json#/definitions/pbs/properties/queue")                 |
 | [before_script](#before_script-4) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-before_script.md "settings.schema.json#/definitions/pbs/properties/before_script") |
-| [max_pend_time](#max_pend_time-3) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-max_pend_time.md "settings.schema.json#/definitions/pbs/properties/max_pend_time") |
+| [maxpendtime](#maxpendtime-3)     | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-maxpendtime.md "settings.schema.json#/definitions/pbs/properties/maxpendtime")     |
 | [account](#account-3)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-account.md "settings.schema.json#/definitions/pbs/properties/account")             |
 | [max_jobs](#max_jobs-4)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-max_jobs.md "settings.schema.json#/definitions/pbs/properties/max_jobs")           |
 | [disable](#disable-4)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-pbs-properties-disable.md "settings.schema.json#/definitions/pbs/properties/disable")             |
@@ -1499,11 +1522,11 @@ The `before_script` section can be used to specify commands before start of test
 
 unknown
 
-### max_pend_time
+### maxpendtime
 
-Cancel job if it is still pending in queue beyond max_pend_time
+Cancel job if it is still pending in queue beyond maxpendtime
 
-`max_pend_time`
+`maxpendtime`
 
 *   is optional
 
@@ -1511,17 +1534,17 @@ Cancel job if it is still pending in queue beyond max_pend_time
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-definitions-pbs-properties-max_pend_time.md "settings.schema.json#/definitions/pbs/properties/max_pend_time")
+*   defined in: [buildtest configuration schema](settings-definitions-pbs-properties-maxpendtime.md "settings.schema.json#/definitions/pbs/properties/maxpendtime")
 
-#### max_pend_time Type
+#### maxpendtime Type
 
 `integer`
 
-#### max_pend_time Constraints
+#### maxpendtime Constraints
 
 **minimum**: the value of this number must greater than or equal to: `10`
 
-#### max_pend_time Default Value
+#### maxpendtime Default Value
 
 The default value is:
 

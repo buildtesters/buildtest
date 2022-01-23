@@ -23,7 +23,7 @@ An instance object of lsf executor
 | [options](#options)             | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-options.md "settings.schema.json#/definitions/lsf/properties/options")             |
 | [queue](#queue)                 | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-queue.md "settings.schema.json#/definitions/lsf/properties/queue")                 |
 | [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-lsf-properties-before_script.md "settings.schema.json#/definitions/lsf/properties/before_script") |
-| [max_pend_time](#max_pend_time) | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-max_pend_time.md "settings.schema.json#/definitions/lsf/properties/max_pend_time")                |
+| [maxpendtime](#maxpendtime)     | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-maxpendtime.md "settings.schema.json#/definitions/lsf/properties/maxpendtime")                    |
 | [account](#account)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-account.md "settings.schema.json#/definitions/lsf/properties/account")                            |
 | [max_jobs](#max_jobs)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-max_jobs.md "settings.schema.json#/definitions/lsf/properties/max_jobs")                          |
 | [disable](#disable)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-disable.md "settings.schema.json#/definitions/lsf/properties/disable")                            |
@@ -127,11 +127,11 @@ The `before_script` section can be used to specify commands before start of test
 
 unknown
 
-## max_pend_time
+## maxpendtime
 
-Cancel job if it is still pending in queue beyond max_pend_time
+Cancel job if it is still pending in queue beyond maxpendtime
 
-`max_pend_time`
+`maxpendtime`
 
 *   is optional
 
@@ -139,17 +139,17 @@ Cancel job if it is still pending in queue beyond max_pend_time
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-definitions-max_pend_time.md "settings.schema.json#/definitions/lsf/properties/max_pend_time")
+*   defined in: [buildtest configuration schema](settings-definitions-maxpendtime.md "settings.schema.json#/definitions/lsf/properties/maxpendtime")
 
-### max_pend_time Type
+### maxpendtime Type
 
 `integer`
 
-### max_pend_time Constraints
+### maxpendtime Constraints
 
 **minimum**: the value of this number must greater than or equal to: `10`
 
-### max_pend_time Default Value
+### maxpendtime Default Value
 
 The default value is:
 

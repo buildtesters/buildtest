@@ -16,12 +16,12 @@ Specify default executor settings for all executors
 
 # defaults Properties
 
-| Property                        | Type      | Required | Nullable       | Defined by                                                                                                                                                                                                                                      |
-| :------------------------------ | :-------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [pollinterval](#pollinterval)   | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-defaults-properties-pollinterval.md "settings.schema.json#/definitions/system/properties/executors/properties/defaults/properties/pollinterval")   |
-| [max_pend_time](#max_pend_time) | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-defaults-properties-max_pend_time.md "settings.schema.json#/definitions/system/properties/executors/properties/defaults/properties/max_pend_time") |
-| [account](#account)             | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-defaults-properties-account.md "settings.schema.json#/definitions/system/properties/executors/properties/defaults/properties/account")             |
-| [max_jobs](#max_jobs)           | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-defaults-properties-max_jobs.md "settings.schema.json#/definitions/system/properties/executors/properties/defaults/properties/max_jobs")           |
+| Property                      | Type      | Required | Nullable       | Defined by                                                                                                                                                                                                                                    |
+| :---------------------------- | :-------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [pollinterval](#pollinterval) | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-defaults-properties-pollinterval.md "settings.schema.json#/definitions/system/properties/executors/properties/defaults/properties/pollinterval") |
+| [maxpendtime](#maxpendtime)   | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-defaults-properties-maxpendtime.md "settings.schema.json#/definitions/system/properties/executors/properties/defaults/properties/maxpendtime")   |
+| [account](#account)           | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-defaults-properties-account.md "settings.schema.json#/definitions/system/properties/executors/properties/defaults/properties/account")           |
+| [max_jobs](#max_jobs)         | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-defaults-properties-max_jobs.md "settings.schema.json#/definitions/system/properties/executors/properties/defaults/properties/max_jobs")         |
 
 ## pollinterval
 
@@ -53,11 +53,11 @@ The default value is:
 30
 ```
 
-## max_pend_time
+## maxpendtime
 
-Cancel job if it is still pending in queue beyond max_pend_time
+Cancel job if it is still pending in queue beyond maxpendtime
 
-`max_pend_time`
+`maxpendtime`
 
 *   is optional
 
@@ -65,17 +65,17 @@ Cancel job if it is still pending in queue beyond max_pend_time
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-definitions-system-properties-executors-properties-defaults-properties-max_pend_time.md "settings.schema.json#/definitions/system/properties/executors/properties/defaults/properties/max_pend_time")
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-executors-properties-defaults-properties-maxpendtime.md "settings.schema.json#/definitions/system/properties/executors/properties/defaults/properties/maxpendtime")
 
-### max_pend_time Type
+### maxpendtime Type
 
 `integer`
 
-### max_pend_time Constraints
+### maxpendtime Constraints
 
 **minimum**: the value of this number must greater than or equal to: `10`
 
-### max_pend_time Default Value
+### maxpendtime Default Value
 
 The default value is:
 

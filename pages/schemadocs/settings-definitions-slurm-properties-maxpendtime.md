@@ -1,24 +1,24 @@
 # Untitled integer in buildtest configuration schema Schema
 
 ```txt
-settings.schema.json#/definitions/pbs/properties/max_pend_time
+settings.schema.json#/definitions/slurm/properties/maxpendtime
 ```
 
-Cancel job if it is still pending in queue beyond max_pend_time
+Cancel job if it is still pending in queue beyond maxpendtime
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
 
-## max_pend_time Type
+## maxpendtime Type
 
 `integer`
 
-## max_pend_time Constraints
+## maxpendtime Constraints
 
 **minimum**: the value of this number must greater than or equal to: `10`
 
-## max_pend_time Default Value
+## maxpendtime Default Value
 
 The default value is:
 
