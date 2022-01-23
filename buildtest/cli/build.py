@@ -478,7 +478,7 @@ class BuildTest:
         rebuild=None,
         buildtest_system=None,
         report_file=None,
-        max_pend_time=None,
+        maxpendtime=None,
         poll_interval=None,
         keep_stage_dir=None,
         retry=None,
@@ -503,7 +503,7 @@ class BuildTest:
             rebuild (int, optional): Rebuild tests X times based on ``buildtest build --rebuild`` option.
             buildtest_system (buildtest.system.BuildTestSystem, optional): Instance of BuildTestSystem class
             report_file (str, optional): Location to report file where test data will be written upon completion. This can be specified via ``buildtest build --report`` command
-            max_pend_time (int, optional): Specify maximum pending time in seconds for batch job until job is cancelled
+            maxpendtime (int, optional): Specify maximum pending time in seconds for batch job until job is cancelled
             poll_interval (int, optional): Specify poll interval in seconds for polling batch jobs.
             keep_stage_dir (bool, optional): Keep stage directory after job completion
             retry (int, optional): Number of retry for failed jobs
@@ -547,7 +547,7 @@ class BuildTest:
         self.exclude_buildspecs = exclude_buildspecs
         self.tags = tags
         self.executors = executors
-        self.max_pend_time = max_pend_time
+        self.maxpendtime = maxpendtime
         self.poll_interval = poll_interval
         self.helpfilter = helpfilter
         self.retry = retry
@@ -602,7 +602,7 @@ class BuildTest:
         logger.debug(f"Tests will be written in {self.testdir}")
 
         self.buildexecutor = BuildExecutor(
-            self.configuration, max_pend_time=self.max_pend_time, account=self.account
+            self.configuration, maxpendtime=self.maxpendtime, account=self.account
         )
 
         self.system = buildtest_system
@@ -912,7 +912,7 @@ class BuildTest:
     def poll_phase(self, builders):
         """This method will poll jobs by processing all builders. The :class:`buildtest.executors.poll.PollQueue`
         is responsible for polling builders at set interval until all jobs are complete. The ``PollQueue``
-        will cancel job if it exceeds `max_pend_time` to ensure jobs are not stuck indefinitely. If
+        will cancel job if it exceeds `maxpendtime` to ensure jobs are not stuck indefinitely. If
         job is cancelled by scheduler, we remove this from list of builders that will be returned from this method.
         This method will return a list of valid builders after polling. If there
         are no vali _builders after polling, the method will return **None**

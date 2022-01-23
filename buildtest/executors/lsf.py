@@ -32,9 +32,9 @@ class LSFExecutor(BaseExecutor):
     type = "lsf"
     launcher = "bsub"
 
-    def __init__(self, name, settings, site_configs, account=None, max_pend_time=None):
+    def __init__(self, name, settings, site_configs, account=None, maxpendtime=None):
         self.account = account
-        self.maxpendtime = max_pend_time
+        self.maxpendtime = maxpendtime
         super().__init__(name, settings, site_configs)
 
     def load(self):
@@ -56,14 +56,14 @@ class LSFExecutor(BaseExecutor):
                 "account",
             )
         )
-        self.max_pend_time = (
+        self.maxpendtime = (
             self.maxpendtime
-            or self._settings.get("max_pend_time")
+            or self._settings.get("maxpendtime")
             or deep_get(
                 self._buildtestsettings.target_config,
                 "executors",
                 "defaults",
-                "max_pend_time",
+                "maxpendtime",
             )
         )
         self.queue = self._settings.get("queue")
@@ -149,7 +149,7 @@ class LSFExecutor(BaseExecutor):
 
     def poll(self, builder):
         """Given a builder object we poll the job by invoking builder method ``builder.job.poll()`` return state of job. If
-        job is suspended or pending we stop timer and check if timer exceeds max_pend_time value which could be defined in configuration
+        job is suspended or pending we stop timer and check if timer exceeds maxpendtime value which could be defined in configuration
         file or passed via command line ``--max-pend-time``
 
         Args:
@@ -167,14 +167,14 @@ class LSFExecutor(BaseExecutor):
         if builder.job.is_suspended() or builder.job.is_pending():
 
             self.logger.debug(f"Time Duration: {builder.duration}")
-            self.logger.debug(f"Max Pend Time: {self.max_pend_time}")
+            self.logger.debug(f"Max Pend Time: {self.maxpendtime}")
 
             # if timer time is more than requested pend time then cancel job
-            if int(builder.timer.duration()) > self.max_pend_time:
+            if int(builder.timer.duration()) > self.maxpendtime:
                 builder.job.cancel()
                 builder.failure()
                 console.print(
-                    f"[blue]{builder}[/]: Cancelling Job: {builder.job.get()} because job exceeds max pend time: {self.max_pend_time} sec with current pend time of {builder.timer.duration()} "
+                    f"[blue]{builder}[/]: Cancelling Job: {builder.job.get()} because job exceeds max pend time: {self.maxpendtime} sec with current pend time of {builder.timer.duration()} "
                 )
 
         builder.start()
@@ -417,7 +417,7 @@ class LSFJob(Job):
 
     def cancel(self):
         """Cancel LSF Job by running ``bkill <jobid>``. This is called if job has exceeded
-        `max_pend_time` limit during poll stage."""
+        `maxpendtime` limit during poll stage."""
 
         query = f"bkill {self.jobid}"
         logger.debug(f"Cancelling job {self.jobid} by running: {query}")

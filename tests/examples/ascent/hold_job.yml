@@ -3,7 +3,7 @@ buildspecs:
   hold_job:
     type: script
     executor: ascent.lsf.batch
-    description: Test job cancellation via max_pend_time by holding job
+    description: Test job cancellation by holding job
     tags: [jobs]
     bsub: ["-W 10", "-nnodes 1", "-H"]
     run: jsrun hostname

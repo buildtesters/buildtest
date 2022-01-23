@@ -28,7 +28,7 @@ def test_build_executor(tmp_path):
     system = BuildTestSystem()
 
     # ensure we have the following executors valid
-    assert "generic.local.bash" in list(be.list_executors())
+    assert "generic.local.bash" in list(be.names())
 
     # Making sure all executors are created properly by inspecting their class attribute.
     # All executors have a class attribute 'type'

@@ -178,6 +178,6 @@ def view_executors(
             print(executor)
         return
 
-    names = buildexecutor.list_executors()
+    names = buildexecutor.names()
     for name in names:
         print(name)

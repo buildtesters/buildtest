@@ -31,13 +31,13 @@ def test_ascent():
     )
     cmd.build()
 
-    # This job will be held indefinitely but job will be cancelled by scheduler after 15sec once job pending time has reached max_pend_time
+    # This job will be held indefinitely but job will be cancelled by scheduler after 15sec once job pending time has reached maxpendtime
     buildspec_files = os.path.join(here, "examples", "ascent", "hold_job.yml")
     cmd = BuildTest(
         configuration=bc,
         buildspecs=[buildspec_files],
         buildtest_system=system,
-        max_pend_time=15,
+        maxpendtime=15,
     )
     with pytest.raises(SystemExit):
         cmd.build()

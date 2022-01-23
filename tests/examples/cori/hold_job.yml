@@ -3,6 +3,6 @@ buildspecs:
   hold_job:
     type: script
     executor: cori.slurm.knl_debug
-    description: "Hold job will be cancelled by scheduler after max_pend_time reached"
+    description: "Hold job will be cancelled by scheduler after maxpendtime reached"
     sbatch: ["-t 5", "-N 1", "-H"]
     run: hostname

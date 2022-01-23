@@ -34,7 +34,7 @@ class BuildExecutor:
     - **poll**: This is responsible for invoking ``poll`` method for corresponding executor from the builder object by checking job state
     """
 
-    def __init__(self, site_config, account=None, max_pend_time=None):
+    def __init__(self, site_config, account=None, maxpendtime=None):
         """Initialize executors, meaning that we provide the buildtest
         configuration that are validated, and can instantiate
         each executor to be available.
@@ -42,7 +42,7 @@ class BuildExecutor:
         Args:
             site_config (buildtest.config.SiteConfiguration): instance of SiteConfiguration class that has the buildtest configuration
             account (str, optional): pass account name to charge batch jobs.
-            max_pend_time (int, optional): maximum pend time in second until job is cancelled.
+            maxpendtime (int, optional): maximum pend time in second until job is cancelled.
         """
 
         # stores a list of builders objects
@@ -75,7 +75,7 @@ class BuildExecutor:
                         "setting"
                     ],
                     site_configs=self.configuration,
-                    max_pend_time=max_pend_time,
+                    maxpendtime=maxpendtime,
                 )
 
         if self.configuration.valid_executors["lsf"]:
@@ -85,7 +85,7 @@ class BuildExecutor:
                     account=account,
                     settings=self.configuration.valid_executors["lsf"][name]["setting"],
                     site_configs=self.configuration,
-                    max_pend_time=max_pend_time,
+                    maxpendtime=maxpendtime,
                 )
 
         if self.configuration.valid_executors["pbs"]:
@@ -95,7 +95,7 @@ class BuildExecutor:
                     account=account,
                     settings=self.configuration.valid_executors["pbs"][name]["setting"],
                     site_configs=self.configuration,
-                    max_pend_time=max_pend_time,
+                    maxpendtime=maxpendtime,
                 )
 
         if self.configuration.valid_executors["cobalt"]:
@@ -107,7 +107,7 @@ class BuildExecutor:
                         "setting"
                     ],
                     site_configs=self.configuration,
-                    max_pend_time=max_pend_time,
+                    maxpendtime=maxpendtime,
                 )
         self.setup()
 
@@ -117,7 +117,8 @@ class BuildExecutor:
     def __repr__(self):
         return "[buildtest-executor]"
 
-    def list_executors(self):
+    def names(self):
+        """Return a list of executor names"""
         return list(self.executors.keys())
 
     def get(self, name):

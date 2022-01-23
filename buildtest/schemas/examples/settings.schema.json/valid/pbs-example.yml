@@ -5,7 +5,7 @@ system:
     executors:
       defaults:
          pollinterval: 10
-         max_pend_time: 30
+         maxpendtime: 30
       pbs:
         workq:
           queue: workq

@@ -19,7 +19,7 @@ system:
     executors:
       defaults:
         pollinterval: 30
-        max_pend_time: 300
+        maxpendtime: 300
       local:
         bash:
           description: submit jobs on local machine using bash shell

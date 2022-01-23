@@ -115,7 +115,7 @@ def main():
                 testdir=args.testdir,
                 buildtest_system=system,
                 report_file=args.report,
-                max_pend_time=args.maxpendtime,
+                maxpendtime=args.maxpendtime,
                 poll_interval=args.pollinterval,
                 keep_stage_dir=args.keep_stage_dir,
                 retry=args.retry,

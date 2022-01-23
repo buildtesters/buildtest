@@ -5,7 +5,7 @@ system:
     executors:
       defaults:
         pollinterval: 30
-        max_pend_time: 300
+        maxpendtime: 300
         account: gen014ecpci
       local:
         bash:

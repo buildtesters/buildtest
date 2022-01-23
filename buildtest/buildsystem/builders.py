@@ -239,9 +239,9 @@ class Builder:
 
         builders = []
         self.logger.debug(
-            f"Searching for builders for test: {name} by applying regular expression with available builders: {self.buildexecutor.list_executors()} "
+            f"Searching for builders for test: {name} by applying regular expression with available builders: {self.buildexecutor.names()} "
         )
-        for executor in self.buildexecutor.list_executors():
+        for executor in self.buildexecutor.names():
 
             if (
                 re.fullmatch(recipe["executor"], executor)
