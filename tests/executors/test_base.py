@@ -62,7 +62,6 @@ def test_build_executor(tmp_path):
     for builder in valid_builders:
         builder.build()
 
-    be.load_builders(valid_builders)
-    builders = be.run()
+    builders = be.run(valid_builders)
     for builder in builders:
         assert builder.is_complete()

@@ -884,12 +884,7 @@ class BuildTest:
         """
 
         console.rule("Running Tests")
-
-        self.buildexecutor.load_builders(self.builders)
-        builders = self.buildexecutor.run()
-
-        if not builders:
-            sys.exit("Unable to run any tests")
+        builders = self.buildexecutor.run(self.builders)
 
         poll = False
         for builder in builders:

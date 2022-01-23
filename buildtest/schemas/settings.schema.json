@@ -39,6 +39,12 @@
           "type": "string",
           "description": "system description field"
         },
+        "numprocs":
+        {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Specify size of Process Pool for parallel processing"
+        },
         "buildspec_roots": {
           "type": "array",
           "items": {
