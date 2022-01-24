@@ -637,3 +637,70 @@ buildtest will terminate after run stage.
 
     Cancelled Jobs: [pbs_hold_job/7cbe643c]
     Unable to run any tests
+
+
+Access PBS Container
+---------------------
+
+If you want to experiment with PBS Scheduler with buildtest, you can run the following to get in the
+container. These instructions are outlined in https://openpbs.atlassian.net/wiki/spaces/PBSPro/pages/79298561/Using+Docker+to+Instantiate+PBS.
+This container will start PBS and start an interactive shell as ``pbsuser``.
+
+.. code-block:: console
+
+    $ docker run -it --name pbs -h pbs -e PBS_START_MOM=1 pbspro/pbspro bash
+    Starting PBS
+    PBS Home directory /var/spool/pbs needs updating.
+    Running /opt/pbs/libexec/pbs_habitat to update it.
+    ***
+    *** Setting default queue and resource limits.
+    ***
+    Connecting to PBS dataservice.....connected to PBS dataservice@pbs
+    *** End of /opt/pbs/libexec/pbs_habitat
+    Home directory /var/spool/pbs updated.
+    /opt/pbs/sbin/pbs_comm ready (pid=1226), Proxy Name:pbs:17001, Threads:4
+    PBS comm
+    PBS mom
+    Creating usage database for fairshare.
+    PBS sched
+    Connecting to PBS dataservice.....connected to PBS dataservice@pbs
+    Licenses valid for 10000000 Floating hosts
+    PBS server
+    [pbsuser@pbs ~]$
+
+Next we need to switch to **root** user to install additional packages. You can run **exit** and it will switch to root
+
+.. code-block:: console
+
+    [pbsuser@pbs ~]$ exit
+    logout
+    [root@pbs /]#
+
+We need to install some basic system packages which were not provided in this container. Please run the following::
+
+    yum install -y which git wget make gcc
+
+We also need to configure PBS to enable job history which is required to poll PBS job. Please run the following::
+
+    /opt/pbs/bin/qmgr -c "set server job_history_enable=True"
+
+
+Now let's switch to `pbsuser`
+
+
+.. code-block:: console
+
+    [root@pbs /]# su - pbsuser
+    Last login: Mon Jan 24 00:45:57 UTC 2022 on pts/0
+    [pbsuser@pbs ~]$
+
+As the pbsuser we will clone buildtest and setup the environment required to use pbs for the container.
+Please run the following commands::
+
+    git clone https://github.com/buildtesters/buildtest/
+    source ~/buildtest/scripts/pbs/setup.sh
+
+The example buildspecs for this container are located in directory `tests/examples/pbs <https://github.com/buildtesters/buildtest/tree/devel/tests/examples/pbs>`_,
+if you want to run all of them you can run the following::
+
+    buildtest build -b tests/examples/pbs
