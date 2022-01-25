@@ -548,7 +548,7 @@ class BuildTest:
         self.tags = tags
         self.executors = executors
         self.maxpendtime = maxpendtime
-        self.poll_interval = poll_interval
+        self.pollinterval = poll_interval
         self.helpfilter = helpfilter
         self.retry = retry
         self.account = account
@@ -602,7 +602,10 @@ class BuildTest:
         logger.debug(f"Tests will be written in {self.testdir}")
 
         self.buildexecutor = BuildExecutor(
-            self.configuration, maxpendtime=self.maxpendtime, account=self.account
+            self.configuration,
+            maxpendtime=self.maxpendtime,
+            account=self.account,
+            pollinterval=self.pollinterval,
         )
 
         self.system = buildtest_system
@@ -884,14 +887,10 @@ class BuildTest:
         """
 
         console.rule("Running Tests")
-        builders = self.buildexecutor.run(self.builders)
+        self.buildexecutor.run(self.builders)
+        self.buildexecutor.poll()
 
-        poll = False
-        for builder in builders:
-            if builder.is_batch_job():
-                poll = True
-                break
-
+        """
         # if any builders to poll we poll the jobs
         if poll:
             builders = self.poll_phase(builders)
@@ -900,14 +899,16 @@ class BuildTest:
         for builder in builders:
             if builder.is_complete():
                 valid_builders.append(builder)
+        """
 
+        builders = self.buildexecutor.get_validbuilders()
         ########## TEST SUMMARY ####################
-        if not valid_builders:
+        if not builders:
             sys.exit("Unable to run any tests")
 
-        self._print_test_summary(valid_builders)
+        self._print_test_summary(builders)
 
-        return valid_builders
+        return builders
 
     def poll_phase(self, builders):
         """This method will poll jobs by processing all builders. The :class:`buildtest.executors.poll.PollQueue`
@@ -926,7 +927,7 @@ class BuildTest:
         # default interval is 30sec for polling jobs if poll interval not set in configuration file or command line
         default_interval = 30
 
-        interval = self.poll_interval or deep_get(
+        interval = self.pollinterval or deep_get(
             self.configuration.target_config, "executors", "defaults", "pollinterval"
         )
 

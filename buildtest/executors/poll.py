@@ -26,16 +26,14 @@ class PollQueue:
     def completed(self):
         return self._completed
 
-    def sleep(self):
-        time.sleep(self.interval)
-
     def poll(self):
         """Poll all until all jobs are complete. At each poll interval, we poll each builder
         job state. If job is complete or failed we remove job from pending queue. In each interval we sleep
         and poll jobs until there is no pending jobs."""
         while self._pending:
             print(f"Polling Jobs in {self.interval} seconds")
-            self.sleep()
+
+            time.sleep(self.interval)
 
             # store list of cancelled and completed job at each interval
             cancelled = []
@@ -68,6 +66,8 @@ class PollQueue:
                     self._cancelled.add(builder)
 
             self.print_pending_jobs()
+
+        self.print_polled_jobs()
 
     def print_pending_jobs(self):
         """Print pending jobs in table format during each poll step"""
