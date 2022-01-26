@@ -37,6 +37,14 @@ jobs:
         git --version
         pip install -U pip
         python --version
+        set -x
         source setup.sh
+        set +x
         which buildtest
         buildtest --version
+
+    - uses: actions/checkout@v2
+    - name: Setup tmate session
+      if: ${{ failure() }}
+      uses: mxschmitt/action-tmate@v3
+      timeout-minutes: 30
