@@ -64,7 +64,7 @@ if ( ! -x `command -v $pip` ) then
   exit 1
 endif
 
-python -c "import buildtest.main" >& /dev/null
+python3 -c "import buildtest.main" >& /dev/null || true
 
 # if we unable to import buildtest.main module then install buildtest dependencies
 if ( $status != 0 ) then

@@ -32,7 +32,9 @@ if ! [ -x "$(command -v $pip)" ]; then
   exit 1
 fi
 
-python -c "import buildtest.main" &> /dev/null
+python=python3
+
+$python -c "import buildtest.main" &> /dev/null
 returncode=$?
 
 # if we are unable to import buildtest.main then install buildtest dependencies
