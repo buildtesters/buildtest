@@ -19,13 +19,13 @@ ascent_pr_regression_test:
     - git branch
     - cd $CI_PROJECT_DIR
     - conda create -p $CI_PROJECT_DIR/.conda python=3.8 -y
-    - conda activate $CI_PROJECT_DIR/.conda
+    - source activate $CI_PROJECT_DIR/.conda
     - source setup.sh
     - pip install -r docs/requirements.txt
     - python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
     # CODECOV_TOKEN environment must be set, this value is stored in CI/CD variable SECRET_CODECOV_TOKEN at https://code.ornl.gov/ecpcitest/buildtest/-/settings/ci_cd
     - export CODECOV_TOKEN=$SECRET_CODECOV_TOKEN
     - bash <(curl -s https://codecov.io/bash)
-    - conda deactivate
-    - conda env remove -p $CI_PROJECT_DIR/.conda -y
+    - source deactivate
+    - rm -rf $CI_PROJECT_DIR/.conda
 
