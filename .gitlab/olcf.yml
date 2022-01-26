@@ -27,5 +27,5 @@ ascent_pr_regression_test:
     - export CODECOV_TOKEN=$SECRET_CODECOV_TOKEN
     - bash <(curl -s https://codecov.io/bash)
     - source deactivate
-    - conda env remove -p $CI_PROJECT_DIR/.conda -y
+    - rm -rf $CI_PROJECT_DIR/.conda
 

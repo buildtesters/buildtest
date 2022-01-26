@@ -29,7 +29,6 @@ from buildtest.defaults import (
     console,
 )
 from buildtest.exceptions import BuildspecError, BuildTestError
-from buildtest.executors.poll import PollQueue
 from buildtest.executors.setup import BuildExecutor
 from buildtest.log import init_logfile
 from buildtest.schemas.defaults import schema_table
@@ -548,7 +547,7 @@ class BuildTest:
         self.tags = tags
         self.executors = executors
         self.maxpendtime = maxpendtime
-        self.poll_interval = poll_interval
+        self.pollinterval = poll_interval
         self.helpfilter = helpfilter
         self.retry = retry
         self.account = account
@@ -602,7 +601,10 @@ class BuildTest:
         logger.debug(f"Tests will be written in {self.testdir}")
 
         self.buildexecutor = BuildExecutor(
-            self.configuration, maxpendtime=self.maxpendtime, account=self.account
+            self.configuration,
+            maxpendtime=self.maxpendtime,
+            account=self.account,
+            pollinterval=self.pollinterval,
         )
 
         self.system = buildtest_system
@@ -884,75 +886,15 @@ class BuildTest:
         """
 
         console.rule("Running Tests")
-        builders = self.buildexecutor.run(self.builders)
+        self.buildexecutor.run(self.builders)
+        self.buildexecutor.poll()
 
-        poll = False
-        for builder in builders:
-            if builder.is_batch_job():
-                poll = True
-                break
-
-        # if any builders to poll we poll the jobs
-        if poll:
-            builders = self.poll_phase(builders)
-
-        valid_builders = []
-        for builder in builders:
-            if builder.is_complete():
-                valid_builders.append(builder)
-
+        builders = self.buildexecutor.get_validbuilders()
         ########## TEST SUMMARY ####################
-        if not valid_builders:
+        if not builders:
             sys.exit("Unable to run any tests")
 
-        self._print_test_summary(valid_builders)
-
-        return valid_builders
-
-    def poll_phase(self, builders):
-        """This method will poll jobs by processing all builders. The :class:`buildtest.executors.poll.PollQueue`
-        is responsible for polling builders at set interval until all jobs are complete. The ``PollQueue``
-        will cancel job if it exceeds `maxpendtime` to ensure jobs are not stuck indefinitely. If
-        job is cancelled by scheduler, we remove this from list of builders that will be returned from this method.
-        This method will return a list of valid builders after polling. If there
-        are no vali _builders after polling, the method will return **None**
-
-        Args:
-            builders (list): List of builder objects that require polling
-
-        Returns:
-            List of builder objects that ran to completion without any failure.
-        """
-        # default interval is 30sec for polling jobs if poll interval not set in configuration file or command line
-        default_interval = 30
-
-        interval = self.poll_interval or deep_get(
-            self.configuration.target_config, "executors", "defaults", "pollinterval"
-        )
-
-        if not interval:
-            interval = default_interval
-
-        poll_jobs = PollQueue(
-            builders=builders, interval=interval, buildexecutor=self.buildexecutor
-        )
-        poll_jobs.poll()
-        poll_jobs.print_polled_jobs()
-
-        cancelled_jobs = poll_jobs.cancelled()
-        completed_jobs = poll_jobs.completed()
-
-        if completed_jobs:
-            for builder in completed_jobs:
-                builders.remove(builder)
-                builders.append(builder)
-
-        if cancelled_jobs:
-            print("\nCancelled Jobs:", list(cancelled_jobs))
-
-            for builder in cancelled_jobs:
-                builders.remove(builder)
-                builders.append(builder)
+        self._print_test_summary(builders)
 
         return builders
 

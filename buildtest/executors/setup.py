@@ -8,6 +8,7 @@ on executor name.
 import logging
 import multiprocessing as mp
 import os
+import time
 
 from buildtest.builders.base import BuilderBase
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
@@ -20,6 +21,8 @@ from buildtest.executors.pbs import PBSExecutor
 from buildtest.executors.slurm import SlurmExecutor
 from buildtest.modules import get_module_commands
 from buildtest.utils.file import create_dir, write_file
+from buildtest.utils.tools import deep_get
+from rich.table import Table
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +37,7 @@ class BuildExecutor:
     - **poll**: This is responsible for invoking ``poll`` method for corresponding executor from the builder object by checking job state
     """
 
-    def __init__(self, site_config, account=None, maxpendtime=None):
+    def __init__(self, site_config, account=None, maxpendtime=None, pollinterval=None):
         """Initialize executors, meaning that we provide the buildtest
         configuration that are validated, and can instantiate
         each executor to be available.
@@ -43,18 +46,38 @@ class BuildExecutor:
             site_config (buildtest.config.SiteConfiguration): instance of SiteConfiguration class that has the buildtest configuration
             account (str, optional): pass account name to charge batch jobs.
             maxpendtime (int, optional): maximum pend time in second until job is cancelled.
+            pollinterval (int, optional): Number of seconds to wait until polling batch jobs
         """
 
         # stores a list of builders objects
         self.builders = []
 
+        # default poll interval if not specified
+        default_interval = 30
+
+        self.configuration = site_config
+
+        self.pollinterval = (
+            pollinterval
+            or deep_get(
+                self.configuration.target_config,
+                "executors",
+                "defaults",
+                "pollinterval",
+            )
+            or default_interval
+        )
+
+        self._completed = set()
+        self._cancelled = set()
+
+        self._pending = []
+
         # store a list of valid builders
-        self.valid_builders = []
+        self._validbuilders = []
 
         self.executors = {}
         logger.debug("Getting Executors from buildtest settings")
-
-        self.configuration = site_config
 
         if site_config.valid_executors["local"]:
             for name in self.configuration.valid_executors["local"].keys():
@@ -125,6 +148,17 @@ class BuildExecutor:
         """Given the name of an executor return the executor object which is of subclass of `BaseExecutor`"""
         return self.executors.get(name)
 
+    def get_validbuilders(self):
+        """Return a list of valid builders that were run"""
+        return self._validbuilders
+
+    def cancelled(self):
+        """Return a list of cancelled builders"""
+        return self._cancelled
+
+    def completed(self):
+        return self._completed
+
     def _choose_executor(self, builder):
         """Choose executor is called at the onset of a run and poll stage. Given a builder
         object we retrieve the executor property ``builder.executor`` of the builder and check if
@@ -135,7 +169,7 @@ class BuildExecutor:
         """
 
         # Get the executor by name, and add the builder to it
-        executor = self.executors.get(builder.executor)
+        executor = self.get(builder.executor)
         if not isinstance(executor, BaseExecutor):
             raise ExecutorError(
                 f"{executor} is not a valid executor because it is not of type BaseExecutor class."
@@ -150,7 +184,7 @@ class BuildExecutor:
         class **__init__** method.
         """
 
-        for executor_name in self.executors.keys():
+        for executor_name in self.names():
             create_dir(os.path.join(BUILDTEST_EXECUTOR_DIR, executor_name))
             executor_settings = self.executors[executor_name]._settings
 
@@ -183,9 +217,6 @@ class BuildExecutor:
             executor = self._choose_executor(builder)
             executor.add_builder(builder)
             self.builders.append(builder)
-
-        for key in self.executors.keys():
-            print(f"executor: {key}", self.executors[key].builders)
 
         results = []
 
@@ -226,7 +257,7 @@ class BuildExecutor:
 
                 # the task object could be None if it fails to submit job therefore we only add items that are valid builders
                 if isinstance(task, BuilderBase):
-                    self.valid_builders.append(task)
+                    self._validbuilders.append(task)
 
             # remove result that are complete
             for result in async_results_ready:
@@ -238,8 +269,102 @@ class BuildExecutor:
         # terminate all worker processes
         workers.join()
 
-        return self.valid_builders
+        for builder in self._validbuilders:
+            # returns True if attribute builder.job is an instance of class Job
+            if builder.is_batch_job():
+                self._pending.append(builder)
 
-    def get_builders(self):
-        """Return a list of valid builders that were run"""
-        return self.valid_builders
+    def poll(self):
+        """Poll all until all jobs are complete. At each poll interval, we poll each builder
+        job state. If job is complete or failed we remove job from pending queue. In each interval we sleep
+        and poll jobs until there is no pending jobs."""
+        # only add builders that are batch jobs
+
+        # poll until all pending jobs are complete
+        while self._pending:
+            print(f"Polling Jobs in {self.pollinterval} seconds")
+
+            time.sleep(self.pollinterval)
+
+            # store list of cancelled and completed job at each interval
+            cancelled = []
+            completed = []
+
+            # for every pending job poll job and mark if job is finished or cancelled
+            for builder in self._pending:
+
+                # get executor instance for corresponding builder. This would be one of the following: SlurmExecutor, PBSExecutor, LSFExecutor, CobaltExecutor
+                executor = self.get(builder.executor)
+                # if builder is local executor we shouldn't be polling so we set job to
+                # complete and return
+
+                executor.poll(builder)
+
+                if builder.is_complete():
+                    completed.append(builder)
+                elif builder.is_failure():
+                    cancelled.append(builder)
+
+            # remove completed jobs from pending queue
+            if completed:
+                for builder in completed:
+                    self._pending.remove(builder)
+                    self._completed.add(builder)
+
+            # remove cancelled jobs from pending queue
+            if cancelled:
+                for builder in cancelled:
+                    self._pending.remove(builder)
+                    self._cancelled.add(builder)
+                    # need to remove builder from self._validbuilders when job is cancelled because these builders are ones
+                    # that have completed
+
+                    self._validbuilders.remove(builder)
+
+            self.print_pending_jobs()
+
+        if self._cancelled:
+            print("\nCancelled Jobs:", list(self._cancelled))
+
+    def print_pending_jobs(self):
+        """Print pending jobs in table format during each poll step"""
+        table = Table(
+            "[blue]Builder",
+            "[blue]executor",
+            "[blue]JobID",
+            "[blue]JobState",
+            "[blue]runtime",
+            title="Pending Jobs",
+        )
+        for builder in self._pending:
+            table.add_row(
+                str(builder),
+                builder.executor,
+                builder.job.get(),
+                builder.job.state(),
+                str(builder.timer.duration()),
+            )
+        console.print(table)
+
+    def print_polled_jobs(self):
+
+        if not self._completed:
+            return
+
+        table = Table(
+            "[blue]Builder",
+            "[blue]executor",
+            "[blue]JobID",
+            "[blue]JobState",
+            "[blue]runtime",
+            title="Completed Jobs",
+        )
+        for builder in self._completed:
+            table.add_row(
+                str(builder),
+                builder.executor,
+                builder.job.get(),
+                builder.job.state(),
+                str(builder.metadata["result"]["runtime"]),
+            )
+        console.print(table)
