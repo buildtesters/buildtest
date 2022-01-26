@@ -8,6 +8,7 @@ on executor name.
 import logging
 import multiprocessing as mp
 import os
+import time
 
 from buildtest.builders.base import BuilderBase
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
@@ -293,7 +294,7 @@ class BuildExecutor:
             for builder in self._pending:
 
                 # get executor instance for corresponding builder. This would be one of the following: SlurmExecutor, PBSExecutor, LSFExecutor, CobaltExecutor
-                executor = self.buildexecutor.get(builder.executor)
+                executor = self.get(builder.executor)
                 # if builder is local executor we shouldn't be polling so we set job to
                 # complete and return
 
