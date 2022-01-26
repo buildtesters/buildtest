@@ -57,31 +57,30 @@ if (! $?BUILDTEST_ROOT) then
 endif
 
 
-# error printing tables from tabulate when utf8 encoding not set. See https://github.com/buildtesters/buildtest/issues/665
-# setenv LANG en_US.utf8
-
-set pip=pip
+set pip=pip3
 
 if ( ! -x `command -v $pip` ) then 
-  echo "cannot find program $pip, please install $pip"
+  echo "cannot find program $pip. Please see the pip documentation: https://pip.pypa.io/en/stable/installation/ on how to install pip"
   exit 1
 endif
 
-echo "Installing buildtest dependencies"
-pip install --target $BUILDTEST_ROOT/.packages -r ${BUILDTEST_ROOT}/requirements.txt > /dev/null
-set bin=${BUILDTEST_ROOT}/bin
-set path=($path $bin)
+python3 -c "import buildtest.main" >& /dev/null || true
 
-# add PYTHONPATH for buildtest to persist in shell environment
-if (! $?PYTHONPATH ) then
-	setenv PYTHONPATH $BUILDTEST_ROOT:$BUILDTEST_ROOT/.packages
-else
-        setenv PYTHONPATH ${PYTHONPATH}:$BUILDTEST_ROOT:$BUILDTEST_ROOT/.packages
+# if we unable to import buildtest.main module then install buildtest dependencies
+if ( $status != 0 ) then
+  $pip install -r ${BUILDTEST_ROOT}/requirements.txt >& /dev/null
 endif
 
-# location of bin directory for executables provided by pypi packages
-setenv PATH ${BUILDTEST_ROOT}/.packages/bin:$PATH
+set path=($path ${BUILDTEST_ROOT}/bin)
 
-echo "BUILDTEST_ROOT: $BUILDTEST_ROOT"
-set buildtest_path=`which buildtest`
-echo "buildtest command: ${buildtest_path}"
+# add PYTHONPATH for buildtest to persist in shell environment
+#if (! $?PYTHONPATH ) then
+#	setenv PYTHONPATH $BUILDTEST_ROOT:$BUILDTEST_ROOT/.packages
+#else
+#        setenv PYTHONPATH ${PYTHONPATH}:$BUILDTEST_ROOT:$BUILDTEST_ROOT/.packages
+#endif
+
+# location of bin directory for executables provided by pypi packages
+#setenv PATH ${BUILDTEST_ROOT}/.packages/bin:$PATH
+
+#set buildtest_path=`which buildtest`

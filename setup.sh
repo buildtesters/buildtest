@@ -28,30 +28,40 @@ buildtest_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)
 pip=pip3
 
 if ! [ -x "$(command -v $pip)" ]; then 
-  echo "cannot find program $pip, please install $pip"
+  echo "cannot find program $pip. Please see the pip documentation: https://pip.pypa.io/en/stable/installation/ on how to install pip"
   exit 1
 fi
 
-# error printing tables from tabulate when utf8 encoding not set. See https://github.com/buildtesters/buildtest/issues/665
-# export LANG=en_US.utf8
+python=python3
 
-echo "Installing buildtest dependencies"
-$pip install --target ${buildtest_root}/.packages -r ${buildtest_root}/requirements.txt &> /dev/null
+$python -c "import buildtest.main" &> /dev/null
+returncode=$?
 
-bin=${buildtest_root}/bin
+# if we are unable to import buildtest.main then install buildtest dependencies
+if [ $returncode -ne 0 ]; then
+  #$pip install --target ${buildtest_root}/.packages -r ${buildtest_root}/requirements.txt &> /dev/null
+  $pip install -r ${buildtest_root}/requirements.txt &> /dev/null
+fi
+
 export BUILDTEST_ROOT=$buildtest_root
-export PATH=${bin}:$PATH
+export PATH=${buildtest_root}/bin:$PATH
 
+# for ZSH shell need to run autoload see https://stackoverflow.com/questions/3249432/can-a-bash-tab-completion-script-be-used-in-zsh
+if [ -n "$ZSH_VERSION" ]; then
+  # compinit -C will ignore insecure files. See https://zsh.sourceforge.io/Doc/Release/Completion-System.html##Use-of-compinit
+  autoload -U +X compinit && compinit -C
+  autoload -U +X bashcompinit && bashcompinit
+fi
 # enable bash completion script 
-source $BUILDTEST_ROOT/bash_completion.sh
+source $buildtest_root/bash_completion.sh
 
 # add PYTHONPATH for $BUILDTEST_ROOT and $BUILDTEST_ROOT/.packages to persist in shell environment
-export PYTHONPATH=${BUILDTEST_ROOT}/.packages:$BUILDTEST_ROOT:$PYTHONPATH
+#export PYTHONPATH=${BUILDTEST_ROOT}/.packages:$BUILDTEST_ROOT:$PYTHONPATH
 
 # location of bin directory for executables provided by pypi packages
-export PATH=${BUILDTEST_ROOT}/.packages/bin:$PATH
+#export PATH=${BUILDTEST_ROOT}/.packages/bin:$PATH
 
-echo "BUILDTEST_ROOT: $BUILDTEST_ROOT"
-buildtest_path=$(which buildtest)
-echo "buildtest command: ${buildtest_path}"
+#echo "BUILDTEST_ROOT: $BUILDTEST_ROOT"
+#buildtest_path=$(which buildtest)
+#echo "buildtest command: ${buildtest_path}"
 
