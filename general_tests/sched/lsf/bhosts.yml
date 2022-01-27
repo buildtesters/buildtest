@@ -1,4 +1,4 @@
-version: "1.0"
+
 buildspecs:
   display_lsf_hosts:
     description: Show all hosts in LSF cluster

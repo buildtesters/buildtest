@@ -1,4 +1,4 @@
-version: "1.0"
+
 buildspecs:
   qsub_version:
     type: script

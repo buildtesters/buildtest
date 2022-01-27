@@ -1,4 +1,4 @@
-version: "1.0"
+
 buildspecs:
   systemd_default_target:
     executor: generic.local.bash

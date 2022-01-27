@@ -1,4 +1,4 @@
-version: "1.0"
+
 buildspecs:
   current_user_queue:
     executor: generic.local.bash

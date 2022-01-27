@@ -1,4 +1,4 @@
-version: "1.0"
+
 buildspecs:
   kernel_swapusage:
     type: script

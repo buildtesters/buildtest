@@ -29,10 +29,9 @@ Parse Buildspecs
 
 A buildspec file may contain one or more test sections specified via ``buildspec``
 field. Each test is validated by a sub-schema specified by ``type`` field.
-buildtest will validate the buildspec with global schema first followed by sub-schema
-by using the ``version`` field to look up the schema version for sub-schema. buildtest
-will look up the schema from its schema library and validate the test section ``hello_world``
-with schema ``script-v1.0.schema.json``.
+buildtest will validate the buildspec with global schema first and one of the subschemas used to validate
+the test instance specified by `type` field. buildtest will seek the schema from its schema library
+and validate the test section ``hello_world`` with schema ``script.schema.json``.
 
 .. image:: _static/ParserSchemaValidationDiagram.png
 

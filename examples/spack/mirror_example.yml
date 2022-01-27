@@ -12,7 +12,6 @@ buildspecs:
       spack mirror list
       spack config blame mirrors
 
-
   add_mirror_in_spack_env:
     type: spack
     executor: generic.local.bash

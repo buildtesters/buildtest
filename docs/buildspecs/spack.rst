@@ -10,22 +10,13 @@ Spack Schema
 buildtest can generate tests for the `spack <https://spack.readthedocs.io/en/latest/>`_ package manager which can be
 used if you want to install or test packages as part of a repeatable process. You must set ``type: spack`` property
 in buildspec to use the spack schema for validating the buildspec test. Currently, we have
-`spack-v1.0.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/spack-v1.0.schema.json>`_
+`spack.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/spack.schema.json>`_
 JSON schema that defines the structure of how tests are to be written in buildspec. Shown below is the schema header. The
 **required** properties are ``type``, ``executor`` and ``spack``.
 
-.. code-block:: json
-
-      "$id": "spack-v1.0.schema.json",
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "spack schema version 1.0",
-      "description": "The spack schema is referenced using ``type: spack`` which is used for generating tests using spack package manager",
-      "type": "object",
-      "required": [
-        "type",
-        "executor",
-        "spack"
-      ],
+.. literalinclude:: ../../buildtest/schemas/spack.schema.json
+   :language: json
+   :lines: 1-12
 
 Install Specs
 ---------------
@@ -41,6 +32,7 @@ The schema is designed to mimic spack commands which will be clear with more exa
 
 .. literalinclude:: ../../examples/spack/install_specs.yml
     :language: yaml
+    :emphasize-lines: 7-10
 
 Let's build this test by running the following
 
@@ -87,6 +79,7 @@ and this field is available for other properties.
 
 .. literalinclude:: ../../examples/spack/env_install.yml
     :language: yaml
+    :emphasize-lines: 9-20
 
 If we build this test and see generated test we see that buildtest will create a
 spack environment `m4_zlib` and activate the environment, add **m4** and **zlib**,
@@ -107,6 +100,7 @@ environment
 
 .. literalinclude:: ../../examples/spack/env_create_directory.yml
     :language: yaml
+    :emphasize-lines: 10-13
 
 When creating spack environment using directory, buildtest will automatically add the
 ``-d`` option which is required when creating spack environments. However, one can also pass
@@ -132,6 +126,7 @@ is of ``type: string`` and this is only available as part of ``create`` property
 
 .. literalinclude:: ../../examples/spack/env_create_manifest.yml
     :language: yaml
+    :emphasize-lines: 12
 
 If we build this test and inspect the generated script we see ``spack env create`` command
 will create an environment **manifest_example** using the manifest file that we provided from the spack.yaml.
@@ -155,6 +150,7 @@ Shown below are two example tests where we remove spack environment using the **
 
 .. literalinclude:: ../../examples/spack/remove_environment_example.yml
     :language: yaml
+    :emphasize-lines: 11,27-28
 
 Let's build this by running the following
 
@@ -184,6 +180,7 @@ We remove spack root (``$SPACK_ROOT``) so that this test can be rerun again.
 
 .. literalinclude:: ../../examples/spack/pre_post_cmds.yml
     :language: yaml
+    :emphasize-lines: 7-9,14-16
 
 If we build this test and inspect the generated script we should get the following result.
 
@@ -205,6 +202,7 @@ Internally, this translates to ``spack mirror add e4s https://cache.e4s.io`` com
 
 .. literalinclude:: ../../examples/spack/mirror_example.yml
     :language: yaml
+    :emphasize-lines: 9-10,27-28
 
 This test can be built by running::
 
@@ -236,6 +234,7 @@ In example below we will test `m4` package by running ``spack test run m4`` and 
 
 .. literalinclude:: ../../examples/spack/spack_test.yml
     :language: yaml
+    :emphasize-lines: 9-14
 
 If we look at the generated test, buildtest will install m4 followed by running the test. The **spack test run --alias**
 option is used to reference name of suitename which can be used to reference suitename when using ``spack test results``
@@ -262,11 +261,11 @@ log after running test.
 
 .. literalinclude:: ../../examples/spack/spack_test_specs.yml
     :language: yaml
+    :emphasize-lines: 17,20-22
 
 We can build this test by running the following
 
 .. program-output:: cat buildtest_tutorial_examples/spack/build/spack_test_specs.txt
-
 
 Now let's check the generated test and output file, we see buildtest will install **libxml2** and **libsigsegv**
 in spack environment followed by removing all testsuites using ``spack test remove -y`` and run the test. Note that we can

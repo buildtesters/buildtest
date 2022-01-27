@@ -80,8 +80,8 @@ references definition ``string_or_list``::
       "$ref": "#/definitions/string_or_list"
     },
 
-The tags field is used in other schemas like **compiler-v1.0.schema.json**
-and **script-v1.0.schema.json**. In this example we declare **tags** field and
+The tags field is used in other schemas like **compiler.schema.json**
+and **script.schema.json**. In this example we declare **tags** field and
 reference tags anchor from definitions.schema.json::
 
     "tags": {

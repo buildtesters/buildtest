@@ -1,4 +1,4 @@
-version: "1.0"
+
 buildspecs:
   nodes_state_down:
     executor: generic.local.bash

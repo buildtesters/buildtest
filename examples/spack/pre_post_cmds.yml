@@ -14,4 +14,3 @@ buildspecs:
     post_cmds: |
       spack location -i gcc@6.5.0
       spack --version
-

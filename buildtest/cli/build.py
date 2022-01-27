@@ -42,7 +42,6 @@ from buildtest.utils.file import (
     resolve_path,
     walk_tree,
 )
-from buildtest.utils.tools import deep_get
 from jsonschema.exceptions import ValidationError
 from rich import box
 from rich.panel import Panel

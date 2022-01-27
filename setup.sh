@@ -55,13 +55,10 @@ fi
 # enable bash completion script 
 source $buildtest_root/bash_completion.sh
 
-# add PYTHONPATH for $BUILDTEST_ROOT and $BUILDTEST_ROOT/.packages to persist in shell environment
-#export PYTHONPATH=${BUILDTEST_ROOT}/.packages:$BUILDTEST_ROOT:$PYTHONPATH
-
-# location of bin directory for executables provided by pypi packages
-#export PATH=${BUILDTEST_ROOT}/.packages/bin:$PATH
-
-#echo "BUILDTEST_ROOT: $BUILDTEST_ROOT"
-#buildtest_path=$(which buildtest)
-#echo "buildtest command: ${buildtest_path}"
+# allow buildtest source code to PYTHONPATH so python can import buildtest
+if [ -z "$PYTHONPATH" ]; then
+  export PYTHONPATH=${BUILDTEST_ROOT}
+else
+  export PYTHONPATH=${BUILDTEST_ROOT}:$PYTHONPATH
+fi
 

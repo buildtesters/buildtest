@@ -74,13 +74,8 @@ endif
 set path=($path ${BUILDTEST_ROOT}/bin)
 
 # add PYTHONPATH for buildtest to persist in shell environment
-#if (! $?PYTHONPATH ) then
-#	setenv PYTHONPATH $BUILDTEST_ROOT:$BUILDTEST_ROOT/.packages
-#else
-#        setenv PYTHONPATH ${PYTHONPATH}:$BUILDTEST_ROOT:$BUILDTEST_ROOT/.packages
-#endif
-
-# location of bin directory for executables provided by pypi packages
-#setenv PATH ${BUILDTEST_ROOT}/.packages/bin:$PATH
-
-#set buildtest_path=`which buildtest`
+if (! $?PYTHONPATH ) then
+	setenv PYTHONPATH $BUILDTEST_ROOT
+else
+        setenv PYTHONPATH ${PYTHONPATH}:$BUILDTEST_ROOT
+endif

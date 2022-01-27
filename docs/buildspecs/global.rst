@@ -34,10 +34,7 @@ method. The test section within ``hello_world`` is validated by sub-schema by lo
 on ``type`` field.
 
 Every sub-schema requires **type** field in this case, ``type: script`` informs
-buildtest to validate with the :ref:`script_schema`. All type schemas have a version,
-currently buildtest supports **1.0** version for all type schemas. The
-``version: "1.0"`` is used to select the version of the sub-schema,
-in this example we validate with the schema `script-v1.0.schema.json <https://buildtesters.github.io/buildtest/pages/schemas/script-v1.0.schema.json>`_.
+buildtest to validate with the :ref:`script_schema` which will use schema `script.schema.json <https://buildtesters.github.io/buildtest/pages/schemas/script.schema.json>`_.
 
 To understand how buildtest validates the buildspec see :ref:`parsing buildspecs <parse_stage>`.
 

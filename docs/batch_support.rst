@@ -30,9 +30,8 @@ insert **#SBATCH** directive in front of each value.
 Shown below is an example buildspec
 
 .. code-block:: yaml
-    :emphasize-lines: 6,8-10
+    :emphasize-lines: 5,7-9
 
-    version: "1.0"
     buildspecs:
       slurm_metadata:
         description: Get metadata from compute node when submitting job
@@ -211,9 +210,8 @@ state of ``FAILED``.
 
 .. code-block:: yaml
     :linenos:
-    :emphasize-lines: 8-9
+    :emphasize-lines: 7-8
 
-    version: "1.0"
     buildspecs:
       wall_timeout:
         type: script
@@ -351,13 +349,11 @@ will use the executor ``ascent.lsf.batch`` executor that was defined in buildtes
     :linenos:
     :emphasize-lines: 6
 
-    version: "1.0"
     buildspecs:
       hostname:
         type: script
         executor: ascent.lsf.batch
         bsub: [ "-W 10",  "-nnodes 1"]
-
         run: jsrun hostname
 
 The LSFExecutor poll jobs  and retrieve job state using
@@ -380,9 +376,8 @@ directives can be specified using ``pbs`` field which is a list of PBS options t
 below is an example buildspec using the `script` schema.
 
 .. code-block:: yaml
-   :emphasize-lines: 6
+   :emphasize-lines: 5
 
-    version: "1.0"
     buildspecs:
       pbs_sleep:
         type: script
@@ -503,10 +498,9 @@ using ``cobalt`` property which accepts a list of strings. Shown below is an exa
 using cobalt property.
 
 .. code-block:: yaml
-    :emphasize-lines: 6
+    :emphasize-lines: 5
     :linenos:
 
-    version: "1.0"
     buildspecs:
       yarrow_hostname:
         executor: jlse.cobalt.yarrow

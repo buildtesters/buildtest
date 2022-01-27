@@ -15,9 +15,8 @@ for all compilers. OpenMP flag for gcc, intel and cray differ for instance one m
 
 .. code-block:: yaml
    :linenos:
-   :emphasize-lines: 10-20
+   :emphasize-lines: 9-19
 
-    version: "1.0"
     buildspecs:
       reduction:
         type: compiler
@@ -61,9 +60,8 @@ modules and load `impi/2020` module.
 
 .. code-block:: yaml
     :linenos:
-    :emphasize-lines: 13,16,18-22
+    :emphasize-lines: 12,15,17-21
 
-    version: "1.0"
     buildspecs:
       laplace_mpi:
         type: compiler
@@ -165,7 +163,6 @@ Shown below is the source code and buildspec for this test.
 
 .. code-block:: yaml
 
-    version: "1.0"
     buildspecs:
       hello_world_openmp:
         type: compiler
@@ -642,7 +639,6 @@ cd into the databuffer and write a 5GB random file.
     :emphasize-lines: 9-12
     :linenos:
 
-    version: "1.0"
     buildspecs:
       create_burst_buffer:
         type: script

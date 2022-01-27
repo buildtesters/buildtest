@@ -1,4 +1,4 @@
-version: "1.0"
+
 buildspecs:
   build_sif_from_dockerimage:
     type: script
