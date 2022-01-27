@@ -6,13 +6,13 @@
 
 *   [buildtest configuration schema](./settings.md) – `settings.schema.json`
 
-*   [compiler schema version 1.0](./compiler-v1.md "The compiler schema is of type: compiler in sub-schema which is used for compiling and running programs") – `compiler-v1.0.schema.json`
+*   [compiler schema](./compiler.md "The compiler schema is of type: compiler in sub-schema which is used for compiling and running programs") – `compiler.schema.json`
 
 *   [global schema](./global.md "buildtest global schema is validated for all buildspecs") – `global.schema.json`
 
-*   [script schema version 1.0](./script-v1.md "The script schema is of type: script in sub-schema which is used for running shell scripts") – `script-v1.0.schema.json`
+*   [script schema version](./script.md "The script schema is of type: script in sub-schema which is used for running shell scripts") – `script.schema.json`
 
-*   [spack schema version 1.0](./spack-v1.md "The spack schema is referenced using type: spack which is used for generating tests using spack package manager") – `spack-v1.0.schema.json`
+*   [spack schema version](./spack.md "The spack schema is referenced using type: spack which is used for generating tests using spack package manager") – `spack.schema.json`
 
 ## Other Schemas
 
@@ -238,51 +238,51 @@
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-pbs.md "An instance object of cobalt executor") – `settings.schema.json#/definitions/pbs`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_all.md "Specify compiler configuration for all compiler groups") – `compiler-v1.0.schema.json#/definitions/default_compiler_all`
+*   [Untitled object in compiler schema](./compiler-definitions-default_compiler_all.md "Specify compiler configuration for all compiler groups") – `compiler.schema.json#/definitions/default_compiler_all`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-default_compiler_config.md "Specify compiler configuration for group of compilers") – `compiler-v1.0.schema.json#/definitions/default_compiler_config`
+*   [Untitled object in compiler schema](./compiler-definitions-default_compiler_config.md "Specify compiler configuration for group of compilers") – `compiler.schema.json#/definitions/default_compiler_config`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration.md "Specify compiler configuration at compiler level") – `compiler-v1.0.schema.json#/definitions/compiler_declaration`
+*   [Untitled object in compiler schema](./compiler-definitions-compiler_declaration.md "Specify compiler configuration at compiler level") – `compiler.schema.json#/definitions/compiler_declaration`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module.md) – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module`
+*   [Untitled object in compiler schema](./compiler-definitions-compiler_declaration-properties-module.md) – `compiler.schema.json#/definitions/compiler_declaration/properties/module`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers.md) – `compiler-v1.0.schema.json#/properties/compilers`
+*   [Untitled object in compiler schema](./compiler-properties-compilers.md) – `compiler.schema.json#/properties/compilers`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-default.md) – `compiler-v1.0.schema.json#/properties/compilers/properties/default`
+*   [Untitled object in compiler schema](./compiler-properties-compilers-properties-default.md) – `compiler.schema.json#/properties/compilers/properties/default`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-properties-compilers-properties-config.md "Specify compiler configuration based on named compilers") – `compiler-v1.0.schema.json#/properties/compilers/properties/config`
+*   [Untitled object in compiler schema](./compiler-properties-compilers-properties-config.md "Specify compiler configuration based on named compilers") – `compiler.schema.json#/properties/compilers/properties/config`
 
-*   [Untitled object in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module.md) – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module`
+*   [Untitled object in compiler schema](./compiler-definitions-compiler_declaration-properties-module.md) – `compiler.schema.json#/definitions/compiler_declaration/properties/module`
 
 *   [Untitled object in global schema](./global-properties-buildspecs.md "This section is used to define one or more tests (buildspecs)") – `global.schema.json#/properties/buildspecs`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-properties-spack.md "Entry point to spack configuration") – `spack-v1.0.schema.json#/properties/spack`
+*   [Untitled object in spack schema version](./spack-properties-spack.md "Entry point to spack configuration") – `spack.schema.json#/properties/spack`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-create.md "Create a spack environment via spack env create") – `spack-v1.0.schema.json#/definitions/env/properties/create`
+*   [Untitled object in spack schema version](./spack-definitions-env-properties-create.md "Create a spack environment via spack env create") – `spack.schema.json#/definitions/env/properties/create`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-activate.md "Activate a spack environment via spack env activate") – `spack-v1.0.schema.json#/definitions/env/properties/activate`
+*   [Untitled object in spack schema version](./spack-definitions-env-properties-activate.md "Activate a spack environment via spack env activate") – `spack.schema.json#/definitions/env/properties/activate`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-rm.md "Remove an existing spack environment via spack env rm") – `spack-v1.0.schema.json#/definitions/env/properties/rm`
+*   [Untitled object in spack schema version](./spack-definitions-env-properties-rm.md "Remove an existing spack environment via spack env rm") – `spack.schema.json#/definitions/env/properties/rm`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test-properties-run.md "Run tests using spack via spack test run command") – `spack-v1.0.schema.json#/definitions/test/properties/run`
+*   [Untitled object in spack schema version](./spack-definitions-test-properties-run.md "Run tests using spack via spack test run command") – `spack.schema.json#/definitions/test/properties/run`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test-properties-results.md "View test results via spack test results after running tests via spack test run") – `spack-v1.0.schema.json#/definitions/test/properties/results`
+*   [Untitled object in spack schema version](./spack-definitions-test-properties-results.md "View test results via spack test results after running tests via spack test run") – `spack.schema.json#/definitions/test/properties/results`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env.md "Used for managing spack environment using spack env command") – `spack-v1.0.schema.json#/definitions/env`
+*   [Untitled object in spack schema version](./spack-definitions-env.md "Used for managing spack environment using spack env command") – `spack.schema.json#/definitions/env`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-create.md "Create a spack environment via spack env create") – `spack-v1.0.schema.json#/definitions/env/properties/create`
+*   [Untitled object in spack schema version](./spack-definitions-env-properties-create.md "Create a spack environment via spack env create") – `spack.schema.json#/definitions/env/properties/create`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-activate.md "Activate a spack environment via spack env activate") – `spack-v1.0.schema.json#/definitions/env/properties/activate`
+*   [Untitled object in spack schema version](./spack-definitions-env-properties-activate.md "Activate a spack environment via spack env activate") – `spack.schema.json#/definitions/env/properties/activate`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-env-properties-rm.md "Remove an existing spack environment via spack env rm") – `spack-v1.0.schema.json#/definitions/env/properties/rm`
+*   [Untitled object in spack schema version](./spack-definitions-env-properties-rm.md "Remove an existing spack environment via spack env rm") – `spack.schema.json#/definitions/env/properties/rm`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-install.md "Install spack packages using spack install command") – `spack-v1.0.schema.json#/definitions/install`
+*   [Untitled object in spack schema version](./spack-definitions-install.md "Install spack packages using spack install command") – `spack.schema.json#/definitions/install`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test.md) – `spack-v1.0.schema.json#/definitions/test`
+*   [Untitled object in spack schema version](./spack-definitions-test.md) – `spack.schema.json#/definitions/test`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test-properties-run.md "Run tests using spack via spack test run command") – `spack-v1.0.schema.json#/definitions/test/properties/run`
+*   [Untitled object in spack schema version](./spack-definitions-test-properties-run.md "Run tests using spack via spack test run command") – `spack.schema.json#/definitions/test/properties/run`
 
-*   [Untitled object in spack schema version 1.0](./spack-v1-definitions-test-properties-results.md "View test results via spack test results after running tests via spack test run") – `spack-v1.0.schema.json#/definitions/test/properties/results`
+*   [Untitled object in spack schema version](./spack-definitions-test-properties-results.md "View test results via spack test results after running tests via spack test run") – `spack.schema.json#/definitions/test/properties/results`
 
 ### Arrays
 
@@ -394,9 +394,9 @@
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module-properties-swap.md "Swap modules using module swap") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/swap`
+*   [Untitled array in compiler schema](./compiler-definitions-compiler_declaration-properties-module-properties-swap.md "Swap modules using module swap") – `compiler.schema.json#/definitions/compiler_declaration/properties/module/properties/swap`
 
-*   [Untitled array in compiler schema version 1.0](./compiler-v1-definitions-compiler_declaration-properties-module-properties-swap.md "Swap modules using module swap") – `compiler-v1.0.schema.json#/definitions/compiler_declaration/properties/module/properties/swap`
+*   [Untitled array in compiler schema](./compiler-definitions-compiler_declaration-properties-module-properties-swap.md "Swap modules using module swap") – `compiler.schema.json#/definitions/compiler_declaration/properties/module/properties/swap`
 
 *   [Untitled array in global schema](./global-properties-maintainers.md "One or more maintainers or aliases") – `global.schema.json#/properties/maintainers`
 

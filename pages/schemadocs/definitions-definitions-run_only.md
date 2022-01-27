@@ -1,14 +1,14 @@
-# Untitled object in script schema version 1.0 Schema
+# Untitled object in script schema version Schema
 
 ```txt
-script-v1.0.schema.json#/properties/run_only
+script.schema.json#/properties/run_only
 ```
 
 A set of conditions to specify when running tests. All conditions must pass in order to process test.
 
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                        |
-| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [script-v1.0.schema.json*](../out/script-v1.0.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                              |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :---------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [script.schema.json*](../out/script.schema.json "open original schema") |
 
 ## run_only Type
 

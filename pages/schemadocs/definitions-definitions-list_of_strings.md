@@ -1,14 +1,14 @@
-# Untitled array in spack schema version 1.0 Schema
+# Untitled array in spack schema version Schema
 
 ```txt
-spack-v1.0.schema.json#/definitions/test/properties/results/properties/specs
+spack.schema.json#/definitions/test/properties/results/properties/specs
 ```
 
 Report result by spec name by running `spack test run -- <specs>`.
 
-| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                      |
-| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------------------ |
-| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [spack-v1.0.schema.json*](../out/spack-v1.0.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                            |
+| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [spack.schema.json*](../out/spack.schema.json "open original schema") |
 
 ## specs Type
 

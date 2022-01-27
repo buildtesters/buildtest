@@ -18,27 +18,8 @@ buildtest global schema is validated for all buildspecs. The global schema defin
 
 | Property                    | Type     | Required | Nullable       | Defined by                                                                                     |
 | :-------------------------- | :------- | :------- | :------------- | :--------------------------------------------------------------------------------------------- |
-| [version](#version)         | `string` | Required | cannot be null | [global schema](global-properties-version.md "global.schema.json#/properties/version")         |
 | [maintainers](#maintainers) | `array`  | Optional | cannot be null | [global schema](global-properties-maintainers.md "global.schema.json#/properties/maintainers") |
 | [buildspecs](#buildspecs)   | `object` | Required | cannot be null | [global schema](global-properties-buildspecs.md "global.schema.json#/properties/buildspecs")   |
-
-## version
-
-The semver version of the schema to use (x.x).
-
-`version`
-
-*   is required
-
-*   Type: `string`
-
-*   cannot be null
-
-*   defined in: [global schema](global-properties-version.md "global.schema.json#/properties/version")
-
-### version Type
-
-`string`
 
 ## maintainers
 
