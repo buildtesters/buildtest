@@ -1,4 +1,3 @@
-version: "1.0"
 buildspecs:
   metrics_variable_compiler:
     type: compiler
@@ -20,7 +19,6 @@ buildspecs:
         gcc_6.5.0:
           env:
             OMP_NUM_THREADS: 2
-
     metrics:
       openmp_threads:
         env: "OMP_NUM_THREADS"

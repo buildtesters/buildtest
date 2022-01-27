@@ -1,4 +1,3 @@
-version: "1.0"
 buildspecs:
   run_only_platform_darwin:
     description: "This test will only run if target platform is Darwin"

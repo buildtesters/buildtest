@@ -1,4 +1,3 @@
-version: "1.0"
 buildspecs:
   spack_test_m4:
     type: spack

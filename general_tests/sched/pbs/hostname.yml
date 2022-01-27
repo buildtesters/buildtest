@@ -1,4 +1,4 @@
-version: "1.0"
+
 buildspecs:
   pbs_sleep:
     type: script

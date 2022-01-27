@@ -1,4 +1,3 @@
-version: "1.0"
 # wrong type for maintainers key, expects a string
 maintainers: 1
 buildspecs:

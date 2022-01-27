@@ -155,7 +155,7 @@ class BuilderBase(ABC):
 
         # store schemafile used for validating
         self.metadata["schemafile"] = os.path.basename(
-            schema_table[f"{self.recipe['type']}-v1.0.schema.json"]["path"]
+            schema_table[f"{self.recipe['type']}.schema.json"]["path"]
         )
 
         # store output content of test

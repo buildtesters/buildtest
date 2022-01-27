@@ -1,7 +1,7 @@
 {
-  "$id": "spack-v1.0.schema.json",
+  "$id": "spack.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "spack schema version 1.0",
+  "title": "spack schema version",
   "description": "The spack schema is referenced using ``type: spack`` which is used for generating tests using spack package manager",
   "type": "object",
   "required": [

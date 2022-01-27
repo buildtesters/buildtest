@@ -34,7 +34,7 @@ class BuildspecParser:
         `global.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/global.schema.json>`_
         and validate each test section with the designated
         type schema. For instance of test includes ``type: script`` we will validate the test with schema
-        `script-v1.0.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/script-v1.0.schema.json>`_.
+        `script.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/script.schema.json>`_.
 
         If there is any error during the init method, an exception will be raised.
 
@@ -119,17 +119,6 @@ class BuildspecParser:
             schema_table["types"],
         )
 
-        # And that there is a version file
-        if self.schema_version not in schema_table["versions"][self.schema_type]:
-            msg = f"version {self.schema_version} is not known for schema type: {self.schema_type}. Valid options for schema type are: {schema_table['versions'][self.schema_type]}"
-            raise BuildspecError(self.buildspec, msg)
-
-        self.logger.info(
-            "Checking version '%s' in version list: %s",
-            self.schema_version,
-            schema_table["versions"][self.schema_type],
-        )
-
     def _check_executor(self, test):
         """This method checks if ``executor`` property is not None and executor
         value is found in list of available executors.
@@ -181,8 +170,6 @@ class BuildspecParser:
             recipe=self.recipe, schema=schema_table["global.schema.json"]["recipe"]
         )
 
-        self.schema_version = self.recipe.get("version")
-
         # validate all test instances in 'buildspecs' property. The validation
         # consist of checking schema type, executor name and validating each section
         # with sub schema
@@ -197,16 +184,12 @@ class BuildspecParser:
             self._check_executor(test)
 
             self.schema_file = os.path.basename(
-                schema_table[f"{self.schema_type}-v{self.schema_version}.schema.json"][
-                    "path"
-                ]
+                schema_table[f"{self.schema_type}.schema.json"]["path"]
             )
             # validate test instance with sub schema
             custom_validator(
                 recipe=self.recipe["buildspecs"][test],
-                schema=schema_table[
-                    f"{self.schema_type}-v{self.schema_version}.schema.json"
-                ]["recipe"],
+                schema=schema_table[f"{self.schema_type}.schema.json"]["recipe"],
             )
 
     def get_test_names(self):

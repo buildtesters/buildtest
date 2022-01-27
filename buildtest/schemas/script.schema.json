@@ -1,7 +1,7 @@
 {
-  "$id": "script-v1.0.schema.json",
+  "$id": "script.schema.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "script schema version 1.0",
+  "title": "script schema version",
   "description": "The script schema is of ``type: script`` in sub-schema which is used for running shell scripts",
   "type": "object",
   "required": ["type", "run", "executor"],

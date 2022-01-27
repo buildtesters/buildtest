@@ -1,4 +1,3 @@
-version: "1.0"
 buildspecs:
   stage_in_out_burst_buffer:
     type: script

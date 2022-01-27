@@ -30,11 +30,7 @@ when validating test section.
 
 Each subschema has a list of field attributes that are supported, for example the
 fields: **type**, **executor**, **vars** and **run** are all valid fields supported
-by the *script* schema. The **version** field informs which version of subschema to use.
-Currently all sub-schemas are at version ``1.0`` where buildtest will validate
-with a schema ``script-v1.0.schema.json``. In future, we can support multiple versions
-of subschema for backwards compatibility.
-
+by the *script* schema.
 
 Let's look at a more interesting example, shown below is a multi line run
 example using the `script` schema with test name called
@@ -79,9 +75,9 @@ To use this schema you must set ``type: script``. The ``run`` field is responsib
 for writing the content of test.
 
 
-Shown below is schema header for `script-v1.0.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/script-v1.0.schema.json>`_.
+Shown below is schema header for `script.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/script.schema.json>`_.
 
-.. literalinclude:: ../../buildtest/schemas/script-v1.0.schema.json
+.. literalinclude:: ../../buildtest/schemas/script.schema.json
    :language: json
    :lines: 1-8
 
@@ -216,7 +212,7 @@ will ``PASS``.
 
 .. literalinclude:: ../tutorials/pass_returncode.yml
    :language: yaml
-   :emphasize-lines: 17-18,26-27,35-36
+   :emphasize-lines: 17,26,35
 
 Let's build this test and pay close attention to the **status**
 column in output.
@@ -260,7 +256,7 @@ on output file.
 
 .. literalinclude:: ../tutorials/status_regex.yml
    :language: yaml
-   :emphasize-lines: 9-12,20-23
+   :emphasize-lines: 9-11,20-22
 
 Now if we run this test, we will see first test will pass while second one will fail even though the returncode is
 a 0. Take a close look at the **status** property
@@ -286,7 +282,7 @@ In test **timelimit_min**, we sleep for 2 seconds and it will pass because minim
 
 .. literalinclude:: ../tutorials/runtime_status_test.yml
    :language: yaml
-   :emphasize-lines: 9-12,21-23,31-33,42-44,52-54
+   :emphasize-lines: 9-11,20-21,30-31,40-41,50-51
 
 .. command-output:: buildtest build -b tutorials/runtime_status_test.yml
 
@@ -311,6 +307,7 @@ their is a match on the returncode.
 
 .. literalinclude:: ../tutorials/explicit_state.yml
    :language: yaml
+   :emphasize-lines: 8,16,22-25,31-34
 
 If we build this test, we expect buildtest to honor the value of ``state`` property
 
@@ -329,6 +326,7 @@ define a list of tags named ``network`` and ``ping``.
 
 .. literalinclude:: ../tutorials/tags_example.yml
     :language: yaml
+    :emphasize-lines: 6,13
 
 Each item in tags must be a string and no duplicates are allowed, for example in
 this test, we define a duplicate tag **network** which is not allowed.
@@ -377,6 +375,7 @@ field.
 
 .. literalinclude:: ../tutorials/shell_examples.yml
    :language: yaml
+   :emphasize-lines: 6,14,22,30,38
 
 The generated test-script for buildspec **_bin_sh_shell** will specify shebang
 **/bin/sh** because we specified ``shell: /bin/sh``:
@@ -487,6 +486,7 @@ below is an example test.
 
 .. literalinclude:: ../tutorials/skip_tests.yml
    :language: yaml
+   :emphasize-lines: 6,14
 
 The first test **skip** will be ignored by buildtest because ``skip: true`` is defined
 while **unskipped** will be processed as usual.
@@ -520,7 +520,7 @@ where we define two metrics named ``hpcg_rating`` and ``hpcg_state``.
 
 .. literalinclude:: ../tutorials/metrics_regex.yml
     :language: yaml
-    :emphasize-lines: 9-18
+    :emphasize-lines: 8-17
 
 The metrics will not impact behavior of test, it will only impact the test report. By default
 a metric will be an empty dictionary if there is no ``metrics`` property. If we fail to match
@@ -551,7 +551,7 @@ environment variable ``FOO``.
 
 .. literalinclude:: ../../tutorials/metrics_variable.yml
     :language: yaml
-    :emphasize-lines: 15-19
+    :emphasize-lines: 14-18
 
 Now let's build the test.
 
@@ -572,6 +572,7 @@ environment variable that corresponds to each compiler.
 
 .. literalinclude:: ../../examples/compilers/metrics_openmp.yml
    :language: yaml
+   :emphasize-lines: 22-24
 
 .. Note:: This test uses a custom site configuration that defines gcc multiple compilers.
 
@@ -716,6 +717,7 @@ we define variables ``X``, ``Y`` and environment ``SHELL`` based on executors **
 
 .. literalinclude:: ../tutorials/script/multiple_executors.yml
    :language: yaml
+   :emphasize-lines: 12-24
 
 Let's build this test.
 
@@ -769,7 +771,7 @@ define a metrics named ``lastname`` that will store the value defined by variabl
 
 .. literalinclude:: ../tutorials/script/status_by_executors.yml
     :language: yaml
-    :emphasize-lines: 13-25
+    :emphasize-lines: 12-24
 
 Now let's run this test and we will see the test using **generic.local.sh** will fail because
 we have a returncode mismatch even though both tests got a 0 returncode as its actual value.

@@ -1,4 +1,3 @@
-version: "1.0"
 buildspecs:
   circle_area:
     executor: generic.local.bash

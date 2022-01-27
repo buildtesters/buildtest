@@ -21,9 +21,9 @@ Shown below is the command usage of ``buildtest schema``
 The json schemas are published at https://buildtesters.github.io/buildtest/ and we
 provide a command line interface to view schema files and examples. You must use the
 ``--name`` option to select a schema, for instance if you want to view the JSON Schema for
-**script-v1.0.schema.json** you can run the following::
+**script.schema.json** you can run the following::
 
-    buildtest schema --name script-v1.0.schema.json --json
+    buildtest schema --name script.schema.json --json
 
 Schema Naming Convention
 ------------------------
@@ -69,7 +69,7 @@ Script Schema
 This is the script schema used for writing scripts (bash, csh, sh, zsh, tcsh, python) and this is used for validating test instance when
 ``type: script`` is specified. For more details on script schema see :ref:`script_schema`.
 
-.. literalinclude:: ../buildtest/schemas/script-v1.0.schema.json
+.. literalinclude:: ../buildtest/schemas/script.schema.json
    :language: json
 
 
@@ -79,7 +79,7 @@ Compiler Schema
 This is the compiler schema used for validating buildspecs that define test using ``type: compiler``.
 This schema is used for compiling a single source code. For more details see :ref:`compiler_schema`
 
-.. literalinclude:: ../buildtest/schemas/compiler-v1.0.schema.json
+.. literalinclude:: ../buildtest/schemas/compiler.schema.json
    :language: json
 
 Spack Schema
@@ -88,7 +88,7 @@ Spack Schema
 This schema is used for writing tests with `spack package manager <https://spack.readthedocs.io/>`_ using ``type: spack`` field. For more details
 see :ref:`spack_schema`.
 
-.. literalinclude:: ../buildtest/schemas/spack-v1.0.schema.json
+.. literalinclude:: ../buildtest/schemas/spack.schema.json
    :language: json
 
 Schema Examples
@@ -116,16 +116,16 @@ Global Schema Examples
 Script Schema Examples
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. command-output:: buildtest schema -n script-v1.0.schema.json --example
+.. command-output:: buildtest schema -n script.schema.json --example
 
 
 Compiler Schema Examples
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. command-output:: buildtest schema -n compiler-v1.0.schema.json --example
+.. command-output:: buildtest schema -n compiler.schema.json --example
 
 
 Spack Schema Examples
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. command-output:: buildtest schema -n spack-v1.0.schema.json --example
+.. command-output:: buildtest schema -n spack.schema.json --example

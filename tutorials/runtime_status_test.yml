@@ -1,4 +1,3 @@
-version: "1.0"
 buildspecs:
   timelimit_min_max:
     type: script
@@ -10,7 +9,6 @@ buildspecs:
       runtime:
         min: 1.0
         max: 3.0
-
 
   timelimit_min:
     type: script
@@ -31,7 +29,6 @@ buildspecs:
     status:
       runtime:
         max: 5.0
-
 
   timelimit_min_fail:
     type: script

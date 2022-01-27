@@ -10,9 +10,9 @@ single source file compilation. In order to use the compiler schema you must set
 test. For more details see `compiler schema docs <https://buildtesters.github.io/buildtest/pages/schemadocs/compiler-v1.html>`_
 
 We assume the reader has basic understanding of :ref:`global_schema` validation. Shown below
-is the schema header definition for `compiler-v1.0.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/compiler-v1.0.schema.json>`_:
+is the schema header definition for `compiler.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/compiler.schema.json>`_:
 
-.. literalinclude:: ../../buildtest/schemas/compiler-v1.0.schema.json
+.. literalinclude:: ../../buildtest/schemas/compiler.schema.json
    :language: json
    :lines: 1-12
 
@@ -24,7 +24,7 @@ First Example - Hello World
 
 We will start out with compilation a Hello World program in Fortran using the GNU compiler.
 In this example we have a test called ``hello_f``.  The ``type: compiler`` is set to signify this
-test will be validated with **compiler-v1.0.schema.json**.
+test will be validated with **compiler.schema.json**.
 
 The ``source`` property is used to specify the source code to compile, this can be a
 relative path to buildspec file or an absolute path.
@@ -38,7 +38,7 @@ options like ``cflags``, ``fflags``, ``cxxflags``, ``ldflags`` to customize comp
 
 .. literalinclude:: ../../examples/compilers/gnu_hello_fortran.yml
    :language: yaml
-   :emphasize-lines: 8-13
+   :emphasize-lines: 8-12
 
 Shown below is an example build for this test.
 
@@ -112,7 +112,7 @@ options for each compiler name.
 
 .. literalinclude:: ../../examples/compilers/gnu_hello_c.yml
     :language: yaml
-    :emphasize-lines: 14-18
+    :emphasize-lines: 14-17
 
 Let's build this test, we will see there is one builder instance for each compiler.
 
@@ -133,7 +133,7 @@ found based on regular expression via ``name`` property.  In this next example, 
 
 .. literalinclude:: ../../examples/compilers/compiler_exclude.yml
     :language: yaml
-    :emphasize-lines: 11
+    :emphasize-lines: 10
 
 Now if we run this test, we will notice that there is only one build for this test even though buildtest
 discovered both ``gcc_6.5.0`` and ``gcc_8.3.0`` compilers.
@@ -152,7 +152,7 @@ we will set ``OMP_NUM_THREADS=2``
 
 .. literalinclude:: ../../examples/compilers/openmp_hello.yml
     :language: yaml
-    :emphasize-lines: 14-15
+    :emphasize-lines: 13-14
 
 Now let's build this test.
 
@@ -169,7 +169,7 @@ we will define OMP_NUM_THREADS to 4 for `gcc_8.3.0` while the default is 2 for a
 
 .. literalinclude:: ../../examples/compilers/envvar_override.yml
     :language: yaml
-    :emphasize-lines: 14-15,18-19
+    :emphasize-lines: 13-14,17-18
 
 We can build this test by running::
 
@@ -198,7 +198,7 @@ show this test will fail.
 
 .. literalinclude:: ../../examples/compilers/compiler_status_regex.yml
     :language: yaml
-    :emphasize-lines: 15-16,30-31,34-37
+    :emphasize-lines: 14-15,29-30,33-36
 
 If we build this test, we should expect the first test example should pass based on
 returncode 0. If the returncode doesn't match buildtest will report failure. For the second test example,
@@ -226,7 +226,7 @@ we pass arguments ``1 3`` for **builtin_gcc** compiler and ``100 200`` for **gcc
 
 .. literalinclude:: ../../examples/compilers/custom_run.yml
     :language: yaml
-    :emphasize-lines: 13,15
+    :emphasize-lines: 12,14
 
 You can build this test by running the following::
 
@@ -250,7 +250,7 @@ test.
 
 .. literalinclude:: ../../examples/compilers/pre_post_build_run.yml
     :language: yaml
-    :emphasize-lines: 14-21
+    :emphasize-lines: 13-20
 
 The format of the test structure is as follows.
 
