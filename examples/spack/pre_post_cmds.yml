@@ -1,4 +1,3 @@
-version: "1.0"
 buildspecs:
   run_pre_post_commands:
     type: spack

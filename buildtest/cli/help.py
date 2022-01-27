@@ -358,12 +358,12 @@ def print_schema_help():
 
     table.add_row("buildtest schema", "Report all buildtest schema files")
     table.add_row(
-        "buildtest schema -n script-v1.0-schema.json -e ",
+        "buildtest schema -n script.schema.json -e ",
         "Show example for schema type script-v1.0-schema.json",
     )
     table.add_row(
-        "buildtest schema -n script-v1.0-schema.json -j",
-        "Show content of JSON schema for script-v1.0-schema.json",
+        "buildtest schema -n script.schema.json -j",
+        "Show content of JSON schema for script.schema.json",
     )
     console.print(table)
 

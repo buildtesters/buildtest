@@ -1,6 +1,6 @@
 """This method defines the Spack buildsystem for the spack package manager (https://spack.readthedocs.io/en/latest/)
 by generating scripts that will do various spack operation. The SpackBuilder class will generate a test script using the
-schema definition 'spack-v1.0.schema.json' that defines how buildspecs are written.
+schema definition 'spack.schema.json' that defines how buildspecs are written.
 """
 
 import os

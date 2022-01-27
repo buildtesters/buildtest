@@ -1,4 +1,3 @@
-version: "1.0"
 buildspecs:
   metric_variable_assignment:
     executor: generic.local.sh

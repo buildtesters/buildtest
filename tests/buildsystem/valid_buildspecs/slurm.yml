@@ -1,4 +1,3 @@
-version: "1.0"
 buildspecs:
   slurm_down_nodes_reason:
     executor: generic.local.bash

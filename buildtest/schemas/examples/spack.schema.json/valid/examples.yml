@@ -1,4 +1,3 @@
-version: "1.0"
 buildspecs:
   env_create_name:
     type: spack

@@ -1,4 +1,3 @@
-version: "1.0"
 buildspecs:
   openmp_hello_c_example:
     type: compiler
