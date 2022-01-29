@@ -1,3 +1,5 @@
+<img src="https://github.com/buildtesters/buildtest/blob/devel/logos/buildtest_primary.png" width="400" alt="buildtest">
+
 | |license| |docs| |codecov| |slack| |release| |installation| |regressiontest| |gh_pages_devel| |checkurls| |dailyurlcheck| |codefactor| |blackformat|  |black| |isort| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
    
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest

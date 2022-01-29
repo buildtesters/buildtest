@@ -136,6 +136,7 @@ pygments_style = None
 #
 html_theme = "sphinx_rtd_theme"
 
+html_logo = f"{BUILDTEST_ROOT}/logos/buildtest_secondary.jpg"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -145,6 +146,7 @@ html_theme_options = {
     "prev_next_buttons_location": "both",
     "sticky_navigation": True,
     "style_external_links": True,
+    "logo_only": True,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
