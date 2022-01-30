@@ -4,7 +4,7 @@ import sys
 
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
-from buildtest.utils.file import is_file, load_json, read_file, resolve_path
+from buildtest.utils.file import is_file, load_json, resolve_path
 from rich.table import Table
 
 logger = logging.getLogger(__name__)
@@ -618,7 +618,7 @@ def report_cmd(args, report_file=None):
     if args.report_subcommand == "clear":
         # if BUILDTEST_REPORTS file is not present then we have no report files to delete since it tracks all report files that are created
         if not is_file(BUILDTEST_REPORTS):
-            sys.exit(f"There is no report file to delete")
+            sys.exit("There is no report file to delete")
 
         reports = load_json(BUILDTEST_REPORTS)
         for report in reports:

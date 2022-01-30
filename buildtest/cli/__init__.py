@@ -5,7 +5,7 @@ interact with a global configuration for buildtest.
 import argparse
 
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
-from buildtest.defaults import BUILD_REPORT, console
+from buildtest.defaults import console
 from buildtest.schemas.defaults import schema_table
 
 

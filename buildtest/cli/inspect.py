@@ -4,7 +4,7 @@ import re
 import sys
 
 from buildtest.cli.report import Report
-from buildtest.defaults import BUILD_REPORT, console
+from buildtest.defaults import console
 from buildtest.utils.file import read_file, resolve_path
 from rich.pretty import pprint
 from rich.syntax import Syntax
