@@ -612,10 +612,11 @@ class Report:
         return records
 
 
-def report_cmd(args, report_file):
+def report_cmd(args, report_file=None):
     """Entry point for ``buildtest report`` command"""
 
     if args.report_subcommand == "clear":
+        # if BUILDTEST_REPORTS file is not present then we have no report files to delete since it tracks all report files that are created
         if not is_file(BUILDTEST_REPORTS):
             sys.exit(f"There is no report file to delete")
 
@@ -629,10 +630,11 @@ def report_cmd(args, report_file):
 
     if args.report_subcommand == "list":
         if not is_file(BUILDTEST_REPORTS):
-            console.print(
-                "There are no report files, please run 'buildtest build' to generate a report file."
+            sys.exit(
+                console.print(
+                    "There are no report files, please run 'buildtest build' to generate a report file."
+                )
             )
-            sys.exit(0)
 
         content = load_json(BUILDTEST_REPORTS)
         for fname in content:

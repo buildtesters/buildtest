@@ -14,9 +14,8 @@ def test_buildtest_inspect_list():
 
     # running buildtest inspect list
     class args:
-        subcommands = "config"
+        subcommands = "inspect"
         inspect = "list"
-        report = False
         terse = False
         no_header = False
         builder = False
@@ -25,9 +24,8 @@ def test_buildtest_inspect_list():
 
     # running buildtest inspect list --terse --no-header
     class args:
-        subcommands = "config"
+        subcommands = "inspect"
         inspect = "list"
-        report = False
         terse = True
         no_header = True
         builder = False
@@ -36,9 +34,8 @@ def test_buildtest_inspect_list():
 
     # running buildtest inspect list --terse
     class args:
-        subcommands = "config"
+        subcommands = "inspect"
         inspect = "list"
-        report = False
         terse = True
         no_header = False
         builder = False
@@ -47,9 +44,8 @@ def test_buildtest_inspect_list():
 
     # running buildtest inspect list --builder
     class args:
-        subcommands = "config"
+        subcommands = "inspect"
         inspect = "list"
-        report = False
         terse = False
         no_header = False
         builder = True
@@ -66,7 +62,7 @@ def test_buildtest_inspect_name():
     # print(test_ids)
 
     class args:
-        subcommands = "config"
+        subcommands = "inspect"
         inspect = "name"
         name = [test_names]
         report = None
@@ -75,7 +71,7 @@ def test_buildtest_inspect_name():
     inspect_cmd(args)
 
     class args:
-        subcommands = "config"
+        subcommands = "inspect"
         inspect = "name"
         name = [test_names]
         report = None
@@ -91,7 +87,7 @@ def test_buildtest_inspect_name():
     ]
 
     class args:
-        subcommands = "config"
+        subcommands = "inspect"
         inspect = "name"
         name = random_test
         report = None
@@ -101,7 +97,7 @@ def test_buildtest_inspect_name():
         inspect_cmd(args)
 
     class args:
-        subcommands = "config"
+        subcommands = "inspect"
         inspect = "name"
         name = [r.builder_names()[0]]
         report = None
@@ -114,7 +110,7 @@ def test_buildspec_inspect_buildspec():
     tf = tempfile.NamedTemporaryFile(delete=True)
 
     class args:
-        subcommands = "config"
+        subcommands = "inspect"
         inspect = "buildspec"
         buildspec = [tf.name]
         report = None
@@ -136,7 +132,7 @@ def test_buildspec_inspect_buildspec():
     ]
 
     class args:
-        subcommands = "config"
+        subcommands = "inspect"
         inspect = "buildspec"
         buildspec = search_buildspec
         report = None
@@ -146,7 +142,7 @@ def test_buildspec_inspect_buildspec():
     inspect_cmd(args)
 
     class args:
-        subcommands = "config"
+        subcommands = "inspect"
         inspect = "buildspec"
         buildspec = search_buildspec
         report = None
@@ -162,20 +158,19 @@ def test_buildtest_query():
     names = report.get_names()
 
     class args:
-        subcommands = "config"
+        subcommands = "inspect"
         inspect = "query"
         name = names
-        report = None
         output = True
         error = True
         testpath = True
         buildscript = True
 
-    # check buildtest inspect query --output --error --testpath --buildscript -d last <name1> <name2> ...
+    # check buildtest inspect query --output --error --testpath --buildscript <name1> <name2> ...
     inspect_cmd(args)
 
     class args:
-        subcommands = "config"
+        subcommands = "inspect"
         inspect = "query"
         name = ["".join(random.choice(string.ascii_letters) for i in range(10))]
         report = None

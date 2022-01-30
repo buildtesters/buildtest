@@ -11,16 +11,12 @@ from rich.syntax import Syntax
 from rich.table import Column, Table
 
 
-def inspect_cmd(args, report_file):
+def inspect_cmd(args, report_file=None):
     """Entry point for ``buildtest inspect`` command
 
     Args:
         args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
     """
-
-    # report_file = BUILD_REPORT
-    if report_file:
-        report_file = resolve_path(report_file)
 
     report = Report(report_file)
 
@@ -109,24 +105,26 @@ def inspect_list(report, terse=None, header=None, builder=None):
     if terse:
         # print column headers if --no-header is not specified
         if not header:
-            print("name|id|buildspec")
+            console.print("[blue]id|name|buildspec")
 
         for identifier in test_ids.keys():
-            print(
+            console.print(
                 f"{identifier}|{test_ids[identifier]['name']}|{test_ids[identifier]['buildspec']}"
             )
 
         return
 
     table = Table(
-        "[blue]name",
         "[blue]id",
+        "[blue]name",
         Column(header="[blue]buildspec", overflow="fold"),
         title="Test Summary by name, id, buildspec",
     )
     for identifier in test_ids.keys():
         table.add_row(
-            identifier, test_ids[identifier]["name"], test_ids[identifier]["buildspec"]
+            f"[red]{identifier}",
+            f"[cyan]{test_ids[identifier]['name']}",
+            f"[green]{test_ids[identifier]['buildspec']}",
         )
     console.print(table)
 
