@@ -22,7 +22,6 @@ def test_cdash_upload():
         cdash = "upload"
         buildname = "TESTING"
         site = None
-        report = None
 
     cdash_cmd(args, default_configuration=configuration)
 
@@ -32,7 +31,6 @@ def test_cdash_upload_exceptions():
         cdash = "upload"
         buildname = None
         site = None
-        report = None
 
     # a buildname must be specified, a None will result in error
     with pytest.raises(SystemExit):
@@ -49,7 +47,6 @@ def test_cdash_upload_exceptions():
         cdash = "upload"
         buildname = "DEMO"
         site = None
-        report = None
 
     # in configuration file we have invalid url to CDASH server
     with pytest.raises(SystemExit):
@@ -64,7 +61,6 @@ def test_cdash_upload_exceptions():
         cdash = "upload"
         buildname = "DEMO"
         site = None
-        report = None
 
     # in configuration file we have invalid project name in CDASH
     with pytest.raises(SystemExit):

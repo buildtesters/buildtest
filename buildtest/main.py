@@ -59,6 +59,8 @@ def main():
 
     console.no_color = no_color
 
+    report_file = args.report
+
     # if no commands just print the help message and return.
     if not args.subcommands:
         print(parser.print_help())
@@ -114,7 +116,7 @@ def main():
                 stage=args.stage,
                 testdir=args.testdir,
                 buildtest_system=system,
-                report_file=args.report,
+                report_file=report_file,
                 maxpendtime=args.maxpendtime,
                 poll_interval=args.pollinterval,
                 keep_stage_dir=args.keep_stage_dir,
@@ -157,7 +159,7 @@ def main():
 
     # running buildtest inspect
     elif args.subcommands in ["inspect", "it"]:
-        inspect_cmd(args)
+        inspect_cmd(args, report_file=report_file)
 
     # running buildtest config
     elif args.subcommands in ["config", "cg"]:
@@ -169,7 +171,7 @@ def main():
 
     # buildtest report
     elif args.subcommands in ["report", "rt"]:
-        report_cmd(args)
+        report_cmd(args, report_file)
 
     elif args.subcommands == "path":
         path_cmd(
@@ -186,7 +188,7 @@ def main():
 
     # running buildtest cdash
     elif args.subcommands == "cdash":
-        cdash_cmd(args, default_configuration=configuration)
+        cdash_cmd(args, default_configuration=configuration, report_file=report_file)
 
     elif args.subcommands in ["help", "h"]:
         buildtest_help(command=args.command)

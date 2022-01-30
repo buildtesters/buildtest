@@ -69,14 +69,14 @@ _buildtest ()
 
   local cmds="build buildspec cd cdash clean config debugreport docs edit help inspect history path report schema schemadocs stylecheck unittests"
   local alias_cmds="bd bc cg it et h hy rt style"
-  local opts="--color --config --debug --help --version -c -d -h -V"
+  local opts="--color --config --debug --help --report --version -c -d -h -r -V"
 
   next=${COMP_WORDS[1]}
 
   case "$next" in
     build|bd)
-      local shortoption="-b -e -f -k -r -s -t -x"
-      local longoption="--buildspec --disable-executor-check --executor --exclude --filter --helpfilter --maxpendtime --nodes --pollinterval --procs --report --retry --stage --tags"
+      local shortoption="-b -e -f -k -s -t -x"
+      local longoption="--buildspec --disable-executor-check --executor --exclude --filter --helpfilter --maxpendtime --nodes --pollinterval --procs --retry --stage --tags"
       local allopts="${longoption} ${shortoption}"
 
       COMPREPLY=( $( compgen -W "$allopts" -- $cur ) )
@@ -126,7 +126,7 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--filter --format --help --helpfilter --helpformat --latest --no-header --oldest --report  --terse  -h -n -r -t clear list summary"
+      local opts="--filter --format --help --helpfilter --helpformat --latest --no-header --oldest --terse  -h -n -t clear list summary"
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) );;
 
     config|cg)
@@ -152,7 +152,7 @@ _buildtest ()
       esac
       ;;
     inspect|it)
-      local cmds="--help --report -h -r buildspec list name query"
+      local cmds="--help -h buildspec list name query"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
@@ -249,10 +249,10 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       if [[ "${prev}" == "view" ]]; then
-        local opts="-h --help --url"
+        local opts="-h --help"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       elif [[ "${prev}" == "upload" ]]; then
-        local opts="-h --help --site -r --report"
+        local opts="-h --help --site"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       fi
       ;;

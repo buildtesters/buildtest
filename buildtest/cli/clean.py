@@ -6,7 +6,7 @@ from buildtest.defaults import (
     BUILD_HISTORY_DIR,
     BUILD_REPORT,
     BUILDSPEC_CACHE_FILE,
-    BUILDTEST_REPORT_SUMMARY,
+    BUILDTEST_REPORTS,
 )
 from buildtest.utils.file import is_dir, is_file
 
@@ -54,8 +54,8 @@ def clean(configuration, yes):
         print("======> Removing Report File")
         if is_file(BUILD_REPORT):
             os.remove(BUILD_REPORT)
-        if is_file(BUILDTEST_REPORT_SUMMARY):
-            os.remove(BUILDTEST_REPORT_SUMMARY)
+        if is_file(BUILDTEST_REPORTS):
+            os.remove(BUILDTEST_REPORTS)
 
     if remove_history == "y":
         print("======> Removing History Directory")

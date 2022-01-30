@@ -6,14 +6,14 @@ import tempfile
 
 import pytest
 from buildtest.cli.report import Report, report_cmd, report_summary
-from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORT_SUMMARY, BUILDTEST_ROOT
+from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 
 
 @pytest.mark.cli
 def test_report():
 
-    assert os.path.exists(BUILD_REPORT)
+    # assert os.path.exists(BUILD_REPORT)
 
     result = Report()
     print("Processing Report File:", result.reportfile())
@@ -170,15 +170,16 @@ def test_report_list():
         format = None
         oldest = False
         latest = False
-        report = BUILD_REPORT
         report_subcommand = "list"
         terse = None
 
     report_cmd(args)
 
     # now removing report summary it should print a message
-    os.remove(BUILDTEST_REPORT_SUMMARY)
-    report_cmd(args)
+    os.remove(BUILDTEST_REPORTS)
+
+    with pytest.raises(SystemExit):
+        report_cmd(args)
 
 
 @pytest.mark.cli
@@ -190,7 +191,6 @@ def test_report_clear():
         format = None
         oldest = False
         latest = False
-        report = BUILD_REPORT
         report_subcommand = None
         terse = None
         no_header = None
@@ -208,11 +208,11 @@ def test_report_clear():
         format = None
         oldest = False
         latest = False
-        report = "".join(random.choice(string.ascii_letters) for i in range(10))
         report_subcommand = "clear"
         terse = None
         no_header = None
 
+    report_file = "".join(random.choice(string.ascii_letters) for i in range(10))
     # buildtest report clear <file> will raise an error since file doesn't exist
     with pytest.raises(SystemExit):
-        report_cmd(args)
+        report_cmd(args, report_file=report_file)

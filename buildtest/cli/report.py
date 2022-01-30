@@ -2,9 +2,9 @@ import logging
 import os
 import sys
 
-from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORT_SUMMARY, console
+from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
-from buildtest.utils.file import is_file, load_json, read_file, resolve_path
+from buildtest.utils.file import is_file, load_json, resolve_path
 from rich.table import Table
 
 logger = logging.getLogger(__name__)
@@ -93,13 +93,15 @@ class Report:
         self.oldest = oldest
         self.filter = filter_args
         self.format = format_args
+
         self.input_report = report_file
 
-        # if no report set we read the default report file
-        if report_file:
-            self._reportfile = resolve_path(report_file)
-        else:
+        # if no report specified use default report
+        if not self.input_report:
             self._reportfile = BUILD_REPORT
+        # otherwise honor report file specified on argument
+        else:
+            self._reportfile = resolve_path(report_file)
 
         self.report = self.load()
         self._check_filter_fields()
@@ -185,11 +187,17 @@ class Report:
         """
 
         if not self._reportfile:
-            sys.exit(f"Unable to resolve path to report file: {self.input_report}")
+            sys.exit(
+                console.print(
+                    f"[red]Unable to resolve path to report file: {self.input_report}"
+                )
+            )
 
         if not is_file(self._reportfile):
             sys.exit(
-                f"Unable to find report please check if {self._reportfile} is a file"
+                console.print(
+                    f"Unable to find report please check if {self._reportfile} is a file or run a test via 'buildtest build' to generate report file"
+                )
             )
 
         report = load_json(self._reportfile)
@@ -604,25 +612,33 @@ class Report:
         return records
 
 
-def report_cmd(args):
+def report_cmd(args, report_file=None):
     """Entry point for ``buildtest report`` command"""
 
     if args.report_subcommand == "clear":
-        if not is_file(args.report):
-            sys.exit(f"There is no report file: {args.report} to delete")
-        print(f"Removing report file: {args.report}")
-        os.remove(BUILD_REPORT)
+        # if BUILDTEST_REPORTS file is not present then we have no report files to delete since it tracks all report files that are created
+        if not is_file(BUILDTEST_REPORTS):
+            sys.exit("There is no report file to delete")
+
+        reports = load_json(BUILDTEST_REPORTS)
+        for report in reports:
+            console.print(f"Removing report file: {report}")
+            os.remove(report)
+
+        os.remove(BUILDTEST_REPORTS)
         return
 
     if args.report_subcommand == "list":
-        if not is_file(BUILDTEST_REPORT_SUMMARY):
-            print(
-                "There are no report files, please run 'buildtest build' to generate a report file."
+        if not is_file(BUILDTEST_REPORTS):
+            sys.exit(
+                console.print(
+                    "There are no report files, please run 'buildtest build' to generate a report file."
+                )
             )
-            return
 
-        content = read_file(BUILDTEST_REPORT_SUMMARY)
-        print(content)
+        content = load_json(BUILDTEST_REPORTS)
+        for fname in content:
+            console.print(fname)
         return
 
     results = Report(
@@ -630,7 +646,7 @@ def report_cmd(args):
         format_args=args.format,
         latest=args.latest,
         oldest=args.oldest,
-        report_file=args.report,
+        report_file=report_file,
     )
     if args.report_subcommand == "summary":
         report_summary(results)
