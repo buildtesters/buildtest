@@ -274,8 +274,8 @@ def print_report_help():
     table.add_row("buildtest report --helpformat", "List all format fields")
     table.add_row("buildtest report --latest", "Retrieve latest record for all tests")
     table.add_row(
-        "buildtest report -r <report-file>",
-        "Specify alternate report file to display test results",
+        "buildtest -r /tmp/result.json report",
+        "Read report file /tmp/result.json and display result",
     )
     table.add_row("buildtest report --terse", "Print report in terse format")
     table.add_row("buildtest report list", "List all report files")
@@ -329,22 +329,15 @@ def print_cdash_help():
         "Upload all tests to cdash with build name 'DEMO'",
     )
     table.add_row(
-        "buildtest cdash upload 'DAILY_CHECK' --report result.json",
-        "Upload all tests from report file 'result.json' with build name 'DAILY_CHECK'",
+        "buildtest --report /tmp/result.json cdash upload DAILY_CHECK ",
+        "Upload all tests from report file '/tmp/result.json' with build name DAILY_CHECK",
     )
     table.add_row(
         "buildtest cdash upload --site laptop DEMO",
         "Upload tests to CDASH with site named called 'laptop'",
     )
-    table.add_row(
-        "buildtest cdash upload -r /tmp/nightly.json nightly",
-        "Upload tests from /tmp/nightly.json to CDASH with buildname 'nightly'",
-    )
+
     table.add_row("buildtest cdash view", "Open CDASH project in web-browser")
-    table.add_row(
-        "buildtest cdash view --url <url>",
-        "Open CDASH project in web-browser with a specified url",
-    )
 
     console.print(table)
 
