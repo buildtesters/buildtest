@@ -341,10 +341,10 @@ Using Alternate Report File
 The ``buildtest report`` and ``buildtest inspect`` command will read from the report file tracked by buildtest which is
 stored in **$BUILDTEST_ROOT/var/report.json**. This single file can became an issue if you are running jobs through CI where you
 can potentially overwrite same file or if you want separate report files for each set of builds. Luckily we have an option to handle
-this using the ``buildtest build -r /path/to/report`` option which can be used to specify an alternate location to report file.
+this using the ``buildtest -r <report_path> build -b <buildspec_path>`` option which can be used to specify an alternate location to report file.
 
 buildtest will write the report file in the desired location, then you can specify the path to report file via
-``buildtest report -r /path/to/report`` and ``buildtest inspect -r /path/to/report`` to load the report file when reporting tests.
+``buildtest -r <report_path> report`` and ``buildtest -r <report_path> inspect`` to load the report file when reporting tests.
 
 The report file must be valid JSON file that buildtest understands in order to use `buildtest report` and
 `buildtest inspect` command. Shown below are some examples using the alternate report file using ``buildtest report`` and
@@ -352,7 +352,7 @@ The report file must be valid JSON file that buildtest understands in order to u
 
 .. code-block:: console
 
-    $ buildtest report -r $BUILDTEST_ROOT/python.json --format name,id
+    $ buildtest -r $BUILDTEST_ROOT/python.json report --format name,id
                           Report File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/python.json
     ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
     ┃ name                                                               ┃ id                                            ┃

@@ -34,8 +34,13 @@ fi
 
 python=python3
 
+# Need 'set +e' so that process is not terminated especially when using in CI
+set +e
+
 $python -c "import buildtest.main" &> /dev/null
 returncode=$?
+
+set -e
 
 # if we are unable to import buildtest.main then install buildtest dependencies
 if [ $returncode -ne 0 ]; then
