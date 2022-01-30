@@ -120,7 +120,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     parser.add_argument(
         "--no-color", help="Disable colored output", action="store_true"
     )
-
+    parser.add_argument("-r", "--report", help="Specify path to test report file")
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 
     build_menu(subparsers)
@@ -373,11 +373,11 @@ def build_menu(subparsers):
         type=positive_number,
         help="Rebuild test X number of times. Must be a positive number between [1-50]",
     )
-    extra_group.add_argument(
-        "-r",
-        "--report",
-        help="Specify a report file where tests will be written.",
-    )
+    # extra_group.add_argument(
+    #    "-r",
+    #    "--report",
+    #    help="Specify a report file where tests will be written.",
+    # )
     extra_group.add_argument(
         "--retry", help="Retry failed jobs", type=positive_number, default=1
     )
@@ -669,7 +669,7 @@ def report_menu(subparsers):
         metavar="",
         dest="report_subcommand",
     )
-    subparsers.add_parser("clear", help="delete report file")
+    subparsers.add_parser("clear", help="Remove all report file")
     subparsers.add_parser("list", help="List all report files")
     subparsers.add_parser("summary", help="Summarize test report")
 
@@ -709,12 +709,12 @@ def report_menu(subparsers):
         help="Don't print headers column used with terse option (--terse).",
     )
 
-    parser_report.add_argument(
-        "-r",
-        "--report",
-        help="Specify a report file to read",
-        default=BUILD_REPORT,
-    )
+    # parser_report.add_argument(
+    #    "-r",
+    #    "--report",
+    #    help="Specify a report file to read",
+    #    default=BUILD_REPORT,
+    # )
     parser_report.add_argument(
         "-t",
         "--terse",
@@ -729,9 +729,9 @@ def inspect_menu(subparsers):
     parser_inspect = subparsers.add_parser(
         "inspect", aliases=["it"], help="Inspect a test based on NAME or ID "
     )
-    parser_inspect.add_argument(
-        "-r", "--report", help="Specify a report file to load when inspecting test"
-    )
+    # parser_inspect.add_argument(
+    #    "-r", "--report", help="Specify a report file to load when inspecting test"
+    # )
     subparser = parser_inspect.add_subparsers(
         description="Inspect Test result based on Test ID or Test Name",
         dest="inspect",
@@ -822,12 +822,11 @@ def cdash_menu(subparsers):
     subparser = parser_cdash.add_subparsers(
         description="buildtest CDASH integeration", dest="cdash", metavar=""
     )
-    view = subparser.add_parser("view", help="Open CDASH project in webbrowser")
-    view.add_argument("--url", help="Specify a url to CDASH project")
+    subparser.add_parser("view", help="Open CDASH project in webbrowser")
 
     upload = subparser.add_parser("upload", help="Upload Test to CDASH server")
-    upload.add_argument(
-        "-r", "--report", help="Path to report file to upload test results"
-    )
+    # upload.add_argument(
+    #    "-r", "--report", help="Path to report file to upload test results"
+    # )
     upload.add_argument("--site", help="Specify site name reported in CDASH")
     upload.add_argument("buildname", help="Specify Build Name reported in CDASH")

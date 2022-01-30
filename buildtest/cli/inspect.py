@@ -11,22 +11,18 @@ from rich.syntax import Syntax
 from rich.table import Column, Table
 
 
-def inspect_cmd(args):
+def inspect_cmd(args, report_file):
     """Entry point for ``buildtest inspect`` command
 
     Args:
         args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
     """
 
-    report_file = BUILD_REPORT
-    if args.report:
-
-        report_file = resolve_path(args.report)
+    # report_file = BUILD_REPORT
+    if report_file:
+        report_file = resolve_path(report_file)
 
     report = Report(report_file)
-
-    # if not args.parse:
-    #    print(f"Reading Report File: {report_file} \n")
 
     # implements command 'buildtest inspect list'
     if args.inspect == "list":

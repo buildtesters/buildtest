@@ -6,7 +6,7 @@ import tempfile
 
 import pytest
 from buildtest.cli.report import Report, report_cmd, report_summary
-from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORT_SUMMARY, BUILDTEST_ROOT
+from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 
 
@@ -177,7 +177,7 @@ def test_report_list():
     report_cmd(args)
 
     # now removing report summary it should print a message
-    os.remove(BUILDTEST_REPORT_SUMMARY)
+    os.remove(BUILDTEST_REPORTS)
     report_cmd(args)
 
 

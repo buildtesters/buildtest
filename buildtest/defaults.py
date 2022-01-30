@@ -39,11 +39,11 @@ BUILDSPEC_CACHE_FILE = os.path.join(BUILDTEST_BUILDSPEC_DIR, "cache.json")
 
 BUILD_REPORT = os.path.join(VAR_DIR, "report.json")
 
-#  BUILDTEST_REPORT_SUMMARY file keeps track of all unique report files as result of 'buildtest build' commands.
+#  BUILDTEST_REPORTS file keeps track of all unique report files as result of 'buildtest build' commands.
 #  The file contains a single line that denotes path to report file and one can specify alternate path to report file
 # using 'buildtest build -r <report>' and this is used by 'buildtest inspect' and 'buildtest report' if one wants to
 # read a different report file
-BUILDTEST_REPORT_SUMMARY = os.path.join(VAR_DIR, "report-summary.txt")
+BUILDTEST_REPORTS = os.path.join(VAR_DIR, "list-report.json")
 
 BUILDSPEC_DEFAULT_PATH = [
     os.path.join(BUILDTEST_ROOT, "tutorials"),

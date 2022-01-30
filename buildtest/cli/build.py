@@ -24,7 +24,7 @@ from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
     BUILDTEST_DEFAULT_TESTDIR,
     BUILDTEST_LOGFILE,
-    BUILDTEST_REPORT_SUMMARY,
+    BUILDTEST_REPORTS,
     DEFAULT_LOGDIR,
     console,
 )
@@ -1261,16 +1261,15 @@ def update_report(valid_builders, report_file):
 
     logger.debug(f"Updating report file: {report_file}")
     console.print(f"Adding {len(valid_builders)} test results to {report_file}")
-    #  BUILDTEST_REPORT_SUMMARY file keeps track of all report files which
+    #  BUILDTEST_REPORTS file keeps track of all report files which
     #  contains a single line that denotes path to report file. This file only contains unique report files
 
     content = []
-    if is_file(BUILDTEST_REPORT_SUMMARY):
-        content = read_file(BUILDTEST_REPORT_SUMMARY)
-        content = content.split("\n")
+    if is_file(BUILDTEST_REPORTS):
+        content = load_json(BUILDTEST_REPORTS)
 
     if report_file not in content:
         content.append(report_file)
 
-    with open(BUILDTEST_REPORT_SUMMARY, "w") as fd:
-        fd.write("\n".join(content))
+    with open(BUILDTEST_REPORTS, "w") as fd:
+        json.dump(content, fd, indent=2)

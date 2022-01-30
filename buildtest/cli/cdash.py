@@ -13,12 +13,12 @@ from urllib.request import Request, urlopen
 
 import requests
 import yaml
-from buildtest.defaults import BUILD_REPORT
+from buildtest.defaults import BUILD_REPORT, console
 from buildtest.utils.file import resolve_path
 from buildtest.utils.tools import deep_get
 
 
-def cdash_cmd(args, default_configuration=None, open_browser=True):
+def cdash_cmd(args, default_configuration=None, open_browser=True, report_file=None):
     """This method is entry point for ``buildtest cdash`` command which implements uploading
     results to CDASH server and command line interface to open CDASH project.
 
@@ -38,8 +38,6 @@ def cdash_cmd(args, default_configuration=None, open_browser=True):
     if not configuration.target_config:
         sys.exit("Unable to load a configuration file")
 
-    print("Reading configuration file: ", configuration.file)
-
     cdash_config = deep_get(configuration.target_config, "cdash")
 
     if not cdash_config:
@@ -48,16 +46,12 @@ def cdash_cmd(args, default_configuration=None, open_browser=True):
         )
 
     if args.cdash == "view":
-        # if url is specified on command line (buildtest cdash view --url) then open link as is
-        if args.url and open_browser:
-            webbrowser.open(args.url)
-            return
 
         url = cdash_config["url"]
         project = cdash_config["project"]
         target_url = urljoin(url, f"index.php?project={project}")
 
-        print("URL:", target_url)
+        console.print("Opening URL:", target_url)
         # check for url via requests, it can raise an exception if its invalid URL in that case we print a message
         try:
             r = requests.get(target_url)
@@ -84,7 +78,7 @@ def cdash_cmd(args, default_configuration=None, open_browser=True):
             build_name=args.buildname,
             configuration=configuration,
             site=args.site,
-            report_file=args.report,
+            report_file=report_file,
         )
 
 
