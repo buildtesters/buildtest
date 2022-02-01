@@ -121,6 +121,9 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         "--no-color", help="Disable colored output", action="store_true"
     )
     parser.add_argument("-r", "--report", help="Specify path to test report file")
+    parser.add_argument(
+        "--lastlog", action="store_true", help="Show content of last log"
+    )
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 
     build_menu(subparsers)

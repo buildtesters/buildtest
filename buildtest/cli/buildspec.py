@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import time
 
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.build import discover_buildspecs
@@ -203,18 +204,19 @@ class BuildspecCache:
 
         buildexecutor = BuildExecutor(self.configuration)
 
-        for buildspec in buildspecs:
+        with console.status("Processing buildspecs", spinner="aesthetic"):
+            for buildspec in buildspecs:
+                try:
+                    parse = BuildspecParser(buildspec, buildexecutor)
+                # any buildspec that raises SystemExit or ValidationError imply
+                # buildspec is not valid, we add this to invalid list along with
+                # error message and skip to next buildspec
+                except (BuildTestError, BuildspecError, ValidationError) as err:
+                    self.invalid_buildspecs[buildspec] = err
+                    continue
 
-            try:
-                parse = BuildspecParser(buildspec, buildexecutor)
-            # any buildspec that raises SystemExit or ValidationError imply
-            # buildspec is not valid, we add this to invalid list along with
-            # error message and skip to next buildspec
-            except (BuildTestError, BuildspecError, ValidationError) as err:
-                self.invalid_buildspecs[buildspec] = err
-                continue
-
-            valid_buildspecs.append(parse)
+                valid_buildspecs.append(parse)
+                time.sleep(0.05)
 
         return valid_buildspecs
 
@@ -270,6 +272,7 @@ class BuildspecCache:
 
         # validate each buildspec and return a list of valid buildspec parsers that
         # is an instance of BuildspecParser class
+
         parsers = self._validate_buildspecs(buildspecs)
 
         if self.invalid_buildspecs:
@@ -700,7 +703,8 @@ class BuildspecCache:
             table.add_row(*i)
 
         if not self.terse:
-            console.print(table)
+            with console.pager():
+                console.print(table)
             return
 
         # print terse output
