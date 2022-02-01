@@ -44,6 +44,7 @@ from buildtest.utils.file import (
 from jsonschema.exceptions import ValidationError
 from rich import box
 from rich.panel import Panel
+from rich.progress import Progress, track
 from rich.table import Table
 
 logger = logging.getLogger(__name__)
@@ -223,9 +224,11 @@ def print_discovered_buildspecs(buildspec_dict):
 
     console.rule("[bold red] Discovering Buildspecs")
 
-    print("Discovered Buildspecs: ", len(buildspec_dict["included"]))
-    print("Excluded Buildspecs: ", len(buildspec_dict["excluded"]))
-    print("Detected Buildspecs after exclusion: ", len(buildspec_dict["detected"]))
+    console.print("Discovered Buildspecs: ", len(buildspec_dict["included"]))
+    console.print("Excluded Buildspecs: ", len(buildspec_dict["excluded"]))
+    console.print(
+        "Detected Buildspecs after exclusion: ", len(buildspec_dict["detected"])
+    )
 
     table = Table(
         "[blue]Buildspecs", title="Discovered buildspecs", box=box.DOUBLE_EDGE
@@ -739,7 +742,8 @@ class BuildTest:
 
         bc = BuildtestCompilers(configuration=self.configuration)
 
-        # build all the tests
+        # for buildspec in track(self.detected_buildspecs, description="Parsing Buildspecs ..."):
+
         for buildspec in self.detected_buildspecs:
             try:
                 # Read in Buildspec file here, loading each will validate the buildspec file

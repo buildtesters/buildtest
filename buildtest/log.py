@@ -4,8 +4,9 @@ Methods related to buildtest logging
 import logging
 import os
 
-from buildtest.defaults import BUILDTEST_LOGFILE
+from buildtest.defaults import BUILDTEST_LOGFILE, console
 from buildtest.utils.file import create_dir
+from rich.logging import RichHandler
 
 
 def init_logfile(logfile=BUILDTEST_LOGFILE, debug=None):
@@ -16,7 +17,9 @@ def init_logfile(logfile=BUILDTEST_LOGFILE, debug=None):
     :type logfile: str
     """
 
-    LOG_FORMATTER = "%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s"
+    formatter = logging.Formatter(
+        "%(asctime)s [%(filename)s:%(lineno)s - %(funcName)5s() ] - [%(levelname)s] %(message)s"
+    )
 
     logger = logging.getLogger("buildtest")
 
@@ -24,17 +27,21 @@ def init_logfile(logfile=BUILDTEST_LOGFILE, debug=None):
     create_dir(parent_dir)
 
     fh = logging.FileHandler(logfile)
-    formatter = logging.Formatter(LOG_FORMATTER)
     fh.setFormatter(formatter)
     logger.addHandler(fh)
     logger.setLevel(logging.DEBUG)
 
     # enable StreamHandler when --debug option is enabled
     if debug:
-        stdout_logger = logging.StreamHandler()
-        stdout_logger.setLevel(logging.DEBUG)
-        stdout_logger.setFormatter(formatter)
-
-        logger.addHandler(stdout_logger)
+        rich_handler = RichHandler(
+            console=console,
+            rich_tracebacks=True,
+            markup=True,
+            show_time=False,
+            show_level=False,
+            level=logging.NOTSET,
+        )
+        rich_handler.setFormatter(formatter)
+        logger.addHandler(rich_handler)
 
     return logger
