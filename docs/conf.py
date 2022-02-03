@@ -136,7 +136,7 @@ pygments_style = None
 #
 html_theme = "sphinx_rtd_theme"
 
-html_logo = f"{BUILDTEST_ROOT}/logos/buildtest_secondary.jpg"
+html_logo = f"{BUILDTEST_ROOT}/logos/BuildTest_Primary_Center_4x3.png"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
