@@ -91,6 +91,7 @@ class BuildtestCompilers:
         "clang": {"cc": "clang", "cxx": "clang++", "fc": "None"},
         "cuda": {"cc": "nvcc", "cxx": "nvcc", "fc": "None"},
         "upcxx": {"cc": "upcxx", "cxx": "upcxx", "fc": "None"},
+        "nvhpc": {"cc": "nvc", "cxx": "nvcc", "fc": "nvfortran"},
     }
 
     def __init__(self, configuration, settings_file=None, debug=False):

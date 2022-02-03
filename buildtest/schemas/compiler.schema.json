@@ -223,6 +223,9 @@
             },
             "upcxx": {
               "$ref": "#definitions/default_compiler_config"
+            },
+            "nvhpc": {
+              "$ref": "#definitions/default_compiler_config"
             }
           }
         },
@@ -243,9 +246,6 @@
     },
     "executor": {
       "$ref": "definitions.schema.json#/definitions/executor"
-    },
-    "run_only": {
-      "$ref": "definitions.schema.json#/definitions/run_only"
     },
     "skip": {
       "$ref": "definitions.schema.json#/definitions/skip"
