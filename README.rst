@@ -1,6 +1,5 @@
-<img src="https://github.com/buildtesters/buildtest/blob/devel/logos/BuildTest_Primary_Center_4x3.png" width="400" alt="buildtest">
-
-| |license| |docs| |codecov| |slack| |release| |installation| |regressiontest| |gh_pages_devel| |checkurls| |dailyurlcheck| |codefactor| |blackformat|  |black| |isort| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
+.. image:: https://github.com/buildtesters/buildtest/blob/devel/logos/BuildTest_Primary_Center_4x3.png
+   :width: 400
    
 .. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
     :alt: Documentation Status
@@ -63,6 +62,8 @@
 
 buildtest
 ---------
+
+| |license| |docs| |codecov| |slack| |release| |installation| |regressiontest| |gh_pages_devel| |checkurls| |dailyurlcheck| |codefactor| |blackformat|  |black| |isort| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
 
 `buildtest <https://buildtest.rtfd.io/>`_ is a testing framework that automates build/execution of tests which allows HPC facilities to develop
 test for their system. In buildtest, tests are written as test recipes called **Buildspecs** which is a `YAML <https://yaml.org/>`_
