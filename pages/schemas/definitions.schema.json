@@ -119,56 +119,6 @@
         }
       }
     },
-    "run_only": {
-      "type": "object",
-      "description": "A set of conditions to specify when running tests. All conditions must pass in order to process test.",
-      "additionalProperties": false,
-      "properties": {
-        "scheduler": {
-          "type": "string",
-          "description": "Test will run only if scheduler is available. We assume binaries are available in $PATH",
-          "enum": [
-            "lsf",
-            "slurm",
-            "cobalt",
-            "pbs"
-          ]
-        },
-        "user": {
-          "type": "string",
-          "description": "Test will run only if current user matches this field, otherwise test will be skipped"
-        },
-        "platform": {
-          "type": "string",
-          "description": "This test will run if target system is Linux or Darwin. We check target system using ``platform.system()`` and match with input field",
-          "enum": [
-            "Linux",
-            "Darwin"
-          ]
-        },
-        "linux_distro": {
-          "type": "array",
-          "description": "Specify a list of Linux Distros to check when processing test. If target system matches one of input field, test will be processed.",
-          "uniqueItems": true,
-          "minItems": 1,
-          "items": {
-            "type": "string",
-            "enum": [
-              "darwin",
-              "ubuntu",
-              "debian",
-              "rhel",
-              "centos",
-              "fedora",
-              "sles",
-              "opensuse",
-              "amazon",
-              "arch"
-            ]
-          }
-        }
-      }
-    },
     "status": {
       "type": "object",
       "description": "The status section describes how buildtest detects PASS/FAIL on test. By default returncode 0 is a PASS and anything else is a FAIL, however buildtest can support other types of PASS/FAIL conditions.",

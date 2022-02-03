@@ -193,33 +193,6 @@ buildspecs:
     status:
       slurm_job_state: "FINISH"
 
-  duplicate_linux_distro:
-    type: script
-    executor: generic.local.bash
-    description: Duplicate items in linux_distro is not allowed
-    run_only:
-      linux_distro:
-        - rhel
-        - rhel
-    run: uname -av
-
-  empty_list_linux_distro:
-    type: script
-    executor: generic.local.bash
-    description: Empty List in linux_distro is not allowed. Requires atleast 1 item
-    run_only:
-      linux_distro: []
-    run: uname -av
-
-  additionalProperties_run_only:
-    type: script
-    executor: generic.local.bash
-    description: additional Properties not allowed in run_only field. Invalid field python
-    run_only:
-      user: root
-      python: 3.5
-    run: hostname
-
   invalid_metrics_additional_property:
     type: script
     executor: generic.local.bash

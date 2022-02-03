@@ -100,8 +100,6 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics.md "This field is used for defining one or more metrics that is recorded for each test") – `definitions.schema.json#/definitions/metrics`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-run_only.md "A set of conditions to specify when running tests") – `definitions.schema.json#/definitions/run_only`
-
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status.md "The status section describes how buildtest detects PASS/FAIL on test") – `definitions.schema.json#/definitions/status`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
@@ -286,15 +284,9 @@
 
 ### Arrays
 
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-run_only-properties-linux_distro.md "Specify a list of Linux Distros to check when processing test") – `definitions.schema.json#/definitions/run_only/properties/linux_distro`
-
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-list_of_strings.md) – `definitions.schema.json#/definitions/list_of_strings`
 
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-list_of_ints.md) – `definitions.schema.json#/definitions/list_of_ints`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-run_only-properties-linux_distro.md "Specify a list of Linux Distros to check when processing test") – `definitions.schema.json#/definitions/run_only/properties/linux_distro`
-
-*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-run_only-properties-linux_distro.md "Specify a list of Linux Distros to check when processing test") – `definitions.schema.json#/definitions/run_only/properties/linux_distro`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-system-properties-hostnames.md "Specify a list of hostnames to check where buildtest can run for the given system record") – `settings.schema.json#/definitions/system/properties/hostnames`
 
