@@ -104,9 +104,6 @@ class Builder:
                     if self._skip_tests_by_type(recipe, name):
                         continue
 
-                if self._skip_tests_run_only(recipe, name):
-                    continue
-
                 # Add the builder for the script or spack schema
                 if recipe["type"] in ["script", "spack"]:
                     builders = self._generate_builders(recipe, name)
@@ -412,62 +409,6 @@ class Builder:
                 self.logger.info(msg)
                 print(msg)
                 return True
-
-        return False
-
-    def _skip_tests_run_only(self, recipe, name):
-        """This method will skip tests based on ``run_only`` field from buildspec. Checks
-        are performed based on conditionals and if any conditional is not met we skip test.
-
-        Args:
-            recipe (dict): Loaded test recipe from buildspec
-            name (str): Name of test
-
-        Returns:
-            bool: ``False`` if `run_only` property not specified in buildspec otherwise returns ``True`` based on following condition
-                - True if there is no match with system 'scheduler' and one specified in buildspec
-                - True if there is no match with user specifed by 'user' property and one detected by system using ``os.getenv("USER")``
-                - True if there is no match with specified 'platform' property and one detected by system platform
-                - True if there is no match with specified 'linux_distro' property and one detected by system
-        """
-        # if run_only field set, check if all conditions match before proceeding with test
-        if recipe.get("run_only"):
-
-            # skip test if host scheduler is not one specified via 'scheduler' field
-            if recipe["run_only"].get("scheduler") and (
-                recipe["run_only"].get("scheduler")
-                not in self.system.system["scheduler"]
-            ):
-                msg = f"[{name}][{self.bp.buildspec}]: test is skipped because ['run_only']['scheduler'] got value: {recipe['run_only']['scheduler']} but detected scheduler: {self.system.system['scheduler']}."
-                print(msg)
-                self.logger.info(msg)
-                return True
-
-            # skip test if current user is not one specified in 'user' field
-            if recipe["run_only"].get("user") and (
-                recipe["run_only"].get("user") != os.getenv("USER")
-            ):
-                msg = f"[{name}][{self.bp.buildspec}]: test is skipped because this test is expected to run as user: {recipe['run_only']['user']} but detected user: {os.getenv('USER')}."
-                print(msg)
-                self.logger.info(msg)
-                return True
-
-            # skip test if host platform is not equal to value specified by 'platform' field
-            if recipe["run_only"].get("platform") and (
-                recipe["run_only"].get("platform") != self.system.system["platform"]
-            ):
-                msg = f"[{name}][{self.bp.buildspec}]: test is skipped because this test is expected to run on platform: {recipe['run_only']['platform']} but detected platform: {self.system.system['platform']}."
-                print(msg)
-                self.logger.info(msg)
-                return True
-
-            # skip test if host platform is not equal to value specified by 'platform' field
-            if recipe["run_only"].get("linux_distro"):
-                if self.system.system["os"] not in recipe["run_only"]["linux_distro"]:
-                    msg = f"[{name}][{self.bp.buildspec}]: test is skipped because this test is expected to run on linux distro: {recipe['run_only']['linux_distro']} but detected linux distro: {self.system.system['os']}."
-                    print(msg)
-                    self.logger.info(msg)
-                    return True
 
         return False
 

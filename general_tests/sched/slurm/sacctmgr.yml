@@ -1,12 +1,9 @@
-
 buildspecs:
   show_accounts:
     executor: generic.local.bash
     type: script
     description: run sacctmgr list accounts
     tags: [slurm]
-    run_only:
-      scheduler: slurm
     run: sacctmgr list accounts
 
   show_users:
@@ -14,8 +11,6 @@ buildspecs:
     type: script
     description: run sacctmgr list users
     tags: [slurm]
-    run_only:
-      scheduler: slurm
     run: |
       sacctmgr list users
       sacctmgr list users $USER
@@ -25,8 +20,6 @@ buildspecs:
     type: script
     description: run sacctmgr list qos
     tags: [slurm]
-    run_only:
-      scheduler: slurm
     run: sacctmgr list qos
 
   show_tres:
@@ -34,7 +27,5 @@ buildspecs:
     description: run sacctmgr list tres
     type: script
     tags: [slurm]
-    run_only:
-      scheduler: slurm
     run: sacctmgr list tres
 

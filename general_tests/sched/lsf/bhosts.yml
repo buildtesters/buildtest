@@ -5,8 +5,6 @@ buildspecs:
     type: script
     executor: generic.local.bash
     tags: lsf
-    run_only:
-      scheduler: lsf
     run: bhosts
 
   display_hosts_format:
@@ -14,8 +12,6 @@ buildspecs:
     type: script
     executor: generic.local.bash
     tags: lsf
-    run_only:
-      scheduler: lsf
     run: bhosts -o 'host_name status'
 
   bhosts_version:
@@ -23,6 +19,4 @@ buildspecs:
     type: script
     executor: generic.local.bash
     tags: lsf
-    run_only:
-      scheduler: lsf
     run: bhosts -V

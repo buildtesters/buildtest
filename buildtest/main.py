@@ -40,7 +40,13 @@ from buildtest.log import init_logfile
 from buildtest.system import BuildTestSystem
 from buildtest.tools.stylecheck import run_style_checks
 from buildtest.tools.unittests import run_unit_tests
-from buildtest.utils.file import create_dir, is_file, remove_file, resolve_path
+from buildtest.utils.file import (
+    create_dir,
+    is_file,
+    read_file,
+    remove_file,
+    resolve_path,
+)
 from rich.traceback import install
 
 
@@ -59,11 +65,14 @@ def main():
 
     console.no_color = no_color
 
-    # if no commands just print the help message and return.
-    if not args.subcommands:
-        print(parser.print_help())
-        return
+    report_file = args.report
 
+    # print content of BUILDTEST_LOGFILE if buildtest --lastlog is specified which should contain last build log
+    if args.lastlog:
+        content = read_file(BUILDTEST_LOGFILE)
+        with console.pager():
+            console.print(content)
+        return
     if is_file(BUILDTEST_LOGFILE):
         remove_file(BUILDTEST_LOGFILE)
 
@@ -88,7 +97,7 @@ def main():
     configuration.detect_system()
     configuration.validate(validate_executors)
 
-    logger.info(f"Processing buildtest configuration file: {configuration.file}")
+    logger.info(f"[red]Processing buildtest configuration file: {configuration.file}")
 
     # build buildspec cache file automatically if it doesn't exist
     if not is_file(BUILDSPEC_CACHE_FILE):
@@ -114,7 +123,7 @@ def main():
                 stage=args.stage,
                 testdir=args.testdir,
                 buildtest_system=system,
-                report_file=args.report,
+                report_file=report_file,
                 maxpendtime=args.maxpendtime,
                 poll_interval=args.pollinterval,
                 keep_stage_dir=args.keep_stage_dir,
@@ -157,7 +166,7 @@ def main():
 
     # running buildtest inspect
     elif args.subcommands in ["inspect", "it"]:
-        inspect_cmd(args)
+        inspect_cmd(args, report_file=report_file)
 
     # running buildtest config
     elif args.subcommands in ["config", "cg"]:
@@ -169,7 +178,7 @@ def main():
 
     # buildtest report
     elif args.subcommands in ["report", "rt"]:
-        report_cmd(args)
+        report_cmd(args, report_file)
 
     elif args.subcommands == "path":
         path_cmd(
@@ -186,7 +195,7 @@ def main():
 
     # running buildtest cdash
     elif args.subcommands == "cdash":
-        cdash_cmd(args, default_configuration=configuration)
+        cdash_cmd(args, default_configuration=configuration, report_file=report_file)
 
     elif args.subcommands in ["help", "h"]:
         buildtest_help(command=args.command)

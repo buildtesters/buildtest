@@ -114,12 +114,12 @@ the test results with different buildname assuming you have different paths to r
 Let's say we want to build all python tests using tags and store them in a report file which we
 want to push to CDASH with buildgroup name ``python`` we can do that as follows
 
-.. command-output:: buildtest build --tags python -r $BUILDTEST_ROOT/python.json
+.. command-output:: buildtest -r $BUILDTEST_ROOT/python.json build --tags python
     :shell:
 
 Next we upload the tests using the ``-r`` option to specify the report file
 
-.. command-output:: buildtest cdash upload -r $BUILDTEST_ROOT/python.json python
+.. command-output:: buildtest -r $BUILDTEST_ROOT/python.json cdash upload python
     :shell:
 
 The ``buildtest cdash view`` command can be used to open CDASH project in a web browser
@@ -213,15 +213,14 @@ If you want to see content of output file, you can use ``-o`` option with **cat*
     :shell:
 
 In this next example we will query test **circle_area** with build ID **aaa** and buildtest will find the first match record that
-starts with this record and resolves to **aaaa622d** which is the short ID of test.
+starts with this record and resolves to **aaaa622d** which is the short ID of test. In the second example we query the latest path
+for latest run for test **circle_area**
 
 .. code-block:: console
 
-    # query testroot for circle_area with build ID "aaa"
     $ buildtest path circle_area/aaa
     /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.python/python-shell/circle_area/aaaa622d
 
-    # query testroot for latest run of circle_area
     $ buildtest path circle_area
     /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.python/python-shell/circle_area/fc221b84
 

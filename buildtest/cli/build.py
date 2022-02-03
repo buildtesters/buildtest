@@ -24,7 +24,7 @@ from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
     BUILDTEST_DEFAULT_TESTDIR,
     BUILDTEST_LOGFILE,
-    BUILDTEST_REPORT_SUMMARY,
+    BUILDTEST_REPORTS,
     DEFAULT_LOGDIR,
     console,
 )
@@ -38,13 +38,13 @@ from buildtest.utils.file import (
     is_dir,
     is_file,
     load_json,
-    read_file,
     resolve_path,
     walk_tree,
 )
 from jsonschema.exceptions import ValidationError
 from rich import box
 from rich.panel import Panel
+from rich.progress import Progress, track
 from rich.table import Table
 
 logger = logging.getLogger(__name__)
@@ -224,9 +224,11 @@ def print_discovered_buildspecs(buildspec_dict):
 
     console.rule("[bold red] Discovering Buildspecs")
 
-    print("Discovered Buildspecs: ", len(buildspec_dict["included"]))
-    print("Excluded Buildspecs: ", len(buildspec_dict["excluded"]))
-    print("Detected Buildspecs after exclusion: ", len(buildspec_dict["detected"]))
+    console.print("Discovered Buildspecs: ", len(buildspec_dict["included"]))
+    console.print("Excluded Buildspecs: ", len(buildspec_dict["excluded"]))
+    console.print(
+        "Detected Buildspecs after exclusion: ", len(buildspec_dict["detected"])
+    )
 
     table = Table(
         "[blue]Buildspecs", title="Discovered buildspecs", box=box.DOUBLE_EDGE
@@ -740,7 +742,8 @@ class BuildTest:
 
         bc = BuildtestCompilers(configuration=self.configuration)
 
-        # build all the tests
+        # for buildspec in track(self.detected_buildspecs, description="Parsing Buildspecs ..."):
+
         for buildspec in self.detected_buildspecs:
             try:
                 # Read in Buildspec file here, loading each will validate the buildspec file
@@ -1261,16 +1264,15 @@ def update_report(valid_builders, report_file):
 
     logger.debug(f"Updating report file: {report_file}")
     console.print(f"Adding {len(valid_builders)} test results to {report_file}")
-    #  BUILDTEST_REPORT_SUMMARY file keeps track of all report files which
+    #  BUILDTEST_REPORTS file keeps track of all report files which
     #  contains a single line that denotes path to report file. This file only contains unique report files
 
     content = []
-    if is_file(BUILDTEST_REPORT_SUMMARY):
-        content = read_file(BUILDTEST_REPORT_SUMMARY)
-        content = content.split("\n")
+    if is_file(BUILDTEST_REPORTS):
+        content = load_json(BUILDTEST_REPORTS)
 
     if report_file not in content:
         content.append(report_file)
 
-    with open(BUILDTEST_REPORT_SUMMARY, "w") as fd:
-        fd.write("\n".join(content))
+    with open(BUILDTEST_REPORTS, "w") as fd:
+        json.dump(content, fd, indent=2)
