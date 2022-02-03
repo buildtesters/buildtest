@@ -2,6 +2,22 @@
 # For auto completion via compgen, options are sorted alphabetically in the format: <longoption> <shortoption> <subcommands>
 # For more details see https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
 
+if test -n "${ZSH_VERSION:-}" ; then
+  if [[ "$(emulate)" = zsh ]] ; then
+    if ! typeset -f compdef >& /dev/null ; then
+        # See https://zsh.sourceforge.io/Doc/Release/Completion-System.html##Use-of-compinit
+        # ensure base completion support is enabled, ignore insecure directories
+        autoload -U +X compinit && compinit -i
+    fi
+    if ! typeset -f complete >& /dev/null ; then
+        # ensure bash compatible completion support is enabled. See  https://stackoverflow.com/questions/3249432/can-a-bash-tab-completion-script-be-used-in-zsh
+        autoload -U +X bashcompinit && bashcompinit
+    fi
+    emulate sh -c "source '$0:A'"
+    return # stop interpreting file
+  fi
+fi
+
 # get list of available tags
 _avail_tags ()
 {

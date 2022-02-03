@@ -253,21 +253,6 @@ buildspecs:
     tags: ["slurm"]
     run: hostname
 
-  run_only_example:
-    type: script
-    executor: generic.local.bash
-    description: run_only example that runs with user1 on Linux system (rhel, centos) with LSF
-    run_only:
-      user: user1
-      scheduler: lsf
-      platform: Linux
-      linux_distro:
-        - rhel
-        - centos
-    run: |
-      uname -av
-      lsinfo
-
   metrics_regex_example:
     type: script
     executor: generic.local.bash

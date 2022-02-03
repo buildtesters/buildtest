@@ -180,29 +180,10 @@ def test_build_csh_executor():
 
 
 @pytest.mark.cli
-def test_run_only():
-
-    system = BuildTestSystem()
-
-    # Testing run_only fields by running:  buildtest build -b tutorials/root_user.yml -b tutorials/run_only_distro.yml -b tutorials/run_only_platform.yml
-    cmd = BuildTest(
-        buildspecs=[
-            os.path.join(BUILDTEST_ROOT, "tutorials", "root_user.yml"),
-            os.path.join(BUILDTEST_ROOT, "tutorials", "run_only_distro.yml"),
-            os.path.join(BUILDTEST_ROOT, "tutorials", "run_only_platform.yml"),
-        ],
-        configuration=configuration,
-        buildtest_system=system,
-    )
-    cmd.build()
-
-
-@pytest.mark.cli
 def test_skip_field():
 
     system = BuildTestSystem()
 
-    # Testing run_only fields by running:  buildtest build -b tutorials/skip.yml
     cmd = BuildTest(
         buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "skip_tests.yml")],
         configuration=configuration,

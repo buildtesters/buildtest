@@ -5,8 +5,6 @@ buildspecs:
     executor: generic.local.bash
     description: Show LSF configuration using lsinfo
     tags: lsf
-    run_only:
-      scheduler: lsf
     run: lsinfo
 
   show_lsf_models:
@@ -14,8 +12,6 @@ buildspecs:
     executor: generic.local.bash
     description: Show information about host models in LSF cluster
     tags: lsf
-    run_only:
-      scheduler: lsf
     run: lsinfo -m
 
   show_lsf_resources:
@@ -23,8 +19,6 @@ buildspecs:
     executor: generic.local.bash
     description: Show information about LSF resources
     tags: lsf
-    run_only:
-      scheduler: lsf
     run: lsinfo -r
 
   lsf_version:
@@ -32,6 +26,4 @@ buildspecs:
     executor: generic.local.bash
     description: Display lsf version using lsinfo
     tags: lsf
-    run_only:
-      scheduler: lsf
     run: lsinfo -V

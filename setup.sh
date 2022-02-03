@@ -52,12 +52,13 @@ export BUILDTEST_ROOT=$buildtest_root
 export PATH=${buildtest_root}/bin:$PATH
 
 # for ZSH shell need to run autoload see https://stackoverflow.com/questions/3249432/can-a-bash-tab-completion-script-be-used-in-zsh
-if [ -n "$ZSH_VERSION" ]; then
+#if [ -n "$ZSH_VERSION" ]; then
   # compinit -C will ignore insecure files. See https://zsh.sourceforge.io/Doc/Release/Completion-System.html##Use-of-compinit
-  autoload -U +X compinit && compinit -C
-  autoload -U +X bashcompinit && bashcompinit
-fi
-# enable bash completion script 
+#  autoload -U +X compinit && compinit -C
+#  autoload -U +X bashcompinit && bashcompinit
+#fi
+
+# enable bash completion script
 source $buildtest_root/bash_completion.sh
 
 # allow buildtest source code to PYTHONPATH so python can import buildtest
@@ -66,4 +67,3 @@ if [ -z "$PYTHONPATH" ]; then
 else
   export PYTHONPATH=${BUILDTEST_ROOT}:$PYTHONPATH
 fi
-

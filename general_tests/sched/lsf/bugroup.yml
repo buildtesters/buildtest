@@ -5,6 +5,4 @@ buildspecs:
     executor: generic.local.bash
     description: Show information about all LSF user groups
     tags: lsf
-    run_only:
-      scheduler: lsf
     run: bugroup

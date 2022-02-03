@@ -5,8 +5,6 @@ buildspecs:
     type: script
     description: Show nodes in DOWN state
     tags: [slurm]
-    run_only:
-      scheduler: slurm
     run: sinfo -t DOWN
 
   nodes_state_reboot:
@@ -14,8 +12,6 @@ buildspecs:
     type: script
     description: Show nodes in REBOOT state
     tags: [slurm]
-    run_only:
-      scheduler: slurm
     run: sinfo -t REBOOT
 
   nodes_state_allocated:
@@ -23,8 +19,6 @@ buildspecs:
     type: script
     description: Show nodes in ALLOCATED state
     tags: [slurm]
-    run_only:
-      scheduler: slurm
     run: sinfo -t ALLOCATED
 
   nodes_state_completing:
@@ -32,8 +26,6 @@ buildspecs:
     type: script
     description: Show nodes in COMPLETING state
     tags: [slurm]
-    run_only:
-      scheduler: slurm
     run: sinfo -t COMPLETING
 
   nodes_state_idle:
@@ -41,8 +33,6 @@ buildspecs:
     type: script
     description: Show nodes in IDLE state
     tags: [slurm]
-    run_only:
-      scheduler: slurm
     run: sinfo -t IDLE
 
   node_down_fail_list_reason:
@@ -50,8 +40,6 @@ buildspecs:
     type: script
     description: Show nodes DOWN, DRAINED, FAIL or FAILING and list reason
     tags: [slurm]
-    run_only:
-      scheduler: slurm
     run: sinfo -R
 
   dead_nodes:
@@ -59,8 +47,6 @@ buildspecs:
     type: script
     description: Show non-responding nodes
     tags: [slurm]
-    run_only:
-      scheduler: slurm
     run: sinfo --dead
 
   get_partitions:
@@ -68,8 +54,6 @@ buildspecs:
     type: script
     description: Get all slurm partitions
     tags: [slurm]
-    run_only:
-      scheduler: slurm
     run: sinfo -a -h -O partitionname
 
   sinfo_version:
@@ -77,7 +61,5 @@ buildspecs:
     type: script
     description: get slurm version
     tags: [slurm]
-    run_only:
-      scheduler: slurm
     run: sinfo --version
 
