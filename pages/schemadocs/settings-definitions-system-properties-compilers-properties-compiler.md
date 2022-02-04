@@ -25,10 +25,11 @@ Start of compiler declaration
 | [clang](#clang) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-compiler-properties-clang.md "settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/clang") |
 | [cuda](#cuda)   | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-compiler-properties-cuda.md "settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cuda")   |
 | [upcxx](#upcxx) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-compiler-properties-upcxx.md "settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/upcxx") |
+| [nvhpc](#nvhpc) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-compiler-properties-nvhpc.md "settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/nvhpc") |
 
 ## gcc
 
-Declaration of one or more GNU compilers where we define C, C++ and Fortran compiler. The GNU compiler wrapper are `gcc`, `g++` and `gfortran`.
+Declaration of one or more GNU compilers.
 
 `gcc`
 
@@ -46,7 +47,7 @@ Declaration of one or more GNU compilers where we define C, C++ and Fortran comp
 
 ## intel
 
-Declaration of one or more Intel compilers where we define C, C++ and Fortran compiler. The Intel compiler wrapper are `icc`, `icpc` and `ifort`.
+Declaration of one or more Intel compilers.
 
 `intel`
 
@@ -64,7 +65,7 @@ Declaration of one or more Intel compilers where we define C, C++ and Fortran co
 
 ## cray
 
-Declaration of one or more Cray compilers where we define C, C++ and Fortran compiler. The Cray compiler wrapper are `cc`, `CC` and `ftn`.
+Declaration of one or more Cray compilers.
 
 `cray`
 
@@ -82,7 +83,7 @@ Declaration of one or more Cray compilers where we define C, C++ and Fortran com
 
 ## pgi
 
-Declaration of one or more PGI compilers where we define C, C++ and Fortran compiler. The PGI compiler wrapper are `pgcc`, `pgc++` and `pgfortran`.
+Declaration of one or more PGI compilers.
 
 `pgi`
 
@@ -100,7 +101,7 @@ Declaration of one or more PGI compilers where we define C, C++ and Fortran comp
 
 ## clang
 
-Declaration of one or more Clang compilers where we define C, C++ compiler. The Clang compiler wrapper are `clang`, `clang++`.
+Declaration of one or more Clang compilers.
 
 `clang`
 
@@ -118,7 +119,7 @@ Declaration of one or more Clang compilers where we define C, C++ compiler. The 
 
 ## cuda
 
-Declaration of one or more Cuda compilers where we define C compiler. The Cuda compiler wrapper is `nvcc`.
+Declaration of one or more CUDA compilers.
 
 `cuda`
 
@@ -136,7 +137,7 @@ Declaration of one or more Cuda compilers where we define C compiler. The Cuda c
 
 ## upcxx
 
-Declaration of one or more UPCXX compilers where we define C, C++ compiler. The UPCXX compiler wrapper are `upcxx`.
+Declaration of one or more UPCXX compilers.
 
 `upcxx`
 
@@ -151,3 +152,21 @@ Declaration of one or more UPCXX compilers where we define C, C++ compiler. The 
 ### upcxx Type
 
 `object` ([Details](settings-definitions-system-properties-compilers-properties-compiler-properties-upcxx.md))
+
+## nvhpc
+
+Declaration of one or more NVHPC compilers.
+
+`nvhpc`
+
+*   is optional
+
+*   Type: `object` ([Details](settings-definitions-system-properties-compilers-properties-compiler-properties-nvhpc.md))
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-compiler-properties-nvhpc.md "settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/nvhpc")
+
+### nvhpc Type
+
+`object` ([Details](settings-definitions-system-properties-compilers-properties-compiler-properties-nvhpc.md))

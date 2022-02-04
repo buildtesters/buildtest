@@ -1,27 +1,15 @@
-# Untitled integer in buildtest configuration schema Schema
+# Untitled string in buildtest configuration schema Schema
 
 ```txt
-settings.schema.json#/definitions/cobalt/properties/maxpendtime
+settings.schema.json#/definitions/system/properties/compilers/properties/find/properties/nvhpc
 ```
 
-Cancel job if it is still pending in queue beyond maxpendtime
+Specify a regular expression to search for nvhpc compilers from your module stack
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
 
-## maxpendtime Type
+## nvhpc Type
 
-`integer`
-
-## maxpendtime Constraints
-
-**minimum**: the value of this number must greater than or equal to: `1`
-
-## maxpendtime Default Value
-
-The default value is:
-
-```json
-86400
-```
+`string`

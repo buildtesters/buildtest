@@ -1,15 +1,15 @@
-# Untitled undefined type in compiler schema Schema
+# Untitled undefined type in buildtest configuration schema Schema
 
 ```txt
-compiler.schema.json#/properties/run_only
+settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/nvhpc/patternProperties
 ```
 
 
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [compiler.schema.json*](../out/compiler.schema.json "open original schema") |
+| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
 
-## run_only Type
+## patternProperties Type
 
 unknown

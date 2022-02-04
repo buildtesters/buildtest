@@ -1,7 +1,7 @@
 # Untitled object in compiler schema Schema
 
 ```txt
-compiler.schema.json#/properties/compilers/properties/default/properties/upcxx
+compiler.schema.json#/properties/compilers/properties/default/properties/nvhpc
 ```
 
 Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides `all` property.
@@ -10,11 +10,11 @@ Specify compiler configuration for group of compilers. Use this property if you 
 | :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
 | Can be instantiated | No         | Unknown status | No           | Forbidden         | Allowed               | none                | [compiler.schema.json*](../out/compiler.schema.json "open original schema") |
 
-## upcxx Type
+## nvhpc Type
 
 `object` ([Details](compiler-definitions-default_compiler_config.md))
 
-# upcxx Properties
+# nvhpc Properties
 
 | Property                  | Type     | Required | Nullable       | Defined by                                                                                                                                                         |
 | :------------------------ | :------- | :------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |

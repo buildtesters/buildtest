@@ -867,14 +867,14 @@ Cancel job if it is still pending in queue beyond maxpendtime
 
 #### maxpendtime Constraints
 
-**minimum**: the value of this number must greater than or equal to: `10`
+**minimum**: the value of this number must greater than or equal to: `1`
 
 #### maxpendtime Default Value
 
 The default value is:
 
 ```json
-90
+86400
 ```
 
 ### account
@@ -1092,14 +1092,14 @@ Cancel job if it is still pending in queue beyond maxpendtime
 
 #### maxpendtime Constraints
 
-**minimum**: the value of this number must greater than or equal to: `10`
+**minimum**: the value of this number must greater than or equal to: `1`
 
 #### maxpendtime Default Value
 
 The default value is:
 
 ```json
-90
+86400
 ```
 
 ### account
@@ -1317,14 +1317,14 @@ Cancel job if it is still pending in queue beyond maxpendtime
 
 #### maxpendtime Constraints
 
-**minimum**: the value of this number must greater than or equal to: `10`
+**minimum**: the value of this number must greater than or equal to: `1`
 
 #### maxpendtime Default Value
 
 The default value is:
 
 ```json
-90
+86400
 ```
 
 ### account
@@ -1542,14 +1542,14 @@ Cancel job if it is still pending in queue beyond maxpendtime
 
 #### maxpendtime Constraints
 
-**minimum**: the value of this number must greater than or equal to: `10`
+**minimum**: the value of this number must greater than or equal to: `1`
 
 #### maxpendtime Default Value
 
 The default value is:
 
 ```json
-90
+86400
 ```
 
 ### account

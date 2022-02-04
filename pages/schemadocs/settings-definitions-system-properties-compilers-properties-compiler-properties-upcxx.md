@@ -4,7 +4,7 @@
 settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/upcxx
 ```
 
-Declaration of one or more UPCXX compilers where we define C, C++ compiler. The UPCXX compiler wrapper are `upcxx`.
+Declaration of one or more UPCXX compilers.
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |

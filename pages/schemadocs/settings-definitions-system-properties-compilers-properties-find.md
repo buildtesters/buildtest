@@ -25,6 +25,7 @@ Find compilers by specifying regular expression that is applied to modulefile na
 | [cuda](#cuda)   | `string` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-find-properties-cuda.md "settings.schema.json#/definitions/system/properties/compilers/properties/find/properties/cuda")   |
 | [pgi](#pgi)     | `string` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-find-properties-pgi.md "settings.schema.json#/definitions/system/properties/compilers/properties/find/properties/pgi")     |
 | [upcxx](#upcxx) | `string` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-find-properties-upcxx.md "settings.schema.json#/definitions/system/properties/compilers/properties/find/properties/upcxx") |
+| [nvhpc](#nvhpc) | `string` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-find-properties-nvhpc.md "settings.schema.json#/definitions/system/properties/compilers/properties/find/properties/nvhpc") |
 
 ## gcc
 
@@ -149,5 +150,23 @@ Specify a regular expression to search for upcxx compilers from your module stac
 *   defined in: [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-find-properties-upcxx.md "settings.schema.json#/definitions/system/properties/compilers/properties/find/properties/upcxx")
 
 ### upcxx Type
+
+`string`
+
+## nvhpc
+
+Specify a regular expression to search for nvhpc compilers from your module stack
+
+`nvhpc`
+
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [buildtest configuration schema](settings-definitions-system-properties-compilers-properties-find-properties-nvhpc.md "settings.schema.json#/definitions/system/properties/compilers/properties/find/properties/nvhpc")
+
+### nvhpc Type
 
 `string`

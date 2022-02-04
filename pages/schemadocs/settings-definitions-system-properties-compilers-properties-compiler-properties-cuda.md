@@ -4,7 +4,7 @@
 settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cuda
 ```
 
-Declaration of one or more Cuda compilers where we define C compiler. The Cuda compiler wrapper is `nvcc`.
+Declaration of one or more CUDA compilers.
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |

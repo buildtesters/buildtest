@@ -26,6 +26,7 @@ compiler.schema.json#/properties/compilers/properties/default
 | [clang](#clang) | `object` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config.md "compiler.schema.json#/properties/compilers/properties/default/properties/clang") |
 | [cuda](#cuda)   | `object` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config.md "compiler.schema.json#/properties/compilers/properties/default/properties/cuda")  |
 | [upcxx](#upcxx) | `object` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config.md "compiler.schema.json#/properties/compilers/properties/default/properties/upcxx") |
+| [nvhpc](#nvhpc) | `object` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config.md "compiler.schema.json#/properties/compilers/properties/default/properties/nvhpc") |
 
 ## all
 
@@ -168,5 +169,23 @@ Specify compiler configuration for group of compilers. Use this property if you 
 *   defined in: [compiler schema](compiler-definitions-default_compiler_config.md "compiler.schema.json#/properties/compilers/properties/default/properties/upcxx")
 
 ### upcxx Type
+
+`object` ([Details](compiler-definitions-default_compiler_config.md))
+
+## nvhpc
+
+Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides `all` property.
+
+`nvhpc`
+
+*   is optional
+
+*   Type: `object` ([Details](compiler-definitions-default_compiler_config.md))
+
+*   cannot be null
+
+*   defined in: [compiler schema](compiler-definitions-default_compiler_config.md "compiler.schema.json#/properties/compilers/properties/default/properties/nvhpc")
+
+### nvhpc Type
 
 `object` ([Details](compiler-definitions-default_compiler_config.md))

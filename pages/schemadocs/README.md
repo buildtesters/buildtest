@@ -90,6 +90,12 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-regex.md "Perform regular expression search using re") – `definitions.schema.json#/definitions/regex`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env.md "One or more key value pairs for an environment (key=value)") – `definitions.schema.json#/definitions/env`
@@ -152,19 +158,21 @@
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler.md "Start of compiler declaration") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-gcc.md "Declaration of one or more GNU compilers where we define C, C++ and Fortran compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/gcc`
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-gcc.md "Declaration of one or more GNU compilers") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/gcc`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-intel.md "Declaration of one or more Intel compilers where we define C, C++ and Fortran compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/intel`
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-intel.md "Declaration of one or more Intel compilers") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/intel`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-cray.md "Declaration of one or more Cray compilers where we define C, C++ and Fortran compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cray`
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-cray.md "Declaration of one or more Cray compilers") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cray`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-pgi.md "Declaration of one or more PGI compilers where we define C, C++ and Fortran compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/pgi`
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-pgi.md "Declaration of one or more PGI compilers") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/pgi`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-clang.md "Declaration of one or more Clang compilers where we define C, C++ compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/clang`
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-clang.md "Declaration of one or more Clang compilers") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/clang`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-cuda.md "Declaration of one or more Cuda compilers where we define C compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cuda`
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-cuda.md "Declaration of one or more CUDA compilers") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cuda`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-upcxx.md "Declaration of one or more UPCXX compilers where we define C, C++ compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/upcxx`
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-upcxx.md "Declaration of one or more UPCXX compilers") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/upcxx`
+
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-nvhpc.md "Declaration of one or more NVHPC compilers") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/nvhpc`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors.md "The executor section is used for declaring your executors that are responsible for running jobs") – `settings.schema.json#/definitions/system/properties/executors`
 
@@ -192,19 +200,21 @@
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler.md "Start of compiler declaration") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-gcc.md "Declaration of one or more GNU compilers where we define C, C++ and Fortran compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/gcc`
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-gcc.md "Declaration of one or more GNU compilers") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/gcc`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-intel.md "Declaration of one or more Intel compilers where we define C, C++ and Fortran compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/intel`
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-intel.md "Declaration of one or more Intel compilers") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/intel`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-cray.md "Declaration of one or more Cray compilers where we define C, C++ and Fortran compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cray`
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-cray.md "Declaration of one or more Cray compilers") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cray`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-pgi.md "Declaration of one or more PGI compilers where we define C, C++ and Fortran compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/pgi`
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-pgi.md "Declaration of one or more PGI compilers") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/pgi`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-clang.md "Declaration of one or more Clang compilers where we define C, C++ compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/clang`
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-clang.md "Declaration of one or more Clang compilers") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/clang`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-cuda.md "Declaration of one or more Cuda compilers where we define C compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cuda`
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-cuda.md "Declaration of one or more CUDA compilers") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/cuda`
 
-*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-upcxx.md "Declaration of one or more UPCXX compilers where we define C, C++ compiler") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/upcxx`
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-upcxx.md "Declaration of one or more UPCXX compilers") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/upcxx`
+
+*   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-compilers-properties-compiler-properties-nvhpc.md "Declaration of one or more NVHPC compilers") – `settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/nvhpc`
 
 *   [Untitled object in buildtest configuration schema](./settings-definitions-system-properties-executors.md "The executor section is used for declaring your executors that are responsible for running jobs") – `settings.schema.json#/definitions/system/properties/executors`
 
@@ -308,6 +318,8 @@
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
+
 *   [Untitled array in buildtest configuration schema](./settings-definitions-lsf-properties-options.md "Specify any options for bsub for this executor when running all jobs associated to this executor") – `settings.schema.json#/definitions/lsf/properties/options`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
@@ -327,6 +339,8 @@
 *   [Untitled array in buildtest configuration schema](./settings-definitions-system-properties-hostnames.md "Specify a list of hostnames to check where buildtest can run for the given system record") – `settings.schema.json#/definitions/system/properties/hostnames`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-system-properties-buildspec_roots.md "Specify a list of directory paths to search buildspecs") – `settings.schema.json#/definitions/system/properties/buildspec_roots`
+
+*   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 

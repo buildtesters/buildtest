@@ -4,7 +4,7 @@
 settings.schema.json#/definitions/system/properties/compilers/properties/compiler/properties/gcc
 ```
 
-Declaration of one or more GNU compilers where we define C, C++ and Fortran compiler. The GNU compiler wrapper are `gcc`, `g++` and `gfortran`.
+Declaration of one or more GNU compilers.
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |

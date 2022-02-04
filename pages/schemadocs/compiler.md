@@ -16,17 +16,16 @@ The compiler schema is of `type: compiler` in sub-schema which is used for compi
 
 # compiler schema Properties
 
-| Property                    | Type          | Required | Nullable       | Defined by                                                                                           |
-| :-------------------------- | :------------ | :------- | :------------- | :--------------------------------------------------------------------------------------------------- |
-| [type](#type)               | `string`      | Required | cannot be null | [compiler schema](compiler-properties-type.md "compiler.schema.json#/properties/type")               |
-| [description](#description) | `string`      | Optional | cannot be null | [compiler schema](compiler-properties-description.md "compiler.schema.json#/properties/description") |
-| [compilers](#compilers)     | `object`      | Required | cannot be null | [compiler schema](compiler-properties-compilers.md "compiler.schema.json#/properties/compilers")     |
-| [source](#source)           | `string`      | Required | cannot be null | [compiler schema](compiler-properties-source.md "compiler.schema.json#/properties/source")           |
-| [executor](#executor)       | `string`      | Required | cannot be null | [compiler schema](compiler-properties-executor.md "compiler.schema.json#/properties/executor")       |
-| [run_only](#run_only)       | Not specified | Optional | cannot be null | [compiler schema](compiler-properties-run_only.md "compiler.schema.json#/properties/run_only")       |
-| [skip](#skip)               | `boolean`     | Optional | cannot be null | [compiler schema](compiler-properties-skip.md "compiler.schema.json#/properties/skip")               |
-| [tags](#tags)               | Merged        | Optional | cannot be null | [compiler schema](compiler-properties-tags.md "compiler.schema.json#/properties/tags")               |
-| [metrics](#metrics)         | `object`      | Optional | cannot be null | [compiler schema](definitions-definitions-metrics.md "compiler.schema.json#/properties/metrics")     |
+| Property                    | Type      | Required | Nullable       | Defined by                                                                                           |
+| :-------------------------- | :-------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------- |
+| [type](#type)               | `string`  | Required | cannot be null | [compiler schema](compiler-properties-type.md "compiler.schema.json#/properties/type")               |
+| [description](#description) | `string`  | Optional | cannot be null | [compiler schema](compiler-properties-description.md "compiler.schema.json#/properties/description") |
+| [compilers](#compilers)     | `object`  | Required | cannot be null | [compiler schema](compiler-properties-compilers.md "compiler.schema.json#/properties/compilers")     |
+| [source](#source)           | `string`  | Required | cannot be null | [compiler schema](compiler-properties-source.md "compiler.schema.json#/properties/source")           |
+| [executor](#executor)       | `string`  | Required | cannot be null | [compiler schema](compiler-properties-executor.md "compiler.schema.json#/properties/executor")       |
+| [skip](#skip)               | `boolean` | Optional | cannot be null | [compiler schema](compiler-properties-skip.md "compiler.schema.json#/properties/skip")               |
+| [tags](#tags)               | Merged    | Optional | cannot be null | [compiler schema](compiler-properties-tags.md "compiler.schema.json#/properties/tags")               |
+| [metrics](#metrics)         | `object`  | Optional | cannot be null | [compiler schema](definitions-definitions-metrics.md "compiler.schema.json#/properties/metrics")     |
 
 ## type
 
@@ -131,24 +130,6 @@ Select one of the executor name defined in your configuration file (`config.yml`
 ### executor Type
 
 `string`
-
-## run_only
-
-
-
-`run_only`
-
-*   is optional
-
-*   Type: unknown
-
-*   cannot be null
-
-*   defined in: [compiler schema](compiler-properties-run_only.md "compiler.schema.json#/properties/run_only")
-
-### run_only Type
-
-unknown
 
 ## skip
 
