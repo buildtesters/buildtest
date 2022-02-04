@@ -121,6 +121,10 @@
                 "upcxx": {
                   "type": "string",
                   "description": "Specify a regular expression to search for upcxx compilers from your module stack"
+                },
+                "nvhpc": {
+                  "type": "string",
+                  "description": "Specify a regular expression to search for nvhpc compilers from your module stack"
                 }
               }
             },
@@ -130,37 +134,42 @@
               "description": "Start of compiler declaration",
               "properties": {
                 "gcc": {
-                  "description": "Declaration of one or more GNU compilers where we define C, C++ and Fortran compiler. The GNU compiler wrapper are ``gcc``, ``g++`` and ``gfortran``. ",
+                  "description": "Declaration of one or more GNU compilers.",
                   "type": "object",
                   "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
                 },
                 "intel": {
-                  "description": "Declaration of one or more Intel compilers where we define C, C++ and Fortran compiler. The Intel compiler wrapper are ``icc``, ``icpc`` and ``ifort``. ",
+                  "description": "Declaration of one or more Intel compilers. ",
                   "type": "object",
                   "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
                 },
                 "cray": {
-                  "description": "Declaration of one or more Cray compilers where we define C, C++ and Fortran compiler. The Cray compiler wrapper are ``cc``, ``CC`` and ``ftn``.",
+                  "description": "Declaration of one or more Cray compilers.",
                   "type": "object",
                   "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
                 },
                 "pgi": {
-                  "description": "Declaration of one or more PGI compilers where we define C, C++ and Fortran compiler. The PGI compiler wrapper are ``pgcc``, ``pgc++`` and ``pgfortran``.",
+                  "description": "Declaration of one or more PGI compilers.",
                   "type": "object",
                   "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
                 },
                 "clang": {
-                  "description": "Declaration of one or more Clang compilers where we define C, C++ compiler. The Clang compiler wrapper are ``clang``, ``clang++``.",
+                  "description": "Declaration of one or more Clang compilers.",
                   "type": "object",
                   "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
                 },
                 "cuda": {
-                  "description": "Declaration of one or more Cuda compilers where we define C compiler. The Cuda compiler wrapper is ``nvcc``. ",
+                  "description": "Declaration of one or more CUDA compilers.",
                   "type": "object",
                   "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
                 },
                 "upcxx": {
-                  "description": "Declaration of one or more UPCXX compilers where we define C, C++ compiler. The UPCXX compiler wrapper are ``upcxx``.",
+                  "description": "Declaration of one or more UPCXX compilers.",
+                  "type": "object",
+                  "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
+                },
+                "nvhpc": {
+                  "description": "Declaration of one or more NVHPC compilers.",
                   "type": "object",
                   "patternProperties": { "^.*$": { "$ref": "#/definitions/compiler_section" } }
                 }
@@ -332,8 +341,8 @@
     "maxpendtime": {
       "type": "integer",
       "description": "Cancel job if it is still pending in queue beyond maxpendtime",
-      "minimum": 10,
-      "default": 90
+      "minimum": 1,
+      "default": 86400
     },
     "account": {
       "type": "string",

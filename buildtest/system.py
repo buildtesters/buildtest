@@ -93,8 +93,6 @@ class BuildTestSystem:
         cobalt = Cobalt()
         pbs = PBS()
 
-        # the "scheduler" property is used with run_only section in buildspecs for
-        # running test based on scheduler.
         self.system["scheduler"] = []
 
         if slurm.state:
