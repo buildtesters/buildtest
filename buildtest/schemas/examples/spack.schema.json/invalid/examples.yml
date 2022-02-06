@@ -1,16 +1,4 @@
 buildspecs:
-  missing_root_to_spack:
-    type: spack
-    executor: generic.local.sh
-    description: 'root property required to run source $SPACK_ROOT/share/spack/setup-env.sh'
-    spack:
-      env:
-        create:
-          name: myproject
-        specs:
-          - m4
-          - zlib
-
   specs_must_be_list_of_strings:
     type: spack
     executor: generic.local.sh

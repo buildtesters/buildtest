@@ -6,7 +6,7 @@ buildspecs:
     tags: [tutorials, compile]
     source: "src/hello.f90"
     compilers:
-      name: ["^(builtin_gcc)$"]
+      name: ["^(gcc_7.5.0)$"]
       default:
         gcc:
           fflags: -Wall

@@ -105,12 +105,12 @@ class Builder:
                         continue
 
                 # Add the builder for the script or spack schema
-                if recipe["type"] in ["script", "spack"]:
+                if recipe["type"] in ["spack"]:
                     builders = self._generate_builders(recipe, name)
                     if builders:
                         self.builders += builders
 
-                elif recipe["type"] == "compiler":
+                elif recipe["type"] in ["script", "compiler"]:
 
                     builders = self._build_compilers(name, recipe)
                     if builders:
@@ -143,6 +143,7 @@ class Builder:
                         executor=executor,
                         buildspec=self.bp.buildspec,
                         buildexecutor=self.buildexecutor,
+                        configuration=self.configuration,
                         testdir=self.testdir,
                         numprocs=proc,
                     )
@@ -187,6 +188,7 @@ class Builder:
                         executor=executor,
                         buildspec=self.bp.buildspec,
                         buildexecutor=self.buildexecutor,
+                        configuration=self.configuration,
                         testdir=self.testdir,
                         numnodes=nodes,
                     )
@@ -260,7 +262,9 @@ class Builder:
                     executor=executor,
                     buildspec=self.bp.buildspec,
                     buildexecutor=self.buildexecutor,
+                    configuration=self.configuration,
                     testdir=self.testdir,
+                    compiler=compiler_name,
                 )
                 builders.append(builder)
 
@@ -328,6 +332,11 @@ class Builder:
         discovered_compilers = self.bc.names()
 
         builders = []
+
+        if not recipe.get("compilers"):
+            builders = self._generate_builders(name=name, recipe=recipe)
+            return builders
+
         # exclude compiler from search if 'exclude' specified in buildspec
         if recipe["compilers"].get("exclude"):
             for exclude in recipe["compilers"]["exclude"]:

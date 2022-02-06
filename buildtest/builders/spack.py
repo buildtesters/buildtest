@@ -97,6 +97,9 @@ class SpackBuilder(BuilderBase):
                     spack_configuration["root"], spack_configuration.get("verify_spack")
                 )
             ]
+        else:
+            lines += ["git clone https://github.com/spack/spack"]
+            lines += ["source ./spack/share/spack/setup-env.sh"]
 
         if spack_configuration.get("compiler_find"):
             lines.append("spack compiler find")

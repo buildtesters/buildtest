@@ -160,6 +160,12 @@ class CompilerBuilder(BuilderBase):
 
         self.run_cmd = self._run_cmd()
 
+    # Compiler schema needs 'source' key in order to compile test if 'build' is specified. Schema needs
+    # 'binary' if one just wants to run test without compilation
+    # if mode: [build, run] - compile and run test
+    # if mode: [build ] - compile test
+    # if mode: [run ] - run test
+
     def generate_script(self):
         """This method is responsible for generating test script for compiler schema.
         The method ``generate_script`` is implemented in each subclass because
@@ -430,7 +436,7 @@ class CompilerBuilder(BuilderBase):
 
             self.cxx = (
                 self.compiler_section["default"][self.compiler_group].get("cxx")
-                or self.fc
+                or self.cxx
             )
 
             self.cflags = self.compiler_section["default"][self.compiler_group].get(

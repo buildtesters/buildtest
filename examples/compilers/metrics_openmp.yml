@@ -6,14 +6,14 @@ buildspecs:
     tags: [tutorials, compile]
     source: "src/hello_omp.c"
     compilers:
-      name: ["^(builtin_gcc|gcc)"]
+      name: ["^(gcc)"]
       default:
         gcc:
           cflags: -fopenmp
           env:
             OMP_NUM_THREADS: 4
       config:
-        builtin_gcc:
+        gcc_7.5.0:
           env:
             OMP_NUM_THREADS: 1
         gcc_6.5.0:

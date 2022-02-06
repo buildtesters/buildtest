@@ -19,10 +19,14 @@ system:
         gcc: ^(gcc)
       compiler:
         gcc:
-          builtin_gcc:
+          gcc_7.5.0:
             cc: /usr/bin/gcc
             fc: /usr/bin/gfortran
             cxx: /usr/bin/g++
+          clang_6.0.0:
+            cc: /usr/bin/clang
+            fc: None
+            cxx: /usr/bin/clang++
           gcc_6.5.0:
             cc: gcc
             fc: gfortran
