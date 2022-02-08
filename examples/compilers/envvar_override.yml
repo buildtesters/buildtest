@@ -6,7 +6,7 @@ buildspecs:
     tags: [tutorials, compile]
     source: "src/hello_omp.c"
     compilers:
-      name: ["^(gcc(7.5.0|8.3.0)"]
+      name: ['^(gcc_7.5.0|gcc_8.3.0)']
       default:
         gcc:
           cflags: -fopenmp

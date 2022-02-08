@@ -1,14 +1,14 @@
 .. Note:: Please see :ref:`tutorial_setup` before you proceed with this section
 
-.. _spack_schema:
+.. _buildtest_spack_integration:
 
-Spack Schema
-=============
+Buildtest Spack Integration
+============================
 
 .. Note:: This feature is in active development.
 
-buildtest can generate tests for the `spack <https://spack.readthedocs.io/en/latest/>`_ package manager which can be
-used if you want to install or test packages as part of a repeatable process. You must set ``type: spack`` property
+buildtest can use `spack <https://spack.readthedocs.io/en/latest/>`_ to build test where one can use
+spack to install packages followed by running any test. You must set ``type: spack``
 in buildspec to use the spack schema for validating the buildspec test. Currently, we have
 `spack.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/spack.schema.json>`_
 JSON schema that defines the structure of how tests are to be written in buildspec. Shown below is the schema header. The
@@ -26,7 +26,9 @@ is a test named **install_zlib**. The **spack** keyword is a JSON object, in thi
 of spack using the ``root`` keyword which informs buildtest where spack is located. buildtest will automatically
 check the path and source the startup script. The ``install`` field is a JSON object that
 contains a ``specs`` property which is a list of strings types that are name of spack packages to install. Each item in the
-``specs`` property will be added as a separate ``spack install`` command.
+``specs`` property will be added as a separate ``spack install`` command. In the second test,
+we run the same example except we clone spack and install zlib. When ``root`` property is not specified buildtest
+will clone buildtest and automatically source the setup script.
 
 The schema is designed to mimic spack commands which will be clear with more examples.
 
@@ -40,7 +42,8 @@ Let's build this test by running the following
 
 
 Let's inspect the generated script and output file via ``buildtest inspect query`` command. We notice that buildtest
-will source spack setup script and install `zlib` which is automatically installed from the buildcache.
+will source spack setup script and install `zlib` which is automatically installed from the buildcache. In the second test
+we clone spack and it will install zlib from source.
 
 .. program-output:: cat buildtest_tutorial_examples/spack/inspect/install_specs.txt
 

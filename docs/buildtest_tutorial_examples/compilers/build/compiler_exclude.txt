@@ -2,11 +2,11 @@ $ buildtest build -b /home/spack/buildtest/examples/compilers/compiler_exclude.y
 ╭────────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────────╮                                                           
 │                                                                                                                                │                                                           
 │ User:               spack                                                                                                      │                                                           
-│ Hostname:           2d93bd00cb98                                                                                               │                                                           
+│ Hostname:           09e0ccd237a0                                                                                               │                                                           
 │ Platform:           Linux                                                                                                      │                                                           
-│ Current Time:       2022/01/14 15:19:52                                                                                        │                                                           
+│ Current Time:       2022/02/07 23:28:46                                                                                        │                                                           
 │ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                        │                                                           
-│ buildtest version:  0.12.0                                                                                                     │                                                           
+│ buildtest version:  0.13.0                                                                                                     │                                                           
 │ python path:        /home/spack/pyenv/buildtest/bin/python3                                                                    │                                                           
 │ python version:     3.8.6                                                                                                      │                                                           
 │ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                               │                                                           
@@ -29,44 +29,59 @@ Excluding compiler: gcc_6.5.0 from test generation
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
 /home/spack/buildtest/examples/compilers/compiler_exclude.yml: VALID
-Total builder objects created: 1
-Total compiler builder: 1
+Total builder objects created: 2
+Total compiler builder: 2
 Total script builder: 0
 Total spack builder: 0
                                                                                   Compiler Builder Details                                                                                   
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Builder                     ┃ Executor           ┃ Compiler  ┃ description                                                 ┃ buildspecs                                                   ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ vecadd_gnu_exclude/35b3d402 │ generic.local.bash │ gcc_8.3.0 │ Vector Addition example with GNU compilers but exclude      │ /home/spack/buildtest/examples/compilers/compiler_exclude.ym │
+│ vecadd_gnu_exclude/ee84de1e │ generic.local.bash │ gcc_7.5.0 │ Vector Addition example with GNU compilers but exclude      │ /home/spack/buildtest/examples/compilers/compiler_exclude.ym │
+│                             │                    │           │ gcc_6.5.0                                                   │ l                                                            │
+├─────────────────────────────┼────────────────────┼───────────┼─────────────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ vecadd_gnu_exclude/23b60aa1 │ generic.local.bash │ gcc_8.3.0 │ Vector Addition example with GNU compilers but exclude      │ /home/spack/buildtest/examples/compilers/compiler_exclude.ym │
 │                             │                    │           │ gcc_6.5.0                                                   │ l                                                            │
 └─────────────────────────────┴────────────────────┴───────────┴─────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────┘
 ─────────────────────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────────────────────
-vecadd_gnu_exclude/35b3d402: Creating test directory: /home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/35b3d402
-vecadd_gnu_exclude/35b3d402: Creating the stage directory: /home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/35b3d402/stage
-vecadd_gnu_exclude/35b3d402: Writing build script: /home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/35b3d402/vecadd_gnu_exclude_build.sh
+vecadd_gnu_exclude/ee84de1e: Creating test directory: /home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/ee84de1e
+vecadd_gnu_exclude/ee84de1e: Creating the stage directory: /home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/ee84de1e/stage
+vecadd_gnu_exclude/ee84de1e: Writing build script: /home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/ee84de1e/vecadd_gnu_exclude_build.sh
+vecadd_gnu_exclude/23b60aa1: Creating test directory: /home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/23b60aa1
+vecadd_gnu_exclude/23b60aa1: Creating the stage directory: /home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/23b60aa1/stage
+vecadd_gnu_exclude/23b60aa1: Writing build script: /home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/23b60aa1/vecadd_gnu_exclude_build.sh
 ─────────────────────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────────────────────
-______________________________
-Launching test: vecadd_gnu_exclude/35b3d402
-vecadd_gnu_exclude/35b3d402: Running Test via command: bash --norc --noprofile 
+Spawning 4 processes for processing builders
+vecadd_gnu_exclude/ee84de1e: Running Test via command: bash --norc --noprofile 
 -eo pipefail vecadd_gnu_exclude_build.sh
-vecadd_gnu_exclude/35b3d402: Test completed with returncode: 0
-vecadd_gnu_exclude/35b3d402: Test completed in 0.089494 seconds
-vecadd_gnu_exclude/35b3d402: Writing output file -  /home/spack/runs/generic.loc
-al.bash/compiler_exclude/vecadd_gnu_exclude/35b3d402/vecadd_gnu_exclude.out
-vecadd_gnu_exclude/35b3d402: Writing error file - /home/spack/runs/generic.local
-.bash/compiler_exclude/vecadd_gnu_exclude/35b3d402/vecadd_gnu_exclude.err
+vecadd_gnu_exclude/23b60aa1: Running Test via command: bash --norc --noprofile 
+-eo pipefail vecadd_gnu_exclude_build.sh
+vecadd_gnu_exclude/23b60aa1: Test completed with returncode: 0
+vecadd_gnu_exclude/23b60aa1: Test completed in 0.092492 seconds
+vecadd_gnu_exclude/23b60aa1: Writing output file -  /home/spack/runs/generic.loc
+al.bash/compiler_exclude/vecadd_gnu_exclude/23b60aa1/vecadd_gnu_exclude.out
+vecadd_gnu_exclude/23b60aa1: Writing error file - /home/spack/runs/generic.local
+.bash/compiler_exclude/vecadd_gnu_exclude/23b60aa1/vecadd_gnu_exclude.err
+vecadd_gnu_exclude/ee84de1e: Test completed with returncode: 0
+vecadd_gnu_exclude/ee84de1e: Test completed in 0.135826 seconds
+vecadd_gnu_exclude/ee84de1e: Writing output file -  /home/spack/runs/generic.loc
+al.bash/compiler_exclude/vecadd_gnu_exclude/ee84de1e/vecadd_gnu_exclude.out
+vecadd_gnu_exclude/ee84de1e: Writing error file - /home/spack/runs/generic.local
+.bash/compiler_exclude/vecadd_gnu_exclude/ee84de1e/vecadd_gnu_exclude.err
                                                        Test Summary                                                        
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃ Builder                     ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ vecadd_gnu_exclude/35b3d402 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.089494 │
+│ vecadd_gnu_exclude/23b60aa1 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.092492 │
+├─────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+│ vecadd_gnu_exclude/ee84de1e │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.135826 │
 └─────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
 
 
-Passed Tests: 1/1 Percentage: 100.000%
-Failed Tests: 0/1 Percentage: 0.000%
+Passed Tests: 2/2 Percentage: 100.000%
+Failed Tests: 0/2 Percentage: 0.000%
 
 
-Adding 1 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_69ekd9qy.log
+Adding 2 test results to /home/spack/buildtest/var/report.json
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_smjcjcm4.log

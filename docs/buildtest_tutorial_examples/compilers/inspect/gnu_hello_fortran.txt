@@ -1,19 +1,19 @@
 $ buildtest inspect query -t hello_f 
-─────────────────────────────────────────────────────────────────────── hello_f/43c099a2-cee6-41e7-9906-488ae77a19b3 ────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────── hello_f/fd7f5227-469c-4402-b7b8-9177acc68d86 ────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Hello World Fortran Compilation
 State: PASS
 Returncode: 0
-Runtime: 0.08557 sec
-Starttime: 2022/01/14 15:19:43
-Endtime: 2022/01/14 15:19:43
+Runtime: 0.068184 sec
+Starttime: 2022/02/07 23:28:41
+Endtime: 2022/02/07 23:28:42
 Command: bash --norc --noprofile -eo pipefail hello_f_build.sh
-Test Script: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/43c099a2/hello_f.sh
-Build Script: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/43c099a2/hello_f_build.sh
-Output File: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/43c099a2/hello_f.out
-Error File: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/43c099a2/hello_f.err
-Log File: /home/spack/buildtest/var/logs/buildtest_6nyv90up.log
-─────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/43c099a2/hello_f.sh ────────────────────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/fd7f5227/hello_f.sh
+Build Script: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/fd7f5227/hello_f_build.sh
+Output File: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/fd7f5227/hello_f.out
+Error File: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/fd7f5227/hello_f.err
+Log File: /home/spack/buildtest/var/logs/buildtest_apnyl3vs.log
+─────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/fd7f5227/hello_f.sh ────────────────────────────────────────────────
    1 #!/bin/bash                                                                                                                                                                             
    2                                                                                                                                                                                         
    3                                                                                                                                                                                         

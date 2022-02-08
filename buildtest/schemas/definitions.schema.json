@@ -98,14 +98,6 @@
       "properties": {
         "regex": {
           "$ref": "#/definitions/regex"
-        },
-        "vars": {
-          "type": "string",
-          "description": "Assign value to metric based on variable name"
-        },
-        "env": {
-          "type": "string",
-          "description": "Assign value to metric based on environment variable"
         }
       }
     },

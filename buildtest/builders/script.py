@@ -38,9 +38,8 @@ class ScriptBuilder(BuilderBase):
             numnodes=numnodes,
             compiler=compiler,
         )
-        self.modules = None
-        self.vars = None
-        self.envvars = None
+        self.compiler_settings = {"vars": None, "env": None, "modules": None}
+
         self.configuration = configuration
         self.compiler_section = self.recipe.get("compilers")
 
@@ -58,26 +57,24 @@ class ScriptBuilder(BuilderBase):
 
     def resolve_compilers(self):
         # get environment variables
-        self.envvars = (
-            deep_get(self.compiler_section, "config", self.compiler, "env")
-            or deep_get(self.compiler_section, "default", self.compiler_group, "env")
-            or deep_get(self.compiler_section, "default", "all", "env")
-        )
+        self.compiler_settings["env"] = deep_get(
+            self.compiler_section, "config", self.compiler, "env"
+        ) or deep_get(self.compiler_section, "default", self.compiler_group, "env")
 
         # get environment variables
-        self.vars = (
-            deep_get(self.compiler_section, "config", self.compiler, "vars")
-            or deep_get(self.compiler_section, "default", self.compiler_group, "vars")
-            or deep_get(self.compiler_section, "default", "all", "vars")
-        )
+        self.compiler_settings["vars"] = deep_get(
+            self.compiler_section, "config", self.compiler, "vars"
+        ) or deep_get(self.compiler_section, "default", self.compiler_group, "vars")
 
         # compiler set in compilers 'config' section, we try to get module lines using self._get_modules
-        self.modules = get_module_commands(
+        self.compiler_settings["modules"] = get_module_commands(
             deep_get(self.compiler_section, "config", self.compiler, "module")
         )
 
-        if not self.modules:
-            self.modules = get_module_commands(self.bc_compiler.get("module"))
+        if not self.compiler_settings["modules"]:
+            self.compiler_settings["modules"] = get_module_commands(
+                self.bc_compiler.get("module")
+            )
 
     def write_python_script(self):
         """This method is used for writing python script when ``shell: python``
@@ -160,52 +157,43 @@ class ScriptBuilder(BuilderBase):
 
         # section below is for shell-scripts (bash, sh, csh, zsh, tcsh, zsh)
 
-        if self.cc:
-            lines.append(f"BUILDTEST_CC={self.cc}")
-        if self.cxx:
-            lines.append(f"BUILDTEST_CXX={self.cxx}")
-        if self.fc:
-            lines.append(f"BUILDTEST_FC={self.fc}")
+        if self.compiler:
+            compiler_variables = {
+                "BUILDTEST_CC": self.cc or " ",
+                "BUILDTEST_CXX": self.cxx or " ",
+                "BUILDTEST_FC": self.fc or " ",
+                "BUILDTEST_CFLAGS": self.cflags or " ",
+                "BUILDTEST_CXXFLAGS": self.cxxflags or " ",
+                "BUILDTEST_FFLAGS": self.fflags or " ",
+                "BUILDTEST_CPPFLAGS": self.cppflags or " ",
+                "BUILDTEST_LDFLAGS": self.ldflags or " ",
+            }
+            lines += self._get_variables(compiler_variables)
 
-        if self.cflags:
-            lines.append(f'BUILDTEST_CFLAGS="{self.cflags}"')
-
-        if self.cxxflags:
-            lines.append(f'BUILDTEST_CXXFLAGS="{self.cxxflags}"')
-
-        if self.fflags:
-            lines.append(f'BUILDTEST_FFLAGS="{self.fflags}"')
+            if self.compiler_settings["env"]:
+                lines += self._get_environment(self.compiler_settings["env"])
+            if self.compiler_settings["vars"]:
+                lines += self._get_variables(self.compiler_settings["vars"])
 
         # Add environment variables
-        env_lines = self._get_environment(self.recipe.get("env"))
-        # Add variables
-        var_lines = self._get_variables(self.recipe.get("vars"))
+        env_section = deep_get(
+            self.recipe, "executors", self.executor, "env"
+        ) or self.recipe.get("env")
+        var_section = deep_get(
+            self.recipe, "executors", self.executor, "vars"
+        ) or self.recipe.get("vars")
 
-        # if environment section defined within 'executors' field then read this instead
-        if deep_get(self.recipe, "executors", self.executor, "env"):
-            env_lines = self._get_environment(
-                self.recipe["executors"][self.executor]["env"]
-            )
-
-        if deep_get(self.recipe, "executors", self.executor, "vars"):
-            var_lines = self._get_environment(
-                self.recipe["executors"][self.executor]["vars"]
-            )
-
-        if self.envvars:
-            lines += self._get_environment(self.envvars)
-
-        if self.vars:
-            lines += self._get_variables(self.vars)
-
+        env_lines = self._get_environment(env_section)
         if env_lines:
             lines += env_lines
 
+        var_lines = self._get_environment(var_section)
         if var_lines:
             lines += var_lines
 
-        if self.modules:
-            lines += self.modules
+        if self.compiler_settings["modules"]:
+            lines += self.compiler_settings["modules"]
+
         lines.append("# Content of run section")
         # Add run section
         lines += [self.recipe["run"]]

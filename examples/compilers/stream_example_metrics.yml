@@ -24,12 +24,10 @@ buildspecs:
         regex:
           stream: stdout
           exp: 'Scale:\s+(\S+)\s+.*'
-
       add:
         regex:
           stream: stdout
           exp: 'Add:\s+(\S+)\s+.*'
-
       triad:
         regex:
           stream: stdout

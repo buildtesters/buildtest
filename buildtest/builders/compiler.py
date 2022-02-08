@@ -67,6 +67,7 @@ class CompilerBuilder(BuilderBase):
             testdir=testdir,
             numprocs=numprocs,
             numnodes=numnodes,
+            compiler=compiler,
         )
         self.compiler = compiler
         self.configuration = configuration

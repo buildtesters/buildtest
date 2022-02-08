@@ -59,9 +59,6 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "all": {
-              "$ref": "#definitions/default_compiler_config"
-            },
             "gcc": {
               "$ref": "#definitions/default_compiler_config"
             },

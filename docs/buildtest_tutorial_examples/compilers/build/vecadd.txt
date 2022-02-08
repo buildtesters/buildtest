@@ -2,11 +2,11 @@ $ buildtest build -b /home/spack/buildtest/examples/compilers/vecadd.yml
 ╭───────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────╮                                                                     
 │                                                                                                                      │                                                                     
 │ User:               spack                                                                                            │                                                                     
-│ Hostname:           2d93bd00cb98                                                                                     │                                                                     
+│ Hostname:           09e0ccd237a0                                                                                     │                                                                     
 │ Platform:           Linux                                                                                            │                                                                     
-│ Current Time:       2022/01/14 15:19:47                                                                              │                                                                     
+│ Current Time:       2022/02/07 23:28:43                                                                              │                                                                     
 │ buildtest path:     /home/spack/buildtest/bin/buildtest                                                              │                                                                     
-│ buildtest version:  0.12.0                                                                                           │                                                                     
+│ buildtest version:  0.13.0                                                                                           │                                                                     
 │ python path:        /home/spack/pyenv/buildtest/bin/python3                                                          │                                                                     
 │ python version:     3.8.6                                                                                            │                                                                     
 │ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                     │                                                                     
@@ -28,60 +28,72 @@ Detected Buildspecs after exclusion:  1
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
 /home/spack/buildtest/examples/compilers/vecadd.yml: VALID
-Total builder objects created: 2
-Total compiler builder: 2
+Total builder objects created: 3
+Total compiler builder: 3
 Total script builder: 0
 Total spack builder: 0
                                                                  Compiler Builder Details                                                                 
 ┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Builder             ┃ Executor           ┃ Compiler  ┃ description                               ┃ buildspecs                                          ┃
 ┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ vecadd_gnu/e9142f9a │ generic.local.bash │ gcc_6.5.0 │ Vector Addition example with GNU compiler │ /home/spack/buildtest/examples/compilers/vecadd.yml │
+│ vecadd_gnu/f5a20333 │ generic.local.bash │ gcc_7.5.0 │ Vector Addition example with GNU compiler │ /home/spack/buildtest/examples/compilers/vecadd.yml │
 ├─────────────────────┼────────────────────┼───────────┼───────────────────────────────────────────┼─────────────────────────────────────────────────────┤
-│ vecadd_gnu/71246158 │ generic.local.bash │ gcc_8.3.0 │ Vector Addition example with GNU compiler │ /home/spack/buildtest/examples/compilers/vecadd.yml │
+│ vecadd_gnu/7ad9e6e5 │ generic.local.bash │ gcc_6.5.0 │ Vector Addition example with GNU compiler │ /home/spack/buildtest/examples/compilers/vecadd.yml │
+├─────────────────────┼────────────────────┼───────────┼───────────────────────────────────────────┼─────────────────────────────────────────────────────┤
+│ vecadd_gnu/9ad99b49 │ generic.local.bash │ gcc_8.3.0 │ Vector Addition example with GNU compiler │ /home/spack/buildtest/examples/compilers/vecadd.yml │
 └─────────────────────┴────────────────────┴───────────┴───────────────────────────────────────────┴─────────────────────────────────────────────────────┘
 ─────────────────────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────────────────────
-vecadd_gnu/e9142f9a: Creating test directory: /home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/e9142f9a
-vecadd_gnu/e9142f9a: Creating the stage directory: /home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/e9142f9a/stage
-vecadd_gnu/e9142f9a: Writing build script: /home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/e9142f9a/vecadd_gnu_build.sh
-vecadd_gnu/71246158: Creating test directory: /home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/71246158
-vecadd_gnu/71246158: Creating the stage directory: /home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/71246158/stage
-vecadd_gnu/71246158: Writing build script: /home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/71246158/vecadd_gnu_build.sh
+vecadd_gnu/f5a20333: Creating test directory: /home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/f5a20333
+vecadd_gnu/f5a20333: Creating the stage directory: /home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/f5a20333/stage
+vecadd_gnu/f5a20333: Writing build script: /home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/f5a20333/vecadd_gnu_build.sh
+vecadd_gnu/7ad9e6e5: Creating test directory: /home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/7ad9e6e5
+vecadd_gnu/7ad9e6e5: Creating the stage directory: /home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/7ad9e6e5/stage
+vecadd_gnu/7ad9e6e5: Writing build script: /home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/7ad9e6e5/vecadd_gnu_build.sh
+vecadd_gnu/9ad99b49: Creating test directory: /home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/9ad99b49
+vecadd_gnu/9ad99b49: Creating the stage directory: /home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/9ad99b49/stage
+vecadd_gnu/9ad99b49: Writing build script: /home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/9ad99b49/vecadd_gnu_build.sh
 ─────────────────────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────────────────────
-______________________________
-Launching test: vecadd_gnu/e9142f9a
-______________________________
-Launching test: vecadd_gnu/71246158
-vecadd_gnu/e9142f9a: Running Test via command: bash --norc --noprofile -eo 
+Spawning 4 processes for processing builders
+vecadd_gnu/f5a20333: Running Test via command: bash --norc --noprofile -eo 
 pipefail vecadd_gnu_build.sh
-vecadd_gnu/71246158: Running Test via command: bash --norc --noprofile -eo 
+vecadd_gnu/7ad9e6e5: Running Test via command: bash --norc --noprofile -eo 
 pipefail vecadd_gnu_build.sh
-vecadd_gnu/71246158: Test completed with returncode: 0
-vecadd_gnu/71246158: Test completed in 0.132217 seconds
-vecadd_gnu/71246158: Writing output file -  
-/home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/71246158/vecadd_gnu.out
-vecadd_gnu/71246158: Writing error file - 
-/home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/71246158/vecadd_gnu.err
-vecadd_gnu/e9142f9a: Test completed with returncode: 0
-vecadd_gnu/e9142f9a: Test completed in 0.200467 seconds
-vecadd_gnu/e9142f9a: Writing output file -  
-/home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/e9142f9a/vecadd_gnu.out
-vecadd_gnu/e9142f9a: Writing error file - 
-/home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/e9142f9a/vecadd_gnu.err
+vecadd_gnu/9ad99b49: Running Test via command: bash --norc --noprofile -eo 
+pipefail vecadd_gnu_build.sh
+vecadd_gnu/f5a20333: Test completed with returncode: 0
+vecadd_gnu/f5a20333: Test completed in 0.157662 seconds
+vecadd_gnu/f5a20333: Writing output file -  
+/home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/f5a20333/vecadd_gnu.out
+vecadd_gnu/f5a20333: Writing error file - 
+/home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/f5a20333/vecadd_gnu.err
+vecadd_gnu/7ad9e6e5: Test completed with returncode: 0
+vecadd_gnu/7ad9e6e5: Test completed in 0.167682 seconds
+vecadd_gnu/7ad9e6e5: Writing output file -  
+/home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/7ad9e6e5/vecadd_gnu.out
+vecadd_gnu/9ad99b49: Test completed with returncode: 0
+vecadd_gnu/7ad9e6e5: Writing error file - 
+/home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/7ad9e6e5/vecadd_gnu.err
+vecadd_gnu/9ad99b49: Test completed in 0.17717 seconds
+vecadd_gnu/9ad99b49: Writing output file -  
+/home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/9ad99b49/vecadd_gnu.out
+vecadd_gnu/9ad99b49: Writing error file - 
+/home/spack/runs/generic.local.bash/vecadd/vecadd_gnu/9ad99b49/vecadd_gnu.err
                                                    Test Summary                                                    
 ┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃ Builder             ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
 ┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ vecadd_gnu/71246158 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.132217 │
+│ vecadd_gnu/7ad9e6e5 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.167682 │
 ├─────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
-│ vecadd_gnu/e9142f9a │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.200467 │
+│ vecadd_gnu/9ad99b49 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.17717  │
+├─────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+│ vecadd_gnu/f5a20333 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.157662 │
 └─────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
 
 
-Passed Tests: 2/2 Percentage: 100.000%
-Failed Tests: 0/2 Percentage: 0.000%
+Passed Tests: 3/3 Percentage: 100.000%
+Failed Tests: 0/3 Percentage: 0.000%
 
 
-Adding 2 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_qof2wcaa.log
+Adding 3 test results to /home/spack/buildtest/var/report.json
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_qi04vvfi.log

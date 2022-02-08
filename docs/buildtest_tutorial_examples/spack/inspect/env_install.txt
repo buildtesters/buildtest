@@ -1,19 +1,19 @@
 $ buildtest inspect query -t install_in_spack_env 
-───────────────────────────────────────────────────────────────── install_in_spack_env/7383bea5-1b39-4970-8db8-46b5b9e470bc ─────────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────────── install_in_spack_env/7f5e2f16-a94a-4ca4-99a6-ddc78ab8694a ─────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Install m4 and zlib in a spack environment named m4_zlib
 State: PASS
 Returncode: 0
-Runtime: 6.107433 sec
-Starttime: 2022/01/14 15:18:45
-Endtime: 2022/01/14 15:18:52
+Runtime: 3.482251 sec
+Starttime: 2022/02/07 23:28:07
+Endtime: 2022/02/07 23:28:10
 Command: bash --norc --noprofile -eo pipefail install_in_spack_env_build.sh
-Test Script: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/7383bea5/install_in_spack_env.sh
-Build Script: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/7383bea5/install_in_spack_env_build.sh
-Output File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/7383bea5/install_in_spack_env.out
-Error File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/7383bea5/install_in_spack_env.err
-Log File: /home/spack/buildtest/var/logs/buildtest_167lre5w.log
-───────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/7383bea5/install_in_spack_env.sh ──────────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/7f5e2f16/install_in_spack_env.sh
+Build Script: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/7f5e2f16/install_in_spack_env_build.sh
+Output File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/7f5e2f16/install_in_spack_env.out
+Error File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/7f5e2f16/install_in_spack_env.err
+Log File: /home/spack/buildtest/var/logs/buildtest_tfbqpj0f.log
+───────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/7f5e2f16/install_in_spack_env.sh ──────────────────────────────────────
   1 #!/bin/bash                                                                                                                                                                              
   2 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                        
   3 spack compiler find                                                                                                                                                                      

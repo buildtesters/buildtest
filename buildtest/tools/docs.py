@@ -77,7 +77,7 @@ def build_spack_examples(autogen_dir):
         f"{build_dir}/spack_test.txt": f"buildtest build -b {SPACK_EXAMPLE_DIR}/spack_test.yml",
         f"{build_dir}/spack_test_specs.txt": f"buildtest build -b {SPACK_EXAMPLE_DIR}/spack_test_specs.yml",
         f"{build_dir}/spack_sbatch.txt": f"buildtest build -b {SPACK_EXAMPLE_DIR}/spack_sbatch.yml",
-        f"{inspect_dir}/install_specs.txt": "buildtest inspect query -o -t install_specs_example",
+        f"{inspect_dir}/install_specs.txt": "buildtest inspect query -o -t install_specs_example clone_spack_and_install_zlib",
         f"{inspect_dir}/env_install.txt": "buildtest inspect query -t install_in_spack_env",
         f"{inspect_dir}/env_create_directory.txt": "buildtest inspect query -o -t spack_env_directory",
         f"{inspect_dir}/env_create_manifest.txt": "buildtest inspect query -o -t spack_env_create_from_manifest",
@@ -126,6 +126,10 @@ def build_compiler_examples(autogen_dir):
         f"{inspect_dir}/custom_run.txt": "buildtest inspect query -b  -t custom_run_by_compilers/",
         f"{build_dir}/pre_post_build_run.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/pre_post_build_run.yml",
         f"{inspect_dir}/pre_post_build_run.txt": "buildtest inspect query -t pre_post_build_run",
+        f"{build_dir}/stream_example.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/stream_example.yml",
+        f"{inspect_dir}/stream_example.txt": f"buildtest inspect query -t stream_openmp_c/",
+        f"{build_dir}/stream_example_metrics.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/stream_example_metrics.yml",
+        f"{inspect_dir}/stream_openmp_metrics.txt": f"buildtest inspect query -o stream_openmp_metrics/",
     }
 
     for fname, command in commands_to_run.items():

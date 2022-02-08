@@ -1,19 +1,19 @@
 $ buildtest inspect query -t override_environmentvars/ 
-─────────────────────────────────────────────────────────────── override_environmentvars/040814b8-df41-4a25-8ec5-2d6af5a506f3 ───────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────── override_environmentvars/63fed06e-dfc0-4335-afdd-d9fc324db551 ───────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: override default environment variables
 State: PASS
 Returncode: 0
-Runtime: 0.125883 sec
-Starttime: 2022/01/14 15:19:56
-Endtime: 2022/01/14 15:19:56
+Runtime: 0.11955 sec
+Starttime: 2022/02/07 23:28:49
+Endtime: 2022/02/07 23:28:49
 Command: bash --norc --noprofile -eo pipefail override_environmentvars_build.sh
-Test Script: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/040814b8/override_environmentvars.sh
-Build Script: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/040814b8/override_environmentvars_build.sh
-Output File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/040814b8/override_environmentvars.out
-Error File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/040814b8/override_environmentvars.err
-Log File: /home/spack/buildtest/var/logs/buildtest_4edzfvng.log
-─────────────────────────────── Test File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/040814b8/override_environmentvars.sh ────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/63fed06e/override_environmentvars.sh
+Build Script: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/63fed06e/override_environmentvars_build.sh
+Output File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/63fed06e/override_environmentvars.out
+Error File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/63fed06e/override_environmentvars.err
+Log File: /home/spack/buildtest/var/logs/buildtest_n1p194xr.log
+─────────────────────────────── Test File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/63fed06e/override_environmentvars.sh ────────────────────────────────
    1 #!/bin/bash                                                                                                                                                                             
    2                                                                                                                                                                                         
    3                                                                                                                                                                                         
@@ -31,21 +31,21 @@ Log File: /home/spack/buildtest/var/logs/buildtest_4edzfvng.log
   15 ./$_EXEC                                                                                                                                                                                
   16                                                                                                                                                                                         
   17                                                                                                                                                                                         
-─────────────────────────────────────────────────────────────── override_environmentvars/71b66eb2-69de-41ea-a8f0-3b55780db847 ───────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────── override_environmentvars/0d4fdcee-3dfa-4735-8fec-80e3314bdad8 ───────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: override default environment variables
 State: PASS
 Returncode: 0
-Runtime: 0.197309 sec
-Starttime: 2022/01/14 15:19:56
-Endtime: 2022/01/14 15:19:56
+Runtime: 0.085875 sec
+Starttime: 2022/02/07 23:28:49
+Endtime: 2022/02/07 23:28:49
 Command: bash --norc --noprofile -eo pipefail override_environmentvars_build.sh
-Test Script: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/71b66eb2/override_environmentvars.sh
-Build Script: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/71b66eb2/override_environmentvars_build.sh
-Output File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/71b66eb2/override_environmentvars.out
-Error File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/71b66eb2/override_environmentvars.err
-Log File: /home/spack/buildtest/var/logs/buildtest_4edzfvng.log
-─────────────────────────────── Test File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/71b66eb2/override_environmentvars.sh ────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/0d4fdcee/override_environmentvars.sh
+Build Script: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/0d4fdcee/override_environmentvars_build.sh
+Output File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/0d4fdcee/override_environmentvars.out
+Error File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/0d4fdcee/override_environmentvars.err
+Log File: /home/spack/buildtest/var/logs/buildtest_n1p194xr.log
+─────────────────────────────── Test File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/0d4fdcee/override_environmentvars.sh ────────────────────────────────
    1 #!/bin/bash                                                                                                                                                                             
    2                                                                                                                                                                                         
    3                                                                                                                                                                                         

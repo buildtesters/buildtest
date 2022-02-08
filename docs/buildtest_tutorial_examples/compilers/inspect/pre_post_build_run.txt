@@ -1,19 +1,19 @@
 $ buildtest inspect query -t pre_post_build_run 
-────────────────────────────────────────────────────────────────── pre_post_build_run/db0a08e4-6f04-44a3-be44-f48470efd7af ──────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────── pre_post_build_run/0d7bda3b-a5e0-44ce-bab0-b2ac673c5a82 ──────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: example using pre_build, post_build, pre_run, post_run example
 State: PASS
 Returncode: 0
-Runtime: 0.060395 sec
-Starttime: 2022/01/14 15:20:05
-Endtime: 2022/01/14 15:20:05
+Runtime: 0.051456 sec
+Starttime: 2022/02/07 23:28:54
+Endtime: 2022/02/07 23:28:54
 Command: bash --norc --noprofile -eo pipefail pre_post_build_run_build.sh
-Test Script: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_post_build_run/db0a08e4/pre_post_build_run.sh
-Build Script: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_post_build_run/db0a08e4/pre_post_build_run_build.sh
-Output File: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_post_build_run/db0a08e4/pre_post_build_run.out
-Error File: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_post_build_run/db0a08e4/pre_post_build_run.err
-Log File: /home/spack/buildtest/var/logs/buildtest_29xg9s3k.log
-──────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_post_build_run/db0a08e4/pre_post_build_run.sh ────────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_post_build_run/0d7bda3b/pre_post_build_run.sh
+Build Script: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_post_build_run/0d7bda3b/pre_post_build_run_build.sh
+Output File: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_post_build_run/0d7bda3b/pre_post_build_run.out
+Error File: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_post_build_run/0d7bda3b/pre_post_build_run.err
+Log File: /home/spack/buildtest/var/logs/buildtest_r1ng49_m.log
+──────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_post_build_run/0d7bda3b/pre_post_build_run.sh ────────────────────────────────────
    1 #!/bin/bash                                                                                                                                                                             
    2                                                                                                                                                                                         
    3                                                                                                                                                                                         

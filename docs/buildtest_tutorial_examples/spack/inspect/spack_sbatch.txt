@@ -1,19 +1,19 @@
 $ buildtest inspect query -t spack_sbatch_example 
-───────────────────────────────────────────────────────────────── spack_sbatch_example/ae2d83a2-3540-49af-b323-af16fc8e36d1 ─────────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────────── spack_sbatch_example/76a6b887-c3f0-415a-b903-ffc0f6b46901 ─────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: sbatch directives can be defined in spack schema
 State: PASS
 Returncode: 0
-Runtime: 1.436416 sec
-Starttime: 2022/01/14 15:19:30
-Endtime: 2022/01/14 15:19:31
+Runtime: 1.42342 sec
+Starttime: 2022/02/07 23:28:33
+Endtime: 2022/02/07 23:28:35
 Command: bash --norc --noprofile -eo pipefail spack_sbatch_example_build.sh
-Test Script: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/ae2d83a2/spack_sbatch_example.sh
-Build Script: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/ae2d83a2/spack_sbatch_example_build.sh
-Output File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/ae2d83a2/spack_sbatch_example.out
-Error File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/ae2d83a2/spack_sbatch_example.err
-Log File: /home/spack/buildtest/var/logs/buildtest_1bzb07wd.log
-───────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/ae2d83a2/spack_sbatch_example.sh ─────────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/76a6b887/spack_sbatch_example.sh
+Build Script: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/76a6b887/spack_sbatch_example_build.sh
+Output File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/76a6b887/spack_sbatch_example.out
+Error File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/76a6b887/spack_sbatch_example.err
+Log File: /home/spack/buildtest/var/logs/buildtest_qm3iuk21.log
+───────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/76a6b887/spack_sbatch_example.sh ─────────────────────────────────────
    1 #!/bin/bash                                                                                                                                                                             
    2 ####### START OF SCHEDULER DIRECTIVES #######                                                                                                                                           
    3 #SBATCH -N 1                                                                                                                                                                            

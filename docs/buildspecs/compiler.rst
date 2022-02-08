@@ -278,3 +278,48 @@ If we inspect the content of test we see that buildtest will insert the shell co
 for ``pre_build``, ``post_build``, ``pre_run`` and ``post_run`` in its corresponding section.
 
 .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/pre_post_build_run.txt
+
+Running Stream Benchmark with multiple compilers
+----------------------------------------------------
+
+In this example, we will show how one can run [STREAM benchmark](https://www.cs.virginia.edu/stream/)
+with multiple compilers with `script` schema. The ``compilers`` property can be set in the script schema which
+is used to search for compilers to create separate test for each discovered compiler. buildtest will set the following
+variables in the script that is mapped to each compiler
+
+- **BUILDTEST_CC**: Path to C compiler
+- **BUILDTEST_CXX**: Path to C++ compiler
+- **BUILDTEST_FC**: Path to Fortran compiler
+- **BUILDTEST_CFLAGs**: C compiler flags
+- **BUILDTEST_CXXFLAGS**: C++ compiler flags
+- **BUILDTEST_CPPFLAGS**: C++ Pre Preprocessor flags
+- **BUILDTEST_LDFLAGS**: Linker Flags
+
+In the ``run`` section we can reference these variables to compile ``stream.c`` to build the code and run it. We will
+set environment ``OMP_NUM_THREADS`` to control number of OpenMP threads when running the benchmark.
+.. literalinclude:: ../../examples/compilers/stream_example.yml
+    :language: yaml
+    :emphasize-lines: 7-13
+
+
+If we build this test we see one test is created per compiler instance defined in our configuration file.
+
+.. program-output:: cat buildtest_tutorial_examples/compilers/build/stream_example.txt
+
+Next, let's see the generated test using ``buildtest inspect query``, we notice buildtest will set variables ``BUILDTEST_*`` for
+each test to map to each compiler.
+
+.. program-output:: cat buildtest_tutorial_examples/compilers/inspect/stream_example.txt
+
+In the next example, we will run STREAM benchmark and extract metrics from test results and assign them to metrics name
+``copy``, ``add``, ``scale``, ``triad``. Each metrics will be searched using regular expression against stdout stream
+
+
+.. literalinclude:: ../../examples/compilers/stream_example_metrics.yml
+    :language: yaml
+    :emphasize-lines: 7-13
+
+buildtest will record the metrics in the test report and ``buildtest inspect query`` will display metrics
+if found in test. Shown below we see the output of the metrics and its corresponding values.
+
+.. program-output:: cat buildtest_tutorial_examples/compilers/inspect/stream_openmp_metrics.txt

@@ -1,26 +1,26 @@
 $ buildtest inspect query -o -t spack_test_m4 
-──────────────────────────────────────────────────────────────────── spack_test_m4/956a6b7d-adca-49f4-aade-7abc3dde3173 ─────────────────────────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────── spack_test_m4/8bdbf1c4-9ca7-4c5d-abfc-bd11c69c633a ─────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Run spack test for m4 package and report results
 State: PASS
 Returncode: 0
-Runtime: 1.570861 sec
-Starttime: 2022/01/14 15:19:20
-Endtime: 2022/01/14 15:19:22
+Runtime: 1.424231 sec
+Starttime: 2022/02/07 23:28:26
+Endtime: 2022/02/07 23:28:28
 Command: bash --norc --noprofile -eo pipefail spack_test_m4_build.sh
-Test Script: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/956a6b7d/spack_test_m4.sh
-Build Script: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/956a6b7d/spack_test_m4_build.sh
-Output File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/956a6b7d/spack_test_m4.out
-Error File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/956a6b7d/spack_test_m4.err
-Log File: /home/spack/buildtest/var/logs/buildtest_r6c_wafs.log
-─────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/956a6b7d/spack_test_m4.out ────────────────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/8bdbf1c4/spack_test_m4.sh
+Build Script: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/8bdbf1c4/spack_test_m4_build.sh
+Output File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/8bdbf1c4/spack_test_m4.out
+Error File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/8bdbf1c4/spack_test_m4.err
+Log File: /home/spack/buildtest/var/logs/buildtest_o18hmhv8.log
+─────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/8bdbf1c4/spack_test_m4.out ────────────────────────────────────────────
 ==> Spack test spack_test_m4                                                                                                                                                                 
 ==> Testing package m4-1.4.18-mkc3u4x                                                                                                                                                        
 ==> Results for test suite 'spack_test_m4':                                                                                                                                                  
 ==>   m4-1.4.18-mkc3u4x PASSED                                                                                                                                                               
 ==> Testing package m4-1.4.18-mkc3u4x                                                                                                                                                        
-==> [2022-01-14-15:19:21.727461] test: ensuring m4 version is 1.4.18                                                                                                                         
-==> [2022-01-14-15:19:21.728484] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/m4-1.4.18-mkc3u4x2p2wie6jfhuku7g5rkovcrxps/bin/m4' '--version'                              
+==> [2022-02-07-23:28:27.760751] test: ensuring m4 version is 1.4.18                                                                                                                         
+==> [2022-02-07-23:28:27.761569] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/m4-1.4.18-mkc3u4x2p2wie6jfhuku7g5rkovcrxps/bin/m4' '--version'                              
 m4 (GNU M4) 1.4.18                                                                                                                                                                           
 Copyright (C) 2016 Free Software Foundation, Inc.                                                                                                                                            
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.                                                                                                               
@@ -28,13 +28,13 @@ This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.                                                                                                                                        
 Written by Rene' Seindal.                                                                                                                                                                    
 PASSED                                                                                                                                                                                       
-==> [2022-01-14-15:19:21.732728] test: ensuring m4 example succeeds                                                                                                                          
-==> [2022-01-14-15:19:21.732978] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/m4-1.4.18-mkc3u4x2p2wie6jfhuku7g5rkovcrxps/bin/m4' '/home/spack/.spack/test/5mpugnenojhehp5k
+==> [2022-02-07-23:28:27.765564] test: ensuring m4 example succeeds                                                                                                                          
+==> [2022-02-07-23:28:27.765873] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/m4-1.4.18-mkc3u4x2p2wie6jfhuku7g5rkovcrxps/bin/m4' '/home/spack/.spack/test/5mpugnenojhehp5k
 // macro is defined                                                                                                                                                                          
 Hello, World!                                                                                                                                                                                
 PASSED                                                                                                                                                                                       
                                                                                                                                                                                              
-───────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/956a6b7d/spack_test_m4.sh ─────────────────────────────────────────────
+───────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/8bdbf1c4/spack_test_m4.sh ─────────────────────────────────────────────
   1 #!/bin/bash                                                                                                                                                                              
   2 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                        
   3 spack test run --alias spack_test_m4 m4                                                                                                                                                  

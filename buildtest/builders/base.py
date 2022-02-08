@@ -67,6 +67,9 @@ class BuilderBase(ABC):
             testdir (str): Test directory where tests are written. Must be full path on filesystem.
         """
 
+        self.name = name
+
+        self.compiler = compiler
         self.cc = None
         self.fc = None
         self.cxx = None
@@ -76,8 +79,6 @@ class BuilderBase(ABC):
         self.ldflags = None
         self.cppflags = None
 
-        self.name = name
-        self.compiler = compiler
         self.metadata = {}
 
         self.duration = 0
@@ -109,11 +110,6 @@ class BuilderBase(ABC):
         self.metrics = None
 
         self.buildspec = buildspec
-
-        # used to lookup variables if 'vars' key is defined.
-        self.variable_lookup = {}
-        # used to lookup environment variables if 'envs' key is defined.
-        self.envs_lookup = {}
 
         # used for storing output content
         self._output = None
@@ -504,11 +500,22 @@ class BuilderBase(ABC):
         that can be referenced when writing tests. The buildtest variables all start with BUILDTEST_*
         """
 
+        buildtest_vars = {
+            "BUILDTEST_TEST_NAME": self.name,
+            "BUILDTEST_TEST_ROOT": self.test_root,
+            "BUILDTEST_BUILDSPEC_DIR": os.path.dirname(self.buildspec),
+            "BUILDTEST_STAGE_DIR": self.stage_dir,
+            "BUILDTEST_TEST_ID": self.metadata["full_id"],
+            "BUILDTEST_NUMPROCS": self.numprocs or "",
+            "BUILDTEST_NUMNODES": self.numnodes or "",
+        }
         lines = []
         lines.append("\n")
         lines.append(
             "############# START VARIABLE DECLARATION ########################"
         )
+        lines += self._get_variables(buildtest_vars)
+        """
         lines.append(f"export BUILDTEST_TEST_NAME={self.name}")
         lines.append(f"export BUILDTEST_TEST_ROOT={self.test_root}")
         lines.append(
@@ -522,7 +529,7 @@ class BuilderBase(ABC):
 
         if self.numnodes:
             lines.append(f"export BUILDTEST_NUMNODES={self.numnodes}")
-
+        """
         lines.append(
             "############# END VARIABLE DECLARATION   ########################"
         )
@@ -558,7 +565,12 @@ class BuilderBase(ABC):
             lines += [" ".join(launcher) + " " + f"{self.testpath}"]
 
         lines.append("# Get return code")
-        lines.append("returncode=$?")
+
+        # for csh returncode is determined by $status environment, for bash,sh,zsh its $?
+        if is_csh_shell(self.shell.name):
+            lines.append("set returncode = $status")
+        else:
+            lines.append("returncode=$?")
 
         lines.append("# Exit with return code")
         lines.append("exit $returncode")
@@ -761,30 +773,34 @@ class BuilderBase(ABC):
 
         lines = []
 
-        shell = self.shell.name
+        # if env not defined return immediately
+        if not env:
+            return
+
+        if not isinstance(env, dict):
+            raise BuildTestError(f"{env} must be a dict but got type: {type(env)}")
+
         # Parse environment depending on expected shell
         if env:
 
             # bash, sh, zsh environment variable declaration is export KEY=VALUE
-            if re.fullmatch("(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", shell):
+            if re.fullmatch(
+                "(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", self.shell.name
+            ):
                 for k, v in env.items():
-                    lines.append("export %s=%s" % (k, v))
-                    self.envs_lookup[k] = v
+                    lines.append(f'export {k}="{v}"')
 
             # tcsh, csh,  environment variable declaration is setenv KEY VALUE
-            elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", shell):
+            elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", self.shell.name):
                 for k, v in env.items():
-                    lines.append("setenv %s %s" % (k, v))
-                    self.envs_lookup[k] = v
+                    lines.append(f'setenv {k} "{v}"')
 
             else:
                 self.logger.warning(
-                    f"{shell} is not supported, skipping environment variables."
+                    f"{self.shell.name} is not supported, skipping environment variables."
                 )
+                return
 
-        if lines:
-            lines.insert(0, "# Declare environment variables")
-            lines.append("\n")
         return lines
 
     def _get_variables(self, variables):
@@ -797,30 +813,36 @@ class BuilderBase(ABC):
 
         lines = []
 
-        shell = self.shell.name
+        if not variables:
+            return
+
+        console.print(variables, type(variables))
+        if not isinstance(variables, dict):
+            raise BuildTestError(
+                f"{variables} must be a dict but got type:  {type(variables)}"
+            )
+
         # Parse environment depending on expected shell
         if variables:
 
             # bash, sh, zsh variable declaration is KEY=VALUE
-            if re.fullmatch("(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", shell):
+            if re.fullmatch(
+                "(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", self.shell.name
+            ):
                 for k, v in variables.items():
-                    self.variable_lookup[k] = v
-                    lines.append("%s=%s" % (k, v))
+                    lines.append(f'{k}="{v}"')
 
             # tcsh, csh variable declaration is set KEY=VALUE
-            elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", shell):
+            elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", self.shell.name):
                 for k, v in variables.items():
-                    self.variable_lookup[k] = v
-                    lines.append("set %s=%s" % (k, v))
+                    lines.append(f'set {k}="{v}"')
 
             else:
                 self.logger.warning(
-                    f"{shell} is not supported, skipping environment variables."
+                    f"{self.shell.name} is not supported, skipping environment variables."
                 )
+                return
 
-        if lines:
-            lines.insert(0, "# Declare shell variables")
-            lines.append("\n")
         return lines
 
     def add_metrics(self):
@@ -845,23 +867,12 @@ class BuilderBase(ABC):
                 elif self.metrics[key]["regex"]["stream"] == "stderr":
                     content = self._error
 
-                pattern = re.search(self.metrics[key]["regex"]["exp"], content)
+                pattern = self.metrics[key]["regex"]["exp"]
+                match = re.search(pattern, content)
 
                 # if pattern match found we assign value to metric
-                if pattern:
-                    self.metadata["metrics"][key] = pattern.group()
-
-            # variable assignment
-            elif self.metrics[key].get("vars"):
-                self.metadata["metrics"][key] = self.variable_lookup.get(
-                    self.metrics[key]["vars"]
-                )
-
-            # environment variable assignment
-            elif self.metrics[key].get("env"):
-                self.metadata["metrics"][key] = self.envs_lookup.get(
-                    self.metrics[key]["env"]
-                )
+                if match:
+                    self.metadata["metrics"][key] = match.group()
 
         # convert all metrics to string types
         for key in self.metadata["metrics"].keys():
@@ -1121,31 +1132,34 @@ class BuilderBase(ABC):
                 self.compiler_section["default"][self.compiler_group].get("cc")
                 or self.cc
             )
-
             self.fc = (
                 self.compiler_section["default"][self.compiler_group].get("fc")
                 or self.fc
             )
-
             self.cxx = (
                 self.compiler_section["default"][self.compiler_group].get("cxx")
                 or self.cxx
             )
 
-            self.cflags = self.compiler_section["default"][self.compiler_group].get(
-                "cflags"
+            self.cflags = (
+                self.compiler_section["default"][self.compiler_group].get("cflags")
+                or self.cflags
             )
-            self.cxxflags = self.compiler_section["default"][self.compiler_group].get(
-                "cxxflags"
+            self.cxxflags = (
+                self.compiler_section["default"][self.compiler_group].get("cxxflags")
+                or self.cxxflags
             )
-            self.fflags = self.compiler_section["default"][self.compiler_group].get(
-                "fflags"
+            self.fflags = (
+                self.compiler_section["default"][self.compiler_group].get("fflags")
+                or self.fflags
             )
-            self.ldflags = self.compiler_section["default"][self.compiler_group].get(
-                "ldflags"
+            self.ldflags = (
+                self.compiler_section["default"][self.compiler_group].get("ldflags")
+                or self.ldflags
             )
-            self.cppflags = self.compiler_section["default"][self.compiler_group].get(
-                "cppflags"
+            self.cppflags = (
+                self.compiler_section["default"][self.compiler_group].get("cppflags")
+                or self.cppflags
             )
         # if compiler instance defined in config section read from buildspec. This overrides default section if specified
         if deep_get(self.compiler_section, "config", self.compiler):

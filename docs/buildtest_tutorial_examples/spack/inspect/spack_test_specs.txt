@@ -1,75 +1,35 @@
 $ buildtest inspect query -o -t spack_test_results_specs_format 
-─────────────────────────────────────────────────────────── spack_test_results_specs_format/5aed83a1-6bb6-4382-9f03-a4736857d752 ────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────── spack_test_results_specs_format/39846d8a-bb6a-4309-a7ca-6653e708c67c ────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Run spack test results with spec format
 State: PASS
 Returncode: 0
-Runtime: 5.489641 sec
-Starttime: 2022/01/14 15:19:23
-Endtime: 2022/01/14 15:19:28
+Runtime: 3.857868 sec
+Starttime: 2022/02/07 23:28:28
+Endtime: 2022/02/07 23:28:32
 Command: bash --norc --noprofile -eo pipefail spack_test_results_specs_format_build.sh
-Test Script: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/5aed83a1/spack_test_results_specs_format.sh
-Build Script: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/5aed83a1/spack_test_results_specs_format_build.sh
-Output File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/5aed83a1/spack_test_results_specs_format.out
-Error File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/5aed83a1/spack_test_results_specs_format.err
-Log File: /home/spack/buildtest/var/logs/buildtest_ap77gg_s.log
-────────────────────── Output File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/5aed83a1/spack_test_results_specs_format.out ───────────────────────
-==> All of the packages are already installed                                                                                                                                                
+Test Script: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/39846d8a/spack_test_results_specs_format.sh
+Build Script: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/39846d8a/spack_test_results_specs_format_build.sh
+Output File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/39846d8a/spack_test_results_specs_format.out
+Error File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/39846d8a/spack_test_results_specs_format.err
+Log File: /home/spack/buildtest/var/logs/buildtest_rbbbuqr5.log
+────────────────────── Output File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/39846d8a/spack_test_results_specs_format.out ───────────────────────
 ==> All of the packages are already installed                                                                                                                                                
 ==> Spack test spack_test_results_specs_format                                                                                                                                               
-==> Testing package libxml2-2.9.10-yn2r3wf                                                                                                                                                   
 ==> Testing package libsigsegv-2.12-lbrx7ln                                                                                                                                                  
-==> Results for test suite 'spack_test_results_specs_format', spec matching 'libxml2':                                                                                                       
-==>   libxml2-2.9.10-yn2r3wf PASSED                                                                                                                                                          
-==> Testing package libxml2-2.9.10-yn2r3wf                                                                                                                                                   
-==> [2022-01-14-15:19:27.401832] test: Performing simple import test                                                                                                                         
-==> [2022-01-14-15:19:27.402547] test: xml2-config: expect command status in [0]                                                                                                             
-==> [2022-01-14-15:19:27.402829] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3wfhiilelyulh5toteicdtxjhw7d/bin/xml2-config' '--version'                
-2.9.10                                                                                                                                                                                       
-PASSED                                                                                                                                                                                       
-==> [2022-01-14-15:19:27.406553] test: xmllint: expect command status in [0]                                                                                                                 
-==> [2022-01-14-15:19:27.406920] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3wfhiilelyulh5toteicdtxjhw7d/bin/xmllint' '--auto' '-o' 'test.xml'       
-PASSED                                                                                                                                                                                       
-==> [2022-01-14-15:19:27.411121] test: xmllint: expect command status in [3]                                                                                                                 
-==> [2022-01-14-15:19:27.411562] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3wfhiilelyulh5toteicdtxjhw7d/bin/xmllint' '--postvalid' 'test.xml'       
-<?xml version="1.0"?>                                                                                                                                                                        
-<info>abc</info>                                                                                                                                                                             
-validity error : no DTD found!                                                                                                                                                               
-Document test.xml does not validate                                                                                                                                                          
-PASSED                                                                                                                                                                                       
-==> [2022-01-14-15:19:27.416198] test: xmllint: expect command status in [3]                                                                                                                 
-==> [2022-01-14-15:19:27.416631] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3wfhiilelyulh5toteicdtxjhw7d/bin/xmllint' '--dtdvalid' '/home/spack/.spac
-<?xml version="1.0"?>                                                                                                                                                                        
-<info>abc</info>                                                                                                                                                                             
-test.xml:2: element info: validity error : Element info content does not follow the DTD, expecting (data), got (CDATA)                                                                       
-Document test.xml does not validate against /home/spack/.spack/test/d6phm2ufma23flnqrts7vw7vidoawdvg/libxml2-2.9.10-yn2r3wf/data/libxml2/info.dtd                                            
-PASSED                                                                                                                                                                                       
-==> [2022-01-14-15:19:27.421012] test: xmllint: expect command status in [0]                                                                                                                 
-==> [2022-01-14-15:19:27.421313] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3wfhiilelyulh5toteicdtxjhw7d/bin/xmllint' '--dtdvalid' '/home/spack/.spac
-<?xml version="1.0"?>                                                                                                                                                                        
-<info>                                                                                                                                                                                       
-<data>abc</data>                                                                                                                                                                             
-</info>                                                                                                                                                                                      
-PASSED                                                                                                                                                                                       
-==> [2022-01-14-15:19:27.425465] test: xmlcatalog: expect command status in [0]                                                                                                              
-==> [2022-01-14-15:19:27.425826] '/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3wfhiilelyulh5toteicdtxjhw7d/bin/xmlcatalog' '--create'                  
-<?xml version="1.0"?>                                                                                                                                                                        
-<!DOCTYPE catalog PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.0//EN" "http://www.oasis-open.org/committees/entity/release/1.0/catalog.dtd">                                       
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"/>                                                                                                                               
-PASSED                                                                                                                                                                                       
 ==> Results for test suite 'spack_test_results_specs_format', spec matching 'libsigsegv':                                                                                                    
 ==>   libsigsegv-2.12-lbrx7ln PASSED                                                                                                                                                         
 ==> Testing package libsigsegv-2.12-lbrx7ln                                                                                                                                                  
-==> [2022-01-14-15:19:27.764162] test: checking ability to link to the library                                                                                                               
-==> [2022-01-14-15:19:27.764601] '/home/spack/spack/lib/spack/env/cc' '-I/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libsigsegv-2.12-lbrx7lnfz46ukewxbhxnucmx76g23c6q/incl
+==> [2022-02-07-23:28:31.737789] test: checking ability to link to the library                                                                                                               
+==> [2022-02-07-23:28:31.738129] '/home/spack/spack/lib/spack/env/cc' '-I/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libsigsegv-2.12-lbrx7lnfz46ukewxbhxnucmx76g23c6q/incl
 PASSED                                                                                                                                                                                       
-==> [2022-01-14-15:19:27.844662] test: checking ability to use the library                                                                                                                   
-==> [2022-01-14-15:19:27.845032] './smoke_test'                                                                                                                                              
+==> [2022-02-07-23:28:31.801523] test: checking ability to use the library                                                                                                                   
+==> [2022-02-07-23:28:31.801926] './smoke_test'                                                                                                                                              
 Caught sigsegv #1                                                                                                                                                                            
 Hello World!                                                                                                                                                                                 
 PASSED                                                                                                                                                                                       
                                                                                                                                                                                              
-──────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/5aed83a1/spack_test_results_specs_format.sh ────────────────────────
+──────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/39846d8a/spack_test_results_specs_format.sh ────────────────────────
    1 #!/bin/bash                                                                                                                                                                             
    2 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                       
    3 spack env create  spack_test_example                                                                                                                                                    

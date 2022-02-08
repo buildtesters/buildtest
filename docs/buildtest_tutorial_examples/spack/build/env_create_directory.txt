@@ -2,11 +2,11 @@ $ buildtest build -b /home/spack/buildtest/examples/spack/env_create_directory.y
 ╭────────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────────╮                                                           
 │                                                                                                                                │                                                           
 │ User:               spack                                                                                                      │                                                           
-│ Hostname:           2d93bd00cb98                                                                                               │                                                           
+│ Hostname:           09e0ccd237a0                                                                                               │                                                           
 │ Platform:           Linux                                                                                                      │                                                           
-│ Current Time:       2022/01/14 15:18:53                                                                                        │                                                           
+│ Current Time:       2022/02/07 23:28:11                                                                                        │                                                           
 │ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                        │                                                           
-│ buildtest version:  0.12.0                                                                                                     │                                                           
+│ buildtest version:  0.13.0                                                                                                     │                                                           
 │ python path:        /home/spack/pyenv/buildtest/bin/python3                                                                    │                                                           
 │ python version:     3.8.6                                                                                                      │                                                           
 │ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                               │                                                           
@@ -36,29 +36,28 @@ Total spack builder: 1
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Builder                      ┃ Executor           ┃ description                           ┃ buildspecs                                                    ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ spack_env_directory/79ca3ec8 │ generic.local.bash │ create spack environment in directory │ /home/spack/buildtest/examples/spack/env_create_directory.yml │
+│ spack_env_directory/297a6915 │ generic.local.bash │ create spack environment in directory │ /home/spack/buildtest/examples/spack/env_create_directory.yml │
 └──────────────────────────────┴────────────────────┴───────────────────────────────────────┴───────────────────────────────────────────────────────────────┘
 ─────────────────────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────────────────────
-spack_env_directory/79ca3ec8: Creating test directory: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/79ca3ec8
-spack_env_directory/79ca3ec8: Creating the stage directory: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/79ca3ec8/stage
-spack_env_directory/79ca3ec8: Writing build script: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/79ca3ec8/spack_env_directory_build.sh
+spack_env_directory/297a6915: Creating test directory: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/297a6915
+spack_env_directory/297a6915: Creating the stage directory: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/297a6915/stage
+spack_env_directory/297a6915: Writing build script: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/297a6915/spack_env_directory_build.sh
 ─────────────────────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────────────────────
-______________________________
-Launching test: spack_env_directory/79ca3ec8
-spack_env_directory/79ca3ec8: Running Test via command: bash --norc --noprofile 
+Spawning 4 processes for processing builders
+spack_env_directory/297a6915: Running Test via command: bash --norc --noprofile 
 -eo pipefail spack_env_directory_build.sh
-spack_env_directory/79ca3ec8: Test completed with returncode: 0
-spack_env_directory/79ca3ec8: Test completed in 3.346589 seconds
-spack_env_directory/79ca3ec8: Writing output file -  /home/spack/runs/generic.lo
-cal.bash/env_create_directory/spack_env_directory/79ca3ec8/spack_env_directory.o
+spack_env_directory/297a6915: Test completed with returncode: 0
+spack_env_directory/297a6915: Test completed in 2.376781 seconds
+spack_env_directory/297a6915: Writing output file -  /home/spack/runs/generic.lo
+cal.bash/env_create_directory/spack_env_directory/297a6915/spack_env_directory.o
 ut
-spack_env_directory/79ca3ec8: Writing error file - /home/spack/runs/generic.loca
-l.bash/env_create_directory/spack_env_directory/79ca3ec8/spack_env_directory.err
+spack_env_directory/297a6915: Writing error file - /home/spack/runs/generic.loca
+l.bash/env_create_directory/spack_env_directory/297a6915/spack_env_directory.err
                                                         Test Summary                                                        
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
 ┃ Builder                      ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ spack_env_directory/79ca3ec8 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 3.346589 │
+│ spack_env_directory/297a6915 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 2.376781 │
 └──────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
 
@@ -68,4 +67,4 @@ Failed Tests: 0/1 Percentage: 0.000%
 
 
 Adding 1 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_8sxi8dgb.log
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_xesu9ouq.log

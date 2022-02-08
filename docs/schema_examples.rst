@@ -86,7 +86,7 @@ Spack Schema
 ~~~~~~~~~~~~~~
 
 This schema is used for writing tests with `spack package manager <https://spack.readthedocs.io/>`_ using ``type: spack`` field. For more details
-see :ref:`spack_schema`.
+see :ref:`buildtest_spack_integration`.
 
 .. literalinclude:: ../buildtest/schemas/spack.schema.json
    :language: json
