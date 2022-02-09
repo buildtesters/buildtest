@@ -116,7 +116,7 @@ class ScriptBuilder(BuilderBase):
         # if shell is python the generated testscript will be run via bash, we invoke
         # python script in bash script.
         if self.shell.name == "python":
-            lines = [self.default_shell.shebang]
+            lines = ["#!/bin/bash"]
 
         sched_lines = self.get_job_directives()
         if sched_lines:
@@ -159,14 +159,14 @@ class ScriptBuilder(BuilderBase):
 
         if self.compiler:
             compiler_variables = {
-                "BUILDTEST_CC": self.cc or " ",
-                "BUILDTEST_CXX": self.cxx or " ",
-                "BUILDTEST_FC": self.fc or " ",
-                "BUILDTEST_CFLAGS": self.cflags or " ",
-                "BUILDTEST_CXXFLAGS": self.cxxflags or " ",
-                "BUILDTEST_FFLAGS": self.fflags or " ",
-                "BUILDTEST_CPPFLAGS": self.cppflags or " ",
-                "BUILDTEST_LDFLAGS": self.ldflags or " ",
+                "BUILDTEST_CC": self.cc,
+                "BUILDTEST_CXX": self.cxx,
+                "BUILDTEST_FC": self.fc,
+                "BUILDTEST_CFLAGS": self.cflags,
+                "BUILDTEST_CXXFLAGS": self.cxxflags,
+                "BUILDTEST_FFLAGS": self.fflags,
+                "BUILDTEST_CPPFLAGS": self.cppflags,
+                "BUILDTEST_LDFLAGS": self.ldflags,
             }
             lines += self._get_variables(compiler_variables)
 
@@ -187,7 +187,7 @@ class ScriptBuilder(BuilderBase):
         if env_lines:
             lines += env_lines
 
-        var_lines = self._get_environment(var_section)
+        var_lines = self._get_variables(var_section)
         if var_lines:
             lines += var_lines
 

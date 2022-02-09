@@ -139,10 +139,11 @@ class BuilderBase(ABC):
     def shell_detection(self):
         """Detect shell and shebang used for test script"""
 
-        # The default shell will be bash
-        self.default_shell = Shell()
-
-        self.shell = Shell(self.recipe.get("shell", "bash"))
+        # if 'shell' property not defined in buildspec use this shell otherwise use the 'shell' property from the executor definition
+        self.shell = Shell(
+            self.recipe.get("shell")
+            or self.buildexecutor.executors[self.executor].shell
+        )
 
         # set shebang to value defined in Buildspec, if not defined then get one from Shell class
         self.shebang = (
@@ -500,40 +501,32 @@ class BuilderBase(ABC):
         that can be referenced when writing tests. The buildtest variables all start with BUILDTEST_*
         """
 
-        buildtest_vars = {
-            "BUILDTEST_TEST_NAME": self.name,
-            "BUILDTEST_TEST_ROOT": self.test_root,
-            "BUILDTEST_BUILDSPEC_DIR": os.path.dirname(self.buildspec),
-            "BUILDTEST_STAGE_DIR": self.stage_dir,
-            "BUILDTEST_TEST_ID": self.metadata["full_id"],
-            "BUILDTEST_NUMPROCS": self.numprocs or "",
-            "BUILDTEST_NUMNODES": self.numnodes or "",
-        }
-        lines = []
-        lines.append("\n")
-        lines.append(
-            "############# START VARIABLE DECLARATION ########################"
-        )
-        lines += self._get_variables(buildtest_vars)
-        """
-        lines.append(f"export BUILDTEST_TEST_NAME={self.name}")
-        lines.append(f"export BUILDTEST_TEST_ROOT={self.test_root}")
-        lines.append(
-            f"export BUILDTEST_BUILDSPEC_DIR={os.path.dirname(self.buildspec)}"
-        )
-        lines.append(f"export BUILDTEST_STAGE_DIR={self.stage_dir}")
-        lines.append(f"export BUILDTEST_TEST_ID={self.metadata['full_id']}")
+        if is_csh_shell(self.shell.name):
+            lines = [
+                f"setenv BUILDTEST_TEST_NAME {self.name}",
+                f"setenv BUILDTEST_TEST_ROOT {self.test_root}",
+                f"setenv BUILDTEST_BUILDSPEC_DIR {os.path.dirname(self.buildspec)}",
+                f"setenv BUILDTEST_STAGE_DIR {self.stage_dir}",
+            ]
+            if self.numnodes:
+                lines.append(f"setenv BUILDTEST_NUMNODES {self.numnodes}")
+            if self.numprocs:
+                lines.append(f"setenv BUILDTEST_NUMPROCS {self.numprocs}")
 
-        if self.numprocs:
-            lines.append(f"export BUILDTEST_NUMPROCS={self.numprocs}")
+            return lines
+
+        lines = [
+            f"export BUILDTEST_TEST_NAME={self.name}",
+            f"export BUILDTEST_TEST_ROOT={self.test_root}",
+            f"export BUILDTEST_BUILDSPEC_DIR={os.path.dirname(self.buildspec)}",
+            f"export BUILDTEST_STAGE_DIR={self.stage_dir}",
+        ]
 
         if self.numnodes:
             lines.append(f"export BUILDTEST_NUMNODES={self.numnodes}")
-        """
-        lines.append(
-            "############# END VARIABLE DECLARATION   ########################"
-        )
-        lines.append("\n")
+        if self.numprocs:
+            lines.append(f"export BUILDTEST_NUMNODES={self.numnodes}")
+
         return lines
 
     def _write_build_script(self):
@@ -780,26 +773,21 @@ class BuilderBase(ABC):
         if not isinstance(env, dict):
             raise BuildTestError(f"{env} must be a dict but got type: {type(env)}")
 
-        # Parse environment depending on expected shell
-        if env:
+        # bash, sh, zsh environment variable declaration is export KEY=VALUE
+        if re.fullmatch("(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", self.shell.name):
+            for k, v in env.items():
+                lines.append(f'export {k}="{v}"')
 
-            # bash, sh, zsh environment variable declaration is export KEY=VALUE
-            if re.fullmatch(
-                "(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", self.shell.name
-            ):
-                for k, v in env.items():
-                    lines.append(f'export {k}="{v}"')
+        # tcsh, csh,  environment variable declaration is setenv KEY VALUE
+        elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", self.shell.name):
+            for k, v in env.items():
+                lines.append(f'setenv {k} "{v}"')
 
-            # tcsh, csh,  environment variable declaration is setenv KEY VALUE
-            elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", self.shell.name):
-                for k, v in env.items():
-                    lines.append(f'setenv {k} "{v}"')
-
-            else:
-                self.logger.warning(
-                    f"{self.shell.name} is not supported, skipping environment variables."
-                )
-                return
+        else:
+            self.logger.warning(
+                f"{self.shell.name} is not supported, skipping environment variables."
+            )
+            return
 
         return lines
 
@@ -816,32 +804,32 @@ class BuilderBase(ABC):
         if not variables:
             return
 
-        console.print(variables, type(variables))
         if not isinstance(variables, dict):
             raise BuildTestError(
                 f"{variables} must be a dict but got type:  {type(variables)}"
             )
 
-        # Parse environment depending on expected shell
-        if variables:
-
-            # bash, sh, zsh variable declaration is KEY=VALUE
-            if re.fullmatch(
-                "(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", self.shell.name
-            ):
-                for k, v in variables.items():
+        # bash, sh, zsh variable declaration is KEY=VALUE
+        if re.fullmatch("(bash|sh|zsh|/bin/bash|/bin/sh|/bin/zsh)$", self.shell.name):
+            for k, v in variables.items():
+                if v:
                     lines.append(f'{k}="{v}"')
+                else:
+                    lines.append(f"{k}=")
 
-            # tcsh, csh variable declaration is set KEY=VALUE
-            elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", self.shell.name):
-                for k, v in variables.items():
+        # tcsh, csh variable declaration is set KEY=VALUE
+        elif re.fullmatch("(tcsh|csh|/bin/tcsh|/bin/csh)$", self.shell.name):
+            for k, v in variables.items():
+                if v:
                     lines.append(f'set {k}="{v}"')
+                else:
+                    lines.append(f"set {k}=")
 
-            else:
-                self.logger.warning(
-                    f"{self.shell.name} is not supported, skipping environment variables."
-                )
-                return
+        else:
+            self.logger.warning(
+                f"{self.shell.name} is not supported, skipping environment variables."
+            )
+            return
 
         return lines
 

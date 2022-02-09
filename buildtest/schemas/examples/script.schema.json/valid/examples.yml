@@ -264,24 +264,6 @@ buildspecs:
           exp: 'rating of=(\d+\.\d+)$'
           stream: stdout
 
-  metric_variable_assignment:
-    executor: generic.local.sh
-    type: script
-    description: capture result metric based on variables and environment variable
-    vars:
-      GFLOPS: "63.6515"
-    env:
-      FOO: BAR
-    run: |
-      echo $GFLOPS
-      echo $FOO
-    tags: tutorials
-    metrics:
-      gflops:
-        vars: "GFLOPS"
-      foo:
-        env: "FOO"
-
   multi_executor_vars:
     type: script
     executor: 'generic.local.(sh|bash)'

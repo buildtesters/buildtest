@@ -44,7 +44,6 @@ from buildtest.utils.file import (
 from jsonschema.exceptions import ValidationError
 from rich import box
 from rich.panel import Panel
-from rich.progress import Progress, track
 from rich.table import Table
 
 logger = logging.getLogger(__name__)

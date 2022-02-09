@@ -4,7 +4,6 @@ parsed validation via :class:`buildtest.buildsystem.parser.BuildspecParser`.
 """
 
 import logging
-import os
 import re
 
 from buildtest.builders.compiler import CompilerBuilder
@@ -241,7 +240,6 @@ class Builder:
             f"Searching for builders for test: {name} by applying regular expression with available builders: {self.buildexecutor.names()} "
         )
         for executor in self.buildexecutor.names():
-
             if (
                 re.fullmatch(recipe["executor"], executor)
                 and recipe["type"] == "script"
