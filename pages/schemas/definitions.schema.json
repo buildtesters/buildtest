@@ -98,14 +98,6 @@
       "properties": {
         "regex": {
           "$ref": "#/definitions/regex"
-        },
-        "vars": {
-          "type": "string",
-          "description": "Assign value to metric based on variable name"
-        },
-        "env": {
-          "type": "string",
-          "description": "Assign value to metric based on environment variable"
         }
       }
     },
@@ -158,14 +150,19 @@
             }
           }
         },
-        "state": {"type": "string",
+        "state": {
+          "type": "string",
           "description": "explicitly mark state of test regardless of status calculation",
-          "enum": ["PASS", "FAIL"]}
+          "enum": [
+            "PASS",
+            "FAIL"
+          ]
+        }
       }
     },
     "BB": {
       "$ref": "#/definitions/list_of_strings",
-       "description": "Create burst buffer space, this specifies #BB options in your test."
+      "description": "Create burst buffer space, this specifies #BB options in your test."
     },
     "DW": {
       "$ref": "#/definitions/list_of_strings",
@@ -195,19 +192,75 @@
         "^.*$": {
           "additionalProperties": false,
           "properties": {
-            "env": { "$ref": "#/definitions/env" },
-            "vars": { "$ref": "#/definitions/env" },
-            "sbatch": { "$ref": "#/definitions/list_of_strings" },
-            "bsub": { "$ref": "#/definitions/list_of_strings" },
-            "pbs": { "$ref": "#/definitions/list_of_strings" },
-            "cobalt": { "$ref": "#/definitions/list_of_strings" },
-            "BB":  { "$ref": "#/definitions/BB" },
-            "DW": { "$ref": "#/definitions/DW" },
-            "status": { "$ref": "#/definitions/status" },
-            "metrics": { "$ref": "#/definitions/metrics" }
+            "env": {
+              "$ref": "#/definitions/env"
+            },
+            "vars": {
+              "$ref": "#/definitions/env"
+            },
+            "sbatch": {
+              "$ref": "#/definitions/list_of_strings"
+            },
+            "bsub": {
+              "$ref": "#/definitions/list_of_strings"
+            },
+            "pbs": {
+              "$ref": "#/definitions/list_of_strings"
+            },
+            "cobalt": {
+              "$ref": "#/definitions/list_of_strings"
+            },
+            "BB": {
+              "$ref": "#/definitions/BB"
+            },
+            "DW": {
+              "$ref": "#/definitions/DW"
+            },
+            "status": {
+              "$ref": "#/definitions/status"
+            },
+            "metrics": {
+              "$ref": "#/definitions/metrics"
+            }
           }
         }
       }
+    },
+    "cc": {
+      "type": "string",
+      "description": "Set C compiler wrapper"
+    },
+    "fc": {
+      "type": "string",
+      "description": "Set Fortran compiler wrapper"
+    },
+    "cxx": {
+      "type": "string",
+      "description": "Set C++ compiler wrapper"
+    },
+    "cflags": {
+      "type": "string",
+      "description": "Set C compiler flags."
+    },
+    "fflags": {
+      "type": "string",
+      "description": "Set Fortran compiler flags."
+    },
+    "cxxflags": {
+      "type": "string",
+      "description": "Set C++ compiler flags."
+    },
+    "ldflags": {
+      "type": "string",
+      "description": "Set linker flags"
+    },
+    "cppflags": {
+      "type": "string",
+      "description": "Set C or C++ preprocessor flags"
+    },
+    "run": {
+      "type": "string",
+      "description": "Specify a series of commands to run."
     }
   }
 }

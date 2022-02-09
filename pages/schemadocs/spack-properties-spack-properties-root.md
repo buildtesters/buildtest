@@ -4,7 +4,7 @@
 spack.schema.json#/properties/spack/properties/root
 ```
 
-
+Specify location for root of spack directory
 
 | Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                            |
 | :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------- |

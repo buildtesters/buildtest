@@ -16,11 +16,9 @@ Name of metric
 
 # ^.\*$ Properties
 
-| Property        | Type     | Required | Nullable       | Defined by                                                                                                                                                      |
-| :-------------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [regex](#regex) | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-regex.md "definitions.schema.json#/definitions/metrics_field/properties/regex")                        |
-| [vars](#vars)   | `string` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-metrics_field-properties-vars.md "definitions.schema.json#/definitions/metrics_field/properties/vars") |
-| [env](#env)     | `string` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-metrics_field-properties-env.md "definitions.schema.json#/definitions/metrics_field/properties/env")   |
+| Property        | Type     | Required | Nullable       | Defined by                                                                                                                               |
+| :-------------- | :------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| [regex](#regex) | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-regex.md "definitions.schema.json#/definitions/metrics_field/properties/regex") |
 
 ## regex
 
@@ -39,39 +37,3 @@ Perform regular expression search using `re.search` python module on stdout/stde
 ### regex Type
 
 `object` ([Details](definitions-definitions-regex.md))
-
-## vars
-
-Assign value to metric based on variable name
-
-`vars`
-
-*   is optional
-
-*   Type: `string`
-
-*   cannot be null
-
-*   defined in: [JSON Schema Definitions File. ](definitions-definitions-metrics_field-properties-vars.md "definitions.schema.json#/definitions/metrics_field/properties/vars")
-
-### vars Type
-
-`string`
-
-## env
-
-Assign value to metric based on environment variable
-
-`env`
-
-*   is optional
-
-*   Type: `string`
-
-*   cannot be null
-
-*   defined in: [JSON Schema Definitions File. ](definitions-definitions-metrics_field-properties-env.md "definitions.schema.json#/definitions/metrics_field/properties/env")
-
-### env Type
-
-`string`

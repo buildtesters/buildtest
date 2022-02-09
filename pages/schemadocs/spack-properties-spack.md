@@ -18,7 +18,7 @@ Entry point to spack configuration
 
 | Property                        | Type      | Required | Nullable       | Defined by                                                                                                                                |
 | :------------------------------ | :-------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| [root](#root)                   | `string`  | Required | cannot be null | [spack schema version](spack-properties-spack-properties-root.md "spack.schema.json#/properties/spack/properties/root")                   |
+| [root](#root)                   | `string`  | Optional | cannot be null | [spack schema version](spack-properties-spack-properties-root.md "spack.schema.json#/properties/spack/properties/root")                   |
 | [compiler_find](#compiler_find) | `boolean` | Optional | cannot be null | [spack schema version](spack-properties-spack-properties-compiler_find.md "spack.schema.json#/properties/spack/properties/compiler_find") |
 | [mirror](#mirror)               | `object`  | Optional | cannot be null | [spack schema version](definitions-definitions-env.md "spack.schema.json#/properties/spack/properties/mirror")                            |
 | [env](#env)                     | `object`  | Optional | cannot be null | [spack schema version](spack-definitions-env.md "spack.schema.json#/properties/spack/properties/env")                                     |
@@ -28,11 +28,11 @@ Entry point to spack configuration
 
 ## root
 
-
+Specify location for root of spack directory
 
 `root`
 
-*   is required
+*   is optional
 
 *   Type: `string`
 
