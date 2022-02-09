@@ -3,14 +3,12 @@
 Global Schema
 ==============
 
-The global schema is validated with for all buildspecs is the top-level
-schema when defining a buildspec file.
-
-Please refer to `Global Schema Documentation <https://buildtesters.github.io/buildtest/pages/schemadocs/global.html>`_ that
+The global schema is validated with for all buildspecs and this schema defines the top-level structure of the buildspec file.
+Please refer to `global schema documentation <https://buildtesters.github.io/buildtest/pages/schemadocs/global.html>`_ that
 provides a summary .
 
 Schema Definition
---------------------------
+------------------
 
 Shown below is the start of the schema definition for  **global.schema.json**
 
@@ -18,9 +16,8 @@ Shown below is the start of the schema definition for  **global.schema.json**
    :lines: 1-8
    :language: json
 
-This schema requires that every buildspec should have ``version`` and ``buildspecs`` fields. The
-version key is required to lookup an a sub-schema using the ``type`` field.
-The ``buildspecs`` is the start of test declaration.
+This schema requires that every buildspec should have ``buildspecs`` which is the start of test declaration and
+each test will contain a ``type`` field to look for appropriate sub-schema.
 
 Example Buildspec
 ------------------
@@ -28,7 +25,7 @@ Example Buildspec
 .. literalinclude:: ../tutorials/hello_world.yml
    :language: yaml
 
-The field ``version`` ``buildspecs`` and ``maintainers`` are validated with **global.schema.json**
+The field  ``buildspecs`` and ``maintainers`` are validated with **global.schema.json**
 using `jsonschema.validate <https://python-jsonschema.readthedocs.io/en/stable/_modules/jsonschema/validators/#validate>`_
 method. The test section within ``hello_world`` is validated by sub-schema by looking up schema based
 on ``type`` field.
@@ -40,8 +37,8 @@ To understand how buildtest validates the buildspec see :ref:`parsing buildspecs
 
 .. _maintainers:
 
-Maintainers
---------------
+Defining Maintainers
+---------------------
 
 The ``maintainers`` is an optional field that can be used to specify a list of test maintainers for a given buildspec.
 The **maintainers** property is used by buildtest to report :ref:`buildspecs by maintainers <buildspec_maintainers>` when querying

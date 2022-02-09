@@ -11,12 +11,6 @@ buildspecs:
           cflags: -fopenmp -O2
           env:
            OMP_NUM_THREADS: 8
-      config:
-        gcc_7.5.0:
-          module:
-            load: [python]
-            swap: [gcc, gcc/8.9.0]
-
     run: |
       wget https://www.cs.virginia.edu/stream/FTP/Code/stream.c
       $BUILDTEST_CC $BUILDTEST_CFLAGS stream.c -o stream

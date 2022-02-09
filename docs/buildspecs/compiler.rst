@@ -2,8 +2,8 @@
 
 .. _compiler_schema:
 
-Compiler Schema
-=================
+Using Compiler Schema
+======================
 
 The compiler schema is used for compilation of programs, currently we support
 single source file compilation. In order to use the compiler schema you must set ``type: compiler`` in your
@@ -19,7 +19,7 @@ is the schema header definition for `compiler.schema.json <https://github.com/bu
 The required fields for compiler schema are **type**, **compilers**, **source**
 and **executor**.
 
-First Example - Hello World
+Compilation of Hello World
 -------------------------------
 
 We will start out with compilation a Hello World program in Fortran using the GNU compiler.
@@ -48,28 +48,13 @@ The generated test for test name **hello_f** is the following:
 
 .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/gnu_hello_fortran.txt
 
-How does compiler search work?
--------------------------------
-
-Compilers are defined in your configuration file that is used by buildtest to search compilers
-via ``name`` property when building test. In :ref:`configuring compilers <compilers>` you will
-learn how one can define compiler, each compiler instance will have a unique name and be under one
-of the compiler groups like ``gcc``, ``intel``, ``cray``, ``pgi``, ``cuda``, ``clang``, etc...
-
-You can see the compiler declaration from our configuration file by running ``buildtest config compilers -y``
-which will display compiler settings in YAML format. Note that for each compiler instance one can define name of compiler
-and path to ``cc``, ``fc``, ``cxx`` wrapper. In addition one can specify ``module`` property to map compiler instance
-to modulefile. If `module` property is defined you can specify list of modules to load via ``load`` property and buildtest will
-automatically load these modules when using the compiler.
-
-.. program-output:: cat buildtest_tutorial_examples/compilers/compilers_list.txt
 
 How does buildtest detect programming language?
 -------------------------------------------------
 
-buildtest will detect the file extension of source file to detect programming language
-and generate the appropriate C, C++, or Fortran compilation line based on language detected.
-In this example, buildtest detects a **.f90** file extension and determines this is a Fortran program.
+buildtest will detect the file extension of source file based specified by ``source`` property
+to detect programming language and generate the appropriate C, C++, or Fortran compilation line based
+on language detected.
 
 Shown below is the file extension table buildtest uses for determining the programming
 language.
@@ -82,22 +67,32 @@ language.
     "**C++**", ".cc .cxx .cpp .c++"
     "**Fortran**", ".f90 .F90 .f95 .f .F .FOR .for .FTN .ftn"
 
-Compiler Selection
----------------------
+How does buildtest search for compiler
+---------------------------------------
+
+Compilers are defined in your configuration file that is used by buildtest to search compilers.
+In :ref:`configuring compilers <compilers>` you will learn how one can define compiler, each compiler
+instance will have a unique name and be under one of the compiler groups like ``gcc``, ``intel``, ``cray``, etc...
+
+You can see the compiler declaration from our configuration file by running ``buildtest config compilers -y``
+which will display compiler settings in YAML format. Note that for each compiler instance one can define name of compiler
+and path to ``cc``, ``fc``, ``cxx`` wrapper. In addition one can specify ``module`` property to map compiler instance
+to modulefile. If `module` property is defined you can specify list of modules to load via ``load`` property and buildtest will
+automatically load these modules when using the compiler.
+
+.. program-output:: cat buildtest_tutorial_examples/compilers/compilers_list.txt
 
 buildtest selects compiler based on ``name`` property which is a list of regular expression
 applied for available compilers defined in buildtest configuration. In this next example, we will
-compile an OpenACC code that will compute vector addition. We specify all `gcc` compilers
-are used for building this test via the **name** property. The ``-fopenacc`` compiler flag
-enables GNU compilers to compile OpenACC code, we can set this via ``fflags`` property.
-We can specify linker flags via ``ldflags`` during compilation, this code requires we specify ``-lm`` flag
-to link with math library.
+compile an OpenACC code that will compute vector addition. We specify all **gcc** compilers
+are used for building this test.  The ``-fopenacc`` compiler flag enables GNU compilers to compile OpenACC code,
+we can set this via ``fflags`` property. We can specify linker flags via ``ldflags`` during compilation,
+this code requires we specify ``-lm`` flag to link with math library.
 
 .. literalinclude:: ../../examples/compilers/vecadd.yml
    :language: yaml
 
-We expect buildtest to select ``gcc_6.5.0`` and ``gcc_8.3.0`` compiler instance based on the regular expression. We
-can see there are two tests one for each compiler.
+We expect buildtest to generate one test per gcc compiler as you can see below.
 
 .. program-output:: cat buildtest_tutorial_examples/compilers/build/vecadd.txt
 
@@ -282,7 +277,7 @@ for ``pre_build``, ``post_build``, ``pre_run`` and ``post_run`` in its correspon
 Running Stream Benchmark with multiple compilers
 ----------------------------------------------------
 
-In this example, we will show how one can run [STREAM benchmark](https://www.cs.virginia.edu/stream/)
+In this example, we will show how one can run `STREAM benchmark <https://www.cs.virginia.edu/stream/>`_
 with multiple compilers with `script` schema. The ``compilers`` property can be set in the script schema which
 is used to search for compilers to create separate test for each discovered compiler. buildtest will set the following
 variables in the script that is mapped to each compiler
@@ -290,7 +285,7 @@ variables in the script that is mapped to each compiler
 - **BUILDTEST_CC**: Path to C compiler
 - **BUILDTEST_CXX**: Path to C++ compiler
 - **BUILDTEST_FC**: Path to Fortran compiler
-- **BUILDTEST_CFLAGs**: C compiler flags
+- **BUILDTEST_CFLAGS**: C compiler flags
 - **BUILDTEST_CXXFLAGS**: C++ compiler flags
 - **BUILDTEST_CPPFLAGS**: C++ Pre Preprocessor flags
 - **BUILDTEST_LDFLAGS**: Linker Flags
@@ -318,7 +313,6 @@ In the next example, we will run STREAM benchmark and extract metrics from test 
 
 .. literalinclude:: ../../examples/compilers/stream_example_metrics.yml
     :language: yaml
-    :emphasize-lines: 7-13
 
 buildtest will record the metrics in the test report and ``buildtest inspect query`` will display metrics
 if found in test. Shown below we see the output of the metrics and its corresponding values.

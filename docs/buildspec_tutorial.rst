@@ -6,8 +6,8 @@ Buildspec Tutorial
 .. toctree::
    :maxdepth: 1
 
-   buildspecs/buildspec_overview
    buildspecs/global
+   buildspecs/buildspec_overview
    buildspecs/compiler
    buildspecs/spack
 
