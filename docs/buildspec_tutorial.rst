@@ -21,7 +21,7 @@ Tutorials Setup
 
 .. note::
 
-    The tutorial setup is required if you want to run buildspecs using the the :ref:`compiler <compiler_schema>` and :ref:`spack <spack_schema>` schema.
+    The tutorial setup is required if you want to run buildspecs using the the :ref:`compiler <compiler_schema>` and :ref:`spack <buildtest_spack_integration>` schema.
 
 
 To get started for this tutorial, you will need `docker <https://docs.docker.com/get-docker/>`_ on your machine to pull the container. You can pull the

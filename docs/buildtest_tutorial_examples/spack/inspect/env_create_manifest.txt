@@ -1,23 +1,27 @@
 $ buildtest inspect query -o -t spack_env_create_from_manifest 
-──────────────────────────────────────────────────────────── spack_env_create_from_manifest/97c3dbdd-abf0-4455-9066-f4a65d4108f9 ────────────────────────────────────────────────────────────
+──────── spack_env_create_from_manifest/2c44ebc0-9663-4870-9008-1b0e89902f1d ─────────
 Executor: generic.local.bash
 Description: Create spack environment from spack.yaml
 State: FAIL
 Returncode: 1
-Runtime: 1.542149 sec
-Starttime: 2022/02/07 23:28:14
-Endtime: 2022/02/07 23:28:16
+Runtime: 3.301349 sec
+Starttime: 2022/02/09 17:48:05
+Endtime: 2022/02/09 17:48:09
 Command: bash --norc --noprofile -eo pipefail spack_env_create_from_manifest_build.sh
-Test Script: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/97c3dbdd/spack_env_create_from_manifest.sh
-Build Script: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/97c3dbdd/spack_env_create_from_manifest_build.sh
-Output File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/97c3dbdd/spack_env_create_from_manifest.out
-Error File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/97c3dbdd/spack_env_create_from_manifest.err
-Log File: /home/spack/buildtest/var/logs/buildtest_cjotutgx.log
-────────────────────── Output File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/97c3dbdd/spack_env_create_from_manifest.out ──────────────────────
-                                                                                                                                                                                             
-─────────────────────── Test File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/97c3dbdd/spack_env_create_from_manifest.sh ────────────────────────
-  1 #!/bin/bash                                                                                                                                                                              
-  2 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                        
-  3 spack env create  manifest_example /home/spack/buildtest/examples/spack/example/spack.yaml                                                                                               
-  4 spack env activate  manifest_example                                                                                                                                                     
-  5 spack concretize -f                                                                                                                                                                      
+Test Script: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_
+from_manifest/2c44ebc0/spack_env_create_from_manifest.sh
+Build Script: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create
+_from_manifest/2c44ebc0/spack_env_create_from_manifest_build.sh
+Output File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_
+from_manifest/2c44ebc0/spack_env_create_from_manifest.out
+Error File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_f
+rom_manifest/2c44ebc0/spack_env_create_from_manifest.err
+Log File: /home/spack/buildtest/var/logs/buildtest_blpgsw2o.log
+─ Output File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_cr… ─
+                                                                                      
+─ Test File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_crea… ─
+  1 #!/bin/bash                                                                       
+  2 source /home/spack/spack/share/spack/setup-env.sh                                 
+  3 spack env create  manifest_example /home/spack/buildtest/examples/spack/example/sp
+  4 spack env activate  manifest_example                                              
+  5 spack concretize -f                                                               

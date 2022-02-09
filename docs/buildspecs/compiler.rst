@@ -297,6 +297,7 @@ variables in the script that is mapped to each compiler
 
 In the ``run`` section we can reference these variables to compile ``stream.c`` to build the code and run it. We will
 set environment ``OMP_NUM_THREADS`` to control number of OpenMP threads when running the benchmark.
+
 .. literalinclude:: ../../examples/compilers/stream_example.yml
     :language: yaml
     :emphasize-lines: 7-13

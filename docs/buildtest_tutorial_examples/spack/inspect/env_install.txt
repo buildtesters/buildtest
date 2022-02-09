@@ -1,25 +1,29 @@
 $ buildtest inspect query -t install_in_spack_env 
-───────────────────────────────────────────────────────────────── install_in_spack_env/7f5e2f16-a94a-4ca4-99a6-ddc78ab8694a ─────────────────────────────────────────────────────────────────
+───────────── install_in_spack_env/e6992240-e0f5-47a7-a27e-b2ce4972025d ──────────────
 Executor: generic.local.bash
 Description: Install m4 and zlib in a spack environment named m4_zlib
 State: PASS
 Returncode: 0
-Runtime: 3.482251 sec
-Starttime: 2022/02/07 23:28:07
-Endtime: 2022/02/07 23:28:10
+Runtime: 6.732769 sec
+Starttime: 2022/02/09 17:47:51
+Endtime: 2022/02/09 17:47:58
 Command: bash --norc --noprofile -eo pipefail install_in_spack_env_build.sh
-Test Script: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/7f5e2f16/install_in_spack_env.sh
-Build Script: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/7f5e2f16/install_in_spack_env_build.sh
-Output File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/7f5e2f16/install_in_spack_env.out
-Error File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/7f5e2f16/install_in_spack_env.err
-Log File: /home/spack/buildtest/var/logs/buildtest_tfbqpj0f.log
-───────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/7f5e2f16/install_in_spack_env.sh ──────────────────────────────────────
-  1 #!/bin/bash                                                                                                                                                                              
-  2 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                        
-  3 spack compiler find                                                                                                                                                                      
-  4 spack env create  m4_zlib                                                                                                                                                                
-  5 spack env activate  m4_zlib                                                                                                                                                              
-  6 spack add m4                                                                                                                                                                             
-  7 spack add zlib                                                                                                                                                                           
-  8 spack concretize -f                                                                                                                                                                      
-  9 spack install --keep-prefix                                                                                                                                                              
+Test Script: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/e699
+2240/install_in_spack_env.sh
+Build Script: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/e69
+92240/install_in_spack_env_build.sh
+Output File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/e699
+2240/install_in_spack_env.out
+Error File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/e6992
+240/install_in_spack_env.err
+Log File: /home/spack/buildtest/var/logs/buildtest_vqr7559s.log
+─ Test File: /home/spack/runs/generic.local.bash/env_install/install_in_spack_env/e… ─
+  1 #!/bin/bash                                                                       
+  2 source /home/spack/spack/share/spack/setup-env.sh                                 
+  3 spack compiler find                                                               
+  4 spack env create  m4_zlib                                                         
+  5 spack env activate  m4_zlib                                                       
+  6 spack add m4                                                                      
+  7 spack add zlib                                                                    
+  8 spack concretize -f                                                               
+  9 spack install --keep-prefix                                                       

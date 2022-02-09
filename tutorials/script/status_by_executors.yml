@@ -2,23 +2,13 @@ buildspecs:
   status_returncode_by_executors:
     type: script
     executor: "generic.local.(bash|sh)"
-    description: define status and metrics per executor type.
+    description: define status per executor type.
     tags: [tutorials]
-    vars:
-      FIRST: Michael
-      LAST: Jackson
-    run: echo "my name is $FIRST $LAST"
-
+    run: exit 0
     executors:
       generic.local.bash:
         status:
           returncode: [0, 2]
-        metrics:
-          firstname:
-            vars: "FIRST"
       generic.local.sh:
         status:
           returncode: 1
-        metrics:
-          lastname:
-            vars: "LAST"

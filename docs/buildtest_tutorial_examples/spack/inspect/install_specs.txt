@@ -1,51 +1,59 @@
 $ buildtest inspect query -o -t install_specs_example clone_spack_and_install_zlib 
-──────────────────────────────────────────────────────────────── install_specs_example/b8d3d497-3f82-4652-855b-9c052c990300 ─────────────────────────────────────────────────────────────────
+───────────── install_specs_example/47c6d7b5-bb1c-49a4-9e26-0fda291aed49 ─────────────
 Executor: generic.local.bash
 Description: Install zlib from an existing spack instance
 State: PASS
 Returncode: 0
-Runtime: 0.984395 sec
-Starttime: 2022/02/07 23:27:01
-Endtime: 2022/02/07 23:27:02
+Runtime: 1.363599 sec
+Starttime: 2022/02/09 17:46:25
+Endtime: 2022/02/09 17:46:26
 Command: bash --norc --noprofile -eo pipefail install_specs_example_build.sh
-Test Script: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/b8d3d497/install_specs_example.sh
-Build Script: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/b8d3d497/install_specs_example_build.sh
-Output File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/b8d3d497/install_specs_example.out
-Error File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/b8d3d497/install_specs_example.err
-Log File: /home/spack/buildtest/var/logs/buildtest_zu4853e3.log
-────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/b8d3d497/install_specs_example.out ──────────────────────────────────
-[+] /home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/zlib-1.2.11-smoyzzo2qhzpn6mg6rd3l2p7b23enshg                                                                              
-                                                                                                                                                                                             
-─────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/b8d3d497/install_specs_example.sh ────────────────────────────────────
-  1 #!/bin/bash                                                                                                                                                                              
-  2 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                        
-  3 spack install  zlib                                                                                                                                                                      
-───────────────────────────────────────────────────────────── clone_spack_and_install_zlib/ba2dff03-2b65-4b91-9d2c-e457fdc9be8a ─────────────────────────────────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/4
+7c6d7b5/install_specs_example.sh
+Build Script: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/
+47c6d7b5/install_specs_example_build.sh
+Output File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/4
+7c6d7b5/install_specs_example.out
+Error File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/47
+c6d7b5/install_specs_example.err
+Log File: /home/spack/buildtest/var/logs/buildtest_us5vj4io.log
+─ Output File: /home/spack/runs/generic.local.bash/install_specs/install_specs_exam… ─
+[+] /home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/zlib-1.2.11-smoyzzo
+                                                                                      
+─ Test File: /home/spack/runs/generic.local.bash/install_specs/install_specs_exampl… ─
+  1 #!/bin/bash                                                                       
+  2 source /home/spack/spack/share/spack/setup-env.sh                                 
+  3 spack install  zlib                                                               
+───────── clone_spack_and_install_zlib/5a6082d1-f75e-4e78-a79a-018d5c62fc5e ──────────
 Executor: generic.local.bash
 Description: Clone spack and install zlib spec
 State: PASS
 Returncode: 0
-Runtime: 64.122459 sec
-Starttime: 2022/02/07 23:27:01
-Endtime: 2022/02/07 23:28:05
+Runtime: 82.490567 sec
+Starttime: 2022/02/09 17:46:25
+Endtime: 2022/02/09 17:47:48
 Command: bash --norc --noprofile -eo pipefail clone_spack_and_install_zlib_build.sh
-Test Script: /home/spack/runs/generic.local.bash/install_specs/clone_spack_and_install_zlib/ba2dff03/clone_spack_and_install_zlib.sh
-Build Script: /home/spack/runs/generic.local.bash/install_specs/clone_spack_and_install_zlib/ba2dff03/clone_spack_and_install_zlib_build.sh
-Output File: /home/spack/runs/generic.local.bash/install_specs/clone_spack_and_install_zlib/ba2dff03/clone_spack_and_install_zlib.out
-Error File: /home/spack/runs/generic.local.bash/install_specs/clone_spack_and_install_zlib/ba2dff03/clone_spack_and_install_zlib.err
-Log File: /home/spack/buildtest/var/logs/buildtest_zu4853e3.log
-─────────────────────────── Output File: /home/spack/runs/generic.local.bash/install_specs/clone_spack_and_install_zlib/ba2dff03/clone_spack_and_install_zlib.out ───────────────────────────
-==> Installing zlib-1.2.11-3rlgy7ycxtoho44una6o3itgfjltkmpd                                                                                                                                  
-==> No binary for zlib-1.2.11-3rlgy7ycxtoho44una6o3itgfjltkmpd found: installing from source                                                                                                 
-==> Fetching https://mirror.spack.io/_source-cache/archive/c3/c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1.tar.gz                                                        
-==> No patches needed for zlib                                                                                                                                                               
-==> zlib: Executing phase: 'install'                                                                                                                                                         
-==> zlib: Successfully installed zlib-1.2.11-3rlgy7ycxtoho44una6o3itgfjltkmpd                                                                                                                
-  Fetch: 0.25s.  Build: 2.61s.  Total: 2.86s.                                                                                                                                                
-[+] /home/spack/runs/generic.local.bash/install_specs/clone_spack_and_install_zlib/ba2dff03/stage/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/zlib-1.2.11-3rlgy7ycxtoho44una6o3itgfjlt
-                                                                                                                                                                                             
-──────────────────────────── Test File: /home/spack/runs/generic.local.bash/install_specs/clone_spack_and_install_zlib/ba2dff03/clone_spack_and_install_zlib.sh ─────────────────────────────
-  1 #!/bin/bash                                                                                                                                                                              
-  2 git clone https://github.com/spack/spack                                                                                                                                                 
-  3 source ./spack/share/spack/setup-env.sh                                                                                                                                                  
-  4 spack install  zlib                                                                                                                                                                      
+Test Script: /home/spack/runs/generic.local.bash/install_specs/clone_spack_and_install
+_zlib/5a6082d1/clone_spack_and_install_zlib.sh
+Build Script: /home/spack/runs/generic.local.bash/install_specs/clone_spack_and_instal
+l_zlib/5a6082d1/clone_spack_and_install_zlib_build.sh
+Output File: /home/spack/runs/generic.local.bash/install_specs/clone_spack_and_install
+_zlib/5a6082d1/clone_spack_and_install_zlib.out
+Error File: /home/spack/runs/generic.local.bash/install_specs/clone_spack_and_install_
+zlib/5a6082d1/clone_spack_and_install_zlib.err
+Log File: /home/spack/buildtest/var/logs/buildtest_us5vj4io.log
+─ Output File: /home/spack/runs/generic.local.bash/install_specs/clone_spack_and_in… ─
+==> Installing zlib-1.2.11-3rlgy7ycxtoho44una6o3itgfjltkmpd                           
+==> No binary for zlib-1.2.11-3rlgy7ycxtoho44una6o3itgfjltkmpd found: installing from 
+==> Fetching https://mirror.spack.io/_source-cache/archive/c3/c3e5e9fdd5004dcb542feda5
+==> No patches needed for zlib                                                        
+==> zlib: Executing phase: 'install'                                                  
+==> zlib: Successfully installed zlib-1.2.11-3rlgy7ycxtoho44una6o3itgfjltkmpd         
+  Fetch: 0.25s.  Build: 6.27s.  Total: 6.52s.                                         
+[+] /home/spack/runs/generic.local.bash/install_specs/clone_spack_and_install_zlib/5a6
+                                                                                      
+─ Test File: /home/spack/runs/generic.local.bash/install_specs/clone_spack_and_inst… ─
+  1 #!/bin/bash                                                                       
+  2 git clone https://github.com/spack/spack                                          
+  3 source ./spack/share/spack/setup-env.sh                                           
+  4 spack install  zlib                                                               
