@@ -8,7 +8,7 @@ buildspecs:
     metrics:
       hpcg_rating:
         regex:
-          exp: 'rating of=(\d+\.\d+)$'
+          exp: '(\d+\.\d+)$'
           stream: stdout
 
       hpcg_state:

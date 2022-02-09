@@ -44,7 +44,6 @@ from buildtest.utils.file import (
 from jsonschema.exceptions import ValidationError
 from rich import box
 from rich.panel import Panel
-from rich.progress import Progress, track
 from rich.table import Table
 
 logger = logging.getLogger(__name__)
@@ -1074,6 +1073,7 @@ class BuildTest:
             table = Table(title="Script Builder Details", show_lines=True)
             table.add_column("[blue]Builder", overflow="fold")
             table.add_column("[blue]Executor", overflow="fold")
+            table.add_column("[blue]Compiler", overflow="fold")
             table.add_column("[blue]description", overflow="fold")
             table.add_column("[blue]buildspecs", overflow="fold")
 
@@ -1083,6 +1083,7 @@ class BuildTest:
                 table.add_row(
                     f"[blue]{builder}",
                     f"[green]{builder.executor}",
+                    f"[red]{builder.compiler}",
                     f"[magenta]{description}",
                     f"[yellow]{builder.buildspec}",
                 )

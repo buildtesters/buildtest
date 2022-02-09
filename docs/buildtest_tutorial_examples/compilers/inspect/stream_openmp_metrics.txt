@@ -1,0 +1,63 @@
+$ buildtest inspect query -o stream_openmp_metrics/ 
+───────────── stream_openmp_metrics/58ecf4b6-495f-4b5d-80bc-fa33f19fcbe2 ─────────────
+Executor: generic.local.bash
+Description: STREAM Microbenchmark C Test with OpenMP
+State: PASS
+Returncode: 0
+Runtime: 0.89871 sec
+Starttime: 2022/02/09 17:49:05
+Endtime: 2022/02/09 17:49:05
+Command: bash --norc --noprofile -eo pipefail stream_openmp_metrics_build.sh
+Test Script: /home/spack/runs/generic.local.bash/stream_example_metrics/stream_openmp_
+metrics/58ecf4b6/stream_openmp_metrics.sh
+Build Script: /home/spack/runs/generic.local.bash/stream_example_metrics/stream_openmp
+_metrics/58ecf4b6/stream_openmp_metrics_build.sh
+Output File: /home/spack/runs/generic.local.bash/stream_example_metrics/stream_openmp_
+metrics/58ecf4b6/stream_openmp_metrics.out
+Error File: /home/spack/runs/generic.local.bash/stream_example_metrics/stream_openmp_m
+etrics/58ecf4b6/stream_openmp_metrics.err
+Log File: /home/spack/buildtest/var/logs/buildtest_snrwlvdk.log
+                                 Metrics                                  
+┏━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Name  ┃ Value                                                          ┃
+┡━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ copy  │ Copy:           19410.2     0.008831     0.008243     0.010025 │
+│ scale │ Scale:          17258.3     0.009646     0.009271     0.010089 │
+│ add   │ Add:            16725.9     0.014764     0.014349     0.015543 │
+│ triad │ Triad:          18316.4     0.014856     0.013103     0.021218 │
+└───────┴────────────────────────────────────────────────────────────────┘
+─ Output File: /home/spack/runs/generic.local.bash/stream_example_metrics/stream_op… ─
+-------------------------------------------------------------                         
+STREAM version $Revision: 5.10 $                                                      
+-------------------------------------------------------------                         
+This system uses 8 bytes per array element.                                           
+-------------------------------------------------------------                         
+Array size = 10000000 (elements), Offset = 0 (elements)                               
+Memory per array = 76.3 MiB (= 0.1 GiB).                                              
+Total memory required = 228.9 MiB (= 0.2 GiB).                                        
+Each kernel will be executed 10 times.                                                
+ The *best* time for each kernel (excluding the first iteration)                      
+ will be used to compute the reported bandwidth.                                      
+-------------------------------------------------------------                         
+Number of Threads requested = 16                                                      
+Number of Threads counted = 16                                                        
+-------------------------------------------------------------                         
+Your clock granularity/precision appears to be 10 microseconds.                       
+Each test below will take on the order of 7186 microseconds.                          
+   (= 718 clock ticks)                                                                
+Increase the size of the arrays if this shows that                                    
+you are not getting at least 20 clock ticks per test.                                 
+-------------------------------------------------------------                         
+WARNING -- The above is only a rough guideline.                                       
+For best results, please be sure you know the                                         
+precision of your system timer.                                                       
+-------------------------------------------------------------                         
+Function    Best Rate MB/s  Avg time     Min time     Max time                        
+Copy:           19410.2     0.008831     0.008243     0.010025                        
+Scale:          17258.3     0.009646     0.009271     0.010089                        
+Add:            16725.9     0.014764     0.014349     0.015543                        
+Triad:          18316.4     0.014856     0.013103     0.021218                        
+-------------------------------------------------------------                         
+Solution Validates: avg error less than 1.000000e-13 on all three arrays              
+-------------------------------------------------------------                         
+                                                                                      

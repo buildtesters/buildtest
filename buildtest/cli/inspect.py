@@ -167,6 +167,13 @@ def inspect_query(report, args):
                 console.print(f"[red]Error File: {test['errfile']}")
                 console.print(f"[red]Log File: {test['logpath']}")
 
+                if test["metrics"]:
+                    table = Table("[blue]Name", "[blue]Value", title="Metrics")
+                    for name, values in test["metrics"].items():
+                        table.add_row(name, values)
+
+                    console.print(table)
+
                 # print content of output file when 'buildtest inspect query --output' is set
                 if args.output:
 

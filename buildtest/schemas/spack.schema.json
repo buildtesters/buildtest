@@ -43,13 +43,11 @@
     "spack": {
       "type": "object",
       "description": "Entry point to spack configuration",
-      "required": [
-        "root"
-      ],
       "additionalProperties": false,
       "properties": {
         "root": {
-          "type": "string"
+          "type": "string",
+          "description": "Specify location for root of spack directory"
         },
         "compiler_find": {
           "type": "boolean",

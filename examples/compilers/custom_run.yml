@@ -6,9 +6,9 @@ buildspecs:
     tags: [tutorials, compile]
     source: "src/argc.c"
     compilers:
-      name: ["^(builtin_gcc|gcc_8.3.0)"]
+      name: ["^(gcc_7.5.0|gcc_8.3.0)"]
       config:
-        builtin_gcc:
+        gcc_7.5.0:
           run: ./$_EXEC 1 3
         gcc_8.3.0:
           run: ./$_EXEC 100 120

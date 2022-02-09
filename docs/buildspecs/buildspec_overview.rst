@@ -549,138 +549,6 @@ of variable or environment variable. If you reference an invalid name, buildtest
 In this next example, we define two metrics ``gflop`` and ``foo`` that are assigned to variable ``GFLOPS`` and
 environment variable ``FOO``.
 
-.. literalinclude:: ../../tutorials/metrics_variable.yml
-    :language: yaml
-    :emphasize-lines: 14-18
-
-Now let's build the test.
-
-.. command-output:: buildtest build -b tutorials/metrics_variable.yml
-
-Now if we query the previous test, we will see the two metrics ``gflops`` and ``foo`` are captured in the test.
-
-.. command-output:: buildtest report --filter buildspec=tutorials/metrics_variable.yml --format name,metrics
-
-
-You can also define metrics with the :ref:`compiler schema <compiler_schema>` which works slightly different
-when it comes to variable and environment assignment. Since you can define ``vars`` and ``env`` in ``defaults``
-or ``config`` section. Let's take a look at this next example where we compile an openmp code
-that will use the `OMP_NUM_THREADS` environment as the metric that is assigned to name ``openmp_threads``. Since
-we have defined ``OMP_NUM_THREADS`` under the ``defaults`` and ``config`` section we will use the
-environment variable that corresponds to each compiler.
-
-
-.. literalinclude:: ../../examples/compilers/metrics_openmp.yml
-   :language: yaml
-   :emphasize-lines: 22-24
-
-.. Note:: This test uses a custom site configuration that defines gcc multiple compilers.
-
-Let's build this test as follows
-
-.. code-block:: console
-
-
-    $ buildtest -c config/laptop.yml build -b tutorials/compilers/metrics_openmp.yml
-
-
-    User:  siddiq90
-    Hostname:  DOE-7086392.local
-    Platform:  Darwin
-    Current Time:  2021/07/24 00:14:33
-    buildtest path: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest
-    buildtest version:  0.10.0
-    python path: /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python
-    python version:  3.7.3
-    Test Directory:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
-    Configuration File:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/config/laptop.yml
-    Command: /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest -c config/laptop.yml build -b tutorials/compilers/metrics_openmp.yml
-
-    +-------------------------------+
-    | Stage: Discovering Buildspecs |
-    +-------------------------------+
-
-    +------------------------------------------------------------------------------------------+
-    | Discovered Buildspecs                                                                    |
-    +==========================================================================================+
-    | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/metrics_openmp.yml |
-    +------------------------------------------------------------------------------------------+
-    Discovered Buildspecs:  1
-    Excluded Buildspecs:  0
-    Detected Buildspecs after exclusion:  1
-
-    +---------------------------+
-    | Stage: Parsing Buildspecs |
-    +---------------------------+
-
-     schemafile                | validstate   | buildspec
-    ---------------------------+--------------+------------------------------------------------------------------------------------------
-     compiler-v1.0.schema.json | True         | /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/compilers/metrics_openmp.yml
-
-
-
-    name                       description
-    -------------------------  -----------------------------------
-    metrics_variable_compiler  define metrics with compiler schema
-    metrics_variable_compiler  define metrics with compiler schema
-    metrics_variable_compiler  define metrics with compiler schema
-
-    +----------------------+
-    | Stage: Building Test |
-    +----------------------+
-
-
-
-
-
-     name                      | id       | type     | executor           | tags                     | compiler           | testpath
-    ---------------------------+----------+----------+--------------------+--------------------------+--------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------
-     metrics_variable_compiler | e45976b8 | compiler | generic.local.bash | ['tutorials', 'compile'] | builtin_gcc        | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/metrics_openmp/metrics_variable_compiler/11/metrics_variable_compiler_build.sh
-     metrics_variable_compiler | 8bc71f19 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/9.3.0-n7p74fd  | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/metrics_openmp/metrics_variable_compiler/12/metrics_variable_compiler_build.sh
-     metrics_variable_compiler | 7127eb46 | compiler | generic.local.bash | ['tutorials', 'compile'] | gcc/10.2.0-37fmsw7 | /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/metrics_openmp/metrics_variable_compiler/13/metrics_variable_compiler_build.sh
-
-    +---------------------+
-    | Stage: Running Test |
-    +---------------------+
-
-     name                      | id       | executor           | status   |   returncode
-    ---------------------------+----------+--------------------+----------+--------------
-     metrics_variable_compiler | e45976b8 | generic.local.bash | FAIL     |          127
-     metrics_variable_compiler | 8bc71f19 | generic.local.bash | PASS     |            0
-     metrics_variable_compiler | 7127eb46 | generic.local.bash | PASS     |            0
-
-    +----------------------+
-    | Stage: Test Summary  |
-    +----------------------+
-
-    Passed Tests: 2/3 Percentage: 66.667%
-    Failed Tests: 1/3 Percentage: 33.333%
-
-
-    Writing Logfile to: /Users/siddiq90/buildtest/buildtest_0a04808e.log
-    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest.log
-
-Now if we filter the results, notice that ``builtin_gcc`` got metrics ``openmp_threads=1`` since
-that is the value set under the ``builtin_gcc`` compiler instance under the ``config`` section. The ``gcc/9.3.0-n7p74fd`` compiler
-got value of **2** because we have an entry defined under the ``config`` section while ``gcc/10.2.0-37fmsw7``
-compiler got the value of **4** from the ``default`` section that is inherited for all gcc compilers.
-
-
-.. code-block:: console
-
-    $ buildtest report --filter buildspec=tutorials/compilers/metrics_openmp.yml --format name,compiler,metrics
-    Reading report file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/report.json
-
-    +---------------------------+--------------------+------------------+
-    | name                      | compiler           | metrics          |
-    +===========================+====================+==================+
-    | metrics_variable_compiler | builtin_gcc        | openmp_threads=1 |
-    +---------------------------+--------------------+------------------+
-    | metrics_variable_compiler | gcc/9.3.0-n7p74fd  | openmp_threads=2 |
-    +---------------------------+--------------------+------------------+
-    | metrics_variable_compiler | gcc/10.2.0-37fmsw7 | openmp_threads=4 |
-    +---------------------------+--------------------+------------------+
-
 .. _multiple_executors:
 
 Running test across multiple executors
@@ -760,25 +628,18 @@ see :ref:`cray_burstbuffer_datawarp`.
     :language: yaml
 
 
-Status and Metrics Field
+Custom Status by Executor
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The :ref:`status <status>` and :ref:`metrics <metrics>` field are supported in ``executors``
 which can be defined within the named executor. In this next example, we will define `generic.local.bash` to match
-test based on returncode **0** or **2** and define metrics named ``firstname`` that is assigned the value
-from variable **FIRST**. The second test using `generic.local.sh` will match returncode of **1** and
-define a metrics named ``lastname`` that will store the value defined by variable **LAST**.
+test based on returncode **0** or **2** while second test using `generic.local.sh` will match returncode of **1**.
 
 .. literalinclude:: ../tutorials/script/status_by_executors.yml
     :language: yaml
-    :emphasize-lines: 12-24
+    :emphasize-lines: 8-14
 
 Now let's run this test and we will see the test using **generic.local.sh** will fail because
 we have a returncode mismatch even though both tests got a 0 returncode as its actual value.
 
 .. command-output:: buildtest build -b tutorials/script/status_by_executors.yml
-
-Now let's see the test results by inspecting the metrics field using ``buildtest report``. We see one test
-has the metrics name **firstname=Michael** and second test has **lastname=Jackson**.
-
-.. command-output:: buildtest report --format id,name,metrics --filter name=status_returncode_by_executors

@@ -2,9 +2,18 @@ buildspecs:
   install_specs_example:
     type: spack
     executor: generic.local.bash
-    description: "Install zlib spec"
+    description: "Install zlib from an existing spack instance"
     tags: [spack]
     spack:
       root: $HOME/spack
+      install:
+        specs: ['zlib']
+
+  clone_spack_and_install_zlib:
+    type: spack
+    executor: generic.local.bash
+    description: "Clone spack and install zlib spec"
+    tags: [spack]
+    spack:
       install:
         specs: ['zlib']
