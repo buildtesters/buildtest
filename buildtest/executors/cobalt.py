@@ -90,7 +90,7 @@ class CobaltExecutor(BaseExecutor):
 
         return batch_cmd
 
-    def dispatch(self, builder):
+    def run(self, builder):
         """This method is responsible for dispatching job to Cobalt Scheduler by invoking ``builder.run()``
         which runs the build script. If job is submitted to scheduler, we get the JobID and pass this to
         ``CobaltJob`` class. At job submission, cobalt will report the output and error file which can be retrieved

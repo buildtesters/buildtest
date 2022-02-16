@@ -91,7 +91,7 @@ class LSFExecutor(BaseExecutor):
 
         return cmd
 
-    def dispatch(self, builder):
+    def run(self, builder):
         """This method is responsible for dispatching job to scheduler and extracting job ID by applying a ``re.search`` against
         output at onset of job submission. If job id is not retrieved due to job failure or unable to match regular expression we
         mark job incomplete by invoking :func:`buildtest.buildsystem.base.BuilderBase.incomplete`` method and return from method.
