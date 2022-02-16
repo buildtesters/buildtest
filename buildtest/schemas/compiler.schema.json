@@ -138,36 +138,7 @@
         "post_build": { "$ref": "#definitions/post_build" },
         "pre_run": { "$ref": "#definitions/pre_run" },
         "post_run": { "$ref": "#definitions/post_run" },
-        "run": { "$ref": "#definitions/run" },
-
-        "module": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-             "purge": {
-               "type": "boolean",
-                "description": "Run ``module purge`` if purge is set"
-             },
-             "load": {
-               "$ref": "definitions.schema.json#/definitions/list_of_strings",
-               "description": "Load one or more modules via ``module load``"
-             },
-             "restore": {
-               "description": "Load a collection name via ``module restore``",
-               "type": "string"
-             },
-             "swap": {
-               "description": "Swap modules using ``module swap``. The swap property expects 2 unique modules.",
-               "type": "array",
-               "uniqueItems": true,
-               "minItems": 2,
-               "maxItems": 2,
-               "items": {
-                 "type": "string"
-               }
-             }
-           }
-        }
+        "module": { "$ref": "definitions.schema.json#/definitions/module" }
       }
     }
   },

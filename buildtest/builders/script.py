@@ -3,7 +3,7 @@ import shlex
 import shutil
 
 from buildtest.builders.base import BuilderBase
-from buildtest.modules import get_module_commands
+from buildtest.tools.modules import get_module_commands
 from buildtest.utils.file import write_file
 from buildtest.utils.tools import deep_get
 

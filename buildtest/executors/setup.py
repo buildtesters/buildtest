@@ -19,7 +19,7 @@ from buildtest.executors.local import LocalExecutor
 from buildtest.executors.lsf import LSFExecutor
 from buildtest.executors.pbs import PBSExecutor
 from buildtest.executors.slurm import SlurmExecutor
-from buildtest.modules import get_module_commands
+from buildtest.tools.modules import get_module_commands
 from buildtest.utils.file import create_dir, write_file
 from buildtest.utils.tools import deep_get
 from rich.table import Table
