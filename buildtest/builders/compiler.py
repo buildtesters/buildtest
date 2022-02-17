@@ -5,7 +5,7 @@ import shutil
 from buildtest.builders.base import BuilderBase
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.exceptions import BuildTestError
-from buildtest.modules import get_module_commands
+from buildtest.tools.modules import get_module_commands
 from buildtest.utils.file import resolve_path
 from buildtest.utils.tools import deep_get
 

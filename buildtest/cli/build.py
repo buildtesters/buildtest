@@ -888,7 +888,7 @@ class BuildTest:
 
         console.rule("Running Tests")
         self.buildexecutor.run(self.builders)
-        self.buildexecutor.poll()
+        # self.buildexecutor.poll()
 
         builders = self.buildexecutor.get_validbuilders()
         ########## TEST SUMMARY ####################

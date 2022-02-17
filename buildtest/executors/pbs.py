@@ -86,7 +86,7 @@ class PBSExecutor(BaseExecutor):
 
         return batch_cmd
 
-    def dispatch(self, builder):
+    def run(self, builder):
         """This method is responsible for dispatching PBS job, get JobID
         and start record metadata in builder object. If job failed to submit
         we check returncode and exit with failure. After we submit job, we

@@ -30,6 +30,9 @@ class BaseExecutor:
         self.load()
         self.builders = []
 
+        # the shell type for executors will be bash by default
+        self.shell = "bash"
+
     def bash_launch_command(self):
         return ["bash --norc --noprofile -eo pipefail"]
 

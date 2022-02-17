@@ -102,7 +102,7 @@ class SlurmExecutor(BaseExecutor):
 
         return sbatch_cmd
 
-    def dispatch(self, builder):
+    def run(self, builder):
         """This method is responsible for dispatching job to slurm scheduler and extracting job
         id. If job id is valid we pass the job to :class:`buildtest.executors.slurm.SlurmJob` class and store object in ``builder.job``.
 

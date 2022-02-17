@@ -9,25 +9,23 @@ def get_module_commands(modules):
         list: a list of module commands
     """
 
-    if not modules:
+    if not modules or not isinstance(modules, dict):
         return
 
     module_cmd = []
-
-    assert isinstance(modules, dict)
 
     # if purge is True and defined add module purge
     if modules.get("purge"):
         module_cmd += ["module purge"]
 
     if modules.get("restore"):
-        module_cmd += [f"module restore {modules.get('restore')}"]
+        module_cmd += [f"module restore {modules['restore']}"]
 
     if modules.get("swap"):
-        module_cmd += [f"module swap {' '.join(modules.get('swap'))}"]
+        module_cmd += [f"module swap {' '.join(modules['swap'])}"]
 
     if modules.get("load"):
-        for name in modules.get("load"):
+        for name in modules["load"]:
             module_cmd += [f"module load {name}"]
 
     return module_cmd

@@ -32,9 +32,6 @@ field. Each test is validated by a sub-schema specified by ``type`` field.
 buildtest will validate the buildspec with global schema first and one of the subschemas used to validate
 the test instance specified by `type` field. buildtest will seek the schema from its schema library
 and validate the test section ``hello_world`` with schema ``script.schema.json``.
-
-.. image:: _static/ParserSchemaValidationDiagram.png
-
 Buildspecs will be ignored if it fails validation process for instance you may have an :ref:`invalid_buildspecs`.
 Invalid buildspecs won't be sent to **build** stage since we can't reliably build a test-script.
 
