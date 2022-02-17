@@ -6,9 +6,9 @@ settings.schema.json#/definitions/system/properties/executors/properties/pbs
 
 The `pbs` section is used for declaring PBS executors for running jobs using PBS scheduler
 
-| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
-| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
+| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :--------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
 
 ## pbs Type
 
@@ -32,7 +32,7 @@ An instance object of cobalt executor
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-definitions-pbs.md "settings.schema.json#/definitions/system/properties/executors/properties/pbs/patternProperties/^.\*$")
+*   defined in: [buildtest configuration schema](settings-definitions-pbs.md "settings.schema.json#/definitions/system/properties/executors/properties/pbs/patternProperties/^.*$")
 
 ### ^.\*$ Type
 

@@ -6,15 +6,15 @@ settings.schema.json#/definitions/compiler_section
 
 A compiler section is composed of `cc`, `cxx` and `fc` wrapper these are required when you need to specify compiler wrapper.
 
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
-| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :--------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
 
-## compiler_section Type
+## compiler\_section Type
 
 `object` ([Details](settings-definitions-compiler_section.md))
 
-# compiler_section Properties
+# compiler\_section Properties
 
 | Property          | Type     | Required | Nullable       | Defined by                                                                                                                              |
 | :---------------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |

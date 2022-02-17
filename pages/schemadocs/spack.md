@@ -34,8 +34,9 @@ The spack schema is referenced using `type: spack` which is used for generating 
 | [status](#status)           | `object`  | Optional | cannot be null | [spack schema version](definitions-definitions-status.md "spack.schema.json#/properties/status")           |
 | [metrics](#metrics)         | `object`  | Optional | cannot be null | [spack schema version](definitions-definitions-metrics.md "spack.schema.json#/properties/metrics")         |
 | [executors](#executors)     | `object`  | Optional | cannot be null | [spack schema version](definitions-definitions-executors.md "spack.schema.json#/properties/executors")     |
-| [pre_cmds](#pre_cmds)       | `string`  | Optional | cannot be null | [spack schema version](spack-properties-pre_cmds.md "spack.schema.json#/properties/pre_cmds")              |
-| [post_cmds](#post_cmds)     | `string`  | Optional | cannot be null | [spack schema version](spack-properties-post_cmds.md "spack.schema.json#/properties/post_cmds")            |
+| [pre\_cmds](#pre_cmds)      | `string`  | Optional | cannot be null | [spack schema version](spack-properties-pre_cmds.md "spack.schema.json#/properties/pre_cmds")              |
+| [post\_cmds](#post_cmds)    | `string`  | Optional | cannot be null | [spack schema version](spack-properties-post_cmds.md "spack.schema.json#/properties/post_cmds")            |
+| [needs](#needs)             | `array`   | Optional | cannot be null | [spack schema version](spack-properties-needs.md "spack.schema.json#/properties/needs")                    |
 | [spack](#spack)             | `object`  | Required | cannot be null | [spack schema version](spack-properties-spack.md "spack.schema.json#/properties/spack")                    |
 
 ## type
@@ -58,7 +59,7 @@ Select schema type to use when validating buildspec. This must be set to 'spack'
 
 ### type Constraints
 
-**pattern**: the string must match the following regular expression: 
+**pattern**: the string must match the following regular expression:&#x20;
 
 ```regexp
 ^spack$
@@ -390,7 +391,7 @@ Define executor specific configuration
 
 `object` ([Details](definitions-definitions-executors.md))
 
-## pre_cmds
+## pre\_cmds
 
 Shell commands run before spack
 
@@ -404,11 +405,11 @@ Shell commands run before spack
 
 *   defined in: [spack schema version](spack-properties-pre_cmds.md "spack.schema.json#/properties/pre_cmds")
 
-### pre_cmds Type
+### pre\_cmds Type
 
 `string`
 
-## post_cmds
+## post\_cmds
 
 Shell commands run after spack
 
@@ -422,9 +423,33 @@ Shell commands run after spack
 
 *   defined in: [spack schema version](spack-properties-post_cmds.md "spack.schema.json#/properties/post_cmds")
 
-### post_cmds Type
+### post\_cmds Type
 
 `string`
+
+## needs
+
+A list of test names that are dependency before runnning job
+
+`needs`
+
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [spack schema version](spack-properties-needs.md "spack.schema.json#/properties/needs")
+
+### needs Type
+
+`string[]`
+
+### needs Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
 
 ## spack
 
@@ -644,13 +669,13 @@ Reference this group by using
 {"$ref":"spack.schema.json#/definitions/test"}
 ```
 
-| Property                      | Type      | Required | Nullable       | Defined by                                                                                                                              |
-| :---------------------------- | :-------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
-| [remove_tests](#remove_tests) | `boolean` | Optional | cannot be null | [spack schema version](spack-definitions-test-properties-remove_tests.md "spack.schema.json#/definitions/test/properties/remove_tests") |
-| [run](#run)                   | `object`  | Required | cannot be null | [spack schema version](spack-definitions-test-properties-run.md "spack.schema.json#/definitions/test/properties/run")                   |
-| [results](#results)           | Merged    | Required | cannot be null | [spack schema version](spack-definitions-test-properties-results.md "spack.schema.json#/definitions/test/properties/results")           |
+| Property                       | Type      | Required | Nullable       | Defined by                                                                                                                              |
+| :----------------------------- | :-------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| [remove\_tests](#remove_tests) | `boolean` | Optional | cannot be null | [spack schema version](spack-definitions-test-properties-remove_tests.md "spack.schema.json#/definitions/test/properties/remove_tests") |
+| [run](#run)                    | `object`  | Required | cannot be null | [spack schema version](spack-definitions-test-properties-run.md "spack.schema.json#/definitions/test/properties/run")                   |
+| [results](#results)            | Merged    | Required | cannot be null | [spack schema version](spack-definitions-test-properties-results.md "spack.schema.json#/definitions/test/properties/results")           |
 
-### remove_tests
+### remove\_tests
 
 Remove all test suites in spack before running test via `spack test run`. If set to `True` we will run `spack test remove -y` which will remove all test suites.
 
@@ -664,7 +689,7 @@ Remove all test suites in spack before running test via `spack test run`. If set
 
 *   defined in: [spack schema version](spack-definitions-test-properties-remove_tests.md "spack.schema.json#/definitions/test/properties/remove_tests")
 
-#### remove_tests Type
+#### remove\_tests Type
 
 `boolean`
 

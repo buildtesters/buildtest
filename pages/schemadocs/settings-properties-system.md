@@ -6,9 +6,9 @@ settings.schema.json#/properties/system
 
 
 
-| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
-| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
+| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :--------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
 
 ## system Type
 
@@ -32,7 +32,7 @@ settings.schema.json#/properties/system
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-definitions-system.md "settings.schema.json#/properties/system/patternProperties/^.\*$")
+*   defined in: [buildtest configuration schema](settings-definitions-system.md "settings.schema.json#/properties/system/patternProperties/^.*$")
 
 ### ^.\*$ Type
 

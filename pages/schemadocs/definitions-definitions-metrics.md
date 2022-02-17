@@ -6,9 +6,9 @@ definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties
 
 This field is used for defining one or more metrics that is recorded for each test. A metric must have a unique name which is recorded in the test metadata.
 
-| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                        |
-| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [definitions.schema.json*](../out/definitions.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                         |
+| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :--------------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [definitions.schema.json\*](../out/definitions.schema.json "open original schema") |
 
 ## metrics Type
 
@@ -32,7 +32,7 @@ Name of metric
 
 *   cannot be null
 
-*   defined in: [JSON Schema Definitions File. ](definitions-definitions-metrics_field.md "definitions.schema.json#/definitions/metrics/patternProperties/^.\*$")
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-metrics_field.md "definitions.schema.json#/definitions/metrics/patternProperties/^.*$")
 
 ### ^.\*$ Type
 

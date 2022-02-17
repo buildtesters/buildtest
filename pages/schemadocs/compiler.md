@@ -20,6 +20,7 @@ The compiler schema is of `type: compiler` in sub-schema which is used for compi
 | :-------------------------- | :-------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------- |
 | [type](#type)               | `string`  | Required | cannot be null | [compiler schema](compiler-properties-type.md "compiler.schema.json#/properties/type")               |
 | [description](#description) | `string`  | Optional | cannot be null | [compiler schema](compiler-properties-description.md "compiler.schema.json#/properties/description") |
+| [needs](#needs)             | `array`   | Optional | cannot be null | [compiler schema](compiler-properties-needs.md "compiler.schema.json#/properties/needs")             |
 | [compilers](#compilers)     | `object`  | Required | cannot be null | [compiler schema](compiler-properties-compilers.md "compiler.schema.json#/properties/compilers")     |
 | [source](#source)           | `string`  | Required | cannot be null | [compiler schema](compiler-properties-source.md "compiler.schema.json#/properties/source")           |
 | [executor](#executor)       | `string`  | Required | cannot be null | [compiler schema](compiler-properties-executor.md "compiler.schema.json#/properties/executor")       |
@@ -47,7 +48,7 @@ Select schema type to use when validating buildspec. This must be of set to `com
 
 ### type Constraints
 
-**pattern**: the string must match the following regular expression: 
+**pattern**: the string must match the following regular expression:&#x20;
 
 ```regexp
 ^compiler$
@@ -76,6 +77,30 @@ The `description` field is used to document what the test is doing
 ### description Constraints
 
 **maximum length**: the maximum number of characters for this string is: `80`
+
+## needs
+
+A list of test names that are dependency before runnning job
+
+`needs`
+
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [compiler schema](compiler-properties-needs.md "compiler.schema.json#/properties/needs")
+
+### needs Type
+
+`string[]`
+
+### needs Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
 
 ## compilers
 
@@ -281,7 +306,7 @@ Reference this group by using
 | Property | Type | Required | Nullable | Defined by |
 | :------- | :--- | :------- | :------- | :--------- |
 
-## Definitions group pre_build
+## Definitions group pre\_build
 
 Reference this group by using
 
@@ -292,7 +317,7 @@ Reference this group by using
 | Property | Type | Required | Nullable | Defined by |
 | :------- | :--- | :------- | :------- | :--------- |
 
-## Definitions group post_build
+## Definitions group post\_build
 
 Reference this group by using
 
@@ -303,7 +328,7 @@ Reference this group by using
 | Property | Type | Required | Nullable | Defined by |
 | :------- | :--- | :------- | :------- | :--------- |
 
-## Definitions group pre_run
+## Definitions group pre\_run
 
 Reference this group by using
 
@@ -314,7 +339,7 @@ Reference this group by using
 | Property | Type | Required | Nullable | Defined by |
 | :------- | :--- | :------- | :------- | :--------- |
 
-## Definitions group post_run
+## Definitions group post\_run
 
 Reference this group by using
 
@@ -336,7 +361,7 @@ Reference this group by using
 | Property | Type | Required | Nullable | Defined by |
 | :------- | :--- | :------- | :------- | :--------- |
 
-## Definitions group default_compiler_all
+## Definitions group default\_compiler\_all
 
 Reference this group by using
 
@@ -344,22 +369,22 @@ Reference this group by using
 {"$ref":"compiler.schema.json#/definitions/default_compiler_all"}
 ```
 
-| Property                  | Type     | Required | Nullable       | Defined by                                                                                                                                                           |
-| :------------------------ | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [sbatch](#sbatch)         | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-sbatch.md "compiler.schema.json#/definitions/default_compiler_all/properties/sbatch")         |
-| [bsub](#bsub)             | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-bsub.md "compiler.schema.json#/definitions/default_compiler_all/properties/bsub")             |
-| [cobalt](#cobalt)         | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-cobalt.md "compiler.schema.json#/definitions/default_compiler_all/properties/cobalt")         |
-| [pbs](#pbs)               | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-pbs.md "compiler.schema.json#/definitions/default_compiler_all/properties/pbs")               |
-| [BB](#bb)                 | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-bb.md "compiler.schema.json#/definitions/default_compiler_all/properties/BB")                 |
-| [DW](#dw)                 | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-dw.md "compiler.schema.json#/definitions/default_compiler_all/properties/DW")                 |
-| [env](#env)               | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-env.md "compiler.schema.json#/definitions/default_compiler_all/properties/env")                                            |
-| [vars](#vars)             | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-env.md "compiler.schema.json#/definitions/default_compiler_all/properties/vars")                                           |
-| [status](#status)         | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-status.md "compiler.schema.json#/definitions/default_compiler_all/properties/status")                                      |
-| [pre_build](#pre_build)   | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-pre_build.md "compiler.schema.json#/definitions/default_compiler_all/properties/pre_build")   |
-| [post_build](#post_build) | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-post_build.md "compiler.schema.json#/definitions/default_compiler_all/properties/post_build") |
-| [pre_run](#pre_run)       | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-pre_run.md "compiler.schema.json#/definitions/default_compiler_all/properties/pre_run")       |
-| [post_run](#post_run)     | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-post_run.md "compiler.schema.json#/definitions/default_compiler_all/properties/post_run")     |
-| [run](#run)               | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-run.md "compiler.schema.json#/definitions/default_compiler_all/properties/run")               |
+| Property                   | Type     | Required | Nullable       | Defined by                                                                                                                                                           |
+| :------------------------- | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [sbatch](#sbatch)          | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-sbatch.md "compiler.schema.json#/definitions/default_compiler_all/properties/sbatch")         |
+| [bsub](#bsub)              | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-bsub.md "compiler.schema.json#/definitions/default_compiler_all/properties/bsub")             |
+| [cobalt](#cobalt)          | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-cobalt.md "compiler.schema.json#/definitions/default_compiler_all/properties/cobalt")         |
+| [pbs](#pbs)                | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-pbs.md "compiler.schema.json#/definitions/default_compiler_all/properties/pbs")               |
+| [BB](#bb)                  | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-bb.md "compiler.schema.json#/definitions/default_compiler_all/properties/BB")                 |
+| [DW](#dw)                  | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-dw.md "compiler.schema.json#/definitions/default_compiler_all/properties/DW")                 |
+| [env](#env)                | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-env.md "compiler.schema.json#/definitions/default_compiler_all/properties/env")                                            |
+| [vars](#vars)              | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-env.md "compiler.schema.json#/definitions/default_compiler_all/properties/vars")                                           |
+| [status](#status)          | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-status.md "compiler.schema.json#/definitions/default_compiler_all/properties/status")                                      |
+| [pre\_build](#pre_build)   | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-pre_build.md "compiler.schema.json#/definitions/default_compiler_all/properties/pre_build")   |
+| [post\_build](#post_build) | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-post_build.md "compiler.schema.json#/definitions/default_compiler_all/properties/post_build") |
+| [pre\_run](#pre_run)       | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-pre_run.md "compiler.schema.json#/definitions/default_compiler_all/properties/pre_run")       |
+| [post\_run](#post_run)     | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-post_run.md "compiler.schema.json#/definitions/default_compiler_all/properties/post_run")     |
+| [run](#run)                | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_all-properties-run.md "compiler.schema.json#/definitions/default_compiler_all/properties/run")               |
 
 ### sbatch
 
@@ -567,7 +592,7 @@ The status section describes how buildtest detects PASS/FAIL on test. By default
 
 `object` ([Details](definitions-definitions-status.md))
 
-### pre_build
+### pre\_build
 
 Run commands before building program
 
@@ -581,11 +606,11 @@ Run commands before building program
 
 *   defined in: [compiler schema](compiler-definitions-default_compiler_all-properties-pre_build.md "compiler.schema.json#/definitions/default_compiler_all/properties/pre_build")
 
-#### pre_build Type
+#### pre\_build Type
 
 `string`
 
-### post_build
+### post\_build
 
 Run commands after building program
 
@@ -599,11 +624,11 @@ Run commands after building program
 
 *   defined in: [compiler schema](compiler-definitions-default_compiler_all-properties-post_build.md "compiler.schema.json#/definitions/default_compiler_all/properties/post_build")
 
-#### post_build Type
+#### post\_build Type
 
 `string`
 
-### pre_run
+### pre\_run
 
 Run commands before running program
 
@@ -617,11 +642,11 @@ Run commands before running program
 
 *   defined in: [compiler schema](compiler-definitions-default_compiler_all-properties-pre_run.md "compiler.schema.json#/definitions/default_compiler_all/properties/pre_run")
 
-#### pre_run Type
+#### pre\_run Type
 
 `string`
 
-### post_run
+### post\_run
 
 Run commands after running program
 
@@ -635,7 +660,7 @@ Run commands after running program
 
 *   defined in: [compiler schema](compiler-definitions-default_compiler_all-properties-post_run.md "compiler.schema.json#/definitions/default_compiler_all/properties/post_run")
 
-#### post_run Type
+#### post\_run Type
 
 `string`
 
@@ -657,7 +682,7 @@ Run command for launching compiled binary
 
 `string`
 
-## Definitions group default_compiler_config
+## Definitions group default\_compiler\_config
 
 Reference this group by using
 
@@ -665,30 +690,30 @@ Reference this group by using
 {"$ref":"compiler.schema.json#/definitions/default_compiler_config"}
 ```
 
-| Property                    | Type     | Required | Nullable       | Defined by                                                                                                                                                                 |
-| :-------------------------- | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [cc](#cc)                   | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-cc.md "compiler.schema.json#/definitions/default_compiler_config/properties/cc")                 |
-| [fc](#fc)                   | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-fc.md "compiler.schema.json#/definitions/default_compiler_config/properties/fc")                 |
-| [cxx](#cxx)                 | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-cxx.md "compiler.schema.json#/definitions/default_compiler_config/properties/cxx")               |
-| [cflags](#cflags)           | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-cflags.md "compiler.schema.json#/definitions/default_compiler_config/properties/cflags")         |
-| [fflags](#fflags)           | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-fflags.md "compiler.schema.json#/definitions/default_compiler_config/properties/fflags")         |
-| [cxxflags](#cxxflags)       | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-cxxflags.md "compiler.schema.json#/definitions/default_compiler_config/properties/cxxflags")     |
-| [ldflags](#ldflags)         | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-ldflags.md "compiler.schema.json#/definitions/default_compiler_config/properties/ldflags")       |
-| [cppflags](#cppflags)       | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-cppflags.md "compiler.schema.json#/definitions/default_compiler_config/properties/cppflags")     |
-| [sbatch](#sbatch-1)         | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-sbatch.md "compiler.schema.json#/definitions/default_compiler_config/properties/sbatch")         |
-| [bsub](#bsub-1)             | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-bsub.md "compiler.schema.json#/definitions/default_compiler_config/properties/bsub")             |
-| [cobalt](#cobalt-1)         | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-cobalt.md "compiler.schema.json#/definitions/default_compiler_config/properties/cobalt")         |
-| [pbs](#pbs-1)               | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-pbs.md "compiler.schema.json#/definitions/default_compiler_config/properties/pbs")               |
-| [BB](#bb-1)                 | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-bb.md "compiler.schema.json#/definitions/default_compiler_config/properties/BB")                 |
-| [DW](#dw-1)                 | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-dw.md "compiler.schema.json#/definitions/default_compiler_config/properties/DW")                 |
-| [env](#env-1)               | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-env.md "compiler.schema.json#/definitions/default_compiler_config/properties/env")                                               |
-| [vars](#vars-1)             | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-env.md "compiler.schema.json#/definitions/default_compiler_config/properties/vars")                                              |
-| [status](#status-1)         | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-status.md "compiler.schema.json#/definitions/default_compiler_config/properties/status")                                         |
-| [pre_build](#pre_build-1)   | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-pre_build.md "compiler.schema.json#/definitions/default_compiler_config/properties/pre_build")   |
-| [post_build](#post_build-1) | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-post_build.md "compiler.schema.json#/definitions/default_compiler_config/properties/post_build") |
-| [pre_run](#pre_run-1)       | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-pre_run.md "compiler.schema.json#/definitions/default_compiler_config/properties/pre_run")       |
-| [post_run](#post_run-1)     | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-post_run.md "compiler.schema.json#/definitions/default_compiler_config/properties/post_run")     |
-| [run](#run-1)               | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-run.md "compiler.schema.json#/definitions/default_compiler_config/properties/run")               |
+| Property                     | Type     | Required | Nullable       | Defined by                                                                                                                                                                 |
+| :--------------------------- | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [cc](#cc)                    | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-cc.md "compiler.schema.json#/definitions/default_compiler_config/properties/cc")                 |
+| [fc](#fc)                    | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-fc.md "compiler.schema.json#/definitions/default_compiler_config/properties/fc")                 |
+| [cxx](#cxx)                  | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-cxx.md "compiler.schema.json#/definitions/default_compiler_config/properties/cxx")               |
+| [cflags](#cflags)            | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-cflags.md "compiler.schema.json#/definitions/default_compiler_config/properties/cflags")         |
+| [fflags](#fflags)            | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-fflags.md "compiler.schema.json#/definitions/default_compiler_config/properties/fflags")         |
+| [cxxflags](#cxxflags)        | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-cxxflags.md "compiler.schema.json#/definitions/default_compiler_config/properties/cxxflags")     |
+| [ldflags](#ldflags)          | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-ldflags.md "compiler.schema.json#/definitions/default_compiler_config/properties/ldflags")       |
+| [cppflags](#cppflags)        | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-cppflags.md "compiler.schema.json#/definitions/default_compiler_config/properties/cppflags")     |
+| [sbatch](#sbatch-1)          | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-sbatch.md "compiler.schema.json#/definitions/default_compiler_config/properties/sbatch")         |
+| [bsub](#bsub-1)              | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-bsub.md "compiler.schema.json#/definitions/default_compiler_config/properties/bsub")             |
+| [cobalt](#cobalt-1)          | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-cobalt.md "compiler.schema.json#/definitions/default_compiler_config/properties/cobalt")         |
+| [pbs](#pbs-1)                | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-pbs.md "compiler.schema.json#/definitions/default_compiler_config/properties/pbs")               |
+| [BB](#bb-1)                  | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-bb.md "compiler.schema.json#/definitions/default_compiler_config/properties/BB")                 |
+| [DW](#dw-1)                  | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-dw.md "compiler.schema.json#/definitions/default_compiler_config/properties/DW")                 |
+| [env](#env-1)                | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-env.md "compiler.schema.json#/definitions/default_compiler_config/properties/env")                                               |
+| [vars](#vars-1)              | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-env.md "compiler.schema.json#/definitions/default_compiler_config/properties/vars")                                              |
+| [status](#status-1)          | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-status.md "compiler.schema.json#/definitions/default_compiler_config/properties/status")                                         |
+| [pre\_build](#pre_build-1)   | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-pre_build.md "compiler.schema.json#/definitions/default_compiler_config/properties/pre_build")   |
+| [post\_build](#post_build-1) | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-post_build.md "compiler.schema.json#/definitions/default_compiler_config/properties/post_build") |
+| [pre\_run](#pre_run-1)       | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-pre_run.md "compiler.schema.json#/definitions/default_compiler_config/properties/pre_run")       |
+| [post\_run](#post_run-1)     | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-post_run.md "compiler.schema.json#/definitions/default_compiler_config/properties/post_run")     |
+| [run](#run-1)                | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-default_compiler_config-properties-run.md "compiler.schema.json#/definitions/default_compiler_config/properties/run")               |
 
 ### cc
 
@@ -1040,7 +1065,7 @@ The status section describes how buildtest detects PASS/FAIL on test. By default
 
 `object` ([Details](definitions-definitions-status.md))
 
-### pre_build
+### pre\_build
 
 Run commands before building program
 
@@ -1054,11 +1079,11 @@ Run commands before building program
 
 *   defined in: [compiler schema](compiler-definitions-default_compiler_config-properties-pre_build.md "compiler.schema.json#/definitions/default_compiler_config/properties/pre_build")
 
-#### pre_build Type
+#### pre\_build Type
 
 `string`
 
-### post_build
+### post\_build
 
 Run commands after building program
 
@@ -1072,11 +1097,11 @@ Run commands after building program
 
 *   defined in: [compiler schema](compiler-definitions-default_compiler_config-properties-post_build.md "compiler.schema.json#/definitions/default_compiler_config/properties/post_build")
 
-#### post_build Type
+#### post\_build Type
 
 `string`
 
-### pre_run
+### pre\_run
 
 Run commands before running program
 
@@ -1090,11 +1115,11 @@ Run commands before running program
 
 *   defined in: [compiler schema](compiler-definitions-default_compiler_config-properties-pre_run.md "compiler.schema.json#/definitions/default_compiler_config/properties/pre_run")
 
-#### pre_run Type
+#### pre\_run Type
 
 `string`
 
-### post_run
+### post\_run
 
 Run commands after running program
 
@@ -1108,7 +1133,7 @@ Run commands after running program
 
 *   defined in: [compiler schema](compiler-definitions-default_compiler_config-properties-post_run.md "compiler.schema.json#/definitions/default_compiler_config/properties/post_run")
 
-#### post_run Type
+#### post\_run Type
 
 `string`
 
@@ -1130,7 +1155,7 @@ Run command for launching compiled binary
 
 `string`
 
-## Definitions group compiler_declaration
+## Definitions group compiler\_declaration
 
 Reference this group by using
 
@@ -1138,31 +1163,30 @@ Reference this group by using
 {"$ref":"compiler.schema.json#/definitions/compiler_declaration"}
 ```
 
-| Property                    | Type     | Required | Nullable       | Defined by                                                                                                                                                           |
-| :-------------------------- | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [cc](#cc-1)                 | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-cc.md "compiler.schema.json#/definitions/compiler_declaration/properties/cc")                 |
-| [fc](#fc-1)                 | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-fc.md "compiler.schema.json#/definitions/compiler_declaration/properties/fc")                 |
-| [cxx](#cxx-1)               | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-cxx.md "compiler.schema.json#/definitions/compiler_declaration/properties/cxx")               |
-| [cflags](#cflags-1)         | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-cflags.md "compiler.schema.json#/definitions/compiler_declaration/properties/cflags")         |
-| [fflags](#fflags-1)         | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-fflags.md "compiler.schema.json#/definitions/compiler_declaration/properties/fflags")         |
-| [cxxflags](#cxxflags-1)     | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-cxxflags.md "compiler.schema.json#/definitions/compiler_declaration/properties/cxxflags")     |
-| [ldflags](#ldflags-1)       | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-ldflags.md "compiler.schema.json#/definitions/compiler_declaration/properties/ldflags")       |
-| [cppflags](#cppflags-1)     | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-cppflags.md "compiler.schema.json#/definitions/compiler_declaration/properties/cppflags")     |
-| [sbatch](#sbatch-2)         | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-sbatch.md "compiler.schema.json#/definitions/compiler_declaration/properties/sbatch")         |
-| [bsub](#bsub-2)             | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-bsub.md "compiler.schema.json#/definitions/compiler_declaration/properties/bsub")             |
-| [cobalt](#cobalt-2)         | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-cobalt.md "compiler.schema.json#/definitions/compiler_declaration/properties/cobalt")         |
-| [pbs](#pbs-2)               | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-pbs.md "compiler.schema.json#/definitions/compiler_declaration/properties/pbs")               |
-| [BB](#bb-2)                 | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-bb.md "compiler.schema.json#/definitions/compiler_declaration/properties/BB")                 |
-| [DW](#dw-2)                 | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-dw.md "compiler.schema.json#/definitions/compiler_declaration/properties/DW")                 |
-| [env](#env-2)               | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-env.md "compiler.schema.json#/definitions/compiler_declaration/properties/env")                                            |
-| [vars](#vars-2)             | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-env.md "compiler.schema.json#/definitions/compiler_declaration/properties/vars")                                           |
-| [status](#status-2)         | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-status.md "compiler.schema.json#/definitions/compiler_declaration/properties/status")                                      |
-| [pre_build](#pre_build-2)   | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-pre_build.md "compiler.schema.json#/definitions/compiler_declaration/properties/pre_build")   |
-| [post_build](#post_build-2) | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-post_build.md "compiler.schema.json#/definitions/compiler_declaration/properties/post_build") |
-| [pre_run](#pre_run-2)       | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-pre_run.md "compiler.schema.json#/definitions/compiler_declaration/properties/pre_run")       |
-| [post_run](#post_run-2)     | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-post_run.md "compiler.schema.json#/definitions/compiler_declaration/properties/post_run")     |
-| [run](#run-2)               | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-run.md "compiler.schema.json#/definitions/compiler_declaration/properties/run")               |
-| [module](#module)           | `object` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-module.md "compiler.schema.json#/definitions/compiler_declaration/properties/module")         |
+| Property                     | Type     | Required | Nullable       | Defined by                                                                                                                                                           |
+| :--------------------------- | :------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [cc](#cc-1)                  | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-cc.md "compiler.schema.json#/definitions/compiler_declaration/properties/cc")                 |
+| [fc](#fc-1)                  | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-fc.md "compiler.schema.json#/definitions/compiler_declaration/properties/fc")                 |
+| [cxx](#cxx-1)                | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-cxx.md "compiler.schema.json#/definitions/compiler_declaration/properties/cxx")               |
+| [cflags](#cflags-1)          | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-cflags.md "compiler.schema.json#/definitions/compiler_declaration/properties/cflags")         |
+| [fflags](#fflags-1)          | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-fflags.md "compiler.schema.json#/definitions/compiler_declaration/properties/fflags")         |
+| [cxxflags](#cxxflags-1)      | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-cxxflags.md "compiler.schema.json#/definitions/compiler_declaration/properties/cxxflags")     |
+| [ldflags](#ldflags-1)        | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-ldflags.md "compiler.schema.json#/definitions/compiler_declaration/properties/ldflags")       |
+| [cppflags](#cppflags-1)      | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-cppflags.md "compiler.schema.json#/definitions/compiler_declaration/properties/cppflags")     |
+| [sbatch](#sbatch-2)          | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-sbatch.md "compiler.schema.json#/definitions/compiler_declaration/properties/sbatch")         |
+| [bsub](#bsub-2)              | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-bsub.md "compiler.schema.json#/definitions/compiler_declaration/properties/bsub")             |
+| [cobalt](#cobalt-2)          | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-cobalt.md "compiler.schema.json#/definitions/compiler_declaration/properties/cobalt")         |
+| [pbs](#pbs-2)                | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-pbs.md "compiler.schema.json#/definitions/compiler_declaration/properties/pbs")               |
+| [BB](#bb-2)                  | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-bb.md "compiler.schema.json#/definitions/compiler_declaration/properties/BB")                 |
+| [DW](#dw-2)                  | `array`  | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-dw.md "compiler.schema.json#/definitions/compiler_declaration/properties/DW")                 |
+| [env](#env-2)                | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-env.md "compiler.schema.json#/definitions/compiler_declaration/properties/env")                                            |
+| [vars](#vars-2)              | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-env.md "compiler.schema.json#/definitions/compiler_declaration/properties/vars")                                           |
+| [status](#status-2)          | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-status.md "compiler.schema.json#/definitions/compiler_declaration/properties/status")                                      |
+| [pre\_build](#pre_build-2)   | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-pre_build.md "compiler.schema.json#/definitions/compiler_declaration/properties/pre_build")   |
+| [post\_build](#post_build-2) | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-post_build.md "compiler.schema.json#/definitions/compiler_declaration/properties/post_build") |
+| [pre\_run](#pre_run-2)       | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-pre_run.md "compiler.schema.json#/definitions/compiler_declaration/properties/pre_run")       |
+| [post\_run](#post_run-2)     | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-compiler_declaration-properties-post_run.md "compiler.schema.json#/definitions/compiler_declaration/properties/post_run")     |
+| [module](#module)            | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-module.md "compiler.schema.json#/definitions/compiler_declaration/properties/module")                                      |
 
 ### cc
 
@@ -1514,7 +1538,7 @@ The status section describes how buildtest detects PASS/FAIL on test. By default
 
 `object` ([Details](definitions-definitions-status.md))
 
-### pre_build
+### pre\_build
 
 Run commands before building program
 
@@ -1528,11 +1552,11 @@ Run commands before building program
 
 *   defined in: [compiler schema](compiler-definitions-compiler_declaration-properties-pre_build.md "compiler.schema.json#/definitions/compiler_declaration/properties/pre_build")
 
-#### pre_build Type
+#### pre\_build Type
 
 `string`
 
-### post_build
+### post\_build
 
 Run commands after building program
 
@@ -1546,11 +1570,11 @@ Run commands after building program
 
 *   defined in: [compiler schema](compiler-definitions-compiler_declaration-properties-post_build.md "compiler.schema.json#/definitions/compiler_declaration/properties/post_build")
 
-#### post_build Type
+#### post\_build Type
 
 `string`
 
-### pre_run
+### pre\_run
 
 Run commands before running program
 
@@ -1564,11 +1588,11 @@ Run commands before running program
 
 *   defined in: [compiler schema](compiler-definitions-compiler_declaration-properties-pre_run.md "compiler.schema.json#/definitions/compiler_declaration/properties/pre_run")
 
-#### pre_run Type
+#### pre\_run Type
 
 `string`
 
-### post_run
+### post\_run
 
 Run commands after running program
 
@@ -1582,25 +1606,7 @@ Run commands after running program
 
 *   defined in: [compiler schema](compiler-definitions-compiler_declaration-properties-post_run.md "compiler.schema.json#/definitions/compiler_declaration/properties/post_run")
 
-#### post_run Type
-
-`string`
-
-### run
-
-Run command for launching compiled binary
-
-`run`
-
-*   is optional
-
-*   Type: `string`
-
-*   cannot be null
-
-*   defined in: [compiler schema](compiler-definitions-compiler_declaration-properties-run.md "compiler.schema.json#/definitions/compiler_declaration/properties/run")
-
-#### run Type
+#### post\_run Type
 
 `string`
 
@@ -1612,12 +1618,12 @@ Run command for launching compiled binary
 
 *   is optional
 
-*   Type: `object` ([Details](compiler-definitions-compiler_declaration-properties-module.md))
+*   Type: `object` ([Details](definitions-definitions-module.md))
 
 *   cannot be null
 
-*   defined in: [compiler schema](compiler-definitions-compiler_declaration-properties-module.md "compiler.schema.json#/definitions/compiler_declaration/properties/module")
+*   defined in: [compiler schema](definitions-definitions-module.md "compiler.schema.json#/definitions/compiler_declaration/properties/module")
 
 #### module Type
 
-`object` ([Details](compiler-definitions-compiler_declaration-properties-module.md))
+`object` ([Details](definitions-definitions-module.md))

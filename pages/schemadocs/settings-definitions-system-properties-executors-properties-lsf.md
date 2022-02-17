@@ -6,9 +6,9 @@ settings.schema.json#/definitions/system/properties/executors/properties/lsf
 
 The `lsf` section is used for declaring LSF executors for running jobs using LSF scheduler
 
-| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
-| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
+| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :--------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
 
 ## lsf Type
 
@@ -32,7 +32,7 @@ An instance object of lsf executor
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-definitions-lsf.md "settings.schema.json#/definitions/system/properties/executors/properties/lsf/patternProperties/^.\*$")
+*   defined in: [buildtest configuration schema](settings-definitions-lsf.md "settings.schema.json#/definitions/system/properties/executors/properties/lsf/patternProperties/^.*$")
 
 ### ^.\*$ Type
 

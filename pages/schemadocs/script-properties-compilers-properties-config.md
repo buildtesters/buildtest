@@ -6,9 +6,9 @@ script.schema.json#/properties/compilers/properties/config
 
 Specify compiler configuration based on named compilers.
 
-| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                              |
-| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :---------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [script.schema.json*](../out/script.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                               |
+| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :----------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [script.schema.json\*](../out/script.schema.json "open original schema") |
 
 ## config Type
 
@@ -32,7 +32,7 @@ Specify compiler configuration at compiler level. The `config` section has highe
 
 *   cannot be null
 
-*   defined in: [script schema version](script-definitions-compiler_declaration.md "script.schema.json#/properties/compilers/properties/config/patternProperties/^.\*$")
+*   defined in: [script schema version](script-definitions-compiler_declaration.md "script.schema.json#/properties/compilers/properties/config/patternProperties/^.*$")
 
 ### ^.\*$ Type
 

@@ -6,9 +6,9 @@ spack.schema.json#/properties/spack
 
 Entry point to spack configuration
 
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                            |
-| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [spack.schema.json*](../out/spack.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                             |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :--------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [spack.schema.json\*](../out/spack.schema.json "open original schema") |
 
 ## spack Type
 
@@ -16,15 +16,15 @@ Entry point to spack configuration
 
 # spack Properties
 
-| Property                        | Type      | Required | Nullable       | Defined by                                                                                                                                |
-| :------------------------------ | :-------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| [root](#root)                   | `string`  | Optional | cannot be null | [spack schema version](spack-properties-spack-properties-root.md "spack.schema.json#/properties/spack/properties/root")                   |
-| [compiler_find](#compiler_find) | `boolean` | Optional | cannot be null | [spack schema version](spack-properties-spack-properties-compiler_find.md "spack.schema.json#/properties/spack/properties/compiler_find") |
-| [mirror](#mirror)               | `object`  | Optional | cannot be null | [spack schema version](definitions-definitions-env.md "spack.schema.json#/properties/spack/properties/mirror")                            |
-| [env](#env)                     | `object`  | Optional | cannot be null | [spack schema version](spack-definitions-env.md "spack.schema.json#/properties/spack/properties/env")                                     |
-| [install](#install)             | `object`  | Optional | cannot be null | [spack schema version](spack-definitions-install.md "spack.schema.json#/properties/spack/properties/install")                             |
-| [verify_spack](#verify_spack)   | `boolean` | Optional | cannot be null | [spack schema version](spack-properties-spack-properties-verify_spack.md "spack.schema.json#/properties/spack/properties/verify_spack")   |
-| [test](#test)                   | `object`  | Optional | cannot be null | [spack schema version](spack-definitions-test.md "spack.schema.json#/properties/spack/properties/test")                                   |
+| Property                         | Type      | Required | Nullable       | Defined by                                                                                                                                |
+| :------------------------------- | :-------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| [root](#root)                    | `string`  | Optional | cannot be null | [spack schema version](spack-properties-spack-properties-root.md "spack.schema.json#/properties/spack/properties/root")                   |
+| [compiler\_find](#compiler_find) | `boolean` | Optional | cannot be null | [spack schema version](spack-properties-spack-properties-compiler_find.md "spack.schema.json#/properties/spack/properties/compiler_find") |
+| [mirror](#mirror)                | `object`  | Optional | cannot be null | [spack schema version](definitions-definitions-env.md "spack.schema.json#/properties/spack/properties/mirror")                            |
+| [env](#env)                      | `object`  | Optional | cannot be null | [spack schema version](spack-definitions-env.md "spack.schema.json#/properties/spack/properties/env")                                     |
+| [install](#install)              | `object`  | Optional | cannot be null | [spack schema version](spack-definitions-install.md "spack.schema.json#/properties/spack/properties/install")                             |
+| [verify\_spack](#verify_spack)   | `boolean` | Optional | cannot be null | [spack schema version](spack-properties-spack-properties-verify_spack.md "spack.schema.json#/properties/spack/properties/verify_spack")   |
+| [test](#test)                    | `object`  | Optional | cannot be null | [spack schema version](spack-definitions-test.md "spack.schema.json#/properties/spack/properties/test")                                   |
 
 ## root
 
@@ -44,7 +44,7 @@ Specify location for root of spack directory
 
 `string`
 
-## compiler_find
+## compiler\_find
 
 Run `spack compiler find` if set to `True`. This is run right after sourcing spack startup script.
 
@@ -58,7 +58,7 @@ Run `spack compiler find` if set to `True`. This is run right after sourcing spa
 
 *   defined in: [spack schema version](spack-properties-spack-properties-compiler_find.md "spack.schema.json#/properties/spack/properties/compiler_find")
 
-### compiler_find Type
+### compiler\_find Type
 
 `boolean`
 
@@ -120,9 +120,9 @@ Install spack packages using `spack install` command
 
 `object` ([Details](spack-definitions-install.md))
 
-## verify_spack
+## verify\_spack
 
-This boolean will determine if we need to check for file existence where spack is cloned via `root` property and file **$SPACK_ROOT/share/spack/setup-env.sh** exists. These checks can be disabled by setting this to `False` which can be useful if you dont want buildtest to raise exception during test generation process and test is skipped.
+This boolean will determine if we need to check for file existence where spack is cloned via `root` property and file **$SPACK\_ROOT/share/spack/setup-env.sh** exists. These checks can be disabled by setting this to `False` which can be useful if you dont want buildtest to raise exception during test generation process and test is skipped.
 
 `verify_spack`
 
@@ -134,11 +134,11 @@ This boolean will determine if we need to check for file existence where spack i
 
 *   defined in: [spack schema version](spack-properties-spack-properties-verify_spack.md "spack.schema.json#/properties/spack/properties/verify_spack")
 
-### verify_spack Type
+### verify\_spack Type
 
 `boolean`
 
-### verify_spack Default Value
+### verify\_spack Default Value
 
 The default value is:
 

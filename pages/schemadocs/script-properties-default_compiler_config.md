@@ -6,30 +6,30 @@ script.schema.json#/properties/default_compiler_config
 
 Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides `all` property.
 
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                              |
-| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :---------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Allowed               | none                | [script.schema.json*](../out/script.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                               |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :----------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Allowed               | none                | [script.schema.json\*](../out/script.schema.json "open original schema") |
 
-## default_compiler_config Type
+## default\_compiler\_config Type
 
 `object` ([Details](script-properties-default_compiler_config.md))
 
-# default_compiler_config Properties
+# default\_compiler\_config Properties
 
-| Property              | Type     | Required | Nullable       | Defined by                                                                                                                                                   |
-| :-------------------- | :------- | :------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [cc](#cc)             | `string` | Optional | cannot be null | [script schema version](definitions-definitions-cc.md "script.schema.json#/properties/default_compiler_config/properties/cc")                                |
-| [fc](#fc)             | `string` | Optional | cannot be null | [script schema version](definitions-definitions-fc.md "script.schema.json#/properties/default_compiler_config/properties/fc")                                |
-| [cxx](#cxx)           | `string` | Optional | cannot be null | [script schema version](definitions-definitions-cxx.md "script.schema.json#/properties/default_compiler_config/properties/cxx")                              |
-| [cflags](#cflags)     | `string` | Optional | cannot be null | [script schema version](definitions-definitions-cflags.md "script.schema.json#/properties/default_compiler_config/properties/cflags")                        |
-| [fflags](#fflags)     | `string` | Optional | cannot be null | [script schema version](definitions-definitions-fflags.md "script.schema.json#/properties/default_compiler_config/properties/fflags")                        |
-| [cxxflags](#cxxflags) | `string` | Optional | cannot be null | [script schema version](definitions-definitions-cxxflags.md "script.schema.json#/properties/default_compiler_config/properties/cxxflags")                    |
-| [ldflags](#ldflags)   | `string` | Optional | cannot be null | [script schema version](definitions-definitions-ldflags.md "script.schema.json#/properties/default_compiler_config/properties/ldflags")                      |
-| [cppflags](#cppflags) | `string` | Optional | cannot be null | [script schema version](definitions-definitions-cppflags.md "script.schema.json#/properties/default_compiler_config/properties/cppflags")                    |
-| [env](#env)           | `object` | Optional | cannot be null | [script schema version](definitions-definitions-env.md "script.schema.json#/properties/default_compiler_config/properties/env")                              |
-| [vars](#vars)         | `object` | Optional | cannot be null | [script schema version](definitions-definitions-env.md "script.schema.json#/properties/default_compiler_config/properties/vars")                             |
-| [status](#status)     | `object` | Optional | cannot be null | [script schema version](definitions-definitions-status.md "script.schema.json#/properties/default_compiler_config/properties/status")                        |
-| [run](#run)           | `string` | Optional | cannot be null | [script schema version](script-properties-default_compiler_config-properties-run.md "script.schema.json#/properties/default_compiler_config/properties/run") |
+| Property              | Type     | Required | Nullable       | Defined by                                                                                                                                |
+| :-------------------- | :------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| [cc](#cc)             | `string` | Optional | cannot be null | [script schema version](definitions-definitions-cc.md "script.schema.json#/properties/default_compiler_config/properties/cc")             |
+| [fc](#fc)             | `string` | Optional | cannot be null | [script schema version](definitions-definitions-fc.md "script.schema.json#/properties/default_compiler_config/properties/fc")             |
+| [cxx](#cxx)           | `string` | Optional | cannot be null | [script schema version](definitions-definitions-cxx.md "script.schema.json#/properties/default_compiler_config/properties/cxx")           |
+| [cflags](#cflags)     | `string` | Optional | cannot be null | [script schema version](definitions-definitions-cflags.md "script.schema.json#/properties/default_compiler_config/properties/cflags")     |
+| [fflags](#fflags)     | `string` | Optional | cannot be null | [script schema version](definitions-definitions-fflags.md "script.schema.json#/properties/default_compiler_config/properties/fflags")     |
+| [cxxflags](#cxxflags) | `string` | Optional | cannot be null | [script schema version](definitions-definitions-cxxflags.md "script.schema.json#/properties/default_compiler_config/properties/cxxflags") |
+| [ldflags](#ldflags)   | `string` | Optional | cannot be null | [script schema version](definitions-definitions-ldflags.md "script.schema.json#/properties/default_compiler_config/properties/ldflags")   |
+| [cppflags](#cppflags) | `string` | Optional | cannot be null | [script schema version](definitions-definitions-cppflags.md "script.schema.json#/properties/default_compiler_config/properties/cppflags") |
+| [env](#env)           | `object` | Optional | cannot be null | [script schema version](definitions-definitions-env.md "script.schema.json#/properties/default_compiler_config/properties/env")           |
+| [vars](#vars)         | `object` | Optional | cannot be null | [script schema version](definitions-definitions-env.md "script.schema.json#/properties/default_compiler_config/properties/vars")          |
+| [status](#status)     | `object` | Optional | cannot be null | [script schema version](definitions-definitions-status.md "script.schema.json#/properties/default_compiler_config/properties/status")     |
+| [run](#run)           | `string` | Optional | cannot be null | [script schema version](definitions-definitions-run.md "script.schema.json#/properties/default_compiler_config/properties/run")           |
 
 ## cc
 
@@ -239,7 +239,7 @@ The status section describes how buildtest detects PASS/FAIL on test. By default
 
 ## run
 
-
+Specify a series of commands to run.
 
 `run`
 
@@ -249,7 +249,7 @@ The status section describes how buildtest detects PASS/FAIL on test. By default
 
 *   cannot be null
 
-*   defined in: [script schema version](script-properties-default_compiler_config-properties-run.md "script.schema.json#/properties/default_compiler_config/properties/run")
+*   defined in: [script schema version](definitions-definitions-run.md "script.schema.json#/properties/default_compiler_config/properties/run")
 
 ### run Type
 

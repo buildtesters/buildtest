@@ -6,9 +6,9 @@ settings.schema.json#/definitions/local
 
 An instance object of local executor
 
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
-| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :--------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
 
 ## local Type
 
@@ -16,14 +16,14 @@ An instance object of local executor
 
 # local Properties
 
-| Property                        | Type          | Required | Nullable       | Defined by                                                                                                                                                  |
-| :------------------------------ | :------------ | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [description](#description)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-description.md "settings.schema.json#/definitions/local/properties/description")     |
-| [shell](#shell)                 | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-shell.md "settings.schema.json#/definitions/local/properties/shell")                 |
-| [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-before_script.md "settings.schema.json#/definitions/local/properties/before_script") |
-| [max_jobs](#max_jobs)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-max_jobs.md "settings.schema.json#/definitions/local/properties/max_jobs")                            |
-| [disable](#disable)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-disable.md "settings.schema.json#/definitions/local/properties/disable")                              |
-| [module](#module)               | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/local/properties/module")                                |
+| Property                         | Type          | Required | Nullable       | Defined by                                                                                                                                                  |
+| :------------------------------- | :------------ | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [description](#description)      | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-description.md "settings.schema.json#/definitions/local/properties/description")     |
+| [shell](#shell)                  | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-shell.md "settings.schema.json#/definitions/local/properties/shell")                 |
+| [before\_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-local-properties-before_script.md "settings.schema.json#/definitions/local/properties/before_script") |
+| [max\_jobs](#max_jobs)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-max_jobs.md "settings.schema.json#/definitions/local/properties/max_jobs")                            |
+| [disable](#disable)              | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-disable.md "settings.schema.json#/definitions/local/properties/disable")                              |
+| [module](#module)                | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/local/properties/module")                                |
 
 ## description
 
@@ -61,7 +61,7 @@ Specify the shell launcher you want to use when running tests locally
 
 `string`
 
-## before_script
+## before\_script
 
 
 
@@ -75,11 +75,11 @@ Specify the shell launcher you want to use when running tests locally
 
 *   defined in: [buildtest configuration schema](settings-definitions-local-properties-before_script.md "settings.schema.json#/definitions/local/properties/before_script")
 
-### before_script Type
+### before\_script Type
 
 unknown
 
-## max_jobs
+## max\_jobs
 
 Maximum number of jobs that can be run at a given time for a particular executor
 
@@ -93,11 +93,11 @@ Maximum number of jobs that can be run at a given time for a particular executor
 
 *   defined in: [buildtest configuration schema](settings-definitions-max_jobs.md "settings.schema.json#/definitions/local/properties/max_jobs")
 
-### max_jobs Type
+### max\_jobs Type
 
 `integer`
 
-### max_jobs Constraints
+### max\_jobs Constraints
 
 **minimum**: the value of this number must greater than or equal to: `1`
 

@@ -6,9 +6,9 @@ settings.schema.json#/definitions/cobalt
 
 An instance object of cobalt executor
 
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
-| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :--------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
 
 ## cobalt Type
 
@@ -16,18 +16,18 @@ An instance object of cobalt executor
 
 # cobalt Properties
 
-| Property                        | Type          | Required | Nullable       | Defined by                                                                                                                                                    |
-| :------------------------------ | :------------ | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [description](#description)     | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-description.md "settings.schema.json#/definitions/cobalt/properties/description")     |
-| [launcher](#launcher)           | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-launcher.md "settings.schema.json#/definitions/cobalt/properties/launcher")           |
-| [options](#options)             | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-options.md "settings.schema.json#/definitions/cobalt/properties/options")             |
-| [queue](#queue)                 | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-queue.md "settings.schema.json#/definitions/cobalt/properties/queue")                 |
-| [before_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-before_script.md "settings.schema.json#/definitions/cobalt/properties/before_script") |
-| [maxpendtime](#maxpendtime)     | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-maxpendtime.md "settings.schema.json#/definitions/cobalt/properties/maxpendtime")                       |
-| [account](#account)             | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-account.md "settings.schema.json#/definitions/cobalt/properties/account")                               |
-| [max_jobs](#max_jobs)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-max_jobs.md "settings.schema.json#/definitions/cobalt/properties/max_jobs")                             |
-| [disable](#disable)             | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-disable.md "settings.schema.json#/definitions/cobalt/properties/disable")                               |
-| [module](#module)               | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/cobalt/properties/module")                                 |
+| Property                         | Type          | Required | Nullable       | Defined by                                                                                                                                                    |
+| :------------------------------- | :------------ | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [description](#description)      | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-description.md "settings.schema.json#/definitions/cobalt/properties/description")     |
+| [launcher](#launcher)            | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-launcher.md "settings.schema.json#/definitions/cobalt/properties/launcher")           |
+| [options](#options)              | `array`       | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-options.md "settings.schema.json#/definitions/cobalt/properties/options")             |
+| [queue](#queue)                  | `string`      | Required | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-queue.md "settings.schema.json#/definitions/cobalt/properties/queue")                 |
+| [before\_script](#before_script) | Not specified | Optional | cannot be null | [buildtest configuration schema](settings-definitions-cobalt-properties-before_script.md "settings.schema.json#/definitions/cobalt/properties/before_script") |
+| [maxpendtime](#maxpendtime)      | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-maxpendtime.md "settings.schema.json#/definitions/cobalt/properties/maxpendtime")                       |
+| [account](#account)              | `string`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-account.md "settings.schema.json#/definitions/cobalt/properties/account")                               |
+| [max\_jobs](#max_jobs)           | `integer`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-max_jobs.md "settings.schema.json#/definitions/cobalt/properties/max_jobs")                             |
+| [disable](#disable)              | `boolean`     | Optional | cannot be null | [buildtest configuration schema](settings-definitions-disable.md "settings.schema.json#/definitions/cobalt/properties/disable")                               |
+| [module](#module)                | `object`      | Optional | cannot be null | [buildtest configuration schema](settings-definitions-module.md "settings.schema.json#/definitions/cobalt/properties/module")                                 |
 
 ## description
 
@@ -109,7 +109,7 @@ Specify the lsf queue you want to use `-q <queue>`
 
 `string`
 
-## before_script
+## before\_script
 
 The `before_script` section can be used to specify commands before start of test. The script will be sourced in active shell.
 
@@ -123,7 +123,7 @@ The `before_script` section can be used to specify commands before start of test
 
 *   defined in: [buildtest configuration schema](settings-definitions-cobalt-properties-before_script.md "settings.schema.json#/definitions/cobalt/properties/before_script")
 
-### before_script Type
+### before\_script Type
 
 unknown
 
@@ -175,7 +175,7 @@ Specify Job Account for charging resources
 
 `string`
 
-## max_jobs
+## max\_jobs
 
 Maximum number of jobs that can be run at a given time for a particular executor
 
@@ -189,11 +189,11 @@ Maximum number of jobs that can be run at a given time for a particular executor
 
 *   defined in: [buildtest configuration schema](settings-definitions-max_jobs.md "settings.schema.json#/definitions/cobalt/properties/max_jobs")
 
-### max_jobs Type
+### max\_jobs Type
 
 `integer`
 
-### max_jobs Constraints
+### max\_jobs Constraints
 
 **minimum**: the value of this number must greater than or equal to: `1`
 

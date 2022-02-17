@@ -6,9 +6,9 @@ definitions.schema.json#/definitions/executors/patternProperties/^.*$
 
 
 
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                        |
-| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [definitions.schema.json*](../out/definitions.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                         |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :--------------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [definitions.schema.json\*](../out/definitions.schema.json "open original schema") |
 
 ## ^.\*$ Type
 
@@ -41,7 +41,7 @@ One or more key value pairs for an environment (key=value)
 
 *   cannot be null
 
-*   defined in: [JSON Schema Definitions File. ](definitions-definitions-env.md "definitions.schema.json#/definitions/executors/patternProperties/^.\*$/properties/env")
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-env.md "definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/env")
 
 ### env Type
 
@@ -63,7 +63,7 @@ One or more key value pairs for an environment (key=value)
 
 *   cannot be null
 
-*   defined in: [JSON Schema Definitions File. ](definitions-definitions-env.md "definitions.schema.json#/definitions/executors/patternProperties/^.\*$/properties/vars")
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-env.md "definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/vars")
 
 ### vars Type
 
@@ -85,7 +85,7 @@ One or more key value pairs for an environment (key=value)
 
 *   cannot be null
 
-*   defined in: [JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "definitions.schema.json#/definitions/executors/patternProperties/^.\*$/properties/sbatch")
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/sbatch")
 
 ### sbatch Type
 
@@ -109,7 +109,7 @@ One or more key value pairs for an environment (key=value)
 
 *   cannot be null
 
-*   defined in: [JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "definitions.schema.json#/definitions/executors/patternProperties/^.\*$/properties/bsub")
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/bsub")
 
 ### bsub Type
 
@@ -133,7 +133,7 @@ One or more key value pairs for an environment (key=value)
 
 *   cannot be null
 
-*   defined in: [JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "definitions.schema.json#/definitions/executors/patternProperties/^.\*$/properties/pbs")
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/pbs")
 
 ### pbs Type
 
@@ -157,7 +157,7 @@ One or more key value pairs for an environment (key=value)
 
 *   cannot be null
 
-*   defined in: [JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "definitions.schema.json#/definitions/executors/patternProperties/^.\*$/properties/cobalt")
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/cobalt")
 
 ### cobalt Type
 
@@ -181,7 +181,7 @@ Create burst buffer space, this specifies #BB options in your test.
 
 *   cannot be null
 
-*   defined in: [JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "definitions.schema.json#/definitions/executors/patternProperties/^.\*$/properties/BB")
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/BB")
 
 ### BB Type
 
@@ -205,7 +205,7 @@ Specify Data Warp option (#DW) when using burst buffer.
 
 *   cannot be null
 
-*   defined in: [JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "definitions.schema.json#/definitions/executors/patternProperties/^.\*$/properties/DW")
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/DW")
 
 ### DW Type
 
@@ -229,7 +229,7 @@ The status section describes how buildtest detects PASS/FAIL on test. By default
 
 *   cannot be null
 
-*   defined in: [JSON Schema Definitions File. ](definitions-definitions-status.md "definitions.schema.json#/definitions/executors/patternProperties/^.\*$/properties/status")
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-status.md "definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/status")
 
 ### status Type
 
@@ -247,7 +247,7 @@ This field is used for defining one or more metrics that is recorded for each te
 
 *   cannot be null
 
-*   defined in: [JSON Schema Definitions File. ](definitions-definitions-metrics.md "definitions.schema.json#/definitions/executors/patternProperties/^.\*$/properties/metrics")
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-metrics.md "definitions.schema.json#/definitions/executors/patternProperties/^.*$/properties/metrics")
 
 ### metrics Type
 

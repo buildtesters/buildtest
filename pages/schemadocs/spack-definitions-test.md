@@ -6,9 +6,9 @@ spack.schema.json#/definitions/test
 
 
 
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                            |
-| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [spack.schema.json*](../out/spack.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                             |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :--------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [spack.schema.json\*](../out/spack.schema.json "open original schema") |
 
 ## test Type
 
@@ -16,13 +16,13 @@ spack.schema.json#/definitions/test
 
 # test Properties
 
-| Property                      | Type      | Required | Nullable       | Defined by                                                                                                                              |
-| :---------------------------- | :-------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
-| [remove_tests](#remove_tests) | `boolean` | Optional | cannot be null | [spack schema version](spack-definitions-test-properties-remove_tests.md "spack.schema.json#/definitions/test/properties/remove_tests") |
-| [run](#run)                   | `object`  | Required | cannot be null | [spack schema version](spack-definitions-test-properties-run.md "spack.schema.json#/definitions/test/properties/run")                   |
-| [results](#results)           | Merged    | Required | cannot be null | [spack schema version](spack-definitions-test-properties-results.md "spack.schema.json#/definitions/test/properties/results")           |
+| Property                       | Type      | Required | Nullable       | Defined by                                                                                                                              |
+| :----------------------------- | :-------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| [remove\_tests](#remove_tests) | `boolean` | Optional | cannot be null | [spack schema version](spack-definitions-test-properties-remove_tests.md "spack.schema.json#/definitions/test/properties/remove_tests") |
+| [run](#run)                    | `object`  | Required | cannot be null | [spack schema version](spack-definitions-test-properties-run.md "spack.schema.json#/definitions/test/properties/run")                   |
+| [results](#results)            | Merged    | Required | cannot be null | [spack schema version](spack-definitions-test-properties-results.md "spack.schema.json#/definitions/test/properties/results")           |
 
-## remove_tests
+## remove\_tests
 
 Remove all test suites in spack before running test via `spack test run`. If set to `True` we will run `spack test remove -y` which will remove all test suites.
 
@@ -36,7 +36,7 @@ Remove all test suites in spack before running test via `spack test run`. If set
 
 *   defined in: [spack schema version](spack-definitions-test-properties-remove_tests.md "spack.schema.json#/definitions/test/properties/remove_tests")
 
-### remove_tests Type
+### remove\_tests Type
 
 `boolean`
 

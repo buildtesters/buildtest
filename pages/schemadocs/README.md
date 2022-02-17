@@ -118,6 +118,14 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-module.md) – `definitions.schema.json#/definitions/module`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
+
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
+
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
@@ -133,40 +141,6 @@
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
@@ -306,15 +280,11 @@
 
 *   [Untitled object in compiler schema](./compiler-definitions-compiler_declaration.md "Specify compiler configuration at compiler level") – `compiler.schema.json#/definitions/compiler_declaration`
 
-*   [Untitled object in compiler schema](./compiler-definitions-compiler_declaration-properties-module.md) – `compiler.schema.json#/definitions/compiler_declaration/properties/module`
-
 *   [Untitled object in compiler schema](./compiler-properties-compilers.md) – `compiler.schema.json#/properties/compilers`
 
 *   [Untitled object in compiler schema](./compiler-properties-compilers-properties-default.md) – `compiler.schema.json#/properties/compilers/properties/default`
 
 *   [Untitled object in compiler schema](./compiler-properties-compilers-properties-config.md "Specify compiler configuration based on named compilers") – `compiler.schema.json#/properties/compilers/properties/config`
-
-*   [Untitled object in compiler schema](./compiler-definitions-compiler_declaration-properties-module.md) – `compiler.schema.json#/definitions/compiler_declaration/properties/module`
 
 *   [Untitled object in global schema](./global-properties-buildspecs.md "This section is used to define one or more tests (buildspecs)") – `global.schema.json#/properties/buildspecs`
 
@@ -324,15 +294,13 @@
 
 *   [Untitled object in script schema version](./script-properties-compilers-properties-config.md "Specify compiler configuration based on named compilers") – `script.schema.json#/properties/compilers/properties/config`
 
-*   [Untitled object in script schema version](./script-definitions-compiler_declaration-properties-module.md) – `script.schema.json#/definitions/compiler_declaration/properties/module`
+*   [Untitled object in script schema version](./script-definitions-compiler_declaration-default_compiler_config.md "Specify compiler configuration for group of compilers") – `script.schema.json#/definitions/compiler_declaration/default_compiler_config`
 
 *   [Untitled object in script schema version](./script-properties-default_compiler_config.md "Specify compiler configuration for group of compilers") – `script.schema.json#/properties/default_compiler_config`
 
 *   [Untitled object in script schema version](./script-definitions-compiler_declaration.md "Specify compiler configuration at compiler level") – `script.schema.json#/definitions/compiler_declaration`
 
-*   [Untitled object in script schema version](./script-definitions-compiler_declaration-properties-module.md) – `script.schema.json#/definitions/compiler_declaration/properties/module`
-
-*   [Untitled object in script schema version](./script-definitions-default_compiler_config.md "Specify compiler configuration for group of compilers") – `script.schema.json#/definitions/default_compiler_config`
+*   [Untitled object in script schema version](./script-definitions-compiler_declaration-default_compiler_config.md "Specify compiler configuration for group of compilers") – `script.schema.json#/definitions/compiler_declaration/default_compiler_config`
 
 *   [Untitled object in spack schema version](./spack-properties-spack.md "Entry point to spack configuration") – `spack.schema.json#/properties/spack`
 
@@ -364,9 +332,19 @@
 
 ### Arrays
 
+*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-module-properties-swap.md "Swap modules using module swap") – `definitions.schema.json#/definitions/module/properties/swap`
+
+*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-module-properties-swap.md "Swap modules using module swap") – `definitions.schema.json#/definitions/module/properties/swap`
+
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-list_of_strings.md) – `definitions.schema.json#/definitions/list_of_strings`
 
 *   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-list_of_ints.md) – `definitions.schema.json#/definitions/list_of_ints`
+
+*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-module-properties-swap.md "Swap modules using module swap") – `definitions.schema.json#/definitions/module/properties/swap`
+
+*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-module-properties-swap.md "Swap modules using module swap") – `definitions.schema.json#/definitions/module/properties/swap`
+
+*   [Untitled array in JSON Schema Definitions File. ](./definitions-definitions-module-properties-swap.md "Swap modules using module swap") – `definitions.schema.json#/definitions/module/properties/swap`
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-system-properties-hostnames.md "Specify a list of hostnames to check where buildtest can run for the given system record") – `settings.schema.json#/definitions/system/properties/hostnames`
 
@@ -470,15 +448,7 @@
 
 *   [Untitled array in buildtest configuration schema](./settings-definitions-module-properties-swap.md "Swap modules using module swap") – `settings.schema.json#/definitions/module/properties/swap`
 
-*   [Untitled array in compiler schema](./compiler-definitions-compiler_declaration-properties-module-properties-swap.md "Swap modules using module swap") – `compiler.schema.json#/definitions/compiler_declaration/properties/module/properties/swap`
-
-*   [Untitled array in compiler schema](./compiler-definitions-compiler_declaration-properties-module-properties-swap.md "Swap modules using module swap") – `compiler.schema.json#/definitions/compiler_declaration/properties/module/properties/swap`
-
 *   [Untitled array in global schema](./global-properties-maintainers.md "One or more maintainers or aliases") – `global.schema.json#/properties/maintainers`
-
-*   [Untitled array in script schema version](./script-definitions-compiler_declaration-properties-module-properties-swap.md "Swap modules using module swap") – `script.schema.json#/definitions/compiler_declaration/properties/module/properties/swap`
-
-*   [Untitled array in script schema version](./script-definitions-compiler_declaration-properties-module-properties-swap.md "Swap modules using module swap") – `script.schema.json#/definitions/compiler_declaration/properties/module/properties/swap`
 
 ## Version Note
 

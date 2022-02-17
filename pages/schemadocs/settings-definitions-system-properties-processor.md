@@ -6,9 +6,9 @@ settings.schema.json#/definitions/system/properties/processor
 
 Specify processor information
 
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
-| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :--------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
 
 ## processor Type
 
@@ -16,16 +16,16 @@ Specify processor information
 
 # processor Properties
 
-| Property                              | Type      | Required | Nullable       | Defined by                                                                                                                                                                                                    |
-| :------------------------------------ | :-------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [numcpus](#numcpus)                   | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-numcpus.md "settings.schema.json#/definitions/system/properties/processor/properties/numcpus")                   |
-| [sockets](#sockets)                   | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-sockets.md "settings.schema.json#/definitions/system/properties/processor/properties/sockets")                   |
-| [cores](#cores)                       | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-cores.md "settings.schema.json#/definitions/system/properties/processor/properties/cores")                       |
-| [threads_per_core](#threads_per_core) | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-threads_per_core.md "settings.schema.json#/definitions/system/properties/processor/properties/threads_per_core") |
-| [core_per_socket](#core_per_socket)   | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-core_per_socket.md "settings.schema.json#/definitions/system/properties/processor/properties/core_per_socket")   |
-| [model](#model)                       | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-model.md "settings.schema.json#/definitions/system/properties/processor/properties/model")                       |
-| [arch](#arch)                         | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-arch.md "settings.schema.json#/definitions/system/properties/processor/properties/arch")                         |
-| [vendor](#vendor)                     | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-vendor.md "settings.schema.json#/definitions/system/properties/processor/properties/vendor")                     |
+| Property                                | Type      | Required | Nullable       | Defined by                                                                                                                                                                                                    |
+| :-------------------------------------- | :-------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [numcpus](#numcpus)                     | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-numcpus.md "settings.schema.json#/definitions/system/properties/processor/properties/numcpus")                   |
+| [sockets](#sockets)                     | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-sockets.md "settings.schema.json#/definitions/system/properties/processor/properties/sockets")                   |
+| [cores](#cores)                         | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-cores.md "settings.schema.json#/definitions/system/properties/processor/properties/cores")                       |
+| [threads\_per\_core](#threads_per_core) | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-threads_per_core.md "settings.schema.json#/definitions/system/properties/processor/properties/threads_per_core") |
+| [core\_per\_socket](#core_per_socket)   | `integer` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-core_per_socket.md "settings.schema.json#/definitions/system/properties/processor/properties/core_per_socket")   |
+| [model](#model)                         | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-model.md "settings.schema.json#/definitions/system/properties/processor/properties/model")                       |
+| [arch](#arch)                           | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-arch.md "settings.schema.json#/definitions/system/properties/processor/properties/arch")                         |
+| [vendor](#vendor)                       | `string`  | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-processor-properties-vendor.md "settings.schema.json#/definitions/system/properties/processor/properties/vendor")                     |
 
 ## numcpus
 
@@ -93,7 +93,7 @@ Specify Number of Physical Cores
 
 **minimum**: the value of this number must greater than or equal to: `1`
 
-## threads_per_core
+## threads\_per\_core
 
 Specify Threads per Core
 
@@ -107,15 +107,15 @@ Specify Threads per Core
 
 *   defined in: [buildtest configuration schema](settings-definitions-system-properties-processor-properties-threads_per_core.md "settings.schema.json#/definitions/system/properties/processor/properties/threads_per_core")
 
-### threads_per_core Type
+### threads\_per\_core Type
 
 `integer`
 
-### threads_per_core Constraints
+### threads\_per\_core Constraints
 
 **minimum**: the value of this number must greater than or equal to: `1`
 
-## core_per_socket
+## core\_per\_socket
 
 Specify Cores per Socket
 
@@ -129,11 +129,11 @@ Specify Cores per Socket
 
 *   defined in: [buildtest configuration schema](settings-definitions-system-properties-processor-properties-core_per_socket.md "settings.schema.json#/definitions/system/properties/processor/properties/core_per_socket")
 
-### core_per_socket Type
+### core\_per\_socket Type
 
 `integer`
 
-### core_per_socket Constraints
+### core\_per\_socket Constraints
 
 **minimum**: the value of this number must greater than or equal to: `1`
 

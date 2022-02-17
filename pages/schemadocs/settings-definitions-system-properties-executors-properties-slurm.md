@@ -6,9 +6,9 @@ settings.schema.json#/definitions/system/properties/executors/properties/slurm
 
 The `slurm` section is used for declaring Slurm executors for running jobs using Slurm scheduler
 
-| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                  |
-| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json*](../out/settings.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                   |
+| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :--------------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [settings.schema.json\*](../out/settings.schema.json "open original schema") |
 
 ## slurm Type
 
@@ -32,7 +32,7 @@ An instance object of slurm executor
 
 *   cannot be null
 
-*   defined in: [buildtest configuration schema](settings-definitions-slurm.md "settings.schema.json#/definitions/system/properties/executors/properties/slurm/patternProperties/^.\*$")
+*   defined in: [buildtest configuration schema](settings-definitions-slurm.md "settings.schema.json#/definitions/system/properties/executors/properties/slurm/patternProperties/^.*$")
 
 ### ^.\*$ Type
 

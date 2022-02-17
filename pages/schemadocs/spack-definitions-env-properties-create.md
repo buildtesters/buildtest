@@ -6,9 +6,9 @@ spack.schema.json#/definitions/env/properties/create
 
 Create a spack environment via `spack env create`
 
-| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                            |
-| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :-------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [spack.schema.json*](../out/spack.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                             |
+| :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :--------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Forbidden             | none                | [spack.schema.json\*](../out/spack.schema.json "open original schema") |
 
 ## create Type
 
@@ -16,15 +16,15 @@ Create a spack environment via `spack env create`
 
 # create Properties
 
-| Property                                  | Type      | Required | Nullable       | Defined by                                                                                                                                                                            |
-| :---------------------------------------- | :-------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [remove_environment](#remove_environment) | `boolean` | Optional | cannot be null | [spack schema version](spack-definitions-env-properties-create-properties-remove_environment.md "spack.schema.json#/definitions/env/properties/create/properties/remove_environment") |
-| [name](#name)                             | `string`  | Optional | cannot be null | [spack schema version](spack-definitions-env-properties-create-properties-name.md "spack.schema.json#/definitions/env/properties/create/properties/name")                             |
-| [manifest](#manifest)                     | `string`  | Optional | cannot be null | [spack schema version](spack-definitions-env-properties-create-properties-manifest.md "spack.schema.json#/definitions/env/properties/create/properties/manifest")                     |
-| [options](#options)                       | `string`  | Optional | cannot be null | [spack schema version](spack-definitions-env-properties-create-properties-options.md "spack.schema.json#/definitions/env/properties/create/properties/options")                       |
-| [dir](#dir)                               | `string`  | Optional | cannot be null | [spack schema version](spack-definitions-env-properties-create-properties-dir.md "spack.schema.json#/definitions/env/properties/create/properties/dir")                               |
+| Property                                   | Type      | Required | Nullable       | Defined by                                                                                                                                                                            |
+| :----------------------------------------- | :-------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [remove\_environment](#remove_environment) | `boolean` | Optional | cannot be null | [spack schema version](spack-definitions-env-properties-create-properties-remove_environment.md "spack.schema.json#/definitions/env/properties/create/properties/remove_environment") |
+| [name](#name)                              | `string`  | Optional | cannot be null | [spack schema version](spack-definitions-env-properties-create-properties-name.md "spack.schema.json#/definitions/env/properties/create/properties/name")                             |
+| [manifest](#manifest)                      | `string`  | Optional | cannot be null | [spack schema version](spack-definitions-env-properties-create-properties-manifest.md "spack.schema.json#/definitions/env/properties/create/properties/manifest")                     |
+| [options](#options)                        | `string`  | Optional | cannot be null | [spack schema version](spack-definitions-env-properties-create-properties-options.md "spack.schema.json#/definitions/env/properties/create/properties/options")                       |
+| [dir](#dir)                                | `string`  | Optional | cannot be null | [spack schema version](spack-definitions-env-properties-create-properties-dir.md "spack.schema.json#/definitions/env/properties/create/properties/dir")                               |
 
-## remove_environment
+## remove\_environment
 
 Remove existing spack environment before creating new environment. If set to `True` we will run `spack env rm -y <name>`.
 
@@ -38,7 +38,7 @@ Remove existing spack environment before creating new environment. If set to `Tr
 
 *   defined in: [spack schema version](spack-definitions-env-properties-create-properties-remove_environment.md "spack.schema.json#/definitions/env/properties/create/properties/remove_environment")
 
-### remove_environment Type
+### remove\_environment Type
 
 `boolean`
 
