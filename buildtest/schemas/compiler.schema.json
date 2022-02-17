@@ -152,6 +152,9 @@
     "description": {
       "$ref": "definitions.schema.json#/definitions/description"
     },
+    "needs": {
+      "$ref": "definitions.schema.json#/definitions/needs"
+    },
     "compilers": {
       "type": "object",
       "required": [

@@ -39,7 +39,9 @@
       "type": "string",
       "description": "Shell commands run after spack"
     },
-
+    "needs": {
+      "$ref": "definitions.schema.json#/definitions/needs"
+    },
     "spack": {
       "type": "object",
       "description": "Entry point to spack configuration",

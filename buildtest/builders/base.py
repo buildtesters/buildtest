@@ -96,6 +96,13 @@ class BuilderBase(ABC):
 
         self.executor = executor
 
+        self._jobdeps = None
+        if self.recipe.get("needs"):
+            self._jobdeps = list(set(self.recipe["needs"]))
+
+            # remove any entries in 'needs' property which reference same test name since that is a circular dependency
+            self._jobdeps = [name for name in self._jobdeps if not name == self.name]
+
         # For batch jobs this variable is an instance of Job class which would be one of the subclass
         self.job = None
 
@@ -132,9 +139,23 @@ class BuilderBase(ABC):
         # Generate a unique id for the build based
         self.test_uid = str(uuid.uuid4())
 
+        self._dependency = False
+
         self._set_metadata_values()
         self.shell_detection()
         self.sched_init()
+
+    @property
+    def jobdeps(self):
+        return self._jobdeps
+
+    @property
+    def dependency(self):
+        return self._dependency
+
+    @dependency.setter
+    def dependency(self, state):
+        self._dependency = state
 
     def shell_detection(self):
         """Detect shell and shebang used for test script"""

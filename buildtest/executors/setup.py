@@ -50,7 +50,7 @@ class BuildExecutor:
         """
 
         # stores a list of builders objects
-        self.builders = []
+        self.builders = set()
 
         # default poll interval if not specified
         default_interval = 30
@@ -216,9 +216,7 @@ class BuildExecutor:
         for builder in builders:
             executor = self._choose_executor(builder)
             executor.add_builder(builder)
-            self.builders.append(builder)
-
-        results = []
+            self.builders.add(builder)
 
         num_workers = self.configuration.target_config.get("numprocs") or os.cpu_count()
         # in case user specifies more process than available CPU count use the min of the two numbers
@@ -228,25 +226,50 @@ class BuildExecutor:
 
         console.print(f"Spawning {num_workers} processes for processing builders")
 
-        for builder in self.builders:
-            # console.print(
-            #    f"[blue]{builder}[/]: Running Test script via command {builder.metadata['command']}[cyan]"
-            # )
+        while self.builders:
+            results = []
 
-            executor = self._choose_executor(builder)
-            results.append(workers.apply_async(executor.run, args=(builder,)))
+            builders = self.builders.copy()
+            for builder in builders:
+                testnames = {builder.name: builder for builder in self.builders}
+                # This section must be executed sequentially if job dependency are found for
+                # any test. Test will be executed async but when checking if test is complete via
+                # .is_complete() we need the builders to be processed to get updated state.
+                with mp.Lock():
+                    if builder.jobdeps:
 
-        for result in results:
-            task = result.get()
-            if isinstance(task, BuilderBase):
-                self._validbuilders.add(task)
+                        builder.dependency = False
+                        for name in builder.jobdeps:
+                            # if name not in list of test names then skip to next entry
+                            if name not in testnames.keys():
+                                continue
 
-        for builder in self._validbuilders:
-            # returns True if attribute builder.job is an instance of class Job
-            if builder.is_batch_job():
-                self._pending_jobs.append(builder)
+                            if not testnames[name].is_complete():
+                                builder.dependency = True
+                                console.print(
+                                    f"Skipping job {builder} because it has job dependency on {builder.jobdeps}"
+                                )
+                                break
 
-        self.poll()
+                    if builder.dependency:
+                        continue
+
+                executor = self._choose_executor(builder)
+                results.append(workers.apply_async(executor.run, args=(builder,)))
+
+                self.builders.remove(builder)
+
+            for result in results:
+                task = result.get()
+                if isinstance(task, BuilderBase):
+                    self._validbuilders.add(task)
+
+            for builder in self._validbuilders:
+                # returns True if attribute builder.job is an instance of class Job
+                if builder.is_batch_job():
+                    self._pending_jobs.append(builder)
+
+            self.poll()
 
         # close the worker pool by preventing any more tasks from being submitted
         workers.close()
