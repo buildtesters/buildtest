@@ -7,7 +7,7 @@ Using Compiler Schema
 
 The compiler schema is used for compilation of programs, currently we support
 single source file compilation. In order to use the compiler schema you must set ``type: compiler`` in your
-test. For more details see `compiler schema docs <https://buildtesters.github.io/buildtest/pages/schemadocs/compiler-v1.html>`_
+test. For more details see `compiler schema docs <https://buildtesters.github.io/buildtest/pages/schemadocs/compiler.html>`_
 
 We assume the reader has basic understanding of :ref:`global_schema` validation. Shown below
 is the schema header definition for `compiler.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/compiler.schema.json>`_:
