@@ -121,7 +121,7 @@ class PBSExecutor(BaseExecutor):
         # store job id
         builder.metadata["jobid"] = builder.job.get()
 
-        msg = f"[blue]{self}[/]: JobID: {builder.metadata['jobid']} dispatched to scheduler"
+        msg = f"[blue]{builder}[/]: JobID: {builder.metadata['jobid']} dispatched to scheduler"
         console.print(msg)
         self.logger.debug(msg)
 
@@ -155,7 +155,7 @@ class PBSExecutor(BaseExecutor):
                 builder.job.cancel()
                 builder.failure()
                 console.print(
-                    f"[blue]{builder}[/]: Cancelling Job: {builder.job.get()} because job exceeds max pend time: {self.maxpendtime} sec with current pend time of {builder.timer.duration()} "
+                    f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.timer.duration()} sec[/red] "
                 )
 
         builder.start()

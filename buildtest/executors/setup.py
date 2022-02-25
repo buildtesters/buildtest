@@ -69,9 +69,8 @@ class BuildExecutor:
         )
 
         self._completed = set()
-        self._cancelled = set()
 
-        self._pending_jobs = []
+        self._pending_jobs = set()
 
         # store a list of valid builders
         self._validbuilders = set()
@@ -152,13 +151,6 @@ class BuildExecutor:
         """Return a list of valid builders that were run"""
         return list(self._validbuilders)
 
-    def cancelled(self):
-        """Return a list of cancelled builders"""
-        return self._cancelled
-
-    def completed(self):
-        return self._completed
-
     def _choose_executor(self, builder):
         """Choose executor is called at the onset of a run and poll stage. Given a builder
         object we retrieve the executor property ``builder.executor`` of the builder and check if
@@ -202,6 +194,49 @@ class BuildExecutor:
             content += executor_settings.get("before_script") or ""
             write_file(file, content)
 
+    def builders_to_run(self, builders):
+        """This method will return list of builders that need to run. We need to check any builders that have a job dependency
+        and make sure the dependent jobs are finished prior to running builder. The return method will be a list of builders
+        to run.
+        """
+
+        run_builders = set()
+
+        testnames = {builder.name: builder for builder in self.builders}
+
+        # This section must be executed sequentially if job dependency are found for
+        # any test. Test will be executed async but when checking if test is complete via
+        # .is_complete() we need the builders to be processed to get updated state.
+
+        for builder in builders:
+
+            # builder.dependency_builders(builders)
+            if not builder.jobdeps:
+                run_builders.add(builder)
+
+                continue
+
+            builder.dependency = False
+            for name in builder.jobdeps:
+                # if name not in list of test names then skip to next entry
+                if name not in list(testnames.keys()):
+                    continue
+
+                if not testnames[name].is_complete():
+                    builder.dependency = True
+                    # console.print(f"[blue]{builder}[/blue] [red]Skipping job because it has job dependency on {builder._jobdeps}[/red]"
+                    console.print(
+                        f"[blue]{builder}[/blue] [red]Skipping job because it has job dependency on {builder.builderdeps}[/red]"
+                    )
+                    break
+
+            if builder.dependency:
+                continue
+
+            run_builders.add(builder)
+
+        return run_builders
+
     def run(self, builders):
         """This method is responsible for running the build script for each builder async and
         gather the results. We setup a pool of worker settings by invoking ``multiprocessing.pool.Pool``
@@ -222,41 +257,17 @@ class BuildExecutor:
         # in case user specifies more process than available CPU count use the min of the two numbers
         num_workers = min(num_workers, os.cpu_count())
 
-        workers = mp.Pool(num_workers)
-
+        pool = mp.Pool(num_workers)
         console.print(f"Spawning {num_workers} processes for processing builders")
 
         while self.builders:
+
+            run_builders = self.builders_to_run(self.builders)
             results = []
 
-            builders = self.builders.copy()
-            for builder in builders:
-                testnames = {builder.name: builder for builder in self.builders}
-                # This section must be executed sequentially if job dependency are found for
-                # any test. Test will be executed async but when checking if test is complete via
-                # .is_complete() we need the builders to be processed to get updated state.
-                with mp.Lock():
-                    if builder.jobdeps:
-
-                        builder.dependency = False
-                        for name in builder.jobdeps:
-                            # if name not in list of test names then skip to next entry
-                            if name not in testnames.keys():
-                                continue
-
-                            if not testnames[name].is_complete():
-                                builder.dependency = True
-                                console.print(
-                                    f"Skipping job {builder} because it has job dependency on {builder.jobdeps}"
-                                )
-                                break
-
-                    if builder.dependency:
-                        continue
-
+            for builder in run_builders:
                 executor = self._choose_executor(builder)
-                results.append(workers.apply_async(executor.run, args=(builder,)))
-
+                results.append(pool.apply_async(executor.run, args=(builder,)))
                 self.builders.remove(builder)
 
             for result in results:
@@ -264,112 +275,99 @@ class BuildExecutor:
                 if isinstance(task, BuilderBase):
                     self._validbuilders.add(task)
 
+            pending_jobs = set()
             for builder in self._validbuilders:
-                # returns True if attribute builder.job is an instance of class Job
-                if builder.is_batch_job():
-                    self._pending_jobs.append(builder)
+                # returns True if attribute builder.job is an instance of class Job. Also add jobs that are not complete to pending jobs.
+                # Note self._validbuilders will contain all completed job as it iterates over while loop
 
-            self.poll()
+                if builder.is_batch_job() and not builder.is_complete():
+                    pending_jobs.add(builder)
+
+            self.poll(pending_jobs)
 
         # close the worker pool by preventing any more tasks from being submitted
-        workers.close()
+        pool.close()
 
         # terminate all worker processes
-        workers.join()
+        pool.join()
 
-    def poll(self):
+    def poll(self, pending_jobs):
         """Poll all until all jobs are complete. At each poll interval, we poll each builder
         job state. If job is complete or failed we remove job from pending queue. In each interval we sleep
         and poll jobs until there is no pending jobs."""
         # only add builders that are batch jobs
 
         # poll until all pending jobs are complete
-        while self._pending_jobs:
+        while pending_jobs:
             print(f"Polling Jobs in {self.pollinterval} seconds")
 
             time.sleep(self.pollinterval)
 
             # store list of cancelled and completed job at each interval
-            cancelled = []
-            completed = []
+            completed_jobs = []
+
+            jobs = pending_jobs.copy()
 
             # for every pending job poll job and mark if job is finished or cancelled
-            for builder in self._pending_jobs:
+            for job in jobs:
 
                 # get executor instance for corresponding builder. This would be one of the following: SlurmExecutor, PBSExecutor, LSFExecutor, CobaltExecutor
-                executor = self.get(builder.executor)
+                executor = self.get(job.executor)
                 # if builder is local executor we shouldn't be polling so we set job to
                 # complete and return
 
-                executor.poll(builder)
+                executor.poll(job)
 
-                if builder.is_complete():
-                    completed.append(builder)
-                elif builder.is_failure():
-                    cancelled.append(builder)
-
-            # remove completed jobs from pending queue
-            if completed:
-                for builder in completed:
-                    self._pending_jobs.remove(builder)
-                    self._completed.add(builder)
-
-            # remove cancelled jobs from pending queue
-            if cancelled:
-                for builder in cancelled:
-                    self._pending_jobs.remove(builder)
-                    self._cancelled.add(builder)
+                if job.is_complete():
+                    completed_jobs.append(job)
+                    pending_jobs.remove(job)
+                elif job.is_failure():
+                    pending_jobs.remove(job)
                     # need to remove builder from self._validbuilders when job is cancelled because these builders are ones
-                    # that have completed
+                    self._validbuilders.remove(job)
 
-                    self._validbuilders.remove(builder)
+            self.print_job_details(pending_jobs, completed_jobs)
 
-            self.print_pending_jobs()
-
-        if self._cancelled:
-            print("\nCancelled Jobs:", list(self._cancelled))
-
-        self.print_polled_jobs()
-
-    def print_pending_jobs(self):
+    def print_job_details(self, pending_jobs, completed_jobs):
         """Print pending jobs in table format during each poll step"""
-        pending_jobs_table = Table(
-            "[blue]builder",
-            "[blue]executor",
-            "[blue]jobid",
-            "[blue]jobstate",
-            "[blue]runtime",
-            title="Pending Jobs",
-        )
+        table_columns = ["builder", "executor", "jobid", "jobstate", "runtime"]
+        pending_jobs_table = Table(title="Pending and Suspending Jobs")
+        running_jobs_table = Table(title="Running Jobs")
+        completed_jobs_table = Table(title="Completed Jobs")
 
-        running_jobs_table = Table(
-            "[blue]builder",
-            "[blue]executor",
-            "[blue]jobid",
-            "[blue]jobstate",
-            "[blue]runtime",
-            title="Running Jobs",
-        )
+        for column in table_columns:
+            pending_jobs_table.add_column(f"[blue]{column}")
+            running_jobs_table.add_column(f"[blue]{column}")
+            completed_jobs_table.add_column(f"[blue]{column}")
 
-        for builder in self._pending_jobs:
+        for builder in pending_jobs:
 
-            if builder.job.is_pending():
+            if builder.job.is_pending() or builder.job.is_suspended():
                 pending_jobs_table.add_row(
-                    str(builder),
-                    builder.executor,
-                    builder.job.get(),
-                    builder.job.state(),
-                    str(builder.timer.duration()),
+                    f"[blue]{str(builder)}",
+                    f"[green]{builder.executor}",
+                    f"[red]{builder.job.get()}",
+                    f"[cyan]{builder.job.state()}",
+                    f"[magenta]{str(builder.timer.duration())}",
                 )
 
             if builder.job.is_running():
                 running_jobs_table.add_row(
-                    str(builder),
-                    builder.executor,
-                    builder.job.get(),
-                    builder.job.state(),
-                    str(builder.timer.duration()),
+                    f"[blue]{str(builder)}",
+                    f"[green]{builder.executor}",
+                    f"[red]{builder.job.get()}",
+                    f"[cyan]{builder.job.state()}",
+                    f"[magenta]{str(builder.timer.duration())}",
                 )
+
+        for builder in completed_jobs:
+            completed_jobs_table.add_row(
+                f"[blue]{str(builder)}",
+                f"[green]{builder.executor}",
+                f"[red]{builder.job.get()}",
+                f"[cyan]{builder.job.state()}",
+                f"[magenta]{str(builder.metadata['result']['runtime'])}",
+            )
 
         # only print table if there are rows in table
         if pending_jobs_table.row_count:
@@ -378,25 +376,5 @@ class BuildExecutor:
         if running_jobs_table.row_count:
             console.print(running_jobs_table)
 
-    def print_polled_jobs(self):
-
-        if not self._completed:
-            return
-
-        table = Table(
-            "[blue]builder",
-            "[blue]executor",
-            "[blue]jobid",
-            "[blue]jobstate",
-            "[blue]runtime",
-            title="Completed Jobs",
-        )
-        for builder in self._completed:
-            table.add_row(
-                str(builder),
-                builder.executor,
-                builder.job.get(),
-                builder.job.state(),
-                str(builder.metadata["result"]["runtime"]),
-            )
-        console.print(table)
+        if completed_jobs_table.row_count:
+            console.print(completed_jobs_table)

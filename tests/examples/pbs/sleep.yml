@@ -3,14 +3,14 @@ buildspecs:
     type: script
     executor: generic.pbs.workq
     pbs: ["-l nodes=1", "-l walltime=00:02:00"]
-    run: sleep 6
+    run: sleep 5
 
   hostname:
     type: script
     executor: generic.pbs.workq
     pbs: ["-l nodes=1", "-l walltime=00:02:00"]
-    needs: [hostname]
-    run: hostname
+    needs: [pbs_sleep]
+    run: sleep 5
 
   whoami:
     type: script
