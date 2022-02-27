@@ -226,7 +226,7 @@ class BuildExecutor:
                     builder.dependency = True
                     # console.print(f"[blue]{builder}[/blue] [red]Skipping job because it has job dependency on {builder._jobdeps}[/red]"
                     console.print(
-                        f"[blue]{builder}[/blue] [red]Skipping job because it has job dependency on {builder.builderdeps}[/red]"
+                        f"[blue]{builder}[/blue] [red]Skipping job because it has job dependency on {builder.builderdeps} [/red]"
                     )
                     break
 
@@ -328,8 +328,13 @@ class BuildExecutor:
 
             self.print_job_details(pending_jobs, completed_jobs)
 
-    def print_job_details(self, pending_jobs, completed_jobs):
-        """Print pending jobs in table format during each poll step"""
+    def print_job_details(self, active_jobs, completed_jobs):
+        """Print pending jobs in table format during each poll step
+
+        args:
+            active_jobs (list): List of builders whose jobs are pending, suspended or running
+            completed_jobs (list): List of builders whose jobs are completed
+        """
         table_columns = ["builder", "executor", "jobid", "jobstate", "runtime"]
         pending_jobs_table = Table(title="Pending and Suspending Jobs")
         running_jobs_table = Table(title="Running Jobs")
@@ -340,7 +345,7 @@ class BuildExecutor:
             running_jobs_table.add_column(f"[blue]{column}")
             completed_jobs_table.add_column(f"[blue]{column}")
 
-        for builder in pending_jobs:
+        for builder in active_jobs:
 
             if builder.job.is_pending() or builder.job.is_suspended():
                 pending_jobs_table.add_row(

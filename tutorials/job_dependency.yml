@@ -10,8 +10,8 @@ buildspecs:
   jobB:
     type: script
     executor: generic.local.bash
-    description: job dependency on A
-    needs: [jobA, jobB]
+    description: job dependency on jobA
+    needs: [jobA]
     run: |
       echo "This job depends on jobA"
       sleep 2
@@ -19,7 +19,7 @@ buildspecs:
   jobC:
     type: script
     executor: generic.local.bash
-    description: job dependency on A and C
+    description: job dependency on jobA and jobB
     needs: [jobA, jobB]
     run: |
       echo "This job depends on jobA and jobB"

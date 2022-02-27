@@ -6,9 +6,9 @@ Buildspec Overview
 What is a buildspec?
 ---------------------
 
-In buildtest, we refer to **buildspec** as a YAML file that defines your test that
-buildtest will parse using the provided schemas and build a shell script from the buildspec file. Every buildspec is
-validated with a global schema which you can find more if you click :ref:`here <global_schema>`.
+A **buildspec** is a YAML file that defines your test in buildtest which is validated by schema followed
+by building a shell script and running the generated test. Buildtest will parse the buildspec with the
+:ref:`global schema file <global_schema>`_ which defines the top-level structure of buildspec file.
 
 .. _buildspec_example:
 
@@ -549,6 +549,31 @@ of variable or environment variable. If you reference an invalid name, buildtest
 In this next example, we define two metrics ``gflop`` and ``foo`` that are assigned to variable ``GFLOPS`` and
 environment variable ``FOO``.
 
+
+Test Dependency
+---------------
+
+
+.. Note:: This feature is subject to change
+
+
+Buildtest can support test dependencies which allows one to specify condition before running a test. Let's take a look
+at this next example, we have a buildspec with three tests ``jobA``, ``jobB``, and ``jobC``. The test `jobA` will run immediately
+but now we introduce a new keyword ``needs`` which is a list of test names as dependency. We want test `jobB` to run after jobA is
+complete, and `jobC` to run once jobA and jobB is complete.
+
+.. literalinclude:: ../tutorials/job_dependency.yml
+   :language: yaml
+   :emphasize-lines: 14,23
+
+The ``needs`` property expects a list of strings, and values must match name of test.  If you specify an invalid
+test name in `needs` property then buildtest will ignore the value. If multiple tests are specified in `needs` property then
+all test must finish prior to running test.
+
+Let's run this test, and take a note that buildtest will run test `jobA`, followed by `jobB` then `jobC`.
+
+.. command-output:: buildtest build -b tutorials/job_dependency.yml
+
 .. _multiple_executors:
 
 Running test across multiple executors
@@ -632,14 +657,14 @@ Custom Status by Executor
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The :ref:`status <status>` and :ref:`metrics <metrics>` field are supported in ``executors``
-which can be defined within the named executor. In this next example, we will define `generic.local.bash` to match
-test based on returncode **0** or **2** while second test using `generic.local.sh` will match returncode of **1**.
+which can be defined within the named executor. In this next example, we will define executor ``generic.local.bash`` to
+match for returncode **0** or **2** while second test will use executor ``generic.local.sh`` to match returncode of **1**.
 
 .. literalinclude:: ../tutorials/script/status_by_executors.yml
     :language: yaml
     :emphasize-lines: 8-14
 
-Now let's run this test and we will see the test using **generic.local.sh** will fail because
+Now let's run this test and we will see the test using executor **generic.local.sh** will fail because
 we have a returncode mismatch even though both tests got a 0 returncode as its actual value.
 
 .. command-output:: buildtest build -b tutorials/script/status_by_executors.yml

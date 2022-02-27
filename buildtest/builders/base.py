@@ -139,7 +139,7 @@ class BuilderBase(ABC):
         self.buildexecutor = buildexecutor
 
         # Generate a unique id for the build based
-        self.test_uid = str(uuid.uuid4())
+        self.testid = str(uuid.uuid4())
 
         self._dependency = False
 
@@ -242,8 +242,8 @@ class BuilderBase(ABC):
         # used to store job metrics for given JobID from batch scheduler
         self.metadata["job"] = {}
 
-        self.metadata["full_id"] = self.test_uid
-        self.metadata["id"] = self.test_uid[:8]
+        self.metadata["full_id"] = self.testid
+        self.metadata["id"] = self.testid[:8]
 
     def get_test_extension(self):
         """Return the test extension, which depends on the shell type. By default we return `sh`
@@ -323,6 +323,12 @@ class BuilderBase(ABC):
 
         # self.runcmd = self.run_command()
         self.metadata["command"] = cmd
+
+        # capture output of 'env' and write to file 'build-env.sh' prior to running test
+        command = BuildTestCommand("env")
+        command.execute()
+        content = "".join(command.get_output())
+        write_file(os.path.join(self.test_root, "build-env.sh"), content)
 
         console.print(f"[blue]{self}[/]: Running Test via command: [cyan]{cmd}[/cyan]")
 
@@ -469,7 +475,7 @@ class BuilderBase(ABC):
         # length of all files in testdir and creating a directory. Subsequent
         # runs will increment this counter
 
-        self.test_root = os.path.join(self.testdir, self.test_uid[:8])
+        self.test_root = os.path.join(self.testdir, self.testid[:8])
 
         create_dir(self.test_root)
 
