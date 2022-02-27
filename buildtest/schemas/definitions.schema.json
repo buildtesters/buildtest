@@ -96,6 +96,15 @@
       "$ref": "#/definitions/list_of_strings",
       "description": "A list of test names that are dependency before runnning job"
     },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "output": {"type": "boolean", "description": "Save output file"},
+        "error": {"type": "boolean", "description": "Save error file"},
+        "files": {"$ref": "#/definitions/list_of_strings", "description": "List of files to save as artifacts for job dependency"}
+      }
+    },
     "metrics_field": {
       "type": "object",
       "additionalProperties": false,

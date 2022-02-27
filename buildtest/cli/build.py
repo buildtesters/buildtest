@@ -842,10 +842,13 @@ class BuildTest:
         """
 
         invalid_builders = []
-        console.rule("Building Test")
+        console.rule("[bold red]Building Test")
 
         valid_builders = []
         for builder in self.builders:
+
+            builder.builderdeps = self.builders
+
             try:
                 builder.build()
             except BuildTestError as err:
@@ -886,9 +889,8 @@ class BuildTest:
             A list of valid builders after running tests
         """
 
-        console.rule("Running Tests")
+        console.rule("[bold red]Running Tests")
         self.buildexecutor.run(self.builders)
-        # self.buildexecutor.poll()
 
         builders = self.buildexecutor.get_validbuilders()
         ########## TEST SUMMARY ####################

@@ -1,0 +1,19 @@
+buildspecs:
+  download_stream:
+    type: script
+    executor: generic.local.bash
+    run: |
+      wget https://www.cs.virginia.edu/stream/FTP/Code/stream.c
+    artifacts:
+      files:
+      - stream.c
+      output: yes
+      error: yes
+
+  run_stream:
+    type: script
+    executor: generic.local.bash
+    description: job dependency on download_stream
+    needs: [download_stream]
+    run: |
+      gcc $BUILDTEST_ARTIFACT_DIR/download_stream/stream.c

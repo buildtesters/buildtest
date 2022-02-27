@@ -13,6 +13,7 @@ import re
 import shutil
 import socket
 import stat
+import tarfile
 import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -29,7 +30,7 @@ from buildtest.exceptions import BuildTestError, RuntimeFailure
 from buildtest.executors.job import Job
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import create_dir, read_file, write_file
+from buildtest.utils.file import create_dir, is_dir, is_file, read_file, write_file
 from buildtest.utils.shell import Shell, is_csh_shell
 from buildtest.utils.timer import Timer
 from buildtest.utils.tools import deep_get
@@ -96,6 +97,7 @@ class BuilderBase(ABC):
 
         self.executor = executor
 
+        self._builderdeps = set()
         self._jobdeps = None
         if self.recipe.get("needs"):
             self._jobdeps = list(set(self.recipe["needs"]))
@@ -137,13 +139,26 @@ class BuilderBase(ABC):
         self.buildexecutor = buildexecutor
 
         # Generate a unique id for the build based
-        self.test_uid = str(uuid.uuid4())
+        self.testid = str(uuid.uuid4())
 
         self._dependency = False
 
         self._set_metadata_values()
         self.shell_detection()
         self.sched_init()
+
+    @property
+    def builderdeps(self):
+        return self._builderdeps
+
+    @builderdeps.setter
+    def builderdeps(self, builders):
+
+        if self._jobdeps:
+            for name in self._jobdeps:
+                for builder in builders:
+                    if builder.name == name:
+                        self._builderdeps.add(builder)
 
     @property
     def jobdeps(self):
@@ -227,8 +242,8 @@ class BuilderBase(ABC):
         # used to store job metrics for given JobID from batch scheduler
         self.metadata["job"] = {}
 
-        self.metadata["full_id"] = self.test_uid
-        self.metadata["id"] = self.test_uid[:8]
+        self.metadata["full_id"] = self.testid
+        self.metadata["id"] = self.testid[:8]
 
     def get_test_extension(self):
         """Return the test extension, which depends on the shell type. By default we return `sh`
@@ -308,6 +323,12 @@ class BuilderBase(ABC):
 
         # self.runcmd = self.run_command()
         self.metadata["command"] = cmd
+
+        # capture output of 'env' and write to file 'build-env.sh' prior to running test
+        command = BuildTestCommand("env")
+        command.execute()
+        content = "".join(command.get_output())
+        write_file(os.path.join(self.test_root, "build-env.sh"), content)
 
         console.print(f"[blue]{self}[/]: Running Test via command: [cyan]{cmd}[/cyan]")
 
@@ -454,7 +475,7 @@ class BuilderBase(ABC):
         # length of all files in testdir and creating a directory. Subsequent
         # runs will increment this counter
 
-        self.test_root = os.path.join(self.testdir, self.test_uid[:8])
+        self.test_root = os.path.join(self.testdir, self.testid[:8])
 
         create_dir(self.test_root)
 
@@ -496,6 +517,34 @@ class BuilderBase(ABC):
                 )
             elif fname.is_file():
                 shutil.copy2(fname, self.stage_dir)
+
+    def save_artifacts(self):
+
+        artifacts = self.recipe["artifacts"]
+
+        self.artifact = os.path.join(self.test_root, "artifacts.tar.gz")
+        tar = tarfile.open(self.artifact, "w:gz")
+
+        if artifacts.get("output"):
+            self.logger.debug(
+                f"{self} Adding output file ({self.metadata['outfile']}) as artifact"
+            )
+            tar.add(self.metadata["outfile"])
+            # shutil.copy2(self.metadata['outfile'], os.path.join(artifact_dir, os.path.basename(self.metadata['outfile'])) )
+
+        if artifacts.get("error"):
+            tar.add(self.metadata["errfile"])
+            self.logger.debug(
+                f"{self}: Saving error file ({self.metadata['errfile']}) as artifact"
+            )
+            # shutil.copy2(self.metadata['errfile'], os.path.join(artifact_dir, os.path.basename(self.metadata['errfile'])) )
+
+        if artifacts.get("files"):
+            for fname in artifacts["files"]:
+                if is_file(fname) or is_dir(fname):
+                    tar.add(fname)
+        tar.close()
+        console.print(f"[blue]{self}[/blue] Writing artifact file: {self.artifact}")
 
     def _emit_command(self):
         """This method will return a shell command used to invoke the script that is used for tests that
@@ -914,6 +963,12 @@ class BuilderBase(ABC):
 
         # need these lines after self.copy_stage_files()
         console.print(
+            f"[blue]{self}[/]: Test completed in {self.metadata['result']['runtime']} seconds"
+        )
+        console.print(
+            f"[blue]{self}[/]: Test completed with returncode: {self.metadata['result']['returncode']}"
+        )
+        console.print(
             f"[blue]{self}[/]: Writing output file -  [green1]{self.metadata['outfile']}"
         )
         console.print(
@@ -926,6 +981,9 @@ class BuilderBase(ABC):
 
         # mark job is success if it finished all post run steps
         self.success()
+
+        if self.recipe.get("artifacts"):
+            self.save_artifacts()
 
     def _check_regex(self):
         """This method conducts a regular expression check using
