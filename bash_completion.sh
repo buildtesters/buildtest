@@ -91,8 +91,8 @@ _buildtest ()
 
   case "$next" in
     build|bd)
-      local shortoption="-b -e -f -k -s -t -x"
-      local longoption="--buildspec --disable-executor-check --executor --exclude --filter --helpfilter --maxpendtime --nodes --pollinterval --procs --retry --stage --tags"
+      local shortoption="-b -e -f -k -m -s -t -x"
+      local longoption="--buildspec --disable-executor-check --executor --exclude --filter --helpfilter --maxpendtime --modules --module-purge --nodes --pollinterval --procs --retry --stage --tags"
       local allopts="${longoption} ${shortoption}"
 
       COMPREPLY=( $( compgen -W "$allopts" -- $cur ) )

@@ -297,11 +297,18 @@ class BuilderBase(ABC):
         # self.duration += self.timer.stop()
         self.timer.stop()
 
-    def build(self):
+    def build(self, modules=None, modulepurge=None):
         """This method is responsible for invoking setup, creating test
         directory and writing test. This method is called from an instance
         object of this class that does ``builder.build()``.
+
+        args:
+            modules (str, optional): Specify a list of modules to load in the build script
+            modules (bool, optional): A boolean to control whether 'module purge' is run before running test
         """
+
+        self.modules = modules
+        self.modulepurge = modulepurge
 
         self._build_setup()
         self._write_test()
@@ -609,6 +616,15 @@ class BuilderBase(ABC):
 
         lines += self._default_test_variables()
         lines.append("# source executor startup script")
+
+        if self.modulepurge:
+            lines.append("module purge")
+
+        if self.modules:
+            lines.append("# Specify list of modules to load")
+            for module in self.modules.split(","):
+
+                lines.append(f"module load {module}")
 
         lines += [
             f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"

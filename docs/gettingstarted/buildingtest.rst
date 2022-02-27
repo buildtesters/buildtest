@@ -293,6 +293,18 @@ If you try to exceed this bound you will get an error such as
 .. command-output:: buildtest build -b tutorials/pass_returncode.yml --rebuild 51
     :returncode: 1
 
+Specify Modules in command line
+--------------------------------
+
+If your system supports ``modules`` such as environment-modules or Lmod you can specify a list
+of modules to load (``module load``) in the test via ``buildtest build --modules``. You can specify
+a comma separated list of modules to load, for example if you want to load `gcc` and `python` module in
+your test you can run ``buildtest build --modules gcc,python``. You may specify full name of module with
+version for instance you want test to load `gcc/9.3.0` and `python/3.7` you can run ``buildtest build --modules gcc/9.3.0,python/3.7``.
+
+If you want test to run ``module purge`` before running test you can specify ``buildtest build --module-purge`` option. If you specify
+``--module-purge`` and ``--modules`` then ``module purge`` will be run prior to loading any modules.
+
 Use Alternate Configuration file
 ---------------------------------
 
