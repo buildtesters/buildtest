@@ -102,6 +102,8 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
+*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-artifacts.md) – `definitions.schema.json#/definitions/artifacts`
+
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics_field.md) – `definitions.schema.json#/definitions/metrics_field`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-metrics.md "This field is used for defining one or more metrics that is recorded for each test") – `definitions.schema.json#/definitions/metrics`

@@ -184,6 +184,80 @@ Reference this group by using
 | Property | Type | Required | Nullable | Defined by |
 | :------- | :--- | :------- | :------- | :--------- |
 
+## Definitions group artifacts
+
+Reference this group by using
+
+```json
+{"$ref":"definitions.schema.json#/definitions/artifacts"}
+```
+
+| Property          | Type      | Required | Nullable       | Defined by                                                                                                                                                  |
+| :---------------- | :-------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [output](#output) | `boolean` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-artifacts-properties-output.md "definitions.schema.json#/definitions/artifacts/properties/output") |
+| [error](#error)   | `boolean` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-artifacts-properties-error.md "definitions.schema.json#/definitions/artifacts/properties/error")   |
+| [files](#files)   | `array`   | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "definitions.schema.json#/definitions/artifacts/properties/files")              |
+
+### output
+
+Save output file
+
+`output`
+
+*   is optional
+
+*   Type: `boolean`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-artifacts-properties-output.md "definitions.schema.json#/definitions/artifacts/properties/output")
+
+#### output Type
+
+`boolean`
+
+### error
+
+Save error file
+
+`error`
+
+*   is optional
+
+*   Type: `boolean`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-artifacts-properties-error.md "definitions.schema.json#/definitions/artifacts/properties/error")
+
+#### error Type
+
+`boolean`
+
+### files
+
+List of files to save as artifacts for job dependency
+
+`files`
+
+*   is optional
+
+*   Type: `string[]`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-list_of_strings.md "definitions.schema.json#/definitions/artifacts/properties/files")
+
+#### files Type
+
+`string[]`
+
+#### files Constraints
+
+**minimum number of items**: the minimum number of items for this array is: `1`
+
+**unique items**: all items in this array must be unique. Duplicates are not allowed.
+
 ## Definitions group metrics\_field
 
 Reference this group by using

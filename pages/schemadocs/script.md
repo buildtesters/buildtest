@@ -31,6 +31,7 @@ The script schema is of `type: script` in sub-schema which is used for running s
 | [executor](#executor)                                 | `string`      | Required | cannot be null | [script schema version](definitions-definitions-executor.md "script.schema.json#/properties/executor")                         |
 | [run\_only](#run_only)                                | Not specified | Optional | cannot be null | [script schema version](script-properties-run_only.md "script.schema.json#/properties/run_only")                               |
 | [needs](#needs)                                       | `array`       | Optional | cannot be null | [script schema version](script-properties-needs.md "script.schema.json#/properties/needs")                                     |
+| [artifacts](#artifacts)                               | `object`      | Optional | cannot be null | [script schema version](definitions-definitions-artifacts.md "script.schema.json#/properties/artifacts")                       |
 | [shell](#shell)                                       | `string`      | Optional | cannot be null | [script schema version](script-properties-shell.md "script.schema.json#/properties/shell")                                     |
 | [shebang](#shebang)                                   | `string`      | Optional | cannot be null | [script schema version](script-properties-shebang.md "script.schema.json#/properties/shebang")                                 |
 | [run](#run)                                           | `string`      | Required | cannot be null | [script schema version](definitions-definitions-run.md "script.schema.json#/properties/run")                                   |
@@ -339,6 +340,24 @@ A list of test names that are dependency before runnning job
 **minimum number of items**: the minimum number of items for this array is: `1`
 
 **unique items**: all items in this array must be unique. Duplicates are not allowed.
+
+## artifacts
+
+
+
+`artifacts`
+
+*   is optional
+
+*   Type: `object` ([Details](definitions-definitions-artifacts.md))
+
+*   cannot be null
+
+*   defined in: [script schema version](definitions-definitions-artifacts.md "script.schema.json#/properties/artifacts")
+
+### artifacts Type
+
+`object` ([Details](definitions-definitions-artifacts.md))
 
 ## shell
 
