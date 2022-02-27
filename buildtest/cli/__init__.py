@@ -383,7 +383,7 @@ def build_menu(subparsers):
     extra_group.add_argument(
         "-s",
         "--stage",
-        help="control behavior of buildtest build",
+        help="Control behavior of buildtest build to stop execution after 'parse' or 'build' stage",
         choices=["parse", "build"],
     )
 
@@ -396,6 +396,18 @@ def build_menu(subparsers):
         help="Specify number of processes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
         nargs="+",
         type=positive_number,
+    )
+    extra_group.add_argument(
+        "--module-purge",
+        action="store_true",
+        help="Run 'module purge' before running any test ",
+    )
+    extra_group.add_argument(
+        "-m",
+        "--modules",
+        type=str,
+        help="Specify a list of modules to load during test execution, to specify multiple modules each one must be comma"
+        "separated for instance if you want to load 'gcc' and 'python' module you can do '-m gcc,python' ",
     )
 
     extra_group.add_argument(

@@ -485,6 +485,8 @@ class BuildTest:
         helpfilter=None,
         numprocs=None,
         numnodes=None,
+        modules=None,
+        modulepurge=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -510,6 +512,8 @@ class BuildTest:
             helpfilter (bool, optional): Display available filter fields for ``buildtest build --filter`` command. This argument is set to ``True`` if one specifies ``buildtest build --helpfilter``
             numprocs (str, optional): List of comma separated process values to run batch jobs specified via ``buildtest build --procs``
             numnodes (str, optional): List of comma separated nodes values to run batch jobs specified via ``buildtest build --nodes``
+            modules (str, optional): List of modules to load for every test specified via ``buildtest build --modules``.
+            modulepurge (bool, optional): Determine whether to run 'module purge' before running test. This is specified via ``buildtest build --modulepurge``.
         """
 
         if buildspecs and not isinstance(buildspecs, list):
@@ -556,6 +560,8 @@ class BuildTest:
         self.stage = stage
         self.filter_buildspecs = filter_buildspecs
         self.rebuild = rebuild
+        self.modules = modules
+        self.modulepurge = modulepurge
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
@@ -850,7 +856,7 @@ class BuildTest:
             builder.builderdeps = self.builders
 
             try:
-                builder.build()
+                builder.build(modules=self.modules, modulepurge=self.modulepurge)
             except BuildTestError as err:
                 console.print(f"[red]{err}")
                 invalid_builders.append(builder)

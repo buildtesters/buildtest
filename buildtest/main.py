@@ -132,6 +132,8 @@ def main():
                 helpfilter=args.helpfilter,
                 numprocs=args.procs,
                 numnodes=args.nodes,
+                modules=args.modules,
+                modulepurge=args.module_purge,
             )
             cmd.build()
 
