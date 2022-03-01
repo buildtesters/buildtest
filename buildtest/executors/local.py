@@ -23,23 +23,26 @@ class LocalExecutor(BaseExecutor):
 
     def load(self):
 
-        # shell_settings = shlex.split(self._settings["shell"])
-
         self.shell = shlex.split(self._settings["shell"])[0]
-        self.shell_opts = shlex.split(self._settings["shell"])[1:]
+        shell_options = shlex.split(self._settings["shell"])[1:]
+
+        self.cmd = [self.shell]
 
         # default options for shell if no shell option specified
-        if is_bash_shell(self.shell) and not self.shell_opts:
-            self.shell_opts = ["--norc", "--noprofile", "-eo pipefail"]
+        if is_bash_shell(self.shell) and not shell_options:
+            self.cmd.append(self._bashopts)
 
-        elif is_sh_shell(self.shell) and not self.shell_opts:
-            self.shell_opts = ["--norc", "--noprofile", "-eo pipefail"]
+        elif is_sh_shell(self.shell) and not shell_options:
+            self.cmd.append(self._shopts)
 
-        elif is_csh_shell(self.shell) and not self.shell_opts:
-            self.shell_opts = ["-e"]
+        elif is_csh_shell(self.shell) and not shell_options:
+            self.cmd.append(self._cshopts)
 
-        elif is_zsh_shell(self.shell) and not self.shell_opts:
-            self.shell_opts = ["-f"]
+        elif is_zsh_shell(self.shell) and not shell_options:
+            self.cmd.append(self._zshopts)
+
+        if shell_options:
+            self.cmd.append(" ".join(shell_options))
 
     def run(self, builder):
         """This method is responsible for running test for LocalExecutor which
@@ -55,9 +58,7 @@ class LocalExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to directory {builder.stage_dir}")
 
-        run_cmd = (
-            [self.shell] + self.shell_opts + [os.path.basename(builder.build_script)]
-        )
+        run_cmd = self.cmd + [os.path.basename(builder.build_script)]
         run_cmd = " ".join(run_cmd)
 
         # ---------- Start of Run ---------- #

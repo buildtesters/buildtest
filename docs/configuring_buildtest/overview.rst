@@ -379,7 +379,7 @@ jobs to ``qa_test``.
     executors:
       defaults:
         pollinterval: 10
-        max_pend_time: 90
+        maxpendtime: 90
         account: development
       pbs:
        testing:
@@ -400,16 +400,16 @@ using ``buildtest build --pollinterval`` which overrides the configuration value
 
 .. Note::
 
-    ``pollinterval``  and ``max_pend_time`` have no effect on local executors.
+    ``pollinterval``  and ``maxpendtime`` have no effect on local executors.
 
 
 Max Pend Time
 ---------------
 
-The ``max_pend_time`` is **maximum** time job can be pending
+The ``maxpendtime`` is **maximum** time job can be pending
 within an executor, if it exceeds the limit buildtest will cancel the job.
 
-The **max_pend_time** option can be overridden per executor level for example the
+The **maxpendtime** option can be overridden per executor level for example the
 section below overrides the default to 300 seconds:
 
 .. code-block:: yaml
@@ -419,17 +419,17 @@ section below overrides the default to 300 seconds:
           description: bigmem jobs
           cluster: escori
           qos: bigmem
-          max_pend_time: 300
+          maxpendtime: 300
 
-The ``max_pend_time`` is used to cancel job only if job is pending in queue, it has
+The ``maxpendtime`` is used to cancel job only if job is pending in queue, it has
 no impact if job is running. buildtest starts a timer at job submission and every poll interval
-(``pollinterval`` field) checks if job has exceeded **max_pend_time** only if job is pending.
-If job pendtime exceeds `max_pend_time` limit, buildtest will
+(``pollinterval`` field) checks if job has exceeded **maxpendtime** only if job is pending.
+If job pendtime exceeds `maxpendtime` limit, buildtest will
 cancel job the job using the appropriate scheduler command like (``scancel``, ``bkill``, ``qdel``).
 Buildtestwill remove cancelled jobs from poll queue, in addition cancelled jobs won't be
 reported in test report.
 
-For more details on `max_pend_time` click :ref:`here <max_pend_time>`.
+For more details on `maxpendtime` click :ref:`here <max_pend_time>`.
 
 .. _pbs_executors:
 

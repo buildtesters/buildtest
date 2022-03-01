@@ -23,6 +23,13 @@ class BaseExecutor:
             site_configs (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
         """
 
+        self._bashopts = "--norc --noprofile -eo pipefail"
+        self._shopts = "--norc --noprofile -eo pipefail"
+        self._cshopts = "-e"
+        self._zshopts = "-f"
+        self.cmd = None
+        self.shell = "bash"
+
         self.logger = logging.getLogger(__name__)
         self.name = name
         self._settings = settings
@@ -31,10 +38,7 @@ class BaseExecutor:
         self.builders = []
 
         # the shell type for executors will be bash by default
-        self.shell = "bash"
-
-    def bash_launch_command(self):
-        return ["bash --norc --noprofile -eo pipefail"]
+        # self.shell = "bash"
 
     def add_builder(self, builder):
         """Add builder object to ``self.builders`` only if its of type BuilderBase"""

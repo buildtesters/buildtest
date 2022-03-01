@@ -23,7 +23,6 @@ system:
         zsh:
           description: submit jobs on local machine using zsh shell
           shell: zsh
-
     # compiler block
     compilers:
       # regular expression to search for compilers based on module pattern. Used with 'buildtest config compilers find' to generate compiler instance

@@ -102,8 +102,7 @@ class CobaltExecutor(BaseExecutor):
 
         os.chdir(builder.stage_dir)
 
-        cmd = self.bash_launch_command() + [os.path.basename(builder.build_script)]
-        cmd = " ".join(cmd)
+        cmd = f"bash {self._bashopts} {os.path.basename(builder.build_script)}"
 
         try:
             command = builder.run(cmd)
