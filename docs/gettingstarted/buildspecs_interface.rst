@@ -259,7 +259,8 @@ in the cache
 
 Let's assume you want to see content of all buildspec that failed test, you can use ``buildtest report`` to extract list of test names
 that failed as argument to ``buildtest buildspec show``, for instance we see below we have two tests that failed, using ``--filter state=FAIL`` will
-retrieve all failures, you will want to pipe output to `uniq` since multiple test runs will be reported twice.
+retrieve all failures, you will want to pipe output to **uniq** to get unique listing since output of ``buildtest report`` will show all test runs and
+duplicates can occur if same test is run multiple times.
 
 .. code-block:: console
 
@@ -356,8 +357,8 @@ Editing buildspecs in your preferred editor
 
 buildtest provides an interface to automatically open your buildspecs in editor and validate them after closing file.
 You are welcome to open your buildspec in your editor (`vim`, `emacs`, `nano`) but you won't be able to validate the buildspec
-unless you explicitly run the test or use `buildtest buildspec validate` to see if your buildspec is valid. buildtest comes
-with two commands to edit your buildspecs ``buildtest buildspec edit`` and ``buildtest buildspec edit-files`` which we will
+unless you explicitly run the test or use **buildtest buildspec validate** to see if your buildspec is valid. buildtest comes
+with two commands to edit your buildspecs ``buildtest buildspec edit`` and ``buildtest buildspec edit-file`` which we will
 discuss below.
 
 Editing by Test ``buildtest buildspec edit``
@@ -371,7 +372,7 @@ For instance, we can see the following test are available as part of command com
 
 .. code-block:: console
 
-    $ buildtest buildspec edit _bin_bash_shell
+    $ buildtest buildspec edit
     _bin_bash_shell                 download_stream                 nodes_state_down                show_host_groups                string_tag
     _bin_sh_shell                   executor_regex_script_schema    nodes_state_idle                show_jobs                       systemd_default_target
     add_numbers                     executors_sbatch_declaration    nodes_state_reboot              show_lsf_configuration          tcsh_env_declaration
@@ -417,16 +418,15 @@ If you specify an invalid test, then buildtest will ignore the test and report a
     /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/sleep.yml is valid
 
 Edit buildspecs ``buildtest buildspec edit-file``
------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``buildtest buildspec edit-file`` command can be used to edit buildspec based on filename as pose to testname.
 This command works similar to ``buildtest buildspec edit`` where each file is open in editor and validated upon completion.
-You can use this command to create new buildspec whereas ``buildtest buildspec edit`` only works on existing buildspecs.
+You can use this command to create new buildspec whereas ``buildtest buildspec edit`` only works on existing buildspecs loaded
+in cache. You can pass multiple filenames as arguments if you want to edit several files.
 
 .. code-block:: console
 
     $ buildtest buildspec edit-file $BUILDTEST_ROOT/tutorials/sleep.yml
       Writing file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/sleep.yml
       /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/sleep.yml is valid
-
-You can pass multiple filenames as arguments if you want to edit several files.

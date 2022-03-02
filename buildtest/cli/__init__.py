@@ -195,6 +195,8 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
             "path",
             "report",
             "schema",
+            "stylecheck",
+            "unittests",
         ],
         help="Show help message for command",
     )
