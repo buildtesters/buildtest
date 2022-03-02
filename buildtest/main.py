@@ -10,6 +10,7 @@ from buildtest.cli.buildspec import (
     BuildspecCache,
     buildspec_find,
     buildspec_validate,
+    edit_buildspec_test,
     show_buildspecs,
     summarize_buildspec_cache,
 )
@@ -157,6 +158,8 @@ def main():
             summarize_buildspec_cache(configuration)
         elif args.buildspecs_subcommand == "show":
             show_buildspecs(test_names=args.name, configuration=configuration)
+        elif args.buildspecs_subcommand == "edit":
+            edit_buildspec_test(test_names=args.name, configuration=configuration)
         elif args.buildspecs_subcommand == "validate":
             buildspec_validate(
                 buildspecs=args.buildspec,
