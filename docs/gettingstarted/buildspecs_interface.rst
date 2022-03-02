@@ -293,3 +293,55 @@ in the cache
 
 .. command-output:: buildtest buildspec show XYZ123!
    :returncode: 1
+
+Editing buildspecs by test ``buildtest buildspec edit``
+--------------------------------------------------------
+
+The ``buildtest buildspec edit`` allows one to specify a list of test as positional
+arguments to edit in your preferred editor. buildtest will provide tab completion for this
+command to show all test available in cache which works similar to ``buildtest buildspec show`` command.
+
+For instance, we can see the following test are available as part of command completion
+
+.. code-block:: console
+
+    $ buildtest buildspec edit _bin_bash_shell
+    _bin_bash_shell                 download_stream                 nodes_state_down                show_host_groups                string_tag
+    _bin_sh_shell                   executor_regex_script_schema    nodes_state_idle                show_jobs                       systemd_default_target
+    add_numbers                     executors_sbatch_declaration    nodes_state_reboot              show_lsf_configuration          tcsh_env_declaration
+    always_fail                     executors_vars_env_declaration  pullImage_dockerhub             show_lsf_models                 test_fail_returncode_match
+    always_pass                     exit1_fail                      pullImage_shub                  show_lsf_queues                 test_pass_returncode_mismatch
+    bash_env_variables              exit1_pass                      pullImage_sylabscloud           show_lsf_queues_current_user    timelimit_max
+    bash_login_shebang              foo_bar                         python_hello                    show_lsf_queues_formatted       timelimit_max_fail
+    bash_nonlogin_shebang           gcc_version                     qdel_version                    show_lsf_resources              timelimit_min
+    bash_shell                      get_partitions                  qmove_version                   show_lsf_user_groups            timelimit_min_fail
+    bhosts_version                  hello_world                     qselect_version                 show_partition                  timelimit_min_max
+    build_remoteimages              inspect_image                   qsub_version                    show_qos                        ulimit_cputime_unlimited
+    build_sandbox_image             jobA                            returncode_int_match            show_queues                     ulimit_filedescriptor_4096
+    build_sif_from_dockerimage      jobB                            returncode_list_mismatch        show_tres                       ulimit_filelock_unlimited
+    circle_area                     jobC                            root_disk_usage                 show_users                      ulimit_max_user_process_2048
+    cqsub_version                   kernel_swapusage                runImage                        sinfo_version                   ulimit_stacksize_unlimited
+    csh_env_declaration             list_of_strings_tags            run_stream                      skip                            ulimit_vmsize_unlimited
+    csh_shell                       lsf_version                     selinux_disable                 sleep                           unskipped
+    current_user_queue              metric_regex_example            sh_shell                        slurm_config                    variables_bash
+    dead_nodes                      node_down_fail_list_reason      shell_options                   status_regex_fail
+    display_hosts_format            nodes_state_allocated           show_accounts                   status_regex_pass
+    display_lsf_hosts               nodes_state_completing          show_all_jobs                   status_returncode_by_executors
+
+Let's take for instance we want to edit the following test, buildtest will search the buildspec cache and find the buildspec file, open
+in editor and once changes are written to disk, the next file will be processed until all files are written to disk.
+
+.. code-block:: console
+
+    $ buildtest buildspec edit sleep _bin_bash_shell add_numbers
+    Writing file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/sleep.yml
+    Writing file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/shell_examples.yml
+    Writing file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/add_numbers.yml
+
+If you specify an invalid test, then buildtest will ignore the test and report a message and skip to next test as shown below
+
+.. code-block:: console
+
+    $ buildtest buildspec edit invalid_test sleep
+    Unable to find test invalid_test in cache
+    Writing file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/sleep.yml

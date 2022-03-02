@@ -460,6 +460,15 @@ def buildspec_menu(subparsers):
         nargs="*",
     )
 
+    edit_buildspecs = subparsers_buildspec.add_parser(
+        "edit", help="Edit buildspec file based on test name"
+    )
+    edit_buildspecs.add_argument(
+        "name",
+        help="Show content of buildspec based on test name",
+        nargs="*",
+    )
+
     buildspec_validate = subparsers_buildspec.add_parser(
         "validate", help="Validate buildspecs with JSON Schema"
     )

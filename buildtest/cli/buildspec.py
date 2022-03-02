@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import subprocess
 import time
 
 from buildtest.buildsystem.parser import BuildspecParser
@@ -825,6 +826,31 @@ class BuildspecCache:
         """This method print buildspec paths, this implements command ``buildtest buildspec find --paths``"""
         for path in self.paths:
             print(path)
+
+
+def edit_buildspec_test(test_names, configuration):
+    """Open a list of test names in editor mode defined by ``EDITOR`` environment otherwise resort to ``vim``.
+    This method will search for buildspec cache and find path to buildspec file corresponding to test name and open
+    file in editor. If multiple test are specified via ``buildtest buildspec edit`` then each file will be open and
+    upon closing file, the next file will be open for edit until all files are written.
+
+    Args:
+        test_names (list): A list of test names to open in editor
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+    """
+    cache = BuildspecCache(configuration=configuration)
+
+    for name in test_names:
+        if name not in cache.get_names():
+            console.print(f"[red]Unable to find test {name} in cache")
+            continue
+
+        buildspec = cache.lookup_buildspec_by_name(name)
+
+        EDITOR = os.environ.get("EDITOR", "vim")
+
+        subprocess.call([EDITOR, buildspec])
+        print(f"Writing file: {buildspec}")
 
 
 def show_buildspecs(test_names, configuration):
