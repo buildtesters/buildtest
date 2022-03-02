@@ -154,6 +154,15 @@ def print_buildspec_help():
         "buildtest buildspec show python_hello",
         "Show content of buildspec based on test name 'python_hello'",
     )
+    table.add_row(
+        "buildtest buildspec edit python_hello",
+        "Open test 'python_hello' in editor and validate file upon closing",
+    )
+    table.add_row(
+        "buildtest buildspec edit-file $BUILDTEST_ROOT/tutorials/sleep.yml",
+        "Open file $BUILDTEST_ROOT/tutorials/sleep.yml in editor and validate file upon closing",
+    )
+
     console.print(table)
 
 
@@ -284,20 +293,6 @@ def print_report_help():
     console.print(table)
 
 
-def print_edit_help():
-    """This method will print help message for command ``buildtest help edit``"""
-
-    table = Table(title="Editing buildspec", show_lines=False)
-    table.add_column("Command", justify="left", style="cyan")
-    table.add_column("Description", justify="left", style="magenta")
-
-    table.add_row(
-        "buildtest edit tutorials/vars.yml",
-        "Edit buildspec 'tutorials/vars.yml' in your preferred editor defined by environment $EDITOR. Upon closing file, buildtest will validate buildspec with jsonschema",
-    )
-    console.print(table)
-
-
 def print_history_help():
     """This method will print help message for command ``buildtest help history``"""
 
@@ -413,8 +408,6 @@ def buildtest_help(command):
         print_report_help()
     elif command == "path":
         print_path_help()
-    elif command == "edit":
-        print_edit_help()
     elif command == "history":
         print_history_help()
     elif command == "cdash":

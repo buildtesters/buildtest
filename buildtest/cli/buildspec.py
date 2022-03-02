@@ -852,6 +852,45 @@ def edit_buildspec_test(test_names, configuration):
         subprocess.call([EDITOR, buildspec])
         print(f"Writing file: {buildspec}")
 
+        be = BuildExecutor(configuration)
+        try:
+            BuildspecParser(buildspec, be)
+        except (BuildTestError, BuildspecError, ValidationError):
+            console.print(f"[red]{buildspec} is invalid")
+            continue
+        console.print(f"[green]{buildspec} is valid")
+
+
+def edit_buildspec_file(buildspecs, configuration):
+    """Open buildspec in editor and validate buildspec with parser. This method is invoked by command ``buildtest buildspec edit-file``.
+
+    Args:
+        buildspec (str): Path to buildspec file to edit
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+    """
+    for file in buildspecs:
+
+        buildspec = resolve_path(file, exist=False)
+        if is_dir(buildspec):
+            console.print(
+                f"buildspec: {buildspec} is a directory, please specify a file type"
+            )
+            continue
+
+        EDITOR = os.environ.get("EDITOR", "vim")
+
+        subprocess.call([EDITOR, buildspec])
+
+        print(f"Writing file: {buildspec}")
+
+        be = BuildExecutor(configuration)
+        try:
+            BuildspecParser(buildspec, be)
+        except (BuildTestError, BuildspecError, ValidationError):
+            console.print(f"[red]{buildspec} is invalid")
+            continue
+        console.print(f"[green]{buildspec} is valid")
+
 
 def show_buildspecs(test_names, configuration):
     """This is the entry point for ``buildtest buildspec show`` command which will print content of
@@ -880,7 +919,6 @@ def show_buildspecs(test_names, configuration):
         raise BuildTestError(
             f"Please select one of the following test: {cache.get_names()}"
         )
-    # print("\nbuildspec: ", buildspec)
 
 
 def buildspec_validate(
