@@ -204,7 +204,7 @@ _buildtest ()
       ;;
 
     buildspec|bc)
-      local cmds="-h --help edit find show summary validate"
+      local cmds="-h --help edit edit-file find show summary validate"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
@@ -226,6 +226,8 @@ _buildtest ()
         ;;
       show|edit)
         COMPREPLY=( $( compgen -W "$(_buildspec_cache_test_names)" -- $cur ) );;
+      edit-file)
+        COMPREPLY=( $( compgen -W "$(_avail_buildspecs)" -- $cur ) );;
       validate)
         local opts="--buildspec --exclude --executor --tag -b -e -t -x "
 
@@ -283,7 +285,7 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
     help|h)
-      local cmds="build buildspec cdash config edit history inspect path report schema"
+      local cmds="build buildspec cdash config history inspect path report schema stylecheck unittests"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       ;;
     *)

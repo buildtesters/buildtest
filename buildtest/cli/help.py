@@ -154,6 +154,15 @@ def print_buildspec_help():
         "buildtest buildspec show python_hello",
         "Show content of buildspec based on test name 'python_hello'",
     )
+    table.add_row(
+        "buildtest buildspec edit python_hello",
+        "Open test 'python_hello' in editor and validate file upon closing",
+    )
+    table.add_row(
+        "buildtest buildspec edit-file $BUILDTEST_ROOT/tutorials/sleep.yml",
+        "Open file $BUILDTEST_ROOT/tutorials/sleep.yml in editor and validate file upon closing",
+    )
+
     console.print(table)
 
 
@@ -284,20 +293,6 @@ def print_report_help():
     console.print(table)
 
 
-def print_edit_help():
-    """This method will print help message for command ``buildtest help edit``"""
-
-    table = Table(title="Editing buildspec", show_lines=False)
-    table.add_column("Command", justify="left", style="cyan")
-    table.add_column("Description", justify="left", style="magenta")
-
-    table.add_row(
-        "buildtest edit tutorials/vars.yml",
-        "Edit buildspec 'tutorials/vars.yml' in your preferred editor defined by environment $EDITOR. Upon closing file, buildtest will validate buildspec with jsonschema",
-    )
-    console.print(table)
-
-
 def print_history_help():
     """This method will print help message for command ``buildtest help history``"""
 
@@ -361,6 +356,57 @@ def print_schema_help():
     console.print(table)
 
 
+def print_stylecheck_help():
+    """This method will print help message for command ``buildtest help stylecheck``"""
+
+    table = Table(title="Buildtest stylecheck", show_lines=False)
+    table.add_column("Command", justify="left", style="cyan")
+    table.add_column("Description", justify="left", style="magenta")
+
+    table.add_row(
+        "buildtest stylecheck",
+        "Run all style check without applying changes to codebase",
+    )
+    table.add_row(
+        "buildtest stylecheck -a", "Run all style check and apply changes to codebase"
+    )
+    table.add_row("buildtest stylecheck --no-black", "Disable black style check")
+    table.add_row("buildtest stylecheck --no-isort", "Disable isort check")
+    table.add_row("buildtest stylecheck --no-pyflakes", "Disable pyflakes check")
+
+    console.print(table)
+
+
+def print_unittests_help():
+    """This method will print help message for command ``buildtest help stylecheck``"""
+
+    table = Table(title="Buildtest unittests", show_lines=False)
+    table.add_column("Command", justify="left", style="cyan")
+    table.add_column("Description", justify="left", style="magenta")
+
+    table.add_row(
+        "buildtest unittests", "Run all unittests, tests are executed via pytest"
+    )
+    table.add_row(
+        "buildtest unittests --coverage",
+        "Enable coverage reporting when running unittests",
+    )
+    table.add_row(
+        "buildtest unittests --pytestopts '-vra'",
+        "Pass pytest options '-vra' when running test",
+    )
+    table.add_row(
+        "buildtest unittests --pytestopts '-m schema'",
+        "Run all tests with marker name 'schema'. This is equivalent to 'pytest -m schema' ",
+    )
+    table.add_row(
+        "buildtest unittests -s $BUILDTEST_ROOT/tests/cli/test_config.py",
+        "Specify a list of files to run unittests instead of running all tests",
+    )
+
+    console.print(table)
+
+
 def print_path_help():
     """This method will print help message for command ``buildtest help schema``"""
 
@@ -413,11 +459,13 @@ def buildtest_help(command):
         print_report_help()
     elif command == "path":
         print_path_help()
-    elif command == "edit":
-        print_edit_help()
     elif command == "history":
         print_history_help()
     elif command == "cdash":
         print_cdash_help()
     elif command == "schema":
         print_schema_help()
+    elif command == "stylecheck":
+        print_stylecheck_help()
+    elif command == "unittests":
+        print_unittests_help()

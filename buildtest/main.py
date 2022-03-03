@@ -10,6 +10,7 @@ from buildtest.cli.buildspec import (
     BuildspecCache,
     buildspec_find,
     buildspec_validate,
+    edit_buildspec_file,
     edit_buildspec_test,
     show_buildspecs,
     summarize_buildspec_cache,
@@ -20,7 +21,6 @@ from buildtest.cli.clean import clean
 from buildtest.cli.compilers import compiler_cmd
 from buildtest.cli.config import config_cmd
 from buildtest.cli.debugreport import print_debug_report
-from buildtest.cli.edit import edit_buildspec
 from buildtest.cli.help import buildtest_help
 from buildtest.cli.history import build_history
 from buildtest.cli.inspect import inspect_cmd
@@ -142,9 +142,6 @@ def main():
             build_history_dir = cmd.get_build_history_dir()
             shutil.move(fname, os.path.join(build_history_dir, "output.txt"))
 
-    elif args.subcommands in ["edit", "et"]:
-        edit_buildspec(args.buildspec, configuration)
-
     # buildtest build history
     elif args.subcommands in ["history", "hy"]:
         build_history(args)
@@ -160,6 +157,8 @@ def main():
             show_buildspecs(test_names=args.name, configuration=configuration)
         elif args.buildspecs_subcommand == "edit":
             edit_buildspec_test(test_names=args.name, configuration=configuration)
+        elif args.buildspecs_subcommand == "edit-file":
+            edit_buildspec_file(buildspecs=args.file, configuration=configuration)
         elif args.buildspecs_subcommand == "validate":
             buildspec_validate(
                 buildspecs=args.buildspec,
