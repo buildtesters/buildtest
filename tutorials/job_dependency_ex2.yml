@@ -1,0 +1,34 @@
+buildspecs:
+  test1:
+    type: script
+    executor: generic.local.bash
+    description: This test will pass
+    run: |
+      echo "This test will pass"
+      sleep 2
+
+  test2:
+    type: script
+    executor: generic.local.bash
+    description: This test will run if test1 pass
+    run: |
+      echo "This test will fail"
+      sleep 2
+    status:
+      state: FAIL
+    needs:
+      - test1:
+          returncode: 2
+
+  test3:
+    type: script
+    executor: generic.local.bash
+    description: This test will run if test1 'PASS' and test2 'FAIL'
+    run: |
+      sleep 2
+      exit 1
+    needs:
+      - test1:
+          state: PASS
+      - test2:
+          returncode: 0

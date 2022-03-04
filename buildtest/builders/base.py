@@ -99,18 +99,20 @@ class BuilderBase(ABC):
 
         self._builderdeps = set()
         self._jobdeps = None
+        """
         if self.recipe.get("needs"):
             self._jobdeps = list(set(self.recipe["needs"]))
 
             # remove any entries in 'needs' property which reference same test name since that is a circular dependency
             self._jobdeps = [name for name in self._jobdeps if not name == self.name]
+        """
 
         # For batch jobs this variable is an instance of Job class which would be one of the subclass
         self.job = None
 
         # Controls the state of the builder object, a complete job  will set
         # this value to True. A job cancellation or job failure in submission will set this to False
-        self.state = None
+        self._state = None
 
         # this value holds the 'status' property from the buildspec
         self.status = None
@@ -328,7 +330,6 @@ class BuilderBase(ABC):
             raise exception of :class:`buildtest.exceptions.RuntimeFailure`
         """
 
-        # self.runcmd = self.run_command()
         self.metadata["command"] = cmd
 
         # capture output of 'env' and write to file 'build-env.sh' prior to running test
@@ -415,6 +416,16 @@ class BuilderBase(ABC):
         """Return runtime of test"""
         return self._runtime
 
+    @property
+    def state(self):
+        return self._state
+
+    @state.setter
+    def state(self, state_value):
+        if state_value not in [True, False]:
+            raise BuildTestError("The state value must be 'True' or 'False'")
+        self._state = state_value
+
     def success(self):
         """This method is invoked to indicate that builder job is complete after polling job."""
         self._buildstate = True
@@ -438,13 +449,6 @@ class BuilderBase(ABC):
     def is_unknown(self):
         """Returns True if builder state is unknown which is the state if job is still running"""
         return self._buildstate is None
-
-    def run_command(self):
-        """Command used to run the build script. buildtest will change into the stage directory (self.stage_dir)
-        before running the test.
-        """
-
-        return f"sh {os.path.basename(self.build_script)}"
 
     def copy_stage_files(self):
         """Copy output and error file into test root directory."""
@@ -667,9 +671,6 @@ class BuilderBase(ABC):
 
         self.build_script = dest
         self.metadata["build_script"] = self.build_script
-
-        # self.runcmd = self.run_command()
-        # self.metadata["command"] = self.runcmd
 
         console.print(f"[blue]{self}:[/] Writing build script: {self.build_script}")
 
@@ -996,8 +997,10 @@ class BuilderBase(ABC):
         self.add_metrics()
 
         # mark job is success if it finished all post run steps
-        self.success()
+        # self.success()
+        self.state = True
 
+        # console.print(f"{self} test is in state: {self._buildstate}")
         if self.recipe.get("artifacts"):
             self.save_artifacts()
 

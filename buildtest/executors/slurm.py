@@ -170,7 +170,8 @@ class SlurmExecutor(BaseExecutor):
             # if timer exceeds 'maxpendtime' then cancel job
             if int(builder.timer.duration()) > self.maxpendtime:
                 builder.job.cancel()
-                builder.failure()
+                # builder.failure()
+                builder.state = False
                 console.print(
                     f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.timer.duration()} sec[/red] "
                 )

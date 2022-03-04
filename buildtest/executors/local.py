@@ -65,7 +65,8 @@ class LocalExecutor(BaseExecutor):
         try:
             command = builder.run(run_cmd)
         except RuntimeFailure as err:
-            builder.failure()
+            # builder.failure()
+            builder.state = False
             self.logger.error(err)
             return
 

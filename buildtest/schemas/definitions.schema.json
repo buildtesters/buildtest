@@ -93,8 +93,27 @@
       "description": "Select one of the executor name defined in your configuration file (``config.yml``). Every buildspec must have an executor which is responsible for running job. "
     },
     "needs": {
-      "$ref": "#/definitions/list_of_strings",
-      "description": "A list of test names that are dependency before runnning job"
+      "description": "A list of test names that are dependency before runnning job",
+      "type": "array",
+      "items": [
+        {
+          "oneOf": [
+            { "type": "string" },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^.*$": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "state": {"$ref": "#/definitions/state"},
+                    "returncode": {"$ref": "#/definitions/returncode"}
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
     },
     "artifacts": {
       "type": "object",
@@ -124,6 +143,18 @@
         }
       }
     },
+    "state": {
+      "type": "string",
+      "description": "explicitly mark state of test regardless of status calculation",
+      "enum": [
+        "PASS",
+        "FAIL"
+      ]
+    },
+    "returncode": {
+      "description": "Specify a list of returncodes to match with script's exit code. buildtest will PASS test if script's exit code is found in list of returncodes. You must specify unique numbers as list and a minimum of 1 item in array",
+      "$ref": "#/definitions/int_or_list"
+    },
     "status": {
       "type": "object",
       "description": "The status section describes how buildtest detects PASS/FAIL on test. By default returncode 0 is a PASS and anything else is a FAIL, however buildtest can support other types of PASS/FAIL conditions.",
@@ -139,10 +170,7 @@
           ],
           "description": "This field can be used for checking Slurm Job State, if there is a match buildtest will report as ``PASS`` "
         },
-        "returncode": {
-          "description": "Specify a list of returncodes to match with script's exit code. buildtest will PASS test if script's exit code is found in list of returncodes. You must specify unique numbers as list and a minimum of 1 item in array",
-          "$ref": "#/definitions/int_or_list"
-        },
+        "returncode": { "$ref": "#/definitions/returncode" },
         "regex": {
           "$ref": "#/definitions/regex",
           "description": "Determine state (PASS/FAIL) of test based on regular expression on output or error stream"
@@ -164,12 +192,8 @@
           }
         },
         "state": {
-          "type": "string",
-          "description": "explicitly mark state of test regardless of status calculation",
-          "enum": [
-            "PASS",
-            "FAIL"
-          ]
+          "$ref": "#/definitions/state",
+          "description": "explicitly mark state of test regardless of status calculation"
         }
       }
     },
