@@ -1,7 +1,7 @@
 # Untitled string in script schema version Schema
 
 ```txt
-script.schema.json#/definitions/compiler_declaration/default_compiler_config/properties/fc
+script.schema.json#/definitions/default_compiler_config/properties/fc
 ```
 
 Set Fortran compiler wrapper

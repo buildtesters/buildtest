@@ -1,7 +1,7 @@
 # Untitled string in script schema version Schema
 
 ```txt
-script.schema.json#/definitions/compiler_declaration/default_compiler_config/properties/cflags
+script.schema.json#/definitions/default_compiler_config/properties/cflags
 ```
 
 Set C compiler flags.
