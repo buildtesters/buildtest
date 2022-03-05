@@ -581,7 +581,9 @@ def buildspec_menu(subparsers):
     terse_group.add_argument(
         "--terse", help="Print output in machine readable format", action="store_true"
     )
-
+    buildspec_find.add_argument(
+        "--pager", action="store_true", help="Enable PAGING when viewing result"
+    )
     buildspec_find.add_argument(
         "-r",
         "--rebuild",
