@@ -297,6 +297,9 @@ class BuilderBase(ABC):
         # self.duration += self.timer.stop()
         self.timer.stop()
 
+    def retry(self, retry):
+        self._retry = retry
+
     def build(self, modules=None, modulepurge=None):
         """This method is responsible for invoking setup, creating test
         directory and writing test. This method is called from an instance
@@ -307,15 +310,9 @@ class BuilderBase(ABC):
             modules (bool, optional): A boolean to control whether 'module purge' is run before running test
         """
 
-        self.modules = modules
-        self.modulepurge = modulepurge
-
         self._build_setup()
         self._write_test()
-        self._write_build_script()
-
-    def retry(self, retry):
-        self._retry = retry
+        self._write_build_script(modules, modulepurge)
 
     def run(self, cmd):
         """Run the test and record the starttime and start timer. We also return the instance
@@ -525,6 +522,100 @@ class BuilderBase(ABC):
             elif fname.is_file():
                 shutil.copy2(fname, self.stage_dir)
 
+    def _write_build_script(self, modules=None, modulepurge=None):
+        """This method will write the content of build script that is run for when invoking
+        the builder run method. Upon creating file we set permission of builder script to 755
+        so test can be run.
+        """
+
+        lines = ["#!/bin/bash"]
+
+        lines += self._default_test_variables()
+        lines.append("# source executor startup script")
+
+        if modulepurge:
+            lines.append("module purge")
+
+        if modules:
+            lines.append("# Specify list of modules to load")
+            for module in modules.split(","):
+
+                lines.append(f"module load {module}")
+
+        lines += [
+            f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"
+        ]
+
+        lines.append("# Run generated script")
+        # local executor
+        if self._is_local_executor():
+            cmd = self._emit_command()
+
+            lines += [" ".join(cmd)]
+        # batch executor
+        else:
+            launcher = self.buildexecutor.executors[self.executor].launcher_command(
+                numprocs=self.numprocs, numnodes=self.numnodes
+            )
+            lines += [" ".join(launcher) + " " + f"{self.testpath}"]
+
+        lines.append("# Get return code")
+
+        # for csh returncode is determined by $status environment, for bash,sh,zsh its $?
+        if is_csh_shell(self.shell.name):
+            lines.append("set returncode = $status")
+        else:
+            lines.append("returncode=$?")
+
+        lines.append("# Exit with return code")
+        lines.append("exit $returncode")
+
+        lines = "\n".join(lines)
+        write_file(self.build_script, lines)
+        self.metadata["buildscript_content"] = lines
+        self.logger.debug(f"Writing build script: {self.build_script}")
+        self._set_execute_perm(self.build_script)
+
+        # copying build script into test_root directory since stage directory will be removed
+        dest = os.path.join(self.test_root, os.path.basename(self.build_script))
+        shutil.copy2(self.build_script, dest)
+        self.logger.debug(f"Copying build script to: {dest}")
+
+        self.build_script = dest
+        self.metadata["build_script"] = self.build_script
+
+        # self.runcmd = self.run_command()
+        # self.metadata["command"] = self.runcmd
+
+        console.print(f"[blue]{self}:[/] Writing build script: {self.build_script}")
+
+    def _write_test(self):
+        """This method is responsible for invoking ``generate_script`` that
+        formulates content of testscript which is implemented in each subclass.
+        Next we write content to file and apply 755 permission on script so
+        it has executable permission.
+        """
+
+        # Implementation to write file generate.sh
+        lines = []
+
+        lines += self.generate_script()
+
+        lines = "\n".join(lines)
+
+        self.logger.info(f"Opening Test File for Writing: {self.testpath}")
+
+        write_file(self.testpath, lines)
+
+        self.metadata["test_content"] = lines
+
+        self._set_execute_perm(self.testpath)
+        # copy testpath to run_dir
+        shutil.copy2(
+            self.testpath,
+            os.path.join(self.test_root, os.path.basename(self.testpath)),
+        )
+
     def save_artifacts(self):
 
         artifacts = self.recipe["artifacts"]
@@ -605,100 +696,6 @@ class BuilderBase(ABC):
             lines.append(f"export BUILDTEST_NUMNODES={self.numnodes}")
 
         return lines
-
-    def _write_build_script(self):
-        """This method will write the content of build script that is run for when invoking
-        the builder run method. Upon creating file we set permission of builder script to 755
-        so test can be run.
-        """
-
-        lines = ["#!/bin/bash"]
-
-        lines += self._default_test_variables()
-        lines.append("# source executor startup script")
-
-        if self.modulepurge:
-            lines.append("module purge")
-
-        if self.modules:
-            lines.append("# Specify list of modules to load")
-            for module in self.modules.split(","):
-
-                lines.append(f"module load {module}")
-
-        lines += [
-            f"source {os.path.join(BUILDTEST_EXECUTOR_DIR, self.executor, 'before_script.sh')}"
-        ]
-
-        lines.append("# Run generated script")
-        # local executor
-        if self._is_local_executor():
-            cmd = self._emit_command()
-
-            lines += [" ".join(cmd)]
-        # batch executor
-        else:
-            launcher = self.buildexecutor.executors[self.executor].launcher_command(
-                numprocs=self.numprocs, numnodes=self.numnodes
-            )
-            lines += [" ".join(launcher) + " " + f"{self.testpath}"]
-
-        lines.append("# Get return code")
-
-        # for csh returncode is determined by $status environment, for bash,sh,zsh its $?
-        if is_csh_shell(self.shell.name):
-            lines.append("set returncode = $status")
-        else:
-            lines.append("returncode=$?")
-
-        lines.append("# Exit with return code")
-        lines.append("exit $returncode")
-
-        lines = "\n".join(lines)
-        write_file(self.build_script, lines)
-        self.metadata["buildscript_content"] = lines
-        self.logger.debug(f"Writing build script: {self.build_script}")
-        self._set_execute_perm(self.build_script)
-
-        # copying build script into test_root directory since stage directory will be removed
-        dest = os.path.join(self.test_root, os.path.basename(self.build_script))
-        shutil.copy2(self.build_script, dest)
-        self.logger.debug(f"Copying build script to: {dest}")
-
-        self.build_script = dest
-        self.metadata["build_script"] = self.build_script
-
-        # self.runcmd = self.run_command()
-        # self.metadata["command"] = self.runcmd
-
-        console.print(f"[blue]{self}:[/] Writing build script: {self.build_script}")
-
-    def _write_test(self):
-        """This method is responsible for invoking ``generate_script`` that
-        formulates content of testscript which is implemented in each subclass.
-        Next we write content to file and apply 755 permission on script so
-        it has executable permission.
-        """
-
-        # Implementation to write file generate.sh
-        lines = []
-
-        lines += self.generate_script()
-
-        lines = "\n".join(lines)
-
-        self.logger.info(f"Opening Test File for Writing: {self.testpath}")
-
-        write_file(self.testpath, lines)
-
-        self.metadata["test_content"] = lines
-
-        self._set_execute_perm(self.testpath)
-        # copy testpath to run_dir
-        shutil.copy2(
-            self.testpath,
-            os.path.join(self.test_root, os.path.basename(self.testpath)),
-        )
 
     def sched_init(self):
         """This method will resolve scheduler fields: 'sbatch', 'pbs', 'bsub', 'cobalt'"""
