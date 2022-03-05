@@ -27,7 +27,7 @@ from jsonschema.exceptions import ValidationError
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.pretty import pprint
-from rich.table import Column, Table
+from rich.table import Table
 
 logger = logging.getLogger(__name__)
 
