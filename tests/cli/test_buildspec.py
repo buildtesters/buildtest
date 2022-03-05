@@ -102,6 +102,17 @@ def test_func_buildspec_find():
     # implements buildtest buildspec find --helpformat
     cache.print_format_fields()
 
+    # buildtest buildspec find --pager
+    cache = BuildspecCache(configuration=configuration, pager=True)
+    cache.print_tags()
+    cache.print_buildspecfiles()
+    cache.print_executors()
+    cache.print_by_executors()
+    cache.print_by_tags()
+    cache.print_maintainer()
+    cache.print_maintainers_by_buildspecs()
+    cache.print_buildspecs()
+
 
 @pytest.mark.cli
 def test_buildspec_find_terse():
