@@ -27,7 +27,7 @@ from jsonschema.exceptions import ValidationError
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.pretty import pprint
-from rich.table import Column, Table
+from rich.table import Table
 
 logger = logging.getLogger(__name__)
 
@@ -48,6 +48,7 @@ class BuildspecCache:
         roots=None,
         header=None,
         terse=None,
+        pager=None,
     ):
         """The initializer method for BuildspecCache class is responsible for loading and finding buildspecs into buildspec cache. First we
         resolve paths to directory where buildspecs will be searched. This can be specified via ``--roots`` option on command line or one can
@@ -74,6 +75,7 @@ class BuildspecCache:
         self.filter = filterfields
         self.format = formatfields
         self.header = header
+        self.pager = pager
         # if --root is not specified we set to empty list instead of None
         self.roots = roots or []
 
@@ -578,9 +580,19 @@ class BuildspecCache:
 
             return
 
-        table = Table("[blue]Buildspecs", title="List of Buildspecs")
+        table = Table(
+            "Buildspecs",
+            title="List of Buildspecs",
+            header_style="blue",
+            row_styles=["red"],
+        )
         for buildspec in self.cache["buildspecs"].keys():
             table.add_row(buildspec)
+
+        if self.pager:
+            with console.pager():
+                console.print(table)
+            return
 
         console.print(table)
 
@@ -591,7 +603,6 @@ class BuildspecCache:
 
         # if --terse option specified print list of all tags in machine readable format
         if self.terse:
-
             if not self.header:
                 print("tag")
 
@@ -600,9 +611,16 @@ class BuildspecCache:
 
             return
 
-        table = Table("[blue]Tags", title="List of Tags")
+        table = Table(
+            "Tags", title="List of Tags", header_style="blue", row_styles=["green"]
+        )
         for tagname in self.cache["unique_tags"]:
             table.add_row(tagname)
+
+        if self.pager:
+            with console.pager():
+                console.print(table)
+            return
 
         console.print(table)
 
@@ -619,9 +637,19 @@ class BuildspecCache:
 
             return
 
-        table = Table("[blue]Executors", title="List of Executors")
+        table = Table(
+            "Executors",
+            title="List of Executors",
+            header_style="blue",
+            row_styles=["green"],
+        )
         for executor in self.cache["unique_executors"]:
             table.add_row(executor)
+
+        if self.pager:
+            with console.pager():
+                console.print(table)
+            return
 
         console.print(table)
 
@@ -640,16 +668,22 @@ class BuildspecCache:
                     print(f"{executor_name}|{test_name}|{description}")
             return
 
-        table = Table(
-            "[blue]Executors",
-            "[blue]Name",
-            "[blue]Description",
-            title="Tests by Executors",
+        table = Table(title="Tests by Executors", header_style="blue")
+        table.add_column("Executors", style="yellow")
+        table.add_column(
+            "Name",
+            style="red",
         )
+        table.add_column("Description", style="green")
 
         for executor_name in self.cache["executor"].keys():
             for test_name, description in self.cache["executor"][executor_name].items():
                 table.add_row(executor_name, test_name, description)
+
+        if self.pager:
+            with console.pager():
+                console.print(table)
+            return
 
         console.print(table)
 
@@ -667,13 +701,19 @@ class BuildspecCache:
                     print(f"{tagname}|{test_name}|{description}")
             return
 
-        table = Table(
-            "[blue]Tags", "[blue]Name", "[blue]Description", title="Tests by Tags"
-        )
+        table = Table(title="Tests by Tags", header_style="blue")
+        table.add_column("Tags", style="yellow")
+        table.add_column("Name", style="red")
+        table.add_column("Description", style="green")
 
         for tagname in self.cache["tags"].keys():
             for test_name, description in self.cache["tags"][tagname].items():
                 table.add_row(tagname, test_name, description)
+
+        if self.pager:
+            with console.pager():
+                console.print(table)
+            return
 
         console.print(table)
 
@@ -689,38 +729,51 @@ class BuildspecCache:
         self.terse = terse or self.terse
         self.header = header or self.header
 
-        table = Table(title="buildspec cache", show_lines=True)
+        table = Table(
+            title=f"Buildspec Cache: {BUILDSPEC_CACHE_FILE}",
+            show_lines=True,
+            header_style="red",
+            style="cyan",
+            row_styles=["red", "green", "tan", "magenta"],
+            title_justify="center",
+            show_edge=False,
+        )
 
         join_list = []
 
         for key in self.table.keys():
             join_list.append(self.table[key])
 
-            table.add_column(f"[blue]{key}", overflow="fold")
+            table.add_column(key, overflow="fold", header_style="blue")
 
         t = [list(i) for i in zip(*join_list)]
 
         for i in t:
             table.add_row(*i)
 
-        if not self.terse:
+        if self.terse:
+            # print terse output
+
+            if not self.header:
+                print("|".join(self.table.keys()))
+
+            for row in t:
+
+                if not isinstance(row, list):
+                    continue
+
+                # if any entry contains None type we convert to empty string
+                row = ["" if item is None else item for item in row]
+                console.print("|".join(row))
+
+            return
+
+        if self.pager:
             with console.pager():
                 console.print(table)
             return
 
-        # print terse output
-
-        if not self.header:
-            print("|".join(self.table.keys()))
-
-        for row in t:
-
-            if not isinstance(row, list):
-                continue
-
-            # if any entry contains None type we convert to empty string
-            row = ["" if item is None else item for item in row]
-            print("|".join(row))
+        console.print(table)
 
     def list_maintainers(self):
         """Return a list of maintainers"""
@@ -739,10 +792,21 @@ class BuildspecCache:
 
             return
 
-        table = Table("[blue]Maintainers", title="List of Maintainers")
+        table = Table(
+            "Maintainers",
+            title="List of Maintainers",
+            header_style="blue",
+            title_style="red",
+            row_styles=["green"],
+        )
 
         for maintainer in self.cache["maintainers"].keys():
             table.add_row(maintainer)
+
+        if self.pager:
+            with console.pager():
+                console.print(table)
+            return
 
         console.print(table)
 
@@ -756,16 +820,25 @@ class BuildspecCache:
                 print(f"{maintainer}|{':'.join(buildspecs)}")
             return
 
-        maintainer_table = Table(
-            "[blue]Maintainers",
-            Column("[blue]Buildspec", overflow="fold"),
+        table = Table(
+            "Maintainers",
+            "Buildspec",
             title="Breakdown of buildspecs by maintainers",
+            header_style="blue",
+            style="cyan",
+            title_style="red",
+            row_styles=["green"],
         )
 
         for maintainer, buildspecs in self.cache["maintainers"].items():
-            maintainer_table.add_row(maintainer, ":".join(buildspecs))
+            table.add_row(maintainer, ":".join(buildspecs))
 
-        console.print(maintainer_table)
+        if self.pager:
+            with console.pager():
+                console.print(table)
+            return
+
+        console.print(table)
 
     def print_invalid_buildspecs(self, error=None):
         """Print invalid buildspecs from cache file. This method implements command ``buildtest buildspec find invalids``
@@ -774,7 +847,14 @@ class BuildspecCache:
             error (bool, optional): Display error messages for invalid buildspecs. Default is ``False`` where we only print list of invalid buildspecs
         """
 
-        table = Table("[blue]Buildspec", title="Invalid Buildspecs")
+        table = Table(
+            "Buildspec",
+            title="Invalid Buildspecs",
+            header_style="blue",
+            style="cyan",
+            title_style="red",
+            row_styles=["red"],
+        )
 
         if not error:
             for buildspec in self.cache["invalids"].keys():
@@ -792,18 +872,15 @@ class BuildspecCache:
         method implements command ``buildtest buildspec find --helpfilter``
         """
 
-        table = Table(
-            "[blue]Field",
-            "[blue]Description",
-            "[blue]Type",
-            title="Filter Field Description",
-        )
-        table.add_row(
-            "[red]buildspecs", "[green]Filter tests by buildspec", "[cyan]FILE"
-        )
-        table.add_row("[red]executor", "[green]Filter by executor name", "[cyan]STRING")
-        table.add_row("[red]tags", "[green]Filter by tag name ", "[cyan]STRING")
-        table.add_row("[red]type", "[green]Filter by schema type ", "[cyan]STRING")
+        table = Table(title="Filter Field Description", header_style="blue")
+        table.add_column("Field", style="red")
+        table.add_column("Type", style="green")
+        table.add_column("Description", style="cyan")
+
+        table.add_row("buildspecs", "Filter tests by buildspec", "FILE")
+        table.add_row("executor", "Filter by executor name", "STRING")
+        table.add_row("tags", "Filter by tag name ", "STRING")
+        table.add_row("type", "Filter by schema type ", "STRING")
         console.print(table)
 
     @staticmethod
@@ -811,21 +888,22 @@ class BuildspecCache:
         """This method prints format fields available for buildspec cache. This
         method implements command ``buildtest buildspec find --helpformat``
         """
-        table = Table(
-            "[blue]Field", "[blue]Description", title="Format Field Description"
-        )
-        table.add_row("[red]buildspec", "[green]Display name of buildspec file")
-        table.add_row("[red]description", "[green]Show description of test")
-        table.add_row("[red]executor", "[green]Display 'executor' property in test")
-        table.add_row("[red]name", "[green]Display name of test")
-        table.add_row("[red]tags", "[green]Display 'tag' property in test ")
-        table.add_row("[red]type", "[green]Display 'type' property in test")
+        table = Table(title="Format Field Description", header_style="blue")
+        table.add_column("Field", style="red")
+        table.add_column("Description", style="green")
+
+        table.add_row("buildspec", "Display name of buildspec file")
+        table.add_row("description", "Show description of test")
+        table.add_row("executor", "Display 'executor' property in test")
+        table.add_row("name", "Display name of test")
+        table.add_row("tags", "Display 'tag' property in test ")
+        table.add_row("type", "Display 'type' property in test")
         console.print(table)
 
     def print_paths(self):
         """This method print buildspec paths, this implements command ``buildtest buildspec find --paths``"""
         for path in self.paths:
-            print(path)
+            console.print(path)
 
 
 def edit_buildspec_test(test_names, configuration):
@@ -851,6 +929,45 @@ def edit_buildspec_test(test_names, configuration):
 
         subprocess.call([EDITOR, buildspec])
         print(f"Writing file: {buildspec}")
+
+        be = BuildExecutor(configuration)
+        try:
+            BuildspecParser(buildspec, be)
+        except (BuildTestError, BuildspecError, ValidationError):
+            console.print(f"[red]{buildspec} is invalid")
+            continue
+        console.print(f"[green]{buildspec} is valid")
+
+
+def edit_buildspec_file(buildspecs, configuration):
+    """Open buildspec in editor and validate buildspec with parser. This method is invoked by command ``buildtest buildspec edit-file``.
+
+    Args:
+        buildspec (str): Path to buildspec file to edit
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+    """
+    for file in buildspecs:
+
+        buildspec = resolve_path(file, exist=False)
+        if is_dir(buildspec):
+            console.print(
+                f"buildspec: {buildspec} is a directory, please specify a file type"
+            )
+            continue
+
+        EDITOR = os.environ.get("EDITOR", "vim")
+
+        subprocess.call([EDITOR, buildspec])
+
+        print(f"Writing file: {buildspec}")
+
+        be = BuildExecutor(configuration)
+        try:
+            BuildspecParser(buildspec, be)
+        except (BuildTestError, BuildspecError, ValidationError):
+            console.print(f"[red]{buildspec} is invalid")
+            continue
+        console.print(f"[green]{buildspec} is valid")
 
 
 def show_buildspecs(test_names, configuration):
@@ -880,7 +997,6 @@ def show_buildspecs(test_names, configuration):
         raise BuildTestError(
             f"Please select one of the following test: {cache.get_names()}"
         )
-    # print("\nbuildspec: ", buildspec)
 
 
 def buildspec_validate(
@@ -939,11 +1055,11 @@ def summarize_buildspec_cache(configuration):
 
     cache = BuildspecCache(configuration=configuration)
     msg = f"""
-    Reading Buildspec Cache File:   {BUILDSPEC_CACHE_FILE}    
-    Total Valid Buildspecs:         {len(cache.get_valid_buildspecs())}
-    Total Invalid Buildspecs:       {len(cache.get_invalid_buildspecs())}
-    Total Unique Tags:              {len(cache.get_unique_tags())}
-    Total Maintainers:              {len(cache.get_maintainers())}
+    [yellow]Reading Buildspec Cache File:[/yellow]   [cyan]{BUILDSPEC_CACHE_FILE}[/cyan] 
+    [yellow]Total Valid Buildspecs:[/yellow]         [cyan]{len(cache.get_valid_buildspecs())}[/cyan] 
+    [yellow]Total Invalid Buildspecs:[/yellow]       [cyan]{len(cache.get_invalid_buildspecs())}[/cyan] 
+    [yellow]Total Unique Tags:[/yellow]              [cyan]{len(cache.get_unique_tags())}[/cyan] 
+    [yellow]Total Maintainers:[/yellow]              [cyan]{len(cache.get_maintainers())}[/cyan] 
 """
     console.print(Panel.fit(msg))
 
@@ -951,37 +1067,38 @@ def summarize_buildspec_cache(configuration):
     layout.split_row(Layout(name="left"), Layout(name="center"), Layout(name="right"))
 
     ################ Tag Breakdown #################
-    tag_table = Table("[blue]tag", "[blue]total tests", title="Tag Breakdown")
+    tag_table = Table(title="Tag Breakdown", header_style="blue")
+    tag_table.add_column("tag", style="red")
+    tag_table.add_column("total tests", style="green")
 
     tag_summary = cache.tag_breakdown()
     for tag, tag_count in tag_summary.items():
         tag_table.add_row(tag, str(len(tag_count)))
 
     ################ Executor Breakdown #################
-    executor_table = Table(
-        "[blue]executor", "[blue]total tests", title="Executor Breakdown"
-    )
+    executor_table = Table(title="Executor Breakdown")
+    executor_table.add_column("executor", style="red", header_style="blue")
+    executor_table.add_column("total tests", style="green", header_style="blue")
 
     executor_summary = cache.executor_breakdown()
     for executor, executor_count in executor_summary.items():
         executor_table.add_row(executor, str(len(executor_count)))
 
     ################ Maintainers #################
-    maintainer_table = Table(
-        "[blue]maintainers", "[blue]total buildspecs", title="Maintainers Breakdown"
-    )
+    maintainer_table = Table(title="Maintainers Breakdown")
+    maintainer_table.add_column("maintainers", style="red", header_style="blue")
+    maintainer_table.add_column("total buildspecs", style="green", header_style="blue")
 
     for maintainer in cache.list_maintainers():
         num_buildspecs = len(cache.cache["maintainers"][maintainer])
         maintainer_table.add_row(maintainer, str(num_buildspecs))
 
     buildspec_table = Table(
-        "[blue]Tests",
-        "[blue]Total",
-        Column("[blue]Buildspec", overflow="fold"),
-        title="Test Breakdown by buildspec",
-        show_lines=True,
+        title="Test Breakdown by buildspec", show_lines=True, header_style="blue"
     )
+    buildspec_table.add_column("Tests", style="red")
+    buildspec_table.add_column("Total", style="cyan")
+    buildspec_table.add_column("Buildspec", style="green")
 
     ################ Test Breakdown by Buildspec #################
     buildspec_summary = cache.test_breakdown_by_buildspec()
@@ -989,8 +1106,10 @@ def summarize_buildspec_cache(configuration):
         buildspec_table.add_row("\n".join(tests), str(len(tests)), buildspec)
 
     invalid_buildspecs_table = Table(
-        "[blue]Buildspecs", title="Invalid Buildspecs", show_lines=True
+        title="Invalid Buildspecs", show_lines=True, header_style="blue"
     )
+    invalid_buildspecs_table.add_column("Buildspecs", style="red")
+
     for buildspec in cache.get_invalid_buildspecs():
         invalid_buildspecs_table.add_row(buildspec)
 
@@ -1019,6 +1138,7 @@ def buildspec_find(args, configuration):
         configuration=configuration,
         header=args.no_header,
         terse=args.terse,
+        pager=args.pager,
     )
 
     if args.buildspec_find_subcommand == "invalid":

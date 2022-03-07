@@ -132,7 +132,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     report_menu(subparsers)
     inspect_menu(subparsers)
     history_menu(subparsers)
-    edit_menu(subparsers)
     schema_menu(subparsers)
     cdash_menu(subparsers)
 
@@ -191,12 +190,13 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
             "buildspec",
             "cdash",
             "config",
-            "edit",
             "history",
             "inspect",
             "path",
             "report",
             "schema",
+            "stylecheck",
+            "unittests",
         ],
         help="Show help message for command",
     )
@@ -238,15 +238,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         "-a", "--apply", action="store_true", help="Apply style checks to codebase."
     )
     return parser
-
-
-def edit_menu(subparsers):
-    edit_subcmd = subparsers.add_parser(
-        "edit", aliases=["et"], help="Edit a buildspec and validate with schema file"
-    )
-    edit_subcmd.add_argument(
-        "buildspec", help="Open buildspec in editor and validate upon closing file"
-    )
 
 
 def history_menu(subparsers):
@@ -426,7 +417,7 @@ def buildspec_menu(subparsers):
     )
 
     subparsers_buildspec = parser_buildspec.add_subparsers(
-        description="Find buildspec from cache file",
+        description="Buildspec Interface subcommands",
         dest="buildspecs_subcommand",
         metavar="",
     )
@@ -466,6 +457,15 @@ def buildspec_menu(subparsers):
     edit_buildspecs.add_argument(
         "name",
         help="Show content of buildspec based on test name",
+        nargs="*",
+    )
+
+    edit_file = subparsers_buildspec.add_parser(
+        "edit-file", help="Edit buildspec file based on filename"
+    )
+    edit_file.add_argument(
+        "file",
+        help="Edit buildspec file in editor",
         nargs="*",
     )
 
@@ -581,7 +581,9 @@ def buildspec_menu(subparsers):
     terse_group.add_argument(
         "--terse", help="Print output in machine readable format", action="store_true"
     )
-
+    buildspec_find.add_argument(
+        "--pager", action="store_true", help="Enable PAGING when viewing result"
+    )
     buildspec_find.add_argument(
         "-r",
         "--rebuild",

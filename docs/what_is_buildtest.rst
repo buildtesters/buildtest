@@ -78,6 +78,11 @@ Inspect Tests
 
 .. command-output:: buildtest help inspect
 
+Buildtest Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. command-output:: buildtest help config
+
 Target Audience & Use Case
 ---------------------------
 

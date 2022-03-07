@@ -233,49 +233,6 @@ will validate all buildspecs for **python** and **pass** tags.
 
 .. command-output:: buildtest buildspec validate -t python -t pass
 
-
-Edit buildspecs ``buildtest edit``
------------------------------------
-
-.. note::
-   ``buildtest et`` is an alias for ``buildtest edit`` command.
-
-The ``buildtest edit`` command can be used to edit buildspec with your preferred editor
-defined by environment **$EDITOR**, if this environment is not set buildtest will resort to ``vim``.
-Once you make change, the file will be written back to disk and validated with the jsonschema.
-If it passes validation you will see a message such as follows:
-
-.. code-block:: console
-
-    $ buildtest edit tutorials/vars.yml
-    Writing file: /Users/siddiq90/Documents/GitHubDesktop/buildtest.tmp/tutorials/vars.yml
-    /Users/siddiq90/Documents/GitHubDesktop/buildtest.tmp/tutorials/vars.yml is valid
-
-If there is an error during validation, buildtest will print the exception to stdout and it is your
-responsibility to fix the buildspec based on error message. In example below, the user provided an invalid
-value for ``type`` field.
-
-
-.. code-block:: console
-    :emphasize-lines: 16
-
-    $ buildtest edit tutorials/vars.yml
-    Writing file: /Users/siddiq90/Documents/GitHubDesktop/buildtest.tmp/tutorials/vars.yml
-    Traceback (most recent call last):
-      File "/Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest", line 17, in <module>
-        buildtest.main.main()
-      File "/Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/main.py", line 103, in main
-        edit_buildspec(args.buildspec, configuration)
-      File "/Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/cli/edit.py", line 23, in edit_buildspec
-        BuildspecParser(buildspec, be)
-      File "/Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/buildsystem/parser.py", line 74, in __init__
-        self._validate()
-      File "/Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/buildsystem/parser.py", line 185, in _validate
-        self._check_schema_type(test)
-      File "/Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/buildsystem/parser.py", line 101, in _check_schema_type
-        raise BuildspecError(self.buildspec, msg)
-    buildtest.exceptions.BuildspecError: '[/Users/siddiq90/Documents/GitHubDesktop/buildtest.tmp/tutorials/vars.yml]: type script123 is not known to buildtest.'
-
 Show buildspec ``buildtest buildspec show``
 --------------------------------------------
 
@@ -287,6 +244,11 @@ In this next example, we will instruct buildtest to show content of buildspec fo
 
 .. command-output:: buildtest buildspec show python_hello
 
+You can pass multiple arguments to ``buildtest buildspec show`` to show content of each test
+
+.. command-output:: buildtest buildspec show python_hello circle_area
+
+
 There is bash completion for this command which will show list of test names available in the cache assuming you have run
 ``buildtest buildspec find``. If you specify an invalid test name you will get an error followed by list of tests that are available
 in the cache
@@ -294,8 +256,113 @@ in the cache
 .. command-output:: buildtest buildspec show XYZ123!
    :returncode: 1
 
-Editing buildspecs by test ``buildtest buildspec edit``
---------------------------------------------------------
+
+Let's assume you want to see content of all buildspec that failed test, you can use ``buildtest report`` to extract list of test names
+that failed as argument to ``buildtest buildspec show``, for instance we see below we have two tests that failed, using ``--filter state=FAIL`` will
+retrieve all failures, you will want to pipe output to **uniq** to get unique listing since output of ``buildtest report`` will show all test runs and
+duplicates can occur if same test is run multiple times.
+
+.. code-block:: console
+
+    $ buildtest report --filter state=FAIL --format name --terse --no-header | uniq
+    exit1_fail
+    returncode_list_mismatch
+
+Next you can use this as argument to ``buildtest buildspec show`` and it will report all buildspec files that correspond to test that failed.
+
+.. code-block:: console
+
+    $ buildtest buildspec show $(buildtest report --filter state=FAIL --format name --terse --no-header | uniq)
+    ────────────────────────────────────────────────────────────────────────────── /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml ───────────────────────────────────────────────────────────────────────────────
+    ╭──────────────────────────────────────────────────────────────────────╮
+    │ buildspecs:                                                          │
+    │                                                                      │
+    │   exit1_fail:                                                        │
+    │     executor: generic.local.bash                                     │
+    │     type: script                                                     │
+    │     description: exit 1 by default is FAIL                           │
+    │     tags:                                                            │
+    │     run: exit 1                                                      │
+    │                                                                      │
+    │   exit1_pass:                                                        │
+    │     executor: generic.local.bash                                     │
+    │     type: script                                                     │
+    │     description: report exit 1 as PASS                               │
+    │     run: exit 1                                                      │
+    │     tags:                                                            │
+    │     status:                                                          │
+    │       returncode: [1]                                                │
+    │                                                                      │
+    │   returncode_list_mismatch:                                          │
+    │     executor: generic.local.bash                                     │
+    │     type: script                                                     │
+    │     description: exit 2 failed since it failed to match returncode 1 │
+    │     run: exit 2                                                      │
+    │     tags:                                                            │
+    │     status:                                                          │
+    │       returncode: [1, 3]                                             │
+    │                                                                      │
+    │   returncode_int_match:                                              │
+    │     executor: generic.local.bash                                     │
+    │     type: script                                                     │
+    │     description: exit 128 matches returncode 128                     │
+    │     run: exit 128                                                    │
+    │     tags:                                                            │
+    │     status:                                                          │
+    │       returncode: 128                                                │
+    │                                                                      │
+    ╰──────────────────────────────────────────────────────────────────────╯
+    ────────────────────────────────────────────────────────────────────────────── /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml ───────────────────────────────────────────────────────────────────────────────
+    ╭──────────────────────────────────────────────────────────────────────╮
+    │ buildspecs:                                                          │
+    │                                                                      │
+    │   exit1_fail:                                                        │
+    │     executor: generic.local.bash                                     │
+    │     type: script                                                     │
+    │     description: exit 1 by default is FAIL                           │
+    │     tags:                                                            │
+    │     run: exit 1                                                      │
+    │                                                                      │
+    │   exit1_pass:                                                        │
+    │     executor: generic.local.bash                                     │
+    │     type: script                                                     │
+    │     description: report exit 1 as PASS                               │
+    │     run: exit 1                                                      │
+    │     tags:                                                            │
+    │     status:                                                          │
+    │       returncode: [1]                                                │
+    │                                                                      │
+    │   returncode_list_mismatch:                                          │
+    │     executor: generic.local.bash                                     │
+    │     type: script                                                     │
+    │     description: exit 2 failed since it failed to match returncode 1 │
+    │     run: exit 2                                                      │
+    │     tags:                                                            │
+    │     status:                                                          │
+    │       returncode: [1, 3]                                             │
+    │                                                                      │
+    │   returncode_int_match:                                              │
+    │     executor: generic.local.bash                                     │
+    │     type: script                                                     │
+    │     description: exit 128 matches returncode 128                     │
+    │     run: exit 128                                                    │
+    │     tags:                                                            │
+    │     status:                                                          │
+    │       returncode: 128                                                │
+    │                                                                      │
+    ╰──────────────────────────────────────────────────────────────────────╯
+
+Editing buildspecs in your preferred editor
+--------------------------------------------
+
+buildtest provides an interface to automatically open your buildspecs in editor and validate them after closing file.
+You are welcome to open your buildspec in your editor (`vim`, `emacs`, `nano`) but you won't be able to validate the buildspec
+unless you explicitly run the test or use **buildtest buildspec validate** to see if your buildspec is valid. buildtest comes
+with two commands to edit your buildspecs ``buildtest buildspec edit`` and ``buildtest buildspec edit-file`` which we will
+discuss below.
+
+Editing by Test ``buildtest buildspec edit``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``buildtest buildspec edit`` allows one to specify a list of test as positional
 arguments to edit in your preferred editor. buildtest will provide tab completion for this
@@ -305,7 +372,7 @@ For instance, we can see the following test are available as part of command com
 
 .. code-block:: console
 
-    $ buildtest buildspec edit _bin_bash_shell
+    $ buildtest buildspec edit
     _bin_bash_shell                 download_stream                 nodes_state_down                show_host_groups                string_tag
     _bin_sh_shell                   executor_regex_script_schema    nodes_state_idle                show_jobs                       systemd_default_target
     add_numbers                     executors_sbatch_declaration    nodes_state_reboot              show_lsf_configuration          tcsh_env_declaration
@@ -335,8 +402,11 @@ in editor and once changes are written to disk, the next file will be processed 
 
     $ buildtest buildspec edit sleep _bin_bash_shell add_numbers
     Writing file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/sleep.yml
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/sleep.yml is valid
     Writing file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/shell_examples.yml
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/shell_examples.yml is valid
     Writing file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/add_numbers.yml
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/add_numbers.yml is valid
 
 If you specify an invalid test, then buildtest will ignore the test and report a message and skip to next test as shown below
 
@@ -345,3 +415,18 @@ If you specify an invalid test, then buildtest will ignore the test and report a
     $ buildtest buildspec edit invalid_test sleep
     Unable to find test invalid_test in cache
     Writing file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/sleep.yml
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/sleep.yml is valid
+
+Edit buildspecs ``buildtest buildspec edit-file``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``buildtest buildspec edit-file`` command can be used to edit buildspec based on filename as pose to testname.
+This command works similar to ``buildtest buildspec edit`` where each file is open in editor and validated upon completion.
+You can use this command to create new buildspec whereas ``buildtest buildspec edit`` only works on existing buildspecs loaded
+in cache. You can pass multiple filenames as arguments if you want to edit several files.
+
+.. code-block:: console
+
+    $ buildtest buildspec edit-file $BUILDTEST_ROOT/tutorials/sleep.yml
+      Writing file: /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/sleep.yml
+      /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/sleep.yml is valid

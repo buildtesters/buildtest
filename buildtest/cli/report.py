@@ -487,7 +487,7 @@ class Report:
         title = title or f"Report File: {self.reportfile()}"
         table = Table(title=title, show_lines=True, expand=True)
         for field in self.display_table.keys():
-            table.add_column(f"[blue]{field}", overflow="fold")
+            table.add_column(f"[blue]{field}", overflow="fold", style="red")
             join_list.append(self.display_table[field])
 
         transpose_list = [list(i) for i in zip(*join_list)]
@@ -674,22 +674,27 @@ def report_summary(report):
     test_breakdown = report.breakdown_by_test_names()
 
     table = Table(
-        "[blue]Name",
-        "[blue]Total Runs",
-        "[blue]Total Pass",
-        "[blue]Total Fail",
         title="Breakdown by test",
     )
+    table.add_column("Name", style="cyan", header_style="blue")
+    table.add_column("Total Pass", style="green", header_style="blue")
+    table.add_column("Total Fail", style="red", header_style="blue")
+    table.add_column("Total Runs", style="blue", header_style="blue")
     for k in test_breakdown.keys():
         table.add_row(
             k,
-            str(test_breakdown[k]["runs"]),
             str(test_breakdown[k]["pass"]),
             str(test_breakdown[k]["fail"]),
+            str(test_breakdown[k]["runs"]),
         )
     console.print(table)
 
-    print("\n")
+    results = Report(
+        filter_args={"state": "PASS"},
+        format_args="name,id,executor,state,returncode,runtime",
+        report_file=report.reportfile(),
+    )
+    results.print_report(title="PASS Tests")
 
     results = Report(
         filter_args={"state": "FAIL"},
