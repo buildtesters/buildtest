@@ -80,6 +80,7 @@ class Report:
         format_args=None,
         latest=None,
         oldest=None,
+        pager=None,
     ):
         """
         Args:
@@ -88,11 +89,13 @@ class Report:
             format (str, optional): A comma separated list of format fields for altering report table. This is specified via ``buildtest report --format``
             latest (bool, optional): Fetch latest run for all tests discovered. This is specified via ``buildtest report --latest``
             oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
+            pager (bool, optional): Enabling PAGING output for ``buildtest report``. This can be specified via ``buildtest report --pager``
         """
         self.latest = latest
         self.oldest = oldest
         self.filter = filter_args
         self.format = format_args
+        self.pager = pager
 
         self.input_report = report_file
 
@@ -494,6 +497,11 @@ class Report:
         for row in transpose_list:
             table.add_row(*row)
 
+        if self.pager:
+            with console.pager():
+                console.print(table)
+
+            return
         console.print(table)
         return
 
@@ -647,9 +655,10 @@ def report_cmd(args, report_file=None):
         latest=args.latest,
         oldest=args.oldest,
         report_file=report_file,
+        pager=args.pager,
     )
     if args.report_subcommand == "summary":
-        report_summary(results)
+        report_summary(results, args.pager)
         return
 
     if args.helpfilter:
@@ -663,13 +672,8 @@ def report_cmd(args, report_file=None):
     results.print_report(terse=args.terse, noheader=args.no_header)
 
 
-def report_summary(report):
+def report_summary(report, pager):
     """This method will print summary for report file which can be retrieved via ``buildtest report summary`` command"""
-
-    print("Report File: ", report.reportfile())
-    print("Total Tests:", len(report.get_testids()))
-    print("Total Tests by Names: ", len(report.get_names()))
-    print("Number of buildspecs in report: ", len(report.get_buildspecs()))
 
     test_breakdown = report.breakdown_by_test_names()
 
@@ -687,18 +691,40 @@ def report_summary(report):
             str(test_breakdown[k]["fail"]),
             str(test_breakdown[k]["runs"]),
         )
-    console.print(table)
 
-    results = Report(
+    pass_results = Report(
         filter_args={"state": "PASS"},
         format_args="name,id,executor,state,returncode,runtime",
         report_file=report.reportfile(),
     )
-    results.print_report(title="PASS Tests")
 
-    results = Report(
+    fail_results = Report(
         filter_args={"state": "FAIL"},
         format_args="name,id,executor,state,returncode,runtime",
         report_file=report.reportfile(),
     )
-    results.print_report(title="FAIL Tests")
+    if pager:
+        with console.pager():
+            print_report_summary_output(report, table, pass_results, fail_results)
+
+        return
+
+    print_report_summary_output(report, table, pass_results, fail_results)
+
+
+def print_report_summary_output(report, table, pass_results, fail_results):
+    """Print output of ``buildtest report summary``.
+
+    Args:
+        report (buildtest.cli.report.Report): An instance of Report class
+        table (rich.table.Table): An instance of Rich Table class
+        pass_results (buildtest.cli.report.Report): An instance of Report class with filtered output by ``state=PASS``
+        fail_results (buildtest.cli.report.Report): An instance of Report class with filtered output by ``state=FAIL``
+    """
+    console.print("Report File: ", report.reportfile())
+    console.print("Total Tests:", len(report.get_testids()))
+    console.print("Total Tests by Names: ", len(report.get_names()))
+    console.print("Number of buildspecs in report: ", len(report.get_buildspecs()))
+    console.print(table)
+    pass_results.print_report(title="PASS Tests")
+    fail_results.print_report(title="FAIL Tests")

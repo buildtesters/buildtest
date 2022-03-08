@@ -693,7 +693,9 @@ def report_menu(subparsers):
     )
     subparsers.add_parser("clear", help="Remove all report file")
     subparsers.add_parser("list", help="List all report files")
-    subparsers.add_parser("summary", help="Summarize test report")
+    parser_report_summary = subparsers.add_parser(
+        "summary", help="Summarize test report"
+    )
 
     # buildtest report
     parser_report.add_argument(
@@ -736,6 +738,13 @@ def report_menu(subparsers):
         "--terse",
         action="store_true",
         help="Print output in machine readable format",
+    )
+    parser_report.add_argument(
+        "--pager", action="store_true", help="Enable PAGING when viewing result"
+    )
+
+    parser_report_summary.add_argument(
+        "--pager", action="store_true", help="Enable PAGING when viewing result"
     )
 
 
