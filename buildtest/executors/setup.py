@@ -400,12 +400,7 @@ class BuildExecutor:
         # poll until all pending jobs are complete
         while pending_jobs:
             print(f"Polling Jobs in {self.pollinterval} seconds")
-
             time.sleep(self.pollinterval)
-
-            # store list of cancelled and completed job at each interval
-            completed_jobs = []
-
             jobs = pending_jobs.copy()
 
             # for every pending job poll job and mark if job is finished or cancelled
