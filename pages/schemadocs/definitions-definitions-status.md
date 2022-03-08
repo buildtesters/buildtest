@@ -22,7 +22,7 @@ The status section describes how buildtest detects PASS/FAIL on test. By default
 | [returncode](#returncode)             | Merged   | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-int_or_list.md "definitions.schema.json#/definitions/status/properties/returncode")                            |
 | [regex](#regex)                       | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-regex.md "definitions.schema.json#/definitions/status/properties/regex")                                       |
 | [runtime](#runtime)                   | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-runtime.md "definitions.schema.json#/definitions/status/properties/runtime")                 |
-| [state](#state)                       | `string` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-state.md "definitions.schema.json#/definitions/status/properties/state")                     |
+| [state](#state)                       | `string` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-state.md "definitions.schema.json#/definitions/status/properties/state")                                       |
 
 ## slurm\_job\_state
 
@@ -125,7 +125,7 @@ explicitly mark state of test regardless of status calculation
 
 *   cannot be null
 
-*   defined in: [JSON Schema Definitions File. ](definitions-definitions-status-properties-state.md "definitions.schema.json#/definitions/status/properties/state")
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-state.md "definitions.schema.json#/definitions/status/properties/state")
 
 ### state Type
 

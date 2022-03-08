@@ -36,7 +36,7 @@ The spack schema is referenced using `type: spack` which is used for generating 
 | [executors](#executors)     | `object`  | Optional | cannot be null | [spack schema version](definitions-definitions-executors.md "spack.schema.json#/properties/executors")     |
 | [pre\_cmds](#pre_cmds)      | `string`  | Optional | cannot be null | [spack schema version](spack-properties-pre_cmds.md "spack.schema.json#/properties/pre_cmds")              |
 | [post\_cmds](#post_cmds)    | `string`  | Optional | cannot be null | [spack schema version](spack-properties-post_cmds.md "spack.schema.json#/properties/post_cmds")            |
-| [needs](#needs)             | `array`   | Optional | cannot be null | [spack schema version](spack-properties-needs.md "spack.schema.json#/properties/needs")                    |
+| [needs](#needs)             | `array`   | Optional | cannot be null | [spack schema version](definitions-definitions-needs.md "spack.schema.json#/properties/needs")             |
 | [spack](#spack)             | `object`  | Required | cannot be null | [spack schema version](spack-properties-spack.md "spack.schema.json#/properties/spack")                    |
 
 ## type
@@ -435,21 +435,19 @@ A list of test names that are dependency before runnning job
 
 *   is optional
 
-*   Type: `string[]`
+*   Type: an array where each item follows the corresponding schema in the following list:
+
+    1.  [Untitled undefined type in JSON Schema Definitions File. ](definitions-definitions-needs-items-0.md "check type definition")
 
 *   cannot be null
 
-*   defined in: [spack schema version](spack-properties-needs.md "spack.schema.json#/properties/needs")
+*   defined in: [spack schema version](definitions-definitions-needs.md "spack.schema.json#/properties/needs")
 
 ### needs Type
 
-`string[]`
+an array where each item follows the corresponding schema in the following list:
 
-### needs Constraints
-
-**minimum number of items**: the minimum number of items for this array is: `1`
-
-**unique items**: all items in this array must be unique. Duplicates are not allowed.
+1.  [Untitled undefined type in JSON Schema Definitions File. ](definitions-definitions-needs-items-0.md "check type definition")
 
 ## spack
 

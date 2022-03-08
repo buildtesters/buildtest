@@ -30,7 +30,7 @@ The script schema is of `type: script` in sub-schema which is used for running s
 | [vars](#vars)                                         | `object`      | Optional | cannot be null | [script schema version](definitions-definitions-env.md "script.schema.json#/properties/vars")                                  |
 | [executor](#executor)                                 | `string`      | Required | cannot be null | [script schema version](definitions-definitions-executor.md "script.schema.json#/properties/executor")                         |
 | [run\_only](#run_only)                                | Not specified | Optional | cannot be null | [script schema version](script-properties-run_only.md "script.schema.json#/properties/run_only")                               |
-| [needs](#needs)                                       | `array`       | Optional | cannot be null | [script schema version](script-properties-needs.md "script.schema.json#/properties/needs")                                     |
+| [needs](#needs)                                       | `array`       | Optional | cannot be null | [script schema version](definitions-definitions-needs.md "script.schema.json#/properties/needs")                               |
 | [artifacts](#artifacts)                               | `object`      | Optional | cannot be null | [script schema version](definitions-definitions-artifacts.md "script.schema.json#/properties/artifacts")                       |
 | [shell](#shell)                                       | `string`      | Optional | cannot be null | [script schema version](script-properties-shell.md "script.schema.json#/properties/shell")                                     |
 | [shebang](#shebang)                                   | `string`      | Optional | cannot be null | [script schema version](script-properties-shebang.md "script.schema.json#/properties/shebang")                                 |
@@ -325,21 +325,19 @@ A list of test names that are dependency before runnning job
 
 *   is optional
 
-*   Type: `string[]`
+*   Type: an array where each item follows the corresponding schema in the following list:
+
+    1.  [Untitled undefined type in JSON Schema Definitions File. ](definitions-definitions-needs-items-0.md "check type definition")
 
 *   cannot be null
 
-*   defined in: [script schema version](script-properties-needs.md "script.schema.json#/properties/needs")
+*   defined in: [script schema version](definitions-definitions-needs.md "script.schema.json#/properties/needs")
 
 ### needs Type
 
-`string[]`
+an array where each item follows the corresponding schema in the following list:
 
-### needs Constraints
-
-**minimum number of items**: the minimum number of items for this array is: `1`
-
-**unique items**: all items in this array must be unique. Duplicates are not allowed.
+1.  [Untitled undefined type in JSON Schema Definitions File. ](definitions-definitions-needs-items-0.md "check type definition")
 
 ## artifacts
 

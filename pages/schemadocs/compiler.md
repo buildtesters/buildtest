@@ -20,7 +20,7 @@ The compiler schema is of `type: compiler` in sub-schema which is used for compi
 | :-------------------------- | :-------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------- |
 | [type](#type)               | `string`  | Required | cannot be null | [compiler schema](compiler-properties-type.md "compiler.schema.json#/properties/type")               |
 | [description](#description) | `string`  | Optional | cannot be null | [compiler schema](compiler-properties-description.md "compiler.schema.json#/properties/description") |
-| [needs](#needs)             | `array`   | Optional | cannot be null | [compiler schema](compiler-properties-needs.md "compiler.schema.json#/properties/needs")             |
+| [needs](#needs)             | `array`   | Optional | cannot be null | [compiler schema](definitions-definitions-needs.md "compiler.schema.json#/properties/needs")         |
 | [compilers](#compilers)     | `object`  | Required | cannot be null | [compiler schema](compiler-properties-compilers.md "compiler.schema.json#/properties/compilers")     |
 | [source](#source)           | `string`  | Required | cannot be null | [compiler schema](compiler-properties-source.md "compiler.schema.json#/properties/source")           |
 | [executor](#executor)       | `string`  | Required | cannot be null | [compiler schema](compiler-properties-executor.md "compiler.schema.json#/properties/executor")       |
@@ -86,21 +86,19 @@ A list of test names that are dependency before runnning job
 
 *   is optional
 
-*   Type: `string[]`
+*   Type: an array where each item follows the corresponding schema in the following list:
+
+    1.  [Untitled undefined type in JSON Schema Definitions File. ](definitions-definitions-needs-items-0.md "check type definition")
 
 *   cannot be null
 
-*   defined in: [compiler schema](compiler-properties-needs.md "compiler.schema.json#/properties/needs")
+*   defined in: [compiler schema](definitions-definitions-needs.md "compiler.schema.json#/properties/needs")
 
 ### needs Type
 
-`string[]`
+an array where each item follows the corresponding schema in the following list:
 
-### needs Constraints
-
-**minimum number of items**: the minimum number of items for this array is: `1`
-
-**unique items**: all items in this array must be unique. Duplicates are not allowed.
+1.  [Untitled undefined type in JSON Schema Definitions File. ](definitions-definitions-needs-items-0.md "check type definition")
 
 ## compilers
 

@@ -318,6 +318,28 @@ Name of metric
 
 `object` ([Details](definitions-definitions-metrics_field.md))
 
+## Definitions group state
+
+Reference this group by using
+
+```json
+{"$ref":"definitions.schema.json#/definitions/state"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | :--- | :------- | :------- | :--------- |
+
+## Definitions group returncode
+
+Reference this group by using
+
+```json
+{"$ref":"definitions.schema.json#/definitions/returncode"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | :--- | :------- | :------- | :--------- |
+
 ## Definitions group status
 
 Reference this group by using

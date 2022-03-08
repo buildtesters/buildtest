@@ -12,10 +12,6 @@ A list of test names that are dependency before runnning job
 
 ## needs Type
 
-`string[]`
+an array where each item follows the corresponding schema in the following list:
 
-## needs Constraints
-
-**minimum number of items**: the minimum number of items for this array is: `1`
-
-**unique items**: all items in this array must be unique. Duplicates are not allowed.
+1.  [Untitled undefined type in JSON Schema Definitions File. ](definitions-definitions-needs-items-0.md "check type definition")
