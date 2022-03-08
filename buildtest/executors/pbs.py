@@ -105,8 +105,7 @@ class PBSExecutor(BaseExecutor):
         try:
             command = builder.run(cmd)
         except RuntimeFailure as err:
-            # builder.failure()
-            builder.state = False
+            builder.failed()
             self.logger.error(err)
             return
 
@@ -152,11 +151,14 @@ class PBSExecutor(BaseExecutor):
             # if timer time is more than requested pend time then cancel job
             if int(builder.timer.duration()) > self.maxpendtime:
                 builder.job.cancel()
-                # builder.failure()
-                builder.state = False
+                builder.failed()
                 console.print(
                     f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.timer.duration()} sec[/red] "
                 )
+                console.print(
+                    f"{builder} in job state: {builder.job.state()} and {builder._state}"
+                )
+                return
 
         builder.start()
 
@@ -169,7 +171,7 @@ class PBSExecutor(BaseExecutor):
             builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
-        builder.endtime()
+        builder.record_endtime()
         builder.metadata["job"] = builder.job.gather()
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
 

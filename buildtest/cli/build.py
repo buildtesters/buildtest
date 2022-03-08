@@ -853,8 +853,6 @@ class BuildTest:
         valid_builders = []
         for builder in self.builders:
 
-            builder.builderdeps = self.builders
-
             try:
                 builder.build(modules=self.modules, modulepurge=self.modulepurge)
             except BuildTestError as err:

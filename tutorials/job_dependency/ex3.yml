@@ -1,0 +1,51 @@
+buildspecs:
+  pass_test:
+    type: script
+    executor: generic.local.bash
+    description: This test will always pass
+    status:
+      state: PASS
+    run: |
+      echo "This test will pass"
+      sleep 2
+
+  fail_test:
+    type: script
+    executor: generic.local.bash
+    description: This test will run if test 'pass_test' is in state 'PASS'
+    status:
+      state: FAIL
+    needs:
+      - pass_test:
+          state: PASS
+    run: |
+      echo "This test will fail"
+      sleep 2
+
+  pass_and_fail_test:
+    type: script
+    executor: generic.local.bash
+    description: This test will run if pass_test is 'PASS' and fail_test is 'FAIL'
+    needs:
+      - pass_test:
+          state: PASS
+      - fail_test:
+          state: FAIL
+    run: |
+      sleep 2
+      exit 1
+    status:
+      returncode: 1
+
+  final_test:
+    type: script
+    executor: generic.local.bash
+    description: Test will run after 'pass_test', 'fail_test', and 'pass_and_fail_test'
+    needs:
+      - pass_test
+      - fail_test
+      - pass_and_fail_test:
+          returncode: 1
+    run: |
+      sleep 2
+      echo "Hello world"

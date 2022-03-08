@@ -1,0 +1,27 @@
+buildspecs:
+  runtime_test:
+    type: script
+    executor: generic.local.bash
+    description: This test will sleep 5 second but will fail due to runtime 2sec
+    status:
+      runtime:
+        min: 2.0
+    run: sleep 5
+
+  runtime_test_pass:
+    type: script
+    executor: generic.local.bash
+    description: This test will run when runtime_test_pass is PASS
+    needs:
+      - runtime_test:
+          state: PASS
+    run: echo "Performing some action when test PASS"
+
+  runtime_test_fail:
+    type: script
+    executor: generic.local.bash
+    description: This test will run when runtime_test_pass is FAIL
+    needs:
+      - runtime_test:
+          state: FAIL
+    run: echo "Performing some action when test FAIL"
