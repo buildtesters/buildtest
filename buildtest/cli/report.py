@@ -631,7 +631,10 @@ def report_cmd(args, report_file=None):
         reports = load_json(BUILDTEST_REPORTS)
         for report in reports:
             console.print(f"Removing report file: {report}")
-            os.remove(report)
+            try:
+                os.remove(report)
+            except OSError:
+                continue
 
         os.remove(BUILDTEST_REPORTS)
         return
@@ -672,18 +675,16 @@ def report_cmd(args, report_file=None):
     results.print_report(terse=args.terse, noheader=args.no_header)
 
 
-def report_summary(report, pager):
+def report_summary(report, pager=None):
     """This method will print summary for report file which can be retrieved via ``buildtest report summary`` command"""
 
     test_breakdown = report.breakdown_by_test_names()
 
-    table = Table(
-        title="Breakdown by test",
-    )
-    table.add_column("Name", style="cyan", header_style="blue")
-    table.add_column("Total Pass", style="green", header_style="blue")
-    table.add_column("Total Fail", style="red", header_style="blue")
-    table.add_column("Total Runs", style="blue", header_style="blue")
+    table = Table(title="Breakdown by test", header_style="blue")
+    table.add_column("Name", style="cyan")
+    table.add_column("Total Pass", style="green")
+    table.add_column("Total Fail", style="red")
+    table.add_column("Total Runs", style="blue")
     for k in test_breakdown.keys():
         table.add_row(
             k,
