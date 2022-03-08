@@ -1,7 +1,5 @@
 import os
-import random
 import shutil
-import string
 import tempfile
 
 import pytest
@@ -25,6 +23,9 @@ def test_report():
 
     # run 'buildtest report --format name,state,returncode,buildspec'
     result = Report(format_args="name,state,returncode,buildspec")
+    result.print_report()
+
+    result = Report(pager=True)
     result.print_report()
 
 
@@ -160,6 +161,9 @@ def test_report_summary():
     report = Report()
     report_summary(report)
 
+    report = Report(pager=True)
+    report_summary(report)
+
 
 @pytest.mark.cli
 def test_report_list():
@@ -191,28 +195,16 @@ def test_report_clear():
         format = None
         oldest = False
         latest = False
-        report_subcommand = None
+        report_subcommand = "clear"
         terse = None
         no_header = None
 
     backupfile = BUILD_REPORT + ".bak"
     shutil.copy2(BUILD_REPORT, backupfile)
-    report_cmd(args)
+
+    # buildtest report clear will raise an error since file doesn't exist
+    with pytest.raises(SystemExit):
+        report_cmd(args)
+
     shutil.move(backupfile, BUILD_REPORT)
     assert BUILD_REPORT
-
-    class args:
-        helpformat = False
-        helpfilter = False
-        filter = None
-        format = None
-        oldest = False
-        latest = False
-        report_subcommand = "clear"
-        terse = None
-        no_header = None
-
-    report_file = "".join(random.choice(string.ascii_letters) for i in range(10))
-    # buildtest report clear <file> will raise an error since file doesn't exist
-    with pytest.raises(SystemExit):
-        report_cmd(args, report_file=report_file)

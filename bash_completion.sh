@@ -142,9 +142,14 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--filter --format --help --helpfilter --helpformat --latest --no-header --oldest --terse  -h -n -t clear list summary"
-      COMPREPLY=( $( compgen -W "$opts" -- $cur ) );;
-
+      local opts="--filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --terse  -h -n -t clear list summary"
+      COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+      case "${COMP_WORDS[2]}" in summary)
+        local opts="-h --help --pager"
+        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+        ;;
+      esac
+      ;;
     config|cg)
       local cmds="-h --help compilers edit executors validate view systems"
 
