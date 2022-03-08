@@ -253,6 +253,20 @@ def test_invalid_buildspes():
         cmd.build()
 
 
+def test_jobdeps():
+    system = BuildTestSystem()
+
+    buildspecs = walk_tree(os.path.join(BUILDTEST_ROOT, "tutorials", "job_dependency"))
+
+    cmd = BuildTest(
+        configuration=configuration,
+        buildspecs=buildspecs,
+        buildtest_system=system,
+        keep_stage_dir=True,
+    )
+    cmd.build()
+
+
 @pytest.mark.cli
 def test_keep_stage():
 

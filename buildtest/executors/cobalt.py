@@ -168,10 +168,11 @@ class CobaltExecutor(BaseExecutor):
             # if timer time is more than requested pend time then cancel job
             if int(builder.timer.duration()) > self.maxpendtime:
                 builder.job.cancel()
-                builder.failure()
+                builder.failed()
                 console.print(
                     f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.timer.duration()} sec[/red] "
                 )
+            return
 
         builder.start()
 
@@ -185,7 +186,7 @@ class CobaltExecutor(BaseExecutor):
             builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
-        builder.endtime()
+        builder.record_endtime()
         # The cobalt job will write output and error file after job completes, there is a few second delay before file comes. Hence
         # stay in while loop and sleep for every 5 second until we find both files in filesystem
         while True:

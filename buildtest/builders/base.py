@@ -97,20 +97,12 @@ class BuilderBase(ABC):
 
         self.executor = executor
 
-        self._builderdeps = set()
-        self._jobdeps = None
-        if self.recipe.get("needs"):
-            self._jobdeps = list(set(self.recipe["needs"]))
-
-            # remove any entries in 'needs' property which reference same test name since that is a circular dependency
-            self._jobdeps = [name for name in self._jobdeps if not name == self.name]
-
         # For batch jobs this variable is an instance of Job class which would be one of the subclass
         self.job = None
 
         # Controls the state of the builder object, a complete job  will set
         # this value to True. A job cancellation or job failure in submission will set this to False
-        self.state = None
+        self._state = "PENDING"
 
         # this value holds the 'status' property from the buildspec
         self.status = None
@@ -146,23 +138,6 @@ class BuilderBase(ABC):
         self._set_metadata_values()
         self.shell_detection()
         self.sched_init()
-
-    @property
-    def builderdeps(self):
-        return self._builderdeps
-
-    @builderdeps.setter
-    def builderdeps(self, builders):
-
-        if self._jobdeps:
-            for name in self._jobdeps:
-                for builder in builders:
-                    if builder.name == name:
-                        self._builderdeps.add(builder)
-
-    @property
-    def jobdeps(self):
-        return self._jobdeps
 
     @property
     def dependency(self):
@@ -325,7 +300,6 @@ class BuilderBase(ABC):
             raise exception of :class:`buildtest.exceptions.RuntimeFailure`
         """
 
-        # self.runcmd = self.run_command()
         self.metadata["command"] = cmd
 
         # capture output of 'env' and write to file 'build-env.sh' prior to running test
@@ -336,7 +310,8 @@ class BuilderBase(ABC):
 
         console.print(f"[blue]{self}[/]: Running Test via command: [cyan]{cmd}[/cyan]")
 
-        self.starttime()
+        self.record_starttime()
+        self.running()
         self.start()
 
         command = BuildTestCommand(cmd)
@@ -377,7 +352,7 @@ class BuilderBase(ABC):
 
         raise RuntimeFailure(err)
 
-    def starttime(self):
+    def record_starttime(self):
         """This method will record the starttime when job starts execution by using
         ``datetime.datetime.now()``
         """
@@ -387,7 +362,7 @@ class BuilderBase(ABC):
         # this is recorded in the report file
         self.metadata["result"]["starttime"] = self._starttime.strftime("%Y/%m/%d %X")
 
-    def endtime(self):
+    def record_endtime(self):
         """This method is called upon termination of job, we get current time using
         ``datetime.datetime.now()`` and calculate runtime of job
         """
@@ -412,36 +387,36 @@ class BuilderBase(ABC):
         """Return runtime of test"""
         return self._runtime
 
-    def success(self):
-        """This method is invoked to indicate that builder job is complete after polling job."""
-        self._buildstate = True
+    def state(self):
+        return self._state
 
-    def failure(self):
-        """This method indicates that builder job is not complete after polling job either job was
-        cancelled by scheduler or job failed to run.
-        """
-        self._buildstate = False
+    def failed(self):
+        """Mark test as failure by updating the ``self._state``. A fail test will not be reported in test report"""
+        self._state = "FAILED"
+
+    def complete(self):
+        """Mark test as complete by updating the ``self._state``. A complete test assumes test ran to completion"""
+        self._state = "COMPLETE"
+
+    def running(self):
+        self._state = "RUNNING"
+
+    def is_pending(self):
+        return self._state == "PENDING"
 
     def is_complete(self):
         """If builder completes execution of test this method will return ``True`` otherwise returns ``False``.
         A builder could fail due to job cancellation, failure to submit job or raise exception during the run phase.
         In those case, this method will return ``False``."""
-        return self._buildstate is True
+        return self._state == "COMPLETE"
 
-    def is_failure(self):
+    def is_failed(self):
         """Return True if builder fails to run test."""
-        return self._buildstate is False
+        return self._state == "FAILED"
 
-    def is_unknown(self):
-        """Returns True if builder state is unknown which is the state if job is still running"""
-        return self._buildstate is None
-
-    def run_command(self):
-        """Command used to run the build script. buildtest will change into the stage directory (self.stage_dir)
-        before running the test.
-        """
-
-        return f"sh {os.path.basename(self.build_script)}"
+    def is_running(self):
+        """Return True if builder fails to run test."""
+        return self._state == "RUNNING"
 
     def copy_stage_files(self):
         """Copy output and error file into test root directory."""
@@ -583,9 +558,6 @@ class BuilderBase(ABC):
 
         self.build_script = dest
         self.metadata["build_script"] = self.build_script
-
-        # self.runcmd = self.run_command()
-        # self.metadata["command"] = self.runcmd
 
         console.print(f"[blue]{self}:[/] Writing build script: {self.build_script}")
 
@@ -993,8 +965,9 @@ class BuilderBase(ABC):
         self.add_metrics()
 
         # mark job is success if it finished all post run steps
-        self.success()
+        self.complete()
 
+        # console.print(f"{self} test is in state: {self._buildstate}")
         if self.recipe.get("artifacts"):
             self.save_artifacts()
 

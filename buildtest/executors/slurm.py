@@ -170,10 +170,11 @@ class SlurmExecutor(BaseExecutor):
             # if timer exceeds 'maxpendtime' then cancel job
             if int(builder.timer.duration()) > self.maxpendtime:
                 builder.job.cancel()
-                builder.failure()
+                builder.failed()
                 console.print(
                     f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.timer.duration()} sec[/red] "
                 )
+                return
 
         builder.start()
 
@@ -184,7 +185,7 @@ class SlurmExecutor(BaseExecutor):
         Args:
             builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
-        builder.endtime()
+        builder.record_endtime()
 
         builder.metadata["job"] = builder.job.gather()
 

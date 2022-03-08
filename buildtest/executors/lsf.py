@@ -124,7 +124,7 @@ class LSFExecutor(BaseExecutor):
         # if there is no match we raise error
         if not m:
             self.logger.debug(f"Unable to find LSF Job ID in output: '{out}'")
-            builder.failure()
+            builder.failed()
             return
 
         try:
@@ -133,7 +133,7 @@ class LSFExecutor(BaseExecutor):
             self.logger.debug(
                 f"Unable to convert '{m.group(0)}' to int to extract Job ID"
             )
-            builder.failure()
+            builder.failed()
             return
 
         builder.job = LSFJob(job_id)
@@ -175,6 +175,7 @@ class LSFExecutor(BaseExecutor):
                 console.print(
                     f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.timer.duration()} sec[/red] "
                 )
+                return
 
         builder.start()
 
@@ -186,7 +187,7 @@ class LSFExecutor(BaseExecutor):
             builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
-        builder.endtime()
+        builder.record_endtime()
 
         builder.metadata["job"] = builder.job.gather()
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
