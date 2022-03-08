@@ -212,7 +212,9 @@ class BuildExecutor:
         for builder in builders:
 
             if not builder.recipe.get("needs"):
-                console.print(f"{builder} does not have any dependencies")
+                console.print(
+                    f"[green]{builder} does not have any dependencies adding test to queue"
+                )
                 run_builders.add(builder)
                 continue
 
@@ -228,10 +230,9 @@ class BuildExecutor:
                     if testnames[name].is_pending():
                         builder.dependency = True
                         console.print(
-                            f"[blue]{builder}[/blue] [red]Skipping job because it has job dependency on {testnames[name]} [/red]"
+                            f"[blue]{builder}[/blue] [red]Skipping job because it has job dependency on {testnames[name]} which is in state {testnames[name].state()} [/red]"
                         )
                         break
-
                 else:
                     testname = list(name.keys())[0]
 
@@ -257,7 +258,7 @@ class BuildExecutor:
                             if testnames[testname].is_pending():
                                 builder.dependency = True
                                 console.print(
-                                    f"{builder} is depends on {testnames[testname]} to have state: {name[testname]['state']} but actual value is {testnames[testname].metadata['result']['state']}"
+                                    f"[blue]{builder}[/blue] skipping test because it depends on {testnames[testname]} to have state: {name[testname]['state']} but actual value is {testnames[testname].metadata['result']['state']}"
                                 )
                                 break
                             # if there is no match but in 'state' property but job is not pending then we cancel job
@@ -299,11 +300,12 @@ class BuildExecutor:
 
             run_builders.add(builder)
 
-        builders = set()
+        builders = []
         for builder in run_builders:
             if builder.is_pending():
-                builders.add(builder)
+                builders.append(builder)
 
+        # console.print(f"In this iteration we will run the following tests: {builders}", )
         return builders
 
     def run(self, builders):
@@ -342,7 +344,11 @@ class BuildExecutor:
             run_builders = self.select_builders_to_run(active_builders)
 
             if not run_builders:
-                raise BuildTestError("Error")
+                raise BuildTestError("Unable to run tests ")
+
+            print(
+                f"In this iteration we are going to run the following tests: {run_builders}"
+            )
             results = []
 
             for builder in run_builders:

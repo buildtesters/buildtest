@@ -15,5 +15,5 @@ buildspecs:
   whoami:
     type: script
     executor: generic.local.bash
-    needs: [pbs_sleep, hostname, whoami]
+    needs: [pbs_sleep, hostname]
     run: whoami
