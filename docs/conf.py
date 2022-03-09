@@ -93,7 +93,7 @@ napoleon_include_init_with_doc = False
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
-    "rich": ("https://rich.readthedocs.io/", None),
+    "rich": ("https://rich.readthedocs.io/en/stable/", None),
 }
 
 suppress_warnings = ["autoapi"]

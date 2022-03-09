@@ -255,7 +255,7 @@ _buildtest ()
 
       case ${COMP_WORDS[2]} in
       list)
-        local opts="--help --no-header --terse -h -n -t"
+        local opts="--help --no-header --pager --terse -h -n -t"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
       query)
         local opts="--help --log --output -h -l -o"

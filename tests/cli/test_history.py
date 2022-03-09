@@ -3,36 +3,18 @@ import shutil
 
 import pytest
 from buildtest.cli.build import BuildTest, Tee
-from buildtest.cli.history import BUILD_HISTORY_DIR, build_history, query_builds
+from buildtest.cli.history import BUILD_HISTORY_DIR, list_build_history, query_builds
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT, VAR_DIR
 from buildtest.system import BuildTestSystem
 
 
 def test_build_history_list():
-    class args:
-        history = "list"
-        terse = False
-        no_header = False
+    list_build_history(terse=False, header=False, pager=False)
+    list_build_history(terse=False, header=False, pager=True)
 
-    # buildtest build history
-    build_history(args)
-
-    class args:
-        history = "list"
-        terse = True
-        no_header = False
-
-    # 'buildtest build history list --terse'
-    build_history(args)
-
-    class args:
-        history = "list"
-        terse = True
-        no_header = True
-
-    # 'buildtest build history list --terse --no-header'
-    build_history(args)
+    list_build_history(terse=True, header=False, pager=False)
+    list_build_history(terse=True, header=True, pager=False)
 
 
 def test_build_history_query():
@@ -56,26 +38,17 @@ def test_build_history_query():
     build_history_dir = cmd.get_build_history_dir()
     shutil.move(fname, os.path.join(build_history_dir, "output.txt"))
 
-    num_ids = list(range(len(os.listdir(BUILD_HISTORY_DIR))))[-1]
-    print(num_ids)
+    build_id = list(range(len(os.listdir(BUILD_HISTORY_DIR))))[-1]
+    print(build_id)
 
-    class args:
-        history = "query"
-        id = num_ids
-        log = False
-        output = False
+    # run buildtest history query <id>
+    query_builds(build_id=build_id, log_option=False, output=False)
 
-    # 'buildtest build history query <ID>'
-    build_history(args)
+    # run buildtest history query <id> --output
+    query_builds(build_id=build_id, log_option=False, output=True)
 
-    class args:
-        history = "query"
-        id = num_ids
-        log = False
-        output = True
-
-    # 'buildtest build history query --output <ID>'
-    build_history(args)
+    # run buildtest history query <id> --log
+    query_builds(build_id=build_id, log_option=True, output=False)
 
 
 def test_invalid_buildid():

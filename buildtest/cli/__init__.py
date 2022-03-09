@@ -266,6 +266,9 @@ def history_menu(subparsers):
         action="store_true",
         help="Print output in machine readable format",
     )
+    list_parser.add_argument(
+        "--pager", action="store_true", help="Enabling PAGING when viewing result"
+    )
 
     query = history_subparser.add_parser(
         "query", help="Query information for a particular build"
