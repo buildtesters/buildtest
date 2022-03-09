@@ -21,6 +21,7 @@ exclude_lines =
 
     buildspec_find
     config_cmd
+    build_history
 
     # Don't complain if tests don't hit defensive assertion code:
     raise AssertionError

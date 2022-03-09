@@ -6,7 +6,7 @@ import sys
 from buildtest.defaults import BUILD_HISTORY_DIR, console
 from buildtest.utils.file import is_dir, load_json, read_file, walk_tree
 from rich.pretty import pprint
-from rich.table import Column, Table
+from rich.table import Table
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ def build_history(args):
     """
 
     if args.history == "list":
-        list_builds(header=args.no_header, terse=args.terse)
+        list_build_history(header=args.no_header, terse=args.terse, pager=args.pager)
 
     if args.history == "query":
         query_builds(build_id=args.id, log_option=args.log, output=args.output)
@@ -40,7 +40,7 @@ def sorted_alphanumeric(data):
     return sorted(data, key=alphanum_key)
 
 
-def list_builds(header=None, terse=None):
+def list_build_history(header=None, terse=None, pager=None):
     """This method is entry point for ``buildtest history list`` which prints all previous builds
     stored in **BUILD_HISTORY_DIR**. Each directory has a ``build.json`` file that stores content
     of each build that was run by ``buildtest build``.
@@ -48,6 +48,7 @@ def list_builds(header=None, terse=None):
     Args:
         header (bool, optional): Control whether header columns are displayed with terse format
         terse (bool, optional): Print output in terse format
+        pager (bool, optional): Print output in paging format
     """
 
     history_files = walk_tree(BUILD_HISTORY_DIR, ".json")
@@ -94,7 +95,7 @@ def list_builds(header=None, terse=None):
 
         # We print the table columns if --no-header is not specified
         if not header:
-            print("|".join(table.keys()))
+            console.print("|".join(table.keys()))
 
         for (
             build_id,
@@ -121,24 +122,24 @@ def list_builds(header=None, terse=None):
             table["fail_rate"],
             table["command"],
         ):
-            print(
+            console.print(
                 f"{build_id}|{hostname}|{user}|{date}|{pass_test}|{fail_tests}|{total_tests}|{pass_rate}|{fail_rate}|{command}"
             )
         return
 
     history_table = Table(
-        "[blue]id",
-        "[blue]hostname",
-        "[blue]user",
-        "[blue]system",
-        "[blue]date",
-        "[blue]Pass Tests",
-        "[blue]Fail Tests",
-        "[blue]Total Tests",
-        Column("[blue]command", overflow="fold"),
-        title="Build History Details",
+        header_style="blue",
         show_lines=True,
     )
+    history_table.add_column("id", style="white")
+    history_table.add_column("hostname", style="white")
+    history_table.add_column("user", style="white")
+    history_table.add_column("system", style="white")
+    history_table.add_column("date", style="white")
+    history_table.add_column("pass tests", style="green")
+    history_table.add_column("fail tests", style="red")
+    history_table.add_column("total tests", style="blue")
+    history_table.add_column("command", overflow="fold")
 
     for (
         build_id,
@@ -172,6 +173,11 @@ def list_builds(header=None, terse=None):
             total_tests,
             command,
         )
+    if pager:
+        with console.pager():
+            console.print(history_table)
+        return
+
     console.print(history_table)
 
 
