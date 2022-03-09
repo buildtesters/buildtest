@@ -1,11 +1,10 @@
 system:
   generic:
     hostnames: ['.*']
-
     moduletool: N/A
     executors:
       defaults:
-         pollinterval: 10
+         pollinterval: 5
          maxpendtime: 30
       local:
         bash:

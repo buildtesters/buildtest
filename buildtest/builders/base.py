@@ -18,16 +18,10 @@ import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-from buildtest.buildsystem.batch import (
-    CobaltBatchScript,
-    LSFBatchScript,
-    PBSBatchScript,
-    SlurmBatchScript,
-)
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
 from buildtest.exceptions import BuildTestError, RuntimeFailure
-from buildtest.executors.job import Job
+from buildtest.scheduler.job import Job
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir, is_dir, is_file, read_file, write_file
@@ -691,69 +685,37 @@ class BuilderBase(ABC):
             self.recipe, "executors", self.executor, "DW"
         )
 
-    def get_slurm_directives(self):
-        """Get #SBATCH lines based on ``sbatch`` property by calling :class:`buildtest.buildsystem.batch.SlurmBatchScript`"""
-        jobscript = SlurmBatchScript(sbatch=self.sbatch)
-        lines = jobscript.get_headers()
-        lines += [f"#SBATCH --job-name={self.name}"]
-        lines += [f"#SBATCH --output={self.name}.out"]
-        lines += [f"#SBATCH --error={self.name}.err"]
-
-        return lines
-
-    def get_lsf_directives(self):
-        """Get #BSUB lines based on ``bsub`` property by calling :class:`buildtest.buildsystem.batch.LSFBatchScript`"""
-        jobscript = LSFBatchScript(bsub=self.bsub)
-        lines = jobscript.get_headers()
-        lines += [f"#BSUB -J {self.name}"]
-        lines += [f"#BSUB -o {self.name}.out"]
-        lines += [f"#BSUB -e {self.name}.err"]
-
-        return lines
-
-    def get_pbs_directives(self):
-        """Get #PBS lines based on ``pbs`` property by calling :class:`buildtest.buildsystem.batch.PBSBatchScript`"""
-        jobscript = PBSBatchScript(pbs=self.pbs)
-        lines = jobscript.get_headers()
-        lines += [f"#PBS -N {self.name}"]
-
-        return lines
-
-    def get_cobalt_directives(self):
-        """Get #COBALT lines based on ``cobalt`` property by calling :class:`buildtest.buildsystem.batch.CobaltBatchScript`"""
-        jobscript = CobaltBatchScript(cobalt=self.cobalt)
-        lines = jobscript.get_headers()
-        lines += [f"#COBALT --jobname {self.name}"]
-
-        return lines
-
     def get_job_directives(self):
         """This method returns a list of lines containing the scheduler directives"""
         lines = []
 
         if self.sbatch:
-            sbatch_lines = self.get_slurm_directives()
-            lines.append("####### START OF SCHEDULER DIRECTIVES #######")
-            lines += sbatch_lines
-            lines.append("####### END OF SCHEDULER DIRECTIVES   #######")
+            for line in self.sbatch:
+                lines.append(f"#SBATCH {line}")
+
+            lines += [f"#SBATCH --job-name={self.name}"]
+            lines += [f"#SBATCH --output={self.name}.out"]
+            lines += [f"#SBATCH --error={self.name}.err"]
 
         if self.bsub:
-            bsub_lines = self.get_lsf_directives()
-            lines.append("####### START OF SCHEDULER DIRECTIVES #######")
-            lines += bsub_lines
-            lines.append("####### END OF SCHEDULER DIRECTIVES   #######")
+            for line in self.bsub:
+                lines.append(f"#BSUB {line}")
+
+            lines += [f"#BSUB -J {self.name}"]
+            lines += [f"#BSUB -o {self.name}.out"]
+            lines += [f"#BSUB -e {self.name}.err"]
 
         if self.pbs:
-            pbs_lines = self.get_pbs_directives()
-            lines.append("####### START OF SCHEDULER DIRECTIVES #######")
-            lines += pbs_lines
-            lines.append("####### END OF SCHEDULER DIRECTIVES   #######")
+
+            for line in self.pbs:
+                lines.append(f"#PBS {line}")
+            lines.append(f"#PBS -N {self.name}")
 
         if self.cobalt:
-            cobalt_lines = self.get_cobalt_directives()
-            lines.append("####### START OF SCHEDULER DIRECTIVES #######")
-            lines += cobalt_lines
-            lines.append("####### END OF SCHEDULER DIRECTIVES   #######")
+
+            for line in self.cobalt:
+                lines.append(f"#COBALT {line}")
+            lines.append(f"#COBALT --jobname={self.name}")
 
         return lines
 
