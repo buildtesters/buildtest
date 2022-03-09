@@ -16,7 +16,7 @@ Specify poll interval in seconds after job submission, where buildtest will slee
 
 ## pollinterval Constraints
 
-**minimum**: the value of this number must greater than or equal to: `10`
+**minimum**: the value of this number must greater than or equal to: `1`
 
 ## pollinterval Default Value
 
