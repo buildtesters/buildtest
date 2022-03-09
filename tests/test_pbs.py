@@ -34,5 +34,6 @@ def test_pbs():
         buildspecs=[os.path.join(here, "examples", "pbs", "sleep.yml")],
         buildtest_system=system,
         numprocs=[1, 2, 4],
+        poll_interval=5,
     )
     cmd.build()
