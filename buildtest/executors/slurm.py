@@ -11,7 +11,6 @@ from buildtest.defaults import console
 from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.scheduler.slurm import SlurmJob
-from buildtest.utils.tools import deep_get
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +26,6 @@ class SlurmExecutor(BaseExecutor):
     """
 
     type = "slurm"
-    launcher = "sbatch"
 
     def __init__(self, name, settings, site_configs, account=None, maxpendtime=None):
 
@@ -35,48 +33,13 @@ class SlurmExecutor(BaseExecutor):
         self.account = account
         super().__init__(name, settings, site_configs)
 
-    def load(self):
-        """Load the a slurm executor configuration from buildtest settings."""
-        """
-        self.launcher = self._settings.get("launcher") or deep_get(
-            self._buildtestsettings.target_config, "executors", "defaults", "launcher"
-        )
-        """
-        self.launcher_opts = self._settings.get("options")
-
         self.cluster = self._settings.get("cluster")
         self.partition = self._settings.get("partition")
         self.qos = self._settings.get("qos")
-        self.account = (
-            self.account
-            or self._settings.get("account")
-            or deep_get(
-                self._buildtestsettings.target_config,
-                "executors",
-                "defaults",
-                "account",
-            )
-        )
-
-        # the maxpendtime can be defined in executors 'default' section or a named instance or passed via command line.
-        # The preference is the following:
-        # 1. Command line: buildtest build --max-pend-time
-        # 2. 'maxpendtime' in named executor instance
-        # 3. 'maxpendtime' in 'default' executor instance
-        self.maxpendtime = (
-            self.maxpendtime
-            or self._settings.get("maxpendtime")
-            or deep_get(
-                self._buildtestsettings.target_config,
-                "executors",
-                "defaults",
-                "maxpendtime",
-            )
-        )
 
     def launcher_command(self, numprocs=None, numnodes=None):
         """Return sbatch launcher command with options used to submit job"""
-        sbatch_cmd = [self.launcher, "--parsable"]
+        sbatch_cmd = ["sbatch", "--parsable"]
 
         if self.partition:
             sbatch_cmd += [f"-p {self.partition}"]

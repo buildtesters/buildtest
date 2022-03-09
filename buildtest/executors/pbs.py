@@ -7,7 +7,6 @@ from buildtest.defaults import console
 from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.scheduler.pbs import PBSJob
-from buildtest.utils.tools import deep_get
 
 logger = logging.getLogger(__name__)
 
@@ -24,48 +23,16 @@ class PBSExecutor(BaseExecutor):
     """
 
     type = "pbs"
-    launcher = "qsub"
 
     def __init__(self, name, settings, site_configs, account=None, maxpendtime=None):
 
         self.maxpendtime = maxpendtime
         self.account = account
         super().__init__(name, settings, site_configs)
-
-    def load(self):
-        """Load the a PBS executor configuration from buildtest settings."""
-
-        """
-        self.launcher = self._settings.get("launcher") or deep_get(
-            self._buildtestsettings.target_config, "executors", "defaults", "launcher"
-        )
-        """
-        self.launcher_opts = self._settings.get("options")
-
         self.queue = self._settings.get("queue")
-        self.account = (
-            self.account
-            or self._settings.get("account")
-            or deep_get(
-                self._buildtestsettings.target_config,
-                "executors",
-                "defaults",
-                "account",
-            )
-        )
-        self.maxpendtime = (
-            self.maxpendtime
-            or self._settings.get("maxpendtime")
-            or deep_get(
-                self._buildtestsettings.target_config,
-                "executors",
-                "defaults",
-                "maxpendtime",
-            )
-        )
 
     def launcher_command(self, numprocs=None, numnodes=None):
-        batch_cmd = [self.launcher]
+        batch_cmd = ["qsub"]
 
         if self.queue:
             batch_cmd += [f"-q {self.queue}"]

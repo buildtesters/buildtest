@@ -11,7 +11,6 @@ from buildtest.defaults import console
 from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.scheduler.lsf import LSFJob
-from buildtest.utils.tools import deep_get
 
 logger = logging.getLogger(__name__)
 
@@ -27,49 +26,19 @@ class LSFExecutor(BaseExecutor):
     """
 
     type = "lsf"
-    launcher = "bsub"
 
     def __init__(self, name, settings, site_configs, account=None, maxpendtime=None):
         self.account = account
         self.maxpendtime = maxpendtime
         super().__init__(name, settings, site_configs)
 
-    def load(self):
-        """Load the a LSF executor configuration from buildtest settings."""
-
-        """
-        self.launcher = self._settings.get("launcher") or deep_get(
-            self._buildtestsettings.target_config, "executors", "defaults", "launcher"
-        )
-        """
-        self.launcher_opts = self._settings.get("options")
-        self.account = (
-            self.account
-            or self._settings.get("account")
-            or deep_get(
-                self._buildtestsettings.target_config,
-                "executors",
-                "defaults",
-                "account",
-            )
-        )
-        self.maxpendtime = (
-            self.maxpendtime
-            or self._settings.get("maxpendtime")
-            or deep_get(
-                self._buildtestsettings.target_config,
-                "executors",
-                "defaults",
-                "maxpendtime",
-            )
-        )
         self.queue = self._settings.get("queue")
 
     def launcher_command(self, numprocs=None, numnodes=None):
         """This command returns the launcher command and any options specified in configuration file. This
         is useful when generating the build script in the BuilderBase class
         """
-        cmd = [self.launcher]
+        cmd = ["bsub"]
 
         if self.queue:
             cmd += [f"-q {self.queue}"]

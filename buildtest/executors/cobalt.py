@@ -12,7 +12,6 @@ from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.scheduler.cobalt import CobaltJob
 from buildtest.utils.file import is_file, read_file
-from buildtest.utils.tools import deep_get
 
 logger = logging.getLogger(__name__)
 
@@ -28,49 +27,17 @@ class CobaltExecutor(BaseExecutor):
     """
 
     type = "cobalt"
-    launcher = "qsub"
 
     def __init__(self, name, settings, site_configs, account=None, maxpendtime=None):
 
         self.account = account
         self.maxpendtime = maxpendtime
         super().__init__(name, settings, site_configs)
-
-    def load(self):
-        """Load the a Cobalt executor configuration from buildtest settings."""
-
-        """
-        self.launcher = self._settings.get("launcher") or deep_get(
-            self._buildtestsettings.target_config, "executors", "defaults", "launcher"
-        )
-        """
-        self.launcher_opts = self._settings.get("options")
-
         self.queue = self._settings.get("queue")
-        self.account = (
-            self.account
-            or self._settings.get("account")
-            or deep_get(
-                self._buildtestsettings.target_config,
-                "executors",
-                "defaults",
-                "account",
-            )
-        )
-        self.maxpendtime = (
-            self.maxpendtime
-            or self._settings.get("maxpendtime")
-            or deep_get(
-                self._buildtestsettings.target_config,
-                "executors",
-                "defaults",
-                "maxpendtime",
-            )
-        )
 
     def launcher_command(self, numprocs, numnodes):
 
-        batch_cmd = [self.launcher]
+        batch_cmd = ["qsub"]
 
         if self.queue:
             batch_cmd += [f"-q {self.queue}"]

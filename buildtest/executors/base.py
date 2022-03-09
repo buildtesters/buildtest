@@ -5,6 +5,7 @@ BuildExecutor: manager for test executors
 import logging
 
 from buildtest.builders.base import BuilderBase
+from buildtest.utils.tools import deep_get
 
 
 class BaseExecutor:
@@ -55,6 +56,28 @@ class BaseExecutor:
         should set defaults for the executor, and will vary based on the
         class.
         """
+
+        self.launcher_opts = self._settings.get("options")
+        self.account = (
+            self.account
+            or self._settings.get("account")
+            or deep_get(
+                self._buildtestsettings.target_config,
+                "executors",
+                "defaults",
+                "account",
+            )
+        )
+        self.maxpendtime = (
+            self.maxpendtime
+            or self._settings.get("maxpendtime")
+            or deep_get(
+                self._buildtestsettings.target_config,
+                "executors",
+                "defaults",
+                "maxpendtime",
+            )
+        )
 
     def run(self):
         """The run step basically runs the build. This is run after setup
