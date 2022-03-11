@@ -491,7 +491,7 @@ v0.6.3 (Oct 26th, 2018)
 - Add OpenHPC integration with buildtest with option ``--ophc``. This is available for ``build`` and ``yaml`` subcommand
 - Rename option ``--ignore-easybuild`` to ``--easybuild``. When this is set, buildtest will check if software is easybuild software.
 - BUILDTEST_EASYBUILD and BUILDTEST_OHPC can be defined in configuration file or environment variable
-- Fix sorting issue with output for ``buidltest list -svr`` and ``buildtest list -bs``
+- Fix sorting issue with output for ``buildtest list -svr`` and ``buildtest list -bs``
 - Add option ``--prepend-modules`` that can prepend modules to test script before loading application module.
 - buildtest will now ignore all .version* files as pose to .version file, this is due to Lmod 7 and how OpenHPC module files have hidden modules with format .versionX.Y.Z
 -
