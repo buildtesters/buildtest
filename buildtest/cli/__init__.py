@@ -403,7 +403,12 @@ def build_menu(subparsers):
         help="Specify a list of modules to load during test execution, to specify multiple modules each one must be comma"
         "separated for instance if you want to load 'gcc' and 'python' module you can do '-m gcc,python' ",
     )
-
+    extra_group.add_argument(
+        "-u",
+        "--unload-modules",
+        type=str,
+        help="Specify a list of modules to unload during test execution",
+    )
     extra_group.add_argument(
         "--nodes",
         help="Specify number of nodes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
