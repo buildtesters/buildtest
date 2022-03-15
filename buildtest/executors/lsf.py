@@ -137,7 +137,7 @@ class LSFExecutor(BaseExecutor):
             # if timer time is more than requested pend time then cancel job
             if int(builder.timer.duration()) > self.maxpendtime:
                 builder.job.cancel()
-                builder.failure()
+                builder.failed()
                 console.print(
                     f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.timer.duration()} sec[/red] "
                 )
