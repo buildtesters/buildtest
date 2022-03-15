@@ -487,6 +487,7 @@ class BuildTest:
         numnodes=None,
         modules=None,
         modulepurge=None,
+        unload_modules=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -514,6 +515,7 @@ class BuildTest:
             numnodes (str, optional): List of comma separated nodes values to run batch jobs specified via ``buildtest build --nodes``
             modules (str, optional): List of modules to load for every test specified via ``buildtest build --modules``.
             modulepurge (bool, optional): Determine whether to run 'module purge' before running test. This is specified via ``buildtest build --modulepurge``.
+            unload_modules (str, optional): List of modules to unload for every test specified via ``buildtest build --unload-modules``.
         """
 
         if buildspecs and not isinstance(buildspecs, list):
@@ -562,6 +564,7 @@ class BuildTest:
         self.rebuild = rebuild
         self.modules = modules
         self.modulepurge = modulepurge
+        self.unload_modules = unload_modules
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
@@ -854,7 +857,11 @@ class BuildTest:
         for builder in self.builders:
 
             try:
-                builder.build(modules=self.modules, modulepurge=self.modulepurge)
+                builder.build(
+                    modules=self.modules,
+                    modulepurge=self.modulepurge,
+                    unload_modules=self.unload_modules,
+                )
             except BuildTestError as err:
                 console.print(f"[red]{err}")
                 invalid_builders.append(builder)

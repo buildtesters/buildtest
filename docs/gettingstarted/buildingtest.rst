@@ -305,6 +305,11 @@ version for instance you want test to load `gcc/9.3.0` and `python/3.7` you can 
 If you want test to run ``module purge`` before running test you can specify ``buildtest build --module-purge`` option. If you specify
 ``--module-purge`` and ``--modules`` then ``module purge`` will be run prior to loading any modules.
 
+Similarly, you can unload modules before running any test via ``buildtest build --unload-modules`` which is a list of modules to run
+``module unload`` command and works similar to ``--modules`` option. Buildtest will unload modules before loading modules if both `--modules` and
+`--unload-modules` are specified. If `--module-purge` is also specified then we run **module purge** first before loading/unloading any modules.
+
+
 Use Alternate Configuration file
 ---------------------------------
 

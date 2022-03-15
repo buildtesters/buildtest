@@ -269,19 +269,20 @@ class BuilderBase(ABC):
     def retry(self, retry):
         self._retry = retry
 
-    def build(self, modules=None, modulepurge=None):
+    def build(self, modules=None, modulepurge=None, unload_modules=None):
         """This method is responsible for invoking setup, creating test
         directory and writing test. This method is called from an instance
         object of this class that does ``builder.build()``.
 
         args:
             modules (str, optional): Specify a list of modules to load in the build script
-            modules (bool, optional): A boolean to control whether 'module purge' is run before running test
+            modulepurge (bool, optional): A boolean to control whether 'module purge' is run before running test
+            unload_modules (str, optional): Specify a list of modules to unload in the build script
         """
 
         self._build_setup()
         self._write_test()
-        self._write_build_script(modules, modulepurge)
+        self._write_build_script(modules, modulepurge, unload_modules)
 
     def run(self, cmd):
         """Run the test and record the starttime and start timer. We also return the instance
@@ -491,7 +492,7 @@ class BuilderBase(ABC):
             elif fname.is_file():
                 shutil.copy2(fname, self.stage_dir)
 
-    def _write_build_script(self, modules=None, modulepurge=None):
+    def _write_build_script(self, modules=None, modulepurge=None, unload_modules=None):
         """This method will write the content of build script that is run for when invoking
         the builder run method. Upon creating file we set permission of builder script to 755
         so test can be run.
@@ -504,6 +505,11 @@ class BuilderBase(ABC):
 
         if modulepurge:
             lines.append("module purge")
+
+        if unload_modules:
+            lines.append("# Specify list of modules to unload")
+            for module in unload_modules.split(","):
+                lines.append(f"module unload {module}")
 
         if modules:
             lines.append("# Specify list of modules to load")

@@ -135,6 +135,7 @@ def main():
                 numnodes=args.nodes,
                 modules=args.modules,
                 modulepurge=args.module_purge,
+                unload_modules=args.unload_modules,
             )
             cmd.build()
 
