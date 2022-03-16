@@ -16,7 +16,7 @@ jobs:
     steps:
 
       # use isort github action see https://pycqa.github.io/isort/docs/configuration/github_action.html
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-python@v2
         with:
           python-version: 3.8
