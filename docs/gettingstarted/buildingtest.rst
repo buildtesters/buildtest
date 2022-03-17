@@ -293,6 +293,30 @@ If you try to exceed this bound you will get an error such as
 .. command-output:: buildtest build -b tutorials/pass_returncode.yml --rebuild 51
     :returncode: 1
 
+Rerun Last command
+-------------------
+
+The ``buildtest build --rerun`` command can be used to rerun **last successful** ``buildtest build`` command, this can be useful if you want to repeat a certain
+build without having to remember the command or going through your command history to find the command you ran. When using this option all other options passed
+to buildtest will be ignored. In order to use **--rerun** option you must run ``buildtest build`` command such that buildtest can rerun your last successful
+command.
+
+Let's start by building a simple test.
+
+.. command-output:: buildtest build -b tutorials/vars.yml
+
+Next let's rerun the same command via ``buildtest build --rerun`` and take note that it will rerun same command as before
+
+.. command-output:: buildtest build --rerun
+
+If you pass additional options with ``--rerun`` it will simply be ignored. In this case ``-t python --stage=build`` will not be read by buildtest instead we will
+rerun same command.
+
+.. command-output:: buildtest build --rerun -t python --stage=build
+
+.. Note::
+    The ``buildtest clean`` will erase all history of builds and if you run ``buildtest build --rerun`` will raise an exception
+
 Specify Modules in command line
 --------------------------------
 

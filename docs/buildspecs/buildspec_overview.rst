@@ -8,7 +8,7 @@ What is a buildspec?
 
 A **buildspec** is a YAML file that defines your test in buildtest which is validated by schema followed
 by building a shell script and running the generated test. Buildtest will parse the buildspec with the
-:ref:`global schema file <global_schema>`_ which defines the top-level structure of buildspec file.
+:ref:`global schema file <global_schema>` which defines the top-level structure of buildspec file.
 
 .. _buildspec_example:
 

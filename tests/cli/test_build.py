@@ -7,7 +7,7 @@ from buildtest.cli.build import BuildTest, discover_buildspecs
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.cli.clean import clean
 from buildtest.config import SiteConfiguration
-from buildtest.defaults import BUILDTEST_ROOT
+from buildtest.defaults import BUILDTEST_RERUN_FILE, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
@@ -46,6 +46,24 @@ def test_build_by_tags():
         buildtest_system=system,
     )
     cmd.build()
+
+
+@pytest.mark.cli
+def test_build_rerun():
+
+    system = BuildTestSystem()
+
+    # ensure we rebuild cache file before running any buildspecs commands
+    BuildspecCache(rebuild=True, configuration=configuration)
+    #  testing buildtest build --rerun
+    cmd = BuildTest(configuration=configuration, rerun=True, buildtest_system=system)
+    cmd.build()
+
+    os.remove(BUILDTEST_RERUN_FILE)
+    with pytest.raises(BuildTestError):
+        cmd = BuildTest(
+            configuration=configuration, rerun=True, buildtest_system=system
+        )
 
 
 @pytest.mark.cli
