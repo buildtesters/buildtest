@@ -519,6 +519,7 @@ class BuildTest:
             modules (str, optional): List of modules to load for every test specified via ``buildtest build --modules``.
             modulepurge (bool, optional): Determine whether to run 'module purge' before running test. This is specified via ``buildtest build --modulepurge``.
             unload_modules (str, optional): List of modules to unload for every test specified via ``buildtest build --unload-modules``.
+            rerun (bool, option): Rerun last successful **buildtest build** command. This is specified via ``buildtest build --rerun``. All other options will be ignored and buildtest will read buildtest options from file **BUILDTEST_RERUN_FILE**.
         """
 
         if buildspecs and not isinstance(buildspecs, list):
@@ -661,6 +662,10 @@ class BuildTest:
             raise BuildTestError(
                 "Please run a 'buildtest build' command before using '--rerun' option. "
             )
+        console.print(
+            f"Reading content of rerun file {BUILDTEST_RERUN_FILE} all other options will be ignored."
+        )
+
         content = load_json(BUILDTEST_RERUN_FILE)
 
         configuration = SiteConfiguration(content["configuration"])
