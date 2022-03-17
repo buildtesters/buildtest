@@ -18,6 +18,7 @@ from buildtest.builders.spack import SpackBuilder
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.compilers import BuildtestCompilers
+from buildtest.config import SiteConfiguration
 from buildtest.defaults import (
     BUILD_HISTORY_DIR,
     BUILD_REPORT,
@@ -25,6 +26,7 @@ from buildtest.defaults import (
     BUILDTEST_DEFAULT_TESTDIR,
     BUILDTEST_LOGFILE,
     BUILDTEST_REPORTS,
+    BUILDTEST_RERUN_FILE,
     DEFAULT_LOGDIR,
     console,
 )
@@ -488,6 +490,7 @@ class BuildTest:
         modules=None,
         modulepurge=None,
         unload_modules=None,
+        rerun=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -556,28 +559,26 @@ class BuildTest:
         self.pollinterval = poll_interval
         self.helpfilter = helpfilter
         self.retry = retry
+        self.rerun = rerun
         self.account = account
-        self.invalid_buildspecs = None
-
         self.stage = stage
         self.filter_buildspecs = filter_buildspecs
         self.rebuild = rebuild
         self.modules = modules
         self.modulepurge = modulepurge
         self.unload_modules = unload_modules
+        self.numprocs = numprocs
+        self.numnodes = numnodes
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
-
+        self.invalid_buildspecs = None
         self.builders = None
         self.finished_builders = None
 
         if self.helpfilter:
             print_filters()
             return
-
-        self.numprocs = numprocs
-        self.numnodes = numnodes
 
         # get real path to log directory which accounts for variable expansion, user expansion, and symlinks
         self.logdir = (
@@ -609,6 +610,18 @@ class BuildTest:
 
         logger.debug(f"Tests will be written in {self.testdir}")
 
+        self.report_file = resolve_path(report_file, exist=False) or BUILD_REPORT
+
+        if is_dir(self.report_file):
+            raise BuildTestError(
+                f"{report_file} is a directory please specify a file name where report will be written"
+            )
+
+        # if buildtest build --rerun is set read file then rerun last command regardless of input specified in command line.
+        # the last command is stored in file BUILDTEST_RERUN_FILE which is a dictionary containing the input arguments.
+        if self.rerun:
+            self.load_rerun_file()
+
         self.buildexecutor = BuildExecutor(
             self.configuration,
             maxpendtime=self.maxpendtime,
@@ -620,13 +633,6 @@ class BuildTest:
 
         if not self.system:
             self.system = BuildTestSystem()
-
-        self.report_file = resolve_path(report_file, exist=False) or BUILD_REPORT
-
-        if is_dir(self.report_file):
-            raise BuildTestError(
-                f"{report_file} is a directory please specify a file name where report will be written"
-            )
 
         self._validate_filters()
 
@@ -641,9 +647,73 @@ class BuildTest:
 [magenta]python version:[/]     [cyan]{self.system.system['pyver']}[/]
 [magenta]Configuration File:[/] [cyan]{self.configuration.file}[/]
 [magenta]Test Directory:[/]     [cyan]{self.testdir}[/]
+[magenta]Report File:[/]        [cyan]{self.report_file}[/]
 [magenta]Command:[/]            [cyan]{' '.join(sys.argv)}[/]
 """
         console.print(Panel.fit(msg, title="buildtest summary"), justify="left")
+
+    def load_rerun_file(self):
+        """This will load content of file BUILDTEST_RERUN_FILE that contains a dictionary of key/value pair
+        that keeps track of last ``buildtest build`` command. This is used with ``buildtest build --rerun``. Upon loading
+        file we reinitalize all class variables that store argument for ``buildtest build`` options"""
+
+        if not is_file(BUILDTEST_RERUN_FILE):
+            raise BuildTestError(
+                "Please run a 'buildtest build' command before using '--rerun' option. "
+            )
+        content = load_json(BUILDTEST_RERUN_FILE)
+
+        configuration = SiteConfiguration(content["configuration"])
+        configuration.detect_system()
+        configuration.validate()
+        self.configuration = configuration
+
+        self.buildspecs = content["buildspecs"]
+        self.tags = content["tags"]
+        self.filter = content["filter"]
+        self.exclude_buildspecs = content["exclude_buildspecs"]
+        self.executors = content["executors"]
+        self.report_file = content["report_file"]
+        self.stage = content["stage"]
+        self.keep_stage_dir = content["keep_stage_dir"]
+        self.testdir = content["testdir"]
+        self.maxpendtime = content["maxpendtime"]
+        self.pollinterval = content["pollinterval"]
+        self.account = content["account"]
+        self.retry = content["retry"]
+        self.modules = content["modules"]
+        self.modulepurge = content["modulepurge"]
+        self.unload_modules = content["unload_modules"]
+        self.rebuild = content["rebuild"]
+        self.numnodes = content["numnodes"]
+        self.numprocs = content["numprocs"]
+
+    def save_rerun_file(self):
+        buildtest_cmd = {
+            "configuration": self.configuration.file,
+            "buildspecs": self.buildspecs,
+            "tags": self.tags,
+            "filter": self.filter_buildspecs,
+            "exclude_buildspecs": self.exclude_buildspecs,
+            "executors": self.executors,
+            "report_file": self.report_file,
+            "stage": self.stage,
+            "keep_stage_dir": self.keep_stage_dir,
+            "testdir": self.testdir,
+            "maxpendtime": self.maxpendtime,
+            "pollinterval": self.pollinterval,
+            "account": self.account,
+            "rebuild": self.rebuild,
+            "retry": self.retry,
+            "modules": self.modules,
+            "modulepurge": self.modulepurge,
+            "unload_modules": self.unload_modules,
+            "numprocs": self.numprocs,
+            "numnodes": self.numnodes,
+        }
+
+        with open(BUILDTEST_RERUN_FILE, "w") as fd:
+            fd.write(json.dumps(buildtest_cmd, indent=2))
 
     def _validate_filters(self):
         """Check filter fields provided by ``buildtest build --filter`` are valid types and supported. Currently
@@ -694,6 +764,8 @@ class BuildTest:
         print_discovered_buildspecs(buildspec_dict=self.discovered_bp)
 
         self.detected_buildspecs = self.discovered_bp["detected"]
+
+        self.save_rerun_file()
 
         # Parse all buildspecs and skip any buildspecs that fail validation, return type
         # is a builder object used for building test.

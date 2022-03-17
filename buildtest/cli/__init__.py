@@ -328,6 +328,11 @@ def build_menu(subparsers):
         help="Discover buildspecs by tags found in buildspec cache",
     )
 
+    discover_group.add_argument(
+        "--rerun",
+        action="store_true",
+        help="Rerun last successful buildtest build command.",
+    )
     filter_group.add_argument(
         "-f",
         "--filter",

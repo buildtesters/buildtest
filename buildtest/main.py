@@ -136,6 +136,7 @@ def main():
                 modules=args.modules,
                 modulepurge=args.module_purge,
                 unload_modules=args.unload_modules,
+                rerun=args.rerun,
             )
             cmd.build()
 
