@@ -1,46 +1,42 @@
 $ buildtest inspect query -o -t spack_test_results_specs_format 
-──────── spack_test_results_specs_format/7b5a0975-8b39-4d76-8659-fa8d6d226837 ────────
+─────────────────────────────────────────────────────────── spack_test_results_specs_format/da2488cf-bb78-439b-b486-5d33d3ddb8ca ────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Run spack test results with spec format
 State: PASS
 Returncode: 0
-Runtime: 5.942643 sec
-Starttime: 2022/02/09 17:48:25
-Endtime: 2022/02/09 17:48:31
+Runtime: 5.10547 sec
+Starttime: 2022/03/18 20:27:32
+Endtime: 2022/03/18 20:27:38
 Command: bash --norc --noprofile -eo pipefail spack_test_results_specs_format_build.sh
-Test Script: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_s
-pecs_format/7b5a0975/spack_test_results_specs_format.sh
-Build Script: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_
-specs_format/7b5a0975/spack_test_results_specs_format_build.sh
-Output File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_s
-pecs_format/7b5a0975/spack_test_results_specs_format.out
-Error File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_sp
-ecs_format/7b5a0975/spack_test_results_specs_format.err
-Log File: /home/spack/buildtest/var/logs/buildtest__tbu0mil.log
-─ Output File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_resu… ─
-==> All of the packages are already installed                                         
-==> Spack test spack_test_results_specs_format                                        
-==> Testing package libsigsegv-2.12-lbrx7ln                                           
-==> Results for test suite 'spack_test_results_specs_format', spec matching 'libsigseg
-==>   libsigsegv-2.12-lbrx7ln PASSED                                                  
-==> Testing package libsigsegv-2.12-lbrx7ln                                           
-==> [2022-02-09-17:48:30.150105] test: checking ability to link to the library        
-==> [2022-02-09-17:48:30.150515] '/home/spack/spack/lib/spack/env/cc' '-I/home/spack/s
-PASSED                                                                                
-==> [2022-02-09-17:48:30.248812] test: checking ability to use the library            
-==> [2022-02-09-17:48:30.249185] './smoke_test'                                       
-Caught sigsegv #1                                                                     
-Hello World!                                                                          
-PASSED                                                                                
-                                                                                      
-─ Test File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_result… ─
-   1 #!/bin/bash                                                                      
-   2 source /home/spack/spack/share/spack/setup-env.sh                                
-   3 spack env create  spack_test_example                                             
-   4 spack env activate  spack_test_example                                           
-   5 spack install  libxml2                                                           
-   6 spack install  libsigsegv                                                        
-   7 spack test remove -y                                                             
-   8 spack test run --alias spack_test_results_specs_format libxml2 libsigsegv        
-   9 spack test results -l -- libxml2                                                 
-  10 spack test results -l -- libsigsegv                                              
+Test Script: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/da2488cf/spack_test_results_specs_format.sh
+Build Script: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/da2488cf/spack_test_results_specs_format_build.sh
+Output File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/da2488cf/spack_test_results_specs_format.out
+Error File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/da2488cf/spack_test_results_specs_format.err
+Log File: /home/spack/buildtest/var/logs/buildtest__dyl87fn.log
+────────────────────── Output File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/da2488cf/spack_test_results_specs_format.out ───────────────────────
+==> All of the packages are already installed                                                                                                                                                
+==> Spack test spack_test_results_specs_format                                                                                                                                               
+==> Testing package libsigsegv-2.12-lbrx7ln                                                                                                                                                  
+==> Results for test suite 'spack_test_results_specs_format', spec matching 'libsigsegv':                                                                                                    
+==>   libsigsegv-2.12-lbrx7ln PASSED                                                                                                                                                         
+==> Testing package libsigsegv-2.12-lbrx7ln                                                                                                                                                  
+==> [2022-03-18-20:27:36.945382] test: checking ability to link to the library                                                                                                               
+==> [2022-03-18-20:27:36.945785] '/home/spack/spack/lib/spack/env/cc' '-I/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libsigsegv-2.12-lbrx7lnfz46ukewxbhxnucmx76g23c6q/incl
+PASSED                                                                                                                                                                                       
+==> [2022-03-18-20:27:37.020254] test: checking ability to use the library                                                                                                                   
+==> [2022-03-18-20:27:37.020646] './smoke_test'                                                                                                                                              
+Caught sigsegv #1                                                                                                                                                                            
+Hello World!                                                                                                                                                                                 
+PASSED                                                                                                                                                                                       
+                                                                                                                                                                                             
+──────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/da2488cf/spack_test_results_specs_format.sh ────────────────────────
+   1 #!/bin/bash                                                                                                                                                                             
+   2 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                       
+   3 spack env create  spack_test_example                                                                                                                                                    
+   4 spack env activate  spack_test_example                                                                                                                                                  
+   5 spack install  libxml2                                                                                                                                                                  
+   6 spack install  libsigsegv                                                                                                                                                               
+   7 spack test remove -y                                                                                                                                                                    
+   8 spack test run --alias spack_test_results_specs_format libxml2 libsigsegv                                                                                                               
+   9 spack test results -l -- libxml2                                                                                                                                                        
+  10 spack test results -l -- libsigsegv                                                                                                                                                     

@@ -1,34 +1,30 @@
 $ buildtest inspect query -t openmp_hello_c_example 
-──────────── openmp_hello_c_example/7a244561-25af-4948-af50-5bdc82574300 ─────────────
+──────────────────────────────────────────────────────────────── openmp_hello_c_example/a03b3d73-9d89-46ad-b180-b16560966e92 ────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: OpenMP Hello World C example
 State: PASS
 Returncode: 0
-Runtime: 0.070765 sec
-Starttime: 2022/02/09 17:48:51
-Endtime: 2022/02/09 17:48:52
+Runtime: 0.065993 sec
+Starttime: 2022/03/18 20:27:54
+Endtime: 2022/03/18 20:27:54
 Command: bash --norc --noprofile -eo pipefail openmp_hello_c_example_build.sh
-Test Script: /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/7
-a244561/openmp_hello_c_example.sh
-Build Script: /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/
-7a244561/openmp_hello_c_example_build.sh
-Output File: /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/7
-a244561/openmp_hello_c_example.out
-Error File: /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/7a
-244561/openmp_hello_c_example.err
-Log File: /home/spack/buildtest/var/logs/buildtest_bipmwagf.log
-─ Test File: /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_exampl… ─
-   1 #!/bin/bash                                                                      
-   2                                                                                  
-   3                                                                                  
-   4 # name of executable                                                             
-   5 _EXEC=hello_omp.c.exe                                                            
-   6 export OMP_NUM_THREADS="2"                                                       
-   7 # Compilation Line                                                               
-   8 /usr/bin/gcc -fopenmp -o $_EXEC /home/spack/buildtest/examples/compilers/src/hell
-   9                                                                                  
-  10                                                                                  
-  11 # Run executable                                                                 
-  12 ./$_EXEC                                                                         
-  13                                                                                  
-  14                                                                                  
+Test Script: /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/a03b3d73/openmp_hello_c_example.sh
+Build Script: /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/a03b3d73/openmp_hello_c_example_build.sh
+Output File: /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/a03b3d73/openmp_hello_c_example.out
+Error File: /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/a03b3d73/openmp_hello_c_example.err
+Log File: /home/spack/buildtest/var/logs/buildtest_1z4eqqte.log
+─────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/a03b3d73/openmp_hello_c_example.sh ───────────────────────────────────
+   1 #!/bin/bash                                                                                                                                                                             
+   2                                                                                                                                                                                         
+   3                                                                                                                                                                                         
+   4 # name of executable                                                                                                                                                                    
+   5 _EXEC=hello_omp.c.exe                                                                                                                                                                   
+   6 export OMP_NUM_THREADS="2"                                                                                                                                                              
+   7 # Compilation Line                                                                                                                                                                      
+   8 /usr/bin/gcc -fopenmp -o $_EXEC /home/spack/buildtest/examples/compilers/src/hello_omp.c                                                                                                
+   9                                                                                                                                                                                         
+  10                                                                                                                                                                                         
+  11 # Run executable                                                                                                                                                                        
+  12 ./$_EXEC                                                                                                                                                                                
+  13                                                                                                                                                                                         
+  14                                                                                                                                                                                         

@@ -1,21 +1,21 @@
 $ buildtest build -b /home/spack/buildtest/examples/compilers/stream_example.yml 
-╭──────────────────────────────── buildtest summary ─────────────────────────────────╮
-│                                                                                    │
-│ User:               spack                                                          │
-│ Hostname:           09e0ccd237a0                                                   │
-│ Platform:           Linux                                                          │
-│ Current Time:       2022/02/09 17:49:00                                            │
-│ buildtest path:     /home/spack/buildtest/bin/buildtest                            │
-│ buildtest version:  0.13.0                                                         │
-│ python path:        /home/spack/pyenv/buildtest/bin/python3                        │
-│ python version:     3.8.6                                                          │
-│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml   │
-│ Test Directory:     /home/spack/runs                                               │
-│ Command:            /home/spack/buildtest/bin/buildtest build -b                   │
-│ /home/spack/buildtest/examples/compilers/stream_example.yml                        │
-│                                                                                    │
-╰────────────────────────────────────────────────────────────────────────────────────╯
-──────────────────────────────  Discovering Buildspecs ───────────────────────────────
+╭───────────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────────╮                                                             
+│                                                                                                                              │                                                             
+│ User:               spack                                                                                                    │                                                             
+│ Hostname:           f170978d3d4a                                                                                             │                                                             
+│ Platform:           Linux                                                                                                    │                                                             
+│ Current Time:       2022/03/18 20:28:03                                                                                      │                                                             
+│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                      │                                                             
+│ buildtest version:  0.13.0                                                                                                   │                                                             
+│ python path:        /home/spack/pyenv/buildtest/bin/python3                                                                  │                                                             
+│ python version:     3.8.6                                                                                                    │                                                             
+│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                             │                                                             
+│ Test Directory:     /home/spack/runs                                                                                         │                                                             
+│ Report File:        /home/spack/buildtest/var/report.json                                                                    │                                                             
+│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/compilers/stream_example.yml │                                                             
+│                                                                                                                              │                                                             
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                             
+──────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────────────────────────────
 Discovered Buildspecs:  1
 Excluded Buildspecs:  0
 Detected Buildspecs after exclusion:  1
@@ -25,7 +25,7 @@ Detected Buildspecs after exclusion:  1
 ╟─────────────────────────────────────────────────────────────╢
 ║ /home/spack/buildtest/examples/compilers/stream_example.yml ║
 ╚═════════════════════════════════════════════════════════════╝
-───────────────────────────────── Parsing Buildspecs ─────────────────────────────────
+──────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────────────────────────────
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
 /home/spack/buildtest/examples/compilers/stream_example.yml: VALID
@@ -33,85 +33,67 @@ Total builder objects created: 3
 Total compiler builder: 0
 Total script builder: 3
 Total spack builder: 0
-                                Script Builder Details                                
-┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
-┃ Builder         ┃ Executor        ┃ Compiler  ┃ description      ┃ buildspecs      ┃
-┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
-│ stream_openmp_c │ generic.local.b │ gcc_7.5.0 │ STREAM           │ /home/spack/bui │
-│ /e79a1ed6       │ ash             │           │ Microbenchmark C │ ldtest/examples │
-│                 │                 │           │ Test with OpenMP │ /compilers/stre │
-│                 │                 │           │                  │ am_example.yml  │
-├─────────────────┼─────────────────┼───────────┼──────────────────┼─────────────────┤
-│ stream_openmp_c │ generic.local.b │ gcc_6.5.0 │ STREAM           │ /home/spack/bui │
-│ /6d1b21be       │ ash             │           │ Microbenchmark C │ ldtest/examples │
-│                 │                 │           │ Test with OpenMP │ /compilers/stre │
-│                 │                 │           │                  │ am_example.yml  │
-├─────────────────┼─────────────────┼───────────┼──────────────────┼─────────────────┤
-│ stream_openmp_c │ generic.local.b │ gcc_8.3.0 │ STREAM           │ /home/spack/bui │
-│ /eae57d8e       │ ash             │           │ Microbenchmark C │ ldtest/examples │
-│                 │                 │           │ Test with OpenMP │ /compilers/stre │
-│                 │                 │           │                  │ am_example.yml  │
-└─────────────────┴─────────────────┴───────────┴──────────────────┴─────────────────┘
-─────────────────────────────────── Building Test ────────────────────────────────────
-stream_openmp_c/e79a1ed6: Creating test directory: 
-/home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/e79a1ed6
-stream_openmp_c/e79a1ed6: Creating the stage directory: 
-/home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/e79a1ed6/stage
-stream_openmp_c/e79a1ed6: Writing build script: /home/spack/runs/generic.local.bash/st
-ream_example/stream_openmp_c/e79a1ed6/stream_openmp_c_build.sh
-stream_openmp_c/6d1b21be: Creating test directory: 
-/home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/6d1b21be
-stream_openmp_c/6d1b21be: Creating the stage directory: 
-/home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/6d1b21be/stage
-stream_openmp_c/6d1b21be: Writing build script: /home/spack/runs/generic.local.bash/st
-ream_example/stream_openmp_c/6d1b21be/stream_openmp_c_build.sh
-stream_openmp_c/eae57d8e: Creating test directory: 
-/home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/eae57d8e
-stream_openmp_c/eae57d8e: Creating the stage directory: 
-/home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/eae57d8e/stage
-stream_openmp_c/eae57d8e: Writing build script: /home/spack/runs/generic.local.bash/st
-ream_example/stream_openmp_c/eae57d8e/stream_openmp_c_build.sh
-─────────────────────────────────── Running Tests ────────────────────────────────────
+                                                                        Script Builder Details                                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Builder                  ┃ Executor           ┃ Compiler  ┃ description                              ┃ buildspecs                                                  ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ stream_openmp_c/a88ca63f │ generic.local.bash │ gcc_7.5.0 │ STREAM Microbenchmark C Test with OpenMP │ /home/spack/buildtest/examples/compilers/stream_example.yml │
+├──────────────────────────┼────────────────────┼───────────┼──────────────────────────────────────────┼─────────────────────────────────────────────────────────────┤
+│ stream_openmp_c/3b2403ff │ generic.local.bash │ gcc_6.5.0 │ STREAM Microbenchmark C Test with OpenMP │ /home/spack/buildtest/examples/compilers/stream_example.yml │
+├──────────────────────────┼────────────────────┼───────────┼──────────────────────────────────────────┼─────────────────────────────────────────────────────────────┤
+│ stream_openmp_c/7d0fb6b4 │ generic.local.bash │ gcc_8.3.0 │ STREAM Microbenchmark C Test with OpenMP │ /home/spack/buildtest/examples/compilers/stream_example.yml │
+└──────────────────────────┴────────────────────┴───────────┴──────────────────────────────────────────┴─────────────────────────────────────────────────────────────┘
+─────────────────────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────────────────────
+stream_openmp_c/a88ca63f: Creating test directory: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/a88ca63f
+stream_openmp_c/a88ca63f: Creating the stage directory: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/a88ca63f/stage
+stream_openmp_c/a88ca63f: Writing build script: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/a88ca63f/stream_openmp_c_build.sh
+stream_openmp_c/3b2403ff: Creating test directory: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/3b2403ff
+stream_openmp_c/3b2403ff: Creating the stage directory: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/3b2403ff/stage
+stream_openmp_c/3b2403ff: Writing build script: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/3b2403ff/stream_openmp_c_build.sh
+stream_openmp_c/7d0fb6b4: Creating test directory: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/7d0fb6b4
+stream_openmp_c/7d0fb6b4: Creating the stage directory: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/7d0fb6b4/stage
+stream_openmp_c/7d0fb6b4: Writing build script: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/7d0fb6b4/stream_openmp_c_build.sh
+─────────────────────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────────────────────
 Spawning 4 processes for processing builders
-stream_openmp_c/e79a1ed6: Running Test via command: bash --norc --noprofile -eo 
+──────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ────────────────────────────────────────────────────────────────────────────────────────
+stream_openmp_c/7d0fb6b4 does not have any dependencies adding test to queue
+stream_openmp_c/a88ca63f does not have any dependencies adding test to queue
+stream_openmp_c/3b2403ff does not have any dependencies adding test to queue
+stream_openmp_c/3b2403ff: Running Test via command: bash --norc --noprofile -eo 
 pipefail stream_openmp_c_build.sh
-stream_openmp_c/6d1b21be: Running Test via command: bash --norc --noprofile -eo 
+stream_openmp_c/a88ca63f: Running Test via command: bash --norc --noprofile -eo 
 pipefail stream_openmp_c_build.sh
-stream_openmp_c/eae57d8e: Running Test via command: bash --norc --noprofile -eo 
+stream_openmp_c/7d0fb6b4: Running Test via command: bash --norc --noprofile -eo 
 pipefail stream_openmp_c_build.sh
-stream_openmp_c/6d1b21be: Test completed with returncode: 0
-stream_openmp_c/6d1b21be: Test completed in 2.816406 seconds
-stream_openmp_c/6d1b21be: Writing output file -  /home/spack/runs/generic.local.
-bash/stream_example/stream_openmp_c/6d1b21be/stream_openmp_c.out
-stream_openmp_c/6d1b21be: Writing error file - /home/spack/runs/generic.local.ba
-sh/stream_example/stream_openmp_c/6d1b21be/stream_openmp_c.err
-stream_openmp_c/eae57d8e: Test completed with returncode: 0
-stream_openmp_c/eae57d8e: Test completed in 2.858822 seconds
-stream_openmp_c/eae57d8e: Writing output file -  /home/spack/runs/generic.local.
-bash/stream_example/stream_openmp_c/eae57d8e/stream_openmp_c.out
-stream_openmp_c/eae57d8e: Writing error file - /home/spack/runs/generic.local.ba
-sh/stream_example/stream_openmp_c/eae57d8e/stream_openmp_c.err
-stream_openmp_c/e79a1ed6: Test completed with returncode: 0
-stream_openmp_c/e79a1ed6: Test completed in 2.909247 seconds
-stream_openmp_c/e79a1ed6: Writing output file -  /home/spack/runs/generic.local.
-bash/stream_example/stream_openmp_c/e79a1ed6/stream_openmp_c.out
-stream_openmp_c/e79a1ed6: Writing error file - /home/spack/runs/generic.local.ba
-sh/stream_example/stream_openmp_c/e79a1ed6/stream_openmp_c.err
-                                     Test Summary                                     
-┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-┃                ┃                ┃        ┃ Checks          ┃            ┃          ┃
-┃                ┃                ┃        ┃ (ReturnCode,    ┃            ┃          ┃
-┃ Builder        ┃ executor       ┃ status ┃ Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
-┡━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ stream_openmp_ │ generic.local… │ PASS   │ N/A N/A N/A     │ 0          │ 2.816406 │
-│ c/6d1b21be     │                │        │                 │            │          │
-├────────────────┼────────────────┼────────┼─────────────────┼────────────┼──────────┤
-│ stream_openmp_ │ generic.local… │ PASS   │ N/A N/A N/A     │ 0          │ 2.858822 │
-│ c/eae57d8e     │                │        │                 │            │          │
-├────────────────┼────────────────┼────────┼─────────────────┼────────────┼──────────┤
-│ stream_openmp_ │ generic.local… │ PASS   │ N/A N/A N/A     │ 0          │ 2.909247 │
-│ c/e79a1ed6     │                │        │                 │            │          │
-└────────────────┴────────────────┴────────┴─────────────────┴────────────┴──────────┘
+stream_openmp_c/7d0fb6b4: Test completed in 2.621733 seconds
+stream_openmp_c/7d0fb6b4: Test completed with returncode: 0
+stream_openmp_c/7d0fb6b4: Writing output file -  /home/spack/runs/generic.local.
+bash/stream_example/stream_openmp_c/7d0fb6b4/stream_openmp_c.out
+stream_openmp_c/7d0fb6b4: Writing error file - /home/spack/runs/generic.local.ba
+sh/stream_example/stream_openmp_c/7d0fb6b4/stream_openmp_c.err
+stream_openmp_c/a88ca63f: Test completed in 2.662157 seconds
+stream_openmp_c/3b2403ff: Test completed in 2.674052 seconds
+stream_openmp_c/a88ca63f: Test completed with returncode: 0
+stream_openmp_c/3b2403ff: Test completed with returncode: 0
+stream_openmp_c/a88ca63f: Writing output file -  /home/spack/runs/generic.local.
+bash/stream_example/stream_openmp_c/a88ca63f/stream_openmp_c.out
+stream_openmp_c/3b2403ff: Writing output file -  /home/spack/runs/generic.local.
+bash/stream_example/stream_openmp_c/3b2403ff/stream_openmp_c.out
+stream_openmp_c/a88ca63f: Writing error file - /home/spack/runs/generic.local.ba
+sh/stream_example/stream_openmp_c/a88ca63f/stream_openmp_c.err
+stream_openmp_c/3b2403ff: Writing error file - /home/spack/runs/generic.local.ba
+sh/stream_example/stream_openmp_c/3b2403ff/stream_openmp_c.err
+In this iteration we are going to run the following tests: [stream_openmp_c/7d0fb6b4, stream_openmp_c/a88ca63f, stream_openmp_c/3b2403ff]
+                                                      Test Summary                                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ Builder                  ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ stream_openmp_c/3b2403ff │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 2.674052 │
+├──────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+│ stream_openmp_c/7d0fb6b4 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 2.621733 │
+├──────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+│ stream_openmp_c/a88ca63f │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 2.662157 │
+└──────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
 
 
@@ -120,4 +102,4 @@ Failed Tests: 0/3 Percentage: 0.000%
 
 
 Adding 3 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_ja1o2386.log
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_b43jkx2i.log

@@ -1,82 +1,74 @@
 $ buildtest inspect query -o  -t add_mirror add_mirror_in_spack_env 
-────────────────── add_mirror/f0cb2ce9-cf5d-4bd5-801b-7ec6eb52860e ───────────────────
+────────────────────────────────────────────────────────────────────── add_mirror/342fc7bd-599e-4c2e-9948-5f124e8fbbea ──────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Declare spack mirror
 State: PASS
 Returncode: 0
-Runtime: 1.571656 sec
-Starttime: 2022/02/09 17:48:19
-Endtime: 2022/02/09 17:48:21
+Runtime: 1.901182 sec
+Starttime: 2022/03/18 20:27:26
+Endtime: 2022/03/18 20:27:28
 Command: bash --norc --noprofile -eo pipefail add_mirror_build.sh
-Test Script: 
-/home/spack/runs/generic.local.bash/mirror_example/add_mirror/f0cb2ce9/add_mirror.sh
-Build Script: /home/spack/runs/generic.local.bash/mirror_example/add_mirror/f0cb2ce9/a
-dd_mirror_build.sh
-Output File: 
-/home/spack/runs/generic.local.bash/mirror_example/add_mirror/f0cb2ce9/add_mirror.out
-Error File: 
-/home/spack/runs/generic.local.bash/mirror_example/add_mirror/f0cb2ce9/add_mirror.err
-Log File: /home/spack/buildtest/var/logs/buildtest_6r1lf9ee.log
-─ Output File: /home/spack/runs/generic.local.bash/mirror_example/add_mirror/f0cb2c… ─
-spack_tutorial_mirror    file:///mirror                                               
-tutorial                 file:///mirror                                               
-spack-public             https://mirror.spack.io                                      
----                                                  mirrors:                         
-/home/spack/.spack/mirrors.yaml:2                      spack_tutorial_mirror: file:///
-/home/spack/.spack/mirrors.yaml:3                      tutorial: file:///mirror       
-/home/spack/spack/etc/spack/defaults/mirrors.yaml:2    spack-public: https://mirror.sp
-                                                                                      
-─ Test File: /home/spack/runs/generic.local.bash/mirror_example/add_mirror/f0cb2ce9… ─
-   1 #!/bin/bash                                                                      
-   2 source /home/spack/spack/share/spack/setup-env.sh                                
-   3 spack mirror add spack_tutorial_mirror /mirror                                   
-   4                                                                                  
-   5                                                                                  
-   6 ######## START OF POST COMMANDS ########                                         
-   7 spack mirror list                                                                
-   8 spack config blame mirrors                                                       
-   9                                                                                  
-  10 ######## END OF POST COMMANDS   ########                                         
-  11                                                                                  
-  12                                                                                  
-──────────── add_mirror_in_spack_env/8c6798b9-61df-46f1-906b-2e9bfae75645 ────────────
+Test Script: /home/spack/runs/generic.local.bash/mirror_example/add_mirror/342fc7bd/add_mirror.sh
+Build Script: /home/spack/runs/generic.local.bash/mirror_example/add_mirror/342fc7bd/add_mirror_build.sh
+Output File: /home/spack/runs/generic.local.bash/mirror_example/add_mirror/342fc7bd/add_mirror.out
+Error File: /home/spack/runs/generic.local.bash/mirror_example/add_mirror/342fc7bd/add_mirror.err
+Log File: /home/spack/buildtest/var/logs/buildtest_w2nqused.log
+──────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/mirror_example/add_mirror/342fc7bd/add_mirror.out ─────────────────────────────────────────────
+spack_tutorial_mirror    file:///mirror                                                                                                                                                      
+tutorial                 file:///mirror                                                                                                                                                      
+spack-public             https://mirror.spack.io                                                                                                                                             
+---                                                  mirrors:                                                                                                                                
+/home/spack/.spack/mirrors.yaml:2                      spack_tutorial_mirror: file:///mirror                                                                                                 
+/home/spack/.spack/mirrors.yaml:3                      tutorial: file:///mirror                                                                                                              
+/home/spack/spack/etc/spack/defaults/mirrors.yaml:2    spack-public: https://mirror.spack.io                                                                                                 
+                                                                                                                                                                                             
+────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/mirror_example/add_mirror/342fc7bd/add_mirror.sh ──────────────────────────────────────────────
+   1 #!/bin/bash                                                                                                                                                                             
+   2 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                       
+   3 spack mirror add spack_tutorial_mirror /mirror                                                                                                                                          
+   4                                                                                                                                                                                         
+   5                                                                                                                                                                                         
+   6 ######## START OF POST COMMANDS ########                                                                                                                                                
+   7 spack mirror list                                                                                                                                                                       
+   8 spack config blame mirrors                                                                                                                                                              
+   9                                                                                                                                                                                         
+  10 ######## END OF POST COMMANDS   ########                                                                                                                                                
+  11                                                                                                                                                                                         
+  12                                                                                                                                                                                         
+─────────────────────────────────────────────────────────────── add_mirror_in_spack_env/23ad718f-698d-4c5b-b5cf-6d40005a419b ────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Declare spack mirror in spack environment
 State: PASS
 Returncode: 0
-Runtime: 2.731018 sec
-Starttime: 2022/02/09 17:48:19
-Endtime: 2022/02/09 17:48:22
+Runtime: 2.705471 sec
+Starttime: 2022/03/18 20:27:26
+Endtime: 2022/03/18 20:27:28
 Command: bash --norc --noprofile -eo pipefail add_mirror_in_spack_env_build.sh
-Test Script: /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_en
-v/8c6798b9/add_mirror_in_spack_env.sh
-Build Script: /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_e
-nv/8c6798b9/add_mirror_in_spack_env_build.sh
-Output File: /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_en
-v/8c6798b9/add_mirror_in_spack_env.out
-Error File: /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env
-/8c6798b9/add_mirror_in_spack_env.err
-Log File: /home/spack/buildtest/var/logs/buildtest_6r1lf9ee.log
-─ Output File: /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spa… ─
-spack_tutorial_mirror    file:///mirror                                               
-tutorial                 file:///mirror                                               
-spack-public             https://mirror.spack.io                                      
----                                                                  mirrors:         
-/home/spack/spack/var/spack/environments/spack_mirror/spack.yaml:10    spack_tutorial_
-/home/spack/.spack/mirrors.yaml:3                                      tutorial: file:
-/home/spack/spack/etc/spack/defaults/mirrors.yaml:2                    spack-public: h
-                                                                                      
-─ Test File: /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack… ─
-   1 #!/bin/bash                                                                      
-   2 source /home/spack/spack/share/spack/setup-env.sh                                
-   3 spack env create  spack_mirror                                                   
-   4 spack env activate  spack_mirror                                                 
-   5 spack mirror add spack_tutorial_mirror /mirror                                   
-   6                                                                                  
-   7                                                                                  
-   8 ######## START OF POST COMMANDS ########                                         
-   9 spack mirror list                                                                
-  10 spack config blame mirrors                                                       
-  11 ######## END OF POST COMMANDS   ########                                         
-  12                                                                                  
-  13                                                                                  
+Test Script: /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/23ad718f/add_mirror_in_spack_env.sh
+Build Script: /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/23ad718f/add_mirror_in_spack_env_build.sh
+Output File: /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/23ad718f/add_mirror_in_spack_env.out
+Error File: /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/23ad718f/add_mirror_in_spack_env.err
+Log File: /home/spack/buildtest/var/logs/buildtest_w2nqused.log
+─────────────────────────────── Output File: /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/23ad718f/add_mirror_in_spack_env.out ────────────────────────────────
+spack_tutorial_mirror    file:///mirror                                                                                                                                                      
+tutorial                 file:///mirror                                                                                                                                                      
+spack-public             https://mirror.spack.io                                                                                                                                             
+---                                                                  mirrors:                                                                                                                
+/home/spack/spack/var/spack/environments/spack_mirror/spack.yaml:10    spack_tutorial_mirror: file:///mirror                                                                                 
+/home/spack/.spack/mirrors.yaml:3                                      tutorial: file:///mirror                                                                                              
+/home/spack/spack/etc/spack/defaults/mirrors.yaml:2                    spack-public: https://mirror.spack.io                                                                                 
+                                                                                                                                                                                             
+───────────────────────────────── Test File: /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/23ad718f/add_mirror_in_spack_env.sh ─────────────────────────────────
+   1 #!/bin/bash                                                                                                                                                                             
+   2 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                       
+   3 spack env create  spack_mirror                                                                                                                                                          
+   4 spack env activate  spack_mirror                                                                                                                                                        
+   5 spack mirror add spack_tutorial_mirror /mirror                                                                                                                                          
+   6                                                                                                                                                                                         
+   7                                                                                                                                                                                         
+   8 ######## START OF POST COMMANDS ########                                                                                                                                                
+   9 spack mirror list                                                                                                                                                                       
+  10 spack config blame mirrors                                                                                                                                                              
+  11 ######## END OF POST COMMANDS   ########                                                                                                                                                
+  12                                                                                                                                                                                         
+  13                                                                                                                                                                                         

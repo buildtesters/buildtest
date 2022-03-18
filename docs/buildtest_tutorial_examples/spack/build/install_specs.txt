@@ -1,23 +1,23 @@
 $ buildtest build -b /home/spack/buildtest/examples/spack/install_specs.yml 
 Buildspec Paths: ['/home/spack/buildtest/examples']
 Updating buildspec cache file: /home/spack/buildtest/var/buildspecs/cache.json
-╭──────────────────────────────── buildtest summary ─────────────────────────────────╮
-│                                                                                    │
-│ User:               spack                                                          │
-│ Hostname:           09e0ccd237a0                                                   │
-│ Platform:           Linux                                                          │
-│ Current Time:       2022/02/09 17:46:25                                            │
-│ buildtest path:     /home/spack/buildtest/bin/buildtest                            │
-│ buildtest version:  0.13.0                                                         │
-│ python path:        /home/spack/pyenv/buildtest/bin/python3                        │
-│ python version:     3.8.6                                                          │
-│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml   │
-│ Test Directory:     /home/spack/runs                                               │
-│ Command:            /home/spack/buildtest/bin/buildtest build -b                   │
-│ /home/spack/buildtest/examples/spack/install_specs.yml                             │
-│                                                                                    │
-╰────────────────────────────────────────────────────────────────────────────────────╯
-──────────────────────────────  Discovering Buildspecs ───────────────────────────────
+╭─────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────╮                                                                  
+│                                                                                                                         │                                                                  
+│ User:               spack                                                                                               │                                                                  
+│ Hostname:           f170978d3d4a                                                                                        │                                                                  
+│ Platform:           Linux                                                                                               │                                                                  
+│ Current Time:       2022/03/18 20:24:21                                                                                 │                                                                  
+│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                 │                                                                  
+│ buildtest version:  0.13.0                                                                                              │                                                                  
+│ python path:        /home/spack/pyenv/buildtest/bin/python3                                                             │                                                                  
+│ python version:     3.8.6                                                                                               │                                                                  
+│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                        │                                                                  
+│ Test Directory:     /home/spack/runs                                                                                    │                                                                  
+│ Report File:        /home/spack/buildtest/var/report.json                                                               │                                                                  
+│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/spack/install_specs.yml │                                                                  
+│                                                                                                                         │                                                                  
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                  
+──────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────────────────────────────
 Discovered Buildspecs:  1
 Excluded Buildspecs:  0
 Detected Buildspecs after exclusion:  1
@@ -27,7 +27,7 @@ Detected Buildspecs after exclusion:  1
 ╟────────────────────────────────────────────────────────╢
 ║ /home/spack/buildtest/examples/spack/install_specs.yml ║
 ╚════════════════════════════════════════════════════════╝
-───────────────────────────────── Parsing Buildspecs ─────────────────────────────────
+──────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────────────────────────────
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
 /home/spack/buildtest/examples/spack/install_specs.yml: VALID
@@ -35,68 +35,54 @@ Total builder objects created: 2
 Total compiler builder: 0
 Total script builder: 0
 Total spack builder: 2
-                                Spack Builder Details                                 
-┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
-┃ Builder            ┃ Executor           ┃ description         ┃ buildspecs         ┃
-┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
-│ install_specs_exam │ generic.local.bash │ Install zlib from   │ /home/spack/buildt │
-│ ple/47c6d7b5       │                    │ an existing spack   │ est/examples/spack │
-│                    │                    │ instance            │ /install_specs.yml │
-├────────────────────┼────────────────────┼─────────────────────┼────────────────────┤
-│ clone_spack_and_in │ generic.local.bash │ Clone spack and     │ /home/spack/buildt │
-│ stall_zlib/5a6082d │                    │ install zlib spec   │ est/examples/spack │
-│ 1                  │                    │                     │ /install_specs.yml │
-└────────────────────┴────────────────────┴─────────────────────┴────────────────────┘
-─────────────────────────────────── Building Test ────────────────────────────────────
-install_specs_example/47c6d7b5: Creating test directory: 
-/home/spack/runs/generic.local.bash/install_specs/install_specs_example/47c6d7b5
-install_specs_example/47c6d7b5: Creating the stage directory: 
-/home/spack/runs/generic.local.bash/install_specs/install_specs_example/47c6d7b5/stage
-install_specs_example/47c6d7b5: Writing build script: /home/spack/runs/generic.local.b
-ash/install_specs/install_specs_example/47c6d7b5/install_specs_example_build.sh
-clone_spack_and_install_zlib/5a6082d1: Creating test directory: /home/spack/runs/gener
-ic.local.bash/install_specs/clone_spack_and_install_zlib/5a6082d1
-clone_spack_and_install_zlib/5a6082d1: Creating the stage directory: /home/spack/runs/
-generic.local.bash/install_specs/clone_spack_and_install_zlib/5a6082d1/stage
-clone_spack_and_install_zlib/5a6082d1: Writing build script: /home/spack/runs/generic.
-local.bash/install_specs/clone_spack_and_install_zlib/5a6082d1/clone_spack_and_install
-_zlib_build.sh
-─────────────────────────────────── Running Tests ────────────────────────────────────
+                                                                        Spack Builder Details                                                                         
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Builder                               ┃ Executor           ┃ description                                  ┃ buildspecs                                             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ install_specs_example/6a1c357d        │ generic.local.bash │ Install zlib from an existing spack instance │ /home/spack/buildtest/examples/spack/install_specs.yml │
+├───────────────────────────────────────┼────────────────────┼──────────────────────────────────────────────┼────────────────────────────────────────────────────────┤
+│ clone_spack_and_install_zlib/bf4511f7 │ generic.local.bash │ Clone spack and install zlib spec            │ /home/spack/buildtest/examples/spack/install_specs.yml │
+└───────────────────────────────────────┴────────────────────┴──────────────────────────────────────────────┴────────────────────────────────────────────────────────┘
+─────────────────────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────────────────────
+install_specs_example/6a1c357d: Creating test directory: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/6a1c357d
+install_specs_example/6a1c357d: Creating the stage directory: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/6a1c357d/stage
+install_specs_example/6a1c357d: Writing build script: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/6a1c357d/install_specs_example_build.sh
+clone_spack_and_install_zlib/bf4511f7: Creating test directory: /home/spack/runs/generic.local.bash/install_specs/clone_spack_and_install_zlib/bf4511f7
+clone_spack_and_install_zlib/bf4511f7: Creating the stage directory: /home/spack/runs/generic.local.bash/install_specs/clone_spack_and_install_zlib/bf4511f7/stage
+clone_spack_and_install_zlib/bf4511f7: Writing build script: /home/spack/runs/generic.local.bash/install_specs/clone_spack_and_install_zlib/bf4511f7/clone_spack_and_install_zlib_build.sh
+─────────────────────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────────────────────
 Spawning 4 processes for processing builders
-install_specs_example/47c6d7b5: Running Test via command: bash --norc 
---noprofile -eo pipefail install_specs_example_build.sh
-clone_spack_and_install_zlib/5a6082d1: Running Test via command: bash --norc 
+──────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ────────────────────────────────────────────────────────────────────────────────────────
+install_specs_example/6a1c357d does not have any dependencies adding test to queue
+clone_spack_and_install_zlib/bf4511f7 does not have any dependencies adding test to queue
+clone_spack_and_install_zlib/bf4511f7: Running Test via command: bash --norc 
 --noprofile -eo pipefail clone_spack_and_install_zlib_build.sh
-install_specs_example/47c6d7b5: Test completed with returncode: 0
-install_specs_example/47c6d7b5: Test completed in 1.363599 seconds
-install_specs_example/47c6d7b5: Writing output file -  /home/spack/runs/generic.
-local.bash/install_specs/install_specs_example/47c6d7b5/install_specs_example.ou
+install_specs_example/6a1c357d: Running Test via command: bash --norc 
+--noprofile -eo pipefail install_specs_example_build.sh
+install_specs_example/6a1c357d: Test completed in 1.704521 seconds
+install_specs_example/6a1c357d: Test completed with returncode: 0
+install_specs_example/6a1c357d: Writing output file -  /home/spack/runs/generic.
+local.bash/install_specs/install_specs_example/6a1c357d/install_specs_example.ou
 t
-install_specs_example/47c6d7b5: Writing error file - /home/spack/runs/generic.lo
-cal.bash/install_specs/install_specs_example/47c6d7b5/install_specs_example.err
-clone_spack_and_install_zlib/5a6082d1: Test completed with returncode: 0
-clone_spack_and_install_zlib/5a6082d1: Test completed in 82.490567 seconds
-clone_spack_and_install_zlib/5a6082d1: Writing output file -  /home/spack/runs/g
-eneric.local.bash/install_specs/clone_spack_and_install_zlib/5a6082d1/clone_spac
+install_specs_example/6a1c357d: Writing error file - /home/spack/runs/generic.lo
+cal.bash/install_specs/install_specs_example/6a1c357d/install_specs_example.err
+clone_spack_and_install_zlib/bf4511f7: Test completed in 155.202672 seconds
+clone_spack_and_install_zlib/bf4511f7: Test completed with returncode: 0
+clone_spack_and_install_zlib/bf4511f7: Writing output file -  /home/spack/runs/g
+eneric.local.bash/install_specs/clone_spack_and_install_zlib/bf4511f7/clone_spac
 k_and_install_zlib.out
-clone_spack_and_install_zlib/5a6082d1: Writing error file - /home/spack/runs/gen
-eric.local.bash/install_specs/clone_spack_and_install_zlib/5a6082d1/clone_spack_
+clone_spack_and_install_zlib/bf4511f7: Writing error file - /home/spack/runs/gen
+eric.local.bash/install_specs/clone_spack_and_install_zlib/bf4511f7/clone_spack_
 and_install_zlib.err
-                                     Test Summary                                     
-┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┓
-┃                ┃                ┃        ┃ Checks         ┃            ┃           ┃
-┃                ┃                ┃        ┃ (ReturnCode,   ┃            ┃           ┃
-┃                ┃                ┃        ┃ Regex,         ┃            ┃           ┃
-┃ Builder        ┃ executor       ┃ status ┃ Runtime)       ┃ ReturnCode ┃ Runtime   ┃
-┡━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━┩
-│ install_specs_ │ generic.local… │ PASS   │ N/A N/A N/A    │ 0          │ 1.363599  │
-│ example/47c6d7 │                │        │                │            │           │
-│ b5             │                │        │                │            │           │
-├────────────────┼────────────────┼────────┼────────────────┼────────────┼───────────┤
-│ clone_spack_an │ generic.local… │ PASS   │ N/A N/A N/A    │ 0          │ 82.490567 │
-│ d_install_zlib │                │        │                │            │           │
-│ /5a6082d1      │                │        │                │            │           │
-└────────────────┴────────────────┴────────┴────────────────┴────────────┴───────────┘
+In this iteration we are going to run the following tests: [install_specs_example/6a1c357d, clone_spack_and_install_zlib/bf4511f7]
+                                                             Test Summary                                                              
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┓
+┃ Builder                               ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime    ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━┩
+│ install_specs_example/6a1c357d        │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 1.704521   │
+├───────────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼────────────┤
+│ clone_spack_and_install_zlib/bf4511f7 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 155.202672 │
+└───────────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴────────────┘
 
 
 
@@ -105,4 +91,4 @@ Failed Tests: 0/2 Percentage: 0.000%
 
 
 Adding 2 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_us5vj4io.log
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_9mll4fao.log
