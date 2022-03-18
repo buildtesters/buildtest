@@ -59,6 +59,9 @@ def print_build_help():
         "buildtest build -b /tmp/hostname.yml --maxpendtime 120 --pollinterval 10",
         "Set Poll Interval to 10sec and Max Pend Time to 120 sec when submitting batch job.",
     )
+    table.add_row(
+        "buildtest build --rerun", "Run last successful 'buildtest build' command"
+    )
 
     console.print(table)
 

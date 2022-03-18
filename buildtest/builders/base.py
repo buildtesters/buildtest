@@ -229,7 +229,7 @@ class BuilderBase(ABC):
         # default file extension
         return "sh"
 
-    def _is_local_executor(self):
+    def is_local_executor(self):
         """Return True if current builder executor type is LocalExecutor otherwise returns False.
 
         Returns:
@@ -316,7 +316,7 @@ class BuilderBase(ABC):
         ret = command.returncode()
         err_msg = " ".join(command.get_error())
 
-        if ret == 0 or self._is_local_executor():
+        if ret == 0 or self.is_local_executor():
             return command
 
         err = f"{self} failed to submit job with returncode: {ret} \n"
@@ -523,7 +523,7 @@ class BuilderBase(ABC):
 
         lines.append("# Run generated script")
         # local executor
-        if self._is_local_executor():
+        if self.is_local_executor():
             cmd = self._emit_command()
 
             lines += [" ".join(cmd)]
