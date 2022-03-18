@@ -1,7 +1,7 @@
 # Untitled string in compiler schema Schema
 
 ```txt
-compiler.schema.json#/definitions/default_compiler_config/properties/run
+compiler.schema.json#/definitions/compiler_declaration/properties/run
 ```
 
 Run command for launching compiled binary

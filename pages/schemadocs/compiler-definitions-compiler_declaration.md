@@ -39,6 +39,7 @@ Specify compiler configuration at compiler level. The `config` section has highe
 | [post\_build](#post_build) | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-post_build.md "compiler.schema.json#/definitions/compiler_declaration/properties/post_build")                         |
 | [pre\_run](#pre_run)       | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-pre_run.md "compiler.schema.json#/definitions/compiler_declaration/properties/pre_run")                               |
 | [post\_run](#post_run)     | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-post_run.md "compiler.schema.json#/definitions/compiler_declaration/properties/post_run")                             |
+| [run](#run)                | `string` | Optional | cannot be null | [compiler schema](compiler-definitions-run.md "compiler.schema.json#/definitions/compiler_declaration/properties/run")                                       |
 | [module](#module)          | `object` | Optional | cannot be null | [compiler schema](definitions-definitions-module.md "compiler.schema.json#/definitions/compiler_declaration/properties/module")                              |
 
 ## cc
@@ -460,6 +461,24 @@ Run commands after running program
 *   defined in: [compiler schema](compiler-definitions-post_run.md "compiler.schema.json#/definitions/compiler_declaration/properties/post_run")
 
 ### post\_run Type
+
+`string`
+
+## run
+
+Run command for launching compiled binary
+
+`run`
+
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [compiler schema](compiler-definitions-run.md "compiler.schema.json#/definitions/compiler_declaration/properties/run")
+
+### run Type
 
 `string`
 
