@@ -37,8 +37,9 @@ jobs:
         source setup.sh
         pip install pytest
         pip install coverage
-        python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
+        python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c        
         buildtest cdash upload --site=github unittests
+        ls -l coverage.json
 
     - uses: actions/checkout@v3
     - name: Setup tmate session
@@ -47,7 +48,7 @@ jobs:
       timeout-minutes: 30
 
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v2.1.0
+      uses: codecov/codecov-action@v2
       with:
         verbose: true
         files: ./coverage.json
