@@ -195,6 +195,30 @@ passing option ``--filter type=script``. We inform buildtest to stop after build
 
 .. command-output:: buildtest build -b tutorials --filter type=script --stage=build
 
+Filter By Executor Type
+-------------------------
+
+In a HPC environment, you may want to run test locally on a login node or perhaps you only want to run batch jobs given a list of buildspecs specified on command line.
+This can be done in buildtest via option **buildtest build --executor-type** which takes one of two values **local** or **batch**. If you want to filter all tests
+by local executor you can do ``buildtest build --executor-type local``. buildtest will filter test based on the ``executor`` property defined in the buildspec. Let's assume
+we want to run all test by ``python`` tag on local executor you can do the following:
+
+.. command-output:: buildtest build -t python --executor-type local
+
+Now let's say we want to rerun same command but now only run test that are batch, we can specify ``--executor-type batch`` and buildtest will filter tests
+by executor and find all batch executors. In this case we see that all tests were filtered out and we have no test run.
+
+.. command-output:: buildtest build -t python --executor-type batch
+    :returncode: 1
+
+This option can be particularly useful if want to run a lot of tests and you are not sure which ones will run locally or batch. Let's say you have all
+your buildspecs in a directory name **tests** and you want to run all test that will use local executor and you don't want to run the batch jobs then you
+can do the following:
+
+.. code-block::
+
+    buildtest build -b tests --executor-type local
+
 .. _discover_buildspecs:
 
 Discover Buildspecs

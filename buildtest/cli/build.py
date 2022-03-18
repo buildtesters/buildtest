@@ -491,6 +491,7 @@ class BuildTest:
         modulepurge=None,
         unload_modules=None,
         rerun=None,
+        executor_type=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -519,7 +520,8 @@ class BuildTest:
             modules (str, optional): List of modules to load for every test specified via ``buildtest build --modules``.
             modulepurge (bool, optional): Determine whether to run 'module purge' before running test. This is specified via ``buildtest build --modulepurge``.
             unload_modules (str, optional): List of modules to unload for every test specified via ``buildtest build --unload-modules``.
-            rerun (bool, option): Rerun last successful **buildtest build** command. This is specified via ``buildtest build --rerun``. All other options will be ignored and buildtest will read buildtest options from file **BUILDTEST_RERUN_FILE**.
+            rerun (bool, optional): Rerun last successful **buildtest build** command. This is specified via ``buildtest build --rerun``. All other options will be ignored and buildtest will read buildtest options from file **BUILDTEST_RERUN_FILE**.
+            executor_type (bool, optional): Filter test by executor type. This option will filter test after discovery by local or batch executors. This can be specified via ``buildtest build --exec-type``
         """
 
         if buildspecs and not isinstance(buildspecs, list):
@@ -570,6 +572,7 @@ class BuildTest:
         self.unload_modules = unload_modules
         self.numprocs = numprocs
         self.numnodes = numnodes
+        self.executor_type = executor_type
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
@@ -692,6 +695,7 @@ class BuildTest:
         self.rebuild = content["rebuild"]
         self.numnodes = content["numnodes"]
         self.numprocs = content["numprocs"]
+        self.executor_type = content["executor_type"]
 
     def save_rerun_file(self):
         buildtest_cmd = {
@@ -715,6 +719,7 @@ class BuildTest:
             "unload_modules": self.unload_modules,
             "numprocs": self.numprocs,
             "numnodes": self.numnodes,
+            "executor_type": self.executor_type,
         }
 
         with open(BUILDTEST_RERUN_FILE, "w") as fd:
@@ -851,6 +856,7 @@ class BuildTest:
                 configuration=self.configuration,
                 numprocs=self.numprocs,
                 numnodes=self.numnodes,
+                executor_type=self.executor_type,
             )
 
             if not builder.get_builders():
@@ -907,7 +913,7 @@ class BuildTest:
             if isinstance(builder, SpackBuilder):
                 spack_builder.append(builder)
 
-            if not builder._is_local_executor():
+            if not builder.is_local_executor():
                 batch_builders.append(builder)
 
         console.print("Total compiler builder:", len(compiler_builder))

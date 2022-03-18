@@ -344,6 +344,12 @@ def build_menu(subparsers):
         action="store_true",
         help="Show available filter fields used with --filter option",
     )
+    filter_group.add_argument(
+        "-et",
+        "--executor-type",
+        choices=["local", "batch"],
+        help="Filter tests by executor type (local, batch) ",
+    )
     extra_group.add_argument(
         "--account",
         type=str,

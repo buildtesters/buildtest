@@ -34,6 +34,7 @@ class Builder:
         rebuild=1,
         numprocs=None,
         numnodes=None,
+        executor_type=None,
     ):
         """Based on a loaded Buildspec file, return the correct builder
         for each based on the type. Each type is associated with a known
@@ -49,6 +50,7 @@ class Builder:
             rebuild (int, option): Number of rebuild for test. This is specified via ``buildtest build --rebuild``. Defaults to 1
             numprocs (list, optional): List of processor values to create builder objects specified via ``buildtest build --procs``
             numnodes (list, optional): List of processor values to create builder objects specified via ``buildtest build --numnodes``
+            executor_type (str, optional): Filter test by executor type (local, batch)
         """
 
         self.configuration = configuration
@@ -60,6 +62,7 @@ class Builder:
         self.rebuild = rebuild or 1
         self.numprocs = numprocs
         self.numnodes = numnodes
+        self.executor_type = executor_type
 
         self.bp = bp
         self.bc = buildtest_compilers
@@ -114,6 +117,31 @@ class Builder:
                     builders = self._build_compilers(name, recipe)
                     if builders:
                         self.builders += builders
+
+        if self.executor_type:
+            self.filter_by_executor_type()
+
+    def filter_by_executor_type(self):
+        builders = []
+        for builder in self.builders:
+            if self.executor_type == "local":
+                if not builder.is_local_executor():
+                    console.print(
+                        f"[red]{builder} is excluded since its not using local executor"
+                    )
+                    continue
+
+                builders.append(builder)
+
+            elif self.executor_type == "batch":
+                if builder.is_local_executor():
+                    console.print(
+                        f"[red]{builder} is excluded since its not using batch executor"
+                    )
+                    continue
+                builders.append(builder)
+
+        self.builders = builders
 
     def _create_builders_procs(self, name, executor, recipe, compiler_name=None):
         """This method will create builders for range of process configuration specified via ``buildtest build --procs``. The return
@@ -170,7 +198,7 @@ class Builder:
                     )
 
                 # if builder is using LocalExecutor we return since we don't need to create object for every process value, this is only needed if test using a Batch Executor.
-                if builder._is_local_executor():
+                if builder.is_local_executor():
                     builders.append(builder)
                     return [builder]
 
@@ -215,7 +243,7 @@ class Builder:
                     )
 
                 # if builder is using LocalExecutor we return since we don't need to create object for every process value, this is only needed if test using a Batch Executor.
-                if builder._is_local_executor():
+                if builder.is_local_executor():
                     builders.append(builder)
                     return [builder]
 

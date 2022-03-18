@@ -53,17 +53,37 @@ def test_build_rerun():
 
     system = BuildTestSystem()
 
-    # ensure we rebuild cache file before running any buildspecs commands
-    BuildspecCache(rebuild=True, configuration=configuration)
     #  testing buildtest build --rerun
     cmd = BuildTest(configuration=configuration, rerun=True, buildtest_system=system)
     cmd.build()
 
     os.remove(BUILDTEST_RERUN_FILE)
     with pytest.raises(BuildTestError):
-        cmd = BuildTest(
-            configuration=configuration, rerun=True, buildtest_system=system
-        )
+        BuildTest(configuration=configuration, rerun=True, buildtest_system=system)
+
+
+@pytest.mark.cli
+def test_build_executor_type():
+
+    system = BuildTestSystem()
+    #  testing buildtest build --tags python --executor-type local
+    cmd = BuildTest(
+        configuration=configuration,
+        tags=["python"],
+        executor_type="local",
+        buildtest_system=system,
+    )
+    cmd.build()
+
+    #  testing buildtest build --tags python --executor-type batch
+    cmd = BuildTest(
+        configuration=configuration,
+        tags=["python"],
+        executor_type="batch",
+        buildtest_system=system,
+    )
+    with pytest.raises(SystemExit):
+        cmd.build()
 
 
 @pytest.mark.cli

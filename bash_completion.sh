@@ -91,8 +91,8 @@ _buildtest ()
 
   case "$next" in
     build|bd)
-      local shortoption="-b -e -f -k -m -s -t -u -x"
-      local longoption="--buildspec --disable-executor-check --executor --exclude --filter --helpfilter --maxpendtime --modules --module-purge --nodes --pollinterval --procs --rerun --retry --stage --tags --unload-modules"
+      local shortoption="-b -e -et -f -k -m -s -t -u -x"
+      local longoption="--buildspec --disable-executor-check --executor --executor-type --exclude --filter --helpfilter --maxpendtime --modules --module-purge --nodes --pollinterval --procs --rerun --retry --stage --tags --unload-modules"
       local allopts="${longoption} ${shortoption}"
 
       COMPREPLY=( $( compgen -W "$allopts" -- $cur ) )
@@ -105,6 +105,11 @@ _buildtest ()
       # fill auto-completion for 'buildtest build --stage'
       if [[ "${prev}" == "-s" ]] || [[ "${prev}" == "--stage"  ]]; then
         COMPREPLY=( $( compgen -W "stage parse" -- $cur ) )
+      fi
+
+      # fill auto-completion for 'buildtest build --executor-type'
+      if [[ "${prev}" == "-et" ]] || [[ "${prev}" == "--executor-type"  ]]; then
+        COMPREPLY=( $( compgen -W "local batch" -- $cur ) )
       fi
 
       # fill auto-completion for 'buildtest build --tag'
