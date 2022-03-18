@@ -1,21 +1,21 @@
 $ buildtest build -b /home/spack/buildtest/examples/compilers/gnu_hello_c.yml 
-╭──────────────────────────────── buildtest summary ─────────────────────────────────╮
-│                                                                                    │
-│ User:               spack                                                          │
-│ Hostname:           09e0ccd237a0                                                   │
-│ Platform:           Linux                                                          │
-│ Current Time:       2022/02/09 17:48:47                                            │
-│ buildtest path:     /home/spack/buildtest/bin/buildtest                            │
-│ buildtest version:  0.13.0                                                         │
-│ python path:        /home/spack/pyenv/buildtest/bin/python3                        │
-│ python version:     3.8.6                                                          │
-│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml   │
-│ Test Directory:     /home/spack/runs                                               │
-│ Command:            /home/spack/buildtest/bin/buildtest build -b                   │
-│ /home/spack/buildtest/examples/compilers/gnu_hello_c.yml                           │
-│                                                                                    │
-╰────────────────────────────────────────────────────────────────────────────────────╯
-──────────────────────────────  Discovering Buildspecs ───────────────────────────────
+╭──────────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────────╮                                                                
+│                                                                                                                           │                                                                
+│ User:               spack                                                                                                 │                                                                
+│ Hostname:           f170978d3d4a                                                                                          │                                                                
+│ Platform:           Linux                                                                                                 │                                                                
+│ Current Time:       2022/03/18 20:27:51                                                                                   │                                                                
+│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                   │                                                                
+│ buildtest version:  0.13.0                                                                                                │                                                                
+│ python path:        /home/spack/pyenv/buildtest/bin/python3                                                               │                                                                
+│ python version:     3.8.6                                                                                                 │                                                                
+│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                          │                                                                
+│ Test Directory:     /home/spack/runs                                                                                      │                                                                
+│ Report File:        /home/spack/buildtest/var/report.json                                                                 │                                                                
+│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/compilers/gnu_hello_c.yml │                                                                
+│                                                                                                                           │                                                                
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                
+──────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────────────────────────────
 Discovered Buildspecs:  1
 Excluded Buildspecs:  0
 Detected Buildspecs after exclusion:  1
@@ -25,7 +25,7 @@ Detected Buildspecs after exclusion:  1
 ╟──────────────────────────────────────────────────────────╢
 ║ /home/spack/buildtest/examples/compilers/gnu_hello_c.yml ║
 ╚══════════════════════════════════════════════════════════╝
-───────────────────────────────── Parsing Buildspecs ─────────────────────────────────
+──────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────────────────────────────
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
 /home/spack/buildtest/examples/compilers/gnu_hello_c.yml: VALID
@@ -33,85 +33,67 @@ Total builder objects created: 3
 Total compiler builder: 3
 Total script builder: 0
 Total spack builder: 0
-                               Compiler Builder Details                               
-┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
-┃ Builder         ┃ Executor        ┃ Compiler  ┃ description      ┃ buildspecs      ┃
-┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
-│ hello_c/05760c1 │ generic.local.b │ gcc_7.5.0 │ Hello World C    │ /home/spack/bui │
-│ 9               │ ash             │           │ Compilation      │ ldtest/examples │
-│                 │                 │           │                  │ /compilers/gnu_ │
-│                 │                 │           │                  │ hello_c.yml     │
-├─────────────────┼─────────────────┼───────────┼──────────────────┼─────────────────┤
-│ hello_c/26006d8 │ generic.local.b │ gcc_6.5.0 │ Hello World C    │ /home/spack/bui │
-│ 1               │ ash             │           │ Compilation      │ ldtest/examples │
-│                 │                 │           │                  │ /compilers/gnu_ │
-│                 │                 │           │                  │ hello_c.yml     │
-├─────────────────┼─────────────────┼───────────┼──────────────────┼─────────────────┤
-│ hello_c/4dc8886 │ generic.local.b │ gcc_8.3.0 │ Hello World C    │ /home/spack/bui │
-│ f               │ ash             │           │ Compilation      │ ldtest/examples │
-│                 │                 │           │                  │ /compilers/gnu_ │
-│                 │                 │           │                  │ hello_c.yml     │
-└─────────────────┴─────────────────┴───────────┴──────────────────┴─────────────────┘
-─────────────────────────────────── Building Test ────────────────────────────────────
-hello_c/05760c19: Creating test directory: 
-/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/05760c19
-hello_c/05760c19: Creating the stage directory: 
-/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/05760c19/stage
-hello_c/05760c19: Writing build script: 
-/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/05760c19/hello_c_build.sh
-hello_c/26006d81: Creating test directory: 
-/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/26006d81
-hello_c/26006d81: Creating the stage directory: 
-/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/26006d81/stage
-hello_c/26006d81: Writing build script: 
-/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/26006d81/hello_c_build.sh
-hello_c/4dc8886f: Creating test directory: 
-/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/4dc8886f
-hello_c/4dc8886f: Creating the stage directory: 
-/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/4dc8886f/stage
-hello_c/4dc8886f: Writing build script: 
-/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/4dc8886f/hello_c_build.sh
-─────────────────────────────────── Running Tests ────────────────────────────────────
+                                                          Compiler Builder Details                                                          
+┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Builder          ┃ Executor           ┃ Compiler  ┃ description               ┃ buildspecs                                               ┃
+┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ hello_c/a0a8c4a9 │ generic.local.bash │ gcc_7.5.0 │ Hello World C Compilation │ /home/spack/buildtest/examples/compilers/gnu_hello_c.yml │
+├──────────────────┼────────────────────┼───────────┼───────────────────────────┼──────────────────────────────────────────────────────────┤
+│ hello_c/e1d7f37a │ generic.local.bash │ gcc_6.5.0 │ Hello World C Compilation │ /home/spack/buildtest/examples/compilers/gnu_hello_c.yml │
+├──────────────────┼────────────────────┼───────────┼───────────────────────────┼──────────────────────────────────────────────────────────┤
+│ hello_c/8d2fdb0c │ generic.local.bash │ gcc_8.3.0 │ Hello World C Compilation │ /home/spack/buildtest/examples/compilers/gnu_hello_c.yml │
+└──────────────────┴────────────────────┴───────────┴───────────────────────────┴──────────────────────────────────────────────────────────┘
+─────────────────────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────────────────────
+hello_c/a0a8c4a9: Creating test directory: /home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/a0a8c4a9
+hello_c/a0a8c4a9: Creating the stage directory: /home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/a0a8c4a9/stage
+hello_c/a0a8c4a9: Writing build script: /home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/a0a8c4a9/hello_c_build.sh
+hello_c/e1d7f37a: Creating test directory: /home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/e1d7f37a
+hello_c/e1d7f37a: Creating the stage directory: /home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/e1d7f37a/stage
+hello_c/e1d7f37a: Writing build script: /home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/e1d7f37a/hello_c_build.sh
+hello_c/8d2fdb0c: Creating test directory: /home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/8d2fdb0c
+hello_c/8d2fdb0c: Creating the stage directory: /home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/8d2fdb0c/stage
+hello_c/8d2fdb0c: Writing build script: /home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/8d2fdb0c/hello_c_build.sh
+─────────────────────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────────────────────
 Spawning 4 processes for processing builders
-hello_c/05760c19: Running Test via command: bash --norc --noprofile -eo pipefail
+──────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ────────────────────────────────────────────────────────────────────────────────────────
+hello_c/8d2fdb0c does not have any dependencies adding test to queue
+hello_c/e1d7f37a does not have any dependencies adding test to queue
+hello_c/a0a8c4a9 does not have any dependencies adding test to queue
+hello_c/8d2fdb0c: Running Test via command: bash --norc --noprofile -eo pipefail
 hello_c_build.sh
-hello_c/4dc8886f: Running Test via command: bash --norc --noprofile -eo pipefail
+hello_c/e1d7f37a: Running Test via command: bash --norc --noprofile -eo pipefail
 hello_c_build.sh
-hello_c/26006d81: Running Test via command: bash --norc --noprofile -eo pipefail
+hello_c/a0a8c4a9: Running Test via command: bash --norc --noprofile -eo pipefail
 hello_c_build.sh
-hello_c/05760c19: Test completed with returncode: 0
-hello_c/05760c19: Test completed in 0.131986 seconds
-hello_c/05760c19: Writing output file -  
-/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/05760c19/hello_c.out
-hello_c/05760c19: Writing error file - 
-/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/05760c19/hello_c.err
-hello_c/4dc8886f: Test completed with returncode: 0
-hello_c/4dc8886f: Test completed in 0.163229 seconds
-hello_c/4dc8886f: Writing output file -  
-/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/4dc8886f/hello_c.out
-hello_c/4dc8886f: Writing error file - 
-/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/4dc8886f/hello_c.err
-hello_c/26006d81: Test completed with returncode: 0
-hello_c/26006d81: Test completed in 0.175778 seconds
-hello_c/26006d81: Writing output file -  
-/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/26006d81/hello_c.out
-hello_c/26006d81: Writing error file - 
-/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/26006d81/hello_c.err
-                                     Test Summary                                     
-┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-┃                ┃                ┃        ┃ Checks          ┃            ┃          ┃
-┃                ┃                ┃        ┃ (ReturnCode,    ┃            ┃          ┃
-┃ Builder        ┃ executor       ┃ status ┃ Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
-┡━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ hello_c/26006d │ generic.local… │ PASS   │ N/A N/A N/A     │ 0          │ 0.175778 │
-│ 81             │                │        │                 │            │          │
-├────────────────┼────────────────┼────────┼─────────────────┼────────────┼──────────┤
-│ hello_c/4dc888 │ generic.local… │ PASS   │ N/A N/A N/A     │ 0          │ 0.163229 │
-│ 6f             │                │        │                 │            │          │
-├────────────────┼────────────────┼────────┼─────────────────┼────────────┼──────────┤
-│ hello_c/05760c │ generic.local… │ PASS   │ N/A N/A N/A     │ 0          │ 0.131986 │
-│ 19             │                │        │                 │            │          │
-└────────────────┴────────────────┴────────┴─────────────────┴────────────┴──────────┘
+hello_c/e1d7f37a: Test completed in 0.179623 seconds
+hello_c/a0a8c4a9: Test completed in 0.176819 seconds
+hello_c/e1d7f37a: Test completed with returncode: 0
+hello_c/a0a8c4a9: Test completed with returncode: 0
+hello_c/e1d7f37a: Writing output file -  
+/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/e1d7f37a/hello_c.out
+hello_c/a0a8c4a9: Writing output file -  
+/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/a0a8c4a9/hello_c.out
+hello_c/8d2fdb0c: Test completed in 0.194887 seconds
+hello_c/a0a8c4a9: Writing error file - 
+/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/a0a8c4a9/hello_c.err
+hello_c/e1d7f37a: Writing error file - 
+/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/e1d7f37a/hello_c.err
+hello_c/8d2fdb0c: Test completed with returncode: 0
+hello_c/8d2fdb0c: Writing output file -  
+/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/8d2fdb0c/hello_c.out
+hello_c/8d2fdb0c: Writing error file - 
+/home/spack/runs/generic.local.bash/gnu_hello_c/hello_c/8d2fdb0c/hello_c.err
+In this iteration we are going to run the following tests: [hello_c/8d2fdb0c, hello_c/e1d7f37a, hello_c/a0a8c4a9]
+                                                  Test Summary                                                  
+┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ Builder          ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
+┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ hello_c/8d2fdb0c │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.194887 │
+├──────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+│ hello_c/e1d7f37a │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.179623 │
+├──────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+│ hello_c/a0a8c4a9 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.176819 │
+└──────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
 
 
@@ -120,4 +102,4 @@ Failed Tests: 0/3 Percentage: 0.000%
 
 
 Adding 3 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_c59e1xvc.log
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_q1wllz_r.log

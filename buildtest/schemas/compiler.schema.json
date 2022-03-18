@@ -138,6 +138,7 @@
         "post_build": { "$ref": "#definitions/post_build" },
         "pre_run": { "$ref": "#definitions/pre_run" },
         "post_run": { "$ref": "#definitions/post_run" },
+        "run": { "$ref": "#definitions/run" },
         "module": { "$ref": "definitions.schema.json#/definitions/module" }
       }
     }
