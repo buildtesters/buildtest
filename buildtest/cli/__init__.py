@@ -295,8 +295,14 @@ def build_menu(subparsers):
         "build", aliases=["bd"], help="Build and Run test"
     )
 
-    discover_group = parser_build.add_argument_group("discover", "select buildspecs")
-    filter_group = parser_build.add_argument_group("filter", "Filter tests")
+    discover_group = parser_build.add_argument_group(
+        "select", "Select buildspec file to run based on file, tag, executor"
+    )
+    filter_group = parser_build.add_argument_group(
+        "filter", "Filter tests after selection"
+    )
+    module_group = parser_build.add_argument_group("module", "Module Selection option")
+    batch_group = parser_build.add_argument_group("batch", "Batch Submission Options ")
     extra_group = parser_build.add_argument_group("extra", "All extra options")
 
     discover_group.add_argument(
@@ -350,7 +356,26 @@ def build_menu(subparsers):
         choices=["local", "batch"],
         help="Filter tests by executor type (local, batch) ",
     )
-    extra_group.add_argument(
+    module_group.add_argument(
+        "--module-purge",
+        action="store_true",
+        help="Run 'module purge' before running any test ",
+    )
+    module_group.add_argument(
+        "-m",
+        "--modules",
+        type=str,
+        help="Specify a list of modules to load during test execution, to specify multiple modules each one must be comma "
+        "separated for instance if you want to load 'gcc' and 'python' module you can do '-m gcc,python' ",
+    )
+    module_group.add_argument(
+        "-u",
+        "--unload-modules",
+        type=str,
+        help="Specify a list of modules to unload during test execution",
+    )
+
+    batch_group.add_argument(
         "--account",
         type=str,
         help="Specify project account used to charge batch jobs (applicable for batch jobs only)",
@@ -366,15 +391,27 @@ def build_menu(subparsers):
         action="store_true",
         help="Keep stage directory after job completion.",
     )
-    extra_group.add_argument(
+    batch_group.add_argument(
         "--maxpendtime",
         type=positive_number,
         help="Specify Maximum Pending Time (sec) for job before cancelling job. This only applies for batch job submission.",
     )
-    extra_group.add_argument(
+    batch_group.add_argument(
         "--pollinterval",
         type=positive_number,
         help="Specify Poll Interval (sec) for polling batch jobs",
+    )
+    batch_group.add_argument(
+        "--procs",
+        help="Specify number of processes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
+        nargs="+",
+        type=positive_number,
+    )
+    batch_group.add_argument(
+        "--nodes",
+        help="Specify number of nodes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
+        nargs="+",
+        type=positive_number,
     )
     extra_group.add_argument(
         "--rebuild",
@@ -395,36 +432,6 @@ def build_menu(subparsers):
     extra_group.add_argument(
         "--testdir",
         help="Specify a custom test directory where to write tests. This overrides configuration file and default location.",
-    )
-    extra_group.add_argument(
-        "--procs",
-        help="Specify number of processes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
-        nargs="+",
-        type=positive_number,
-    )
-    extra_group.add_argument(
-        "--module-purge",
-        action="store_true",
-        help="Run 'module purge' before running any test ",
-    )
-    extra_group.add_argument(
-        "-m",
-        "--modules",
-        type=str,
-        help="Specify a list of modules to load during test execution, to specify multiple modules each one must be comma"
-        "separated for instance if you want to load 'gcc' and 'python' module you can do '-m gcc,python' ",
-    )
-    extra_group.add_argument(
-        "-u",
-        "--unload-modules",
-        type=str,
-        help="Specify a list of modules to unload during test execution",
-    )
-    extra_group.add_argument(
-        "--nodes",
-        help="Specify number of nodes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
-        nargs="+",
-        type=positive_number,
     )
 
 

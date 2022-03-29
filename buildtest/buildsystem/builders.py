@@ -70,32 +70,30 @@ class Builder:
 
         self.builders = []
 
-        if deep_get(self.filters, "maintainers") and not self.bp.recipe.get(
-            "maintainers"
-        ):
-            console.print(
-                f"{self.bp.buildspec}: skipping test because [italic]'maintainers'[/italic] field is not specified in buildspec."
-            )
-            return
+        if deep_get(self.filters, "maintainers"):
 
-        if deep_get(self.filters, "maintainers") and self.filters[
-            "maintainers"
-        ] not in self.bp.recipe.get("maintainers"):
-            console.print(
-                f"{self.bp.buildspec}: unable to find maintainer: {self.filters['maintainers']} in buildspec which contains the following maintainers: {self.bp.recipe.get('maintainers')} therefore we skip this test"
-            )
-            return
+            if not self.bp.recipe.get("maintainers"):
+                console.print(
+                    f"{self.bp.buildspec}: skipping test because [italic]'maintainers'[/italic] field is not specified in buildspec."
+                )
+                return
+
+            if self.filters["maintainers"] not in self.bp.recipe.get("maintainers"):
+                console.print(
+                    f"{self.bp.buildspec}: unable to find maintainer: {self.filters['maintainers']} in buildspec which contains the following maintainers: {self.bp.recipe.get('maintainers')} therefore we skip this test"
+                )
+                return
 
         for count in range(self.rebuild):
             for name in self.bp.get_test_names():
                 recipe = self.bp.recipe["buildspecs"][name]
 
                 if recipe.get("skip"):
-                    msg = f"{name}: skipping test due to [italic]'skip'[/italic] property."
+                    msg = f"[red]{name}: skipping test due to [italic]'skip'[/italic] property."
                     self.logger.info(msg)
-                    console.print(
-                        f"[red]{name}: skipping test due to [italic]'skip'[/italic] property."
-                    )
+                    console.print(msg)
+                    # f"[red]{name}: skipping test due to [italic]'skip'[/italic] property."
+                    # )
                     continue
 
                 # apply filter by tags or type if --filter option is specified

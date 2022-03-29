@@ -46,9 +46,6 @@
     "executor": {
       "$ref": "definitions.schema.json#/definitions/executor"
     },
-    "run_only": {
-      "$ref": "definitions.schema.json#/definitions/run_only"
-    },
     "needs": {
       "$ref": "definitions.schema.json#/definitions/needs"
     },
@@ -134,48 +131,6 @@
               "$ref": "#definitions/compiler_declaration"
             }
           }
-        }
-      }
-    },
-    "default_compiler_config": {
-      "type": "object",
-      "description": "Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides ``all`` property. ",
-      "properties": {
-        "cc": {
-          "$ref": "definitions.schema.json#/definitions/cc"
-        },
-        "fc": {
-          "$ref": "definitions.schema.json#/definitions/fc"
-        },
-        "cxx": {
-          "$ref": "definitions.schema.json#/definitions/cxx"
-        },
-        "cflags": {
-          "$ref": "definitions.schema.json#/definitions/cflags"
-        },
-        "fflags": {
-          "$ref": "definitions.schema.json#/definitions/fflags"
-        },
-        "cxxflags": {
-          "$ref": "definitions.schema.json#/definitions/cxxflags"
-        },
-        "ldflags": {
-          "$ref": "definitions.schema.json#/definitions/ldflags"
-        },
-        "cppflags": {
-          "$ref": "definitions.schema.json#/definitions/cppflags"
-        },
-        "env": {
-          "$ref": "definitions.schema.json#/definitions/env"
-        },
-        "vars": {
-          "$ref": "definitions.schema.json#/definitions/env"
-        },
-        "status": {
-          "$ref": "definitions.schema.json#/definitions/status"
-        },
-        "run": {
-          "$ref": "definitions.schema.json#/definitions/run"
         }
       }
     }
@@ -266,7 +221,7 @@
         }
       }
     },
-   "default_compiler_config": {
+    "default_compiler_config": {
       "type": "object",
       "description": "Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides ``all`` property. ",
       "properties": {
