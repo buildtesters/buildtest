@@ -208,12 +208,6 @@
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-status-properties-runtime.md "The runtime section will pass test based on min and max values and compare with actual runtime") – `definitions.schema.json#/definitions/status/properties/runtime`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
-*   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
-
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
 
 *   [Untitled object in JSON Schema Definitions File. ](./definitions-definitions-env-items.md) – `definitions.schema.json#/definitions/env/items`
@@ -359,8 +353,6 @@
 *   [Untitled object in script schema version](./script-properties-compilers-properties-config.md "Specify compiler configuration based on named compilers") – `script.schema.json#/properties/compilers/properties/config`
 
 *   [Untitled object in script schema version](./script-definitions-compiler_declaration-default_compiler_config.md "Specify compiler configuration for group of compilers") – `script.schema.json#/definitions/compiler_declaration/default_compiler_config`
-
-*   [Untitled object in script schema version](./script-properties-default_compiler_config.md "Specify compiler configuration for group of compilers") – `script.schema.json#/properties/default_compiler_config`
 
 *   [Untitled object in script schema version](./script-definitions-compiler_declaration.md "Specify compiler configuration at compiler level") – `script.schema.json#/definitions/compiler_declaration`
 

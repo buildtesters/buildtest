@@ -16,32 +16,30 @@ The script schema is of `type: script` in sub-schema which is used for running s
 
 # script schema version Properties
 
-| Property                                              | Type          | Required | Nullable       | Defined by                                                                                                                     |
-| :---------------------------------------------------- | :------------ | :------- | :------------- | :----------------------------------------------------------------------------------------------------------------------------- |
-| [type](#type)                                         | `string`      | Required | cannot be null | [script schema version](script-properties-type.md "script.schema.json#/properties/type")                                       |
-| [description](#description)                           | `string`      | Optional | cannot be null | [script schema version](definitions-definitions-description.md "script.schema.json#/properties/description")                   |
-| [sbatch](#sbatch)                                     | `array`       | Optional | cannot be null | [script schema version](script-properties-sbatch.md "script.schema.json#/properties/sbatch")                                   |
-| [bsub](#bsub)                                         | `array`       | Optional | cannot be null | [script schema version](script-properties-bsub.md "script.schema.json#/properties/bsub")                                       |
-| [cobalt](#cobalt)                                     | `array`       | Optional | cannot be null | [script schema version](script-properties-cobalt.md "script.schema.json#/properties/cobalt")                                   |
-| [pbs](#pbs)                                           | `array`       | Optional | cannot be null | [script schema version](script-properties-pbs.md "script.schema.json#/properties/pbs")                                         |
-| [BB](#bb)                                             | `array`       | Optional | cannot be null | [script schema version](script-properties-bb.md "script.schema.json#/properties/BB")                                           |
-| [DW](#dw)                                             | `array`       | Optional | cannot be null | [script schema version](script-properties-dw.md "script.schema.json#/properties/DW")                                           |
-| [env](#env)                                           | `object`      | Optional | cannot be null | [script schema version](definitions-definitions-env.md "script.schema.json#/properties/env")                                   |
-| [vars](#vars)                                         | `object`      | Optional | cannot be null | [script schema version](definitions-definitions-env.md "script.schema.json#/properties/vars")                                  |
-| [executor](#executor)                                 | `string`      | Required | cannot be null | [script schema version](definitions-definitions-executor.md "script.schema.json#/properties/executor")                         |
-| [run\_only](#run_only)                                | Not specified | Optional | cannot be null | [script schema version](script-properties-run_only.md "script.schema.json#/properties/run_only")                               |
-| [needs](#needs)                                       | `array`       | Optional | cannot be null | [script schema version](definitions-definitions-needs.md "script.schema.json#/properties/needs")                               |
-| [artifacts](#artifacts)                               | `object`      | Optional | cannot be null | [script schema version](definitions-definitions-artifacts.md "script.schema.json#/properties/artifacts")                       |
-| [shell](#shell)                                       | `string`      | Optional | cannot be null | [script schema version](script-properties-shell.md "script.schema.json#/properties/shell")                                     |
-| [shebang](#shebang)                                   | `string`      | Optional | cannot be null | [script schema version](script-properties-shebang.md "script.schema.json#/properties/shebang")                                 |
-| [run](#run)                                           | `string`      | Required | cannot be null | [script schema version](definitions-definitions-run.md "script.schema.json#/properties/run")                                   |
-| [status](#status)                                     | `object`      | Optional | cannot be null | [script schema version](definitions-definitions-status.md "script.schema.json#/properties/status")                             |
-| [skip](#skip)                                         | `boolean`     | Optional | cannot be null | [script schema version](definitions-definitions-skip.md "script.schema.json#/properties/skip")                                 |
-| [tags](#tags)                                         | Merged        | Optional | cannot be null | [script schema version](script-properties-tags.md "script.schema.json#/properties/tags")                                       |
-| [metrics](#metrics)                                   | `object`      | Optional | cannot be null | [script schema version](definitions-definitions-metrics.md "script.schema.json#/properties/metrics")                           |
-| [executors](#executors)                               | `object`      | Optional | cannot be null | [script schema version](definitions-definitions-executors.md "script.schema.json#/properties/executors")                       |
-| [compilers](#compilers)                               | `object`      | Optional | cannot be null | [script schema version](script-properties-compilers.md "script.schema.json#/properties/compilers")                             |
-| [default\_compiler\_config](#default_compiler_config) | `object`      | Optional | cannot be null | [script schema version](script-properties-default_compiler_config.md "script.schema.json#/properties/default_compiler_config") |
+| Property                    | Type      | Required | Nullable       | Defined by                                                                                                   |
+| :-------------------------- | :-------- | :------- | :------------- | :----------------------------------------------------------------------------------------------------------- |
+| [type](#type)               | `string`  | Required | cannot be null | [script schema version](script-properties-type.md "script.schema.json#/properties/type")                     |
+| [description](#description) | `string`  | Optional | cannot be null | [script schema version](definitions-definitions-description.md "script.schema.json#/properties/description") |
+| [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [script schema version](script-properties-sbatch.md "script.schema.json#/properties/sbatch")                 |
+| [bsub](#bsub)               | `array`   | Optional | cannot be null | [script schema version](script-properties-bsub.md "script.schema.json#/properties/bsub")                     |
+| [cobalt](#cobalt)           | `array`   | Optional | cannot be null | [script schema version](script-properties-cobalt.md "script.schema.json#/properties/cobalt")                 |
+| [pbs](#pbs)                 | `array`   | Optional | cannot be null | [script schema version](script-properties-pbs.md "script.schema.json#/properties/pbs")                       |
+| [BB](#bb)                   | `array`   | Optional | cannot be null | [script schema version](script-properties-bb.md "script.schema.json#/properties/BB")                         |
+| [DW](#dw)                   | `array`   | Optional | cannot be null | [script schema version](script-properties-dw.md "script.schema.json#/properties/DW")                         |
+| [env](#env)                 | `object`  | Optional | cannot be null | [script schema version](definitions-definitions-env.md "script.schema.json#/properties/env")                 |
+| [vars](#vars)               | `object`  | Optional | cannot be null | [script schema version](definitions-definitions-env.md "script.schema.json#/properties/vars")                |
+| [executor](#executor)       | `string`  | Required | cannot be null | [script schema version](definitions-definitions-executor.md "script.schema.json#/properties/executor")       |
+| [needs](#needs)             | `array`   | Optional | cannot be null | [script schema version](definitions-definitions-needs.md "script.schema.json#/properties/needs")             |
+| [artifacts](#artifacts)     | `object`  | Optional | cannot be null | [script schema version](definitions-definitions-artifacts.md "script.schema.json#/properties/artifacts")     |
+| [shell](#shell)             | `string`  | Optional | cannot be null | [script schema version](script-properties-shell.md "script.schema.json#/properties/shell")                   |
+| [shebang](#shebang)         | `string`  | Optional | cannot be null | [script schema version](script-properties-shebang.md "script.schema.json#/properties/shebang")               |
+| [run](#run)                 | `string`  | Required | cannot be null | [script schema version](definitions-definitions-run.md "script.schema.json#/properties/run")                 |
+| [status](#status)           | `object`  | Optional | cannot be null | [script schema version](definitions-definitions-status.md "script.schema.json#/properties/status")           |
+| [skip](#skip)               | `boolean` | Optional | cannot be null | [script schema version](definitions-definitions-skip.md "script.schema.json#/properties/skip")               |
+| [tags](#tags)               | Merged    | Optional | cannot be null | [script schema version](script-properties-tags.md "script.schema.json#/properties/tags")                     |
+| [metrics](#metrics)         | `object`  | Optional | cannot be null | [script schema version](definitions-definitions-metrics.md "script.schema.json#/properties/metrics")         |
+| [executors](#executors)     | `object`  | Optional | cannot be null | [script schema version](definitions-definitions-executors.md "script.schema.json#/properties/executors")     |
+| [compilers](#compilers)     | `object`  | Optional | cannot be null | [script schema version](script-properties-compilers.md "script.schema.json#/properties/compilers")           |
 
 ## type
 
@@ -299,24 +297,6 @@ Select one of the executor name defined in your configuration file (`config.yml`
 
 `string`
 
-## run\_only
-
-
-
-`run_only`
-
-*   is optional
-
-*   Type: unknown
-
-*   cannot be null
-
-*   defined in: [script schema version](script-properties-run_only.md "script.schema.json#/properties/run_only")
-
-### run\_only Type
-
-unknown
-
 ## needs
 
 A list of test names that are dependency before runnning job
@@ -524,24 +504,6 @@ Define executor specific configuration
 ### compilers Type
 
 `object` ([Details](script-properties-compilers.md))
-
-## default\_compiler\_config
-
-Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides `all` property.
-
-`default_compiler_config`
-
-*   is optional
-
-*   Type: `object` ([Details](script-properties-default_compiler_config.md))
-
-*   cannot be null
-
-*   defined in: [script schema version](script-properties-default_compiler_config.md "script.schema.json#/properties/default_compiler_config")
-
-### default\_compiler\_config Type
-
-`object` ([Details](script-properties-default_compiler_config.md))
 
 # script schema version Definitions
 
