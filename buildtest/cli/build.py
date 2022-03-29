@@ -293,13 +293,6 @@ def discover_buildspecs_by_tags(tagnames):
 
     tag_dict = {}
 
-    """
-    if not is_file(BUILDSPEC_CACHE_FILE):
-        raise BuildTestError(
-            f"Cannot for buildspec cache: {BUILDSPEC_CACHE_FILE}, please run 'buildtest buildspec find' "
-        )
-    """
-
     cache = load_json(BUILDSPEC_CACHE_FILE)
 
     buildspecs = []
@@ -345,13 +338,6 @@ def discover_buildspecs_by_executor(executors):
     """
 
     executor_dict = {}
-
-    """
-    if not is_file(BUILDSPEC_CACHE_FILE):
-        raise BuildTestError(
-            f"Cannot for buildspec cache: {BUILDSPEC_CACHE_FILE}, please run 'buildtest buildspec find' "
-        )
-    """
 
     cache = load_json(BUILDSPEC_CACHE_FILE)
 
@@ -411,10 +397,10 @@ def discover_by_buildspecs(buildspec):
     # if buildspec doesn't exist print message and log error and return
     if not os.path.exists(os.path.abspath(buildspec)):
         msg = (
-            f"Unable to find any buildspecs with name: {os.path.abspath(buildspec)} "
-            + "Please provide an absolute or relative path to a directory or file relative to current directory."
+            f"[red]Unable to find any buildspecs: {os.path.abspath(buildspec)} [/red] \n"
+            + "Please provide an absolute or relative path to a file or directory"
         )
-        print(msg)
+        console.print(msg)
         logger.error(msg)
         return
 
@@ -456,10 +442,13 @@ def print_filters():
     running ``buildtest build --helpfilter``.
     """
 
-    table = Table("[blue]Field", "[blue]Description", title="Buildtest Filters")
-    table.add_row("[green]tags", "[red]Filter tests by 'tag' field")
-    table.add_row("[green]type", "[red]Filter test by 'type' field")
-    table.add_row("[green]maintainers", "[red]Filter test by 'maintainers' field")
+    table = Table(title="Buildtest Filters", header_style="blue")
+    table.add_column("Field", style="green")
+    table.add_column("Description", style="red")
+
+    table.add_row("tags", "Filter tests by [italic]'tag'[/italic] field")
+    table.add_row("type", "Filter test by [italic]'type'[/italic] field")
+    table.add_row("maintainers", "Filter test by [italic]'maintainers'[/italic] field")
     console.print(table)
 
 
@@ -1309,7 +1298,8 @@ def update_report(valid_builders, report_file):
         entry = {}
 
         report[buildspec] = report.get(buildspec) or {}
-        report[buildspec][name] = report.get(buildspec, {}).get(name) or []
+        # report[buildspec][name] = report.get(buildspec, {}).get(name) or []
+        report[buildspec][name] = report[buildspec].get(name) or []
 
         # query over attributes found in builder.metadata, we only assign
         # keys that we care about for reporting
