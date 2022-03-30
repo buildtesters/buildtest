@@ -180,6 +180,15 @@
             "F"
           ]
         },
+        "lsf_job_state": {
+          "type": "string",
+          "description": "This field can be used to pass test based on LSF Job State, if there is a match buildtest will report as ``PASS`` ",
+          "enum": [
+            "DONE",
+            "EXIT"
+          ]
+        },
+
         "returncode": { "$ref": "#/definitions/returncode" },
         "regex": {
           "$ref": "#/definitions/regex",

@@ -217,7 +217,7 @@ class LSFJob(Job):
         return job_data
 
     def cancel(self):
-        """Cancel LSF Job by running ``bkill <jobid>``. This is called if job has exceeded
+        """Cancel LSF Job by running ``bkill <jobid>``. This method is called if job pending time exceeds
         `maxpendtime` limit during poll stage."""
 
         query = f"bkill {self.jobid}"
