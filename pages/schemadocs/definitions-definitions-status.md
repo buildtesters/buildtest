@@ -20,6 +20,7 @@ The status section describes how buildtest detects PASS/FAIL on test. By default
 | :------------------------------------ | :------- | :------- | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [slurm\_job\_state](#slurm_job_state) | `string` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-slurm_job_state.md "definitions.schema.json#/definitions/status/properties/slurm_job_state") |
 | [pbs\_job\_state](#pbs_job_state)     | `string` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-pbs_job_state.md "definitions.schema.json#/definitions/status/properties/pbs_job_state")     |
+| [lsf\_job\_state](#lsf_job_state)     | `string` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-lsf_job_state.md "definitions.schema.json#/definitions/status/properties/lsf_job_state")     |
 | [returncode](#returncode)             | Merged   | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-int_or_list.md "definitions.schema.json#/definitions/status/properties/returncode")                            |
 | [regex](#regex)                       | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-regex.md "definitions.schema.json#/definitions/status/properties/regex")                                       |
 | [runtime](#runtime)                   | `object` | Optional | cannot be null | [JSON Schema Definitions File. ](definitions-definitions-status-properties-runtime.md "definitions.schema.json#/definitions/status/properties/runtime")                 |
@@ -81,6 +82,33 @@ This field can be used to pass test based on PBS Job State, if there is a match 
 | `"H"` |             |
 | `"S"` |             |
 | `"F"` |             |
+
+## lsf\_job\_state
+
+This field can be used to pass test based on LSF Job State, if there is a match buildtest will report as `PASS`
+
+`lsf_job_state`
+
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [JSON Schema Definitions File. ](definitions-definitions-status-properties-lsf_job_state.md "definitions.schema.json#/definitions/status/properties/lsf_job_state")
+
+### lsf\_job\_state Type
+
+`string`
+
+### lsf\_job\_state Constraints
+
+**enum**: the value of this property must be equal to one of the following values:
+
+| Value    | Explanation |
+| :------- | :---------- |
+| `"DONE"` |             |
+| `"EXIT"` |             |
 
 ## returncode
 
