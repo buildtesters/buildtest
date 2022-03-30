@@ -77,6 +77,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
     "sphinx_copybutton",
+    "sphinx_search.extension",
 ]
 
 # Sphinx AutoApi configuration see https://sphinx-autoapi.readthedocs.io/en/latest/
