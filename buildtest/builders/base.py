@@ -22,6 +22,8 @@ from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
 from buildtest.exceptions import BuildTestError, RuntimeFailure
 from buildtest.scheduler.job import Job
+from buildtest.scheduler.pbs import PBSJob
+from buildtest.scheduler.slurm import SlurmJob
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import create_dir, is_dir, is_file, read_file, write_file
@@ -1072,7 +1074,7 @@ class BuilderBase(ABC):
         if self.status:
 
             slurm_job_state_match = False
-
+            pbs_job_state_match = False
             # returncode_match is boolean to check if reference returncode matches return code from test
             returncode_match = self._returncode_check()
 
@@ -1088,19 +1090,24 @@ class BuilderBase(ABC):
 
             # if slurm_job_state_codes defined in buildspec.
             # self.builder.metadata["job"] only defined when job run through SlurmExecutor
-            if self.status.get("slurm_job_state") and self.metadata.get("job"):
+            if self.status.get("slurm_job_state") and issubclass(self.job, SlurmJob):
                 slurm_job_state_match = (
-                    self.status["slurm_job_state"] == self.metadata["job"]["State"]
+                    self.status["slurm_job_state"] == self.job.state()
                 )
 
-            self.logger.info(
-                "ReturnCode Match: %s Regex Match: %s Slurm Job State Match: %s"
-                % (returncode_match, regex_match, slurm_job_state_match)
-            )
+            if self.status.get("pbs_job_state") and isinstance(self.job, PBSJob):
+
+                pbs_job_state_match = self.status["pbs_job_state"] == self.job.state()
 
             # if any of checks is True we set the 'state' to PASS
             state = any(
-                [returncode_match, regex_match, slurm_job_state_match, runtime_match]
+                [
+                    returncode_match,
+                    regex_match,
+                    slurm_job_state_match,
+                    pbs_job_state_match,
+                    runtime_match,
+                ]
             )
             if state:
                 self.metadata["result"]["state"] = "PASS"
