@@ -22,6 +22,7 @@ from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
 from buildtest.exceptions import BuildTestError, RuntimeFailure
 from buildtest.scheduler.job import Job
+from buildtest.scheduler.lsf import LSFJob
 from buildtest.scheduler.pbs import PBSJob
 from buildtest.scheduler.slurm import SlurmJob
 from buildtest.schemas.defaults import schema_table
@@ -1075,6 +1076,8 @@ class BuilderBase(ABC):
 
             slurm_job_state_match = False
             pbs_job_state_match = False
+            lsf_job_state_match = False
+
             # returncode_match is boolean to check if reference returncode matches return code from test
             returncode_match = self._returncode_check()
 
@@ -1088,16 +1091,16 @@ class BuilderBase(ABC):
             self.metadata["check"]["runtime"] = runtime_match
             self.metadata["check"]["returncode"] = returncode_match
 
-            # if slurm_job_state_codes defined in buildspec.
-            # self.builder.metadata["job"] only defined when job run through SlurmExecutor
             if self.status.get("slurm_job_state") and issubclass(self.job, SlurmJob):
                 slurm_job_state_match = (
                     self.status["slurm_job_state"] == self.job.state()
                 )
 
             if self.status.get("pbs_job_state") and isinstance(self.job, PBSJob):
-
                 pbs_job_state_match = self.status["pbs_job_state"] == self.job.state()
+
+            if self.status.get("lsf_job_state") and isinstance(self.job, LSFJob):
+                lsf_job_state_match = self.status["lsf_job_state"] == self.job.state()
 
             # if any of checks is True we set the 'state' to PASS
             state = any(
@@ -1106,6 +1109,7 @@ class BuilderBase(ABC):
                     regex_match,
                     slurm_job_state_match,
                     pbs_job_state_match,
+                    lsf_job_state_match,
                     runtime_match,
                 ]
             )
