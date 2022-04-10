@@ -23,19 +23,19 @@ jobs:
         jsonschema2md -d buildtest/schemas/ -o schema_docs/
 
     - name: Upload Schema Docs
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: schemadocs
         path: schema_docs/
 
     - name: Upload Schemas
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: schemafiles
         path: buildtest/schemas/*.schema.json
 
     - name: Upload Schemas Examples
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: schemaexamples
         path: buildtest/schemas/examples
