@@ -68,7 +68,7 @@ def test_report_filter():
     Report(
         filter_args={
             "buildspec": os.path.join(
-                BUILDTEST_ROOT, "tutorials", "pass_returncode.yml"
+                BUILDTEST_ROOT, "tutorials", "test_status", "pass_returncode.yml"
             )
         },
         format_args="name,returncode,buildspec",

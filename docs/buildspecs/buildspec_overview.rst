@@ -210,14 +210,14 @@ In this example we have four tests called ``exit1_fail``, ``exit1_pass``,
 **returncode_mismatch** to ``FAIL`` while **exit1_pass** and **returncode_int_match**
 will ``PASS``.
 
-.. literalinclude:: ../tutorials/pass_returncode.yml
+.. literalinclude:: ../tutorials/test_status/pass_returncode.yml
    :language: yaml
    :emphasize-lines: 17,26,35
 
 Let's build this test and pay close attention to the **status**
 column in output.
 
-.. command-output:: buildtest build -b tutorials/pass_returncode.yml
+.. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml
    :shell:
 
 The ``returncode`` field can be an integer or list of integers but it may not accept
@@ -254,14 +254,14 @@ buildtest will read output or error file and apply regular expression. If there 
 test state as **PASS** otherwise it will be a **FAIL**. In this example, we have two tests that will apply regular expression
 on output file.
 
-.. literalinclude:: ../tutorials/status_regex.yml
+.. literalinclude:: ../tutorials/test_status/status_regex.yml
    :language: yaml
    :emphasize-lines: 9-11,20-22
 
 Now if we run this test, we will see first test will pass while second one will fail even though the returncode is
 a 0. Take a close look at the **status** property
 
-.. command-output:: buildtest build -b tutorials/status_regex.yml
+.. command-output:: buildtest build -b tutorials/test_status/status_regex.yml
 
 .. _runtime:
 
@@ -280,16 +280,16 @@ will be greater than 0 sec.
 In test **timelimit_min**, we sleep for 2 seconds and it will pass because minimum runtime is 1.0 seconds. Similarly,
 **timelimit_max** will pass because we sleep for 2 seconds with a max time of 5.0.
 
-.. literalinclude:: ../tutorials/runtime_status_test.yml
+.. literalinclude:: ../tutorials/test_status/runtime_status_test.yml
    :language: yaml
    :emphasize-lines: 9-11,20-21,30-31,40-41,50-51
 
-.. command-output:: buildtest build -b tutorials/runtime_status_test.yml
+.. command-output:: buildtest build -b tutorials/test_status/runtime_status_test.yml
 
 If we look at the test results, we expect the first three tests **timelimit_min**, **timelimit_max**, **timelimit_min_max**
 will pass while the last two tests fail because it fails to comply with runtime property.
 
-.. command-output:: buildtest report --filter buildspec=tutorials/runtime_status_test.yml --format name,id,state,runtime --latest
+.. command-output:: buildtest report --filter buildspec=tutorials/test_status/runtime_status_test.yml --format name,id,state,runtime --latest
 
 Explicitly Declaring Status of Test
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -305,13 +305,13 @@ second test ``always_fail`` will **FAIL** even though it has a 0 returncode. The
 can define state regardless of what is specified for returncode match. buildtest will honor the ``state`` property even if
 their is a match on the returncode.
 
-.. literalinclude:: ../tutorials/explicit_state.yml
+.. literalinclude:: ../tutorials/test_status/explicit_state.yml
    :language: yaml
    :emphasize-lines: 8,16,22-25,31-34
 
 If we build this test, we expect buildtest to honor the value of ``state`` property
 
-.. command-output:: buildtest build -b tutorials/explicit_state.yml
+.. command-output:: buildtest build -b tutorials/test_status/explicit_state.yml
 
 .. _define_tags:
 
@@ -644,12 +644,12 @@ You can retrieve a list of executors by running ``buildtest config executors``.
 In example below we will run this test on `generic.local.bash` and `generic.local.sh` executor based
 on the regular expression.
 
-.. literalinclude:: ../tutorials/executor_regex_script.yml
+.. literalinclude:: ../tutorials/multi_executors/executor_regex_script.yml
    :language: yaml
 
 If we build this test, notice that there are two tests, one for each executor.
 
-.. command-output:: buildtest build -b tutorials/executor_regex_script.yml
+.. command-output:: buildtest build -b tutorials/multi_executors/executor_regex_script.yml
 
 Multiple Executors
 ~~~~~~~~~~~~~~~~~~~
@@ -664,13 +664,13 @@ for each test, currently this field can be used with :ref:`vars <variables>`, :r
 The ``executors`` field is a JSON object that expects name of executor followed by property set per executor. In this next example,
 we define variables ``X``, ``Y`` and environment ``SHELL`` based on executors **generic.local.sh** and **generic.local.bash**.
 
-.. literalinclude:: ../tutorials/script/multiple_executors.yml
+.. literalinclude:: ../tutorials/multi_executors/executors_var_env_declaration.yml
    :language: yaml
-   :emphasize-lines: 12-24
+   :emphasize-lines: 12-23
 
 Let's build this test.
 
-.. command-output:: buildtest build -b tutorials/script/multiple_executors.yml
+.. command-output:: buildtest build -b tutorials/multi_executors/executors_var_env_declaration.yml
 
 Now let's look at the generated content of the test as follows. We will see that buildtest will
 set **X=1**, **Y=3** and **SHELL=bash** for ``generic.local.bash`` and **X=2**, **Y=4** and **SHELL=sh** for
@@ -686,11 +686,11 @@ We can also define scheduler directives based on executor type, in this example 
 will override the ``sbatch`` property defined in the top-level file otherwise it will use the default.
 
 
-.. literalinclude:: ../tutorials/script/executor_scheduler.yml
+.. literalinclude:: ../tutorials/multi_executors/executor_scheduler.yml
    :language: yaml
 
 
-.. command-output:: buildtest build -b tutorials/script/executor_scheduler.yml
+.. command-output:: buildtest build -b tutorials/multi_executors/executor_scheduler.yml
 
 If we inspect this test, we will see each each test have different ``#SBATCH`` directives for each test
 based on the ``sbatch`` property defined in the ``executors`` field.
@@ -716,11 +716,11 @@ The :ref:`status <status>` and :ref:`metrics <metrics>` field are supported in `
 which can be defined within the named executor. In this next example, we will define executor ``generic.local.bash`` to
 match for returncode **0** or **2** while second test will use executor ``generic.local.sh`` to match returncode of **1**.
 
-.. literalinclude:: ../tutorials/script/status_by_executors.yml
+.. literalinclude:: ../tutorials/multi_executors/status_by_executors.yml
     :language: yaml
     :emphasize-lines: 8-14
 
 Now let's run this test and we will see the test using executor **generic.local.sh** will fail because
 we have a returncode mismatch even though both tests got a 0 returncode as its actual value.
 
-.. command-output:: buildtest build -b tutorials/script/status_by_executors.yml
+.. command-output:: buildtest build -b tutorials/multi_executors/status_by_executors.yml

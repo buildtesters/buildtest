@@ -92,8 +92,6 @@ class Builder:
                     msg = f"[red]{name}: skipping test due to [italic]'skip'[/italic] property."
                     self.logger.info(msg)
                     console.print(msg)
-                    # f"[red]{name}: skipping test due to [italic]'skip'[/italic] property."
-                    # )
                     continue
 
                 # apply filter by tags or type if --filter option is specified
@@ -105,14 +103,10 @@ class Builder:
                         continue
 
                 # Add the builder for the script or spack schema
-                if recipe["type"] in ["spack"]:
-                    builders = self._generate_builders(recipe, name)
-                    if builders:
-                        self.builders += builders
 
-                elif recipe["type"] in ["script", "compiler"]:
+                if recipe["type"] in ["script", "compiler", "spack"]:
 
-                    builders = self._build_compilers(name, recipe)
+                    builders = self.build(name, recipe)
                     if builders:
                         self.builders += builders
 
@@ -120,24 +114,22 @@ class Builder:
             self.filter_by_executor_type()
 
     def filter_by_executor_type(self):
+        """This method will filter test by executor type when using ``buildtest build --executor-type``. The filter can be made based on local or batch executors"""
         builders = []
         for builder in self.builders:
-            if self.executor_type == "local":
-                if not builder.is_local_executor():
-                    console.print(
-                        f"[red]{builder} is excluded since its not using local executor"
-                    )
-                    continue
+            if self.executor_type == "local" and not builder.is_local_executor():
+                console.print(
+                    f"[red]{builder} is excluded since its not using local executor"
+                )
+                continue
 
-                builders.append(builder)
+            elif self.executor_type == "batch" and builder.is_local_executor():
+                console.print(
+                    f"[red]{builder} is excluded since its not using batch executor"
+                )
+                continue
 
-            elif self.executor_type == "batch":
-                if builder.is_local_executor():
-                    console.print(
-                        f"[red]{builder} is excluded since its not using batch executor"
-                    )
-                    continue
-                builders.append(builder)
+            builders.append(builder)
 
         self.builders = builders
 
@@ -205,6 +197,7 @@ class Builder:
         if self.numnodes:
             # loop over all proc values and create builder object based on schema type since we need to call different classes. If builder is using local executor we return the builder immediately,
             # otherwise we keep adding builders for all proc values
+
             for nodes in self.numnodes:
                 if recipe["type"] == "script":
                     builder = ScriptBuilder(
@@ -245,7 +238,7 @@ class Builder:
                     builders.append(builder)
                     return [builder]
 
-                builders.append(builder)
+            builders.append(builder)
         return builders
 
     def _generate_builders(self, recipe, name, compiler_name=None):
@@ -343,9 +336,10 @@ class Builder:
 
         return builders
 
-    def _build_compilers(self, name, recipe):
-        """This method will perform regular expression with 'name' field in compilers
-        section and retrieve one or more compiler that were defined in buildtest
+    def build(self, name, recipe):
+        """This method will generate a list of builders by invoking method ``_generate_builders``. If ``compilers`
+        is specified in buildspec we will perform regular expression to search for compilers based on ``name``
+        and retrieve one or more compiler that were defined in buildtest
         configuration. If any compilers were retrieved we return one or more
         builder objects that call :class:`buildtest.buildsystem.builders.compiler.CompilerBuilder`
 
@@ -357,6 +351,7 @@ class Builder:
 
         builders = []
 
+        # compilers property in script schema is optional while in compiler schema its required. If 'compilers' is set with 'type: script' then return builders
         if not recipe.get("compilers"):
             builders = self._generate_builders(name=name, recipe=recipe)
             return builders
@@ -365,8 +360,8 @@ class Builder:
         if recipe["compilers"].get("exclude"):
             for exclude in recipe["compilers"]["exclude"]:
                 if exclude in discovered_compilers:
-                    msg = f"Excluding compiler: {exclude} from test generation"
-                    print(msg)
+                    msg = f"[blue]{name}[/blue]: [red]Excluding compiler {exclude} during test generation"
+                    console.print(msg)
                     self.logger.debug(msg)
                     discovered_compilers.remove(exclude)
 

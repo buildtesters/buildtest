@@ -246,9 +246,9 @@ buildtest will report an error if an input buildspec is invalid filepath such as
    :returncode: 1
 
 You can also pass multiple buildspes on the command line and fetch all records for a test. In example
-below we will fetch all records from buildspecs **tutorials/vars.yml** and **tutorials/status_regex.yml**
+below we will fetch all records from buildspecs **tutorials/vars.yml** and **tutorials/hello_world.yml**
 
-.. command-output:: buildtest it buildspec --all tutorials/vars.yml tutorials/status_regex.yml
+.. command-output:: buildtest it buildspec --all tutorials/vars.yml tutorials/hello_world.yml
 
 .. note::
 
