@@ -13,7 +13,6 @@ import re
 import shutil
 import socket
 import stat
-import tarfile
 import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -27,7 +26,7 @@ from buildtest.scheduler.pbs import PBSJob
 from buildtest.scheduler.slurm import SlurmJob
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import create_dir, is_dir, is_file, read_file, write_file
+from buildtest.utils.file import create_dir, read_file, write_file
 from buildtest.utils.shell import Shell, is_csh_shell
 from buildtest.utils.timer import Timer
 from buildtest.utils.tools import deep_get
