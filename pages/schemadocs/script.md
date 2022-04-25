@@ -30,7 +30,6 @@ The script schema is of `type: script` in sub-schema which is used for running s
 | [vars](#vars)               | `object`  | Optional | cannot be null | [script schema version](definitions-definitions-env.md "script.schema.json#/properties/vars")                |
 | [executor](#executor)       | `string`  | Required | cannot be null | [script schema version](definitions-definitions-executor.md "script.schema.json#/properties/executor")       |
 | [needs](#needs)             | `array`   | Optional | cannot be null | [script schema version](definitions-definitions-needs.md "script.schema.json#/properties/needs")             |
-| [artifacts](#artifacts)     | `object`  | Optional | cannot be null | [script schema version](definitions-definitions-artifacts.md "script.schema.json#/properties/artifacts")     |
 | [shell](#shell)             | `string`  | Optional | cannot be null | [script schema version](script-properties-shell.md "script.schema.json#/properties/shell")                   |
 | [shebang](#shebang)         | `string`  | Optional | cannot be null | [script schema version](script-properties-shebang.md "script.schema.json#/properties/shebang")               |
 | [run](#run)                 | `string`  | Required | cannot be null | [script schema version](definitions-definitions-run.md "script.schema.json#/properties/run")                 |
@@ -318,24 +317,6 @@ A list of test names that are dependency before runnning job
 an array where each item follows the corresponding schema in the following list:
 
 1.  [Untitled undefined type in JSON Schema Definitions File. ](definitions-definitions-needs-items-0.md "check type definition")
-
-## artifacts
-
-
-
-`artifacts`
-
-*   is optional
-
-*   Type: `object` ([Details](definitions-definitions-artifacts.md))
-
-*   cannot be null
-
-*   defined in: [script schema version](definitions-definitions-artifacts.md "script.schema.json#/properties/artifacts")
-
-### artifacts Type
-
-`object` ([Details](definitions-definitions-artifacts.md))
 
 ## shell
 
