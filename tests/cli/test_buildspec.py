@@ -143,12 +143,10 @@ def test_buildspec_find_filter():
     cache = BuildspecCache(filterfields={"tags": "fail"}, configuration=configuration)
     cache.print_buildspecs()
 
-    # testing buildtest buildspec find --filter buildspec=$BUILDTEST_ROOT/tutorials/pass_returncode.yml
+    # testing buildtest buildspec find --filter buildspec=$BUILDTEST_ROOT/tutorials/hello_world.yml
     cache = BuildspecCache(
         filterfields={
-            "buildspec": os.path.join(
-                BUILDTEST_ROOT, "tutorials", "pass_returncode.yml"
-            )
+            "buildspec": os.path.join(BUILDTEST_ROOT, "tutorials", "hello_world.yml")
         },
         configuration=configuration,
     )
@@ -156,7 +154,11 @@ def test_buildspec_find_filter():
 
     # testing buildtest buildspec find --filter type=script,executor=generic.local.sh,tags=fail
     cache = BuildspecCache(
-        filterfields={"type": "script", "executor": "generic.local.sh", "tags": "fail"},
+        filterfields={
+            "type": "script",
+            "executor": "generic.local.bash",
+            "tags": "fail",
+        },
         configuration=configuration,
     )
     cache.print_buildspecs()
@@ -177,17 +179,6 @@ def test_buildspec_find_filter():
         tf = tempfile.TemporaryDirectory()
         # if we specify a directory path for buildspec filter this will raise an exception.
         BuildspecCache(filterfields={"buildspec": tf.name}, configuration=configuration)
-
-    # testing buildtest buildspec find --filter tags=fail
-    cache = BuildspecCache(
-        filterfields={
-            "buildspec": os.path.join(
-                BUILDTEST_ROOT, "tutorials", "pass_returncode.yml"
-            )
-        },
-        configuration=configuration,
-    )
-    cache.print_buildspecs()
 
     # testing buildtest buildspec find --filter key1=val1,key2=val2
     with pytest.raises(BuildTestError):

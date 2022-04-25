@@ -88,11 +88,11 @@ We can filter output of buildspec cache by buildspec using ``--filter buildspec=
 expects a path to buildspec file.  The buildspec must be in the cache and file path must exist in order to
 fetch the result. The path can be absolute or relative path.
 
-In this next example, we will filter cache by file `tutorials/pass_returncode.yml` and use ``--format name,buildspec``
+In this next example, we will filter cache by file `tutorials/test_status/pass_returncode.yml` and use ``--format name,buildspec``
 to format columns. The ``--format buildspec`` will show full path to buildspec and ``name`` refers to name of test.
 For more details on **--format** see :ref:`format_buildspec`.
 
-.. command-output:: buildtest buildspec find --filter buildspec=tutorials/pass_returncode.yml --format name,buildspec
+.. command-output:: buildtest buildspec find --filter buildspec=tutorials/test_status/pass_returncode.yml --format name,buildspec
 
 .. _format_buildspec:
 
@@ -273,7 +273,7 @@ Next you can use this as argument to ``buildtest buildspec show`` and it will re
 .. code-block:: console
 
     $ buildtest buildspec show $(buildtest report --filter state=FAIL --format name --terse --no-header | uniq)
-    ────────────────────────────────────────────────────────────────────────────── /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml ───────────────────────────────────────────────────────────────────────────────
+    ────────────────────────────────────────────────────────────────────────────── /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/test_status/pass_returncode.yml ───────────────────────────────────────────────────────────────────────────────
     ╭──────────────────────────────────────────────────────────────────────╮
     │ buildspecs:                                                          │
     │                                                                      │
@@ -312,7 +312,7 @@ Next you can use this as argument to ``buildtest buildspec show`` and it will re
     │       returncode: 128                                                │
     │                                                                      │
     ╰──────────────────────────────────────────────────────────────────────╯
-    ────────────────────────────────────────────────────────────────────────────── /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/pass_returncode.yml ───────────────────────────────────────────────────────────────────────────────
+    ────────────────────────────────────────────────────────────────────────────── /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/test_status/pass_returncode.yml ───────────────────────────────────────────────────────────────────────────────
     ╭──────────────────────────────────────────────────────────────────────╮
     │ buildspecs:                                                          │
     │                                                                      │

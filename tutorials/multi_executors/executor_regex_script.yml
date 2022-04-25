@@ -1,0 +1,7 @@
+buildspecs:
+  multiple_executors:
+    type: script
+    executor: 'generic.local.(bash|sh)'
+    description: run test with executor generic.local.bash and generic.local.sh executor
+    tags: [tutorials]
+    run: date

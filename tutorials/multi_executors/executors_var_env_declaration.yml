@@ -8,7 +8,6 @@ buildspecs:
       echo "X:" $X
       echo "Y:" $Y
       echo $SHELL
-
     executors:
       generic.local.bash:
         vars:

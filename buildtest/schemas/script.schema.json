@@ -49,9 +49,6 @@
     "needs": {
       "$ref": "definitions.schema.json#/definitions/needs"
     },
-    "artifacts": {
-      "$ref": "definitions.schema.json#/definitions/artifacts"
-    },
     "shell": {
       "type": "string",
       "description": "Specify a shell launcher to use when running jobs. This sets the shebang line in your test script. The ``shell`` key can be used with ``run`` section to describe content of script and how its executed"

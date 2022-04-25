@@ -13,7 +13,6 @@ import re
 import shutil
 import socket
 import stat
-import tarfile
 import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -27,7 +26,7 @@ from buildtest.scheduler.pbs import PBSJob
 from buildtest.scheduler.slurm import SlurmJob
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import create_dir, is_dir, is_file, read_file, write_file
+from buildtest.utils.file import create_dir, read_file, write_file
 from buildtest.utils.shell import Shell, is_csh_shell
 from buildtest.utils.timer import Timer
 from buildtest.utils.tools import deep_get
@@ -591,34 +590,6 @@ class BuilderBase(ABC):
             os.path.join(self.test_root, os.path.basename(self.testpath)),
         )
 
-    def save_artifacts(self):
-
-        artifacts = self.recipe["artifacts"]
-
-        self.artifact = os.path.join(self.test_root, "artifacts.tar.gz")
-        tar = tarfile.open(self.artifact, "w:gz")
-
-        if artifacts.get("output"):
-            self.logger.debug(
-                f"{self} Adding output file ({self.metadata['outfile']}) as artifact"
-            )
-            tar.add(self.metadata["outfile"])
-            # shutil.copy2(self.metadata['outfile'], os.path.join(artifact_dir, os.path.basename(self.metadata['outfile'])) )
-
-        if artifacts.get("error"):
-            tar.add(self.metadata["errfile"])
-            self.logger.debug(
-                f"{self}: Saving error file ({self.metadata['errfile']}) as artifact"
-            )
-            # shutil.copy2(self.metadata['errfile'], os.path.join(artifact_dir, os.path.basename(self.metadata['errfile'])) )
-
-        if artifacts.get("files"):
-            for fname in artifacts["files"]:
-                if is_file(fname) or is_dir(fname):
-                    tar.add(fname)
-        tar.close()
-        console.print(f"[blue]{self}[/blue] Writing artifact file: {self.artifact}")
-
     def _emit_command(self):
         """This method will return a shell command used to invoke the script that is used for tests that
         use local executors
@@ -937,10 +908,6 @@ class BuilderBase(ABC):
 
         # mark job is success if it finished all post run steps
         self.complete()
-
-        # console.print(f"{self} test is in state: {self._buildstate}")
-        if self.recipe.get("artifacts"):
-            self.save_artifacts()
 
     def _check_regex(self):
         """This method conducts a regular expression check using
