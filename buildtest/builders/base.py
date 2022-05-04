@@ -639,7 +639,7 @@ class BuilderBase(ABC):
         if self.numnodes:
             lines.append(f"export BUILDTEST_NUMNODES={self.numnodes}")
         if self.numprocs:
-            lines.append(f"export BUILDTEST_NUMNODES={self.numnodes}")
+            lines.append(f"export BUILDTEST_NUMPROCS={self.numprocs}")
 
         return lines
 

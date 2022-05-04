@@ -1155,88 +1155,111 @@ class BuildTest:
 
         if script_builder:
 
-            table = Table(title="Script Builder Details", show_lines=True)
-            table.add_column("[blue]Builder", overflow="fold")
-            table.add_column("[blue]Executor", overflow="fold")
-            table.add_column("[blue]Compiler", overflow="fold")
-            table.add_column("[blue]description", overflow="fold")
-            table.add_column("[blue]buildspecs", overflow="fold")
+            table = Table(
+                title="Script Builder Details", show_lines=True, header_style="blue"
+            )
+            table.add_column("Builder", overflow="fold", style="blue")
+            table.add_column("Executor", overflow="fold", style="green")
+            table.add_column("Compiler", overflow="fold", style="red")
+            table.add_column("Nodes", overflow="fold", style="orange3")
+            table.add_column("Procs", overflow="fold", style="orange3")
+            table.add_column("Description", overflow="fold", style="magenta")
+            table.add_column("Buildspecs", overflow="fold", style="yellow")
 
             for builder in script_builder:
                 description = builder.recipe.get("description")
-
+                # table entries must be rendered by rich and for purpose we need everything to be converted to string.
                 table.add_row(
-                    f"[blue]{builder}",
-                    f"[green]{builder.executor}",
-                    f"[red]{builder.compiler}",
-                    f"[magenta]{description}",
-                    f"[yellow]{builder.buildspec}",
+                    f"{builder}",
+                    f"{builder.executor}",
+                    f"{builder.compiler}",
+                    f"{builder.numnodes}",
+                    f"{builder.numprocs}",
+                    f"{description}",
+                    f"{builder.buildspec}",
                 )
-
             console.print(table)
 
         if spack_builder:
 
-            table = Table(title="Spack Builder Details", show_lines=True)
-            table.add_column("[blue]Builder", overflow="fold")
-            table.add_column("[blue]Executor", overflow="fold")
-            table.add_column("[blue]description", overflow="fold")
-            table.add_column("[blue]buildspecs", overflow="fold")
+            table = Table(
+                title="Spack Builder Details", show_lines=True, header_style="blue"
+            )
+            table.add_column("Builder", overflow="fold", style="blue")
+            table.add_column("Executor", overflow="fold", style="green")
+            table.add_column("Nodes", overflow="fold", style="orange3")
+            table.add_column("Procs", overflow="fold", style="orange3")
+            table.add_column("Description", overflow="fold", style="magenta")
+            table.add_column("Buildspecs", overflow="fold", style="yellow")
 
             for builder in spack_builder:
                 description = builder.recipe.get("description")
 
                 table.add_row(
-                    f"[blue]{builder}",
-                    f"[green]{builder.executor}",
-                    f"[magenta]{description}",
-                    f"[yellow]{builder.buildspec}",
+                    f"{builder}",
+                    f"{builder.executor}",
+                    f"{builder.numnodes}",
+                    f"{builder.numprocs}",
+                    f"{description}",
+                    f"{builder.buildspec}",
                 )
 
             console.print(table)
 
         if compiler_builder:
-            table = Table(title="Compiler Builder Details", show_lines=True)
-            table.add_column("[blue]Builder", overflow="fold")
-            table.add_column("[blue]Executor", overflow="fold")
-            table.add_column("[blue]Compiler", overflow="fold")
-            table.add_column("[blue]description", overflow="fold")
-            table.add_column("[blue]buildspecs", overflow="fold")
+            table = Table(
+                title="Compiler Builder Details", show_lines=True, style="blue"
+            )
+            table.add_column("Builder", overflow="fold", style="blue")
+            table.add_column("Executor", overflow="fold", style="green")
+            table.add_column("Compiler", overflow="fold", style="red")
+            table.add_column("Nodes", overflow="fold", style="orange3")
+            table.add_column("Procs", overflow="fold", style="orange3")
+            table.add_column("Description", overflow="fold", style="magenta")
+            table.add_column("Buildspecs", overflow="fold", style="yellow")
 
             for builder in compiler_builder:
                 description = builder.recipe.get("description")
 
                 table.add_row(
-                    f"[blue]{builder}",
-                    f"[green]{builder.executor}",
-                    f"[red]{builder.compiler}",
-                    f"[magenta]{description}",
-                    f"[yellow]{builder.buildspec}",
+                    f"{builder}",
+                    f"{builder.executor}",
+                    f"{builder.compiler}",
+                    f"{builder.numnodes}",
+                    f"{builder.numprocs}",
+                    f"{description}",
+                    f"{builder.buildspec}",
                 )
 
             console.print(table)
 
         if batch_builder:
-            table = Table(title="Batch Job Builders", show_lines=True)
-            table.add_column("[blue]Builder", overflow="fold")
-            table.add_column("[blue]Executor", overflow="fold")
-            table.add_column("[blue]buildspecs", overflow="fold")
+            table = Table(
+                title="Batch Job Builders", show_lines=True, header_style="blue"
+            )
+            table.add_column("Builder", overflow="fold", style="blue")
+            table.add_column("Executor", overflow="fold", style="green")
+            table.add_column("Buildspecs", overflow="fold", style="yellow")
 
             for builder in batch_builder:
                 table.add_row(
-                    f"[blue]{builder}",
-                    f"[green]{builder.executor}",
-                    f"[yellow]{builder.buildspec}",
+                    f"{builder}",
+                    f"{builder.executor}",
+                    f"{builder.buildspec}",
                 )
 
             console.print(table)
 
             if self.numprocs:
-                table = Table(title="Batch Job Builders by Processors", show_lines=True)
-                table.add_column("[blue]Builder", overflow="fold")
-                table.add_column("[blue]Executor", overflow="fold")
-                table.add_column("[blue]Processor", overflow="fold")
-                table.add_column("[blue]buildspecs", overflow="fold")
+                table = Table(
+                    title="Batch Job Builders by Processors",
+                    show_lines=True,
+                    header_style="blue",
+                )
+                table.add_column("Builder", overflow="fold", style="blue")
+                table.add_column("Executor", overflow="fold", style="green")
+                table.add_column("Procs", overflow="fold", style="orange3")
+                table.add_column("Buildspecs", overflow="fold", style="yellow")
 
                 for builder in batch_builder:
                     # skip builders that dont have attribute builder.numprocs which is set if buildtest build --procs is specified
@@ -1244,20 +1267,24 @@ class BuildTest:
                         continue
 
                     table.add_row(
-                        f"[blue]{builder}",
-                        f"[green]{builder.executor}",
-                        f"[cyan]{builder.numprocs}",
-                        f"[yellow]{builder.buildspec}",
+                        f"{builder}",
+                        f"{builder.executor}",
+                        f"{builder.numprocs}",
+                        f"{builder.buildspec}",
                     )
 
                 console.print(table)
 
             if self.numnodes:
-                table = Table(title="Batch Job Builders by Nodes", show_lines=True)
-                table.add_column("[blue]Builder", overflow="fold")
-                table.add_column("[blue]Executor", overflow="fold")
-                table.add_column("[blue]Nodes", overflow="fold")
-                table.add_column("[blue]buildspecs", overflow="fold")
+                table = Table(
+                    title="Batch Job Builders by Nodes",
+                    show_lines=True,
+                    header_style="blue",
+                )
+                table.add_column("Builder", overflow="fold", style="blue")
+                table.add_column("Executor", overflow="fold", style="green")
+                table.add_column("Nodes", overflow="fold", style="orange3")
+                table.add_column("Buildspecs", overflow="fold", style="yellow")
 
                 for builder in batch_builder:
                     # skip builders that dont have attribute builder.numprocs which is set if buildtest build --procs is specified
@@ -1265,10 +1292,10 @@ class BuildTest:
                         continue
 
                     table.add_row(
-                        f"[blue]{builder}",
-                        f"[green]{builder.executor}",
-                        f"[cyan]{builder.numnodes}",
-                        f"[yellow]{builder.buildspec}",
+                        f"{builder}",
+                        f"{builder.executor}",
+                        f"{builder.numnodes}",
+                        f"{builder.buildspec}",
                     )
 
                 console.print(table)
