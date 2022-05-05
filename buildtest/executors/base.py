@@ -13,7 +13,7 @@ class BaseExecutor:
 
     type = "base"
 
-    def __init__(self, name, settings, site_configs):
+    def __init__(self, name, settings, site_configs, timeout=None):
         """Initiate a base executor, meaning we provide a name (also held
         by the BuildExecutor base that holds it) and the loaded dictionary
         of config opts to parse.
@@ -22,6 +22,7 @@ class BaseExecutor:
             name (str): name of executor
             setting (dict): setting for a given executor defined in configuration file
             site_configs (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
+            timeout (str, optional): Test timeout in number of seconds
         """
 
         self._bashopts = "--norc --noprofile -eo pipefail"
@@ -30,11 +31,11 @@ class BaseExecutor:
         self._zshopts = "-f"
         self.cmd = None
         self.shell = "bash"
-
         self.logger = logging.getLogger(__name__)
         self.name = name
         self._settings = settings
         self._buildtestsettings = site_configs
+        self.timeout = timeout
         self.load()
         self.builders = []
 

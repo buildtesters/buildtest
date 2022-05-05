@@ -69,6 +69,11 @@
             "N/A"
           ]
         },
+        "timeout": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Specify timeout duration in number of seconds"
+        },
         "processor": {
           "type": "object",
           "description": "Specify processor information",
@@ -181,6 +186,7 @@
             "type": "object",
             "additionalProperties": false,
             "description": "The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be ``local``, ``lsf``, ``slurm``, ``cobalt``. The executors are referenced in buildspec using ``executor`` field.",
+            "required": ["local"],
             "properties": {
               "defaults": {
                 "type": "object",

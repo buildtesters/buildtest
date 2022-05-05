@@ -434,6 +434,12 @@ def build_menu(subparsers):
         help="Specify a custom test directory where to write tests. This overrides configuration file and default location.",
     )
 
+    extra_group.add_argument(
+        "--timeout",
+        help="Specify test timeout in number of seconds",
+        type=positive_number,
+    )
+
 
 def buildspec_menu(subparsers):
     """This method implements ``buildtest buildspec`` command"""

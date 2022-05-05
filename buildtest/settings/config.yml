@@ -8,6 +8,9 @@ system:
     # specify module system used at your site (environment-modules, lmod)
     moduletool: N/A
 
+    # specify test timeout duration in number of seconds
+    timeout: 60
+
     executors:
       # define local executors for running jobs locally
       local:

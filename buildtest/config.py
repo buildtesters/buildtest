@@ -116,8 +116,8 @@ class SiteConfiguration:
                 self.file,
                 f"Based on current system hostname: {hostname} we cannot find a matching system  {list(self.systems)} based on current hostnames: {host_lookup} ",
             )
-        if self.target_config["executors"].get("local"):
-            self.localexecutors = list(self.target_config["executors"]["local"].keys())
+
+        # self.localexecutors = list(self.target_config["executors"]["local"].keys())
 
     def validate(self, validate_executors=True):
         """This method validates the site configuration with schema and checks executor setting.
@@ -220,7 +220,7 @@ class SiteConfiguration:
         for executor in lsf_executors:
 
             executor_name = f"{self.name()}.{executor_type}.{executor}"
-            if lsf_executors[executor].get("disable"):
+            if self.is_executor_disabled(lsf_executors[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
 
@@ -275,7 +275,7 @@ class SiteConfiguration:
 
             executor_name = f"{self.name()}.{executor_type}.{executor}"
 
-            if slurm_executor[executor].get("disable"):
+            if self.is_executor_disabled(slurm_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
 
@@ -351,7 +351,7 @@ class SiteConfiguration:
         for executor in cobalt_executor:
             executor_name = f"{self.name()}.{executor_type}.{executor}"
 
-            if cobalt_executor[executor].get("disable"):
+            if self.is_executor_disabled(cobalt_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
 
@@ -413,7 +413,7 @@ class SiteConfiguration:
 
             executor_name = f"{self.name()}.{executor_type}.{executor}"
 
-            if pbs_executor[executor].get("disable"):
+            if self.is_executor_disabled(pbs_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
 

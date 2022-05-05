@@ -481,6 +481,7 @@ class BuildTest:
         unload_modules=None,
         rerun=None,
         executor_type=None,
+        timeout=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -511,6 +512,7 @@ class BuildTest:
             unload_modules (str, optional): List of modules to unload for every test specified via ``buildtest build --unload-modules``.
             rerun (bool, optional): Rerun last successful **buildtest build** command. This is specified via ``buildtest build --rerun``. All other options will be ignored and buildtest will read buildtest options from file **BUILDTEST_RERUN_FILE**.
             executor_type (bool, optional): Filter test by executor type. This option will filter test after discovery by local or batch executors. This can be specified via ``buildtest build --exec-type``
+            timeout (int, optional): Test timeout in seconds specified by ``buildtest build --timeout``
         """
 
         if buildspecs and not isinstance(buildspecs, list):
@@ -541,6 +543,13 @@ class BuildTest:
                     f"--rebuild {rebuild} exceeds maximum rebuild limit of 50"
                 )
 
+        if timeout:
+            if not isinstance(timeout, int):
+                raise BuildTestError(f"{timeout} is not of type int")
+
+            if timeout <= 0:
+                raise BuildTestError(f"Timeout must be greater than 0")
+
         self.keep_stage_dir = keep_stage_dir
         self.configuration = configuration
         self.buildspecs = buildspecs
@@ -562,6 +571,7 @@ class BuildTest:
         self.numprocs = numprocs
         self.numnodes = numnodes
         self.executor_type = executor_type
+        self.timeout = timeout
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
@@ -620,6 +630,7 @@ class BuildTest:
             maxpendtime=self.maxpendtime,
             account=self.account,
             pollinterval=self.pollinterval,
+            timeout=self.timeout,
         )
 
         self.system = buildtest_system

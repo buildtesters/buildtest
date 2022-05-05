@@ -286,7 +286,7 @@ class BuilderBase(ABC):
         self._write_test()
         self._write_build_script(modules, modulepurge, unload_modules)
 
-    def run(self, cmd):
+    def run(self, cmd, timeout=None):
         """Run the test and record the starttime and start timer. We also return the instance
         object of type BuildTestCommand which is used by Executors for processing output and error
 
@@ -312,7 +312,7 @@ class BuilderBase(ABC):
         self.start()
 
         command = BuildTestCommand(cmd)
-        command.execute()
+        command.execute(timeout=timeout)
 
         self.logger.debug(f"Running Test via command: {cmd}")
         ret = command.returncode()
@@ -333,7 +333,10 @@ class BuilderBase(ABC):
         for run in range(1, self._retry + 1):
             print(f"{self}: Run - {run}/{self._retry}")
             command = BuildTestCommand(cmd)
-            command.execute()
+            console.print(
+                f"[blue]{self}[/]: Running Test via command: [cyan]{cmd}[/cyan]"
+            )
+            command.execute(timeout=timeout)
 
             self.logger.debug(f"Running Test via command: {cmd}")
             ret = command.returncode()
