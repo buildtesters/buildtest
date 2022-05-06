@@ -62,8 +62,10 @@ class LocalExecutor(BaseExecutor):
         run_cmd = " ".join(run_cmd)
 
         # ---------- Start of Run ---------- #
+        timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
+
         try:
-            command = builder.run(run_cmd)
+            command = builder.run(run_cmd, timeout=timeout)
         except RuntimeFailure as err:
             builder.failed()
             self.logger.error(err)

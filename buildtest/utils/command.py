@@ -1,4 +1,3 @@
-# import locale
 import os
 import shlex
 import shutil
@@ -94,7 +93,7 @@ class BuildTestCommand:
             cmd = shlex.split(cmd)
         self.cmd = cmd
 
-    def execute(self):
+    def execute(self, timeout=None):
         """Execute a system command and return output and error."""
         # Reset the output and error records
         self.out = []
@@ -121,11 +120,21 @@ class BuildTestCommand:
                 stderr=capture.stderr,
                 universal_newlines=True,
             )
-            returncode = process.poll()
+            try:
+                process.communicate(timeout=timeout)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                # os.kill(process.pid, signal.SIGTERM)
+
+                print("Killing process", process.pid)
+
+            self._returncode = process.wait()
+
+            # returncode = process.poll()
 
             # Iterate through the output
-            while returncode is None:
-                returncode = process.poll()
+            # while returncode is None:
+            #    returncode = process.poll()
 
         # Get the remainder of lines, add return code. The self.decode avoids UTF-8 decode error
         self.out += ["%s\n" % x for x in self.decode(capture.out).split("\n") if x]
@@ -135,7 +144,7 @@ class BuildTestCommand:
         # self.err += ["%s\n" % x for x in capture.err.split("\n") if x]
         # Cleanup capture files and save final return code
         capture.cleanup()
-        self._returncode = returncode
+        # self._returncode = returncode
 
         return (self.out, self.err)
 

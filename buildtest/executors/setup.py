@@ -37,7 +37,14 @@ class BuildExecutor:
     - **poll**: This is responsible for invoking ``poll`` method for corresponding executor from the builder object by checking job state
     """
 
-    def __init__(self, site_config, account=None, maxpendtime=None, pollinterval=None):
+    def __init__(
+        self,
+        site_config,
+        account=None,
+        maxpendtime=None,
+        pollinterval=None,
+        timeout=None,
+    ):
         """Initialize executors, meaning that we provide the buildtest
         configuration that are validated, and can instantiate
         each executor to be available.
@@ -83,6 +90,7 @@ class BuildExecutor:
                         "setting"
                     ],
                     site_configs=self.configuration,
+                    timeout=timeout,
                 )
 
         if site_config.valid_executors["slurm"]:
@@ -95,6 +103,7 @@ class BuildExecutor:
                     ],
                     site_configs=self.configuration,
                     maxpendtime=maxpendtime,
+                    timeout=timeout,
                 )
 
         if self.configuration.valid_executors["lsf"]:
@@ -105,6 +114,7 @@ class BuildExecutor:
                     settings=self.configuration.valid_executors["lsf"][name]["setting"],
                     site_configs=self.configuration,
                     maxpendtime=maxpendtime,
+                    timeout=timeout,
                 )
 
         if self.configuration.valid_executors["pbs"]:
@@ -115,6 +125,7 @@ class BuildExecutor:
                     settings=self.configuration.valid_executors["pbs"][name]["setting"],
                     site_configs=self.configuration,
                     maxpendtime=maxpendtime,
+                    timeout=timeout,
                 )
 
         if self.configuration.valid_executors["cobalt"]:
@@ -127,6 +138,7 @@ class BuildExecutor:
                     ],
                     site_configs=self.configuration,
                     maxpendtime=maxpendtime,
+                    timeout=timeout,
                 )
         self.setup()
 

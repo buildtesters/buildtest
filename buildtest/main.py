@@ -138,6 +138,7 @@ def main():
                 unload_modules=args.unload_modules,
                 rerun=args.rerun,
                 executor_type=args.executor_type,
+                timeout=args.timeout,
             )
             cmd.build()
 

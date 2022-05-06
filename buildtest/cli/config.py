@@ -51,7 +51,7 @@ def edit_configuration(configuration):
         configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class used for storing buildtest configuration
     """
 
-    EDITOR = os.environ.get("EDITOR", "vim")
+    EDITOR = os.environ.get("EDITOR", "vi")
 
     subprocess.call([EDITOR, configuration.file])
 
@@ -68,11 +68,12 @@ def view_system(configuration):
 
     # table = {"system": [], "description": [], "hostnames": [], "moduletool": []}
     table = Table(
-        "[blue]system",
-        "[blue]description",
-        "[blue]moduletool",
-        Column("[blue]hostnames", overflow="fold"),
+        "system",
+        "description",
+        "moduletool",
+        Column("hostnames", overflow="fold"),
         title=f"System Summary (Configuration={configuration.file})",
+        header_style="blue",
         min_width=120,
     )
 
@@ -115,7 +116,7 @@ def validate_config(configuration):
         print(err)
         raise sys.exit(f"{configuration.file} is not valid")
 
-    print(f"{configuration.file} is valid")
+    console.print(f"{configuration.file} is valid")
 
 
 def view_configuration(configuration):
@@ -146,36 +147,36 @@ def view_executors(
         invalid (bool): Display list of invalid executors which is specified via ``buildtest config executors --invalid``
     """
 
-    d = {"executors": configuration.target_config["executors"]}
+    executor_settings = {"executors": configuration.target_config["executors"]}
 
     # display output in JSON format
     if json_format:
-        console.print(json.dumps(d, indent=2))
+        console.print(json.dumps(executor_settings, indent=2))
         return
 
     # display output in YAML format
     if yaml_format:
-        console.print(yaml.dump(d, default_flow_style=False))
+        console.print(yaml.dump(executor_settings, default_flow_style=False))
         return
 
     if disabled:
-        executors = configuration.disabled_executors
-        if not executors:
-            print("There are no disabled executors")
+
+        if not configuration.disabled_executors:
+            console.print("There are no disabled executors")
             return
 
-        for executor in executors:
-            print(executor)
+        for executor in configuration.disabled_executors:
+            console.print(executor)
         return
 
     if invalid:
-        executors = configuration.invalid_executors
-        if not executors:
-            print("There are no invalid executors")
+
+        if not configuration.invalid_executors:
+            console.print("There are no invalid executors")
             return
 
-        for executor in executors:
-            print(executor)
+        for executor in configuration.invalid_executors:
+            console.print(executor)
         return
 
     names = buildexecutor.names()
