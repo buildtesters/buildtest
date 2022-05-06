@@ -51,19 +51,19 @@ jobs:
           persist-credentials: false
 
      - name: Download Schemas
-       uses: actions/download-artifact@v2
+       uses: actions/download-artifact@v3
        with:
          name: schemafiles
          path: downloads/schemas
 
      - name: Download Schema Examples
-       uses: actions/download-artifact@v2
+       uses: actions/download-artifact@v3
        with:
          name: schemaexamples
          path: downloads/examples
 
      - name: Download Schema Docs
-       uses: actions/download-artifact@v2
+       uses: actions/download-artifact@v3
        with:
           name: schemadocs
           path: downloads/schemadocs
