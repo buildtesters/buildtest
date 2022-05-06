@@ -548,7 +548,7 @@ class BuildTest:
                 raise BuildTestError(f"{timeout} is not of type int")
 
             if timeout <= 0:
-                raise BuildTestError(f"Timeout must be greater than 0")
+                raise BuildTestError("Timeout must be greater than 0")
 
         self.keep_stage_dir = keep_stage_dir
         self.configuration = configuration

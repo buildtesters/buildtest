@@ -9,7 +9,7 @@ system:
     moduletool: N/A
 
     # specify test timeout duration in number of seconds
-    timeout: 60
+    # timeout: 60
 
     executors:
       # define local executors for running jobs locally
