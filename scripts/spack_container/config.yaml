@@ -1,0 +1,9 @@
+config:
+  build_stage: $HOME/spack-workspace/build_stage
+  misc_cache: $HOME/spack-workspace/misc_cache
+  install_tree:
+    root: $HOME/spack-workspace/software
+  source_cache: $HOME/.spack/cache
+  module_roots:
+    tcl: $HOME/spack-workspace/modules/tcl
+    lmod: $HOME/spack-workspace/modules/lmod

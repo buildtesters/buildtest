@@ -11,8 +11,15 @@ RUN apt update && \
     apt-get install git -y
 
 USER spack
-RUN git clone https://github.com/spack/spack ~/spack && \
-    cd ~/spack && \
+RUN git clone https://github.com/spack/spack ~/spack
+
+COPY /config.yaml /home/spack/spack/etc/spack/config.yaml
+COPY /spack_setup.sh /etc/profile.d/spack_setup.sh
+COPY /modules.yaml   /home/spack/spack/etc/spack/modules.yaml
+COPY /compilers.yaml /home/spack/spack/etc/spack/compilers.yaml
+
+USER spack
+RUN cd ~/spack && \
     git checkout releases/v0.16 && \
     . ~/spack/share/spack/setup-env.sh && \
     spack tutorial -y && \
@@ -21,5 +28,3 @@ RUN git clone https://github.com/spack/spack ~/spack && \
     spack install gcc@6.5.0 gcc@8.3.0 && \
     echo "source /etc/profile" >> ~/.bashrc
 
-COPY /spack_setup.sh /etc/profile.d/spack_setup.sh
-COPY /modules.yaml   /etc/spack/modules.yaml
