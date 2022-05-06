@@ -19,7 +19,7 @@ The executor section is used for declaring your executors that are responsible f
 | Property              | Type     | Required | Nullable       | Defined by                                                                                                                                                                                    |
 | :-------------------- | :------- | :------- | :------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [defaults](#defaults) | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-defaults.md "settings.schema.json#/definitions/system/properties/executors/properties/defaults") |
-| [local](#local)       | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-local.md "settings.schema.json#/definitions/system/properties/executors/properties/local")       |
+| [local](#local)       | `object` | Required | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-local.md "settings.schema.json#/definitions/system/properties/executors/properties/local")       |
 | [lsf](#lsf)           | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-lsf.md "settings.schema.json#/definitions/system/properties/executors/properties/lsf")           |
 | [slurm](#slurm)       | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-slurm.md "settings.schema.json#/definitions/system/properties/executors/properties/slurm")       |
 | [cobalt](#cobalt)     | `object` | Optional | cannot be null | [buildtest configuration schema](settings-definitions-system-properties-executors-properties-cobalt.md "settings.schema.json#/definitions/system/properties/executors/properties/cobalt")     |
@@ -49,7 +49,7 @@ The `local` section is used for declaring local executors for running jobs on lo
 
 `local`
 
-*   is optional
+*   is required
 
 *   Type: `object` ([Details](settings-definitions-system-properties-executors-properties-local.md))
 
