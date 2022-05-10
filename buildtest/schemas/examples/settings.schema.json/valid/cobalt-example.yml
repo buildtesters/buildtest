@@ -5,7 +5,10 @@ system:
     executors:
       defaults:
          maxpendtime: 30
-
+      local:
+        bash:
+          description: submit jobs via bash shell
+          shell: bash
       cobalt:
         knl:
           queue: knl

@@ -696,6 +696,7 @@ class BuildTest:
         self.numnodes = content["numnodes"]
         self.numprocs = content["numprocs"]
         self.executor_type = content["executor_type"]
+        self.timeout = content["timeout"]
 
     def save_rerun_file(self):
         buildtest_cmd = {
@@ -720,6 +721,7 @@ class BuildTest:
             "numprocs": self.numprocs,
             "numnodes": self.numnodes,
             "executor_type": self.executor_type,
+            "timeout": self.timeout,
         }
 
         with open(BUILDTEST_RERUN_FILE, "w") as fd:
