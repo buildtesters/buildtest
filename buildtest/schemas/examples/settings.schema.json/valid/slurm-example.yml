@@ -10,6 +10,10 @@ system:
         pollinterval: 20
         maxpendtime: 30
         account: admin
+      local:
+        bash:
+          description: submit jobs via bash shell
+          shell: bash
       slurm:
         normal:
           options: ["-C haswell"]
@@ -17,7 +21,6 @@ system:
           before_script: |
             time
             echo "commands run before job"
-
     compilers:
       compiler:
         gcc:
