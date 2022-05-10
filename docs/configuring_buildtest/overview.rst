@@ -18,10 +18,10 @@ Which configuration file does buildtest read?
 
 buildtest will read configuration files in the following order:
 
-- Command line ``buildtest -c <config>.yml build``
-- Environment variable - **BUILDTEST_CONFIGFILE**
-- User Configuration - ``$HOME/.buildtest/config.yml``
-- Default Configuration - ``$BUILDTEST_ROOT/buildtest/settings/config.yml``
+1. Command line ``buildtest -c <config>.yml build``
+2. Environment variable - **BUILDTEST_CONFIGFILE**
+3. User Configuration - ``$HOME/.buildtest/config.yml``
+4. Default Configuration - ``$BUILDTEST_ROOT/buildtest/settings/config.yml``
 
 .. _default_configuration:
 
@@ -285,9 +285,9 @@ Specifying Modules
 ~~~~~~~~~~~~~~~~~~~~
 
 You can configure executors to load modules, purge or restore from collection which will be run for all tests that use the executor.
-This can be achieved via `module` property that can be defined in the executor definition. In this next example, we create a bash executor
-that will purge modules and load gcc. The `purge` property is a boolean, if set to `True` we will run `module purge` before
-loading commands. The `load` property is a list of modules to `module load`.
+This can be achieved via ``module`` property that can be defined in the executor definition. In this next example, we create a bash executor
+that will purge modules and load gcc. The ``purge`` property is a boolean, if set to **True** we will run **module purge** before
+loading commands. The ``load`` property is a list of modules to **module load**.
 
 .. code-block:: yaml
 
@@ -502,9 +502,6 @@ Shown below is an example with one queue **workq** that is ``enabled`` and ``sta
         }
     }
 
-.. _cdash_configuration:
-
-
 Configuring test directory
 ---------------------------
 
@@ -539,6 +536,8 @@ based on platform (Linux, Mac).
 The buildtest logs will start with **buildtest_** followed by random identifier with
 a **.log** extension.
 
+.. _cdash_configuration:
+
 CDASH Configuration
 --------------------
 
@@ -565,3 +564,16 @@ The cdash section can be summarized as follows:
 
 The cdash settings can be used with ``buildtest cdash`` command. For more details
 see :ref:`cdash_integration`.
+
+Configuring Test Timeout
+-------------------------
+
+The ``timeout`` property is number of seconds a test can run before it is called. **The timeout property must be a positive integer**.
+For instance if you want all test to timeout within 60 sec you can do the following
+
+.. code-block:: yaml
+
+    timeout: 60
+
+The ``timeout`` field is not set by default, it can be configured in the configuration file but can be overridden via command line
+option ``buildtest build --timeout``. For more details see :ref:`test_timeout`

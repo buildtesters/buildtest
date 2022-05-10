@@ -126,8 +126,6 @@ class BuildTestCommand:
                 process.kill()
                 # os.kill(process.pid, signal.SIGTERM)
 
-                print("Killing process", process.pid)
-
             self._returncode = process.wait()
 
             # returncode = process.poll()
@@ -144,7 +142,6 @@ class BuildTestCommand:
         # self.err += ["%s\n" % x for x in capture.err.split("\n") if x]
         # Cleanup capture files and save final return code
         capture.cleanup()
-        # self._returncode = returncode
 
         return (self.out, self.err)
 
