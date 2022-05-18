@@ -6,10 +6,10 @@
 module load python
 
 # setup python environment
-python -m venv $HOME/pyenv/buildtest
-source $HOME/pyenv/buildtest/bin/activate
+python -m venv ~/pyenv/buildtest
+source ~/pyenv/buildtest/bin/activate
 
-cd $HOME/buildtest
+cd ~/buildtest
 # installing buildtest
 source setup.sh
 
