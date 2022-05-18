@@ -230,6 +230,11 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
                         build_endtime = test_endtime_datetime
                     tests.append(test)
 
+                    # remove ANSI escape characters from output and error field to avoid issues with CDASH upload. See https://localcoder.org/how-can-i-remove-the-ansi-escape-sequences-from-a-string-in-python
+                    ansi_escape = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
+                    ansi_escape.sub("", test["output"])
+                    ansi_escape.sub("", test["error"])
+
     build_stamp = build_starttime.strftime(output_datetime_format)
     build_stamp += "-Experimental"
 
