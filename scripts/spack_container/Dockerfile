@@ -26,5 +26,7 @@ RUN cd ~/spack && \
     spack install lmod && \
     spack install python && \
     spack install gcc@6.5.0 gcc@8.3.0 && \
+    . $(spack location -i lmod)/lmod/lmod/init/bash \
+    spack module tcl refresh --delete-tree -y \
     echo "source /etc/profile" >> ~/.bashrc
 
