@@ -303,7 +303,8 @@ class BuilderBase(ABC):
         command = BuildTestCommand("env")
         command.execute()
         content = "".join(command.get_output())
-        write_file(os.path.join(self.test_root, "build-env.sh"), content)
+        self.metadata["buildenv"] = os.path.join(self.test_root, "build-env.txt")
+        write_file(self.metadata["buildenv"], content)
 
         console.print(f"[blue]{self}[/]: Running Test via command: [cyan]{cmd}[/cyan]")
 
@@ -752,9 +753,7 @@ class BuilderBase(ABC):
             fname,
             stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
         )
-        self.logger.debug(
-            f"Applying permission 755 to {fname} so that test can be executed"
-        )
+        self.logger.debug(f"Changing permission to 755 for script: {fname}")
 
     def _get_environment(self, env):
         """Retrieve a list of environment variables defined in buildspec and

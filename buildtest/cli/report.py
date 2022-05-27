@@ -26,6 +26,7 @@ class Report:
     # list of format fields
     format_field_description = {
         "buildspec": "Buildspec File",
+        "buildenv": "Show build environment file for test",
         "command": "Command executed",
         "compiler": "Retrieve compiler used for test (applicable for compiler schema)",
         "endtime": "End Time for test",
