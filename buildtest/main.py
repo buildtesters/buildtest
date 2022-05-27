@@ -196,6 +196,7 @@ def main():
             testpath=args.testpath,
             buildscript=args.buildscript,
             stagedir=args.stagedir,
+            buildenv=args.buildenv,
         )
     # running bnuildtest schema
     elif args.subcommands == "schema":

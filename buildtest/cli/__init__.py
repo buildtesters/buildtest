@@ -147,7 +147,9 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     )
     path = subparsers.add_parser("path", help="Show path attributes for a given test")
     path_group = path.add_mutually_exclusive_group()
-
+    path_group.add_argument(
+        "-be", "--buildenv", action="store_true", help="Show path to build environment"
+    )
     path_group.add_argument(
         "-t", "--testpath", action="store_true", help="Show path to test script"
     )

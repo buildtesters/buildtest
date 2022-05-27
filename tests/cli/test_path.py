@@ -19,6 +19,7 @@ def test_path():
     path_cmd(name, stagedir=True)
     path_cmd(name, testpath=True)
     path_cmd(name, buildscript=True)
+    path_cmd(name, buildenv=True)
 
     builders = report.builder_names()
     # specify name in format 'buildtest path <name>/<testid>

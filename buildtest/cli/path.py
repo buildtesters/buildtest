@@ -4,7 +4,13 @@ from buildtest.cli.report import Report
 
 
 def path_cmd(
-    name, testpath=None, outfile=None, errfile=None, buildscript=None, stagedir=None
+    name,
+    testpath=None,
+    outfile=None,
+    errfile=None,
+    buildscript=None,
+    stagedir=None,
+    buildenv=None,
 ):
     """This is the entry point for ``buildtest path`` command which will display path
     variables for a given test name. If no options are specified we retrieve the root
@@ -38,6 +44,7 @@ def path_cmd(
         errfile (bool): Retrieve path to error file for a given test
         buildscript (bool): Retrieve path to build script for a given test
         stagedir (bool): Retrieve path to stage directory for a given test
+        buildenv (bool): Retrieve path to buildenv for a given test
     """
     report = Report()
 
@@ -79,5 +86,8 @@ def path_cmd(
 
     if stagedir:
         path = record[tid]["stagedir"]
+
+    if buildenv:
+        path = record[tid]["buildenv"]
 
     print(path)
