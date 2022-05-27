@@ -165,8 +165,9 @@ def test_buildtest_query():
         error = True
         testpath = True
         buildscript = True
+        buildenv = True
 
-    # check buildtest inspect query --output --error --testpath --buildscript <name1> <name2> ...
+    # check buildtest inspect query --output --error --testpath --buildscript --buildenv <name1> <name2> ...
     inspect_cmd(args)
 
     class args:
@@ -178,6 +179,7 @@ def test_buildtest_query():
         error = False
         testpath = False
         buildscript = False
+        buildenv = False
 
     # check invalid test name when querying result which will result in exception SystemExit
     with pytest.raises(SystemExit):

@@ -832,7 +832,9 @@ def inspect_menu(subparsers):
     query_list.add_argument(
         "-b", "--buildscript", action="store_true", help="Print build script"
     )
-
+    query_list.add_argument(
+        "-be", "--buildenv", action="store_true", help="Print content of build env"
+    )
     query_list.add_argument(
         "-e", "--error", action="store_true", help="Print error file"
     )
