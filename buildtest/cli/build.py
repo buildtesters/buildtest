@@ -9,7 +9,7 @@ import re
 import shutil
 import sys
 import tempfile
-import time
+import traceback
 from datetime import datetime
 
 from buildtest import BUILDTEST_VERSION
@@ -47,13 +47,9 @@ from buildtest.utils.file import (
 from jsonschema.exceptions import ValidationError
 from rich import box
 from rich.panel import Panel
-from rich.table import Table
+from rich.table import Column, Table
 
 logger = logging.getLogger(__name__)
-
-
-import traceback
-
 
 # Context manager that copies stdout and any exceptions to a log file
 class Tee(object):
@@ -952,8 +948,8 @@ class BuildTest:
         console.rule("[bold red]Building Test")
 
         valid_builders = []
-        for builder in self.builders:
 
+        for builder in self.builders:
             try:
                 builder.build(
                     modules=self.modules,
@@ -1177,7 +1173,6 @@ class BuildTest:
     def print_builders(
         self, compiler_builder, spack_builder, script_builder, batch_builder
     ):
-        from rich.table import Column
 
         """Print detected builders during build phase"""
 
@@ -1375,6 +1370,7 @@ def update_report(valid_builders, report_file):
             "command",
             "outfile",
             "errfile",
+            "buildenv",
             "buildspec_content",
             "test_content",
             "buildscript_content",
