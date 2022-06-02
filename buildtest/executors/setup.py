@@ -336,7 +336,7 @@ class BuildExecutor:
             executor.add_builder(builder)
             self.builders.add(builder)
 
-        num_workers = self.configuration.target_config.get("numprocs") or os.cpu_count()
+        num_workers = self.configuration.target_config.get("poolsize") or os.cpu_count()
         # in case user specifies more process than available CPU count use the min of the two numbers
         num_workers = min(num_workers, os.cpu_count())
 
