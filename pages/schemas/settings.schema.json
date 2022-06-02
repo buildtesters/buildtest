@@ -39,11 +39,11 @@
           "type": "string",
           "description": "system description field"
         },
-        "numprocs":
+        "poolsize":
         {
           "type": "integer",
           "minimum": 1,
-          "description": "Specify size of Process Pool for parallel processing"
+          "description": "Specify size of Process Pool for parallel processing using ``multiprocessing.Pool``"
         },
         "buildspec_roots": {
           "type": "array",
