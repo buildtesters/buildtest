@@ -310,6 +310,7 @@ example we defined a slurm executor named **haswell_debug** which will submit jo
 qos on the haswell partition as follows:
 
 .. code-block:: yaml
+   :emphasize-lines: 4
 
     executors:
       slurm:
@@ -339,6 +340,7 @@ can be done via ``partition`` property. In this next example we define an execut
 to slurm partition **regular_hsw**.
 
 .. code-block:: yaml
+   :emphasize-lines: 4
 
     executors:
       slurm:
@@ -577,3 +579,32 @@ For instance if you want all test to timeout within 60 sec you can do the follow
 
 The ``timeout`` field is not set by default, it can be configured in the configuration file but can be overridden via command line
 option ``buildtest build --timeout``. For more details see :ref:`test_timeout`
+
+Configuring Pool Size
+----------------------
+
+buildtest makes use of `multiprocessing.Pool <https://docs.python.org/3/library/multiprocessing.html#multiprocessing.pool.Pool>`_ which is used
+to control pool size for worker processes used for processing builders during run phase. We can use the ``poolsize`` property
+to control the size of pool. The pool size must be 1 or higher, if value exceeds maximum CPU count (i.e. `os.cpu_count() <https://docs.python.org/3/library/os.html#os.cpu_count>`_)
+then value is set to maximum CPU count.
+
+Shown below we set ``poolsize`` to 1.
+
+
+.. code-block:: yaml
+    :emphasize-lines: 14
+
+    system:
+      generic:
+        # specify list of hostnames where buildtest can run for given system record
+        hostnames: [".*"]
+
+        # system description
+        description: Generic System
+        # specify module system used at your site (environment-modules, lmod)
+        moduletool: N/A
+
+        # specify test timeout duration in number of seconds
+        # timeout: 60
+
+        poolsize: 1

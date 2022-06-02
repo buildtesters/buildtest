@@ -2,6 +2,7 @@ system:
   generic:
     hostnames: ['.*']
     moduletool: lmod
+    poolsize: 1
     buildspec_roots:
       - $HOME/buildtest-cori
     testdir: /tmp/buildtest

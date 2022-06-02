@@ -2,6 +2,7 @@ system:
   generic:
     hostnames: ['.*']
     moduletool: N/A
+    poolsize: 1
     executors:
       defaults:
          pollinterval: 10
