@@ -237,7 +237,7 @@ buildspecs:
   summary_example:
     type: script
     executor: generic.local.bash
-    description: Short description limited to 80 characters
+    description: The summary field can be a multi-line string and exceed 80 char
     summary: |
       This is a long description of test that
       can exceed 80 characters and be multiline
