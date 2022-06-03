@@ -82,7 +82,7 @@
     },
     "summary": {
       "type": "string",
-      "description": "The ``description`` field is used to document what the test is doing",
+      "description": "The ``description`` field is used to document what the test is doing"
     },
     "tags": {
       "description": "Classify tests using a tag name, this can be used for categorizing test and building tests using ``--tags`` option",
