@@ -234,6 +234,15 @@ buildspecs:
     skip: true
     run: hostname
 
+  summary_example:
+    type: script
+    executor: generic.local.bash
+    description: Short description limited to 80 characters
+    summary: |
+      This is a long description of test that
+      can exceed 80 characters and be multiline
+    run: hostname
+
   tag_str_example:
     type: script
     executor: generic.local.bash
