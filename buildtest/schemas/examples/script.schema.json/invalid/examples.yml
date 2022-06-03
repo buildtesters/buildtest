@@ -41,6 +41,21 @@ buildspecs:
       - "Multi Line description"
       - "is not accepted"
 
+
+  invalid_summary_1:
+    type: script
+    executor: generic.local.bash
+    description: "test"
+    summary: "test"
+
+
+  invalid_summary_2:
+    type: script
+    executor: generic.local.bash
+    description: 1
+    summary: 1
+
+
   invalid_regex_stream:
     type: script
     executor: generic.local.bash
