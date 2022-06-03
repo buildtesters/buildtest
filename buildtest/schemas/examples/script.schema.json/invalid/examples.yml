@@ -42,17 +42,10 @@ buildspecs:
       - "is not accepted"
 
 
-  invalid_summary_1:
+  invalid_summary:
     type: script
     executor: generic.local.bash
-    description: "test"
-    summary: "test"
-
-
-  invalid_summary_2:
-    type: script
-    executor: generic.local.bash
-    description: 1
+    description: summary field must be a string
     summary: 1
 
 
