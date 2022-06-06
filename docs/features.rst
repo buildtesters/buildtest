@@ -303,7 +303,12 @@ If you want to view buildtest configuration you can run ``buildtest config view`
 
 .. command-output:: buildtest config view
 
-.. Note:: ``buildtest config view`` will display contents of user buildtest settings ``~/.buildtest/config.yml`` if found, otherwise it will display the default configuration
+Edit buildtest configuration (``buildtest config edit``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``buildtest config edit`` command is used to open buildtest configuration file in your preferred editor. buildtest will
+use the environment **EDITOR** to get the preffered editor; however, one can override the environment variable via command line option
+``buildtest --editor``.
 
 .. _view_executors:
 
