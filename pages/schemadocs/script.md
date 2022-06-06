@@ -20,6 +20,7 @@ The script schema is of `type: script` in sub-schema which is used for running s
 | :-------------------------- | :-------- | :------- | :------------- | :----------------------------------------------------------------------------------------------------------- |
 | [type](#type)               | `string`  | Required | cannot be null | [script schema version](script-properties-type.md "script.schema.json#/properties/type")                     |
 | [description](#description) | `string`  | Optional | cannot be null | [script schema version](definitions-definitions-description.md "script.schema.json#/properties/description") |
+| [summary](#summary)         | `string`  | Optional | cannot be null | [script schema version](definitions-definitions-summary.md "script.schema.json#/properties/summary")         |
 | [sbatch](#sbatch)           | `array`   | Optional | cannot be null | [script schema version](script-properties-sbatch.md "script.schema.json#/properties/sbatch")                 |
 | [bsub](#bsub)               | `array`   | Optional | cannot be null | [script schema version](script-properties-bsub.md "script.schema.json#/properties/bsub")                     |
 | [cobalt](#cobalt)           | `array`   | Optional | cannot be null | [script schema version](script-properties-cobalt.md "script.schema.json#/properties/cobalt")                 |
@@ -89,6 +90,24 @@ The `description` field is used to document what the test is doing
 ### description Constraints
 
 **maximum length**: the maximum number of characters for this string is: `80`
+
+## summary
+
+The `summary` field is used to document what the test is doing and can be a multi-line string
+
+`summary`
+
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [script schema version](definitions-definitions-summary.md "script.schema.json#/properties/summary")
+
+### summary Type
+
+`string`
 
 ## sbatch
 

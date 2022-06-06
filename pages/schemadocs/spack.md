@@ -20,6 +20,7 @@ The spack schema is referenced using `type: spack` which is used for generating 
 | :-------------------------- | :-------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------------- |
 | [type](#type)               | `string`  | Required | cannot be null | [spack schema version](spack-properties-type.md "spack.schema.json#/properties/type")                      |
 | [description](#description) | `string`  | Optional | cannot be null | [spack schema version](definitions-definitions-description.md "spack.schema.json#/properties/description") |
+| [summary](#summary)         | `string`  | Optional | cannot be null | [spack schema version](definitions-definitions-summary.md "spack.schema.json#/properties/summary")         |
 | [executor](#executor)       | `string`  | Required | cannot be null | [spack schema version](definitions-definitions-executor.md "spack.schema.json#/properties/executor")       |
 | [env](#env)                 | `object`  | Optional | cannot be null | [spack schema version](definitions-definitions-env.md "spack.schema.json#/properties/env")                 |
 | [vars](#vars)               | `object`  | Optional | cannot be null | [spack schema version](definitions-definitions-env.md "spack.schema.json#/properties/vars")                |
@@ -88,6 +89,24 @@ The `description` field is used to document what the test is doing
 ### description Constraints
 
 **maximum length**: the maximum number of characters for this string is: `80`
+
+## summary
+
+The `summary` field is used to document what the test is doing and can be a multi-line string
+
+`summary`
+
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [spack schema version](definitions-definitions-summary.md "spack.schema.json#/properties/summary")
+
+### summary Type
+
+`string`
 
 ## executor
 

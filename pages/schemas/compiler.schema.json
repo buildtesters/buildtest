@@ -153,6 +153,9 @@
     "description": {
       "$ref": "definitions.schema.json#/definitions/description"
     },
+    "summary": {
+      "$ref": "definitions.schema.json#/definitions/summary"
+    },
     "needs": {
       "$ref": "definitions.schema.json#/definitions/needs"
     },

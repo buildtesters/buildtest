@@ -20,6 +20,7 @@ The compiler schema is of `type: compiler` in sub-schema which is used for compi
 | :-------------------------- | :-------- | :------- | :------------- | :--------------------------------------------------------------------------------------------------- |
 | [type](#type)               | `string`  | Required | cannot be null | [compiler schema](compiler-properties-type.md "compiler.schema.json#/properties/type")               |
 | [description](#description) | `string`  | Optional | cannot be null | [compiler schema](compiler-properties-description.md "compiler.schema.json#/properties/description") |
+| [summary](#summary)         | `string`  | Optional | cannot be null | [compiler schema](compiler-properties-summary.md "compiler.schema.json#/properties/summary")         |
 | [needs](#needs)             | `array`   | Optional | cannot be null | [compiler schema](definitions-definitions-needs.md "compiler.schema.json#/properties/needs")         |
 | [compilers](#compilers)     | `object`  | Required | cannot be null | [compiler schema](compiler-properties-compilers.md "compiler.schema.json#/properties/compilers")     |
 | [source](#source)           | `string`  | Required | cannot be null | [compiler schema](compiler-properties-source.md "compiler.schema.json#/properties/source")           |
@@ -77,6 +78,24 @@ The `description` field is used to document what the test is doing
 ### description Constraints
 
 **maximum length**: the maximum number of characters for this string is: `80`
+
+## summary
+
+The `summary` field is used to document what the test is doing and can be a multi-line string
+
+`summary`
+
+*   is optional
+
+*   Type: `string`
+
+*   cannot be null
+
+*   defined in: [compiler schema](compiler-properties-summary.md "compiler.schema.json#/properties/summary")
+
+### summary Type
+
+`string`
 
 ## needs
 

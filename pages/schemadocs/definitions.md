@@ -140,6 +140,17 @@ Reference this group by using
 | Property | Type | Required | Nullable | Defined by |
 | :------- | :--- | :------- | :------- | :--------- |
 
+## Definitions group summary
+
+Reference this group by using
+
+```json
+{"$ref":"definitions.schema.json#/definitions/summary"}
+```
+
+| Property | Type | Required | Nullable | Defined by |
+| :------- | :--- | :------- | :------- | :--------- |
+
 ## Definitions group tags
 
 Reference this group by using
