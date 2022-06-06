@@ -118,12 +118,18 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         "-d", "--debug", action="store_true", help="Print debug messages to screen"
     )
     parser.add_argument(
-        "--no-color", help="Disable colored output", action="store_true"
+        "--editor",
+        help="Select your preferred editor when opening files.",
+        choices=["vi", "vim", "emacs", "nano"],
     )
-    parser.add_argument("-r", "--report", help="Specify path to test report file")
     parser.add_argument(
         "--lastlog", action="store_true", help="Show content of last log"
     )
+    parser.add_argument(
+        "--no-color", help="Disable colored output", action="store_true"
+    )
+    parser.add_argument("-r", "--report", help="Specify path to test report file")
+
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 
     build_menu(subparsers)
