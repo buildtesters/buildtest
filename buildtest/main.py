@@ -39,6 +39,7 @@ from buildtest.defaults import (
 )
 from buildtest.log import init_logfile
 from buildtest.system import BuildTestSystem
+from buildtest.tools.editor import set_editor
 from buildtest.tools.stylecheck import run_style_checks
 from buildtest.tools.unittests import run_unit_tests
 from buildtest.utils.file import (
@@ -98,6 +99,7 @@ def main():
     configuration.detect_system()
     configuration.validate(validate_executors)
 
+    buildtest_editor = set_editor(args.editor)
     logger.info(f"[red]Processing buildtest configuration file: {configuration.file}")
 
     # build buildspec cache file automatically if it doesn't exist
@@ -160,9 +162,17 @@ def main():
         elif args.buildspecs_subcommand == "show":
             show_buildspecs(test_names=args.name, configuration=configuration)
         elif args.buildspecs_subcommand == "edit":
-            edit_buildspec_test(test_names=args.name, configuration=configuration)
+            edit_buildspec_test(
+                test_names=args.name,
+                configuration=configuration,
+                editor=buildtest_editor,
+            )
         elif args.buildspecs_subcommand == "edit-file":
-            edit_buildspec_file(buildspecs=args.file, configuration=configuration)
+            edit_buildspec_file(
+                buildspecs=args.file,
+                configuration=configuration,
+                editor=buildtest_editor,
+            )
         elif args.buildspecs_subcommand == "validate":
             buildspec_validate(
                 buildspecs=args.buildspec,
@@ -182,7 +192,7 @@ def main():
         if args.config == "compilers":
             compiler_cmd(args, configuration)
         else:
-            config_cmd(args, configuration)
+            config_cmd(args, configuration, buildtest_editor)
 
     # buildtest report
     elif args.subcommands in ["report", "rt"]:

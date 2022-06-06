@@ -1,5 +1,4 @@
 import json
-import os
 import subprocess
 import sys
 
@@ -12,7 +11,7 @@ from rich.syntax import Syntax
 from rich.table import Column, Table
 
 
-def config_cmd(args, configuration):
+def config_cmd(args, configuration, editor):
     """Entry point for ``buildtest config`` command. This method will invoke other methods depending on input argument.
 
     Args:
@@ -40,10 +39,10 @@ def config_cmd(args, configuration):
         view_system(configuration)
 
     elif args.config == "edit":
-        edit_configuration(configuration)
+        edit_configuration(configuration, editor)
 
 
-def edit_configuration(configuration):
+def edit_configuration(configuration, editor):
     """This method will open configuration file in editor. The preferred editor will be determined based on environment
     variable ``EDITOR`` if found otherwise will resort to ``vim``.
 
@@ -51,9 +50,9 @@ def edit_configuration(configuration):
         configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class used for storing buildtest configuration
     """
 
-    EDITOR = os.environ.get("EDITOR", "vi")
-
-    subprocess.call([EDITOR, configuration.file])
+    # subprocess.call([editor, configuration.file])
+    cmd = subprocess.Popen([editor, configuration.file])
+    cmd.communicate()
 
     print(f"Writing configuration file: {configuration.file}")
 

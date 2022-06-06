@@ -906,7 +906,7 @@ class BuildspecCache:
             console.print(path)
 
 
-def edit_buildspec_test(test_names, configuration):
+def edit_buildspec_test(test_names, configuration, editor):
     """Open a list of test names in editor mode defined by ``EDITOR`` environment otherwise resort to ``vim``.
     This method will search for buildspec cache and find path to buildspec file corresponding to test name and open
     file in editor. If multiple test are specified via ``buildtest buildspec edit`` then each file will be open and
@@ -915,6 +915,7 @@ def edit_buildspec_test(test_names, configuration):
     Args:
         test_names (list): A list of test names to open in editor
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        editor (str): Path to editor to use when opening file
     """
     cache = BuildspecCache(configuration=configuration)
 
@@ -925,9 +926,7 @@ def edit_buildspec_test(test_names, configuration):
 
         buildspec = cache.lookup_buildspec_by_name(name)
 
-        EDITOR = os.environ.get("EDITOR", "vim")
-
-        subprocess.call([EDITOR, buildspec])
+        subprocess.call([editor, buildspec])
         print(f"Writing file: {buildspec}")
 
         be = BuildExecutor(configuration)
@@ -939,12 +938,13 @@ def edit_buildspec_test(test_names, configuration):
         console.print(f"[green]{buildspec} is valid")
 
 
-def edit_buildspec_file(buildspecs, configuration):
+def edit_buildspec_file(buildspecs, configuration, editor):
     """Open buildspec in editor and validate buildspec with parser. This method is invoked by command ``buildtest buildspec edit-file``.
 
     Args:
         buildspec (str): Path to buildspec file to edit
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        editor (str): Path to editor to use when opening file
     """
     for file in buildspecs:
 
@@ -955,9 +955,7 @@ def edit_buildspec_file(buildspecs, configuration):
             )
             continue
 
-        EDITOR = os.environ.get("EDITOR", "vim")
-
-        subprocess.call([EDITOR, buildspec])
+        subprocess.call([editor, buildspec])
 
         print(f"Writing file: {buildspec}")
 
