@@ -32,7 +32,7 @@ jobs:
       env:
         OS: ${{ matrix.os }}
       run: |
-        if [ $OS = "ubuntu-latest" ] ; then sudo apt-get install -y csh tcsh zsh && add-apt-repository ppa:kelleyk/emacs && apt-get install -y emacs27; else brew install tcsh zsh emacs ;  fi
+        if [ $OS = "ubuntu-latest" ] ; then sudo apt-get install -y csh tcsh zsh && sudo add-apt-repository ppa:kelleyk/emacs && sudo apt-get install -y emacs27; else brew install tcsh zsh emacs ;  fi
         cat /etc/shells
         source setup.sh
         pip install pytest
