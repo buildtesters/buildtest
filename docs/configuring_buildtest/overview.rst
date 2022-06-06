@@ -439,10 +439,10 @@ PBS Executors
 --------------
 
 .. Note:: buildtest PBS support relies on job history set because buildtest needs to query job after completion using ``qstat -x``. This
-          can be configured using ``qmgr`` by setting ``set server job_history_enable=True``. For more details see section **13.15.5.1 Enabling Job History** in `PBS 2020.1 Admin Guide <https://www.altair.com/pdfs/pbsworks/PBSAdminGuide2020.1.pdf>`_
+          can be configured using ``qmgr`` by setting ``set server job_history_enable=True``. For more details see section **14.15.5.1 Enabling Job History** in `PBS 2021.1.3 Admin Guide <https://help.altair.com/2021.1.3/PBS%20Professional/PBSAdminGuide2021.1.3.pdf>`_
 
 
-buildtest supports `PBS <https://www.altair.com/pbs-works-documentation/>`_ scheduler
+buildtest supports `PBS <https://community.altair.com/community?id=altair_product_documentation>`_ scheduler
 which can be defined in the ``executors`` section. Shown below is an example configuration using
 one ``pbs`` executor named ``workq``.  The property ``queue: workq`` defines
 the name of PBS queue that is available in your system.

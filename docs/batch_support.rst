@@ -482,7 +482,7 @@ Shown below is an example build of the buildspec using PBS scheduler.
 
 buildtest can determine status of test based on PBS Job State. This can be configured via ``pbs_job_state`` property
 that is an attribute of **status** field. The ``pbs_job_state`` can be one of three values **H**, **S**, **F**. ``H`` refers to Job Held, ``S`` refers
-to suspended job and ``F`` refers to Finished job. Please see **Table 2-24: Job States** in https://www.altair.com/pdfs/pbsworks/PBSReferenceGuide2021.1.pdf.
+to suspended job and ``F`` refers to Finished job. Please see **Table 8-1: Job States** in https://2021.help.altair.com/2021.1.2/PBS%20Professional/PBSReferenceGuide2021.1.2.pdf.
 
 In example below we simulate a failed job by expecting job to be in Hold state (``H``) however job will finish with a job state of ``F``. buildtest will match
 the actual job state reported by PBS and value of ``pbs_job_state``, if there is a match we will report a ``PASS`` otherwise job will be a ``FAIL``.
