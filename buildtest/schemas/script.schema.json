@@ -19,6 +19,9 @@
     "description": {
       "$ref": "definitions.schema.json#/definitions/description"
     },
+    "summary": {
+      "$ref": "definitions.schema.json#/definitions/summary"
+    },
     "sbatch": {
       "$ref": "definitions.schema.json#/definitions/sbatch"
     },

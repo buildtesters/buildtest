@@ -1,0 +1,10 @@
+buildspecs:
+  summary_example:
+    type: script
+    executor: generic.local.bash
+    description: The summary field can be a multi-line string and exceed 80 char
+    tags: [tutorials]
+    summary: |
+      This is a long description of test that
+      can exceed 80 characters and be multiline
+    run: hostname

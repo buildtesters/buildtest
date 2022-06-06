@@ -17,6 +17,7 @@
       "description": "Select schema type to use when validating buildspec. This must be set to 'spack'"
     },
     "description": { "$ref": "definitions.schema.json#/definitions/description" },
+    "summary": { "$ref": "definitions.schema.json#/definitions/summary" },
     "executor": { "$ref": "definitions.schema.json#/definitions/executor" },
     "env": { "$ref": "definitions.schema.json#/definitions/env" },
     "vars": { "$ref": "definitions.schema.json#/definitions/env" },
