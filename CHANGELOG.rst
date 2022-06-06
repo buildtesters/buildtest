@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+v0.14.1 (TBD)
+--------------
+
+- Add option ``--buildenv`` to **buildtest report**, **buildtest path** and **buildtest inspect query** and add entry `buildenv` to capture build environment from test. `#1062 <https://github.com/buildtesters/buildtest/pull/1062>`_
+- Add support to timeout test via ``buildtest build --timeout`` which is calculated in number of seconds. `#1052 <https://github.com/buildtesters/buildtest/pull/1052>`_, `#1057 <https://github.com/buildtesters/buildtest/pull/1057>`_
+- Rename property *numprocs* to *poolsize* in buildtest configuration for configuring number of worker process when using multiprocessing library. `#1064 <https://github.com/buildtesters/buildtest/pull/1064>`_
+- Add option ``buildtest --editor`` to specify your preferred editor when opening files. `#1070 <https://github.com/buildtesters/buildtest/pull/1070>`_
+- Add ``summary`` property to specify an extended description of test that is not limited to 80 character unlike the `description` field. See `#1069 <https://github.com/buildtesters/buildtest/pull/1069>`_
+
 v0.14.0 (Mar 18th 2022)
 -----------------------
 
