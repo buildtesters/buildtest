@@ -86,8 +86,8 @@ def get_parser():
     epilog_str = f"""
 References
 
-GitHub:                  https://github.com/buildtesters/buildtest 
-Documentation:           https://buildtest.readthedocs.io/en/latest/index.html             
+GitHub:                  https://github.com/buildtesters/buildtest
+Documentation:           https://buildtest.readthedocs.io/en/latest/index.html
 Schema Documentation:    https://buildtesters.github.io/buildtest/
 Slack:                   http://hpcbuildtest.slack.com/
 
@@ -748,6 +748,12 @@ def report_menu(subparsers):
         "--format",
         help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
     )
+
+    parser_report.add_argument(
+        "--failure",
+        help="failure field to report all test failtures",
+    )
+
     parser_report.add_argument(
         "--helpfilter",
         action="store_true",
