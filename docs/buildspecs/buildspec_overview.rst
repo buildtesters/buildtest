@@ -65,6 +65,17 @@ summary of the test. In this example we can a full multi-line run section, this
 is achieved in YAML using ``run: |`` followed by content of run section tab indented
 2 spaces.
 
+Let's look at a more comprehensive example, shown below is a multi line run
+example using the `script` schema with test name called
+**summary_example**, shown below is the content of test:
+
+.. literalinclude:: ../tutorials/summary_example.yml
+    :language: yaml
+    :emphasize-lines: 5,7,8,9
+
+The ``summary`` field is also an optional key that can be used to provide a brief summary
+of the test. The ``summary`` field can be a multi-line string and exceed 80 chars.
+
 .. _script_schema:
 
 Script Schema
