@@ -61,9 +61,20 @@ To reference this executor use the format ``<system>.<type>.<name>`` in this cas
 refers to bash executor.
 
 The ``description`` field is an optional key that can be used to provide a brief
-summary of the test. In this example we can a full multi-line run section, this
-is achieved in YAML using ``run: |`` followed by content of run section tab indented
+summary of the test. The `description` field is limited to 80 characters. 
+In this example we can specify multiple commands in ``run`` section, this
+can be done in YAML using ``run: |`` followed by content of run section tab indented
 2 spaces.
+
+In this next example, we introduce the ``summary`` field, which can be used as an extended description of test. It has no 
+impact on the test. Unlike the ``description`` field, the summary field has no limit on character count and one can define multi-line
+string using the pipe symbol **|**. 
+
+.. literalinclude:: ../tutorials/summary_example.yml
+    :language: yaml
+    :emphasize-lines: 5,7,8,9
+
+
 
 .. _script_schema:
 
