@@ -188,7 +188,7 @@ def main():
         inspect_cmd(args, report_file=report_file)
 
     elif args.subcommands in ["stats"]:
-        stats_cmd(args, report_file=report_file)
+        stats_cmd(name=args.name, report_file=report_file)
     # running buildtest config
     elif args.subcommands in ["config", "cg"]:
         #  running buildtest config compilers

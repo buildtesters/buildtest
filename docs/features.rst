@@ -233,6 +233,15 @@ into this situation you will get the following error.
 If you specify an invalid test name or buildtest can't find the test id, then buildtest will print list of available test names
 with IDs.
 
+Test Statistics (``buildtest stats``)
+---------------------------------------
+
+The ``buildtest stats`` command can be used to get statistics for a particular test. The input argument is a positional argument which is
+name of test found in the report file. The output will show some useful details such as First and Last Run, show fastest and slowest runtime
+including mean and variance. Shown below is the test statistics for **exit_fail**.
+
+.. command-output:: buildtest stats exit1_fail
+
 Buildtest Debug Report (``buildtest debugreport``)
 ---------------------------------------------------
 
