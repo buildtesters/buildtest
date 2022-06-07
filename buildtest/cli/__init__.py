@@ -748,12 +748,6 @@ def report_menu(subparsers):
         "--format",
         help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
     )
-
-    parser_report.add_argument(
-        "--failure",
-        help="failure field to report all test failtures",
-    )
-
     parser_report.add_argument(
         "--helpfilter",
         action="store_true",
@@ -761,6 +755,11 @@ def report_menu(subparsers):
     )
     parser_report.add_argument(
         "--helpformat", action="store_true", help="List of available format fields"
+    )
+    parser_report.add_argument(
+        "--failure",
+        help="Retrieve all records of failure tests",
+        action="store_true",
     )
     parser_report.add_argument(
         "--latest",
