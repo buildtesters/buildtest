@@ -186,6 +186,11 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         help="Display system information and additional information for debugging purposes.",
     )
 
+    parser_stats = subparsers.add_parser(
+        "stats", help="Show test statistics for given test"
+    )
+    parser_stats.add_argument("name", help="Name of test")
+
     help_subparser = subparsers.add_parser(
         "help",
         aliases=["h"],

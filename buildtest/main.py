@@ -27,6 +27,7 @@ from buildtest.cli.inspect import inspect_cmd
 from buildtest.cli.path import path_cmd
 from buildtest.cli.report import report_cmd
 from buildtest.cli.schema import schema_cmd
+from buildtest.cli.stats import stats_cmd
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
@@ -186,6 +187,8 @@ def main():
     elif args.subcommands in ["inspect", "it"]:
         inspect_cmd(args, report_file=report_file)
 
+    elif args.subcommands in ["stats"]:
+        stats_cmd(args, report_file=report_file)
     # running buildtest config
     elif args.subcommands in ["config", "cg"]:
         #  running buildtest config compilers
