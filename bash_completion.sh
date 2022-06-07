@@ -136,6 +136,8 @@ _buildtest ()
         COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
       fi
       ;;
+    stats)
+      COMPREPLY=( $( compgen  -W "$(_test_name)" -- $cur ) );;
     schema)
       local opts="-h -n -e -j --name --example --json"
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
