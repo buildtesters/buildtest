@@ -757,8 +757,9 @@ def report_menu(subparsers):
         "--helpformat", action="store_true", help="List of available format fields"
     )
     parser_report.add_argument(
+        "-f",
         "--failure",
-        help="Retrieve all records of failure tests",
+        help="Retrieve all FAIL tests",
         action="store_true",
     )
     parser_report.add_argument(
