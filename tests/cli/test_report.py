@@ -106,6 +106,13 @@ def test_report_oldest_and_latest():
 
 
 @pytest.mark.cli
+def test_report_failure():
+
+    # buildtest report --filter tags=tutorials --failure
+    Report(filter_args={"tags": "tutorials"}, failure=True)
+
+
+@pytest.mark.cli
 def test_invalid_filters():
 
     # run 'buildtest report --filter state=UNKNOWN --format name,state',
