@@ -161,13 +161,9 @@ want to report all test failures after a regression test.
 Let's take a look at this example, we filter by tag name ``tutorials`` which retrieves a subset of
 test runs. In subsequent example we retrieve all failure tests via ``--failure`` option.
 
-.. command-output:: buildtest report --filter tags=tutorials --format name,id,starttime
+.. command-output:: buildtest report --filter tags=tutorials --format name,id,state
 
-.. command-output:: buildtest report --filter tags=tutorials --format name,id,starttime --failure
-
-You may run the following command to get the same result.
-
-.. command-output:: buildtest report --filter tags=tutorials,state=FAIL --format name,id,starttime --failure
+.. command-output:: buildtest report --filter tags=tutorials --format name,id,state --failure
 
 Terse Output
 -------------
