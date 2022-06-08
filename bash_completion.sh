@@ -149,7 +149,7 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --terse  -h -n -t clear list summary"
+      local opts="--failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --terse  -f -h -n -t clear list summary"
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
       case "${COMP_WORDS[2]}" in summary)
         local opts="-h --help --pager"
@@ -191,7 +191,7 @@ _buildtest ()
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         name)
           COMPREPLY=( $( compgen -W "$(_builder_names)" -- $cur ) )
-          
+
           if [[ $cur == -* ]] ; then
             local opts="--all --help -a -h"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )

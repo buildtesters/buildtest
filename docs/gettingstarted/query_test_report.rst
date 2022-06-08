@@ -152,6 +152,21 @@ buildtest will retrieve the first and last record of every test.
 
 .. command-output:: buildtest report --filter name=exit1_pass --format name,id,starttime --oldest --latest
 
+Find all Failed Tests (``buildtest report --failure``)
+--------------------------------------------------------
+
+The ``buildtest report --failure`` command can be used to retrieve all failed tests which is equivalent to filtering tests 
+by **state=FAIL** since test state is determined by **state** property. This command can be useful to pin-point failures.
+
+Let's take a look at these two example, the first test queries report by filtering by tag name ``tutorials`` and the second command
+will run same example with ``--failure`` option. Take note of the **state** property in table, in second example buildtest will
+filter test and report all **FAIL** tests.
+
+
+.. command-output:: buildtest report --filter tags=tutorials --format name,id,state
+
+.. command-output:: buildtest report --filter tags=tutorials --format name,id,state --failure
+
 Terse Output
 -------------
 

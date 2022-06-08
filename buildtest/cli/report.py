@@ -79,6 +79,7 @@ class Report:
         report_file=None,
         filter_args=None,
         format_args=None,
+        failure=None,
         latest=None,
         oldest=None,
         pager=None,
@@ -88,10 +89,12 @@ class Report:
             report_file (str, optional): Full path to report file to read
             filter_args (str, optional): A comma separated list of Key=Value pair for filter arguments via ``buildtest report --filter``
             format (str, optional): A comma separated list of format fields for altering report table. This is specified via ``buildtest report --format``
+            failure (bool, optional): Fetch failure run for all tests discovered. This is specified via ``buildtest report --failure``
             latest (bool, optional): Fetch latest run for all tests discovered. This is specified via ``buildtest report --latest``
             oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
             pager (bool, optional): Enabling PAGING output for ``buildtest report``. This can be specified via ``buildtest report --pager``
         """
+        self.failure = failure
         self.latest = latest
         self.oldest = oldest
         self.filter = filter_args
@@ -354,6 +357,9 @@ class Report:
                 # retrieve first record of every test if --oldest is specified
                 elif self.oldest:
                     tests = [self.report[buildspec][name][0]]
+                # retrieve all records of failure tests if --failure is specified
+                elif self.failure:
+                    tests = [test for test in tests if test["state"] == "FAIL"]
 
                 # process all tests for an associated script. There can be multiple
                 # test runs for a single test depending on how many tests were run
@@ -656,6 +662,7 @@ def report_cmd(args, report_file=None):
     results = Report(
         filter_args=args.filter,
         format_args=args.format,
+        failure=args.failure,
         latest=args.latest,
         oldest=args.oldest,
         report_file=report_file,
