@@ -152,14 +152,14 @@ buildtest will retrieve the first and last record of every test.
 
 .. command-output:: buildtest report --filter name=exit1_pass --format name,id,starttime --oldest --latest
 
-Find Failure
+Find Failure (``buildtest report --failure``)
 --------------------------
 
 We can fetch failure run for all tests discovered. This can be useful if you
-want to retrieve all records of failure tests after a regression test.
+want to report all test failures after a regression test.
 
 Let's take a look at this example, we filter by tag name ``tutorials`` which retrieves a subset of
-test runs. In subsequent example we add ``failure`` boolean flag to retrieve `FAIL` tests only.
+test runs. In subsequent example we retrieve all failure tests via ``--failure`` option.
 
 .. command-output:: buildtest report --filter tags=tutorials --format name,id,starttime
 
