@@ -768,6 +768,18 @@ def report_menu(subparsers):
         action="store_true",
     )
     parser_report.add_argument(
+        "-s",
+        "--start",
+        help="Retrieve by starttime",
+        action="store_true",
+    )
+    parser_report.add_argument(
+        "-e",
+        "--end",
+        help="Retrieve by endtime",
+        action="store_true",
+    )
+    parser_report.add_argument(
         "--latest",
         help="Retrieve latest record of particular test",
         action="store_true",
