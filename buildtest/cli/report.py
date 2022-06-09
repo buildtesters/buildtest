@@ -289,6 +289,29 @@ class Report:
                     f"filter argument 'state' must be 'PASS' or 'FAIL' got value {self.filter['state']}"
                 )
 
+    def filter_by_start_end(self, test):
+        """This method will return a boolean (True/False) to check if test should be included from report. Given an input test, we
+        check if a test record has 'starttime' and 'endtime' fields in range specified by ``--start`` and ``--end`` by the user. If
+        there is a match we return ``True``. A ``False`` indicates the test will not be incldued in report.
+
+        Args:
+            test (dict): Test recorded loaded as dictionary
+        """
+
+        test_fmt = "%Y/%m/%d %H:%M:%S"
+        test_start = datetime.datetime.strptime(test.get("starttime"), test_fmt)
+        test_end = datetime.datetime.strptime(test.get("endtime"), test_fmt)
+        end_include = self.end + datetime.timedelta(days=1)
+
+        if self.start and self.end:
+            return True if test_start >= self.start and test_end <= end_include else False
+
+        if self.start:
+            return True if test_start >= self.start else False
+
+        if self.end:
+            return True if test_end >= self.end else False
+
     def _filter_by_names(self, name):
         """Filter test by name of test. This method will return True if record should be processed,
         otherwise returns False
@@ -389,6 +412,9 @@ class Report:
                 # retrieve all records of failure tests if --failure is specified
                 elif self.failure:
                     tests = [test for test in tests if test["state"] == "FAIL"]
+                # retirve all records of tests filtered by start or end if --start ir --end are specified
+                elif self.start or self.end:
+                    tests = [test for test in tests if self.filter_by_start_end(test)]
 
                 # process all tests for an associated script. There can be multiple
                 # test runs for a single test depending on how many tests were run
