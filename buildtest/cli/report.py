@@ -301,9 +301,9 @@ class Report:
         test_fmt = "%Y/%m/%d %H:%M:%S"
         test_start = datetime.datetime.strptime(test.get("starttime"), test_fmt)
         test_end = datetime.datetime.strptime(test.get("endtime"), test_fmt)
-        end_include = self.end + datetime.timedelta(days=1)
 
         if self.start and self.end:
+            end_include = self.end + datetime.timedelta(days=1)
             return True if test_start >= self.start and test_end <= end_include else False
 
         if self.start:
