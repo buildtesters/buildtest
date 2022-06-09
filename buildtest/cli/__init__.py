@@ -808,13 +808,13 @@ def report_menu(subparsers):
         "-s",
         "--start",
         type=valid_time,
-        help="Retrieve by starttime",
+        help="Retrieve tests by starttime",
     )
     parser_report.add_argument(
         "-e",
         "--end",
         type=valid_time,
-        help="Retrieve by endtime",
+        help="Retrieve tests by endtime",
     )
     parser_report.add_argument(
         "--latest",
