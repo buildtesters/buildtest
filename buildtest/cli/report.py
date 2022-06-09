@@ -1,3 +1,4 @@
+import datetime
 import logging
 import os
 import sys
@@ -79,6 +80,8 @@ class Report:
         report_file=None,
         filter_args=None,
         format_args=None,
+        start=None,
+        end=None,
         failure=None,
         latest=None,
         oldest=None,
@@ -89,11 +92,15 @@ class Report:
             report_file (str, optional): Full path to report file to read
             filter_args (str, optional): A comma separated list of Key=Value pair for filter arguments via ``buildtest report --filter``
             format (str, optional): A comma separated list of format fields for altering report table. This is specified via ``buildtest report --format``
+            start (datetime, optional): Fetch run for all tests discovered filered by starttime . This is specified via ``buildtest report --start``
+            end (datetime, optional): Fetch run for all tests discovered filered by endtime. This is specified via ``buildtest report --end``
             failure (bool, optional): Fetch failure run for all tests discovered. This is specified via ``buildtest report --failure``
             latest (bool, optional): Fetch latest run for all tests discovered. This is specified via ``buildtest report --latest``
             oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
             pager (bool, optional): Enabling PAGING output for ``buildtest report``. This can be specified via ``buildtest report --pager``
         """
+        self.start = start
+        self.end = end
         self.failure = failure
         self.latest = latest
         self.oldest = oldest
@@ -113,6 +120,7 @@ class Report:
         self.report = self.load()
         self._check_filter_fields()
         self._check_format_fields()
+        self._check_start_and_end_fields()
         self.filter_buildspecs_from_report()
 
         self.process_report()
@@ -182,6 +190,27 @@ class Report:
 
             for field in self.display_format_fields:
                 self.display_table[field] = []
+
+    def _check_start_and_end_fields(self):
+        """Check start argument (--start) and end argument (--end) are valid. The start argument is specified
+        in format (--start yyyy-mm-dd), end argument in format (--end yyyy-mm-dd), or both (--start yyyy-mm-dd --end yyyy-mm-dd).
+
+        Raises:
+            BuildTestError: If --start is greater than --end or --end is greater than now
+        """
+
+        if self.end:
+
+            current_time = datetime.datetime.now()
+            logger.debug(f"checking end field: {self.end}")
+
+            if self.end > current_time:
+                raise BuildTestError(f"Invalid --end {self.end} is greater than current time {current_time}")
+
+            logger.debug(f"checking start field: {self.start}")
+
+            if self.start and self.start > self.end:
+                raise BuildTestError(f"Invalid --start {self.start} is greater than --end {self.end}")
 
     def load(self):
         """This method is responsible for loading report file. If file not found
@@ -662,6 +691,8 @@ def report_cmd(args, report_file=None):
     results = Report(
         filter_args=args.filter,
         format_args=args.format,
+        start=args.start,
+        end=args.end,
         failure=args.failure,
         latest=args.latest,
         oldest=args.oldest,
