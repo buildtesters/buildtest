@@ -115,8 +115,7 @@ def valid_time(value):
         console.print_exception()
         raise ValueError
 
-    format_string = dt_object.strftime(fmt)
-    return format_string
+    return dt_object
 
 
 def get_parser():
