@@ -1,3 +1,4 @@
+import datetime
 import os
 import shutil
 import tempfile
@@ -110,6 +111,23 @@ def test_report_failure():
 
     # buildtest report --filter tags=tutorials --failure
     Report(filter_args={"tags": "tutorials"}, failure=True)
+
+
+@pytest.mark.cli
+def test_report_start_and_end():
+
+    fmt = "%Y-%m-%d"
+    start_date = datetime.datetime.strptime("2022-06-07", fmt)
+    end_date = datetime.datetime.strptime("2022-06-09", fmt)
+
+    # buildtest report --filter tags=tutorials --start
+    Report(filter_args={"tags": "tutorials"}, start=start_date)
+
+    # buildtest report --filter tags=tutorials --end
+    Report(filter_args={"tags": "tutorials"}, end=end_date)
+
+    # buildtest report --filter tags=tutorials --start --end
+    Report(filter_args={"tags": "tutorials"}, start=start_date, end=end_date)
 
 
 @pytest.mark.cli
