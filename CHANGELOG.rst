@@ -4,11 +4,20 @@ CHANGELOG
 v0.14.1 (TBD)
 --------------
 
-- Add option ``--buildenv`` to **buildtest report**, **buildtest path** and **buildtest inspect query** and add entry `buildenv` to capture build environment from test. `#1062 <https://github.com/buildtesters/buildtest/pull/1062>`_
-- Add support to timeout test via ``buildtest build --timeout`` which is calculated in number of seconds. `#1052 <https://github.com/buildtesters/buildtest/pull/1052>`_, `#1057 <https://github.com/buildtesters/buildtest/pull/1057>`_
-- Rename property *numprocs* to *poolsize* in buildtest configuration for configuring number of worker process when using multiprocessing library. `#1064 <https://github.com/buildtesters/buildtest/pull/1064>`_
-- Add option ``buildtest --editor`` to specify your preferred editor when opening files. `#1070 <https://github.com/buildtesters/buildtest/pull/1070>`_
-- Add ``summary`` property to specify an extended description of test that is not limited to 80 character unlike the `description` field. See `#1069 <https://github.com/buildtesters/buildtest/pull/1069>`_
+**New Options**
+
+- Add option ``--buildenv`` to **buildtest report**, **buildtest path** and **buildtest inspect query** and add entry `buildenv` to capture build environment from test `#1062 <https://github.com/buildtesters/buildtest/pull/1062>`_
+- Add support to timeout test via ``buildtest build --timeout`` which is calculated in number of seconds `#1052 <https://github.com/buildtesters/buildtest/pull/1052>`_, `#1057 <https://github.com/buildtesters/buildtest/pull/1057>`_
+- Add option ``buildtest --editor`` to specify your preferred editor when opening files `#1070 <https://github.com/buildtesters/buildtest/pull/1070>`_
+- Rename ``buildtest buildspec edit`` to ``buildtest buildspec edit-test`` used for editing files by testname which is to be consistent with `buildtest buildspec edit-file` which edits by filename `#1081 <https://github.com/buildtesters/buildtest/pull/1081>`_
+- Add option ``buildtest report --failure`` to report all failure tests `#1076 <https://github.com/buildtesters/buildtest/pull/1076>`_
+- Add new command ``buildtest stats`` to show test stats which can be useful for analysis purpose. This command is subject to change  `#1074 <https://github.com/buildtesters/buildtest/pull/1074>`_
+- Add option ``buildtest cdash upload --open`` to CDASH result that was recently pushed in webbrowser which can be useful if one wants to run this command as pose to clicking link that is shown in output `#1083 <https://github.com/buildtesters/buildtest/pull/1083>`_
+
+**Changes to buildspec**
+
+- Rename property **numprocs** to **poolsize** in buildtest configuration for configuring number of worker process when using multiprocessing library. `#1064 <https://github.com/buildtesters/buildtest/pull/1064>`_
+- Add **summary** property to provide extended description of test that is not limited to 80 character unlike the `description` field. `#1069 <https://github.com/buildtesters/buildtest/pull/1069>`_,  `#1073 <https://github.com/buildtesters/buildtest/pull/1073>`_
 
 v0.14.0 (Mar 18th 2022)
 -----------------------
