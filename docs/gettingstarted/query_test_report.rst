@@ -155,7 +155,7 @@ buildtest will retrieve the first and last record of every test.
 Find all Failed Tests (``buildtest report --failure``)
 --------------------------------------------------------
 
-The ``buildtest report --failure`` command can be used to retrieve all failed tests which is equivalent to filtering tests 
+The ``buildtest report --failure`` command can be used to retrieve all failed tests which is equivalent to filtering tests
 by **state=FAIL** since test state is determined by **state** property. This command can be useful to pin-point failures.
 
 Let's take a look at these two example, the first test queries report by filtering by tag name ``tutorials`` and the second command
@@ -166,6 +166,21 @@ filter test and report all **FAIL** tests.
 .. command-output:: buildtest report --filter tags=tutorials --format name,id,state
 
 .. command-output:: buildtest report --filter tags=tutorials --format name,id,state --failure
+
+Find Tests by Start and End Dates(``buildtest report --start --end``)
+--------------------------------------------------------
+
+The ``buildtest report --start --end`` command can be used to retrieve all tests in [start, end] dates range.
+This command can be useful to pin-point tests by a specific date range.
+
+Let's take a look at these two example, the first test queries report by filtering by tag name ``tutorials`` and the second command
+will run same example with ``--start --end`` option. Take note of the **starttime** and **endtime** properties in table, in second example buildtest will
+filter test and only report tests in the range of [start, end] dates.
+
+
+.. command-output:: buildtest report --filter tags=tutorials --format starttime,endtime
+
+.. command-output:: buildtest report --filter tags=tutorials --format starttime,endtime --start 2022-06-07 --end 2022-06-09
 
 Terse Output
 -------------
