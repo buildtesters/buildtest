@@ -205,12 +205,16 @@ class Report:
             logger.debug(f"checking end field: {self.end}")
 
             if self.end > current_time:
-                raise BuildTestError(f"Invalid --end {self.end} is greater than current time {current_time}")
+                raise BuildTestError(
+                    f"Invalid --end {self.end} is greater than current time {current_time}"
+                )
 
             logger.debug(f"checking start field: {self.start}")
 
             if self.start and self.start > self.end:
-                raise BuildTestError(f"Invalid --start {self.start} is greater than --end {self.end}")
+                raise BuildTestError(
+                    f"Invalid --start {self.start} is greater than --end {self.end}"
+                )
 
     def load(self):
         """This method is responsible for loading report file. If file not found
@@ -304,7 +308,9 @@ class Report:
 
         if self.start and self.end:
             end_include = self.end + datetime.timedelta(days=1)
-            return True if test_start >= self.start and test_end <= end_include else False
+            return (
+                True if test_start >= self.start and test_end <= end_include else False
+            )
 
         if self.start:
             return True if test_start >= self.start else False
