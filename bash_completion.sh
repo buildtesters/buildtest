@@ -83,7 +83,7 @@ _buildtest ()
 
   COMPREPLY=()   # Array variable storing the possible completions.
 
-  local cmds="build buildspec cd cdash clean config debugreport docs edit help inspect history path report schema schemadocs stylecheck unittests"
+  local cmds="build buildspec cd cdash clean config debugreport docs edit-test help inspect history path report schema schemadocs stylecheck unittests"
   local alias_cmds="bd bc cg it et h hy rt style"
   local opts="--color --config --debug --editor --help --lastlog --report --version -c -d -h -r -V"
 
@@ -158,7 +158,7 @@ _buildtest ()
       esac
       ;;
     config|cg)
-      local cmds="-h --help compilers edit executors validate view systems"
+      local cmds="-h --help compilers edit-test executors validate view systems"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
@@ -216,7 +216,7 @@ _buildtest ()
       ;;
 
     buildspec|bc)
-      local cmds="-h --help edit edit-file find show summary validate"
+      local cmds="-h --help edit-test edit-file find show summary validate"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
@@ -236,7 +236,7 @@ _buildtest ()
            COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) );;
          esac
         ;;
-      show|edit)
+      show|edit-test)
         COMPREPLY=( $( compgen -W "$(_buildspec_cache_test_names)" -- $cur ) );;
       edit-file)
         COMPREPLY=( $( compgen -W "$(_avail_buildspecs)" -- $cur ) );;
