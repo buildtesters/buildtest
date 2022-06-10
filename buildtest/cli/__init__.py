@@ -496,19 +496,19 @@ def buildspec_menu(subparsers):
         nargs="*",
     )
 
-    edit_buildspecs = subparsers_buildspec.add_parser(
-        "edit", help="Edit buildspec file based on test name"
+    edit_via_testname = subparsers_buildspec.add_parser(
+        "edit-test", help="Edit buildspec file based on test name"
     )
-    edit_buildspecs.add_argument(
+    edit_via_testname.add_argument(
         "name",
         help="Show content of buildspec based on test name",
         nargs="*",
     )
 
-    edit_file = subparsers_buildspec.add_parser(
+    edit_via_filename = subparsers_buildspec.add_parser(
         "edit-file", help="Edit buildspec file based on filename"
     )
-    edit_file.add_argument(
+    edit_via_filename.add_argument(
         "file",
         help="Edit buildspec file in editor",
         nargs="*",
