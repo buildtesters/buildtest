@@ -14,7 +14,7 @@ from urllib.request import Request, urlopen
 import requests
 import yaml
 from buildtest.defaults import BUILD_REPORT, console
-from buildtest.utils.file import resolve_path
+from buildtest.utils.file import is_file, resolve_path
 from buildtest.utils.tools import deep_get
 
 
@@ -46,31 +46,11 @@ def cdash_cmd(args, default_configuration=None, open_browser=True, report_file=N
         )
 
     if args.cdash == "view":
-
-        url = cdash_config["url"]
-        project = cdash_config["project"]
-        target_url = urljoin(url, f"index.php?project={project}")
-
-        console.print("Opening URL:", target_url)
-        # check for url via requests, it can raise an exception if its invalid URL in that case we print a message
-        try:
-            r = requests.get(target_url)
-        except requests.ConnectionError as err:
-            print(err)
-
-            print(
-                "\nShown below is the CDASH settings from configuration file:",
-                configuration.file,
-            )
-            print(yaml.dump(cdash_config, indent=2))
-            sys.exit(f"Invalid URL: {target_url}")
-
-        # A 200 status code is valid URL, if its not found we exit before opening page in browser
-        if not r.status_code == 200:
-            sys.exit("Invalid URL")
-
-        if open_browser:
-            webbrowser.open(target_url)
+        view_cdash_project(
+            cdash_config=cdash_config,
+            config_file=configuration.file,
+            open_browser=open_browser,
+        )
 
     if args.cdash == "upload":
 
@@ -79,10 +59,46 @@ def cdash_cmd(args, default_configuration=None, open_browser=True, report_file=N
             configuration=configuration,
             site=args.site,
             report_file=report_file,
+            open_browser=args.open,
         )
 
 
-def upload_test_cdash(build_name, configuration, site=None, report_file=None):
+def view_cdash_project(cdash_config, config_file, open_browser=None):
+    """Open CDASH project in browser which can be done by running ``buildtest cdash view``.
+    Args:
+        cdash_config (dict): Loaded CDASH configuration from configuration file
+        config_file (str): Path to configuration file
+        open_browser (bool, optional): Determine whether to open file in browser. This option is useful for regression check since we dont want to open file during a run
+    """
+    url = cdash_config["url"]
+    project = cdash_config["project"]
+    target_url = urljoin(url, f"index.php?project={project}")
+
+    console.print("Opening URL:", target_url)
+    # check for url via requests, it can raise an exception if its invalid URL in that case we print a message
+    try:
+        r = requests.get(target_url)
+    except requests.ConnectionError as err:
+        print(err)
+
+        print(
+            "\nShown below is the CDASH settings from configuration file:",
+            config_file,
+        )
+        print(yaml.dump(cdash_config, indent=2))
+        sys.exit(f"Invalid URL: {target_url}")
+
+    # A 200 status code is valid URL, if its not found we exit before opening page in browser
+    if not r.status_code == 200:
+        sys.exit("Invalid URL")
+
+    if open_browser:
+        webbrowser.open(target_url)
+
+
+def upload_test_cdash(
+    build_name, configuration, site=None, report_file=None, open_browser=None
+):
     """This method is responsible for reading report file and pushing results to CDASH
     server. User can specify cdash settings in configuration file or pass them in command line.
     The command ``buildtest cdash upload`` will upload results to CDASH.
@@ -104,8 +120,9 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
     Args:
         build_name (str): build name that shows up in CDASH
         configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class that contains the configuration file
-        site (str): Site name that shows up in CDASH
-        report (str): Path to report file when uploading results. This is specified via ``buildtest cdash upload -r`` command
+        site (str, optional): Site name that shows up in CDASH
+        report (str, optional): Path to report file when uploading results. This is specified via ``buildtest cdash upload -r`` command
+        open_browser (str, optional): Open CDASH report in web browser. This is specified via ``buildtest cdash upload --open`` command
     """
 
     cdash_url = configuration.target_config["cdash"]["url"]
@@ -117,16 +134,14 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
 
     try:
         requests.get(cdash_url)
-    except requests.ConnectionError as err:
+    except requests.ConnectionError:
         print(
             "\nShown below is the CDASH settings from configuration file:",
             configuration.file,
         )
         print(yaml.dump(configuration.target_config["cdash"], indent=2))
-        sys.exit(err)
-
-    if not requests.get(cdash_url).status_code == 200:
-        sys.exit(f"Invalid URL: {cdash_url} please check your CDASH server URL.")
+        console.print_exception()
+        raise requests.ConnectionError
 
     upload_url = urljoin(cdash_url, f"submit.php?project={project_name}")
 
@@ -134,6 +149,7 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
     # output of text property is the following:
     # '<cdash version="3.0.3">\n  <status>OK</status>\n  <message></message>\n  <md5>d41d8cd98f00b204e9800998ecf8427e</md5>\n</cdash>\n'
     if not re.search("<status>OK</status>", r.text):
+        console.print("[red]Malformed XML, please check if project exist on CDASH!")
         sys.exit(f"Invalid URL: {upload_url}")
 
     # For best CDash results, builds names should be consistent (ie not change every time).
@@ -146,9 +162,9 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
 
     tests = []
     abspath_report_file = resolve_path(report_file) or BUILD_REPORT
-    if not abspath_report_file:
+    if not is_file(abspath_report_file):
         sys.exit(
-            f"Unable to find report file: {report_file} please build a test via buildtest build"
+            f"Unable to find report file: {abspath_report_file} please build a test via buildtest build"
         )
 
     print("Reading report file: ", abspath_report_file)
@@ -236,8 +252,9 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
                     ansi_escape.sub("", test["output"])
                     ansi_escape.sub("", test["error"])
 
+    console.print(f"Uploading {len(tests)} tests")
+
     build_stamp = build_starttime.strftime(output_datetime_format)
-    build_stamp += "-Experimental"
 
     filename = "Test.xml"
     site_element = ET.Element(
@@ -383,32 +400,31 @@ def upload_test_cdash(build_name, configuration, site=None, report_file=None):
         md5sum = hashlib.md5(xml_file.read().encode("utf-8")).hexdigest()
 
     buildid_regexp = re.compile("<buildId>([0-9]+)</buildId>")
-    with open(filename, "rb") as f:
+    with open(filename, "rb") as fd:
         params_dict = {
             "build": build_name,
             "site": site_name,
             "stamp": build_stamp,
             "MD5": md5sum,
         }
-        print("build name: ", build_name)
-        print("site: ", site_name)
-        print("stamp: ", build_stamp)
-        print("MD5SUM:", md5sum)
+        console.print("[red]Build Name: ", build_name)
+        console.print("[green]site: ", site_name)
+        console.print("[blue]MD5SUM:", md5sum)
         encoded_params = urlencode(params_dict)
         url = "{0}&{1}".format(upload_url, encoded_params)
         hdrs = {"Content-Type": "text/xml", "Content-Length": os.path.getsize(filename)}
-        request = Request(url, data=f, method="PUT", headers=hdrs)
+        request = Request(url, data=fd, method="PUT", headers=hdrs)
 
         with urlopen(request) as response:
             resp_value = response.read()
             if isinstance(resp_value, bytes):
                 resp_value = resp_value.decode("utf-8")
             match = buildid_regexp.search(resp_value)
-            print("PUT STATUS:", response.status)
             if match:
                 buildid = match.group(1)
-                print(
-                    f"You can view the results at: {cdash_url}/viewTest.php?buildid={buildid}"
-                )
+                url_view = f"{cdash_url}/viewTest.php?buildid={buildid}"
+                console.print(f"You can view the results at: {url_view}")
+                if open_browser:
+                    webbrowser.open(url_view)
 
         os.remove(filename)
