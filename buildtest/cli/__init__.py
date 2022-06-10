@@ -904,3 +904,6 @@ def cdash_menu(subparsers):
 
     upload.add_argument("--site", help="Specify site name reported in CDASH")
     upload.add_argument("buildname", help="Specify Build Name reported in CDASH")
+    upload.add_argument(
+        "-o", "--open", action="store_true", help="Open CDASH report in browser"
+    )

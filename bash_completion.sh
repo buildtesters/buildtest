@@ -282,7 +282,7 @@ _buildtest ()
         local opts="-h --help"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       elif [[ "${prev}" == "upload" ]]; then
-        local opts="-h --help --site"
+        local opts="--help --open --site -h -o"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       fi
       ;;
