@@ -44,3 +44,4 @@ env.bak/
 
 # ignore .packages directory
 .packages/
+Pipfile
