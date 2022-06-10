@@ -13,6 +13,7 @@ v0.14.1 (TBD)
 - Add option ``buildtest report --failure`` to report all failure tests `#1076 <https://github.com/buildtesters/buildtest/pull/1076>`_
 - Add new command ``buildtest stats`` to show test stats which can be useful for analysis purpose. This command is subject to change  `#1074 <https://github.com/buildtesters/buildtest/pull/1074>`_
 - Add option ``buildtest cdash upload --open`` to CDASH result that was recently pushed in webbrowser which can be useful if one wants to run this command as pose to clicking link that is shown in output `#1083 <https://github.com/buildtesters/buildtest/pull/1083>`_
+- Add option ``buildtest report --start`` and ``buildtest report --end`` to filter test records by starttime and endtime `#1082 <https://github.com/buildtesters/buildtest/pull/1082>`_
 
 **Changes to buildspec**
 
