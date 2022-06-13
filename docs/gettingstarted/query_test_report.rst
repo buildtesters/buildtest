@@ -172,7 +172,7 @@ Find Tests by Start and End Date (``buildtest report --start --end``)
 
 The ``buildtest report --start`` and ``buildtest report --end`` command can be used to retrieve test records based on start and end date.
 
-Let's take a look at these two example, the first test queries report by filtering by tag name ``state`` and ``name``. The second command
+Let's take a look at these two example, the first test queries report by filtering by **state** and **name**. The second command
 will run same example with ``--start --end`` option. Take note of the **starttime** and **endtime** properties in table, in second example buildtest will
 filter test and only report tests in the range of [start, end] dates.
 
