@@ -167,7 +167,7 @@ filter test and report all **FAIL** tests.
 
 .. command-output:: buildtest report --filter tags=tutorials --format name,id,state --failure
 
-Find Tests by Start and End Date(``buildtest report --start --end``)
+Find Tests by Start and End Date (``buildtest report --start --end``)
 --------------------------------------------------------
 
 The ``buildtest report --start`` and ``buildtest report --end`` command can be used to retrieve test records based on start and end date.
