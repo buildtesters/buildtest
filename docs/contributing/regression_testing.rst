@@ -3,10 +3,11 @@ Buildtest Unit Tests
 
 buildtest has a suite of unit tests to verify the state of buildtest. These
 tests are located in the top-level directory `tests <https://github.com/buildtesters/buildtest/tree/devel/tests>`_
-and tests are run via `pytest <https://docs.pytest.org/en/latest/>`_
+and run via `pytest <https://docs.pytest.org/en/latest/>`_
 
 In order to run regression tests, you will need ``pytest`` and ``coverage``
-installed in your python environment. This should be installed when installing buildtest.
+in your python environment. This should be available if you installed buildtest and also run `pip install -r docs/requirements.txt`
+which installs all developer dependencies.
 
 Writing Unit Tests
 -------------------
