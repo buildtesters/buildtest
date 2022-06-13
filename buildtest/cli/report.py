@@ -196,7 +196,7 @@ class Report:
         in format (--start yyyy-mm-dd), end argument in format (--end yyyy-mm-dd), or both (--start yyyy-mm-dd --end yyyy-mm-dd).
 
         Raises:
-            BuildTestError: If --start is greater than --end or --end is greater than now
+            BuildTestError: If --start is greater than --end or --end is greater than current time - datetime.datetime.now()
         """
 
         if self.end:
