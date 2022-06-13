@@ -362,7 +362,7 @@ with two commands to edit your buildspecs ``buildtest buildspec edit-test`` and 
 discuss below.
 
 Editing by Test ``buildtest buildspec edit-test``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``buildtest buildspec edit-test`` allows one to specify a list of test as positional
 arguments to edit-test in your preferred editor. buildtest will provide tab completion for this
