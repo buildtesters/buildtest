@@ -92,7 +92,7 @@ class Report:
             report_file (str, optional): Full path to report file to read
             filter_args (str, optional): A comma separated list of Key=Value pair for filter arguments via ``buildtest report --filter``
             format (str, optional): A comma separated list of format fields for altering report table. This is specified via ``buildtest report --format``
-            start (datetime, optional): Fetch run for all tests discovered filered by starttime . This is specified via ``buildtest report --start``
+            start (datetime, optional): Fetch run for all tests discovered filered by starttime. This is specified via ``buildtest report --start``
             end (datetime, optional): Fetch run for all tests discovered filered by endtime. This is specified via ``buildtest report --end``
             failure (bool, optional): Fetch failure run for all tests discovered. This is specified via ``buildtest report --failure``
             latest (bool, optional): Fetch latest run for all tests discovered. This is specified via ``buildtest report --latest``
@@ -299,7 +299,7 @@ class Report:
         there is a match we return ``True``. A ``False`` indicates the test will not be incldued in report.
 
         Args:
-            test (dict): Test recorded loaded as dictionary
+            test (dict): Test record loaded as dictionary
         """
 
         test_fmt = "%Y/%m/%d %H:%M:%S"
@@ -418,7 +418,7 @@ class Report:
                 # retrieve all records of failure tests if --failure is specified
                 elif self.failure:
                     tests = [test for test in tests if test["state"] == "FAIL"]
-                # retirve all records of tests filtered by start or end if --start ir --end are specified
+                # retrieve all records of tests filtered by start or end if --start and end are specified
                 elif self.start or self.end:
                     tests = [test for test in tests if self.filter_by_start_end(test)]
 
