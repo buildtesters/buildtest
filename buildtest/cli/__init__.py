@@ -3,6 +3,7 @@ buildtest cli: include functions to build, get test configurations, and
 interact with a global configuration for buildtest.
 """
 import argparse
+import datetime
 
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import console
@@ -79,6 +80,42 @@ def positive_number(value):
             f"Input: {value} converted to int: {int_val} must be a positive number"
         )
     return int_val
+
+
+def valid_time(value):
+    """Checks if input is valid time and returns value as a str type.
+
+    Args:
+        value (str): Specify an input date in yyyy-mm-dd format
+
+    Returns:
+        int: Return value as str type in correct format
+
+    Raises:
+        argparse.ArgumentTypeError will be raised if input is not str or input is not in desired format
+
+    >>> valid_time("2022-01-01")
+    "2022-01-01"
+
+    >>> valid_time("2022-01-13")
+    "2022-01-13"
+    """
+
+    if not isinstance(value, str):
+        raise argparse.ArgumentTypeError(
+            f"Input must be string type, you have specified '{value}' which is of type {type(value)}"
+        )
+
+    fmt = "%Y-%m-%d"
+
+    try:
+        dt_object = datetime.datetime.strptime(value, fmt)
+    except ValueError:
+        console.print(f"[red]Unable to convert {value} to correct date format")
+        console.print_exception()
+        raise ValueError
+
+    return dt_object
 
 
 def get_parser():
@@ -766,6 +803,18 @@ def report_menu(subparsers):
         "--failure",
         help="Retrieve all FAIL tests",
         action="store_true",
+    )
+    parser_report.add_argument(
+        "-s",
+        "--start",
+        type=valid_time,
+        help="Retrieve tests by starttime",
+    )
+    parser_report.add_argument(
+        "-e",
+        "--end",
+        type=valid_time,
+        help="Retrieve tests by endtime",
     )
     parser_report.add_argument(
         "--latest",
