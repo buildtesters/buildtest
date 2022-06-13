@@ -116,7 +116,7 @@ def test_report_failure():
 @pytest.mark.cli
 def test_report_start_and_end():
 
-    start_date = datetime.datetime.strptime("2022-06-07 00:00:00", '%Y-%m-%d %X')
+    start_date = datetime.datetime.strptime("2022-06-07 00:00:00", "%Y-%m-%d %X")
     end_date = datetime.datetime.now()
 
     # buildtest report --filter tags=tutorials --start
