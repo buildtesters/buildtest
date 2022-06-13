@@ -184,6 +184,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     subparsers.add_parser(
         "debugreport",
         help="Display system information and additional information for debugging purposes.",
+        aliases=["debug"],
     )
 
     parser_stats = subparsers.add_parser(
@@ -214,8 +215,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         help="Show help message for command",
     )
     unittests_parser = subparsers.add_parser(
-        "unittests",
-        help="Run buildtest unit tests",
+        "unittests", help="Run buildtest unit tests", aliases=["test"]
     )
     unittests_parser.add_argument(
         "-c",

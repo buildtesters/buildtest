@@ -257,10 +257,10 @@ def main():
     elif args.subcommands == "schemadocs":
         webbrowser.open("https://buildtesters.github.io/buildtest/")
 
-    elif args.subcommands == "debugreport":
+    elif args.subcommands in ["debug", "debugreport"]:
         print_debug_report(system, configuration)
 
-    elif args.subcommands == "unittests":
+    elif args.subcommands in ["unittests", "test"]:
         run_unit_tests(
             pytestopts=args.pytestopts,
             sourcefiles=args.sourcefiles,
