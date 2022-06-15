@@ -489,25 +489,25 @@ def buildtest_help(command):
         command (str): Name of buildtest command specified by ``buildtest help <command>``
     """
 
-    if command == "build":
+    if command in ["build", "bd"]:
         print_build_help()
-    elif command == "buildspec":
+    elif command in ["buildspec", "bc"]:
         print_buildspec_help()
-    elif command == "config":
+    elif command in ["config", "cg"]:
         print_config_help()
-    elif command == "inspect":
+    elif command in ["inspect", "it"]:
         print_inspect_help()
-    elif command == "report":
+    elif command in ["report", "rt"]:
         print_report_help()
     elif command == "path":
         print_path_help()
-    elif command == "history":
+    elif command in ["history", "hy"]:
         print_history_help()
     elif command == "cdash":
         print_cdash_help()
     elif command == "schema":
         print_schema_help()
-    elif command == "stylecheck":
+    elif command in ["stylecheck", "style"]:
         print_stylecheck_help()
-    elif command == "unittests":
+    elif command in ["unittests", "test"]:
         print_unittests_help()
