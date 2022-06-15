@@ -75,6 +75,11 @@ _buildspec_cache_test_names()
 {
   buildtest buildspec find --format name --terse -n | sort
 }
+
+_avail_maintainers()
+{
+  buildtest buildspec maintainers --terse -l --no-header | sort
+}
 #  entry point to buildtest bash completion function
 _buildtest ()
 {
@@ -216,7 +221,7 @@ _buildtest ()
       ;;
 
     buildspec|bc)
-      local cmds="-h --help edit-test edit-file find show summary validate"
+      local cmds="-h --help edit-test edit-file find maintainers show summary validate"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
@@ -229,8 +234,8 @@ _buildtest ()
            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
          # completion for rest of arguments
          *)
-           local longopts="--buildspec --executors --filter --format --group-by-executor --group-by-tags --help --helpfilter --helpformat --maintainers --maintainers-by-buildspecs --no-header --pager --paths --rebuild --tags --root --terse"
-           local shortopts="-b -e -h -m -mb -n -p -r -t"
+           local longopts="--buildspec --executors --filter --format --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --rebuild --tags --root --terse"
+           local shortopts="-b -e -h -n -p -r -t"
            local subcmds="invalid"
            local allopts="${longopts} ${shortopts} ${subcmds}"
            COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) );;
@@ -238,6 +243,16 @@ _buildtest ()
         ;;
       show|edit-test)
         COMPREPLY=( $( compgen -W "$(_buildspec_cache_test_names)" -- $cur ) );;
+      maintainers)
+        local opts="--breakdown --list --help --terse --no-header -b -h -l -n find"
+        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+
+        case ${COMP_WORDS[3]} in
+        find)
+          COMPREPLY=( $( compgen -W "$(_avail_maintainers)" -- $cur ) );;
+        esac
+        ;;
+
       edit-file)
         COMPREPLY=( $( compgen -W "$(_avail_buildspecs)" -- $cur ) );;
       validate)

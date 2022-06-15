@@ -9,6 +9,7 @@ from buildtest.cli.build import BuildTest, Tee
 from buildtest.cli.buildspec import (
     BuildspecCache,
     buildspec_find,
+    buildspec_maintainers,
     buildspec_validate,
     edit_buildspec_file,
     edit_buildspec_test,
@@ -176,6 +177,19 @@ def main():
                 configuration=configuration,
                 editor=buildtest_editor,
             )
+        elif args.buildspecs_subcommand == "maintainers":
+            name = None
+            if hasattr(args, "name"):
+                name = args.name
+            buildspec_maintainers(
+                configuration=configuration,
+                list=args.list,
+                breakdown=args.breakdown,
+                terse=args.terse,
+                header=args.no_header,
+                name=name,
+            )
+
         elif args.buildspecs_subcommand == "validate":
             buildspec_validate(
                 buildspecs=args.buildspec,

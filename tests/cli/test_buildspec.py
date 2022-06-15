@@ -6,6 +6,7 @@ import tempfile
 import pytest
 from buildtest.cli.buildspec import (
     BuildspecCache,
+    buildspec_maintainers,
     buildspec_validate,
     show_buildspecs,
     summarize_buildspec_cache,
@@ -90,12 +91,6 @@ def test_func_buildspec_find():
     # buildtest buildspec find --group-by-tags
     cache.print_by_tags()
 
-    # buildtest buildspec find --maintainers
-    cache.print_maintainer()
-
-    # implements buildtest buildspec find --maintainers-by-buildspecs
-    cache.print_maintainers_by_buildspecs()
-
     # implements buildtest buildspec find --helpfilter
     cache.print_filter_fields()
 
@@ -126,6 +121,17 @@ def test_buildspec_find_terse():
     cache.print_by_tags()
     cache.print_maintainer()
     cache.print_maintainers_by_buildspecs()
+
+
+@pytest.mark.cli
+def test_buildspec_maintainers():
+    buildspec_maintainers(
+        configuration=configuration, list=True, terse=True, header=True
+    )
+    buildspec_maintainers(
+        configuration=configuration, breakdown=True, terse=True, header=True
+    )
+    buildspec_maintainers(configuration=configuration, name="@shahzebsiddiqui")
 
 
 @pytest.mark.cli

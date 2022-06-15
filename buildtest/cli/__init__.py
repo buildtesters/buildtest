@@ -504,44 +504,7 @@ def buildspec_menu(subparsers):
         metavar="",
     )
 
-    buildspec_find = subparsers_buildspec.add_parser(
-        "find", help="Query information from buildspecs cache"
-    )
-    filter_group = buildspec_find.add_argument_group(
-        "filter and format", "filter and format options"
-    )
-    terse_group = buildspec_find.add_argument_group("terse", "terse options")
-    query_group = buildspec_find.add_argument_group(
-        "query", "query options to retrieve from buildspec cache"
-    )
-
-    subparsers_invalid = buildspec_find.add_subparsers(
-        metavar="", dest="buildspec_find_subcommand"
-    )
-    invalid_buildspecs = subparsers_invalid.add_parser(
-        "invalid", help="Show invalid buildspecs"
-    )
-
-    subparsers_buildspec.add_parser("summary", help="Print summary of buildspec cache")
-
-    show_buildspecs = subparsers_buildspec.add_parser(
-        "show", help="Show content of buildspec file"
-    )
-    show_buildspecs.add_argument(
-        "name",
-        help="Show content of buildspec based on test name",
-        nargs="*",
-    )
-
-    edit_via_testname = subparsers_buildspec.add_parser(
-        "edit-test", help="Edit buildspec file based on test name"
-    )
-    edit_via_testname.add_argument(
-        "name",
-        help="Show content of buildspec based on test name",
-        nargs="*",
-    )
-
+    # buildtest buildspec edit-file
     edit_via_filename = subparsers_buildspec.add_parser(
         "edit-file", help="Edit buildspec file based on filename"
     )
@@ -551,44 +514,74 @@ def buildspec_menu(subparsers):
         nargs="*",
     )
 
-    buildspec_validate = subparsers_buildspec.add_parser(
-        "validate", help="Validate buildspecs with JSON Schema"
+    # buildtest buildspec edit-test
+    edit_via_testname = subparsers_buildspec.add_parser(
+        "edit-test", help="Edit buildspec file based on test name"
     )
-    # buildtest buildspec invalid options
+    edit_via_testname.add_argument(
+        "name",
+        help="Show content of buildspec based on test name",
+        nargs="*",
+    )
+
+    # buildtest buildspec find
+
+    buildspec_find = subparsers_buildspec.add_parser(
+        "find", help="Query information from buildspecs cache"
+    )
+
+    # buildtest buildspec maintainers
+    buildspec_maintainers = subparsers_buildspec.add_parser(
+        "maintainers", help="Query maintainers from buildspecs cache"
+    )
+
+    subparsers_maintainers = buildspec_maintainers.add_subparsers()
+    maintainers_find = subparsers_maintainers.add_parser(
+        "find", help="Find buildspecs based on maintainer name"
+    )
+
+    maintainers_find.add_argument(
+        "name", help="Find buildspec based on maintainer name"
+    )
+
+    buildspec_maintainers.add_argument(
+        "-l", "--list", action="store_true", help="List all maintainers"
+    )
+    buildspec_maintainers.add_argument(
+        "-b",
+        "--breakdown",
+        action="store_true",
+        help="Breakdown of buildspecs by maintainers",
+    )
+    buildspec_maintainers.add_argument(
+        "--terse", help="Print output in machine readable format", action="store_true"
+    )
+    buildspec_maintainers.add_argument(
+        "-n",
+        "--no-header",
+        action="store_true",
+        help="Print output without header in terse output",
+    )
+
+    filter_group = buildspec_find.add_argument_group(
+        "filter and format", "filter and format options"
+    )
+    terse_group = buildspec_find.add_argument_group("terse", "terse options")
+    query_group = buildspec_find.add_argument_group(
+        "query", "query options to retrieve from buildspec cache"
+    )
+
+    # buildtest buildspec find invalid
+    subparsers_invalid = buildspec_find.add_subparsers(
+        metavar="", dest="buildspec_find_subcommand"
+    )
+    invalid_buildspecs = subparsers_invalid.add_parser(
+        "invalid", help="Show invalid buildspecs"
+    )
+
+    # buildtest buildspec find invalid options
     invalid_buildspecs.add_argument(
         "-e", "--error", action="store_true", help="Show error messages"
-    )
-
-    # buildtest buildspec validate options
-    buildspec_validate.add_argument(
-        "-b",
-        "--buildspec",
-        type=str,
-        help="Specify path to buildspec (file, or directory) to validate",
-        action="append",
-    )
-
-    buildspec_validate.add_argument(
-        "-x",
-        "--exclude",
-        type=str,
-        help="Specify path to buildspec to exclude (file or directory) during validation",
-        action="append",
-    )
-
-    buildspec_validate.add_argument(
-        "-e",
-        "--executor",
-        type=str,
-        action="append",
-        help="Specify buildspecs by executor name to validate",
-    )
-    buildspec_validate.add_argument(
-        "-t",
-        "--tag",
-        type=str,
-        action="append",
-        help="Specify buildspecs by tag name to validate",
     )
 
     # buildtest buildspec find options
@@ -613,19 +606,6 @@ def buildspec_menu(subparsers):
         "--group-by-executor",
         action="store_true",
         help="Group tests by executor name",
-    )
-
-    query_group.add_argument(
-        "-m",
-        "--maintainers",
-        help="Get all maintainers for all buildspecs",
-        action="store_true",
-    )
-    query_group.add_argument(
-        "-mb",
-        "--maintainers-by-buildspecs",
-        help="Show maintainers breakdown by buildspecs",
-        action="store_true",
     )
     query_group.add_argument(
         "-p", "--paths", help="print all root buildspec paths", action="store_true"
@@ -677,6 +657,55 @@ def buildspec_menu(subparsers):
         help="Specify root buildspecs (directory) path to load buildspecs into buildspec cache.",
         type=str,
         action="append",
+    )
+
+    # buildtest buildspec show
+    show_buildspecs = subparsers_buildspec.add_parser(
+        "show", help="Show content of buildspec file"
+    )
+    show_buildspecs.add_argument(
+        "name",
+        help="Show content of buildspec based on test name",
+        nargs="*",
+    )
+
+    # buildtest buildspec summary
+    subparsers_buildspec.add_parser("summary", help="Print summary of buildspec cache")
+
+    # buildtest buildspec validate
+    buildspec_validate = subparsers_buildspec.add_parser(
+        "validate", help="Validate buildspecs with JSON Schema"
+    )
+    # buildtest buildspec validate options
+    buildspec_validate.add_argument(
+        "-b",
+        "--buildspec",
+        type=str,
+        help="Specify path to buildspec (file, or directory) to validate",
+        action="append",
+    )
+
+    buildspec_validate.add_argument(
+        "-x",
+        "--exclude",
+        type=str,
+        help="Specify path to buildspec to exclude (file or directory) during validation",
+        action="append",
+    )
+
+    buildspec_validate.add_argument(
+        "-e",
+        "--executor",
+        type=str,
+        action="append",
+        help="Specify buildspecs by executor name to validate",
+    )
+    buildspec_validate.add_argument(
+        "-t",
+        "--tag",
+        type=str,
+        action="append",
+        help="Specify buildspecs by tag name to validate",
     )
 
 
