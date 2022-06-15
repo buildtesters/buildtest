@@ -43,7 +43,7 @@ buildspecs:
   hello-world:
     type: script
     run: hostname
-  
+    
   # testing '-' at end of word
   helloworld-:
     type: script
