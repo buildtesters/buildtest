@@ -1,0 +1,48 @@
+buildspecs:
+  # testing all caps
+  ABCDEFGHIJKLMNOPQRSTUVWXYZ:
+    type: script
+    executor: generic.local.bash
+    run: "hostname"
+
+  # testing all lowercase letters
+  abcdefghijklmnopqrstuvwxyz:
+    type: script
+    executor: generic.local.bash
+    run: "hostname"
+
+  # testing '_' in beginning followed by all numbers
+  _0123456789:
+    type: script
+    executor: generic.local.bash
+    run: "hostname"
+
+  # testing '_' in combination with caps, lowercase and numbers
+  _ABCDEFabcdef0123456789:
+    type: script
+    executor: generic.local.bash
+    run: "hostname"
+
+  # testing '_' at end of word
+  abcdefghijklmnopqrstuvwxyz_:
+    type: script
+    executor: generic.local.bash
+    run: "hostname"
+
+  # testing '.' in beginning of word
+  .helloworld:
+    type: script
+    executor: generic.local.bash
+    run: hostname
+
+  # testing '.' in middle of word
+  hello.world:
+    type: script
+    executor: generic.local.bash
+    run: hostname
+
+  # testing '.' at end of word
+  helloworld.:
+    type: script
+    executor: generic.local.bash
+    run: hostname
