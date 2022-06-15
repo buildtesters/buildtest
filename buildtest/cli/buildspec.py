@@ -794,7 +794,6 @@ class BuildspecCache:
 
         table = Table(
             "Maintainers",
-            title="List of Maintainers",
             header_style="blue",
             title_style="red",
             row_styles=["green"],
@@ -810,7 +809,21 @@ class BuildspecCache:
 
         console.print(table)
 
+    def print_maintainers_find(self, name):
+        """Display a list of buildspec files associated to a given maintainer. This command is used when running
+        ``buildtest buildspec maintainers find``
+
+        Args:
+            name (str): Name of maintainer specified via ``buildtest buildspec maintainers find <name>``
+        """
+
+        maintainers = list(self.cache["maintainers"].keys())
+        if name in maintainers:
+            for file in self.cache["maintainers"][name]:
+                console.print(file)
+
     def print_maintainers_by_buildspecs(self):
+
         """This method prints maintainers breakdown by buildspecs. This method implements ``buildtest buildspec find --maintainers-by-buildspecs``"""
         if self.terse:
             if not self.header:
@@ -1118,6 +1131,31 @@ def summarize_buildspec_cache(configuration):
     console.print(layout)
     console.print(invalid_buildspecs_table)
     console.print(buildspec_table)
+
+
+def buildspec_maintainers(
+    configuration, list=None, breakdown=None, terse=None, header=None, name=None
+):
+    """Entry point for ``buildtest buildspec maintainers`` command.
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
+        list (bool, optional): List all maintainers
+        terse (bool, optional): Print in terse mode
+        header (bool, optional): If True disable printing of headers
+        name (str, optional): List all buildspecs corresponding to maintainer name. This command is specified via ``buildtest buildspec maintainers find <name>``
+    """
+
+    cache = BuildspecCache(configuration=configuration, terse=terse, header=header)
+
+    if list:
+        cache.print_maintainer()
+
+    if breakdown:
+        cache.print_maintainers_by_buildspecs()
+
+    if name:
+        cache.print_maintainers_find(name=name)
 
 
 def buildspec_find(args, configuration):
