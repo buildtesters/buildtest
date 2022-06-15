@@ -38,3 +38,13 @@ buildspecs:
   helloworld.:
     type: script
     run: hostname
+
+  # testing '-' in middle of word
+  hello-world:
+    type: script
+    run: hostname
+  
+  # testing '-' at end of word
+  helloworld-:
+    type: script
+    run: hostname
