@@ -21,7 +21,7 @@ unknown
 **pattern**: the string must match the following regular expression:&#x20;
 
 ```regexp
-^[A-Za-z_.][A-Za-z0-9_.]*$
+^[A-Za-z_.-][A-Za-z0-9_.-]*$
 ```
 
-[try pattern](https://regexr.com/?expression=%5E%5BA-Za-z_.%5D%5BA-Za-z0-9_.%5D*%24 "try regular expression with regexr.com")
+[try pattern](https://regexr.com/?expression=%5E%5BA-Za-z_.-%5D%5BA-Za-z0-9_.-%5D*%24 "try regular expression with regexr.com")
