@@ -607,19 +607,6 @@ def buildspec_menu(subparsers):
         action="store_true",
         help="Group tests by executor name",
     )
-
-    query_group.add_argument(
-        "-m",
-        "--maintainers",
-        help="Get all maintainers for all buildspecs",
-        action="store_true",
-    )
-    query_group.add_argument(
-        "-mb",
-        "--maintainers-by-buildspecs",
-        help="Show maintainers breakdown by buildspecs",
-        action="store_true",
-    )
     query_group.add_argument(
         "-p", "--paths", help="print all root buildspec paths", action="store_true"
     )

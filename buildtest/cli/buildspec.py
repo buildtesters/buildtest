@@ -1211,16 +1211,6 @@ def buildspec_find(args, configuration):
         cache.print_by_tags()
         return
 
-    # buildtest buildspec find --maintainers
-    if args.maintainers:
-        cache.print_maintainer()
-        return
-
-    #  buildtest buildspec find --maintainers-by-buildspecs
-    if args.maintainers_by_buildspecs:
-        cache.print_maintainers_by_buildspecs()
-        return
-
     # buildtest buildspec find --helpfilter
     if args.helpfilter:
         cache.print_filter_fields()
