@@ -242,8 +242,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
             "bc",
             "buildspec",
             "cdash",
-            "cg"
-            "config",
+            "cg" "config",
             "hy",
             "history",
             "it",
@@ -256,7 +255,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
             "stylecheck",
             "test",
             "unittests",
-
         ],
         help="Show help message for command",
     )
