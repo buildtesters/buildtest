@@ -237,17 +237,26 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     help_subparser.add_argument(
         "command",
         choices=[
+            "bd",
             "build",
+            "bc",
             "buildspec",
             "cdash",
+            "cg"
             "config",
+            "hy",
             "history",
+            "it",
             "inspect",
             "path",
+            "rt",
             "report",
             "schema",
+            "style",
             "stylecheck",
+            "test",
             "unittests",
+
         ],
         help="Show help message for command",
     )
