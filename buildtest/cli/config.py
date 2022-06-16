@@ -40,10 +40,10 @@ def config_cmd(args, configuration, editor):
 
     elif args.config == "edit":
         edit_configuration(configuration, editor)
-    
+
     elif args.config == "path":
         view_path(configuration)
-        
+
 
 def edit_configuration(configuration, editor):
     """This method will open configuration file in editor. The preferred editor will be determined based on environment
