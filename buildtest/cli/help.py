@@ -229,6 +229,7 @@ def print_config_help():
         "buildtest config executors --disabled", "List all disabled executors"
     )
     table.add_row("buildtest config executors --json", "List all invalid executors")
+    table.add_row("buildtest config path", "Show path to configuration file")
     table.add_row(
         "buildtest config systems",
         "List all available system entries in configuration file",
