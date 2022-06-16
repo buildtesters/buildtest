@@ -40,7 +40,10 @@ def config_cmd(args, configuration, editor):
 
     elif args.config == "edit":
         edit_configuration(configuration, editor)
-
+    
+    elif args.config == "path":
+        view_path(configuration)
+        
 
 def edit_configuration(configuration, editor):
     """This method will open configuration file in editor. The preferred editor will be determined based on environment
@@ -116,6 +119,11 @@ def validate_config(configuration):
         raise sys.exit(f"{configuration.file} is not valid")
 
     console.print(f"{configuration.file} is valid")
+
+
+def view_path(configuration):
+    """Display the path to configuration file regardless if file is valid"""
+    console.print(f"Config path: {configuration.file}")
 
 
 def view_configuration(configuration):
