@@ -119,39 +119,6 @@ class BuildspecParser:
             schema_table["types"],
         )
 
-    def _check_executor(self, test):
-        """This method checks if ``executor`` property is not None and executor
-        value is found in list of available executors.
-
-        Args:
-            test (str): Name of test in ``buildspecs`` property of buildspec file
-
-        Raises:
-            BuildspecError: If there is no match with ``executor`` property in test with list of available executors
-        """
-
-        # extract type field from test, if not found
-        executor = self.recipe["buildspecs"][test].get("executor")
-
-        if not executor:
-            raise BuildspecError(self.buildspec, "No 'executor' key found in buildspec")
-
-        match = False
-        for name in self.buildexecutors.names():
-            if re.match(executor, name):
-                match = True
-                break
-
-        if not match:
-            raise BuildspecError(
-                self.buildspec,
-                f"Unable to find executor: {executor} in {self.buildexecutors.names()}",
-            )
-
-        self.logger.debug(
-            f"Executor: {executor} found in executor list: {self.buildexecutors.names()}"
-        )
-
     def validate(self):
         """This method will validate the entire buildspec file with global schema
         and each test section with a sub-schema. The global validation ensures
@@ -181,7 +148,6 @@ class BuildspecParser:
             )
 
             self._check_schema_type(test)
-            self._check_executor(test)
 
             self.schema_file = os.path.basename(
                 schema_table[f"{self.schema_type}.schema.json"]["path"]

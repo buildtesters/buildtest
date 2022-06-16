@@ -892,10 +892,10 @@ class BuildTest:
                 console.print(msg)
 
         if filtered_buildspecs:
-            table = Table("[blue]buildspecs", title="Buildspecs Filtered out")
+            table = Table("buildspecs", title="Buildspecs Filtered out", header_style="blue", row_styles=["red"])
 
             for test in filtered_buildspecs:
-                table.add_row(f"[red]{test}")
+                table.add_row(test)
             console.print(table)
 
         # if no builders found we return from this method
