@@ -7,7 +7,6 @@ expose functions to run builds.
 
 import logging
 import os
-import re
 
 from buildtest.defaults import console
 from buildtest.exceptions import BuildspecError, BuildTestError
