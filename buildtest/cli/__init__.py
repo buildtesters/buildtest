@@ -737,6 +737,8 @@ def config_menu(subparsers):
         "executors", help="Query executors from buildtest configuration"
     )
 
+    subparsers_config.add_parser("path", help="Show path to configuration file")
+
     subparsers_config.add_parser("systems", help="List all available systems")
 
     subparsers_config.add_parser(
