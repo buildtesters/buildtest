@@ -846,19 +846,44 @@ class BuildspecCache:
         Args:
             error (bool, optional): Display error messages for invalid buildspecs. Default is ``False`` where we only print list of invalid buildspecs
         """
+        table = Table()
+        if(not self.terse and not self.header):
+            table = Table(
+                "Buildspec",
+                title="Invalid Buildspecs",
+                header_style="blue",
+                style="cyan",
+                title_style="red",
+                row_styles=["red"],
+            )
+        if(not self.terse and self.header):
+            table = Table(
+                    "Buildspec",
+                    style="cyan",
+                    title_style="red",
+                    row_styles=["red"],
+                )
+        if(self.terse and not self.header):
+            table = ["Invalid Buildspecs"]
+                
+        if(self.terse and self.header):
+            table = []
 
-        table = Table(
-            "Buildspec",
-            title="Invalid Buildspecs",
-            header_style="blue",
-            style="cyan",
-            title_style="red",
-            row_styles=["red"],
-        )
+
+                
 
         if not error:
             for buildspec in self.cache["invalids"].keys():
-                table.add_row(buildspec)
+                if(self.terse):
+                    splitBuildSpec = buildspec.split('/')
+                    lengthSplitBuildSpec = len(splitBuildSpec)
+                    table.append(splitBuildSpec[lengthSplitBuildSpec-1])
+                else:
+                    table.add_row(buildspec)
+            if(self.terse):
+                for string in table:
+                    console.print(string)
+                return
             console.print(table)
             return
 
