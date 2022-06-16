@@ -163,7 +163,7 @@ _buildtest ()
       esac
       ;;
     config|cg)
-      local cmds="-h --help compilers edit executors validate view systems"
+      local cmds="-h --help compilers edit executors path systems validate view"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
