@@ -868,10 +868,6 @@ class BuildspecCache:
                 
         if(self.terse and self.header):
             table = []
-
-
-                
-
         if not error:
             for buildspec in self.cache["invalids"].keys():
                 if(self.terse):

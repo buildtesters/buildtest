@@ -44,7 +44,6 @@ def test_buildspec_validate():
 
     buildspec_validate(buildspecs=buildspec, configuration=configuration)
 
-
 @pytest.mark.cli
 def test_func_buildspec_find():
 
@@ -52,7 +51,7 @@ def test_func_buildspec_find():
     cache = BuildspecCache(
         rebuild=True, configuration=configuration, terse=True, header=False
     )
-
+    
     bp_dict = cache.get_cache()
     # check top-level keys in buildspec cache are present
     for key in [
@@ -132,6 +131,19 @@ def test_buildspec_find_terse():
 def test_buildspec_find_invalid():
 
     cache = BuildspecCache(configuration=configuration)
+    cache.print_invalid_buildspecs(error=True)
+    cache.print_invalid_buildspecs(error=False)
+@pytest.mark.cli
+def test_buildspec_find_invalid_terse():
+
+    cache = BuildspecCache(configuration=configuration,terse=True)
+    cache.print_invalid_buildspecs(error=True)
+    cache.print_invalid_buildspecs(error=False)
+
+@pytest.mark.cli
+def test_buildspec_find_invalid_terse_no_header():
+
+    cache = BuildspecCache(configuration=configuration,terse=True,header=False)
     cache.print_invalid_buildspecs(error=True)
     cache.print_invalid_buildspecs(error=False)
 
