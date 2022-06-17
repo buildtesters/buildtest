@@ -123,7 +123,7 @@ def validate_config(configuration):
 
 def view_path(configuration):
     """Display the path to configuration file regardless if file is valid
-    
+
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
     """
@@ -132,7 +132,7 @@ def view_path(configuration):
 
 def view_configuration(configuration):
     """Display content of buildtest configuration file. This implements command ``buildtest config view``
-    
+
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
     """
