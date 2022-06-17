@@ -333,7 +333,7 @@ If you want to view buildtest configuration you can run ``buildtest config view`
 .. command-output:: buildtest config view
 
 Check path to buildtest configuration file (``buildtest config path``)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want to check path to buildtest configuration file you can run ``buildtest config path`` which will print path of buildtest configuration file.
 
