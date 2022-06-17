@@ -122,12 +122,20 @@ def validate_config(configuration):
 
 
 def view_path(configuration):
-    """Display the path to configuration file regardless if file is valid"""
-    console.print(f"Config path: {configuration.file}")
+    """Display the path to configuration file regardless if file is valid
+    
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+    """
+    console.print(configuration.file)
 
 
 def view_configuration(configuration):
-    """Display content of buildtest configuration file. This implements command ``buildtest config view``"""
+    """Display content of buildtest configuration file. This implements command ``buildtest config view``
+    
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+    """
 
     console.rule(configuration.file)
     with open(configuration.file, "r") as bc:
