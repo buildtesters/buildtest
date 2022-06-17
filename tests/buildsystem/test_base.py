@@ -36,7 +36,10 @@ def test_BuildspecParser(tmp_path):
         BuildspecParser(None, executors)
 
     directory = os.path.join(here, "invalid_buildspecs")
-    fnames = [os.path.join(directory, "invalid_type.yml"), os.path.join(directory, "missing_type.yml")]
+    fnames = [
+        os.path.join(directory, "invalid_type.yml"),
+        os.path.join(directory, "missing_type.yml"),
+    ]
     for buildspec in fnames:
         print("Processing buildspec: ", buildspec)
         with pytest.raises(BuildspecError):
