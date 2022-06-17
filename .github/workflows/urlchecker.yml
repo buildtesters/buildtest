@@ -9,7 +9,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: URLs-checker
-      uses: urlstechie/urlchecker-action@user-agent-headers
+      uses: urlstechie/urlchecker-action@update/user-agent-headers
       with:
         # check this subfolder only
         subfolder: docs
