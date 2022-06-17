@@ -36,12 +36,14 @@ def test_BuildspecParser(tmp_path):
         BuildspecParser(None, executors)
 
     directory = os.path.join(here, "invalid_buildspecs")
-
-    for buildspec in walk_tree(directory, ".yml"):
-        buildspecfile = os.path.join(directory, buildspec)
-        print("Processing buildspec: ", buildspecfile)
+    fnames = [
+        os.path.join(directory, "invalid_type.yml"),
+        os.path.join(directory, "missing_type.yml"),
+    ]
+    for buildspec in fnames:
+        print("Processing buildspec: ", buildspec)
         with pytest.raises(BuildspecError):
-            BuildspecParser(buildspecfile, executors)
+            BuildspecParser(buildspec, executors)
 
     directory = os.path.join(here, "invalid_builds")
     # invalid builds for compiler schema tests. These tests will raise BuildTestError exception upon building
