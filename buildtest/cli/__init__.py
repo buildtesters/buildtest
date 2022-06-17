@@ -242,7 +242,8 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
             "bc",
             "buildspec",
             "cdash",
-            "cg" "config",
+            "cg",
+            "config",
             "hy",
             "history",
             "it",
@@ -736,6 +737,8 @@ def config_menu(subparsers):
     executors = subparsers_config.add_parser(
         "executors", help="Query executors from buildtest configuration"
     )
+
+    subparsers_config.add_parser("path", help="Show path to configuration file")
 
     subparsers_config.add_parser("systems", help="List all available systems")
 

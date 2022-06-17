@@ -41,6 +41,9 @@ def config_cmd(args, configuration, editor):
     elif args.config == "edit":
         edit_configuration(configuration, editor)
 
+    elif args.config == "path":
+        view_path(configuration)
+
 
 def edit_configuration(configuration, editor):
     """This method will open configuration file in editor. The preferred editor will be determined based on environment
@@ -118,8 +121,21 @@ def validate_config(configuration):
     console.print(f"{configuration.file} is valid")
 
 
+def view_path(configuration):
+    """Display the path to configuration file regardless if file is valid
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+    """
+    console.print(configuration.file)
+
+
 def view_configuration(configuration):
-    """Display content of buildtest configuration file. This implements command ``buildtest config view``"""
+    """Display content of buildtest configuration file. This implements command ``buildtest config view``
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+    """
 
     console.rule(configuration.file)
     with open(configuration.file, "r") as bc:
