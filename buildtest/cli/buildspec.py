@@ -6,6 +6,7 @@ import time
 
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.build import discover_buildspecs
+from buildtest.cli.report import Report
 from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
     BUILDSPEC_DEFAULT_PATH,
@@ -1008,6 +1009,17 @@ def show_buildspecs(test_names, configuration):
         raise BuildTestError(
             f"Please select one of the following test: {cache.get_names()}"
         )
+
+def show_failed_buildspecs(configuration): 
+    """This is the entry point for ``buildtest buildspec show-fail`` command which will print content of
+    buildspec on name of failed tests.
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
+    """
+    results = Report()
+    failed_tests = results.get_failed_tests()
+    show_buildspecs(failed_tests, configuration)
 
 
 def buildspec_validate(
