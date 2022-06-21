@@ -14,6 +14,7 @@ from buildtest.cli.buildspec import (
     edit_buildspec_file,
     edit_buildspec_test,
     show_buildspecs,
+    show_failed_buildspecs,
     summarize_buildspec_cache,
 )
 from buildtest.cli.cd import change_directory
@@ -165,6 +166,8 @@ def main():
             summarize_buildspec_cache(configuration)
         elif args.buildspecs_subcommand == "show":
             show_buildspecs(test_names=args.name, configuration=configuration)
+        elif args.buildspecs_subcommand == "show-fail":
+            show_failed_buildspecs(configuration=configuration)
         elif args.buildspecs_subcommand == "edit":
             edit_buildspec_test(
                 test_names=args.name,
