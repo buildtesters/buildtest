@@ -60,19 +60,17 @@ is defined in JSON as follows:
 
 .. code-block:: json
 
-    "buildspecs": {
-      "type": "object",
-       "description": "This section is used to define one or more tests (buildspecs). Each test must be unique name",
-       "propertyNames": {
-          "pattern": "^[A-Za-z_.][A-Za-z0-9_.]*$",
-          "maxLength": 32
+       "buildspecs": {
+         "type": "object",
+         "description": "This section is used to define one or more tests (buildspecs). Each test must be unique name",
+         "propertyNames": {
+           "pattern": "^[A-Za-z_.-][A-Za-z0-9_.-]*$",
+           "maxLength": 32
+         }
        }
-    }
 
-The test names take the following pattern ``"^[A-Za-z_.][A-Za-z0-9_.]*$"`` and limited
-to 32 characters. In previous example, the test name is **hello_world**. You must have unique
-testname in your **buildspecs** section, otherwise you will have an invalid buildspec
-file. The ``description`` field is used to document the test and limited to 80 characters.
+The test names are limited to 32 characters and follow the regular expression defined in **pattern** property. In previous example, the test name is **hello_world**.
+You must have unique testname in your **buildspecs** section, otherwise you will have an invalid buildspec file.
 
 .. Note:: We refer to the entire YAML content as **buildspec file**, this is not to be confused with the **buildspecs** field.
 
@@ -81,9 +79,10 @@ Buildspec Structure
 
 Shown below is an overview of buildspec file. In this diagram we define one test within
 ``buildspecs`` property named ``systemd_default_target``. This test is using the
-script schema defined by ``type: script``.  The ``executor`` property is a required
+script schema defined by ``type: script``. The ``executor`` property is a required
 property that determines how test is run. The executors are defined in buildtest configuration
-see :ref:`configuring_buildtest` for more details.
+see :ref:`configuring_buildtest` for more details. The ``description`` field is used to
+document the test and limited to 80 characters.
 
 The ``run`` property is used for defining content of script, this can a shell-script
 (bash,csh) or python script.
