@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-v0.14.1 (TBD)
---------------
+v0.14.1 (July 1st 2022)
+-------------------------
 
 **New Options**
 
@@ -14,12 +14,15 @@ v0.14.1 (TBD)
 - Add new command ``buildtest stats`` to show test stats which can be useful for analysis purpose. This command is subject to change  `#1074 <https://github.com/buildtesters/buildtest/pull/1074>`_
 - Add option ``buildtest cdash upload --open`` to CDASH result that was recently pushed in webbrowser which can be useful if one wants to run this command as pose to clicking link that is shown in output `#1083 <https://github.com/buildtesters/buildtest/pull/1083>`_
 - Add option ``buildtest report --start`` and ``buildtest report --end`` to filter test records by starttime and endtime `#1082 <https://github.com/buildtesters/buildtest/pull/1082>`_
+- Add new command ``buildtest config path`` to show path to configuration file `#1100 <https://github.com/buildtesters/buildtest/pull/1100>`_
+- Add new command ``buildtest buildspec maintainers`` to show maintainer details from buildspec cache. The command ``buildtest buildspec maintainers --list`` will report list of maintainers. The ``--terse`` and ``---no-header`` can be used for parseable format.
+  The ``buildtest buildspec maintainers find <maintainer>`` can be used to search for buildspecs given a maintainer name  `#1093 <https://github.com/buildtesters/buildtest/pull/1093>`_.
 
 **Changes to buildspec**
 
 - Rename property **numprocs** to **poolsize** in buildtest configuration for configuring number of worker process when using multiprocessing library. `#1064 <https://github.com/buildtesters/buildtest/pull/1064>`_
 - Add **summary** property to provide extended description of test that is not limited to 80 character unlike the `description` field. `#1069 <https://github.com/buildtesters/buildtest/pull/1069>`_,  `#1073 <https://github.com/buildtesters/buildtest/pull/1073>`_
-
+- The dash character `-` is now supported character in the test name `#1097 <https://github.com/buildtesters/buildtest/pull/1097>`_
 v0.14.0 (Mar 18th 2022)
 -----------------------
 
