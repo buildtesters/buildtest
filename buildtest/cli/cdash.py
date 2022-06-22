@@ -5,7 +5,7 @@ import os.path
 import re
 import sys
 import webbrowser
-import xml.etree.cElementTree as ET
+import xml.etree.ElementTree as ET
 import zlib
 from datetime import datetime
 from urllib.parse import urlencode, urljoin
@@ -107,15 +107,13 @@ def upload_test_cdash(
 
     .. code-block:: console
 
-        bash-3.2$ buildtest cdash upload demo
-        Reading configuration file:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml
-        Reading report file:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/report.json
-        build name:  demo
+        (buildtest)  ~/Documents/github/buildtest/ [buildtest_build*] buildtest cdash upload -o demo
+        Reading report file:  /Users/siddiq90/Documents/github/buildtest/var/report.json
+        Uploading 1 tests
+        Build Name:  demo
         site:  generic
-        stamp:  20210908-1445-Experimental
-        MD5SUM: 078202fdea13860d50eff19a9ea737db
-        PUT STATUS: 200
-        You can view the results at: https://my.cdash.org//viewTest.php?buildid=2063736
+        MD5SUM: 02049fc1dad67acdeac79a4ffc24e553
+        You can view the results at: https://my.cdash.org//viewTest.php?buildid=2181193
 
     Args:
         build_name (str): build name that shows up in CDASH
@@ -194,6 +192,7 @@ def upload_test_cdash(
                         )
                         test["status"] = "failed"
                     test["description"] = test_data["description"]
+                    test["summary"] = test_data["summary"]
                     test["command"] = test_data["command"]
                     test["testpath"] = test_data["testpath"]
                     test["test_content"] = test_data["test_content"]
@@ -322,6 +321,14 @@ def upload_test_cdash(
                 results_element, "NamedMeasurement", type="text/string", name=field
             )
             ET.SubElement(measurement, "Value").text = test[field]
+
+        summary_content = ET.SubElement(
+            results_element,
+            "NamedMeasurement",
+            type="text/preformatted",
+            name="Summary",
+        )
+        ET.SubElement(summary_content, "Value").text = test["summary"]
 
         error_content = ET.SubElement(
             results_element, "NamedMeasurement", type="text/preformatted", name="Error"
