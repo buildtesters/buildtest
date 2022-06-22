@@ -599,13 +599,13 @@ class Report:
     def get_buildspecs(self):
         """Return a list of buildspecs in report file"""
         return self.filtered_buildspecs
-    
+
     def get_failed_tests(self):
         """Return a list of failed test names from report file"""
         test_names = []
         for buildspec in self.filtered_buildspecs:
             for name in self.report[buildspec].keys():
-                if self.report[buildspec][name][0]["state"]=="FAIL":
+                if self.report[buildspec][name][0]["state"] == "FAIL":
                     test_names.append(name)
         return test_names
 

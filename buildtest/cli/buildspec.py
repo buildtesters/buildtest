@@ -1010,7 +1010,8 @@ def show_buildspecs(test_names, configuration):
             f"Please select one of the following test: {cache.get_names()}"
         )
 
-def show_failed_buildspecs(configuration): 
+
+def show_failed_buildspecs(configuration):
     """This is the entry point for ``buildtest buildspec show-fail`` command which will print content of
     buildspec on name of failed tests.
 
