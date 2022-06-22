@@ -678,7 +678,7 @@ def buildspec_menu(subparsers):
     )
 
     # buildtest buildspec show-fail
-    show_fail_buildspecs = subparsers_buildspec.add_parser(
+    subparsers_buildspec.add_parser(
         "show-fail", help="Show content of buildspec file for a failed test"
     )
 
