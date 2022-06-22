@@ -9,6 +9,7 @@ from buildtest.cli.buildspec import (
     buildspec_maintainers,
     buildspec_validate,
     show_buildspecs,
+    show_failed_buildspecs,
     summarize_buildspec_cache,
 )
 from buildtest.config import SiteConfiguration
@@ -251,3 +252,10 @@ def test_buildspec_show():
             random.choice(string.ascii_letters) for i in range(10)
         )
         show_buildspecs(test_names=[random_testname], configuration=configuration)
+
+
+@pytest.mark.cli
+def test_buildspec_show_fail():
+    # test buildtest buildspec show-fail
+    with pytest.raises(BuildTestError):
+        show_failed_buildspecs(configuration)
