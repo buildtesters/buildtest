@@ -602,12 +602,13 @@ class Report:
 
     def get_failed_tests(self):
         """Return a list of failed test names from report file"""
-        test_names = []
+        test_names = set()
         for buildspec in self.filtered_buildspecs:
             for name in self.report[buildspec].keys():
-                if self.report[buildspec][name][0]["state"] == "FAIL":
-                    test_names.append(name)
-        return test_names
+                for trial in self.report[buildspec][name]:
+                    if trial["state"] == "FAIL":
+                        test_names.add(name)
+        return list(test_names)
 
     def get_testids(self):
         """Return a list of test ids from the report file"""
