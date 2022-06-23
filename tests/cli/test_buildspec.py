@@ -12,6 +12,7 @@ from buildtest.cli.buildspec import (
     show_failed_buildspecs,
     summarize_buildspec_cache,
 )
+from buildtest.cli.report import Report
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
@@ -257,5 +258,17 @@ def test_buildspec_show():
 @pytest.mark.cli
 def test_buildspec_show_fail():
     # test buildtest buildspec show-fail
+    show_failed_buildspecs(configuration=configuration)
+
+    # # Query some random test name that doesn't exist
     with pytest.raises(BuildTestError):
-        show_failed_buildspecs(configuration)
+        random_testname = "".join(
+            random.choice(string.ascii_letters) for i in range(10)
+        )
+        show_failed_buildspecs(configuration=configuration, test_names=[random_testname])
+
+    # # Query a test that is NOT in state=FAIL
+    with pytest.raises(BuildTestError):
+        results = Report()
+        pass_test = results.get_pass_tests()[0]
+        show_failed_buildspecs(configuration=configuration, test_names=[pass_test])
