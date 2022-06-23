@@ -172,6 +172,10 @@ def print_buildspec_help():
         "Show content of buildspec based on test name 'python_hello'",
     )
     table.add_row(
+    "buildtest buildspec show-fail",
+    "Show content of buildspec on all failed tests",
+    )
+    table.add_row(
         "buildtest buildspec edit-test python_hello",
         "Open test 'python_hello' in editor and validate file upon closing",
     )
