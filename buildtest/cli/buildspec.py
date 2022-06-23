@@ -840,49 +840,45 @@ class BuildspecCache:
 
         console.print(table)
 
-    def print_invalid_buildspecs(self, error=None):
+    def print_invalid_buildspecs(self, error=None, terse=None, header=None):
         """Print invalid buildspecs from cache file. This method implements command ``buildtest buildspec find invalids``
 
         Args:
             error (bool, optional): Display error messages for invalid buildspecs. Default is ``False`` where we only print list of invalid buildspecs
         """
+
+        print(error)
+        print(self.terse)
         table = Table()
-        if(not self.terse and not self.header):
-            table = Table(
-                "Buildspec",
-                title="Invalid Buildspecs",
-                header_style="blue",
-                style="cyan",
-                title_style="red",
-                row_styles=["red"],
-            )
-        if(not self.terse and self.header):
-            table = Table(
+        if error and terse:
+            console.print("the --terse flag can not be used with the --error option")
+            return
+        if not error:
+            if not self.terse:
+
+                table = Table(
                     "Buildspec",
+                    title="Invalid Buildspecs",
+                    header_style="blue",
                     style="cyan",
                     title_style="red",
                     row_styles=["red"],
                 )
-        if(self.terse and not self.header):
-            table = ["Invalid Buildspecs"]
-                
-        if(self.terse and self.header):
-            table = []
-        if not error:
-            for buildspec in self.cache["invalids"].keys():
-                if(self.terse):
-                    splitBuildSpec = buildspec.split('/')
-                    lengthSplitBuildSpec = len(splitBuildSpec)
-                    table.append(splitBuildSpec[lengthSplitBuildSpec-1])
-                else:
+                for buildspec in self.cache["invalids"].keys():
                     table.add_row(buildspec)
-            if(self.terse):
-                for string in table:
-                    console.print(string)
+                console.print(table)
                 return
-            console.print(table)
+            listOfInvalid = []
+            if not self.header:
+                listOfInvalid.append("Invalid Buildspecs")
+            for buildspec in self.cache["invalids"].keys():
+                if self.terse:
+                    splitBuildSpec = buildspec.split("/")
+                    lengthSplitBuildSpec = len(splitBuildSpec)
+                    listOfInvalid.append(splitBuildSpec[lengthSplitBuildSpec - 1])
+            for buildspec in listOfInvalid:
+                console.print(buildspec)
             return
-
         for buildspec, value in self.cache["invalids"].items():
             console.rule(buildspec)
             pprint(value)
