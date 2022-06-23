@@ -1011,15 +1011,17 @@ def show_buildspecs(test_names, configuration):
         )
 
 
-def show_failed_buildspecs(configuration):
+def show_failed_buildspecs(configuration, test_names=None, report_file=None):
     """This is the entry point for ``buildtest buildspec show-fail`` command which will print content of
-    buildspec on name of failed tests.
+    buildspec on name of all failed tests if a list of test names are not speficied
 
     Args:
         configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
+        test_names (list): List of test names to show content of file
+        report_file (str, optional): Full path to report file to read
     """
-    results = Report()
-    failed_tests = results.get_failed_tests()
+    results = Report(report_file=report_file)
+    failed_tests = test_names or results.get_failed_tests()
     show_buildspecs(failed_tests, configuration)
 
 
