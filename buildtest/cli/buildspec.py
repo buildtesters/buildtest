@@ -1017,11 +1017,21 @@ def show_failed_buildspecs(configuration, test_names=None, report_file=None):
 
     Args:
         configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
-        test_names (list): List of test names to show content of file
+        test_names (list, optional): List of test names to show content of file
         report_file (str, optional): Full path to report file to read
     """
     results = Report(report_file=report_file)
-    failed_tests = test_names or results.get_failed_tests()
+    all_failed_tests = results.get_failed_tests()
+   
+    if test_names:
+        for test_name in test_names:
+            if test_name not in all_failed_tests:
+                raise BuildTestError(
+                f"{test_name} is not in one of the following failed test: {all_failed_tests}"
+            )
+        failed_tests = test_names 
+    else: 
+        failed_tests = all_failed_tests
     show_buildspecs(failed_tests, configuration)
 
 
