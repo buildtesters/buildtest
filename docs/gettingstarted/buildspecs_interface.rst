@@ -364,6 +364,94 @@ Next you can use this as argument to ``buildtest buildspec show`` and it will re
     │                                                                      │
     ╰──────────────────────────────────────────────────────────────────────╯
 
+Show buildspec ``buildtest buildspec show-fail``
+-------------------------------------------------
+
+buildtest can display content of buildspec file of all failed tests via ``buildtest buildspec show-fail`` command. 
+This can be quick way to see content of buildspec files that correspond to test that failed.
+
+.. code-block:: console
+
+    $ buildtest buildspec show-fail
+    ────────────────────────────────────────────────────────────────────────────── /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/test_status/pass_returncode.yml ───────────────────────────────────────────────────────────────────────────────
+    ╭──────────────────────────────────────────────────────────────────────╮
+    │ buildspecs:                                                          │
+    │                                                                      │
+    │   exit1_fail:                                                        │
+    │     executor: generic.local.bash                                     │
+    │     type: script                                                     │
+    │     description: exit 1 by default is FAIL                           │
+    │     tags:                                                            │
+    │     run: exit 1                                                      │
+    │                                                                      │
+    │   exit1_pass:                                                        │
+    │     executor: generic.local.bash                                     │
+    │     type: script                                                     │
+    │     description: report exit 1 as PASS                               │
+    │     run: exit 1                                                      │
+    │     tags:                                                            │
+    │     status:                                                          │
+    │       returncode: [1]                                                │
+    │                                                                      │
+    │   returncode_list_mismatch:                                          │
+    │     executor: generic.local.bash                                     │
+    │     type: script                                                     │
+    │     description: exit 2 failed since it failed to match returncode 1 │
+    │     run: exit 2                                                      │
+    │     tags:                                                            │
+    │     status:                                                          │
+    │       returncode: [1, 3]                                             │
+    │                                                                      │
+    │   returncode_int_match:                                              │
+    │     executor: generic.local.bash                                     │
+    │     type: script                                                     │
+    │     description: exit 128 matches returncode 128                     │
+    │     run: exit 128                                                    │
+    │     tags:                                                            │
+    │     status:                                                          │
+    │       returncode: 128                                                │
+    │                                                                      │
+    ╰──────────────────────────────────────────────────────────────────────╯
+    ────────────────────────────────────────────────────────────────────────────── /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/test_status/pass_returncode.yml ───────────────────────────────────────────────────────────────────────────────
+    ╭──────────────────────────────────────────────────────────────────────╮
+    │ buildspecs:                                                          │
+    │                                                                      │
+    │   exit1_fail:                                                        │
+    │     executor: generic.local.bash                                     │
+    │     type: script                                                     │
+    │     description: exit 1 by default is FAIL                           │
+    │     tags:                                                            │
+    │     run: exit 1                                                      │
+    │                                                                      │
+    │   exit1_pass:                                                        │
+    │     executor: generic.local.bash                                     │
+    │     type: script                                                     │
+    │     description: report exit 1 as PASS                               │
+    │     run: exit 1                                                      │
+    │     tags:                                                            │
+    │     status:                                                          │
+    │       returncode: [1]                                                │
+    │                                                                      │
+    │   returncode_list_mismatch:                                          │
+    │     executor: generic.local.bash                                     │
+    │     type: script                                                     │
+    │     description: exit 2 failed since it failed to match returncode 1 │
+    │     run: exit 2                                                      │
+    │     tags:                                                            │
+    │     status:                                                          │
+    │       returncode: [1, 3]                                             │
+    │                                                                      │
+    │   returncode_int_match:                                              │
+    │     executor: generic.local.bash                                     │
+    │     type: script                                                     │
+    │     description: exit 128 matches returncode 128                     │
+    │     run: exit 128                                                    │
+    │     tags:                                                            │
+    │     status:                                                          │
+    │       returncode: 128                                                │
+    │                                                                      │
+    ╰──────────────────────────────────────────────────────────────────────╯
+
 Editing buildspecs in your preferred editor
 --------------------------------------------
 
