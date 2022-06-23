@@ -846,11 +846,8 @@ class BuildspecCache:
         Args:
             error (bool, optional): Display error messages for invalid buildspecs. Default is ``False`` where we only print list of invalid buildspecs
         """
-
-        print(error)
-        print(self.terse)
         table = Table()
-        if error and terse:
+        if error and self.terse:
             console.print("the --terse flag can not be used with the --error option")
             return
         if not error:
