@@ -190,6 +190,7 @@ class BuilderBase(ABC):
         self.metadata["stagedir"] = None
 
         self.metadata["description"] = self.recipe.get("description") or ""
+        self.metadata["summary"] = self.recipe.get("summary") or ""
 
         # location of test script
         self.metadata["testpath"] = None

@@ -1364,6 +1364,7 @@ def update_report(valid_builders, report_file):
             "id",
             "full_id",
             "description",
+            "summary",
             "schemafile",
             "executor",
             "compiler",
