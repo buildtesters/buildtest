@@ -167,7 +167,7 @@ def main():
         elif args.buildspecs_subcommand == "show":
             show_buildspecs(test_names=args.name, configuration=configuration)
         elif args.buildspecs_subcommand == "show-fail":
-            show_failed_buildspecs(configuration=configuration)
+            show_failed_buildspecs(configuration=configuration, report_file=report_file)
         elif args.buildspecs_subcommand == "edit":
             edit_buildspec_test(
                 test_names=args.name,
