@@ -608,6 +608,18 @@ class Report:
                 for trial in self.report[buildspec][name]:
                     if trial["state"] == "FAIL":
                         test_names.add(name)
+                        break
+        return list(test_names)
+    
+    def get_pass_tests(self):
+        """Return a list of pass test names from report file"""
+        test_names = set()
+        for buildspec in self.filtered_buildspecs:
+            for name in self.report[buildspec].keys():
+                for trial in self.report[buildspec][name]:
+                    if trial["state"] == "PASS":
+                        test_names.add(name)
+                        break
         return list(test_names)
 
     def get_testids(self):
