@@ -54,16 +54,13 @@
 .. |gh_pages_devel| image:: https://github.com/buildtesters/buildtest/workflows/Schema%20Documentation/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
 
-.. |dailyurlcheck| image:: https://github.com/buildtesters/buildtest/workflows/Daily%20Check%20URLs/badge.svg
-   :target: https://github.com/buildtesters/buildtest/actions
-
 .. |zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3967143.svg
    :target: https://doi.org/10.5281/zenodo.3967143
 
 buildtest
 ---------
 
-| |license| |docs| |codecov| |slack| |release| |installation| |regressiontest| |gh_pages_devel| |checkurls| |dailyurlcheck| |codefactor| |blackformat|  |black| |isort| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
+| |license| |docs| |codecov| |slack| |release| |installation| |regressiontest| |gh_pages_devel| |checkurls| |codefactor| |blackformat|  |black| |isort| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
 
 `buildtest <https://buildtest.rtfd.io/>`_ is a testing framework that automates build/execution of tests which allows HPC facilities to develop
 test for their system. In buildtest, tests are written as test recipes called **Buildspecs** which is a `YAML <https://yaml.org/>`_
