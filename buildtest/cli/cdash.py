@@ -255,6 +255,7 @@ def upload_test_cdash(
     console.print(f"Uploading {len(tests)} tests")
 
     build_stamp = build_starttime.strftime(output_datetime_format)
+    build_stamp += "-Experimental"
 
     filename = "Test.xml"
     site_element = ET.Element(
