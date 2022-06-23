@@ -610,7 +610,7 @@ class Report:
                         test_names.add(name)
                         break
         return list(test_names)
-    
+
     def get_pass_tests(self):
         """Return a list of pass test names from report file"""
         test_names = set()

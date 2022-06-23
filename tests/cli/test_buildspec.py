@@ -265,7 +265,9 @@ def test_buildspec_show_fail():
         random_testname = "".join(
             random.choice(string.ascii_letters) for i in range(10)
         )
-        show_failed_buildspecs(configuration=configuration, test_names=[random_testname])
+        show_failed_buildspecs(
+            configuration=configuration, test_names=[random_testname]
+        )
 
     # # Query a test that is NOT in state=FAIL
     with pytest.raises(BuildTestError):
