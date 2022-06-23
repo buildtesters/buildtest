@@ -369,7 +369,7 @@ get job record.
 PBS
 ----
 
-buildtest can support job submission to `PBS Pro <https://www.altair.com/pbs-works-documentation/>`_ or `OpenPBS <https://openpbs.atlassian.net/wiki/spaces/PBSPro/overview>`_
+buildtest can support job submission to `PBS Pro <https://community.altair.com/community?id=altair_product_documentation>`_ or `OpenPBS <https://openpbs.atlassian.net/wiki/spaces/PBSPro/overview>`_
 scheduler. Assuming you have configured :ref:`pbs_executors` in your configuration file you can submit jobs
 to the PBS executor by selecting the appropriate pbs executor via ``executor`` property in buildspec. The ``#PBS``
 directives can be specified using ``pbs`` field which is a list of PBS options that get inserted at top of script. Shown
@@ -585,7 +585,7 @@ Cobalt
 
 `Cobalt <https://trac.mcs.anl.gov/projects/cobalt>`_ is a job scheduler developed
 by `Argonne National Laboratory <https://www.anl.gov/>`_ that runs on compute
-resources and IBM BlueGene series. Cobalt resembles `PBS <https://www.altair.com/pbs-works-documentation/>`_
+resources and IBM BlueGene series. Cobalt resembles `PBS <https://community.altair.com/community?id=altair_product_documentation/>`_
 in terms of command line interface such as ``qsub``, ``qacct`` however they
 slightly differ in their behavior.
 
