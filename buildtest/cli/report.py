@@ -600,24 +600,16 @@ class Report:
         """Return a list of buildspecs in report file"""
         return self.filtered_buildspecs
 
-    def get_failed_tests(self):
-        """Return a list of failed test names from report file"""
+    def get_test_by_state(self, state):
+        """Return a list of test names by state from report file"""
+        valid_test_states = ["PASS", "FAIL"]
+        if state not in valid_test_states:
+            raise BuildTestError(f"{state} is not in {valid_test_states}")
         test_names = set()
         for buildspec in self.filtered_buildspecs:
             for name in self.report[buildspec].keys():
                 for trial in self.report[buildspec][name]:
-                    if trial["state"] == "FAIL":
-                        test_names.add(name)
-                        break
-        return list(test_names)
-
-    def get_pass_tests(self):
-        """Return a list of pass test names from report file"""
-        test_names = set()
-        for buildspec in self.filtered_buildspecs:
-            for name in self.report[buildspec].keys():
-                for trial in self.report[buildspec][name]:
-                    if trial["state"] == "PASS":
+                    if trial["state"] == state:
                         test_names.add(name)
                         break
         return list(test_names)
