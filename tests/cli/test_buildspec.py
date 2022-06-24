@@ -257,10 +257,8 @@ def test_buildspec_show():
 
 @pytest.mark.cli
 def test_buildspec_show_fail():
-    # test buildtest buildspec show-fail
-    show_failed_buildspecs(configuration=configuration)
 
-    # # Query some random test name that doesn't exist
+    # Query some random test name that doesn't exist
     with pytest.raises(BuildTestError):
         random_testname = "".join(
             random.choice(string.ascii_letters) for i in range(10)
@@ -269,8 +267,8 @@ def test_buildspec_show_fail():
             configuration=configuration, test_names=[random_testname]
         )
 
-    # # Query a test that is NOT in state=FAIL
+    # Query a test that is NOT in state=FAIL
     with pytest.raises(BuildTestError):
         results = Report()
-        pass_test = results.get_pass_tests()[0]
+        pass_test = results.get_test_by_state(state="PASS")[0]
         show_failed_buildspecs(configuration=configuration, test_names=[pass_test])
