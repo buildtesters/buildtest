@@ -845,37 +845,41 @@ class BuildspecCache:
 
         Args:
             error (bool, optional): Display error messages for invalid buildspecs. Default is ``False`` where we only print list of invalid buildspecs
+            terse (bool, optional): Display output in machine readable format.
+            header (bool, optional): Determine whether to print header column in machine readable format.
         """
-        table = Table()
-        if error and self.terse:
-            console.print("the --terse flag can not be used with the --error option")
-            return
-        if not error:
-            if not self.terse:
 
-                table = Table(
-                    "Buildspec",
-                    title="Invalid Buildspecs",
-                    header_style="blue",
-                    style="cyan",
-                    title_style="red",
-                    row_styles=["red"],
-                )
-                for buildspec in self.cache["invalids"].keys():
-                    table.add_row(buildspec)
+        terse = terse or self.terse
+        header = header or self.header
+
+        if error and terse:
+            console.print("The --terse flag can not be used with the --error option")
+            return
+
+        # implementation for machine readable format specified via --terse
+        if terse:
+            if not header:
+                print("buildspec")
+            for buildspec in self.cache["invalids"].keys():
+                print(buildspec)
+            return
+
+        # if --error is not specified print list of invalid buildspecs in rich table
+        if not error:
+            table = Table(
+                "Buildspec",
+                title="Invalid Buildspecs",
+                header_style="blue",
+                style="cyan",
+                title_style="red",
+                row_styles=["red"],
+            )
+            for buildspec in self.cache["invalids"].keys():
+                table.add_row(buildspec)
                 console.print(table)
                 return
-            listOfInvalid = []
-            if not self.header:
-                listOfInvalid.append("Invalid Buildspecs")
-            for buildspec in self.cache["invalids"].keys():
-                if self.terse:
-                    splitBuildSpec = buildspec.split("/")
-                    lengthSplitBuildSpec = len(splitBuildSpec)
-                    listOfInvalid.append(splitBuildSpec[lengthSplitBuildSpec - 1])
-            for buildspec in listOfInvalid:
-                console.print(buildspec)
-            return
+
+        # implementation for --error which displays buildspec file followed by error
         for buildspec, value in self.cache["invalids"].items():
             console.rule(buildspec)
             pprint(value)
