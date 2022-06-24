@@ -993,6 +993,7 @@ def show_buildspecs(test_names, configuration):
     cache = BuildspecCache(configuration=configuration)
 
     error = False
+    visited = set()
     for name in test_names:
         if name not in cache.get_names():
 
@@ -1001,9 +1002,11 @@ def show_buildspecs(test_names, configuration):
             continue
 
         buildspec = cache.lookup_buildspec_by_name(name)
-        content = read_file(buildspec)
-        console.rule(buildspec)
-        console.print(Panel.fit(content))
+        if buildspec not in visited:
+            visited.add(buildspec)
+            content = read_file(buildspec)
+            console.rule(buildspec)
+            console.print(Panel.fit(content))
 
     if error:
         raise BuildTestError(
@@ -1021,7 +1024,7 @@ def show_failed_buildspecs(configuration, test_names=None, report_file=None):
         report_file (str, optional): Full path to report file to read
     """
     results = Report(report_file=report_file)
-    all_failed_tests = results.get_failed_tests()
+    all_failed_tests = results.get_test_by_state(state="FAIL")
 
     if test_names:
         for test_name in test_names:
