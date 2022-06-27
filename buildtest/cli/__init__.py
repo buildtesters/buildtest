@@ -677,6 +677,16 @@ def buildspec_menu(subparsers):
         nargs="*",
     )
 
+    # buildtest buildspec show-fail
+    show_fail_buildspecs = subparsers_buildspec.add_parser(
+        "show-fail", help="Show content of buildspec file for all failed tests"
+    )
+    show_fail_buildspecs.add_argument(
+        "name",
+        help="Show content of buildspec based on failed test name",
+        nargs="*",
+    )
+
     # buildtest buildspec summary
     subparsers_buildspec.add_parser("summary", help="Print summary of buildspec cache")
 

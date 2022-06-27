@@ -76,6 +76,11 @@ _buildspec_cache_test_names()
   buildtest buildspec find --format name --terse -n | sort
 }
 
+_failed_tests()
+{
+  buildtest rt --failure --format name --terse --no-header | uniq
+}
+
 _avail_maintainers()
 {
   buildtest buildspec maintainers --terse -l --no-header | sort
@@ -221,7 +226,7 @@ _buildtest ()
       ;;
 
     buildspec|bc)
-      local cmds="-h --help edit-test edit-file find maintainers show summary validate"
+      local cmds="-h --help edit-test edit-file find maintainers show show-fail summary validate"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
@@ -243,6 +248,8 @@ _buildtest ()
         ;;
       show|edit-test)
         COMPREPLY=( $( compgen -W "$(_buildspec_cache_test_names)" -- $cur ) );;
+      show-fail)
+        COMPREPLY=( $( compgen -W "$(_failed_tests)" -- $cur ) );;
       maintainers)
         local opts="--breakdown --list --help --terse --no-header -b -h -l -n find"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )

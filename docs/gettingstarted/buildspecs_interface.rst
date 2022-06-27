@@ -364,6 +364,14 @@ Next you can use this as argument to ``buildtest buildspec show`` and it will re
     │                                                                      │
     ╰──────────────────────────────────────────────────────────────────────╯
 
+Show fail buildspec ``buildtest buildspec show-fail``
+------------------------------------------------------
+
+buildtest can display content of buildspec file of all failed tests via ``buildtest buildspec show-fail`` command. 
+This can be quick way to see content of buildspec file given a failed test name such as ``buildtest buildspec show-fail exit1_fail``.
+
+.. command-output:: buildtest buildspec show-fail exit1_fail
+
 Editing buildspecs in your preferred editor
 --------------------------------------------
 

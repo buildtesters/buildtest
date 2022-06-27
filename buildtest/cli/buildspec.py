@@ -6,6 +6,7 @@ import time
 
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.build import discover_buildspecs
+from buildtest.cli.report import Report
 from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
     BUILDSPEC_DEFAULT_PATH,
@@ -992,6 +993,7 @@ def show_buildspecs(test_names, configuration):
     cache = BuildspecCache(configuration=configuration)
 
     error = False
+    visited = set()
     for name in test_names:
         if name not in cache.get_names():
 
@@ -1000,14 +1002,40 @@ def show_buildspecs(test_names, configuration):
             continue
 
         buildspec = cache.lookup_buildspec_by_name(name)
-        content = read_file(buildspec)
-        console.rule(buildspec)
-        console.print(Panel.fit(content))
+        if buildspec not in visited:
+            visited.add(buildspec)
+            content = read_file(buildspec)
+            console.rule(buildspec)
+            console.print(Panel.fit(content))
 
     if error:
         raise BuildTestError(
             f"Please select one of the following test: {cache.get_names()}"
         )
+
+
+def show_failed_buildspecs(configuration, test_names=None, report_file=None):
+    """This is the entry point for ``buildtest buildspec show-fail`` command which will print content of
+    buildspec on name of all failed tests if a list of test names are not speficied
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
+        test_names (list, optional): List of test names to show content of file
+        report_file (str, optional): Full path to report file to read
+    """
+    results = Report(report_file=report_file)
+    all_failed_tests = results.get_test_by_state(state="FAIL")
+
+    if test_names:
+        for test_name in test_names:
+            if test_name not in all_failed_tests:
+                raise BuildTestError(
+                    f"{test_name} is not in one of the following failed test: {all_failed_tests}"
+                )
+        failed_tests = test_names
+    else:
+        failed_tests = all_failed_tests
+    show_buildspecs(failed_tests, configuration)
 
 
 def buildspec_validate(
