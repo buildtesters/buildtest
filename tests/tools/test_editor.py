@@ -1,7 +1,6 @@
 import os
+import shutil
 
-import pytest
-from buildtest.exceptions import BuildTestError
 from buildtest.tools.editor import set_editor
 
 
@@ -11,9 +10,8 @@ def test_editor():
     set_editor("emacs")
     set_editor("nano")
 
-    with pytest.raises(BuildTestError):
-        set_editor("notepad")
+    # an invalid editor will force this method to return full path to default editor which is 'vi'
+    assert set_editor("notepad") == shutil.which("vi")
 
     os.environ["EDITOR"] = "notepad"
-    with pytest.raises(BuildTestError):
-        set_editor("notepad")
+    set_editor("notepad")

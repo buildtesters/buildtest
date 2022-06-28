@@ -3,6 +3,7 @@ import re
 import shutil
 import subprocess
 
+from buildtest.defaults import console
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import resolve_path
 
@@ -141,6 +142,8 @@ def set_editor(editor=None):
     """
     # prefer command line
 
+    default_editor = shutil.which("vi")
+
     valid_editors = ["vim", "vi", "emacs", "nano"]
 
     for editor_name in valid_editors:
@@ -153,17 +156,21 @@ def set_editor(editor=None):
         buildtest_editor = resolve_path(shutil.which(os.environ["EDITOR"]))
 
         if not buildtest_editor:
-            raise BuildTestError(
-                f"Unable to resolve path via environment EDITOR: {os.environ['EDITOR']}"
+            console.print(
+                f"[red]Unable to resolve path via environment EDITOR: {os.environ['EDITOR']}"
             )
 
     # command line option --editor is specified
     if editor:
         buildtest_editor = resolve_path(shutil.which(editor))
         if not buildtest_editor:
-            raise BuildTestError(
-                f"Unable to resolve path to editor specified via command line argument --editor: {editor}"
+            console.print(
+                f"[red]Unable to resolve path to editor specified via command line argument --editor: {editor}"
             )
+
+    # if editor is not found return the default editor which is vi
+    if not buildtest_editor:
+        return default_editor
 
     if not (
         is_emacs(buildtest_editor)
