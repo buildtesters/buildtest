@@ -1,29 +1,33 @@
 $ buildtest inspect query -t hello_f 
-─────────────────────────────────────────────────────────────────────── hello_f/339023ee-002f-480e-bf47-9ade7a287eac ────────────────────────────────────────────────────────────────────────
+───────────── hello_f/2fbc7f44-7762-473a-b8ae-95a327219493 ──────────────
 Executor: generic.local.bash
 Description: Hello World Fortran Compilation
 State: PASS
 Returncode: 0
-Runtime: 0.153233 sec
-Starttime: 2022/03/18 20:27:47
-Endtime: 2022/03/18 20:27:47
+Runtime: 0.144778 sec
+Starttime: 2022/06/29 17:27:22
+Endtime: 2022/06/29 17:27:22
 Command: bash --norc --noprofile -eo pipefail hello_f_build.sh
-Test Script: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/339023ee/hello_f.sh
-Build Script: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/339023ee/hello_f_build.sh
-Output File: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/339023ee/hello_f.out
-Error File: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/339023ee/hello_f.err
-Log File: /home/spack/buildtest/var/logs/buildtest_xcxzeu97.log
-─────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/339023ee/hello_f.sh ────────────────────────────────────────────────
-   1 #!/bin/bash                                                                                                                                                                             
-   2                                                                                                                                                                                         
-   3                                                                                                                                                                                         
-   4 # name of executable                                                                                                                                                                    
-   5 _EXEC=hello.f90.exe                                                                                                                                                                     
-   6 # Compilation Line                                                                                                                                                                      
-   7 /usr/bin/gfortran -Wall -o $_EXEC /home/spack/buildtest/examples/compilers/src/hello.f90                                                                                                
-   8                                                                                                                                                                                         
-   9                                                                                                                                                                                         
-  10 # Run executable                                                                                                                                                                        
-  11 ./$_EXEC                                                                                                                                                                                
-  12                                                                                                                                                                                         
-  13                                                                                                                                                                                         
+Test Script: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_
+f/2fbc7f44/hello_f.sh
+Build Script: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello
+_f/2fbc7f44/hello_f_build.sh
+Output File: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_
+f/2fbc7f44/hello_f.out
+Error File: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f
+/2fbc7f44/hello_f.err
+Log File: /home/spack/buildtest/var/logs/buildtest_o1jub4w4.log
+─ Test File: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hel… ─
+#!/bin/bash                                                              
+                                                                         
+                                                                         
+# name of executable                                                     
+_EXEC=hello.f90.exe                                                      
+# Compilation Line                                                       
+/usr/bin/gfortran -Wall -o $_EXEC /home/spack/buildtest/examples/compiler
+                                                                         
+                                                                         
+# Run executable                                                         
+./$_EXEC                                                                 
+                                                                         
+                                                                         

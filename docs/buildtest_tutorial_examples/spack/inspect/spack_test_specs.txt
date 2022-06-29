@@ -1,42 +1,104 @@
 $ buildtest inspect query -o -t spack_test_results_specs_format 
-─────────────────────────────────────────────────────────── spack_test_results_specs_format/da2488cf-bb78-439b-b486-5d33d3ddb8ca ────────────────────────────────────────────────────────────
+─ spack_test_results_specs_format/ce805e1b-3ed5-4635-8730-209871828c6e ──
 Executor: generic.local.bash
 Description: Run spack test results with spec format
 State: PASS
 Returncode: 0
-Runtime: 5.10547 sec
-Starttime: 2022/03/18 20:27:32
-Endtime: 2022/03/18 20:27:38
-Command: bash --norc --noprofile -eo pipefail spack_test_results_specs_format_build.sh
-Test Script: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/da2488cf/spack_test_results_specs_format.sh
-Build Script: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/da2488cf/spack_test_results_specs_format_build.sh
-Output File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/da2488cf/spack_test_results_specs_format.out
-Error File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/da2488cf/spack_test_results_specs_format.err
-Log File: /home/spack/buildtest/var/logs/buildtest__dyl87fn.log
-────────────────────── Output File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/da2488cf/spack_test_results_specs_format.out ───────────────────────
-==> All of the packages are already installed                                                                                                                                                
-==> Spack test spack_test_results_specs_format                                                                                                                                               
-==> Testing package libsigsegv-2.12-lbrx7ln                                                                                                                                                  
-==> Results for test suite 'spack_test_results_specs_format', spec matching 'libsigsegv':                                                                                                    
-==>   libsigsegv-2.12-lbrx7ln PASSED                                                                                                                                                         
-==> Testing package libsigsegv-2.12-lbrx7ln                                                                                                                                                  
-==> [2022-03-18-20:27:36.945382] test: checking ability to link to the library                                                                                                               
-==> [2022-03-18-20:27:36.945785] '/home/spack/spack/lib/spack/env/cc' '-I/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/libsigsegv-2.12-lbrx7lnfz46ukewxbhxnucmx76g23c6q/incl
-PASSED                                                                                                                                                                                       
-==> [2022-03-18-20:27:37.020254] test: checking ability to use the library                                                                                                                   
-==> [2022-03-18-20:27:37.020646] './smoke_test'                                                                                                                                              
-Caught sigsegv #1                                                                                                                                                                            
-Hello World!                                                                                                                                                                                 
-PASSED                                                                                                                                                                                       
-                                                                                                                                                                                             
-──────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_test_results_specs_format/da2488cf/spack_test_results_specs_format.sh ────────────────────────
-   1 #!/bin/bash                                                                                                                                                                             
-   2 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                       
-   3 spack env create  spack_test_example                                                                                                                                                    
-   4 spack env activate  spack_test_example                                                                                                                                                  
-   5 spack install  libxml2                                                                                                                                                                  
-   6 spack install  libsigsegv                                                                                                                                                               
-   7 spack test remove -y                                                                                                                                                                    
-   8 spack test run --alias spack_test_results_specs_format libxml2 libsigsegv                                                                                                               
-   9 spack test results -l -- libxml2                                                                                                                                                        
-  10 spack test results -l -- libsigsegv                                                                                                                                                     
+Runtime: 7.39282 sec
+Starttime: 2022/06/29 17:27:03
+Endtime: 2022/06/29 17:27:10
+Command: bash --norc --noprofile -eo pipefail 
+spack_test_results_specs_format_build.sh
+Test Script: /home/spack/runs/generic.local.bash/spack_test_specs/spack_t
+est_results_specs_format/ce805e1b/spack_test_results_specs_format.sh
+Build Script: /home/spack/runs/generic.local.bash/spack_test_specs/spack_
+test_results_specs_format/ce805e1b/spack_test_results_specs_format_build.
+sh
+Output File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_t
+est_results_specs_format/ce805e1b/spack_test_results_specs_format.out
+Error File: /home/spack/runs/generic.local.bash/spack_test_specs/spack_te
+st_results_specs_format/ce805e1b/spack_test_results_specs_format.err
+Log File: /home/spack/buildtest/var/logs/buildtest_lujjy6x3.log
+─ Output File: /home/spack/runs/generic.local.bash/spack_test_specs/sp… ─
+==> Updating view at /home/spack/spack/var/spack/environments/spack_test_
+==> Created environment 'spack_test_example' in /home/spack/spack/var/spa
+==> You can activate this environment with:                              
+==>   spack env activate spack_test_example                              
+==> All of the packages are already installed                            
+==> All of the packages are already installed                            
+==> Spack test spack_test_results_specs_format                           
+==> Testing package libxml2-2.9.10-yn2r3wf                               
+==> Testing package libsigsegv-2.12-lbrx7ln                              
+==> Results for test suite 'spack_test_results_specs_format', spec matchi
+==>   libxml2-2.9.10-yn2r3wf PASSED                                      
+==> Testing package libxml2-2.9.10-yn2r3wf                               
+==> [2022-06-29-17:27:08.701492] test: Performing simple import test     
+==> [2022-06-29-17:27:08.703887] test: xml2-config: expect command status
+==> [2022-06-29-17:27:08.704384] '/home/spack/spack-workspace/software/li
+2.9.10                                                                   
+PASSED                                                                   
+==> [2022-06-29-17:27:08.710285] test: xmllint: expect command status in 
+==> [2022-06-29-17:27:08.710636] '/home/spack/spack-workspace/software/li
+PASSED                                                                   
+==> [2022-06-29-17:27:08.722998] test: xmllint: expect command status in 
+==> [2022-06-29-17:27:08.723393] '/home/spack/spack-workspace/software/li
+<?xml version="1.0"?>                                                    
+<info>abc</info>                                                         
+validity error : no DTD found!                                           
+Document test.xml does not validate                                      
+PASSED                                                                   
+==> [2022-06-29-17:27:08.728919] test: xmllint: expect command status in 
+==> [2022-06-29-17:27:08.729334] '/home/spack/spack-workspace/software/li
+<?xml version="1.0"?>                                                    
+<info>abc</info>                                                         
+test.xml:2: element info: validity error : Element info content does not 
+Document test.xml does not validate against /home/spack/.spack/test/d6phm
+PASSED                                                                   
+==> [2022-06-29-17:27:08.735692] test: xmllint: expect command status in 
+==> [2022-06-29-17:27:08.736022] '/home/spack/spack-workspace/software/li
+<?xml version="1.0"?>                                                    
+<info>                                                                   
+<data>abc</data>                                                         
+</info>                                                                  
+PASSED                                                                   
+==> [2022-06-29-17:27:08.740868] test: xmlcatalog: expect command status 
+==> [2022-06-29-17:27:08.741324] '/home/spack/spack-workspace/software/li
+<?xml version="1.0"?>                                                    
+<!DOCTYPE catalog PUBLIC "-//OASIS//DTD Entity Resolution XML Catalog V1.
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog"/>           
+PASSED                                                                   
+==> Results for test suite 'spack_test_results_specs_format', spec matchi
+==>   libsigsegv-2.12-lbrx7ln PASSED                                     
+==> Testing package libsigsegv-2.12-lbrx7ln                              
+==> [2022-06-29-17:27:09.187686] Multiple definitions of compiler gcc@7.5
+ [gcc(/usr/bin/gcc                                                       
+     /usr/bin/g++                                                        
+     /usr/bin/gfortran                                                   
+     /usr/bin/gfortran                                                   
+     []                                                                  
+     ubuntu18.04), gcc(/usr/bin/gcc                                      
+     /usr/bin/g++                                                        
+     /usr/bin/gfortran                                                   
+     /usr/bin/gfortran                                                   
+     []                                                                  
+     ubuntu18.04)]                                                       
+==> [2022-06-29-17:27:09.188553] test: checking ability to link to the li
+==> [2022-06-29-17:27:09.188912] '/home/spack/spack/lib/spack/env/cc' '-I
+PASSED                                                                   
+==> [2022-06-29-17:27:09.265355] test: checking ability to use the librar
+==> [2022-06-29-17:27:09.266429] './smoke_test'                          
+Caught sigsegv #1                                                        
+Hello World!                                                             
+PASSED                                                                   
+                                                                         
+─ Test File: /home/spack/runs/generic.local.bash/spack_test_specs/spac… ─
+#!/bin/bash                                                              
+source /home/spack/spack/share/spack/setup-env.sh                        
+spack env create  spack_test_example                                     
+spack env activate  spack_test_example                                   
+spack install  libxml2                                                   
+spack install  libsigsegv                                                
+spack test remove -y                                                     
+spack test run --alias spack_test_results_specs_format libxml2 libsigsegv
+spack test results -l -- libxml2                                         
+spack test results -l -- libsigsegv                                      

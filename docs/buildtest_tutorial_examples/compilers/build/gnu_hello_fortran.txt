@@ -1,31 +1,36 @@
 $ buildtest build -b /home/spack/buildtest/examples/compilers/gnu_hello_fortran.yml 
-╭─────────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────────╮                                                          
-│                                                                                                                                 │                                                          
-│ User:               spack                                                                                                       │                                                          
-│ Hostname:           f170978d3d4a                                                                                                │                                                          
-│ Platform:           Linux                                                                                                       │                                                          
-│ Current Time:       2022/03/18 20:27:47                                                                                         │                                                          
-│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                         │                                                          
-│ buildtest version:  0.13.0                                                                                                      │                                                          
-│ python path:        /home/spack/pyenv/buildtest/bin/python3                                                                     │                                                          
-│ python version:     3.8.6                                                                                                       │                                                          
-│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                                │                                                          
-│ Test Directory:     /home/spack/runs                                                                                            │                                                          
-│ Report File:        /home/spack/buildtest/var/report.json                                                                       │                                                          
-│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/compilers/gnu_hello_fortran.yml │                                                          
-│                                                                                                                                 │                                                          
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                          
-──────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────────────────────────────
-Discovered Buildspecs:  1
-Excluded Buildspecs:  0
-Detected Buildspecs after exclusion:  1
+╭────────────────────────── buildtest summary ──────────────────────────╮
+│                                                                       │
+│ User:               spack                                             │
+│ Hostname:           356ea13b3433                                      │
+│ Platform:           Linux                                             │
+│ Current Time:       2022/06/29 17:27:22                               │
+│ buildtest path:     /home/spack/buildtest/bin/buildtest               │
+│ buildtest version:  0.14.0                                            │
+│ python path:        /home/spack/pyenv/buildtest/bin/python3           │
+│ python version:     3.8.6                                             │
+│ Configuration File:                                                   │
+│ /home/spack/buildtest/buildtest/settings/spack_container.yml          │
+│ Test Directory:     /home/spack/runs                                  │
+│ Report File:        /home/spack/buildtest/var/report.json             │
+│ Command:            /home/spack/buildtest/bin/buildtest build -b      │
+│ /home/spack/buildtest/examples/compilers/gnu_hello_fortran.yml        │
+│                                                                       │
+╰───────────────────────────────────────────────────────────────────────╯
+────────────────────────  Discovering Buildspecs ────────────────────────
                       Discovered buildspecs                       
 ╔════════════════════════════════════════════════════════════════╗
-║ Buildspecs                                                     ║
+║ buildspec                                                      ║
 ╟────────────────────────────────────────────────────────────────╢
 ║ /home/spack/buildtest/examples/compilers/gnu_hello_fortran.yml ║
 ╚════════════════════════════════════════════════════════════════╝
-──────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────────────────────────────
+
+
+Total Discovered Buildspecs:  1
+Total Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
+────────────────────────── Parsing Buildspecs ───────────────────────────
+Buildtest will parse 1 buildspecs
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
 /home/spack/buildtest/examples/compilers/gnu_hello_fortran.yml: VALID
@@ -33,35 +38,45 @@ Total builder objects created: 1
 Total compiler builder: 1
 Total script builder: 0
 Total spack builder: 0
-                                                                Compiler Builder Details                                                                
-┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Builder          ┃ Executor           ┃ Compiler  ┃ description                     ┃ buildspecs                                                     ┃
-┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ hello_f/339023ee │ generic.local.bash │ gcc_7.5.0 │ Hello World Fortran Compilation │ /home/spack/buildtest/examples/compilers/gnu_hello_fortran.yml │
-└──────────────────┴────────────────────┴───────────┴─────────────────────────────────┴────────────────────────────────────────────────────────────────┘
-─────────────────────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────────────────────
-hello_f/339023ee: Creating test directory: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/339023ee
-hello_f/339023ee: Creating the stage directory: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/339023ee/stage
-hello_f/339023ee: Writing build script: /home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/339023ee/hello_f_build.sh
-─────────────────────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────────────────────
+                        Compiler Builder Details                         
+┏━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ builder  ┃ executor ┃ compiler ┃ nodes ┃ procs ┃ descript… ┃ buildsp… ┃
+┡━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━┩
+│ hello_f… │ generic… │ gcc_7.5… │ None  │ None  │ Hello     │ /home/s… │
+│          │          │          │       │       │ World     │          │
+│          │          │          │       │       │ Fortran   │          │
+│          │          │          │       │       │ Compilat… │          │
+└──────────┴──────────┴──────────┴───────┴───────┴───────────┴──────────┘
+───────────────────────────── Building Test ─────────────────────────────
+hello_f/2fbc7f44: Creating test directory: 
+/home/spack/runs/generic.local.bash/gnu_hello_fortran/hello_f/2fbc7f44
+hello_f/2fbc7f44: Creating the stage directory: /home/spack/runs/generic.
+local.bash/gnu_hello_fortran/hello_f/2fbc7f44/stage
+hello_f/2fbc7f44: Writing build script: /home/spack/runs/generic.local.ba
+sh/gnu_hello_fortran/hello_f/2fbc7f44/hello_f_build.sh
+───────────────────────────── Running Tests ─────────────────────────────
 Spawning 4 processes for processing builders
-──────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ────────────────────────────────────────────────────────────────────────────────────────
-hello_f/339023ee does not have any dependencies adding test to queue
-hello_f/339023ee: Running Test via command: bash --norc --noprofile -eo pipefail
-hello_f_build.sh
-hello_f/339023ee: Test completed in 0.153233 seconds
-hello_f/339023ee: Test completed with returncode: 0
-hello_f/339023ee: Writing output file -  /home/spack/runs/generic.local.bash/gnu
-_hello_fortran/hello_f/339023ee/hello_f.out
-hello_f/339023ee: Writing error file - /home/spack/runs/generic.local.bash/gnu_h
-ello_fortran/hello_f/339023ee/hello_f.err
-In this iteration we are going to run the following tests: [hello_f/339023ee]
-                                                  Test Summary                                                  
-┏━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-┃ Builder          ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
-┡━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ hello_f/339023ee │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.153233 │
-└──────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
+────────────────────────────── Iteration 1 ──────────────────────────────
+hello_f/2fbc7f44 does not have any dependencies adding test to queue
+hello_f/2fbc7f44: Running Test via command: bash --norc --noprofile -eo 
+pipefail hello_f_build.sh
+hello_f/2fbc7f44: Test completed in 0.144778 seconds
+hello_f/2fbc7f44: Test completed with returncode: 0
+hello_f/2fbc7f44: Writing output file -  /home/spack/runs/generic.local.b
+ash/gnu_hello_fortran/hello_f/2fbc7f44/hello_f.out
+hello_f/2fbc7f44: Writing error file - /home/spack/runs/generic.local.bas
+h/gnu_hello_fortran/hello_f/2fbc7f44/hello_f.err
+In this iteration we are going to run the following tests: [hello_f/2fbc7f44]
+                              Test Summary                               
+┏━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃            ┃            ┃        ┃ checks (Re ┃            ┃          ┃
+┃            ┃            ┃        ┃ turnCode,  ┃            ┃          ┃
+┃            ┃            ┃        ┃ Regex,     ┃            ┃          ┃
+┃ builder    ┃ executor   ┃ status ┃ Runtime)   ┃ returnCode ┃ runtime  ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ hello_f/2f │ generic.l… │ PASS   │ N/A N/A    │ 0          │ 0.144778 │
+│ bc7f44     │            │        │ N/A        │            │          │
+└────────────┴────────────┴────────┴────────────┴────────────┴──────────┘
 
 
 
@@ -70,4 +85,4 @@ Failed Tests: 0/1 Percentage: 0.000%
 
 
 Adding 1 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_xcxzeu97.log
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_o1jub4w4.log
