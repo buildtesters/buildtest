@@ -674,6 +674,14 @@ class Report:
             builders.append(lookup[uid]["name"] + "/" + uid)
         return builders
 
+    def get_random_builder_names(self, num_items=1):
+        """Return a list of random builder names from report file.
+
+        Args:
+            num_items (int, optional): Number of items to retrieve
+        """
+        return random.sample(self.builder_names(), num_items)
+
     def breakdown_by_test_names(self):
         """Returns a dictionary with number of test runs, pass test and fail test by testname"""
         tests = {}
