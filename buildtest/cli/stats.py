@@ -1,8 +1,7 @@
-from statistics import StatisticsError, mean, variance
+from statistics import mean, variance
 
 from buildtest.cli.report import Report
 from buildtest.defaults import console
-from buildtest.exceptions import BuildTestError
 
 
 def stats_cmd(name, report_file=None):
@@ -40,14 +39,8 @@ def stats_cmd(name, report_file=None):
 
     # need to convert all items to float since each item is str
     runtimes = [float(runtime) for runtime in results.display_table["runtime"]]
+    test_variance = variance(runtimes) if len(runtimes) > 1 else 0
     console.print(f"Mean Runtime {mean(runtimes):.6f}")
-
-    # variance requires 2 input data otherwise it raises exception StatisticsError
-    try:
-        test_variance = variance(runtimes)
-    except StatisticsError:
-        raise BuildTestError("We need two test runs to calculate variance")
-
     console.print(f"Variance Runtime {test_variance:0.6f}")
 
     results.print_report()
