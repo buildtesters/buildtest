@@ -1,6 +1,7 @@
 import datetime
 import logging
 import os
+import random
 import sys
 
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
@@ -596,6 +597,15 @@ class Report:
 
         return test_names
 
+    def get_random_tests(self, num_items=1):
+        """Returns a list of random test names from the list of available test. The test are picked
+        using `random.sample <https://docs.python.org/3/library/random.html#random.sample>`_
+
+        Args:
+            num_items (int, optional): Number of test items to retrieve
+        """
+        return random.sample(self.get_names(), num_items)
+
     def get_buildspecs(self):
         """Return a list of buildspecs in report file"""
         return self.filtered_buildspecs
@@ -663,6 +673,14 @@ class Report:
         for uid in lookup.keys():
             builders.append(lookup[uid]["name"] + "/" + uid)
         return builders
+
+    def get_random_builder_names(self, num_items=1):
+        """Return a list of random builder names from report file.
+
+        Args:
+            num_items (int, optional): Number of items to retrieve
+        """
+        return random.sample(self.builder_names(), num_items)
 
     def breakdown_by_test_names(self):
         """Returns a dictionary with number of test runs, pass test and fail test by testname"""

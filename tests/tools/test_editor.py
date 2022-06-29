@@ -14,4 +14,4 @@ def test_editor():
     assert set_editor("notepad") == shutil.which("vi")
 
     os.environ["EDITOR"] = "notepad"
-    set_editor("notepad")
+    assert set_editor("notepad") == shutil.which("vi")
