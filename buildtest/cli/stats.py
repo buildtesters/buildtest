@@ -1,8 +1,7 @@
-from statistics import StatisticsError, mean, variance
+from statistics import mean, variance
 
 from buildtest.cli.report import Report
 from buildtest.defaults import console
-from buildtest.exceptions import BuildTestError
 
 
 def stats_cmd(name, report_file=None):
