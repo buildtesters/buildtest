@@ -1,32 +1,31 @@
 $ buildtest inspect query -t spack_sbatch_example 
-───────────── spack_sbatch_example/187aadba-2c42-4875-aa8d-a1fc2fc798e4 ──────────────
+─────── spack_sbatch_example/b38cb93d-801d-4085-a22c-bfcecfbf1b7e ───────
 Executor: generic.local.bash
 Description: sbatch directives can be defined in spack schema
 State: PASS
 Returncode: 0
-Runtime: 1.507024 sec
-Starttime: 2022/02/09 17:48:32
-Endtime: 2022/02/09 17:48:34
-Command: bash --norc --noprofile -eo pipefail spack_sbatch_example_build.sh
-Test Script: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/187
-aadba/spack_sbatch_example.sh
-Build Script: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/18
-7aadba/spack_sbatch_example_build.sh
-Output File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/187
-aadba/spack_sbatch_example.out
-Error File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/187a
-adba/spack_sbatch_example.err
-Log File: /home/spack/buildtest/var/logs/buildtest_vy6nsn_c.log
-─ Test File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/… ─
-   1 #!/bin/bash                                                                      
-   2 ####### START OF SCHEDULER DIRECTIVES #######                                    
-   3 #SBATCH -N 1                                                                     
-   4 #SBATCH -n 8                                                                     
-   5 #SBATCH -t 30                                                                    
-   6 #SBATCH --job-name=spack_sbatch_example                                          
-   7 #SBATCH --output=spack_sbatch_example.out                                        
-   8 #SBATCH --error=spack_sbatch_example.err                                         
-   9 ####### END OF SCHEDULER DIRECTIVES   #######                                    
-  10 source /home/spack/spack/share/spack/setup-env.sh                                
-  11 spack install  zlib@1.2.11%clang                                                 
-  12 spack install  zlib@1.2.8%clang                                                  
+Runtime: 3.542731 sec
+Starttime: 2022/06/29 17:27:11
+Endtime: 2022/06/29 17:27:15
+Command: bash --norc --noprofile -eo pipefail 
+spack_sbatch_example_build.sh
+Test Script: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatc
+h_example/b38cb93d/spack_sbatch_example.sh
+Build Script: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbat
+ch_example/b38cb93d/spack_sbatch_example_build.sh
+Output File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatc
+h_example/b38cb93d/spack_sbatch_example.out
+Error File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch
+_example/b38cb93d/spack_sbatch_example.err
+Log File: /home/spack/buildtest/var/logs/buildtest_ktoiyb7h.log
+─ Test File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sb… ─
+#!/bin/bash                                                              
+#SBATCH -N 1                                                             
+#SBATCH -n 8                                                             
+#SBATCH -t 30                                                            
+#SBATCH --job-name=spack_sbatch_example                                  
+#SBATCH --output=spack_sbatch_example.out                                
+#SBATCH --error=spack_sbatch_example.err                                 
+source /home/spack/spack/share/spack/setup-env.sh                        
+spack install  zlib@1.2.11%clang                                         
+spack install  zlib@1.2.8%clang                                          

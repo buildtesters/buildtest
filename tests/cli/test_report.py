@@ -1,3 +1,4 @@
+import datetime
 import os
 import shutil
 import tempfile
@@ -68,7 +69,7 @@ def test_report_filter():
     Report(
         filter_args={
             "buildspec": os.path.join(
-                BUILDTEST_ROOT, "tutorials", "pass_returncode.yml"
+                BUILDTEST_ROOT, "tutorials", "test_status", "pass_returncode.yml"
             )
         },
         format_args="name,returncode,buildspec",
@@ -103,6 +104,29 @@ def test_report_oldest_and_latest():
 
     # buildtest report --filter tags=tutorials --oldest --latest
     Report(filter_args={"tags": "tutorials"}, oldest=True, latest=True)
+
+
+@pytest.mark.cli
+def test_report_failure():
+
+    # buildtest report --filter tags=tutorials --failure
+    Report(filter_args={"tags": "tutorials"}, failure=True)
+
+
+@pytest.mark.cli
+def test_report_start_and_end():
+
+    start_date = datetime.datetime.strptime("2022-06-07 00:00:00", "%Y-%m-%d %X")
+    end_date = datetime.datetime.now()
+
+    # buildtest report --filter tags=tutorials --start
+    Report(filter_args={"tags": "tutorials"}, start=start_date)
+
+    # buildtest report --filter tags=tutorials --end
+    Report(filter_args={"tags": "tutorials"}, end=end_date)
+
+    # buildtest report --filter tags=tutorials --start --end
+    Report(filter_args={"tags": "tutorials"}, start=start_date, end=end_date)
 
 
 @pytest.mark.cli

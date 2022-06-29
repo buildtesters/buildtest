@@ -39,11 +39,11 @@
           "type": "string",
           "description": "system description field"
         },
-        "numprocs":
+        "poolsize":
         {
           "type": "integer",
           "minimum": 1,
-          "description": "Specify size of Process Pool for parallel processing"
+          "description": "Specify size of Process Pool for parallel processing using ``multiprocessing.Pool``"
         },
         "buildspec_roots": {
           "type": "array",
@@ -68,6 +68,11 @@
             "lmod",
             "N/A"
           ]
+        },
+        "timeout": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Specify timeout duration in number of seconds"
         },
         "processor": {
           "type": "object",
@@ -181,6 +186,7 @@
             "type": "object",
             "additionalProperties": false,
             "description": "The executor section is used for declaring your executors that are responsible for running jobs. The executor section can be ``local``, ``lsf``, ``slurm``, ``cobalt``. The executors are referenced in buildspec using ``executor`` field.",
+            "required": ["local"],
             "properties": {
               "defaults": {
                 "type": "object",

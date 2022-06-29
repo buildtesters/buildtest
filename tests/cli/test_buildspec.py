@@ -6,10 +6,13 @@ import tempfile
 import pytest
 from buildtest.cli.buildspec import (
     BuildspecCache,
+    buildspec_maintainers,
     buildspec_validate,
     show_buildspecs,
+    show_failed_buildspecs,
     summarize_buildspec_cache,
 )
+from buildtest.cli.report import Report
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
@@ -90,12 +93,6 @@ def test_func_buildspec_find():
     # buildtest buildspec find --group-by-tags
     cache.print_by_tags()
 
-    # buildtest buildspec find --maintainers
-    cache.print_maintainer()
-
-    # implements buildtest buildspec find --maintainers-by-buildspecs
-    cache.print_maintainers_by_buildspecs()
-
     # implements buildtest buildspec find --helpfilter
     cache.print_filter_fields()
 
@@ -129,6 +126,17 @@ def test_buildspec_find_terse():
 
 
 @pytest.mark.cli
+def test_buildspec_maintainers():
+    buildspec_maintainers(
+        configuration=configuration, list=True, terse=True, header=True
+    )
+    buildspec_maintainers(
+        configuration=configuration, breakdown=True, terse=True, header=True
+    )
+    buildspec_maintainers(configuration=configuration, name="@shahzebsiddiqui")
+
+
+@pytest.mark.cli
 def test_buildspec_find_invalid():
 
     cache = BuildspecCache(configuration=configuration)
@@ -143,12 +151,10 @@ def test_buildspec_find_filter():
     cache = BuildspecCache(filterfields={"tags": "fail"}, configuration=configuration)
     cache.print_buildspecs()
 
-    # testing buildtest buildspec find --filter buildspec=$BUILDTEST_ROOT/tutorials/pass_returncode.yml
+    # testing buildtest buildspec find --filter buildspec=$BUILDTEST_ROOT/tutorials/hello_world.yml
     cache = BuildspecCache(
         filterfields={
-            "buildspec": os.path.join(
-                BUILDTEST_ROOT, "tutorials", "pass_returncode.yml"
-            )
+            "buildspec": os.path.join(BUILDTEST_ROOT, "tutorials", "hello_world.yml")
         },
         configuration=configuration,
     )
@@ -156,7 +162,11 @@ def test_buildspec_find_filter():
 
     # testing buildtest buildspec find --filter type=script,executor=generic.local.sh,tags=fail
     cache = BuildspecCache(
-        filterfields={"type": "script", "executor": "generic.local.sh", "tags": "fail"},
+        filterfields={
+            "type": "script",
+            "executor": "generic.local.bash",
+            "tags": "fail",
+        },
         configuration=configuration,
     )
     cache.print_buildspecs()
@@ -177,17 +187,6 @@ def test_buildspec_find_filter():
         tf = tempfile.TemporaryDirectory()
         # if we specify a directory path for buildspec filter this will raise an exception.
         BuildspecCache(filterfields={"buildspec": tf.name}, configuration=configuration)
-
-    # testing buildtest buildspec find --filter tags=fail
-    cache = BuildspecCache(
-        filterfields={
-            "buildspec": os.path.join(
-                BUILDTEST_ROOT, "tutorials", "pass_returncode.yml"
-            )
-        },
-        configuration=configuration,
-    )
-    cache.print_buildspecs()
 
     # testing buildtest buildspec find --filter key1=val1,key2=val2
     with pytest.raises(BuildTestError):
@@ -254,3 +253,22 @@ def test_buildspec_show():
             random.choice(string.ascii_letters) for i in range(10)
         )
         show_buildspecs(test_names=[random_testname], configuration=configuration)
+
+
+@pytest.mark.cli
+def test_buildspec_show_fail():
+
+    # Query some random test name that doesn't exist
+    with pytest.raises(BuildTestError):
+        random_testname = "".join(
+            random.choice(string.ascii_letters) for i in range(10)
+        )
+        show_failed_buildspecs(
+            configuration=configuration, test_names=[random_testname]
+        )
+
+    # Query a test that is NOT in state=FAIL
+    with pytest.raises(BuildTestError):
+        results = Report()
+        pass_test = results.get_test_by_state(state="PASS")[0]
+        show_failed_buildspecs(configuration=configuration, test_names=[pass_test])

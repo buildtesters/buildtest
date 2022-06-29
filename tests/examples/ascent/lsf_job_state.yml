@@ -1,0 +1,10 @@
+buildspecs:
+  lsf_job_state_example:
+    type: script
+    executor: ascent.lsf.batch
+    description: This job will only PASS if LSF Job state is EXIT
+    tags: [jobs]
+    bsub: ["-W 10", "-nnodes 1"]
+    run: jsrun hostname
+    status:
+      lsf_job_state: EXIT

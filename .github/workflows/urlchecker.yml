@@ -1,6 +1,12 @@
 name: Check URLs
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [devel]
+  pull_request:
+    branches: [devel]
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   urlcheck:
@@ -9,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: URLs-checker
-      uses: urlstechie/urlchecker-action@0.2.31
+      uses: urlstechie/urlchecker-action@0.0.27
       with:
         # check this subfolder only
         subfolder: docs
@@ -29,4 +35,6 @@ jobs:
         retry_count: 5
 
         # Cannot check private GitHub settings
-        exclude_patterns: https://github.com/buildtesters/buildtest/settings,https://hpckp.org/past-edition/hpckp-17/,https://hpckp.org/past-edition/hpckp-18,https://sc19.supercomputing.org/presentation/?id=bof195&sess=sess324,https://sc19.supercomputing.org/,https://trac.mcs.anl.gov/projects/cobalt,https://cache.e4s.io,https://readthedocs.org/accounts/signup/,http://localhost:9000
+        exclude_patterns: https://github.com/buildtesters/buildtest/settings,https://hpckp.org/past-edition/hpckp-17/,https://hpckp.org/past-edition/hpckp-18,https://sc19.supercomputing.org/presentation/?id=bof195&sess=sess324,https://sc19.supercomputing.org/,https://trac.mcs.anl.gov/projects/cobalt,https://cache.e4s.io,https://readthedocs.org/accounts/signup/,http://localhost:9000,https://www.hpcwire.com/2019/01/17/pfizer-hpc-engineer-aims-to-automate-software-stack-testing/
+        
+        verbose: true

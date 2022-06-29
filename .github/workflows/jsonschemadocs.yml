@@ -23,19 +23,19 @@ jobs:
         jsonschema2md -d buildtest/schemas/ -o schema_docs/
 
     - name: Upload Schema Docs
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: schemadocs
         path: schema_docs/
 
     - name: Upload Schemas
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: schemafiles
         path: buildtest/schemas/*.schema.json
 
     - name: Upload Schemas Examples
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: schemaexamples
         path: buildtest/schemas/examples
@@ -51,19 +51,19 @@ jobs:
           persist-credentials: false
 
      - name: Download Schemas
-       uses: actions/download-artifact@v2
+       uses: actions/download-artifact@v3
        with:
          name: schemafiles
          path: downloads/schemas
 
      - name: Download Schema Examples
-       uses: actions/download-artifact@v2
+       uses: actions/download-artifact@v3
        with:
          name: schemaexamples
          path: downloads/examples
 
      - name: Download Schema Docs
-       uses: actions/download-artifact@v2
+       uses: actions/download-artifact@v3
        with:
           name: schemadocs
           path: downloads/schemadocs
@@ -74,7 +74,7 @@ jobs:
 
 
      - name: Deploy to GitHub Pages 🚀
-       uses: JamesIves/github-pages-deploy-action@v4.2.5
+       uses: JamesIves/github-pages-deploy-action@v4.3.3
        with:
          # ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
          branch: gh-pages 

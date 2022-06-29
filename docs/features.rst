@@ -233,6 +233,35 @@ into this situation you will get the following error.
 If you specify an invalid test name or buildtest can't find the test id, then buildtest will print list of available test names
 with IDs.
 
+Test Statistics (``buildtest stats``)
+---------------------------------------
+
+The ``buildtest stats`` command can be used to get statistics for a particular test. The input argument is a positional argument which is
+name of test found in the report file. The output will show some useful details such as First and Last Run, show fastest and slowest runtime
+including mean and variance. Shown below is the test statistics for **exit_fail**.
+
+.. code-block:: console
+
+    $ buildtest stats python_hello
+    Total Test Runs:  3
+    First Run: 2022/06/13 15:29:11
+    Last Run: 2022/06/13 15:29:21
+    Fastest Runtime:  0.132854
+    Slowest Runtime:  0.161916
+    Mean Runtime 0.144621
+    Variance Runtime 0.000234
+                                                                                  Report File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/report.json
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ name                                 ┃ state             ┃ returncode                      ┃ starttime                                              ┃ endtime                                                ┃ runtime                  ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ python_hello                         │ PASS              │ 0                               │ 2022/06/13 15:29:11                                    │ 2022/06/13 15:29:11                                    │ 0.132854                 │
+    ├──────────────────────────────────────┼───────────────────┼─────────────────────────────────┼────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────┼──────────────────────────┤
+    │ python_hello                         │ PASS              │ 0                               │ 2022/06/13 15:29:12                                    │ 2022/06/13 15:29:12                                    │ 0.139094                 │
+    ├──────────────────────────────────────┼───────────────────┼─────────────────────────────────┼────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────┼──────────────────────────┤
+    │ python_hello                         │ PASS              │ 0                               │ 2022/06/13 15:29:21                                    │ 2022/06/13 15:29:21                                    │ 0.161916                 │
+    └──────────────────────────────────────┴───────────────────┴─────────────────────────────────┴────────────────────────────────────────────────────────┴────────────────────────────────────────────────────────┴──────────────────────────┘
+
+
 Buildtest Debug Report (``buildtest debugreport``)
 ---------------------------------------------------
 
@@ -303,7 +332,19 @@ If you want to view buildtest configuration you can run ``buildtest config view`
 
 .. command-output:: buildtest config view
 
-.. Note:: ``buildtest config view`` will display contents of user buildtest settings ``~/.buildtest/config.yml`` if found, otherwise it will display the default configuration
+Check path to buildtest configuration file (``buildtest config path``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you want to check path to buildtest configuration file you can run ``buildtest config path`` which will print path of buildtest configuration file.
+
+.. command-output:: buildtest config path
+
+Edit buildtest configuration (``buildtest config edit``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``buildtest config edit`` command is used to open buildtest configuration file in your preferred editor. buildtest will
+use the environment **EDITOR** to get the preffered editor; however, one can override the environment variable via command line option
+``buildtest --editor``.
 
 .. _view_executors:
 

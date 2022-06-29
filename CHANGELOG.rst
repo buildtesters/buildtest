@@ -1,21 +1,61 @@
 CHANGELOG
 =========
 
-v0.14.0
---------
+v0.14.1 (July 1st 2022)
+-------------------------
 
-- Add PAGING output using ``--pager`` option which is available for ``buildtest buildspec find``, ``buildtest report``, ``buildtest report summary``, and ``buildtest history list`` command `#1012 <https://github.com/buildtesters/buildtest/pull/1012>`_ `#1016 <https://github.com/buildtesters/buildtest/pull/1016>`_, `#1017 <https://github.com/buildtesters/buildtest/pull/1017>`_
-- Remove **buildtest edit** command and now this is **buildtest buildspec edit-file**. Add new command ``buildtest buildspec edit`` which will edit buildspecs based on testname while ``buildtest buildspec edit-file`` uses filepath `#1006 <https://github.com/buildtesters/buildtest/pull/1006>`_, `#1007 <https://github.com/buildtesters/buildtest/pull/1007>`_
+**New Options**
+
+- Add option ``--buildenv`` to **buildtest report**, **buildtest path** and **buildtest inspect query** and add entry `buildenv` to capture build environment from test `#1062 <https://github.com/buildtesters/buildtest/pull/1062>`_
+- Add support to timeout test via ``buildtest build --timeout`` which is calculated in number of seconds `#1052 <https://github.com/buildtesters/buildtest/pull/1052>`_, `#1057 <https://github.com/buildtesters/buildtest/pull/1057>`_
+- Add option ``buildtest --editor`` to specify your preferred editor when opening files `#1070 <https://github.com/buildtesters/buildtest/pull/1070>`_
+- Rename ``buildtest buildspec edit`` to ``buildtest buildspec edit-test`` used for editing files by testname which is to be consistent with `buildtest buildspec edit-file` which edits by filename `#1081 <https://github.com/buildtesters/buildtest/pull/1081>`_
+- Add option ``buildtest report --failure`` to report all failure tests `#1076 <https://github.com/buildtesters/buildtest/pull/1076>`_
+- Add new command ``buildtest stats`` to show test stats which can be useful for analysis purpose. This command is subject to change  `#1074 <https://github.com/buildtesters/buildtest/pull/1074>`_
+- Add option ``buildtest cdash upload --open`` to CDASH result that was recently pushed in webbrowser which can be useful if one wants to run this command as pose to clicking link that is shown in output `#1083 <https://github.com/buildtesters/buildtest/pull/1083>`_
+- Add option ``buildtest report --start`` and ``buildtest report --end`` to filter test records by starttime and endtime `#1082 <https://github.com/buildtesters/buildtest/pull/1082>`_
+- Add new command ``buildtest config path`` to show path to configuration file `#1100 <https://github.com/buildtesters/buildtest/pull/1100>`_
+- Add new command ``buildtest buildspec maintainers`` to show maintainer details from buildspec cache. The command ``buildtest buildspec maintainers --list`` will report list of maintainers. The ``--terse`` and ``---no-header`` can be used for parseable format.
+  The ``buildtest buildspec maintainers find <name>`` can be used to search for buildspecs given a maintainer name  `#1093 <https://github.com/buildtesters/buildtest/pull/1093>`_.
+
+**Changes to buildspec**
+
+- Rename property **numprocs** to **poolsize** in buildtest configuration for configuring number of worker process when using multiprocessing library. `#1064 <https://github.com/buildtesters/buildtest/pull/1064>`_
+- Add **summary** property to provide extended description of test that is not limited to 80 character unlike the `description` field. `#1069 <https://github.com/buildtesters/buildtest/pull/1069>`_,  `#1073 <https://github.com/buildtesters/buildtest/pull/1073>`_
+- The dash ``-`` character is now supported character in the test name `#1097 <https://github.com/buildtesters/buildtest/pull/1097>`_
+- Remove **executor** check during Parse stage this avoids having an invalid buildspec when one specifies a buildspec using regular expression where test can run across multiple system `#1098 <https://github.com/buildtesters/buildtest/pull/1098>`_
+
+**Other Changes**
+
+- Add coverage for *ubuntu-22.04* and *macos-12* in regression test and test all python version from 3.7-3.10 `#1120 <https://github.com/buildtesters/buildtest/pull/1120>`_, `#1118 <https://github.com/buildtesters/buildtest/pull/1118>`_, `#1115 <https://github.com/buildtesters/buildtest/pull/1115>`_
+- Remove urlchecker cron workflow `#1110 <https://github.com/buildtesters/buildtest/pull/1110>`_
+- Fix regression test for ``buildtest --editor`` when specifying invalid editor name. Now editor will resort to **vi** if invalid editor is specified `#1124 <https://github.com/buildtesters/buildtest/pull/1124>`_
+
+
+
+v0.14.0 (Mar 18th 2022)
+-----------------------
+
+**Changes buildspec structure**
+
 - Add support for test dependencies in buildspec using the ``needs`` property. `#1000 <https://github.com/buildtesters/buildtest/pull/1000>`_, `#1003 <https://github.com/buildtesters/buildtest/pull/1003>`_, `#1015 <https://github.com/buildtesters/buildtest/pull/1015>`_
-- Add new option ``buildtest build --modules``, ``buildtest build --module-purge`` and ``buildtest build --unload-modules`` which allows one to specify modules to load/unload on command line and purging modules command before running any test. `#1004 <https://github.com/buildtesters/buildtest/pull/1004>`_, `#1020 <https://github.com/buildtesters/buildtest/pull/1020>`_
-- Add new option ``buildtest build --rerun`` which will rerun last successful **buildtest build** command which can be used to repeat a command without having to remember what you typed. `#1023 <https://github.com/buildtesters/buildtest/pull/1023>`_
-- Add new option ``buildtest build --executor-type`` to filter test by executor types which can be **local** or **batch**. `#1026 <https://github.com/buildtesters/buildtest/pull/1026>`_
 - Add ``compilers`` property in script schema for defining multiple compilers when using the ``type: script`` in buildspec. This can be used in the ``run`` section for selecting multiple compilers `#999 <https://github.com/buildtesters/buildtest/pull/999>`_
 - Add field ``nvhpc`` to settings schema for compiler declaration and under compiler schema for using nvhpc compiler `#996 <https://github.com/buildtesters/buildtest/pull/996>`_
 - Remove the ``run_only`` property from schema, remove buildspec examples and update user documentation `#994 <https://github.com/buildtesters/buildtest/pull/994>`_
-- Add new option ``buildtest --lastlog`` to see output of last build log. Enable RichHandler for logging `#993 <https://github.com/buildtesters/buildtest/pull/993>`_
-- buildtest has a logo! `#989 <https://github.com/buildtesters/buildtest/pull/989>`_
 - Remove version numbers from all schemas, example buildspec, refactor codebase and update user documentation `#988 <https://github.com/buildtesters/buildtest/pull/988>`_
+
+**New command line options:**
+
+- Add PAGING output using ``--pager`` option which is available for ``buildtest buildspec find``, ``buildtest report``, ``buildtest report summary``, and ``buildtest history list`` command `#1012 <https://github.com/buildtesters/buildtest/pull/1012>`_ `#1016 <https://github.com/buildtesters/buildtest/pull/1016>`_, `#1017 <https://github.com/buildtesters/buildtest/pull/1017>`_
+- Add new option ``buildtest build --modules``, ``buildtest build --module-purge`` and ``buildtest build --unload-modules`` which allows one to specify modules to load/unload on command line and purging modules command before running any test. `#1004 <https://github.com/buildtesters/buildtest/pull/1004>`_, `#1020 <https://github.com/buildtesters/buildtest/pull/1020>`_
+- Add new option ``buildtest build --rerun`` which will rerun last successful **buildtest build** command which can be used to repeat a command without having to remember what you typed. `#1023 <https://github.com/buildtesters/buildtest/pull/1023>`_
+- Add new option ``buildtest build --executor-type`` to filter test by executor types which can be **local** or **batch**. `#1026 <https://github.com/buildtesters/buildtest/pull/1026>`_
+- Remove **buildtest edit** command and now this is **buildtest buildspec edit-file**. Add new command ``buildtest buildspec edit`` which will edit buildspecs based on testname while ``buildtest buildspec edit-file`` uses filepath `#1006 <https://github.com/buildtesters/buildtest/pull/1006>`_, `#1007 <https://github.com/buildtesters/buildtest/pull/1007>`_
+- Add new option ``buildtest --lastlog`` to see output of last build log. Enable RichHandler for logging `#993 <https://github.com/buildtesters/buildtest/pull/993>`_
+
+**Miscelleaneous Updates**
+
+- buildtest has a logo! `#989 <https://github.com/buildtesters/buildtest/pull/989>`_
 - Enable bash completion support for zsh `#987 <https://github.com/buildtesters/buildtest/pull/987/>`_
 - Refactor Polling Implementation for Batch Job Submission `#986 <https://github.com/buildtesters/buildtest/pull/986/>`_
 - Add documentation on starting PBS container `#985 <https://github.com/buildtesters/buildtest/pull/985/>`_

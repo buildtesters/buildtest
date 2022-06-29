@@ -375,16 +375,9 @@ to the PBS executor by selecting the appropriate pbs executor via ``executor`` p
 directives can be specified using ``pbs`` field which is a list of PBS options that get inserted at top of script. Shown
 below is an example buildspec using the `script` schema.
 
-.. code-block:: yaml
+.. literalinclude:: ../tests/examples/pbs/sleep.yml
    :emphasize-lines: 5
-
-    buildspecs:
-      pbs_sleep:
-        type: script
-        executor: generic.pbs.workq
-        pbs: ["-l nodes=1", "-l walltime=00:02:00"]
-        run: sleep 10
-
+   :language: yaml
 
 buildtest will poll PBS jobs using ``qstat -x -f -F json <jobID>`` until job is finished. Note that
 we use **-x** option to retrieve finished jobs which is required in-order for buildtest to detect job
@@ -392,86 +385,90 @@ state upon completion.
 
 Shown below is an example build of the buildspec using PBS scheduler.
 
-
 .. code-block:: console
 
-    [pbsuser@pbs tmp]$ buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/sleep.yml --pollinterval=5
-    ╭─────────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────────╮
-    │                                                                                                                          │
-    │ User:               pbsuser                                                                                              │
-    │ Hostname:           pbs                                                                                                  │
-    │ Platform:           Linux                                                                                                │
-    │ Current Time:       2021/10/13 16:59:34                                                                                  │
-    │ buildtest path:     /tmp/bin/buildtest                                                                                   │
-    │ buildtest version:  0.11.0                                                                                               │
-    │ python path:        /bin/python                                                                                          │
-    │ python version:     3.7.11                                                                                               │
-    │ Configuration File: /tmp/tests/settings/pbs.yml                                                                          │
-    │ Test Directory:     /tmp/var/tests                                                                                       │
-    │ Command:            /tmp/bin/buildtest -c tests/settings/pbs.yml build -b tests/examples/pbs/sleep.yml --pollinterval=5 │
-    │                                                                                                                          │
-    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-    ─────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────────────────────
+    (buildtest) -bash-4.2$ buildtest build -b tests/examples/pbs/sleep.yml
+    ╭─────────────────────────────────────── buildtest summary ───────────────────────────────────────╮
+    │                                                                                                 │
+    │ User:               pbsuser                                                                     │
+    │ Hostname:           pbs                                                                         │
+    │ Platform:           Linux                                                                       │
+    │ Current Time:       2022/03/30 14:59:29                                                         │
+    │ buildtest path:     /home/pbsuser/buildtest/bin/buildtest                                       │
+    │ buildtest version:  0.14.0                                                                      │
+    │ python path:        /home/pbsuser/miniconda/bin/python3                                         │
+    │ python version:     3.9.7                                                                       │
+    │ Configuration File: /home/pbsuser/buildtest/tests/settings/pbs.yml                              │
+    │ Test Directory:     /home/pbsuser/buildtest/var/tests                                           │
+    │ Report File:        /home/pbsuser/buildtest/var/report.json                                     │
+    │ Command:            /home/pbsuser/buildtest/bin/buildtest build -b tests/examples/pbs/sleep.yml │
+    │                                                                                                 │
+    ╰─────────────────────────────────────────────────────────────────────────────────────────────────╯
+    ───────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────
     Discovered Buildspecs:  1
     Excluded Buildspecs:  0
     Detected Buildspecs after exclusion:  1
-            Discovered buildspecs
-    ╔═══════════════════════════════════╗
-    ║ Buildspecs                        ║
-    ╟───────────────────────────────────╢
-    ║ /tmp/tests/examples/pbs/sleep.yml ║
-    ╚═══════════════════════════════════╝
-    ──────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────
+                     Discovered buildspecs
+    ╔══════════════════════════════════════════════════════╗
+    ║ Buildspecs                                           ║
+    ╟──────────────────────────────────────────────────────╢
+    ║ /home/pbsuser/buildtest/tests/examples/pbs/sleep.yml ║
+    ╚══════════════════════════════════════════════════════╝
+    ────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────────────────────────────────────────────────
     Valid Buildspecs: 1
     Invalid Buildspecs: 0
-    /tmp/tests/examples/pbs/sleep.yml: VALID
-
-
+    /home/pbsuser/buildtest/tests/examples/pbs/sleep.yml: VALID
     Total builder objects created: 1
-
-
-                                          Builder Details
-    ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-    ┃ Builder            ┃ Executor          ┃ description ┃ buildspecs                        ┃
-    ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-    │ pbs_sleep/c7bc6a9c │ generic.pbs.workq │             │ /tmp/tests/examples/pbs/sleep.yml │
-    └────────────────────┴───────────────────┴─────────────┴───────────────────────────────────┘
-    ────────────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────────────
-    [16:59:34] pbs_sleep/c7bc6a9c: Creating test directory - /tmp/var/tests/generic.pbs.workq/sleep/pbs_sleep/c7bc6a9c                                               base.py:440
-               pbs_sleep/c7bc6a9c: Creating stage directory - /tmp/var/tests/generic.pbs.workq/sleep/pbs_sleep/c7bc6a9c/stage                                        base.py:450
-               pbs_sleep/c7bc6a9c: Writing build script: /tmp/var/tests/generic.pbs.workq/sleep/pbs_sleep/c7bc6a9c/pbs_sleep_build.sh                                base.py:567
-    ────────────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────────────
-    ______________________________
-    Launching test: pbs_sleep/c7bc6a9c
-    pbs_sleep/c7bc6a9c: Running Test script /tmp/var/tests/generic.pbs.workq/sleep/pbs_sleep/c7bc6a9c/pbs_sleep_build.sh
-    pbs.generic.pbs.workq: JobID: 0.pbs dispatched to scheduler
+    Total compiler builder: 0
+    Total script builder: 1
+    Total spack builder: 0
+                                                      Script Builder Details
+    ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder            ┃ Executor          ┃ Compiler ┃ description ┃ buildspecs                                           ┃
+    ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ pbs_sleep/eeeb2fd9 │ generic.pbs.workq │ None     │ None        │ /home/pbsuser/buildtest/tests/examples/pbs/sleep.yml │
+    └────────────────────┴───────────────────┴──────────┴─────────────┴──────────────────────────────────────────────────────┘
+                                           Batch Job Builders
+    ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder            ┃ Executor          ┃ buildspecs                                           ┃
+    ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ pbs_sleep/eeeb2fd9 │ generic.pbs.workq │ /home/pbsuser/buildtest/tests/examples/pbs/sleep.yml │
+    └────────────────────┴───────────────────┴──────────────────────────────────────────────────────┘
+    ──────────────────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────────────────
+    pbs_sleep/eeeb2fd9: Creating test directory: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/eeeb2fd9
+    pbs_sleep/eeeb2fd9: Creating the stage directory: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/eeeb2fd9/stage
+    pbs_sleep/eeeb2fd9: Writing build script: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/eeeb2fd9/pbs_sleep_build.sh
+    ──────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────────────────
+    Spawning 4 processes for processing builders
+    ───────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────────────────────────────────────
+    pbs_sleep/eeeb2fd9 does not have any dependencies adding test to queue
+    In this iteration we are going to run the following tests: [pbs_sleep/eeeb2fd9]
+    pbs_sleep/eeeb2fd9: Running Test via command: bash --norc --noprofile -eo pipefail pbs_sleep_build.sh
+    pbs_sleep/eeeb2fd9: JobID: 7.pbs dispatched to scheduler
     Polling Jobs in 5 seconds
-                                 Pending Jobs
+                                 Running Jobs
     ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
-    ┃ Builder            ┃ executor          ┃ JobID ┃ JobState ┃ runtime ┃
+    ┃ builder            ┃ executor          ┃ jobid ┃ jobstate ┃ runtime ┃
     ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
-    │ pbs_sleep/c7bc6a9c │ generic.pbs.workq │ 0.pbs │ R        │ 5.138   │
+    │ pbs_sleep/eeeb2fd9 │ generic.pbs.workq │ 7.pbs │ R        │ 5.067   │
     └────────────────────┴───────────────────┴───────┴──────────┴─────────┘
     Polling Jobs in 5 seconds
-    pbs_sleep/c7bc6a9c: Job 0.pbs is complete!
-    pbs_sleep/c7bc6a9c: Writing output file -  /tmp/var/tests/generic.pbs.workq/sleep/pbs_sleep/c7bc6a9c/pbs_sleep.o0
-    pbs_sleep/c7bc6a9c: Writing error file - /tmp/var/tests/generic.pbs.workq/sleep/pbs_sleep/c7bc6a9c/pbs_sleep.e0
-                       Pending Jobs
-    ┏━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
-    ┃ Builder ┃ executor ┃ JobID ┃ JobState ┃ runtime ┃
-    ┡━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
-    └─────────┴──────────┴───────┴──────────┴─────────┘
+    pbs_sleep/eeeb2fd9: Job 7.pbs is complete!
+    pbs_sleep/eeeb2fd9: Test completed in 10.101154 seconds
+    pbs_sleep/eeeb2fd9: Test completed with returncode: 0
+    pbs_sleep/eeeb2fd9: Writing output file -  /home/pbsuser/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/eeeb2fd9/pbs_sleep.o7
+    pbs_sleep/eeeb2fd9: Writing error file - /home/pbsuser/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/eeeb2fd9/pbs_sleep.e7
                                  Completed Jobs
     ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┓
-    ┃ Builder            ┃ executor          ┃ JobID ┃ JobState ┃ runtime   ┃
+    ┃ builder            ┃ executor          ┃ jobid ┃ jobstate ┃ runtime   ┃
     ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━┩
-    │ pbs_sleep/c7bc6a9c │ generic.pbs.workq │ 0.pbs │ F        │ 10.173252 │
+    │ pbs_sleep/eeeb2fd9 │ generic.pbs.workq │ 7.pbs │ F        │ 10.101154 │
     └────────────────────┴───────────────────┴───────┴──────────┴───────────┘
                                                        Test Summary
     ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┓
     ┃ Builder            ┃ executor          ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime   ┃
     ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━┩
-    │ pbs_sleep/c7bc6a9c │ generic.pbs.workq │ PASS   │ N/A N/A N/A                         │ 0          │ 10.173252 │
+    │ pbs_sleep/eeeb2fd9 │ generic.pbs.workq │ PASS   │ N/A N/A N/A                         │ 0          │ 10.101154 │
     └────────────────────┴───────────────────┴────────┴─────────────────────────────────────┴────────────┴───────────┘
 
 
@@ -480,8 +477,108 @@ Shown below is an example build of the buildspec using PBS scheduler.
     Failed Tests: 0/1 Percentage: 0.000%
 
 
-    Writing Logfile to: /tmp/buildtest_fgm9gtu2.log
-    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /tmp/buildtest.log
+    Adding 1 test results to /home/pbsuser/buildtest/var/report.json
+    Writing Logfile to: /home/pbsuser/buildtest/var/logs/buildtest_5d6h0_uk.log
+
+buildtest can determine status of test based on PBS Job State. This can be configured via ``pbs_job_state`` property
+that is an attribute of **status** field. The ``pbs_job_state`` can be one of three values **H**, **S**, **F**. ``H`` refers to Job Held, ``S`` refers
+to suspended job and ``F`` refers to Finished job. Please see **Table 8-1: Job States** in https://2021.help.altair.com/2021.1.2/PBS%20Professional/PBSReferenceGuide2021.1.2.pdf.
+
+In example below we simulate a failed job by expecting job to be in Hold state (``H``) however job will finish with a job state of ``F``. buildtest will match
+the actual job state reported by PBS and value of ``pbs_job_state``, if there is a match we will report a ``PASS`` otherwise job will be a ``FAIL``.
+
+.. literalinclude:: ../tests/examples/pbs/pbs_job_state.yml
+   :language: yaml
+
+Let's run this example and notice that this job ran to completion but it was reported as **FAIL**
+
+.. code-block:: console
+
+    (buildtest) -bash-4.2$ buildtest bd -b tests/examples/pbs/pbs_job_state.yml
+    ╭───────────────────────────────────────── buildtest summary ──────────────────────────────────────────╮
+    │                                                                                                      │
+    │ User:               pbsuser                                                                          │
+    │ Hostname:           pbs                                                                              │
+    │ Platform:           Linux                                                                            │
+    │ Current Time:       2022/03/30 14:33:36                                                              │
+    │ buildtest path:     /home/pbsuser/buildtest/bin/buildtest                                            │
+    │ buildtest version:  0.14.0                                                                           │
+    │ python path:        /home/pbsuser/miniconda/bin/python3                                              │
+    │ python version:     3.9.7                                                                            │
+    │ Configuration File: /home/pbsuser/buildtest/tests/settings/pbs.yml                                   │
+    │ Test Directory:     /home/pbsuser/buildtest/var/tests                                                │
+    │ Report File:        /home/pbsuser/buildtest/var/report.json                                          │
+    │ Command:            /home/pbsuser/buildtest/bin/buildtest bd -b tests/examples/pbs/pbs_job_state.yml │
+    │                                                                                                      │
+    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯
+    ───────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────
+    Discovered Buildspecs:  1
+    Excluded Buildspecs:  0
+    Detected Buildspecs after exclusion:  1
+                         Discovered buildspecs
+    ╔══════════════════════════════════════════════════════════════╗
+    ║ Buildspecs                                                   ║
+    ╟──────────────────────────────────────────────────────────────╢
+    ║ /home/pbsuser/buildtest/tests/examples/pbs/pbs_job_state.yml ║
+    ╚══════════════════════════════════════════════════════════════╝
+    ────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────────────────────────────────────────────────
+    Valid Buildspecs: 1
+    Invalid Buildspecs: 0
+    /home/pbsuser/buildtest/tests/examples/pbs/pbs_job_state.yml: VALID
+    Total builder objects created: 1
+    Total compiler builder: 0
+    Total script builder: 1
+    Total spack builder: 0
+                                                                     Script Builder Details
+    ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder            ┃ Executor          ┃ Compiler ┃ description                       ┃ buildspecs                                                   ┃
+    ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ pbs_sleep/3369fd9e │ generic.pbs.workq │ None     │ pass test based on PBS job state. │ /home/pbsuser/buildtest/tests/examples/pbs/pbs_job_state.yml │
+    └────────────────────┴───────────────────┴──────────┴───────────────────────────────────┴──────────────────────────────────────────────────────────────┘
+                                               Batch Job Builders
+    ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder            ┃ Executor          ┃ buildspecs                                                   ┃
+    ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ pbs_sleep/3369fd9e │ generic.pbs.workq │ /home/pbsuser/buildtest/tests/examples/pbs/pbs_job_state.yml │
+    └────────────────────┴───────────────────┴──────────────────────────────────────────────────────────────┘
+    ──────────────────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────────────────
+    pbs_sleep/3369fd9e: Creating test directory: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/pbs_job_state/pbs_sleep/3369fd9e
+    pbs_sleep/3369fd9e: Creating the stage directory: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/pbs_job_state/pbs_sleep/3369fd9e/stage
+    pbs_sleep/3369fd9e: Writing build script: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/pbs_job_state/pbs_sleep/3369fd9e/pbs_sleep_build.sh
+    ──────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────────────────
+    Spawning 4 processes for processing builders
+    ───────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────────────────────────────────────
+    pbs_sleep/3369fd9e does not have any dependencies adding test to queue
+    In this iteration we are going to run the following tests: [pbs_sleep/3369fd9e]
+    pbs_sleep/3369fd9e: Running Test via command: bash --norc --noprofile -eo pipefail pbs_sleep_build.sh
+    pbs_sleep/3369fd9e: JobID: 6.pbs dispatched to scheduler
+    Polling Jobs in 5 seconds
+    pbs_sleep/3369fd9e: Job 6.pbs is complete!
+    pbs_sleep/3369fd9e: Test completed in 5.069735 seconds
+    pbs_sleep/3369fd9e: Test completed with returncode: 0
+    pbs_sleep/3369fd9e: Writing output file -  /home/pbsuser/buildtest/var/tests/generic.pbs.workq/pbs_job_state/pbs_sleep/3369fd9e/pbs_sleep.o6
+    pbs_sleep/3369fd9e: Writing error file - /home/pbsuser/buildtest/var/tests/generic.pbs.workq/pbs_job_state/pbs_sleep/3369fd9e/pbs_sleep.e6
+                                 Completed Jobs
+    ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┓
+    ┃ builder            ┃ executor          ┃ jobid ┃ jobstate ┃ runtime  ┃
+    ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━┩
+    │ pbs_sleep/3369fd9e │ generic.pbs.workq │ 6.pbs │ F        │ 5.069735 │
+    └────────────────────┴───────────────────┴───────┴──────────┴──────────┘
+                                                      Test Summary
+    ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+    ┃ Builder            ┃ executor          ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
+    ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+    │ pbs_sleep/3369fd9e │ generic.pbs.workq │ FAIL   │ False False False                   │ 0          │ 5.069735 │
+    └────────────────────┴───────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
+
+
+
+    Passed Tests: 0/1 Percentage: 0.000%
+    Failed Tests: 1/1 Percentage: 100.000%
+
+
+    Adding 1 test results to /home/pbsuser/buildtest/var/report.json
+    Writing Logfile to: /home/pbsuser/buildtest/var/logs/buildtest_oo3rh3oo.log
 
 Cobalt
 -------
@@ -674,9 +771,11 @@ We need to install some basic system packages which were not provided in this co
 
     yum install -y which git wget make gcc
 
-We also need to configure PBS to enable job history which is required to poll PBS job. Please run the following::
+We need to configure PBS queue and enable job history to poll PBS job. Please run the following as root::
 
-    /opt/pbs/bin/qmgr -c "set server job_history_enable=True"
+    qmgr -c "create node pbs"
+    qmgr -c "set  node pbs queue=workq"
+    qmgr -c "set server job_history_enable=True"
 
 
 Now let's switch to `pbsuser`

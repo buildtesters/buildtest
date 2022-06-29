@@ -10,8 +10,7 @@ logger = logging.getLogger(__name__)
 class PBSJob(Job):
     """The PBSJob models a PBS Job with helper methods to retrieve job state, check if job is running/pending/suspended. We have methods
     to poll job state, gather job results upon completion and cancel job.
-
-    See https://www.altair.com/pdfs/pbsworks/PBSReferenceGuide2021.1.pdf section 8.1 for list of Job State Codes"""
+    """
 
     def __init__(self, jobID):
         super().__init__(jobID)
@@ -47,7 +46,7 @@ class PBSJob(Job):
     def success(self):
         """This method determines if job was completed successfully and returns ``True`` if exit code is 0.
 
-        According to https://www.altair.com/pdfs/pbsworks/PBSAdminGuide2021.1.pdf section 14.9 Job Exit Status Codes we have the following
+        According to https://help.altair.com/2021.1.3/PBS%20Professional/PBSAdminGuide2021.1.3.pdf section 14.9 Job Exit Status Codes we have the following
 
          - Exit Code:  X < 0         - Job could not be executed
          - Exit Code: 0 <= X < 128   -  Exit value of Shell or top-level process

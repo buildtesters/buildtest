@@ -6,6 +6,7 @@ import time
 
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.build import discover_buildspecs
+from buildtest.cli.report import Report
 from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
     BUILDSPEC_DEFAULT_PATH,
@@ -794,7 +795,6 @@ class BuildspecCache:
 
         table = Table(
             "Maintainers",
-            title="List of Maintainers",
             header_style="blue",
             title_style="red",
             row_styles=["green"],
@@ -810,7 +810,21 @@ class BuildspecCache:
 
         console.print(table)
 
+    def print_maintainers_find(self, name):
+        """Display a list of buildspec files associated to a given maintainer. This command is used when running
+        ``buildtest buildspec maintainers find``
+
+        Args:
+            name (str): Name of maintainer specified via ``buildtest buildspec maintainers find <name>``
+        """
+
+        maintainers = list(self.cache["maintainers"].keys())
+        if name in maintainers:
+            for file in self.cache["maintainers"][name]:
+                console.print(file)
+
     def print_maintainers_by_buildspecs(self):
+
         """This method prints maintainers breakdown by buildspecs. This method implements ``buildtest buildspec find --maintainers-by-buildspecs``"""
         if self.terse:
             if not self.header:
@@ -906,7 +920,7 @@ class BuildspecCache:
             console.print(path)
 
 
-def edit_buildspec_test(test_names, configuration):
+def edit_buildspec_test(test_names, configuration, editor):
     """Open a list of test names in editor mode defined by ``EDITOR`` environment otherwise resort to ``vim``.
     This method will search for buildspec cache and find path to buildspec file corresponding to test name and open
     file in editor. If multiple test are specified via ``buildtest buildspec edit`` then each file will be open and
@@ -915,6 +929,7 @@ def edit_buildspec_test(test_names, configuration):
     Args:
         test_names (list): A list of test names to open in editor
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        editor (str): Path to editor to use when opening file
     """
     cache = BuildspecCache(configuration=configuration)
 
@@ -925,9 +940,7 @@ def edit_buildspec_test(test_names, configuration):
 
         buildspec = cache.lookup_buildspec_by_name(name)
 
-        EDITOR = os.environ.get("EDITOR", "vim")
-
-        subprocess.call([EDITOR, buildspec])
+        subprocess.call([editor, buildspec])
         print(f"Writing file: {buildspec}")
 
         be = BuildExecutor(configuration)
@@ -939,12 +952,13 @@ def edit_buildspec_test(test_names, configuration):
         console.print(f"[green]{buildspec} is valid")
 
 
-def edit_buildspec_file(buildspecs, configuration):
+def edit_buildspec_file(buildspecs, configuration, editor):
     """Open buildspec in editor and validate buildspec with parser. This method is invoked by command ``buildtest buildspec edit-file``.
 
     Args:
         buildspec (str): Path to buildspec file to edit
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        editor (str): Path to editor to use when opening file
     """
     for file in buildspecs:
 
@@ -955,9 +969,7 @@ def edit_buildspec_file(buildspecs, configuration):
             )
             continue
 
-        EDITOR = os.environ.get("EDITOR", "vim")
-
-        subprocess.call([EDITOR, buildspec])
+        subprocess.call([editor, buildspec])
 
         print(f"Writing file: {buildspec}")
 
@@ -981,6 +993,7 @@ def show_buildspecs(test_names, configuration):
     cache = BuildspecCache(configuration=configuration)
 
     error = False
+    visited = set()
     for name in test_names:
         if name not in cache.get_names():
 
@@ -989,14 +1002,40 @@ def show_buildspecs(test_names, configuration):
             continue
 
         buildspec = cache.lookup_buildspec_by_name(name)
-        content = read_file(buildspec)
-        console.rule(buildspec)
-        console.print(Panel.fit(content))
+        if buildspec not in visited:
+            visited.add(buildspec)
+            content = read_file(buildspec)
+            console.rule(buildspec)
+            console.print(Panel.fit(content))
 
     if error:
         raise BuildTestError(
             f"Please select one of the following test: {cache.get_names()}"
         )
+
+
+def show_failed_buildspecs(configuration, test_names=None, report_file=None):
+    """This is the entry point for ``buildtest buildspec show-fail`` command which will print content of
+    buildspec on name of all failed tests if a list of test names are not speficied
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
+        test_names (list, optional): List of test names to show content of file
+        report_file (str, optional): Full path to report file to read
+    """
+    results = Report(report_file=report_file)
+    all_failed_tests = results.get_test_by_state(state="FAIL")
+
+    if test_names:
+        for test_name in test_names:
+            if test_name not in all_failed_tests:
+                raise BuildTestError(
+                    f"{test_name} is not in one of the following failed test: {all_failed_tests}"
+                )
+        failed_tests = test_names
+    else:
+        failed_tests = all_failed_tests
+    show_buildspecs(failed_tests, configuration)
 
 
 def buildspec_validate(
@@ -1122,6 +1161,31 @@ def summarize_buildspec_cache(configuration):
     console.print(buildspec_table)
 
 
+def buildspec_maintainers(
+    configuration, list=None, breakdown=None, terse=None, header=None, name=None
+):
+    """Entry point for ``buildtest buildspec maintainers`` command.
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
+        list (bool, optional): List all maintainers
+        terse (bool, optional): Print in terse mode
+        header (bool, optional): If True disable printing of headers
+        name (str, optional): List all buildspecs corresponding to maintainer name. This command is specified via ``buildtest buildspec maintainers find <name>``
+    """
+
+    cache = BuildspecCache(configuration=configuration, terse=terse, header=header)
+
+    if list:
+        cache.print_maintainer()
+
+    if breakdown:
+        cache.print_maintainers_by_buildspecs()
+
+    if name:
+        cache.print_maintainers_find(name=name)
+
+
 def buildspec_find(args, configuration):
     """Entry point for ``buildtest buildspec find`` command
 
@@ -1173,16 +1237,6 @@ def buildspec_find(args, configuration):
     # buildtest buildspec find --group-by-tags
     if args.group_by_tags:
         cache.print_by_tags()
-        return
-
-    # buildtest buildspec find --maintainers
-    if args.maintainers:
-        cache.print_maintainer()
-        return
-
-    #  buildtest buildspec find --maintainers-by-buildspecs
-    if args.maintainers_by_buildspecs:
-        cache.print_maintainers_by_buildspecs()
         return
 
     # buildtest buildspec find --helpfilter

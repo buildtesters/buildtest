@@ -2,6 +2,7 @@ system:
   generic:
     hostnames: ['.*']
     moduletool: lmod
+    poolsize: 1
     buildspec_roots:
       - $HOME/buildtest-cori
     testdir: /tmp/buildtest
@@ -10,6 +11,10 @@ system:
         pollinterval: 20
         maxpendtime: 30
         account: admin
+      local:
+        bash:
+          description: submit jobs via bash shell
+          shell: bash
       slurm:
         normal:
           options: ["-C haswell"]
@@ -17,7 +22,6 @@ system:
           before_script: |
             time
             echo "commands run before job"
-
     compilers:
       compiler:
         gcc:

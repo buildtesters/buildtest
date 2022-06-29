@@ -24,11 +24,13 @@ class PBSExecutor(BaseExecutor):
 
     type = "pbs"
 
-    def __init__(self, name, settings, site_configs, account=None, maxpendtime=None):
+    def __init__(
+        self, name, settings, site_configs, account=None, maxpendtime=None, timeout=None
+    ):
 
         self.maxpendtime = maxpendtime
         self.account = account
-        super().__init__(name, settings, site_configs)
+        super().__init__(name, settings, site_configs, timeout=timeout)
         self.queue = self._settings.get("queue")
 
     def launcher_command(self, numprocs=None, numnodes=None):
@@ -67,8 +69,11 @@ class PBSExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
 
         cmd = f"bash {self._bashopts} {os.path.basename(builder.build_script)}"
+
+        timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
+
         try:
-            command = builder.run(cmd)
+            command = builder.run(cmd, timeout=timeout)
         except RuntimeFailure as err:
             builder.failed()
             self.logger.error(err)

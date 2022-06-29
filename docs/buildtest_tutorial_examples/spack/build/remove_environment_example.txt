@@ -1,112 +1,139 @@
 $ buildtest build -b /home/spack/buildtest/examples/spack/remove_environment_example.yml 
-╭──────────────────────────────── buildtest summary ─────────────────────────────────╮
-│                                                                                    │
-│ User:               spack                                                          │
-│ Hostname:           09e0ccd237a0                                                   │
-│ Platform:           Linux                                                          │
-│ Current Time:       2022/02/09 17:48:10                                            │
-│ buildtest path:     /home/spack/buildtest/bin/buildtest                            │
-│ buildtest version:  0.13.0                                                         │
-│ python path:        /home/spack/pyenv/buildtest/bin/python3                        │
-│ python version:     3.8.6                                                          │
-│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml   │
-│ Test Directory:     /home/spack/runs                                               │
-│ Command:            /home/spack/buildtest/bin/buildtest build -b                   │
-│ /home/spack/buildtest/examples/spack/remove_environment_example.yml                │
-│                                                                                    │
-╰────────────────────────────────────────────────────────────────────────────────────╯
-──────────────────────────────  Discovering Buildspecs ───────────────────────────────
-Discovered Buildspecs:  1
-Excluded Buildspecs:  0
-Detected Buildspecs after exclusion:  1
+╭────────────────────────── buildtest summary ──────────────────────────╮
+│                                                                       │
+│ User:               spack                                             │
+│ Hostname:           356ea13b3433                                      │
+│ Platform:           Linux                                             │
+│ Current Time:       2022/06/29 17:26:52                               │
+│ buildtest path:     /home/spack/buildtest/bin/buildtest               │
+│ buildtest version:  0.14.0                                            │
+│ python path:        /home/spack/pyenv/buildtest/bin/python3           │
+│ python version:     3.8.6                                             │
+│ Configuration File:                                                   │
+│ /home/spack/buildtest/buildtest/settings/spack_container.yml          │
+│ Test Directory:     /home/spack/runs                                  │
+│ Report File:        /home/spack/buildtest/var/report.json             │
+│ Command:            /home/spack/buildtest/bin/buildtest build -b      │
+│ /home/spack/buildtest/examples/spack/remove_environment_example.yml   │
+│                                                                       │
+╰───────────────────────────────────────────────────────────────────────╯
+────────────────────────  Discovering Buildspecs ────────────────────────
                          Discovered buildspecs                         
 ╔═════════════════════════════════════════════════════════════════════╗
-║ Buildspecs                                                          ║
+║ buildspec                                                           ║
 ╟─────────────────────────────────────────────────────────────────────╢
 ║ /home/spack/buildtest/examples/spack/remove_environment_example.yml ║
 ╚═════════════════════════════════════════════════════════════════════╝
-───────────────────────────────── Parsing Buildspecs ─────────────────────────────────
+
+
+Total Discovered Buildspecs:  1
+Total Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
+────────────────────────── Parsing Buildspecs ───────────────────────────
+Buildtest will parse 1 buildspecs
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
-/home/spack/buildtest/examples/spack/remove_environment_example.yml: VALID
+/home/spack/buildtest/examples/spack/remove_environment_example.yml: 
+VALID
 Total builder objects created: 2
 Total compiler builder: 0
 Total script builder: 0
 Total spack builder: 2
-                                Spack Builder Details                                 
-┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
-┃ Builder            ┃ Executor           ┃ description         ┃ buildspecs         ┃
-┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩
-│ remove_environment │ generic.local.bash │ remove spack        │ /home/spack/buildt │
-│ _automatically/2ab │                    │ environment         │ est/examples/spack │
-│ b0a5d              │                    │ automatically       │ /remove_environmen │
-│                    │                    │ before creating a   │ t_example.yml      │
-│                    │                    │ new environment     │                    │
-├────────────────────┼────────────────────┼─────────────────────┼────────────────────┤
-│ remove_environment │ generic.local.bash │ remove spack        │ /home/spack/buildt │
-│ _explicit/3bfe249d │                    │ environment         │ est/examples/spack │
-│                    │                    │ explicitly using    │ /remove_environmen │
-│                    │                    │ the 'rm' property   │ t_example.yml      │
-└────────────────────┴────────────────────┴─────────────────────┴────────────────────┘
-─────────────────────────────────── Building Test ────────────────────────────────────
-remove_environment_automatically/2abb0a5d: Creating test directory: /home/spack/runs/g
-eneric.local.bash/remove_environment_example/remove_environment_automatically/2abb0a5d
-remove_environment_automatically/2abb0a5d: Creating the stage directory: /home/spack/r
-uns/generic.local.bash/remove_environment_example/remove_environment_automatically/2ab
-b0a5d/stage
-remove_environment_automatically/2abb0a5d: Writing build script: /home/spack/runs/gene
-ric.local.bash/remove_environment_example/remove_environment_automatically/2abb0a5d/re
-move_environment_automatically_build.sh
-remove_environment_explicit/3bfe249d: Creating test directory: /home/spack/runs/generi
-c.local.bash/remove_environment_example/remove_environment_explicit/3bfe249d
-remove_environment_explicit/3bfe249d: Creating the stage directory: /home/spack/runs/g
-eneric.local.bash/remove_environment_example/remove_environment_explicit/3bfe249d/stag
-e
-remove_environment_explicit/3bfe249d: Writing build script: /home/spack/runs/generic.l
-ocal.bash/remove_environment_example/remove_environment_explicit/3bfe249d/remove_envir
-onment_explicit_build.sh
-─────────────────────────────────── Running Tests ────────────────────────────────────
+                          Spack Builder Details                          
+┏━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
+┃ builder  ┃ executor ┃ compiler ┃ nodes ┃ procs   ┃ descrip… ┃ builds… ┃
+┡━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
+│ remove_… │ generic… │ None     │ None  │ remove  │ /home/s… │         │
+│          │          │          │       │ spack   │          │         │
+│          │          │          │       │ enviro… │          │         │
+│          │          │          │       │ automa… │          │         │
+│          │          │          │       │ before  │          │         │
+│          │          │          │       │ creati… │          │         │
+│          │          │          │       │ a new   │          │         │
+│          │          │          │       │ enviro… │          │         │
+├──────────┼──────────┼──────────┼───────┼─────────┼──────────┼─────────┤
+│ remove_… │ generic… │ None     │ None  │ remove  │ /home/s… │         │
+│          │          │          │       │ spack   │          │         │
+│          │          │          │       │ enviro… │          │         │
+│          │          │          │       │ explic… │          │         │
+│          │          │          │       │ using   │          │         │
+│          │          │          │       │ the     │          │         │
+│          │          │          │       │ 'rm'    │          │         │
+│          │          │          │       │ proper… │          │         │
+└──────────┴──────────┴──────────┴───────┴─────────┴──────────┴─────────┘
+───────────────────────────── Building Test ─────────────────────────────
+remove_environment_automatically/c5bb2a6f: Creating test directory: /home
+/spack/runs/generic.local.bash/remove_environment_example/remove_environm
+ent_automatically/c5bb2a6f
+remove_environment_automatically/c5bb2a6f: Creating the stage directory: 
+/home/spack/runs/generic.local.bash/remove_environment_example/remove_env
+ironment_automatically/c5bb2a6f/stage
+remove_environment_automatically/c5bb2a6f: Writing build script: /home/sp
+ack/runs/generic.local.bash/remove_environment_example/remove_environment
+_automatically/c5bb2a6f/remove_environment_automatically_build.sh
+remove_environment_explicit/a1ddfbc0: Creating test directory: /home/spac
+k/runs/generic.local.bash/remove_environment_example/remove_environment_e
+xplicit/a1ddfbc0
+remove_environment_explicit/a1ddfbc0: Creating the stage directory: /home
+/spack/runs/generic.local.bash/remove_environment_example/remove_environm
+ent_explicit/a1ddfbc0/stage
+remove_environment_explicit/a1ddfbc0: Writing build script: /home/spack/r
+uns/generic.local.bash/remove_environment_example/remove_environment_expl
+icit/a1ddfbc0/remove_environment_explicit_build.sh
+───────────────────────────── Running Tests ─────────────────────────────
 Spawning 4 processes for processing builders
-remove_environment_automatically/2abb0a5d: Running Test via command: bash --norc
---noprofile -eo pipefail remove_environment_automatically_build.sh
-remove_environment_explicit/3bfe249d: Running Test via command: bash --norc 
---noprofile -eo pipefail remove_environment_explicit_build.sh
-remove_environment_automatically/2abb0a5d: Test completed with returncode: 1
-remove_environment_automatically/2abb0a5d: Test completed in 5.181047 seconds
-remove_environment_automatically/2abb0a5d: Writing output file -  /home/spack/ru
-ns/generic.local.bash/remove_environment_example/remove_environment_automaticall
-y/2abb0a5d/remove_environment_automatically.out
-remove_environment_automatically/2abb0a5d: Writing error file - /home/spack/runs
-/generic.local.bash/remove_environment_example/remove_environment_automatically/
-2abb0a5d/remove_environment_automatically.err
-remove_environment_explicit/3bfe249d: Test completed with returncode: 1
-remove_environment_explicit/3bfe249d: Test completed in 5.475819 seconds
-remove_environment_explicit/3bfe249d: Writing output file -  /home/spack/runs/ge
-neric.local.bash/remove_environment_example/remove_environment_explicit/3bfe249d
-/remove_environment_explicit.out
-remove_environment_explicit/3bfe249d: Writing error file - /home/spack/runs/gene
-ric.local.bash/remove_environment_example/remove_environment_explicit/3bfe249d/r
-emove_environment_explicit.err
-                                     Test Summary                                     
-┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-┃                ┃                ┃        ┃ Checks          ┃            ┃          ┃
-┃                ┃                ┃        ┃ (ReturnCode,    ┃            ┃          ┃
-┃ Builder        ┃ executor       ┃ status ┃ Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
-┡━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ remove_environ │ generic.local… │ FAIL   │ N/A N/A N/A     │ 1          │ 5.181047 │
-│ ment_automatic │                │        │                 │            │          │
-│ ally/2abb0a5d  │                │        │                 │            │          │
-├────────────────┼────────────────┼────────┼─────────────────┼────────────┼──────────┤
-│ remove_environ │ generic.local… │ FAIL   │ N/A N/A N/A     │ 1          │ 5.475819 │
-│ ment_explicit/ │                │        │                 │            │          │
-│ 3bfe249d       │                │        │                 │            │          │
-└────────────────┴────────────────┴────────┴─────────────────┴────────────┴──────────┘
+────────────────────────────── Iteration 1 ──────────────────────────────
+remove_environment_explicit/a1ddfbc0 does not have any dependencies 
+adding test to queue
+remove_environment_automatically/c5bb2a6f does not have any dependencies 
+adding test to queue
+remove_environment_explicit/a1ddfbc0: Running Test via command: bash 
+--norc --noprofile -eo pipefail remove_environment_explicit_build.sh
+remove_environment_automatically/c5bb2a6f: Running Test via command: bash
+--norc --noprofile -eo pipefail remove_environment_automatically_build.sh
+remove_environment_automatically/c5bb2a6f: Test completed in 2.409277 
+seconds
+remove_environment_automatically/c5bb2a6f: Test completed with 
+returncode: 0
+remove_environment_automatically/c5bb2a6f: Writing output file -  /home/s
+pack/runs/generic.local.bash/remove_environment_example/remove_environmen
+t_automatically/c5bb2a6f/remove_environment_automatically.out
+remove_environment_automatically/c5bb2a6f: Writing error file - /home/spa
+ck/runs/generic.local.bash/remove_environment_example/remove_environment_
+automatically/c5bb2a6f/remove_environment_automatically.err
+remove_environment_explicit/a1ddfbc0: Test completed in 2.442686 seconds
+remove_environment_explicit/a1ddfbc0: Test completed with returncode: 0
+remove_environment_explicit/a1ddfbc0: Writing output file -  /home/spack/
+runs/generic.local.bash/remove_environment_example/remove_environment_exp
+licit/a1ddfbc0/remove_environment_explicit.out
+remove_environment_explicit/a1ddfbc0: Writing error file - /home/spack/ru
+ns/generic.local.bash/remove_environment_example/remove_environment_expli
+cit/a1ddfbc0/remove_environment_explicit.err
+In this iteration we are going to run the following tests: [remove_environment_explicit/a1ddfbc0, remove_environment_automatically/c5bb2a6f]
+                              Test Summary                               
+┏━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃            ┃            ┃        ┃ checks (Re ┃            ┃          ┃
+┃            ┃            ┃        ┃ turnCode,  ┃            ┃          ┃
+┃            ┃            ┃        ┃ Regex,     ┃            ┃          ┃
+┃ builder    ┃ executor   ┃ status ┃ Runtime)   ┃ returnCode ┃ runtime  ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ remove_env │ generic.l… │ PASS   │ N/A N/A    │ 0          │ 2.442686 │
+│ ironment_e │            │        │ N/A        │            │          │
+│ xplicit/a1 │            │        │            │            │          │
+│ ddfbc0     │            │        │            │            │          │
+├────────────┼────────────┼────────┼────────────┼────────────┼──────────┤
+│ remove_env │ generic.l… │ PASS   │ N/A N/A    │ 0          │ 2.409277 │
+│ ironment_a │            │        │ N/A        │            │          │
+│ utomatical │            │        │            │            │          │
+│ ly/c5bb2a6 │            │        │            │            │          │
+│ f          │            │        │            │            │          │
+└────────────┴────────────┴────────┴────────────┴────────────┴──────────┘
 
 
 
-Passed Tests: 0/2 Percentage: 0.000%
-Failed Tests: 2/2 Percentage: 100.000%
+Passed Tests: 2/2 Percentage: 100.000%
+Failed Tests: 0/2 Percentage: 0.000%
 
 
 Adding 2 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_g552s75d.log
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_09m1bwsv.log

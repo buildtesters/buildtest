@@ -25,14 +25,18 @@ def test_ascent():
 
     system = BuildTestSystem()
 
-    buildspec_files = os.path.join(here, "examples", "ascent", "hostname.yml")
+    ascent_examples_dir = os.path.join(here, "examples", "ascent")
+    buildspec_files = [
+        os.path.join(ascent_examples_dir, "hostname.yml"),
+        os.path.join(ascent_examples_dir, "lsf_job_state.yml"),
+    ]
     cmd = BuildTest(
         configuration=bc, buildspecs=[buildspec_files], buildtest_system=system
     )
     cmd.build()
 
     # This job will be held indefinitely but job will be cancelled by scheduler after 15sec once job pending time has reached maxpendtime
-    buildspec_files = os.path.join(here, "examples", "ascent", "hold_job.yml")
+    buildspec_files = os.path.join(ascent_examples_dir, "hold_job.yml")
     cmd = BuildTest(
         configuration=bc,
         buildspecs=[buildspec_files],

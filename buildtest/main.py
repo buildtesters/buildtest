@@ -9,14 +9,16 @@ from buildtest.cli.build import BuildTest, Tee
 from buildtest.cli.buildspec import (
     BuildspecCache,
     buildspec_find,
+    buildspec_maintainers,
     buildspec_validate,
     edit_buildspec_file,
     edit_buildspec_test,
     show_buildspecs,
+    show_failed_buildspecs,
     summarize_buildspec_cache,
 )
 from buildtest.cli.cd import change_directory
-from buildtest.cli.cdash import cdash_cmd
+from buildtest.cli.cdash import upload_test_cdash, view_cdash_project
 from buildtest.cli.clean import clean
 from buildtest.cli.compilers import compiler_cmd
 from buildtest.cli.config import config_cmd
@@ -27,6 +29,7 @@ from buildtest.cli.inspect import inspect_cmd
 from buildtest.cli.path import path_cmd
 from buildtest.cli.report import report_cmd
 from buildtest.cli.schema import schema_cmd
+from buildtest.cli.stats import stats_cmd
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import (
     BUILDSPEC_CACHE_FILE,
@@ -37,8 +40,10 @@ from buildtest.defaults import (
     VAR_DIR,
     console,
 )
+from buildtest.exceptions import BuildTestError
 from buildtest.log import init_logfile
 from buildtest.system import BuildTestSystem
+from buildtest.tools.editor import set_editor
 from buildtest.tools.stylecheck import run_style_checks
 from buildtest.tools.unittests import run_unit_tests
 from buildtest.utils.file import (
@@ -48,6 +53,7 @@ from buildtest.utils.file import (
     remove_file,
     resolve_path,
 )
+from buildtest.utils.tools import deep_get
 from rich.traceback import install
 
 
@@ -98,6 +104,7 @@ def main():
     configuration.detect_system()
     configuration.validate(validate_executors)
 
+    buildtest_editor = set_editor(args.editor)
     logger.info(f"[red]Processing buildtest configuration file: {configuration.file}")
 
     # build buildspec cache file automatically if it doesn't exist
@@ -138,6 +145,7 @@ def main():
                 unload_modules=args.unload_modules,
                 rerun=args.rerun,
                 executor_type=args.executor_type,
+                timeout=args.timeout,
             )
             cmd.build()
 
@@ -158,10 +166,37 @@ def main():
             summarize_buildspec_cache(configuration)
         elif args.buildspecs_subcommand == "show":
             show_buildspecs(test_names=args.name, configuration=configuration)
+        elif args.buildspecs_subcommand == "show-fail":
+            show_failed_buildspecs(
+                configuration=configuration,
+                test_names=args.name,
+                report_file=report_file,
+            )
         elif args.buildspecs_subcommand == "edit":
-            edit_buildspec_test(test_names=args.name, configuration=configuration)
+            edit_buildspec_test(
+                test_names=args.name,
+                configuration=configuration,
+                editor=buildtest_editor,
+            )
         elif args.buildspecs_subcommand == "edit-file":
-            edit_buildspec_file(buildspecs=args.file, configuration=configuration)
+            edit_buildspec_file(
+                buildspecs=args.file,
+                configuration=configuration,
+                editor=buildtest_editor,
+            )
+        elif args.buildspecs_subcommand == "maintainers":
+            name = None
+            if hasattr(args, "name"):
+                name = args.name
+            buildspec_maintainers(
+                configuration=configuration,
+                list=args.list,
+                breakdown=args.breakdown,
+                terse=args.terse,
+                header=args.no_header,
+                name=name,
+            )
+
         elif args.buildspecs_subcommand == "validate":
             buildspec_validate(
                 buildspecs=args.buildspec,
@@ -175,13 +210,15 @@ def main():
     elif args.subcommands in ["inspect", "it"]:
         inspect_cmd(args, report_file=report_file)
 
+    elif args.subcommands in ["stats"]:
+        stats_cmd(name=args.name, report_file=report_file)
     # running buildtest config
     elif args.subcommands in ["config", "cg"]:
         #  running buildtest config compilers
         if args.config == "compilers":
             compiler_cmd(args, configuration)
         else:
-            config_cmd(args, configuration)
+            config_cmd(args, configuration, buildtest_editor)
 
     # buildtest report
     elif args.subcommands in ["report", "rt"]:
@@ -195,6 +232,7 @@ def main():
             testpath=args.testpath,
             buildscript=args.buildscript,
             stagedir=args.stagedir,
+            buildenv=args.buildenv,
         )
     # running bnuildtest schema
     elif args.subcommands == "schema":
@@ -202,7 +240,28 @@ def main():
 
     # running buildtest cdash
     elif args.subcommands == "cdash":
-        cdash_cmd(args, default_configuration=configuration, report_file=report_file)
+
+        cdash_config = deep_get(configuration.target_config, "cdash")
+
+        if not cdash_config:
+            raise BuildTestError(
+                f"We found no 'cdash' setting set in configuration file: {configuration.file}. Please specify 'cdash' setting in order to use 'buildtest cdash' command"
+            )
+
+        if args.cdash == "view":
+            view_cdash_project(
+                cdash_config=cdash_config,
+                config_file=configuration.file,
+                open_browser=True,
+            )
+        elif args.cdash == "upload":
+            upload_test_cdash(
+                build_name=args.buildname,
+                configuration=configuration,
+                site=args.site,
+                report_file=report_file,
+                open_browser=args.open,
+            )
 
     elif args.subcommands in ["help", "h"]:
         buildtest_help(command=args.command)
@@ -219,10 +278,10 @@ def main():
     elif args.subcommands == "schemadocs":
         webbrowser.open("https://buildtesters.github.io/buildtest/")
 
-    elif args.subcommands == "debugreport":
+    elif args.subcommands in ["debug", "debugreport"]:
         print_debug_report(system, configuration)
 
-    elif args.subcommands == "unittests":
+    elif args.subcommands in ["unittests", "test"]:
         run_unit_tests(
             pytestopts=args.pytestopts,
             sourcefiles=args.sourcefiles,

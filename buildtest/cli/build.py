@@ -9,6 +9,7 @@ import re
 import shutil
 import sys
 import tempfile
+import traceback
 from datetime import datetime
 
 from buildtest import BUILDTEST_VERSION
@@ -46,13 +47,9 @@ from buildtest.utils.file import (
 from jsonschema.exceptions import ValidationError
 from rich import box
 from rich.panel import Panel
-from rich.table import Table
+from rich.table import Column, Table
 
 logger = logging.getLogger(__name__)
-
-
-import traceback
-
 
 # Context manager that copies stdout and any exceptions to a log file
 class Tee(object):
@@ -225,28 +222,25 @@ def print_discovered_buildspecs(buildspec_dict):
 
     console.rule("[bold red] Discovering Buildspecs")
 
-    console.print("Discovered Buildspecs: ", len(buildspec_dict["included"]))
-    console.print("Excluded Buildspecs: ", len(buildspec_dict["excluded"]))
-    console.print(
-        "Detected Buildspecs after exclusion: ", len(buildspec_dict["detected"])
-    )
-
     table = Table(
-        "[blue]Buildspecs", title="Discovered buildspecs", box=box.DOUBLE_EDGE
+        title="Discovered buildspecs", box=box.DOUBLE_EDGE, header_style="blue"
     )
+    table.add_column("buildspec", style="red")
 
     for i in buildspec_dict["included"]:
-        table.add_row(f"[red]{i}")
+        table.add_row(i)
     console.print(table)
 
     # if any buildspecs removed due to -x option we print them to screen
     if buildspec_dict["excluded"]:
 
         table = Table(
-            "[blue]Buildspecs", title="Excluded buildspecs", box=box.DOUBLE_EDGE
+            title="Excluded buildspecs", box=box.DOUBLE_EDGE, header_style="blue"
         )
+        table.add_column("buildspec", style="red")
+
         for i in buildspec_dict["excluded"]:
-            table.add_row(f"[red]{i}")
+            table.add_row(i)
         console.print(table)
 
     # print breakdown of buildspecs by tags
@@ -254,12 +248,13 @@ def print_discovered_buildspecs(buildspec_dict):
 
         for tagname in buildspec_dict["tags"].keys():
             table = Table(
-                "[blue]Buildspecs",
                 title=f"Buildspecs By Tag={tagname}",
                 box=box.DOUBLE_EDGE,
+                header_style="blue",
             )
+            table.add_column("buildspec", style="red")
             for row in buildspec_dict["tags"][tagname]:
-                table.add_row(f"[red] {row}")
+                table.add_row(row)
             console.print(table)
 
     # print breakdown of buildspecs by executors
@@ -267,14 +262,26 @@ def print_discovered_buildspecs(buildspec_dict):
 
         for executorname in buildspec_dict["executors"].keys():
             table = Table(
-                "[blue]Buildspecs",
                 title=f"Buildspecs by Executor={executorname}",
                 box=box.DOUBLE_EDGE,
+                header_style="blue",
             )
-
+            table.add_column("buildspecs")
             for row in buildspec_dict["executors"][executorname]:
                 table.add_row(f"[red]{row}")
             console.print(table)
+
+    print("\n")
+    console.print(
+        "[green bold]Total Discovered Buildspecs: ", len(buildspec_dict["included"])
+    )
+    console.print(
+        "[red bold]Total Excluded Buildspecs: ", len(buildspec_dict["excluded"])
+    )
+    console.print(
+        "[blue bold]Detected Buildspecs after exclusion: ",
+        len(buildspec_dict["detected"]),
+    )
 
 
 def discover_buildspecs_by_tags(tagnames):
@@ -292,13 +299,6 @@ def discover_buildspecs_by_tags(tagnames):
     """
 
     tag_dict = {}
-
-    """
-    if not is_file(BUILDSPEC_CACHE_FILE):
-        raise BuildTestError(
-            f"Cannot for buildspec cache: {BUILDSPEC_CACHE_FILE}, please run 'buildtest buildspec find' "
-        )
-    """
 
     cache = load_json(BUILDSPEC_CACHE_FILE)
 
@@ -345,13 +345,6 @@ def discover_buildspecs_by_executor(executors):
     """
 
     executor_dict = {}
-
-    """
-    if not is_file(BUILDSPEC_CACHE_FILE):
-        raise BuildTestError(
-            f"Cannot for buildspec cache: {BUILDSPEC_CACHE_FILE}, please run 'buildtest buildspec find' "
-        )
-    """
 
     cache = load_json(BUILDSPEC_CACHE_FILE)
 
@@ -411,10 +404,10 @@ def discover_by_buildspecs(buildspec):
     # if buildspec doesn't exist print message and log error and return
     if not os.path.exists(os.path.abspath(buildspec)):
         msg = (
-            f"Unable to find any buildspecs with name: {os.path.abspath(buildspec)} "
-            + "Please provide an absolute or relative path to a directory or file relative to current directory."
+            f"[red]Unable to find any buildspecs: {os.path.abspath(buildspec)} [/red] \n"
+            + "Please provide an absolute or relative path to a file or directory"
         )
-        print(msg)
+        console.print(msg)
         logger.error(msg)
         return
 
@@ -456,10 +449,13 @@ def print_filters():
     running ``buildtest build --helpfilter``.
     """
 
-    table = Table("[blue]Field", "[blue]Description", title="Buildtest Filters")
-    table.add_row("[green]tags", "[red]Filter tests by 'tag' field")
-    table.add_row("[green]type", "[red]Filter test by 'type' field")
-    table.add_row("[green]maintainers", "[red]Filter test by 'maintainers' field")
+    table = Table(title="Buildtest Filters", header_style="blue")
+    table.add_column("Field", style="green")
+    table.add_column("Description", style="red")
+
+    table.add_row("tags", "Filter tests by [italic]'tag'[/italic] field")
+    table.add_row("type", "Filter test by [italic]'type'[/italic] field")
+    table.add_row("maintainers", "Filter test by [italic]'maintainers'[/italic] field")
     console.print(table)
 
 
@@ -492,6 +488,7 @@ class BuildTest:
         unload_modules=None,
         rerun=None,
         executor_type=None,
+        timeout=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -522,6 +519,7 @@ class BuildTest:
             unload_modules (str, optional): List of modules to unload for every test specified via ``buildtest build --unload-modules``.
             rerun (bool, optional): Rerun last successful **buildtest build** command. This is specified via ``buildtest build --rerun``. All other options will be ignored and buildtest will read buildtest options from file **BUILDTEST_RERUN_FILE**.
             executor_type (bool, optional): Filter test by executor type. This option will filter test after discovery by local or batch executors. This can be specified via ``buildtest build --exec-type``
+            timeout (int, optional): Test timeout in seconds specified by ``buildtest build --timeout``
         """
 
         if buildspecs and not isinstance(buildspecs, list):
@@ -552,6 +550,13 @@ class BuildTest:
                     f"--rebuild {rebuild} exceeds maximum rebuild limit of 50"
                 )
 
+        if timeout:
+            if not isinstance(timeout, int):
+                raise BuildTestError(f"{timeout} is not of type int")
+
+            if timeout <= 0:
+                raise BuildTestError("Timeout must be greater than 0")
+
         self.keep_stage_dir = keep_stage_dir
         self.configuration = configuration
         self.buildspecs = buildspecs
@@ -573,6 +578,7 @@ class BuildTest:
         self.numprocs = numprocs
         self.numnodes = numnodes
         self.executor_type = executor_type
+        self.timeout = timeout
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
@@ -631,6 +637,7 @@ class BuildTest:
             maxpendtime=self.maxpendtime,
             account=self.account,
             pollinterval=self.pollinterval,
+            timeout=self.timeout,
         )
 
         self.system = buildtest_system
@@ -696,6 +703,7 @@ class BuildTest:
         self.numnodes = content["numnodes"]
         self.numprocs = content["numprocs"]
         self.executor_type = content["executor_type"]
+        self.timeout = content["timeout"]
 
     def save_rerun_file(self):
         buildtest_cmd = {
@@ -720,6 +728,7 @@ class BuildTest:
             "numprocs": self.numprocs,
             "numnodes": self.numnodes,
             "executor_type": self.executor_type,
+            "timeout": self.timeout,
         }
 
         with open(BUILDTEST_RERUN_FILE, "w") as fd:
@@ -832,7 +841,9 @@ class BuildTest:
 
         bc = BuildtestCompilers(configuration=self.configuration)
 
-        # for buildspec in track(self.detected_buildspecs, description="Parsing Buildspecs ..."):
+        console.print(
+            f"Buildtest will parse {len(self.detected_buildspecs)} buildspecs"
+        )
 
         for buildspec in self.detected_buildspecs:
             try:
@@ -865,8 +876,8 @@ class BuildTest:
 
             self.builders += builder.get_builders()
 
-        console.print(f"Valid Buildspecs: [green]{len(valid_buildspecs)}")
-        console.print(f"Invalid Buildspecs: [red]{len(self.invalid_buildspecs)}")
+        console.print(f"[green]Valid Buildspecs: {len(valid_buildspecs)}")
+        console.print(f"[red]Invalid Buildspecs: {len(self.invalid_buildspecs)}")
 
         for buildspec in valid_buildspecs:
 
@@ -881,10 +892,15 @@ class BuildTest:
                 console.print(msg)
 
         if filtered_buildspecs:
-            table = Table("[blue]Buildspecs", title="Buildspecs Filtered out")
+            table = Table(
+                "buildspecs",
+                title="Buildspecs Filtered out",
+                header_style="blue",
+                row_styles=["red"],
+            )
 
             for test in filtered_buildspecs:
-                table.add_row(f"[red]{test}")
+                table.add_row(test)
             console.print(table)
 
         # if no builders found we return from this method
@@ -937,8 +953,8 @@ class BuildTest:
         console.rule("[bold red]Building Test")
 
         valid_builders = []
-        for builder in self.builders:
 
+        for builder in self.builders:
             try:
                 builder.build(
                     modules=self.modules,
@@ -1006,13 +1022,13 @@ class BuildTest:
             builders (list): List of builders that ran to completion
         """
 
-        table = Table(title="Test Summary", show_lines=True)
-        table.add_column("[blue]Builder", overflow="fold")
-        table.add_column("[blue]executor")
-        table.add_column("[blue]status")
-        table.add_column("[blue]Checks (ReturnCode, Regex, Runtime)", overflow="fold")
-        table.add_column("[blue]ReturnCode")
-        table.add_column("[blue]Runtime")
+        table = Table(title="Test Summary", show_lines=True, header_style="blue")
+        table.add_column("builder", overflow="fold")
+        table.add_column("executor")
+        table.add_column("status")
+        table.add_column("checks (ReturnCode, Regex, Runtime)", overflow="fold")
+        table.add_column("returnCode")
+        table.add_column("runtime")
 
         passed_tests = 0
         failed_tests = 0
@@ -1162,92 +1178,118 @@ class BuildTest:
     def print_builders(
         self, compiler_builder, spack_builder, script_builder, batch_builder
     ):
+
         """Print detected builders during build phase"""
 
+        script_table = Table(
+            Column(header="builder", style="blue"),
+            Column(header="executor", style="green"),
+            Column(header="compiler", style="red"),
+            Column(header="nodes", style="orange3"),
+            Column(header="procs", style="orange3"),
+            Column(header="description", style="magenta"),
+            Column(header="buildspecs", style="yellow"),
+            title="Script Builder Details",
+            show_lines=True,
+            header_style="blue",
+        )
+        compiler_table = Table(
+            Column(header="builder", style="blue"),
+            Column(header="executor", style="green"),
+            Column(header="compiler", style="red"),
+            Column(header="nodes", style="orange3"),
+            Column(header="procs", style="orange3"),
+            Column(header="description", style="magenta"),
+            Column(header="buildspecs", style="yellow"),
+            title="Compiler Builder Details",
+            show_lines=True,
+            header_style="blue",
+        )
+        spack_table = Table(
+            Column(header="builder", style="blue"),
+            Column(header="executor", style="green"),
+            Column(header="compiler", style="red"),
+            Column(header="nodes", style="orange3"),
+            Column(header="procs", style="orange3"),
+            Column(header="description", style="magenta"),
+            Column(header="buildspecs", style="yellow"),
+            title="Spack Builder Details",
+            show_lines=True,
+            header_style="blue",
+        )
         if script_builder:
-
-            table = Table(title="Script Builder Details", show_lines=True)
-            table.add_column("[blue]Builder", overflow="fold")
-            table.add_column("[blue]Executor", overflow="fold")
-            table.add_column("[blue]Compiler", overflow="fold")
-            table.add_column("[blue]description", overflow="fold")
-            table.add_column("[blue]buildspecs", overflow="fold")
-
             for builder in script_builder:
-                description = builder.recipe.get("description")
-
-                table.add_row(
-                    f"[blue]{builder}",
-                    f"[green]{builder.executor}",
-                    f"[red]{builder.compiler}",
-                    f"[magenta]{description}",
-                    f"[yellow]{builder.buildspec}",
+                description = builder.recipe.get("description") or ""
+                # table entries must be rendered by rich and for purpose we need everything to be converted to string.
+                script_table.add_row(
+                    f"{builder}",
+                    f"{builder.executor}",
+                    f"{builder.compiler}",
+                    f"{builder.numnodes}",
+                    f"{builder.numprocs}",
+                    f"{description}",
+                    f"{builder.buildspec}",
                 )
-
-            console.print(table)
+            console.print(script_table)
 
         if spack_builder:
-
-            table = Table(title="Spack Builder Details", show_lines=True)
-            table.add_column("[blue]Builder", overflow="fold")
-            table.add_column("[blue]Executor", overflow="fold")
-            table.add_column("[blue]description", overflow="fold")
-            table.add_column("[blue]buildspecs", overflow="fold")
-
             for builder in spack_builder:
-                description = builder.recipe.get("description")
+                description = builder.recipe.get("description") or ""
 
-                table.add_row(
-                    f"[blue]{builder}",
-                    f"[green]{builder.executor}",
-                    f"[magenta]{description}",
-                    f"[yellow]{builder.buildspec}",
+                spack_table.add_row(
+                    f"{builder}",
+                    f"{builder.executor}",
+                    f"{builder.numnodes}",
+                    f"{builder.numprocs}",
+                    f"{description}",
+                    f"{builder.buildspec}",
                 )
 
-            console.print(table)
+            console.print(spack_table)
 
         if compiler_builder:
-            table = Table(title="Compiler Builder Details", show_lines=True)
-            table.add_column("[blue]Builder", overflow="fold")
-            table.add_column("[blue]Executor", overflow="fold")
-            table.add_column("[blue]Compiler", overflow="fold")
-            table.add_column("[blue]description", overflow="fold")
-            table.add_column("[blue]buildspecs", overflow="fold")
-
             for builder in compiler_builder:
-                description = builder.recipe.get("description")
+                description = builder.recipe.get("description") or ""
 
-                table.add_row(
-                    f"[blue]{builder}",
-                    f"[green]{builder.executor}",
-                    f"[red]{builder.compiler}",
-                    f"[magenta]{description}",
-                    f"[yellow]{builder.buildspec}",
+                compiler_table.add_row(
+                    f"{builder}",
+                    f"{builder.executor}",
+                    f"{builder.compiler}",
+                    f"{builder.numnodes}",
+                    f"{builder.numprocs}",
+                    f"{description}",
+                    f"{builder.buildspec}",
                 )
 
-            console.print(table)
+            console.print(compiler_table)
 
         if batch_builder:
-            table = Table(title="Batch Job Builders", show_lines=True)
-            table.add_column("[blue]Builder", overflow="fold")
-            table.add_column("[blue]Executor", overflow="fold")
-            table.add_column("[blue]buildspecs", overflow="fold")
+            table = Table(
+                title="Batch Job Builders", show_lines=True, header_style="blue"
+            )
+            table.add_column("builder", overflow="fold", style="blue")
+            table.add_column("executor", overflow="fold", style="green")
+            table.add_column("buildspecs", overflow="fold", style="yellow")
 
             for builder in batch_builder:
                 table.add_row(
-                    f"[blue]{builder}",
-                    f"[green]{builder.executor}",
-                    f"[yellow]{builder.buildspec}",
+                    f"{builder}",
+                    f"{builder.executor}",
+                    f"{builder.buildspec}",
                 )
 
             console.print(table)
 
             if self.numprocs:
-                table = Table(title="Batch Job Builders by Processors", show_lines=True)
-                table.add_column("[blue]Builder", overflow="fold")
-                table.add_column("[blue]Executor", overflow="fold")
-                table.add_column("[blue]Processor", overflow="fold")
-                table.add_column("[blue]buildspecs", overflow="fold")
+                table = Table(
+                    title="Batch Job Builders by Processors",
+                    show_lines=True,
+                    header_style="blue",
+                )
+                table.add_column("builder", overflow="fold", style="blue")
+                table.add_column("executor", overflow="fold", style="green")
+                table.add_column("procs", overflow="fold", style="orange3")
+                table.add_column("buildspecs", overflow="fold", style="yellow")
 
                 for builder in batch_builder:
                     # skip builders that dont have attribute builder.numprocs which is set if buildtest build --procs is specified
@@ -1255,20 +1297,24 @@ class BuildTest:
                         continue
 
                     table.add_row(
-                        f"[blue]{builder}",
-                        f"[green]{builder.executor}",
-                        f"[cyan]{builder.numprocs}",
-                        f"[yellow]{builder.buildspec}",
+                        f"{builder}",
+                        f"{builder.executor}",
+                        f"{builder.numprocs}",
+                        f"{builder.buildspec}",
                     )
 
                 console.print(table)
 
             if self.numnodes:
-                table = Table(title="Batch Job Builders by Nodes", show_lines=True)
-                table.add_column("[blue]Builder", overflow="fold")
-                table.add_column("[blue]Executor", overflow="fold")
-                table.add_column("[blue]Nodes", overflow="fold")
-                table.add_column("[blue]buildspecs", overflow="fold")
+                table = Table(
+                    title="Batch Job Builders by Nodes",
+                    show_lines=True,
+                    header_style="blue",
+                )
+                table.add_column("builder", overflow="fold", style="blue")
+                table.add_column("executor", overflow="fold", style="green")
+                table.add_column("nodes", overflow="fold", style="orange3")
+                table.add_column("buildspecs", overflow="fold", style="yellow")
 
                 for builder in batch_builder:
                     # skip builders that dont have attribute builder.numprocs which is set if buildtest build --procs is specified
@@ -1276,10 +1322,10 @@ class BuildTest:
                         continue
 
                     table.add_row(
-                        f"[blue]{builder}",
-                        f"[green]{builder.executor}",
-                        f"[cyan]{builder.numnodes}",
-                        f"[yellow]{builder.buildspec}",
+                        f"{builder}",
+                        f"{builder.executor}",
+                        f"{builder.numnodes}",
+                        f"{builder.buildspec}",
                     )
 
                 console.print(table)
@@ -1309,7 +1355,8 @@ def update_report(valid_builders, report_file):
         entry = {}
 
         report[buildspec] = report.get(buildspec) or {}
-        report[buildspec][name] = report.get(buildspec, {}).get(name) or []
+        # report[buildspec][name] = report.get(buildspec, {}).get(name) or []
+        report[buildspec][name] = report[buildspec].get(name) or []
 
         # query over attributes found in builder.metadata, we only assign
         # keys that we care about for reporting
@@ -1317,6 +1364,7 @@ def update_report(valid_builders, report_file):
             "id",
             "full_id",
             "description",
+            "summary",
             "schemafile",
             "executor",
             "compiler",
@@ -1328,6 +1376,7 @@ def update_report(valid_builders, report_file):
             "command",
             "outfile",
             "errfile",
+            "buildenv",
             "buildspec_content",
             "test_content",
             "buildscript_content",

@@ -2,10 +2,15 @@ system:
   generic:
     hostnames: ['.*']
     moduletool: N/A
+    poolsize: 1
     executors:
       defaults:
          pollinterval: 10
          maxpendtime: 30
+      local:
+        bash:
+          description: submit jobs via bash shell
+          shell: bash
       pbs:
         workq:
           queue: workq

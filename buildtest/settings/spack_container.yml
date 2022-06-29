@@ -4,7 +4,7 @@ system:
     - .*
     description: Generic System
     moduletool: lmod
-    testdir: "/home/spack/runs"
+    testdir: "~/runs"
     buildspec_roots: [$BUILDTEST_ROOT/examples]
     executors:
       local:

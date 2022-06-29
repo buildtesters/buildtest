@@ -1,27 +1,59 @@
 $ buildtest inspect query -o -t spack_env_create_from_manifest 
-──────── spack_env_create_from_manifest/2c44ebc0-9663-4870-9008-1b0e89902f1d ─────────
+── spack_env_create_from_manifest/aaca792c-4625-48d1-9b43-eb47b8d636d0 ──
 Executor: generic.local.bash
 Description: Create spack environment from spack.yaml
-State: FAIL
-Returncode: 1
-Runtime: 3.301349 sec
-Starttime: 2022/02/09 17:48:05
-Endtime: 2022/02/09 17:48:09
-Command: bash --norc --noprofile -eo pipefail spack_env_create_from_manifest_build.sh
-Test Script: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_
-from_manifest/2c44ebc0/spack_env_create_from_manifest.sh
-Build Script: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create
-_from_manifest/2c44ebc0/spack_env_create_from_manifest_build.sh
-Output File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_
-from_manifest/2c44ebc0/spack_env_create_from_manifest.out
-Error File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_f
-rom_manifest/2c44ebc0/spack_env_create_from_manifest.err
-Log File: /home/spack/buildtest/var/logs/buildtest_blpgsw2o.log
-─ Output File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_cr… ─
-                                                                                      
-─ Test File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_crea… ─
-  1 #!/bin/bash                                                                       
-  2 source /home/spack/spack/share/spack/setup-env.sh                                 
-  3 spack env create  manifest_example /home/spack/buildtest/examples/spack/example/sp
-  4 spack env activate  manifest_example                                              
-  5 spack concretize -f                                                               
+State: PASS
+Returncode: 0
+Runtime: 4.026969 sec
+Starttime: 2022/06/29 17:26:47
+Endtime: 2022/06/29 17:26:51
+Command: bash --norc --noprofile -eo pipefail 
+spack_env_create_from_manifest_build.sh
+Test Script: /home/spack/runs/generic.local.bash/env_create_manifest/spac
+k_env_create_from_manifest/aaca792c/spack_env_create_from_manifest.sh
+Build Script: /home/spack/runs/generic.local.bash/env_create_manifest/spa
+ck_env_create_from_manifest/aaca792c/spack_env_create_from_manifest_build
+.sh
+Output File: /home/spack/runs/generic.local.bash/env_create_manifest/spac
+k_env_create_from_manifest/aaca792c/spack_env_create_from_manifest.out
+Error File: /home/spack/runs/generic.local.bash/env_create_manifest/spack
+_env_create_from_manifest/aaca792c/spack_env_create_from_manifest.err
+Log File: /home/spack/buildtest/var/logs/buildtest_8hqm6wf8.log
+─ Output File: /home/spack/runs/generic.local.bash/env_create_manifest… ─
+==> Created environment 'manifest_example' in /home/spack/spack/var/spack
+==> You can activate this environment with:                              
+==>   spack env activate manifest_example                                
+==> Concretized m4                                                       
+ -   mkc3u4x  m4@1.4.18%gcc@7.5.0+sigsegv patches=3877ab548f88597ab2327a2
+ -   lbrx7ln      ^libsigsegv@2.12%gcc@7.5.0 arch=linux-ubuntu18.04-x86_6
+==> Concretized zlib                                                     
+ -   smoyzzo  zlib@1.2.11%gcc@7.5.0+optimize+pic+shared arch=linux-ubuntu
+==> Concretized python                                                   
+ -   szj7juk  python@3.8.6%gcc@7.5.0+bz2+ctypes+dbm~debug+libxml2+lzma~ni
+ -   fvfpt26      ^bzip2@1.0.8%gcc@7.5.0+shared arch=linux-ubuntu18.04-x8
+ -   otkkten          ^diffutils@3.7%gcc@7.5.0 arch=linux-ubuntu18.04-x86
+ -   jearpk4              ^libiconv@1.16%gcc@7.5.0 arch=linux-ubuntu18.04
+ -   ba7brxj      ^expat@2.2.10%gcc@7.5.0+libbsd arch=linux-ubuntu18.04-x
+ -   u6ue7vw          ^libbsd@0.10.0%gcc@7.5.0 arch=linux-ubuntu18.04-x86
+ -   4av4gyw      ^gdbm@1.18.1%gcc@7.5.0 arch=linux-ubuntu18.04-x86_64   
+ -   t54jzdy          ^readline@8.0%gcc@7.5.0 arch=linux-ubuntu18.04-x86_
+ -   crhlefo              ^ncurses@6.2%gcc@7.5.0~symlinks+termlib arch=li
+ -   4sh6pym                  ^pkgconf@1.7.3%gcc@7.5.0 arch=linux-ubuntu1
+ -   lbb45to      ^gettext@0.21%gcc@7.5.0+bzip2+curses+git~libunistring+l
+ -   yn2r3wf          ^libxml2@2.9.10%gcc@7.5.0~python arch=linux-ubuntu1
+ -   komekkm              ^xz@5.2.5%gcc@7.5.0~pic arch=linux-ubuntu18.04-
+ -   smoyzzo              ^zlib@1.2.11%gcc@7.5.0+optimize+pic+shared arch
+ -   uwe6tb5          ^tar@1.32%gcc@7.5.0 arch=linux-ubuntu18.04-x86_64  
+ -   hyhbnrm      ^libffi@3.3%gcc@7.5.0 patches=26f26c6f29a7ce9bf370ad3ab
+ -   wuyj2ax      ^libuuid@1.0.3%gcc@7.5.0 arch=linux-ubuntu18.04-x86_64 
+ -   es377uq      ^openssl@1.1.1h%gcc@7.5.0+systemcerts arch=linux-ubuntu
+ -   zfdvt2j          ^perl@5.32.0%gcc@7.5.0+cpanm+shared+threads arch=li
+ -   4ihuiaz              ^berkeley-db@18.1.40%gcc@7.5.0 arch=linux-ubunt
+ -   rhv2o7b      ^sqlite@3.33.0%gcc@7.5.0+column_metadata+fts~functions~
+                                                                         
+─ Test File: /home/spack/runs/generic.local.bash/env_create_manifest/s… ─
+#!/bin/bash                                                              
+source /home/spack/spack/share/spack/setup-env.sh                        
+spack env create  manifest_example /home/spack/buildtest/examples/spack/e
+spack env activate  manifest_example                                     
+spack concretize -f                                                      

@@ -4,6 +4,7 @@ system:
     #logdir: $BUILDTEST_ROOT/logs
     #testdir: $BUILDTEST_ROOT/tests
     moduletool: N/A
+    poolsize: 1
     cdash:
       url: https://my.cdash.org
       project: buildtest
@@ -32,11 +33,9 @@ system:
         csh:
           description: submit jobs on local machine using csh shell
           shell: csh -x
-
         tcsh:
           description: submit jobs on local machine using tcsh shell
           shell: /bin/tcsh
-
         zsh:
           description: submit jobs on local machine using zsh shell
           shell: /bin/zsh

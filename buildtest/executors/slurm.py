@@ -27,11 +27,13 @@ class SlurmExecutor(BaseExecutor):
 
     type = "slurm"
 
-    def __init__(self, name, settings, site_configs, account=None, maxpendtime=None):
+    def __init__(
+        self, name, settings, site_configs, account=None, maxpendtime=None, timeout=None
+    ):
 
         self.maxpendtime = maxpendtime
         self.account = account
-        super().__init__(name, settings, site_configs)
+        super().__init__(name, settings, site_configs, timeout=timeout)
 
         self.cluster = self._settings.get("cluster")
         self.partition = self._settings.get("partition")
@@ -79,8 +81,10 @@ class SlurmExecutor(BaseExecutor):
 
         cmd = f"bash {self._bashopts} {os.path.basename(builder.build_script)}"
 
+        timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
+
         try:
-            command = builder.run(cmd)
+            command = builder.run(cmd, timeout)
         except RuntimeFailure as err:
             self.logger.error(err)
             return

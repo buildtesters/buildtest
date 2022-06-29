@@ -80,6 +80,10 @@
       "description": "The ``description`` field is used to document what the test is doing",
       "maxLength": 80
     },
+    "summary": {
+      "type": "string",
+      "description": "The ``summary`` field is used to document what the test is doing and can be a multi-line string"
+    },
     "tags": {
       "description": "Classify tests using a tag name, this can be used for categorizing test and building tests using ``--tags`` option",
       "$ref": "#/definitions/string_or_list"
@@ -114,15 +118,6 @@
           ]
         }
       ]
-    },
-    "artifacts": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "output": {"type": "boolean", "description": "Save output file"},
-        "error": {"type": "boolean", "description": "Save error file"},
-        "files": {"$ref": "#/definitions/list_of_strings", "description": "List of files to save as artifacts for job dependency"}
-      }
     },
     "metrics_field": {
       "type": "object",
@@ -168,8 +163,27 @@
             "OUT_OF_MEMORY",
             "TIMEOUT"
           ],
-          "description": "This field can be used for checking Slurm Job State, if there is a match buildtest will report as ``PASS`` "
+          "description": "This field can be used to pass test based on Slurm Job State, if there is a match buildtest will report as ``PASS`` "
         },
+        "pbs_job_state":
+        {
+          "type": "string",
+          "description": "This field can be used to pass test based on PBS Job State, if there is a match buildtest will report as ``PASS`` ",
+          "enum": [
+            "H",
+            "S",
+            "F"
+          ]
+        },
+        "lsf_job_state": {
+          "type": "string",
+          "description": "This field can be used to pass test based on LSF Job State, if there is a match buildtest will report as ``PASS`` ",
+          "enum": [
+            "DONE",
+            "EXIT"
+          ]
+        },
+
         "returncode": { "$ref": "#/definitions/returncode" },
         "regex": {
           "$ref": "#/definitions/regex",

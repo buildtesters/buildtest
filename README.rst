@@ -54,16 +54,13 @@
 .. |gh_pages_devel| image:: https://github.com/buildtesters/buildtest/workflows/Schema%20Documentation/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
 
-.. |dailyurlcheck| image:: https://github.com/buildtesters/buildtest/workflows/Daily%20Check%20URLs/badge.svg
-   :target: https://github.com/buildtesters/buildtest/actions
-
 .. |zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3967143.svg
    :target: https://doi.org/10.5281/zenodo.3967143
-
+   
 buildtest
 ---------
 
-| |license| |docs| |codecov| |slack| |release| |installation| |regressiontest| |gh_pages_devel| |checkurls| |dailyurlcheck| |codefactor| |blackformat|  |black| |isort| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
+| |license| |docs| |codecov| |slack| |release| |installation| |regressiontest| |gh_pages_devel| |checkurls| |codefactor| |blackformat|  |black| |isort| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
 
 `buildtest <https://buildtest.rtfd.io/>`_ is a testing framework that automates build/execution of tests which allows HPC facilities to develop
 test for their system. In buildtest, tests are written as test recipes called **Buildspecs** which is a `YAML <https://yaml.org/>`_
@@ -154,3 +151,42 @@ LICENSE
 
 buildtest is released under the MIT License. See
 `LICENSE <https://github.com/buildtesters/buildtest/blob/master/LICENSE>`_ for more details.
+
+
+|Repography logo| / Top contributors
+-----
+|top-contributors_table| 
+
+.. |Repography logo| image:: https://images.repography.com/logo.svg
+   :alt: Repography logo
+   :target: https://repography.com
+.. |top-contributors_table| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/top-contributors/89a2f61f5c28c34d672f40b902549acd_table.svg
+   :alt: Top contributors
+   :target: https://github.com/buildtesters/buildtest/graphs/contributors
+   
+
+|Repography logo| / Recent activity |Time period|
+-----
+|recent-activity_timeline| |recent-activity_issues| |recent-activity_prs| |recent-activity_words| |recent-activity_users| 
+
+.. |Time period| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/recent-activity/89a2f61f5c28c34d672f40b902549acd_badge.svg
+   :alt: Time period
+   :target: https://repography.com
+.. |Repography logo| image:: https://images.repography.com/logo.svg
+   :alt: Repography logo
+   :target: https://repography.com
+.. |recent-activity_timeline| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/recent-activity/89a2f61f5c28c34d672f40b902549acd_timeline.svg
+   :alt: Timeline graph
+   :target: https://github.com/buildtesters/buildtest/commits
+.. |recent-activity_issues| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/recent-activity/89a2f61f5c28c34d672f40b902549acd_issues.svg
+   :alt: Issue status graph
+   :target: https://github.com/buildtesters/buildtest/issues
+.. |recent-activity_prs| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/recent-activity/89a2f61f5c28c34d672f40b902549acd_prs.svg
+   :alt: Pull request status graph
+   :target: https://github.com/buildtesters/buildtest/pulls
+.. |recent-activity_words| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/recent-activity/89a2f61f5c28c34d672f40b902549acd_words.svg
+   :alt: Trending topics
+   :target: https://github.com/buildtesters/buildtest/commits
+.. |recent-activity_users| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/recent-activity/89a2f61f5c28c34d672f40b902549acd_users.svg
+   :alt: Top contributors
+   :target: https://github.com/buildtesters/buildtest/graphs/contributors

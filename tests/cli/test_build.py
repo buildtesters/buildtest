@@ -305,6 +305,29 @@ def test_jobdeps():
     cmd.build()
 
 
+def test_timeout():
+
+    system = BuildTestSystem()
+
+    buildspecs = [os.path.join(BUILDTEST_ROOT, "tutorials", "sleep.yml")]
+    cmd = BuildTest(
+        configuration=configuration,
+        buildspecs=buildspecs,
+        buildtest_system=system,
+        timeout=1,
+    )
+    cmd.build()
+
+    # running same test with timeout=10 which should pass
+    cmd = BuildTest(
+        configuration=configuration,
+        buildspecs=buildspecs,
+        buildtest_system=system,
+        timeout=10,
+    )
+    cmd.build()
+
+
 @pytest.mark.cli
 def test_keep_stage():
 
@@ -387,3 +410,11 @@ def test_BuildTest_type():
     # invalid type for rebuild argument, must be an int not string
     with pytest.raises(BuildTestError):
         BuildTest(configuration=configuration, tags=["pass"], rebuild="1")
+
+    # timeout must be an integer
+    with pytest.raises(BuildTestError):
+        BuildTest(configuration=configuration, tags=["pass"], timeout=1.5)
+
+    # timeout must be a positive integer
+    with pytest.raises(BuildTestError):
+        BuildTest(configuration=configuration, tags=["pass"], timeout=-1)

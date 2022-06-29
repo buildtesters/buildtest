@@ -5,6 +5,7 @@ from buildtest.cli.config import (
     validate_config,
     view_configuration,
     view_executors,
+    view_path,
     view_system,
 )
 from buildtest.config import SiteConfiguration
@@ -51,6 +52,11 @@ def test_valid_config_schemas():
 @pytest.mark.cli
 def test_config_validate():
     validate_config(configuration)
+
+
+@pytest.mark.cli
+def test_config_path():
+    view_path(configuration)
 
 
 @pytest.mark.cli

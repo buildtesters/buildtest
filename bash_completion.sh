@@ -75,6 +75,16 @@ _buildspec_cache_test_names()
 {
   buildtest buildspec find --format name --terse -n | sort
 }
+
+_failed_tests()
+{
+  buildtest rt --failure --format name --terse --no-header | uniq
+}
+
+_avail_maintainers()
+{
+  buildtest buildspec maintainers --terse -l --no-header | sort
+}
 #  entry point to buildtest bash completion function
 _buildtest ()
 {
@@ -83,16 +93,16 @@ _buildtest ()
 
   COMPREPLY=()   # Array variable storing the possible completions.
 
-  local cmds="build buildspec cd cdash clean config debugreport docs edit help inspect history path report schema schemadocs stylecheck unittests"
-  local alias_cmds="bd bc cg it et h hy rt style"
-  local opts="--color --config --debug --help --lastlog --report --version -c -d -h -r -V"
+  local cmds="build buildspec cd cdash clean config debugreport docs help inspect history path report schema schemadocs stylecheck unittests"
+  local alias_cmds="bd bc cg debug it h hy rt style test"
+  local opts="--color --config --debug --editor --help --lastlog --report --version -c -d -h -r -V"
 
   next=${COMP_WORDS[1]}
 
   case "$next" in
     build|bd)
       local shortoption="-b -e -et -f -k -m -s -t -u -x"
-      local longoption="--buildspec --disable-executor-check --executor --executor-type --exclude --filter --helpfilter --maxpendtime --modules --module-purge --nodes --pollinterval --procs --rerun --retry --stage --tags --unload-modules"
+      local longoption="--buildspec --disable-executor-check --executor --executor-type --exclude --filter --helpfilter --maxpendtime --modules --module-purge --nodes --pollinterval --procs --rerun --retry --stage --tags --timeout --unload-modules"
       local allopts="${longoption} ${shortoption}"
 
       COMPREPLY=( $( compgen -W "$allopts" -- $cur ) )
@@ -130,12 +140,14 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
       ;;
     path)
-      local opts="-b -e -h -o -s -t --buildscript --errfile --help --outfile --stagedir --testpath"
+      local opts="-b -be -e -h -o -s -t --buildscript --buildenv --errfile --help --outfile --stagedir --testpath"
       COMPREPLY=( $( compgen -W "$(_builder_names)" -- $cur ) )
       if [[ $cur == -* ]] ; then
         COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
       fi
       ;;
+    stats)
+      COMPREPLY=( $( compgen  -W "$(_test_name)" -- $cur ) );;
     schema)
       local opts="-h -n -e -j --name --example --json"
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
@@ -147,7 +159,7 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --terse  -h -n -t clear list summary"
+      local opts="--end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --start --terse  -e -f -h -n -s -t clear list summary"
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
       case "${COMP_WORDS[2]}" in summary)
         local opts="-h --help --pager"
@@ -156,7 +168,7 @@ _buildtest ()
       esac
       ;;
     config|cg)
-      local cmds="-h --help compilers edit executors validate view systems"
+      local cmds="-h --help compilers edit executors path systems validate view"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
@@ -189,7 +201,7 @@ _buildtest ()
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         name)
           COMPREPLY=( $( compgen -W "$(_builder_names)" -- $cur ) )
-          
+
           if [[ $cur == -* ]] ; then
             local opts="--all --help -a -h"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
@@ -206,7 +218,7 @@ _buildtest ()
         query)
           COMPREPLY=( $( compgen -W "$(_builder_names)" -- $cur ) )
           if [[ $cur == -* ]] ; then
-            local opts="--buildscript --error --help --output --testpath -b -e -o -h -o -t"
+            local opts="--buildscript --buildenv --error --help --output --testpath -b -be -e -o -h -o -t"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           fi
           ;;
@@ -214,7 +226,7 @@ _buildtest ()
       ;;
 
     buildspec|bc)
-      local cmds="-h --help edit edit-file find show summary validate"
+      local cmds="-h --help edit-test edit-file find maintainers show show-fail summary validate"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
@@ -227,15 +239,27 @@ _buildtest ()
            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
          # completion for rest of arguments
          *)
-           local longopts="--buildspec --executors --filter --format --group-by-executor --group-by-tags --help --helpfilter --helpformat --maintainers --maintainers-by-buildspecs --no-header --pager --paths --rebuild --tags --root --terse"
-           local shortopts="-b -e -h -m -mb -n -p -r -t"
+           local longopts="--buildspec --executors --filter --format --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --rebuild --tags --root --terse"
+           local shortopts="-b -e -h -n -p -r -t"
            local subcmds="invalid"
            local allopts="${longopts} ${shortopts} ${subcmds}"
            COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) );;
          esac
         ;;
-      show|edit)
+      show|edit-test)
         COMPREPLY=( $( compgen -W "$(_buildspec_cache_test_names)" -- $cur ) );;
+      show-fail)
+        COMPREPLY=( $( compgen -W "$(_failed_tests)" -- $cur ) );;
+      maintainers)
+        local opts="--breakdown --list --help --terse --no-header -b -h -l -n find"
+        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+
+        case ${COMP_WORDS[3]} in
+        find)
+          COMPREPLY=( $( compgen -W "$(_avail_maintainers)" -- $cur ) );;
+        esac
+        ;;
+
       edit-file)
         COMPREPLY=( $( compgen -W "$(_avail_buildspecs)" -- $cur ) );;
       validate)
@@ -280,7 +304,7 @@ _buildtest ()
         local opts="-h --help"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       elif [[ "${prev}" == "upload" ]]; then
-        local opts="-h --help --site"
+        local opts="--help --open --site -h -o"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       fi
       ;;
@@ -295,7 +319,9 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
     help|h)
-      local cmds="build buildspec cdash config history inspect path report schema stylecheck unittests"
+      local subcommands="build buildspec cdash config history inspect path report schema stylecheck unittests"
+      local alias_cmds="bd bc cg hy it rt style test"
+      local cmds="$subcommands $alias_cmds"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       ;;
     *)

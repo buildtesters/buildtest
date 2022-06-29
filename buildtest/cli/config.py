@@ -1,5 +1,4 @@
 import json
-import os
 import subprocess
 import sys
 
@@ -12,7 +11,7 @@ from rich.syntax import Syntax
 from rich.table import Column, Table
 
 
-def config_cmd(args, configuration):
+def config_cmd(args, configuration, editor):
     """Entry point for ``buildtest config`` command. This method will invoke other methods depending on input argument.
 
     Args:
@@ -40,10 +39,13 @@ def config_cmd(args, configuration):
         view_system(configuration)
 
     elif args.config == "edit":
-        edit_configuration(configuration)
+        edit_configuration(configuration, editor)
+
+    elif args.config == "path":
+        view_path(configuration)
 
 
-def edit_configuration(configuration):
+def edit_configuration(configuration, editor):
     """This method will open configuration file in editor. The preferred editor will be determined based on environment
     variable ``EDITOR`` if found otherwise will resort to ``vim``.
 
@@ -51,9 +53,9 @@ def edit_configuration(configuration):
         configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class used for storing buildtest configuration
     """
 
-    EDITOR = os.environ.get("EDITOR", "vim")
-
-    subprocess.call([EDITOR, configuration.file])
+    # subprocess.call([editor, configuration.file])
+    cmd = subprocess.Popen([editor, configuration.file])
+    cmd.communicate()
 
     print(f"Writing configuration file: {configuration.file}")
 
@@ -68,11 +70,12 @@ def view_system(configuration):
 
     # table = {"system": [], "description": [], "hostnames": [], "moduletool": []}
     table = Table(
-        "[blue]system",
-        "[blue]description",
-        "[blue]moduletool",
-        Column("[blue]hostnames", overflow="fold"),
+        "system",
+        "description",
+        "moduletool",
+        Column("hostnames", overflow="fold"),
         title=f"System Summary (Configuration={configuration.file})",
+        header_style="blue",
         min_width=120,
     )
 
@@ -115,11 +118,24 @@ def validate_config(configuration):
         print(err)
         raise sys.exit(f"{configuration.file} is not valid")
 
-    print(f"{configuration.file} is valid")
+    console.print(f"{configuration.file} is valid")
+
+
+def view_path(configuration):
+    """Display the path to configuration file regardless if file is valid
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+    """
+    console.print(configuration.file)
 
 
 def view_configuration(configuration):
-    """Display content of buildtest configuration file. This implements command ``buildtest config view``"""
+    """Display content of buildtest configuration file. This implements command ``buildtest config view``
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+    """
 
     console.rule(configuration.file)
     with open(configuration.file, "r") as bc:
@@ -146,36 +162,36 @@ def view_executors(
         invalid (bool): Display list of invalid executors which is specified via ``buildtest config executors --invalid``
     """
 
-    d = {"executors": configuration.target_config["executors"]}
+    executor_settings = {"executors": configuration.target_config["executors"]}
 
     # display output in JSON format
     if json_format:
-        console.print(json.dumps(d, indent=2))
+        console.print(json.dumps(executor_settings, indent=2))
         return
 
     # display output in YAML format
     if yaml_format:
-        console.print(yaml.dump(d, default_flow_style=False))
+        console.print(yaml.dump(executor_settings, default_flow_style=False))
         return
 
     if disabled:
-        executors = configuration.disabled_executors
-        if not executors:
-            print("There are no disabled executors")
+
+        if not configuration.disabled_executors:
+            console.print("There are no disabled executors")
             return
 
-        for executor in executors:
-            print(executor)
+        for executor in configuration.disabled_executors:
+            console.print(executor)
         return
 
     if invalid:
-        executors = configuration.invalid_executors
-        if not executors:
-            print("There are no invalid executors")
+
+        if not configuration.invalid_executors:
+            console.print("There are no invalid executors")
             return
 
-        for executor in executors:
-            print(executor)
+        for executor in configuration.invalid_executors:
+            console.print(executor)
         return
 
     names = buildexecutor.names()

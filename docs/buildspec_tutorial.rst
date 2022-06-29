@@ -24,17 +24,24 @@ Tutorials Setup
     The tutorial setup is required if you want to run buildspecs using the the :ref:`compiler <compiler_schema>` and :ref:`spack <buildtest_spack_integration>` schema.
 
 
-To get started for this tutorial, you will need `docker <https://docs.docker.com/get-docker/>`_ on your machine to pull the container. You can pull the
-container by running the following following::
+To get started for this tutorial, you will need `docker <https://docs.docker.com/get-docker/>`_ on your machine to pull the container. At NERSC,
+you can use `shifter <https://github.com/NERSC/shifter>`_ to access the container, you will need to start an interactive shell.
 
-    docker pull ghcr.io/buildtesters/buildtest_spack:latest
+.. tabs::
 
-Next we can start an interactive shell into the container as follows::
+    .. code-tab:: bash docker
 
-    docker run -it ghcr.io/buildtesters/buildtest_spack:latest
+        docker pull ghcr.io/buildtesters/buildtest_spack:latest
+        docker run -it ghcr.io/buildtesters/buildtest_spack:latest /bin/bash --login
 
-We need to install buildtest and setup environment for this tutorial. This can be done as follows::
+    .. code-tab:: bash shifter
 
+        shifter -E --image=registry.services.nersc.gov/siddiq90/buildtest_spack:latest -- /bin/bash --login
+
+We need to install buildtest and setup environment for this tutorial. We recommend you clone buildtest in your HOME directory.
+This can be done as follows::
+
+    cd ~
     git clone https://github.com/buildtesters/buildtest.git
     cd buildtest
     source scripts/spack_container/setup.sh

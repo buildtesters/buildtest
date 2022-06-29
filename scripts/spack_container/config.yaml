@@ -1,0 +1,7 @@
+config:
+  build_stage: $HOME/spack-workspace/build_stage
+  install_tree:
+    root: /home/spack/spack-workspace/software
+  module_roots:
+    tcl: /home/spack/spack-workspace/modules/tcl
+    lmod: /home/spack/spack-workspace/modules/lmod

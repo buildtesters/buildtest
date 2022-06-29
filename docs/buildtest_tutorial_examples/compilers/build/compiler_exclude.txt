@@ -1,32 +1,37 @@
 $ buildtest build -b /home/spack/buildtest/examples/compilers/compiler_exclude.yml 
-╭──────────────────────────────── buildtest summary ─────────────────────────────────╮
-│                                                                                    │
-│ User:               spack                                                          │
-│ Hostname:           09e0ccd237a0                                                   │
-│ Platform:           Linux                                                          │
-│ Current Time:       2022/02/09 17:48:50                                            │
-│ buildtest path:     /home/spack/buildtest/bin/buildtest                            │
-│ buildtest version:  0.13.0                                                         │
-│ python path:        /home/spack/pyenv/buildtest/bin/python3                        │
-│ python version:     3.8.6                                                          │
-│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml   │
-│ Test Directory:     /home/spack/runs                                               │
-│ Command:            /home/spack/buildtest/bin/buildtest build -b                   │
-│ /home/spack/buildtest/examples/compilers/compiler_exclude.yml                      │
-│                                                                                    │
-╰────────────────────────────────────────────────────────────────────────────────────╯
-──────────────────────────────  Discovering Buildspecs ───────────────────────────────
-Discovered Buildspecs:  1
-Excluded Buildspecs:  0
-Detected Buildspecs after exclusion:  1
+╭────────────────────────── buildtest summary ──────────────────────────╮
+│                                                                       │
+│ User:               spack                                             │
+│ Hostname:           356ea13b3433                                      │
+│ Platform:           Linux                                             │
+│ Current Time:       2022/06/29 17:27:27                               │
+│ buildtest path:     /home/spack/buildtest/bin/buildtest               │
+│ buildtest version:  0.14.0                                            │
+│ python path:        /home/spack/pyenv/buildtest/bin/python3           │
+│ python version:     3.8.6                                             │
+│ Configuration File:                                                   │
+│ /home/spack/buildtest/buildtest/settings/spack_container.yml          │
+│ Test Directory:     /home/spack/runs                                  │
+│ Report File:        /home/spack/buildtest/var/report.json             │
+│ Command:            /home/spack/buildtest/bin/buildtest build -b      │
+│ /home/spack/buildtest/examples/compilers/compiler_exclude.yml         │
+│                                                                       │
+╰───────────────────────────────────────────────────────────────────────╯
+────────────────────────  Discovering Buildspecs ────────────────────────
                       Discovered buildspecs                      
 ╔═══════════════════════════════════════════════════════════════╗
-║ Buildspecs                                                    ║
+║ buildspec                                                     ║
 ╟───────────────────────────────────────────────────────────────╢
 ║ /home/spack/buildtest/examples/compilers/compiler_exclude.yml ║
 ╚═══════════════════════════════════════════════════════════════╝
-───────────────────────────────── Parsing Buildspecs ─────────────────────────────────
-Excluding compiler: gcc_6.5.0 from test generation
+
+
+Total Discovered Buildspecs:  1
+Total Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
+────────────────────────── Parsing Buildspecs ───────────────────────────
+Buildtest will parse 1 buildspecs
+vecadd_gnu_exclude: Excluding compiler gcc_6.5.0 during test generation
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
 /home/spack/buildtest/examples/compilers/compiler_exclude.yml: VALID
@@ -34,65 +39,86 @@ Total builder objects created: 2
 Total compiler builder: 2
 Total script builder: 0
 Total spack builder: 0
-                               Compiler Builder Details                               
-┏━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
-┃ Builder         ┃ Executor        ┃ Compiler  ┃ description      ┃ buildspecs      ┃
-┡━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
-│ vecadd_gnu_excl │ generic.local.b │ gcc_7.5.0 │ Vector Addition  │ /home/spack/bui │
-│ ude/71f0f73e    │ ash             │           │ example with GNU │ ldtest/examples │
-│                 │                 │           │ compilers but    │ /compilers/comp │
-│                 │                 │           │ exclude          │ iler_exclude.ym │
-│                 │                 │           │ gcc_6.5.0        │ l               │
-├─────────────────┼─────────────────┼───────────┼──────────────────┼─────────────────┤
-│ vecadd_gnu_excl │ generic.local.b │ gcc_8.3.0 │ Vector Addition  │ /home/spack/bui │
-│ ude/7e5743fb    │ ash             │           │ example with GNU │ ldtest/examples │
-│                 │                 │           │ compilers but    │ /compilers/comp │
-│                 │                 │           │ exclude          │ iler_exclude.ym │
-│                 │                 │           │ gcc_6.5.0        │ l               │
-└─────────────────┴─────────────────┴───────────┴──────────────────┴─────────────────┘
-─────────────────────────────────── Building Test ────────────────────────────────────
-vecadd_gnu_exclude/71f0f73e: Creating test directory: 
-/home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/71f0f73e
-vecadd_gnu_exclude/71f0f73e: Creating the stage directory: 
-/home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/71f0f73e/stage
-vecadd_gnu_exclude/71f0f73e: Writing build script: /home/spack/runs/generic.local.bash
-/compiler_exclude/vecadd_gnu_exclude/71f0f73e/vecadd_gnu_exclude_build.sh
-vecadd_gnu_exclude/7e5743fb: Creating test directory: 
-/home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/7e5743fb
-vecadd_gnu_exclude/7e5743fb: Creating the stage directory: 
-/home/spack/runs/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/7e5743fb/stage
-vecadd_gnu_exclude/7e5743fb: Writing build script: /home/spack/runs/generic.local.bash
-/compiler_exclude/vecadd_gnu_exclude/7e5743fb/vecadd_gnu_exclude_build.sh
-─────────────────────────────────── Running Tests ────────────────────────────────────
+                        Compiler Builder Details                         
+┏━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ builder  ┃ executor ┃ compiler ┃ nodes ┃ procs ┃ descript… ┃ buildsp… ┃
+┡━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━┩
+│ vecadd_… │ generic… │ gcc_7.5… │ None  │ None  │ Vector    │ /home/s… │
+│          │          │          │       │       │ Addition  │          │
+│          │          │          │       │       │ example   │          │
+│          │          │          │       │       │ with GNU  │          │
+│          │          │          │       │       │ compilers │          │
+│          │          │          │       │       │ but       │          │
+│          │          │          │       │       │ exclude   │          │
+│          │          │          │       │       │ gcc_6.5.0 │          │
+├──────────┼──────────┼──────────┼───────┼───────┼───────────┼──────────┤
+│ vecadd_… │ generic… │ gcc_8.3… │ None  │ None  │ Vector    │ /home/s… │
+│          │          │          │       │       │ Addition  │          │
+│          │          │          │       │       │ example   │          │
+│          │          │          │       │       │ with GNU  │          │
+│          │          │          │       │       │ compilers │          │
+│          │          │          │       │       │ but       │          │
+│          │          │          │       │       │ exclude   │          │
+│          │          │          │       │       │ gcc_6.5.0 │          │
+└──────────┴──────────┴──────────┴───────┴───────┴───────────┴──────────┘
+───────────────────────────── Building Test ─────────────────────────────
+vecadd_gnu_exclude/0c481907: Creating test directory: /home/spack/runs/ge
+neric.local.bash/compiler_exclude/vecadd_gnu_exclude/0c481907
+vecadd_gnu_exclude/0c481907: Creating the stage directory: /home/spack/ru
+ns/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/0c481907/stage
+vecadd_gnu_exclude/0c481907: Writing build script: /home/spack/runs/gener
+ic.local.bash/compiler_exclude/vecadd_gnu_exclude/0c481907/vecadd_gnu_exc
+lude_build.sh
+vecadd_gnu_exclude/22fc63e3: Creating test directory: /home/spack/runs/ge
+neric.local.bash/compiler_exclude/vecadd_gnu_exclude/22fc63e3
+vecadd_gnu_exclude/22fc63e3: Creating the stage directory: /home/spack/ru
+ns/generic.local.bash/compiler_exclude/vecadd_gnu_exclude/22fc63e3/stage
+vecadd_gnu_exclude/22fc63e3: Writing build script: /home/spack/runs/gener
+ic.local.bash/compiler_exclude/vecadd_gnu_exclude/22fc63e3/vecadd_gnu_exc
+lude_build.sh
+───────────────────────────── Running Tests ─────────────────────────────
 Spawning 4 processes for processing builders
-vecadd_gnu_exclude/71f0f73e: Running Test via command: bash --norc --noprofile 
--eo pipefail vecadd_gnu_exclude_build.sh
-vecadd_gnu_exclude/7e5743fb: Running Test via command: bash --norc --noprofile 
--eo pipefail vecadd_gnu_exclude_build.sh
-vecadd_gnu_exclude/7e5743fb: Test completed with returncode: 0
-vecadd_gnu_exclude/71f0f73e: Test completed with returncode: 0
-vecadd_gnu_exclude/7e5743fb: Test completed in 0.134892 seconds
-vecadd_gnu_exclude/71f0f73e: Test completed in 0.1373 seconds
-vecadd_gnu_exclude/7e5743fb: Writing output file -  /home/spack/runs/generic.loc
-al.bash/compiler_exclude/vecadd_gnu_exclude/7e5743fb/vecadd_gnu_exclude.out
-vecadd_gnu_exclude/71f0f73e: Writing output file -  /home/spack/runs/generic.loc
-al.bash/compiler_exclude/vecadd_gnu_exclude/71f0f73e/vecadd_gnu_exclude.out
-vecadd_gnu_exclude/7e5743fb: Writing error file - /home/spack/runs/generic.local
-.bash/compiler_exclude/vecadd_gnu_exclude/7e5743fb/vecadd_gnu_exclude.err
-vecadd_gnu_exclude/71f0f73e: Writing error file - /home/spack/runs/generic.local
-.bash/compiler_exclude/vecadd_gnu_exclude/71f0f73e/vecadd_gnu_exclude.err
-                                     Test Summary                                     
-┏━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-┃                ┃                ┃        ┃ Checks          ┃            ┃          ┃
-┃                ┃                ┃        ┃ (ReturnCode,    ┃            ┃          ┃
-┃ Builder        ┃ executor       ┃ status ┃ Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
-┡━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ vecadd_gnu_exc │ generic.local… │ PASS   │ N/A N/A N/A     │ 0          │ 0.134892 │
-│ lude/7e5743fb  │                │        │                 │            │          │
-├────────────────┼────────────────┼────────┼─────────────────┼────────────┼──────────┤
-│ vecadd_gnu_exc │ generic.local… │ PASS   │ N/A N/A N/A     │ 0          │ 0.1373   │
-│ lude/71f0f73e  │                │        │                 │            │          │
-└────────────────┴────────────────┴────────┴─────────────────┴────────────┴──────────┘
+────────────────────────────── Iteration 1 ──────────────────────────────
+vecadd_gnu_exclude/22fc63e3 does not have any dependencies adding test to
+queue
+vecadd_gnu_exclude/0c481907 does not have any dependencies adding test to
+queue
+vecadd_gnu_exclude/22fc63e3: Running Test via command: bash --norc 
+--noprofile -eo pipefail vecadd_gnu_exclude_build.sh
+vecadd_gnu_exclude/0c481907: Running Test via command: bash --norc 
+--noprofile -eo pipefail vecadd_gnu_exclude_build.sh
+vecadd_gnu_exclude/0c481907: Test completed in 0.086397 seconds
+vecadd_gnu_exclude/0c481907: Test completed with returncode: 0
+vecadd_gnu_exclude/0c481907: Writing output file -  /home/spack/runs/gene
+ric.local.bash/compiler_exclude/vecadd_gnu_exclude/0c481907/vecadd_gnu_ex
+clude.out
+vecadd_gnu_exclude/0c481907: Writing error file - /home/spack/runs/generi
+c.local.bash/compiler_exclude/vecadd_gnu_exclude/0c481907/vecadd_gnu_excl
+ude.err
+vecadd_gnu_exclude/22fc63e3: Test completed in 0.095962 seconds
+vecadd_gnu_exclude/22fc63e3: Test completed with returncode: 0
+vecadd_gnu_exclude/22fc63e3: Writing output file -  /home/spack/runs/gene
+ric.local.bash/compiler_exclude/vecadd_gnu_exclude/22fc63e3/vecadd_gnu_ex
+clude.out
+vecadd_gnu_exclude/22fc63e3: Writing error file - /home/spack/runs/generi
+c.local.bash/compiler_exclude/vecadd_gnu_exclude/22fc63e3/vecadd_gnu_excl
+ude.err
+In this iteration we are going to run the following tests: [vecadd_gnu_exclude/22fc63e3, vecadd_gnu_exclude/0c481907]
+                              Test Summary                               
+┏━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃            ┃            ┃        ┃ checks (Re ┃            ┃          ┃
+┃            ┃            ┃        ┃ turnCode,  ┃            ┃          ┃
+┃            ┃            ┃        ┃ Regex,     ┃            ┃          ┃
+┃ builder    ┃ executor   ┃ status ┃ Runtime)   ┃ returnCode ┃ runtime  ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ vecadd_gnu │ generic.l… │ PASS   │ N/A N/A    │ 0          │ 0.095962 │
+│ _exclude/2 │            │        │ N/A        │            │          │
+│ 2fc63e3    │            │        │            │            │          │
+├────────────┼────────────┼────────┼────────────┼────────────┼──────────┤
+│ vecadd_gnu │ generic.l… │ PASS   │ N/A N/A    │ 0          │ 0.086397 │
+│ _exclude/0 │            │        │ N/A        │            │          │
+│ c481907    │            │        │            │            │          │
+└────────────┴────────────┴────────┴────────────┴────────────┴──────────┘
 
 
 
@@ -101,4 +127,4 @@ Failed Tests: 0/2 Percentage: 0.000%
 
 
 Adding 2 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_fpvvg3ei.log
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_ha4l_7bj.log

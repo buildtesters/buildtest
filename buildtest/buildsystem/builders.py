@@ -17,9 +17,9 @@ class Builder:
     """The Builder class creates builder objects based on parsed buildspecs.
 
     The builder class is created based on the 'type' field in the test. If test contains
-    ``type: script`` we will create builder by calling :class:`buildtest.buildsystem.scriptbuilder.ScriptBuilder`.
-    Likewise for ``type: compiler`` and ``type: spack`` we will call :class:`buildtest.buildsystem.compilerbuilder.CompilerBuilder` and
-    :class:`buildtest.buildsystem.spack.SpackBuilder`.
+    ``type: script`` we will create builder by calling :class:`buildtest.builders.script.ScriptBuilder`.
+    Likewise for ``type: compiler`` and ``type: spack`` we will call :class:`buildtest.builders.compiler.CompilerBuilder` and
+    :class:`buildtest.builders.spack.SpackBuilder`.
     """
 
     def __init__(
@@ -70,32 +70,28 @@ class Builder:
 
         self.builders = []
 
-        if deep_get(self.filters, "maintainers") and not self.bp.recipe.get(
-            "maintainers"
-        ):
-            console.print(
-                f"{self.bp.buildspec}: skipping test because [italic]'maintainers'[/italic] field is not specified in buildspec."
-            )
-            return
+        if deep_get(self.filters, "maintainers"):
 
-        if deep_get(self.filters, "maintainers") and self.filters[
-            "maintainers"
-        ] not in self.bp.recipe.get("maintainers"):
-            console.print(
-                f"{self.bp.buildspec}: unable to find maintainer: {self.filters['maintainers']} in buildspec which contains the following maintainers: {self.bp.recipe.get('maintainers')} therefore we skip this test"
-            )
-            return
+            if not self.bp.recipe.get("maintainers"):
+                console.print(
+                    f"{self.bp.buildspec}: skipping test because [italic]'maintainers'[/italic] field is not specified in buildspec."
+                )
+                return
+
+            if self.filters["maintainers"] not in self.bp.recipe.get("maintainers"):
+                console.print(
+                    f"{self.bp.buildspec}: unable to find maintainer: {self.filters['maintainers']} in buildspec which contains the following maintainers: {self.bp.recipe.get('maintainers')} therefore we skip this test"
+                )
+                return
 
         for count in range(self.rebuild):
             for name in self.bp.get_test_names():
                 recipe = self.bp.recipe["buildspecs"][name]
 
                 if recipe.get("skip"):
-                    msg = f"{name}: skipping test due to [italic]'skip'[/italic] property."
+                    msg = f"[red]{name}: skipping test due to [italic]'skip'[/italic] property."
                     self.logger.info(msg)
-                    console.print(
-                        f"[red]{name}: skipping test due to [italic]'skip'[/italic] property."
-                    )
+                    console.print(msg)
                     continue
 
                 # apply filter by tags or type if --filter option is specified
@@ -107,14 +103,10 @@ class Builder:
                         continue
 
                 # Add the builder for the script or spack schema
-                if recipe["type"] in ["spack"]:
-                    builders = self._generate_builders(recipe, name)
-                    if builders:
-                        self.builders += builders
 
-                elif recipe["type"] in ["script", "compiler"]:
+                if recipe["type"] in ["script", "compiler", "spack"]:
 
-                    builders = self._build_compilers(name, recipe)
+                    builders = self.build(name, recipe)
                     if builders:
                         self.builders += builders
 
@@ -122,137 +114,195 @@ class Builder:
             self.filter_by_executor_type()
 
     def filter_by_executor_type(self):
+        """This method will filter test by executor type when using ``buildtest build --executor-type``. The filter can be made based on local or batch executors"""
         builders = []
         for builder in self.builders:
-            if self.executor_type == "local":
-                if not builder.is_local_executor():
-                    console.print(
-                        f"[red]{builder} is excluded since its not using local executor"
-                    )
-                    continue
+            if self.executor_type == "local" and not builder.is_local_executor():
+                console.print(
+                    f"[red]{builder} is excluded since its not using local executor"
+                )
+                continue
 
-                builders.append(builder)
+            elif self.executor_type == "batch" and builder.is_local_executor():
+                console.print(
+                    f"[red]{builder} is excluded since its not using batch executor"
+                )
+                continue
 
-            elif self.executor_type == "batch":
-                if builder.is_local_executor():
-                    console.print(
-                        f"[red]{builder} is excluded since its not using batch executor"
-                    )
-                    continue
-                builders.append(builder)
+            builders.append(builder)
 
         self.builders = builders
 
-    def _create_builders_procs(self, name, executor, recipe, compiler_name=None):
-        """This method will create builders for range of process configuration specified via ``buildtest build --procs``. The return
-        will be a list of builder object of type :class:`buildtest.buildsystem.base.BuilderBase`. If builder is using a Local Executor
-        we will return a the builder as is without iterating over the loop over all proc values. The `--procs` work with builders that
-        leverage a Batch Executor such as Slurm, LSF, PBS, etc...
+    def create_script_builders(
+        self, name, recipe, executor, nodes=None, procs=None, compiler_name=None
+    ):
+        """Create builder objects by calling :class:`buildtest.builders.script.ScriptBuilder` class.
 
-        Args:
-           name (str): Name of test in buildspec file
-           recipe (dict): Loaded test recipe from buildspec file
-           executor (str): Name of executor for a given test
-           compiler_name (str, optional): Name of compiler
+        args:
+            name (str): Name of test
+            recipe (dict): Loaded test recipe from buildtest
+            executor (str): Name of executor
+            nodes (list, optional): A list of node configuration
+            procs (list, optional): A list of process configuration
+            compiler_name (str, optional): Name of resolved compiler instance
         """
 
-        # used for storing builder objects creating during class invocation
         builders = []
 
-        if self.numprocs:
-            # loop over all proc values and create builder object based on schema type since we need to call different classes. If builder is using local executor we return the builder immediately,
-            # otherwise we keep adding builders for all proc values
-            for proc in self.numprocs:
-                if recipe["type"] == "script":
-                    builder = ScriptBuilder(
-                        name=name,
-                        recipe=recipe,
-                        executor=executor,
-                        buildspec=self.bp.buildspec,
-                        buildexecutor=self.buildexecutor,
-                        configuration=self.configuration,
-                        testdir=self.testdir,
-                        numprocs=proc,
-                    )
-                elif recipe["type"] == "compiler":
-                    builder = CompilerBuilder(
-                        name=name,
-                        recipe=recipe,
-                        executor=executor,
-                        buildspec=self.bp.buildspec,
-                        buildexecutor=self.buildexecutor,
-                        configuration=self.configuration,
-                        testdir=self.testdir,
-                        compiler=compiler_name,
-                        numprocs=proc,
-                    )
-                elif recipe["type"] == "spack":
-                    builder = SpackBuilder(
-                        name=name,
-                        recipe=recipe,
-                        executor=executor,
-                        buildspec=self.bp.buildspec,
-                        buildexecutor=self.buildexecutor,
-                        testdir=self.testdir,
-                        numprocs=proc,
-                    )
+        builder = ScriptBuilder(
+            name=name,
+            recipe=recipe,
+            executor=executor,
+            buildspec=self.bp.buildspec,
+            buildexecutor=self.buildexecutor,
+            configuration=self.configuration,
+            testdir=self.testdir,
+            compiler=compiler_name,
+        )
+        builders.append(builder)
 
-                # if builder is using LocalExecutor we return since we don't need to create object for every process value, this is only needed if test using a Batch Executor.
-                if builder.is_local_executor():
-                    builders.append(builder)
-                    return [builder]
-
+        if nodes:
+            for node in nodes:
+                builder = ScriptBuilder(
+                    name=name,
+                    recipe=recipe,
+                    executor=executor,
+                    buildspec=self.bp.buildspec,
+                    buildexecutor=self.buildexecutor,
+                    configuration=self.configuration,
+                    testdir=self.testdir,
+                    numnodes=node,
+                    compiler=compiler_name,
+                )
+                builders.append(builder)
+        if procs:
+            for proc in procs:
+                builder = ScriptBuilder(
+                    name=name,
+                    recipe=recipe,
+                    executor=executor,
+                    buildspec=self.bp.buildspec,
+                    buildexecutor=self.buildexecutor,
+                    configuration=self.configuration,
+                    testdir=self.testdir,
+                    numprocs=proc,
+                    compiler=compiler_name,
+                )
                 builders.append(builder)
 
-        if self.numnodes:
-            # loop over all proc values and create builder object based on schema type since we need to call different classes. If builder is using local executor we return the builder immediately,
-            # otherwise we keep adding builders for all proc values
-            for nodes in self.numnodes:
-                if recipe["type"] == "script":
-                    builder = ScriptBuilder(
-                        name=name,
-                        recipe=recipe,
-                        executor=executor,
-                        buildspec=self.bp.buildspec,
-                        buildexecutor=self.buildexecutor,
-                        configuration=self.configuration,
-                        testdir=self.testdir,
-                        numnodes=nodes,
-                    )
-                elif recipe["type"] == "compiler":
-                    builder = CompilerBuilder(
-                        name=name,
-                        recipe=recipe,
-                        executor=executor,
-                        buildspec=self.bp.buildspec,
-                        buildexecutor=self.buildexecutor,
-                        configuration=self.configuration,
-                        testdir=self.testdir,
-                        compiler=compiler_name,
-                        numnodes=nodes,
-                    )
-                elif recipe["type"] == "spack":
-                    builder = SpackBuilder(
-                        name=name,
-                        recipe=recipe,
-                        executor=executor,
-                        buildspec=self.bp.buildspec,
-                        buildexecutor=self.buildexecutor,
-                        testdir=self.testdir,
-                        numnodes=nodes,
-                    )
-
-                # if builder is using LocalExecutor we return since we don't need to create object for every process value, this is only needed if test using a Batch Executor.
-                if builder.is_local_executor():
-                    builders.append(builder)
-                    return [builder]
-
-                builders.append(builder)
         return builders
 
-    def _generate_builders(self, recipe, name, compiler_name=None):
+    def create_compiler_builders(
+        self, name, recipe, executor, nodes=None, procs=None, compiler_name=None
+    ):
+
+        """Create builder objects by calling :class:`buildtest.builders.compiler.CompilerBuilder` class.
+
+        args:
+            name (str): Name of test
+            recipe (dict): Loaded test recipe from buildtest
+            executor (str): Name of executor
+            nodes (list, optional): A list of node configuration
+            procs (list, optional): A list of process configuration
+            compiler_name (str, optional): Name of resolved compiler instance
+        """
+        builders = []
+
+        builder = CompilerBuilder(
+            name=name,
+            recipe=recipe,
+            executor=executor,
+            buildspec=self.bp.buildspec,
+            buildexecutor=self.buildexecutor,
+            configuration=self.configuration,
+            testdir=self.testdir,
+            compiler=compiler_name,
+        )
+        builders.append(builder)
+
+        if nodes:
+            for node in nodes:
+                builder = CompilerBuilder(
+                    name=name,
+                    recipe=recipe,
+                    executor=executor,
+                    buildspec=self.bp.buildspec,
+                    buildexecutor=self.buildexecutor,
+                    configuration=self.configuration,
+                    testdir=self.testdir,
+                    numnodes=node,
+                    compiler=compiler_name,
+                )
+                builders.append(builder)
+        if procs:
+            for proc in procs:
+                builder = CompilerBuilder(
+                    name=name,
+                    recipe=recipe,
+                    executor=executor,
+                    buildspec=self.bp.buildspec,
+                    buildexecutor=self.buildexecutor,
+                    configuration=self.configuration,
+                    testdir=self.testdir,
+                    numprocs=proc,
+                    compiler=compiler_name,
+                )
+                builders.append(builder)
+
+        return builders
+
+    def create_spack_builders(self, name, recipe, executor, nodes=None, procs=None):
+        """Create builder objects by calling :class:`buildtest.builders.spack.SpackBuilder` class.
+
+        args:
+            name (str): Name of test
+            recipe (dict): Loaded test recipe from buildtest
+            executor (str): Name of executor
+            nodes (list, optional): A list of node configuration
+            procs (list, optional): A list of process configuration
+        """
+        builders = []
+
+        builder = SpackBuilder(
+            name=name,
+            recipe=recipe,
+            executor=executor,
+            buildspec=self.bp.buildspec,
+            buildexecutor=self.buildexecutor,
+            testdir=self.testdir,
+        )
+        builders.append(builder)
+
+        if nodes:
+            for node in nodes:
+                builder = SpackBuilder(
+                    name=name,
+                    recipe=recipe,
+                    executor=executor,
+                    buildspec=self.bp.buildspec,
+                    buildexecutor=self.buildexecutor,
+                    testdir=self.testdir,
+                    numnodes=node,
+                )
+                builders.append(builder)
+        if procs:
+            for proc in procs:
+                builder = SpackBuilder(
+                    name=name,
+                    recipe=recipe,
+                    executor=executor,
+                    buildspec=self.bp.buildspec,
+                    buildexecutor=self.buildexecutor,
+                    testdir=self.testdir,
+                    numprocs=proc,
+                )
+                builders.append(builder)
+
+        return builders
+
+    def generate_builders(self, recipe, name, compiler_name=None):
         """This method is responsible for generating builders by applying regular expression specified by
-        ``executor`` field in buildspec with list of executors. If their is a match we generate a builder.
+        `executor` field in buildspec with list of executors. If their is a match we generate a builder.
 
         Args:
             name (str): Name of test in buildspec file
@@ -275,24 +325,14 @@ class Builder:
                 self.logger.debug(
                     f"Found a match in buildspec with available executors via re.fullmatch({recipe['executor']},{executor})"
                 )
-                # if --procs is specified create builder object for list of proc values
-                if self.numprocs or self.numnodes:
-                    builders += self._create_builders_procs(
-                        name=name, executor=executor, recipe=recipe
-                    )
-                    continue
-
-                builder = ScriptBuilder(
+                builders += self.create_script_builders(
                     name=name,
-                    recipe=recipe,
                     executor=executor,
-                    buildspec=self.bp.buildspec,
-                    buildexecutor=self.buildexecutor,
-                    configuration=self.configuration,
-                    testdir=self.testdir,
-                    compiler=compiler_name,
+                    recipe=recipe,
+                    nodes=self.numnodes,
+                    procs=self.numprocs,
+                    compiler_name=compiler_name,
                 )
-                builders.append(builder)
 
             elif (
                 re.fullmatch(recipe["executor"], executor)
@@ -301,55 +341,34 @@ class Builder:
                 self.logger.debug(
                     f"Found a match in buildspec with available executors via re.fullmatch({recipe['executor']},{executor})"
                 )
-                # if --procs is specified create builder object for list of proc values
-                if self.numprocs or self.numnodes:
-                    builders += self._create_builders_procs(
-                        name=name,
-                        executor=executor,
-                        recipe=recipe,
-                        compiler_name=compiler_name,
-                    )
-                    continue
-
-                builder = CompilerBuilder(
+                builders += self.create_compiler_builders(
                     name=name,
-                    recipe=recipe,
                     executor=executor,
-                    compiler=compiler_name,
-                    buildspec=self.bp.buildspec,
-                    configuration=self.configuration,
-                    buildexecutor=self.buildexecutor,
-                    testdir=self.testdir,
+                    recipe=recipe,
+                    nodes=self.numnodes,
+                    procs=self.numprocs,
+                    compiler_name=compiler_name,
                 )
-                builders.append(builder)
 
             elif (
                 re.fullmatch(recipe["executor"], executor) and recipe["type"] == "spack"
             ):
-                # if --procs is specified create builder object for list of proc values
-                if self.numprocs or self.numnodes:
-                    builders += self._create_builders_procs(
-                        name=name, executor=executor, recipe=recipe
-                    )
-                    continue
-
-                builder = SpackBuilder(
+                builders += self.create_spack_builders(
                     name=name,
-                    recipe=recipe,
                     executor=executor,
-                    buildspec=self.bp.buildspec,
-                    buildexecutor=self.buildexecutor,
-                    testdir=self.testdir,
+                    recipe=recipe,
+                    nodes=self.numnodes,
+                    procs=self.numprocs,
                 )
-                builders.append(builder)
 
         return builders
 
-    def _build_compilers(self, name, recipe):
-        """This method will perform regular expression with 'name' field in compilers
-        section and retrieve one or more compiler that were defined in buildtest
+    def build(self, name, recipe):
+        """This method will generate a list of builders by invoking method :func:`buildtest.buildsystem.builders.Builder.generate_builders`.
+        If `compilers` is specified in buildspec we will perform regular expression to search for compilers based on `name`
+        and retrieve one or more compiler that were defined in buildtest
         configuration. If any compilers were retrieved we return one or more
-        builder objects that call :class:`buildtest.buildsystem.builders.compiler.CompilerBuilder`
+        builder objects based on compiler name.
 
         Args:
             name (str): name of test
@@ -359,16 +378,17 @@ class Builder:
 
         builders = []
 
+        # compilers property in script schema is optional while in compiler schema its required. If 'compilers' is set with 'type: script' then return builders
         if not recipe.get("compilers"):
-            builders = self._generate_builders(name=name, recipe=recipe)
+            builders = self.generate_builders(name=name, recipe=recipe)
             return builders
 
         # exclude compiler from search if 'exclude' specified in buildspec
         if recipe["compilers"].get("exclude"):
             for exclude in recipe["compilers"]["exclude"]:
                 if exclude in discovered_compilers:
-                    msg = f"Excluding compiler: {exclude} from test generation"
-                    print(msg)
+                    msg = f"[blue]{name}[/blue]: [red]Excluding compiler {exclude} during test generation"
+                    console.print(msg)
                     self.logger.debug(msg)
                     discovered_compilers.remove(exclude)
 
@@ -377,7 +397,7 @@ class Builder:
             for bc_name in discovered_compilers:
                 if re.match(compiler_pattern, bc_name):
 
-                    builder = self._generate_builders(
+                    builder = self.generate_builders(
                         name=name, recipe=recipe, compiler_name=bc_name
                     )
 

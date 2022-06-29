@@ -18,10 +18,10 @@ Which configuration file does buildtest read?
 
 buildtest will read configuration files in the following order:
 
-- Command line ``buildtest -c <config>.yml build``
-- Environment variable - **BUILDTEST_CONFIGFILE**
-- User Configuration - ``$HOME/.buildtest/config.yml``
-- Default Configuration - ``$BUILDTEST_ROOT/buildtest/settings/config.yml``
+1. Command line ``buildtest -c <config>.yml build``
+2. Environment variable - **BUILDTEST_CONFIGFILE**
+3. User Configuration - ``$HOME/.buildtest/config.yml``
+4. Default Configuration - ``$BUILDTEST_ROOT/buildtest/settings/config.yml``
 
 .. _default_configuration:
 
@@ -285,9 +285,9 @@ Specifying Modules
 ~~~~~~~~~~~~~~~~~~~~
 
 You can configure executors to load modules, purge or restore from collection which will be run for all tests that use the executor.
-This can be achieved via `module` property that can be defined in the executor definition. In this next example, we create a bash executor
-that will purge modules and load gcc. The `purge` property is a boolean, if set to `True` we will run `module purge` before
-loading commands. The `load` property is a list of modules to `module load`.
+This can be achieved via ``module`` property that can be defined in the executor definition. In this next example, we create a bash executor
+that will purge modules and load gcc. The ``purge`` property is a boolean, if set to **True** we will run **module purge** before
+loading commands. The ``load`` property is a list of modules to **module load**.
 
 .. code-block:: yaml
 
@@ -310,6 +310,7 @@ example we defined a slurm executor named **haswell_debug** which will submit jo
 qos on the haswell partition as follows:
 
 .. code-block:: yaml
+   :emphasize-lines: 4
 
     executors:
       slurm:
@@ -339,6 +340,7 @@ can be done via ``partition`` property. In this next example we define an execut
 to slurm partition **regular_hsw**.
 
 .. code-block:: yaml
+   :emphasize-lines: 4
 
     executors:
       slurm:
@@ -437,10 +439,10 @@ PBS Executors
 --------------
 
 .. Note:: buildtest PBS support relies on job history set because buildtest needs to query job after completion using ``qstat -x``. This
-          can be configured using ``qmgr`` by setting ``set server job_history_enable=True``. For more details see section **13.15.5.1 Enabling Job History** in `PBS 2020.1 Admin Guide <https://www.altair.com/pdfs/pbsworks/PBSAdminGuide2020.1.pdf>`_
+          can be configured using ``qmgr`` by setting ``set server job_history_enable=True``. For more details see section **14.15.5.1 Enabling Job History** in `PBS 2021.1.3 Admin Guide <https://help.altair.com/2021.1.3/PBS%20Professional/PBSAdminGuide2021.1.3.pdf>`_
 
 
-buildtest supports `PBS <https://www.altair.com/pbs-works-documentation/>`_ scheduler
+buildtest supports `PBS <https://community.altair.com/community?id=altair_product_documentation>`_ scheduler
 which can be defined in the ``executors`` section. Shown below is an example configuration using
 one ``pbs`` executor named ``workq``.  The property ``queue: workq`` defines
 the name of PBS queue that is available in your system.
@@ -502,9 +504,6 @@ Shown below is an example with one queue **workq** that is ``enabled`` and ``sta
         }
     }
 
-.. _cdash_configuration:
-
-
 Configuring test directory
 ---------------------------
 
@@ -539,6 +538,8 @@ based on platform (Linux, Mac).
 The buildtest logs will start with **buildtest_** followed by random identifier with
 a **.log** extension.
 
+.. _cdash_configuration:
+
 CDASH Configuration
 --------------------
 
@@ -565,3 +566,45 @@ The cdash section can be summarized as follows:
 
 The cdash settings can be used with ``buildtest cdash`` command. For more details
 see :ref:`cdash_integration`.
+
+Configuring Test Timeout
+-------------------------
+
+The ``timeout`` property is number of seconds a test can run before it is called. **The timeout property must be a positive integer**.
+For instance if you want all test to timeout within 60 sec you can do the following
+
+.. code-block:: yaml
+
+    timeout: 60
+
+The ``timeout`` field is not set by default, it can be configured in the configuration file but can be overridden via command line
+option ``buildtest build --timeout``. For more details see :ref:`test_timeout`
+
+Configuring Pool Size
+----------------------
+
+buildtest makes use of `multiprocessing.Pool <https://docs.python.org/3/library/multiprocessing.html#multiprocessing.pool.Pool>`_ which is used
+to control pool size for worker processes used for processing builders during run phase. We can use the ``poolsize`` property
+to control the size of pool. The pool size must be 1 or higher, if value exceeds maximum CPU count (i.e. `os.cpu_count() <https://docs.python.org/3/library/os.html#os.cpu_count>`_)
+then value is set to maximum CPU count.
+
+Shown below we set ``poolsize`` to 1.
+
+
+.. code-block:: yaml
+    :emphasize-lines: 14
+
+    system:
+      generic:
+        # specify list of hostnames where buildtest can run for given system record
+        hostnames: [".*"]
+
+        # system description
+        description: Generic System
+        # specify module system used at your site (environment-modules, lmod)
+        moduletool: N/A
+
+        # specify test timeout duration in number of seconds
+        # timeout: 60
+
+        poolsize: 1

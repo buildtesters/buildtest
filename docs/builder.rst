@@ -35,6 +35,8 @@ and validate the test section ``hello_world`` with schema ``script.schema.json``
 Buildspecs will be ignored if it fails validation process for instance you may have an :ref:`invalid_buildspecs`.
 Invalid buildspecs won't be sent to **build** stage since we can't reliably build a test-script.
 
+.. image:: _static/ParserDiagram.png
+
 Building Buildspecs
 ---------------------
 

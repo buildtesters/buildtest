@@ -13,7 +13,6 @@ import re
 import shutil
 import socket
 import stat
-import tarfile
 import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -22,9 +21,12 @@ from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
 from buildtest.exceptions import BuildTestError, RuntimeFailure
 from buildtest.scheduler.job import Job
+from buildtest.scheduler.lsf import LSFJob
+from buildtest.scheduler.pbs import PBSJob
+from buildtest.scheduler.slurm import SlurmJob
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import create_dir, is_dir, is_file, read_file, write_file
+from buildtest.utils.file import create_dir, read_file, write_file
 from buildtest.utils.shell import Shell, is_csh_shell
 from buildtest.utils.timer import Timer
 from buildtest.utils.tools import deep_get
@@ -188,6 +190,7 @@ class BuilderBase(ABC):
         self.metadata["stagedir"] = None
 
         self.metadata["description"] = self.recipe.get("description") or ""
+        self.metadata["summary"] = self.recipe.get("summary") or ""
 
         # location of test script
         self.metadata["testpath"] = None
@@ -284,7 +287,7 @@ class BuilderBase(ABC):
         self._write_test()
         self._write_build_script(modules, modulepurge, unload_modules)
 
-    def run(self, cmd):
+    def run(self, cmd, timeout=None):
         """Run the test and record the starttime and start timer. We also return the instance
         object of type BuildTestCommand which is used by Executors for processing output and error
 
@@ -301,7 +304,8 @@ class BuilderBase(ABC):
         command = BuildTestCommand("env")
         command.execute()
         content = "".join(command.get_output())
-        write_file(os.path.join(self.test_root, "build-env.sh"), content)
+        self.metadata["buildenv"] = os.path.join(self.test_root, "build-env.txt")
+        write_file(self.metadata["buildenv"], content)
 
         console.print(f"[blue]{self}[/]: Running Test via command: [cyan]{cmd}[/cyan]")
 
@@ -310,7 +314,7 @@ class BuilderBase(ABC):
         self.start()
 
         command = BuildTestCommand(cmd)
-        command.execute()
+        command.execute(timeout=timeout)
 
         self.logger.debug(f"Running Test via command: {cmd}")
         ret = command.returncode()
@@ -331,7 +335,10 @@ class BuilderBase(ABC):
         for run in range(1, self._retry + 1):
             print(f"{self}: Run - {run}/{self._retry}")
             command = BuildTestCommand(cmd)
-            command.execute()
+            console.print(
+                f"[blue]{self}[/]: Running Test via command: [cyan]{cmd}[/cyan]"
+            )
+            command.execute(timeout=timeout)
 
             self.logger.debug(f"Running Test via command: {cmd}")
             ret = command.returncode()
@@ -588,34 +595,6 @@ class BuilderBase(ABC):
             os.path.join(self.test_root, os.path.basename(self.testpath)),
         )
 
-    def save_artifacts(self):
-
-        artifacts = self.recipe["artifacts"]
-
-        self.artifact = os.path.join(self.test_root, "artifacts.tar.gz")
-        tar = tarfile.open(self.artifact, "w:gz")
-
-        if artifacts.get("output"):
-            self.logger.debug(
-                f"{self} Adding output file ({self.metadata['outfile']}) as artifact"
-            )
-            tar.add(self.metadata["outfile"])
-            # shutil.copy2(self.metadata['outfile'], os.path.join(artifact_dir, os.path.basename(self.metadata['outfile'])) )
-
-        if artifacts.get("error"):
-            tar.add(self.metadata["errfile"])
-            self.logger.debug(
-                f"{self}: Saving error file ({self.metadata['errfile']}) as artifact"
-            )
-            # shutil.copy2(self.metadata['errfile'], os.path.join(artifact_dir, os.path.basename(self.metadata['errfile'])) )
-
-        if artifacts.get("files"):
-            for fname in artifacts["files"]:
-                if is_file(fname) or is_dir(fname):
-                    tar.add(fname)
-        tar.close()
-        console.print(f"[blue]{self}[/blue] Writing artifact file: {self.artifact}")
-
     def _emit_command(self):
         """This method will return a shell command used to invoke the script that is used for tests that
         use local executors
@@ -665,7 +644,7 @@ class BuilderBase(ABC):
         if self.numnodes:
             lines.append(f"export BUILDTEST_NUMNODES={self.numnodes}")
         if self.numprocs:
-            lines.append(f"export BUILDTEST_NUMNODES={self.numnodes}")
+            lines.append(f"export BUILDTEST_NUMPROCS={self.numprocs}")
 
         return lines
 
@@ -775,9 +754,7 @@ class BuilderBase(ABC):
             fname,
             stat.S_IRWXU | stat.S_IRGRP | stat.S_IXGRP | stat.S_IROTH | stat.S_IXOTH,
         )
-        self.logger.debug(
-            f"Applying permission 755 to {fname} so that test can be executed"
-        )
+        self.logger.debug(f"Changing permission to 755 for script: {fname}")
 
     def _get_environment(self, env):
         """Retrieve a list of environment variables defined in buildspec and
@@ -935,10 +912,6 @@ class BuilderBase(ABC):
         # mark job is success if it finished all post run steps
         self.complete()
 
-        # console.print(f"{self} test is in state: {self._buildstate}")
-        if self.recipe.get("artifacts"):
-            self.save_artifacts()
-
     def _check_regex(self):
         """This method conducts a regular expression check using
         `re.search <https://docs.python.org/3/library/re.html#re.search>`_
@@ -1072,6 +1045,8 @@ class BuilderBase(ABC):
         if self.status:
 
             slurm_job_state_match = False
+            pbs_job_state_match = False
+            lsf_job_state_match = False
 
             # returncode_match is boolean to check if reference returncode matches return code from test
             returncode_match = self._returncode_check()
@@ -1086,21 +1061,27 @@ class BuilderBase(ABC):
             self.metadata["check"]["runtime"] = runtime_match
             self.metadata["check"]["returncode"] = returncode_match
 
-            # if slurm_job_state_codes defined in buildspec.
-            # self.builder.metadata["job"] only defined when job run through SlurmExecutor
-            if self.status.get("slurm_job_state") and self.metadata.get("job"):
+            if self.status.get("slurm_job_state") and issubclass(self.job, SlurmJob):
                 slurm_job_state_match = (
-                    self.status["slurm_job_state"] == self.metadata["job"]["State"]
+                    self.status["slurm_job_state"] == self.job.state()
                 )
 
-            self.logger.info(
-                "ReturnCode Match: %s Regex Match: %s Slurm Job State Match: %s"
-                % (returncode_match, regex_match, slurm_job_state_match)
-            )
+            if self.status.get("pbs_job_state") and isinstance(self.job, PBSJob):
+                pbs_job_state_match = self.status["pbs_job_state"] == self.job.state()
+
+            if self.status.get("lsf_job_state") and isinstance(self.job, LSFJob):
+                lsf_job_state_match = self.status["lsf_job_state"] == self.job.state()
 
             # if any of checks is True we set the 'state' to PASS
             state = any(
-                [returncode_match, regex_match, slurm_job_state_match, runtime_match]
+                [
+                    returncode_match,
+                    regex_match,
+                    slurm_job_state_match,
+                    pbs_job_state_match,
+                    lsf_job_state_match,
+                    runtime_match,
+                ]
             )
             if state:
                 self.metadata["result"]["state"] = "PASS"

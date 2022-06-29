@@ -314,7 +314,7 @@ avoid system degredation due to high workload.
 
 If you try to exceed this bound you will get an error such as
 
-.. command-output:: buildtest build -b tutorials/pass_returncode.yml --rebuild 51
+.. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml --rebuild 51
     :returncode: 1
 
 Rerun Last command
@@ -380,3 +380,21 @@ For batch jobs you typically require one to specify a project account in order t
 scheduler you can use ``buildtest build --account`` option and specify an account name. The command line
 argument ``--account`` will override configuration setting. For more details see :ref:`project_account`
 
+.. _test_timeout:
+
+Test Timeout
+--------------
+
+Buildtest can terminate test based on timeout value specified via ``--timeout`` option which can be used to terminate
+long running test. The timeout is in seconds and value must be a positive integer which is applied to all
+test that are run via ``buildtest build`` command. If test exceeds the timeout value, then process will be terminated.
+
+To demonstrate this behavior, we will run the following test with a timeout of 1 sec which is expected to fail.
+Take note of the test returncode of test.
+
+.. command-output:: buildtest build -b tutorials/sleep.yml --timeout 1
+
+Now if we run this test with a higher timeout value we will see this test will pass, if no timeout is specified then test will
+run until completion.
+
+.. command-output:: buildtest build -b tutorials/sleep.yml --timeout 10
