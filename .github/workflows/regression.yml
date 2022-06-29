@@ -42,6 +42,7 @@ jobs:
       timeout-minutes: 30
 
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3.1.0      
-      with:        
+      uses: codecov/codecov-action@v3
+      with:
+        name: github-ci-checks
         verbose: true        
