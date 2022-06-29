@@ -162,7 +162,7 @@ buildtest is released under the MIT License. See
    :target: https://repography.com
 .. |top-contributors_table| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/top-contributors/89a2f61f5c28c34d672f40b902549acd_table.svg
    :alt: Top contributors
-   :target: https://github.com/_/buildtest/graphs/contributors
+   :target: https://github.com/buildtesters/buildtest/graphs/contributors
    
 
 |Repography logo| / Recent activity |Time period|
@@ -177,16 +177,16 @@ buildtest is released under the MIT License. See
    :target: https://repography.com
 .. |recent-activity_timeline| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/recent-activity/89a2f61f5c28c34d672f40b902549acd_timeline.svg
    :alt: Timeline graph
-   :target: https://github.com/_/buildtest/commits
+   :target: https://github.com/buildtesters/buildtest/commits
 .. |recent-activity_issues| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/recent-activity/89a2f61f5c28c34d672f40b902549acd_issues.svg
    :alt: Issue status graph
-   :target: https://github.com/_/buildtest/issues
+   :target: https://github.com/buildtesters/buildtest/issues
 .. |recent-activity_prs| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/recent-activity/89a2f61f5c28c34d672f40b902549acd_prs.svg
    :alt: Pull request status graph
-   :target: https://github.com/_/buildtest/pulls
+   :target: https://github.com/buildtesters/buildtest/pulls
 .. |recent-activity_words| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/recent-activity/89a2f61f5c28c34d672f40b902549acd_words.svg
    :alt: Trending topics
-   :target: https://github.com/_/buildtest/commits
+   :target: https://github.com/buildtesters/buildtest/commits
 .. |recent-activity_users| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/recent-activity/89a2f61f5c28c34d672f40b902549acd_users.svg
    :alt: Top contributors
-   :target: https://github.com/_/buildtest/graphs/contributors
+   :target: https://github.com/buildtesters/buildtest/graphs/contributors
