@@ -1,57 +1,62 @@
 $ buildtest inspect query -o -t run_pre_post_commands 
-──────────────────────────────────────────────────────────────── run_pre_post_commands/9eb731f1-4ef3-4bf8-b99b-eb20605a3b1a ─────────────────────────────────────────────────────────────────
+────── run_pre_post_commands/c6a63ba3-9776-49ee-bec5-3fa905b7e474 ───────
 Executor: generic.local.bash
 Description: Install zlib
 State: PASS
 Returncode: 0
-Runtime: 1.888707 sec
-Starttime: 2022/03/18 20:27:23
-Endtime: 2022/03/18 20:27:25
-Command: bash --norc --noprofile -eo pipefail run_pre_post_commands_build.sh
-Test Script: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/9eb731f1/run_pre_post_commands.sh
-Build Script: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/9eb731f1/run_pre_post_commands_build.sh
-Output File: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/9eb731f1/run_pre_post_commands.out
-Error File: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/9eb731f1/run_pre_post_commands.err
-Log File: /home/spack/buildtest/var/logs/buildtest_v07hwxhl.log
-────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/9eb731f1/run_pre_post_commands.out ──────────────────────────────────
-NAME="Ubuntu"                                                                                                                                                                                
-VERSION="18.04.5 LTS (Bionic Beaver)"                                                                                                                                                        
-ID=ubuntu                                                                                                                                                                                    
-ID_LIKE=debian                                                                                                                                                                               
-PRETTY_NAME="Ubuntu 18.04.5 LTS"                                                                                                                                                             
-VERSION_ID="18.04"                                                                                                                                                                           
-HOME_URL="https://www.ubuntu.com/"                                                                                                                                                           
-SUPPORT_URL="https://help.ubuntu.com/"                                                                                                                                                       
-BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"                                                                                                                                          
-PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"                                                                                                          
-VERSION_CODENAME=bionic                                                                                                                                                                      
-UBUNTU_CODENAME=bionic                                                                                                                                                                       
-gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0                                                                                                                                                      
-Copyright (C) 2017 Free Software Foundation, Inc.                                                                                                                                            
-This is free software; see the source for copying conditions.  There is NO                                                                                                                   
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                                                                                                                  
-[+] /home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/zlib-1.2.11-smoyzzo2qhzpn6mg6rd3l2p7b23enshg                                                                              
-/home/spack/spack/opt/spack/linux-ubuntu18.04-x86_64/gcc-7.5.0/gcc-6.5.0-ol37lodnsnyso6w7gkg5naw7m6kbltxu                                                                                    
-0.16.3                                                                                                                                                                                       
-                                                                                                                                                                                             
-─────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/9eb731f1/run_pre_post_commands.sh ────────────────────────────────────
-   1 #!/bin/bash                                                                                                                                                                             
-   2                                                                                                                                                                                         
-   3                                                                                                                                                                                         
-   4 ######## START OF PRE COMMANDS ########                                                                                                                                                 
-   5 cat /etc/os-release                                                                                                                                                                     
-   6 gcc --version                                                                                                                                                                           
-   7                                                                                                                                                                                         
-   8 ######## END OF PRE COMMANDS   ########                                                                                                                                                 
-   9                                                                                                                                                                                         
-  10                                                                                                                                                                                         
-  11 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                       
-  12 spack install  zlib                                                                                                                                                                     
-  13                                                                                                                                                                                         
-  14                                                                                                                                                                                         
-  15 ######## START OF POST COMMANDS ########                                                                                                                                                
-  16 spack location -i gcc@6.5.0                                                                                                                                                             
-  17 spack --version                                                                                                                                                                         
-  18 ######## END OF POST COMMANDS   ########                                                                                                                                                
-  19                                                                                                                                                                                         
-  20                                                                                                                                                                                         
+Runtime: 1.571065 sec
+Starttime: 2022/06/29 17:26:55
+Endtime: 2022/06/29 17:26:57
+Command: bash --norc --noprofile -eo pipefail 
+run_pre_post_commands_build.sh
+Test Script: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_po
+st_commands/c6a63ba3/run_pre_post_commands.sh
+Build Script: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_p
+ost_commands/c6a63ba3/run_pre_post_commands_build.sh
+Output File: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_po
+st_commands/c6a63ba3/run_pre_post_commands.out
+Error File: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_pos
+t_commands/c6a63ba3/run_pre_post_commands.err
+Log File: /home/spack/buildtest/var/logs/buildtest_xlxjubga.log
+─ Output File: /home/spack/runs/generic.local.bash/pre_post_cmds/run_p… ─
+NAME="Ubuntu"                                                            
+VERSION="18.04.5 LTS (Bionic Beaver)"                                    
+ID=ubuntu                                                                
+ID_LIKE=debian                                                           
+PRETTY_NAME="Ubuntu 18.04.5 LTS"                                         
+VERSION_ID="18.04"                                                       
+HOME_URL="https://www.ubuntu.com/"                                       
+SUPPORT_URL="https://help.ubuntu.com/"                                   
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"                      
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/priva
+VERSION_CODENAME=bionic                                                  
+UBUNTU_CODENAME=bionic                                                   
+gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0                                  
+Copyright (C) 2017 Free Software Foundation, Inc.                        
+This is free software; see the source for copying conditions.  There is N
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOS
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5
+/home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/g
+0.16.3                                                                   
+                                                                         
+─ Test File: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre… ─
+#!/bin/bash                                                              
+                                                                         
+                                                                         
+######## START OF PRE COMMANDS ########                                  
+cat /etc/os-release                                                      
+gcc --version                                                            
+                                                                         
+######## END OF PRE COMMANDS   ########                                  
+                                                                         
+                                                                         
+source /home/spack/spack/share/spack/setup-env.sh                        
+spack install  zlib                                                      
+                                                                         
+                                                                         
+######## START OF POST COMMANDS ########                                 
+spack location -i gcc@6.5.0                                              
+spack --version                                                          
+######## END OF POST COMMANDS   ########                                 
+                                                                         
+                                                                         
