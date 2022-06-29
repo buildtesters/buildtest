@@ -56,7 +56,7 @@
 
 .. |zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3967143.svg
    :target: https://doi.org/10.5281/zenodo.3967143
-
+   
 buildtest
 ---------
 
@@ -151,3 +151,42 @@ LICENSE
 
 buildtest is released under the MIT License. See
 `LICENSE <https://github.com/buildtesters/buildtest/blob/master/LICENSE>`_ for more details.
+
+
+|Repography logo| / Top contributors
+-----
+|top-contributors_table| 
+
+.. |Repography logo| image:: https://images.repography.com/logo.svg
+   :alt: Repography logo
+   :target: https://repography.com
+.. |top-contributors_table| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/top-contributors/89a2f61f5c28c34d672f40b902549acd_table.svg
+   :alt: Top contributors
+   :target: https://github.com/_/buildtest/graphs/contributors
+   
+
+|Repography logo| / Recent activity |Time period|
+-----
+|recent-activity_timeline| |recent-activity_issues| |recent-activity_prs| |recent-activity_words| |recent-activity_users| 
+
+.. |Time period| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/recent-activity/89a2f61f5c28c34d672f40b902549acd_badge.svg
+   :alt: Time period
+   :target: https://repography.com
+.. |Repography logo| image:: https://images.repography.com/logo.svg
+   :alt: Repography logo
+   :target: https://repography.com
+.. |recent-activity_timeline| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/recent-activity/89a2f61f5c28c34d672f40b902549acd_timeline.svg
+   :alt: Timeline graph
+   :target: https://github.com/_/buildtest/commits
+.. |recent-activity_issues| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/recent-activity/89a2f61f5c28c34d672f40b902549acd_issues.svg
+   :alt: Issue status graph
+   :target: https://github.com/_/buildtest/issues
+.. |recent-activity_prs| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/recent-activity/89a2f61f5c28c34d672f40b902549acd_prs.svg
+   :alt: Pull request status graph
+   :target: https://github.com/_/buildtest/pulls
+.. |recent-activity_words| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/recent-activity/89a2f61f5c28c34d672f40b902549acd_words.svg
+   :alt: Trending topics
+   :target: https://github.com/_/buildtest/commits
+.. |recent-activity_users| image:: https://images.repography.com/0/0B6MjOgVQ_yYztxHlv_W5A/recent-activity/89a2f61f5c28c34d672f40b902549acd_users.svg
+   :alt: Top contributors
+   :target: https://github.com/_/buildtest/graphs/contributors
