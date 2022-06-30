@@ -854,6 +854,12 @@ def report_menu(subparsers):
         action="store_true",
     )
     parser_report.add_argument(
+        "-p",
+        "--passed",
+        help="Retrieve all PASS tests",
+        action="store_true",
+    )
+    parser_report.add_argument(
         "-s",
         "--start",
         type=valid_time,
