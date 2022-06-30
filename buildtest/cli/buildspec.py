@@ -1267,4 +1267,5 @@ def buildspec_find(args, configuration):
         cache.print_format_fields()
         return
 
-    cache.print_buildspecs()
+    if not args.quiet:
+        cache.print_buildspecs()
