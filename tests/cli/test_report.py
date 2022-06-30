@@ -236,43 +236,8 @@ def test_report_clear():
 
 @pytest.mark.cli
 def test_report_limited_rows():
-    class args:
-        filter = None
-        format = None
-        start = None
-        end = None
-        failure = None
-        latest = False
-        oldest = False
-        report_file = None
-        pager = None
-        terse = None
-        no_header = None
-        report_subcommand = None
-        helpfilter = False
-        helpformat = False
-        count = 5
-
-    report_cmd(args)
-
-
-@pytest.mark.cli
-def test_report_limited_rows_in_terse():
-    class args:
-        filter = None
-        format = None
-        start = None
-        end = None
-        failure = None
-        latest = False
-        oldest = False
-        report_file = None
-        pager = None
-        no_header = None
-        report_subcommand = None
-        helpfilter = False
-        helpformat = False
-        terse = True
-        count = 5
-
-    report_cmd(args)
+    
+    report = Report()
+    report.print_report(count=5)
+    report.print_report(terse=True, count=5)
+     
