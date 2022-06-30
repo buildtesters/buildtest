@@ -239,13 +239,13 @@ def test_report_limited_rows():
     class args:
         filter = None
         format = None
-        start=None
-        end=None
-        failure=None
+        start = None
+        end = None
+        failure = None
         latest = False
         oldest = False
         report_file = None
-        pager = None 
+        pager = None
         terse = None
         no_header = None
         report_subcommand = None
