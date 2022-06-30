@@ -549,6 +549,10 @@ class Report:
 
             t = [list(i) for i in zip(*join_list)]
 
+            # limited number of rows to be printed in terse mode
+            if count:
+                t = t[:count]
+
             if not noheader:
                 print("|".join(self.display_table.keys()))
 
