@@ -24,7 +24,7 @@ Configuring buildtest for your site
 ------------------------------------
 
 Once you have picked a version of buildtest, you need to configure buildtest for your site, this
-requires you see :ref:`configuring_buildtest`. We recommend you see `buildtest-cori configuration <https://github.com/buildtesters/buildtest-cori/blob/devel/config.yml>`_
+requires you see :ref:`configuring_buildtest`. We recommend you see `buildtest-nersc configuration <https://github.com/buildtesters/buildtest-nersc/blob/devel/config.yml>`_
 that provides how buildtest is configured at NERSC. Once you have defined your configuration file you should make sure your configuration is valid by running::
 
     buildtest config validate

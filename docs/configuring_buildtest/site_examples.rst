@@ -13,7 +13,7 @@ Slurm executors for each system which are mapped to qos provided by our Slurm cl
 In-order to use ``bigmem``, ``xfer``,
 or ``gpu`` qos at Cori, we need to specify **escori** cluster (i.e ``sbatch --clusters=escori``).
 
-.. rli:: https://raw.githubusercontent.com/buildtesters/buildtest-cori/devel/config.yml
+.. rli:: https://raw.githubusercontent.com/buildtesters/buildtest-nersc/devel/config.yml
    :language: yaml
 
 Ascent @ OLCF
