@@ -35,6 +35,11 @@ buildspec cache by running::
 
   $ buildtest buildspec find --rebuild
 
+The ``--quiet`` option can be used to suppress output when using **buildtest buildspec find** this can be useful
+if you want to rebuild the cache without seeing output of cache. Take for instance the following command
+
+.. command-output:: buildtest buildspec find --quiet --rebuild
+
 If you want to find all buildspec files in cache you can run ``buildtest buildspec find --buildspec``.
 Shown below is an example output.
 
@@ -42,7 +47,7 @@ Shown below is an example output.
    :ellipsis: 11
 
 The ``buildtest buildspec find --paths`` will display a list of root directories buildtest will search for
-buildspecs when runninh ``buildtest buildspec find``. One can define these directories in the configuration file
+buildspecs when running ``buildtest buildspec find``. One can define these directories in the configuration file
 or pass them via command line.
 
 .. command-output:: buildtest buildspec find --paths
@@ -280,90 +285,6 @@ duplicates can occur if same test is run multiple times.
     exit1_fail
     returncode_list_mismatch
 
-Next you can use this as argument to ``buildtest buildspec show`` and it will report all buildspec files that correspond to test that failed.
-
-.. code-block:: console
-
-    $ buildtest buildspec show $(buildtest report --filter state=FAIL --format name --terse --no-header | uniq)
-    ────────────────────────────────────────────────────────────────────────────── /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/test_status/pass_returncode.yml ───────────────────────────────────────────────────────────────────────────────
-    ╭──────────────────────────────────────────────────────────────────────╮
-    │ buildspecs:                                                          │
-    │                                                                      │
-    │   exit1_fail:                                                        │
-    │     executor: generic.local.bash                                     │
-    │     type: script                                                     │
-    │     description: exit 1 by default is FAIL                           │
-    │     tags:                                                            │
-    │     run: exit 1                                                      │
-    │                                                                      │
-    │   exit1_pass:                                                        │
-    │     executor: generic.local.bash                                     │
-    │     type: script                                                     │
-    │     description: report exit 1 as PASS                               │
-    │     run: exit 1                                                      │
-    │     tags:                                                            │
-    │     status:                                                          │
-    │       returncode: [1]                                                │
-    │                                                                      │
-    │   returncode_list_mismatch:                                          │
-    │     executor: generic.local.bash                                     │
-    │     type: script                                                     │
-    │     description: exit 2 failed since it failed to match returncode 1 │
-    │     run: exit 2                                                      │
-    │     tags:                                                            │
-    │     status:                                                          │
-    │       returncode: [1, 3]                                             │
-    │                                                                      │
-    │   returncode_int_match:                                              │
-    │     executor: generic.local.bash                                     │
-    │     type: script                                                     │
-    │     description: exit 128 matches returncode 128                     │
-    │     run: exit 128                                                    │
-    │     tags:                                                            │
-    │     status:                                                          │
-    │       returncode: 128                                                │
-    │                                                                      │
-    ╰──────────────────────────────────────────────────────────────────────╯
-    ────────────────────────────────────────────────────────────────────────────── /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/test_status/pass_returncode.yml ───────────────────────────────────────────────────────────────────────────────
-    ╭──────────────────────────────────────────────────────────────────────╮
-    │ buildspecs:                                                          │
-    │                                                                      │
-    │   exit1_fail:                                                        │
-    │     executor: generic.local.bash                                     │
-    │     type: script                                                     │
-    │     description: exit 1 by default is FAIL                           │
-    │     tags:                                                            │
-    │     run: exit 1                                                      │
-    │                                                                      │
-    │   exit1_pass:                                                        │
-    │     executor: generic.local.bash                                     │
-    │     type: script                                                     │
-    │     description: report exit 1 as PASS                               │
-    │     run: exit 1                                                      │
-    │     tags:                                                            │
-    │     status:                                                          │
-    │       returncode: [1]                                                │
-    │                                                                      │
-    │   returncode_list_mismatch:                                          │
-    │     executor: generic.local.bash                                     │
-    │     type: script                                                     │
-    │     description: exit 2 failed since it failed to match returncode 1 │
-    │     run: exit 2                                                      │
-    │     tags:                                                            │
-    │     status:                                                          │
-    │       returncode: [1, 3]                                             │
-    │                                                                      │
-    │   returncode_int_match:                                              │
-    │     executor: generic.local.bash                                     │
-    │     type: script                                                     │
-    │     description: exit 128 matches returncode 128                     │
-    │     run: exit 128                                                    │
-    │     tags:                                                            │
-    │     status:                                                          │
-    │       returncode: 128                                                │
-    │                                                                      │
-    ╰──────────────────────────────────────────────────────────────────────╯
-
 Show fail buildspec ``buildtest buildspec show-fail``
 ------------------------------------------------------
 
@@ -371,6 +292,10 @@ buildtest can display content of buildspec file of all failed tests via ``buildt
 This can be quick way to see content of buildspec file given a failed test name such as ``buildtest buildspec show-fail exit1_fail``.
 
 .. command-output:: buildtest buildspec show-fail exit1_fail
+
+If you run ``buildtest buildspec show-fail`` without any argument, then buildtest will show content of all failed tests with
+corresponding buildspec. buildtest will automatically filter out duplicate buildspec entries where multiple test correspond to
+same buildspec to avoid printing content of buildspec multiple times.
 
 Editing buildspecs in your preferred editor
 --------------------------------------------
