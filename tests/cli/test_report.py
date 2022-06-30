@@ -254,3 +254,25 @@ def test_report_limited_rows():
         count = 5
 
     report_cmd(args)
+
+
+@pytest.mark.cli
+def test_report_limited_rows_in_terse():
+    class args:
+        filter = None
+        format = None
+        start = None
+        end = None
+        failure = None
+        latest = False
+        oldest = False
+        report_file = None
+        pager = None
+        no_header = None
+        report_subcommand = None
+        helpfilter = False
+        helpformat = False
+        terse = True
+        count = 5
+
+    report_cmd(args)
