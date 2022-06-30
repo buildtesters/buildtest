@@ -237,12 +237,15 @@ filter test and only report tests in the range of [start, end] dates.
 Find limited Tests (``buildtest report --count``)
 --------------------------------------------------------
 
-The ``buildtest report`` command will show all test results and the output can be quite long so for this command 
-``buildtest report --count`` we would like to limit the output by limiting the number of rows that get printed
-
-.. command-output:: buildtest report --count 1
+The ``buildtest report`` command will show all test results from the report file and the output can be quite long. 
+If you want to limit the number of records that get printed then you can use ``buildtest report --count`` 
+where ``--count`` is number of rows that that get printed. Shown below is the output of 2 records in table format
 
 .. command-output:: buildtest report --count 2
+
+The ``--count`` option also works with terse mode ``--terse``, shown below is the same output 
+
+.. command-output:: buildtest report --terse --count 2
 
 Terse Output
 -------------
