@@ -1061,7 +1061,7 @@ class BuilderBase(ABC):
             self.metadata["check"]["runtime"] = runtime_match
             self.metadata["check"]["returncode"] = returncode_match
 
-            if self.status.get("slurm_job_state") and issubclass(self.job, SlurmJob):
+            if self.status.get("slurm_job_state") and isinstance(self.job, SlurmJob):
                 slurm_job_state_match = (
                     self.status["slurm_job_state"] == self.job.state()
                 )
