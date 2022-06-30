@@ -110,83 +110,90 @@ Shown below is an example build for this test
 
 .. code-block:: console
 
-    (buildtest) siddiq90@cori01> buildtest build -b buildspecs/jobs/metadata.yml
-    ╭──────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────╮
-    │                                                                                                                   │
-    │ User:               siddiq90                                                                                      │
-    │ Hostname:           cori01                                                                                        │
-    │ Platform:           Linux                                                                                         │
-    │ Current Time:       2021/10/13 09:23:35                                                                           │
-    │ buildtest path:     /global/homes/s/siddiq90/github/buildtest/bin/buildtest                                       │
-    │ buildtest version:  0.11.0                                                                                        │
-    │ python path:        /global/homes/s/siddiq90/.conda/envs/buildtest/bin/python                                     │
-    │ python version:     3.8.8                                                                                         │
-    │ Configuration File: /global/u1/s/siddiq90/github/buildtest-cori/config.yml                                        │
-    │ Test Directory:     /global/u1/s/siddiq90/github/buildtest/var/tests                                              │
-    │ Command:            /global/homes/s/siddiq90/github/buildtest/bin/buildtest build -b buildspecs/jobs/metadata.yml │
-    │                                                                                                                   │
-    ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-    ──────────────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────────────
-    Discovered Buildspecs:  1
-    Excluded Buildspecs:  0
+    (buildtest)  ~/gitrepos/buildtest-nersc/buildspecs/jobs/ [devel*] buildtest build -b metadata.yml
+    ╭───────────────────────────────────────── buildtest summary ─────────────────────────────────────────╮
+    │                                                                                                     │
+    │ User:               siddiq90                                                                        │
+    │ Hostname:           cori10                                                                          │
+    │ Platform:           Linux                                                                           │
+    │ Current Time:       2022/06/30 14:52:58                                                             │
+    │ buildtest path:     /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest                       │
+    │ buildtest version:  0.14.0                                                                          │
+    │ python path:        /global/u1/s/siddiq90/.local/share/virtualenvs/buildtest-WqshQcL1/bin/python3   │
+    │ python version:     3.9.7                                                                           │
+    │ Configuration File: /global/u1/s/siddiq90/gitrepos/buildtest-nersc/config.yml                       │
+    │ Test Directory:     /global/u1/s/siddiq90/gitrepos/buildtest/var/tests                              │
+    │ Report File:        /global/u1/s/siddiq90/gitrepos/buildtest/var/report.json                        │
+    │ Command:            /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest build -b metadata.yml │
+    │                                                                                                     │
+    ╰─────────────────────────────────────────────────────────────────────────────────────────────────────╯
+    ────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────
+                                 Discovered buildspecs
+    ╔═════════════════════════════════════════════════════════════════════════════╗
+    ║ buildspec                                                                   ║
+    ╟─────────────────────────────────────────────────────────────────────────────╢
+    ║ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/metadata.yml ║
+    ╚═════════════════════════════════════════════════════════════════════════════╝
+
+
+    Total Discovered Buildspecs:  1
+    Total Excluded Buildspecs:  0
     Detected Buildspecs after exclusion:  1
-                               Discovered buildspecs
-    ╔══════════════════════════════════════════════════════════════════════════╗
-    ║ Buildspecs                                                               ║
-    ╟──────────────────────────────────────────────────────────────────────────╢
-    ║ /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/metadata.yml ║
-    ╚══════════════════════════════════════════════════════════════════════════╝
-    ──────────────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────────────
+    ────────────────────────────────────────────────────────────── Parsing Buildspecs ───────────────────────────────────────────────────────────────
+    Buildtest will parse 1 buildspecs
     Valid Buildspecs: 1
     Invalid Buildspecs: 0
-    /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/metadata.yml: VALID
-
-
+    /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/metadata.yml: VALID
     Total builder objects created: 1
-
-
-                                                                           Builder Details
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-    ┃ Builder                 ┃ Executor             ┃ description                                        ┃ buildspecs                                          ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-    │ slurm_metadata/a45a9f6a │ cori.slurm.knl_debug │ Get metadata from compute node when submitting job │ /global/u1/s/siddiq90/github/buildtest-cori/buildsp │
-    │                         │                      │                                                    │ ecs/jobs/metadata.yml                               │
-    └─────────────────────────┴──────────────────────┴────────────────────────────────────────────────────┴─────────────────────────────────────────────────────┘
-    ─────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────
-    [09:23:35] slurm_metadata/a45a9f6a: Creating test directory -                                                                                     base.py:440
-               /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/a45a9f6a
-               slurm_metadata/a45a9f6a: Creating stage directory -                                                                                    base.py:450
-               /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/a45a9f6a/stage
-               slurm_metadata/a45a9f6a: Writing build script:                                                                                         base.py:567
-               /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/a45a9f6a/slurm_metadata_build.sh
-    ─────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────
-    ______________________________
-    Launching test: slurm_metadata/a45a9f6a
-    slurm_metadata/a45a9f6a: Running Test script
-    /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/a45a9f6a/slurm_metadata_build.sh
-    slurm_metadata/a45a9f6a: JobID 48410143 dispatched to scheduler
+    Total compiler builder: 0
+    Total script builder: 1
+    Total spack builder: 0
+                                                                 Script Builder Details
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ builder                 ┃ executor             ┃ compiler ┃ nodes ┃ procs ┃ description                     ┃ buildspecs                      ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ slurm_metadata/d7bd20ec │ cori.slurm.knl_debug │ None     │ None  │ None  │ Get metadata from compute node  │ /global/u1/s/siddiq90/gitrepos… │
+    │                         │                      │          │       │       │ when submitting job             │                                 │
+    └─────────────────────────┴──────────────────────┴──────────┴───────┴───────┴─────────────────────────────────┴─────────────────────────────────┘
+                                                           Batch Job Builders
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ builder                 ┃ executor             ┃ buildspecs                                                                  ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ slurm_metadata/d7bd20ec │ cori.slurm.knl_debug │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/metadata.yml │
+    └─────────────────────────┴──────────────────────┴─────────────────────────────────────────────────────────────────────────────┘
+    ───────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────
+    slurm_metadata/d7bd20ec: Creating test directory:
+    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/d7bd20ec
+    slurm_metadata/d7bd20ec: Creating the stage directory:
+    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/d7bd20ec/stage
+    slurm_metadata/d7bd20ec: Writing build script:
+    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/d7bd20ec/slurm_metadata_build.sh
+    ───────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────
+    Spawning 64 processes for processing builders
+    ────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────
+    slurm_metadata/d7bd20ec does not have any dependencies adding test to queue
+    In this iteration we are going to run the following tests: [slurm_metadata/d7bd20ec]
+    slurm_metadata/d7bd20ec: Running Test via command: bash --norc --noprofile -eo pipefail slurm_metadata_build.sh
+    slurm_metadata/d7bd20ec: JobID 60681706 dispatched to scheduler
     Polling Jobs in 30 seconds
-    slurm_metadata/a45a9f6a: Job 48410143 is complete!
-    slurm_metadata/a45a9f6a: Writing output file -
-    /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/a45a9f6a/slurm_metadata.out
-    slurm_metadata/a45a9f6a: Writing error file -
-    /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/a45a9f6a/slurm_metadata.err
-                       Pending Jobs
-    ┏━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
-    ┃ Builder ┃ executor ┃ JobID ┃ JobState ┃ runtime ┃
-    ┡━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
-    └─────────┴──────────┴───────┴──────────┴─────────┘
+    slurm_metadata/d7bd20ec: Job 60681706 is complete!
+    slurm_metadata/d7bd20ec: Test completed in 32.069894 seconds
+    slurm_metadata/d7bd20ec: Test completed with returncode: 0
+    slurm_metadata/d7bd20ec: Writing output file -
+    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/d7bd20ec/slurm_metadata.out
+    slurm_metadata/d7bd20ec: Writing error file -
+    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/d7bd20ec/slurm_metadata.err
                                        Completed Jobs
     ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
-    ┃ Builder                 ┃ executor             ┃ JobID    ┃ JobState  ┃ runtime   ┃
+    ┃ builder                 ┃ executor             ┃ jobid    ┃ jobstate  ┃ runtime   ┃
     ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━┩
-    │ slurm_metadata/a45a9f6a │ cori.slurm.knl_debug │ 48410143 │ COMPLETED │ 30.714244 │
+    │ slurm_metadata/d7bd20ec │ cori.slurm.knl_debug │ 60681706 │ COMPLETED │ 32.069894 │
     └─────────────────────────┴──────────────────────┴──────────┴───────────┴───────────┘
                                                            Test Summary
     ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┓
-    ┃ Builder                 ┃ executor             ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime   ┃
+    ┃ builder                 ┃ executor             ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returnCode ┃ runtime   ┃
     ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━┩
-    │ slurm_metadata/a45a9f6a │ cori.slurm.knl_debug │ PASS   │ N/A N/A N/A                         │ 0          │ 30.714244 │
+    │ slurm_metadata/d7bd20ec │ cori.slurm.knl_debug │ PASS   │ N/A N/A N/A                         │ 0          │ 32.069894 │
     └─────────────────────────┴──────────────────────┴────────┴─────────────────────────────────────┴────────────┴───────────┘
 
 
@@ -195,8 +202,10 @@ Shown below is an example build for this test
     Failed Tests: 0/1 Percentage: 0.000%
 
 
-    Writing Logfile to: /tmp/buildtest_8pfljnkx.log
-    A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /global/homes/s/siddiq90/github/buildtest/buildtest.log
+    Adding 1 test results to /global/u1/s/siddiq90/gitrepos/buildtest/var/report.json
+    Writing Logfile to: /global/u1/s/siddiq90/gitrepos/buildtest/var/logs/buildtest_8g4rs_z1.log
+
+
 
 The **SlurmExecutor** class is responsible for processing slurm job that may include:
 dispatch, poll, gather, or cancel job. The SlurmExecutor will gather job metrics
