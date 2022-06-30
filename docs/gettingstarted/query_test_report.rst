@@ -167,7 +167,7 @@ filter test and report all **FAIL** tests.
 
 .. command-output:: buildtest report --filter tags=tutorials --format name,id,state --failure
 
-Find all Failed Tests (``buildtest report --passed``)
+Find all Passed Tests (``buildtest report --passed``)
 --------------------------------------------------------
 
 The ``buildtest report --passed`` command can be used to retrieve all passed tests which is equivalent to filtering tests
