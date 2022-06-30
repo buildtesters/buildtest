@@ -55,12 +55,33 @@ def print_build_help():
     )
     table.add_row("buildtest build -b <file> --rebuild 5", "Rebuild a test 5 times")
     table.add_row("buildtest build -b <file> --testdir /tmp", "Write tests in /tmp")
-    table.add_row(
-        "buildtest build -b /tmp/hostname.yml --maxpendtime 120 --pollinterval 10",
-        "Set Poll Interval to 10sec and Max Pend Time to 120 sec when submitting batch job.",
-    )
+
     table.add_row(
         "buildtest build --rerun", "Run last successful 'buildtest build' command"
+    )
+    table.add_row(
+        "buildtest -r $HOME/python.json build -t python",
+        "Write test to report file $HOME/python.json for all test run via 'python' tag",
+    )
+    table.add_row(
+        "buildtest build -b <file> --module-purge --modules gcc,python",
+        "For every test run 'module purge' and then load 'gcc' and 'python' module",
+    )
+    table.add_row(
+        "buildtest build -b <file> --unload-modules gcc/9.3.0 --modules gcc/10.3.0",
+        "For every test run 'module unload gcc/9.3.0' and then load 'gcc/10.3.0'",
+    )
+    table.add_row(
+        "buildtest build -b /tmp/hostname.yml --maxpendtime 120 --pollinterval 10",
+        "Poll jobs every 10 seconds and maximum pending time for jobs to 120 sec when submitting batch job. Job will be cancelled after 120sec if job is pending",
+    )
+    table.add_row(
+        "buildtest build -b <file> --account dev",
+        "Use project 'dev' when submitting batch jobs",
+    )
+    table.add_row(
+        "buildtest build -b <file> --timeout 60",
+        "Test will run till it reaches timeout of 60sec and then it will be cancelled if it exceeds the limit.",
     )
 
     console.print(table)
@@ -91,13 +112,6 @@ def print_buildspec_help():
     )
     table.add_row(
         "buildtest buildspec find --executors", "List all unique executors from cache"
-    )
-    table.add_row(
-        "buildtest buildspec find --maintainers", "List all maintainers from cache"
-    )
-    table.add_row(
-        "buildtest buildspec find --maintainers-by-buildspecs",
-        "Show breakdown of all buildspecs by maintainer names",
     )
     table.add_row(
         "buildtest buildspec find --filter type=script,tags=pass",
@@ -158,7 +172,11 @@ def print_buildspec_help():
         "Show content of buildspec based on test name 'python_hello'",
     )
     table.add_row(
-        "buildtest buildspec edit python_hello",
+        "buildtest buildspec show-fail",
+        "Show content of buildspec on all failed tests",
+    )
+    table.add_row(
+        "buildtest buildspec edit-test python_hello",
         "Open test 'python_hello' in editor and validate file upon closing",
     )
     table.add_row(
@@ -166,6 +184,22 @@ def print_buildspec_help():
         "Open file $BUILDTEST_ROOT/tutorials/sleep.yml in editor and validate file upon closing",
     )
 
+    table.add_row(
+        "buildtest buildspec maintainers find johndoe",
+        "Find buildspec with maintainer name 'johndoe'",
+    )
+    table.add_row(
+        "buildtest buildspec maintainers --list",
+        "List all maintainers from buildspec cache",
+    )
+    table.add_row(
+        "buildtest buildspec maintainers --list --terse --no-header",
+        "List all maintainers in machine readable format without header",
+    )
+    table.add_row(
+        "buildtest buildspec maintainers --breakdown",
+        "Show breakdown of maintainers by buildspecs",
+    )
     console.print(table)
 
 
@@ -199,6 +233,7 @@ def print_config_help():
         "buildtest config executors --disabled", "List all disabled executors"
     )
     table.add_row("buildtest config executors --json", "List all invalid executors")
+    table.add_row("buildtest config path", "Show path to configuration file")
     table.add_row(
         "buildtest config systems",
         "List all available system entries in configuration file",
@@ -242,19 +277,19 @@ def print_inspect_help():
         "Fetch latest runs for all tests in buildspec file 'tutorials/vars.yml'",
     )
     table.add_row(
-        "buildtest inspect query -o hello",
-        "Display content of output file for test name 'hello'",
+        "buildtest inspect query -o exit1_fail",
+        "Display content of output file for latest run for test name 'exit1_fail'",
     )
     table.add_row(
         "buildtest inspect query -e hello",
         "Display content of error file for test name 'hello'",
     )
     table.add_row(
-        "buildtest inspect query -d first -o -e foo bar",
-        "Display first record of tests 'foo', 'bar', and show output and error file",
+        "buildtest inspect query exit1_fail/", "Display all runs for tests 'exit1_fail'"
     )
     table.add_row(
-        "buildtest inspect query -o hello", "Display all runs for tests 'foo'"
+        "buildtest inspect query 'exit1_fail/(24|52)'",
+        "Use regular expression when searching for test via 'buildtest inspect query'",
     )
     console.print(table)
 
@@ -288,6 +323,11 @@ def print_report_help():
     table.add_row(
         "buildtest -r /tmp/result.json report",
         "Read report file /tmp/result.json and display result",
+    )
+    table.add_row("buildtest report --failure", "Show all test failures")
+    table.add_row(
+        "buildtest report --start 2022-01-01 --end 2022-01-05",
+        "Show all test records in the date range from [2022-01-01, 2022-01-05]",
     )
     table.add_row("buildtest report --terse", "Print report in terse format")
     table.add_row("buildtest report list", "List all report files")
@@ -325,6 +365,10 @@ def print_cdash_help():
     table.add_row(
         "buildtest cdash upload DEMO",
         "Upload all tests to cdash with build name 'DEMO'",
+    )
+    table.add_row(
+        "buildtest cdash upload DEMO --open",
+        "Upload test results to CDASH and open results in web browser",
     )
     table.add_row(
         "buildtest --report /tmp/result.json cdash upload DAILY_CHECK ",
@@ -450,25 +494,25 @@ def buildtest_help(command):
         command (str): Name of buildtest command specified by ``buildtest help <command>``
     """
 
-    if command == "build":
+    if command in ["build", "bd"]:
         print_build_help()
-    elif command == "buildspec":
+    elif command in ["buildspec", "bc"]:
         print_buildspec_help()
-    elif command == "config":
+    elif command in ["config", "cg"]:
         print_config_help()
-    elif command == "inspect":
+    elif command in ["inspect", "it"]:
         print_inspect_help()
-    elif command == "report":
+    elif command in ["report", "rt"]:
         print_report_help()
     elif command == "path":
         print_path_help()
-    elif command == "history":
+    elif command in ["history", "hy"]:
         print_history_help()
     elif command == "cdash":
         print_cdash_help()
     elif command == "schema":
         print_schema_help()
-    elif command == "stylecheck":
+    elif command in ["stylecheck", "style"]:
         print_stylecheck_help()
-    elif command == "unittests":
+    elif command in ["unittests", "test"]:
         print_unittests_help()

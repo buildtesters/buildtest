@@ -150,26 +150,6 @@ name of test and test description. Shown below is an example output.
 .. command-output:: buildtest buildspec find --group-by-executor
     :ellipsis: 31
 
-
-.. _buildspec_maintainers:
-
-Query Maintainers
-~~~~~~~~~~~~~~~~~
-
-When you are writing your buildspecs, you can specify the ``maintainers`` field to assign
-authors to buildspecs. buildtest can query the maintainers from the cache
-once buildspecs are loaded. You can retrieve all maintainers using ``--maintainers`` option or ``-m``
-short option. In this example, we show all maintainers for buildspecs in buildspec
-cache
-
-.. command-output:: buildtest buildspec find --maintainers
-
-If you want to see a breakdown of maintainers by buildspec file you can use ``--maintainers-by-buildspecs``
-or ``-mb`` short option. This can be useful to get correlation between maintainers and the buildspec file.
-
-.. command-output:: buildtest buildspec find -mb
-
-
 Terse Output
 ~~~~~~~~~~~~~
 
@@ -194,6 +174,38 @@ If you want to see error messages for each buildspec you can pass the ``-e`` or 
 each buildspec followed by error message.
 
 .. command-output:: buildtest buildspec find invalid -e
+
+.. _buildspec_maintainers:
+
+Query Maintainers (``buildtest buildspec maintainers``)
+----------------------------------------------------------
+
+buildtest keeps track of maintainers (i.e authors) for a given buildspec provided that you
+specify the ``maintainers`` property. This is stored in the buildspec cache which can be used
+to query some interesting details.
+
+Shown below is the help for ``buildtest buildspec maintainers --help``
+
+.. command-output:: buildtest buildspec maintainers --help
+
+If you want to see a listing of all maintainers you can use the ``--list`` as shown below
+
+.. command-output:: buildtest buildspec maintainers --list
+
+If you prefer a machine readable format, then you can use ``--terse`` and ``--no-header``.
+
+.. command-output:: buildtest buildspec maintainers --list --terse --no-header
+
+If you want to see a breakdown of all buildspecs by maintainers you can use `--breakdown` which will
+display the following information
+
+.. command-output:: buildtest buildspec maintainers --breakdown
+
+The ``buildtest buildspec maintainers find`` command can be used to report buildspec given a maintainer
+name which works similar to `--breakdown` but doesn't report information for all maintainers. Shown
+below, we query all buildspecs by maintainer **@shahzebsiddiqui**
+
+.. command-output:: buildtest buildspec maintainers find @shahzebsiddiqui
 
 
 Cache Summary - ``buildtest buildspec summary``
@@ -352,6 +364,14 @@ Next you can use this as argument to ``buildtest buildspec show`` and it will re
     │                                                                      │
     ╰──────────────────────────────────────────────────────────────────────╯
 
+Show fail buildspec ``buildtest buildspec show-fail``
+------------------------------------------------------
+
+buildtest can display content of buildspec file of all failed tests via ``buildtest buildspec show-fail`` command. 
+This can be quick way to see content of buildspec file given a failed test name such as ``buildtest buildspec show-fail exit1_fail``.
+
+.. command-output:: buildtest buildspec show-fail exit1_fail
+
 Editing buildspecs in your preferred editor
 --------------------------------------------
 
@@ -362,7 +382,7 @@ with two commands to edit your buildspecs ``buildtest buildspec edit-test`` and 
 discuss below.
 
 Editing by Test ``buildtest buildspec edit-test``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``buildtest buildspec edit-test`` allows one to specify a list of test as positional
 arguments to edit-test in your preferred editor. buildtest will provide tab completion for this

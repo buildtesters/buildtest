@@ -12,13 +12,8 @@ jobs:
       fail-fast: false
 
       matrix:
-        os: [macos-latest, ubuntu-latest]
-        python-version: [3.7, 3.8, 3.9]
-        exclude:
-        - os: macos-latest
-          python-version: 3.8
-        - os: macos-latest
-          python-version: 3.9
+        os: [macos-latest, macos-12, ubuntu-latest, ubuntu-22.04 ]
+        python-version: ['3.7', '3.8', '3.9', '3.10']
 
     steps:
     - uses: actions/checkout@v3
@@ -32,7 +27,7 @@ jobs:
       env:
         OS: ${{ matrix.os }}
       run: |
-        if [ $OS = "ubuntu-latest" ] ; then sudo apt-get install -y csh tcsh zsh && sudo add-apt-repository ppa:kelleyk/emacs && sudo apt-get install -y emacs27; else brew install tcsh zsh emacs ;  fi
+        if [ $OS = "ubuntu-latest"  ] || [ $OS = "ubuntu-22.04" ] ; then sudo apt-get install -y csh tcsh zsh && sudo add-apt-repository ppa:kelleyk/emacs && sudo apt-get install -y emacs28; else brew install tcsh zsh emacs ;  fi
         cat /etc/shells
         source setup.sh
         pip install pytest

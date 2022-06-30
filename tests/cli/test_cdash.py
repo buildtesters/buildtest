@@ -1,40 +1,57 @@
 import os
 
 import pytest
-from buildtest.cli.cdash import cdash_cmd
+import requests
+from buildtest.cli.build import BuildTest
+from buildtest.cli.cdash import upload_test_cdash, view_cdash_project
 from buildtest.config import SiteConfiguration
+from buildtest.defaults import BUILDTEST_ROOT
+from buildtest.system import BuildTestSystem
+from buildtest.utils.tools import deep_get
 
 configuration = SiteConfiguration()
 configuration.detect_system()
 configuration.validate()
 
 
+@pytest.mark.cli
 def test_cdash_view():
-    class args:
-        cdash = "view"
-        url = None
 
-    cdash_cmd(args=args, default_configuration=configuration, open_browser=False)
+    cdash_config = deep_get(configuration.target_config, "cdash")
+    view_cdash_project(
+        cdash_config=cdash_config, config_file=configuration.file, open_browser=False
+    )
 
 
+@pytest.mark.cli
 def test_cdash_upload():
-    class args:
-        cdash = "upload"
-        buildname = "TESTING"
-        site = None
 
-    cdash_cmd(args, default_configuration=configuration)
+    system = BuildTestSystem()
+    cmd = BuildTest(
+        buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "shell_examples.yml")],
+        buildtest_system=system,
+        configuration=configuration,
+    )
+    cmd.build()
+
+    upload_test_cdash(
+        build_name="TESTING",
+        configuration=configuration,
+        site="GENERIC",
+        open_browser=False,
+    )
 
 
 def test_cdash_upload_exceptions():
-    class args:
-        cdash = "upload"
-        buildname = None
-        site = None
 
     # a buildname must be specified, a None will result in error
     with pytest.raises(SystemExit):
-        cdash_cmd(args, default_configuration=configuration)
+        upload_test_cdash(
+            build_name=None,
+            configuration=configuration,
+            site="GENERIC",
+            open_browser=False,
+        )
 
     here = os.path.dirname(__file__)
 
@@ -43,25 +60,21 @@ def test_cdash_upload_exceptions():
     )
     bc.detect_system()
 
-    class args:
-        cdash = "upload"
-        buildname = "DEMO"
-        site = None
-
     # in configuration file we have invalid url to CDASH server
-    with pytest.raises(SystemExit):
-        cdash_cmd(args, default_configuration=bc)
+    with pytest.raises(requests.ConnectionError):
+        upload_test_cdash(
+            build_name="DEMO",
+            configuration=bc,
+        )
 
     bc = SiteConfiguration(
         os.path.abspath(os.path.join(here, "cdash_examples", "invalid_project.yml"))
     )
     bc.detect_system()
 
-    class args:
-        cdash = "upload"
-        buildname = "DEMO"
-        site = None
-
     # in configuration file we have invalid project name in CDASH
+
     with pytest.raises(SystemExit):
-        cdash_cmd(args, default_configuration=bc)
+        upload_test_cdash(
+            build_name="DEMO", configuration=bc, site=None, open_browser=False
+        )

@@ -6,10 +6,13 @@ import tempfile
 import pytest
 from buildtest.cli.buildspec import (
     BuildspecCache,
+    buildspec_maintainers,
     buildspec_validate,
     show_buildspecs,
+    show_failed_buildspecs,
     summarize_buildspec_cache,
 )
+from buildtest.cli.report import Report
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
@@ -90,12 +93,6 @@ def test_func_buildspec_find():
     # buildtest buildspec find --group-by-tags
     cache.print_by_tags()
 
-    # buildtest buildspec find --maintainers
-    cache.print_maintainer()
-
-    # implements buildtest buildspec find --maintainers-by-buildspecs
-    cache.print_maintainers_by_buildspecs()
-
     # implements buildtest buildspec find --helpfilter
     cache.print_filter_fields()
 
@@ -126,6 +123,17 @@ def test_buildspec_find_terse():
     cache.print_by_tags()
     cache.print_maintainer()
     cache.print_maintainers_by_buildspecs()
+
+
+@pytest.mark.cli
+def test_buildspec_maintainers():
+    buildspec_maintainers(
+        configuration=configuration, list=True, terse=True, header=True
+    )
+    buildspec_maintainers(
+        configuration=configuration, breakdown=True, terse=True, header=True
+    )
+    buildspec_maintainers(configuration=configuration, name="@shahzebsiddiqui")
 
 
 @pytest.mark.cli
@@ -267,3 +275,22 @@ def test_buildspec_show():
             random.choice(string.ascii_letters) for i in range(10)
         )
         show_buildspecs(test_names=[random_testname], configuration=configuration)
+
+
+@pytest.mark.cli
+def test_buildspec_show_fail():
+
+    # Query some random test name that doesn't exist
+    with pytest.raises(BuildTestError):
+        random_testname = "".join(
+            random.choice(string.ascii_letters) for i in range(10)
+        )
+        show_failed_buildspecs(
+            configuration=configuration, test_names=[random_testname]
+        )
+
+    # Query a test that is NOT in state=FAIL
+    with pytest.raises(BuildTestError):
+        results = Report()
+        pass_test = results.get_test_by_state(state="PASS")[0]
+        show_failed_buildspecs(configuration=configuration, test_names=[pass_test])

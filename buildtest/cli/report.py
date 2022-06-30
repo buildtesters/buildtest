@@ -1,5 +1,7 @@
+import datetime
 import logging
 import os
+import random
 import sys
 
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
@@ -79,6 +81,8 @@ class Report:
         report_file=None,
         filter_args=None,
         format_args=None,
+        start=None,
+        end=None,
         failure=None,
         latest=None,
         oldest=None,
@@ -89,11 +93,15 @@ class Report:
             report_file (str, optional): Full path to report file to read
             filter_args (str, optional): A comma separated list of Key=Value pair for filter arguments via ``buildtest report --filter``
             format (str, optional): A comma separated list of format fields for altering report table. This is specified via ``buildtest report --format``
+            start (datetime, optional): Fetch run for all tests discovered filered by starttime. This is specified via ``buildtest report --start``
+            end (datetime, optional): Fetch run for all tests discovered filered by endtime. This is specified via ``buildtest report --end``
             failure (bool, optional): Fetch failure run for all tests discovered. This is specified via ``buildtest report --failure``
             latest (bool, optional): Fetch latest run for all tests discovered. This is specified via ``buildtest report --latest``
             oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
             pager (bool, optional): Enabling PAGING output for ``buildtest report``. This can be specified via ``buildtest report --pager``
         """
+        self.start = start
+        self.end = end
         self.failure = failure
         self.latest = latest
         self.oldest = oldest
@@ -113,6 +121,7 @@ class Report:
         self.report = self.load()
         self._check_filter_fields()
         self._check_format_fields()
+        self._check_start_and_end_fields()
         self.filter_buildspecs_from_report()
 
         self.process_report()
@@ -182,6 +191,31 @@ class Report:
 
             for field in self.display_format_fields:
                 self.display_table[field] = []
+
+    def _check_start_and_end_fields(self):
+        """Check start argument (--start) and end argument (--end) are valid. The start argument is specified
+        in format (--start yyyy-mm-dd), end argument in format (--end yyyy-mm-dd), or both (--start yyyy-mm-dd --end yyyy-mm-dd).
+
+        Raises:
+            BuildTestError: If --start is greater than --end or --end is greater than current time - datetime.datetime.now()
+        """
+
+        if self.end:
+
+            current_time = datetime.datetime.now()
+            logger.debug(f"checking end field: {self.end}")
+
+            if self.end > current_time:
+                raise BuildTestError(
+                    f"Invalid --end {self.end} is greater than current time {current_time}"
+                )
+
+            logger.debug(f"checking start field: {self.start}")
+
+            if self.start and self.start > self.end:
+                raise BuildTestError(
+                    f"Invalid --start {self.start} is greater than --end {self.end}"
+                )
 
     def load(self):
         """This method is responsible for loading report file. If file not found
@@ -259,6 +293,31 @@ class Report:
                 raise BuildTestError(
                     f"filter argument 'state' must be 'PASS' or 'FAIL' got value {self.filter['state']}"
                 )
+
+    def filter_by_start_end(self, test):
+        """This method will return a boolean (True/False) to check if test should be included from report. Given an input test, we
+        check if a test record has 'starttime' and 'endtime' fields in range specified by ``--start`` and ``--end`` by the user. If
+        there is a match we return ``True``. A ``False`` indicates the test will not be incldued in report.
+
+        Args:
+            test (dict): Test record loaded as dictionary
+        """
+
+        test_fmt = "%Y/%m/%d %H:%M:%S"
+        test_start = datetime.datetime.strptime(test.get("starttime"), test_fmt)
+        test_end = datetime.datetime.strptime(test.get("endtime"), test_fmt)
+
+        if self.start and self.end:
+            end_include = self.end + datetime.timedelta(days=1)
+            return (
+                True if test_start >= self.start and test_end <= end_include else False
+            )
+
+        if self.start:
+            return True if test_start >= self.start else False
+
+        if self.end:
+            return True if test_end >= self.end else False
 
     def _filter_by_names(self, name):
         """Filter test by name of test. This method will return True if record should be processed,
@@ -360,6 +419,9 @@ class Report:
                 # retrieve all records of failure tests if --failure is specified
                 elif self.failure:
                     tests = [test for test in tests if test["state"] == "FAIL"]
+                # retrieve all records of tests filtered by start or end if --start and end are specified
+                elif self.start or self.end:
+                    tests = [test for test in tests if self.filter_by_start_end(test)]
 
                 # process all tests for an associated script. There can be multiple
                 # test runs for a single test depending on how many tests were run
@@ -535,9 +597,32 @@ class Report:
 
         return test_names
 
+    def get_random_tests(self, num_items=1):
+        """Returns a list of random test names from the list of available test. The test are picked
+        using `random.sample <https://docs.python.org/3/library/random.html#random.sample>`_
+
+        Args:
+            num_items (int, optional): Number of test items to retrieve
+        """
+        return random.sample(self.get_names(), num_items)
+
     def get_buildspecs(self):
         """Return a list of buildspecs in report file"""
         return self.filtered_buildspecs
+
+    def get_test_by_state(self, state):
+        """Return a list of test names by state from report file"""
+        valid_test_states = ["PASS", "FAIL"]
+        if state not in valid_test_states:
+            raise BuildTestError(f"{state} is not in {valid_test_states}")
+        test_names = set()
+        for buildspec in self.filtered_buildspecs:
+            for name in self.report[buildspec].keys():
+                for trial in self.report[buildspec][name]:
+                    if trial["state"] == state:
+                        test_names.add(name)
+                        break
+        return list(test_names)
 
     def get_testids(self):
         """Return a list of test ids from the report file"""
@@ -588,6 +673,14 @@ class Report:
         for uid in lookup.keys():
             builders.append(lookup[uid]["name"] + "/" + uid)
         return builders
+
+    def get_random_builder_names(self, num_items=1):
+        """Return a list of random builder names from report file.
+
+        Args:
+            num_items (int, optional): Number of items to retrieve
+        """
+        return random.sample(self.builder_names(), num_items)
 
     def breakdown_by_test_names(self):
         """Returns a dictionary with number of test runs, pass test and fail test by testname"""
@@ -662,6 +755,8 @@ def report_cmd(args, report_file=None):
     results = Report(
         filter_args=args.filter,
         format_args=args.format,
+        start=args.start,
+        end=args.end,
         failure=args.failure,
         latest=args.latest,
         oldest=args.oldest,

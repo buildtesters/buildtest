@@ -1,31 +1,36 @@
 $ buildtest build -b /home/spack/buildtest/examples/compilers/compiler_status_regex.yml 
-╭───────────────────────────────────────────────────────── buildtest summary ─────────────────────────────────────────────────────────╮                                                      
-│                                                                                                                                     │                                                      
-│ User:               spack                                                                                                           │                                                      
-│ Hostname:           f170978d3d4a                                                                                                    │                                                      
-│ Platform:           Linux                                                                                                           │                                                      
-│ Current Time:       2022/03/18 20:27:57                                                                                             │                                                      
-│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                             │                                                      
-│ buildtest version:  0.13.0                                                                                                          │                                                      
-│ python path:        /home/spack/pyenv/buildtest/bin/python3                                                                         │                                                      
-│ python version:     3.8.6                                                                                                           │                                                      
-│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                                    │                                                      
-│ Test Directory:     /home/spack/runs                                                                                                │                                                      
-│ Report File:        /home/spack/buildtest/var/report.json                                                                           │                                                      
-│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/compilers/compiler_status_regex.yml │                                                      
-│                                                                                                                                     │                                                      
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                      
-──────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────────────────────────────
-Discovered Buildspecs:  1
-Excluded Buildspecs:  0
-Detected Buildspecs after exclusion:  1
+╭────────────────────────── buildtest summary ──────────────────────────╮
+│                                                                       │
+│ User:               spack                                             │
+│ Hostname:           356ea13b3433                                      │
+│ Platform:           Linux                                             │
+│ Current Time:       2022/06/29 17:27:32                               │
+│ buildtest path:     /home/spack/buildtest/bin/buildtest               │
+│ buildtest version:  0.14.0                                            │
+│ python path:        /home/spack/pyenv/buildtest/bin/python3           │
+│ python version:     3.8.6                                             │
+│ Configuration File:                                                   │
+│ /home/spack/buildtest/buildtest/settings/spack_container.yml          │
+│ Test Directory:     /home/spack/runs                                  │
+│ Report File:        /home/spack/buildtest/var/report.json             │
+│ Command:            /home/spack/buildtest/bin/buildtest build -b      │
+│ /home/spack/buildtest/examples/compilers/compiler_status_regex.yml    │
+│                                                                       │
+╰───────────────────────────────────────────────────────────────────────╯
+────────────────────────  Discovering Buildspecs ────────────────────────
                         Discovered buildspecs                         
 ╔════════════════════════════════════════════════════════════════════╗
-║ Buildspecs                                                         ║
+║ buildspec                                                          ║
 ╟────────────────────────────────────────────────────────────────────╢
 ║ /home/spack/buildtest/examples/compilers/compiler_status_regex.yml ║
 ╚════════════════════════════════════════════════════════════════════╝
-──────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────────────────────────────
+
+
+Total Discovered Buildspecs:  1
+Total Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
+────────────────────────── Parsing Buildspecs ───────────────────────────
+Buildtest will parse 1 buildspecs
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
 /home/spack/buildtest/examples/compilers/compiler_status_regex.yml: VALID
@@ -33,145 +38,225 @@ Total builder objects created: 6
 Total compiler builder: 6
 Total script builder: 0
 Total spack builder: 0
-                                                                                  Compiler Builder Details                                                                                   
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ Builder                            ┃ Executor           ┃ Compiler  ┃ description                                              ┃ buildspecs                                               ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ default_status_returncode/0d46a9b3 │ generic.local.bash │ gcc_7.5.0 │ status check based on returncode                         │ /home/spack/buildtest/examples/compilers/compiler_status │
-│                                    │                    │           │                                                          │ _regex.yml                                               │
-├────────────────────────────────────┼────────────────────┼───────────┼──────────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────┤
-│ default_status_returncode/83e1caf9 │ generic.local.bash │ gcc_6.5.0 │ status check based on returncode                         │ /home/spack/buildtest/examples/compilers/compiler_status │
-│                                    │                    │           │                                                          │ _regex.yml                                               │
-├────────────────────────────────────┼────────────────────┼───────────┼──────────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────┤
-│ default_status_returncode/aeb7a9fb │ generic.local.bash │ gcc_8.3.0 │ status check based on returncode                         │ /home/spack/buildtest/examples/compilers/compiler_status │
-│                                    │                    │           │                                                          │ _regex.yml                                               │
-├────────────────────────────────────┼────────────────────┼───────────┼──────────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────┤
-│ override_status_regex/9bbd537c     │ generic.local.bash │ gcc_7.5.0 │ override 'status' property in compiler gcc_8.3.0         │ /home/spack/buildtest/examples/compilers/compiler_status │
-│                                    │                    │           │ instance                                                 │ _regex.yml                                               │
-├────────────────────────────────────┼────────────────────┼───────────┼──────────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────┤
-│ override_status_regex/f56b56e5     │ generic.local.bash │ gcc_6.5.0 │ override 'status' property in compiler gcc_8.3.0         │ /home/spack/buildtest/examples/compilers/compiler_status │
-│                                    │                    │           │ instance                                                 │ _regex.yml                                               │
-├────────────────────────────────────┼────────────────────┼───────────┼──────────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────┤
-│ override_status_regex/c3fab452     │ generic.local.bash │ gcc_8.3.0 │ override 'status' property in compiler gcc_8.3.0         │ /home/spack/buildtest/examples/compilers/compiler_status │
-│                                    │                    │           │ instance                                                 │ _regex.yml                                               │
-└────────────────────────────────────┴────────────────────┴───────────┴──────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────┘
-─────────────────────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────────────────────
-default_status_returncode/0d46a9b3: Creating test directory: /home/spack/runs/generic.local.bash/compiler_status_regex/default_status_returncode/0d46a9b3
-default_status_returncode/0d46a9b3: Creating the stage directory: /home/spack/runs/generic.local.bash/compiler_status_regex/default_status_returncode/0d46a9b3/stage
-default_status_returncode/0d46a9b3: Writing build script: /home/spack/runs/generic.local.bash/compiler_status_regex/default_status_returncode/0d46a9b3/default_status_returncode_build.sh
-default_status_returncode/83e1caf9: Creating test directory: /home/spack/runs/generic.local.bash/compiler_status_regex/default_status_returncode/83e1caf9
-default_status_returncode/83e1caf9: Creating the stage directory: /home/spack/runs/generic.local.bash/compiler_status_regex/default_status_returncode/83e1caf9/stage
-default_status_returncode/83e1caf9: Writing build script: /home/spack/runs/generic.local.bash/compiler_status_regex/default_status_returncode/83e1caf9/default_status_returncode_build.sh
-default_status_returncode/aeb7a9fb: Creating test directory: /home/spack/runs/generic.local.bash/compiler_status_regex/default_status_returncode/aeb7a9fb
-default_status_returncode/aeb7a9fb: Creating the stage directory: /home/spack/runs/generic.local.bash/compiler_status_regex/default_status_returncode/aeb7a9fb/stage
-default_status_returncode/aeb7a9fb: Writing build script: /home/spack/runs/generic.local.bash/compiler_status_regex/default_status_returncode/aeb7a9fb/default_status_returncode_build.sh
-override_status_regex/9bbd537c: Creating test directory: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/9bbd537c
-override_status_regex/9bbd537c: Creating the stage directory: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/9bbd537c/stage
-override_status_regex/9bbd537c: Writing build script: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/9bbd537c/override_status_regex_build.sh
-override_status_regex/f56b56e5: Creating test directory: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/f56b56e5
-override_status_regex/f56b56e5: Creating the stage directory: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/f56b56e5/stage
-override_status_regex/f56b56e5: Writing build script: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/f56b56e5/override_status_regex_build.sh
-override_status_regex/c3fab452: Creating test directory: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/c3fab452
-override_status_regex/c3fab452: Creating the stage directory: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/c3fab452/stage
-override_status_regex/c3fab452: Writing build script: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/c3fab452/override_status_regex_build.sh
-─────────────────────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────────────────────
+                        Compiler Builder Details                         
+┏━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ builder  ┃ executor ┃ compiler ┃ nodes ┃ procs ┃ descript… ┃ buildsp… ┃
+┡━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━┩
+│ default… │ generic… │ gcc_7.5… │ None  │ None  │ status    │ /home/s… │
+│          │          │          │       │       │ check     │          │
+│          │          │          │       │       │ based on  │          │
+│          │          │          │       │       │ returnco… │          │
+├──────────┼──────────┼──────────┼───────┼───────┼───────────┼──────────┤
+│ default… │ generic… │ gcc_6.5… │ None  │ None  │ status    │ /home/s… │
+│          │          │          │       │       │ check     │          │
+│          │          │          │       │       │ based on  │          │
+│          │          │          │       │       │ returnco… │          │
+├──────────┼──────────┼──────────┼───────┼───────┼───────────┼──────────┤
+│ default… │ generic… │ gcc_8.3… │ None  │ None  │ status    │ /home/s… │
+│          │          │          │       │       │ check     │          │
+│          │          │          │       │       │ based on  │          │
+│          │          │          │       │       │ returnco… │          │
+├──────────┼──────────┼──────────┼───────┼───────┼───────────┼──────────┤
+│ overrid… │ generic… │ gcc_7.5… │ None  │ None  │ override  │ /home/s… │
+│          │          │          │       │       │ 'status'  │          │
+│          │          │          │       │       │ property  │          │
+│          │          │          │       │       │ in        │          │
+│          │          │          │       │       │ compiler  │          │
+│          │          │          │       │       │ gcc_8.3.0 │          │
+│          │          │          │       │       │ instance  │          │
+├──────────┼──────────┼──────────┼───────┼───────┼───────────┼──────────┤
+│ overrid… │ generic… │ gcc_6.5… │ None  │ None  │ override  │ /home/s… │
+│          │          │          │       │       │ 'status'  │          │
+│          │          │          │       │       │ property  │          │
+│          │          │          │       │       │ in        │          │
+│          │          │          │       │       │ compiler  │          │
+│          │          │          │       │       │ gcc_8.3.0 │          │
+│          │          │          │       │       │ instance  │          │
+├──────────┼──────────┼──────────┼───────┼───────┼───────────┼──────────┤
+│ overrid… │ generic… │ gcc_8.3… │ None  │ None  │ override  │ /home/s… │
+│          │          │          │       │       │ 'status'  │          │
+│          │          │          │       │       │ property  │          │
+│          │          │          │       │       │ in        │          │
+│          │          │          │       │       │ compiler  │          │
+│          │          │          │       │       │ gcc_8.3.0 │          │
+│          │          │          │       │       │ instance  │          │
+└──────────┴──────────┴──────────┴───────┴───────┴───────────┴──────────┘
+───────────────────────────── Building Test ─────────────────────────────
+default_status_returncode/146a17db: Creating test directory: /home/spack/
+runs/generic.local.bash/compiler_status_regex/default_status_returncode/1
+46a17db
+default_status_returncode/146a17db: Creating the stage directory: /home/s
+pack/runs/generic.local.bash/compiler_status_regex/default_status_returnc
+ode/146a17db/stage
+default_status_returncode/146a17db: Writing build script: /home/spack/run
+s/generic.local.bash/compiler_status_regex/default_status_returncode/146a
+17db/default_status_returncode_build.sh
+default_status_returncode/c18e8856: Creating test directory: /home/spack/
+runs/generic.local.bash/compiler_status_regex/default_status_returncode/c
+18e8856
+default_status_returncode/c18e8856: Creating the stage directory: /home/s
+pack/runs/generic.local.bash/compiler_status_regex/default_status_returnc
+ode/c18e8856/stage
+default_status_returncode/c18e8856: Writing build script: /home/spack/run
+s/generic.local.bash/compiler_status_regex/default_status_returncode/c18e
+8856/default_status_returncode_build.sh
+default_status_returncode/8f1541f1: Creating test directory: /home/spack/
+runs/generic.local.bash/compiler_status_regex/default_status_returncode/8
+f1541f1
+default_status_returncode/8f1541f1: Creating the stage directory: /home/s
+pack/runs/generic.local.bash/compiler_status_regex/default_status_returnc
+ode/8f1541f1/stage
+default_status_returncode/8f1541f1: Writing build script: /home/spack/run
+s/generic.local.bash/compiler_status_regex/default_status_returncode/8f15
+41f1/default_status_returncode_build.sh
+override_status_regex/d3d57fb4: Creating test directory: /home/spack/runs
+/generic.local.bash/compiler_status_regex/override_status_regex/d3d57fb4
+override_status_regex/d3d57fb4: Creating the stage directory: /home/spack
+/runs/generic.local.bash/compiler_status_regex/override_status_regex/d3d5
+7fb4/stage
+override_status_regex/d3d57fb4: Writing build script: /home/spack/runs/ge
+neric.local.bash/compiler_status_regex/override_status_regex/d3d57fb4/ove
+rride_status_regex_build.sh
+override_status_regex/aa303b16: Creating test directory: /home/spack/runs
+/generic.local.bash/compiler_status_regex/override_status_regex/aa303b16
+override_status_regex/aa303b16: Creating the stage directory: /home/spack
+/runs/generic.local.bash/compiler_status_regex/override_status_regex/aa30
+3b16/stage
+override_status_regex/aa303b16: Writing build script: /home/spack/runs/ge
+neric.local.bash/compiler_status_regex/override_status_regex/aa303b16/ove
+rride_status_regex_build.sh
+override_status_regex/465cf5fe: Creating test directory: /home/spack/runs
+/generic.local.bash/compiler_status_regex/override_status_regex/465cf5fe
+override_status_regex/465cf5fe: Creating the stage directory: /home/spack
+/runs/generic.local.bash/compiler_status_regex/override_status_regex/465c
+f5fe/stage
+override_status_regex/465cf5fe: Writing build script: /home/spack/runs/ge
+neric.local.bash/compiler_status_regex/override_status_regex/465cf5fe/ove
+rride_status_regex_build.sh
+───────────────────────────── Running Tests ─────────────────────────────
 Spawning 4 processes for processing builders
-──────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ────────────────────────────────────────────────────────────────────────────────────────
-default_status_returncode/83e1caf9 does not have any dependencies adding test to queue
-default_status_returncode/aeb7a9fb does not have any dependencies adding test to queue
-default_status_returncode/0d46a9b3 does not have any dependencies adding test to queue
-override_status_regex/c3fab452 does not have any dependencies adding test to queue
-override_status_regex/9bbd537c does not have any dependencies adding test to queue
-override_status_regex/f56b56e5 does not have any dependencies adding test to queue
-default_status_returncode/83e1caf9: Running Test via command: bash --norc 
---noprofile -eo pipefail default_status_returncode_build.sh
-override_status_regex/c3fab452: Running Test via command: bash --norc 
+────────────────────────────── Iteration 1 ──────────────────────────────
+override_status_regex/465cf5fe does not have any dependencies adding test
+to queue
+default_status_returncode/c18e8856 does not have any dependencies adding 
+test to queue
+override_status_regex/aa303b16 does not have any dependencies adding test
+to queue
+default_status_returncode/8f1541f1 does not have any dependencies adding 
+test to queue
+override_status_regex/d3d57fb4 does not have any dependencies adding test
+to queue
+default_status_returncode/146a17db does not have any dependencies adding 
+test to queue
+override_status_regex/aa303b16: Running Test via command: bash --norc 
 --noprofile -eo pipefail override_status_regex_build.sh
-default_status_returncode/0d46a9b3: Running Test via command: bash --norc 
+default_status_returncode/8f1541f1: Running Test via command: bash --norc
 --noprofile -eo pipefail default_status_returncode_build.sh
-default_status_returncode/aeb7a9fb: Running Test via command: bash --norc 
+override_status_regex/d3d57fb4: Running Test via command: bash --norc 
+--noprofile -eo pipefail override_status_regex_build.sh
+override_status_regex/465cf5fe: Running Test via command: bash --norc 
+--noprofile -eo pipefail override_status_regex_build.sh
+override_status_regex/d3d57fb4: Test completed in 0.114215 seconds
+override_status_regex/d3d57fb4: Test completed with returncode: 0
+override_status_regex/aa303b16: Test completed in 0.123078 seconds
+override_status_regex/aa303b16: Test completed with returncode: 0
+override_status_regex/d3d57fb4: Writing output file -  /home/spack/runs/g
+eneric.local.bash/compiler_status_regex/override_status_regex/d3d57fb4/ov
+erride_status_regex.out
+override_status_regex/d3d57fb4: Writing error file - /home/spack/runs/gen
+eric.local.bash/compiler_status_regex/override_status_regex/d3d57fb4/over
+ride_status_regex.err
+override_status_regex/aa303b16: Writing output file -  /home/spack/runs/g
+eneric.local.bash/compiler_status_regex/override_status_regex/aa303b16/ov
+erride_status_regex.out
+override_status_regex/aa303b16: Writing error file - /home/spack/runs/gen
+eric.local.bash/compiler_status_regex/override_status_regex/aa303b16/over
+ride_status_regex.err
+override_status_regex/d3d57fb4: Checking returncode - 0 is matched in 
+list [1]
+override_status_regex/aa303b16: Checking returncode - 0 is matched in 
+list [1]
+override_status_regex/465cf5fe: Test completed in 0.141141 seconds
+override_status_regex/465cf5fe: Test completed with returncode: 0
+override_status_regex/465cf5fe: Writing output file -  /home/spack/runs/g
+eneric.local.bash/compiler_status_regex/override_status_regex/465cf5fe/ov
+erride_status_regex.out
+default_status_returncode/146a17db: Running Test via command: bash --norc
 --noprofile -eo pipefail default_status_returncode_build.sh
-default_status_returncode/83e1caf9: Test completed in 0.19217 seconds
-default_status_returncode/83e1caf9: Test completed with returncode: 0
-default_status_returncode/83e1caf9: Writing output file -  /home/spack/runs/gene
-ric.local.bash/compiler_status_regex/default_status_returncode/83e1caf9/default_
-status_returncode.out
-default_status_returncode/83e1caf9: Writing error file - /home/spack/runs/generi
-c.local.bash/compiler_status_regex/default_status_returncode/83e1caf9/default_st
-atus_returncode.err
-default_status_returncode/83e1caf9: Checking returncode - 0 is matched in list 
-[0]
-default_status_returncode/0d46a9b3: Test completed in 0.213665 seconds
-default_status_returncode/0d46a9b3: Test completed with returncode: 0
-default_status_returncode/aeb7a9fb: Test completed in 0.21168 seconds
-default_status_returncode/0d46a9b3: Writing output file -  /home/spack/runs/gene
-ric.local.bash/compiler_status_regex/default_status_returncode/0d46a9b3/default_
-status_returncode.out
-default_status_returncode/aeb7a9fb: Test completed with returncode: 0
-override_status_regex/c3fab452: Test completed in 0.23273 seconds
-default_status_returncode/0d46a9b3: Writing error file - /home/spack/runs/generi
-c.local.bash/compiler_status_regex/default_status_returncode/0d46a9b3/default_st
-atus_returncode.err
-default_status_returncode/aeb7a9fb: Writing output file -  /home/spack/runs/gene
-ric.local.bash/compiler_status_regex/default_status_returncode/aeb7a9fb/default_
-status_returncode.out
-override_status_regex/c3fab452: Test completed with returncode: 0
-default_status_returncode/aeb7a9fb: Writing error file - /home/spack/runs/generi
-c.local.bash/compiler_status_regex/default_status_returncode/aeb7a9fb/default_st
-atus_returncode.err
-override_status_regex/c3fab452: Writing output file -  /home/spack/runs/generic.
-local.bash/compiler_status_regex/override_status_regex/c3fab452/override_status_
-regex.out
-default_status_returncode/0d46a9b3: Checking returncode - 0 is matched in list 
-[0]
-override_status_regex/c3fab452: Writing error file - /home/spack/runs/generic.lo
-cal.bash/compiler_status_regex/override_status_regex/c3fab452/override_status_re
-gex.err
-default_status_returncode/aeb7a9fb: Checking returncode - 0 is matched in list 
-[0]
-override_status_regex/c3fab452: performing regular expression - '^final result: 
-0.99$' on file: /home/spack/runs/generic.local.bash/compiler_status_regex/overri
-de_status_regex/c3fab452/override_status_regex.out
-override_status_regex/c3fab452: Regular Expression Match - Failed!
-override_status_regex/9bbd537c: Running Test via command: bash --norc 
---noprofile -eo pipefail override_status_regex_build.sh
-override_status_regex/f56b56e5: Running Test via command: bash --norc 
---noprofile -eo pipefail override_status_regex_build.sh
-override_status_regex/9bbd537c: Test completed in 0.107907 seconds
-override_status_regex/9bbd537c: Test completed with returncode: 0
-override_status_regex/f56b56e5: Test completed in 0.113869 seconds
-override_status_regex/9bbd537c: Writing output file -  /home/spack/runs/generic.
-local.bash/compiler_status_regex/override_status_regex/9bbd537c/override_status_
-regex.out
-override_status_regex/f56b56e5: Test completed with returncode: 0
-override_status_regex/9bbd537c: Writing error file - /home/spack/runs/generic.lo
-cal.bash/compiler_status_regex/override_status_regex/9bbd537c/override_status_re
-gex.err
-override_status_regex/f56b56e5: Writing output file -  /home/spack/runs/generic.
-local.bash/compiler_status_regex/override_status_regex/f56b56e5/override_status_
-regex.out
-override_status_regex/9bbd537c: Checking returncode - 0 is matched in list [1]
-override_status_regex/f56b56e5: Writing error file - /home/spack/runs/generic.lo
-cal.bash/compiler_status_regex/override_status_regex/f56b56e5/override_status_re
-gex.err
-override_status_regex/f56b56e5: Checking returncode - 0 is matched in list [1]
-In this iteration we are going to run the following tests: [default_status_returncode/83e1caf9, default_status_returncode/aeb7a9fb, default_status_returncode/0d46a9b3, override_status_regex/c3fab452, override_status_regex/9bbd537c, override_status_regex/f56b56e5]
-                                                           Test Summary                                                           
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-┃ Builder                            ┃ executor           ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime  ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ default_status_returncode/83e1caf9 │ generic.local.bash │ PASS   │ True False False                    │ 0          │ 0.19217  │
-├────────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
-│ override_status_regex/f56b56e5     │ generic.local.bash │ FAIL   │ False False False                   │ 0          │ 0.113869 │
-├────────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
-│ override_status_regex/9bbd537c     │ generic.local.bash │ FAIL   │ False False False                   │ 0          │ 0.107907 │
-├────────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
-│ override_status_regex/c3fab452     │ generic.local.bash │ FAIL   │ False False False                   │ 0          │ 0.23273  │
-├────────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
-│ default_status_returncode/aeb7a9fb │ generic.local.bash │ PASS   │ True False False                    │ 0          │ 0.21168  │
-├────────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
-│ default_status_returncode/0d46a9b3 │ generic.local.bash │ PASS   │ True False False                    │ 0          │ 0.213665 │
-└────────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
+override_status_regex/465cf5fe: Writing error file - /home/spack/runs/gen
+eric.local.bash/compiler_status_regex/override_status_regex/465cf5fe/over
+ride_status_regex.err
+default_status_returncode/c18e8856: Running Test via command: bash --norc
+--noprofile -eo pipefail default_status_returncode_build.sh
+default_status_returncode/8f1541f1: Test completed in 0.160761 seconds
+default_status_returncode/8f1541f1: Test completed with returncode: 0
+default_status_returncode/8f1541f1: Writing output file -  /home/spack/ru
+ns/generic.local.bash/compiler_status_regex/default_status_returncode/8f1
+541f1/default_status_returncode.out
+override_status_regex/465cf5fe: performing regular expression - '^final 
+result: 0.99$' on file: /home/spack/runs/generic.local.bash/compiler_stat
+us_regex/override_status_regex/465cf5fe/override_status_regex.out
+override_status_regex/465cf5fe: Regular Expression Match - Failed!
+default_status_returncode/8f1541f1: Writing error file - /home/spack/runs
+/generic.local.bash/compiler_status_regex/default_status_returncode/8f154
+1f1/default_status_returncode.err
+default_status_returncode/8f1541f1: Checking returncode - 0 is matched in
+list [0]
+default_status_returncode/146a17db: Test completed in 0.104225 seconds
+default_status_returncode/146a17db: Test completed with returncode: 0
+default_status_returncode/146a17db: Writing output file -  /home/spack/ru
+ns/generic.local.bash/compiler_status_regex/default_status_returncode/146
+a17db/default_status_returncode.out
+default_status_returncode/146a17db: Writing error file - /home/spack/runs
+/generic.local.bash/compiler_status_regex/default_status_returncode/146a1
+7db/default_status_returncode.err
+default_status_returncode/c18e8856: Test completed in 0.107678 seconds
+default_status_returncode/146a17db: Checking returncode - 0 is matched in
+list [0]
+default_status_returncode/c18e8856: Test completed with returncode: 0
+default_status_returncode/c18e8856: Writing output file -  /home/spack/ru
+ns/generic.local.bash/compiler_status_regex/default_status_returncode/c18
+e8856/default_status_returncode.out
+default_status_returncode/c18e8856: Writing error file - /home/spack/runs
+/generic.local.bash/compiler_status_regex/default_status_returncode/c18e8
+856/default_status_returncode.err
+default_status_returncode/c18e8856: Checking returncode - 0 is matched in
+list [0]
+In this iteration we are going to run the following tests: [override_status_regex/465cf5fe, override_status_regex/aa303b16, default_status_returncode/8f1541f1, override_status_regex/d3d57fb4, default_status_returncode/c18e8856, default_status_returncode/146a17db]
+                              Test Summary                               
+┏━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃            ┃            ┃        ┃ checks (Re ┃            ┃          ┃
+┃            ┃            ┃        ┃ turnCode,  ┃            ┃          ┃
+┃            ┃            ┃        ┃ Regex,     ┃            ┃          ┃
+┃ builder    ┃ executor   ┃ status ┃ Runtime)   ┃ returnCode ┃ runtime  ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ override_s │ generic.l… │ FAIL   │ False      │ 0          │ 0.123078 │
+│ tatus_rege │            │        │ False      │            │          │
+│ x/aa303b16 │            │        │ False      │            │          │
+├────────────┼────────────┼────────┼────────────┼────────────┼──────────┤
+│ default_st │ generic.l… │ PASS   │ True False │ 0          │ 0.104225 │
+│ atus_retur │            │        │ False      │            │          │
+│ ncode/146a │            │        │            │            │          │
+│ 17db       │            │        │            │            │          │
+├────────────┼────────────┼────────┼────────────┼────────────┼──────────┤
+│ override_s │ generic.l… │ FAIL   │ False      │ 0          │ 0.114215 │
+│ tatus_rege │            │        │ False      │            │          │
+│ x/d3d57fb4 │            │        │ False      │            │          │
+├────────────┼────────────┼────────┼────────────┼────────────┼──────────┤
+│ default_st │ generic.l… │ PASS   │ True False │ 0          │ 0.107678 │
+│ atus_retur │            │        │ False      │            │          │
+│ ncode/c18e │            │        │            │            │          │
+│ 8856       │            │        │            │            │          │
+├────────────┼────────────┼────────┼────────────┼────────────┼──────────┤
+│ default_st │ generic.l… │ PASS   │ True False │ 0          │ 0.160761 │
+│ atus_retur │            │        │ False      │            │          │
+│ ncode/8f15 │            │        │            │            │          │
+│ 41f1       │            │        │            │            │          │
+├────────────┼────────────┼────────┼────────────┼────────────┼──────────┤
+│ override_s │ generic.l… │ FAIL   │ False      │ 0          │ 0.141141 │
+│ tatus_rege │            │        │ False      │            │          │
+│ x/465cf5fe │            │        │ False      │            │          │
+└────────────┴────────────┴────────┴────────────┴────────────┴──────────┘
 
 
 
@@ -180,4 +265,4 @@ Failed Tests: 3/6 Percentage: 50.000%
 
 
 Adding 6 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_ysjq4lge.log
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_lhzqv902.log

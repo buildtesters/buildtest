@@ -8,7 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Mirror and trigger CI job at https://software.nersc.gov
-      uses: SvanBoxel/gitlab-mirror-and-ci-action@0.3
+      uses: SvanBoxel/gitlab-mirror-and-ci-action@0.2
       with:
         args: "https://software.nersc.gov/siddiq90/buildtest"
       env:
@@ -24,7 +24,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Mirror and trigger CI job at https://code.ornl.gov
-      uses: SvanBoxel/gitlab-mirror-and-ci-action@0.3
+      uses: SvanBoxel/gitlab-mirror-and-ci-action@0.2
       with:
         args: "https://code.ornl.gov/ecpcitest/buildtest"
       env:

@@ -1,61 +1,71 @@
 $ buildtest inspect query -t override_environmentvars/ 
-─────────────────────────────────────────────────────────────── override_environmentvars/8da65eb9-fa63-455a-b864-aa1f0f81e0b2 ───────────────────────────────────────────────────────────────
+───── override_environmentvars/c552e0e2-b516-48e1-9563-b208047dd11c ─────
 Executor: generic.local.bash
 Description: override default environment variables
 State: PASS
 Returncode: 0
-Runtime: 0.139843 sec
-Starttime: 2022/03/18 20:27:55
-Endtime: 2022/03/18 20:27:55
-Command: bash --norc --noprofile -eo pipefail override_environmentvars_build.sh
-Test Script: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/8da65eb9/override_environmentvars.sh
-Build Script: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/8da65eb9/override_environmentvars_build.sh
-Output File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/8da65eb9/override_environmentvars.out
-Error File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/8da65eb9/override_environmentvars.err
-Log File: /home/spack/buildtest/var/logs/buildtest_vb7vj8l_.log
-─────────────────────────────── Test File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/8da65eb9/override_environmentvars.sh ────────────────────────────────
-   1 #!/bin/bash                                                                                                                                                                             
-   2                                                                                                                                                                                         
-   3                                                                                                                                                                                         
-   4 # name of executable                                                                                                                                                                    
-   5 _EXEC=hello_omp.c.exe                                                                                                                                                                   
-   6 export OMP_NUM_THREADS="4"                                                                                                                                                              
-   7 # Loading modules                                                                                                                                                                       
-   8 module load gcc/8.3.0-gcc-7.5.0                                                                                                                                                         
-   9 # Compilation Line                                                                                                                                                                      
-  10 gcc -fopenmp -o $_EXEC /home/spack/buildtest/examples/compilers/src/hello_omp.c                                                                                                         
-  11                                                                                                                                                                                         
-  12                                                                                                                                                                                         
-  13 # Run executable                                                                                                                                                                        
-  14 ./$_EXEC                                                                                                                                                                                
-  15                                                                                                                                                                                         
-  16                                                                                                                                                                                         
-─────────────────────────────────────────────────────────────── override_environmentvars/687d988d-e8fe-429f-94ab-8bec1df87e16 ───────────────────────────────────────────────────────────────
+Runtime: 0.067774 sec
+Starttime: 2022/06/29 17:27:30
+Endtime: 2022/06/29 17:27:30
+Command: bash --norc --noprofile -eo pipefail 
+override_environmentvars_build.sh
+Test Script: /home/spack/runs/generic.local.bash/envvar_override/override
+_environmentvars/c552e0e2/override_environmentvars.sh
+Build Script: /home/spack/runs/generic.local.bash/envvar_override/overrid
+e_environmentvars/c552e0e2/override_environmentvars_build.sh
+Output File: /home/spack/runs/generic.local.bash/envvar_override/override
+_environmentvars/c552e0e2/override_environmentvars.out
+Error File: /home/spack/runs/generic.local.bash/envvar_override/override_
+environmentvars/c552e0e2/override_environmentvars.err
+Log File: /home/spack/buildtest/var/logs/buildtest_nhaaefle.log
+─ Test File: /home/spack/runs/generic.local.bash/envvar_override/overr… ─
+#!/bin/bash                                                              
+                                                                         
+                                                                         
+# name of executable                                                     
+_EXEC=hello_omp.c.exe                                                    
+export OMP_NUM_THREADS="2"                                               
+# Compilation Line                                                       
+/usr/bin/gcc -fopenmp -o $_EXEC /home/spack/buildtest/examples/compilers/
+                                                                         
+                                                                         
+# Run executable                                                         
+./$_EXEC                                                                 
+                                                                         
+                                                                         
+───── override_environmentvars/d3fcdf11-03aa-4bb5-bec0-f67dbf550074 ─────
 Executor: generic.local.bash
 Description: override default environment variables
 State: PASS
 Returncode: 0
-Runtime: 0.100356 sec
-Starttime: 2022/03/18 20:27:55
-Endtime: 2022/03/18 20:27:55
-Command: bash --norc --noprofile -eo pipefail override_environmentvars_build.sh
-Test Script: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/687d988d/override_environmentvars.sh
-Build Script: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/687d988d/override_environmentvars_build.sh
-Output File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/687d988d/override_environmentvars.out
-Error File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/687d988d/override_environmentvars.err
-Log File: /home/spack/buildtest/var/logs/buildtest_vb7vj8l_.log
-─────────────────────────────── Test File: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/687d988d/override_environmentvars.sh ────────────────────────────────
-   1 #!/bin/bash                                                                                                                                                                             
-   2                                                                                                                                                                                         
-   3                                                                                                                                                                                         
-   4 # name of executable                                                                                                                                                                    
-   5 _EXEC=hello_omp.c.exe                                                                                                                                                                   
-   6 export OMP_NUM_THREADS="2"                                                                                                                                                              
-   7 # Compilation Line                                                                                                                                                                      
-   8 /usr/bin/gcc -fopenmp -o $_EXEC /home/spack/buildtest/examples/compilers/src/hello_omp.c                                                                                                
-   9                                                                                                                                                                                         
-  10                                                                                                                                                                                         
-  11 # Run executable                                                                                                                                                                        
-  12 ./$_EXEC                                                                                                                                                                                
-  13                                                                                                                                                                                         
-  14                                                                                                                                                                                         
+Runtime: 0.096485 sec
+Starttime: 2022/06/29 17:27:30
+Endtime: 2022/06/29 17:27:30
+Command: bash --norc --noprofile -eo pipefail 
+override_environmentvars_build.sh
+Test Script: /home/spack/runs/generic.local.bash/envvar_override/override
+_environmentvars/d3fcdf11/override_environmentvars.sh
+Build Script: /home/spack/runs/generic.local.bash/envvar_override/overrid
+e_environmentvars/d3fcdf11/override_environmentvars_build.sh
+Output File: /home/spack/runs/generic.local.bash/envvar_override/override
+_environmentvars/d3fcdf11/override_environmentvars.out
+Error File: /home/spack/runs/generic.local.bash/envvar_override/override_
+environmentvars/d3fcdf11/override_environmentvars.err
+Log File: /home/spack/buildtest/var/logs/buildtest_nhaaefle.log
+─ Test File: /home/spack/runs/generic.local.bash/envvar_override/overr… ─
+#!/bin/bash                                                              
+                                                                         
+                                                                         
+# name of executable                                                     
+_EXEC=hello_omp.c.exe                                                    
+export OMP_NUM_THREADS="4"                                               
+# Loading modules                                                        
+module load gcc/8.3.0-gcc-7.5.0                                          
+# Compilation Line                                                       
+gcc -fopenmp -o $_EXEC /home/spack/buildtest/examples/compilers/src/hello
+                                                                         
+                                                                         
+# Run executable                                                         
+./$_EXEC                                                                 
+                                                                         
+                                                                         

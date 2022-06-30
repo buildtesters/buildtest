@@ -1,14 +1,37 @@
 CHANGELOG
 =========
 
-v0.14.1 (TBD)
---------------
+v0.14.1 (July 1st 2022)
+-------------------------
 
-- Add option ``--buildenv`` to **buildtest report**, **buildtest path** and **buildtest inspect query** and add entry `buildenv` to capture build environment from test. `#1062 <https://github.com/buildtesters/buildtest/pull/1062>`_
-- Add support to timeout test via ``buildtest build --timeout`` which is calculated in number of seconds. `#1052 <https://github.com/buildtesters/buildtest/pull/1052>`_, `#1057 <https://github.com/buildtesters/buildtest/pull/1057>`_
-- Rename property *numprocs* to *poolsize* in buildtest configuration for configuring number of worker process when using multiprocessing library. `#1064 <https://github.com/buildtesters/buildtest/pull/1064>`_
-- Add option ``buildtest --editor`` to specify your preferred editor when opening files. `#1070 <https://github.com/buildtesters/buildtest/pull/1070>`_
-- Add ``summary`` property to specify an extended description of test that is not limited to 80 character unlike the `description` field. See `#1069 <https://github.com/buildtesters/buildtest/pull/1069>`_
+**New Options**
+
+- Add option ``--buildenv`` to **buildtest report**, **buildtest path** and **buildtest inspect query** and add entry `buildenv` to capture build environment from test `#1062 <https://github.com/buildtesters/buildtest/pull/1062>`_
+- Add support to timeout test via ``buildtest build --timeout`` which is calculated in number of seconds `#1052 <https://github.com/buildtesters/buildtest/pull/1052>`_, `#1057 <https://github.com/buildtesters/buildtest/pull/1057>`_
+- Add option ``buildtest --editor`` to specify your preferred editor when opening files `#1070 <https://github.com/buildtesters/buildtest/pull/1070>`_
+- Rename ``buildtest buildspec edit`` to ``buildtest buildspec edit-test`` used for editing files by testname which is to be consistent with `buildtest buildspec edit-file` which edits by filename `#1081 <https://github.com/buildtesters/buildtest/pull/1081>`_
+- Add option ``buildtest report --failure`` to report all failure tests `#1076 <https://github.com/buildtesters/buildtest/pull/1076>`_
+- Add new command ``buildtest stats`` to show test stats which can be useful for analysis purpose. This command is subject to change  `#1074 <https://github.com/buildtesters/buildtest/pull/1074>`_
+- Add option ``buildtest cdash upload --open`` to CDASH result that was recently pushed in webbrowser which can be useful if one wants to run this command as pose to clicking link that is shown in output `#1083 <https://github.com/buildtesters/buildtest/pull/1083>`_
+- Add option ``buildtest report --start`` and ``buildtest report --end`` to filter test records by starttime and endtime `#1082 <https://github.com/buildtesters/buildtest/pull/1082>`_
+- Add new command ``buildtest config path`` to show path to configuration file `#1100 <https://github.com/buildtesters/buildtest/pull/1100>`_
+- Add new command ``buildtest buildspec maintainers`` to show maintainer details from buildspec cache. The command ``buildtest buildspec maintainers --list`` will report list of maintainers. The ``--terse`` and ``---no-header`` can be used for parseable format.
+  The ``buildtest buildspec maintainers find <name>`` can be used to search for buildspecs given a maintainer name  `#1093 <https://github.com/buildtesters/buildtest/pull/1093>`_.
+
+**Changes to buildspec**
+
+- Rename property **numprocs** to **poolsize** in buildtest configuration for configuring number of worker process when using multiprocessing library. `#1064 <https://github.com/buildtesters/buildtest/pull/1064>`_
+- Add **summary** property to provide extended description of test that is not limited to 80 character unlike the `description` field. `#1069 <https://github.com/buildtesters/buildtest/pull/1069>`_,  `#1073 <https://github.com/buildtesters/buildtest/pull/1073>`_
+- The dash ``-`` character is now supported character in the test name `#1097 <https://github.com/buildtesters/buildtest/pull/1097>`_
+- Remove **executor** check during Parse stage this avoids having an invalid buildspec when one specifies a buildspec using regular expression where test can run across multiple system `#1098 <https://github.com/buildtesters/buildtest/pull/1098>`_
+
+**Other Changes**
+
+- Add coverage for *ubuntu-22.04* and *macos-12* in regression test and test all python version from 3.7-3.10 `#1120 <https://github.com/buildtesters/buildtest/pull/1120>`_, `#1118 <https://github.com/buildtesters/buildtest/pull/1118>`_, `#1115 <https://github.com/buildtesters/buildtest/pull/1115>`_
+- Remove urlchecker cron workflow `#1110 <https://github.com/buildtesters/buildtest/pull/1110>`_
+- Fix regression test for ``buildtest --editor`` when specifying invalid editor name. Now editor will resort to **vi** if invalid editor is specified `#1124 <https://github.com/buildtesters/buildtest/pull/1124>`_
+
+
 
 v0.14.0 (Mar 18th 2022)
 -----------------------
