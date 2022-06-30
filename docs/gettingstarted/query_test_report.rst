@@ -234,6 +234,16 @@ filter test and only report tests in the range of [start, end] dates.
     │ exit1_fail                                             │ FAIL         │ 2022/06/11 17:51:59                      │ 2022/06/11 17:51:59                     │
     └────────────────────────────────────────────────────────┴──────────────┴──────────────────────────────────────────┴─────────────────────────────────────────┘
 
+Find limited Tests (``buildtest report --count``)
+--------------------------------------------------------
+
+The ``buildtest report`` command will show all test results and the output can be quite long so for this command 
+``buildtest report --count`` we would like to limit the output by limiting the number of rows that get printed
+
+.. command-output:: buildtest report --count 1
+
+.. command-output:: buildtest report --count 2
+
 Terse Output
 -------------
 
