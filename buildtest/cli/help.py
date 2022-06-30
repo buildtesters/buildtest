@@ -103,7 +103,10 @@ def print_buildspec_help():
         "buildtest buildspec find --root /tmp --rebuild",
         "Discover buildspecs in /tmp and rebuild buildspec cache",
     )
-    table.add_row("buildtest buildspec find --quiet --rebuild", "Rebuild cache file but don't display output of cache")
+    table.add_row(
+        "buildtest buildspec find --quiet --rebuild",
+        "Rebuild cache file but don't display output of cache",
+    )
     table.add_row(
         "buildtest buildspec find --paths", "Print all root directories for buildspecs"
     )

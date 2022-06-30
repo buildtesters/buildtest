@@ -618,7 +618,7 @@ def buildspec_menu(subparsers):
     query_group.add_argument(
         "-p", "--paths", help="print all root buildspec paths", action="store_true"
     )
-    query_group.add_argument("-q", "--quiet", help="Don't print output of buildspec cache when rebuilding cache", action="store_true")
+
     query_group.add_argument(
         "-t", "--tags", help="List all available tags", action="store_true"
     )
@@ -666,6 +666,13 @@ def buildspec_menu(subparsers):
         help="Specify root buildspecs (directory) path to load buildspecs into buildspec cache.",
         type=str,
         action="append",
+    )
+
+    buildspec_find.add_argument(
+        "-q",
+        "--quiet",
+        help="Don't print output of buildspec cache when rebuilding cache",
+        action="store_true",
     )
 
     # buildtest buildspec show

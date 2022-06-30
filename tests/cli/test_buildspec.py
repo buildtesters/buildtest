@@ -5,7 +5,6 @@ import tempfile
 
 import pytest
 from buildtest.cli.buildspec import (
-    buildspec_find,
     BuildspecCache,
     buildspec_maintainers,
     buildspec_validate,
@@ -111,9 +110,9 @@ def test_func_buildspec_find():
     cache.print_maintainers_by_buildspecs()
     cache.print_buildspecs()
 
-
     # buildtest buildspec find --quiet
     cache.print_buildspecs(quiet=True)
+
 
 @pytest.mark.cli
 def test_buildspec_find_terse():
