@@ -138,32 +138,13 @@ def test_buildspec_maintainers():
 
 @pytest.mark.cli
 def test_buildspec_find_invalid():
-
     cache = BuildspecCache(configuration=configuration)
     cache.print_invalid_buildspecs(error=True)
     cache.print_invalid_buildspecs(error=False)
-
-
-@pytest.mark.cli
-def test_buildspec_find_invalid_terse():
-
-    cache = BuildspecCache(configuration=configuration, terse=True)
-    cache.print_invalid_buildspecs(error=True)
-    cache.print_invalid_buildspecs(error=False)
-
-
-@pytest.mark.cli
-def test_buildspec_find_invalid_terse_no_header():
-
-    cache = BuildspecCache(configuration=configuration, terse=True, header=False)
-    cache.print_invalid_buildspecs(error=True)
-    cache.print_invalid_buildspecs(error=False)
-
-
-@pytest.mark.cli
-def test_buildspec_find_invalid_terse_error():
-    cache = BuildspecCache(configuration=configuration, terse=True, header=False)
-    cache.print_invalid_buildspecs(error=True)
+    cache.print_invalid_buildspecs(error=True, terse=True)
+    cache.print_invalid_buildspecs(error=False, terse=True)
+    cache.print_invalid_buildspecs(error=True, terse=True, header=True)
+    cache.print_invalid_buildspecs(error=False, terse=True, header=True)
 
 
 @pytest.mark.cli
