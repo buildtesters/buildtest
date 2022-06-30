@@ -876,12 +876,17 @@ def report_menu(subparsers):
         action="store_true",
     )
     parser_report.add_argument(
+        "-c",
+        "--count",
+        type=positive_number,
+        help="Retrieve limited number of rows that get printed"
+    )
+    parser_report.add_argument(
         "-n",
         "--no-header",
         action="store_true",
         help="Don't print headers column used with terse option (--terse).",
     )
-
     parser_report.add_argument(
         "-t",
         "--terse",

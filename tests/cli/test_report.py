@@ -232,3 +232,25 @@ def test_report_clear():
 
     shutil.move(backupfile, BUILD_REPORT)
     assert BUILD_REPORT
+
+
+@pytest.mark.cli
+def test_report_limited_rows():
+    class args:
+        filter = None
+        format = None
+        start=None
+        end=None
+        failure=None
+        latest = False
+        oldest = False
+        report_file = None
+        pager = None 
+        terse = None
+        no_header = None
+        report_subcommand = None
+        helpfilter = False
+        helpformat = False
+        count = 5
+
+    report_cmd(args)
