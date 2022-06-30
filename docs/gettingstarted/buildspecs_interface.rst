@@ -35,6 +35,11 @@ buildspec cache by running::
 
   $ buildtest buildspec find --rebuild
 
+The ``--quiet`` option can be used to suppress output when using **buildtest buildspec find** this can be useful
+if you want to rebuild the cache without seeing output of cache. Take for instance the following command
+
+.. command-output:: buildtest buildspec find --quiet --rebuild
+
 If you want to find all buildspec files in cache you can run ``buildtest buildspec find --buildspec``.
 Shown below is an example output.
 
@@ -42,7 +47,7 @@ Shown below is an example output.
    :ellipsis: 11
 
 The ``buildtest buildspec find --paths`` will display a list of root directories buildtest will search for
-buildspecs when runninh ``buildtest buildspec find``. One can define these directories in the configuration file
+buildspecs when running ``buildtest buildspec find``. One can define these directories in the configuration file
 or pass them via command line.
 
 .. command-output:: buildtest buildspec find --paths
