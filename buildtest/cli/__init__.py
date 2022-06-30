@@ -879,7 +879,7 @@ def report_menu(subparsers):
         "-c",
         "--count",
         type=positive_number,
-        help="Retrieve limited number of rows that get printed"
+        help="Retrieve limited number of rows that get printed",
     )
     parser_report.add_argument(
         "-n",

@@ -85,7 +85,7 @@ class Report:
         end=None,
         failure=None,
         latest=None,
-        oldest=None, 
+        oldest=None,
         count=None,
         pager=None,
     ):
