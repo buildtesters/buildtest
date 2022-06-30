@@ -236,8 +236,7 @@ def test_report_clear():
 
 @pytest.mark.cli
 def test_report_limited_rows():
-    
+
     report = Report()
     report.print_report(count=5)
     report.print_report(terse=True, count=5)
-     
