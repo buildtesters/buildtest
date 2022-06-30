@@ -543,7 +543,7 @@ a **.log** extension.
 CDASH Configuration
 --------------------
 
-buildtest can be configured to push test to `CDASH <https://www.kitware.com/cdash/project/about.html>`_. The default configuration
+buildtest can be configured to push test to `CDASH <https://www.cdash.org/>`_. The default configuration
 file provides a CDASH configuration for buildtest project is the following.
 
 .. code-block:: yaml
