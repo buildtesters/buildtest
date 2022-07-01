@@ -943,7 +943,7 @@ class BuildspecCache:
             console.print(path)
 
 
-def edit_buildspec_test(test_names, configuration, editor):
+def edit_buildspec_test(test_names, configuration, editor, open=True):
     """Open a list of test names in editor mode defined by ``EDITOR`` environment otherwise resort to ``vim``.
     This method will search for buildspec cache and find path to buildspec file corresponding to test name and open
     file in editor. If multiple test are specified via ``buildtest buildspec edit`` then each file will be open and
@@ -954,6 +954,8 @@ def edit_buildspec_test(test_names, configuration, editor):
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
         editor (str): Path to editor to use when opening file
     """
+    if not open:
+        return
     cache = BuildspecCache(configuration=configuration)
 
     for name in test_names:
@@ -975,7 +977,7 @@ def edit_buildspec_test(test_names, configuration, editor):
         console.print(f"[green]{buildspec} is valid")
 
 
-def edit_buildspec_file(buildspecs, configuration, editor):
+def edit_buildspec_file(buildspecs, configuration, editor, open=True):
     """Open buildspec in editor and validate buildspec with parser. This method is invoked by command ``buildtest buildspec edit-file``.
 
     Args:
@@ -983,6 +985,8 @@ def edit_buildspec_file(buildspecs, configuration, editor):
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
         editor (str): Path to editor to use when opening file
     """
+    if not open:
+        return
     for file in buildspecs:
 
         buildspec = resolve_path(file, exist=False)
