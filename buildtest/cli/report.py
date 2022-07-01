@@ -84,6 +84,7 @@ class Report:
         start=None,
         end=None,
         failure=None,
+        passed=None,
         latest=None,
         oldest=None,
         count=None,
@@ -97,6 +98,7 @@ class Report:
             start (datetime, optional): Fetch run for all tests discovered filered by starttime. This is specified via ``buildtest report --start``
             end (datetime, optional): Fetch run for all tests discovered filered by endtime. This is specified via ``buildtest report --end``
             failure (bool, optional): Fetch failure run for all tests discovered. This is specified via ``buildtest report --failure``
+            passed (bool, optional): Fetch passed run for all tests discovered. This is specified via ``buildtest report --passed``
             latest (bool, optional): Fetch latest run for all tests discovered. This is specified via ``buildtest report --latest``
             oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
             count (int, optional): Fetch limited number of rows get printed for all tests discovered. This is specified via ``buildtest report --count``
@@ -105,6 +107,7 @@ class Report:
         self.start = start
         self.end = end
         self.failure = failure
+        self.passed = passed
         self.latest = latest
         self.oldest = oldest
         self.filter = filter_args
@@ -421,6 +424,9 @@ class Report:
                 # retrieve all records of failure tests if --failure is specified
                 elif self.failure:
                     tests = [test for test in tests if test["state"] == "FAIL"]
+                # retrieve all records of passed tests if --passed is specified
+                elif self.passed:
+                    tests = [test for test in tests if test["state"] == "PASS"]
                 # retrieve all records of tests filtered by start or end if --start and end are specified
                 elif self.start or self.end:
                     tests = [test for test in tests if self.filter_by_start_end(test)]
@@ -769,6 +775,7 @@ def report_cmd(args, report_file=None):
         start=args.start,
         end=args.end,
         failure=args.failure,
+        passed=args.passed,
         latest=args.latest,
         oldest=args.oldest,
         report_file=report_file,

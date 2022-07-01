@@ -330,6 +330,7 @@ def print_report_help():
         "Read report file /tmp/result.json and display result",
     )
     table.add_row("buildtest report --failure", "Show all test failures")
+    table.add_row("buildtest report --passed", "Show all test passed")
     table.add_row(
         "buildtest report --start 2022-01-01 --end 2022-01-05",
         "Show all test records in the date range from [2022-01-01, 2022-01-05]",

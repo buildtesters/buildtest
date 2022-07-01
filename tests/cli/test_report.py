@@ -114,6 +114,13 @@ def test_report_failure():
 
 
 @pytest.mark.cli
+def test_report_passed():
+
+    # buildtest report --filter tags=tutorials --passed
+    Report(filter_args={"tags": "tutorials"}, passed=True)
+
+
+@pytest.mark.cli
 def test_report_start_and_end():
 
     start_date = datetime.datetime.strptime("2022-06-07 00:00:00", "%Y-%m-%d %X")

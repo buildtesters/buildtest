@@ -167,6 +167,21 @@ filter test and report all **FAIL** tests.
 
 .. command-output:: buildtest report --filter tags=tutorials --format name,id,state --failure
 
+Find all Passed Tests (``buildtest report --passed``)
+--------------------------------------------------------
+
+The ``buildtest report --passed`` command can be used to retrieve all passed tests which is equivalent to filtering tests
+by **state=PASS** since the test state is determined by **state** property. This command can be useful to pin-point passed tests.
+
+Let's take a look at these two example, the first test queries report by filtering by tag name ``tutorials`` and the second command
+will run same example with ``--passed`` option. Take note of the **state** property in table. In second example buildtest will
+filter test and report all **PASS** tests.
+
+
+.. command-output:: buildtest report --filter tags=tutorials --format name,id,state
+
+.. command-output:: buildtest report --filter tags=tutorials --format name,id,state --passed
+
 Find Tests by Start and End Date (``buildtest report --start --end``)
 ------------------------------------------------------------------------
 
