@@ -120,13 +120,13 @@ buildspec roots
 
 buildtest can discover buildspec using ``buildspec_roots`` keyword. This field is a list
 of directory paths to search for buildspecs. For example we clone the repo
-https://github.com/buildtesters/buildtest-cori at **$HOME/buildtest-cori** and assign
+https://github.com/buildtesters/buildtest-nersc at **$HOME/buildtest-nersc** and assign
 this to **buildspec_roots** as follows:
 
 .. code-block:: yaml
 
     buildspec_roots:
-      - $HOME/buildtest-cori
+      - $HOME/buildtest-nersc
 
 This field is used with the ``buildtest buildspec find`` command. If you rebuild
 your buildspec cache via ``--rebuild`` option, buildtest will search for all buildspecs in
@@ -543,7 +543,7 @@ a **.log** extension.
 CDASH Configuration
 --------------------
 
-buildtest can be configured to push test to `CDASH <https://www.kitware.com/cdash/project/about.html>`_. The default configuration
+buildtest can be configured to push test to `CDASH <https://www.cdash.org/>`_. The default configuration
 file provides a CDASH configuration for buildtest project is the following.
 
 .. code-block:: yaml

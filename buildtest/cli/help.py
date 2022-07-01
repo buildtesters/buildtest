@@ -104,6 +104,10 @@ def print_buildspec_help():
         "Discover buildspecs in /tmp and rebuild buildspec cache",
     )
     table.add_row(
+        "buildtest buildspec find --quiet --rebuild",
+        "Rebuild cache file but don't display output of cache",
+    )
+    table.add_row(
         "buildtest buildspec find --paths", "Print all root directories for buildspecs"
     )
     table.add_row(
@@ -320,6 +324,7 @@ def print_report_help():
     table.add_row("buildtest report --helpfilter", "List all filter fields")
     table.add_row("buildtest report --helpformat", "List all format fields")
     table.add_row("buildtest report --latest", "Retrieve latest record for all tests")
+    table.add_row("buildtest report --count", "Retrieve limited records for all tests")
     table.add_row(
         "buildtest -r /tmp/result.json report",
         "Read report file /tmp/result.json and display result",

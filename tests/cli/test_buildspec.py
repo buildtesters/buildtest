@@ -110,6 +110,9 @@ def test_func_buildspec_find():
     cache.print_maintainers_by_buildspecs()
     cache.print_buildspecs()
 
+    # buildtest buildspec find --quiet
+    cache.print_buildspecs(quiet=True)
+
 
 @pytest.mark.cli
 def test_buildspec_find_terse():
@@ -138,10 +141,13 @@ def test_buildspec_maintainers():
 
 @pytest.mark.cli
 def test_buildspec_find_invalid():
-
     cache = BuildspecCache(configuration=configuration)
     cache.print_invalid_buildspecs(error=True)
     cache.print_invalid_buildspecs(error=False)
+    cache.print_invalid_buildspecs(error=True, terse=True)
+    cache.print_invalid_buildspecs(error=False, terse=True)
+    cache.print_invalid_buildspecs(error=True, terse=True, header=True)
+    cache.print_invalid_buildspecs(error=False, terse=True, header=True)
 
 
 @pytest.mark.cli

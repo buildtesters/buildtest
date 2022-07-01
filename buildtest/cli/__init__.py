@@ -618,6 +618,7 @@ def buildspec_menu(subparsers):
     query_group.add_argument(
         "-p", "--paths", help="print all root buildspec paths", action="store_true"
     )
+
     query_group.add_argument(
         "-t", "--tags", help="List all available tags", action="store_true"
     )
@@ -665,6 +666,13 @@ def buildspec_menu(subparsers):
         help="Specify root buildspecs (directory) path to load buildspecs into buildspec cache.",
         type=str,
         action="append",
+    )
+
+    buildspec_find.add_argument(
+        "-q",
+        "--quiet",
+        help="Don't print output of buildspec cache when rebuilding cache",
+        action="store_true",
     )
 
     # buildtest buildspec show
@@ -882,12 +890,17 @@ def report_menu(subparsers):
         action="store_true",
     )
     parser_report.add_argument(
+        "-c",
+        "--count",
+        type=positive_number,
+        help="Retrieve limited number of rows that get printed",
+    )
+    parser_report.add_argument(
         "-n",
         "--no-header",
         action="store_true",
         help="Don't print headers column used with terse option (--terse).",
     )
-
     parser_report.add_argument(
         "-t",
         "--terse",

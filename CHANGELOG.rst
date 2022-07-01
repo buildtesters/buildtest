@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-v0.14.1 (July 1st 2022)
+v0.15.0 (June 30th 2022)
 -------------------------
 
 **New Options**
@@ -17,6 +17,8 @@ v0.14.1 (July 1st 2022)
 - Add new command ``buildtest config path`` to show path to configuration file `#1100 <https://github.com/buildtesters/buildtest/pull/1100>`_
 - Add new command ``buildtest buildspec maintainers`` to show maintainer details from buildspec cache. The command ``buildtest buildspec maintainers --list`` will report list of maintainers. The ``--terse`` and ``---no-header`` can be used for parseable format.
   The ``buildtest buildspec maintainers find <name>`` can be used to search for buildspecs given a maintainer name  `#1093 <https://github.com/buildtesters/buildtest/pull/1093>`_.
+- Add option ``buildtest buildspec find --quiet`` to suppress output which can be useful when rebuilding cache `#1135 <https://github.com/buildtesters/buildtest/pull/1135>`_
+- Add option ``buildtest report --count`` to limit number of entries that is displayed in output `#1130 <https://github.com/buildtesters/buildtest/pull/1130>`_
 
 **Changes to buildspec**
 
@@ -30,7 +32,9 @@ v0.14.1 (July 1st 2022)
 - Add coverage for *ubuntu-22.04* and *macos-12* in regression test and test all python version from 3.7-3.10 `#1120 <https://github.com/buildtesters/buildtest/pull/1120>`_, `#1118 <https://github.com/buildtesters/buildtest/pull/1118>`_, `#1115 <https://github.com/buildtesters/buildtest/pull/1115>`_
 - Remove urlchecker cron workflow `#1110 <https://github.com/buildtesters/buildtest/pull/1110>`_
 - Fix regression test for ``buildtest --editor`` when specifying invalid editor name. Now editor will resort to **vi** if invalid editor is specified `#1124 <https://github.com/buildtesters/buildtest/pull/1124>`_
-
+- Fix bug in invocation for ``buildtest buildspec edit-test`` `#1133 <https://github.com/buildtesters/buildtest/pull/1133>`_
+- Add coverage for ubuntu-22.04 and macos-12 in installation workflow `#1129 <https://github.com/buildtesters/buildtest/pull/1129>`_
+- Fix version of black in `.pre-commit-config.yaml` `#1131 <https://github.com/buildtesters/buildtest/pull/1131>`_
 
 
 v0.14.0 (Mar 18th 2022)

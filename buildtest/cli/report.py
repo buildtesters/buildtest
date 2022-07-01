@@ -87,6 +87,7 @@ class Report:
         passed=None,
         latest=None,
         oldest=None,
+        count=None,
         pager=None,
     ):
         """
@@ -100,6 +101,7 @@ class Report:
             passed (bool, optional): Fetch passed run for all tests discovered. This is specified via ``buildtest report --passed``
             latest (bool, optional): Fetch latest run for all tests discovered. This is specified via ``buildtest report --latest``
             oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
+            count (int, optional): Fetch limited number of rows get printed for all tests discovered. This is specified via ``buildtest report --count``
             pager (bool, optional): Enabling PAGING output for ``buildtest report``. This can be specified via ``buildtest report --pager``
         """
         self.start = start
@@ -499,7 +501,7 @@ class Report:
             )
         console.print(table)
 
-    def print_report(self, terse=None, noheader=None, title=None):
+    def print_report(self, terse=None, noheader=None, title=None, count=None):
         """This method will print report table after processing report file. By default we print output in
         table format but this can be changed to terse format which will print output in parseable format.
 
@@ -553,6 +555,10 @@ class Report:
 
             t = [list(i) for i in zip(*join_list)]
 
+            # limited number of rows to be printed in terse mode
+            if count:
+                t = t[:count]
+
             if not noheader:
                 print("|".join(self.display_table.keys()))
 
@@ -569,6 +575,11 @@ class Report:
             join_list.append(self.display_table[field])
 
         transpose_list = [list(i) for i in zip(*join_list)]
+
+        # limited number of rows to be printed
+        if count:
+            transpose_list = transpose_list[:count]
+
         for row in transpose_list:
             table.add_row(*row)
 
@@ -768,6 +779,7 @@ def report_cmd(args, report_file=None):
         latest=args.latest,
         oldest=args.oldest,
         report_file=report_file,
+        count=args.count,
         pager=args.pager,
     )
     if args.report_subcommand == "summary":
@@ -782,7 +794,7 @@ def report_cmd(args, report_file=None):
         results.print_format_fields()
         return
 
-    results.print_report(terse=args.terse, noheader=args.no_header)
+    results.print_report(terse=args.terse, noheader=args.no_header, count=args.count)
 
 
 def report_summary(report, pager=None):

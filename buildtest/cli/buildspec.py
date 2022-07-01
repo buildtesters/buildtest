@@ -718,14 +718,19 @@ class BuildspecCache:
 
         console.print(table)
 
-    def print_buildspecs(self, terse=None, header=None):
+    def print_buildspecs(self, terse=None, header=None, quiet=None):
         """Print buildspec table. This method is typically called when running ``buildtest buildspec find`` or options
         with ``--filter`` and ``--format``.
 
         Args:
             terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
             header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
+            quiet (bool, optional): If this option is set we return immediately and don't anything. This is specified via ``buildtest buildspec find --quiet`` which can be useful when rebuilding cache without displaying output
         """
+
+        # Don't print anything if --quiet is set
+        if quiet:
+            return
 
         self.terse = terse or self.terse
         self.header = header or self.header
@@ -854,28 +859,46 @@ class BuildspecCache:
 
         console.print(table)
 
-    def print_invalid_buildspecs(self, error=None):
+    def print_invalid_buildspecs(self, error=None, terse=None, header=None):
         """Print invalid buildspecs from cache file. This method implements command ``buildtest buildspec find invalids``
 
         Args:
             error (bool, optional): Display error messages for invalid buildspecs. Default is ``False`` where we only print list of invalid buildspecs
+            terse (bool, optional): Display output in machine readable format.
+            header (bool, optional): Determine whether to print header column in machine readable format.
         """
 
-        table = Table(
-            "Buildspec",
-            title="Invalid Buildspecs",
-            header_style="blue",
-            style="cyan",
-            title_style="red",
-            row_styles=["red"],
-        )
+        terse = terse or self.terse
+        header = header or self.header
 
-        if not error:
-            for buildspec in self.cache["invalids"].keys():
-                table.add_row(buildspec)
-            console.print(table)
+        if error and terse:
+            console.print("The --terse flag can not be used with the --error option")
             return
 
+        # implementation for machine readable format specified via --terse
+        if terse:
+            if not header:
+                print("buildspec")
+            for buildspec in self.cache["invalids"].keys():
+                print(buildspec)
+            return
+
+        # if --error is not specified print list of invalid buildspecs in rich table
+        if not error:
+            table = Table(
+                "Buildspec",
+                title="Invalid Buildspecs",
+                header_style="blue",
+                style="cyan",
+                title_style="red",
+                row_styles=["red"],
+            )
+            for buildspec in self.cache["invalids"].keys():
+                table.add_row(buildspec)
+                console.print(table)
+                return
+
+        # implementation for --error which displays buildspec file followed by error
         for buildspec, value in self.cache["invalids"].items():
             console.rule(buildspec)
             pprint(value)
@@ -1249,4 +1272,4 @@ def buildspec_find(args, configuration):
         cache.print_format_fields()
         return
 
-    cache.print_buildspecs()
+    cache.print_buildspecs(quiet=args.quiet)

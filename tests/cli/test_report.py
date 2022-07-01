@@ -239,3 +239,11 @@ def test_report_clear():
 
     shutil.move(backupfile, BUILD_REPORT)
     assert BUILD_REPORT
+
+
+@pytest.mark.cli
+def test_report_limited_rows():
+
+    report = Report()
+    report.print_report(count=5)
+    report.print_report(terse=True, count=5)
