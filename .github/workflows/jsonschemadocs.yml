@@ -74,7 +74,7 @@ jobs:
 
 
      - name: Deploy to GitHub Pages 🚀
-       uses: JamesIves/github-pages-deploy-action@v4.3.3
+       uses: JamesIves/github-pages-deploy-action@v4.3.4
        with:
          # ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
          branch: gh-pages 
