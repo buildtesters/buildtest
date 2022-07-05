@@ -27,7 +27,7 @@ jobs:
       # use black github action see https://black.readthedocs.io/en/stable/integrations/github_actions.html
       - uses: psf/black@stable
         with:
-          options: "--check"
+          options: "--check --verbose"
           src: "buildtest tests scripts"
 
       - name: Check imports with pyflakes
