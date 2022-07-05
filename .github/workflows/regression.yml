@@ -35,7 +35,7 @@ jobs:
         python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
         buildtest cdash upload --site=github unittests
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
     - name: Setup tmate session
       if: ${{ failure() }}
       uses: mxschmitt/action-tmate@v3
