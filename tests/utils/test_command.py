@@ -1,4 +1,5 @@
 import pytest
+from buildtest.exceptions import BuildTestError
 from buildtest.utils.command import BuildTestCommand
 
 
@@ -12,7 +13,7 @@ class TestBuildTestCommand:
 
         out, err, ret = a.get_output(), a.get_error(), a.returncode()
 
-        print("Command: {cmd}")
+        print(f"Command: {cmd}")
         print(f"Output: {out}")
         print(f"Error: {err}")
         print(f"Return Code: {ret}")
@@ -26,9 +27,15 @@ class TestBuildTestCommand:
 
         out, err, ret = a.get_output(), a.get_error(), a.returncode()
 
-        print("Command: {cmd}")
+        print(f"Command: {cmd}")
         print(f"Output: {out}")
         print(f"Error: {err}")
         print(f"Return Code: {ret}")
 
         assert 0 != ret
+
+    def test_invalid_type(self):
+        query = ["hostname"]
+        # input type must be a string otherwise it will raise an exception
+        with pytest.raises(BuildTestError):
+            BuildTestCommand(query)
