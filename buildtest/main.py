@@ -25,6 +25,7 @@ from buildtest.cli.config import config_cmd
 from buildtest.cli.debugreport import print_debug_report
 from buildtest.cli.help import buildtest_help
 from buildtest.cli.history import build_history
+from buildtest.cli.info import buildtest_info
 from buildtest.cli.inspect import inspect_cmd
 from buildtest.cli.path import path_cmd
 from buildtest.cli.report import report_cmd
@@ -278,6 +279,8 @@ def main():
     elif args.subcommands == "schemadocs":
         webbrowser.open("https://buildtesters.github.io/buildtest/")
 
+    elif args.subcommands == "info":
+        buildtest_info(configuration, system)
     elif args.subcommands in ["debug", "debugreport"]:
         print_debug_report(system, configuration)
 

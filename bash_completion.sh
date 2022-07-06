@@ -93,7 +93,7 @@ _buildtest ()
 
   COMPREPLY=()   # Array variable storing the possible completions.
 
-  local cmds="build buildspec cd cdash clean config debugreport docs help inspect history path report schema schemadocs stylecheck unittests"
+  local cmds="build buildspec cd cdash clean config debugreport docs help info inspect history path report schema schemadocs stylecheck unittests"
   local alias_cmds="bd bc cg debug it h hy rt style test"
   local opts="--color --config --debug --editor --help --lastlog --report --version -c -d -h -r -V"
 
