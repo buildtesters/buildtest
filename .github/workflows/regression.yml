@@ -45,6 +45,5 @@ jobs:
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
-        path_to_write_report: ./coverage/coverage.json
-        directory: ./coverage/
+        directory: ./../
         verbose: true
