@@ -34,7 +34,6 @@ jobs:
         pip install coverage
         python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
         buildtest cdash upload --site=github unittests
-        coverage xml
 
 
     # - uses: actions/checkout@v2
