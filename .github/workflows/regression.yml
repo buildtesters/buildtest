@@ -36,11 +36,10 @@ jobs:
         buildtest cdash upload --site=github unittests
 
 
-    # - uses: actions/checkout@v2
-    # - name: Setup tmate session
-    #   if: ${{ failure() }}
-    #   uses: mxschmitt/action-tmate@v3
-    #   timeout-minutes: 30
+    - name: Setup tmate session
+      if: ${{ failure() }}
+      uses: mxschmitt/action-tmate@v3
+      timeout-minutes: 30
 
 
     - name: Upload coverage to Codecov
