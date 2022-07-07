@@ -114,7 +114,6 @@ The ``buildtest unittest`` command will run this script, shown below are the opt
 the script via python
 
 .. command-output:: python $BUILDTEST_ROOT/buildtest/tools/unittests.py --help
-   :shell:
 
 
 The `pytest.ini <https://github.com/buildtesters/buildtest/blob/devel/pytest.ini>`_
