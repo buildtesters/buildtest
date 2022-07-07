@@ -10,7 +10,7 @@ cori_pr_regression_test:
   tags: ["cori"]
   stage: regression
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web" || '$CI_PIPELINE_SOURCE' == "external_pull_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "external_pull_request_event"'
 
   script:
     - whoami
