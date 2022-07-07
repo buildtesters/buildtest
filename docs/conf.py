@@ -16,7 +16,7 @@ import os
 import shutil
 import sys
 
-here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+here = os.path.dirname((os.path.abspath(__file__)))
 sys.path.insert(0, here)
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.cli.buildspec import BuildspecCache
