@@ -4,8 +4,8 @@ import shutil
 import sys
 
 here = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-print(here)
-print(sys.path)
+if here not in sys.path:
+    sys.path.insert(0, here)
 
 import coverage
 import pytest
