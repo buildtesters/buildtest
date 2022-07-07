@@ -174,9 +174,19 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     config_menu(subparsers)
     report_menu(subparsers)
     inspect_menu(subparsers)
+    path_menu(subparsers)
     history_menu(subparsers)
     schema_menu(subparsers)
     cdash_menu(subparsers)
+    unittest_menu(subparsers)
+    stylecheck_menu(subparsers)
+    misc_menu(subparsers)
+
+    return parser
+
+
+def misc_menu(subparsers):
+    """Build the command line menu for some miscellaneous commands"""
 
     cd_parser = subparsers.add_parser(
         "cd", help="change directory to root of test given a test name"
@@ -188,28 +198,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         "clean",
         help="Remove all generate files from buildtest including test directory, log files, report file, buildspec cache, history files.",
     )
-    path = subparsers.add_parser("path", help="Show path attributes for a given test")
-    path_group = path.add_mutually_exclusive_group()
-    path_group.add_argument(
-        "-be", "--buildenv", action="store_true", help="Show path to build environment"
-    )
-    path_group.add_argument(
-        "-t", "--testpath", action="store_true", help="Show path to test script"
-    )
-    path_group.add_argument(
-        "-o", "--outfile", action="store_true", help="Show path to output file"
-    )
-    path_group.add_argument(
-        "-e", "--errfile", action="store_true", help="Show path to error file"
-    )
-    path_group.add_argument(
-        "-b", "--buildscript", action="store_true", help="Show path to build script"
-    )
-    path_group.add_argument(
-        "-s", "--stagedir", action="store_true", help="Show path to stage directory"
-    )
-
-    path.add_argument("name", help="Name of test")
 
     subparsers.add_parser("docs", help="Open buildtest docs in browser")
     subparsers.add_parser("schemadocs", help="Open buildtest schema docs in browser")
@@ -228,6 +216,8 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         "stats", help="Show test statistics for given test"
     )
     parser_stats.add_argument("name", help="Name of test")
+
+    subparsers.add_parser("info", help="Show details regarding current buildtest setup")
 
     help_subparser = subparsers.add_parser(
         "help",
@@ -259,6 +249,32 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         ],
         help="Show help message for command",
     )
+
+
+def stylecheck_menu(subparsers):
+    """This method will create command options for ``buildtest stylecheck``"""
+
+    stylecheck_parser = subparsers.add_parser(
+        "stylecheck", aliases=["style"], help="Run buildtest style checks"
+    )
+
+    stylecheck_parser.add_argument(
+        "--no-black", action="store_true", help="Don't run black style check"
+    )
+    stylecheck_parser.add_argument(
+        "--no-isort", action="store_true", help="Don't run isort style check"
+    )
+    stylecheck_parser.add_argument(
+        "--no-pyflakes", action="store_true", help="Dont' run pyflakes check"
+    )
+    stylecheck_parser.add_argument(
+        "-a", "--apply", action="store_true", help="Apply style checks to codebase."
+    )
+
+
+def unittest_menu(subparsers):
+    """This method builds the command line menu for ``buildtest unittests`` command"""
+
     unittests_parser = subparsers.add_parser(
         "unittests", help="Run buildtest unit tests", aliases=["test"]
     )
@@ -279,23 +295,32 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         action="append",
     )
 
-    stylecheck_parser = subparsers.add_parser(
-        "stylecheck", aliases=["style"], help="Run buildtest style checks"
+
+def path_menu(subparsers):
+    """This method builds the command line menu for ``buildtest path`` command"""
+
+    path = subparsers.add_parser("path", help="Show path attributes for a given test")
+    path_group = path.add_mutually_exclusive_group()
+    path_group.add_argument(
+        "-be", "--buildenv", action="store_true", help="Show path to build environment"
+    )
+    path_group.add_argument(
+        "-t", "--testpath", action="store_true", help="Show path to test script"
+    )
+    path_group.add_argument(
+        "-o", "--outfile", action="store_true", help="Show path to output file"
+    )
+    path_group.add_argument(
+        "-e", "--errfile", action="store_true", help="Show path to error file"
+    )
+    path_group.add_argument(
+        "-b", "--buildscript", action="store_true", help="Show path to build script"
+    )
+    path_group.add_argument(
+        "-s", "--stagedir", action="store_true", help="Show path to stage directory"
     )
 
-    stylecheck_parser.add_argument(
-        "--no-black", action="store_true", help="Don't run black style check"
-    )
-    stylecheck_parser.add_argument(
-        "--no-isort", action="store_true", help="Don't run isort style check"
-    )
-    stylecheck_parser.add_argument(
-        "--no-pyflakes", action="store_true", help="Dont' run pyflakes check"
-    )
-    stylecheck_parser.add_argument(
-        "-a", "--apply", action="store_true", help="Apply style checks to codebase."
-    )
-    return parser
+    path.add_argument("name", help="Name of test")
 
 
 def history_menu(subparsers):
