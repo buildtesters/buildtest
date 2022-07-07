@@ -154,15 +154,12 @@ def test_buildspec_find_invalid():
 
 @pytest.mark.cli
 def test_edit_test():
-    # cache.print
-    buildspecs = []
-    edit_buildspec_test(buildspecs, configuration, editor="", open=False)
+    edit_buildspec_test(buildspecs=[], configuration, editor="", open=False)
 
 
 @pytest.mark.cli
 def test_edit_file():
-    buildspecs = []
-    edit_buildspec_file(buildspecs, configuration, editor="", open=False)
+    edit_buildspec_file(buildspecs=[], configuration, editor="", open=False)
 
 
 @pytest.mark.cli

@@ -953,6 +953,7 @@ def edit_buildspec_test(test_names, configuration, editor, open=True):
         test_names (list): A list of test names to open in editor
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
         editor (str): Path to editor to use when opening file
+        open (bool): Variable allows for more accurate coverage tracking in regression testing.
     """
     if not open:
         return
@@ -984,6 +985,7 @@ def edit_buildspec_file(buildspecs, configuration, editor, open=True):
         buildspec (str): Path to buildspec file to edit
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
         editor (str): Path to editor to use when opening file
+        open (bool): Variable allows for more accurate coverage tracking in regression testing.
     """
     if not open:
         return
