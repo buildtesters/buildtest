@@ -3,6 +3,10 @@ import os
 import shutil
 import sys
 
+here = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+print(here)
+print(sys.path)
+
 import coverage
 import pytest
 from buildtest.defaults import (
