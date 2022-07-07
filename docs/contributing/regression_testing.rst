@@ -113,6 +113,7 @@ You can run buildtest unittest via python by running the following script
 The ``buildtest unittest`` command will run this script, shown below are the options if you want to run
 the script via python
 
+.. command-output:: echo $BUILDTEST_ROOT
 .. command-output:: python $BUILDTEST_ROOT/buildtest/tools/unittests.py --help
 
 
