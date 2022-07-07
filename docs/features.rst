@@ -50,6 +50,16 @@ builds using the ``--output`` option. In example below we show output of build f
 
 .. command-output:: buildtest history query --output 0
 
+Buildtest Info (``buildtest info``)
+--------------------------------------
+
+The ``buildtest info`` command will provide user with general information pertaining to buildtest and its configuration, system details
+such as python wrapper, python version, machine name, operating system. It will also show the version of `black`, `isort` and `pyflakes` which are used when using
+``buildtest stylecheck`` command
+
+.. command-output:: buildtest info
+
+
 Accessing buildtest documentation
 ----------------------------------
 
@@ -273,8 +283,8 @@ along with configuration file and output of log file during the report.
 
 .. _configuration_cli:
 
-Command Line Interface to buildtest configuration
----------------------------------------------------
+Command Line Interface to buildtest configuration (``buildtest config``)
+---------------------------------------------------------------------------
 
 Once you have implemented your buildtest configuration, you can query the configuration
 details using ``buildtest config`` command. Shown below is the command usage.
@@ -361,8 +371,8 @@ you would reference in buildspec using the ``executor`` property. If you prefer 
 
 .. command-output:: buildtest config executors
 
-View Registered Systems
-~~~~~~~~~~~~~~~~~~~~~~~~~
+View Registered Systems (``buildtest config systems``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Your buildtest configuration may compose of one or more systems since you can define multiple systems
 in a single configuration file to run buildtest for different HPC clusters. You can use
