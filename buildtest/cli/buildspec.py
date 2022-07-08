@@ -1108,14 +1108,14 @@ def buildspec_validate(
         console.print("[green]All buildspecs passed validation!!!")
 
 
-def summarize_buildspec_cache(args, configuration):
+def summarize_buildspec_cache(pager, configuration):
     """entry point for ``buildtest buildspec summary``
 
     Args:
         configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
         args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
     """
-    if args.pager:
+    if pager:
         with console.pager():
             summary_print(configuration)
             return

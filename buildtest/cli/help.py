@@ -172,6 +172,9 @@ def print_buildspec_help():
 
     table.add_row("buildtest buildspec summary", "Show summary of buildspec cache file")
     table.add_row(
+        "buildtest buildspec summary --pager", "Pageants the output of summary"
+    )
+    table.add_row(
         "buildtest buildspec show python_hello",
         "Show content of buildspec based on test name 'python_hello'",
     )

@@ -243,7 +243,8 @@ def test_buildspec_find_roots():
 @pytest.mark.cli
 def test_buildspec_summary():
     # test buildtest buildspec summary
-    summarize_buildspec_cache(configuration)
+    summarize_buildspec_cache(configuration=configuration, pager=False)
+    summarize_buildspec_cache(configuration=configuration, pager=True)
 
 
 @pytest.mark.cli
