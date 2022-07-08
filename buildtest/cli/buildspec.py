@@ -50,7 +50,7 @@ class BuildspecCache:
         roots=None,
         header=None,
         terse=None,
-        pager=None,
+        # pager=None,
     ):
         """The initializer method for BuildspecCache class is responsible for loading and finding buildspecs into buildspec cache. First we
         resolve paths to directory where buildspecs will be searched. This can be specified via ``--roots`` option on command line or one can
@@ -1115,7 +1115,7 @@ def summarize_buildspec_cache(args, configuration):
     Args:
         configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
     """
-    pager = args.pager
+
     cache = BuildspecCache(configuration=configuration)
     msg = f"""
     [yellow]Reading Buildspec Cache File:[/yellow]   [cyan]{BUILDSPEC_CACHE_FILE}[/cyan] 
@@ -1124,8 +1124,7 @@ def summarize_buildspec_cache(args, configuration):
     [yellow]Total Unique Tags:[/yellow]              [cyan]{len(cache.get_unique_tags())}[/cyan] 
     [yellow]Total Maintainers:[/yellow]              [cyan]{len(cache.get_maintainers())}[/cyan] 
 """
-    print(pager)
-    if pager:
+    if args.pager:
         with console.pager():
             summery_print(msg, cache)
             return
