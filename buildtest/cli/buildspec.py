@@ -3,7 +3,6 @@ import logging
 import os
 import subprocess
 import time
-from pydoc import pager
 
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.build import discover_buildspecs
@@ -50,7 +49,7 @@ class BuildspecCache:
         roots=None,
         header=None,
         terse=None,
-        # pager=None,
+        pager=None,
     ):
         """The initializer method for BuildspecCache class is responsible for loading and finding buildspecs into buildspec cache. First we
         resolve paths to directory where buildspecs will be searched. This can be specified via ``--roots`` option on command line or one can
@@ -1110,12 +1109,25 @@ def buildspec_validate(
 
 
 def summarize_buildspec_cache(args, configuration):
+    """entry point for ``buildtest buildspec summary``
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
+        args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
+    """
+    if args.pager:
+        with console.pager():
+            summary_print(configuration)
+            return
+    summary_print(configuration)
+
+
+def summary_print(configuration):
     """Prints summary of buildspec cache which is run via command ``buildtest buildspec summary``
 
     Args:
         configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
     """
-
     cache = BuildspecCache(configuration=configuration)
     msg = f"""
     [yellow]Reading Buildspec Cache File:[/yellow]   [cyan]{BUILDSPEC_CACHE_FILE}[/cyan] 
@@ -1124,14 +1136,7 @@ def summarize_buildspec_cache(args, configuration):
     [yellow]Total Unique Tags:[/yellow]              [cyan]{len(cache.get_unique_tags())}[/cyan] 
     [yellow]Total Maintainers:[/yellow]              [cyan]{len(cache.get_maintainers())}[/cyan] 
 """
-    if args.pager:
-        with console.pager():
-            summery_print(msg, cache)
-            return
-    summery_print(msg, cache)
 
-
-def summery_print(msg, cache):
     console.print(Panel.fit(msg))
 
     layout = Layout()
