@@ -1108,13 +1108,26 @@ def buildspec_validate(
         console.print("[green]All buildspecs passed validation!!!")
 
 
-def summarize_buildspec_cache(configuration):
+def summarize_buildspec_cache(pager, configuration):
+    """entry point for ``buildtest buildspec summary``
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
+        pager (bool): Bolean control output of summary with paging
+    """
+    if pager:
+        with console.pager():
+            summary_print(configuration)
+            return
+    summary_print(configuration)
+
+
+def summary_print(configuration):
     """Prints summary of buildspec cache which is run via command ``buildtest buildspec summary``
 
     Args:
         configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
     """
-
     cache = BuildspecCache(configuration=configuration)
     msg = f"""
     [yellow]Reading Buildspec Cache File:[/yellow]   [cyan]{BUILDSPEC_CACHE_FILE}[/cyan] 
@@ -1123,6 +1136,7 @@ def summarize_buildspec_cache(configuration):
     [yellow]Total Unique Tags:[/yellow]              [cyan]{len(cache.get_unique_tags())}[/cyan] 
     [yellow]Total Maintainers:[/yellow]              [cyan]{len(cache.get_maintainers())}[/cyan] 
 """
+
     console.print(Panel.fit(msg))
 
     layout = Layout()
