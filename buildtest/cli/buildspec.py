@@ -1113,7 +1113,7 @@ def summarize_buildspec_cache(pager, configuration):
 
     Args:
         configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
-        args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
+        pager (bool): Bolean control output of summary with paging
     """
     if pager:
         with console.pager():
