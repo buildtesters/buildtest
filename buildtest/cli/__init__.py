@@ -721,8 +721,13 @@ def buildspec_menu(subparsers):
     )
 
     # buildtest buildspec summary
-    subparsers_buildspec.add_parser("summary", help="Print summary of buildspec cache")
-
+    buildspec_summary = subparsers_buildspec.add_parser(
+        "summary", help="Print summary of buildspec cache"
+    )
+    # buildtest buildspec summary options
+    buildspec_summary.add_argument(
+        "-p", "--pager", action="store_true", help="Enable PAGING when viewing result"
+    )
     # buildtest buildspec validate
     buildspec_validate = subparsers_buildspec.add_parser(
         "validate", help="Validate buildspecs with JSON Schema"

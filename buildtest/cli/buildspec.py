@@ -3,6 +3,7 @@ import logging
 import os
 import subprocess
 import time
+from pydoc import pager
 
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.build import discover_buildspecs
@@ -1108,13 +1109,13 @@ def buildspec_validate(
         console.print("[green]All buildspecs passed validation!!!")
 
 
-def summarize_buildspec_cache(configuration, pager=None):
+def summarize_buildspec_cache(args, configuration):
     """Prints summary of buildspec cache which is run via command ``buildtest buildspec summary``
 
     Args:
         configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
     """
-
+    pager = args.pager
     cache = BuildspecCache(configuration=configuration)
     msg = f"""
     [yellow]Reading Buildspec Cache File:[/yellow]   [cyan]{BUILDSPEC_CACHE_FILE}[/cyan] 
@@ -1123,14 +1124,15 @@ def summarize_buildspec_cache(configuration, pager=None):
     [yellow]Total Unique Tags:[/yellow]              [cyan]{len(cache.get_unique_tags())}[/cyan] 
     [yellow]Total Maintainers:[/yellow]              [cyan]{len(cache.get_maintainers())}[/cyan] 
 """
-    if pager != None:
+    print(pager)
+    if pager:
         with console.pager():
-            largePrint(msg, cache)
+            summery_print(msg, cache)
             return
-    largePrint(msg, cache)
+    summery_print(msg, cache)
 
 
-def largePrint(msg, cache):
+def summery_print(msg, cache):
     console.print(Panel.fit(msg))
 
     layout = Layout()
