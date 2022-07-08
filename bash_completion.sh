@@ -246,6 +246,18 @@ _buildtest ()
            COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) );;
          esac
         ;;
+      summary)
+         case ${COMP_WORDS[3]} in
+         # completion for rest of arguments
+         *)
+           local longopts=" --pager"
+           local shortopts="-p"
+           local allopts="${longopts} ${shortopts}"
+           COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) );;
+         esac
+        ;;
+
+
       show|edit-test)
         COMPREPLY=( $( compgen -W "$(_buildspec_cache_test_names)" -- $cur ) );;
       show-fail)
@@ -259,7 +271,7 @@ _buildtest ()
           COMPREPLY=( $( compgen -W "$(_avail_maintainers)" -- $cur ) );;
         esac
         ;;
-
+      
       edit-file)
         COMPREPLY=( $( compgen -W "$(_avail_buildspecs)" -- $cur ) );;
       validate)

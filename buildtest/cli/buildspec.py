@@ -1108,7 +1108,7 @@ def buildspec_validate(
         console.print("[green]All buildspecs passed validation!!!")
 
 
-def summarize_buildspec_cache(configuration):
+def summarize_buildspec_cache(configuration, pager=None):
     """Prints summary of buildspec cache which is run via command ``buildtest buildspec summary``
 
     Args:
@@ -1123,6 +1123,14 @@ def summarize_buildspec_cache(configuration):
     [yellow]Total Unique Tags:[/yellow]              [cyan]{len(cache.get_unique_tags())}[/cyan] 
     [yellow]Total Maintainers:[/yellow]              [cyan]{len(cache.get_maintainers())}[/cyan] 
 """
+    if pager != None:
+        with console.pager():
+            largePrint(msg, cache)
+            return
+    largePrint(msg, cache)
+
+
+def largePrint(msg, cache):
     console.print(Panel.fit(msg))
 
     layout = Layout()
