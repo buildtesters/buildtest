@@ -11,7 +11,7 @@ ascent_pr_regression_test:
   tags: ["nobatch"]
   stage: regression
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'
+    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "external_pull_request_event'
 
   script:
     - ml python/3.7.0-anaconda3-5.3.0
