@@ -15,6 +15,7 @@ from buildtest.defaults import (
 )
 from buildtest.exceptions import BuildspecError, BuildTestError
 from buildtest.executors.setup import BuildExecutor
+from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import (
     create_dir,
     is_dir,
@@ -943,20 +944,19 @@ class BuildspecCache:
             console.print(path)
 
 
-def edit_buildspec_test(test_names, configuration, editor, open=True):
+def edit_buildspec_test(test_names, configuration, editor, timeout=None):
     """Open a list of test names in editor mode defined by ``EDITOR`` environment otherwise resort to ``vim``.
     This method will search for buildspec cache and find path to buildspec file corresponding to test name and open
-    file in editor. If multiple test are specified via ``buildtest buildspec edit`` then each file will be open and
+    file in editor. If multiple test are specified via ``buildtest buildspec edit-test`` then each file will be open and
     upon closing file, the next file will be open for edit until all files are written.
 
     Args:
         test_names (list): A list of test names to open in editor
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
         editor (str): Path to editor to use when opening file
-        open (bool): Variable allows for more accurate coverage tracking in regression testing.
+        open (bool): A boolean to determine whether to open file for editing, by default `open=True` indicates file will be open in editor. If its False this method will return immediately which is useful when running regression test.
     """
-    if not open:
-        return
+
     cache = BuildspecCache(configuration=configuration)
 
     for name in test_names:
@@ -965,8 +965,8 @@ def edit_buildspec_test(test_names, configuration, editor, open=True):
             continue
 
         buildspec = cache.lookup_buildspec_by_name(name)
-
-        subprocess.call([editor, buildspec])
+        edditorCommand = BuildTestCommand(f"{editor} {buildspec}")
+        edditorCommand.execute(timeout)
         print(f"Writing file: {buildspec}")
 
         be = BuildExecutor(configuration)
@@ -985,7 +985,7 @@ def edit_buildspec_file(buildspecs, configuration, editor, open=True):
         buildspec (str): Path to buildspec file to edit
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
         editor (str): Path to editor to use when opening file
-        open (bool): Variable allows for more accurate coverage tracking in regression testing.
+        open (bool): A boolean to determine whether to open file for editing, by default `open=True` indicates file will be open in editor. If its False this method will return immediately which is useful when running regression test.
     """
     if not open:
         return
