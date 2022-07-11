@@ -81,6 +81,12 @@ def main():
         with console.pager():
             console.print(content)
         return
+
+    # print content of BUILDTEST_LOGFILE without paginated form if buildtest --print-lastlog is specified
+    if args.print_lastlog:
+        content = read_file(BUILDTEST_LOGFILE)
+        console.print(content)
+
     if is_file(BUILDTEST_LOGFILE):
         remove_file(BUILDTEST_LOGFILE)
 
