@@ -160,7 +160,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         choices=["vi", "vim", "emacs", "nano"],
     )
     parser.add_argument(
-        "--lastlog", action="store_true", help="Show content of last log"
+        "--view-lastlog", action="store_true", help="Show content of last log"
     )
     parser.add_argument(
         "--no-color", help="Disable colored output", action="store_true"
