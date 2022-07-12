@@ -7,3 +7,16 @@ yaml
 Buildtest
 buildtest
 buildspec
+buildspecs
+csh
+yml
+str
+testdir
+json
+schemas
+returncode
+Cori
+cori
+nersc
+shahzebsiddiqui
+Slurm
