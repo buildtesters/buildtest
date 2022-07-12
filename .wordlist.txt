@@ -5,3 +5,5 @@ config
 repo
 yaml
 Buildtest
+buildtest
+buildspec
