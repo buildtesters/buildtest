@@ -81,6 +81,10 @@ def main():
         with console.pager():
             console.print(content)
         return
+
+    # print full path to the lastlog file if buildtest --lastlog-path is specified
+    if args.lastlog_path:
+        console.print(BUILDTEST_LOGFILE)
     if is_file(BUILDTEST_LOGFILE):
         remove_file(BUILDTEST_LOGFILE)
 
