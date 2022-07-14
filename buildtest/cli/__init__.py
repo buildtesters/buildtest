@@ -166,6 +166,11 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         "--lastlog-path", action="store_true", help="Print full path to last log file"
     )
     parser.add_argument(
+        "--print-lastlog",
+        action="store_true",
+        help="Print content of last log without pagination",
+    )
+    parser.add_argument(
         "--no-color", help="Disable colored output", action="store_true"
     )
     parser.add_argument("-r", "--report", help="Specify path to test report file")
