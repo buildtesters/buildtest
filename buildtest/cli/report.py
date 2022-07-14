@@ -570,8 +570,11 @@ class Report:
         join_list = []
         title = title or f"Report File: {self.reportfile()}"
         table = Table(title=title, show_lines=True, expand=True)
+        selectedStyle = "green"
+        if self.display_table["state"][0] == "FAIL":
+            selectedStyle = "red"
         for field in self.display_table.keys():
-            table.add_column(f"[blue]{field}", overflow="fold", style="red")
+            table.add_column(f"[blue]{field}", overflow="fold", style=selectedStyle)
             join_list.append(self.display_table[field])
 
         transpose_list = [list(i) for i in zip(*join_list)]
