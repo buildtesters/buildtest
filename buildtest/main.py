@@ -75,8 +75,8 @@ def main():
 
     report_file = args.report
 
-    # print content of BUILDTEST_LOGFILE if buildtest --lastlog is specified which should contain last build log
-    if args.lastlog:
+    # print content of BUILDTEST_LOGFILE if buildtest --view-lastlog is specified which should contain last build log
+    if args.view_lastlog:
         content = read_file(BUILDTEST_LOGFILE)
         with console.pager():
             console.print(content)
@@ -87,6 +87,9 @@ def main():
         content = read_file(BUILDTEST_LOGFILE)
         console.print(content)
 
+    # print full path to the lastlog file if buildtest --lastlog-path is specified
+    if args.lastlog_path:
+        console.print(BUILDTEST_LOGFILE)
     if is_file(BUILDTEST_LOGFILE):
         remove_file(BUILDTEST_LOGFILE)
 
