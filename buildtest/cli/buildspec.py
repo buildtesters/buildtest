@@ -965,7 +965,7 @@ def edit_buildspec_test(test_names, configuration, editor, test=None):
             continue
 
         buildspec = cache.lookup_buildspec_by_name(name)
-        if test != None:
+        if test is not None:
             editor = "cat"  # Doesnt call the editor.
         subprocess.call([editor, buildspec])
         print(f"Writing file: {buildspec}")
@@ -988,8 +988,6 @@ def edit_buildspec_file(buildspecs, configuration, editor, test=None):
         editor (str): Path to editor to use when opening file
         test (bool): A boolean to determine whether to open file for editing, by default `test=None` indicates file will be open in editor. If its True this method will return immediately which is useful when running regression test.
     """
-    if not open:
-        return
     for file in buildspecs:
 
         buildspec = resolve_path(file, exist=False)
@@ -998,8 +996,8 @@ def edit_buildspec_file(buildspecs, configuration, editor, test=None):
                 f"buildspec: {buildspec} is a directory, please specify a file type"
             )
             continue
-        if test != None:
-            editor = "cat"  # Doesnt call the editor.
+        if test is not None:
+            editor = "cat"
         subprocess.call([editor, buildspec])
 
         print(f"Writing file: {buildspec}")
