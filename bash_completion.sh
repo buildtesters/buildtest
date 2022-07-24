@@ -162,7 +162,7 @@ _buildtest ()
       local opts="--end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
       case "${COMP_WORDS[2]}" in summary)
-        local opts="-h --help --pager"
+        local opts="-d -h --detailed --help --pager"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
         ;;
       esac
@@ -250,7 +250,7 @@ _buildtest ()
          case ${COMP_WORDS[3]} in
          # completion for rest of arguments
          *)
-           local longopts=" --pager"
+           local longopts="--pager"
            local shortopts="-p"
            local allopts="${longopts} ${shortopts}"
            COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) );;

@@ -786,7 +786,7 @@ def report_cmd(args, report_file=None):
         pager=args.pager,
     )
     if args.report_subcommand == "summary":
-        report_summary(results, args.pager)
+        report_summary(results, pager=args.pager, detailed=args.detailed)
         return
 
     if args.helpfilter:
@@ -800,9 +800,8 @@ def report_cmd(args, report_file=None):
     results.print_report(terse=args.terse, noheader=args.no_header, count=args.count)
 
 
-def report_summary(report, pager=None):
+def report_summary(report, pager=None, detailed=None):
     """This method will print summary for report file which can be retrieved via ``buildtest report summary`` command"""
-
     test_breakdown = report.breakdown_by_test_names()
 
     table = Table(title="Breakdown by test", header_style="blue")
@@ -829,16 +828,23 @@ def report_summary(report, pager=None):
         format_args="name,id,executor,state,returncode,runtime",
         report_file=report.reportfile(),
     )
-    if pager:
-        with console.pager():
-            print_report_summary_output(report, table, pass_results, fail_results)
+    if detailed is True:
+        if pager is True:
+            print(f"pager: {pager}  n\ detailed: {detailed}")
+            with console.pager():
+                print_report_summary_detailed(report, table, pass_results, fail_results)
+        elif pager is not True:
+            print_report_summary_detailed(report, table, pass_results, fail_results)
+    elif detailed is not True:
+        if pager is True:
+            print(f"pager: {pager}  n\ detailed: {detailed}")
+            with console.pager():
+                print_report_summary(report, table)
+        elif pager is not True:
+            print_report_summary(report, table)
 
-        return
 
-    print_report_summary_output(report, table, pass_results, fail_results)
-
-
-def print_report_summary_output(report, table, pass_results, fail_results):
+def print_report_summary_detailed(report, table, pass_results, fail_results):
     """Print output of ``buildtest report summary``.
 
     Args:
@@ -851,6 +857,22 @@ def print_report_summary_output(report, table, pass_results, fail_results):
     console.print("Total Tests:", len(report.get_testids()))
     console.print("Total Tests by Names: ", len(report.get_names()))
     console.print("Number of buildspecs in report: ", len(report.get_buildspecs()))
+
     console.print(table)
     pass_results.print_report(title="PASS Tests")
     fail_results.print_report(title="FAIL Tests")
+    return
+
+
+def print_report_summary(report, table):
+    """Print output of ``buildtest report summary``.
+
+    Args:
+        report (buildtest.cli.report.Report): An instance of Report class
+        table (rich.table.Table): An instance of Rich Table class
+    """
+    console.print("Report File: ", report.reportfile())
+    console.print("Total Tests:", len(report.get_testids()))
+    console.print("Total Tests by Names: ", len(report.get_names()))
+    console.print("Number of buildspecs in report: ", len(report.get_buildspecs()))
+    return

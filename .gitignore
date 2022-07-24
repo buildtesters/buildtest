@@ -45,3 +45,4 @@ env.bak/
 # ignore .packages directory
 .packages/
 Pipfile
+coverage.json
