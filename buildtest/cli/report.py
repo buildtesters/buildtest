@@ -801,7 +801,12 @@ def report_cmd(args, report_file=None):
 
 
 def report_summary(report, pager=None, detailed=None):
-    """This method will print summary for report file which can be retrieved via ``buildtest report summary`` command"""
+    """
+    This method will print summary for report file which can be retrieved via ``buildtest report summary`` command
+    Args:
+        pager (bool): An instance of bool, flag for turning on pagination.
+        detailed (bool): An instance of bool, flag for printing a detailed report.
+    """
     test_breakdown = report.breakdown_by_test_names()
 
     table = Table(title="Breakdown by test", header_style="blue")
