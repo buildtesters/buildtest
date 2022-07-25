@@ -15,6 +15,6 @@ jobs:
     - uses: rojopolis/spellcheck-github-actions@0.25.0
       name: Spellcheck
       with:
-        source_files: README.rst CHANGELOG.md
+        source_files: README.rst CHANGELOG.rst
         task_name: Markdown
         output_file: spellcheck-output.txt
