@@ -20,6 +20,7 @@ matrix:
 - name: Markdown
   apsell:
     lang: en
+    ignore-case: true
   dictionary:
     wordlists:
     - .wordlist.txt
