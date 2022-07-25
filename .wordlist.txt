@@ -55,3 +55,9 @@ Snyk
 ReStructuredText
 rst
 hpcbuildtest
+codecov
+CodeCov
+gh
+regressiontest
+rtfd
+ReadTheDocs
