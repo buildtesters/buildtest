@@ -19,8 +19,8 @@ matrix:
 #       string_types: fu
 - name: Markdown
   apsell:
+    ignore-case: true
     lang: en
-      ignore-case: true
   dictionary:
     wordlists:
     - .wordlist.txt
