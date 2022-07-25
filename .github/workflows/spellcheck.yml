@@ -12,9 +12,13 @@ on:
 
 jobs:
   build:
-    name: runner / spellcheck
+    name: Spellcheck
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
     - uses: rojopolis/spellcheck-github-actions@0.25.0
       name: Spellcheck
+      with:
+        source_files: README.rst CHANGELOG.md
+        task_name: Markdown
+        output_file: spellcheck-output.txt
