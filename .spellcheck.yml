@@ -9,8 +9,8 @@ matrix:
     encoding: utf-8
   pipeline:
   - pyspelling.filters.python:
-      comments: true
-      docstrings: true
+      comments: false
+      docstrings: false
       group_comments: false
       decode_escapes: true
       strings: false
