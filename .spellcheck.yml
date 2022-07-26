@@ -16,5 +16,6 @@ matrix:
       - pre
   sources:
   - 'README.rst'
-  - 'docs/'
+  - 'docs/*.rst'
+  - 'docs/**/*.rst'
   default_encoding: utf-8
