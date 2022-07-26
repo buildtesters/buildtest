@@ -1,24 +1,4 @@
 matrix:
-- name: Python
-  aspell:
-    ignore-case: true
-    lang: en
-  dictionary:
-    wordlists:
-    - .wordlist.txt
-    encoding: utf-8
-  pipeline:
-  - pyspelling.filters.python:
-      comments: false
-      docstrings: false
-      group_comments: false
-      decode_escapes: true
-      strings: false
-      string_types: fu
-  sources:
-  - '**/*.py'
-  default_encoding: utf-8
-
 - name: Markdown
   aspell:
     ignore-case: true

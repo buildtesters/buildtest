@@ -309,7 +309,7 @@ schema **settings.schema.json**. If validation is successful you will get the fo
 If there is an error during validation, the output from **jsonschema.exceptions.ValidationError**
 will be displayed in terminal. For example the error below indicates that
 ``moduletool`` property was expecting one of the values
-[``environment-modules``, ``lmod``, ``N/A``] but it recieved a value of ``none``:
+[``environment-modules``, ``lmod``, ``N/A``] but it received a value of ``none``:
 
 .. code-block:: console
 
