@@ -14,3 +14,6 @@ jobs:
     - uses: actions/checkout@master
     - uses: rojopolis/spellcheck-github-actions@0.25.0
       name: Spellcheck
+      with:
+        source_files: README.rst docs/
+        task_name: Markdown
