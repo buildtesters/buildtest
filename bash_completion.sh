@@ -95,7 +95,7 @@ _buildtest ()
 
   local cmds="build buildspec cd cdash clean config debugreport docs help info inspect history path report schema schemadocs stylecheck unittests"
   local alias_cmds="bd bc cg debug it h hy rt style test"
-  local opts="--color --config --debug --editor --help --lastlog-path --print-lastlog --report --version --view-lastlog -c -d -h -r -V"
+  local opts="--color --config --debug --editor --help --logpath --print-log --report --version --view-log -c -d -h -r -V"
 
   next=${COMP_WORDS[1]}
 
