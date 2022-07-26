@@ -35,5 +35,5 @@ matrix:
       - code
       - pre
   sources:
-  - '**/*.md'
+  - 'README.rst'
   default_encoding: utf-8
