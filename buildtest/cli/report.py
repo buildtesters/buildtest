@@ -501,7 +501,9 @@ class Report:
             )
         console.print(table)
 
-    def print_report(self, terse=None, noheader=None, title=None, count=None):
+    def print_report(
+        self, terse=None, noheader=None, title=None, count=None, color=None
+    ):
         """This method will print report table after processing report file. By default we print output in
         table format but this can be changed to terse format which will print output in parseable format.
 
@@ -571,7 +573,9 @@ class Report:
         title = title or f"Report File: {self.reportfile()}"
         table = Table(title=title, show_lines=True, expand=True)
         selectedStyle = "green"
-        if self.display_table["state"][0] == "FAIL":
+        if color is not None:
+            selectedStyle = color
+        if self.display_table["state"][0] == "FAIL" and color is None:
             selectedStyle = "red"
         for field in self.display_table.keys():
             table.add_column(f"[blue]{field}", overflow="fold", style=selectedStyle)
