@@ -160,13 +160,13 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         choices=["vi", "vim", "emacs", "nano"],
     )
     parser.add_argument(
-        "--view-lastlog", action="store_true", help="Show content of last log"
+        "--view-log", action="store_true", help="Show content of last log"
     )
     parser.add_argument(
-        "--lastlog-path", action="store_true", help="Print full path to last log file"
+        "--logpath", action="store_true", help="Print full path to last log file"
     )
     parser.add_argument(
-        "--print-lastlog",
+        "--print-log",
         action="store_true",
         help="Print content of last log without pagination",
     )
