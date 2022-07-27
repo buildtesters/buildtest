@@ -21,6 +21,10 @@ def compiler_cmd(args, configuration):
     if args.compilers == "find":
         compiler_find(args, configuration)
         return
+    
+    if args.compilers == "test":
+        compiler_test(args, configuration)
+        return
 
     bc = BuildtestCompilers(configuration)
 
@@ -32,6 +36,15 @@ def compiler_cmd(args, configuration):
 
     if args.yaml:
         bc.print_yaml()
+
+
+def compiler_test(args, configuration):
+    """This method implements ``buildtest config compilers test`` which tests 
+    the compilers with the corresponding modules if set. This command iterates 
+    over all compilers and perform the module load test and show an output of 
+    each compiler with a PASS or FAIL next to each compiler section.
+    """
+    pass 
 
 
 def compiler_find(args, configuration):
