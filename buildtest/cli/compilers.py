@@ -21,7 +21,7 @@ def compiler_cmd(args, configuration):
     if args.compilers == "find":
         compiler_find(args, configuration)
         return
-    
+
     if args.compilers == "test":
         compiler_test(args, configuration)
         return
@@ -39,14 +39,13 @@ def compiler_cmd(args, configuration):
 
 
 def compiler_test(args, configuration):
-    """This method implements ``buildtest config compilers test`` which tests 
-    the compilers with the corresponding modules if set. This command iterates 
-    over all compilers and perform the module load test and show an output of 
+    """This method implements ``buildtest config compilers test`` which tests
+    the compilers with the corresponding modules if set. This command iterates
+    over all compilers and perform the module load test and show an output of
     each compiler with a PASS or FAIL next to each compiler section.
     """
     bc = BuildtestCompilers(debug=args.debug, configuration=configuration)
     bc.find_compilers()
-
 
 
 def compiler_find(args, configuration):
@@ -246,6 +245,7 @@ class BuildtestCompilers:
         # test all modules via 'module load' and add only modules that passed (ret: 0)
         for name, module_list in module_dict.items():
             self.compiler_modules_lookup[name] = []
+            self.compiler_modules_lookup_fail[name] = []
             for module in module_list:
                 cmd = Module(module, debug=self.debug)
                 ret = cmd.test_modules(login=True)
@@ -254,7 +254,7 @@ class BuildtestCompilers:
                     self.compiler_modules_lookup[name].append(module)
                 else:
                     self.compiler_modules_lookup_fail[name].append(module)
-                    
+
         if self.debug:
             print("PASS Compilers: ", self.compiler_modules_lookup)
             print("FAIL Compilers: ", self.compiler_modules_lookup_fail)
