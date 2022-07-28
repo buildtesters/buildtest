@@ -13,7 +13,9 @@ from buildtest.schemas.defaults import custom_validator, schema_table
 from buildtest.utils.tools import deep_get
 from lmod.module import Module
 from lmod.spider import Spider
+from rich.console import Console
 from rich.syntax import Syntax
+from rich.table import Table
 
 
 def compiler_cmd(args, configuration):
@@ -46,6 +48,32 @@ def compiler_test(args, configuration):
     """
     bc = BuildtestCompilers(debug=args.debug, configuration=configuration)
     bc.find_compilers()
+    console = Console()
+
+    table = Table(title="Compilers Test Pass")
+    table.add_column("S. No.", style="cyan", no_wrap=True)
+    table.add_column("Compiler Name", style="green")
+    table.add_column("Status", justify="right", style="green")
+    count_id = 1
+    for compiler_cat in bc.compiler_modules_lookup:
+        for compiler in bc.compiler_modules_lookup[compiler_cat]:
+            table.add_row(str(count_id), compiler, "✅")
+            count_id += 1
+
+    console.print(table)
+
+    table = Table(title="Compilers Test Fail")
+    table.add_column("S. No.", style="cyan", no_wrap=True)
+    table.add_column("Compiler Name", style="red")
+    table.add_column("Status", justify="right", style="green")
+
+    count_id = 1
+    for compiler_cat in bc.compiler_modules_lookup_fail:
+        for compiler in bc.compiler_modules_lookup_fail[compiler_cat]:
+            table.add_row(str(count_id), compiler, "❌")
+            count_id += 1
+
+    console.print(table)
 
 
 def compiler_find(args, configuration):
