@@ -581,7 +581,9 @@ class Report:
                 consoleColor = Color.default().name
 
         for field in self.display_table.keys():
-            table.add_column(f"[blue]{field}", overflow="fold", style=consoleColor)
+            table.add_column(
+                f"[blue]{field}", overflow="fold", style=consoleColor
+            )  # change [blue] to console color if we want the entire console output to be uniform.
             join_list.append(self.display_table[field])
 
         transpose_list = [list(i) for i in zip(*join_list)]
@@ -807,16 +809,28 @@ def report_cmd(args, report_file=None):
     results.print_report(terse=args.terse, noheader=args.no_header, count=args.count)
 
 
-def report_summary(report, pager=None):
+def report_summary(report, pager=None, color=None):
     """This method will print summary for report file which can be retrieved via ``buildtest report summary`` command"""
 
     test_breakdown = report.breakdown_by_test_names()
+    if color is None:
+        table = Table(title="Breakdown by test", header_style="blue")
+        table.add_column("Name", style="cyan")
+        table.add_column("Total Pass", style="green")
+        table.add_column("Total Fail", style="red")
+        table.add_column("Total Runs", style="blue")
+    elif color is not None:
+        try:
+            consoleColor = Color.parse(color).name
+        except ColorParseError:
+            consoleColor = Color.default().name
+        finally:
+            table = Table(title="Breakdown by test", header_style=consoleColor)
+            table.add_column("Name", style=consoleColor)
+            table.add_column("Total Pass", style=consoleColor)
+            table.add_column("Total Fail", style=consoleColor)
+            table.add_column("Total Runs", style=consoleColor)
 
-    table = Table(title="Breakdown by test", header_style="blue")
-    table.add_column("Name", style="cyan")
-    table.add_column("Total Pass", style="green")
-    table.add_column("Total Fail", style="red")
-    table.add_column("Total Runs", style="blue")
     for k in test_breakdown.keys():
         table.add_row(
             k,
@@ -838,14 +852,16 @@ def report_summary(report, pager=None):
     )
     if pager:
         with console.pager():
-            print_report_summary_output(report, table, pass_results, fail_results)
+            print_report_summary_output(
+                report, table, pass_results, fail_results, color=color
+            )
 
         return
 
-    print_report_summary_output(report, table, pass_results, fail_results)
+    print_report_summary_output(report, table, pass_results, fail_results, color=color)
 
 
-def print_report_summary_output(report, table, pass_results, fail_results):
+def print_report_summary_output(report, table, pass_results, fail_results, color=None):
     """Print output of ``buildtest report summary``.
 
     Args:
@@ -859,5 +875,9 @@ def print_report_summary_output(report, table, pass_results, fail_results):
     console.print("Total Tests by Names: ", len(report.get_names()))
     console.print("Number of buildspecs in report: ", len(report.get_buildspecs()))
     console.print(table)
-    pass_results.print_report(title="PASS Tests", color="green")
-    fail_results.print_report(title="FAIL Tests", color="red")
+    if color is None:
+        pass_results.print_report(title="PASS Tests", color="green")
+        fail_results.print_report(title="FAIL Tests", color="red")
+    elif color is not None:
+        pass_results.print_report(title="PASS Tests", color=color)
+        fail_results.print_report(title="FAIL Tests", color=color)
