@@ -856,7 +856,7 @@ def config_menu(subparsers):
         help="Update configuration file with new compilers",
     )
 
-    compiler_test = subparsers_compiler.add_parser(
+    subparsers_compiler.add_parser(
         "test",
         help="Test compilers",
     )
