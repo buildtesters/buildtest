@@ -44,7 +44,9 @@ def compiler_test(args, configuration):
     over all compilers and perform the module load test and show an output of 
     each compiler with a PASS or FAIL next to each compiler section.
     """
-    pass 
+    bc = BuildtestCompilers(debug=args.debug, configuration=configuration)
+    bc.find_compilers()
+
 
 
 def compiler_find(args, configuration):
@@ -249,6 +251,8 @@ class BuildtestCompilers:
                 # if module load test passed we add entry to list
                 if ret == 0:
                     self.compiler_modules_lookup[name].append(module)
+
+        print(self.compiler_modules_lookup)
 
     def _update_compiler_section(self):
         """This method will update the compiler section by adding new compilers if
