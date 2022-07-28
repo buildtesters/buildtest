@@ -51,9 +51,9 @@ def compiler_test(args, configuration):
     console = Console()
 
     table = Table(title="Compilers Test Pass")
-    table.add_column("S. No.", style="cyan", no_wrap=True)
+    table.add_column("No.", style="cyan", no_wrap=True)
     table.add_column("Compiler Name", style="green")
-    table.add_column("Status", justify="right", style="green")
+    table.add_column("Status", justify="right")
     count_id = 1
     for compiler_cat in bc.compiler_modules_lookup:
         for compiler in bc.compiler_modules_lookup[compiler_cat]:
@@ -63,9 +63,9 @@ def compiler_test(args, configuration):
     console.print(table)
 
     table = Table(title="Compilers Test Fail")
-    table.add_column("S. No.", style="cyan", no_wrap=True)
+    table.add_column("No.", style="cyan", no_wrap=True)
     table.add_column("Compiler Name", style="red")
-    table.add_column("Status", justify="right", style="green")
+    table.add_column("Status", justify="right")
 
     count_id = 1
     for compiler_cat in bc.compiler_modules_lookup_fail:
