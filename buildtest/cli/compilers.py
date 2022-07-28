@@ -242,6 +242,7 @@ class BuildtestCompilers:
             print(f"Testing all discovered modules: {list(module_dict.values())}")
 
         self.compiler_modules_lookup = {}
+        self.compiler_modules_lookup_fail = {}
         # test all modules via 'module load' and add only modules that passed (ret: 0)
         for name, module_list in module_dict.items():
             self.compiler_modules_lookup[name] = []
@@ -251,8 +252,12 @@ class BuildtestCompilers:
                 # if module load test passed we add entry to list
                 if ret == 0:
                     self.compiler_modules_lookup[name].append(module)
-
-        print(self.compiler_modules_lookup)
+                else:
+                    self.compiler_modules_lookup_fail[name].append(module)
+                    
+        if self.debug:
+            print("PASS Compilers: ", self.compiler_modules_lookup)
+            print("FAIL Compilers: ", self.compiler_modules_lookup_fail)
 
     def _update_compiler_section(self):
         """This method will update the compiler section by adding new compilers if
