@@ -783,7 +783,6 @@ def report_cmd(args, report_file=None):
         oldest=args.oldest,
         report_file=report_file,
         count=args.count,
-        pager=args.pager,
     )
     if args.report_subcommand == "summary":
         report_summary(results, pager=args.pager, detailed=args.detailed)
@@ -807,6 +806,7 @@ def report_summary(report, pager=None, detailed=None):
         pager (bool): An instance of bool, flag for turning on pagination.
         detailed (bool): An instance of bool, flag for printing a detailed report.
     """
+
     test_breakdown = report.breakdown_by_test_names()
 
     table = Table(title="Breakdown by test", header_style="blue")
@@ -821,7 +821,6 @@ def report_summary(report, pager=None, detailed=None):
             str(test_breakdown[k]["fail"]),
             str(test_breakdown[k]["runs"]),
         )
-
     pass_results = Report(
         filter_args={"state": "PASS"},
         format_args="name,id,executor,state,returncode,runtime",
@@ -833,6 +832,7 @@ def report_summary(report, pager=None, detailed=None):
         format_args="name,id,executor,state,returncode,runtime",
         report_file=report.reportfile(),
     )
+
     if detailed is True:
         if pager is True:
             print(f"pager: {pager}  n\ detailed: {detailed}")

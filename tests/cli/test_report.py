@@ -195,6 +195,12 @@ def test_report_summary():
     report = Report(pager=True)
     report_summary(report)
 
+    report = Report(detailed=True)
+    report_summary(report)
+
+    report = Report(pager=True, detailed=True)
+    report_summary(report)
+
 
 @pytest.mark.cli
 def test_report_list():
