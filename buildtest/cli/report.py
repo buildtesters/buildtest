@@ -7,7 +7,7 @@ import sys
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, resolve_path
-from rich.color import Color
+from rich.color import Color, ColorParseError
 from rich.table import Table
 
 logger = logging.getLogger(__name__)
@@ -577,7 +577,7 @@ class Report:
         if color is not None:
             try:
                 consoleColor = Color.parse(color).name
-            except:
+            except ColorParseError:
                 consoleColor = Color.default().name
 
         for field in self.display_table.keys():
