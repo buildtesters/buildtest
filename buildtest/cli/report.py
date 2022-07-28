@@ -7,6 +7,7 @@ import sys
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, resolve_path
+from rich.color import Color
 from rich.table import Table
 
 logger = logging.getLogger(__name__)
@@ -572,13 +573,15 @@ class Report:
         join_list = []
         title = title or f"Report File: {self.reportfile()}"
         table = Table(title=title, show_lines=True, expand=True)
-        selectedStyle = "green"
+        consoleColor = Color.default().name
         if color is not None:
-            selectedStyle = color
-        if self.display_table["state"][0] == "FAIL" and color is None:
-            selectedStyle = "red"
+            try:
+                consoleColor = Color.parse(color).name
+            except:
+                consoleColor = Color.default().name
+
         for field in self.display_table.keys():
-            table.add_column(f"[blue]{field}", overflow="fold", style=selectedStyle)
+            table.add_column(f"[blue]{field}", overflow="fold", style=consoleColor)
             join_list.append(self.display_table[field])
 
         transpose_list = [list(i) for i in zip(*join_list)]
@@ -856,5 +859,5 @@ def print_report_summary_output(report, table, pass_results, fail_results):
     console.print("Total Tests by Names: ", len(report.get_names()))
     console.print("Number of buildspecs in report: ", len(report.get_buildspecs()))
     console.print(table)
-    pass_results.print_report(title="PASS Tests")
-    fail_results.print_report(title="FAIL Tests")
+    pass_results.print_report(title="PASS Tests", color="green")
+    fail_results.print_report(title="FAIL Tests", color="red")
