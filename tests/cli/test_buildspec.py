@@ -155,20 +155,18 @@ def test_buildspec_find_invalid():
 @pytest.mark.cli
 def test_edit_test():
     edit_buildspec_test(
-        configuration,
+        configuration=configuration,
         buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml")],
         editor="",
-        test=True,
     )
 
 
 @pytest.mark.cli
 def test_edit_file():
     edit_buildspec_file(
-        configuration,
         buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml")],
+        configuration=configuration,
         editor="",
-        test=True,
     )
 
 

@@ -3,7 +3,6 @@ import logging
 import os
 import subprocess
 import time
-import traceback
 
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.build import discover_buildspecs
@@ -16,7 +15,6 @@ from buildtest.defaults import (
 )
 from buildtest.exceptions import BuildspecError, BuildTestError
 from buildtest.executors.setup import BuildExecutor
-from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import (
     create_dir,
     is_dir,
