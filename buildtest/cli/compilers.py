@@ -54,11 +54,10 @@ def compiler_test(args, configuration):
     table.add_column("No.", style="cyan", no_wrap=True)
     table.add_column("Compiler Name", style="green")
     table.add_column("Status", justify="right")
-    
+
     for compiler_cat in bc.compiler_modules_lookup:
         for compiler in bc.compiler_modules_lookup[compiler_cat]:
             table.add_row(str(table.row_count + 1), compiler, "✅")
-           
 
     if table.row_count:
         console.print(table)
@@ -68,13 +67,12 @@ def compiler_test(args, configuration):
     table.add_column("Compiler Name", style="red")
     table.add_column("Status", justify="right")
 
-    count_id = 1
     for compiler_cat in bc.compiler_modules_lookup_fail:
         for compiler in bc.compiler_modules_lookup_fail[compiler_cat]:
-            table.add_row(str(count_id), compiler, "❌")
-            count_id += 1
-
-    console.print(table)
+            table.add_row(str(table.row_count + 1), compiler, "❌")
+     
+    if table.row_count:
+        console.print(table)
 
 
 def compiler_find(args, configuration):
