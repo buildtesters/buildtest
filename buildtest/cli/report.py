@@ -511,7 +511,7 @@ class Report:
         Args:
             terse (bool, optional): Print output int terse format
             noheader (bool, optional): Determine whether to print header in terse format
-
+            color (str, optional): An instance of a string class that tells print_report what color the output should be printed in.
 
         In this example, we display output in tabular format which works with ``--filter`` and ``--format`` option.
 
@@ -819,17 +819,16 @@ def report_summary(report, pager=None, color=None):
         table.add_column("Total Pass", style="green")
         table.add_column("Total Fail", style="red")
         table.add_column("Total Runs", style="blue")
-    elif color is not None:
+    else:
         try:
             consoleColor = Color.parse(color).name
         except ColorParseError:
             consoleColor = Color.default().name
-        finally:
-            table = Table(title="Breakdown by test", header_style=consoleColor)
-            table.add_column("Name", style=consoleColor)
-            table.add_column("Total Pass", style=consoleColor)
-            table.add_column("Total Fail", style=consoleColor)
-            table.add_column("Total Runs", style=consoleColor)
+        table = Table(title="Breakdown by test", header_style=consoleColor)
+        table.add_column("Name", style=consoleColor)
+        table.add_column("Total Pass", style=consoleColor)
+        table.add_column("Total Fail", style=consoleColor)
+        table.add_column("Total Runs", style=consoleColor)
 
     for k in test_breakdown.keys():
         table.add_row(
@@ -869,6 +868,7 @@ def print_report_summary_output(report, table, pass_results, fail_results, color
         table (rich.table.Table): An instance of Rich Table class
         pass_results (buildtest.cli.report.Report): An instance of Report class with filtered output by ``state=PASS``
         fail_results (buildtest.cli.report.Report): An instance of Report class with filtered output by ``state=FAIL``
+        color (str): An instance of a string class that tells print_report_summary what color the output should be printed in.
     """
     console.print("Report File: ", report.reportfile())
     console.print("Total Tests:", len(report.get_testids()))
@@ -878,6 +878,6 @@ def print_report_summary_output(report, table, pass_results, fail_results, color
     if color is None:
         pass_results.print_report(title="PASS Tests", color="green")
         fail_results.print_report(title="FAIL Tests", color="red")
-    elif color is not None:
+    else:
         pass_results.print_report(title="PASS Tests", color=color)
         fail_results.print_report(title="FAIL Tests", color=color)
