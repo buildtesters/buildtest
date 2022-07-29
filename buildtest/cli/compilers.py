@@ -57,10 +57,11 @@ def compiler_test(args, configuration):
     count_id = 1
     for compiler_cat in bc.compiler_modules_lookup:
         for compiler in bc.compiler_modules_lookup[compiler_cat]:
-            table.add_row(str(count_id), compiler, "✅")
+            # table.add_row(str(count_id), compiler, "✅")
             count_id += 1
 
-    console.print(table)
+    if table.row_count:
+        console.print(table)
 
     table = Table(title="Compilers Test Fail")
     table.add_column("No.", style="cyan", no_wrap=True)
