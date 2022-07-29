@@ -858,7 +858,7 @@ def config_menu(subparsers):
 
     subparsers_compiler.add_parser(
         "test",
-        help="Test compilers",
+        help="Test each compiler instance by performing module load test",
     )
 
 
