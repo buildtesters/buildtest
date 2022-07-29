@@ -963,8 +963,9 @@ def edit_buildspec_test(test_names, configuration, editor, test=None):
             continue
 
         buildspec = cache.lookup_buildspec_by_name(name)
-        if test is not None:
-            editor = "cat"  # Doesnt call the editor.
+        if test is None:
+            editor = "echo"  # Doesnt call the editor.
+
         subprocess.call([editor, buildspec])
         print(f"Writing file: {buildspec}")
 
@@ -994,7 +995,7 @@ def edit_buildspec_file(buildspecs, configuration, editor, test=None):
                 f"buildspec: {buildspec} is a directory, please specify a file type"
             )
             continue
-        if test is not None:
+        if test is None:
             editor = "cat"
         subprocess.call([editor, buildspec])
 
