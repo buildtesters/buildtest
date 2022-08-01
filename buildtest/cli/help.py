@@ -257,6 +257,10 @@ def print_config_help():
         "buildtest config compilers find",
         "Detect compilers and update configuration file",
     )
+    table.add_row(
+        "buildtest config compilers test",
+        "Test each compiler instance by performing module load test",
+    )
     console.print(table)
 
 
