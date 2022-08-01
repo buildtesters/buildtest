@@ -3,7 +3,7 @@ import socket
 
 import pytest
 from buildtest.cli.build import BuildTest
-from buildtest.cli.compilers import BuildtestCompilers
+from buildtest.cli.compilers import BuildtestCompilers, compiler_test
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.system import BuildTestSystem
@@ -105,3 +105,17 @@ def test_compiler_find_cori():
     # testing buildtest config compilers find
     compilers = BuildtestCompilers(configuration=bc)
     compilers.find_compilers()
+
+
+def test_compiler_test_cori():
+
+    if not hostname.startswith("cori"):
+        pytest.skip("This test runs on Cori Login nodes ('cori*')")
+
+    bc = SiteConfiguration(settings_file)
+    bc.detect_system()
+    bc.validate()
+
+    # testing buildtest config compilers test
+    compiler_test(configuration=bc)
+   
