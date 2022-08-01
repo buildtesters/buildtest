@@ -118,4 +118,3 @@ def test_compiler_test_cori():
 
     # testing buildtest config compilers test
     compiler_test(configuration=bc)
-   
