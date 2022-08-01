@@ -195,6 +195,12 @@ def test_report_summary():
     report = Report(pager=True)
     report_summary(report)
 
+    report = Report()
+    report_summary(report, color="light_pink1")
+
+    report = Report()
+    report_summary(report, color="BAD_COLOR")  # For system to use default color
+
 
 @pytest.mark.cli
 def test_report_list():

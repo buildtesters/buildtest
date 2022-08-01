@@ -7,6 +7,7 @@ import sys
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, resolve_path
+from rich.color import Color, ColorParseError
 from rich.table import Table
 
 logger = logging.getLogger(__name__)
@@ -501,14 +502,16 @@ class Report:
             )
         console.print(table)
 
-    def print_report(self, terse=None, noheader=None, title=None, count=None):
+    def print_report(
+        self, terse=None, noheader=None, title=None, count=None, color=None
+    ):
         """This method will print report table after processing report file. By default we print output in
         table format but this can be changed to terse format which will print output in parseable format.
 
         Args:
             terse (bool, optional): Print output int terse format
             noheader (bool, optional): Determine whether to print header in terse format
-
+            color (str, optional): An instance of a string class that tells print_report what color the output should be printed in.
 
         In this example, we display output in tabular format which works with ``--filter`` and ``--format`` option.
 
@@ -570,8 +573,17 @@ class Report:
         join_list = []
         title = title or f"Report File: {self.reportfile()}"
         table = Table(title=title, show_lines=True, expand=True)
+        consoleColor = Color.default().name
+        if color is not None:
+            try:
+                consoleColor = Color.parse(color).name
+            except ColorParseError:
+                consoleColor = Color.default().name
+
         for field in self.display_table.keys():
-            table.add_column(f"[blue]{field}", overflow="fold", style="red")
+            table.add_column(
+                f"[blue]{field}", overflow="fold", style=consoleColor
+            )  # change [blue] to console color if we want the entire console output to be uniform.
             join_list.append(self.display_table[field])
 
         transpose_list = [list(i) for i in zip(*join_list)]
@@ -797,16 +809,27 @@ def report_cmd(args, report_file=None):
     results.print_report(terse=args.terse, noheader=args.no_header, count=args.count)
 
 
-def report_summary(report, pager=None):
+def report_summary(report, pager=None, color=None):
     """This method will print summary for report file which can be retrieved via ``buildtest report summary`` command"""
 
     test_breakdown = report.breakdown_by_test_names()
+    if color is None:
+        table = Table(title="Breakdown by test", header_style="blue")
+        table.add_column("Name", style="cyan")
+        table.add_column("Total Pass", style="green")
+        table.add_column("Total Fail", style="red")
+        table.add_column("Total Runs", style="blue")
+    else:
+        try:
+            consoleColor = Color.parse(color).name
+        except ColorParseError:
+            consoleColor = Color.default().name
+        table = Table(title="Breakdown by test", header_style=consoleColor)
+        table.add_column("Name", style=consoleColor)
+        table.add_column("Total Pass", style=consoleColor)
+        table.add_column("Total Fail", style=consoleColor)
+        table.add_column("Total Runs", style=consoleColor)
 
-    table = Table(title="Breakdown by test", header_style="blue")
-    table.add_column("Name", style="cyan")
-    table.add_column("Total Pass", style="green")
-    table.add_column("Total Fail", style="red")
-    table.add_column("Total Runs", style="blue")
     for k in test_breakdown.keys():
         table.add_row(
             k,
@@ -828,14 +851,16 @@ def report_summary(report, pager=None):
     )
     if pager:
         with console.pager():
-            print_report_summary_output(report, table, pass_results, fail_results)
+            print_report_summary_output(
+                report, table, pass_results, fail_results, color=color
+            )
 
         return
 
-    print_report_summary_output(report, table, pass_results, fail_results)
+    print_report_summary_output(report, table, pass_results, fail_results, color=color)
 
 
-def print_report_summary_output(report, table, pass_results, fail_results):
+def print_report_summary_output(report, table, pass_results, fail_results, color=None):
     """Print output of ``buildtest report summary``.
 
     Args:
@@ -843,11 +868,16 @@ def print_report_summary_output(report, table, pass_results, fail_results):
         table (rich.table.Table): An instance of Rich Table class
         pass_results (buildtest.cli.report.Report): An instance of Report class with filtered output by ``state=PASS``
         fail_results (buildtest.cli.report.Report): An instance of Report class with filtered output by ``state=FAIL``
+        color (str): An instance of a string class that tells print_report_summary what color the output should be printed in.
     """
     console.print("Report File: ", report.reportfile())
     console.print("Total Tests:", len(report.get_testids()))
     console.print("Total Tests by Names: ", len(report.get_names()))
     console.print("Number of buildspecs in report: ", len(report.get_buildspecs()))
     console.print(table)
-    pass_results.print_report(title="PASS Tests")
-    fail_results.print_report(title="FAIL Tests")
+    if color is None:
+        pass_results.print_report(title="PASS Tests", color="green")
+        fail_results.print_report(title="FAIL Tests", color="red")
+    else:
+        pass_results.print_report(title="PASS Tests", color=color)
+        fail_results.print_report(title="FAIL Tests", color=color)
