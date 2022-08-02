@@ -169,9 +169,6 @@ If ``moduletool: lmod`` is set, buildtest will rely on Lmod spider using `Lmodul
 API to detect and test all modules. If ``moduletool: environment-modules`` is set, buildtest
 will retrieve modules using output of ``module -t av``.
 
-
-.. _test_compilers:
-
 Test Compilers (Experimental Feature)
 --------------------------------------
 
