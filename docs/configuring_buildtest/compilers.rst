@@ -168,3 +168,14 @@ and one must specify **moduletool** property to indicate how buildtest will sear
 If ``moduletool: lmod`` is set, buildtest will rely on Lmod spider using `Lmodule  <http://lmodule.readthedocs.io/>`_
 API to detect and test all modules. If ``moduletool: environment-modules`` is set, buildtest
 will retrieve modules using output of ``module -t av``.
+
+
+.. _test_compilers:
+
+Test Compilers (Experimental Feature)
+--------------------------------------
+
+Next we run ``buildtest config compilers test`` which test each compiler instance by performing 
+module load test and show an output of each compiler.
+
+.. command-output:: buildtest config compilers test
