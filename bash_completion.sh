@@ -174,7 +174,7 @@ _buildtest ()
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
       case "${COMP_WORDS[2]}" in
         compilers)
-          local opts="--help --json --yaml -h -j -y find"
+          local opts="--help --json --yaml -h -j -y find test"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           if [[ "${prev}" == "find" ]]; then
             local opts="--debug --help --update -d -h -u"

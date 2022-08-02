@@ -833,13 +833,13 @@ def config_menu(subparsers):
         help="List compiler details in YAML format",
     )
 
-    subparsers_compiler_find = compilers.add_subparsers(
+    subparsers_compiler = compilers.add_subparsers(
         description="Find new compilers and add them to detected compiler section",
         dest="compilers",
         metavar="",
     )
 
-    compiler_find = subparsers_compiler_find.add_parser(
+    compiler_find = subparsers_compiler.add_parser(
         "find",
         help="Find compilers",
     )
@@ -854,6 +854,11 @@ def config_menu(subparsers):
         "--update",
         action="store_true",
         help="Update configuration file with new compilers",
+    )
+
+    subparsers_compiler.add_parser(
+        "test",
+        help="Test each compiler instance by performing module load test",
     )
 
 
