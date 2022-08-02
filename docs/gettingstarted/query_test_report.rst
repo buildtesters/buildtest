@@ -182,6 +182,13 @@ filter test and report all **PASS** tests.
 
 .. command-output:: buildtest report --filter tags=tutorials --format name,id,state --passed
 
+.. Note::
+    The ``--passed`` and ``--failure`` are mutually exclusive option which will query all PASS or FAIL test from report file, if you try to
+    specify both options on command line you will get an error
+
+    .. command-output:: buildtest report --passed --failure
+        :returncode: 2
+
 Find Tests by Start and End Date (``buildtest report --start --end``)
 ------------------------------------------------------------------------
 

@@ -893,18 +893,21 @@ def report_menu(subparsers):
     parser_report.add_argument(
         "--helpformat", action="store_true", help="List of available format fields"
     )
-    parser_report.add_argument(
+    pass_fail = parser_report.add_mutually_exclusive_group()
+
+    pass_fail.add_argument(
         "-f",
         "--failure",
         help="Retrieve all FAIL tests",
         action="store_true",
     )
-    parser_report.add_argument(
+    pass_fail.add_argument(
         "-p",
         "--passed",
         help="Retrieve all PASS tests",
         action="store_true",
     )
+
     parser_report.add_argument(
         "-s",
         "--start",
