@@ -175,4 +175,50 @@ Test Compilers (Experimental Feature)
 Next we run ``buildtest config compilers test`` which test each compiler instance by performing 
 module load test and show an output of each compiler.
 
-.. command-output:: buildtest config compilers test
+.. code-block:: console
+
+    $ buildtest config compilers test
+
+                    Compilers Test Pass
+    ┏━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+    ┃ No. ┃ Compiler Name                   ┃ Status ┃
+    ┡━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩                                                                                                    [0/1858]
+    │ 1   │ PrgEnv-gnu/6.0.5                │     ✅ │
+    │ 2   │ PrgEnv-gnu/6.0.10               │     ✅ │
+    │ 3   │ gcc/7.3.0                       │     ✅ │
+    │ 4   │ gcc/8.1.0                       │     ✅ │
+    │ 5   │ gcc/8.3.0                       │     ✅ │
+    │ 6   │ gcc/10.3.0                      │     ✅ │
+    │ 7   │ gcc/11.2.0                      │     ✅ │
+    │ 8   │ PrgEnv-cray/6.0.5               │     ✅ │
+    │ 9   │ PrgEnv-cray/6.0.10              │     ✅ │
+    │ 10  │ PrgEnv-intel/6.0.5              │     ✅ │
+    │ 11  │ PrgEnv-intel/6.0.10             │     ✅ │
+    │ 12  │ intel/19.0.3.199                │     ✅ │
+    │ 13  │ intel/19.1.2.254                │     ✅ │
+    │ 14  │ intel/19.1.0.166                │     ✅ │
+    │ 15  │ intel/19.1.1.217                │     ✅ │
+    │ 16  │ intel/19.1.2.275                │     ✅ │
+    │ 17  │ intel/19.1.3.304                │     ✅ │
+    │ 18  │ upcxx/2021.9.0                  │     ✅ │
+    │ 19  │ upcxx/2022.3.0                  │     ✅ │
+    │ 20  │ upcxx/bleeding-edge             │     ✅ │
+    │ 21  │ upcxx/nightly                   │     ✅ │
+    │ 22  │ upcxx-bupc-narrow/2021.9.0      │     ✅ │
+    │ 23  │ upcxx-bupc-narrow/2022.3.0      │     ✅ │
+    │ 24  │ upcxx-bupc-narrow/bleeding-edge │     ✅ │
+    │ 25  │ upcxx-extras/2020.3.0           │     ✅ │
+    │ 26  │ upcxx-extras/2020.3.8           │     ✅ │
+    │ 27  │ upcxx-extras/2022.3.0           │     ✅ │
+    │ 28  │ upcxx-extras/master             │     ✅ │
+    └─────┴─────────────────────────────────┴────────┘
+                Compilers Test Fail
+    ┏━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+    ┃ No. ┃ Compiler Name            ┃ Status ┃
+    ┡━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+    │ 1   │ upcxx-gpu/2021.9.0       │     ❌ │
+    │ 2   │ upcxx-gpu/2022.3.0       │     ❌ │
+    │ 3   │ upcxx-gpu/nightly        │     ❌ │
+    │ 4   │ upcxx-gpu-1rail/2021.9.0 │     ❌ │
+    │ 5   │ upcxx-gpu-1rail/nightly  │     ❌ │
+    └─────┴──────────────────────────┴────────┘
