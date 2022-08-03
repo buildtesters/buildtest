@@ -8,6 +8,8 @@ from buildtest.cli.buildspec import (
     BuildspecCache,
     buildspec_maintainers,
     buildspec_validate,
+    edit_buildspec_file,
+    edit_buildspec_test,
     show_buildspecs,
     show_failed_buildspecs,
     summarize_buildspec_cache,
@@ -148,6 +150,22 @@ def test_buildspec_find_invalid():
     cache.print_invalid_buildspecs(error=False, terse=True)
     cache.print_invalid_buildspecs(error=True, terse=True, header=True)
     cache.print_invalid_buildspecs(error=False, terse=True, header=True)
+
+
+@pytest.mark.cli
+def test_edit_test():
+    edit_buildspec_test(
+        test_names=["hello_world"], configuration=configuration, editor=None
+    )
+
+
+@pytest.mark.cli
+def test_edit_file():
+    edit_buildspec_file(
+        buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml")],
+        configuration=configuration,
+        editor="",
+    )
 
 
 @pytest.mark.cli

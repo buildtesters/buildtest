@@ -14,12 +14,17 @@ from buildtest.utils.tools import deep_get
 from lmod.module import Module
 from lmod.spider import Spider
 from rich.syntax import Syntax
+from rich.table import Table
 
 
 def compiler_cmd(args, configuration):
 
     if args.compilers == "find":
         compiler_find(args, configuration)
+        return
+
+    if args.compilers == "test":
+        compiler_test(configuration)
         return
 
     bc = BuildtestCompilers(configuration)
@@ -32,6 +37,43 @@ def compiler_cmd(args, configuration):
 
     if args.yaml:
         bc.print_yaml()
+
+
+def compiler_test(configuration):
+    """This method implements ``buildtest config compilers test`` which tests
+    the compilers with the corresponding modules if set. This command iterates
+    over all compilers and perform the module load test and show an output of
+    each compiler.
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+    """
+    bc = BuildtestCompilers(configuration=configuration)
+    bc.find_compilers()
+
+    table = Table(title="Compilers Test Pass")
+    table.add_column("No.", style="cyan", no_wrap=True)
+    table.add_column("Compiler Name", style="green")
+    table.add_column("Status", justify="right")
+
+    for compiler_cat in bc.compiler_modules_lookup:
+        for compiler in bc.compiler_modules_lookup[compiler_cat]:
+            table.add_row(str(table.row_count + 1), compiler, "✅")
+
+    if table.row_count:
+        console.print(table)
+
+    table = Table(title="Compilers Test Fail")
+    table.add_column("No.", style="cyan", no_wrap=True)
+    table.add_column("Compiler Name", style="red")
+    table.add_column("Status", justify="right")
+
+    for compiler_cat in bc.compiler_modules_lookup_fail:
+        for compiler in bc.compiler_modules_lookup_fail[compiler_cat]:
+            table.add_row(str(table.row_count + 1), compiler, "❌")
+
+    if table.row_count:
+        console.print(table)
 
 
 def compiler_find(args, configuration):
@@ -227,15 +269,23 @@ class BuildtestCompilers:
             print(f"Testing all discovered modules: {list(module_dict.values())}")
 
         self.compiler_modules_lookup = {}
+        self.compiler_modules_lookup_fail = {}
         # test all modules via 'module load' and add only modules that passed (ret: 0)
         for name, module_list in module_dict.items():
             self.compiler_modules_lookup[name] = []
+            self.compiler_modules_lookup_fail[name] = []
             for module in module_list:
                 cmd = Module(module, debug=self.debug)
                 ret = cmd.test_modules(login=True)
                 # if module load test passed we add entry to list
                 if ret == 0:
                     self.compiler_modules_lookup[name].append(module)
+                else:
+                    self.compiler_modules_lookup_fail[name].append(module)
+
+        if self.debug:
+            print("PASS Compilers: ", self.compiler_modules_lookup)
+            print("FAIL Compilers: ", self.compiler_modules_lookup_fail)
 
     def _update_compiler_section(self):
         """This method will update the compiler section by adding new compilers if

@@ -3,22 +3,6 @@ name: Mirror and run GitLab CI
 on: [push]
 
 jobs:
-  nersc_mirror:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Mirror and trigger CI job at https://software.nersc.gov
-      uses: SvanBoxel/gitlab-mirror-and-ci-action@0.2
-      with:
-        args: "https://software.nersc.gov/siddiq90/buildtest"
-      env:
-        GITLAB_HOSTNAME: "software.nersc.gov"
-        GITLAB_USERNAME: "siddiq90"
-        GITLAB_PASSWORD: ${{ secrets.CORI_GITLAB_PASSWORD }}
-        GITLAB_PROJECT_ID: "211"
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        POLL_TIMEOUT: "300"
-
   olcf_mirror:
     runs-on: ubuntu-latest
     steps:

@@ -95,7 +95,7 @@ _buildtest ()
 
   local cmds="build buildspec cd cdash clean config debugreport docs help info inspect history path report schema schemadocs stylecheck unittests"
   local alias_cmds="bd bc cg debug it h hy rt style test"
-  local opts="--color --config --debug --editor --help --lastlog --report --version -c -d -h -r -V"
+  local opts="--color --config --debug --editor --help --logpath --print-log --report --version --view-log -c -d -h -r -V"
 
   next=${COMP_WORDS[1]}
 
@@ -174,7 +174,7 @@ _buildtest ()
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
       case "${COMP_WORDS[2]}" in
         compilers)
-          local opts="--help --json --yaml -h -j -y find"
+          local opts="--help --json --yaml -h -j -y find test"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           if [[ "${prev}" == "find" ]]; then
             local opts="--debug --help --update -d -h -u"

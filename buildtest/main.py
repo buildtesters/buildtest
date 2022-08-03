@@ -75,12 +75,30 @@ def main():
 
     report_file = args.report
 
-    # print content of BUILDTEST_LOGFILE if buildtest --lastlog is specified which should contain last build log
-    if args.lastlog:
+    # print content of BUILDTEST_LOGFILE if buildtest --view-log or buildtest --print-log is specified which should contain output of last log
+    if args.view_log or args.print_log:
+
+        # if logfile is not present we should raise exception since this file is only created upon running 'buildtest build'
+        if not is_file(BUILDTEST_LOGFILE):
+            raise BuildTestError(
+                f"Unable to find logfile: {BUILDTEST_LOGFILE}, please run 'buildtest build'"
+            )
+
         content = read_file(BUILDTEST_LOGFILE)
-        with console.pager():
+
+        if args.view_log:
+            with console.pager():
+                console.print(content)
+        else:
             console.print(content)
+
         return
+
+    # print full path to the lastlog file if buildtest --logpath is specified
+    if args.logpath:
+        console.print(BUILDTEST_LOGFILE)
+        return
+
     if is_file(BUILDTEST_LOGFILE):
         remove_file(BUILDTEST_LOGFILE)
 

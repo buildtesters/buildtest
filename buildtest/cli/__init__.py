@@ -160,7 +160,15 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         choices=["vi", "vim", "emacs", "nano"],
     )
     parser.add_argument(
-        "--lastlog", action="store_true", help="Show content of last log"
+        "--view-log", action="store_true", help="Show content of last log"
+    )
+    parser.add_argument(
+        "--logpath", action="store_true", help="Print full path to last log file"
+    )
+    parser.add_argument(
+        "--print-log",
+        action="store_true",
+        help="Print content of last log without pagination",
     )
     parser.add_argument(
         "--no-color", help="Disable colored output", action="store_true"
@@ -825,13 +833,13 @@ def config_menu(subparsers):
         help="List compiler details in YAML format",
     )
 
-    subparsers_compiler_find = compilers.add_subparsers(
+    subparsers_compiler = compilers.add_subparsers(
         description="Find new compilers and add them to detected compiler section",
         dest="compilers",
         metavar="",
     )
 
-    compiler_find = subparsers_compiler_find.add_parser(
+    compiler_find = subparsers_compiler.add_parser(
         "find",
         help="Find compilers",
     )
@@ -846,6 +854,11 @@ def config_menu(subparsers):
         "--update",
         action="store_true",
         help="Update configuration file with new compilers",
+    )
+
+    subparsers_compiler.add_parser(
+        "test",
+        help="Test each compiler instance by performing module load test",
     )
 
 
@@ -885,18 +898,21 @@ def report_menu(subparsers):
     parser_report.add_argument(
         "--helpformat", action="store_true", help="List of available format fields"
     )
-    parser_report.add_argument(
+    pass_fail = parser_report.add_mutually_exclusive_group()
+
+    pass_fail.add_argument(
         "-f",
         "--failure",
         help="Retrieve all FAIL tests",
         action="store_true",
     )
-    parser_report.add_argument(
+    pass_fail.add_argument(
         "-p",
         "--passed",
         help="Retrieve all PASS tests",
         action="store_true",
     )
+
     parser_report.add_argument(
         "-s",
         "--start",

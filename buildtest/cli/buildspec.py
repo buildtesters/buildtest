@@ -943,16 +943,17 @@ class BuildspecCache:
             console.print(path)
 
 
-def edit_buildspec_test(test_names, configuration, editor):
+def edit_buildspec_test(test_names, configuration, editor, test=None):
     """Open a list of test names in editor mode defined by ``EDITOR`` environment otherwise resort to ``vim``.
     This method will search for buildspec cache and find path to buildspec file corresponding to test name and open
-    file in editor. If multiple test are specified via ``buildtest buildspec edit`` then each file will be open and
+    file in editor. If multiple test are specified via ``buildtest buildspec edit-test`` then each file will be open and
     upon closing file, the next file will be open for edit until all files are written.
 
     Args:
         test_names (list): A list of test names to open in editor
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
         editor (str): Path to editor to use when opening file
+        test (bool): A boolean to determine whether to open file for editing, by default `test=None` indicates file will be open in editor. If its True this method will return immediately which is useful when running regression test.
     """
     cache = BuildspecCache(configuration=configuration)
 
@@ -962,6 +963,8 @@ def edit_buildspec_test(test_names, configuration, editor):
             continue
 
         buildspec = cache.lookup_buildspec_by_name(name)
+        if test is None:
+            editor = "echo"  # Doesnt call the editor.
 
         subprocess.call([editor, buildspec])
         print(f"Writing file: {buildspec}")
@@ -975,13 +978,14 @@ def edit_buildspec_test(test_names, configuration, editor):
         console.print(f"[green]{buildspec} is valid")
 
 
-def edit_buildspec_file(buildspecs, configuration, editor):
+def edit_buildspec_file(buildspecs, configuration, editor, test=None):
     """Open buildspec in editor and validate buildspec with parser. This method is invoked by command ``buildtest buildspec edit-file``.
 
     Args:
         buildspec (str): Path to buildspec file to edit
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
         editor (str): Path to editor to use when opening file
+        test (bool): A boolean to determine whether to open file for editing, by default `test=None` indicates file will be open in editor. If its True this method will return immediately which is useful when running regression test.
     """
     for file in buildspecs:
 
@@ -991,7 +995,8 @@ def edit_buildspec_file(buildspecs, configuration, editor):
                 f"buildspec: {buildspec} is a directory, please specify a file type"
             )
             continue
-
+        if test is None:
+            editor = "cat"
         subprocess.call([editor, buildspec])
 
         print(f"Writing file: {buildspec}")
