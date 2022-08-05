@@ -896,10 +896,10 @@ class BuildspecCache:
             )
             for buildspec in self.cache["invalids"].keys():
                 table.add_row(buildspec)
-            console.print(table)
 
             # return a non-zero returncode
             if table.row_count > 0:
+                console.print(table)
                 sys.exit(1)
             return
 
