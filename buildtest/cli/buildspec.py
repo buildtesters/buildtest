@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import subprocess
+import sys
 import time
 
 from buildtest.buildsystem.parser import BuildspecParser
@@ -860,7 +861,7 @@ class BuildspecCache:
         console.print(table)
 
     def print_invalid_buildspecs(self, error=None, terse=None, header=None):
-        """Print invalid buildspecs from cache file. This method implements command ``buildtest buildspec find invalids``
+        """Print invalid buildspecs from cache file. This method implements command ``buildtest buildspec find invalid``
 
         Args:
             error (bool, optional): Display error messages for invalid buildspecs. Default is ``False`` where we only print list of invalid buildspecs
@@ -895,8 +896,12 @@ class BuildspecCache:
             )
             for buildspec in self.cache["invalids"].keys():
                 table.add_row(buildspec)
+
+            # return a non-zero returncode
+            if table.row_count > 0:
                 console.print(table)
-                return
+                sys.exit(1)
+            return
 
         # implementation for --error which displays buildspec file followed by error
         for buildspec, value in self.cache["invalids"].items():
