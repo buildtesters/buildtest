@@ -13,7 +13,6 @@ from buildtest.schemas.defaults import custom_validator, schema_table
 from buildtest.utils.tools import deep_get
 from lmod.module import Module
 from lmod.spider import Spider
-from rich.syntax import Syntax
 from rich.table import Table
 
 
