@@ -13,7 +13,6 @@ from buildtest.schemas.defaults import custom_validator, schema_table
 from buildtest.utils.tools import deep_get
 from lmod.module import Module
 from lmod.spider import Spider
-from rich.syntax import Syntax
 from rich.table import Table
 
 
@@ -98,12 +97,10 @@ def compiler_find(args, configuration):
         configuration.config, schema_table["settings.schema.json"]["recipe"]
     )
 
-    syntax = Syntax(
-        yaml.safe_dump(configuration.config, default_flow_style=False, sort_keys=False),
-        "yaml",
-        theme="emacs",
-    )
-    console.print(syntax)
+    # print out all compilers from existing configuration file
+    # run buildtest config compilers find --update to update existing configuration file
+    bc.print_compilers()
+
     # if --update is specified we update existing configuration file and write backup in same directory
     if args.update:
         fname = (
