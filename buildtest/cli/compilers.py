@@ -98,14 +98,10 @@ def compiler_find(args, configuration):
         configuration.config, schema_table["settings.schema.json"]["recipe"]
     )
 
-    print(bc.compilers)
+    # print out all compilers from existing configuration file
+    # run buildtest config compilers find --update to update existing configuration file
+    bc.print_compilers()
 
-    # syntax = Syntax(
-    #     yaml.safe_dump(configuration.config, default_flow_style=False, sort_keys=False),
-    #     "yaml",
-    #     theme="emacs",
-    # )
-    # console.print(syntax)
     # if --update is specified we update existing configuration file and write backup in same directory
     if args.update:
         fname = (
