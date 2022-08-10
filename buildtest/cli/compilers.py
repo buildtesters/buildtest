@@ -23,7 +23,7 @@ def compiler_cmd(args, configuration):
         return
 
     if args.compilers == "test":
-        compiler_test(args, configuration)
+        compiler_test(configuration)
         return
 
     bc = BuildtestCompilers(configuration)
@@ -38,7 +38,7 @@ def compiler_cmd(args, configuration):
         bc.print_yaml()
 
 
-def compiler_test(args, configuration):
+def compiler_test(configuration):
     """This method implements ``buildtest config compilers test`` which tests
     the compilers with the corresponding modules if set. This command iterates
     over all compilers and perform the module load test and show an output of
@@ -53,11 +53,10 @@ def compiler_test(args, configuration):
     bc = BuildtestCompilers(configuration=configuration)
     register_compilers = bc.names()
 
-    # if args.debug:
-    print("Find those registered compilers: ", register_compilers)
+    print("Find these registered compilers: ", register_compilers)
 
     for module in register_compilers:
-        cmd = Module(module, debug=args.debug)
+        cmd = Module(module, debug=True)
         ret = cmd.test_modules(login=True)
         if ret == 0:
             pass_compilers.append(module)
@@ -74,6 +73,8 @@ def compiler_test(args, configuration):
         for idx, pass_compiler in enumerate(pass_compilers):
             table.add_row(str(idx + 1), pass_compiler, "✅")
 
+        console.print(table)
+
     if fail_compilers:
 
         table = Table(title="Compilers Test Fail")
@@ -83,6 +84,8 @@ def compiler_test(args, configuration):
 
         for idx, fail_compiler in enumerate(fail_compilers):
             table.add_row(str(idx + 1), fail_compiler, "❌")
+
+        console.print(table)
 
 
 def compiler_find(args, configuration):
@@ -282,9 +285,6 @@ class BuildtestCompilers:
             self.compiler_modules_lookup[name] = []
             self.compiler_modules_lookup_fail[name] = []
             for module in module_list:
-                print("------")
-                print("module: ", module)
-                print("------")
                 cmd = Module(module, debug=self.debug)
                 ret = cmd.test_modules(login=True)
                 # if module load test passed we add entry to list
