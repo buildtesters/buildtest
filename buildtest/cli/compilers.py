@@ -23,7 +23,7 @@ def compiler_cmd(args, configuration):
         return
 
     if args.compilers == "test":
-        compiler_test(configuration)
+        compiler_test(args, configuration)
         return
 
     bc = BuildtestCompilers(configuration)
@@ -38,7 +38,7 @@ def compiler_cmd(args, configuration):
         bc.print_yaml()
 
 
-def compiler_test(configuration):
+def compiler_test(args, configuration):
     """This method implements ``buildtest config compilers test`` which tests
     the compilers with the corresponding modules if set. This command iterates
     over all compilers and perform the module load test and show an output of
@@ -47,33 +47,42 @@ def compiler_test(configuration):
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
     """
+    pass_compilers = []
+    fail_compilers = []
+
     bc = BuildtestCompilers(configuration=configuration)
-    print("To process register compilers: ", bc.names())
-    bc.find_compilers()
+    register_compilers = bc.names()
 
-    table = Table(title="Compilers Test Pass")
-    table.add_column("No.", style="cyan", no_wrap=True)
-    table.add_column("Compiler Name", style="green")
-    table.add_column("Status", justify="right")
+    if args.debug:
+        print("Find those registered compilers: ", register_compilers)
 
-    for compiler_cat in bc.compiler_modules_lookup:
-        for compiler in bc.compiler_modules_lookup[compiler_cat]:
-            table.add_row(str(table.row_count + 1), compiler, "✅")
+    for module in register_compilers:
+        cmd = Module(module, debug=args.debug)
+        ret = cmd.test_modules(login=True)
+        if ret == 0:
+            pass_compilers.append(module)
+        else:
+            fail_compilers.append(module)
 
-    if table.row_count:
-        console.print(table)
+    if pass_compilers:
 
-    table = Table(title="Compilers Test Fail")
-    table.add_column("No.", style="cyan", no_wrap=True)
-    table.add_column("Compiler Name", style="red")
-    table.add_column("Status", justify="right")
+        table = Table(title="Compilers Test Pass")
+        table.add_column("No.", style="cyan", no_wrap=True)
+        table.add_column("Compiler Name", style="green")
+        table.add_column("Status", justify="right")
 
-    for compiler_cat in bc.compiler_modules_lookup_fail:
-        for compiler in bc.compiler_modules_lookup_fail[compiler_cat]:
-            table.add_row(str(table.row_count + 1), compiler, "❌")
+        for idx, pass_compiler in enumerate(pass_compilers):
+            table.add_row(str(idx + 1), pass_compiler, "✅")
 
-    if table.row_count:
-        console.print(table)
+    if fail_compilers:
+
+        table = Table(title="Compilers Test Fail")
+        table.add_column("No.", style="cyan", no_wrap=True)
+        table.add_column("Compiler Name", style="red")
+        table.add_column("Status", justify="right")
+
+        for idx, fail_compiler in enumerate(fail_compilers):
+            table.add_row(str(idx + 1), fail_compiler, "❌")
 
 
 def compiler_find(args, configuration):
