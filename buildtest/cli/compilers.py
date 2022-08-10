@@ -282,6 +282,9 @@ class BuildtestCompilers:
             self.compiler_modules_lookup[name] = []
             self.compiler_modules_lookup_fail[name] = []
             for module in module_list:
+                print("------")
+                print("module: ", module)
+                print("------")
                 cmd = Module(module, debug=self.debug)
                 ret = cmd.test_modules(login=True)
                 # if module load test passed we add entry to list
