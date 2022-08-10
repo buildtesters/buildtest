@@ -90,6 +90,7 @@ class Report:
         oldest=None,
         count=None,
         pager=None,
+        detailed=None,
     ):
         """
         Args:
@@ -855,7 +856,7 @@ def report_summary(report, pager=None, detailed=None, color=None):
 
     if detailed is True:
         if pager is True:
-            print(f"pager: {pager}  n\ detailed: {detailed}")
+            print(f"pager: {pager}  \n detailed: {detailed}")
             with console.pager():
                 print_report_summary_detailed(report, table, pass_results, fail_results)
         elif pager is not True:
