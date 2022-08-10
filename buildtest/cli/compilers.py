@@ -53,8 +53,8 @@ def compiler_test(args, configuration):
     bc = BuildtestCompilers(configuration=configuration)
     register_compilers = bc.names()
 
-    if args.debug:
-        print("Find those registered compilers: ", register_compilers)
+    # if args.debug:
+    print("Find those registered compilers: ", register_compilers)
 
     for module in register_compilers:
         cmd = Module(module, debug=args.debug)
