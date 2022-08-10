@@ -48,6 +48,7 @@ def compiler_test(configuration):
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
     """
     bc = BuildtestCompilers(configuration=configuration)
+    print("To process register compilers: ", bc.names())
     bc.find_compilers()
 
     table = Table(title="Compilers Test Pass")
