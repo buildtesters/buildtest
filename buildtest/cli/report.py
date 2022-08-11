@@ -858,7 +858,7 @@ def report_summary(report, pager=None, detailed=None, color=None):
     print_report_summary_output(report, table, pass_results, fail_results, color=color, detailed=detailed)
 
 
-def print_report_summary_output(report, table, pass_results, fail_results, color="red", detailed=None):
+def print_report_summary_output(report, table, pass_results, fail_results, color=None, detailed=None):
     """Print output of ``buildtest report summary``.
 
     Args:
@@ -867,6 +867,7 @@ def print_report_summary_output(report, table, pass_results, fail_results, color
         pass_results (buildtest.cli.report.Report): An instance of Report class with filtered output by ``state=PASS``
         fail_results (buildtest.cli.report.Report): An instance of Report class with filtered output by ``state=FAIL``
         color (str): An instance of a string class that tells print_report_summary what color the output should be printed in.
+        detailed (bool, optional): Print detailed output of the report summary if ``buildtest report summary --detailed`` is specified
     """
 
     console.print("Report File: ", report.reportfile())
