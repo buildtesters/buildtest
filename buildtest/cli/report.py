@@ -504,7 +504,7 @@ class Report:
         console.print(table)
 
     def print_report(
-        self, terse=None, noheader=None, title=None, count=None, color=None
+        self, terse=None, noheader=None, title=None, count=None, pager=None, color=None
     ):
         """This method will print report table after processing report file. By default we print output in
         table format but this can be changed to terse format which will print output in parseable format.
@@ -512,6 +512,7 @@ class Report:
         Args:
             terse (bool, optional): Print output int terse format
             noheader (bool, optional): Determine whether to print header in terse format
+            pager (bool, optional): Paginate output of report table
             color (str, optional): An instance of a string class that tells print_report what color the output should be printed in.
 
         In this example, we display output in tabular format which works with ``--filter`` and ``--format`` option.
@@ -591,7 +592,7 @@ class Report:
         for row in transpose_list:
             table.add_row(*row)
 
-        if self.pager:
+        if pager or self.pager:
             with console.pager():
                 console.print(table)
 
@@ -869,34 +870,35 @@ def print_report_summary(
         detailed (bool): An instance of bool, flag for printing a detailed report.
         color (str): An instance of str, color that the report should be printed in
     """
-    report_message = f"""Report File:  {report.reportfile()}
+    report_message = f"""
+Report File:  {report.reportfile()}
 Total Tests: {len(report.get_testids())}
 Total Tests by Names: {len(report.get_names())}
-Number of buildspecs in report:{len(report.get_buildspecs())}"""
-    if pager:
+Number of buildspecs in report: {len(report.get_buildspecs())}
+"""
+
+    if not detailed and pager:
         with console.pager():
             console.print(report_message)
-            if detailed:
-                console.print(table)
-                if not color:
-                    pass_results.print_report(title="PASS Tests", color="green")
-                    fail_results.print_report(title="FAIL Tests", color="red")
-                    return
-                consoleColor = checkColor(color=color)
-                pass_results.print_report(title="PASS Tests", color=consoleColor)
-                fail_results.print_report(title="FAIL Tests", color=consoleColor)
-        return
-    console.print(report_message)
-    if detailed:
-        console.print(table)
-        if not color:
-            pass_results.print_report(title="PASS Tests", color="green")
-            fail_results.print_report(title="FAIL Tests", color="red")
             return
-        consoleColor = checkColor(color=color)
-        pass_results.print_report(title="PASS Tests", color=consoleColor)
-        fail_results.print_report(title="FAIL Tests", color=consoleColor)
+    elif not detailed and not pager:
+        console.print(report_message)
+        return
 
+    if pager:
+        with console.pager():
+            console.print(table)
+    else:
+        console.print(table)
+
+    if color:
+        consoleColor = checkColor(color=color)
+        console.print("consoleColor: ", consoleColor)
+        pass_results.print_report(title="PASS Tests", color=consoleColor, pager=pager)
+        fail_results.print_report(title="FAIL Tests", color=consoleColor, pager=pager)
+    else:
+        pass_results.print_report(title="PASS Tests", color="green", pager=pager)
+        fail_results.print_report(title="FAIL Tests", color="red", pager=pager)
 
 def checkColor(color):
     checkedColor = Color.default().name
