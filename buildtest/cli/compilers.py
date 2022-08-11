@@ -57,7 +57,7 @@ def compiler_test(configuration):
         for module in bc.compilers[name]:
             has_module = bc.compilers[name][module].get("module", None)
             if has_module and has_module["load"]:
-                cmd = Module(module, debug=True)
+                cmd = Module(module, debug=False)
                 ret = cmd.test_modules(login=True)
                 if ret == 0:
                     pass_compilers.append(module)
