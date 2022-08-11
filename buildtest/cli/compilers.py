@@ -55,13 +55,14 @@ def compiler_test(configuration):
 
     for name in bc.compilers:
         for module in bc.compilers[name]:
-            if bc.compilers[name][module].get("module", None):
+            if bc.compilers[name][module].get("module"):
                 cmd = Module(module, debug=False)
                 ret = cmd.test_modules(login=True)
                 if ret == 0:
                     pass_compilers.append(module)
                     continue
-            fail_compilers.append(module)
+                fail_compilers.append(module)
+            pass_compilers.append(module)
 
     if pass_compilers:
 
