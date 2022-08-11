@@ -574,12 +574,7 @@ class Report:
         join_list = []
         title = title or f"Report File: {self.reportfile()}"
         table = Table(title=title, show_lines=True, expand=True)
-        consoleColor = Color.default().name
-        if color is not None:
-            try:
-                consoleColor = Color.parse(color).name
-            except ColorParseError:
-                consoleColor = Color.default().name
+        consoleColor = checkColor(color=color)
 
         for field in self.display_table.keys():
             table.add_column(
@@ -818,17 +813,14 @@ def report_summary(report, pager=None, detailed=None, color=None):
     """
 
     test_breakdown = report.breakdown_by_test_names()
-    if color is None:
+    if not color:
         table = Table(title="Breakdown by test", header_style="blue")
         table.add_column("Name", style="cyan")
         table.add_column("Total Pass", style="green")
         table.add_column("Total Fail", style="red")
         table.add_column("Total Runs", style="blue")
     else:
-        try:
-            consoleColor = Color.parse(color).name
-        except ColorParseError:
-            consoleColor = Color.default().name
+        consoleColor = checkColor(color=color)
         table = Table(title="Breakdown by test", header_style=consoleColor)
         table.add_column("Name", style=consoleColor)
         table.add_column("Total Pass", style=consoleColor)
@@ -853,58 +845,64 @@ def report_summary(report, pager=None, detailed=None, color=None):
         format_args="name,id,executor,state,returncode,runtime",
         report_file=report.reportfile(),
     )
-
-    if detailed is True:
-        if pager is True:
-            print(f"pager: {pager}  \n detailed: {detailed}")
-            with console.pager():
-                print_report_summary_detailed(report, table, pass_results, fail_results)
-        elif pager is not True:
-            print_report_summary_detailed(report, table, pass_results, fail_results)
-    elif detailed is not True:
-        if pager is True:
-            print(f"pager: {pager}  n\ detailed: {detailed}")
-            with console.pager():
-                print_report_summary(report, table)
-        elif pager is not True:
-            print_report_summary(report, table)
+    print_report_summary(
+        report=report,
+        table=table,
+        pass_results=pass_results,
+        fail_results=fail_results,
+        pager=pager,
+        detailed=detailed,
+        color=color,
+    )
 
 
-def print_report_summary_detailed(
-    report, table, pass_results, fail_results, color=None
+def print_report_summary(
+    report, table, pass_results, fail_results, pager=None, detailed=None, color=None
 ):
     """Print output of ``buildtest report summary``.
-
     Args:
         report (buildtest.cli.report.Report): An instance of Report class
         table (rich.table.Table): An instance of Rich Table class
         pass_results (buildtest.cli.report.Report): An instance of Report class with filtered output by ``state=PASS``
         fail_results (buildtest.cli.report.Report): An instance of Report class with filtered output by ``state=FAIL``
-        color (str): An instance of a string class that tells print_report_summary what color the output should be printed in.
+        pager (bool): An instance of bool, flag for turning on pagination.
+        detailed (bool): An instance of bool, flag for printing a detailed report.
+        color (str): An instance of str, color that the report should be printed in
     """
-    console.print("Report File: ", report.reportfile())
-    console.print("Total Tests:", len(report.get_testids()))
-    console.print("Total Tests by Names: ", len(report.get_names()))
-    console.print("Number of buildspecs in report: ", len(report.get_buildspecs()))
+    report_message = f"""Report File:  {report.reportfile()}
+Total Tests: {len(report.get_testids())}
+Total Tests by Names: {len(report.get_names())}
+Number of buildspecs in report:{len(report.get_buildspecs())}"""
+    if pager:
+        with console.pager():
+            console.print(report_message)
+            if detailed:
+                console.print(table)
+                if not color:
+                    pass_results.print_report(title="PASS Tests", color="green")
+                    fail_results.print_report(title="FAIL Tests", color="red")
+                    return
+                consoleColor = checkColor(color=color)
+                pass_results.print_report(title="PASS Tests", color=consoleColor)
+                fail_results.print_report(title="FAIL Tests", color=consoleColor)
+        return
+    console.print(report_message)
+    if detailed:
+        console.print(table)
+        if not color:
+            pass_results.print_report(title="PASS Tests", color="green")
+            fail_results.print_report(title="FAIL Tests", color="red")
+            return
+        consoleColor = checkColor(color=color)
+        pass_results.print_report(title="PASS Tests", color=consoleColor)
+        fail_results.print_report(title="FAIL Tests", color=consoleColor)
 
-    console.print(table)
-    if color is None:
-        pass_results.print_report(title="PASS Tests", color="green")
-        fail_results.print_report(title="FAIL Tests", color="red")
-    else:
-        pass_results.print_report(title="PASS Tests", color=color)
-        fail_results.print_report(title="FAIL Tests", color=color)
-    return
 
-
-def print_report_summary(report, table):
-    """Print output of ``buildtest report summary``.
-    Args:
-        report (buildtest.cli.report.Report): An instance of Report class
-        table (rich.table.Table): An instance of Rich Table class
-    """
-    console.print("Report File: ", report.reportfile())
-    console.print("Total Tests:", len(report.get_testids()))
-    console.print("Total Tests by Names: ", len(report.get_names()))
-    console.print("Number of buildspecs in report: ", len(report.get_buildspecs()))
-    return
+def checkColor(color):
+    checkedColor = Color.default().name
+    if color:
+        try:
+            checkedColor = Color.parse(color).name
+        except ColorParseError:
+            checkedColor = Color.default().name
+    return checkedColor
