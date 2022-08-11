@@ -283,13 +283,20 @@ output, if you want to disable output of header you can use ``--no-header`` opti
 Report Summary (``buildtest report summary``)
 ----------------------------------------------
 
-The ``buildtest report summary`` command can be used to provide a summary of the test report
-with breakdown statistics of tests including all fail tests, number of tests by name, test runs
-and buildspecs in report file.
+The ``buildtest report summary`` command can be used to provide a short summary of the test report.
 
 Shown below is an example output from the report summary.
 
 .. command-output:: buildtest report summary
+
+The ``buildtest report summary --detailed`` command can be used to provide a summary of the test report
+with breakdown statistics of tests including all fail tests, number of tests by name, test runs
+and buildspecs in report file. To see a short report use 
+
+Shown below is an example output from the report summary --detailed.
+
+.. command-output:: buildtest report summary --detailed
+
 
 .. _inspect_test:
 
