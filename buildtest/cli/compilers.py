@@ -53,14 +53,6 @@ def compiler_test(configuration):
     bc = BuildtestCompilers(configuration=configuration)
     bc.find_compilers()
 
-
-    print("name: ", bc.compiler_modules_lookup.keys())
-
-    print("-----------------------")
-    print("big dict", bc.compilers)
-    print("-----------------------")
-
-
     for name in bc.compilers:
         for module in bc.compilers[name]:
             has_module = bc.compilers[name][module].get("module", None)
@@ -71,8 +63,6 @@ def compiler_test(configuration):
                     pass_compilers.append(module)
                     continue
             fail_compilers.append(module)
-            
-
 
     if pass_compilers:
 
