@@ -53,8 +53,6 @@ def compiler_test(configuration):
     bc = BuildtestCompilers(configuration=configuration)
     bc.find_compilers()
 
-    register_compilers = bc.names()
-
     print("register compilers: ", register_compilers)
 
     print("name: ", bc.compiler_modules_lookup.keys())
@@ -63,13 +61,18 @@ def compiler_test(configuration):
     print("big dict", bc.compilers)
     print("-----------------------")
 
-    for module in register_compilers:
-        cmd = Module(module, debug=True)
-        ret = cmd.test_modules(login=True)
-        if ret == 0:
-            pass_compilers.append(module)
-            continue
-        fail_compilers.append(module)
+
+    for name in bc.compilers:
+        for module in bc.compilers[name]:
+            if bc.compilers[name][module]["module"]["load"]:
+                cmd = Module(module, debug=True)
+                ret = cmd.test_modules(login=True)
+                if ret == 0:
+                    pass_compilers.append(module)
+                    continue
+            fail_compilers.append(module)
+            
+
 
     if pass_compilers:
 
