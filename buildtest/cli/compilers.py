@@ -62,7 +62,8 @@ def compiler_test(configuration):
                     pass_compilers.append(module)
                     continue
                 fail_compilers.append(module)
-            pass_compilers.append(module)
+            else:
+                pass_compilers.append(module)
 
     if pass_compilers:
 
