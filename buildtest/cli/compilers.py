@@ -53,15 +53,13 @@ def compiler_test(configuration):
     bc = BuildtestCompilers(configuration=configuration)
     register_compilers = bc.names()
 
-    print("Find these registered compilers: ", register_compilers)
-
     for module in register_compilers:
         cmd = Module(module, debug=True)
         ret = cmd.test_modules(login=True)
         if ret == 0:
             pass_compilers.append(module)
-        else:
-            fail_compilers.append(module)
+            continue
+        fail_compilers.append(module)
 
     if pass_compilers:
 
