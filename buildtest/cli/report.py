@@ -846,59 +846,45 @@ def report_summary(report, pager=None, detailed=None, color=None):
         format_args="name,id,executor,state,returncode,runtime",
         report_file=report.reportfile(),
     )
-    print_report_summary(
-        report=report,
-        table=table,
-        pass_results=pass_results,
-        fail_results=fail_results,
-        pager=pager,
-        detailed=detailed,
-        color=color,
-    )
+
+    if pager:
+        with console.pager():
+            print_report_summary_output(
+                report, table, pass_results, fail_results, color=color, detailed=detailed
+            )
+
+        return
+
+    print_report_summary_output(report, table, pass_results, fail_results, color=color, detailed=detailed)
 
 
-def print_report_summary(
-    report, table, pass_results, fail_results, pager=None, detailed=None, color=None
-):
+def print_report_summary_output(report, table, pass_results, fail_results, color="red", detailed=None):
     """Print output of ``buildtest report summary``.
+
     Args:
         report (buildtest.cli.report.Report): An instance of Report class
         table (rich.table.Table): An instance of Rich Table class
         pass_results (buildtest.cli.report.Report): An instance of Report class with filtered output by ``state=PASS``
         fail_results (buildtest.cli.report.Report): An instance of Report class with filtered output by ``state=FAIL``
-        pager (bool): An instance of bool, flag for turning on pagination.
-        detailed (bool): An instance of bool, flag for printing a detailed report.
-        color (str): An instance of str, color that the report should be printed in
+        color (str): An instance of a string class that tells print_report_summary what color the output should be printed in.
     """
-    report_message = f"""
-Report File:  {report.reportfile()}
-Total Tests: {len(report.get_testids())}
-Total Tests by Names: {len(report.get_names())}
-Number of buildspecs in report: {len(report.get_buildspecs())}
-"""
 
-    if not detailed and pager:
-        with console.pager():
-            console.print(report_message)
-            return
-    elif not detailed and not pager:
-        console.print(report_message)
+    console.print("Report File: ", report.reportfile())
+    console.print("Total Tests:", len(report.get_testids()))
+    console.print("Total Tests by Names: ", len(report.get_names()))
+    console.print("Number of buildspecs in report: ", len(report.get_buildspecs()))
+
+    if not detailed:
         return
 
-    if pager:
-        with console.pager():
-            console.print(table)
-    else:
-        console.print(table)
+    console.print(table)
 
-    if color:
-        consoleColor = checkColor(color=color)
-        console.print("consoleColor: ", consoleColor)
-        pass_results.print_report(title="PASS Tests", color=consoleColor, pager=pager)
-        fail_results.print_report(title="FAIL Tests", color=consoleColor, pager=pager)
-    else:
-        pass_results.print_report(title="PASS Tests", color="green", pager=pager)
-        fail_results.print_report(title="FAIL Tests", color="red", pager=pager)
+    pass_color = color or "green"
+    fail_color = color or "red"
+
+    pass_results.print_report(title="PASS Tests", color=pass_color)
+    fail_results.print_report(title="FAIL Tests", color=fail_color)
+
 
 def checkColor(color):
     checkedColor = Color.default().name
