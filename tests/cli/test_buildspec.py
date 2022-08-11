@@ -145,7 +145,12 @@ def test_buildspec_maintainers():
 def test_buildspec_find_invalid():
     cache = BuildspecCache(configuration=configuration)
     cache.print_invalid_buildspecs(error=True)
-    cache.print_invalid_buildspecs(error=False)
+
+    # testing buildtest buildspec find invalid. This will catch SystemExit exception raised by sys.exit
+    with pytest.raises(SystemExit) as pytest_wrapped_e:
+        cache.print_invalid_buildspecs(error=False)
+    assert pytest_wrapped_e.type == SystemExit
+
     cache.print_invalid_buildspecs(error=True, terse=True)
     cache.print_invalid_buildspecs(error=False, terse=True)
     cache.print_invalid_buildspecs(error=True, terse=True, header=True)
