@@ -850,15 +850,24 @@ def report_summary(report, pager=None, detailed=None, color=None):
     if pager:
         with console.pager():
             print_report_summary_output(
-                report, table, pass_results, fail_results, color=color, detailed=detailed
+                report,
+                table,
+                pass_results,
+                fail_results,
+                color=color,
+                detailed=detailed,
             )
 
         return
 
-    print_report_summary_output(report, table, pass_results, fail_results, color=color, detailed=detailed)
+    print_report_summary_output(
+        report, table, pass_results, fail_results, color=color, detailed=detailed
+    )
 
 
-def print_report_summary_output(report, table, pass_results, fail_results, color=None, detailed=None):
+def print_report_summary_output(
+    report, table, pass_results, fail_results, color=None, detailed=None
+):
     """Print output of ``buildtest report summary``.
 
     Args:
