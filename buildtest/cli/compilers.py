@@ -53,7 +53,6 @@ def compiler_test(configuration):
     bc = BuildtestCompilers(configuration=configuration)
     bc.find_compilers()
 
-    print("register compilers: ", register_compilers)
 
     print("name: ", bc.compiler_modules_lookup.keys())
 
