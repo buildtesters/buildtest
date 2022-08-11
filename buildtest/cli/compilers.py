@@ -51,7 +51,17 @@ def compiler_test(configuration):
     fail_compilers = []
 
     bc = BuildtestCompilers(configuration=configuration)
+    bc.find_compilers()
+
     register_compilers = bc.names()
+
+    print("register compilers: ", register_compilers)
+
+    print("name: ", bc.compiler_modules_lookup.keys())
+
+    print("-----------------------")
+    print("big dict", bc.compilers)
+    print("-----------------------")
 
     for module in register_compilers:
         cmd = Module(module, debug=True)
