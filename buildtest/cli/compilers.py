@@ -53,6 +53,8 @@ def compiler_test(configuration):
     bc = BuildtestCompilers(configuration=configuration)
     bc.find_compilers()
 
+    print("bc.comppilers: ", bc.compilers)
+
     for name in bc.compilers:
         for module in bc.compilers[name]:
             if bc.compilers[name][module].get("module"):
