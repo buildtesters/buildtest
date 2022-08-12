@@ -882,6 +882,7 @@ class BuildspecCache:
                 print("buildspec")
             for buildspec in self.cache["invalids"].keys():
                 print(buildspec)
+            sys.exit(1)
             return
 
         # if --error is not specified print list of invalid buildspecs in rich table
@@ -907,6 +908,7 @@ class BuildspecCache:
         for buildspec, value in self.cache["invalids"].items():
             console.rule(buildspec)
             pprint(value)
+        sys.exit(1)
 
     @staticmethod
     def print_filter_fields():
