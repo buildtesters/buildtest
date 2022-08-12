@@ -148,10 +148,20 @@ def test_buildspec_find_invalid():
     # testing buildtest buildspec find invalid. This will assert SystemExit exception raised by sys.exit
     with pytest.raises(SystemExit):
         cache.print_invalid_buildspecs(error=True)
+
+    with pytest.raises(SystemExit):
         cache.print_invalid_buildspecs(error=False)
+
+    with pytest.raises(SystemExit):
         cache.print_invalid_buildspecs(error=True, terse=True)
+
+    with pytest.raises(SystemExit):
         cache.print_invalid_buildspecs(error=False, terse=True)
+
+    with pytest.raises(SystemExit):
         cache.print_invalid_buildspecs(error=True, terse=True, header=True)
+
+    with pytest.raises(SystemExit):
         cache.print_invalid_buildspecs(error=False, terse=True, header=True)
 
 

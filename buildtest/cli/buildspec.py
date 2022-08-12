@@ -874,6 +874,7 @@ class BuildspecCache:
 
         if error and terse:
             console.print("The --terse flag can not be used with the --error option")
+            sys.exit(1)
             return
 
         # implementation for machine readable format specified via --terse
