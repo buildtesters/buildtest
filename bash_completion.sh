@@ -159,12 +159,15 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"
-      COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
-      case "${COMP_WORDS[2]}" in summary)
-        local opts="-d -h --detailed --help --pager"
-        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-        ;;
+      local opts="--end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary sm"
+      COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+      case "${COMP_WORDS[2]}" in summary|sm)
+        local opt="-d -h --detailed --help"
+        COMPREPLY=( $( compgen -W "${opt}" -- $cur ) );;
+      esac
+      case "${COMP_WORDS[3]}" in summary|sm)
+        local opt="-d -h --detailed --help"
+        COMPREPLY=( $( compgen -W "${opt}" -- $cur ) );;
       esac
       ;;
     config|cg)

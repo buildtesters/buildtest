@@ -89,7 +89,7 @@ class Report:
         latest=None,
         oldest=None,
         count=None,
-        pager=None,
+        pagerOpt=None,
         detailed=None,
     ):
         """
@@ -104,7 +104,7 @@ class Report:
             latest (bool, optional): Fetch latest run for all tests discovered. This is specified via ``buildtest report --latest``
             oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
             count (int, optional): Fetch limited number of rows get printed for all tests discovered. This is specified via ``buildtest report --count``
-            pager (bool, optional): Enabling PAGING output for ``buildtest report``. This can be specified via ``buildtest report --pager``
+            pagerOpt (bool, optional): Enabling PAGING output for ``buildtest report``. This can be specified via ``buildtest report --pager``
         """
         self.start = start
         self.end = end
@@ -114,7 +114,7 @@ class Report:
         self.oldest = oldest
         self.filter = filter_args
         self.format = format_args
-        self.pager = pager
+        self.pager = pagerOpt
 
         self.input_report = report_file
 
@@ -504,7 +504,7 @@ class Report:
         console.print(table)
 
     def print_report(
-        self, terse=None, noheader=None, title=None, count=None, pager=None, color=None
+        self, terse=None, noheader=None, title=None, count=None, color=None
     ):
         """This method will print report table after processing report file. By default we print output in
         table format but this can be changed to terse format which will print output in parseable format.
@@ -512,7 +512,6 @@ class Report:
         Args:
             terse (bool, optional): Print output int terse format
             noheader (bool, optional): Determine whether to print header in terse format
-            pager (bool, optional): Paginate output of report table
             color (str, optional): An instance of a string class that tells print_report what color the output should be printed in.
 
         In this example, we display output in tabular format which works with ``--filter`` and ``--format`` option.
@@ -592,13 +591,7 @@ class Report:
         for row in transpose_list:
             table.add_row(*row)
 
-        if pager or self.pager:
-            with console.pager():
-                console.print(table)
-
-            return
         console.print(table)
-        return
 
     def latest_testid_by_name(self, name):
         """Given a test name return test id of latest run
@@ -748,7 +741,6 @@ class Report:
 
 def report_cmd(args, report_file=None):
     """Entry point for ``buildtest report`` command"""
-
     if args.report_subcommand == "clear":
         # if BUILDTEST_REPORTS file is not present then we have no report files to delete since it tracks all report files that are created
         if not is_file(BUILDTEST_REPORTS):
@@ -791,7 +783,12 @@ def report_cmd(args, report_file=None):
         count=args.count,
     )
     if args.report_subcommand == "summary":
-        report_summary(results, pager=args.pager, detailed=args.detailed)
+        if args.pager:
+            with console.pager():
+                report_summary(results, detailed=args.detailed)
+            return
+
+        report_summary(results, detailed=args.detailed)
         return
 
     if args.helpfilter:
@@ -801,14 +798,19 @@ def report_cmd(args, report_file=None):
     if args.helpformat:
         results.print_format_fields()
         return
-
+    if args.pager:
+        with console.pager():
+            results.print_report(
+                terse=args.terse, noheader=args.no_header, count=args.count
+            )
+        return
     results.print_report(terse=args.terse, noheader=args.no_header, count=args.count)
 
 
-def report_summary(report, pager=None, detailed=None, color=None):
+def report_summary(report, detailed=None, color=None):
     """This method will print summary for report file which can be retrieved via ``buildtest report summary`` command
     Args:
-        pager (bool): An instance of bool, flag for turning on pagination.
+        report (buildtest.cli.report.Report): An instance of Report class
         detailed (bool): An instance of bool, flag for printing a detailed report.
         color (str): An instance of str, color that the report should be printed in
     """
@@ -847,21 +849,13 @@ def report_summary(report, pager=None, detailed=None, color=None):
         report_file=report.reportfile(),
     )
 
-    if pager:
-        with console.pager():
-            print_report_summary_output(
-                report,
-                table,
-                pass_results,
-                fail_results,
-                color=color,
-                detailed=detailed,
-            )
-
-        return
-
     print_report_summary_output(
-        report, table, pass_results, fail_results, color=color, detailed=detailed
+        report,
+        table,
+        pass_results,
+        fail_results,
+        color=color,
+        detailed=detailed,
     )
 
 

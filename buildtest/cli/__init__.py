@@ -9,6 +9,8 @@ from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import console
 from buildtest.schemas.defaults import schema_table
 
+# from ast import alias
+
 
 def handle_kv_string(val):
     """This method is used as type field in --filter argument in ``buildtest buildspec find``.
@@ -876,7 +878,7 @@ def report_menu(subparsers):
     subparsers.add_parser("clear", help="Remove all report file")
     subparsers.add_parser("list", help="List all report files")
     parser_report_summary = subparsers.add_parser(
-        "summary", help="Summarize test report"
+        "summary", aliases=["sm"], help="Summarize test report"
     )
 
     # buildtest report
@@ -954,10 +956,6 @@ def report_menu(subparsers):
         help="Print output in machine readable format",
     )
     parser_report.add_argument(
-        "--pager", action="store_true", help="Enable PAGING when viewing result"
-    )
-
-    parser_report_summary.add_argument(
         "--pager", action="store_true", help="Enable PAGING when viewing result"
     )
     parser_report_summary.add_argument(
