@@ -50,22 +50,20 @@ def compiler_test(configuration):
     pass_compilers = []
     fail_compilers = []
 
-    bc = BuildtestCompilers(configuration=configuration)
-    bc.find_compilers()
+    print("config_target: ", configuration.target_config)
 
-    print("bc.comppilers: ", bc.compilers)
-
-    for name in bc.compilers:
-        for module in bc.compilers[name]:
-            if bc.compilers[name][module].get("module"):
-                cmd = Module(module, debug=False)
-                ret = cmd.test_modules(login=True)
-                if ret == 0:
-                    pass_compilers.append(module)
-                    continue
-                fail_compilers.append(module)
-            else:
-                pass_compilers.append(module)
+   
+    # for name in bc.compilers:
+    #     for module in bc.compilers[name]:
+    #         if bc.compilers[name][module].get("module"):
+    #             cmd = Module(module, debug=False)
+    #             ret = cmd.test_modules(login=True)
+    #             if ret == 0:
+    #                 pass_compilers.append(module)
+    #                 continue
+    #             fail_compilers.append(module)
+    #         else:
+    #             pass_compilers.append(module)
 
     if pass_compilers:
 
