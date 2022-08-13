@@ -9,8 +9,6 @@ from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import console
 from buildtest.schemas.defaults import schema_table
 
-# from ast import alias
-
 
 def handle_kv_string(val):
     """This method is used as type field in --filter argument in ``buildtest buildspec find``.
