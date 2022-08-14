@@ -144,12 +144,25 @@ def test_buildspec_maintainers():
 @pytest.mark.cli
 def test_buildspec_find_invalid():
     cache = BuildspecCache(configuration=configuration)
-    cache.print_invalid_buildspecs(error=True)
-    cache.print_invalid_buildspecs(error=False)
-    cache.print_invalid_buildspecs(error=True, terse=True)
-    cache.print_invalid_buildspecs(error=False, terse=True)
-    cache.print_invalid_buildspecs(error=True, terse=True, header=True)
-    cache.print_invalid_buildspecs(error=False, terse=True, header=True)
+
+    # testing buildtest buildspec find invalid. This will assert SystemExit exception raised by sys.exit
+    with pytest.raises(SystemExit):
+        cache.print_invalid_buildspecs(error=True)
+
+    with pytest.raises(SystemExit):
+        cache.print_invalid_buildspecs(error=False)
+
+    with pytest.raises(SystemExit):
+        cache.print_invalid_buildspecs(error=True, terse=True)
+
+    with pytest.raises(SystemExit):
+        cache.print_invalid_buildspecs(error=False, terse=True)
+
+    with pytest.raises(SystemExit):
+        cache.print_invalid_buildspecs(error=True, terse=True, header=True)
+
+    with pytest.raises(SystemExit):
+        cache.print_invalid_buildspecs(error=False, terse=True, header=True)
 
 
 @pytest.mark.cli

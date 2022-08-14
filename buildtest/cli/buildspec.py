@@ -874,7 +874,7 @@ class BuildspecCache:
 
         if error and terse:
             console.print("The --terse flag can not be used with the --error option")
-            return
+            sys.exit(1)
 
         # implementation for machine readable format specified via --terse
         if terse:
@@ -882,7 +882,7 @@ class BuildspecCache:
                 print("buildspec")
             for buildspec in self.cache["invalids"].keys():
                 print(buildspec)
-            return
+            sys.exit(1)
 
         # if --error is not specified print list of invalid buildspecs in rich table
         if not error:
@@ -907,6 +907,7 @@ class BuildspecCache:
         for buildspec, value in self.cache["invalids"].items():
             console.rule(buildspec)
             pprint(value)
+        sys.exit(1)
 
     @staticmethod
     def print_filter_fields():
