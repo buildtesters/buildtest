@@ -51,7 +51,7 @@ def compiler_test(configuration):
     fail_compilers = []
 
     compilers = configuration.target_config["compilers"]["compiler"]
-   
+
     for name in compilers:
         for module in compilers[name]:
             if compilers[name][module].get("module"):
