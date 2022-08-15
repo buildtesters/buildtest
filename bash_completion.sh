@@ -159,19 +159,12 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--color= --end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"
-      if $cur in --color*
-        
-      else
+      local opts="--color --end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"
+      COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+      case "${COMP_WORDS[2]}" in --color)  
+        local opts=$(python -c "from rich.color import ANSI_COLOR_NAMES; print(str(list(ANSI_COLOR_NAMES.keys())).replace(',',''))")
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-      fi
-      case "${COMP_WORDS[2]}" in --color*)  
-        #local opts=$(python -c "from rich.color import ANSI_COLOR_NAMES; print(str(list(ANSI_COLOR_NAMES.keys())).replace(',',''))")
-        
-        echo ${prev/-t}
-        #COMPREPLY=( $(compgen -W "${opts}" -- "hey" ) )
       esac
-      
       case "${COMP_WORDS[2]}" in summary)
         local opts="-d -h --detailed --help --pager"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
