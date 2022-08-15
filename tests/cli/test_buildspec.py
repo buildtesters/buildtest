@@ -149,32 +149,32 @@ def test_buildspec_find_invalid():
     try:
         cache.print_invalid_buildspecs(error=True)
     except SystemExit:
-        assert True
+        pass
 
     try:
         cache.print_invalid_buildspecs(error=False)
     except SystemExit:
-        assert True
+        pass
 
     try:
         cache.print_invalid_buildspecs(error=True, terse=True)
     except SystemExit:
-        assert True
+        pass
 
     try:
         cache.print_invalid_buildspecs(error=False, terse=True)
     except SystemExit:
-        assert True
+        pass
 
     try:
         cache.print_invalid_buildspecs(error=True, terse=True, header=True)
     except SystemExit:
-        assert True
+        pass
 
     try:
         cache.print_invalid_buildspecs(error=False, terse=True, header=True)
     except SystemExit:
-        assert True
+        pass
 
 
 @pytest.mark.cli
