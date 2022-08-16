@@ -8,7 +8,7 @@ import pwd
 
 from rich.console import Console
 
-console = Console()
+console = Console(soft_wrap=True)
 
 # Get user home based on effective uid, root of install to copy files
 userhome = pwd.getpwuid(os.getuid())[5]
