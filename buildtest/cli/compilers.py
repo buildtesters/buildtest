@@ -224,7 +224,7 @@ class BuildtestCompilers:
             if self.debug:
                 print(f"Searching modules by parsing content of command: {module_av}")
 
-            cmd = subprocess.getoutput("module av -t")
+            cmd = subprocess.getoutput("/bin/bash -c 'module -t av'")
             modules = cmd.split()
 
             # discover all modules based with list of module names specified in find field, we add all
