@@ -876,6 +876,10 @@ class BuildspecCache:
             console.print("The --terse flag can not be used with the --error option")
             sys.exit(1)
 
+        if not self.get_invalid_buildspecs():
+            console.print("There are no invalid buildspecs in cache")
+            return
+
         # implementation for machine readable format specified via --terse
         if terse:
             if not header:
@@ -896,12 +900,8 @@ class BuildspecCache:
             )
             for buildspec in self.cache["invalids"].keys():
                 table.add_row(buildspec)
-
-            # return a non-zero returncode
-            if table.row_count > 0:
-                console.print(table)
-                sys.exit(1)
-            return
+            console.print(table)
+            sys.exit(1)
 
         # implementation for --error which displays buildspec file followed by error
         for buildspec, value in self.cache["invalids"].items():
