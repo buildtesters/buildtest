@@ -845,8 +845,8 @@ def config_menu(subparsers):
     )
     compiler_find.add_argument(
         "-d",
-        "--debug",
-        help="Display Debugging output when finding compilers",
+        "--detailed",
+        help="Display detailed output when finding compilers",
         action="store_true",
     )
     compiler_find.add_argument(
