@@ -886,6 +886,7 @@ class BuildspecCache:
                 print("buildspec")
             for buildspec in self.cache["invalids"].keys():
                 print(buildspec)
+            sys.exit(1)
 
         # if --error is not specified print list of invalid buildspecs in rich table
         if not error:
