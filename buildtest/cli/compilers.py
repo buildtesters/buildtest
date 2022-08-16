@@ -82,7 +82,7 @@ def compiler_find(args, configuration):
     search for all modules in current ``$MODULEPATH``.
     """
 
-    bc = BuildtestCompilers(debug=args.debug, configuration=configuration)
+    bc = BuildtestCompilers(detailed=args.detailed, configuration=configuration)
     bc.find_compilers()
     # configuration["compilers"]["compiler"] = bc.compilers
 
@@ -133,7 +133,7 @@ class BuildtestCompilers:
         "nvhpc": {"cc": "nvc", "cxx": "nvcc", "fc": "nvfortran"},
     }
 
-    def __init__(self, configuration, settings_file=None, debug=False):
+    def __init__(self, configuration, settings_file=None, detailed=False):
         """
         :param settings_file: Specify an alternate settings file to use when finding compilers
         :param settings_file: str, optional
@@ -151,7 +151,7 @@ class BuildtestCompilers:
             bc.validate()
             self.configuration = bc
 
-        self.debug = debug
+        self.detailed = detailed
 
         if not deep_get(self.configuration.target_config, "compilers", "compiler"):
             raise BuildTestError("compiler section not defined")
@@ -194,11 +194,11 @@ class BuildtestCompilers:
             )
 
         module_dict = {}
-        print(f"MODULEPATH: {os.getenv('MODULEPATH')}")
+        console.print(f"MODULEPATH: {os.getenv('MODULEPATH')}")
 
         # First we discover modules, if its Lmod we use Lmodule API class Spider to retrieve modules
         if self.moduletool == "lmod":
-            if self.debug:
+            if self.detailed:
                 print("Searching modules via Lmod Spider")
             spider = Spider()
 
@@ -210,8 +210,8 @@ class BuildtestCompilers:
                 raw_string = r"{}".format(module_regex_patttern)
 
                 for module_fname in spider_modules:
-                    if self.debug:
-                        print(
+                    if self.detailed:
+                        console.print(
                             f"Applying regex {raw_string} with module: {module_fname}"
                         )
 
@@ -221,7 +221,7 @@ class BuildtestCompilers:
         # for environment-modules we retrieve modules by parsing output of 'module av -t'
         elif self.moduletool == "environment-modules":
             module_av = "module av -t"
-            if self.debug:
+            if self.detailed:
                 print(f"Searching modules by parsing content of command: {module_av}")
 
             cmd = subprocess.getoutput("/bin/bash -c 'module -t av'")
@@ -262,27 +262,35 @@ class BuildtestCompilers:
 
         """
 
-        if self.debug:
-            print(f"Testing all discovered modules: {list(module_dict.values())}")
+        if self.detailed:
 
-        self.compiler_modules_lookup = {}
-        self.compiler_modules_lookup_fail = {}
+            table = Table(
+                title="Discovered Modules", show_lines=True, header_style="blue"
+            )
+            table.add_column("Name")
+            for modules in module_dict.values():
+                for name in modules:
+                    table.add_row(f"{name}")
+            console.print(table)
+
+        self.valid_compilers = {}
+        self.invalid_compilers = {}
         # test all modules via 'module load' and add only modules that passed (ret: 0)
         for name, module_list in module_dict.items():
-            self.compiler_modules_lookup[name] = []
-            self.compiler_modules_lookup_fail[name] = []
+            self.valid_compilers[name] = []
+            self.invalid_compilers[name] = []
             for module in module_list:
-                cmd = Module(module, debug=self.debug)
+                cmd = Module(module, debug=self.detailed)
                 ret = cmd.test_modules(login=True)
                 # if module load test passed we add entry to list
                 if ret == 0:
-                    self.compiler_modules_lookup[name].append(module)
+                    self.valid_compilers[name].append(module)
                 else:
-                    self.compiler_modules_lookup_fail[name].append(module)
+                    self.invalid_compilers[name].append(module)
 
-        if self.debug:
-            print("PASS Compilers: ", self.compiler_modules_lookup)
-            print("FAIL Compilers: ", self.compiler_modules_lookup_fail)
+        # if self.detailed:
+        #    console.print("PASS Compilers: ", self.valid_compilers)
+        #    console.print("FAIL Compilers: ", self.invalid_compilers)
 
     def _update_compiler_section(self):
         """This method will update the compiler section by adding new compilers if
@@ -292,7 +300,7 @@ class BuildtestCompilers:
         :rtype: dict
         """
 
-        for name, module_list in self.compiler_modules_lookup.items():
+        for name, module_list in self.valid_compilers.items():
             if not self.compilers.get(name):
                 self.compilers[name] = {}
 
