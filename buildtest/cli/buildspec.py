@@ -29,7 +29,7 @@ from jsonschema.exceptions import ValidationError
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.pretty import pprint
-from rich.table import Table
+from rich.table import Column, Table
 
 logger = logging.getLogger(__name__)
 
@@ -583,7 +583,7 @@ class BuildspecCache:
             return
 
         table = Table(
-            "Buildspecs",
+            Column("Buildspecs", overflow="fold"),
             title="List of Buildspecs",
             header_style="blue",
             row_styles=["red"],
@@ -614,7 +614,10 @@ class BuildspecCache:
             return
 
         table = Table(
-            "Tags", title="List of Tags", header_style="blue", row_styles=["green"]
+            Column("Tags", overflow="fold"),
+            title="List of Tags",
+            header_style="blue",
+            row_styles=["green"],
         )
         for tagname in self.cache["unique_tags"]:
             table.add_row(tagname)
@@ -640,7 +643,7 @@ class BuildspecCache:
             return
 
         table = Table(
-            "Executors",
+            Column("Executors", overflow="fold"),
             title="List of Executors",
             header_style="blue",
             row_styles=["green"],
@@ -670,13 +673,10 @@ class BuildspecCache:
                     print(f"{executor_name}|{test_name}|{description}")
             return
 
-        table = Table(title="Tests by Executors", header_style="blue")
-        table.add_column("Executors", style="yellow")
-        table.add_column(
-            "Name",
-            style="red",
-        )
-        table.add_column("Description", style="green")
+        table = Table(title="Tests by Executors", header_style="blue", show_lines=True)
+        table.add_column("Executors", style="yellow", overflow="fold")
+        table.add_column("Name", style="red", overflow="fold")
+        table.add_column("Description", style="green", overflow="fold")
 
         for executor_name in self.cache["executor"].keys():
             for test_name, description in self.cache["executor"][executor_name].items():
@@ -703,10 +703,10 @@ class BuildspecCache:
                     print(f"{tagname}|{test_name}|{description}")
             return
 
-        table = Table(title="Tests by Tags", header_style="blue")
-        table.add_column("Tags", style="yellow")
-        table.add_column("Name", style="red")
-        table.add_column("Description", style="green")
+        table = Table(title="Tests by Tags", header_style="blue", show_lines=True)
+        table.add_column("Tags", style="yellow", overflow="fold")
+        table.add_column("Name", style="red", overflow="fold")
+        table.add_column("Description", style="green", overflow="fold")
 
         for tagname in self.cache["tags"].keys():
             for test_name, description in self.cache["tags"][tagname].items():
@@ -741,7 +741,7 @@ class BuildspecCache:
             show_lines=True,
             header_style="red",
             style="cyan",
-            row_styles=["red", "green", "tan", "magenta"],
+            row_styles=["tan"],
             title_justify="center",
             show_edge=False,
         )
@@ -787,10 +787,9 @@ class BuildspecCache:
         return self.cache["maintainers"]
 
     def print_maintainer(self):
-        """This method prints maintainers from buildspec cache file which implements ``buildtest buildspec find --maintainers`` command."""
+        """This method prints maintainers from buildspec cache file which implements ``buildtest buildspec maintainers --list`` command."""
 
         if self.terse:
-
             if not self.header:
                 print("maintainers")
 
@@ -800,7 +799,7 @@ class BuildspecCache:
             return
 
         table = Table(
-            "Maintainers",
+            Column("Maintainers", overflow="fold"),
             header_style="blue",
             title_style="red",
             row_styles=["green"],
@@ -831,7 +830,7 @@ class BuildspecCache:
 
     def print_maintainers_by_buildspecs(self):
 
-        """This method prints maintainers breakdown by buildspecs. This method implements ``buildtest buildspec find --maintainers-by-buildspecs``"""
+        """This method prints maintainers breakdown by buildspecs. This method implements ``buildtest buildspec maintainers --breakdown``"""
         if self.terse:
             if not self.header:
                 print("maintainers|buildspec")
@@ -841,13 +840,14 @@ class BuildspecCache:
             return
 
         table = Table(
-            "Maintainers",
-            "Buildspec",
+            Column("Maintainers", overflow="fold"),
+            Column("Buildspec", overflow="fold"),
             title="Breakdown of buildspecs by maintainers",
             header_style="blue",
             style="cyan",
             title_style="red",
             row_styles=["green"],
+            show_lines=True,
         )
 
         for maintainer, buildspecs in self.cache["maintainers"].items():
@@ -915,10 +915,12 @@ class BuildspecCache:
         method implements command ``buildtest buildspec find --helpfilter``
         """
 
-        table = Table(title="Filter Field Description", header_style="blue")
-        table.add_column("Field", style="red")
-        table.add_column("Type", style="green")
-        table.add_column("Description", style="cyan")
+        table = Table(
+            title="Filter Field Description", header_style="blue", show_lines=True
+        )
+        table.add_column("Field", style="red", overflow="fold")
+        table.add_column("Type", style="green", overflow="fold")
+        table.add_column("Description", style="cyan", overflow="fold")
 
         table.add_row("buildspecs", "Filter tests by buildspec", "FILE")
         table.add_row("executor", "Filter by executor name", "STRING")
@@ -931,9 +933,11 @@ class BuildspecCache:
         """This method prints format fields available for buildspec cache. This
         method implements command ``buildtest buildspec find --helpformat``
         """
-        table = Table(title="Format Field Description", header_style="blue")
-        table.add_column("Field", style="red")
-        table.add_column("Description", style="green")
+        table = Table(
+            title="Format Field Description", header_style="blue", show_lines=True
+        )
+        table.add_column("Field", style="red", overflow="fold")
+        table.add_column("Description", style="green", overflow="fold")
 
         table.add_row("buildspec", "Display name of buildspec file")
         table.add_row("description", "Show description of test")
