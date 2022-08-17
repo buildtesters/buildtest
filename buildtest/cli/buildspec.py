@@ -1157,13 +1157,15 @@ def summary_print(configuration):
     layout = Layout()
     layout.split_column(Layout(name="top"), Layout(name="bottom"))
 
-    layout['top'].split_row(Layout(name="top-left"), Layout(name="top-center"), Layout(name="top-right"))
-    layout['top'].ratio=2
+    layout["top"].split_row(
+        Layout(name="top-left"), Layout(name="top-center"), Layout(name="top-right")
+    )
+    layout["top"].ratio = 2
 
-    #layout['bottom'].split_row(Layout(name="bottom-left"))
+    # layout['bottom'].split_row(Layout(name="bottom-left"))
     ################ Tag Breakdown #################
     tag_table = Table(title="Tag Breakdown", header_style="blue")
-    #tag_table.overflow="fold"
+    # tag_table.overflow="fold"
 
     tag_table.add_column("tag", style="red", overflow="fold")
     tag_table.add_column("total tests", style="green", overflow="fold")
@@ -1174,8 +1176,12 @@ def summary_print(configuration):
 
     ################ Executor Breakdown #################
     executor_table = Table(title="Executor Breakdown")
-    executor_table.add_column("executor", style="red", header_style="blue", overflow="fold")
-    executor_table.add_column("total tests", style="green", header_style="blue", overflow="fold")
+    executor_table.add_column(
+        "executor", style="red", header_style="blue", overflow="fold"
+    )
+    executor_table.add_column(
+        "total tests", style="green", header_style="blue", overflow="fold"
+    )
 
     executor_summary = cache.executor_breakdown()
     for executor, executor_count in executor_summary.items():
@@ -1183,8 +1189,12 @@ def summary_print(configuration):
 
     ################ Maintainers #################
     maintainer_table = Table(title="Maintainers Breakdown")
-    maintainer_table.add_column("maintainers", style="red", header_style="blue", overflow="fold")
-    maintainer_table.add_column("total buildspecs", style="green", header_style="blue", overflow="fold")
+    maintainer_table.add_column(
+        "maintainers", style="red", header_style="blue", overflow="fold"
+    )
+    maintainer_table.add_column(
+        "total buildspecs", style="green", header_style="blue", overflow="fold"
+    )
 
     for maintainer in cache.list_maintainers():
         num_buildspecs = len(cache.cache["maintainers"][maintainer])
@@ -1213,7 +1223,7 @@ def summary_print(configuration):
     layout["top-left"].update(tag_table)
     layout["top-center"].update(executor_table)
     layout["top-right"].update(maintainer_table)
-    layout['bottom'].update(invalid_buildspecs_table)
+    layout["bottom"].update(invalid_buildspecs_table)
 
     console.print(layout)
     console.print(buildspec_table)
