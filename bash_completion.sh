@@ -159,19 +159,16 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--color --end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"
-      COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-      case "${COMP_WORDS[2]}" in --color)  
-        local opts=$(python -c "from rich.color import ANSI_COLOR_NAMES; print(str(list(ANSI_COLOR_NAMES.keys())).replace(',',''))")
-        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-      esac
+      local opts="--end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"     
+      local copts=$(python -c "from rich.color import ANSI_COLOR_NAMES;a=' --color-'.join(list(ANSI_COLOR_NAMES.keys())) ;print(a)")
+      local allopts="${opts} ${copts} "
+      COMPREPLY=( $( compgen -W "$allopts" -- $cur ) )
+
       case "${COMP_WORDS[2]}" in summary)
         local opts="-d -h --detailed --help --pager"
-        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-        ;;
+        COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
       esac
-      ;;
-      
+    ;;
     config|cg)
       local cmds="-h --help compilers edit executors path systems validate view"
 

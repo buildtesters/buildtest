@@ -954,6 +954,9 @@ def report_menu(subparsers):
         help="Print output in machine readable format",
     )
     parser_report.add_argument(
+        "--color", type=str, action="append", help="change the color of the output font"
+    )
+    parser_report.add_argument(
         "--pager", action="store_true", help="Enable PAGING when viewing result"
     )
 
