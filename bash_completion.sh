@@ -2,6 +2,7 @@
 # For auto completion via compgen, options are sorted alphabetically in the format: <longoption> <shortoption> <subcommands>
 # For more details see https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
 
+
 if test -n "${ZSH_VERSION:-}" ; then
   if [[ "$(emulate)" = zsh ]] ; then
     if ! typeset -f compdef >& /dev/null ; then
@@ -17,6 +18,13 @@ if test -n "${ZSH_VERSION:-}" ; then
     return # stop interpreting file
   fi
 fi
+
+
+function containsElement () 
+{
+  
+  return $result
+}
 
 # get list of available tags
 _avail_tags ()
@@ -159,16 +167,27 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"     
-      local copts=$(python -c "from rich.color import ANSI_COLOR_NAMES;a=' --color-'.join(list(ANSI_COLOR_NAMES.keys())) ;print(a)")
-      local allopts="${opts} ${copts} "
-      COMPREPLY=( $( compgen -W "$allopts" -- $cur ) )
-
+      local opts="--color --end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"     
+      COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+      case ${COMP_WORDS[2]} in --color)
+        local copts=$(python -c "from rich.color import ANSI_COLOR_NAMES;print(' '.join(list(ANSI_COLOR_NAMES.keys())))")
+        
+        COMPREPLY=( $( compgen -W "$copts" -- $cur ) )
+        arr2=($opts)
+        local opts="--color --end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"     
+        if [[ " ${arr1[*]} " == *" $prev "* ]]; then
+            local opts="--end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"     
+            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) ) 
+        fi
+        if [[ "$prev" == "summary" ]]; then
+              local opts="-d -h --detailed --help --pager"
+              COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+        fi
+      esac
       case "${COMP_WORDS[2]}" in summary)
         local opts="-d -h --detailed --help --pager"
-        COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
-      esac
-    ;;
+        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+      esac;;
     config|cg)
       local cmds="-h --help compilers edit executors path systems validate view"
 
