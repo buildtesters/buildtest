@@ -55,7 +55,8 @@ def compiler_test(configuration):
     for name in compilers:
         for module in compilers[name]:
             if compilers[name][module].get("module"):
-                cmd = Module(module, debug=False)
+                module_test = compilers[name][module]["module"]["load"]
+                cmd = Module(module_test, debug=False)
                 ret = cmd.test_modules(login=True)
                 if ret == 0:
                     pass_compilers.append(module)
