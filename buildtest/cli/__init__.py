@@ -876,7 +876,7 @@ def report_menu(subparsers):
     subparsers.add_parser("clear", help="Remove all report file")
     subparsers.add_parser("list", help="List all report files")
     parser_report_summary = subparsers.add_parser(
-        "summary", aliases=["sm"], help="Summarize test report"
+        "summary", help="Summarize test report"
     )
 
     # buildtest report

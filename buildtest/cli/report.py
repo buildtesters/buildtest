@@ -89,7 +89,7 @@ class Report:
         latest=None,
         oldest=None,
         count=None,
-        pagerOpt=None,
+        pager=None,
         detailed=None,
     ):
         """
@@ -104,7 +104,7 @@ class Report:
             latest (bool, optional): Fetch latest run for all tests discovered. This is specified via ``buildtest report --latest``
             oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
             count (int, optional): Fetch limited number of rows get printed for all tests discovered. This is specified via ``buildtest report --count``
-            pagerOpt (bool, optional): Enabling PAGING output for ``buildtest report``. This can be specified via ``buildtest report --pager``
+            pager (bool, optional): Enabling PAGING output for ``buildtest report``. This can be specified via ``buildtest report --pager``
         """
         self.start = start
         self.end = end
@@ -114,7 +114,7 @@ class Report:
         self.oldest = oldest
         self.filter = filter_args
         self.format = format_args
-        self.pager = pagerOpt
+        self.pager = pager
 
         self.input_report = report_file
 
