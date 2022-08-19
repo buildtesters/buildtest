@@ -47,3 +47,4 @@ env.bak/
 Pipfile
 
 coverage.json
+Pipfile.lock

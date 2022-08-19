@@ -173,7 +173,7 @@ _buildtest ()
         local copts=$(python -c "from rich.color import ANSI_COLOR_NAMES;print(' '.join(list(ANSI_COLOR_NAMES.keys())))")
         
         COMPREPLY=( $( compgen -W "$copts" -- $cur ) )
-        arr2=($opts)
+        arr1=($copts)
         local opts="--color --end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"     
         if [[ " ${arr1[*]} " == *" $prev "* ]]; then
             local opts="--end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"     
