@@ -47,31 +47,46 @@ def compiler_test(configuration):
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
     """
-    bc = BuildtestCompilers(configuration=configuration)
-    bc.find_compilers()
+    pass_compilers = []
+    fail_compilers = []
 
-    table = Table(title="Compilers Test Pass")
-    table.add_column("No.", style="cyan", no_wrap=True)
-    table.add_column("Compiler Name", style="green")
-    table.add_column("Status", justify="right")
+    compilers = configuration.target_config["compilers"]["compiler"]
 
-    for compiler_cat in bc.compiler_modules_lookup:
-        for compiler in bc.compiler_modules_lookup[compiler_cat]:
-            table.add_row(str(table.row_count + 1), compiler, "✅")
+    for name in compilers:
+        for module in compilers[name]:
+            if compilers[name][module].get("module"):
+                module_test = compilers[name][module]["module"]["load"]
+                cmd = Module(module_test, debug=False)
+                ret = cmd.test_modules(login=True)
+                if ret == 0:
+                    pass_compilers.append(module)
+                    continue
+                fail_compilers.append(module)
+            else:
+                pass_compilers.append(module)
 
-    if table.row_count:
+    if pass_compilers:
+
+        table = Table(title="Compilers Test Pass")
+        table.add_column("No.", style="cyan", no_wrap=True)
+        table.add_column("Compiler Name", style="green")
+        table.add_column("Status", justify="right")
+
+        for idx, pass_compiler in enumerate(pass_compilers):
+            table.add_row(str(idx + 1), pass_compiler, "✅")
+
         console.print(table)
 
-    table = Table(title="Compilers Test Fail")
-    table.add_column("No.", style="cyan", no_wrap=True)
-    table.add_column("Compiler Name", style="red")
-    table.add_column("Status", justify="right")
+    if fail_compilers:
 
-    for compiler_cat in bc.compiler_modules_lookup_fail:
-        for compiler in bc.compiler_modules_lookup_fail[compiler_cat]:
-            table.add_row(str(table.row_count + 1), compiler, "❌")
+        table = Table(title="Compilers Test Fail")
+        table.add_column("No.", style="cyan", no_wrap=True)
+        table.add_column("Compiler Name", style="red")
+        table.add_column("Status", justify="right")
 
-    if table.row_count:
+        for idx, fail_compiler in enumerate(fail_compilers):
+            table.add_row(str(idx + 1), fail_compiler, "❌")
+
         console.print(table)
 
 
