@@ -168,26 +168,31 @@ _buildtest ()
 
     report|rt)
       local opts="--color --end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"     
+      local copts=$(python -c "from rich.color import ANSI_COLOR_NAMES;print(' '.join(list(ANSI_COLOR_NAMES.keys())))")
+      arr1=($copts)
+      arr2=($opts)
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-      case ${COMP_WORDS[2]} in --color)
-        local copts=$(python -c "from rich.color import ANSI_COLOR_NAMES;print(' '.join(list(ANSI_COLOR_NAMES.keys())))")
-        
+      case ${prev} in --color)
         COMPREPLY=( $( compgen -W "$copts" -- $cur ) )
-        arr1=($copts)
-        local opts="--color --end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"     
-        if [[ " ${arr1[*]} " == *" $prev "* ]]; then
-            local opts="--end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"     
-            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) ) 
-        fi
-        if [[ "$prev" == "summary" ]]; then
-              local opts="-d -h --detailed --help --pager"
-              COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-        fi
+        return
       esac
-      case "${COMP_WORDS[2]}" in summary)
+      case "$prev" in summary)
         local opts="-d -h --detailed --help --pager"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-      esac;;
+        return
+      esac
+      if [[ " ${arr1[*]} " == *" $prev "* ]]; then 
+            delete=$delete+(--color)
+            COMPREPLY=( $( compgen -W "${opts/$delete}" -- $cur ) ) 
+            return
+      fi
+      if [[ " ${arr2[*]} " == *" $prev "* ]]; then 
+            delete=$delete+($prev)
+            COMPREPLY=( $( compgen -W "${opts/$delete}" -- $cur ) ) 
+            return
+      fi
+    ;;
+
     config|cg)
       local cmds="-h --help compilers edit executors path systems validate view"
 
