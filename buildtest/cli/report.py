@@ -91,6 +91,7 @@ class Report:
         count=None,
         pager=None,
         detailed=None,
+        color=None,
     ):
         """
         Args:
@@ -105,6 +106,8 @@ class Report:
             oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
             count (int, optional): Fetch limited number of rows get printed for all tests discovered. This is specified via ``buildtest report --count``
             pager (bool, optional): Enabling PAGING output for ``buildtest report``. This can be specified via ``buildtest report --pager``
+            color (str, optional): An instance of a string class that tells print_report what color the output should be printed in.
+
         """
         self.start = start
         self.end = end
@@ -115,6 +118,7 @@ class Report:
         self.filter = filter_args
         self.format = format_args
         self.pager = pager
+        self.color = color
 
         self.input_report = report_file
 
@@ -479,29 +483,44 @@ class Report:
 
     def print_format_fields(self):
         """Displays list of format field which implements command ``buildtest report --helpformat``"""
-        table = Table("[blue]Field", "[blue]Description", title="Format Fields")
+        consoleColor = checkColor(self.color) or "blue"
+        table = Table(
+            "[{consoleColor}]Field",
+            "[{consoleColor}]Description",
+            title="Format Fields",
+        )
         for field, description in self.format_field_description.items():
-            table.add_row(f"[red]{field}", f"[green]{description}")
+            if not consoleColor:
+                table.add_row(f"[red]{field}", f"[green]{description}")
+                continue
+            table.add_row(f"[{consoleColor}]{field}", f"[{consoleColor}]{description}")
 
-        console.print(table)
+        console.print(table, style=consoleColor)
 
     def print_filter_fields(self):
         """Displays list of help filters which implements command ``buildtest report --helpfilter``"""
-
+        consoleColor = checkColor(self.color) or "blue"
         table = Table(
-            "[blue]Field",
-            "[blue]Description",
-            "[blue]Expected Value",
+            "[{consoleColor}]Field",
+            "[{consoleColor}]Description",
+            "[{consoleColor}]Expected Value",
             title="Filter Fields",
         )
-
+        consoleColor = checkColor(self.color)
         for field, value in self.filter_field_description.items():
+            if not self.color:
+                table.add_row(
+                    f"[red]{field}",
+                    f"[green]{value['description']}",
+                    f"[magenta]{value['type']}",
+                )
+                continue
             table.add_row(
-                f"[red]{field}",
-                f"[green]{value['description']}",
-                f"[magenta]{value['type']}",
+                f"[{consoleColor}]{field}",
+                f"[{consoleColor}]{value['description']}",
+                f"[{consoleColor}]{value['type']}",
             )
-        console.print(table)
+        console.print(table, style=consoleColor)
 
     def print_report(
         self, terse=None, noheader=None, title=None, count=None, pager=None, color=None
@@ -551,6 +570,7 @@ class Report:
             root_disk_usage|PASS|0
             root_disk_usage|PASS|0
         """
+        consoleColor = checkColor(color)
 
         if terse:
             join_list = []
@@ -575,14 +595,13 @@ class Report:
         join_list = []
         title = title or f"Report File: {self.reportfile()}"
         table = Table(title=title, show_lines=True, expand=True)
-        consoleColor = checkColor(color=color)
-
+        consoleColor = consoleColor or "blue"
         for field in self.display_table.keys():
             table.add_column(
-                f"[blue]{field}", overflow="fold", style=consoleColor
-            )  # change [blue] to console color if we want the entire console output to be uniform.
+                f"[consoleColor]{field}", overflow="fold", style=consoleColor
+            )
             join_list.append(self.display_table[field])
-
+        consoleColor = checkColor(color)
         transpose_list = [list(i) for i in zip(*join_list)]
 
         # limited number of rows to be printed
@@ -594,10 +613,10 @@ class Report:
 
         if pager or self.pager:
             with console.pager():
-                console.print(table)
+                console.print(table, style=consoleColor)
 
             return
-        console.print(table)
+        console.print(table, style=consoleColor)
         return
 
     def latest_testid_by_name(self, name):
@@ -748,7 +767,7 @@ class Report:
 
 def report_cmd(args, report_file=None):
     """Entry point for ``buildtest report`` command"""
-
+    consoleColor = checkColor(args.color)
     if args.report_subcommand == "clear":
         # if BUILDTEST_REPORTS file is not present then we have no report files to delete since it tracks all report files that are created
         if not is_file(BUILDTEST_REPORTS):
@@ -756,7 +775,7 @@ def report_cmd(args, report_file=None):
 
         reports = load_json(BUILDTEST_REPORTS)
         for report in reports:
-            console.print(f"Removing report file: {report}")
+            console.print(f"Removing report file: {report}", consoleColor)
             try:
                 os.remove(report)
             except OSError:
@@ -775,7 +794,7 @@ def report_cmd(args, report_file=None):
 
         content = load_json(BUILDTEST_REPORTS)
         for fname in content:
-            console.print(fname)
+            console.print(fname, style=consoleColor)
         return
 
     results = Report(
@@ -791,7 +810,9 @@ def report_cmd(args, report_file=None):
         count=args.count,
     )
     if args.report_subcommand == "summary":
-        report_summary(results, pager=args.pager, detailed=args.detailed)
+        report_summary(
+            results, pager=args.pager, detailed=args.detailed, color=consoleColor
+        )
         return
 
     if args.helpfilter:
@@ -801,8 +822,9 @@ def report_cmd(args, report_file=None):
     if args.helpformat:
         results.print_format_fields()
         return
-
-    results.print_report(terse=args.terse, noheader=args.no_header, count=args.count)
+    results.print_report(
+        terse=args.terse, noheader=args.no_header, count=args.count, color=consoleColor
+    )
 
 
 def report_summary(report, pager=None, detailed=None, color=None):
@@ -812,16 +834,15 @@ def report_summary(report, pager=None, detailed=None, color=None):
         detailed (bool): An instance of bool, flag for printing a detailed report.
         color (str): An instance of str, color that the report should be printed in
     """
-
+    consoleColor = checkColor(color=color)
     test_breakdown = report.breakdown_by_test_names()
-    if not color:
+    if not consoleColor:
         table = Table(title="Breakdown by test", header_style="blue")
         table.add_column("Name", style="cyan")
         table.add_column("Total Pass", style="green")
         table.add_column("Total Fail", style="red")
         table.add_column("Total Runs", style="blue")
     else:
-        consoleColor = checkColor(color=color)
         table = Table(title="Breakdown by test", header_style=consoleColor)
         table.add_column("Name", style=consoleColor)
         table.add_column("Total Pass", style=consoleColor)
@@ -854,14 +875,14 @@ def report_summary(report, pager=None, detailed=None, color=None):
                 table,
                 pass_results,
                 fail_results,
-                color=color,
+                color=consoleColor,
                 detailed=detailed,
             )
 
         return
 
     print_report_summary_output(
-        report, table, pass_results, fail_results, color=color, detailed=detailed
+        report, table, pass_results, fail_results, color=consoleColor, detailed=detailed
     )
 
 
@@ -878,29 +899,37 @@ def print_report_summary_output(
         color (str): An instance of a string class that tells print_report_summary what color the output should be printed in.
         detailed (bool, optional): Print detailed output of the report summary if ``buildtest report summary --detailed`` is specified
     """
+    consoleColor = checkColor(color)
 
-    console.print("Report File: ", report.reportfile())
-    console.print("Total Tests:", len(report.get_testids()))
-    console.print("Total Tests by Names: ", len(report.get_names()))
-    console.print("Number of buildspecs in report: ", len(report.get_buildspecs()))
+    console.print("Report File: ", report.reportfile(), style=consoleColor)
+    console.print("Total Tests:", len(report.get_testids()), style=consoleColor)
+    console.print("Total Tests by Names: ", len(report.get_names()), style=consoleColor)
+    console.print(
+        "Number of buildspecs in report: ",
+        len(report.get_buildspecs()),
+        style=consoleColor,
+    )
 
     if not detailed:
         return
 
-    console.print(table)
+    console.print(table, style=consoleColor)
 
-    pass_color = color or "green"
-    fail_color = color or "red"
+    pass_color = consoleColor or "green"
+    fail_color = consoleColor or "red"
 
     pass_results.print_report(title="PASS Tests", color=pass_color)
     fail_results.print_report(title="FAIL Tests", color=fail_color)
 
 
 def checkColor(color):
+    if type(color) is list:
+        color = color[0]
     checkedColor = Color.default().name
     if color:
         try:
             checkedColor = Color.parse(color).name
         except ColorParseError:
             checkedColor = Color.default().name
-    return checkedColor
+        return checkedColor
+    return None
