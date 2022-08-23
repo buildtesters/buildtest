@@ -832,6 +832,13 @@ def config_menu(subparsers):
         action="store_true",
         help="List compiler details in YAML format",
     )
+    compilers.add_argument(
+        "-m",
+        "--modulepath",
+        type=str, 
+        nargs='+', 
+        help="List modulepath to search for compiler directories",
+    )
 
     subparsers_compiler = compilers.add_subparsers(
         description="Find new compilers and add them to detected compiler section",
