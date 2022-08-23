@@ -160,7 +160,7 @@ _buildtest ()
 
     report|rt)
       local opts="--end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"
-      COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+      COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
       case "${COMP_WORDS[2]}" in summary)
         local opt="-d -h --detailed --help"
         COMPREPLY=( $( compgen -W "${opt}" -- $cur ) )
