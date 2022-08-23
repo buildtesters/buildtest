@@ -835,8 +835,8 @@ def config_menu(subparsers):
     compilers.add_argument(
         "-m",
         "--modulepath",
-        type=str, 
-        nargs='+', 
+        type=str,
+        nargs='+',
         help="List modulepath to search for compiler directories",
     )
 
