@@ -211,13 +211,19 @@ class BuildtestCompilers:
         module_dict = {}
         console.print(f"MODULEPATH: {os.getenv('MODULEPATH')}")
 
+        print("self.moduletool: ", self.moduletool)
+
         # First we discover modules, if its Lmod we use Lmodule API class Spider to retrieve modules
         if self.moduletool == "lmod":
             if self.detailed:
                 print("Searching modules via Lmod Spider")
             spider = Spider()
 
+            print("spider.get_modules(): ", spider.get_modules())
+
             spider_modules = list(spider.get_modules().values())
+            print("spider_modules: ", spider_modules)
+            
             for name, module_regex_patttern in self.configuration.target_config[
                 "compilers"
             ]["find"].items():
