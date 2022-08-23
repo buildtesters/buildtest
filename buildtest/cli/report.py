@@ -512,6 +512,8 @@ class Report:
         Args:
             terse (bool, optional): Print output int terse format
             noheader (bool, optional): Determine whether to print header in terse format
+            title (str, optional): Table title to print out
+            count (int, optional): Number of rows to be printed in terse format
             color (str, optional): An instance of a string class that tells print_report what color the output should be printed in.
 
         In this example, we display output in tabular format which works with ``--filter`` and ``--format`` option.
