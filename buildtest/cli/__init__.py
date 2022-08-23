@@ -956,10 +956,6 @@ def report_menu(subparsers):
     parser_report.add_argument(
         "--pager", action="store_true", help="Enable PAGING when viewing result"
     )
-
-    parser_report_summary.add_argument(
-        "--pager", action="store_true", help="Enable PAGING when viewing result"
-    )
     parser_report_summary.add_argument(
         "--detailed", "-d", action="store_true", help="Enable a more detailed report"
     )
