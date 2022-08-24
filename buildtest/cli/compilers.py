@@ -217,13 +217,13 @@ class BuildtestCompilers:
         if self.moduletool == "lmod":
             if self.detailed:
                 print("Searching modules via Lmod Spider")
-            spider = Spider()
+            spider = Spider(tree="/usr/share/lmod/lmod/modulefiles/Core")
 
             print("spider.get_modules(): ", spider.get_modules())
 
             spider_modules = list(spider.get_modules().values())
             print("spider_modules: ", spider_modules)
-            
+
             for name, module_regex_patttern in self.configuration.target_config[
                 "compilers"
             ]["find"].items():
