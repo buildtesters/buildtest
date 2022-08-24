@@ -97,7 +97,7 @@ def compiler_find(args, configuration):
     search for all modules in current ``$MODULEPATH``.
     """
 
-    bc = BuildtestCompilers(detailed=args.detailed, configuration=configuration)
+    bc = BuildtestCompilers(detailed=args.detailed, configuration=configuration, modulepath=args.modulepath)
     bc.find_compilers()
     # configuration["compilers"]["compiler"] = bc.compilers
 
@@ -148,7 +148,7 @@ class BuildtestCompilers:
         "nvhpc": {"cc": "nvc", "cxx": "nvcc", "fc": "nvfortran"},
     }
 
-    def __init__(self, configuration, settings_file=None, detailed=False):
+    def __init__(self, configuration, settings_file=None, detailed=False, modulepath=None):
         """
         :param settings_file: Specify an alternate settings file to use when finding compilers
         :param settings_file: str, optional
@@ -167,6 +167,8 @@ class BuildtestCompilers:
             self.configuration = bc
 
         self.detailed = detailed
+
+        self.modulepath = ":".join(modulepath) if modulepath else None
 
         if not deep_get(self.configuration.target_config, "compilers", "compiler"):
             raise BuildTestError("compiler section not defined")
@@ -217,7 +219,7 @@ class BuildtestCompilers:
         if self.moduletool == "lmod":
             if self.detailed:
                 print("Searching modules via Lmod Spider")
-            spider = Spider(tree="/opt/cray/pe/lmod/modulefiles/mix_compilers")
+            spider = Spider(tree=self.modulepath)
 
             print("spider.get_modules(): ", spider.get_modules())
 
