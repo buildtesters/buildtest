@@ -217,7 +217,7 @@ class BuildtestCompilers:
         if self.moduletool == "lmod":
             if self.detailed:
                 print("Searching modules via Lmod Spider")
-            spider = Spider(tree="/opt/cray/pe/lmod/modulefiles/mpi/gnu/8.0/ofi/1.0/cray-mpich/8.0")
+            spider = Spider(tree="/opt/cray/pe/lmod/modulefiles/mix_compilers")
 
             print("spider.get_modules(): ", spider.get_modules())
 
