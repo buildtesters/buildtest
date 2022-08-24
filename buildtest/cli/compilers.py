@@ -27,7 +27,6 @@ def compiler_cmd(args, configuration):
         return
 
     bc = BuildtestCompilers(configuration, modulepath=args.modulepath)
-    bc.find_compilers()
 
     if args.json is False and args.yaml is False:
         bc.print_compilers()
@@ -227,11 +226,11 @@ class BuildtestCompilers:
             spider_modules = list(spider.get_modules().values())
             print("spider_modules: ", spider_modules)
 
-            for name, module_regex_patttern in self.configuration.target_config[
+            for name, module_regex_pattern in self.configuration.target_config[
                 "compilers"
             ]["find"].items():
                 module_dict[name] = []
-                raw_string = r"{}".format(module_regex_patttern)
+                raw_string = r"{}".format(module_regex_pattern)
 
                 for module_fname in spider_modules:
                     if self.detailed:
