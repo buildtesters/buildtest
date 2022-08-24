@@ -26,7 +26,8 @@ def compiler_cmd(args, configuration):
         compiler_test(configuration)
         return
 
-    bc = BuildtestCompilers(configuration)
+    bc = BuildtestCompilers(configuration, modulepath=args.modulepath)
+    bc.find_compilers()
 
     if args.json is False and args.yaml is False:
         bc.print_compilers()
@@ -97,7 +98,7 @@ def compiler_find(args, configuration):
     search for all modules in current ``$MODULEPATH``.
     """
 
-    bc = BuildtestCompilers(detailed=args.detailed, configuration=configuration, modulepath=args.modulepath)
+    bc = BuildtestCompilers(detailed=args.detailed, configuration=configuration)
     bc.find_compilers()
     # configuration["compilers"]["compiler"] = bc.compilers
 
