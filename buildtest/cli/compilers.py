@@ -148,7 +148,9 @@ class BuildtestCompilers:
         "nvhpc": {"cc": "nvc", "cxx": "nvcc", "fc": "nvfortran"},
     }
 
-    def __init__(self, configuration, settings_file=None, detailed=False, modulepath=None):
+    def __init__(
+        self, configuration, settings_file=None, detailed=False, modulepath=None
+    ):
         """
         :param settings_file: Specify an alternate settings file to use when finding compilers
         :param settings_file: str, optional
