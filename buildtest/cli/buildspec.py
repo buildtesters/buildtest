@@ -29,7 +29,7 @@ from jsonschema.exceptions import ValidationError
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.pretty import pprint
-from rich.table import Table
+from rich.table import Column, Table
 
 logger = logging.getLogger(__name__)
 
@@ -583,7 +583,7 @@ class BuildspecCache:
             return
 
         table = Table(
-            "Buildspecs",
+            Column("Buildspecs", overflow="fold"),
             title="List of Buildspecs",
             header_style="blue",
             row_styles=["red"],
@@ -614,7 +614,10 @@ class BuildspecCache:
             return
 
         table = Table(
-            "Tags", title="List of Tags", header_style="blue", row_styles=["green"]
+            Column("Tags", overflow="fold"),
+            title="List of Tags",
+            header_style="blue",
+            row_styles=["green"],
         )
         for tagname in self.cache["unique_tags"]:
             table.add_row(tagname)
@@ -640,7 +643,7 @@ class BuildspecCache:
             return
 
         table = Table(
-            "Executors",
+            Column("Executors", overflow="fold"),
             title="List of Executors",
             header_style="blue",
             row_styles=["green"],
@@ -670,13 +673,10 @@ class BuildspecCache:
                     print(f"{executor_name}|{test_name}|{description}")
             return
 
-        table = Table(title="Tests by Executors", header_style="blue")
-        table.add_column("Executors", style="yellow")
-        table.add_column(
-            "Name",
-            style="red",
-        )
-        table.add_column("Description", style="green")
+        table = Table(title="Tests by Executors", header_style="blue", show_lines=True)
+        table.add_column("Executors", style="yellow", overflow="fold")
+        table.add_column("Name", style="red", overflow="fold")
+        table.add_column("Description", style="green", overflow="fold")
 
         for executor_name in self.cache["executor"].keys():
             for test_name, description in self.cache["executor"][executor_name].items():
@@ -703,10 +703,10 @@ class BuildspecCache:
                     print(f"{tagname}|{test_name}|{description}")
             return
 
-        table = Table(title="Tests by Tags", header_style="blue")
-        table.add_column("Tags", style="yellow")
-        table.add_column("Name", style="red")
-        table.add_column("Description", style="green")
+        table = Table(title="Tests by Tags", header_style="blue", show_lines=True)
+        table.add_column("Tags", style="yellow", overflow="fold")
+        table.add_column("Name", style="red", overflow="fold")
+        table.add_column("Description", style="green", overflow="fold")
 
         for tagname in self.cache["tags"].keys():
             for test_name, description in self.cache["tags"][tagname].items():
@@ -741,7 +741,7 @@ class BuildspecCache:
             show_lines=True,
             header_style="red",
             style="cyan",
-            row_styles=["red", "green", "tan", "magenta"],
+            row_styles=["tan"],
             title_justify="center",
             show_edge=False,
         )
@@ -787,10 +787,9 @@ class BuildspecCache:
         return self.cache["maintainers"]
 
     def print_maintainer(self):
-        """This method prints maintainers from buildspec cache file which implements ``buildtest buildspec find --maintainers`` command."""
+        """This method prints maintainers from buildspec cache file which implements ``buildtest buildspec maintainers --list`` command."""
 
         if self.terse:
-
             if not self.header:
                 print("maintainers")
 
@@ -800,7 +799,7 @@ class BuildspecCache:
             return
 
         table = Table(
-            "Maintainers",
+            Column("Maintainers", overflow="fold"),
             header_style="blue",
             title_style="red",
             row_styles=["green"],
@@ -831,7 +830,7 @@ class BuildspecCache:
 
     def print_maintainers_by_buildspecs(self):
 
-        """This method prints maintainers breakdown by buildspecs. This method implements ``buildtest buildspec find --maintainers-by-buildspecs``"""
+        """This method prints maintainers breakdown by buildspecs. This method implements ``buildtest buildspec maintainers --breakdown``"""
         if self.terse:
             if not self.header:
                 print("maintainers|buildspec")
@@ -841,13 +840,14 @@ class BuildspecCache:
             return
 
         table = Table(
-            "Maintainers",
-            "Buildspec",
+            Column("Maintainers", overflow="fold"),
+            Column("Buildspec", overflow="fold"),
             title="Breakdown of buildspecs by maintainers",
             header_style="blue",
             style="cyan",
             title_style="red",
             row_styles=["green"],
+            show_lines=True,
         )
 
         for maintainer, buildspecs in self.cache["maintainers"].items():
@@ -874,6 +874,10 @@ class BuildspecCache:
 
         if error and terse:
             console.print("The --terse flag can not be used with the --error option")
+            sys.exit(1)
+
+        if not self.get_invalid_buildspecs():
+            console.print("There are no invalid buildspecs in cache")
             return
 
         # implementation for machine readable format specified via --terse
@@ -882,7 +886,7 @@ class BuildspecCache:
                 print("buildspec")
             for buildspec in self.cache["invalids"].keys():
                 print(buildspec)
-            return
+            sys.exit(1)
 
         # if --error is not specified print list of invalid buildspecs in rich table
         if not error:
@@ -896,17 +900,14 @@ class BuildspecCache:
             )
             for buildspec in self.cache["invalids"].keys():
                 table.add_row(buildspec)
-
-            # return a non-zero returncode
-            if table.row_count > 0:
-                console.print(table)
-                sys.exit(1)
-            return
+            console.print(table)
+            sys.exit(1)
 
         # implementation for --error which displays buildspec file followed by error
         for buildspec, value in self.cache["invalids"].items():
             console.rule(buildspec)
             pprint(value)
+        sys.exit(1)
 
     @staticmethod
     def print_filter_fields():
@@ -914,10 +915,12 @@ class BuildspecCache:
         method implements command ``buildtest buildspec find --helpfilter``
         """
 
-        table = Table(title="Filter Field Description", header_style="blue")
-        table.add_column("Field", style="red")
-        table.add_column("Type", style="green")
-        table.add_column("Description", style="cyan")
+        table = Table(
+            title="Filter Field Description", header_style="blue", show_lines=True
+        )
+        table.add_column("Field", style="red", overflow="fold")
+        table.add_column("Type", style="green", overflow="fold")
+        table.add_column("Description", style="cyan", overflow="fold")
 
         table.add_row("buildspecs", "Filter tests by buildspec", "FILE")
         table.add_row("executor", "Filter by executor name", "STRING")
@@ -930,9 +933,11 @@ class BuildspecCache:
         """This method prints format fields available for buildspec cache. This
         method implements command ``buildtest buildspec find --helpformat``
         """
-        table = Table(title="Format Field Description", header_style="blue")
-        table.add_column("Field", style="red")
-        table.add_column("Description", style="green")
+        table = Table(
+            title="Format Field Description", header_style="blue", show_lines=True
+        )
+        table.add_column("Field", style="red", overflow="fold")
+        table.add_column("Description", style="green", overflow="fold")
 
         table.add_row("buildspec", "Display name of buildspec file")
         table.add_row("description", "Show description of test")
@@ -1150,12 +1155,20 @@ def summary_print(configuration):
     console.print(Panel.fit(msg))
 
     layout = Layout()
-    layout.split_row(Layout(name="left"), Layout(name="center"), Layout(name="right"))
+    layout.split_column(Layout(name="top"), Layout(name="bottom"))
 
+    layout["top"].split_row(
+        Layout(name="top-left"), Layout(name="top-center"), Layout(name="top-right")
+    )
+    layout["top"].ratio = 2
+
+    # layout['bottom'].split_row(Layout(name="bottom-left"))
     ################ Tag Breakdown #################
     tag_table = Table(title="Tag Breakdown", header_style="blue")
-    tag_table.add_column("tag", style="red")
-    tag_table.add_column("total tests", style="green")
+    # tag_table.overflow="fold"
+
+    tag_table.add_column("tag", style="red", overflow="fold")
+    tag_table.add_column("total tests", style="green", overflow="fold")
 
     tag_summary = cache.tag_breakdown()
     for tag, tag_count in tag_summary.items():
@@ -1163,8 +1176,12 @@ def summary_print(configuration):
 
     ################ Executor Breakdown #################
     executor_table = Table(title="Executor Breakdown")
-    executor_table.add_column("executor", style="red", header_style="blue")
-    executor_table.add_column("total tests", style="green", header_style="blue")
+    executor_table.add_column(
+        "executor", style="red", header_style="blue", overflow="fold"
+    )
+    executor_table.add_column(
+        "total tests", style="green", header_style="blue", overflow="fold"
+    )
 
     executor_summary = cache.executor_breakdown()
     for executor, executor_count in executor_summary.items():
@@ -1172,8 +1189,12 @@ def summary_print(configuration):
 
     ################ Maintainers #################
     maintainer_table = Table(title="Maintainers Breakdown")
-    maintainer_table.add_column("maintainers", style="red", header_style="blue")
-    maintainer_table.add_column("total buildspecs", style="green", header_style="blue")
+    maintainer_table.add_column(
+        "maintainers", style="red", header_style="blue", overflow="fold"
+    )
+    maintainer_table.add_column(
+        "total buildspecs", style="green", header_style="blue", overflow="fold"
+    )
 
     for maintainer in cache.list_maintainers():
         num_buildspecs = len(cache.cache["maintainers"][maintainer])
@@ -1182,9 +1203,9 @@ def summary_print(configuration):
     buildspec_table = Table(
         title="Test Breakdown by buildspec", show_lines=True, header_style="blue"
     )
-    buildspec_table.add_column("Tests", style="red")
-    buildspec_table.add_column("Total", style="cyan")
-    buildspec_table.add_column("Buildspec", style="green")
+    buildspec_table.add_column("Tests", style="red", overflow="fold")
+    buildspec_table.add_column("Total", style="cyan", overflow="fold")
+    buildspec_table.add_column("Buildspec", style="green", overflow="fold")
 
     ################ Test Breakdown by Buildspec #################
     buildspec_summary = cache.test_breakdown_by_buildspec()
@@ -1194,17 +1215,17 @@ def summary_print(configuration):
     invalid_buildspecs_table = Table(
         title="Invalid Buildspecs", show_lines=True, header_style="blue"
     )
-    invalid_buildspecs_table.add_column("Buildspecs", style="red")
+    invalid_buildspecs_table.add_column("Buildspecs", style="red", overflow="fold")
 
     for buildspec in cache.get_invalid_buildspecs():
         invalid_buildspecs_table.add_row(buildspec)
 
-    layout["left"].update(tag_table)
-    layout["center"].update(executor_table)
-    layout["right"].update(maintainer_table)
+    layout["top-left"].update(tag_table)
+    layout["top-center"].update(executor_table)
+    layout["top-right"].update(maintainer_table)
+    layout["bottom"].update(invalid_buildspecs_table)
 
     console.print(layout)
-    console.print(invalid_buildspecs_table)
     console.print(buildspec_table)
 
 

@@ -45,6 +45,5 @@ env.bak/
 # ignore .packages directory
 .packages/
 Pipfile
-
-coverage.json
 Pipfile.lock
+coverage.json

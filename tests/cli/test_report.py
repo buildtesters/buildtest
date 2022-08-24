@@ -195,20 +195,20 @@ def test_report_summary():
     report = Report(pager=True)
     report_summary(report)
 
-    report = Report(detailed=True)
-    report_summary(report)
+    report = Report()
+    report_summary(report, detailed=True)
 
-    report = Report(pager=True, detailed=True)
-    report_summary(report)
+    report = Report(pager=True)
+    report_summary(report, detailed=True)
 
     report = Report()
     report_summary(report, color="light_pink1")
 
-    report = Report(pager=True, detailed=True)
-    report_summary(report, color="light_pink1")
+    report = Report(pager=True)
+    report_summary(report, color="light_pink1", detailed=True)
 
-    report = Report(detailed=True)
-    report_summary(report, color="light_pink1")
+    report = Report()
+    report_summary(report, color="light_pink1", detailed=True)
 
     report = Report(pager=True)
     report_summary(report, color="light_pink1")
@@ -216,11 +216,11 @@ def test_report_summary():
     report = Report()
     report_summary(report, color="BAD_COLOR")
 
-    report = Report(pager=True, detailed=True)
-    report_summary(report, color="BAD_COLOR")
+    report = Report(pager=True)
+    report_summary(report, color="BAD_COLOR", detailed=True)
 
-    report = Report(detailed=True)
-    report_summary(report, color="BAD_COLOR")
+    report = Report()
+    report_summary(report, color="BAD_COLOR", detailed=True)
 
     report = Report(pager=True)
     report_summary(report, color="BAD_COLOR")

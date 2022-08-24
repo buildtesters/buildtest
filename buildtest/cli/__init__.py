@@ -845,8 +845,8 @@ def config_menu(subparsers):
     )
     compiler_find.add_argument(
         "-d",
-        "--debug",
-        help="Display Debugging output when finding compilers",
+        "--detailed",
+        help="Display detailed output when finding compilers",
         action="store_true",
     )
     compiler_find.add_argument(
@@ -957,10 +957,6 @@ def report_menu(subparsers):
         "--color", type=str, action="append", help="change the color of the output font"
     )
     parser_report.add_argument(
-        "--pager", action="store_true", help="Enable PAGING when viewing result"
-    )
-
-    parser_report_summary.add_argument(
         "--pager", action="store_true", help="Enable PAGING when viewing result"
     )
     parser_report_summary.add_argument(
