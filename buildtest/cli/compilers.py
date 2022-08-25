@@ -178,7 +178,7 @@ class BuildtestCompilers:
         )
 
         # if self.modulepath == ["/tmp", "/var/"]:
-        self.modulepath = None
+        #     self.modulepath = None
 
         # override default modulepath if --modulepath is specified
         if modulepath:
