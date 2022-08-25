@@ -97,7 +97,9 @@ def compiler_find(args, configuration):
     search for all modules in current ``$MODULEPATH``.
     """
 
-    bc = BuildtestCompilers(detailed=args.detailed, configuration=configuration, modulepath=args.modulepath)
+    bc = BuildtestCompilers(
+        detailed=args.detailed, configuration=configuration, modulepath=args.modulepath
+    )
     bc.find_compilers()
     # configuration["compilers"]["compiler"] = bc.compilers
 
@@ -171,7 +173,9 @@ class BuildtestCompilers:
         self.detailed = detailed
 
         # first read from config file for modulepath
-        self.modulepath = deep_get(self.configuration.target_config, "compilers", "modulepath")
+        self.modulepath = deep_get(
+            self.configuration.target_config, "compilers", "modulepath"
+        )
         # overwrite default modulepath if --modulepath is specified
         if modulepath:
             self.modulepath = ":".join(modulepath)
@@ -219,19 +223,13 @@ class BuildtestCompilers:
         module_dict = {}
         console.print(f"MODULEPATH: {os.getenv('MODULEPATH')}")
 
-        print("self.moduletool: ", self.moduletool)
-
         # First we discover modules, if its Lmod we use Lmodule API class Spider to retrieve modules
         if self.moduletool == "lmod":
             if self.detailed:
                 print("Searching modules via Lmod Spider")
             spider = Spider(tree=self.modulepath)
 
-            print("spider.get_modules(): ", spider.get_modules())
-
             spider_modules = list(spider.get_modules().values())
-            print("spider_modules: ", spider_modules)
-
             for name, module_regex_pattern in self.configuration.target_config[
                 "compilers"
             ]["find"].items():
