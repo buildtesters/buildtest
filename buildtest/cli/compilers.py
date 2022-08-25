@@ -26,7 +26,7 @@ def compiler_cmd(args, configuration):
         compiler_test(configuration)
         return
 
-    bc = BuildtestCompilers(configuration, modulepath=args.modulepath)
+    bc = BuildtestCompilers(configuration)
 
     if args.json is False and args.yaml is False:
         bc.print_compilers()
@@ -97,7 +97,7 @@ def compiler_find(args, configuration):
     search for all modules in current ``$MODULEPATH``.
     """
 
-    bc = BuildtestCompilers(detailed=args.detailed, configuration=configuration)
+    bc = BuildtestCompilers(detailed=args.detailed, configuration=configuration, modulepath=args.modulepath)
     bc.find_compilers()
     # configuration["compilers"]["compiler"] = bc.compilers
 
@@ -170,7 +170,11 @@ class BuildtestCompilers:
 
         self.detailed = detailed
 
-        self.modulepath = ":".join(modulepath) if modulepath else None
+        # first read from config file for modulepath
+        self.modulepath = deep_get(self.configuration.target_config, "compilers", "modulepath")
+        # overwrite default modulepath if --modulepath is specified
+        if modulepath:
+            self.modulepath = ":".join(modulepath)
 
         if not deep_get(self.configuration.target_config, "compilers", "compiler"):
             raise BuildTestError("compiler section not defined")
