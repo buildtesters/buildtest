@@ -119,7 +119,6 @@ class Report:
         self.format = format_args
         self.pager = pager
         self.color = color
-
         self.input_report = report_file
 
         # if no report specified use default report
@@ -483,44 +482,34 @@ class Report:
 
     def print_format_fields(self):
         """Displays list of format field which implements command ``buildtest report --helpformat``"""
-        consoleColor = checkColor(self.color) or "blue"
         table = Table(
-            "[{consoleColor}]Field",
-            "[{consoleColor}]Description",
+            "[blue]Field",
+            "[blue]Description",
             title="Format Fields",
         )
         for field, description in self.format_field_description.items():
-            if not consoleColor:
-                table.add_row(f"[red]{field}", f"[green]{description}")
-                continue
-            table.add_row(f"[{consoleColor}]{field}", f"[{consoleColor}]{description}")
+            table.add_row(f"[red]{field}", f"[green]{description}")
 
-        console.print(table, style=consoleColor)
+        console.print(table)
 
     def print_filter_fields(self):
         """Displays list of help filters which implements command ``buildtest report --helpfilter``"""
-        consoleColor = checkColor(self.color) or "blue"
+
         table = Table(
-            "[{consoleColor}]Field",
-            "[{consoleColor}]Description",
-            "[{consoleColor}]Expected Value",
+            "[blue]Field",
+            "[blue]Description",
+            "[blue]Expected Value",
             title="Filter Fields",
         )
-        consoleColor = checkColor(self.color)
+
         for field, value in self.filter_field_description.items():
-            if not self.color:
-                table.add_row(
-                    f"[red]{field}",
-                    f"[green]{value['description']}",
-                    f"[magenta]{value['type']}",
-                )
-                continue
+
             table.add_row(
-                f"[{consoleColor}]{field}",
-                f"[{consoleColor}]{value['description']}",
-                f"[{consoleColor}]{value['type']}",
+                f"[red]{field}",
+                f"[green]{value['description']}",
+                f"[magenta]{value['type']}",
             )
-        console.print(table, style=consoleColor)
+        console.print(table)
 
     def print_report(
         self, terse=None, noheader=None, title=None, count=None, color=None
@@ -571,7 +560,7 @@ class Report:
             root_disk_usage|PASS|0
             root_disk_usage|PASS|0
         """
-        consoleColor = checkColor(color)
+        consoleColor = checkColor(color) or "blue"
 
         if terse:
             join_list = []
@@ -596,13 +585,11 @@ class Report:
         join_list = []
         title = title or f"Report File: {self.reportfile()}"
         table = Table(title=title, show_lines=True, expand=True)
-        consoleColor = consoleColor or "blue"
         for field in self.display_table.keys():
             table.add_column(
-                f"[consoleColor]{field}", overflow="fold", style=consoleColor
+                f"[{consoleColor}]{field}", overflow="fold", style=consoleColor
             )
             join_list.append(self.display_table[field])
-        consoleColor = checkColor(color)
         transpose_list = [list(i) for i in zip(*join_list)]
 
         # limited number of rows to be printed
@@ -762,6 +749,8 @@ class Report:
 
 def report_cmd(args, report_file=None):
     """Entry point for ``buildtest report`` command"""
+    consoleColor = checkColor(args.color)
+
     if args.report_subcommand == "clear":
         # if BUILDTEST_REPORTS file is not present then we have no report files to delete since it tracks all report files that are created
         if not is_file(BUILDTEST_REPORTS):
@@ -769,7 +758,7 @@ def report_cmd(args, report_file=None):
 
         reports = load_json(BUILDTEST_REPORTS)
         for report in reports:
-            console.print(f"Removing report file: {report}", consoleColor)
+            console.print(f"Removing report file: {report}")
             try:
                 os.remove(report)
             except OSError:
@@ -788,7 +777,7 @@ def report_cmd(args, report_file=None):
 
         content = load_json(BUILDTEST_REPORTS)
         for fname in content:
-            console.print(fname, style=consoleColor)
+            console.print(fname)
         return
 
     results = Report(
@@ -806,10 +795,10 @@ def report_cmd(args, report_file=None):
     if args.report_subcommand == "summary":
         if args.pager:
             with console.pager():
-                report_summary(results, detailed=args.detailed)
+                report_summary(results, detailed=args.detailed, color=consoleColor)
             return
 
-        report_summary(results, detailed=args.detailed)
+        report_summary(results, detailed=args.detailed, color=consoleColor)
         return
 
     if args.helpfilter:
@@ -822,10 +811,15 @@ def report_cmd(args, report_file=None):
     if args.pager:
         with console.pager():
             results.print_report(
-                terse=args.terse, noheader=args.no_header, count=args.count
+                terse=args.terse,
+                noheader=args.no_header,
+                count=args.count,
+                color=consoleColor,
             )
         return
-    results.print_report(terse=args.terse, noheader=args.no_header, count=args.count)
+    results.print_report(
+        terse=args.terse, noheader=args.no_header, count=args.count, color=consoleColor
+    )
 
 
 def report_summary(report, detailed=None, color=None):
@@ -835,7 +829,7 @@ def report_summary(report, detailed=None, color=None):
         detailed (bool): An instance of bool, flag for printing a detailed report.
         color (str): An instance of str, color that the report should be printed in
     """
-    consoleColor = checkColor(color=color)
+    consoleColor = checkColor(color)
     test_breakdown = report.breakdown_by_test_names()
     if not consoleColor:
         table = Table(title="Breakdown by test", header_style="blue")
@@ -906,7 +900,7 @@ def print_report_summary_output(
     if not detailed:
         return
 
-    console.print(table, style=consoleColor)
+    console.print(table)
 
     pass_color = consoleColor or "green"
     fail_color = consoleColor or "red"
@@ -915,13 +909,13 @@ def print_report_summary_output(
     fail_results.print_report(title="FAIL Tests", color=fail_color)
 
 
-def checkColor(color):
-    if type(color) is list:
-        color = color[0]
+def checkColor(colorArg):
+    if colorArg and type(colorArg) is list:
+        colorArg = colorArg[0]
     checkedColor = Color.default().name
-    if color:
+    if colorArg:
         try:
-            checkedColor = Color.parse(color).name
+            checkedColor = Color.parse(colorArg).name
         except ColorParseError:
             checkedColor = Color.default().name
         return checkedColor

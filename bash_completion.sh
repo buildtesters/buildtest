@@ -177,20 +177,10 @@ _buildtest ()
         return
       esac
       case "$prev" in summary)
-        local opts="-d -h --detailed --help --pager"
+        local opts="-d -h --detailed --help"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
         return
       esac
-      if [[ " ${arr1[*]} " == *" $prev "* ]]; then 
-            delete=$delete+(--color)
-            COMPREPLY=( $( compgen -W "${opts/$delete}" -- $cur ) ) 
-            return
-      fi
-      if [[ " ${arr2[*]} " == *" $prev "* ]]; then 
-            delete=$delete+($prev)
-            COMPREPLY=( $( compgen -W "${opts/$delete}" -- $cur ) ) 
-            return
-      fi
     ;;
 
     config|cg)
