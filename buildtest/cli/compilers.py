@@ -177,9 +177,6 @@ class BuildtestCompilers:
             self.configuration.target_config, "compilers", "modulepath"
         )
 
-        # if self.modulepath == ["/tmp", "/var/"]:
-        #     self.modulepath = None
-
         # override default modulepath if --modulepath is specified
         if modulepath:
             self.modulepath = ":".join(modulepath)
@@ -232,10 +229,8 @@ class BuildtestCompilers:
             if self.detailed:
                 print("Searching modules via Lmod Spider")
             spider = Spider(tree=self.modulepath)
-            print(spider.get_modules())
 
             spider_modules = list(spider.get_modules().values())
-            print(spider_modules)
             for name, module_regex_pattern in self.configuration.target_config[
                 "compilers"
             ]["find"].items():
