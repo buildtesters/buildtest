@@ -176,7 +176,7 @@ class BuildtestCompilers:
         self.modulepath = deep_get(
             self.configuration.target_config, "compilers", "modulepath"
         )
-        # overwrite default modulepath if --modulepath is specified
+        # override default modulepath if --modulepath is specified
         if modulepath:
             self.modulepath = ":".join(modulepath)
 
