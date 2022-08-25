@@ -31,7 +31,7 @@ system:
           shell: zsh
     # compiler block
     compilers:
-      modulepath: []
+      modulepath: ['/tmp', '/var/']
       # regular expression to search for compilers based on module pattern. Used with 'buildtest config compilers find' to generate compiler instance
       # find:
       #  gcc: "^(gcc)"

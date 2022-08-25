@@ -176,6 +176,10 @@ class BuildtestCompilers:
         self.modulepath = deep_get(
             self.configuration.target_config, "compilers", "modulepath"
         )
+
+        if self.modulepath == ["/tmp", "/var/"]:
+            self.modulepath = None
+
         # override default modulepath if --modulepath is specified
         if modulepath:
             self.modulepath = ":".join(modulepath)
