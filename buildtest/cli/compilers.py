@@ -95,11 +95,17 @@ def compiler_test(configuration):
         console.print(table)
 
 
-def compiler_find(configuration, modulepath, detailed, update):
+def compiler_find(configuration, modulepath=None, detailed=None, update=None):
     """This method implements ``buildtest config compilers find`` which detects
     new compilers based on module names defined in configuration. If system has
     Lmod we use Lmodule API to detect the compilers. For environment-modules we
     search for all modules in current ``$MODULEPATH``.
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        modulepath (List, optional): An instance of List, a list of directories to search for modules via MODULEPATH to detect compilers
+        detailed (bool, optional): An instance of bool, flag for printing a detailed report.
+        update (bool, optional): An instance of bool, flag for updating configuration file with new compilers
     """
 
     bc = BuildtestCompilers(
