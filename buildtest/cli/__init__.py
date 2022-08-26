@@ -8,6 +8,7 @@ import datetime
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import console
 from buildtest.schemas.defaults import schema_table
+from rich.color import Color, ColorParseError
 
 
 def handle_kv_string(val):
@@ -80,6 +81,35 @@ def positive_number(value):
             f"Input: {value} converted to int: {int_val} must be a positive number"
         )
     return int_val
+
+
+def supported_color(value):
+    """Checks if input is positive number and returns value as an int type.
+
+    Args:
+        value (str): Specify an input number
+
+    Returns:
+        str: Return value as str type
+
+    Raises:
+        argparse.ArgumentTypeError will be raised if input is not a supported color input or is not str type
+
+    >>> supported_color("red")
+    red
+    """
+
+    if not isinstance(value, (str)):
+        raise argparse.ArgumentTypeError(
+            f"Input must be a string type, you have specified '{value}' which is of type {type(value)}"
+        )
+    try:
+        color_val = Color.parse(value)
+    except ColorParseError:
+        console.print(f"[red]Unable to convert {value} to a Color ")
+        console.print_exception()
+        return None
+    return color_val
 
 
 def valid_time(value):
@@ -898,11 +928,6 @@ def report_menu(subparsers):
     parser_report.add_argument(
         "--helpformat", action="store_true", help="List of available format fields"
     )
-    parser_report.add_argument(
-        "--helpcolor",
-        action="store_true",
-        help="List of available colors for console output",
-    )
     pass_fail = parser_report.add_mutually_exclusive_group()
 
     pass_fail.add_argument(
@@ -960,7 +985,8 @@ def report_menu(subparsers):
     )
     parser_report.add_argument(
         "--color",
-        type=str,
+        type=supported_color,
+        metavar="COLOR",
         action="append",
         help="Prints reports and the subcommand summary in the provided COLOR, colors defined in Rich.Color",
     )

@@ -13,6 +13,23 @@ from rich.table import Table
 logger = logging.getLogger(__name__)
 
 
+def checkColor(colorArg):
+    """Checks the provided colorArg against the compatible colors from Rich.Color"""
+    if type(colorArg) is Color:
+        return colorArg.name
+
+    if colorArg and type(colorArg) is list:
+        colorArg = colorArg[0]
+        return colorArg
+    if type(colorArg) is str:
+        try:
+            checkedColor = Color.parse(colorArg).name
+        except ColorParseError:
+            checkedColor = Color.default().name
+        return checkedColor
+    return None
+
+
 def is_int(val):
     """Check if input is an integer by running `int() <https://docs.python.org/3/library/functions.html#int>`_. If its successful we
     return **True** otherwise returns **False**
@@ -569,7 +586,6 @@ class Report:
             root_disk_usage|PASS|0
         """
         consoleColor = checkColor(color)
-
         if terse:
             join_list = []
 
@@ -816,9 +832,6 @@ def report_cmd(args, report_file=None):
     if args.helpformat:
         results.print_format_fields()
         return
-    if args.helpcolor:
-        results.print_color_help()
-        return
     if args.pager:
         with console.pager():
             results.print_report(
@@ -912,23 +925,7 @@ def print_report_summary_output(
         return
 
     console.print(table)
-
     pass_color = consoleColor or "green"
     fail_color = consoleColor or "red"
-
     pass_results.print_report(title="PASS Tests", color=pass_color)
     fail_results.print_report(title="FAIL Tests", color=fail_color)
-
-
-def checkColor(colorArg):
-    """Checks the provided colorArg againts the compatible colors from Rich.Color"""
-    if colorArg and type(colorArg) is list:
-        colorArg = colorArg[0]
-    checkedColor = Color.default().name
-    if colorArg:
-        try:
-            checkedColor = Color.parse(colorArg).name
-        except ColorParseError:
-            checkedColor = Color.default().name
-        return checkedColor
-    return None
