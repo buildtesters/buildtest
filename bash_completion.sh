@@ -2,7 +2,6 @@
 # For auto completion via compgen, options are sorted alphabetically in the format: <longoption> <shortoption> <subcommands>
 # For more details see https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
 
-
 if test -n "${ZSH_VERSION:-}" ; then
   if [[ "$(emulate)" = zsh ]] ; then
     if ! typeset -f compdef >& /dev/null ; then
@@ -169,8 +168,6 @@ _buildtest ()
     report|rt)
       local opts="--color --end --failure --filter --format --help --helpcolor --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"     
       local copts=$(python -c "from rich.color import ANSI_COLOR_NAMES;print(' '.join(list(ANSI_COLOR_NAMES.keys())))")
-      arr1=($copts)
-      arr2=($opts)
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       case ${prev} in --color)
         COMPREPLY=( $( compgen -W "$copts" -- $cur ) )

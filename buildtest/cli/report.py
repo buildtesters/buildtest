@@ -568,7 +568,7 @@ class Report:
             root_disk_usage|PASS|0
             root_disk_usage|PASS|0
         """
-        consoleColor = checkColor(color) or "blue"
+        consoleColor = checkColor(color)
 
         if terse:
             join_list = []
