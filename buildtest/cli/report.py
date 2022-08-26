@@ -910,6 +910,7 @@ def print_report_summary_output(
 
 
 def checkColor(colorArg):
+    """Checks the provided colorArg againts the compatible colors from Rich.Color"""
     if colorArg and type(colorArg) is list:
         colorArg = colorArg[0]
     checkedColor = Color.default().name
