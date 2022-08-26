@@ -20,6 +20,10 @@ with default format fields. To see a list of all format fields, click :ref:`here
 .. note::
    ``buildtest rt`` is an alias for ``buildtest report`` command.
 
+Color Options (``buildtest report --color``)
+---------------------------------------------
+
+
 Format Reports (``buildtest report --format``)
 -----------------------------------------------
 

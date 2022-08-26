@@ -167,7 +167,7 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--color --end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"     
+      local opts="--color --end --failure --filter --format --help --helpcolor --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"     
       local copts=$(python -c "from rich.color import ANSI_COLOR_NAMES;print(' '.join(list(ANSI_COLOR_NAMES.keys())))")
       arr1=($copts)
       arr2=($opts)

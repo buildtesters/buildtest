@@ -7,7 +7,7 @@ import sys
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, resolve_path
-from rich.color import Color, ColorParseError
+from rich.color import ANSI_COLOR_NAMES, Color, ColorParseError
 from rich.table import Table
 
 logger = logging.getLogger(__name__)
@@ -59,6 +59,7 @@ class Report:
         "state": {"description": "Filter by test state", "type": "PASS/FAIL"},
         "tags": {"description": "Filter tests by tag name", "type": "STRING"},
     }
+    color_options = list(ANSI_COLOR_NAMES.keys())
 
     format_fields = format_field_description.keys()
     # list of filter fields
@@ -492,6 +493,13 @@ class Report:
 
         console.print(table)
 
+    def print_color_help(self):
+        """Displays list of colors supported by the rich console which implements command ``buildtest report --helpcolor``"""
+        table = Table("Color", title="Supported Colors")
+        for color_option in self.color_options:
+            table.add_row(f"[{color_option}]{color_option}")
+        console.print(table)
+
     def print_filter_fields(self):
         """Displays list of help filters which implements command ``buildtest report --helpfilter``"""
 
@@ -807,6 +815,9 @@ def report_cmd(args, report_file=None):
 
     if args.helpformat:
         results.print_format_fields()
+        return
+    if args.helpcolor:
+        results.print_color_help()
         return
     if args.pager:
         with console.pager():

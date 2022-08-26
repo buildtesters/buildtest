@@ -898,6 +898,11 @@ def report_menu(subparsers):
     parser_report.add_argument(
         "--helpformat", action="store_true", help="List of available format fields"
     )
+    parser_report.add_argument(
+        "--helpcolor",
+        action="store_true",
+        help="List of available colors for console output",
+    )
     pass_fail = parser_report.add_mutually_exclusive_group()
 
     pass_fail.add_argument(
@@ -954,7 +959,10 @@ def report_menu(subparsers):
         help="Print output in machine readable format",
     )
     parser_report.add_argument(
-        "--color", type=str, action="append", help="change the color of the output font"
+        "--color",
+        type=str,
+        action="append",
+        help="Prints reports and the subcommand summary in the provided COLOR, colors defined in Rich.Color",
     )
     parser_report.add_argument(
         "--pager", action="store_true", help="Enable PAGING when viewing result"
