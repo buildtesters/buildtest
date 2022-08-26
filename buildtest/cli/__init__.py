@@ -855,6 +855,13 @@ def config_menu(subparsers):
         action="store_true",
         help="Update configuration file with new compilers",
     )
+    compiler_find.add_argument(
+        "-m",
+        "--modulepath",
+        type=str,
+        nargs="+",
+        help="Specify a list of directories to search for modules via MODULEPATH to detect compilers",
+    )
 
     subparsers_compiler.add_parser(
         "test",
