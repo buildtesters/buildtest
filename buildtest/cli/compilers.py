@@ -19,7 +19,12 @@ from rich.table import Table
 def compiler_cmd(args, configuration):
 
     if args.compilers == "find":
-        compiler_find(args, configuration)
+        compiler_find(
+            configuration,
+            modulepath=args.modulepath,
+            detailed=args.detailed,
+            update=args.update,
+        )
         return
 
     if args.compilers == "test":
@@ -90,7 +95,7 @@ def compiler_test(configuration):
         console.print(table)
 
 
-def compiler_find(args, configuration):
+def compiler_find(configuration, modulepath, detailed, update):
     """This method implements ``buildtest config compilers find`` which detects
     new compilers based on module names defined in configuration. If system has
     Lmod we use Lmodule API to detect the compilers. For environment-modules we
@@ -98,7 +103,7 @@ def compiler_find(args, configuration):
     """
 
     bc = BuildtestCompilers(
-        detailed=args.detailed, configuration=configuration, modulepath=args.modulepath
+        detailed=detailed, configuration=configuration, modulepath=modulepath
     )
     bc.find_compilers()
     # configuration["compilers"]["compiler"] = bc.compilers
@@ -119,7 +124,7 @@ def compiler_find(args, configuration):
     bc.print_compilers()
 
     # if --update is specified we update existing configuration file and write backup in same directory
-    if args.update:
+    if update:
         fname = (
             "buildtest_"
             + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
@@ -181,6 +186,9 @@ class BuildtestCompilers:
         if modulepath:
             self.modulepath = ":".join(modulepath)
 
+        # if not override then default
+        self.modulepath = self.modulepath or os.getenv("MODULEPATH")
+
         if not deep_get(self.configuration.target_config, "compilers", "compiler"):
             raise BuildTestError("compiler section not defined")
 
@@ -222,7 +230,7 @@ class BuildtestCompilers:
             )
 
         module_dict = {}
-        console.print(f"MODULEPATH: {os.getenv('MODULEPATH')}")
+        console.print(f"MODULEPATH: {self.modulepath}")
 
         # First we discover modules, if its Lmod we use Lmodule API class Spider to retrieve modules
         if self.moduletool == "lmod":
