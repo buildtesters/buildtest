@@ -1,6 +1,22 @@
 CHANGELOG
 =========
 
+v1.0 (T.B.D)
+--------------
+
+- Add option ``buildtest report --passed`` to show only pass test results from report file `#1140 <https://github.com/buildtesters/buildtest/pull/1140>`_
+- Add new command ``buildtest info`` to print details on buildtest `#1155 <https://github.com/buildtesters/buildtest/pull/1155>`_
+- Trigger Cori and Ascent Regression test using external pull request event from Gitlab `#1161 <https://github.com/buildtesters/buildtest/pull/1161>`_, `#1162 <https://github.com/buildtesters/buildtest/pull/1162>`_
+- Add pager support for ``buildtest buildspec summary`` `#1163 <https://github.com/buildtesters/buildtest/pull/1163>`_
+- Add new command ``buildtest config compilers test`` to automatically test compiler instances via ``module load`` test `#1175 <https://github.com/buildtesters/buildtest/pull/1175>`_
+- Rename option ``--debug`` to ``--detailed`` in command **buildtest report summary** to avoid argparse from confusing with **buildtest --debug** option `#1176 <https://github.com/buildtesters/buildtest/pull/1176>`_
+- Add feature ``buildtest --print-lastlog``, ``buildtest --lastlog`` and ``buildtest --lastlog-path`` `#1167 <https://github.com/buildtesters/buildtest/pull/1167>`_ `#1168 <https://github.com/buildtesters/buildtest/pull/1168>`_, `#1169 <https://github.com/buildtesters/buildtest/pull/1169>`_, `#1174 <https://github.com/buildtesters/buildtest/pull/1174>`_
+- Make ``buildtest report --passed`` and ``buildtest report --failure`` mutually exclusive option on command line `#1180 <https://github.com/buildtesters/buildtest/pull/1180>`_
+- Change output of ``buildtest report summary`` such that success are printed in green and failures in red `#1170 <https://github.com/buildtesters/buildtest/pull/1170>`_
+- Add a Spelling check CI workflow to detect errors in user documentation `#1166 <https://github.com/buildtesters/buildtest/pull/1166>`_
+- Fix issue with uploading results from buildtest regression test to CodeCov in Github CI checks. `#1149 <https://github.com/buildtesters/buildtest/pull/1149>`_. Thanks to `@Xiangs18 <https://github.com/Xiangs18>`_ for the fix.
+- Fix a bug during slurm job submission when detecting slurm job state `#1141 <https://github.com/buildtesters/buildtest/pull/1141>`_
+
 v0.15.0 (June 30th 2022)
 -------------------------
 
