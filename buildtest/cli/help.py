@@ -258,6 +258,10 @@ def print_config_help():
         "Detect compilers and update configuration file",
     )
     table.add_row(
+        "buildtest config compilers find --detailed --update",
+        "Show detailed output when finding compiler and update configuration file with new compilers",
+    )
+    table.add_row(
         "buildtest config compilers test",
         "Test each compiler instance by performing module load test",
     )
@@ -346,6 +350,9 @@ def print_report_help():
     table.add_row("buildtest report list", "List all report files")
     table.add_row("buildtest report clear", "Remove content of default report file")
     table.add_row("buildtest report summary", "Show summary of test report")
+    table.add_row(
+        "buildtest report summary --detailed", "Show detailed summary of test report"
+    )
     console.print(table)
 
 
