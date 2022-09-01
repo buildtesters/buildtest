@@ -135,6 +135,7 @@ def view_configuration(configuration, theme=None):
 
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        theme (str, optional): Color theme to choose. This is the Pygments style (https://pygments.org/docs/styles/#getting-a-list-of-available-styles) which is specified by ``--theme`` option
     """
 
     console.rule(configuration.file)
