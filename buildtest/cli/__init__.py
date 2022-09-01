@@ -8,6 +8,7 @@ import datetime
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import console
 from buildtest.schemas.defaults import schema_table
+from pygments.styles import STYLE_MAP
 
 
 def handle_kv_string(val):
@@ -717,7 +718,13 @@ def buildspec_menu(subparsers):
         help="Show content of buildspec based on test name",
         nargs="*",
     )
-
+    show_buildspecs.add_argument(
+        "-t",
+        "--theme",
+        metavar="Color Themes",
+        help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themese",
+        choices=list(STYLE_MAP.keys()),
+    )
     # buildtest buildspec show-fail
     show_fail_buildspecs = subparsers_buildspec.add_parser(
         "show-fail", help="Show content of buildspec file for all failed tests"
@@ -726,6 +733,13 @@ def buildspec_menu(subparsers):
         "name",
         help="Show content of buildspec based on failed test name",
         nargs="*",
+    )
+    show_fail_buildspecs.add_argument(
+        "-t",
+        "--theme",
+        metavar="Color Themes",
+        help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themes",
+        choices=list(STYLE_MAP.keys()),
     )
 
     # buildtest buildspec summary
