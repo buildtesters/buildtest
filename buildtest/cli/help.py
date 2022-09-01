@@ -178,8 +178,10 @@ def print_buildspec_help():
         "buildtest buildspec show python_hello",
         "Show content of buildspec based on test name 'python_hello'",
     )
-    table.add_row("buildtest buildspec show python_hello --theme emacs",
-                  "Use color theme 'emacs' for showing content of test")
+    table.add_row(
+        "buildtest buildspec show python_hello --theme emacs",
+        "Use color theme 'emacs' for showing content of test",
+    )
     table.add_row(
         "buildtest buildspec show-fail",
         "Show content of buildspec on all failed tests",
