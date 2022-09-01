@@ -25,7 +25,7 @@ def test_path():
     # specify name in format 'buildtest path <name>/<testid>
     path_cmd(name=builders[0])
 
-    random_test_name = "".join(random.choice(string.ascii_letters) for i in range(10))
+    random_test_name = "".join(random.choices(string.ascii_letters, k=10))
 
     with pytest.raises(SystemExit):
         path_cmd(random_test_name)

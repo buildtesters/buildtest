@@ -133,7 +133,7 @@ def test_buildspec_find_terse():
 @pytest.mark.cli
 def test_buildspec_maintainers():
     buildspec_maintainers(
-        configuration=configuration, list=True, terse=True, header=True
+        configuration=configuration, list_maintainers=True, terse=True, header=True
     )
     buildspec_maintainers(
         configuration=configuration, breakdown=True, terse=True, header=True
@@ -304,7 +304,7 @@ def test_buildspec_show():
 
     with pytest.raises(BuildTestError):
         random_testname = "".join(
-            random.choice(string.ascii_letters) for i in range(10)
+            random.choices(string.ascii_letters, k=10)
         )
         show_buildspecs(test_names=[random_testname], configuration=configuration)
 
@@ -315,7 +315,7 @@ def test_buildspec_show_fail():
     # Query some random test name that doesn't exist
     with pytest.raises(BuildTestError):
         random_testname = "".join(
-            random.choice(string.ascii_letters) for i in range(10)
+            random.choices(string.ascii_letters, k=10)
         )
         show_failed_buildspecs(
             configuration=configuration, test_names=[random_testname]

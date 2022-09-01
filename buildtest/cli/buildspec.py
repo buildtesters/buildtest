@@ -1247,13 +1247,13 @@ def summary_print(configuration):
 
 
 def buildspec_maintainers(
-    configuration, list=None, breakdown=None, terse=None, header=None, name=None
+    configuration, list_maintainers=None, breakdown=None, terse=None, header=None, name=None
 ):
     """Entry point for ``buildtest buildspec maintainers`` command.
 
     Args:
         configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
-        list (bool, optional): List all maintainers
+        list_maintainers (bool, optional): List all maintainers
         terse (bool, optional): Print in terse mode
         header (bool, optional): If True disable printing of headers
         name (str, optional): List all buildspecs corresponding to maintainer name. This command is specified via ``buildtest buildspec maintainers find <name>``
@@ -1261,7 +1261,7 @@ def buildspec_maintainers(
 
     cache = BuildspecCache(configuration=configuration, terse=terse, header=header)
 
-    if list:
+    if list_maintainers:
         cache.print_maintainer()
 
     if breakdown:

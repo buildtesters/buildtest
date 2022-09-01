@@ -83,8 +83,8 @@ def test_buildtest_inspect_name():
     inspect_cmd(args)
 
     random_test = [
-        "".join(random.choice(string.ascii_letters) for i in range(10)),
-        "".join(random.choice(string.ascii_letters) for i in range(10))
+        "".join(random.choices(string.ascii_letters, k=10)),
+        "".join(random.choices(string.ascii_letters, k=10))
         + "/"
         + str(uuid.uuid4()),
     ]
@@ -176,7 +176,7 @@ def test_buildtest_query():
     class args:
         subcommands = "inspect"
         inspect = "query"
-        name = ["".join(random.choice(string.ascii_letters) for i in range(10))]
+        name = ["".join(random.choices(string.ascii_letters, k=10))]
         report = None
         output = True
         error = False

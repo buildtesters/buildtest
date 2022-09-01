@@ -40,13 +40,6 @@ class BuildTestSystem:
         """
 
         self.logger.debug("Starting System Compatibility Check")
-        """
-        microarch = archspec.cpu.detect.host()
-        self.system["model"] = archspec.cpu.detect.raw_info_dictionary()["model name"]
-        self.system["arch"] = microarch.name
-        self.system["vendor"] = microarch.vendor
-        self.system["features"] = " ".join(list(microarch.features))
-        """
 
         self.system["platform"] = platform.system()
         if self.system["platform"] not in self.supported_platforms:
