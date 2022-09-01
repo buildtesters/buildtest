@@ -257,8 +257,9 @@ _buildtest ()
          esac
         ;;
 
-
-      show|edit-test)
+      edit-test)
+        COMPREPLY=( $( compgen -W "$(_buildspec_cache_test_names)" -- $cur ) );;
+      show)
         local opts="-h --help --theme"
         COMPREPLY=( $( compgen -W "$(_buildspec_cache_test_names)" -- $cur ) )
         if [[ $cur == -* ]] ; then
