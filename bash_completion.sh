@@ -197,7 +197,7 @@ _buildtest ()
           local opts="--help --theme -h -t"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
-          case ${prev} in --theme|-t)
+          case "${prev}" in --theme|-t)
             COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
             return
           esac
@@ -281,7 +281,7 @@ _buildtest ()
           COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
         fi
 
-        case ${prev} in --theme|-t)
+        case "${prev}" in --theme|-t)
           COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
           return
         esac
@@ -292,7 +292,7 @@ _buildtest ()
         if [[ $cur == -* ]] ; then
           COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
         fi
-        case ${prev} in --theme|-t)
+        case "${prev}" in --theme|-t)
           COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
           return
         esac
