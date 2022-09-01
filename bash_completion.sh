@@ -190,7 +190,7 @@ _buildtest ()
         executors)
           local opts="--help --disabled --invalid --json --yaml -d -h -i -j -y"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
-        validate|summary|systems)
+        validate|systems)
           local opts="-h --help"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         view)
