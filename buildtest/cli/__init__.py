@@ -815,7 +815,14 @@ def config_menu(subparsers):
     subparsers_config.add_parser(
         "validate", help="Validate buildtest settings file with schema."
     )
-    subparsers_config.add_parser("view", help="View configuration file")
+    view_parser = subparsers_config.add_parser("view", help="View configuration file")
+    view_parser.add_argument(
+        "-t",
+        "--theme",
+        metavar="Color Themes",
+        help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themes",
+        choices=list(STYLE_MAP.keys()),
+    )
 
     executor_group = executors.add_mutually_exclusive_group()
 

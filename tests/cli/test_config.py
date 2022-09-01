@@ -38,6 +38,8 @@ def test_config_systems():
 @pytest.mark.cli
 def test_view_configuration():
     view_configuration(configuration)
+    # testing -  buildtest config view --theme emacs
+    view_configuration(configuration, theme="emacs")
 
 
 def test_valid_config_schemas():

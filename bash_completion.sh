@@ -18,6 +18,12 @@ if test -n "${ZSH_VERSION:-}" ; then
   fi
 fi
 
+# get a list of available color themes used for command completion for --theme option
+_avail_color_themes ()
+{
+  python -c "from pygments.styles import STYLE_MAP; print(' '.join(list(STYLE_MAP.keys())))"
+}
+
 # get list of available tags
 _avail_tags ()
 {
@@ -184,9 +190,18 @@ _buildtest ()
         executors)
           local opts="--help --disabled --invalid --json --yaml -d -h -i -j -y"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
-        view|validate|summary|systems)
+        validate|summary|systems)
           local opts="-h --help"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
+        view)
+          local opts="--help --theme -h -t"
+          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+
+          case ${prev} in --theme|-t)
+            COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
+            return
+          esac
+        ;;
       esac
       ;;
     inspect|it)
@@ -265,9 +280,9 @@ _buildtest ()
         if [[ $cur == -* ]] ; then
           COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
         fi
-        local themes=$(python -c "from pygments.styles import STYLE_MAP; print(' '.join(list(STYLE_MAP.keys())))")
+
         case ${prev} in --theme|-t)
-          COMPREPLY=( $( compgen -W "$themes" -- $cur ) )
+          COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
           return
         esac
         ;;
@@ -277,9 +292,8 @@ _buildtest ()
         if [[ $cur == -* ]] ; then
           COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
         fi
-        local themes=$(python -c "from pygments.styles import STYLE_MAP; print(' '.join(list(STYLE_MAP.keys())))")
         case ${prev} in --theme|-t)
-          COMPREPLY=( $( compgen -W "$themes" -- $cur ) )
+          COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
           return
         esac
         ;;
