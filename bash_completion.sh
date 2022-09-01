@@ -259,7 +259,17 @@ _buildtest ()
 
 
       show|edit-test)
-        COMPREPLY=( $( compgen -W "$(_buildspec_cache_test_names)" -- $cur ) );;
+        local opts="-h --help --theme"
+        COMPREPLY=( $( compgen -W "$(_buildspec_cache_test_names)" -- $cur ) )
+        if [[ $cur == -* ]] ; then
+          COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+        fi
+        local themes=$(python -c "from pygments.styles import STYLE_MAP; print(' '.join(list(STYLE_MAP.keys())))")
+        case ${prev} in --theme)
+          COMPREPLY=( $( compgen -W "$themes" -- $cur ) )
+          return
+        esac
+        ;;
       show-fail)
         COMPREPLY=( $( compgen -W "$(_failed_tests)" -- $cur ) );;
       maintainers)

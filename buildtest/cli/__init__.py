@@ -4,6 +4,7 @@ interact with a global configuration for buildtest.
 """
 import argparse
 import datetime
+from pygments.styles import STYLE_MAP
 
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import console
@@ -717,7 +718,10 @@ def buildspec_menu(subparsers):
         help="Show content of buildspec based on test name",
         nargs="*",
     )
-
+    show_buildspecs.add_argument("--theme",
+                                 help="Specify a color theme, Pygments style to use when displaying output.",
+                                 choices=list(STYLE_MAP.keys())
+    )
     # buildtest buildspec show-fail
     show_fail_buildspecs = subparsers_buildspec.add_parser(
         "show-fail", help="Show content of buildspec file for all failed tests"

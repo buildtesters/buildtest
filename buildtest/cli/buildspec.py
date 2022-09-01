@@ -30,7 +30,7 @@ from rich.layout import Layout
 from rich.panel import Panel
 from rich.pretty import pprint
 from rich.table import Column, Table
-
+from rich.syntax import Syntax
 logger = logging.getLogger(__name__)
 
 
@@ -1020,15 +1020,17 @@ def edit_buildspec_file(buildspecs, configuration, editor, test=None):
         console.print(f"[green]{buildspec} is valid")
 
 
-def show_buildspecs(test_names, configuration):
+def show_buildspecs(test_names, configuration, theme="monokai"):
     """This is the entry point for ``buildtest buildspec show`` command which will print content of
     buildspec based on name of test.
 
     Args:
         test_names (list): List of test names to show content of file
         configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
+        theme (str): Color theme to chose. This is the Pygments style (https://pygments.org/docs/styles/#getting-a-list-of-available-styles) which is specified by ``--theme`` option
     """
     cache = BuildspecCache(configuration=configuration)
+    theme = theme or "monokai"
 
     error = False
     visited = set()
@@ -1042,9 +1044,11 @@ def show_buildspecs(test_names, configuration):
         buildspec = cache.lookup_buildspec_by_name(name)
         if buildspec not in visited:
             visited.add(buildspec)
-            content = read_file(buildspec)
+
             console.rule(buildspec)
-            console.print(Panel.fit(content))
+            with open(buildspec) as fd:
+                syntax = Syntax(fd.read(), "yaml", theme=theme)
+            console.print(syntax)
 
     if error:
         raise BuildTestError(

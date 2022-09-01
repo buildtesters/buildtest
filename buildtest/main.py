@@ -184,7 +184,7 @@ def main():
         elif args.buildspecs_subcommand == "summary":
             summarize_buildspec_cache(pager=args.pager, configuration=configuration)
         elif args.buildspecs_subcommand == "show":
-            show_buildspecs(test_names=args.name, configuration=configuration)
+            show_buildspecs(test_names=args.name, configuration=configuration, theme=args.theme)
         elif args.buildspecs_subcommand == "show-fail":
             show_failed_buildspecs(
                 configuration=configuration,
