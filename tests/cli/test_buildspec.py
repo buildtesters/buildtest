@@ -293,10 +293,14 @@ def test_buildspec_summary():
 @pytest.mark.cli
 def test_buildspec_show():
     cache = BuildspecCache(configuration=configuration)
-    # get first test in list
-    test_name = [cache.get_names()[0]]
+
+    test_name = cache.get_random_tests(num_items=1)
+
     # run buildtest buildspec show <test>
     show_buildspecs(test_name, configuration)
+
+    # run buildtest buildspec <test> show --theme monokai
+    show_buildspecs(test_name, configuration, theme="monokai")
 
     with pytest.raises(BuildTestError):
         random_testname = "".join(
@@ -322,3 +326,11 @@ def test_buildspec_show_fail():
         results = Report()
         pass_test = results.get_test_by_state(state="PASS")[0]
         show_failed_buildspecs(configuration=configuration, test_names=[pass_test])
+
+    report = Report()
+    # get a random failed test from report file to be used for showing content of buildspec file
+    fail_tests = random.sample(report.get_test_by_state(state="FAIL"), 1)
+    # running buildtest buildspec show-fail <test> --theme monokai
+    show_failed_buildspecs(
+        configuration=configuration, test_names=fail_tests, theme="monokai"
+    )
