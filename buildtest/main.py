@@ -190,6 +190,7 @@ def main():
                 configuration=configuration,
                 test_names=args.name,
                 report_file=report_file,
+                theme=args.theme
             )
         elif args.buildspecs_subcommand == "edit-test":
             edit_buildspec_test(

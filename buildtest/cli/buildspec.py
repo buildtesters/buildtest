@@ -1020,7 +1020,7 @@ def edit_buildspec_file(buildspecs, configuration, editor, test=None):
         console.print(f"[green]{buildspec} is valid")
 
 
-def show_buildspecs(test_names, configuration, theme="monokai"):
+def show_buildspecs(test_names, configuration, theme=None):
     """This is the entry point for ``buildtest buildspec show`` command which will print content of
     buildspec based on name of test.
 
@@ -1056,7 +1056,7 @@ def show_buildspecs(test_names, configuration, theme="monokai"):
         )
 
 
-def show_failed_buildspecs(configuration, test_names=None, report_file=None):
+def show_failed_buildspecs(configuration, test_names=None, report_file=None, theme=None):
     """This is the entry point for ``buildtest buildspec show-fail`` command which will print content of
     buildspec on name of all failed tests if a list of test names are not speficied
 
@@ -1077,7 +1077,7 @@ def show_failed_buildspecs(configuration, test_names=None, report_file=None):
         failed_tests = test_names
     else:
         failed_tests = all_failed_tests
-    show_buildspecs(failed_tests, configuration)
+    show_buildspecs(failed_tests, configuration, theme)
 
 
 def buildspec_validate(

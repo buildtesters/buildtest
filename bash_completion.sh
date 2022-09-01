@@ -266,13 +266,23 @@ _buildtest ()
           COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
         fi
         local themes=$(python -c "from pygments.styles import STYLE_MAP; print(' '.join(list(STYLE_MAP.keys())))")
-        case ${prev} in --theme)
+        case ${prev} in --theme|-t)
           COMPREPLY=( $( compgen -W "$themes" -- $cur ) )
           return
         esac
         ;;
       show-fail)
-        COMPREPLY=( $( compgen -W "$(_failed_tests)" -- $cur ) );;
+        local opts="-h --help --theme"
+        COMPREPLY=( $( compgen -W "$(_failed_tests)" -- $cur ) )
+        if [[ $cur == -* ]] ; then
+          COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+        fi
+        local themes=$(python -c "from pygments.styles import STYLE_MAP; print(' '.join(list(STYLE_MAP.keys())))")
+        case ${prev} in --theme|-t)
+          COMPREPLY=( $( compgen -W "$themes" -- $cur ) )
+          return
+        esac
+        ;;
       maintainers)
         local opts="--breakdown --list --help --terse --no-header -b -h -l -n find"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )

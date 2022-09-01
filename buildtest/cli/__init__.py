@@ -718,8 +718,10 @@ def buildspec_menu(subparsers):
         help="Show content of buildspec based on test name",
         nargs="*",
     )
-    show_buildspecs.add_argument("--theme",
-                                 help="Specify a color theme, Pygments style to use when displaying output.",
+    show_buildspecs.add_argument("-t",
+                                 "--theme",
+                                 metavar="Color Themes",
+                                 help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themese",
                                  choices=list(STYLE_MAP.keys())
     )
     # buildtest buildspec show-fail
@@ -730,6 +732,12 @@ def buildspec_menu(subparsers):
         "name",
         help="Show content of buildspec based on failed test name",
         nargs="*",
+    )
+    show_fail_buildspecs.add_argument("-t",
+                                 "--theme",
+                                 metavar="Color Themes",
+                                 help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themes",
+                                 choices=list(STYLE_MAP.keys())
     )
 
     # buildtest buildspec summary
