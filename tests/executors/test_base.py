@@ -32,7 +32,7 @@ def test_build_executor(tmp_path):
 
     # Making sure all executors are created properly by inspecting their class attribute.
     # All executors have a class attribute 'type'
-    for name, executor in be.executors.items():
+    for executor in be.executors.values():
         assert hasattr(executor, "type")
 
     examples_dir = os.path.join(pytest_root, "buildsystem", "valid_buildspecs")
