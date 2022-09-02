@@ -1136,8 +1136,9 @@ def buildspec_validate(
 
     if exception_counter > 0:
         console.print(f"[red]{exception_counter} buildspecs failed to validate")
-    else:
-        console.print("[green]All buildspecs passed validation!!!")
+        sys.exit(1)
+
+    console.print("[green]All buildspecs passed validation!!!")
 
 
 def summarize_buildspec_cache(pager, configuration):
