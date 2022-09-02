@@ -240,9 +240,10 @@ Shown below is an example output of what it may look like
 
 .. command-output:: buildtest buildspec validate -b tutorials/vars.yml
 
-If buildtest detects an error during validation, the error message will be displayed to screen as we see in this example
+If buildtest detects an error during validation, the error message will be displayed to screen with a non-zero returncode.
 
 .. command-output:: buildtest buildspec validate -b tutorials/invalid_tags.yml
+   :returncode: 1
 
 Similarly we can search buildspecs based on tags if you want to validate a group of buildspecs using the ``-t`` option. We can
 append ``-t`` option multiple times to search by multiple tag names. In this next example, we

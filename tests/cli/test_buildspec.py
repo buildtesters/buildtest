@@ -45,9 +45,10 @@ def test_buildspec_validate():
         configuration=configuration,
     )
 
-    buildspec = [os.path.join(BUILDTEST_ROOT, "tutorials", "invalid_executor.yml")]
+    buildspec = [os.path.join(BUILDTEST_ROOT, "tutorials", "invalid_tag.yml")]
 
-    buildspec_validate(buildspecs=buildspec, configuration=configuration)
+    with pytest.raises(SystemExit):
+        buildspec_validate(buildspecs=buildspec, configuration=configuration)
 
 
 @pytest.mark.cli
