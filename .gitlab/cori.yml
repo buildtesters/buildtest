@@ -10,7 +10,7 @@ cori_pr_regression_test:
   tags: ["cori"]
   stage: regression
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event"'
+    - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" && $CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
 
   script:
     - env | grep CI_
