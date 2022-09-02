@@ -174,11 +174,13 @@ will attempt to parse each buildspec and store error message for every buildspec
 report a list of invalid buildspecs as shown below
 
 .. command-output:: buildtest buildspec find invalid
+   :returncode: 1
 
 If you want to see error messages for each buildspec you can pass the ``-e`` or ``--error`` option which will display output of
 each buildspec followed by error message.
 
 .. command-output:: buildtest buildspec find invalid -e
+   :returncode: 1
 
 .. _buildspec_maintainers:
 
