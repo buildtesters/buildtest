@@ -84,9 +84,7 @@ def test_buildtest_inspect_name():
 
     random_test = [
         "".join(random.choices(string.ascii_letters, k=10)),
-        "".join(random.choices(string.ascii_letters, k=10))
-        + "/"
-        + str(uuid.uuid4()),
+        "".join(random.choices(string.ascii_letters, k=10)) + "/" + str(uuid.uuid4()),
     ]
 
     class args:

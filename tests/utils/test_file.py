@@ -194,7 +194,7 @@ def test_resolve_path():
 
     assert not resolve_path(None)
 
-    random_name = "".join(random.choices(string.ascii_letters,k=10))
+    random_name = "".join(random.choices(string.ascii_letters, k=10))
     # test a directory path that doesn't exist in $HOME with random key, but setting exist=False will return
     # path but doesn't mean file exists
     path = resolve_path(os.path.join("$HOME", random_name), exist=False)
@@ -215,7 +215,7 @@ def test_load_json():
         load_json(None)
 
     with pytest.raises(BuildTestError):
-        random_name = "".join(random.choices(string.ascii_letters,k=10))
+        random_name = "".join(random.choices(string.ascii_letters, k=10))
         load_json(random_name)
 
 

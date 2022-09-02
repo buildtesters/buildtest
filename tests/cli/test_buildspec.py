@@ -303,9 +303,7 @@ def test_buildspec_show():
     show_buildspecs(test_name, configuration, theme="monokai")
 
     with pytest.raises(BuildTestError):
-        random_testname = "".join(
-            random.choices(string.ascii_letters, k=10)
-        )
+        random_testname = "".join(random.choices(string.ascii_letters, k=10))
         show_buildspecs(test_names=[random_testname], configuration=configuration)
 
 
@@ -314,9 +312,7 @@ def test_buildspec_show_fail():
 
     # Query some random test name that doesn't exist
     with pytest.raises(BuildTestError):
-        random_testname = "".join(
-            random.choices(string.ascii_letters, k=10)
-        )
+        random_testname = "".join(random.choices(string.ascii_letters, k=10))
         show_failed_buildspecs(
             configuration=configuration, test_names=[random_testname]
         )

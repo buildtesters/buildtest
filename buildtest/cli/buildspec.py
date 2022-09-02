@@ -1247,7 +1247,12 @@ def summary_print(configuration):
 
 
 def buildspec_maintainers(
-    configuration, list_maintainers=None, breakdown=None, terse=None, header=None, name=None
+    configuration,
+    list_maintainers=None,
+    breakdown=None,
+    terse=None,
+    header=None,
+    name=None,
 ):
     """Entry point for ``buildtest buildspec maintainers`` command.
 
