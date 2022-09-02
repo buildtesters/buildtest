@@ -13,6 +13,7 @@ cori_pr_regression_test:
     - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "external_pull_request_event"'
 
   script:
+    - set -e
     - whoami
     - module load python/3.9-anaconda-2021.11
     - git branch
