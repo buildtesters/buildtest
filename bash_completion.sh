@@ -194,7 +194,7 @@ _buildtest ()
           local opts="-h --help"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         view)
-          local opts="--help --theme -h -t"
+          local opts="--help --pager --theme -h -p -t"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
           case "${prev}" in --theme|-t)

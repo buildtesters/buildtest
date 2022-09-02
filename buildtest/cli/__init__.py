@@ -823,7 +823,9 @@ def config_menu(subparsers):
         help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themes",
         choices=list(STYLE_MAP.keys()),
     )
-
+    view_parser.add_argument(
+        "-p", "--pager", action="store_true", help="Enable PAGING when viewing result"
+    )
     executor_group = executors.add_mutually_exclusive_group()
 
     # buildtest config executors
