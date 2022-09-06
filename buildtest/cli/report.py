@@ -7,7 +7,7 @@ import sys
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, resolve_path
-from rich.color import ANSI_COLOR_NAMES, Color, ColorParseError
+from rich.color import Color, ColorParseError
 from rich.table import Table
 
 logger = logging.getLogger(__name__)
@@ -27,7 +27,7 @@ def checkColor(colorArg):
         except ColorParseError:
             checkedColor = Color.default().name
         return checkedColor
-    return None
+    return
 
 
 def is_int(val):
@@ -76,8 +76,6 @@ class Report:
         "state": {"description": "Filter by test state", "type": "PASS/FAIL"},
         "tags": {"description": "Filter tests by tag name", "type": "STRING"},
     }
-    color_options = list(ANSI_COLOR_NAMES.keys())
-
     format_fields = format_field_description.keys()
     # list of filter fields
     filter_fields = filter_field_description.keys()
@@ -508,13 +506,6 @@ class Report:
         for field, description in self.format_field_description.items():
             table.add_row(f"[red]{field}", f"[green]{description}")
 
-        console.print(table)
-
-    def print_color_help(self):
-        """Displays list of colors supported by the rich console which implements command ``buildtest report --helpcolor``"""
-        table = Table("Color", title="Supported Colors")
-        for color_option in self.color_options:
-            table.add_row(f"[{color_option}]{color_option}")
         console.print(table)
 
     def print_filter_fields(self):

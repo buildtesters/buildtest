@@ -83,14 +83,14 @@ def positive_number(value):
     return int_val
 
 
-def supported_color(value):
-    """Checks if input is positive number and returns value as an int type.
+def supported_color(input_color):
+    """Checks if input is a supported color and returns value as an Color type.
 
     Args:
-        value (str): Specify an input number
+        value (str): Specify an input color
 
     Returns:
-        str: Return value as str type
+        str: Return value as rich.color.Color type
 
     Raises:
         argparse.ArgumentTypeError will be raised if input is not a supported color input or is not str type
@@ -99,16 +99,16 @@ def supported_color(value):
     red
     """
 
-    if not isinstance(value, (str)):
+    if not isinstance(input_color, (str)):
         raise argparse.ArgumentTypeError(
-            f"Input must be a string type, you have specified '{value}' which is of type {type(value)}"
+            f"Input must be a string type, you have specified '{input_color}' which is of type {type(input_color)}"
         )
     try:
-        color_val = Color.parse(value)
+        color_val = Color.parse(input_color)
     except ColorParseError:
-        console.print(f"[red]Unable to convert {value} to a Color ")
+        console.print(f"[red]Unable to convert {input_color} to a Color ")
         console.print_exception()
-        return None
+        return
     return color_val
 
 
@@ -987,8 +987,7 @@ def report_menu(subparsers):
         "--color",
         type=supported_color,
         metavar="COLOR",
-        action="append",
-        help="Prints reports and the subcommand summary in the provided COLOR, colors defined in Rich.Color",
+        help="Print output of report table with the selected color.",
     )
     parser_report.add_argument(
         "--pager", action="store_true", help="Enable PAGING when viewing result"
