@@ -184,12 +184,15 @@ def main():
         elif args.buildspecs_subcommand == "summary":
             summarize_buildspec_cache(pager=args.pager, configuration=configuration)
         elif args.buildspecs_subcommand == "show":
-            show_buildspecs(test_names=args.name, configuration=configuration)
+            show_buildspecs(
+                test_names=args.name, configuration=configuration, theme=args.theme
+            )
         elif args.buildspecs_subcommand == "show-fail":
             show_failed_buildspecs(
                 configuration=configuration,
                 test_names=args.name,
                 report_file=report_file,
+                theme=args.theme,
             )
         elif args.buildspecs_subcommand == "edit-test":
             edit_buildspec_test(
@@ -209,7 +212,7 @@ def main():
                 name = args.name
             buildspec_maintainers(
                 configuration=configuration,
-                list=args.list,
+                list_maintainers=args.list,
                 breakdown=args.breakdown,
                 terse=args.terse,
                 header=args.no_header,

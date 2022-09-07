@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import random
 import subprocess
 import sys
 import time
@@ -21,7 +22,6 @@ from buildtest.utils.file import (
     is_dir,
     is_file,
     load_json,
-    read_file,
     resolve_path,
     walk_tree,
 )
@@ -29,6 +29,7 @@ from jsonschema.exceptions import ValidationError
 from rich.layout import Layout
 from rich.panel import Panel
 from rich.pretty import pprint
+from rich.syntax import Syntax
 from rich.table import Column, Table
 
 logger = logging.getLogger(__name__)
@@ -237,6 +238,15 @@ class BuildspecCache:
                 test_names.append(name)
 
         return test_names
+
+    def get_random_tests(self, num_items=1):
+        """Returns a list of random test names from the list of available test. The test are picked
+        using `random.sample <https://docs.python.org/3/library/random.html#random.sample>`_
+
+        Args:
+            num_items (int, optional): Number of test items to retrieve
+        """
+        return random.sample(self.get_names(), num_items)
 
     def lookup_buildspec_by_name(self, name):
         """Given an input test name, return corresponding buildspec file found in the cache.
@@ -1020,15 +1030,17 @@ def edit_buildspec_file(buildspecs, configuration, editor, test=None):
         console.print(f"[green]{buildspec} is valid")
 
 
-def show_buildspecs(test_names, configuration):
+def show_buildspecs(test_names, configuration, theme=None):
     """This is the entry point for ``buildtest buildspec show`` command which will print content of
     buildspec based on name of test.
 
     Args:
         test_names (list): List of test names to show content of file
         configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
+        theme (str, optional): Color theme to choose. This is the Pygments style (https://pygments.org/docs/styles/#getting-a-list-of-available-styles) which is specified by ``--theme`` option
     """
     cache = BuildspecCache(configuration=configuration)
+    theme = theme or "monokai"
 
     error = False
     visited = set()
@@ -1042,9 +1054,11 @@ def show_buildspecs(test_names, configuration):
         buildspec = cache.lookup_buildspec_by_name(name)
         if buildspec not in visited:
             visited.add(buildspec)
-            content = read_file(buildspec)
+
             console.rule(buildspec)
-            console.print(Panel.fit(content))
+            with open(buildspec) as fd:
+                syntax = Syntax(fd.read(), "yaml", theme=theme)
+            console.print(syntax)
 
     if error:
         raise BuildTestError(
@@ -1052,7 +1066,9 @@ def show_buildspecs(test_names, configuration):
         )
 
 
-def show_failed_buildspecs(configuration, test_names=None, report_file=None):
+def show_failed_buildspecs(
+    configuration, test_names=None, report_file=None, theme=None
+):
     """This is the entry point for ``buildtest buildspec show-fail`` command which will print content of
     buildspec on name of all failed tests if a list of test names are not speficied
 
@@ -1060,6 +1076,7 @@ def show_failed_buildspecs(configuration, test_names=None, report_file=None):
         configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
         test_names (list, optional): List of test names to show content of file
         report_file (str, optional): Full path to report file to read
+        theme (str, optional): Color theme to choose. This is the Pygments style (https://pygments.org/docs/styles/#getting-a-list-of-available-styles) which is specified by ``--theme`` option
     """
     results = Report(report_file=report_file)
     all_failed_tests = results.get_test_by_state(state="FAIL")
@@ -1073,7 +1090,7 @@ def show_failed_buildspecs(configuration, test_names=None, report_file=None):
         failed_tests = test_names
     else:
         failed_tests = all_failed_tests
-    show_buildspecs(failed_tests, configuration)
+    show_buildspecs(failed_tests, configuration, theme)
 
 
 def buildspec_validate(
@@ -1119,8 +1136,9 @@ def buildspec_validate(
 
     if exception_counter > 0:
         console.print(f"[red]{exception_counter} buildspecs failed to validate")
-    else:
-        console.print("[green]All buildspecs passed validation!!!")
+        sys.exit(1)
+
+    console.print("[green]All buildspecs passed validation!!!")
 
 
 def summarize_buildspec_cache(pager, configuration):
@@ -1230,13 +1248,18 @@ def summary_print(configuration):
 
 
 def buildspec_maintainers(
-    configuration, list=None, breakdown=None, terse=None, header=None, name=None
+    configuration,
+    list_maintainers=None,
+    breakdown=None,
+    terse=None,
+    header=None,
+    name=None,
 ):
     """Entry point for ``buildtest buildspec maintainers`` command.
 
     Args:
         configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
-        list (bool, optional): List all maintainers
+        list_maintainers (bool, optional): List all maintainers
         terse (bool, optional): Print in terse mode
         header (bool, optional): If True disable printing of headers
         name (str, optional): List all buildspecs corresponding to maintainer name. This command is specified via ``buildtest buildspec maintainers find <name>``
@@ -1244,7 +1267,7 @@ def buildspec_maintainers(
 
     cache = BuildspecCache(configuration=configuration, terse=terse, header=header)
 
-    if list:
+    if list_maintainers:
         cache.print_maintainer()
 
     if breakdown:

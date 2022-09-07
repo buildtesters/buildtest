@@ -94,6 +94,7 @@
           "description": "Declare compiler section for defining system compilers that can be referenced in buildspec.",
           "additionalProperties": false,
           "properties": {
+            "modulepath": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
             "find": {
               "type": "object",
               "additionalProperties": false,

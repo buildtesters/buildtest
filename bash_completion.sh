@@ -18,6 +18,12 @@ if test -n "${ZSH_VERSION:-}" ; then
   fi
 fi
 
+# get a list of available color themes used for command completion for --theme option
+_avail_color_themes ()
+{
+  python -c "from pygments.styles import STYLE_MAP; print(' '.join(list(STYLE_MAP.keys())))"
+}
+
 # get list of available tags
 _avail_tags ()
 {
@@ -183,16 +189,25 @@ _buildtest ()
           local opts="--help --json --yaml -h -j -y find test"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           if [[ "${prev}" == "find" ]]; then
-            local opts="--detailed --help --update -d -h -u"
+            local opts="--detailed --help --modulepath --update -d -h -m -u"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           fi
           ;;
         executors)
           local opts="--help --disabled --invalid --json --yaml -d -h -i -j -y"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
-        view|validate|summary|systems)
+        validate|systems)
           local opts="-h --help"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
+        view)
+          local opts="--help --pager --theme -h -p -t"
+          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+
+          case "${prev}" in --theme|-t)
+            COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
+            return
+          esac
+        ;;
       esac
       ;;
     inspect|it)
@@ -263,11 +278,31 @@ _buildtest ()
          esac
         ;;
 
-
-      show|edit-test)
+      edit-test)
         COMPREPLY=( $( compgen -W "$(_buildspec_cache_test_names)" -- $cur ) );;
+      show)
+        local opts="-h --help --theme"
+        COMPREPLY=( $( compgen -W "$(_buildspec_cache_test_names)" -- $cur ) )
+        if [[ $cur == -* ]] ; then
+          COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+        fi
+
+        case "${prev}" in --theme|-t)
+          COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
+          return
+        esac
+        ;;
       show-fail)
-        COMPREPLY=( $( compgen -W "$(_failed_tests)" -- $cur ) );;
+        local opts="-h --help --theme"
+        COMPREPLY=( $( compgen -W "$(_failed_tests)" -- $cur ) )
+        if [[ $cur == -* ]] ; then
+          COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+        fi
+        case "${prev}" in --theme|-t)
+          COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
+          return
+        esac
+        ;;
       maintainers)
         local opts="--breakdown --list --help --terse --no-header -b -h -l -n find"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )

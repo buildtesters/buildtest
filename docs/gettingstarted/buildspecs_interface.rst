@@ -174,11 +174,13 @@ will attempt to parse each buildspec and store error message for every buildspec
 report a list of invalid buildspecs as shown below
 
 .. command-output:: buildtest buildspec find invalid
+   :returncode: 1
 
 If you want to see error messages for each buildspec you can pass the ``-e`` or ``--error`` option which will display output of
 each buildspec followed by error message.
 
 .. command-output:: buildtest buildspec find invalid -e
+   :returncode: 1
 
 .. _buildspec_maintainers:
 
@@ -240,9 +242,10 @@ Shown below is an example output of what it may look like
 
 .. command-output:: buildtest buildspec validate -b tutorials/vars.yml
 
-If buildtest detects an error during validation, the error message will be displayed to screen as we see in this example
+If buildtest detects an error during validation, the error message will be displayed to screen with a non-zero returncode.
 
 .. command-output:: buildtest buildspec validate -b tutorials/invalid_tags.yml
+   :returncode: 1
 
 Similarly we can search buildspecs based on tags if you want to validate a group of buildspecs using the ``-t`` option. We can
 append ``-t`` option multiple times to search by multiple tag names. In this next example, we
@@ -273,17 +276,16 @@ in the cache
 .. command-output:: buildtest buildspec show XYZ123!
    :returncode: 1
 
+You can use ``--theme`` option to define the color scheme used for printing content of buildspecs. The available comlor schemes can be found at
+https://pygments.org/docs/styles/#getting-a-list-of-available-styles. buildtest supports tab completion on the available themes which you can see below
 
-Let's assume you want to see content of all buildspec that failed test, you can use ``buildtest report`` to extract list of test names
-that failed as argument to ``buildtest buildspec show``, for instance we see below we have two tests that failed, using ``--filter state=FAIL`` will
-retrieve all failures, you will want to pipe output to **uniq** to get unique listing since output of ``buildtest report`` will show all test runs and
-duplicates can occur if same test is run multiple times.
+.. code-block::
 
-.. code-block:: console
-
-    $ buildtest report --filter state=FAIL --format name --terse --no-header | uniq
-    exit1_fail
-    returncode_list_mismatch
+    $  buildtest bc show --theme
+    abap                autumn              default             friendly_grayscale  igor                manni               native              pastie              sas                 stata-dark          vim
+    algol               borland             dracula             fruity              inkpot              material            one-dark            perldoc             solarized-dark      stata-light         vs
+    algol_nu            bw                  emacs               gruvbox-dark        lilypond            monokai             paraiso-dark        rainbow_dash        solarized-light     tango               xcode
+    arduino             colorful            friendly            gruvbox-light       lovelace            murphy              paraiso-light       rrt                 stata               trac                zenburn
 
 Show fail buildspec ``buildtest buildspec show-fail``
 ------------------------------------------------------

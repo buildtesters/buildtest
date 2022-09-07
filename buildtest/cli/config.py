@@ -19,7 +19,7 @@ def config_cmd(args, configuration, editor):
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
     """
     if args.config == "view":
-        view_configuration(configuration)
+        view_configuration(configuration, theme=args.theme, pager=args.pager)
 
     elif args.config == "executors":
         buildexecutor = BuildExecutor(configuration)
@@ -130,16 +130,24 @@ def view_path(configuration):
     console.print(configuration.file)
 
 
-def view_configuration(configuration):
+def view_configuration(configuration, theme=None, pager=None):
     """Display content of buildtest configuration file. This implements command ``buildtest config view``
 
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        theme (str, optional): Color theme to choose. This is the Pygments style (https://pygments.org/docs/styles/#getting-a-list-of-available-styles) which is specified by ``--theme`` option
     """
 
-    console.rule(configuration.file)
+    theme = theme or "monokai"
     with open(configuration.file, "r") as bc:
-        syntax = Syntax(bc.read(), "yaml", line_numbers=True, theme="emacs")
+        syntax = Syntax(bc.read(), "yaml", line_numbers=True, theme=theme)
+    if pager:
+        with console.pager():
+            console.rule(configuration.file)
+            console.print(syntax)
+        return
+
+    console.rule(configuration.file)
     console.print(syntax)
 
 

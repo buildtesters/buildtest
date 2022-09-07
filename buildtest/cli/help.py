@@ -179,8 +179,16 @@ def print_buildspec_help():
         "Show content of buildspec based on test name 'python_hello'",
     )
     table.add_row(
+        "buildtest buildspec show python_hello --theme emacs",
+        "Use color theme 'emacs' for showing content of test",
+    )
+    table.add_row(
         "buildtest buildspec show-fail",
         "Show content of buildspec on all failed tests",
+    )
+    table.add_row(
+        "buildtest buildspec show-fail exit1_fail",
+        "Show content of test 'exit1_fail'",
     )
     table.add_row(
         "buildtest buildspec edit-test python_hello",
@@ -256,6 +264,10 @@ def print_config_help():
     table.add_row(
         "buildtest config compilers find",
         "Detect compilers and update configuration file",
+    )
+    table.add_row(
+        "buildtest config compilers find --detailed --update",
+        "Show detailed output when finding compiler and update configuration file with new compilers",
     )
     table.add_row(
         "buildtest config compilers test",
@@ -346,6 +358,9 @@ def print_report_help():
     table.add_row("buildtest report list", "List all report files")
     table.add_row("buildtest report clear", "Remove content of default report file")
     table.add_row("buildtest report summary", "Show summary of test report")
+    table.add_row(
+        "buildtest report summary --detailed", "Show detailed summary of test report"
+    )
     console.print(table)
 
 

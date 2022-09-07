@@ -9,6 +9,8 @@ from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import console
 from buildtest.schemas.defaults import schema_table
 from rich.color import Color, ColorParseError
+from pygments.styles import STYLE_MAP
+
 
 
 def handle_kv_string(val):
@@ -747,7 +749,13 @@ def buildspec_menu(subparsers):
         help="Show content of buildspec based on test name",
         nargs="*",
     )
-
+    show_buildspecs.add_argument(
+        "-t",
+        "--theme",
+        metavar="Color Themes",
+        help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themese",
+        choices=list(STYLE_MAP.keys()),
+    )
     # buildtest buildspec show-fail
     show_fail_buildspecs = subparsers_buildspec.add_parser(
         "show-fail", help="Show content of buildspec file for all failed tests"
@@ -756,6 +764,13 @@ def buildspec_menu(subparsers):
         "name",
         help="Show content of buildspec based on failed test name",
         nargs="*",
+    )
+    show_fail_buildspecs.add_argument(
+        "-t",
+        "--theme",
+        metavar="Color Themes",
+        help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themes",
+        choices=list(STYLE_MAP.keys()),
     )
 
     # buildtest buildspec summary
@@ -831,8 +846,17 @@ def config_menu(subparsers):
     subparsers_config.add_parser(
         "validate", help="Validate buildtest settings file with schema."
     )
-    subparsers_config.add_parser("view", help="View configuration file")
-
+    view_parser = subparsers_config.add_parser("view", help="View configuration file")
+    view_parser.add_argument(
+        "-t",
+        "--theme",
+        metavar="Color Themes",
+        help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themes",
+        choices=list(STYLE_MAP.keys()),
+    )
+    view_parser.add_argument(
+        "-p", "--pager", action="store_true", help="Enable PAGING when viewing result"
+    )
     executor_group = executors.add_mutually_exclusive_group()
 
     # buildtest config executors
@@ -884,6 +908,13 @@ def config_menu(subparsers):
         "--update",
         action="store_true",
         help="Update configuration file with new compilers",
+    )
+    compiler_find.add_argument(
+        "-m",
+        "--modulepath",
+        type=str,
+        nargs="+",
+        help="Specify a list of directories to search for modules via MODULEPATH to detect compilers",
     )
 
     subparsers_compiler.add_parser(

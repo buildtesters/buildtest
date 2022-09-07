@@ -45,9 +45,10 @@ def test_buildspec_validate():
         configuration=configuration,
     )
 
-    buildspec = [os.path.join(BUILDTEST_ROOT, "tutorials", "invalid_executor.yml")]
+    buildspec = [os.path.join(BUILDTEST_ROOT, "tutorials", "invalid_tag.yml")]
 
-    buildspec_validate(buildspecs=buildspec, configuration=configuration)
+    with pytest.raises(SystemExit):
+        buildspec_validate(buildspecs=buildspec, configuration=configuration)
 
 
 @pytest.mark.cli
@@ -133,7 +134,7 @@ def test_buildspec_find_terse():
 @pytest.mark.cli
 def test_buildspec_maintainers():
     buildspec_maintainers(
-        configuration=configuration, list=True, terse=True, header=True
+        configuration=configuration, list_maintainers=True, terse=True, header=True
     )
     buildspec_maintainers(
         configuration=configuration, breakdown=True, terse=True, header=True
@@ -293,15 +294,17 @@ def test_buildspec_summary():
 @pytest.mark.cli
 def test_buildspec_show():
     cache = BuildspecCache(configuration=configuration)
-    # get first test in list
-    test_name = [cache.get_names()[0]]
+
+    test_name = cache.get_random_tests(num_items=1)
+
     # run buildtest buildspec show <test>
     show_buildspecs(test_name, configuration)
 
+    # run buildtest buildspec <test> show --theme monokai
+    show_buildspecs(test_name, configuration, theme="monokai")
+
     with pytest.raises(BuildTestError):
-        random_testname = "".join(
-            random.choice(string.ascii_letters) for i in range(10)
-        )
+        random_testname = "".join(random.choices(string.ascii_letters, k=10))
         show_buildspecs(test_names=[random_testname], configuration=configuration)
 
 
@@ -310,9 +313,7 @@ def test_buildspec_show_fail():
 
     # Query some random test name that doesn't exist
     with pytest.raises(BuildTestError):
-        random_testname = "".join(
-            random.choice(string.ascii_letters) for i in range(10)
-        )
+        random_testname = "".join(random.choices(string.ascii_letters, k=10))
         show_failed_buildspecs(
             configuration=configuration, test_names=[random_testname]
         )
@@ -322,3 +323,11 @@ def test_buildspec_show_fail():
         results = Report()
         pass_test = results.get_test_by_state(state="PASS")[0]
         show_failed_buildspecs(configuration=configuration, test_names=[pass_test])
+
+    report = Report()
+    # get a random failed test from report file to be used for showing content of buildspec file
+    fail_tests = random.sample(report.get_test_by_state(state="FAIL"), 1)
+    # running buildtest buildspec show-fail <test> --theme monokai
+    show_failed_buildspecs(
+        configuration=configuration, test_names=fail_tests, theme="monokai"
+    )
