@@ -8,9 +8,8 @@ import datetime
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import console
 from buildtest.schemas.defaults import schema_table
-from rich.color import Color, ColorParseError
 from pygments.styles import STYLE_MAP
-
+from rich.color import Color, ColorParseError
 
 
 def handle_kv_string(val):
