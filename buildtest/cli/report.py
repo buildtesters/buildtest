@@ -15,13 +15,13 @@ logger = logging.getLogger(__name__)
 
 def checkColor(colorArg):
     """Checks the provided colorArg against the compatible colors from Rich.Color"""
-    if type(colorArg) is Color:
+    if isinstance(colorArg, Color):
         return colorArg.name
 
-    if colorArg and type(colorArg) is list:
+    if colorArg and isinstance(colorArg, list):
         colorArg = colorArg[0]
         return colorArg
-    if type(colorArg) is str:
+    if isinstance(colorArg, str):
         try:
             checkedColor = Color.parse(colorArg).name
         except ColorParseError:
@@ -601,9 +601,7 @@ class Report:
         title = title or f"Report File: {self.reportfile()}"
         table = Table(title=title, show_lines=True, expand=True)
         for field in self.display_table.keys():
-            table.add_column(
-                f"[{consoleColor}]{field}", overflow="fold", style=consoleColor
-            )
+            table.add_column(field, overflow="fold", style=consoleColor)
             join_list.append(self.display_table[field])
         transpose_list = [list(i) for i in zip(*join_list)]
 
@@ -901,22 +899,20 @@ def print_report_summary_output(
         color (str): An instance of a string class that tells print_report_summary what color the output should be printed in.
         detailed (bool, optional): Print detailed output of the report summary if ``buildtest report summary --detailed`` is specified
     """
-    consoleColor = checkColor(color)
 
-    console.print("Report File: ", report.reportfile(), style=consoleColor)
-    console.print("Total Tests:", len(report.get_testids()), style=consoleColor)
-    console.print("Total Tests by Names: ", len(report.get_names()), style=consoleColor)
+    console.print("Report File: ", report.reportfile())
+    console.print("Total Tests:", len(report.get_testids()))
+    console.print("Total Tests by Names: ", len(report.get_names()))
     console.print(
         "Number of buildspecs in report: ",
         len(report.get_buildspecs()),
-        style=consoleColor,
     )
 
     if not detailed:
         return
 
     console.print(table)
-    pass_color = consoleColor or "green"
-    fail_color = consoleColor or "red"
+    pass_color = "green"
+    fail_color = "red"
     pass_results.print_report(title="PASS Tests", color=pass_color)
     fail_results.print_report(title="FAIL Tests", color=fail_color)
