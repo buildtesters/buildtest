@@ -28,6 +28,14 @@ def test_report():
 
     result = Report(pager=True)
     result.print_report()
+    result = Report(color="red")
+    result.print_report()
+    result = Report(color="red", pager=True)
+    result.print_report()
+    result = Report(color="BAD_COLOR")
+    result.print_report()
+    result = Report(color="BAD_COLOR", pager=True)
+    result.print_report()
 
 
 @pytest.mark.cli
@@ -201,29 +209,32 @@ def test_report_summary():
     report = Report(pager=True)
     report_summary(report, detailed=True)
 
-    report = Report()
-    report_summary(report, color="light_pink1")
+    report = Report(color="light_pink1")
+    report_summary(report)
 
-    report = Report(pager=True)
-    report_summary(report, color="light_pink1", detailed=True)
+    report = Report(
+        pager=True,
+        color="light_pink1",
+    )
+    report_summary(report, detailed=True)
 
-    report = Report()
-    report_summary(report, color="light_pink1", detailed=True)
+    report = Report(color="light_pink1")
+    report_summary(report, detailed=True)
 
-    report = Report(pager=True)
-    report_summary(report, color="light_pink1")
+    report = Report(pager=True, color="light_pink1")
+    report_summary(report)
 
-    report = Report()
-    report_summary(report, color="BAD_COLOR")
+    report = Report(color="BAD_COLOR")
+    report_summary(report)
 
-    report = Report(pager=True)
-    report_summary(report, color="BAD_COLOR", detailed=True)
+    report = Report(pager=True, color="BAD_COLOR")
+    report_summary(report, detailed=True)
 
-    report = Report()
-    report_summary(report, color="BAD_COLOR", detailed=True)
+    report = Report(color="BAD_COLOR")
+    report_summary(report, detailed=True)
 
-    report = Report(pager=True)
-    report_summary(report, color="BAD_COLOR")
+    report = Report(pager=True, color="BAD_COLOR")
+    report_summary(report)
 
 
 @pytest.mark.cli

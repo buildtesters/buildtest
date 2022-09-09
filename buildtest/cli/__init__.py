@@ -9,6 +9,7 @@ from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import console
 from buildtest.schemas.defaults import schema_table
 from pygments.styles import STYLE_MAP
+from rich.color import Color, ColorParseError
 
 
 def handle_kv_string(val):
@@ -81,6 +82,35 @@ def positive_number(value):
             f"Input: {value} converted to int: {int_val} must be a positive number"
         )
     return int_val
+
+
+def supported_color(input_color):
+    """Checks if input is a supported color and returns value as an Color type.
+
+    Args:
+        input_color (str): Specify an input color
+
+    Returns:
+        str: Return value as rich.color.Color type
+
+    Raises:
+        argparse.ArgumentTypeError will be raised if input is not a supported color input or is not str type
+
+    >>> supported_color("red")
+    red
+    """
+
+    if not isinstance(input_color, (str)):
+        raise argparse.ArgumentTypeError(
+            f"Input must be a string type, you have specified '{input_color}' which is of type {type(input_color)}"
+        )
+    try:
+        color_val = Color.parse(input_color)
+    except ColorParseError:
+        console.print(f"[red]Unable to convert {input_color} to a Color ")
+        console.print_exception()
+        return
+    return color_val
 
 
 def valid_time(value):
@@ -982,6 +1012,12 @@ def report_menu(subparsers):
         "--terse",
         action="store_true",
         help="Print output in machine readable format",
+    )
+    parser_report.add_argument(
+        "--color",
+        type=supported_color,
+        metavar="COLOR",
+        help="Print output of report table with the selected color.",
     )
     parser_report.add_argument(
         "--pager", action="store_true", help="Enable PAGING when viewing result"

@@ -13,6 +13,22 @@ from rich.table import Table
 logger = logging.getLogger(__name__)
 
 
+def checkColor(colorArg):
+    """Checks the provided colorArg against the compatible colors from Rich.Color"""
+    if isinstance(colorArg, Color):
+        return colorArg.name
+
+    if colorArg and isinstance(colorArg, list):
+        colorArg = colorArg[0]
+        return colorArg
+    if isinstance(colorArg, str):
+        try:
+            checkedColor = Color.parse(colorArg).name
+        except ColorParseError:
+            checkedColor = Color.default().name
+        return checkedColor
+
+
 def is_int(val):
     """Check if input is an integer by running `int() <https://docs.python.org/3/library/functions.html#int>`_. If its successful we
     return **True** otherwise returns **False**
@@ -59,7 +75,6 @@ class Report:
         "state": {"description": "Filter by test state", "type": "PASS/FAIL"},
         "tags": {"description": "Filter tests by tag name", "type": "STRING"},
     }
-
     format_fields = format_field_description.keys()
     # list of filter fields
     filter_fields = filter_field_description.keys()
@@ -91,6 +106,7 @@ class Report:
         count=None,
         pager=None,
         detailed=None,
+        color=None,
     ):
         """
         Args:
@@ -105,6 +121,8 @@ class Report:
             oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
             count (int, optional): Fetch limited number of rows get printed for all tests discovered. This is specified via ``buildtest report --count``
             pager (bool, optional): Enabling PAGING output for ``buildtest report``. This can be specified via ``buildtest report --pager``
+            color (str, optional): An instance of a string class that tells print_report what color the output should be printed in.
+
         """
         self.start = start
         self.end = end
@@ -115,7 +133,7 @@ class Report:
         self.filter = filter_args
         self.format = format_args
         self.pager = pager
-
+        self.color = color
         self.input_report = report_file
 
         # if no report specified use default report
@@ -479,7 +497,11 @@ class Report:
 
     def print_format_fields(self):
         """Displays list of format field which implements command ``buildtest report --helpformat``"""
-        table = Table("[blue]Field", "[blue]Description", title="Format Fields")
+        table = Table(
+            "[blue]Field",
+            "[blue]Description",
+            title="Format Fields",
+        )
         for field, description in self.format_field_description.items():
             table.add_row(f"[red]{field}", f"[green]{description}")
 
@@ -496,6 +518,7 @@ class Report:
         )
 
         for field, value in self.filter_field_description.items():
+
             table.add_row(
                 f"[red]{field}",
                 f"[green]{value['description']}",
@@ -552,7 +575,7 @@ class Report:
             root_disk_usage|PASS|0
             root_disk_usage|PASS|0
         """
-
+        consoleColor = checkColor(color)
         if terse:
             join_list = []
 
@@ -576,14 +599,9 @@ class Report:
         join_list = []
         title = title or f"Report File: {self.reportfile()}"
         table = Table(title=title, show_lines=True, expand=True)
-        consoleColor = checkColor(color=color)
-
         for field in self.display_table.keys():
-            table.add_column(
-                f"[blue]{field}", overflow="fold", style=consoleColor
-            )  # change [blue] to console color if we want the entire console output to be uniform.
+            table.add_column(field, overflow="fold", style=consoleColor)
             join_list.append(self.display_table[field])
-
         transpose_list = [list(i) for i in zip(*join_list)]
 
         # limited number of rows to be printed
@@ -743,6 +761,8 @@ class Report:
 
 def report_cmd(args, report_file=None):
     """Entry point for ``buildtest report`` command"""
+    consoleColor = checkColor(args.color)
+
     if args.report_subcommand == "clear":
         # if BUILDTEST_REPORTS file is not present then we have no report files to delete since it tracks all report files that are created
         if not is_file(BUILDTEST_REPORTS):
@@ -787,10 +807,10 @@ def report_cmd(args, report_file=None):
     if args.report_subcommand == "summary":
         if args.pager:
             with console.pager():
-                report_summary(results, detailed=args.detailed)
+                report_summary(results, detailed=args.detailed, color=consoleColor)
             return
 
-        report_summary(results, detailed=args.detailed)
+        report_summary(results, detailed=args.detailed, color=consoleColor)
         return
 
     if args.helpfilter:
@@ -803,10 +823,15 @@ def report_cmd(args, report_file=None):
     if args.pager:
         with console.pager():
             results.print_report(
-                terse=args.terse, noheader=args.no_header, count=args.count
+                terse=args.terse,
+                noheader=args.no_header,
+                count=args.count,
+                color=consoleColor,
             )
         return
-    results.print_report(terse=args.terse, noheader=args.no_header, count=args.count)
+    results.print_report(
+        terse=args.terse, noheader=args.no_header, count=args.count, color=consoleColor
+    )
 
 
 def report_summary(report, detailed=None, color=None):
@@ -816,16 +841,15 @@ def report_summary(report, detailed=None, color=None):
         detailed (bool): An instance of bool, flag for printing a detailed report.
         color (str): An instance of str, color that the report should be printed in
     """
-
+    consoleColor = checkColor(color)
     test_breakdown = report.breakdown_by_test_names()
-    if not color:
+    if not consoleColor:
         table = Table(title="Breakdown by test", header_style="blue")
         table.add_column("Name", style="cyan")
         table.add_column("Total Pass", style="green")
         table.add_column("Total Fail", style="red")
         table.add_column("Total Runs", style="blue")
     else:
-        consoleColor = checkColor(color=color)
         table = Table(title="Breakdown by test", header_style=consoleColor)
         table.add_column("Name", style=consoleColor)
         table.add_column("Total Pass", style=consoleColor)
@@ -878,25 +902,16 @@ def print_report_summary_output(
     console.print("Report File: ", report.reportfile())
     console.print("Total Tests:", len(report.get_testids()))
     console.print("Total Tests by Names: ", len(report.get_names()))
-    console.print("Number of buildspecs in report: ", len(report.get_buildspecs()))
+    console.print(
+        "Number of buildspecs in report: ",
+        len(report.get_buildspecs()),
+    )
 
     if not detailed:
         return
 
     console.print(table)
-
-    pass_color = color or "green"
-    fail_color = color or "red"
-
+    pass_color = "green"
+    fail_color = "red"
     pass_results.print_report(title="PASS Tests", color=pass_color)
     fail_results.print_report(title="FAIL Tests", color=fail_color)
-
-
-def checkColor(color):
-    checkedColor = Color.default().name
-    if color:
-        try:
-            checkedColor = Color.parse(color).name
-        except ColorParseError:
-            checkedColor = Color.default().name
-    return checkedColor
