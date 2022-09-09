@@ -27,7 +27,6 @@ def checkColor(colorArg):
         except ColorParseError:
             checkedColor = Color.default().name
         return checkedColor
-    return
 
 
 def is_int(val):

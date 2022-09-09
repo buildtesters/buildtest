@@ -88,7 +88,7 @@ def supported_color(input_color):
     """Checks if input is a supported color and returns value as an Color type.
 
     Args:
-        value (str): Specify an input color
+        input_color (str): Specify an input color
 
     Returns:
         str: Return value as rich.color.Color type
