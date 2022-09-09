@@ -278,15 +278,6 @@ where ``--count`` is number of rows that that get printed. Shown below is the ou
 The ``--count`` option also works with terse mode ``--terse``, shown below is the same output 
 
 .. command-output:: buildtest report --terse --count 2
-Color Output
--------------
-
-If you would like to change the output color for either ``buildtest report`` and ``buildtest report summary`` you can use the ``--color`` option.
-This will print the output of the previous two commands in the provided color. The color must be one of the supported colors by rich console.
-
-.. command-output:: buildtest report --color red 
-.. command-output:: buildtest report --color red summary
-
 Terse Output
 -------------
 
