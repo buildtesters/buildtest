@@ -32,37 +32,19 @@ is used for configuration codecov. For more details on codecov yaml file see htt
 Gitlab CI checks
 ------------------
 
-buildtest has automated CI checks on gitlab servers: https://software.nersc.gov and https://code.ornl.gov. The
+buildtest has automated CI checks on gitlab servers: https://software.nersc.gov (NERSC) and https://code.ornl.gov (OLCF). The
 gitlab pipelines are stored in `.gitlab <https://github.com/buildtesters/buildtest/tree/devel/.gitlab>`_ directory found
-in root of repository.
+in root of repository. We have imported the buildtest project using the `Gitlab CI/CD for external repositories <https://docs.gitlab.com/ee/ci/ci_cd_for_external_repos/>`_ feature
+to automatically pull mirror and run CI/CD from incoming Pull Request to buildtest project on GitHub.
 
-The `mirror.yml <https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/mirror.yml>`_ github workflow
-is responsible for mirroring and trigger CI check and return result back to github PR. Currently, we are using github
-action `stenongithub/gitlab-mirror-and-ci-action <https://github.com/stenongithub/gitlab-mirror-and-ci-action>`_ to perform pull mirroring and triggering CI job.
+The project mirrors are located in the following location
 
-The gitlab server https://software.nersc.gov is hosted at NERSC. The following steps were taken to setup pipeline
+- NERSC: https://software.nersc.gov/NERSC/buildtest
+- OLCF: https://code.ornl.gov/ecpcitest/buildtest
 
-1. Create a Personal Access token with **read_api**, **read_repository**, **write_repository** scope at https://software.nersc.gov/-/profile/personal_access_tokens
-2. Define a secret **CORI_GITLAB_PASSWORD** at https://github.com/buildtesters/buildtest/settings/secrets/actions with token value generated in step 1
-3. Import buildtest project from github at https://software.nersc.gov/siddiq90/buildtest
-4. Add variable **SECRET_CODECOV_TOKEN** in https://software.nersc.gov/siddiq90/buildtest/-/settings/ci_cd that contains codecov token found at https://app.codecov.io/gh/buildtesters/buildtest/settings
-5. Change gitlab CI configuration file to `.gitlab/cori.yml <https://github.com/buildtesters/buildtest/blob/devel/.gitlab/cori.yml>`_ under **Settings > CI/CD > General pipelines**. For more details see https://docs.gitlab.com/ee/ci/pipelines/settings.html#custom-cicd-configuration-path
-
-The gitlab server https://code.ornl.gov is hosted at OLCF which has access to systems like Summit and Ascent. We performed similar steps at as shown above with
-slight modification
-
-1. Create a Personal access token with same scope at https://code.ornl.gov/-/profile/personal_access_tokens
-2. Define a secret **OLCF_GITLAB_PASSWORD** at https://github.com/buildtesters/buildtest/settings/secrets/actions
-3. Import buildtest project at https://code.ornl.gov/ecpcitest/buildtest. Currently, all projects in ``ecpcitest`` project group has access to gitlab runners.
-4. Add variable **SECRET_CODECOV_TOKEN** in https://code.ornl.gov/ecpcitest/buildtest/-/settings/ci_cd that contains codecov token found at https://app.codecov.io/gh/buildtesters/buildtest/settings
-5. Change gitlab CI configuration file to `.gitlab/olcf.yml <https://github.com/buildtesters/buildtest/blob/devel/.gitlab/olcf.yml>`_
-
-Currently, the gitlab pipelines are triggered manually which requires a user to have access to the gitlab project to run the pipeline. The pipelines can be run manually at
-https://software.nersc.gov/siddiq90/buildtest/-/pipelines and https://code.ornl.gov/ecpcitest/buildtest/-/pipelines
-
-The github workflow `mirror.yml <https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/mirror.yml>`_
-defines gitlab configuration for each mirror. Any changes to mirror path must be addressed in this workflow to ensure pull mirroring is
-done properly.
+We have configured each gitlab project to point to the gitlab configuration file. For instance, at NERSC we use
+`.gitlab/cori.yml <https://github.com/buildtesters/buildtest/blob/devel/.gitlab/cori.yml>`_ that runs CI on Cori, this can be configured at
+**Settings > CI/CD > General pipelines** with the path to gitlab configuration. For more details see https://docs.gitlab.com/ee/ci/pipelines/settings.html#custom-cicd-configuration-path
 
 GitHub Bots
 -----------

@@ -1,5 +1,4 @@
-# This pipeline is run at OLCF at gitlab instance: https://code.ornl.gov
-
+# This pipeline is run at OLCF at: https://code.ornl.gov/ecpcitest/buildtest/
 
 variables:
   CUSTOM_CI_BUILDS_DIR: /gpfs/wolf/proj-shared/gen014/ecp-ci/buildtest
@@ -11,9 +10,11 @@ ascent_pr_regression_test:
   tags: ["nobatch"]
   stage: regression
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web" || $CI_PIPELINE_SOURCE == "external_pull_request_event'
+    - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" && $CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
 
   script:
+    - env | grep CI_
+    - set -e
     - ml python/3.7.0-anaconda3-5.3.0
     - whoami
     - git branch
