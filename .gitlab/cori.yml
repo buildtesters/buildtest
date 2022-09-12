@@ -1,4 +1,4 @@
-# This pipeline is run at NERSC at gitlab instance: https://software.nersc.gov
+# This pipeline is run at NERSC at https://software.nersc.gov/NERSC/buildtest
 
 variables:
   SCHEDULER_PARAMETERS: "-N 1 -M escori -q compile -t 360"
