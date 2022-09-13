@@ -8,9 +8,8 @@ jobs:
 
   buildtest_regtest:
     runs-on: ${{ matrix.os }}
-    continue-on-error: false
     strategy:
-      fail-fast: false
+      fail-fast: true
 
       matrix:
         os: [macos-latest, ubuntu-latest]
