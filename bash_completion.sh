@@ -165,7 +165,7 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--color --end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"     
+      local opts="--color --end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t c clear l list sm summary"
       local copts=$(python -c "from rich.color import ANSI_COLOR_NAMES;print(' '.join(list(ANSI_COLOR_NAMES.keys())))")
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       case ${prev} in --color)

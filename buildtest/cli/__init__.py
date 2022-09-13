@@ -943,10 +943,10 @@ def report_menu(subparsers):
         metavar="",
         dest="report_subcommand",
     )
-    subparsers.add_parser("clear", help="Remove all report file")
-    subparsers.add_parser("list", help="List all report files")
+    subparsers.add_parser("clear", aliases=["c"], help="Remove all report file")
+    subparsers.add_parser("list", aliases=["l"], help="List all report files")
     parser_report_summary = subparsers.add_parser(
-        "summary", help="Summarize test report"
+        "summary", aliases=["sm"], help="Summarize test report"
     )
 
     # buildtest report
