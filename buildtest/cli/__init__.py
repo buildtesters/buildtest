@@ -972,13 +972,14 @@ def report_menu(subparsers):
 
     pass_fail.add_argument(
         "-f",
-        "--failure",
+        "--fail",
         help="Retrieve all FAIL tests",
         action="store_true",
     )
     pass_fail.add_argument(
         "-p",
-        "--passed",
+        "--pass",
+        dest="passed",
         help="Retrieve all PASS tests",
         action="store_true",
     )

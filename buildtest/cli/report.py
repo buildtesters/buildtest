@@ -115,8 +115,8 @@ class Report:
             format (str, optional): A comma separated list of format fields for altering report table. This is specified via ``buildtest report --format``
             start (datetime, optional): Fetch run for all tests discovered filered by starttime. This is specified via ``buildtest report --start``
             end (datetime, optional): Fetch run for all tests discovered filered by endtime. This is specified via ``buildtest report --end``
-            failure (bool, optional): Fetch failure run for all tests discovered. This is specified via ``buildtest report --failure``
-            passed (bool, optional): Fetch passed run for all tests discovered. This is specified via ``buildtest report --passed``
+            failure (bool, optional): Fetch failure run for all tests discovered. This is specified via ``buildtest report --fail``
+            passed (bool, optional): Fetch passed run for all tests discovered. This is specified via ``buildtest report --pass``
             latest (bool, optional): Fetch latest run for all tests discovered. This is specified via ``buildtest report --latest``
             oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
             count (int, optional): Fetch limited number of rows get printed for all tests discovered. This is specified via ``buildtest report --count``
@@ -797,7 +797,7 @@ def report_cmd(args, report_file=None):
         format_args=args.format,
         start=args.start,
         end=args.end,
-        failure=args.failure,
+        failure=args.fail,
         passed=args.passed,
         latest=args.latest,
         oldest=args.oldest,
