@@ -21,7 +21,7 @@ def config_cmd(args, configuration, editor):
     if args.config in ["view", "v"]:
         view_configuration(configuration, theme=args.theme, pager=args.pager)
 
-    elif args.config == "executors":
+    elif args.config in ["executors", "ex"]:
         buildexecutor = BuildExecutor(configuration)
         view_executors(
             configuration,

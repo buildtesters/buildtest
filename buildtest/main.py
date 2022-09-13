@@ -237,7 +237,7 @@ def main():
     # running buildtest config
     elif args.subcommands in ["config", "cg"]:
         #  running buildtest config compilers
-        if args.config == "compilers":
+        if args.config in ["compilers", "co"]:
             compiler_cmd(args, configuration)
         else:
             config_cmd(args, configuration, buildtest_editor)

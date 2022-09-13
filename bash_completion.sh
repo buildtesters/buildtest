@@ -180,12 +180,12 @@ _buildtest ()
     ;;
 
     config|cg)
-      local cmds="-h --help compilers e edit executors p path systems validate v view"
+      local cmds="-h --help co compilers e edit ex executors p path systems validate v view"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
       case "${COMP_WORDS[2]}" in
-        compilers)
+        compilers|co)
           local opts="--help --json --yaml -h -j -y find test"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           if [[ "${prev}" == "find" ]]; then
@@ -193,7 +193,7 @@ _buildtest ()
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           fi
           ;;
-        executors)
+        executors|ex)
           local opts="--help --disabled --invalid --json --yaml -d -h -i -j -y"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         validate|systems)
