@@ -27,7 +27,7 @@ jobs:
       env:
         OS: ${{ matrix.os }}
       run: |
-        if [ $OS = "ubuntu-latest"  ] || [ $OS = "ubuntu-22.04" ] ; then sudo apt-get install -y csh tcsh zsh && sudo add-apt-repository ppa:kelleyk/emacs && sudo apt-get install -y emacs28; else brew install tcsh zsh emacs ;  fi
+        if [ $OS = "ubuntu-latest"  ] ; then sudo apt-get install -y csh tcsh zsh && sudo add-apt-repository ppa:kelleyk/emacs && sudo apt-get install -y emacs28; else brew install tcsh zsh emacs ;  fi
         cat /etc/shells
         source setup.sh
         pip install pytest
