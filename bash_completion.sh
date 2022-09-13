@@ -247,7 +247,7 @@ _buildtest ()
       ;;
 
     buildspec|bc)
-      local cmds="-h --help edit-test edit-file find maintainers show show-fail summary validate"
+      local cmds="-h --help ef edit-file et edit-test f find maintainers s show sf show-fail sm summary val validate"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
@@ -267,7 +267,7 @@ _buildtest ()
            COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) );;
          esac
         ;;
-      summary)
+      summary|sm)
          case ${COMP_WORDS[3]} in
          # completion for rest of arguments
          *)
@@ -277,10 +277,11 @@ _buildtest ()
            COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) );;
          esac
         ;;
-
-      edit-test)
+      edit-file|ef)
+        COMPREPLY=( $( compgen -W "$(_avail_buildspecs)" -- $cur ) );;
+      edit-test|et)
         COMPREPLY=( $( compgen -W "$(_buildspec_cache_test_names)" -- $cur ) );;
-      show)
+      show|s)
         local opts="-h --help --theme"
         COMPREPLY=( $( compgen -W "$(_buildspec_cache_test_names)" -- $cur ) )
         if [[ $cur == -* ]] ; then
@@ -292,7 +293,7 @@ _buildtest ()
           return
         esac
         ;;
-      show-fail)
+      show-fail|sf)
         local opts="-h --help --theme"
         COMPREPLY=( $( compgen -W "$(_failed_tests)" -- $cur ) )
         if [[ $cur == -* ]] ; then
@@ -303,7 +304,7 @@ _buildtest ()
           return
         esac
         ;;
-      maintainers)
+      maintainers|m)
         local opts="--breakdown --list --help --terse --no-header -b -h -l -n find"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
@@ -312,10 +313,7 @@ _buildtest ()
           COMPREPLY=( $( compgen -W "$(_avail_maintainers)" -- $cur ) );;
         esac
         ;;
-      
-      edit-file)
-        COMPREPLY=( $( compgen -W "$(_avail_buildspecs)" -- $cur ) );;
-      validate)
+      validate|val)
         local opts="--buildspec --exclude --executor --tag -b -e -t -x "
 
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
