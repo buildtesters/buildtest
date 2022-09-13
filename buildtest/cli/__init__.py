@@ -1048,10 +1048,12 @@ def inspect_menu(subparsers):
         metavar="",
     )
     inspect_buildspec = subparser.add_parser(
-        "buildspec", help="Inspect a test based on buildspec"
+        "buildspec", aliases=["b"], help="Inspect a test based on buildspec"
     )
-    name = subparser.add_parser("name", help="Specify name of test")
-    query_list = subparser.add_parser("query", help="Query fields from record")
+    name = subparser.add_parser("name", aliases=["n"], help="Specify name of test")
+    query_list = subparser.add_parser(
+        "query", aliases=["q"], help="Query fields from record"
+    )
 
     # buildtest inspect buildspec
     inspect_buildspec.add_argument(
@@ -1065,7 +1067,9 @@ def inspect_menu(subparsers):
 
     # buildtest inspect list
     inspect_list = subparser.add_parser(
-        "list", help="List all test names, ids, and corresponding buildspecs"
+        "list",
+        aliases=["l"],
+        help="List all test names, ids, and corresponding buildspecs",
     )
     inspect_list.add_argument(
         "-n",
