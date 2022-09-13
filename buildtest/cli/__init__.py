@@ -832,20 +832,26 @@ def config_menu(subparsers):
 
     compilers = subparsers_config.add_parser("compilers", help="Search compilers")
 
-    subparsers_config.add_parser("edit", help="Open configuration file in editor")
+    subparsers_config.add_parser(
+        "edit", aliases=["e"], help="Open configuration file in editor"
+    )
 
     executors = subparsers_config.add_parser(
         "executors", help="Query executors from buildtest configuration"
     )
 
-    subparsers_config.add_parser("path", help="Show path to configuration file")
+    subparsers_config.add_parser(
+        "path", aliases=["p"], help="Show path to configuration file"
+    )
 
     subparsers_config.add_parser("systems", help="List all available systems")
 
     subparsers_config.add_parser(
         "validate", help="Validate buildtest settings file with schema."
     )
-    view_parser = subparsers_config.add_parser("view", help="View configuration file")
+    view_parser = subparsers_config.add_parser(
+        "view", aliases=["v"], help="View configuration file"
+    )
     view_parser.add_argument(
         "-t",
         "--theme",

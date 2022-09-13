@@ -180,7 +180,7 @@ _buildtest ()
     ;;
 
     config|cg)
-      local cmds="-h --help compilers edit executors path systems validate view"
+      local cmds="-h --help compilers e edit executors p path systems validate v view"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
@@ -199,7 +199,7 @@ _buildtest ()
         validate|systems)
           local opts="-h --help"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
-        view)
+        view|v)
           local opts="--help --pager --theme -h -p -t"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
