@@ -8,6 +8,7 @@ jobs:
 
   buildtest_regtest:
     runs-on: ${{ matrix.os }}
+    continue-on-error: false
     strategy:
       fail-fast: false
 
