@@ -18,10 +18,10 @@ def config_cmd(args, configuration, editor):
         args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
     """
-    if args.config == "view":
+    if args.config in ["view", "v"]:
         view_configuration(configuration, theme=args.theme, pager=args.pager)
 
-    elif args.config == "executors":
+    elif args.config in ["executors", "ex"]:
         buildexecutor = BuildExecutor(configuration)
         view_executors(
             configuration,
@@ -38,10 +38,10 @@ def config_cmd(args, configuration, editor):
     elif args.config == "systems":
         view_system(configuration)
 
-    elif args.config == "edit":
+    elif args.config in ["edit", "e"]:
         edit_configuration(configuration, editor)
 
-    elif args.config == "path":
+    elif args.config in ["path", "p"]:
         view_path(configuration)
 
 

@@ -21,22 +21,22 @@ def inspect_cmd(args, report_file=None):
     report = Report(report_file)
 
     # implements command 'buildtest inspect list'
-    if args.inspect == "list":
+    if args.inspect in ["list", "l"]:
         inspect_list(
             report, terse=args.terse, header=args.no_header, builder=args.builder
         )
         return
 
     # implements command 'buildtest inspect name'
-    if args.inspect == "name":
+    if args.inspect in ["name", "n"]:
         inspect_by_name(report, args.name)
         return
 
-    if args.inspect == "query":
+    if args.inspect in ["query", "q"]:
         inspect_query(report, args)
         return
 
-    if args.inspect == "buildspec":
+    if args.inspect in ["buildspec", "b"]:
         inspect_buildspec(report, input_buildspecs=args.buildspec, all_records=args.all)
 
 

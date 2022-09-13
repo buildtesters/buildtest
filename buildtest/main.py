@@ -179,34 +179,34 @@ def main():
     # implementation for 'buildtest buildspec find'
     elif args.subcommands in ["buildspec", "bc"]:
 
-        if args.buildspecs_subcommand == "find":
+        if args.buildspecs_subcommand in ["find", "f"]:
             buildspec_find(args=args, configuration=configuration)
-        elif args.buildspecs_subcommand == "summary":
+        elif args.buildspecs_subcommand in ["summary", "sm"]:
             summarize_buildspec_cache(pager=args.pager, configuration=configuration)
-        elif args.buildspecs_subcommand == "show":
+        elif args.buildspecs_subcommand in ["show", "s"]:
             show_buildspecs(
                 test_names=args.name, configuration=configuration, theme=args.theme
             )
-        elif args.buildspecs_subcommand == "show-fail":
+        elif args.buildspecs_subcommand in ["show-fail", "sf"]:
             show_failed_buildspecs(
                 configuration=configuration,
                 test_names=args.name,
                 report_file=report_file,
                 theme=args.theme,
             )
-        elif args.buildspecs_subcommand == "edit-test":
+        elif args.buildspecs_subcommand in ["edit-test", "et"]:
             edit_buildspec_test(
                 test_names=args.name,
                 configuration=configuration,
                 editor=buildtest_editor,
             )
-        elif args.buildspecs_subcommand == "edit-file":
+        elif args.buildspecs_subcommand in ["edit-file", "ef"]:
             edit_buildspec_file(
                 buildspecs=args.file,
                 configuration=configuration,
                 editor=buildtest_editor,
             )
-        elif args.buildspecs_subcommand == "maintainers":
+        elif args.buildspecs_subcommand in ["maintainers", "m"]:
             name = None
             if hasattr(args, "name"):
                 name = args.name
@@ -219,7 +219,7 @@ def main():
                 name=name,
             )
 
-        elif args.buildspecs_subcommand == "validate":
+        elif args.buildspecs_subcommand in ["validate", "val"]:
             buildspec_validate(
                 buildspecs=args.buildspec,
                 excluded_buildspecs=args.exclude,
@@ -237,7 +237,7 @@ def main():
     # running buildtest config
     elif args.subcommands in ["config", "cg"]:
         #  running buildtest config compilers
-        if args.config == "compilers":
+        if args.config in ["compilers", "co"]:
             compiler_cmd(args, configuration)
         else:
             config_cmd(args, configuration, buildtest_editor)

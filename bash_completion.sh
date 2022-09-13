@@ -165,7 +165,7 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--color --end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t clear list summary"     
+      local opts="--color --end --failure --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --passed --start --terse  -e -f -h -n -p -s -t c clear l list sm summary"
       local copts=$(python -c "from rich.color import ANSI_COLOR_NAMES;print(' '.join(list(ANSI_COLOR_NAMES.keys())))")
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       case ${prev} in --color)
@@ -180,12 +180,12 @@ _buildtest ()
     ;;
 
     config|cg)
-      local cmds="-h --help compilers edit executors path systems validate view"
+      local cmds="-h --help co compilers e edit ex executors p path systems validate v view"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
       case "${COMP_WORDS[2]}" in
-        compilers)
+        compilers|co)
           local opts="--help --json --yaml -h -j -y find test"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           if [[ "${prev}" == "find" ]]; then
@@ -193,13 +193,13 @@ _buildtest ()
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           fi
           ;;
-        executors)
+        executors|ex)
           local opts="--help --disabled --invalid --json --yaml -d -h -i -j -y"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         validate|systems)
           local opts="-h --help"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
-        view)
+        view|v)
           local opts="--help --pager --theme -h -p -t"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
@@ -211,16 +211,16 @@ _buildtest ()
       esac
       ;;
     inspect|it)
-      local cmds="--help -h buildspec list name query"
+      local cmds="--help -h b buildspec l list n name q query"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # case statement to handle completion for buildtest inspect [name|id|list] command
       case "${COMP_WORDS[2]}" in
-        list)
+        list|l)
           local opts="--builder --help --no-header --terse -b -h -n -t"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
-        name)
+        name|n)
           COMPREPLY=( $( compgen -W "$(_builder_names)" -- $cur ) )
 
           if [[ $cur == -* ]] ; then
@@ -228,7 +228,7 @@ _buildtest ()
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           fi
           ;;
-        buildspec)
+        buildspec|b)
           COMPREPLY=( $( compgen -W "$(_test_buildspec)" -- $cur ) )
 
           if [[ $cur == -* ]] ; then
@@ -236,7 +236,7 @@ _buildtest ()
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           fi
           ;;
-        query)
+        query|q)
           COMPREPLY=( $( compgen -W "$(_builder_names)" -- $cur ) )
           if [[ $cur == -* ]] ; then
             local opts="--buildscript --buildenv --error --help --output --testpath -b -be -e -o -h -o -t"
@@ -247,7 +247,7 @@ _buildtest ()
       ;;
 
     buildspec|bc)
-      local cmds="-h --help edit-test edit-file find maintainers show show-fail summary validate"
+      local cmds="-h --help ef edit-file et edit-test f find maintainers s show sf show-fail sm summary val validate"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
@@ -267,7 +267,7 @@ _buildtest ()
            COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) );;
          esac
         ;;
-      summary)
+      summary|sm)
          case ${COMP_WORDS[3]} in
          # completion for rest of arguments
          *)
@@ -277,10 +277,11 @@ _buildtest ()
            COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) );;
          esac
         ;;
-
-      edit-test)
+      edit-file|ef)
+        COMPREPLY=( $( compgen -W "$(_avail_buildspecs)" -- $cur ) );;
+      edit-test|et)
         COMPREPLY=( $( compgen -W "$(_buildspec_cache_test_names)" -- $cur ) );;
-      show)
+      show|s)
         local opts="-h --help --theme"
         COMPREPLY=( $( compgen -W "$(_buildspec_cache_test_names)" -- $cur ) )
         if [[ $cur == -* ]] ; then
@@ -292,7 +293,7 @@ _buildtest ()
           return
         esac
         ;;
-      show-fail)
+      show-fail|sf)
         local opts="-h --help --theme"
         COMPREPLY=( $( compgen -W "$(_failed_tests)" -- $cur ) )
         if [[ $cur == -* ]] ; then
@@ -303,7 +304,7 @@ _buildtest ()
           return
         esac
         ;;
-      maintainers)
+      maintainers|m)
         local opts="--breakdown --list --help --terse --no-header -b -h -l -n find"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
@@ -312,10 +313,7 @@ _buildtest ()
           COMPREPLY=( $( compgen -W "$(_avail_maintainers)" -- $cur ) );;
         esac
         ;;
-      
-      edit-file)
-        COMPREPLY=( $( compgen -W "$(_avail_buildspecs)" -- $cur ) );;
-      validate)
+      validate|val)
         local opts="--buildspec --exclude --executor --tag -b -e -t -x "
 
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )

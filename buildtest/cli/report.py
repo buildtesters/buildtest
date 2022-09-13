@@ -763,7 +763,7 @@ def report_cmd(args, report_file=None):
     """Entry point for ``buildtest report`` command"""
     consoleColor = checkColor(args.color)
 
-    if args.report_subcommand == "clear":
+    if args.report_subcommand in ["clear", "c"]:
         # if BUILDTEST_REPORTS file is not present then we have no report files to delete since it tracks all report files that are created
         if not is_file(BUILDTEST_REPORTS):
             sys.exit("There is no report file to delete")
@@ -779,7 +779,7 @@ def report_cmd(args, report_file=None):
         os.remove(BUILDTEST_REPORTS)
         return
 
-    if args.report_subcommand == "list":
+    if args.report_subcommand in ["list", "l"]:
         if not is_file(BUILDTEST_REPORTS):
             sys.exit(
                 console.print(
@@ -804,7 +804,7 @@ def report_cmd(args, report_file=None):
         report_file=report_file,
         count=args.count,
     )
-    if args.report_subcommand == "summary":
+    if args.report_subcommand in ["summary", "sm"]:
         if args.pager:
             with console.pager():
                 report_summary(results, detailed=args.detailed, color=consoleColor)

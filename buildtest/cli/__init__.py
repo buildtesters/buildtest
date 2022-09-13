@@ -578,7 +578,7 @@ def buildspec_menu(subparsers):
 
     # buildtest buildspec edit-file
     edit_via_filename = subparsers_buildspec.add_parser(
-        "edit-file", help="Edit buildspec file based on filename"
+        "edit-file", aliases=["ef"], help="Edit buildspec file based on filename"
     )
     edit_via_filename.add_argument(
         "file",
@@ -588,7 +588,7 @@ def buildspec_menu(subparsers):
 
     # buildtest buildspec edit-test
     edit_via_testname = subparsers_buildspec.add_parser(
-        "edit-test", help="Edit buildspec file based on test name"
+        "edit-test", aliases=["et"], help="Edit buildspec file based on test name"
     )
     edit_via_testname.add_argument(
         "name",
@@ -599,12 +599,12 @@ def buildspec_menu(subparsers):
     # buildtest buildspec find
 
     buildspec_find = subparsers_buildspec.add_parser(
-        "find", help="Query information from buildspecs cache"
+        "find", aliases=["f"], help="Query information from buildspecs cache"
     )
 
     # buildtest buildspec maintainers
     buildspec_maintainers = subparsers_buildspec.add_parser(
-        "maintainers", help="Query maintainers from buildspecs cache"
+        "maintainers", aliases=["m"], help="Query maintainers from buildspecs cache"
     )
 
     subparsers_maintainers = buildspec_maintainers.add_subparsers()
@@ -741,7 +741,7 @@ def buildspec_menu(subparsers):
 
     # buildtest buildspec show
     show_buildspecs = subparsers_buildspec.add_parser(
-        "show", help="Show content of buildspec file"
+        "show", aliases=["s"], help="Show content of buildspec file"
     )
     show_buildspecs.add_argument(
         "name",
@@ -757,7 +757,9 @@ def buildspec_menu(subparsers):
     )
     # buildtest buildspec show-fail
     show_fail_buildspecs = subparsers_buildspec.add_parser(
-        "show-fail", help="Show content of buildspec file for all failed tests"
+        "show-fail",
+        aliases=["sf"],
+        help="Show content of buildspec file for all failed tests",
     )
     show_fail_buildspecs.add_argument(
         "name",
@@ -774,7 +776,7 @@ def buildspec_menu(subparsers):
 
     # buildtest buildspec summary
     buildspec_summary = subparsers_buildspec.add_parser(
-        "summary", help="Print summary of buildspec cache"
+        "summary", aliases=["sm"], help="Print summary of buildspec cache"
     )
     # buildtest buildspec summary options
     buildspec_summary.add_argument(
@@ -782,7 +784,7 @@ def buildspec_menu(subparsers):
     )
     # buildtest buildspec validate
     buildspec_validate = subparsers_buildspec.add_parser(
-        "validate", help="Validate buildspecs with JSON Schema"
+        "validate", aliases=["val"], help="Validate buildspecs with JSON Schema"
     )
     # buildtest buildspec validate options
     buildspec_validate.add_argument(
@@ -830,22 +832,30 @@ def config_menu(subparsers):
         metavar="",
     )
 
-    compilers = subparsers_config.add_parser("compilers", help="Search compilers")
-
-    subparsers_config.add_parser("edit", help="Open configuration file in editor")
-
-    executors = subparsers_config.add_parser(
-        "executors", help="Query executors from buildtest configuration"
+    compilers = subparsers_config.add_parser(
+        "compilers", aliases=["co"], help="Search compilers"
     )
 
-    subparsers_config.add_parser("path", help="Show path to configuration file")
+    subparsers_config.add_parser(
+        "edit", aliases=["e"], help="Open configuration file in editor"
+    )
+
+    executors = subparsers_config.add_parser(
+        "executors", aliases=["ex"], help="Query executors from buildtest configuration"
+    )
+
+    subparsers_config.add_parser(
+        "path", aliases=["p"], help="Show path to configuration file"
+    )
 
     subparsers_config.add_parser("systems", help="List all available systems")
 
     subparsers_config.add_parser(
         "validate", help="Validate buildtest settings file with schema."
     )
-    view_parser = subparsers_config.add_parser("view", help="View configuration file")
+    view_parser = subparsers_config.add_parser(
+        "view", aliases=["v"], help="View configuration file"
+    )
     view_parser.add_argument(
         "-t",
         "--theme",
@@ -933,10 +943,10 @@ def report_menu(subparsers):
         metavar="",
         dest="report_subcommand",
     )
-    subparsers.add_parser("clear", help="Remove all report file")
-    subparsers.add_parser("list", help="List all report files")
+    subparsers.add_parser("clear", aliases=["c"], help="Remove all report file")
+    subparsers.add_parser("list", aliases=["l"], help="List all report files")
     parser_report_summary = subparsers.add_parser(
-        "summary", help="Summarize test report"
+        "summary", aliases=["sm"], help="Summarize test report"
     )
 
     # buildtest report
@@ -1040,10 +1050,12 @@ def inspect_menu(subparsers):
         metavar="",
     )
     inspect_buildspec = subparser.add_parser(
-        "buildspec", help="Inspect a test based on buildspec"
+        "buildspec", aliases=["b"], help="Inspect a test based on buildspec"
     )
-    name = subparser.add_parser("name", help="Specify name of test")
-    query_list = subparser.add_parser("query", help="Query fields from record")
+    name = subparser.add_parser("name", aliases=["n"], help="Specify name of test")
+    query_list = subparser.add_parser(
+        "query", aliases=["q"], help="Query fields from record"
+    )
 
     # buildtest inspect buildspec
     inspect_buildspec.add_argument(
@@ -1057,7 +1069,9 @@ def inspect_menu(subparsers):
 
     # buildtest inspect list
     inspect_list = subparser.add_parser(
-        "list", help="List all test names, ids, and corresponding buildspecs"
+        "list",
+        aliases=["l"],
+        help="List all test names, ids, and corresponding buildspecs",
     )
     inspect_list.add_argument(
         "-n",
