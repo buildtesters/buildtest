@@ -273,6 +273,7 @@ where ``--count`` is number of rows that that get printed. Shown below is the ou
 The ``--count`` option also works with terse mode ``--terse``, shown below is the same output 
 
 .. command-output:: buildtest report --terse --count 2
+
 Terse Output
 -------------
 
