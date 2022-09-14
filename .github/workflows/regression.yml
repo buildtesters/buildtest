@@ -29,16 +29,15 @@ jobs:
       shell: bash
       run: |
         set -eo pipefail
-        exit 1
         if [ $OS = "ubuntu-latest"  ] ; then sudo apt-get install -y csh tcsh zsh && sudo add-apt-repository ppa:kelleyk/emacs && sudo apt-get install -y emacs28; else brew install tcsh zsh emacs ;  fi
         cat /etc/shells
         source setup.sh
         pip install pytest
         pip install coverage
         python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
-        echo $?
+        returncode=$?
+        if [ $returncode != 0 ]; then exit $returncode; fi
         buildtest cdash upload --site=github unittests
-
 
     - name: Setup tmate session
       if: ${{ failure() }}
