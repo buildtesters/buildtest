@@ -321,7 +321,7 @@ def test_buildspec_show_fail():
     # Query a test that is NOT in state=FAIL
     with pytest.raises(BuildTestError):
         results = Report()
-        pass_test = results.get_test_by_state(state="PASS")[0]
+        pass_test = random.sample(results.get_test_by_state(state="PASS"), 1)
         show_failed_buildspecs(configuration=configuration, test_names=[pass_test])
 
     report = Report()

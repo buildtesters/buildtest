@@ -248,6 +248,7 @@ def test_report_list():
         latest = False
         report_subcommand = "list"
         terse = None
+        color = None
 
     report_cmd(args)
 
@@ -270,6 +271,7 @@ def test_report_clear():
         report_subcommand = "clear"
         terse = None
         no_header = None
+        color = None
 
     backupfile = BUILD_REPORT + ".bak"
     shutil.copy2(BUILD_REPORT, backupfile)
