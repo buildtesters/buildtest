@@ -9,10 +9,10 @@ jobs:
   buildtest_regtest:
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
+      fail-fast: true
 
       matrix:
-        os: [macos-latest, macos-12, ubuntu-latest, ubuntu-22.04 ]
+        os: [macos-latest, ubuntu-latest]
         python-version: ['3.7', '3.8', '3.9', '3.10']
 
     steps:
@@ -26,21 +26,22 @@ jobs:
     - name: Run buildtest unittests for os - ${{ matrix.os }}, python version - ${{ matrix.python-version }}
       env:
         OS: ${{ matrix.os }}
+      shell: bash
       run: |
-        if [ $OS = "ubuntu-latest"  ] || [ $OS = "ubuntu-22.04" ] ; then sudo apt-get install -y csh tcsh zsh && sudo add-apt-repository ppa:kelleyk/emacs && sudo apt-get install -y emacs28; else brew install tcsh zsh emacs ;  fi
+        if [ $OS = "ubuntu-latest"  ] ; then sudo apt-get install -y csh tcsh zsh && sudo add-apt-repository ppa:kelleyk/emacs && sudo apt-get install -y emacs28; else brew install tcsh zsh emacs ;  fi
         cat /etc/shells
         source setup.sh
         pip install pytest
         pip install coverage
         python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
+        returncode=$?
+        if [ $returncode != 0 ]; then exit $returncode; fi
         buildtest cdash upload --site=github unittests
-
 
     - name: Setup tmate session
       if: ${{ failure() }}
       uses: mxschmitt/action-tmate@v3
       timeout-minutes: 30
-
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3

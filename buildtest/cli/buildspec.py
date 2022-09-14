@@ -1084,8 +1084,8 @@ def show_failed_buildspecs(
     if test_names:
         for test_name in test_names:
             if test_name not in all_failed_tests:
-                raise BuildTestError(
-                    f"{test_name} is not in one of the following failed test: {all_failed_tests}"
+                console.print(
+                    f"[red]{test_name} is not in one of the following failed test: {all_failed_tests}"
                 )
         failed_tests = test_names
     else:
