@@ -925,9 +925,13 @@ def config_menu(subparsers):
         help="Specify a list of directories to search for modules via MODULEPATH to detect compilers",
     )
 
-    subparsers_compiler.add_parser(
+    compiler_test = subparsers_compiler.add_parser(
         "test",
         help="Test each compiler instance by performing module load test",
+    )
+    compiler_test.add_argument(
+        "specific_compilers",
+        nargs="*",
     )
 
 
