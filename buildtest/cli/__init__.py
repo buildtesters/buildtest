@@ -508,10 +508,9 @@ def build_menu(subparsers):
         help="Disable executor check during configuration check. By default these checks are enforced for Local, Slurm, PBS, LSF, and Cobalt Executor.",
     )
     extra_group.add_argument(
-        "-k",
-        "--keep-stage-dir",
+        "--remove-stagedir",
         action="store_true",
-        help="Keep stage directory after job completion.",
+        help="Remove stage directory after job completion.",
     )
     batch_group.add_argument(
         "--maxpendtime",

@@ -477,7 +477,7 @@ class BuildTest:
         report_file=None,
         maxpendtime=None,
         poll_interval=None,
-        keep_stage_dir=None,
+        remove_stagedir=None,
         retry=None,
         account=None,
         helpfilter=None,
@@ -508,7 +508,7 @@ class BuildTest:
             report_file (str, optional): Location to report file where test data will be written upon completion. This can be specified via ``buildtest build --report`` command
             maxpendtime (int, optional): Specify maximum pending time in seconds for batch job until job is cancelled
             poll_interval (int, optional): Specify poll interval in seconds for polling batch jobs.
-            keep_stage_dir (bool, optional): Keep stage directory after job completion
+            remove_stagedir (bool, optional): remove stage directory after job completion
             retry (int, optional): Number of retry for failed jobs
             account (str, optional): Project account to charge jobs. This takes input argument ``buildtest build --account``
             helpfilter (bool, optional): Display available filter fields for ``buildtest build --filter`` command. This argument is set to ``True`` if one specifies ``buildtest build --helpfilter``
@@ -557,7 +557,7 @@ class BuildTest:
             if timeout <= 0:
                 raise BuildTestError("Timeout must be greater than 0")
 
-        self.keep_stage_dir = keep_stage_dir
+        self.remove_stagedir = remove_stagedir
         self.configuration = configuration
         self.buildspecs = buildspecs
         self.exclude_buildspecs = exclude_buildspecs
@@ -690,7 +690,7 @@ class BuildTest:
         self.executors = content["executors"]
         self.report_file = content["report_file"]
         self.stage = content["stage"]
-        self.keep_stage_dir = content["keep_stage_dir"]
+        self.remove_stagedir = content["remove_stagedir"]
         self.testdir = content["testdir"]
         self.maxpendtime = content["maxpendtime"]
         self.pollinterval = content["pollinterval"]
@@ -715,7 +715,7 @@ class BuildTest:
             "executors": self.executors,
             "report_file": self.report_file,
             "stage": self.stage,
-            "keep_stage_dir": self.keep_stage_dir,
+            "remove_stagedir": self.remove_stagedir,
             "testdir": self.testdir,
             "maxpendtime": self.maxpendtime,
             "pollinterval": self.pollinterval,
@@ -806,7 +806,7 @@ class BuildTest:
         for builder in self.finished_builders:
             builder.metadata["logpath"] = self.logfile.name
 
-        if not self.keep_stage_dir:
+        if self.remove_stagedir:
             logger.debug("Removing stage directory for all tests")
             for builder in self.finished_builders:
                 shutil.rmtree(builder.stage_dir)

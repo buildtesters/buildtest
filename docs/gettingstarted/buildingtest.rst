@@ -365,13 +365,11 @@ If you want to use an alternate configuration file when building test you can us
 buildtest will prefer configuration file on command line over the user configuration (``$HOME/.buildtest/config.yml``). For more
 details see :ref:`which_configuration_file_buildtest_reads`.
 
-Keeping Stage Directory
+Removing Stage Directory
 ------------------------
 
-buildtest will create setup the test environment in the `stage` directory where test will be executed. Once
-test is complete, buildtest will remove the `stage` directory. If you
-want to preserve the stage directory you can use ``buildtest build --keep-stage-dir``, this
-is only useful if you want to run the test manually
+buildtest will write the tests in `stage` directory where test will be executed, typically buildtest will keep the
+stage directory but if you want to remove the directory you can use ``buildtest build --remove-stagedir``.
 
 Specify Project Account for batch jobs
 ----------------------------------------

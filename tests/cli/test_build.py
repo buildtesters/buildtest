@@ -300,7 +300,6 @@ def test_jobdeps():
         configuration=configuration,
         buildspecs=buildspecs,
         buildtest_system=system,
-        keep_stage_dir=True,
     )
     cmd.build()
 
@@ -329,7 +328,7 @@ def test_timeout():
 
 
 @pytest.mark.cli
-def test_keep_stage():
+def test_remove_stagedi():
 
     system = BuildTestSystem()
 
@@ -338,7 +337,7 @@ def test_keep_stage():
         configuration=configuration,
         buildspecs=buildspec_file,
         buildtest_system=system,
-        keep_stage_dir=True,
+        remove_stagedir=True,
     )
     cmd.build()
 
