@@ -153,7 +153,7 @@ def main():
                 report_file=report_file,
                 maxpendtime=args.maxpendtime,
                 poll_interval=args.pollinterval,
-                keep_stage_dir=args.keep_stage_dir,
+                remove_stagedir=args.remove_stagedir,
                 retry=args.retry,
                 account=args.account,
                 helpfilter=args.helpfilter,
