@@ -48,6 +48,12 @@ _avail_executors ()
   buildtest config executors
 }
 
+# list of available compilers
+_avail_compilers ()
+{
+  buildtest config compilers
+}
+
 # list of test ids from report
 _test_ids ()
 {
@@ -191,6 +197,9 @@ _buildtest ()
           if [[ "${prev}" == "find" ]]; then
             local opts="--detailed --help --modulepath --update -d -h -m -u"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          fi
+          if [[ "${prev}" == "test"  ]]; then
+            COMPREPLY=( $( compgen -W "$(_avail_compilers)" -- $cur ) )
           fi
           ;;
         executors|ex)
