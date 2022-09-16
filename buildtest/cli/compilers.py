@@ -28,7 +28,7 @@ def compiler_cmd(args, configuration):
         return
 
     if args.compilers == "test":
-        compiler_test(configuration)
+        compiler_test(configuration, args.specific_compilers)
         return
 
     bc = BuildtestCompilers(configuration)
@@ -43,7 +43,7 @@ def compiler_cmd(args, configuration):
         bc.print_yaml()
 
 
-def compiler_test(configuration):
+def compiler_test(configuration, specific_compilers=[]):
     """This method implements ``buildtest config compilers test`` which tests
     the compilers with the corresponding modules if set. This command iterates
     over all compilers and perform the module load test and show an output of
@@ -56,9 +56,12 @@ def compiler_test(configuration):
     fail_compilers = []
 
     compilers = configuration.target_config["compilers"]["compiler"]
+    target_compilers = set(specific_compilers)
 
     for name in compilers:
         for module in compilers[name]:
+            if target_compilers and module not in target_compilers:
+                continue
             if compilers[name][module].get("module"):
                 module_test = compilers[name][module]["module"]["load"]
                 cmd = Module(module_test, debug=False)
