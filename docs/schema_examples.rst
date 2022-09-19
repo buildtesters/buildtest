@@ -104,8 +104,8 @@ see :ref:`buildtest_spack_integration`.
 
 .. dropdown:: spack.schema.json
 
-.. literalinclude:: ../buildtest/schemas/spack.schema.json
-   :language: json
+    .. literalinclude:: ../buildtest/schemas/spack.schema.json
+       :language: json
 
 Schema Examples
 ------------------
