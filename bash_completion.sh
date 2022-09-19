@@ -264,7 +264,18 @@ _buildtest ()
            local shortopts="-b -e -h -n -p -q -r -t"
            local subcmds="invalid"
            local allopts="${longopts} ${shortopts} ${subcmds}"
-           COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) );;
+           COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) )
+           case "${prev}" in --filter)
+             local opts="type executor tags buildspec"
+             COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+             return
+           esac
+           case "${prev}" in --format)
+             local opts="name type executor tags description buildspec"
+             COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+             return
+           esac
+           ;;
          esac
         ;;
       summary|sm)
