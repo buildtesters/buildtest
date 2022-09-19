@@ -65,6 +65,7 @@ release = BUILDTEST_VERSION
 # Sphinx extensions
 extensions = [
     "autoapi.extension",
+    "sphinx_design",
     "sphinxarg.ext",
     "sphinxcontrib.programoutput",
     "sphinxext.remoteliteralinclude",

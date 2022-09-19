@@ -58,30 +58,25 @@ Preview of buildtest
 
 You can run ``buildtest help`` followed by name of command and it will provide an overview of the buildtest.
 
-Building Test
-~~~~~~~~~~~~~~
+.. dropdown:: ``buildtest help build``
 
-.. command-output:: buildtest help build
+    .. command-output:: buildtest help build
 
-Buildspec Interface
-~~~~~~~~~~~~~~~~~~~
+.. dropdown:: ``buildtest help buildspec``
 
-.. command-output:: buildtest help buildspec
+    .. command-output:: buildtest help buildspec
 
-Query Report
-~~~~~~~~~~~~~
+.. dropdown:: ``buildtest help report``
 
-.. command-output:: buildtest help report
+    .. command-output:: buildtest help report
 
-Inspect Tests
-~~~~~~~~~~~~~~
+.. dropdown:: ``buildtest help inspect``
 
-.. command-output:: buildtest help inspect
+    .. command-output:: buildtest help inspect
 
-Buildtest Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~
+.. dropdown:: ``buildtest help config``
 
-.. command-output:: buildtest help config
+    .. command-output:: buildtest help config
 
 Target Audience & Use Case
 ---------------------------

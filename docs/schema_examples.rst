@@ -12,11 +12,15 @@ buildtest uses JSON Schema for validating buildspecs and :ref:`buildtest configu
 You can use ``buildtest schema`` command to see the list of schemas
 supported by buildtest. The schema files are denoted by ``.schema.json`` file extension.
 
-.. command-output:: buildtest schema
+.. dropdown:: ``buildtest schema``
+
+    .. command-output:: buildtest schema
 
 Shown below is the command usage of ``buildtest schema``
 
-.. command-output:: buildtest schema --help
+.. dropdown:: ``buildtest schema --help``
+
+    .. command-output:: buildtest schema --help
 
 The json schemas are published at https://buildtesters.github.io/buildtest/ and we
 provide a command line interface to view schema files and examples. You must use the
@@ -42,16 +46,20 @@ Definition Schema
 This schema is used for declaring `definitions <https://json-schema.org/understanding-json-schema/structuring.html>`_ that need to be
 reused in multiple schemas. We use ``$ref`` keyword to reference definitions from this file.
 
-.. literalinclude:: ../buildtest/schemas/definitions.schema.json
-   :language: json
+.. dropdown:: definitions.schema.json
+
+    .. literalinclude:: ../buildtest/schemas/definitions.schema.json
+       :language: json
 
 Settings Schema
 ~~~~~~~~~~~~~~~
 
 This schema defines how :ref:`buildtest configuration <configuring_buildtest>` file is validated.
 
-.. literalinclude:: ../buildtest/schemas/settings.schema.json
-   :language: json
+.. dropdown:: settings.schema.json
+
+    .. literalinclude:: ../buildtest/schemas/settings.schema.json
+       :language: json
 
 
 Global Schema
@@ -59,8 +67,10 @@ Global Schema
 
 This schema is used for validating buildspec file and validates outer level structure of test. This is referred as :ref:`global_schema`
 
-.. literalinclude:: ../buildtest/schemas/global.schema.json
-   :language: json
+.. dropdown:: global.schema.json
+
+    .. literalinclude:: ../buildtest/schemas/global.schema.json
+       :language: json
 
 
 Script Schema
@@ -69,8 +79,10 @@ Script Schema
 This is the script schema used for writing scripts (bash, csh, sh, zsh, tcsh, python) and this is used for validating test instance when
 ``type: script`` is specified. For more details on script schema see :ref:`script_schema`.
 
-.. literalinclude:: ../buildtest/schemas/script.schema.json
-   :language: json
+.. dropdown:: script.schema.json
+
+    .. literalinclude:: ../buildtest/schemas/script.schema.json
+       :language: json
 
 
 Compiler Schema
@@ -79,8 +91,10 @@ Compiler Schema
 This is the compiler schema used for validating buildspecs that define test using ``type: compiler``.
 This schema is used for compiling a single source code. For more details see :ref:`compiler_schema`
 
-.. literalinclude:: ../buildtest/schemas/compiler.schema.json
-   :language: json
+.. dropdown:: compiler.schema.json
+
+    .. literalinclude:: ../buildtest/schemas/compiler.schema.json
+       :language: json
 
 Spack Schema
 ~~~~~~~~~~~~~~
@@ -88,8 +102,10 @@ Spack Schema
 This schema is used for writing tests with `spack package manager <https://spack.readthedocs.io/>`_ using ``type: spack`` field. For more details
 see :ref:`buildtest_spack_integration`.
 
-.. literalinclude:: ../buildtest/schemas/spack.schema.json
-   :language: json
+.. dropdown:: spack.schema.json
+
+    .. literalinclude:: ../buildtest/schemas/spack.schema.json
+       :language: json
 
 Schema Examples
 ------------------
@@ -106,26 +122,36 @@ In order to view an example you can run::
 Settings Schema Examples
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. command-output:: buildtest schema -n settings.schema.json --example
+.. dropdown:: ``buildtest schema -n settings.schema.json --example``
+
+    .. command-output:: buildtest schema -n settings.schema.json --example
 
 Global Schema Examples
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. command-output:: buildtest schema -n global.schema.json --example
+.. dropdown:: ``buildtest schema -n global.schema.json --example``
+
+    .. command-output:: buildtest schema -n global.schema.json --example
 
 Script Schema Examples
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. command-output:: buildtest schema -n script.schema.json --example
+.. dropdown:: ``buildtest schema -n script.schema.json --example``
+
+    .. command-output:: buildtest schema -n script.schema.json --example
 
 
 Compiler Schema Examples
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. command-output:: buildtest schema -n compiler.schema.json --example
+.. dropdown:: ``buildtest schema -n compiler.schema.json --example``
+
+    .. command-output:: buildtest schema -n compiler.schema.json --example
 
 
 Spack Schema Examples
 ~~~~~~~~~~~~~~~~~~~~~~
 
-.. command-output:: buildtest schema -n spack.schema.json --example
+.. dropdown:: ``buildtest schema -n spack.schema.json --example``
+
+    .. command-output:: buildtest schema -n spack.schema.json --example

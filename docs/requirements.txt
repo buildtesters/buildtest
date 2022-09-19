@@ -3,6 +3,7 @@ codecov
 docutils==0.16
 pre-commit
 Sphinx
+sphinx-design
 sphinx-argparse
 sphinx-autoapi
 sphinx-rtd-theme

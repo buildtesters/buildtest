@@ -763,7 +763,6 @@ def report_cmd(args, report_file=None):
     """Entry point for ``buildtest report`` command"""
 
     consoleColor = checkColor(args.color)
-    console.print(consoleColor)
     if args.report_subcommand in ["clear", "c"]:
         # if BUILDTEST_REPORTS file is not present then we have no report files to delete since it tracks all report files that are created
         if not is_file(BUILDTEST_REPORTS):
