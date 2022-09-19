@@ -102,6 +102,12 @@ def test_func_buildspec_find():
     # implements buildtest buildspec find --helpformat
     cache.print_format_fields()
 
+    # implements buildtest buildspec find --filterfields
+    cache.print_raw_filter_fields()
+
+    # implements buildtest buildspec find --formatfields
+    cache.print_raw_format_fields()
+
     # buildtest buildspec find --pager
     cache = BuildspecCache(configuration=configuration, pager=True)
     cache.print_tags()

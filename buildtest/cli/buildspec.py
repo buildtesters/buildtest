@@ -957,6 +957,20 @@ class BuildspecCache:
         table.add_row("type", "Display 'type' property in test")
         console.print(table)
 
+    def print_raw_filter_fields(self):
+        """This method prints the raw filter fields available for buildspec cache. This
+        method implements command ``buildtest buildspec find --filterfields``
+        """
+        for field in self.filter_fields:
+            console.print(field)
+
+    def print_raw_format_fields(self):
+        """This method prints the raw format fields available for buildspec cache. This
+        method implements command ``buildtest buildspec find --formatfields``
+        """
+        for field in self.format_fields:
+            console.print(field)
+
     def print_paths(self):
         """This method print buildspec paths, this implements command ``buildtest buildspec find --paths``"""
         for path in self.paths:
@@ -1338,6 +1352,16 @@ def buildspec_find(args, configuration):
     # buildtest buildspec find --helpformat
     if args.helpformat:
         cache.print_format_fields()
+        return
+
+    # buildtest buildspec find --filterfields
+    if args.filterfields:
+        cache.print_raw_filter_fields()
+        return
+
+    # buildtest buildspec find --formatfields
+    if args.formatfields:
+        cache.print_raw_format_fields()
         return
 
     cache.print_buildspecs(quiet=args.quiet)

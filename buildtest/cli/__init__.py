@@ -705,6 +705,16 @@ def buildspec_menu(subparsers):
         action="store_true",
         help="Show Format fields for --format option for formatting buildspec cache output",
     )
+    filter_group.add_argument(
+        "--filterfields",
+        action="store_true",
+        help="Print raw Filter fields for --filter option for filtering builspec cache output",
+    )
+    filter_group.add_argument(
+        "--formatfields",
+        action="store_true",
+        help="Print raw Format fields for --format option for formatting builspec cache output",
+    )
 
     terse_group.add_argument(
         "-n",
