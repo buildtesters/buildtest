@@ -26,8 +26,10 @@ buildtest schemas. For a complete list of build options please run ``buildtest b
 Build Usage
 ------------
 
-.. command-output:: buildtest build --help
-   :shell:
+.. dropdown:: ``buildtest build --help``
+
+    .. command-output:: buildtest build --help
+       :shell:
 
 Building a Test
 ----------------
@@ -38,8 +40,10 @@ In this example, buildtest will :ref:`discover buildspecs <discover_buildspecs>`
 parsing the test with appropriate schema and generate a shell script that is run
 by buildtest. You can learn more about :ref:`build and test process <build_and_test_process>`.
 
-.. command-output:: buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml
-    :shell:
+.. dropdown:: ``buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml``
+
+    .. command-output:: buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml
+        :shell:
 
 .. Note::
     buildtest will only read buildspecs with ``.yml`` extension, if you specify a
@@ -50,7 +54,10 @@ to build multiple buildspecs in a directory you can specify the directory path
 and buildtest will recursively search for all ``.yml`` files. In the next example,
 we build all tests in directory **general_tests/configuration**.
 
-.. command-output:: buildtest build -b general_tests/configuration/
+.. dropdown:: ``buildtest build -b $BUILDTEST_ROOT/general_tests/configuration/``
+
+    .. command-output:: buildtest build -b $BUILDTEST_ROOT/general_tests/configuration/
+       :shell:
 
 Building Multiple Buildspecs
 ------------------------------
@@ -60,7 +67,10 @@ command. Buildtest will discover buildspecs for every argument (``-b``) and accu
 a list of buildspecs to run. In this example, we instruct buildtest to build
 a buildspec file and all buildspecs in a directory path.
 
-.. command-output:: buildtest build -b general_tests/configuration/ -b tutorials/vars.yml
+.. dropdown:: ``buildtest build -b $BUILDTEST_ROOT/general_tests/configuration/ -b $BUILDTEST_ROOT/tutorials/vars.yml``
+
+    .. command-output:: buildtest build -b $BUILDTEST_ROOT/general_tests/configuration/ -b $BUILDTEST_ROOT/tutorials/vars.yml
+       :shell:
 
 .. _exclude_buildspecs:
 
@@ -82,8 +92,10 @@ by ``-x`` option. You can specify ``-x`` multiple times just like ``-b`` option.
 
 For example, we can undo discovery by passing same option to ``-b`` and ``-x``  as follows
 
-.. command-output:: buildtest bd -b tutorials/ -x tutorials/
-    :returncode: 1
+.. dropdown:: ``buildtest bd -b tutorials/ -x tutorials/``
+
+    .. command-output:: buildtest bd -b tutorials/ -x tutorials/
+        :returncode: 1
 
 Buildtest will stop immediately if there are no Buildspecs to process, this is
 true if you were to specify files instead of directory.
@@ -92,7 +104,9 @@ In this example, we build all buildspecs in a directory but exclude a file. Buil
 will report the excluded buildspecs in the output and ``-x`` option can be appended multiple times.
 The ``-x`` can be a file or a directory and behaves similar to ``-b`` option.
 
-.. command-output:: buildtest bd -b general_tests/configuration/ -x general_tests/configuration/ulimits.yml
+.. dropdown:: ``buildtest bd -b general_tests/configuration/ -x general_tests/configuration/ulimits.yml``
+
+    .. command-output:: buildtest bd -b general_tests/configuration/ -x general_tests/configuration/ulimits.yml
 
 .. _build_by_tags:
 
@@ -111,12 +125,16 @@ will attempt to find all tests that contain ``tags: ['network']`` in the buildsp
 which is loaded in the buildcache cache. If a test matches the tag name, the test
 will be picked up during the discover process.
 
-.. command-output:: buildtest build -t network
+.. dropdown:: ``buildtest build -t network``
+
+    .. command-output:: buildtest build -t network
 
 You can build by multiple tags by specifying ``--tags`` multiple times. In next
 example we build all tests with tag name ``pass`` and ``python``.
 
-.. command-output:: buildtest build -t python -t pass
+.. dropdown:: ``buildtest build -t python -t pass``
+
+    .. command-output:: buildtest build -t python -t pass
 
 When multiple tags are specified, we search each tag independently and if it's
 found in the buildspec cache we retrieve the buildspec file and add file to queue.
@@ -131,7 +149,9 @@ You can combine ``--tags`` with ``--buildspec`` to discover buildspecs in a sing
 buildtest will query tags and buildspecs independently and combine all discovered
 buildspecs together.
 
-.. command-output:: buildtest build --tags pass --buildspec tutorials/python-hello.yml
+.. dropdown:: ``buildtest build --tags pass --buildspec tutorials/python-hello.yml``
+
+    .. command-output:: buildtest build --tags pass --buildspec tutorials/python-hello.yml
 
 As you may see, there are several ways to build buildspecs with buildtest. Tags is
 great way to build a whole collection of tests if you don't know path to all the files. You can
@@ -158,7 +178,9 @@ buildspec cache see :ref:`querying buildspec executor <buildspec_executor>`.
 
 In this example we run all tests that are associated to ``generic.local.csh`` executor.
 
-.. command-output:: buildtest build --executor generic.local.csh
+.. dropdown:: ``buildtest build --executor generic.local.csh``
+
+    .. command-output:: buildtest build --executor generic.local.csh
 
 .. Note:: The ``--executor`` option can be appended to discover tests by multiple executors.
 
@@ -174,11 +196,15 @@ key=value pair. Currently, buildtest can filter tests based on ``tags``, ``type`
 To see all available filter fields you can run ``buildtest build --helpfilter`` and buildtest will
 report the fields followed by description.
 
-.. command-output:: buildtest build --helpfilter
+.. dropdown:: ``buildtest build --helpfilter``
+
+    .. command-output:: buildtest build --helpfilter
 
 In this example, we will discover all buildspecs based on tagname ``pass`` and then filter each **test** by tagname **pass** specified by ``--filter tags=pass``.
 
-.. command-output:: buildtest build -t pass --filter tags=pass
+.. dropdown:: ``buildtest build -t pass --filter tags=pass``
+
+    .. command-output:: buildtest build -t pass --filter tags=pass
 
 
 buildtest can run filter tests by :ref:`maintainers <maintainers>`, this can be useful if you want to run tests that you are maintainer. The ``maintainers`` field is
@@ -186,14 +212,18 @@ set per buildspec and not each test. You can filter maintiners via ``--filter ma
 the buildspec will be filtered out if ``--filter maintainers`` is specified. In this next example, we will build all tests for maintainer
 ``@shahzebsiddiqui``.
 
-.. command-output:: buildtest build -b tutorials --filter maintainers=@shahzebsiddiqui
+.. dropdown:: ``buildtest build -b tutorials --filter maintainers=@shahzebsiddiqui``
+
+    .. command-output:: buildtest build -b tutorials --filter maintainers=@shahzebsiddiqui
 
 Please see :ref:`buildspec_maintainers` on list of maintainers and breakdown of buildspecs by maintainers.
 
 We can also filter tests by ``type`` field in the buildspec which corresponds to the schema type. In this next example, we filter all tests by script schema type by
 passing option ``--filter type=script``. We inform buildtest to stop after build stage (``--stage=build``) for more details see :ref:`build_stage`.
 
-.. command-output:: buildtest build -b tutorials --filter type=script --stage=build
+.. dropdown:: ``buildtest build -b tutorials --filter type=script --stage=build``
+
+    .. command-output:: buildtest build -b tutorials --filter type=script --stage=build
 
 Filter By Executor Type
 -------------------------
@@ -203,13 +233,18 @@ This can be done in buildtest via option **buildtest build --executor-type** whi
 by local executor you can do ``buildtest build --executor-type local``. buildtest will filter test based on the ``executor`` property defined in the buildspec. Let's assume
 we want to run all test by ``python`` tag on local executor you can do the following:
 
-.. command-output:: buildtest build -t python --executor-type local
+.. dropdown:: ``buildtest build -t python --executor-type local``
+
+    .. command-output:: buildtest build -t python --executor-type local
 
 Now let's say we want to rerun same command but now only run test that are batch, we can specify ``--executor-type batch`` and buildtest will filter tests
 by executor and find all batch executors. In this case we see that all tests were filtered out and we have no test run.
 
-.. command-output:: buildtest build -t python --executor-type batch
-    :returncode: 1
+.. dropdown:: ``buildtest build -t python --executor-type batch``
+    :color: warning
+
+    .. command-output:: buildtest build -t python --executor-type batch
+        :returncode: 1
 
 This option can be particularly useful if want to run a lot of tests and you are not sure which ones will run locally or batch. Let's say you have all
 your buildspecs in a directory name **tests** and you want to run all test that will use local executor and you don't want to run the batch jobs then you
@@ -261,15 +296,18 @@ instruct buildtest to stop at parse stage via ``--stage=parse``. This can be use
 when debugging buildspecs that are invalid. In this example below, we instruct
 buildtest to stop after parse stage.
 
-.. command-output:: buildtest build -b tutorials/vars.yml --stage=parse
+.. dropdown:: ``buildtest build -b tutorials/vars.yml --stage=parse``
+
+    .. command-output:: buildtest build -b tutorials/vars.yml --stage=parse
 
 Likewise, if you want to troubleshoot your test script without running them you can
 use ``--stage=build`` which will stop after build phase. This can
 be used when you are writing buildspec to troubleshoot how test is generated.
 In this next example, we inform buildtest to stop after build stage.
 
+.. dropdown:: ``buildtest build -b tutorials/vars.yml --stage=build``
 
-.. command-output:: buildtest build -b tutorials/vars.yml --stage=build
+    .. command-output:: buildtest build -b tutorials/vars.yml --stage=build
 
 .. _invalid_buildspecs:
 
@@ -280,16 +318,22 @@ buildtest will skip any buildspecs that fail to validate, in that case
 the test script will not be generated. Here is an example where we have an invalid
 buildspec.
 
-.. command-output:: buildtest build -b tutorials/invalid_buildspec_section.yml
-    :returncode: 1
+.. dropdown:: ``buildtest build -b tutorials/invalid_buildspec_section.yml``
+   :color: warning
+
+    .. command-output:: buildtest build -b tutorials/invalid_buildspec_section.yml
+        :returncode: 1
 
 buildtest may skip tests from running if buildspec specifies an invalid
 executor name since buildtest needs to know this in order to delegate test
 to Executor class responsible for running the test. Here is an example
 where test failed to run since we provided invalid executor.
 
-.. command-output:: buildtest build -b tutorials/invalid_executor.yml
-    :returncode: 1
+.. dropdown:: ``buildtest build -b tutorials/invalid_executor.yml``
+   :color: warning
+
+    .. command-output:: buildtest build -b tutorials/invalid_executor.yml
+        :returncode: 1
 
 Rebuild Tests
 --------------
@@ -300,13 +344,17 @@ all discovered buildspecs and create a new test instance (unique id) and test di
 path. To demonstrate we will build ``tutorials/python-shell.yml`` three times using
 ``--rebuild=3``.
 
-.. command-output:: buildtest build -b tutorials/python-shell.yml --rebuild=3
+.. dropdown:: ``buildtest build -b tutorials/python-shell.yml --rebuild=3``
+
+    .. command-output:: buildtest build -b tutorials/python-shell.yml --rebuild=3
 
 The rebuild works with all options including: ``--buildspec``, ``--exclude``, ``--tags``
 and ``--executor``. buildtest will perform rebuild for all discovered tests, for instance in
 this next example we will discover all tests by tag name **fail** and each test is rebuild twice.
 
-.. command-output:: buildtest build -t fail --rebuild 2
+.. dropdown:: ``buildtest build -t fail --rebuild 2``
+
+    .. command-output:: buildtest build -t fail --rebuild 2
 
 The rebuild option expects a range between **1-50**, the ``--rebuild=1`` is equivalent
 to running without ``--rebuild`` option. We set a max limit for rebuild option to
@@ -314,8 +362,11 @@ avoid system degredation due to high workload.
 
 If you try to exceed this bound you will get an error such as
 
-.. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml --rebuild 51
-    :returncode: 1
+.. dropdown:: ``buildtest build -b tutorials/test_status/pass_returncode.yml --rebuild 51``
+    :color: warning
+
+    .. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml --rebuild 51
+        :returncode: 1
 
 Rerun Last command
 -------------------
@@ -327,16 +378,22 @@ command.
 
 Let's start by building a simple test.
 
-.. command-output:: buildtest build -b tutorials/vars.yml
+.. dropdown:: ``buildtest build -b tutorials/vars.yml``
+
+    .. command-output:: buildtest build -b tutorials/vars.yml
 
 Next let's rerun the same command via ``buildtest build --rerun`` and take note that it will rerun same command as before
 
-.. command-output:: buildtest build --rerun
+.. dropdown:: ``buildtest build --rerun``
+
+    .. command-output:: buildtest build --rerun
 
 If you pass additional options with ``--rerun`` it will simply be ignored. In this case ``-t python --stage=build`` will not be read by buildtest instead we will
 rerun same command.
 
-.. command-output:: buildtest build --rerun -t python --stage=build
+.. dropdown:: ``buildtest build --rerun -t python --stage=build``
+
+    .. command-output:: buildtest build --rerun -t python --stage=build
 
 .. Note::
     The ``buildtest clean`` will erase all history of builds and if you run ``buildtest build --rerun`` will raise an exception
@@ -390,9 +447,13 @@ test that are run via ``buildtest build`` command. If test exceeds the timeout v
 To demonstrate this behavior, we will run the following test with a timeout of 1 sec which is expected to fail.
 Take note of the test returncode of test.
 
-.. command-output:: buildtest build -b tutorials/sleep.yml --timeout 1
+.. dropdown:: ``buildtest build -b tutorials/sleep.yml --timeout 1``
+
+    .. command-output:: buildtest build -b tutorials/sleep.yml --timeout 1
 
 Now if we run this test with a higher timeout value we will see this test will pass, if no timeout is specified then test will
 run until completion.
 
-.. command-output:: buildtest build -b tutorials/sleep.yml --timeout 10
+.. dropdown:: ``buildtest build -b tutorials/sleep.yml --timeout 10``
+
+    .. command-output:: buildtest build -b tutorials/sleep.yml --timeout 10
