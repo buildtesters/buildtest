@@ -70,7 +70,6 @@ extensions = [
     "sphinxcontrib.programoutput",
     "sphinxext.remoteliteralinclude",
     "sphinx_rtd_theme",
-    "sphinx_tabs.tabs",
     # "sphinx.ext.autosectionlabel",
     "sphinx.ext.coverage",
     "sphinx.ext.imgmath",

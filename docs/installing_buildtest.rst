@@ -16,15 +16,19 @@ Cloning buildtest
 
 To get started, clone the buildtest repository in your local machine as follows
 
-.. tabs::
+.. tab-set::
 
-    .. code-tab:: bash HTTPS
+    .. tab-item:: HTTPS
 
-        git clone https://github.com/buildtesters/buildtest.git
+        .. code-block:: console
 
-    .. code-tab:: bash SSH
+            git clone https://github.com/buildtesters/buildtest.git
 
-        git clone git@github.com:buildtesters/buildtest.git
+    .. tab-item:: SSH
+
+      .. code-block:: console
+
+            git clone git@github.com:buildtesters/buildtest.git
 
 If you prefer the latest release, you can clone the **master** branch::
 
@@ -38,31 +42,41 @@ to install buildtest. You can use `venv <https://docs.python.org/3/library/venv.
 or `pipenv <https://pipenv.readthedocs.io/en/latest/>`_ to manage your python environment depending on your preference.
 Assuming you have cloned buildtest in your HOME directory you will need to follow these instructions to install buildtest.
 
-.. tabs::
+.. tab-set::
 
-    .. code-tab:: bash Virtual Environment (bash)
+    .. tab-item:: Virtual Environment
 
-       python3 -m venv $HOME/.pyenv/buildtest
-       source $HOME/.pyenv/buildtest/bin/activate
-       source $HOME/buildtest/setup.sh
+       For bash shell
 
-    .. code-tab:: bash Virtual Environment (csh)
+       .. code-block:: console
 
-       python3 -m venv $HOME/.pyenv/buildtest
-       source $HOME/.pyenv/buildtest/bin/activate.csh
-       source $HOME/buildtest/setup.csh
+           python3 -m venv $HOME/.pyenv/buildtest
+           source $HOME/.pyenv/buildtest/bin/activate
+           source $HOME/buildtest/setup.sh
 
-    .. code-tab:: bash Conda
+       For csh shell
 
-       conda create -n buildtest python=3.7
-       source activate buildtest
-       source $HOME/buildtest/setup.sh
+       .. code-block:: console
 
-    .. code-tab:: bash pipenv
+           python3 -m venv $HOME/.pyenv/buildtest
+           source $HOME/.pyenv/buildtest/bin/activate.csh
+           source $HOME/buildtest/setup.csh
 
-       pipenv --python 3.7
-       pipenv shell
-       source $HOME/buildtest/setup.sh
+    .. tab-item:: Conda
+
+       .. code-block:: console
+
+           conda create -n buildtest python=3.7
+           source activate buildtest
+           source $HOME/buildtest/setup.sh
+
+    .. tab-item:: pipenv
+
+       .. code-block:: console
+
+           pipenv --python 3.7
+           pipenv shell
+           source $HOME/buildtest/setup.sh
 
 For csh users you will need to ``source setup.csh`` in order to install buildtest.
 
