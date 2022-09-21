@@ -91,6 +91,18 @@ _avail_maintainers()
 {
   buildtest buildspec maintainers --terse -l --no-header | sort
 }
+
+# list of filterfields
+_avail_buildspec_filterfields()
+{
+  buildtest buildspec find --filterfields
+}
+
+# list of formatfields
+_avail_buildspec_formatfields()
+{
+  buildtest buildspec find --formatfields
+}
 #  entry point to buildtest bash completion function
 _buildtest ()
 {
@@ -264,7 +276,16 @@ _buildtest ()
            local shortopts="-b -e -h -n -p -q -r -t"
            local subcmds="invalid"
            local allopts="${longopts} ${shortopts} ${subcmds}"
-           COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) );;
+           COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) )
+           case "${prev}" in --filter)
+             COMPREPLY=( $( compgen -W "$(_avail_buildspec_filterfields)" -- $cur ) )
+             return
+           esac
+           case "${prev}" in --format)
+             COMPREPLY=( $( compgen -W "$(_avail_buildspec_formatfields)" -- $cur ) )
+             return
+           esac
+           ;;
          esac
         ;;
       summary|sm)
