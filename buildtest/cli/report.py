@@ -526,6 +526,16 @@ class Report:
             )
         console.print(table)
 
+    def print_raw_filter_fields(self):
+        """Print list of filter fields which implements command ``buildtest report --filterfields``"""
+        for field in self.filter_fields:
+            console.print(field)
+
+    def print_raw_format_fields(self):
+        """Print list of format fields which implements command ``buildtest report --formatfields``"""
+        for field in self.format_fields:
+            console.print(field)
+
     def print_report(
         self, terse=None, noheader=None, title=None, count=None, color=None
     ):
@@ -819,6 +829,14 @@ def report_cmd(args, report_file=None):
 
     if args.helpformat:
         results.print_format_fields()
+        return
+
+    if args.filterfields:
+        results.print_raw_filter_fields()
+        return
+
+    if args.formatfields:
+        results.print_raw_format_fields()
         return
     if args.pager:
         with console.pager():
