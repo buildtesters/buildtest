@@ -740,7 +740,12 @@ def buildspec_menu(subparsers):
         type=str,
         action="append",
     )
-
+    buildspec_find.add_argument(
+        "--color",
+        type=supported_color,
+        metavar="COLOR",
+        help="Print output of table with the selected color.",
+    )
     buildspec_find.add_argument(
         "-q",
         "--quiet",

@@ -7,26 +7,10 @@ import sys
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, resolve_path
-from rich.color import Color, ColorParseError
+from buildtest.utils.tools import checkColor
 from rich.table import Table
 
 logger = logging.getLogger(__name__)
-
-
-def checkColor(colorArg):
-    """Checks the provided colorArg against the compatible colors from Rich.Color"""
-    if isinstance(colorArg, Color):
-        return colorArg.name
-
-    if colorArg and isinstance(colorArg, list):
-        colorArg = colorArg[0]
-        return colorArg
-    if isinstance(colorArg, str):
-        try:
-            checkedColor = Color.parse(colorArg).name
-        except ColorParseError:
-            checkedColor = Color.default().name
-        return checkedColor
 
 
 def is_int(val):

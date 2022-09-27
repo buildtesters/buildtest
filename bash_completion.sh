@@ -18,6 +18,10 @@ if test -n "${ZSH_VERSION:-}" ; then
   fi
 fi
 
+_supported_colors()
+{
+  python -c "from rich.color import ANSI_COLOR_NAMES;print(' '.join(list(ANSI_COLOR_NAMES.keys())))"
+}
 # get a list of available color themes used for command completion for --theme option
 _avail_color_themes ()
 {
@@ -178,10 +182,9 @@ _buildtest ()
 
     report|rt)
       local opts="--color --end --fail --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --start --terse  -e -f -h -n -p -s -t c clear l list sm summary"
-      local copts=$(python -c "from rich.color import ANSI_COLOR_NAMES;print(' '.join(list(ANSI_COLOR_NAMES.keys())))")
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       case ${prev} in --color)
-        COMPREPLY=( $( compgen -W "$copts" -- $cur ) )
+        COMPREPLY=( $( compgen -W "$(_supported_colors)" -- $cur ) )
         return
       esac
       case "$prev" in summary)
@@ -272,7 +275,7 @@ _buildtest ()
            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
          # completion for rest of arguments
          *)
-           local longopts="--buildspec --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --tags --root --terse"
+           local longopts="--buildspec --color --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --tags --root --terse"
            local shortopts="-b -e -h -n -p -q -r -t"
            local subcmds="invalid"
            local allopts="${longopts} ${shortopts} ${subcmds}"
@@ -284,6 +287,10 @@ _buildtest ()
            case "${prev}" in --format)
              COMPREPLY=( $( compgen -W "$(_avail_buildspec_formatfields)" -- $cur ) )
              return
+           esac
+           case ${prev} in --color)
+            COMPREPLY=( $( compgen -W "$(_supported_colors)" -- $cur ) )
+            return
            esac
            ;;
          esac
