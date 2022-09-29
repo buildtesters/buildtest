@@ -20,6 +20,11 @@ with default format fields. To see a list of all format fields, click :ref:`here
     .. command-output:: buildtest report
        :ellipsis: 20
 
+To get the row count of the tables run ``buildtest report --row-count``. 
+
+.. dropdown:: ``buildtest report --row-count``
+
+    .. command-output:: buildtest report --row-count
 
 .. note::
    ``buildtest rt`` is an alias for ``buildtest report`` command.
