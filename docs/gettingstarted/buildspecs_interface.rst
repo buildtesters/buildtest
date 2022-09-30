@@ -46,6 +46,18 @@ if you want to rebuild the cache without seeing output of cache. Take for instan
 
     .. command-output:: buildtest buildspec find --quiet --rebuild
 
+If you want to limit the number of entries to display in output, you can use ``--count`` option which expects a positive number. For instance
+let's limit output to 5 entries, we can run the following
+
+.. dropdown:: ``buildtest buildspec find --count=5``
+
+    .. command-output:: buildtest buildspec find --count=5
+
+You can also color the output via ``--color=<COLOR>`` which will color output of each entry with the selected color.
+
+Finding buildspec files
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
 If you want to find all buildspec files in cache you can run ``buildtest buildspec find --buildspec``.
 Shown below is an example output.
 
@@ -53,6 +65,9 @@ Shown below is an example output.
 
     .. command-output:: buildtest buildspec find --buildspec
        :ellipsis: 11
+
+Find root paths where buildspecs are searched
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``buildtest buildspec find --paths`` will display a list of root directories buildtest will search for
 buildspecs when running ``buildtest buildspec find``. One can define these directories in the configuration file
@@ -199,6 +214,13 @@ can be used to disable printing of header title.
 
     .. command-output:: buildtest buildspec find -t --terse
 
+
+You can also use ``--count`` with terse option, note that heading is not counted as an element, the --count will only limit number
+of entries reported from the buildspec cache. Shown below we retrieve 5 test results in terse mode and disable heading via `-n` option.
+
+.. dropdown:: ``buildtest buildspec find --terse -n --count=5``
+
+    .. command-output:: buildtest buildspec find --terse -n --count=5
 
 Invalid Buildspecs - ``buildtest buildspec find invalid``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
