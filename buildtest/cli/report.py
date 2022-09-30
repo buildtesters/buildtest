@@ -540,6 +540,7 @@ class Report:
 
         Args:
             terse (bool, optional): Print output int terse format
+            row_count (bool, optional): Print total number of records from the table
             noheader (bool, optional): Determine whether to print header in terse format
             title (str, optional): Table title to print out
             count (int, optional): Number of rows to be printed in terse format
