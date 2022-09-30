@@ -54,6 +54,7 @@ class BuildspecCache:
         terse=None,
         pager=None,
         color=None,
+        count=None,
     ):
         """The initializer method for BuildspecCache class is responsible for loading and finding buildspecs into buildspec cache. First we
         resolve paths to directory where buildspecs will be searched. This can be specified via ``--roots`` option on command line or one can
@@ -72,6 +73,7 @@ class BuildspecCache:
             headers (bool, optional):  Option to control whether header are printed in terse output. This argument contains value of ``buildtest buildspec find --no-header``
             terse (bool, optional): Enable terse mode when printing output. In this mode we don't print output in table format instead output is printed in parseable format. This option can be specified via ``buildtest buildspec find --terse``
             color (str, optional): An instance of a string class that selects the color to use when printing table output
+            count (int, optional): Number of entries to display in output. This argument contains value of ``buildtest buildspec find --count``
         """
 
         if not is_dir(BUILDTEST_BUILDSPEC_DIR):
@@ -82,6 +84,7 @@ class BuildspecCache:
         self.format = formatfields
         self.header = header
         self.pager = pager
+        self.count = count
         # if --root is not specified we set to empty list instead of None
         self.roots = roots or []
 
@@ -767,6 +770,10 @@ class BuildspecCache:
 
         t = [list(i) for i in zip(*join_list)]
 
+        # if --count is specified then reduce list to length of self.count
+        if self.count:
+            t = t[: self.count]
+
         for i in t:
             table.add_row(*i)
 
@@ -1311,6 +1318,7 @@ def buildspec_find(args, configuration):
         terse=args.terse,
         pager=args.pager,
         color=args.color,
+        count=args.count,
     )
 
     if args.buildspec_find_subcommand == "invalid":

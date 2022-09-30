@@ -726,6 +726,11 @@ def buildspec_menu(subparsers):
         "--terse", help="Print output in machine readable format", action="store_true"
     )
     buildspec_find.add_argument(
+        "--count",
+        type=positive_number,
+        help="Limit number of entries queried in output",
+    )
+    buildspec_find.add_argument(
         "--pager", action="store_true", help="Enable PAGING when viewing result"
     )
     buildspec_find.add_argument(
