@@ -267,7 +267,7 @@ _buildtest ()
 
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
       case ${COMP_WORDS[2]} in
-      find)
+      find|f)
          case ${COMP_WORDS[3]} in
          # completion for 'buildtest buildspec find invalid'
          invalid)
@@ -275,7 +275,7 @@ _buildtest ()
            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
          # completion for rest of arguments
          *)
-           local longopts="--buildspec --color --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --tags --root --terse"
+           local longopts="--buildspec --color --count --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --tags --root --terse"
            local shortopts="-b -e -h -n -p -q -r -t"
            local subcmds="invalid"
            local allopts="${longopts} ${shortopts} ${subcmds}"
