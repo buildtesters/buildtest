@@ -28,7 +28,6 @@ a raw count of records in the table. In the example below we will run ``buildtes
     .. command-output:: buildtest report --row-count
 
 You may find it useful to fetch all failed records and determine pass/fail criteria as part of your shell script, this can be done by running ``buildtest report --row-count --fail`` as shown below.
-The ``--row-count`` option also works with the ``--filter`` option.
 
 .. dropdown:: ``buildtest report --row-count --fail``
 
