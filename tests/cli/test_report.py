@@ -47,6 +47,9 @@ def test_report_format():
     report = Report()
     report.print_format_fields()
 
+    # buildtest report --formatfields
+    report.print_raw_format_fields()
+
     # buildtest report --format XYZ is invalid format field
     with pytest.raises(BuildTestError):
         Report(format_args="XYZ")
@@ -58,6 +61,9 @@ def test_report_filter():
     # run 'buildtest report --helpfilter'
     report = Report()
     report.print_filter_fields()
+
+    # run 'buildtest report --filterfields'
+    report.print_raw_filter_fields()
 
     # run 'buildtest report --helpfilter'
     report.print_format_fields()

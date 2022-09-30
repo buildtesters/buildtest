@@ -60,6 +60,12 @@ This option will list all format fields with their description.
 
     .. command-output:: buildtest report --helpformat
 
+To print just the raw format fields use the command ``buildtest report --formatfields``.
+
+.. dropdown:: ``buildtest report --formatfields``
+
+    .. command-output:: buildtest report --formatfields
+
 Format Field Usage
 ~~~~~~~~~~~~~~~~~~
 
@@ -82,6 +88,12 @@ by run ``buildtest report --helpfilter`` which shows a list of filter fields and
 .. dropdown:: ``buildtest report --helpfilter``
 
     .. command-output:: buildtest report --helpfilter
+
+To print just the raw filter fields use the command ``buildtest report --filterfields``.
+
+.. dropdown:: ``buildtest report --filterfields``
+
+    .. command-output:: buildtest report --filterfields
 
 The ``--filter`` option expects arguments in **key=value** format. You can
 specify multiple filter delimited by comma. buildtest will treat multiple

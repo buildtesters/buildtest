@@ -25,6 +25,7 @@ from buildtest.utils.file import (
     resolve_path,
     walk_tree,
 )
+from buildtest.utils.tools import checkColor
 from jsonschema.exceptions import ValidationError
 from rich.layout import Layout
 from rich.panel import Panel
@@ -52,6 +53,7 @@ class BuildspecCache:
         header=None,
         terse=None,
         pager=None,
+        color=None,
     ):
         """The initializer method for BuildspecCache class is responsible for loading and finding buildspecs into buildspec cache. First we
         resolve paths to directory where buildspecs will be searched. This can be specified via ``--roots`` option on command line or one can
@@ -69,6 +71,7 @@ class BuildspecCache:
             roots (list, optional): List of directories to search for buildspecs. This argument contains value of ``buildtest buildspec find --roots``
             headers (bool, optional):  Option to control whether header are printed in terse output. This argument contains value of ``buildtest buildspec find --no-header``
             terse (bool, optional): Enable terse mode when printing output. In this mode we don't print output in table format instead output is printed in parseable format. This option can be specified via ``buildtest buildspec find --terse``
+            color (str, optional): An instance of a string class that selects the color to use when printing table output
         """
 
         if not is_dir(BUILDTEST_BUILDSPEC_DIR):
@@ -89,6 +92,7 @@ class BuildspecCache:
         self.invalid_buildspecs = {}
 
         self.terse = terse
+        self.color = checkColor(color)
 
         self.rebuild = rebuild
         self.cache = {}
@@ -596,7 +600,7 @@ class BuildspecCache:
             Column("Buildspecs", overflow="fold"),
             title="List of Buildspecs",
             header_style="blue",
-            row_styles=["red"],
+            row_styles=[self.color],
         )
         for buildspec in self.cache["buildspecs"].keys():
             table.add_row(buildspec)
@@ -627,7 +631,7 @@ class BuildspecCache:
             Column("Tags", overflow="fold"),
             title="List of Tags",
             header_style="blue",
-            row_styles=["green"],
+            row_styles=[self.color],
         )
         for tagname in self.cache["unique_tags"]:
             table.add_row(tagname)
@@ -656,7 +660,7 @@ class BuildspecCache:
             Column("Executors", overflow="fold"),
             title="List of Executors",
             header_style="blue",
-            row_styles=["green"],
+            row_styles=[self.color],
         )
         for executor in self.cache["unique_executors"]:
             table.add_row(executor)
@@ -684,9 +688,9 @@ class BuildspecCache:
             return
 
         table = Table(title="Tests by Executors", header_style="blue", show_lines=True)
-        table.add_column("Executors", style="yellow", overflow="fold")
-        table.add_column("Name", style="red", overflow="fold")
-        table.add_column("Description", style="green", overflow="fold")
+        table.add_column("Executors", style=self.color, overflow="fold")
+        table.add_column("Name", style=self.color, overflow="fold")
+        table.add_column("Description", style=self.color, overflow="fold")
 
         for executor_name in self.cache["executor"].keys():
             for test_name, description in self.cache["executor"][executor_name].items():
@@ -714,9 +718,9 @@ class BuildspecCache:
             return
 
         table = Table(title="Tests by Tags", header_style="blue", show_lines=True)
-        table.add_column("Tags", style="yellow", overflow="fold")
-        table.add_column("Name", style="red", overflow="fold")
-        table.add_column("Description", style="green", overflow="fold")
+        table.add_column("Tags", style=self.color, overflow="fold")
+        table.add_column("Name", style=self.color, overflow="fold")
+        table.add_column("Description", style=self.color, overflow="fold")
 
         for tagname in self.cache["tags"].keys():
             for test_name, description in self.cache["tags"][tagname].items():
@@ -749,9 +753,7 @@ class BuildspecCache:
         table = Table(
             title=f"Buildspec Cache: {BUILDSPEC_CACHE_FILE}",
             show_lines=True,
-            header_style="red",
-            style="cyan",
-            row_styles=["tan"],
+            row_styles=[self.color],
             title_justify="center",
             show_edge=False,
         )
@@ -1308,6 +1310,7 @@ def buildspec_find(args, configuration):
         header=args.no_header,
         terse=args.terse,
         pager=args.pager,
+        color=args.color,
     )
 
     if args.buildspec_find_subcommand == "invalid":

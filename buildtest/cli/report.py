@@ -7,26 +7,10 @@ import sys
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, resolve_path
-from rich.color import Color, ColorParseError
+from buildtest.utils.tools import checkColor
 from rich.table import Table
 
 logger = logging.getLogger(__name__)
-
-
-def checkColor(colorArg):
-    """Checks the provided colorArg against the compatible colors from Rich.Color"""
-    if isinstance(colorArg, Color):
-        return colorArg.name
-
-    if colorArg and isinstance(colorArg, list):
-        colorArg = colorArg[0]
-        return colorArg
-    if isinstance(colorArg, str):
-        try:
-            checkedColor = Color.parse(colorArg).name
-        except ColorParseError:
-            checkedColor = Color.default().name
-        return checkedColor
 
 
 def is_int(val):
@@ -526,6 +510,16 @@ class Report:
             )
         console.print(table)
 
+    def print_raw_filter_fields(self):
+        """Print list of filter fields which implements command ``buildtest report --filterfields``"""
+        for field in self.filter_fields:
+            console.print(field)
+
+    def print_raw_format_fields(self):
+        """Print list of format fields which implements command ``buildtest report --formatfields``"""
+        for field in self.format_fields:
+            console.print(field)
+
     def print_report(
         self,
         terse=None,
@@ -830,6 +824,14 @@ def report_cmd(args, report_file=None):
 
     if args.helpformat:
         results.print_format_fields()
+        return
+
+    if args.filterfields:
+        results.print_raw_filter_fields()
+        return
+
+    if args.formatfields:
+        results.print_raw_format_fields()
         return
     if args.pager:
         with console.pager():
