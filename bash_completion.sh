@@ -107,6 +107,16 @@ _avail_buildspec_formatfields()
 {
   buildtest buildspec find --formatfields
 }
+
+_avail_report_filterfields()
+{
+  buildtest report --filterfields
+}
+
+_avail_report_formatfields()
+{
+  buildtest report --formatfields
+}
 #  entry point to buildtest bash completion function
 _buildtest ()
 {
@@ -185,6 +195,14 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       case ${prev} in --color)
         COMPREPLY=( $( compgen -W "$(_supported_colors)" -- $cur ) )
+        return
+      esac
+      case "${prev}" in --filter)
+        COMPREPLY=( $( compgen -W "$(_avail_report_filterfields)" -- $cur ) )
+        return
+      esac
+      case "${prev}" in --format)
+        COMPREPLY=( $( compgen -W "$(_avail_report_formatfields)" -- $cur ) )
         return
       esac
       case "$prev" in summary)
