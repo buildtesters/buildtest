@@ -521,13 +521,20 @@ class Report:
             console.print(field)
 
     def print_report(
-        self, terse=None, noheader=None, title=None, count=None, color=None
+        self,
+        terse=None,
+        row_count=None,
+        noheader=None,
+        title=None,
+        count=None,
+        color=None,
     ):
         """This method will print report table after processing report file. By default we print output in
         table format but this can be changed to terse format which will print output in parseable format.
 
         Args:
             terse (bool, optional): Print output int terse format
+            row_count (bool, optional): Print total number of records from the table
             noheader (bool, optional): Determine whether to print header in terse format
             title (str, optional): Table title to print out
             count (int, optional): Number of rows to be printed in terse format
@@ -604,6 +611,10 @@ class Report:
 
         for row in transpose_list:
             table.add_row(*row)
+
+        if row_count:
+            console.print(table.row_count)
+            return
 
         console.print(table)
 
@@ -832,7 +843,11 @@ def report_cmd(args, report_file=None):
             )
         return
     results.print_report(
-        terse=args.terse, noheader=args.no_header, count=args.count, color=consoleColor
+        terse=args.terse,
+        row_count=args.row_count,
+        noheader=args.no_header,
+        count=args.count,
+        color=consoleColor,
     )
 
 

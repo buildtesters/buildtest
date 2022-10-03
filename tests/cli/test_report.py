@@ -22,6 +22,8 @@ def test_report():
     # run 'buildtest report --format name,state,returncode,buildspec --terse'
     result.print_report(terse=True)
 
+    result.print_report(row_count=True)
+
     # run 'buildtest report --format name,state,returncode,buildspec'
     result = Report(format_args="name,state,returncode,buildspec")
     result.print_report()

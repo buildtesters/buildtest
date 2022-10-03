@@ -363,6 +363,9 @@ def print_report_help():
         "Show all test records in the date range from [2022-01-01, 2022-01-05]",
     )
     table.add_row("buildtest report --terse", "Print report in terse format")
+    table.add_row(
+        "buildtest report --row-count", "Print total count of records from the table"
+    )
     table.add_row("buildtest report list", "List all report files")
     table.add_row("buildtest report clear", "Remove content of default report file")
     table.add_row("buildtest report summary", "Show summary of test report")

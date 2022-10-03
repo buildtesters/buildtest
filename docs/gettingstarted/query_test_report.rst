@@ -20,6 +20,18 @@ with default format fields. To see a list of all format fields, click :ref:`here
     .. command-output:: buildtest report
        :ellipsis: 20
 
+The ``buildtest report`` command will fetch all records and display them in a table format, if you want to know how many records are displayed in the table you can use ``buildtest report --row-count`` which will display   
+a raw count of records in the table. In the example below we will run ``buildtest report --row-count`` which will show number of tests in the report.
+
+.. dropdown:: ``buildtest report --row-count``
+
+    .. command-output:: buildtest report --row-count
+
+You may find it useful to fetch all failed records and determine pass/fail criteria as part of your shell script, this can be done by running ``buildtest report --row-count --fail`` as shown below.
+
+.. dropdown:: ``buildtest report --row-count --fail``
+
+    .. command-output:: buildtest report --row-count --fail
 
 .. note::
    ``buildtest rt`` is an alias for ``buildtest report`` command.

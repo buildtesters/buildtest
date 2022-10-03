@@ -1054,6 +1054,11 @@ def report_menu(subparsers):
         help="Print output in machine readable format",
     )
     parser_report.add_argument(
+        "--row-count",
+        action="store_true",
+        help="Print total count of records from the table.",
+    )
+    parser_report.add_argument(
         "--color",
         type=supported_color,
         metavar="COLOR",
