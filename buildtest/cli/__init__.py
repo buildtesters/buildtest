@@ -391,6 +391,12 @@ def history_menu(subparsers):
     list_parser.add_argument(
         "--pager", action="store_true", help="Enabling PAGING when viewing result"
     )
+    list_parser.add_argument(
+        "--color",
+        type=supported_color,
+        metavar="COLOR",
+        help="Print output of table with the selected color.",
+    )
 
     query = history_subparser.add_parser(
         "query", help="Query information for a particular build"

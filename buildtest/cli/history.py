@@ -5,6 +5,7 @@ import sys
 
 from buildtest.defaults import BUILD_HISTORY_DIR, console
 from buildtest.utils.file import is_dir, load_json, read_file, walk_tree
+from buildtest.utils.tools import checkColor
 from rich.pretty import pprint
 from rich.table import Table
 
@@ -19,7 +20,12 @@ def build_history(args):
     """
 
     if args.history == "list":
-        list_build_history(header=args.no_header, terse=args.terse, pager=args.pager)
+        list_build_history(
+            no_header=args.no_header,
+            terse=args.terse,
+            pager=args.pager,
+            color=args.color,
+        )
 
     if args.history == "query":
         query_builds(build_id=args.id, log_option=args.log, output=args.output)
@@ -40,16 +46,19 @@ def sorted_alphanumeric(data):
     return sorted(data, key=alphanum_key)
 
 
-def list_build_history(header=None, terse=None, pager=None):
+def list_build_history(no_header=None, terse=None, pager=None, color=None):
     """This method is entry point for ``buildtest history list`` which prints all previous builds
     stored in **BUILD_HISTORY_DIR**. Each directory has a ``build.json`` file that stores content
     of each build that was run by ``buildtest build``.
 
     Args:
-        header (bool, optional): Control whether header columns are displayed with terse format
+        no_header (bool, optional): Control whether header columns are displayed with terse format
         terse (bool, optional): Print output in terse format
         pager (bool, optional): Print output in paging format
+        color (bool, optional): Select desired color when displaying results
     """
+
+    consoleColor = checkColor(color)
 
     history_files = walk_tree(BUILD_HISTORY_DIR, ".json")
     logger.debug(f"Searching for all '.json' files in directory: {BUILD_HISTORY_DIR}")
@@ -94,7 +103,7 @@ def list_build_history(header=None, terse=None, pager=None):
     if terse:
 
         # We print the table columns if --no-header is not specified
-        if not header:
+        if not no_header:
             console.print("|".join(table.keys()))
 
         for (
@@ -128,17 +137,16 @@ def list_build_history(header=None, terse=None, pager=None):
         return
 
     history_table = Table(
-        header_style="blue",
-        show_lines=True,
+        header_style="blue", show_lines=True, row_styles=[consoleColor]
     )
-    history_table.add_column("id", style="white")
-    history_table.add_column("hostname", style="white")
-    history_table.add_column("user", style="white")
-    history_table.add_column("system", style="white")
-    history_table.add_column("date", style="white")
-    history_table.add_column("pass tests", style="green")
-    history_table.add_column("fail tests", style="red")
-    history_table.add_column("total tests", style="blue")
+    history_table.add_column("id")
+    history_table.add_column("hostname")
+    history_table.add_column("user")
+    history_table.add_column("system")
+    history_table.add_column("date")
+    history_table.add_column("pass tests")
+    history_table.add_column("fail tests")
+    history_table.add_column("total tests")
     history_table.add_column("command", overflow="fold")
 
     for (
