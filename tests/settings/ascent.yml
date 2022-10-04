@@ -1,6 +1,7 @@
 system:
   ascent:
-    hostnames: [login1.ascent.olcf.ornl.gov]
+    hostnames:
+    - login1.ascent.olcf.ornl.gov
     moduletool: lmod
     executors:
       defaults:
@@ -23,14 +24,68 @@ system:
       lsf:
         batch:
           queue: batch
-
     compilers:
       find:
-        gcc: "^(gcc)"
+        gcc: ^(gcc)
       compiler:
         gcc:
           builtin_gcc:
             cc: /usr/bin/gcc
             cxx: /usr/bin/g++
             fc: /usr/bin/gfortran
-
+          gcc/9.3.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            module:
+              load:
+              - gcc/9.3.0
+              purge: false
+          gcc/11.1.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            module:
+              load:
+              - gcc/11.1.0
+              purge: false
+          gcc/7.5.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            module:
+              load:
+              - gcc/7.5.0
+              purge: false
+          gcc/12.1.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            module:
+              load:
+              - gcc/12.1.0
+              purge: false
+          gcc/11.2.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            module:
+              load:
+              - gcc/11.2.0
+              purge: false
+          gcc/10.2.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            module:
+              load:
+              - gcc/10.2.0
+              purge: false
+          gcc/9.1.0:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            module:
+              load:
+              - gcc/9.1.0
+              purge: false
