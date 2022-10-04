@@ -3,7 +3,7 @@ import socket
 
 import pytest
 from buildtest.cli.build import BuildTest
-from buildtest.cli.compilers import BuildtestCompilers
+from buildtest.cli.compilers import BuildtestCompilers, compiler_test
 from buildtest.config import SiteConfiguration
 from buildtest.system import BuildTestSystem
 
@@ -31,15 +31,15 @@ def test_ascent():
         os.path.join(ascent_examples_dir, "lsf_job_state.yml"),
     ]
     cmd = BuildTest(
-        configuration=bc, buildspecs=[buildspec_files], buildtest_system=system
+        configuration=bc, buildspecs=buildspec_files, buildtest_system=system
     )
     cmd.build()
 
     # This job will be held indefinitely but job will be cancelled by scheduler after 15sec once job pending time has reached maxpendtime
-    buildspec_files = os.path.join(ascent_examples_dir, "hold_job.yml")
+    buildspec_files = [os.path.join(ascent_examples_dir, "hold_job.yml")]
     cmd = BuildTest(
         configuration=bc,
-        buildspecs=[buildspec_files],
+        buildspecs=buildspec_files,
         buildtest_system=system,
         maxpendtime=15,
     )
@@ -61,3 +61,9 @@ def test_compilers_find_ascent():
     # testing buildtest config compilers find
     bc = BuildtestCompilers(configuration=bc)
     bc.find_compilers()
+
+    # test all compilers
+    compiler_test(configuration=bc)
+
+    # test specific compiler
+    compiler_test(configuration=bc, compiler_names=["gcc/9.1.0"])

@@ -222,3 +222,24 @@ module load test and show an output of each compiler.
     │ 4   │ upcxx-gpu-1rail/2021.9.0 │     ❌ │
     │ 5   │ upcxx-gpu-1rail/nightly  │     ❌ │
     └─────┴──────────────────────────┴────────┘
+
+If you want to test specific compilers instead of testing all compilers you can pass name of compiler as a positional argument
+to `buildtest config compilers test` and buildtest will only test the selected compiler. Shown below is an example where we only test
+compiler ``gcc/9.1.01``
+
+.. code-block:: console
+
+    $ buildtest config compilers test gcc/9.1.0
+    Skipping test for compiler: builtin_gcc
+    Skipping test for compiler: gcc/9.3.0
+    Skipping test for compiler: gcc/11.1.0
+    Skipping test for compiler: gcc/7.5.0
+    Skipping test for compiler: gcc/12.1.0
+    Skipping test for compiler: gcc/11.2.0
+    Skipping test for compiler: gcc/10.2.0
+          Compilers Test Pass
+    ┏━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━┓
+    ┃ No. ┃ Compiler Name ┃ Status ┃
+    ┡━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━┩
+    │ 1   │ gcc/9.1.0     │     ✅ │
+    └─────┴───────────────┴────────┘

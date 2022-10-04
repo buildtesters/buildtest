@@ -52,6 +52,12 @@ _avail_executors ()
   buildtest config executors
 }
 
+# list of available compilers
+_avail_compilers ()
+{
+  buildtest config compilers
+}
+
 # list of test ids from report
 _test_ids ()
 {
@@ -215,13 +221,17 @@ _buildtest ()
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
-      case "${prev}" in
+
+      case "${COMP_WORDS[COMP_CWORD-2]}" in
         compilers|co)
           local opts="--help --json --yaml -h -j -y find test"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           if [[ "${prev}" == "find" ]]; then
             local opts="--detailed --help --modulepath --update -d -h -m -u"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          fi
+          if [[ "${prev}" == "test"  ]]; then
+            COMPREPLY=( $( compgen -W "$(_avail_compilers)" -- $cur ) )
           fi
           ;;
         executors|ex)
