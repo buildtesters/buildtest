@@ -125,13 +125,11 @@ _buildtest ()
 
   COMPREPLY=()   # Array variable storing the possible completions.
 
-  local cmds="build buildspec cd cdash clean config debugreport docs help info inspect history path report schema schemadocs stylecheck unittests"
-  local alias_cmds="bd bc cg debug it h hy rt style test"
-  local opts="--color --config --debug --editor --help --logpath --print-log --report --version --view-log -c -d -h -r -V"
-
   next=${COMP_WORDS[1]}
 
+
   case "$next" in
+  #case "${prev}" in
     build|bd)
       local shortoption="-b -e -et -f -m -s -t -u -x"
       local longoption="--buildspec --disable-executor-check --executor --executor-type --exclude --filter --helpfilter --maxpendtime --modules --module-purge --nodes --pollinterval --procs --rerun --remove-stagedir --retry --stage --tags --timeout --unload-modules"
@@ -217,7 +215,7 @@ _buildtest ()
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
-      case "${COMP_WORDS[2]}" in
+      case "${prev}" in
         compilers|co)
           local opts="--help --json --yaml -h -j -y find test"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
@@ -381,8 +379,13 @@ _buildtest ()
 
       case ${COMP_WORDS[2]} in
       list)
-        local opts="--help --no-header --pager --terse -h -n -t"
-        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
+        local opts="--help --color --no-header --pager --terse -h -n -t"
+        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+
+        if [[ "${prev}" == "--color" ]]; then
+          COMPREPLY=( $( compgen -W "$(_supported_colors)" -- $cur ) )
+        fi
+        ;;
       query)
         local opts="--help --log --output -h -l -o"
         COMPREPLY=( $( compgen -W "$(_history_id)" -- $cur ) )
@@ -422,6 +425,10 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       ;;
     *)
+      local cmds="build buildspec cd cdash clean config debugreport docs help info inspect history path report schema schemadocs stats stylecheck unittests"
+      local alias_cmds="bd bc cg debug it h hy rt style test"
+      local opts="--config --debug --editor --help --logpath --print-log --no-color --report --version --view-log -c -d -h -r -V"
+
       case "${cur}" in
       # print main options to buildtest
         -*)

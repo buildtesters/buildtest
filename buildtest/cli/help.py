@@ -385,6 +385,9 @@ def print_history_help():
     table.add_row("buildtest history list", "List all build history files")
     table.add_row("buildtest history list --terse", "Print output in terse format")
     table.add_row(
+        "buildtest history list --color blue", "Print output using the color 'blue'"
+    )
+    table.add_row(
         "buildtest history query 0", "Query content of history build identifier '0'"
     )
     table.add_row(
