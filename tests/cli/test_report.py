@@ -22,6 +22,8 @@ def test_report():
     # run 'buildtest report --format name,state,returncode,buildspec --terse'
     result.print_report(terse=True)
 
+    result.print_report(row_count=True)
+
     # run 'buildtest report --format name,state,returncode,buildspec'
     result = Report(format_args="name,state,returncode,buildspec")
     result.print_report()
@@ -45,6 +47,9 @@ def test_report_format():
     report = Report()
     report.print_format_fields()
 
+    # buildtest report --formatfields
+    report.print_raw_format_fields()
+
     # buildtest report --format XYZ is invalid format field
     with pytest.raises(BuildTestError):
         Report(format_args="XYZ")
@@ -56,6 +61,9 @@ def test_report_filter():
     # run 'buildtest report --helpfilter'
     report = Report()
     report.print_filter_fields()
+
+    # run 'buildtest report --filterfields'
+    report.print_raw_filter_fields()
 
     # run 'buildtest report --helpfilter'
     report.print_format_fields()

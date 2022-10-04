@@ -15,7 +15,9 @@ If you want to list all builds you should run **buildtest history list** which w
 format of all builds with corresponding build ID to differentiate each build. Shown below is an example output. The build
 IDs start at **0** and increment as you run **buildtest build** command.
 
-.. command-output:: buildtest history list
+.. dropdown:: ``buildtest history list``
+
+    .. command-output:: buildtest history list
 
 The ``buildtest history query`` command is particularly useful when you want to inspect a particular build. This command
 expects a *Build Identifier* which can be found by inspecting output column `id` in `buildtest history list`.
@@ -23,8 +25,10 @@ expects a *Build Identifier* which can be found by inspecting output column `id`
 Shown below is an output of build ID 0 which reports relevant detail for the build such as input command, username, hostname,
 platform, date, etc...
 
-.. command-output:: buildtest history query 0
-    :shell:
+.. dropdown:: ``buildtest history query 0``
+
+    .. command-output:: buildtest history query 0
+        :shell:
 
 If you want to see all available build IDs, you can use the following command. The ``-t`` is terse format and ``--no-header`` will
 omit the headers for each column and pipe the output to **cut** to extract the first column which corresponds to build IDs.
@@ -48,7 +52,9 @@ If you want to see logfile for build ID 0 you can use ``--log`` option to see lo
 buildtest will store output of ``buildtest build`` command to file if command ran to completion. You can retrieve output of previous
 builds using the ``--output`` option. In example below we show output of build file
 
-.. command-output:: buildtest history query --output 0
+.. dropdown:: ``buildtest history query --output 0``
+
+    .. command-output:: buildtest history query --output 0
 
 Buildtest Info (``buildtest info``)
 --------------------------------------
@@ -90,7 +96,9 @@ The ``buildtest cdash`` command is responsible for uploading tests to CDASH serv
 need to specify :ref:`cdash_configuration` in your configuration file. Shown below is the command
 usage.
 
-.. command-output:: buildtest cdash --help
+.. dropdown:: ``buildtest cdash --help``
+
+    .. command-output:: buildtest cdash --help
 
 The ``buildtest cdash upload`` command is responsible for uploading all tests in `report.json`
 into CDASH. You must specify a buildname when using **buildtest cdash upload** in this example we will
@@ -114,7 +122,9 @@ By default buildtest will read the report file in your **$HOME/.buildtest/report
 specify an alternate report file. First let's see the available help options for
 ``buildtest cdash upload``.
 
-.. command-output:: buildtest cdash upload --help
+.. dropdown:: ``buildtest cdash upload --help``
+
+    .. command-output:: buildtest cdash upload --help
 
 We can pass an alternate report file using ``-r`` option when uploading tests
 to CDASH. This can be useful if you want to map test results to different buildnames in CDASH
@@ -124,8 +134,10 @@ the test results with different buildname assuming you have different paths to r
 Let's say we want to build all python tests using tags and store them in a report file which we
 want to push to CDASH with buildgroup name ``python`` we can do that as follows
 
-.. command-output:: buildtest -r $BUILDTEST_ROOT/python.json build --tags python
-    :shell:
+.. dropdown:: ``buildtest -r $BUILDTEST_ROOT/python.json build --tags python``
+
+    .. command-output:: buildtest -r $BUILDTEST_ROOT/python.json build --tags python
+        :shell:
 
 Next we upload the tests using the ``-r`` option to specify the report file
 
@@ -202,7 +214,9 @@ Get Path for Test (``buildtest path``)
 The ``buildtest path`` command is used to display path attributes for a test that is available in the test report.
 Shown below are available options for **buildtest path**
 
-.. command-output:: buildtest path -h
+.. dropdown:: ``buildtest path --help``
+
+    .. command-output:: buildtest path --help
 
 If you want to fetch the last run for any given test you can specify the name of the test as follows: ``buildtest path <name>``.
 We can specify a test ID for a test by separating the name and test ID with backslash character (``/``) as follows: ``buildtest path <name>/<ID>``
@@ -279,7 +293,9 @@ The ``buildtest debugreport`` command is used for debugging especially when you 
 an `issue <https://github.com/buildtesters/buildtest/issues>`_ to buildtest project. This command will provide system details
 along with configuration file and output of log file during the report.
 
-.. command-output:: buildtest debugreport
+.. dropdown:: ``buildtest debugreport``
+
+    .. command-output:: buildtest debugreport
 
 .. _configuration_cli:
 
@@ -289,7 +305,9 @@ Command Line Interface to buildtest configuration (``buildtest config``)
 Once you have implemented your buildtest configuration, you can query the configuration
 details using ``buildtest config`` command. Shown below is the command usage.
 
-.. command-output:: buildtest config --help
+.. dropdown:: ``buildtest config --help``
+
+    .. command-output:: buildtest config --help
 
 .. note::
   ``buildtest cg`` is an alias for ``buildtest config`` command.
@@ -311,28 +329,31 @@ will be displayed in terminal. For example the error below indicates that
 ``moduletool`` property was expecting one of the values
 [``environment-modules``, ``lmod``, ``N/A``] but it received a value of ``none``:
 
-.. code-block:: console
+.. dropdown:: Invalid buildtest configuration
+   :color: warning
 
-    $ buildtest config validate
-    Traceback (most recent call last):
-      File "/Users/siddiq90/Documents/buildtest/bin/buildtest", line 17, in <module>
-        buildtest.main.main()
-      File "/Users/siddiq90/Documents/buildtest/buildtest/main.py", line 39, in main
-        buildtest_configuration = check_settings(settings_file, retrieve_settings=True)
-      File "/Users/siddiq90/Documents/buildtest/buildtest/config.py", line 41, in check_settings
-        validate(instance=user_schema, schema=config_schema)
-      File "/Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/lib/python3.7/site-packages/jsonschema/validators.py", line 934, in validate
-        raise error
-    jsonschema.exceptions.ValidationError: 'none' is not one of ['environment-modules', 'lmod', 'N/A']
+    .. code-block:: console
 
-    Failed validating 'enum' in schema['properties']['moduletool']:
-        {'description': 'Specify modules tool used for interacting with '
-                        '``module`` command. ',
-         'enum': ['environment-modules', 'lmod', 'N/A'],
-         'type': 'string'}
+        $ buildtest config validate
+        Traceback (most recent call last):
+          File "/Users/siddiq90/Documents/buildtest/bin/buildtest", line 17, in <module>
+            buildtest.main.main()
+          File "/Users/siddiq90/Documents/buildtest/buildtest/main.py", line 39, in main
+            buildtest_configuration = check_settings(settings_file, retrieve_settings=True)
+          File "/Users/siddiq90/Documents/buildtest/buildtest/config.py", line 41, in check_settings
+            validate(instance=user_schema, schema=config_schema)
+          File "/Users/siddiq90/.local/share/virtualenvs/buildtest-1gHVG2Pd/lib/python3.7/site-packages/jsonschema/validators.py", line 934, in validate
+            raise error
+        jsonschema.exceptions.ValidationError: 'none' is not one of ['environment-modules', 'lmod', 'N/A']
 
-    On instance['moduletool']:
-        'none'
+        Failed validating 'enum' in schema['properties']['moduletool']:
+            {'description': 'Specify modules tool used for interacting with '
+                            '``module`` command. ',
+             'enum': ['environment-modules', 'lmod', 'N/A'],
+             'type': 'string'}
+
+        On instance['moduletool']:
+            'none'
 
 
 View buildtest configuration (``buildtest config view``)
@@ -340,7 +361,9 @@ View buildtest configuration (``buildtest config view``)
 
 If you want to view buildtest configuration you can run ``buildtest config view`` which will print content of buildtest configuration.
 
-.. command-output:: buildtest config view
+.. dropdown:: ``buildtest config view``
+
+    .. command-output:: buildtest config view
 
 Check path to buildtest configuration file (``buildtest config path``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -364,7 +387,9 @@ View Executors (``buildtest config executors``)
 You can use the command ``buildtest config executors`` to view executors from buildtest
 configuration file.  Shown below is the command usage
 
-.. command-output:: buildtest config executors --help
+.. dropdown:: ``buildtest config executors --help``
+
+    .. command-output:: buildtest config executors --help
 
 You can run ``buildtest config executors`` without any options and it will report a list of named executors that
 you would reference in buildspec using the ``executor`` property. If you prefer json or yaml format you can use ``--json`` or ``--yaml`` option.
@@ -390,7 +415,9 @@ can be retrieved by running ``buildtest schema -n settings.schema.json --example
 or short option (``-e``), which will validate each example with schema file
 ``settings.schema.json``.
 
-.. command-output:: buildtest schema -n settings.schema.json -e
+.. dropdown:: ``buildtest schema -n settings.schema.json -e``
+
+    .. command-output:: buildtest schema -n settings.schema.json -e
 
 If you want to retrieve full json schema file for buildtest configuration you can
 run ``buildtest schema -n settings.schema.json --json`` or short option ``-j``.

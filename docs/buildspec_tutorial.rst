@@ -27,16 +27,20 @@ Tutorials Setup
 To get started for this tutorial, you will need `docker <https://docs.docker.com/get-docker/>`_ on your machine to pull the container. At NERSC,
 you can use `shifter <https://github.com/NERSC/shifter>`_ to access the container, you will need to start an interactive shell.
 
-.. tabs::
+.. tab-set::
 
-    .. code-tab:: bash docker
+    .. tab-item:: docker
 
-        docker pull ghcr.io/buildtesters/buildtest_spack:latest
-        docker run -it ghcr.io/buildtesters/buildtest_spack:latest /bin/bash --login
+        .. code-block:: console
 
-    .. code-tab:: bash shifter
+            docker pull ghcr.io/buildtesters/buildtest_spack:latest
+            docker run -it ghcr.io/buildtesters/buildtest_spack:latest /bin/bash --login
 
-        shifter -E --image=registry.services.nersc.gov/siddiq90/buildtest_spack:latest -- /bin/bash --login
+    .. tab-item:: shifter
+
+        .. code-block:: console
+
+            shifter -E --image=registry.services.nersc.gov/siddiq90/buildtest_spack:latest -- /bin/bash --login
 
 We need to install buildtest and setup environment for this tutorial. We recommend you clone buildtest in your HOME directory.
 This can be done as follows::

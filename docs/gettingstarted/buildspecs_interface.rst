@@ -20,13 +20,17 @@ The ``buildtest buildspec find`` command is used for finding buildspecs from bui
 cache. This command is also used for generating the buildspec cache. Shown below is a list of options for
 provided for this command.
 
-.. command-output:: buildtest buildspec find --help
+.. dropdown:: ``buildtest buildspec find --help``
+
+    .. command-output:: buildtest buildspec find --help
 
 The ``buildtest buildspec find`` command will discover all buildspecs by recursively searching all `.yml` extensions.
 buildtest will validate each buildspec file with the json schema and buildtest will display all valid buildspecs in the output,
 all invalid buildspecs will be stored in a file for post-processing.
 
-.. command-output:: buildtest buildspec find
+.. dropdown:: ``buildtest buildspec find``
+
+    .. command-output:: buildtest buildspec find
 
 buildtest will load all discovered buildspecs in a cache file (JSON) which is created upon
 running ``buildtest buildspec find``. Any subsequent runs will read from cache and update
@@ -38,19 +42,40 @@ buildspec cache by running::
 The ``--quiet`` option can be used to suppress output when using **buildtest buildspec find** this can be useful
 if you want to rebuild the cache without seeing output of cache. Take for instance the following command
 
-.. command-output:: buildtest buildspec find --quiet --rebuild
+.. dropdown:: ``buildtest buildspec find --quiet --rebuild``
+
+    .. command-output:: buildtest buildspec find --quiet --rebuild
+
+If you want to limit the number of entries to display in output, you can use ``--count`` option which expects a positive number. For instance
+let's limit output to 5 entries, we can run the following
+
+.. dropdown:: ``buildtest buildspec find --count=5``
+
+    .. command-output:: buildtest buildspec find --count=5
+
+You can also color the output via ``--color=<COLOR>`` which will color output of each entry with the selected color.
+
+Finding buildspec files
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want to find all buildspec files in cache you can run ``buildtest buildspec find --buildspec``.
 Shown below is an example output.
 
-.. command-output:: buildtest buildspec find --buildspec
-   :ellipsis: 11
+.. dropdown:: ``buildtest buildspec find --buildspec``
+
+    .. command-output:: buildtest buildspec find --buildspec
+       :ellipsis: 11
+
+Find root paths where buildspecs are searched
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The ``buildtest buildspec find --paths`` will display a list of root directories buildtest will search for
 buildspecs when running ``buildtest buildspec find``. One can define these directories in the configuration file
 or pass them via command line.
 
-.. command-output:: buildtest buildspec find --paths
+.. dropdown:: ``buildtest buildspec find --paths``
+
+    .. command-output:: buildtest buildspec find --paths
 
 buildtest will search buildspecs in :ref:`buildspecs root <buildspec_roots>` defined in your configuration,
 which is a list of directory paths to search for buildspecs.
@@ -67,7 +92,9 @@ When you run **buildtest buildspec find** it will report all buildspecs from cac
 be difficult to process. Therefore, we have a filter option (``--filter``) to restrict our search.
 Let's take a look at the available filter fields that are acceptable with filter option.
 
-.. command-output:: buildtest buildspec find --helpfilter
+.. dropdown:: ``buildtest buildspec find --helpfilter``
+
+    .. command-output:: buildtest buildspec find --helpfilter
 
 The ``--filter`` option expects an arguments in **key=value** format as follows::
 
@@ -76,18 +103,24 @@ The ``--filter`` option expects an arguments in **key=value** format as follows:
 We can filter buildspec cache by ``tags=fail`` which will query all tests with
 associated tag field in test.
 
-.. command-output:: buildtest buildspec find --filter tags=fail
+.. dropdown:: ``buildtest buildspec find --filter tags=fail``
+
+    .. command-output:: buildtest buildspec find --filter tags=fail
 
 In addition, we can query buildspecs by schema type using ``type`` property. In this
 example we query all tests by **type** property
 
-.. command-output:: buildtest buildspec find --filter type=script
-    :ellipsis: 21
+.. dropdown:: ``buildtest buildspec find --filter type=script``
+
+    .. command-output:: buildtest buildspec find --filter type=script
+        :ellipsis: 21
 
 Finally, we can combine multiple filter fields separated by comma, in the next example
 we can query all buildspecs with ``tags=tutorials``, ``executor=generic.local.sh``, and ``type=script``
 
-.. command-output:: buildtest buildspec find --filter tags=tutorials,executor=generic.local.sh,type=script
+.. dropdown:: ``buildtest buildspec find --filter tags=tutorials,executor=generic.local.sh,type=script``
+
+    .. command-output:: buildtest buildspec find --filter tags=tutorials,executor=generic.local.sh,type=script
 
 We can filter output of buildspec cache by buildspec using ``--filter buildspec=<path>`` which
 expects a path to buildspec file.  The buildspec must be in the cache and file path must exist in order to
@@ -97,7 +130,9 @@ In this next example, we will filter cache by file `tutorials/test_status/pass_r
 to format columns. The ``--format buildspec`` will show full path to buildspec and ``name`` refers to name of test.
 For more details on **--format** see :ref:`format_buildspec`.
 
-.. command-output:: buildtest buildspec find --filter buildspec=tutorials/test_status/pass_returncode.yml --format name,buildspec
+.. dropdown:: ``buildtest buildspec find --filter buildspec=tutorials/test_status/pass_returncode.yml --format name,buildspec``
+
+    .. command-output:: buildtest buildspec find --filter buildspec=tutorials/test_status/pass_returncode.yml --format name,buildspec
 
 .. _format_buildspec:
 
@@ -111,13 +146,17 @@ in the output, however there are more format fields available that can be config
 The format fields are specified in comma separated format such as ``buildtest buildspec find --format <field1>,<field2>,...``.
 You can see a list of all format fields by ``--helpformat`` option as shown below
 
-.. command-output:: buildtest buildspec find --helpformat
+.. dropdown:: ``buildtest buildspec find --helpformat``
+
+    .. command-output:: buildtest buildspec find --helpformat
 
 In the next example, we utilize ``--format`` field with ``--filter`` option to show
 how format fields affect table columns. buildtest will display the table in order of
 format fields specified in command line.
 
-.. command-output:: buildtest buildspec find --format name,description,buildspec --filter tags=tutorials,executor=generic.local.sh
+.. dropdown:: ``buildtest buildspec find --format name,description,buildspec --filter tags=tutorials,executor=generic.local.sh``
+
+    .. command-output:: buildtest buildspec find --format name,description,buildspec --filter tags=tutorials,executor=generic.local.sh
 
 .. _buildspec_tags:
 
@@ -128,14 +167,18 @@ If you want to retrieve all unique tags from all buildspecs you can run
 ``buildtest buildspec find --tags``. This can be useful if you want to know available
 tags in your buildspec cache.
 
-.. command-output:: buildtest buildspec find --tags
+.. dropdown:: ``buildtest buildspec find --tags``
+
+    .. command-output:: buildtest buildspec find --tags
 
 In addition, buildtest can group tests by tags via ``buildtest buildspec find --group-by-tags``
 which can be useful if you want to know which tests get executed when running ``buildtest build --tags``.
 The output is grouped by tag names, followed by name of test and description.
 
-.. command-output:: buildtest buildspec find --group-by-tags
-   :ellipsis: 41
+.. dropdown:: ``buildtest buildspec find --group-by-tags``
+
+    .. command-output:: buildtest buildspec find --group-by-tags
+       :ellipsis: 41
 
 .. _buildspec_executor:
 
@@ -146,14 +189,18 @@ If you want to know all executors in your buildspec cache use the
 ``buildtest buildspec find --executors`` command. This can be useful when
 you want to build by executors (``buildtest build --executor``).
 
-.. command-output:: buildtest buildspec find --executors
+.. dropdown:: ``buildtest buildspec find --executors``
+
+    .. command-output:: buildtest buildspec find --executors
 
 Similar to ``--group-by-tags``, buildtest has an option to group tests by executor
 using ``--group-by-executor`` option. This will show tests grouped by executor,
 name of test and test description. Shown below is an example output.
 
-.. command-output:: buildtest buildspec find --group-by-executor
-    :ellipsis: 31
+.. dropdown:: ``buildtest buildspec find --group-by-executor``
+
+    .. command-output:: buildtest buildspec find --group-by-executor
+        :ellipsis: 31
 
 Terse Output
 ~~~~~~~~~~~~~
@@ -163,8 +210,17 @@ be useful if you want to parse content of file. In example below, we will print 
 first entry ``tags`` is the header followed by list of unique tags.  The ``--no-header`` option
 can be used to disable printing of header title.
 
-.. command-output:: buildtest buildspec find -t --terse
+.. dropdown:: ``buildtest buildspec find -t --terse``
 
+    .. command-output:: buildtest buildspec find -t --terse
+
+
+You can also use ``--count`` with terse option, note that heading is not counted as an element, the --count will only limit number
+of entries reported from the buildspec cache. Shown below we retrieve 5 test results in terse mode and disable heading via `-n` option.
+
+.. dropdown:: ``buildtest buildspec find --terse -n --count=5``
+
+    .. command-output:: buildtest buildspec find --terse -n --count=5
 
 Invalid Buildspecs - ``buildtest buildspec find invalid``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -173,14 +229,20 @@ buildtest will store invalid buildspecs in the cache file which can be retrieved
 will attempt to parse each buildspec and store error message for every buildspec. If you run without any options it will
 report a list of invalid buildspecs as shown below
 
-.. command-output:: buildtest buildspec find invalid
-   :returncode: 1
+.. dropdown:: ``buildtest buildspec find invalid``
+    :color: warning
+
+    .. command-output:: buildtest buildspec find invalid
+       :returncode: 1
 
 If you want to see error messages for each buildspec you can pass the ``-e`` or ``--error`` option which will display output of
 each buildspec followed by error message.
 
-.. command-output:: buildtest buildspec find invalid -e
-   :returncode: 1
+.. dropdown:: ``buildtest buildspec find -e``
+   :color: warning
+
+    .. command-output:: buildtest buildspec find invalid -e
+       :returncode: 1
 
 .. _buildspec_maintainers:
 
@@ -193,26 +255,36 @@ to query some interesting details.
 
 Shown below is the help for ``buildtest buildspec maintainers --help``
 
-.. command-output:: buildtest buildspec maintainers --help
+.. dropdown:: ``buildtest buildspec maintainers --help``
+
+    .. command-output:: buildtest buildspec maintainers --help
 
 If you want to see a listing of all maintainers you can use the ``--list`` as shown below
 
-.. command-output:: buildtest buildspec maintainers --list
+.. dropdown:: ``buildtest buildspec maintainers --list``
+
+    .. command-output:: buildtest buildspec maintainers --list
 
 If you prefer a machine readable format, then you can use ``--terse`` and ``--no-header``.
 
-.. command-output:: buildtest buildspec maintainers --list --terse --no-header
+.. dropdown:: ``buildtest buildspec maintainers --list --terse --no-header``
+
+    .. command-output:: buildtest buildspec maintainers --list --terse --no-header
 
 If you want to see a breakdown of all buildspecs by maintainers you can use `--breakdown` which will
 display the following information
 
-.. command-output:: buildtest buildspec maintainers --breakdown
+.. dropdown:: ``buildtest buildspec maintainers --breakdown``
+
+    .. command-output:: buildtest buildspec maintainers --breakdown
 
 The ``buildtest buildspec maintainers find`` command can be used to report buildspec given a maintainer
 name which works similar to `--breakdown` but doesn't report information for all maintainers. Shown
 below, we query all buildspecs by maintainer **@shahzebsiddiqui**
 
-.. command-output:: buildtest buildspec maintainers find @shahzebsiddiqui
+.. dropdown:: ``buildtest buildspec maintainers find @shahzebsiddiqui``
+
+    .. command-output:: buildtest buildspec maintainers find @shahzebsiddiqui
 
 
 Cache Summary - ``buildtest buildspec summary``
@@ -221,7 +293,9 @@ Cache Summary - ``buildtest buildspec summary``
 The ``buildtest buildspec summary`` command can be used to provide a summary of the buildspec cache. This command
 can be used assuming your cache is built via ``buildtest buildspec find``. Shown below is a summary of the cache file.
 
-.. command-output:: buildtest buildspec summary
+.. dropdown:: ``buildtest buildspec summary``
+
+    .. command-output:: buildtest buildspec summary
 
 
 Validate Buildspecs - ``buildtest buildspec validate``
@@ -234,24 +308,33 @@ and want to validate the buildspec without running the test.
 
 Shown below are the available command options.
 
-.. command-output:: buildtest buildspec validate --help
+.. dropdown:: ``buildtest buildspec validate --help``
+
+    .. command-output:: buildtest buildspec validate --help
 
 The `-b` option can be used to specify path to buildspec file or directory to validate buildspecs. If its a directory,
 buildtest will traverse all directories recursively and find any **.yml** file extensions and attempt to validate each buildspec.
 Shown below is an example output of what it may look like
 
-.. command-output:: buildtest buildspec validate -b tutorials/vars.yml
+.. dropdown:: ``buildtest buildspec validate -b tutorials/vars.yml``
+
+    .. command-output:: buildtest buildspec validate -b tutorials/vars.yml
 
 If buildtest detects an error during validation, the error message will be displayed to screen with a non-zero returncode.
 
-.. command-output:: buildtest buildspec validate -b tutorials/invalid_tags.yml
-   :returncode: 1
+.. dropdown:: ``buildtest buildspec validate -b tutorials/invalid_tags.yml``
+   :color: warning
+
+   .. command-output:: buildtest buildspec validate -b tutorials/invalid_tags.yml
+      :returncode: 1
 
 Similarly we can search buildspecs based on tags if you want to validate a group of buildspecs using the ``-t`` option. We can
 append ``-t`` option multiple times to search by multiple tag names. In this next example, we
 will validate all buildspecs for **python** and **pass** tags.
 
-.. command-output:: buildtest buildspec validate -t python -t pass
+.. dropdown:: ``buildtest buildspec validate -t python -t pass``
+
+    .. command-output:: buildtest buildspec validate -t python -t pass
 
 Show buildspec ``buildtest buildspec show``
 --------------------------------------------
@@ -262,19 +345,26 @@ to the buildspec.
 
 In this next example, we will instruct buildtest to show content of buildspec for test name `python_hello`.
 
-.. command-output:: buildtest buildspec show python_hello
+.. dropdown:: ``buildtest buildspec show python_hello``
+
+    .. command-output:: buildtest buildspec show python_hello
 
 You can pass multiple arguments to ``buildtest buildspec show`` to show content of each test
 
-.. command-output:: buildtest buildspec show python_hello circle_area
+.. dropdown:: ``buildtest buildspec show python_hello circle_area``
+
+    .. command-output:: buildtest buildspec show python_hello circle_area
 
 
 There is bash completion for this command which will show list of test names available in the cache assuming you have run
 ``buildtest buildspec find``. If you specify an invalid test name you will get an error followed by list of tests that are available
 in the cache
 
-.. command-output:: buildtest buildspec show XYZ123!
-   :returncode: 1
+.. dropdown:: ``buildtest buildspec show python_hello``
+   :color: warning
+
+    .. command-output:: buildtest buildspec show XYZ123!
+       :returncode: 1
 
 You can use ``--theme`` option to define the color scheme used for printing content of buildspecs. The available comlor schemes can be found at
 https://pygments.org/docs/styles/#getting-a-list-of-available-styles. buildtest supports tab completion on the available themes which you can see below
@@ -293,7 +383,9 @@ Show fail buildspec ``buildtest buildspec show-fail``
 buildtest can display content of buildspec file of all failed tests via ``buildtest buildspec show-fail`` command. 
 This can be quick way to see content of buildspec file given a failed test name such as ``buildtest buildspec show-fail exit1_fail``.
 
-.. command-output:: buildtest buildspec show-fail exit1_fail
+.. dropdown:: ``buildtest buildspec show-fail exit1_fail``
+
+    .. command-output:: buildtest buildspec show-fail exit1_fail
 
 If you run ``buildtest buildspec show-fail`` without any argument, then buildtest will show content of all failed tests with
 corresponding buildspec. buildtest will automatically filter out duplicate buildspec entries where multiple test correspond to

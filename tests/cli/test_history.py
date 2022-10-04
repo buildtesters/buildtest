@@ -7,14 +7,26 @@ from buildtest.cli.history import BUILD_HISTORY_DIR, list_build_history, query_b
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT, VAR_DIR
 from buildtest.system import BuildTestSystem
+from rich.color import Color
 
 
 def test_build_history_list():
-    list_build_history(terse=False, header=False, pager=False)
-    list_build_history(terse=False, header=False, pager=True)
+    # Testing command:  buildtest history list
+    list_build_history(terse=False, no_header=False, pager=False)
 
-    list_build_history(terse=True, header=False, pager=False)
-    list_build_history(terse=True, header=True, pager=False)
+    # test with a color: buildtest history list --color <color>
+    list_build_history(
+        terse=False, no_header=False, pager=False, color=Color.default().name
+    )
+
+    # test with pager support: buildtest history list --pager
+    list_build_history(terse=False, no_header=False, pager=True)
+
+    # test with terse mode: buildtest history list --terse
+    list_build_history(terse=True, no_header=False, pager=False)
+
+    # test with terse and no header: buildtest history list --terse --no-header
+    list_build_history(terse=True, no_header=True, pager=False)
 
 
 def test_build_history_query():

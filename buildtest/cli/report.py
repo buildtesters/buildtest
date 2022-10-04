@@ -7,26 +7,10 @@ import sys
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, resolve_path
-from rich.color import Color, ColorParseError
+from buildtest.utils.tools import checkColor
 from rich.table import Table
 
 logger = logging.getLogger(__name__)
-
-
-def checkColor(colorArg):
-    """Checks the provided colorArg against the compatible colors from Rich.Color"""
-    if isinstance(colorArg, Color):
-        return colorArg.name
-
-    if colorArg and isinstance(colorArg, list):
-        colorArg = colorArg[0]
-        return colorArg
-    if isinstance(colorArg, str):
-        try:
-            checkedColor = Color.parse(colorArg).name
-        except ColorParseError:
-            checkedColor = Color.default().name
-        return checkedColor
 
 
 def is_int(val):
@@ -526,14 +510,31 @@ class Report:
             )
         console.print(table)
 
+    def print_raw_filter_fields(self):
+        """Print list of filter fields which implements command ``buildtest report --filterfields``"""
+        for field in self.filter_fields:
+            console.print(field)
+
+    def print_raw_format_fields(self):
+        """Print list of format fields which implements command ``buildtest report --formatfields``"""
+        for field in self.format_fields:
+            console.print(field)
+
     def print_report(
-        self, terse=None, noheader=None, title=None, count=None, color=None
+        self,
+        terse=None,
+        row_count=None,
+        noheader=None,
+        title=None,
+        count=None,
+        color=None,
     ):
         """This method will print report table after processing report file. By default we print output in
         table format but this can be changed to terse format which will print output in parseable format.
 
         Args:
             terse (bool, optional): Print output int terse format
+            row_count (bool, optional): Print total number of records from the table
             noheader (bool, optional): Determine whether to print header in terse format
             title (str, optional): Table title to print out
             count (int, optional): Number of rows to be printed in terse format
@@ -610,6 +611,10 @@ class Report:
 
         for row in transpose_list:
             table.add_row(*row)
+
+        if row_count:
+            console.print(table.row_count)
+            return
 
         console.print(table)
 
@@ -763,7 +768,6 @@ def report_cmd(args, report_file=None):
     """Entry point for ``buildtest report`` command"""
 
     consoleColor = checkColor(args.color)
-    console.print(consoleColor)
     if args.report_subcommand in ["clear", "c"]:
         # if BUILDTEST_REPORTS file is not present then we have no report files to delete since it tracks all report files that are created
         if not is_file(BUILDTEST_REPORTS):
@@ -821,6 +825,14 @@ def report_cmd(args, report_file=None):
     if args.helpformat:
         results.print_format_fields()
         return
+
+    if args.filterfields:
+        results.print_raw_filter_fields()
+        return
+
+    if args.formatfields:
+        results.print_raw_format_fields()
+        return
     if args.pager:
         with console.pager():
             results.print_report(
@@ -831,7 +843,11 @@ def report_cmd(args, report_file=None):
             )
         return
     results.print_report(
-        terse=args.terse, noheader=args.no_header, count=args.count, color=consoleColor
+        terse=args.terse,
+        row_count=args.row_count,
+        noheader=args.no_header,
+        count=args.count,
+        color=consoleColor,
     )
 
 

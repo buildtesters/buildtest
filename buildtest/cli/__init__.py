@@ -391,6 +391,12 @@ def history_menu(subparsers):
     list_parser.add_argument(
         "--pager", action="store_true", help="Enabling PAGING when viewing result"
     )
+    list_parser.add_argument(
+        "--color",
+        type=supported_color,
+        metavar="COLOR",
+        help="Print output of table with the selected color.",
+    )
 
     query = history_subparser.add_parser(
         "query", help="Query information for a particular build"
@@ -705,6 +711,16 @@ def buildspec_menu(subparsers):
         action="store_true",
         help="Show Format fields for --format option for formatting buildspec cache output",
     )
+    filter_group.add_argument(
+        "--filterfields",
+        action="store_true",
+        help="Print raw Filter fields for --filter option for filtering builspec cache output",
+    )
+    filter_group.add_argument(
+        "--formatfields",
+        action="store_true",
+        help="Print raw Format fields for --format option for formatting builspec cache output",
+    )
 
     terse_group.add_argument(
         "-n",
@@ -714,6 +730,11 @@ def buildspec_menu(subparsers):
     )
     terse_group.add_argument(
         "--terse", help="Print output in machine readable format", action="store_true"
+    )
+    buildspec_find.add_argument(
+        "--count",
+        type=positive_number,
+        help="Limit number of entries queried in output",
     )
     buildspec_find.add_argument(
         "--pager", action="store_true", help="Enable PAGING when viewing result"
@@ -730,7 +751,12 @@ def buildspec_menu(subparsers):
         type=str,
         action="append",
     )
-
+    buildspec_find.add_argument(
+        "--color",
+        type=supported_color,
+        metavar="COLOR",
+        help="Print output of table with the selected color.",
+    )
     buildspec_find.add_argument(
         "-q",
         "--quiet",
@@ -971,6 +997,16 @@ def report_menu(subparsers):
     parser_report.add_argument(
         "--helpformat", action="store_true", help="List of available format fields"
     )
+    parser_report.add_argument(
+        "--filterfields",
+        action="store_true",
+        help="Print raw filter fields for --filter option to filter the report",
+    )
+    parser_report.add_argument(
+        "--formatfields",
+        action="store_true",
+        help="Print raw format fields for --format option to format the report",
+    )
     pass_fail = parser_report.add_mutually_exclusive_group()
 
     pass_fail.add_argument(
@@ -1026,6 +1062,11 @@ def report_menu(subparsers):
         "--terse",
         action="store_true",
         help="Print output in machine readable format",
+    )
+    parser_report.add_argument(
+        "--row-count",
+        action="store_true",
+        help="Print total count of records from the table.",
     )
     parser_report.add_argument(
         "--color",

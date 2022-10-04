@@ -8,14 +8,30 @@ buildtest keeps track of all tests and results in a JSON file.  This file is rea
 command to extract certain fields from JSON file and display
 them in table format. Shown below is command usage to query test reports.
 
-.. command-output:: buildtest report --help
+.. dropdown:: ``buildtest report --help``
+
+    .. command-output:: buildtest report --help
 
 You may run ``buildtest report`` without any option, and buildtest will display **all** test results
 with default format fields. To see a list of all format fields, click :ref:`here <report_format_fields>`.
 
-.. command-output:: buildtest report
-   :ellipsis: 20
+.. dropdown:: ``buildtest report``
 
+    .. command-output:: buildtest report
+       :ellipsis: 20
+
+The ``buildtest report`` command will fetch all records and display them in a table format, if you want to know how many records are displayed in the table you can use ``buildtest report --row-count`` which will display   
+a raw count of records in the table. In the example below we will run ``buildtest report --row-count`` which will show number of tests in the report.
+
+.. dropdown:: ``buildtest report --row-count``
+
+    .. command-output:: buildtest report --row-count
+
+You may find it useful to fetch all failed records and determine pass/fail criteria as part of your shell script, this can be done by running ``buildtest report --row-count --fail`` as shown below.
+
+.. dropdown:: ``buildtest report --row-count --fail``
+
+    .. command-output:: buildtest report --row-count --fail
 
 .. note::
    ``buildtest rt`` is an alias for ``buildtest report`` command.
@@ -24,27 +40,30 @@ Color output of buildtest report (buildtest report --color)
 ------------------------------------------------------------
 
 If you would like to change the output color for either ``buildtest report`` and ``buildtest report summary`` you can use the ``--color`` option.
-This will print the output of the previous two commands in the provided color. The color must be one of the supported colors by rich console.
+This will print the output of the previous two commands in the provided color. The color must be one of the supported colors by rich console::
 
-::  
     buildtest report --color red 
     buildtest report --color red summary --detailed
 
-Format Reports (``buildtest report --format``)
------------------------------------------------
-
 .. _report_format_fields:
 
-Available Format Fields (``buildtest report --helpformat``)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+Format Reports (``buildtest report --format``)
+-----------------------------------------------
 
 The **buildtest report** command displays a default format fields that can be changed using the
 ``--format`` option. The report file (JSON) contains many more fields and we expose some of the fields
 with the **--format** option. To see a list of available format fields you can run ``buildtest report --helpformat``.
 This option will list all format fields with their description.
 
-.. command-output:: buildtest report --helpformat
+.. dropdown:: ``buildtest report --helpformat``
+
+    .. command-output:: buildtest report --helpformat
+
+To print just the raw format fields use the command ``buildtest report --formatfields``.
+
+.. dropdown:: ``buildtest report --formatfields``
+
+    .. command-output:: buildtest report --formatfields
 
 Format Field Usage
 ~~~~~~~~~~~~~~~~~~
@@ -52,8 +71,10 @@ Format Field Usage
 The ``--format`` field are specified in comma separated format (i.e ``--format <field1>,<field2>``).
 In this example we format table by fields ``--format id,executor,state,returncode``.
 
-.. command-output:: buildtest rt --format name,id,executor,state,returncode
-   :ellipsis: 21
+.. dropdown:: ``buildtest rt --format name,id,executor,state,returncode``
+
+    .. command-output:: buildtest rt --format name,id,executor,state,returncode
+       :ellipsis: 21
 
 Filter Reports (``buildtest report --filter``)
 -----------------------------------------------
@@ -63,7 +84,15 @@ so therefore we need a mechanism to filter the test results. The ``--filter`` op
 to filter out tests in the output based on filter fields. First, lets see the available filter fields
 by run ``buildtest report --helpfilter`` which shows a list of filter fields and their description.
 
-.. command-output:: buildtest report --helpfilter
+.. dropdown:: ``buildtest report --helpfilter``
+
+    .. command-output:: buildtest report --helpfilter
+
+To print just the raw filter fields use the command ``buildtest report --filterfields``.
+
+.. dropdown:: ``buildtest report --filterfields``
+
+    .. command-output:: buildtest report --filterfields
 
 The ``--filter`` option expects arguments in **key=value** format. You can
 specify multiple filter delimited by comma. buildtest will treat multiple
@@ -76,7 +105,9 @@ Filter by returncode (``--filter returncode``)
 If you want to retrieve all tests with a given returncode, we can use the **returncode**
 property. For instance, let's retrieve all tests with returncode of 2 by setting ``--filter returncode=2``.
 
-.. command-output:: buildtest rt --filter returncode=2 --format=name,id,returncode
+.. dropdown:: ``buildtest rt --filter returncode=2 --format=name,id,returncode``
+
+    .. command-output:: buildtest rt --filter returncode=2 --format=name,id,returncode
 
 .. Note:: buildtest automatically converts returncode to integer when matching returncode, so ``--filter returncode="2"`` will work too
 
@@ -88,7 +119,9 @@ we want to filter all tests by name ``exit1_pass``, this can be achieved by sett
 field as follows: ``--filter name=exit1_pass``. Shown below is an example using **name** filter field
 to filter test results.
 
-.. command-output:: buildtest rt --filter name=exit1_pass --format=name,id,returncode,state
+.. dropdown:: ``buildtest rt --filter name=exit1_pass --format=name,id,returncode,state``
+
+    .. command-output:: buildtest rt --filter name=exit1_pass --format=name,id,returncode,state
 
 Filter by buildspec (``--filter buildspec``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -98,7 +131,9 @@ Likewise, we can filter results by buildspec file using **buildspec** attribute 
 relative or absolute path. buildtest will resolve path (absolute path) and find the appropriate
 tests that belong to the buildspec file. If file doesn't exist or is not found in cache it will raise an error.
 
-.. command-output:: buildtest rt --filter buildspec=tutorials/python-hello.yml --format=name,id,state,buildspec
+.. dropdown:: ``buildtest rt --filter buildspec=tutorials/python-hello.yml --format=name,id,state,buildspec``
+
+    .. command-output:: buildtest rt --filter buildspec=tutorials/python-hello.yml --format=name,id,state,buildspec
 
 
 Filter by test state (``--filter state``)
@@ -110,7 +145,9 @@ value of ``[PASS|FAIL]`` since these are the two recorded test states marked by 
 We can also pass multiple filter fields for instance if we want to find all **FAIL**
 tests for executor **generic.local.sh** we can do the following.
 
-.. command-output:: buildtest rt --filter state=FAIL,executor=generic.local.sh --format=name,id,state,executor
+.. dropdown:: ``buildtest rt --filter state=FAIL,executor=generic.local.sh --format=name,id,state,executor``
+
+    .. command-output:: buildtest rt --filter state=FAIL,executor=generic.local.sh --format=name,id,state,executor
 
 Filter Exception Cases
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -118,28 +155,40 @@ Filter Exception Cases
 The ``returncode`` filter field expects an integer value, so if you try a non-integer
 returncode you will get the following message
 
-.. command-output:: buildtest rt --filter returncode=1.5
-    :returncode: 1
+.. dropdown:: ``buildtest rt --filter returncode=1.5``
+    :color: warning
+
+    .. command-output:: buildtest rt --filter returncode=1.5
+        :returncode: 1
 
 The ``state`` filter field expects value of ``PASS`` or ``FAIL`` so if you specify an
 invalid state you will get an error as follows.
 
-.. command-output:: buildtest rt --filter state=UNKNOWN
-    :returncode: 1
+.. dropdown:: ``buildtest rt --filter state=UNKNOWN``
+    :color: warning
+
+    .. command-output:: buildtest rt --filter state=UNKNOWN
+        :returncode: 1
 
 The ``buildspec`` field expects a valid file path, it can be an absolute or relative
 path, buildtest will resolve absolute path and check if file exist and is in the report
 file. If it's an invalid file we get an error such as
 
-.. command-output:: buildtest rt --filter buildspec=/path/to/invalid.yml
-    :returncode: 1
+.. dropdown:: ``buildtest rt --filter buildspec=/path/to/invalid.yml``
+    :color: warning
+
+    .. command-output:: buildtest rt --filter buildspec=/path/to/invalid.yml
+        :returncode: 1
 
 You may have a valid filepath for buildspec filter field such as
 ``$BUILDTEST_ROOT/tutorials/invalid_executor.yml``, but there is no record of a test in the report cache
 because this test wasn't run. In this case you will get the following message.
 
-.. command-output:: buildtest rt --filter buildspec=$BUILDTEST_ROOT/tutorials/invalid_executor.yml
-    :returncode: 1
+.. dropdown:: ``buildtest rt --filter buildspec=$BUILDTEST_ROOT/tutorials/invalid_executor.yml``
+   :color: warning
+
+    .. command-output:: buildtest rt --filter buildspec=$BUILDTEST_ROOT/tutorials/invalid_executor.yml
+        :returncode: 1
 
 Find Latest or Oldest test
 --------------------------
@@ -151,16 +200,22 @@ test you can use ``--oldest`` option, likewise you can retrieve the latest run v
 Let's take a look at this example, we filter by test name ``exit1_pass`` which retrieves all
 test runs. In subsequent example we filter by latest and oldest run.
 
-.. command-output:: buildtest report --filter name=exit1_pass --format name,id,starttime
+.. dropdown:: Show oldest run
 
-.. command-output:: buildtest report --filter name=exit1_pass --format name,id,starttime --oldest
+    .. command-output:: buildtest report --filter name=exit1_pass --format name,id,starttime
 
-.. command-output:: buildtest report --filter name=exit1_pass --format name,id,starttime --latest
+    .. command-output:: buildtest report --filter name=exit1_pass --format name,id,starttime --oldest
+
+.. dropdown:: Show latest run
+
+    .. command-output:: buildtest report --filter name=exit1_pass --format name,id,starttime --latest
 
 You may combine **--oldest** and **--latest** options in same command, in this case
 buildtest will retrieve the first and last record of every test.
 
-.. command-output:: buildtest report --filter name=exit1_pass --format name,id,starttime --oldest --latest
+.. dropdown:: Show oldest and latest run
+
+    .. command-output:: buildtest report --filter name=exit1_pass --format name,id,starttime --oldest --latest
 
 .. _buildtest_report_fail:
 
@@ -174,9 +229,11 @@ Let's take a look at next two example, the first command will query report and l
 and failed test. The second command will run same example with ``--fail`` and only retrieve failed tests.
 Take note of the **state** property in table, in second example buildtest will filter test and report all **FAIL** tests.
 
-.. command-output:: buildtest report --format name,id,state --count=6
+.. dropdown:: Show fail tests
 
-.. command-output:: buildtest report --format name,id,state --fail --count=6
+    .. command-output:: buildtest report --format name,id,state --count=6
+
+    .. command-output:: buildtest report --format name,id,state --fail --count=6
 
 Find all Passed Tests (``buildtest report --pass``)
 --------------------------------------------------------
@@ -185,7 +242,9 @@ The ``buildtest report --pass``, works similar to ``buildtest report --fail`` wh
 
 We can see in example below, that buildtest will retrieve only PASS tests which can be determined by the ``state`` property
 
-.. command-output:: buildtest report --format name,id,state --pass --count=6
+.. dropdown:: Show pass tests
+
+    .. command-output:: buildtest report --format name,id,state --pass --count=6
 
 .. Note::
     The ``--pass`` and ``--fail`` are mutually exclusive option which will query all PASS or FAIL test from report file, if you try to
@@ -203,63 +262,65 @@ Let's take a look at these two example, the first test queries report by filteri
 will run same example with ``--start --end`` option. Take note of the **starttime** and **endtime** properties in table, in second example buildtest will
 filter test and only report tests in the range of [start, end] dates.
 
-.. code-block:: console
+.. dropdown:: Filter by start and end date
 
-    $ buildtest report --filter state=FAIL,name=exit1_fail --format name,state,starttime,endtime
-    Report File: /home/docs/checkouts/readthedocs.org/user_builds/buildtest/checkout
-                                 s/1082/var/report.json
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-    ┃ name                                                   ┃ state        ┃ starttime                                ┃ endtime                                 ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-    │ exit1_fail                                             │ FAIL         │ 2022/06/09 17:51:50                      │ 2022/06/09 17:51:50                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/09 17:51:51                      │ 2022/06/09 17:51:51                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/09 17:51:53                      │ 2022/06/09 17:51:53                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/09 17:52:01                      │ 2022/06/09 17:52:01                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/10 17:51:50                      │ 2022/06/10 17:51:50                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/10 17:51:52                      │ 2022/06/10 17:51:52                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/10 17:51:52                      │ 2022/06/10 17:51:52                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/10 17:52:01                      │ 2022/06/10 17:52:01                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/11 17:51:57                      │ 2022/06/11 17:51:57                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/11 17:51:59                      │ 2022/06/11 17:51:59                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/11 17:51:57                      │ 2022/06/11 17:51:57                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/11 17:51:59                      │ 2022/06/11 17:51:59                     │
-    └────────────────────────────────────────────────────────┴──────────────┴──────────────────────────────────────────┴─────────────────────────────────────────┘
+    .. code-block:: console
 
-.. code-block:: console
+        $ buildtest report --filter state=FAIL,name=exit1_fail --format name,state,starttime,endtime
+        Report File: /home/docs/checkouts/readthedocs.org/user_builds/buildtest/checkout
+                                     s/1082/var/report.json
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ name                                                   ┃ state        ┃ starttime                                ┃ endtime                                 ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ exit1_fail                                             │ FAIL         │ 2022/06/09 17:51:50                      │ 2022/06/09 17:51:50                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/09 17:51:51                      │ 2022/06/09 17:51:51                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/09 17:51:53                      │ 2022/06/09 17:51:53                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/09 17:52:01                      │ 2022/06/09 17:52:01                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/10 17:51:50                      │ 2022/06/10 17:51:50                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/10 17:51:52                      │ 2022/06/10 17:51:52                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/10 17:51:52                      │ 2022/06/10 17:51:52                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/10 17:52:01                      │ 2022/06/10 17:52:01                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/11 17:51:57                      │ 2022/06/11 17:51:57                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/11 17:51:59                      │ 2022/06/11 17:51:59                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/11 17:51:57                      │ 2022/06/11 17:51:57                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/11 17:51:59                      │ 2022/06/11 17:51:59                     │
+        └────────────────────────────────────────────────────────┴──────────────┴──────────────────────────────────────────┴─────────────────────────────────────────┘
 
-    $ buildtest report --filter state=FAIL,name=exit1_fail --format name,state,starttime,endtime --start 2022-06-10 --end 2022-06-11
-    Report File: /home/docs/checkouts/readthedocs.org/user_builds/buildtest/checkout
-                                 s/1082/var/report.json
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-    ┃ name                                                   ┃ state        ┃ starttime                                ┃ endtime                                 ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-    │ exit1_fail                                             │ FAIL         │ 2022/06/10 17:51:50                      │ 2022/06/10 17:51:50                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/10 17:51:52                      │ 2022/06/10 17:51:52                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/10 17:51:52                      │ 2022/06/10 17:51:52                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/10 17:52:01                      │ 2022/06/10 17:52:01                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/11 17:51:57                      │ 2022/06/11 17:51:57                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/11 17:51:59                      │ 2022/06/11 17:51:59                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/11 17:51:57                      │ 2022/06/11 17:51:57                     │
-    ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
-    │ exit1_fail                                             │ FAIL         │ 2022/06/11 17:51:59                      │ 2022/06/11 17:51:59                     │
-    └────────────────────────────────────────────────────────┴──────────────┴──────────────────────────────────────────┴─────────────────────────────────────────┘
+    .. code-block:: console
+
+        $ buildtest report --filter state=FAIL,name=exit1_fail --format name,state,starttime,endtime --start 2022-06-10 --end 2022-06-11
+        Report File: /home/docs/checkouts/readthedocs.org/user_builds/buildtest/checkout
+                                     s/1082/var/report.json
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ name                                                   ┃ state        ┃ starttime                                ┃ endtime                                 ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ exit1_fail                                             │ FAIL         │ 2022/06/10 17:51:50                      │ 2022/06/10 17:51:50                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/10 17:51:52                      │ 2022/06/10 17:51:52                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/10 17:51:52                      │ 2022/06/10 17:51:52                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/10 17:52:01                      │ 2022/06/10 17:52:01                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/11 17:51:57                      │ 2022/06/11 17:51:57                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/11 17:51:59                      │ 2022/06/11 17:51:59                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/11 17:51:57                      │ 2022/06/11 17:51:57                     │
+        ├────────────────────────────────────────────────────────┼──────────────┼──────────────────────────────────────────┼─────────────────────────────────────────┤
+        │ exit1_fail                                             │ FAIL         │ 2022/06/11 17:51:59                      │ 2022/06/11 17:51:59                     │
+        └────────────────────────────────────────────────────────┴──────────────┴──────────────────────────────────────────┴─────────────────────────────────────────┘
 
 Find limited Tests (``buildtest report --count``)
 --------------------------------------------------------
@@ -283,7 +344,9 @@ is delimited by PIPE symbol (``|``). The ``--terse`` option works with ``--forma
 next example, we report all FAIL tests in terse output. The first line is the header of tables followed by
 output, if you want to disable output of header you can use ``--no-header`` option.
 
-.. command-output:: buildtest report --filter state=FAIL --format=name,id,state -t
+.. dropdown:: ``buildtest report --filter state=FAIL --format=name,id,state -t``
+
+    .. command-output:: buildtest report --filter state=FAIL --format=name,id,state -t
 
 Report Summary (``buildtest report summary``)
 ----------------------------------------------
@@ -292,7 +355,9 @@ The ``buildtest report summary`` command can be used to provide a short summary 
 
 Shown below is an example output from the report summary.
 
-.. command-output:: buildtest report summary
+.. dropdown:: ``buildtest report summary``
+
+    .. command-output:: buildtest report summary
 
 The ``buildtest report summary --detailed`` command can be used to provide a summary of the test report
 with breakdown statistics of tests including all fail tests, number of tests by name, test runs
@@ -300,7 +365,9 @@ and buildspecs in report file. To see a short report use
 
 Shown below is an example output from the report summary --detailed.
 
-.. command-output:: buildtest report summary --detailed
+.. dropdown:: ``buildtest report summary --detailed``
+
+    .. command-output:: buildtest report summary --detailed
 
 
 .. _inspect_test:
@@ -316,25 +383,33 @@ is printed in table format. We have limited the output to a limited fields howev
 we have a separate command called ``buildtest inspect`` that can be used for inspecting a test record
 based on name or id. Shown below is the command usage for `buildtest inspect` command.
 
-.. command-output:: buildtest inspect --help
+.. dropdown:: ``buildtest inspect --help``
+
+    .. command-output:: buildtest inspect --help
 
 You can report all test names and corresponding ids using ``buildtest inspect list`` which
 will be used for querying tests by name or id.
 
-.. command-output:: buildtest inspect list
-   :ellipsis: 20
+.. dropdown:: ``buildtest inspect list``
+
+    .. command-output:: buildtest inspect list
+       :ellipsis: 20
 
 You can fetch all builder names via ``buildtest inspect list --builder`` which is the format used for
 querying test records via :ref:`buildtest inspect name <inspect_by_name>` or :ref:`buildtest inspect query <inspect_query>`.
 
-.. command-output:: buildtest inspect list --builder
-    :ellipsis: 5
+.. dropdown:: ``buildtest inspect list --builder``
+
+    .. command-output:: buildtest inspect list --builder
+        :ellipsis: 5
 
 If you are interested in parsing output of ``buildtest inspect list``, you can may find the ``--terse`` option useful. The output will show
 headers followed by entries, the headers can be omitted by specifying ``--no-header`` option.
 
-.. command-output:: buildtest inspect list -t
-   :ellipsis: 5
+.. dropdown:: ``buildtest inspect list -t``
+
+    .. command-output:: buildtest inspect list -t
+       :ellipsis: 5
 
 .. _inspect_by_name:
 
@@ -348,12 +423,16 @@ metadata for each test such as `user`, `hostname`, `command`, path to output and
 state of test, returncode, etc... In this example, we will retrieve record for test name **circle_area** which
 will print the raw content of the test in JSON format.
 
-.. command-output:: buildtest it name circle_area
+.. dropdown:: ``buildtest inspect name circle_area``
+
+    .. command-output:: buildtest inspect name circle_area
 
 You can query multiple tests as positional arguments in the format: ``buildtest inspect name <test1> <test2>``
 In this next example, we will retrieve test records for ``bash_shell`` and  ``python_hello``.
 
-.. command-output:: buildtest inspect name bash_shell python_hello
+.. dropdown:: ``buildtest inspect name bash_shell python_hello``
+
+    .. command-output:: buildtest inspect name bash_shell python_hello
 
 If you want to query all test records for a given name you can use the ``--all`` option which is applied to all positional
 arguments.
@@ -367,7 +446,9 @@ want to fetch all records you can pass the ``--all`` option.
 
 In example below we will fetch latest record for all tests in **tutorials/vars.yml**
 
-.. command-output:: buildtest it buildspec tutorials/vars.yml
+.. dropdown:: ``buildtest it buildspec tutorials/vars.yml``
+
+    .. command-output:: buildtest it buildspec tutorials/vars.yml
 
 buildtest will report an error if an input buildspec is invalid filepath such as one below
 
@@ -397,14 +478,18 @@ each test records that can be useful when you are inspecting a test. Currently, 
 fetch content of output file, error file, testpath, and build script. Shown below are the list
 of available options for ``buildtest inspect query``.
 
-.. command-output:: buildtest inspect query --help
+.. dropdown:: ``buildtest inspect --help``
+
+    .. command-output:: buildtest inspect query --help
 
 The ``buildtest inspect query`` command expects positional arguments that are name of tests
 which you can get by running ``buildtest inspect list``.
 
 For instance, let's query the test ``circle_area`` by running the following:
 
-.. command-output:: buildtest inspect query circle_area
+.. dropdown:: ``buildtest inspect query circle_area``
+
+    .. command-output:: buildtest inspect query circle_area
 
 buildtest will display metadata for each test. By default, buildtest will report the last run
 for each test that is specified as a positional argument.
@@ -412,19 +497,25 @@ for each test that is specified as a positional argument.
 You can retrieve content of output file via ``--output`` or short option ``-o``. In this command, we retrieve the last run for ``circle_area`` and
 print content of output file
 
-.. command-output:: buildtest inspect query -o circle_area
+.. dropdown:: ``buildtest inspect query -o circle_area``
+
+    .. command-output:: buildtest inspect query -o circle_area
 
 If you want to see content of error file use the ``-e`` or ``--error`` flag. It would be useful to inspect
 content of build script and generated test, which can be retrieved using ``--testpath`` and ``--buildscript``. Let's
 query test ``circle_area`` and report all of the content fields
 
-.. command-output:: buildtest inspect query -o -e -t -b circle_area
+.. dropdown:: ``buildtest inspect query -o -e -t -b circle_area``
+
+    .. command-output:: buildtest inspect query -o -e -t -b circle_area
 
 We can query multiple tests using ``buildtest inspect query`` since each test is a positional argument. Any
 options specified to `buildtest inspect query` will be applied to all test. For instance, let's fetch the output the
 of test names ``root_disk_usage`` and ``python_hello``
 
-.. command-output:: buildtest inspect query -o root_disk_usage python_hello
+.. dropdown:: ``buildtest inspect query -o root_disk_usage python_hello``
+
+    .. command-output:: buildtest inspect query -o root_disk_usage python_hello
 
 If you want to query specific test ID, you can specify name of test followed by `/` and test ID. You don't need to specify
 the full ID however tab completion is available to help fill in the names. For example if you want to query test record for

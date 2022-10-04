@@ -25,6 +25,7 @@ from buildtest.utils.file import (
     resolve_path,
     walk_tree,
 )
+from buildtest.utils.tools import checkColor
 from jsonschema.exceptions import ValidationError
 from rich.layout import Layout
 from rich.panel import Panel
@@ -52,6 +53,8 @@ class BuildspecCache:
         header=None,
         terse=None,
         pager=None,
+        color=None,
+        count=None,
     ):
         """The initializer method for BuildspecCache class is responsible for loading and finding buildspecs into buildspec cache. First we
         resolve paths to directory where buildspecs will be searched. This can be specified via ``--roots`` option on command line or one can
@@ -69,6 +72,8 @@ class BuildspecCache:
             roots (list, optional): List of directories to search for buildspecs. This argument contains value of ``buildtest buildspec find --roots``
             headers (bool, optional):  Option to control whether header are printed in terse output. This argument contains value of ``buildtest buildspec find --no-header``
             terse (bool, optional): Enable terse mode when printing output. In this mode we don't print output in table format instead output is printed in parseable format. This option can be specified via ``buildtest buildspec find --terse``
+            color (str, optional): An instance of a string class that selects the color to use when printing table output
+            count (int, optional): Number of entries to display in output. This argument contains value of ``buildtest buildspec find --count``
         """
 
         if not is_dir(BUILDTEST_BUILDSPEC_DIR):
@@ -79,6 +84,7 @@ class BuildspecCache:
         self.format = formatfields
         self.header = header
         self.pager = pager
+        self.count = count
         # if --root is not specified we set to empty list instead of None
         self.roots = roots or []
 
@@ -89,6 +95,7 @@ class BuildspecCache:
         self.invalid_buildspecs = {}
 
         self.terse = terse
+        self.color = checkColor(color)
 
         self.rebuild = rebuild
         self.cache = {}
@@ -596,7 +603,7 @@ class BuildspecCache:
             Column("Buildspecs", overflow="fold"),
             title="List of Buildspecs",
             header_style="blue",
-            row_styles=["red"],
+            row_styles=[self.color],
         )
         for buildspec in self.cache["buildspecs"].keys():
             table.add_row(buildspec)
@@ -627,7 +634,7 @@ class BuildspecCache:
             Column("Tags", overflow="fold"),
             title="List of Tags",
             header_style="blue",
-            row_styles=["green"],
+            row_styles=[self.color],
         )
         for tagname in self.cache["unique_tags"]:
             table.add_row(tagname)
@@ -656,7 +663,7 @@ class BuildspecCache:
             Column("Executors", overflow="fold"),
             title="List of Executors",
             header_style="blue",
-            row_styles=["green"],
+            row_styles=[self.color],
         )
         for executor in self.cache["unique_executors"]:
             table.add_row(executor)
@@ -684,9 +691,9 @@ class BuildspecCache:
             return
 
         table = Table(title="Tests by Executors", header_style="blue", show_lines=True)
-        table.add_column("Executors", style="yellow", overflow="fold")
-        table.add_column("Name", style="red", overflow="fold")
-        table.add_column("Description", style="green", overflow="fold")
+        table.add_column("Executors", style=self.color, overflow="fold")
+        table.add_column("Name", style=self.color, overflow="fold")
+        table.add_column("Description", style=self.color, overflow="fold")
 
         for executor_name in self.cache["executor"].keys():
             for test_name, description in self.cache["executor"][executor_name].items():
@@ -714,9 +721,9 @@ class BuildspecCache:
             return
 
         table = Table(title="Tests by Tags", header_style="blue", show_lines=True)
-        table.add_column("Tags", style="yellow", overflow="fold")
-        table.add_column("Name", style="red", overflow="fold")
-        table.add_column("Description", style="green", overflow="fold")
+        table.add_column("Tags", style=self.color, overflow="fold")
+        table.add_column("Name", style=self.color, overflow="fold")
+        table.add_column("Description", style=self.color, overflow="fold")
 
         for tagname in self.cache["tags"].keys():
             for test_name, description in self.cache["tags"][tagname].items():
@@ -749,9 +756,7 @@ class BuildspecCache:
         table = Table(
             title=f"Buildspec Cache: {BUILDSPEC_CACHE_FILE}",
             show_lines=True,
-            header_style="red",
-            style="cyan",
-            row_styles=["tan"],
+            row_styles=[self.color],
             title_justify="center",
             show_edge=False,
         )
@@ -764,6 +769,10 @@ class BuildspecCache:
             table.add_column(key, overflow="fold", header_style="blue")
 
         t = [list(i) for i in zip(*join_list)]
+
+        # if --count is specified then reduce list to length of self.count
+        if self.count:
+            t = t[: self.count]
 
         for i in t:
             table.add_row(*i)
@@ -956,6 +965,20 @@ class BuildspecCache:
         table.add_row("tags", "Display 'tag' property in test ")
         table.add_row("type", "Display 'type' property in test")
         console.print(table)
+
+    def print_raw_filter_fields(self):
+        """This method prints the raw filter fields available for buildspec cache. This
+        method implements command ``buildtest buildspec find --filterfields``
+        """
+        for field in self.filter_fields:
+            console.print(field)
+
+    def print_raw_format_fields(self):
+        """This method prints the raw format fields available for buildspec cache. This
+        method implements command ``buildtest buildspec find --formatfields``
+        """
+        for field in self.format_fields:
+            console.print(field)
 
     def print_paths(self):
         """This method print buildspec paths, this implements command ``buildtest buildspec find --paths``"""
@@ -1294,6 +1317,8 @@ def buildspec_find(args, configuration):
         header=args.no_header,
         terse=args.terse,
         pager=args.pager,
+        color=args.color,
+        count=args.count,
     )
 
     if args.buildspec_find_subcommand == "invalid":
@@ -1338,6 +1363,16 @@ def buildspec_find(args, configuration):
     # buildtest buildspec find --helpformat
     if args.helpformat:
         cache.print_format_fields()
+        return
+
+    # buildtest buildspec find --filterfields
+    if args.filterfields:
+        cache.print_raw_filter_fields()
+        return
+
+    # buildtest buildspec find --formatfields
+    if args.formatfields:
+        cache.print_raw_format_fields()
         return
 
     cache.print_buildspecs(quiet=args.quiet)

@@ -18,6 +18,10 @@ if test -n "${ZSH_VERSION:-}" ; then
   fi
 fi
 
+_supported_colors()
+{
+  python -c "from rich.color import ANSI_COLOR_NAMES;print(' '.join(list(ANSI_COLOR_NAMES.keys())))"
+}
 # get a list of available color themes used for command completion for --theme option
 _avail_color_themes ()
 {
@@ -97,6 +101,28 @@ _avail_maintainers()
 {
   buildtest buildspec maintainers --terse -l --no-header | sort
 }
+
+# list of filterfields
+_avail_buildspec_filterfields()
+{
+  buildtest buildspec find --filterfields
+}
+
+# list of formatfields
+_avail_buildspec_formatfields()
+{
+  buildtest buildspec find --formatfields
+}
+
+_avail_report_filterfields()
+{
+  buildtest report --filterfields
+}
+
+_avail_report_formatfields()
+{
+  buildtest report --formatfields
+}
 #  entry point to buildtest bash completion function
 _buildtest ()
 {
@@ -105,13 +131,11 @@ _buildtest ()
 
   COMPREPLY=()   # Array variable storing the possible completions.
 
-  local cmds="build buildspec cd cdash clean config debugreport docs help info inspect history path report schema schemadocs stylecheck unittests"
-  local alias_cmds="bd bc cg debug it h hy rt style test"
-  local opts="--color --config --debug --editor --help --logpath --print-log --report --version --view-log -c -d -h -r -V"
-
   next=${COMP_WORDS[1]}
 
+
   case "$next" in
+  #case "${prev}" in
     build|bd)
       local shortoption="-b -e -et -f -m -s -t -u -x"
       local longoption="--buildspec --disable-executor-check --executor --executor-type --exclude --filter --helpfilter --maxpendtime --modules --module-purge --nodes --pollinterval --procs --rerun --remove-stagedir --retry --stage --tags --timeout --unload-modules"
@@ -171,11 +195,18 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--color --end --fail --filter --format --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --start --terse  -e -f -h -n -p -s -t c clear l list sm summary"
-      local copts=$(python -c "from rich.color import ANSI_COLOR_NAMES;print(' '.join(list(ANSI_COLOR_NAMES.keys())))")
+      local opts="--color --end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse  -e -f -h -n -p -s -t c clear l list sm summary"
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       case ${prev} in --color)
-        COMPREPLY=( $( compgen -W "$copts" -- $cur ) )
+        COMPREPLY=( $( compgen -W "$(_supported_colors)" -- $cur ) )
+        return
+      esac
+      case "${prev}" in --filter)
+        COMPREPLY=( $( compgen -W "$(_avail_report_filterfields)" -- $cur ) )
+        return
+      esac
+      case "${prev}" in --format)
+        COMPREPLY=( $( compgen -W "$(_avail_report_formatfields)" -- $cur ) )
         return
       esac
       case "$prev" in summary)
@@ -190,7 +221,7 @@ _buildtest ()
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
-      case "${COMP_WORDS[2]}" in
+      case "${prev}" in
         compilers|co)
           local opts="--help --json --yaml -h -j -y find test"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
@@ -261,7 +292,7 @@ _buildtest ()
 
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
       case ${COMP_WORDS[2]} in
-      find)
+      find|f)
          case ${COMP_WORDS[3]} in
          # completion for 'buildtest buildspec find invalid'
          invalid)
@@ -269,11 +300,24 @@ _buildtest ()
            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
          # completion for rest of arguments
          *)
-           local longopts="--buildspec --executors --filter --format --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --tags --root --terse"
+           local longopts="--buildspec --color --count --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --tags --root --terse"
            local shortopts="-b -e -h -n -p -q -r -t"
            local subcmds="invalid"
            local allopts="${longopts} ${shortopts} ${subcmds}"
-           COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) );;
+           COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) )
+           case "${prev}" in --filter)
+             COMPREPLY=( $( compgen -W "$(_avail_buildspec_filterfields)" -- $cur ) )
+             return
+           esac
+           case "${prev}" in --format)
+             COMPREPLY=( $( compgen -W "$(_avail_buildspec_formatfields)" -- $cur ) )
+             return
+           esac
+           case ${prev} in --color)
+            COMPREPLY=( $( compgen -W "$(_supported_colors)" -- $cur ) )
+            return
+           esac
+           ;;
          esac
         ;;
       summary|sm)
@@ -344,8 +388,13 @@ _buildtest ()
 
       case ${COMP_WORDS[2]} in
       list)
-        local opts="--help --no-header --pager --terse -h -n -t"
-        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
+        local opts="--help --color --no-header --pager --terse -h -n -t"
+        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+
+        if [[ "${prev}" == "--color" ]]; then
+          COMPREPLY=( $( compgen -W "$(_supported_colors)" -- $cur ) )
+        fi
+        ;;
       query)
         local opts="--help --log --output -h -l -o"
         COMPREPLY=( $( compgen -W "$(_history_id)" -- $cur ) )
@@ -385,6 +434,10 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       ;;
     *)
+      local cmds="build buildspec cd cdash clean config debugreport docs help info inspect history path report schema schemadocs stats stylecheck unittests"
+      local alias_cmds="bd bc cg debug it h hy rt style test"
+      local opts="--config --debug --editor --help --logpath --print-log --no-color --report --version --view-log -c -d -h -r -V"
+
       case "${cur}" in
       # print main options to buildtest
         -*)

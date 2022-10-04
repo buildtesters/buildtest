@@ -102,6 +102,12 @@ def test_func_buildspec_find():
     # implements buildtest buildspec find --helpformat
     cache.print_format_fields()
 
+    # implements buildtest buildspec find --filterfields
+    cache.print_raw_filter_fields()
+
+    # implements buildtest buildspec find --formatfields
+    cache.print_raw_format_fields()
+
     # buildtest buildspec find --pager
     cache = BuildspecCache(configuration=configuration, pager=True)
     cache.print_tags()
@@ -115,6 +121,15 @@ def test_func_buildspec_find():
 
     # buildtest buildspec find --quiet
     cache.print_buildspecs(quiet=True)
+
+    # test buildspec cache with color 'blue'
+    cache = BuildspecCache(rebuild=True, configuration=configuration, color="blue")
+    cache.print_buildspecs()
+    cache.print_buildspecfiles()
+    cache.print_executors()
+    cache.print_tags()
+    cache.print_by_executors()
+    cache.print_by_tags()
 
 
 @pytest.mark.cli

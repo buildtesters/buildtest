@@ -136,6 +136,14 @@ def print_buildspec_help():
     table.add_row("buildtest buildspec find --helpfilter", "Show all filter fields")
     table.add_row("buildtest buildspec find --helpformat", "Show all format fields")
     table.add_row("buildtest buildspec find --terse", "Display output in terse format")
+    table.add_row(
+        "buildtest buildspec find --count=5",
+        "Limit output of buildspec cache to 5 elements",
+    )
+    table.add_row(
+        "buildtest buildspec find --color=blue",
+        "Color output using a pre-selected color such as 'blue'",
+    )
     table.add_row("buildtest buildspec find invalid", "Show invalid buildspecs")
     table.add_row(
         "buildtest buildspec find invalid --error",
@@ -343,7 +351,7 @@ def print_report_help():
     table.add_row("buildtest report --helpfilter", "List all filter fields")
     table.add_row("buildtest report --helpformat", "List all format fields")
     table.add_row("buildtest report --latest", "Retrieve latest record for all tests")
-    table.add_row("buildtest report --count", "Retrieve limited records for all tests")
+    table.add_row("buildtest report --count=5", "Retrieve 5 records from report file")
     table.add_row(
         "buildtest -r /tmp/result.json report",
         "Read report file /tmp/result.json and display result",
@@ -355,6 +363,9 @@ def print_report_help():
         "Show all test records in the date range from [2022-01-01, 2022-01-05]",
     )
     table.add_row("buildtest report --terse", "Print report in terse format")
+    table.add_row(
+        "buildtest report --row-count", "Print total count of records from the table"
+    )
     table.add_row("buildtest report list", "List all report files")
     table.add_row("buildtest report clear", "Remove content of default report file")
     table.add_row("buildtest report summary", "Show summary of test report")
@@ -373,6 +384,9 @@ def print_history_help():
 
     table.add_row("buildtest history list", "List all build history files")
     table.add_row("buildtest history list --terse", "Print output in terse format")
+    table.add_row(
+        "buildtest history list --color blue", "Print output using the color 'blue'"
+    )
     table.add_row(
         "buildtest history query 0", "Query content of history build identifier '0'"
     )
