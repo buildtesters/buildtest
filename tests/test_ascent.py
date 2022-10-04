@@ -3,7 +3,7 @@ import socket
 
 import pytest
 from buildtest.cli.build import BuildTest
-from buildtest.cli.compilers import BuildtestCompilers
+from buildtest.cli.compilers import BuildtestCompilers, compiler_test
 from buildtest.config import SiteConfiguration
 from buildtest.system import BuildTestSystem
 
@@ -61,3 +61,9 @@ def test_compilers_find_ascent():
     # testing buildtest config compilers find
     bc = BuildtestCompilers(configuration=bc)
     bc.find_compilers()
+
+    # test all compilers
+    compiler_test(configuration=bc)
+
+    # test specific compiler
+    compiler_test(configuration=bc, compiler_names=["gcc/9.1.0"])
