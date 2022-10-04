@@ -28,22 +28,23 @@ def compiler_cmd(args, configuration):
         return
 
     if args.compilers == "test":
-        compiler_test(configuration, args.specific_compilers)
+        compiler_test(configuration, args.compiler_names)
         return
 
     bc = BuildtestCompilers(configuration)
 
-    if args.json is False and args.yaml is False:
-        bc.print_compilers()
-
     if args.json:
         bc.print_json()
+        return
 
     if args.yaml:
         bc.print_yaml()
+        return
+
+    bc.print_compilers()
 
 
-def compiler_test(configuration, specific_compilers=[]):
+def compiler_test(configuration, compiler_names=None):
     """This method implements ``buildtest config compilers test`` which tests
     the compilers with the corresponding modules if set. This command iterates
     over all compilers and perform the module load test and show an output of
@@ -51,51 +52,53 @@ def compiler_test(configuration, specific_compilers=[]):
 
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        compiler_names (list, optional): A list of compiler names to test
     """
     pass_compilers = []
     fail_compilers = []
 
     compilers = configuration.target_config["compilers"]["compiler"]
-    target_compilers = set(specific_compilers)
+    target_compilers = set(compiler_names)
 
     for name in compilers:
-        for module in compilers[name]:
-            if target_compilers and module not in target_compilers:
+        for compiler_instance in compilers[name]:
+            # skip compilers if one needs to test specific compiler instances via 'buildtest config compilers test <compiler>'
+            if target_compilers and compiler_instance not in target_compilers:
+                console.print(f"[red]Skipping test for compiler: {compiler_instance}")
                 continue
-            if compilers[name][module].get("module"):
-                module_test = compilers[name][module]["module"]["load"]
+            if compilers[name][compiler_instance].get("module"):
+                module_test = compilers[name][compiler_instance]["module"]["load"]
                 cmd = Module(module_test, debug=False)
                 ret = cmd.test_modules(login=True)
                 if ret == 0:
-                    pass_compilers.append(module)
+                    pass_compilers.append(compiler_instance)
                     continue
-                fail_compilers.append(module)
+                fail_compilers.append(compiler_instance)
             else:
-                pass_compilers.append(module)
+                pass_compilers.append(compiler_instance)
 
-    if pass_compilers:
+    compiler_pass = Table(title="Compilers Test Pass")
+    compiler_fail = Table(title="Compilers Test Fail")
 
-        table = Table(title="Compilers Test Pass")
-        table.add_column("No.", style="cyan", no_wrap=True)
-        table.add_column("Compiler Name", style="green")
-        table.add_column("Status", justify="right")
+    compiler_pass.add_column("No.", style="cyan", no_wrap=True)
+    compiler_pass.add_column("Compiler Name", style="green")
+    compiler_pass.add_column("Status", justify="right")
 
-        for idx, pass_compiler in enumerate(pass_compilers):
-            table.add_row(str(idx + 1), pass_compiler, "✅")
+    compiler_fail.add_column("No.", style="cyan", no_wrap=True)
+    compiler_fail.add_column("Compiler Name", style="red")
+    compiler_fail.add_column("Status", justify="right")
 
-        console.print(table)
+    for idx, pass_compiler in enumerate(pass_compilers):
+        compiler_pass.add_row(str(idx + 1), pass_compiler, "✅")
 
-    if fail_compilers:
+    for idx, fail_compiler in enumerate(fail_compilers):
+        compiler_fail.add_row(str(idx + 1), fail_compiler, "❌")
 
-        table = Table(title="Compilers Test Fail")
-        table.add_column("No.", style="cyan", no_wrap=True)
-        table.add_column("Compiler Name", style="red")
-        table.add_column("Status", justify="right")
+    if compiler_pass.row_count:
+        console.print(compiler_pass)
 
-        for idx, fail_compiler in enumerate(fail_compilers):
-            table.add_row(str(idx + 1), fail_compiler, "❌")
-
-        console.print(table)
+    if compiler_fail.row_count:
+        console.print(compiler_fail)
 
 
 def compiler_find(configuration, modulepath=None, detailed=None, update=None):

@@ -956,8 +956,7 @@ def config_menu(subparsers):
         help="Test each compiler instance by performing module load test",
     )
     compiler_test.add_argument(
-        "specific_compilers",
-        nargs="*",
+        "compiler_names", nargs="*", help="Specify compiler name to test"
     )
 
 

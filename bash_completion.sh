@@ -221,7 +221,8 @@ _buildtest ()
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
-      case "${prev}" in
+
+      case "${COMP_WORDS[COMP_CWORD-2]}" in
         compilers|co)
           local opts="--help --json --yaml -h -j -y find test"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
