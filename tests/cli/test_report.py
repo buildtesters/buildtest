@@ -268,29 +268,6 @@ def test_report_list():
 
 
 @pytest.mark.cli
-def test_report_path():
-    class args:
-        filter = None
-        format = None
-        start = None
-        end = None
-        fail = None
-        passed = None
-        oldest = False
-        latest = False
-        report_subcommand = "path"
-        count = None
-        color = None
-
-    report_cmd(args)
-
-    os.remove(BUILD_REPORT)
-
-    with pytest.raises(SystemExit):
-        report_cmd(args)
-
-
-@pytest.mark.cli
 def test_report_clear():
     class args:
         helpformat = False
@@ -313,6 +290,29 @@ def test_report_clear():
 
     shutil.move(backupfile, BUILD_REPORT)
     assert BUILD_REPORT
+
+
+@pytest.mark.cli
+def test_report_path():
+    class args:
+        filter = None
+        format = None
+        start = None
+        end = None
+        fail = None
+        passed = None
+        oldest = False
+        latest = False
+        report_subcommand = "path"
+        count = None
+        color = None
+
+    report_cmd(args)
+
+    os.remove(BUILD_REPORT)
+
+    with pytest.raises(SystemExit):
+        report_cmd(args)
 
 
 @pytest.mark.cli
