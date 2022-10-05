@@ -13,7 +13,6 @@ ascent_pr_regression_test:
     - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" && $CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
 
   script:
-    - env | grep CI_
     - set -e
     - ml python/3.7.0-anaconda3-5.3.0
     - whoami
@@ -23,7 +22,7 @@ ascent_pr_regression_test:
     - source activate $CI_PROJECT_DIR/.conda
     - source setup.sh
     - pip install -r docs/requirements.txt
-    - python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c]
+    - python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
     - echo $?
     - exit 1
     # CODECOV_TOKEN environment must be set, this value is stored in CI/CD variable at https://code.ornl.gov/ecpcitest/buildtest/-/settings/ci_cd
