@@ -20,6 +20,13 @@ with default format fields. To see a list of all format fields, click :ref:`here
     .. command-output:: buildtest report
        :ellipsis: 20
 
+You can run ``buildtest report path`` command to get the full path to the report file being used. This is helpful when the report file
+is not known in that case one can print the file by doing ``cat $(buildtest report path)``.
+
+.. dropdown:: ``buildtest report path``
+
+    .. command-output:: buildtest report path
+
 The ``buildtest report`` command will fetch all records and display them in a table format, if you want to know how many records are displayed in the table you can use ``buildtest report --row-count`` which will display   
 a raw count of records in the table. In the example below we will run ``buildtest report --row-count`` which will show number of tests in the report.
 

@@ -368,6 +368,9 @@ def print_report_help():
     )
     table.add_row("buildtest report list", "List all report files")
     table.add_row("buildtest report clear", "Remove content of default report file")
+    table.add_roe(
+        "buildtest report path", "Print full path to the report file being used"
+    )
     table.add_row("buildtest report summary", "Show summary of test report")
     table.add_row(
         "buildtest report summary --detailed", "Show detailed summary of test report"

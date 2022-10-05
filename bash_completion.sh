@@ -195,7 +195,7 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--color --end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse  -e -f -h -n -p -s -t c clear l list sm summary"
+      local opts="--color --end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse  -e -f -h -n -p -s -t c clear l list p path sm summary"
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       case ${prev} in --color)
         COMPREPLY=( $( compgen -W "$(_supported_colors)" -- $cur ) )

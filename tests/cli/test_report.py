@@ -268,6 +268,27 @@ def test_report_list():
 
 
 @pytest.mark.cli
+def test_report_path():
+    class args:
+        helpformat = False
+        helpfilter = False
+        filter = None
+        format = None
+        oldest = False
+        latest = False
+        report_subcommand = "path"
+        terse = None
+        color = None
+
+    report_cmd(args)
+
+    os.remove(BUILD_REPORT)
+
+    with pytest.raises(SystemExit):
+        report_cmd(args)
+
+
+@pytest.mark.cli
 def test_report_clear():
     class args:
         helpformat = False

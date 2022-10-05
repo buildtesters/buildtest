@@ -809,6 +809,11 @@ def report_cmd(args, report_file=None):
         report_file=report_file,
         count=args.count,
     )
+
+    if args.report_subcommand in ["path", "p"]:
+        console.print(results.reportfile())
+        return
+
     if args.report_subcommand in ["summary", "sm"]:
         if args.pager:
             with console.pager():
