@@ -270,14 +270,16 @@ def test_report_list():
 @pytest.mark.cli
 def test_report_path():
     class args:
-        helpformat = False
-        helpfilter = False
         filter = None
         format = None
+        start = None
+        end = None
+        fail = None
+        passed = None
         oldest = False
         latest = False
         report_subcommand = "path"
-        terse = None
+        count = None
         color = None
 
     report_cmd(args)
