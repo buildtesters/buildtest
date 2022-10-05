@@ -316,8 +316,3 @@ def test_report_path():
         color = None
 
     report_cmd(args)
-
-    os.remove(BUILD_REPORT)
-
-    with pytest.raises(SystemExit):
-        report_cmd(args)
