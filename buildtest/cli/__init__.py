@@ -973,6 +973,9 @@ def report_menu(subparsers):
     )
     subparsers.add_parser("clear", aliases=["c"], help="Remove all report file")
     subparsers.add_parser("list", aliases=["l"], help="List all report files")
+    subparsers.add_parser(
+        "path", aliases=["p"], help="Print full path to the report file being used"
+    )
     parser_report_summary = subparsers.add_parser(
         "summary", aliases=["sm"], help="Summarize test report"
     )

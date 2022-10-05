@@ -298,3 +298,21 @@ def test_report_limited_rows():
     report = Report()
     report.print_report(count=5)
     report.print_report(terse=True, count=5)
+
+
+@pytest.mark.cli
+def test_report_path():
+    class args:
+        filter = None
+        format = None
+        start = None
+        end = None
+        fail = None
+        passed = None
+        oldest = False
+        latest = False
+        report_subcommand = "path"
+        count = None
+        color = None
+
+    report_cmd(args)
