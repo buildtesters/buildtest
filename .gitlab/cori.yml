@@ -18,12 +18,12 @@ cori_pr_regression_test:
     - module load python/3.9-anaconda-2021.11
     - git branch
     - conda create -p $CI_PROJECT_DIR/.conda python=3.9 -y
-    - conda activate $CI_PROJECT_DIR/.conda
+    - source activate $CI_PROJECT_DIR/.conda
     - source setup.sh
     - pip install -r docs/requirements.txt
     - python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
     - echo $?
     # CODECOV_TOKEN environment must be set, this value is stored in CI/CD variable at https://software.nersc.gov/NERSC/buildtest/-/settings/ci_cd
     - codecov -t $CODECOV_TOKEN
-    - conda deactivate
+    - source deactivate
     - conda env remove -p $CI_PROJECT_DIR/.conda -y
