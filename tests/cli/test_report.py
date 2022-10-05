@@ -293,6 +293,14 @@ def test_report_clear():
 
 
 @pytest.mark.cli
+def test_report_limited_rows():
+
+    report = Report()
+    report.print_report(count=5)
+    report.print_report(terse=True, count=5)
+
+
+@pytest.mark.cli
 def test_report_path():
     class args:
         filter = None
@@ -313,11 +321,3 @@ def test_report_path():
 
     with pytest.raises(SystemExit):
         report_cmd(args)
-
-
-@pytest.mark.cli
-def test_report_limited_rows():
-
-    report = Report()
-    report.print_report(count=5)
-    report.print_report(terse=True, count=5)
