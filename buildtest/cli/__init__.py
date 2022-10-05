@@ -4,7 +4,6 @@ interact with a global configuration for buildtest.
 """
 import argparse
 import datetime
-from ast import alias
 
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import console
