@@ -54,16 +54,16 @@ def test_compilers_find_ascent():
 
     settings_file = os.path.join(here, "settings", "ascent.yml")
 
-    bc = SiteConfiguration(settings_file)
-    bc.detect_system()
-    bc.validate()
+    config = SiteConfiguration(settings_file)
+    config.detect_system()
+    config.validate()
 
     # testing buildtest config compilers find
-    bc = BuildtestCompilers(configuration=bc)
+    bc = BuildtestCompilers(configuration=config)
     bc.find_compilers()
 
     # test all compilers
-    compiler_test(configuration=bc)
+    compiler_test(configuration=config)
 
     # test specific compiler
-    compiler_test(configuration=bc, compiler_names=["gcc/9.1.0"])
+    compiler_test(configuration=config, compiler_names=["gcc/9.1.0"])

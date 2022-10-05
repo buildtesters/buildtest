@@ -58,7 +58,17 @@ def compiler_test(configuration, compiler_names=None):
     fail_compilers = []
 
     compilers = configuration.target_config["compilers"]["compiler"]
-    target_compilers = set(compiler_names)
+
+    target_compilers = []
+
+    if compiler_names:
+        # catch input is not a list then we raise exception since we need to run 'set()' on a list otherwise we will get an error
+        if not isinstance(compiler_names, list):
+            raise BuildTestError(
+                f"Compiler names must be specified as a list. We got type {type(compiler_names)}"
+            )
+
+        target_compilers = set(compiler_names)
 
     for name in compilers:
         for compiler_instance in compilers[name]:

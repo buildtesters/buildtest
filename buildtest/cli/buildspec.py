@@ -1065,13 +1065,11 @@ def show_buildspecs(test_names, configuration, theme=None):
     cache = BuildspecCache(configuration=configuration)
     theme = theme or "monokai"
 
-    error = False
+    error_msg = []
     visited = set()
     for name in test_names:
         if name not in cache.get_names():
-
-            console.print(f"[red]Unable to find test {name} in cache")
-            error = True
+            error_msg.append(f"[red]Unable to find test {name} in cache")
             continue
 
         buildspec = cache.lookup_buildspec_by_name(name)
@@ -1083,10 +1081,9 @@ def show_buildspecs(test_names, configuration, theme=None):
                 syntax = Syntax(fd.read(), "yaml", theme=theme)
             console.print(syntax)
 
-    if error:
-        raise BuildTestError(
-            f"Please select one of the following test: {cache.get_names()}"
-        )
+    if error_msg:
+        for line in error_msg:
+            console.print(line)
 
 
 def show_failed_buildspecs(

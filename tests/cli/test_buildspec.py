@@ -318,26 +318,24 @@ def test_buildspec_show():
     # run buildtest buildspec <test> show --theme monokai
     show_buildspecs(test_name, configuration, theme="monokai")
 
-    with pytest.raises(BuildTestError):
-        random_testname = "".join(random.choices(string.ascii_letters, k=10))
-        show_buildspecs(test_names=[random_testname], configuration=configuration)
+    # testing invalid buildspec name, it should not raise exception
+    random_testname = "".join(random.choices(string.ascii_letters, k=10))
+    show_buildspecs(test_names=[random_testname], configuration=configuration)
 
 
 @pytest.mark.cli
 def test_buildspec_show_fail():
 
     # Query some random test name that doesn't exist
-    with pytest.raises(BuildTestError):
-        random_testname = "".join(random.choices(string.ascii_letters, k=10))
-        show_failed_buildspecs(
-            configuration=configuration, test_names=[random_testname]
-        )
+
+    random_testname = "".join(random.choices(string.ascii_letters, k=10))
+    show_failed_buildspecs(configuration=configuration, test_names=[random_testname])
 
     # Query a test that is NOT in state=FAIL
-    with pytest.raises(BuildTestError):
-        results = Report()
-        pass_test = random.sample(results.get_test_by_state(state="PASS"), 1)
-        show_failed_buildspecs(configuration=configuration, test_names=[pass_test])
+
+    results = Report()
+    pass_test = random.sample(results.get_test_by_state(state="PASS"), 1)
+    show_failed_buildspecs(configuration=configuration, test_names=[pass_test])
 
     report = Report()
     # get a random failed test from report file to be used for showing content of buildspec file
