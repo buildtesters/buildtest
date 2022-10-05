@@ -36,8 +36,7 @@ jlse_pr_regression_test:
     - source setup.sh
     - pip install -r docs/requirements.txt
     - python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
-    # CODECOV_TOKEN environment must be set, this value is stored in CI/CD variable SECRET_CODECOV_TOKEN at https://gitlab.jlse.anl.gov/e4s/shahzebsiddiqui/buildtest/-/settings/ci_cd
-    - export CODECOV_TOKEN=$SECRET_CODECOV_TOKEN
-    - bash <(curl -s https://codecov.io/bash)
+    # CODECOV_TOKEN environment must be set, this value is stored in CI/CD variable at https://gitlab.jlse.anl.gov/e4s/shahzebsiddiqui/buildtest/-/settings/ci_cd
+    - codecov -t $CODECOV_TOKEN
     - source deactivate
     - rm -rf $CI_PROJECT_DIR/.pyenv -y
