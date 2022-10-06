@@ -364,7 +364,6 @@ in the cache
    :color: warning
 
     .. command-output:: buildtest buildspec show XYZ123!
-       :returncode: 1
 
 You can use ``--theme`` option to define the color scheme used for printing content of buildspecs. The available comlor schemes can be found at
 https://pygments.org/docs/styles/#getting-a-list-of-available-styles. buildtest supports tab completion on the available themes which you can see below

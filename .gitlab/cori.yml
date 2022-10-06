@@ -13,18 +13,17 @@ cori_pr_regression_test:
     - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" && $CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
 
   script:
-    - env | grep CI_
     - set -e
     - whoami
     - module load python/3.9-anaconda-2021.11
     - git branch
     - conda create -p $CI_PROJECT_DIR/.conda python=3.9 -y
-    - conda activate $CI_PROJECT_DIR/.conda
+    - source activate $CI_PROJECT_DIR/.conda
     - source setup.sh
     - pip install -r docs/requirements.txt
     - python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
-    # CODECOV_TOKEN environment must be set, this value is stored in CI/CD variable SECRET_CODECOV_TOKEN at https://software.nersc.gov/siddiq90/buildtest/-/settings/ci_cd
-    - export CODECOV_TOKEN=$SECRET_CODECOV_TOKEN
-    - bash <(curl -s https://codecov.io/bash)
-    - conda deactivate
+    - echo $?
+    # CODECOV_TOKEN environment must be set, this value is stored in CI/CD variable at https://software.nersc.gov/NERSC/buildtest/-/settings/ci_cd
+    - codecov -t $CODECOV_TOKEN
+    - source deactivate
     - conda env remove -p $CI_PROJECT_DIR/.conda -y
