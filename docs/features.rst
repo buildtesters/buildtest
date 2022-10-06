@@ -63,7 +63,9 @@ The ``buildtest info`` command will provide user with general information pertai
 such as python wrapper, python version, machine name, operating system. It will also show the version of `black`, `isort` and `pyflakes` which are used when using
 ``buildtest stylecheck`` command
 
-.. command-output:: buildtest info
+.. dropdown:: ``buildtest info``
+
+    .. command-output:: buildtest info
 
 
 Accessing buildtest documentation

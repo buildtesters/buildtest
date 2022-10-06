@@ -35,36 +35,37 @@ system compiler that defines C, C++ and Fortran compilers using ``cc``, ``cxx`` 
 One can retrieve all compilers using ``buildtest config compilers``, there are few
 options for this command.
 
-.. command-output:: buildtest config compilers --help
+.. dropdown:: ``buildtest config compilers --help``
+
+    .. command-output:: buildtest config compilers --help
 
 buildtest can represent compiler output in JSON, YAML using the ``--json`` and ``--yaml``.
-Shown below is an example output with these options::
+Shown below is an example output with these options
 
-    $ buildtest config compilers --json
-    {
-      "gcc": {
-        "builtin_gcc": {
-          "cc": "/usr/bin/gcc",
-          "cxx": "/usr/bin/g++",
-          "fc": "/usr/bin/gfortran"
-        }
-      }
-    }
+.. dropdown:: ``buildtest config compilers --json``
 
-    $ buildtest config compilers --yaml
-    gcc:
-      builtin_gcc:
-        cc: /usr/bin/gcc
-        cxx: /usr/bin/g++
-        fc: /usr/bin/gfortran
+    .. command-output:: buildtest config compilers --json
 
-    $ buildtest config compilers
-    builtin_gcc
+.. dropdown:: ``buildtest config compilers --yaml``
+
+    .. command-output:: buildtest config compilers --yaml
+
+If you want to see a flat listing of the compilers as names you can simply run ``buildtest config compilers`` as shown below
+
+.. command-output:: buildtest config compilers
 
 .. _detect_compilers:
 
 Detect Compilers (Experimental Feature)
 ----------------------------------------
+
+.. Note::
+
+    This feature relies on module system (Lmod, environment-modules) to search modulefiles
+    and one must specify **moduletool** property to indicate how buildtest will search modules.
+    If ``moduletool: lmod`` is set, buildtest will rely on Lmod spider using `Lmodule  <http://lmodule.readthedocs.io/>`_
+    API to detect and test all modules. If ``moduletool: environment-modules`` is set, buildtest
+    will retrieve modules using output of ``module -t av``.
 
 buildtest can detect compilers based on modulefiles and generate compiler section
 that way you don't have to specify each compiler manually.
@@ -104,52 +105,30 @@ package manager, we will attempt to add both modules as compiler instance in bui
 
 Next we run ``buildtest config compilers find`` which will search all modules based on
 regular expression and add compilers in their respective group. In this example, buildtest
-automatically add ``gcc/9.2.0-n7p74fd`` and ```gcc/10.2.0-37fmsw7`` modules as compiler
+automatically add ``gcc/9.2.0-n7p74fd`` and ``gcc/10.2.0-37fmsw7`` modules as compiler
 instance. Depending on the compiler group, buildtest will apply the compiler wrapper
 ``cc``, ``cxx``, ``fc`` however these can be updated manually. The module section
 is generated with the module to load. One can further tweak the module behavior
-along with purging or swap modules.
+along with purging or swap modules. In the output below buildtest will show the compilers detected in YAML format.
 
-.. code-block:: console
+.. Note::
 
-    $ buildtest config compilers find
-    MODULEPATH: /Users/siddiq90/projects/spack/share/spack/lmod/darwin-catalina-x86_64/Core:/usr/local/Cellar/lmod/8.4.12/modulefiles/Darwin:/usr/local/Cellar/lmod/8.4.12/modulefiles/Core
-    Configuration File: /Users/siddiq90/.buildtest/config.yml
-    ________________________________________________________________________________
-    moduletool: lmod
-    load_default_buildspecs: true
-    executors:
-      local:
-        bash:
-          description: submit jobs on local machine using bash shell
-          shell: bash
-        sh:
-          description: submit jobs on local machine using sh shell
-          shell: sh
-        csh:
-          description: submit jobs on local machine using csh shell
-          shell: csh
-        python:
-          description: submit jobs on local machine using python shell
-          shell: python
-    compilers:
-      find:
-        gcc: ^(gcc)
-        pgi: ^(pgi)
-      compiler:
+    ``buildtest config compilers find`` will not update the buildtest configuration with new compilers, you will need to use ``--update`` option
+    to override the configuration file.
+
+
+.. dropdown:: ``buildtest config compilers``
+
+    .. code-block:: console
+
+        $ buildtest config compilers find
+        MODULEPATH: /Users/siddiq90/projects/spack/share/spack/lmod/darwin-catalina-x86_64/Core:/usr/local/Cellar/lmod/8.6.14/modulefiles/Darwin:/usr/local/Cellar/lmod/8.6.14/modulefiles/Core
+        ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Detect Compilers ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
         gcc:
           builtin_gcc:
             cc: /usr/bin/gcc
             cxx: /usr/bin/g++
-            fc: /usr/local/bin/gfortran
-          gcc/9.3.0-n7p74fd:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            module:
-              load:
-              - gcc/9.3.0-n7p74fd
-              purge: false
+            fc: /usr/bin/gfortran
           gcc/10.2.0-37fmsw7:
             cc: gcc
             cxx: g++
@@ -158,16 +137,90 @@ along with purging or swap modules.
               load:
               - gcc/10.2.0-37fmsw7
               purge: false
+          gcc/9.3.0-n7p74fd:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            module:
+              load:
+              - gcc/9.3.0-n7p74fd
+              purge: false
 
-    ________________________________________________________________________________
-    Updating settings file:  /Users/siddiq90/.buildtest/config.yml
 
+You can use **--detailed** option to see how buildtest discovers compilers
+by searching the modules in MODULEPATH and testing each one with a regular expression.
+We can see in the output buildtest is applying a regular expression with each modulefile and if there is a match, we
+add the compiler instance into the appropriate compiler group.
 
-This feature relies on module system (Lmod, environment-modules) to search modulefiles
-and one must specify **moduletool** property to indicate how buildtest will search modules.
-If ``moduletool: lmod`` is set, buildtest will rely on Lmod spider using `Lmodule  <http://lmodule.readthedocs.io/>`_
-API to detect and test all modules. If ``moduletool: environment-modules`` is set, buildtest
-will retrieve modules using output of ``module -t av``.
+.. dropdown:: ``buildtest config compilers --detailed``
+
+    .. code-block:: console
+
+        $ buildtest config compilers find --detailed
+        MODULEPATH: /Users/siddiq90/projects/spack/share/spack/lmod/darwin-catalina-x86_64/Core:/usr/local/Cellar/lmod/8.6.14/modulefiles/Darwin:/usr/local/Cellar/lmod/8.6.14/modulefiles/Core
+        Searching modules via Lmod Spider
+        Applying regex ^(gcc) with module: autoconf/2.69-3yrvwbu
+        Applying regex ^(gcc) with module: autoconf-archive/2019.01.06-qoeupni
+        Applying regex ^(gcc) with module: automake/1.16.2-vjjvnh7
+        Applying regex ^(gcc) with module: berkeley-db/18.1.40-zixsuu6
+        Applying regex ^(gcc) with module: bzip2/1.0.8-uem3fk5
+        Applying regex ^(gcc) with module: diffutils/3.7-67w5vu5
+        Applying regex ^(gcc) with module: gcc/9.3.0-n7p74fd
+        Applying regex ^(gcc) with module: gcc/10.2.0-37fmsw7
+        Applying regex ^(gcc) with module: gdbm/1.18.1-qcqdlzf
+        Applying regex ^(gcc) with module: gmp/6.1.2-pstkmss
+        Applying regex ^(gcc) with module: isl/0.21-v6cpwya
+        Applying regex ^(gcc) with module: isl/0.20-ypts4jg
+        Applying regex ^(gcc) with module: libiconv/1.16-3kkozjq
+        Applying regex ^(gcc) with module: libsigsegv/2.12-dg5wkck
+        Applying regex ^(gcc) with module: libtool/2.4.6-sp423u5
+        Applying regex ^(gcc) with module: lmod
+        Applying regex ^(gcc) with module: m4/1.4.18-wctmckj
+        Applying regex ^(gcc) with module: mpc/1.1.0-xid3nuo
+        Applying regex ^(gcc) with module: mpc/1.1.0-sqfmp67
+        Applying regex ^(gcc) with module: mpfr/3.1.6-nm4h2fx
+        Applying regex ^(gcc) with module: mpfr/4.0.2-6in3dph
+        Applying regex ^(gcc) with module: ncurses/6.2-g5wyknv
+        Applying regex ^(gcc) with module: perl/5.32.0-hlmfvxi
+        Applying regex ^(gcc) with module: pkgconf/1.7.3-pxfp6qy
+        Applying regex ^(gcc) with module: readline/8.0-d4acjhu
+        Applying regex ^(gcc) with module: settarg
+        Applying regex ^(gcc) with module: zlib/1.2.11-id3vwmq
+        Applying regex ^(gcc) with module: zstd/1.4.5-2tk5glw
+          Discovered Modules
+        ┏━━━━━━━━━━━━━━━━━━━━┓
+        ┃ Name               ┃
+        ┡━━━━━━━━━━━━━━━━━━━━┩
+        │ gcc/9.3.0-n7p74fd  │
+        ├────────────────────┤
+        │ gcc/10.2.0-37fmsw7 │
+        └────────────────────┘
+        [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/9.3.0-n7p74fd  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/10.2.0-37fmsw7  "
+        [DEBUG] Return Code: 0
+        ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Detect Compilers ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+        gcc:
+          builtin_gcc:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran
+          gcc/10.2.0-37fmsw7:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            module:
+              load:
+              - gcc/10.2.0-37fmsw7
+              purge: false
+          gcc/9.3.0-n7p74fd:
+            cc: gcc
+            cxx: g++
+            fc: gfortran
+            module:
+              load:
+              - gcc/9.3.0-n7p74fd
+              purge: false
 
 Test Compilers (Experimental Feature)
 --------------------------------------
@@ -175,71 +228,75 @@ Test Compilers (Experimental Feature)
 Next we run ``buildtest config compilers test`` which test each compiler instance by performing 
 module load test and show an output of each compiler.
 
-.. code-block:: console
+.. dropdown:: ``buildtest config compilers test``
 
-    $ buildtest config compilers test
+    .. code-block:: console
 
-                    Compilers Test Pass
-    ┏━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
-    ┃ No. ┃ Compiler Name                   ┃ Status ┃
-    ┡━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩                                                                                                    [0/1858]
-    │ 1   │ PrgEnv-gnu/6.0.5                │     ✅ │
-    │ 2   │ PrgEnv-gnu/6.0.10               │     ✅ │
-    │ 3   │ gcc/7.3.0                       │     ✅ │
-    │ 4   │ gcc/8.1.0                       │     ✅ │
-    │ 5   │ gcc/8.3.0                       │     ✅ │
-    │ 6   │ gcc/10.3.0                      │     ✅ │
-    │ 7   │ gcc/11.2.0                      │     ✅ │
-    │ 8   │ PrgEnv-cray/6.0.5               │     ✅ │
-    │ 9   │ PrgEnv-cray/6.0.10              │     ✅ │
-    │ 10  │ PrgEnv-intel/6.0.5              │     ✅ │
-    │ 11  │ PrgEnv-intel/6.0.10             │     ✅ │
-    │ 12  │ intel/19.0.3.199                │     ✅ │
-    │ 13  │ intel/19.1.2.254                │     ✅ │
-    │ 14  │ intel/19.1.0.166                │     ✅ │
-    │ 15  │ intel/19.1.1.217                │     ✅ │
-    │ 16  │ intel/19.1.2.275                │     ✅ │
-    │ 17  │ intel/19.1.3.304                │     ✅ │
-    │ 18  │ upcxx/2021.9.0                  │     ✅ │
-    │ 19  │ upcxx/2022.3.0                  │     ✅ │
-    │ 20  │ upcxx/bleeding-edge             │     ✅ │
-    │ 21  │ upcxx/nightly                   │     ✅ │
-    │ 22  │ upcxx-bupc-narrow/2021.9.0      │     ✅ │
-    │ 23  │ upcxx-bupc-narrow/2022.3.0      │     ✅ │
-    │ 24  │ upcxx-bupc-narrow/bleeding-edge │     ✅ │
-    │ 25  │ upcxx-extras/2020.3.0           │     ✅ │
-    │ 26  │ upcxx-extras/2020.3.8           │     ✅ │
-    │ 27  │ upcxx-extras/2022.3.0           │     ✅ │
-    │ 28  │ upcxx-extras/master             │     ✅ │
-    └─────┴─────────────────────────────────┴────────┘
-                Compilers Test Fail
-    ┏━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
-    ┃ No. ┃ Compiler Name            ┃ Status ┃
-    ┡━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
-    │ 1   │ upcxx-gpu/2021.9.0       │     ❌ │
-    │ 2   │ upcxx-gpu/2022.3.0       │     ❌ │
-    │ 3   │ upcxx-gpu/nightly        │     ❌ │
-    │ 4   │ upcxx-gpu-1rail/2021.9.0 │     ❌ │
-    │ 5   │ upcxx-gpu-1rail/nightly  │     ❌ │
-    └─────┴──────────────────────────┴────────┘
+        $ buildtest config compilers test
+
+                        Compilers Test Pass
+        ┏━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+        ┃ No. ┃ Compiler Name                   ┃ Status ┃
+        ┡━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩                                                                                                    [0/1858]
+        │ 1   │ PrgEnv-gnu/6.0.5                │     ✅ │
+        │ 2   │ PrgEnv-gnu/6.0.10               │     ✅ │
+        │ 3   │ gcc/7.3.0                       │     ✅ │
+        │ 4   │ gcc/8.1.0                       │     ✅ │
+        │ 5   │ gcc/8.3.0                       │     ✅ │
+        │ 6   │ gcc/10.3.0                      │     ✅ │
+        │ 7   │ gcc/11.2.0                      │     ✅ │
+        │ 8   │ PrgEnv-cray/6.0.5               │     ✅ │
+        │ 9   │ PrgEnv-cray/6.0.10              │     ✅ │
+        │ 10  │ PrgEnv-intel/6.0.5              │     ✅ │
+        │ 11  │ PrgEnv-intel/6.0.10             │     ✅ │
+        │ 12  │ intel/19.0.3.199                │     ✅ │
+        │ 13  │ intel/19.1.2.254                │     ✅ │
+        │ 14  │ intel/19.1.0.166                │     ✅ │
+        │ 15  │ intel/19.1.1.217                │     ✅ │
+        │ 16  │ intel/19.1.2.275                │     ✅ │
+        │ 17  │ intel/19.1.3.304                │     ✅ │
+        │ 18  │ upcxx/2021.9.0                  │     ✅ │
+        │ 19  │ upcxx/2022.3.0                  │     ✅ │
+        │ 20  │ upcxx/bleeding-edge             │     ✅ │
+        │ 21  │ upcxx/nightly                   │     ✅ │
+        │ 22  │ upcxx-bupc-narrow/2021.9.0      │     ✅ │
+        │ 23  │ upcxx-bupc-narrow/2022.3.0      │     ✅ │
+        │ 24  │ upcxx-bupc-narrow/bleeding-edge │     ✅ │
+        │ 25  │ upcxx-extras/2020.3.0           │     ✅ │
+        │ 26  │ upcxx-extras/2020.3.8           │     ✅ │
+        │ 27  │ upcxx-extras/2022.3.0           │     ✅ │
+        │ 28  │ upcxx-extras/master             │     ✅ │
+        └─────┴─────────────────────────────────┴────────┘
+                    Compilers Test Fail
+        ┏━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+        ┃ No. ┃ Compiler Name            ┃ Status ┃
+        ┡━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+        │ 1   │ upcxx-gpu/2021.9.0       │     ❌ │
+        │ 2   │ upcxx-gpu/2022.3.0       │     ❌ │
+        │ 3   │ upcxx-gpu/nightly        │     ❌ │
+        │ 4   │ upcxx-gpu-1rail/2021.9.0 │     ❌ │
+        │ 5   │ upcxx-gpu-1rail/nightly  │     ❌ │
+        └─────┴──────────────────────────┴────────┘
 
 If you want to test specific compilers instead of testing all compilers you can pass name of compiler as a positional argument
-to `buildtest config compilers test` and buildtest will only test the selected compiler. Shown below is an example where we only test
+to **buildtest config compilers test** and buildtest will only test the selected compiler. Shown below is an example where we only test
 compiler ``gcc/9.1.01``
 
-.. code-block:: console
+.. dropdown:: ``buildtest config compilers test gcc/9.1.0``
 
-    $ buildtest config compilers test gcc/9.1.0
-    Skipping test for compiler: builtin_gcc
-    Skipping test for compiler: gcc/9.3.0
-    Skipping test for compiler: gcc/11.1.0
-    Skipping test for compiler: gcc/7.5.0
-    Skipping test for compiler: gcc/12.1.0
-    Skipping test for compiler: gcc/11.2.0
-    Skipping test for compiler: gcc/10.2.0
-          Compilers Test Pass
-    ┏━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━┓
-    ┃ No. ┃ Compiler Name ┃ Status ┃
-    ┡━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━┩
-    │ 1   │ gcc/9.1.0     │     ✅ │
-    └─────┴───────────────┴────────┘
+    .. code-block:: console
+
+        $ buildtest config compilers test gcc/9.1.0
+        Skipping test for compiler: builtin_gcc
+        Skipping test for compiler: gcc/9.3.0
+        Skipping test for compiler: gcc/11.1.0
+        Skipping test for compiler: gcc/7.5.0
+        Skipping test for compiler: gcc/12.1.0
+        Skipping test for compiler: gcc/11.2.0
+        Skipping test for compiler: gcc/10.2.0
+              Compilers Test Pass
+        ┏━━━━━┳━━━━━━━━━━━━━━━┳━━━━━━━━┓
+        ┃ No. ┃ Compiler Name ┃ Status ┃
+        ┡━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━┩
+        │ 1   │ gcc/9.1.0     │     ✅ │
+        └─────┴───────────────┴────────┘

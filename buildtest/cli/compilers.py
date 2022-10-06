@@ -141,9 +141,10 @@ def compiler_find(configuration, modulepath=None, detailed=None, update=None):
         configuration.config, schema_table["settings.schema.json"]["recipe"]
     )
 
+    console.rule("Detect Compilers")
+    bc.print_yaml()
     # print out all compilers from existing configuration file
     # run buildtest config compilers find --update to update existing configuration file
-    bc.print_compilers()
 
     # if --update is specified we update existing configuration file and write backup in same directory
     if update:

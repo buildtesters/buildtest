@@ -24,6 +24,7 @@ If you want to add a new schema to buildtest you need to do the following:
  4. There should be regression testfile in `schema_tests <https://github.com/buildtesters/buildtest/tree/devel/tests/schema_tests>`_ to test the schema.
 
 Be sure to update properties and take account for:
+
   - a property being required or not
   - Make use of `additionalProperties: false` when defining properties so that additional keys in properties are not passed in.
   - requirements for the values provided (types, lengths, etc.)
@@ -101,8 +102,8 @@ each schema. Currently, we support JSON Schema Draft7 so our schema field must b
 
 .. _resources:
 
-Resources
-----------
+JSON Schema Resources
+----------------------
 
 The following sites (along with the files here) can be useful to help with your development
 of a schema.

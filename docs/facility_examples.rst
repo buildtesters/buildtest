@@ -86,43 +86,45 @@ modules and load `impi/2020` module.
 
 The generated test script is show below, notice that ``mpiicc`` is used to compile the program and run via srun.
 
-.. code-block:: shell
+.. dropdown:: ``buildtest inspect query -t laplace_mpi``
 
-    $ buildtest inspect query -t laplace_mpi/1a4c7a6f
-    ─────────────────────────────────────────────── laplace_mpi/1a4c7a6f-0f69-40e7-b451-f9f62843eee5 ────────────────────────────────────────────────
-    Executor: cori.slurm.knl_debug
-    Description: Laplace MPI code in C
-    State: PASS
-    Returncode: 0
-    Runtime: 31.496144 sec
-    Starttime: 2022/06/30 14:35:34
-    Endtime: 2022/06/30 14:36:06
-    Command: bash --norc --noprofile -eo pipefail laplace_mpi_build.sh
-    Test Script: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/laplace_mpi/laplace_mpi/1a4c7a6f/laplace_mpi.sh
-    Build Script: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/laplace_mpi/laplace_mpi/1a4c7a6f/laplace_mpi_build.sh
-    Output File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/laplace_mpi/laplace_mpi/1a4c7a6f/laplace_mpi.out
-    Error File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/laplace_mpi/laplace_mpi/1a4c7a6f/laplace_mpi.err
-    Log File: /global/u1/s/siddiq90/gitrepos/buildtest/var/logs/buildtest_e5cuwqhf.log
-    ────── Test File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/laplace_mpi/laplace_mpi/1a4c7a6f/laplace_mpi.sh ───────
-    #!/bin/bash
-    #SBATCH -N 1
-    #SBATCH -n 4
-    #SBATCH --job-name=laplace_mpi
-    #SBATCH --output=laplace_mpi.out
-    #SBATCH --error=laplace_mpi.err
+    .. code-block:: console
 
-
-    # name of executable
-    _EXEC=laplace_mpi.c.exe
-    # Loading modules
-    module swap intel intel/19.1.2.254
-    module load impi/2020.up4
-    # Compilation Line
-    mpiicc -O3 -o $_EXEC /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/mpi/src/laplace_mpi.c
+        $ buildtest inspect query -t laplace_mpi
+        ─────────────────────────────────────────────── laplace_mpi/1a4c7a6f-0f69-40e7-b451-f9f62843eee5 ────────────────────────────────────────────────
+        Executor: cori.slurm.knl_debug
+        Description: Laplace MPI code in C
+        State: PASS
+        Returncode: 0
+        Runtime: 31.496144 sec
+        Starttime: 2022/06/30 14:35:34
+        Endtime: 2022/06/30 14:36:06
+        Command: bash --norc --noprofile -eo pipefail laplace_mpi_build.sh
+        Test Script: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/laplace_mpi/laplace_mpi/1a4c7a6f/laplace_mpi.sh
+        Build Script: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/laplace_mpi/laplace_mpi/1a4c7a6f/laplace_mpi_build.sh
+        Output File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/laplace_mpi/laplace_mpi/1a4c7a6f/laplace_mpi.out
+        Error File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/laplace_mpi/laplace_mpi/1a4c7a6f/laplace_mpi.err
+        Log File: /global/u1/s/siddiq90/gitrepos/buildtest/var/logs/buildtest_e5cuwqhf.log
+        ────── Test File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/laplace_mpi/laplace_mpi/1a4c7a6f/laplace_mpi.sh ───────
+        #!/bin/bash
+        #SBATCH -N 1
+        #SBATCH -n 4
+        #SBATCH --job-name=laplace_mpi
+        #SBATCH --output=laplace_mpi.out
+        #SBATCH --error=laplace_mpi.err
 
 
-    # Run executable
-    srun -n 4 $_EXEC
+        # name of executable
+        _EXEC=laplace_mpi.c.exe
+        # Loading modules
+        module swap intel intel/19.1.2.254
+        module load impi/2020.up4
+        # Compilation Line
+        mpiicc -O3 -o $_EXEC /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/mpi/src/laplace_mpi.c
+
+
+        # Run executable
+        srun -n 4 $_EXEC
 
 
 OpenMP Hello Processor Scaling Test
@@ -180,216 +182,218 @@ Shown below is the source code and buildspec for this test.
 Next, we will run this test with 8, 16, and 24 processes. buildtest will create three builder objects for these test and each will run through slurm
 scheduler. The values will be set for ``OMP_NUM_THREADS``. Shown below is the test execution
 
-.. code-block:: console
+.. dropdown:: ``buildtest bd -b openmp_scale.yml --procs 8 16 24``
 
-    $ buildtest bd -b openmp_scale.yml --procs 8 16 24
-    ╭───────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────╮
-    │                                                                                                                      │
-    │ User:               siddiq90                                                                                         │
-    │ Hostname:           cori10                                                                                           │
-    │ Platform:           Linux                                                                                            │
-    │ Current Time:       2022/06/30 14:39:12                                                                              │
-    │ buildtest path:     /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest                                        │
-    │ buildtest version:  0.14.0                                                                                           │
-    │ python path:        /global/u1/s/siddiq90/.local/share/virtualenvs/buildtest-WqshQcL1/bin/python3                    │
-    │ python version:     3.9.7                                                                                            │
-    │ Configuration File: /global/u1/s/siddiq90/gitrepos/buildtest-nersc/config.yml                                        │
-    │ Test Directory:     /global/u1/s/siddiq90/gitrepos/buildtest/var/tests                                               │
-    │ Report File:        /global/u1/s/siddiq90/gitrepos/buildtest/var/report.json                                         │
-    │ Command:            /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest bd -b openmp_scale.yml --procs 8 16 24 │
-    │                                                                                                                      │
-    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-    ────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────
-                                      Discovered buildspecs
-    ╔════════════════════════════════════════════════════════════════════════════════════════╗
-    ║ buildspec                                                                              ║
-    ╟────────────────────────────────────────────────────────────────────────────────────────╢
-    ║ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_scale.yml ║
-    ╚════════════════════════════════════════════════════════════════════════════════════════╝
+    .. code-block:: console
 
-
-    Total Discovered Buildspecs:  1
-    Total Excluded Buildspecs:  0
-    Detected Buildspecs after exclusion:  1
-    ────────────────────────────────────────────────────────────── Parsing Buildspecs ───────────────────────────────────────────────────────────────
-    Buildtest will parse 1 buildspecs
-    Valid Buildspecs: 1
-    Invalid Buildspecs: 0
-    /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_scale.yml: VALID
-    Total builder objects created: 4
-    Total compiler builder: 4
-    Total script builder: 0
-    Total spack builder: 0
-                                                                Compiler Builder Details
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-    ┃ builder                   ┃ executor             ┃ compiler           ┃ nodes ┃ procs ┃ description               ┃ buildspecs                ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-    │ hello_world_openmp/a7de0… │ cori.slurm.knl_debug │ PrgEnv-intel/6.0.5 │ None  │ None  │ Hello World OpenMP        │ /global/u1/s/siddiq90/gi… │
-    │                           │                      │                    │       │       │ scaling example with      │                           │
-    │                           │                      │                    │       │       │ processor count           │                           │
-    ├───────────────────────────┼──────────────────────┼────────────────────┼───────┼───────┼───────────────────────────┼───────────────────────────┤
-    │ hello_world_openmp/ce755… │ cori.slurm.knl_debug │ PrgEnv-intel/6.0.5 │ None  │ 8     │ Hello World OpenMP        │ /global/u1/s/siddiq90/gi… │
-    │                           │                      │                    │       │       │ scaling example with      │                           │
-    │                           │                      │                    │       │       │ processor count           │                           │
-    ├───────────────────────────┼──────────────────────┼────────────────────┼───────┼───────┼───────────────────────────┼───────────────────────────┤
-    │ hello_world_openmp/fa271… │ cori.slurm.knl_debug │ PrgEnv-intel/6.0.5 │ None  │ 16    │ Hello World OpenMP        │ /global/u1/s/siddiq90/gi… │
-    │                           │                      │                    │       │       │ scaling example with      │                           │
-    │                           │                      │                    │       │       │ processor count           │                           │
-    ├───────────────────────────┼──────────────────────┼────────────────────┼───────┼───────┼───────────────────────────┼───────────────────────────┤
-    │ hello_world_openmp/0fe29… │ cori.slurm.knl_debug │ PrgEnv-intel/6.0.5 │ None  │ 24    │ Hello World OpenMP        │ /global/u1/s/siddiq90/gi… │
-    │                           │                      │                    │       │       │ scaling example with      │                           │
-    │                           │                      │                    │       │       │ processor count           │                           │
-    └───────────────────────────┴──────────────────────┴────────────────────┴───────┴───────┴───────────────────────────┴───────────────────────────┘
-                                                                  Batch Job Builders
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-    ┃ builder                     ┃ executor             ┃ buildspecs                                                                             ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-    │ hello_world_openmp/a7de0abb │ cori.slurm.knl_debug │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_scale.yml │
-    ├─────────────────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────────────────────────────┤
-    │ hello_world_openmp/ce755367 │ cori.slurm.knl_debug │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_scale.yml │
-    ├─────────────────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────────────────────────────┤
-    │ hello_world_openmp/fa271571 │ cori.slurm.knl_debug │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_scale.yml │
-    ├─────────────────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────────────────────────────┤
-    │ hello_world_openmp/0fe298ae │ cori.slurm.knl_debug │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_scale.yml │
-    └─────────────────────────────┴──────────────────────┴────────────────────────────────────────────────────────────────────────────────────────┘
-                                                            Batch Job Builders by Processors
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-    ┃ builder                     ┃ executor             ┃ procs ┃ buildspecs                                                                       ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-    │ hello_world_openmp/ce755367 │ cori.slurm.knl_debug │ 8     │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_sca │
-    │                             │                      │       │ le.yml                                                                           │
-    ├─────────────────────────────┼──────────────────────┼───────┼──────────────────────────────────────────────────────────────────────────────────┤
-    │ hello_world_openmp/fa271571 │ cori.slurm.knl_debug │ 16    │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_sca │
-    │                             │                      │       │ le.yml                                                                           │
-    ├─────────────────────────────┼──────────────────────┼───────┼──────────────────────────────────────────────────────────────────────────────────┤
-    │ hello_world_openmp/0fe298ae │ cori.slurm.knl_debug │ 24    │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_sca │
-    │                             │                      │       │ le.yml                                                                           │
-    └─────────────────────────────┴──────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────┘
-    ───────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────
-    hello_world_openmp/a7de0abb: Creating test directory:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/a7de0abb
-    hello_world_openmp/a7de0abb: Creating the stage directory:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/a7de0abb/stage
-    hello_world_openmp/a7de0abb: Writing build script:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/a7de0abb/hello_world_openmp_build.sh
-    hello_world_openmp/ce755367: Creating test directory:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367
-    hello_world_openmp/ce755367: Creating the stage directory:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/stage
-    hello_world_openmp/ce755367: Writing build script:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_openmp_build.sh
-    hello_world_openmp/fa271571: Creating test directory:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571
-    hello_world_openmp/fa271571: Creating the stage directory:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/stage
-    hello_world_openmp/fa271571: Writing build script:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_openmp_build.sh
-    hello_world_openmp/0fe298ae: Creating test directory:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae
-    hello_world_openmp/0fe298ae: Creating the stage directory:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/stage
-    hello_world_openmp/0fe298ae: Writing build script:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_openmp_build.sh
-    ───────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────
-    Spawning 64 processes for processing builders
-    ────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────
-    hello_world_openmp/a7de0abb does not have any dependencies adding test to queue
-    hello_world_openmp/0fe298ae does not have any dependencies adding test to queue
-    hello_world_openmp/fa271571 does not have any dependencies adding test to queue
-    hello_world_openmp/ce755367 does not have any dependencies adding test to queue
-    In this iteration we are going to run the following tests: [hello_world_openmp/a7de0abb, hello_world_openmp/0fe298ae, hello_world_openmp/fa271571, hello_world_openmp/ce755367]
-    hello_world_openmp/0fe298ae: Running Test via command: bash --norc --noprofile -eo pipefail hello_world_openmp_build.sh
-    hello_world_openmp/ce755367: Running Test via command: bash --norc --noprofile -eo pipefail hello_world_openmp_build.sh
-    hello_world_openmp/a7de0abb: Running Test via command: bash --norc --noprofile -eo pipefail hello_world_openmp_build.sh
-    hello_world_openmp/fa271571: Running Test via command: bash --norc --noprofile -eo pipefail hello_world_openmp_build.sh
-    hello_world_openmp/0fe298ae: JobID 60681274 dispatched to scheduler
-    hello_world_openmp/a7de0abb: JobID 60681275 dispatched to scheduler
-    hello_world_openmp/ce755367: JobID 60681276 dispatched to scheduler
-    hello_world_openmp/fa271571: JobID 60681277 dispatched to scheduler
-    Polling Jobs in 30 seconds
-    hello_world_openmp/0fe298ae: Job 60681274 is complete!
-    hello_world_openmp/0fe298ae: Test completed in 31.868266 seconds
-    hello_world_openmp/0fe298ae: Test completed with returncode: 0
-    hello_world_openmp/0fe298ae: Writing output file -
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_openmp.out
-    hello_world_openmp/0fe298ae: Writing error file -
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_openmp.err
-    hello_world_openmp/ce755367: Job 60681276 is complete!
-    hello_world_openmp/ce755367: Test completed in 32.010719 seconds
-    hello_world_openmp/ce755367: Test completed with returncode: 0
-    hello_world_openmp/ce755367: Writing output file -
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_openmp.out
-    hello_world_openmp/ce755367: Writing error file -
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_openmp.err
-                                         Running Jobs
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
-    ┃ builder                     ┃ executor             ┃ jobid    ┃ jobstate ┃ runtime ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
-    │ hello_world_openmp/a7de0abb │ cori.slurm.knl_debug │ 60681275 │ RUNNING  │ 31.957  │
-    │ hello_world_openmp/fa271571 │ cori.slurm.knl_debug │ 60681277 │ RUNNING  │ 31.987  │
-    └─────────────────────────────┴──────────────────────┴──────────┴──────────┴─────────┘
-                                         Completed Jobs
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
-    ┃ builder                     ┃ executor             ┃ jobid    ┃ jobstate  ┃ runtime   ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━┩
-    │ hello_world_openmp/0fe298ae │ cori.slurm.knl_debug │ 60681274 │ COMPLETED │ 31.868266 │
-    │ hello_world_openmp/ce755367 │ cori.slurm.knl_debug │ 60681276 │ COMPLETED │ 32.010719 │
-    └─────────────────────────────┴──────────────────────┴──────────┴───────────┴───────────┘
-    Polling Jobs in 30 seconds
-    hello_world_openmp/fa271571: Job 60681277 is complete!
-    hello_world_openmp/fa271571: Test completed in 62.153829 seconds
-    hello_world_openmp/fa271571: Test completed with returncode: 0
-    hello_world_openmp/fa271571: Writing output file -
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_openmp.out
-    hello_world_openmp/fa271571: Writing error file -
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_openmp.err
-                                         Running Jobs
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
-    ┃ builder                     ┃ executor             ┃ jobid    ┃ jobstate ┃ runtime ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
-    │ hello_world_openmp/a7de0abb │ cori.slurm.knl_debug │ 60681275 │ RUNNING  │ 62.132  │
-    └─────────────────────────────┴──────────────────────┴──────────┴──────────┴─────────┘
-                                         Completed Jobs
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
-    ┃ builder                     ┃ executor             ┃ jobid    ┃ jobstate  ┃ runtime   ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━┩
-    │ hello_world_openmp/fa271571 │ cori.slurm.knl_debug │ 60681277 │ COMPLETED │ 62.153829 │
-    └─────────────────────────────┴──────────────────────┴──────────┴───────────┴───────────┘
-    Polling Jobs in 30 seconds
-    hello_world_openmp/a7de0abb: Job 60681275 is complete!
-    hello_world_openmp/a7de0abb: Test completed in 92.278197 seconds
-    hello_world_openmp/a7de0abb: Test completed with returncode: 0
-    hello_world_openmp/a7de0abb: Writing output file -
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/a7de0abb/hello_world_openmp.out
-    hello_world_openmp/a7de0abb: Writing error file -
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/a7de0abb/hello_world_openmp.err
-                                         Completed Jobs
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
-    ┃ builder                     ┃ executor             ┃ jobid    ┃ jobstate  ┃ runtime   ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━┩
-    │ hello_world_openmp/a7de0abb │ cori.slurm.knl_debug │ 60681275 │ COMPLETED │ 92.278197 │
-    └─────────────────────────────┴──────────────────────┴──────────┴───────────┴───────────┘
-                                                             Test Summary
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┓
-    ┃ builder                     ┃ executor             ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returnCode ┃ runtime   ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━┩
-    │ hello_world_openmp/0fe298ae │ cori.slurm.knl_debug │ PASS   │ N/A N/A N/A                         │ 0          │ 31.868266 │
-    ├─────────────────────────────┼──────────────────────┼────────┼─────────────────────────────────────┼────────────┼───────────┤
-    │ hello_world_openmp/a7de0abb │ cori.slurm.knl_debug │ PASS   │ N/A N/A N/A                         │ 0          │ 92.278197 │
-    ├─────────────────────────────┼──────────────────────┼────────┼─────────────────────────────────────┼────────────┼───────────┤
-    │ hello_world_openmp/fa271571 │ cori.slurm.knl_debug │ PASS   │ N/A N/A N/A                         │ 0          │ 62.153829 │
-    ├─────────────────────────────┼──────────────────────┼────────┼─────────────────────────────────────┼────────────┼───────────┤
-    │ hello_world_openmp/ce755367 │ cori.slurm.knl_debug │ PASS   │ N/A N/A N/A                         │ 0          │ 32.010719 │
-    └─────────────────────────────┴──────────────────────┴────────┴─────────────────────────────────────┴────────────┴───────────┘
+        $ buildtest bd -b openmp_scale.yml --procs 8 16 24
+        ╭───────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────╮
+        │                                                                                                                      │
+        │ User:               siddiq90                                                                                         │
+        │ Hostname:           cori10                                                                                           │
+        │ Platform:           Linux                                                                                            │
+        │ Current Time:       2022/06/30 14:39:12                                                                              │
+        │ buildtest path:     /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest                                        │
+        │ buildtest version:  0.14.0                                                                                           │
+        │ python path:        /global/u1/s/siddiq90/.local/share/virtualenvs/buildtest-WqshQcL1/bin/python3                    │
+        │ python version:     3.9.7                                                                                            │
+        │ Configuration File: /global/u1/s/siddiq90/gitrepos/buildtest-nersc/config.yml                                        │
+        │ Test Directory:     /global/u1/s/siddiq90/gitrepos/buildtest/var/tests                                               │
+        │ Report File:        /global/u1/s/siddiq90/gitrepos/buildtest/var/report.json                                         │
+        │ Command:            /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest bd -b openmp_scale.yml --procs 8 16 24 │
+        │                                                                                                                      │
+        ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+        ────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────
+                                          Discovered buildspecs
+        ╔════════════════════════════════════════════════════════════════════════════════════════╗
+        ║ buildspec                                                                              ║
+        ╟────────────────────────────────────────────────────────────────────────────────────────╢
+        ║ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_scale.yml ║
+        ╚════════════════════════════════════════════════════════════════════════════════════════╝
 
 
+        Total Discovered Buildspecs:  1
+        Total Excluded Buildspecs:  0
+        Detected Buildspecs after exclusion:  1
+        ────────────────────────────────────────────────────────────── Parsing Buildspecs ───────────────────────────────────────────────────────────────
+        Buildtest will parse 1 buildspecs
+        Valid Buildspecs: 1
+        Invalid Buildspecs: 0
+        /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_scale.yml: VALID
+        Total builder objects created: 4
+        Total compiler builder: 4
+        Total script builder: 0
+        Total spack builder: 0
+                                                                    Compiler Builder Details
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ builder                   ┃ executor             ┃ compiler           ┃ nodes ┃ procs ┃ description               ┃ buildspecs                ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ hello_world_openmp/a7de0… │ cori.slurm.knl_debug │ PrgEnv-intel/6.0.5 │ None  │ None  │ Hello World OpenMP        │ /global/u1/s/siddiq90/gi… │
+        │                           │                      │                    │       │       │ scaling example with      │                           │
+        │                           │                      │                    │       │       │ processor count           │                           │
+        ├───────────────────────────┼──────────────────────┼────────────────────┼───────┼───────┼───────────────────────────┼───────────────────────────┤
+        │ hello_world_openmp/ce755… │ cori.slurm.knl_debug │ PrgEnv-intel/6.0.5 │ None  │ 8     │ Hello World OpenMP        │ /global/u1/s/siddiq90/gi… │
+        │                           │                      │                    │       │       │ scaling example with      │                           │
+        │                           │                      │                    │       │       │ processor count           │                           │
+        ├───────────────────────────┼──────────────────────┼────────────────────┼───────┼───────┼───────────────────────────┼───────────────────────────┤
+        │ hello_world_openmp/fa271… │ cori.slurm.knl_debug │ PrgEnv-intel/6.0.5 │ None  │ 16    │ Hello World OpenMP        │ /global/u1/s/siddiq90/gi… │
+        │                           │                      │                    │       │       │ scaling example with      │                           │
+        │                           │                      │                    │       │       │ processor count           │                           │
+        ├───────────────────────────┼──────────────────────┼────────────────────┼───────┼───────┼───────────────────────────┼───────────────────────────┤
+        │ hello_world_openmp/0fe29… │ cori.slurm.knl_debug │ PrgEnv-intel/6.0.5 │ None  │ 24    │ Hello World OpenMP        │ /global/u1/s/siddiq90/gi… │
+        │                           │                      │                    │       │       │ scaling example with      │                           │
+        │                           │                      │                    │       │       │ processor count           │                           │
+        └───────────────────────────┴──────────────────────┴────────────────────┴───────┴───────┴───────────────────────────┴───────────────────────────┘
+                                                                      Batch Job Builders
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ builder                     ┃ executor             ┃ buildspecs                                                                             ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ hello_world_openmp/a7de0abb │ cori.slurm.knl_debug │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_scale.yml │
+        ├─────────────────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────────────────────────────┤
+        │ hello_world_openmp/ce755367 │ cori.slurm.knl_debug │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_scale.yml │
+        ├─────────────────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────────────────────────────┤
+        │ hello_world_openmp/fa271571 │ cori.slurm.knl_debug │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_scale.yml │
+        ├─────────────────────────────┼──────────────────────┼────────────────────────────────────────────────────────────────────────────────────────┤
+        │ hello_world_openmp/0fe298ae │ cori.slurm.knl_debug │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_scale.yml │
+        └─────────────────────────────┴──────────────────────┴────────────────────────────────────────────────────────────────────────────────────────┘
+                                                                Batch Job Builders by Processors
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ builder                     ┃ executor             ┃ procs ┃ buildspecs                                                                       ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ hello_world_openmp/ce755367 │ cori.slurm.knl_debug │ 8     │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_sca │
+        │                             │                      │       │ le.yml                                                                           │
+        ├─────────────────────────────┼──────────────────────┼───────┼──────────────────────────────────────────────────────────────────────────────────┤
+        │ hello_world_openmp/fa271571 │ cori.slurm.knl_debug │ 16    │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_sca │
+        │                             │                      │       │ le.yml                                                                           │
+        ├─────────────────────────────┼──────────────────────┼───────┼──────────────────────────────────────────────────────────────────────────────────┤
+        │ hello_world_openmp/0fe298ae │ cori.slurm.knl_debug │ 24    │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/openmp_sca │
+        │                             │                      │       │ le.yml                                                                           │
+        └─────────────────────────────┴──────────────────────┴───────┴──────────────────────────────────────────────────────────────────────────────────┘
+        ───────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────
+        hello_world_openmp/a7de0abb: Creating test directory:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/a7de0abb
+        hello_world_openmp/a7de0abb: Creating the stage directory:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/a7de0abb/stage
+        hello_world_openmp/a7de0abb: Writing build script:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/a7de0abb/hello_world_openmp_build.sh
+        hello_world_openmp/ce755367: Creating test directory:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367
+        hello_world_openmp/ce755367: Creating the stage directory:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/stage
+        hello_world_openmp/ce755367: Writing build script:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_openmp_build.sh
+        hello_world_openmp/fa271571: Creating test directory:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571
+        hello_world_openmp/fa271571: Creating the stage directory:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/stage
+        hello_world_openmp/fa271571: Writing build script:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_openmp_build.sh
+        hello_world_openmp/0fe298ae: Creating test directory:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae
+        hello_world_openmp/0fe298ae: Creating the stage directory:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/stage
+        hello_world_openmp/0fe298ae: Writing build script:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_openmp_build.sh
+        ───────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────
+        Spawning 64 processes for processing builders
+        ────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────
+        hello_world_openmp/a7de0abb does not have any dependencies adding test to queue
+        hello_world_openmp/0fe298ae does not have any dependencies adding test to queue
+        hello_world_openmp/fa271571 does not have any dependencies adding test to queue
+        hello_world_openmp/ce755367 does not have any dependencies adding test to queue
+        In this iteration we are going to run the following tests: [hello_world_openmp/a7de0abb, hello_world_openmp/0fe298ae, hello_world_openmp/fa271571, hello_world_openmp/ce755367]
+        hello_world_openmp/0fe298ae: Running Test via command: bash --norc --noprofile -eo pipefail hello_world_openmp_build.sh
+        hello_world_openmp/ce755367: Running Test via command: bash --norc --noprofile -eo pipefail hello_world_openmp_build.sh
+        hello_world_openmp/a7de0abb: Running Test via command: bash --norc --noprofile -eo pipefail hello_world_openmp_build.sh
+        hello_world_openmp/fa271571: Running Test via command: bash --norc --noprofile -eo pipefail hello_world_openmp_build.sh
+        hello_world_openmp/0fe298ae: JobID 60681274 dispatched to scheduler
+        hello_world_openmp/a7de0abb: JobID 60681275 dispatched to scheduler
+        hello_world_openmp/ce755367: JobID 60681276 dispatched to scheduler
+        hello_world_openmp/fa271571: JobID 60681277 dispatched to scheduler
+        Polling Jobs in 30 seconds
+        hello_world_openmp/0fe298ae: Job 60681274 is complete!
+        hello_world_openmp/0fe298ae: Test completed in 31.868266 seconds
+        hello_world_openmp/0fe298ae: Test completed with returncode: 0
+        hello_world_openmp/0fe298ae: Writing output file -
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_openmp.out
+        hello_world_openmp/0fe298ae: Writing error file -
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_openmp.err
+        hello_world_openmp/ce755367: Job 60681276 is complete!
+        hello_world_openmp/ce755367: Test completed in 32.010719 seconds
+        hello_world_openmp/ce755367: Test completed with returncode: 0
+        hello_world_openmp/ce755367: Writing output file -
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_openmp.out
+        hello_world_openmp/ce755367: Writing error file -
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_openmp.err
+                                             Running Jobs
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
+        ┃ builder                     ┃ executor             ┃ jobid    ┃ jobstate ┃ runtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
+        │ hello_world_openmp/a7de0abb │ cori.slurm.knl_debug │ 60681275 │ RUNNING  │ 31.957  │
+        │ hello_world_openmp/fa271571 │ cori.slurm.knl_debug │ 60681277 │ RUNNING  │ 31.987  │
+        └─────────────────────────────┴──────────────────────┴──────────┴──────────┴─────────┘
+                                             Completed Jobs
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
+        ┃ builder                     ┃ executor             ┃ jobid    ┃ jobstate  ┃ runtime   ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━┩
+        │ hello_world_openmp/0fe298ae │ cori.slurm.knl_debug │ 60681274 │ COMPLETED │ 31.868266 │
+        │ hello_world_openmp/ce755367 │ cori.slurm.knl_debug │ 60681276 │ COMPLETED │ 32.010719 │
+        └─────────────────────────────┴──────────────────────┴──────────┴───────────┴───────────┘
+        Polling Jobs in 30 seconds
+        hello_world_openmp/fa271571: Job 60681277 is complete!
+        hello_world_openmp/fa271571: Test completed in 62.153829 seconds
+        hello_world_openmp/fa271571: Test completed with returncode: 0
+        hello_world_openmp/fa271571: Writing output file -
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_openmp.out
+        hello_world_openmp/fa271571: Writing error file -
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_openmp.err
+                                             Running Jobs
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
+        ┃ builder                     ┃ executor             ┃ jobid    ┃ jobstate ┃ runtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
+        │ hello_world_openmp/a7de0abb │ cori.slurm.knl_debug │ 60681275 │ RUNNING  │ 62.132  │
+        └─────────────────────────────┴──────────────────────┴──────────┴──────────┴─────────┘
+                                             Completed Jobs
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
+        ┃ builder                     ┃ executor             ┃ jobid    ┃ jobstate  ┃ runtime   ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━┩
+        │ hello_world_openmp/fa271571 │ cori.slurm.knl_debug │ 60681277 │ COMPLETED │ 62.153829 │
+        └─────────────────────────────┴──────────────────────┴──────────┴───────────┴───────────┘
+        Polling Jobs in 30 seconds
+        hello_world_openmp/a7de0abb: Job 60681275 is complete!
+        hello_world_openmp/a7de0abb: Test completed in 92.278197 seconds
+        hello_world_openmp/a7de0abb: Test completed with returncode: 0
+        hello_world_openmp/a7de0abb: Writing output file -
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/a7de0abb/hello_world_openmp.out
+        hello_world_openmp/a7de0abb: Writing error file -
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/a7de0abb/hello_world_openmp.err
+                                             Completed Jobs
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
+        ┃ builder                     ┃ executor             ┃ jobid    ┃ jobstate  ┃ runtime   ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━┩
+        │ hello_world_openmp/a7de0abb │ cori.slurm.knl_debug │ 60681275 │ COMPLETED │ 92.278197 │
+        └─────────────────────────────┴──────────────────────┴──────────┴───────────┴───────────┘
+                                                                 Test Summary
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┓
+        ┃ builder                     ┃ executor             ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returnCode ┃ runtime   ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━┩
+        │ hello_world_openmp/0fe298ae │ cori.slurm.knl_debug │ PASS   │ N/A N/A N/A                         │ 0          │ 31.868266 │
+        ├─────────────────────────────┼──────────────────────┼────────┼─────────────────────────────────────┼────────────┼───────────┤
+        │ hello_world_openmp/a7de0abb │ cori.slurm.knl_debug │ PASS   │ N/A N/A N/A                         │ 0          │ 92.278197 │
+        ├─────────────────────────────┼──────────────────────┼────────┼─────────────────────────────────────┼────────────┼───────────┤
+        │ hello_world_openmp/fa271571 │ cori.slurm.knl_debug │ PASS   │ N/A N/A N/A                         │ 0          │ 62.153829 │
+        ├─────────────────────────────┼──────────────────────┼────────┼─────────────────────────────────────┼────────────┼───────────┤
+        │ hello_world_openmp/ce755367 │ cori.slurm.knl_debug │ PASS   │ N/A N/A N/A                         │ 0          │ 32.010719 │
+        └─────────────────────────────┴──────────────────────┴────────┴─────────────────────────────────────┴────────────┴───────────┘
 
-    Passed Tests: 4/4 Percentage: 100.000%
-    Failed Tests: 0/4 Percentage: 0.000%
 
 
-    Adding 4 test results to /global/u1/s/siddiq90/gitrepos/buildtest/var/report.json
-    Writing Logfile to: /global/u1/s/siddiq90/gitrepos/buildtest/var/logs/buildtest_ptr4xf10.log
+        Passed Tests: 4/4 Percentage: 100.000%
+        Failed Tests: 0/4 Percentage: 0.000%
+
+
+        Adding 4 test results to /global/u1/s/siddiq90/gitrepos/buildtest/var/report.json
+        Writing Logfile to: /global/u1/s/siddiq90/gitrepos/buildtest/var/logs/buildtest_ptr4xf10.log
 
 
 Now let's query the result via **buildtest inspect query** and examine the run. First we will need to specify the appropriate builder ids, we can specify
@@ -398,225 +402,227 @@ set for each test corresponding to value specified via ``--procs``. In the build
 account the processor value. In the output we see each thread will print **Hello World... from thread** followed by name of thread where number of threads for these
 tests are controlled by value set by ``OMP_NUM_THREADS``.
 
-.. code-block:: console
+.. dropdown:: ``buildtest inspect query -t -o -b "hello_world_openmp/(fa|ce|0f)"``
 
-    $ buildtest inspect query -t -o -b "hello_world_openmp/(fa|ce|0f)"
-    ──────────────────────────────────────────── hello_world_openmp/fa271571-40e7-4a28-808c-f2ed38b47538 ────────────────────────────────────────────
-    Executor: cori.slurm.knl_debug
-    Description: Hello World OpenMP scaling example with processor count
-    State: PASS
-    Returncode: 0
-    Runtime: 62.153829 sec
-    Starttime: 2022/06/30 14:39:12
-    Endtime: 2022/06/30 14:40:14
-    Command: bash --norc --noprofile -eo pipefail hello_world_openmp_build.sh
-    Test Script:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_openmp.sh
-    Build Script:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_openmp_build.sh
-    Output File:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_openmp.out
-    Error File:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_openmp.err
-    Log File: /global/u1/s/siddiq90/gitrepos/buildtest/var/logs/buildtest_ptr4xf10.log
-    ─ Output File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_op… ─
-    Hello World... from thread = 0
-    Hello World... from thread = 12
-    Hello World... from thread = 13
-    Hello World... from thread = 8
-    Hello World... from thread = 4
-    Hello World... from thread = 9
-    Hello World... from thread = 5
-    Hello World... from thread = 14
-    Hello World... from thread = 11
-    Hello World... from thread = 6
-    Hello World... from thread = 10
-    Hello World... from thread = 7
-    Hello World... from thread = 1
-    Hello World... from thread = 3
-    Hello World... from thread = 2
-    Hello World... from thread = 15
+    .. code-block:: console
 
-    ─ Test File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_open… ─
-    #!/bin/bash
-    #SBATCH -t 10
-    #SBATCH --job-name=hello_world_openmp
-    #SBATCH --output=hello_world_openmp.out
-    #SBATCH --error=hello_world_openmp.err
+        $ buildtest inspect query -t -o -b "hello_world_openmp/(fa|ce|0f)"
+        ──────────────────────────────────────────── hello_world_openmp/fa271571-40e7-4a28-808c-f2ed38b47538 ────────────────────────────────────────────
+        Executor: cori.slurm.knl_debug
+        Description: Hello World OpenMP scaling example with processor count
+        State: PASS
+        Returncode: 0
+        Runtime: 62.153829 sec
+        Starttime: 2022/06/30 14:39:12
+        Endtime: 2022/06/30 14:40:14
+        Command: bash --norc --noprofile -eo pipefail hello_world_openmp_build.sh
+        Test Script:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_openmp.sh
+        Build Script:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_openmp_build.sh
+        Output File:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_openmp.out
+        Error File:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_openmp.err
+        Log File: /global/u1/s/siddiq90/gitrepos/buildtest/var/logs/buildtest_ptr4xf10.log
+        ─ Output File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_op… ─
+        Hello World... from thread = 0
+        Hello World... from thread = 12
+        Hello World... from thread = 13
+        Hello World... from thread = 8
+        Hello World... from thread = 4
+        Hello World... from thread = 9
+        Hello World... from thread = 5
+        Hello World... from thread = 14
+        Hello World... from thread = 11
+        Hello World... from thread = 6
+        Hello World... from thread = 10
+        Hello World... from thread = 7
+        Hello World... from thread = 1
+        Hello World... from thread = 3
+        Hello World... from thread = 2
+        Hello World... from thread = 15
 
-
-    # name of executable
-    _EXEC=hello.c.exe
-    export OMP_NUM_THREADS="$BUILDTEST_NUMPROCS"
-    # Loading modules
-    module load PrgEnv-intel/6.0.5
-    # Compilation Line
-    cc -qopenmp -o $_EXEC /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/src/hello.c
+        ─ Test File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_open… ─
+        #!/bin/bash
+        #SBATCH -t 10
+        #SBATCH --job-name=hello_world_openmp
+        #SBATCH --output=hello_world_openmp.out
+        #SBATCH --error=hello_world_openmp.err
 
 
-    # Run executable
-    ./$_EXEC
+        # name of executable
+        _EXEC=hello.c.exe
+        export OMP_NUM_THREADS="$BUILDTEST_NUMPROCS"
+        # Loading modules
+        module load PrgEnv-intel/6.0.5
+        # Compilation Line
+        cc -qopenmp -o $_EXEC /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/src/hello.c
 
 
-    ─ Test File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_open… ─
-    #!/bin/bash
-    export BUILDTEST_TEST_NAME=hello_world_openmp
-    export BUILDTEST_TEST_ROOT=/global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571
-    export BUILDTEST_BUILDSPEC_DIR=/global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp
-    export BUILDTEST_STAGE_DIR=/global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/stage
-    export BUILDTEST_NUMPROCS=16
-    # source executor startup script
-    source /global/u1/s/siddiq90/gitrepos/buildtest/var/executor/cori.slurm.knl_debug/before_script.sh
-    # Run generated script
-    sbatch --parsable -q debug --clusters=cori -n 16 -C knl,quad,cache /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp
-    # Get return code
-    returncode=$?
-    # Exit with return code
-    exit $returncode
-    ──────────────────────────────────────────── hello_world_openmp/0fe298ae-6704-4a3c-8253-1767e25e6edb ────────────────────────────────────────────
-    Executor: cori.slurm.knl_debug
-    Description: Hello World OpenMP scaling example with processor count
-    State: PASS
-    Returncode: 0
-    Runtime: 31.868266 sec
-    Starttime: 2022/06/30 14:39:12
-    Endtime: 2022/06/30 14:39:44
-    Command: bash --norc --noprofile -eo pipefail hello_world_openmp_build.sh
-    Test Script:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_openmp.sh
-    Build Script:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_openmp_build.sh
-    Output File:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_openmp.out
-    Error File:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_openmp.err
-    Log File: /global/u1/s/siddiq90/gitrepos/buildtest/var/logs/buildtest_ptr4xf10.log
-    ─ Output File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_op… ─
-    Hello World... from thread = 0
-    Hello World... from thread = 8
-    Hello World... from thread = 12
-    Hello World... from thread = 16
-    Hello World... from thread = 13
-    Hello World... from thread = 9
-    Hello World... from thread = 20
-    Hello World... from thread = 17
-    Hello World... from thread = 21
-    Hello World... from thread = 15
-    Hello World... from thread = 10
-    Hello World... from thread = 19
-    Hello World... from thread = 14
-    Hello World... from thread = 18
-    Hello World... from thread = 4
-    Hello World... from thread = 5
-    Hello World... from thread = 11
-    Hello World... from thread = 1
-    Hello World... from thread = 23
-    Hello World... from thread = 22
-    Hello World... from thread = 3
-    Hello World... from thread = 7
-    Hello World... from thread = 6
-    Hello World... from thread = 2
-
-    ─ Test File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_open… ─
-    #!/bin/bash
-    #SBATCH -t 10
-    #SBATCH --job-name=hello_world_openmp
-    #SBATCH --output=hello_world_openmp.out
-    #SBATCH --error=hello_world_openmp.err
+        # Run executable
+        ./$_EXEC
 
 
-    # name of executable
-    _EXEC=hello.c.exe
-    export OMP_NUM_THREADS="$BUILDTEST_NUMPROCS"
-    # Loading modules
-    module load PrgEnv-intel/6.0.5
-    # Compilation Line
-    cc -qopenmp -o $_EXEC /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/src/hello.c
+        ─ Test File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/hello_world_open… ─
+        #!/bin/bash
+        export BUILDTEST_TEST_NAME=hello_world_openmp
+        export BUILDTEST_TEST_ROOT=/global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571
+        export BUILDTEST_BUILDSPEC_DIR=/global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp
+        export BUILDTEST_STAGE_DIR=/global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/fa271571/stage
+        export BUILDTEST_NUMPROCS=16
+        # source executor startup script
+        source /global/u1/s/siddiq90/gitrepos/buildtest/var/executor/cori.slurm.knl_debug/before_script.sh
+        # Run generated script
+        sbatch --parsable -q debug --clusters=cori -n 16 -C knl,quad,cache /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp
+        # Get return code
+        returncode=$?
+        # Exit with return code
+        exit $returncode
+        ──────────────────────────────────────────── hello_world_openmp/0fe298ae-6704-4a3c-8253-1767e25e6edb ────────────────────────────────────────────
+        Executor: cori.slurm.knl_debug
+        Description: Hello World OpenMP scaling example with processor count
+        State: PASS
+        Returncode: 0
+        Runtime: 31.868266 sec
+        Starttime: 2022/06/30 14:39:12
+        Endtime: 2022/06/30 14:39:44
+        Command: bash --norc --noprofile -eo pipefail hello_world_openmp_build.sh
+        Test Script:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_openmp.sh
+        Build Script:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_openmp_build.sh
+        Output File:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_openmp.out
+        Error File:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_openmp.err
+        Log File: /global/u1/s/siddiq90/gitrepos/buildtest/var/logs/buildtest_ptr4xf10.log
+        ─ Output File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_op… ─
+        Hello World... from thread = 0
+        Hello World... from thread = 8
+        Hello World... from thread = 12
+        Hello World... from thread = 16
+        Hello World... from thread = 13
+        Hello World... from thread = 9
+        Hello World... from thread = 20
+        Hello World... from thread = 17
+        Hello World... from thread = 21
+        Hello World... from thread = 15
+        Hello World... from thread = 10
+        Hello World... from thread = 19
+        Hello World... from thread = 14
+        Hello World... from thread = 18
+        Hello World... from thread = 4
+        Hello World... from thread = 5
+        Hello World... from thread = 11
+        Hello World... from thread = 1
+        Hello World... from thread = 23
+        Hello World... from thread = 22
+        Hello World... from thread = 3
+        Hello World... from thread = 7
+        Hello World... from thread = 6
+        Hello World... from thread = 2
+
+        ─ Test File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_open… ─
+        #!/bin/bash
+        #SBATCH -t 10
+        #SBATCH --job-name=hello_world_openmp
+        #SBATCH --output=hello_world_openmp.out
+        #SBATCH --error=hello_world_openmp.err
 
 
-    # Run executable
-    ./$_EXEC
+        # name of executable
+        _EXEC=hello.c.exe
+        export OMP_NUM_THREADS="$BUILDTEST_NUMPROCS"
+        # Loading modules
+        module load PrgEnv-intel/6.0.5
+        # Compilation Line
+        cc -qopenmp -o $_EXEC /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/src/hello.c
 
 
-    ─ Test File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_open… ─
-    #!/bin/bash
-    export BUILDTEST_TEST_NAME=hello_world_openmp
-    export BUILDTEST_TEST_ROOT=/global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae
-    export BUILDTEST_BUILDSPEC_DIR=/global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp
-    export BUILDTEST_STAGE_DIR=/global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/stage
-    export BUILDTEST_NUMPROCS=24
-    # source executor startup script
-    source /global/u1/s/siddiq90/gitrepos/buildtest/var/executor/cori.slurm.knl_debug/before_script.sh
-    # Run generated script
-    sbatch --parsable -q debug --clusters=cori -n 24 -C knl,quad,cache /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp
-    # Get return code
-    returncode=$?
-    # Exit with return code
-    exit $returncode
-    ──────────────────────────────────────────── hello_world_openmp/ce755367-4155-4721-adfd-2bd2aad36f46 ────────────────────────────────────────────
-    Executor: cori.slurm.knl_debug
-    Description: Hello World OpenMP scaling example with processor count
-    State: PASS
-    Returncode: 0
-    Runtime: 32.010719 sec
-    Starttime: 2022/06/30 14:39:12
-    Endtime: 2022/06/30 14:39:44
-    Command: bash --norc --noprofile -eo pipefail hello_world_openmp_build.sh
-    Test Script:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_openmp.sh
-    Build Script:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_openmp_build.sh
-    Output File:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_openmp.out
-    Error File:
-    /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_openmp.err
-    Log File: /global/u1/s/siddiq90/gitrepos/buildtest/var/logs/buildtest_ptr4xf10.log
-    ─ Output File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_op… ─
-    Hello World... from thread = 0
-    Hello World... from thread = 3
-    Hello World... from thread = 4
-    Hello World... from thread = 6
-    Hello World... from thread = 5
-    Hello World... from thread = 1
-    Hello World... from thread = 2
-    Hello World... from thread = 7
-
-    ─ Test File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_open… ─
-    #!/bin/bash
-    #SBATCH -t 10
-    #SBATCH --job-name=hello_world_openmp
-    #SBATCH --output=hello_world_openmp.out
-    #SBATCH --error=hello_world_openmp.err
+        # Run executable
+        ./$_EXEC
 
 
-    # name of executable
-    _EXEC=hello.c.exe
-    export OMP_NUM_THREADS="$BUILDTEST_NUMPROCS"
-    # Loading modules
-    module load PrgEnv-intel/6.0.5
-    # Compilation Line
-    cc -qopenmp -o $_EXEC /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/src/hello.c
+        ─ Test File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/hello_world_open… ─
+        #!/bin/bash
+        export BUILDTEST_TEST_NAME=hello_world_openmp
+        export BUILDTEST_TEST_ROOT=/global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae
+        export BUILDTEST_BUILDSPEC_DIR=/global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp
+        export BUILDTEST_STAGE_DIR=/global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/0fe298ae/stage
+        export BUILDTEST_NUMPROCS=24
+        # source executor startup script
+        source /global/u1/s/siddiq90/gitrepos/buildtest/var/executor/cori.slurm.knl_debug/before_script.sh
+        # Run generated script
+        sbatch --parsable -q debug --clusters=cori -n 24 -C knl,quad,cache /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp
+        # Get return code
+        returncode=$?
+        # Exit with return code
+        exit $returncode
+        ──────────────────────────────────────────── hello_world_openmp/ce755367-4155-4721-adfd-2bd2aad36f46 ────────────────────────────────────────────
+        Executor: cori.slurm.knl_debug
+        Description: Hello World OpenMP scaling example with processor count
+        State: PASS
+        Returncode: 0
+        Runtime: 32.010719 sec
+        Starttime: 2022/06/30 14:39:12
+        Endtime: 2022/06/30 14:39:44
+        Command: bash --norc --noprofile -eo pipefail hello_world_openmp_build.sh
+        Test Script:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_openmp.sh
+        Build Script:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_openmp_build.sh
+        Output File:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_openmp.out
+        Error File:
+        /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_openmp.err
+        Log File: /global/u1/s/siddiq90/gitrepos/buildtest/var/logs/buildtest_ptr4xf10.log
+        ─ Output File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_op… ─
+        Hello World... from thread = 0
+        Hello World... from thread = 3
+        Hello World... from thread = 4
+        Hello World... from thread = 6
+        Hello World... from thread = 5
+        Hello World... from thread = 1
+        Hello World... from thread = 2
+        Hello World... from thread = 7
+
+        ─ Test File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_open… ─
+        #!/bin/bash
+        #SBATCH -t 10
+        #SBATCH --job-name=hello_world_openmp
+        #SBATCH --output=hello_world_openmp.out
+        #SBATCH --error=hello_world_openmp.err
 
 
-    # Run executable
-    ./$_EXEC
+        # name of executable
+        _EXEC=hello.c.exe
+        export OMP_NUM_THREADS="$BUILDTEST_NUMPROCS"
+        # Loading modules
+        module load PrgEnv-intel/6.0.5
+        # Compilation Line
+        cc -qopenmp -o $_EXEC /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp/src/hello.c
 
 
-    ─ Test File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_open… ─
-    #!/bin/bash
-    export BUILDTEST_TEST_NAME=hello_world_openmp
-    export BUILDTEST_TEST_ROOT=/global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367
-    export BUILDTEST_BUILDSPEC_DIR=/global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp
-    export BUILDTEST_STAGE_DIR=/global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/stage
-    export BUILDTEST_NUMPROCS=8
-    # source executor startup script
-    source /global/u1/s/siddiq90/gitrepos/buildtest/var/executor/cori.slurm.knl_debug/before_script.sh
-    # Run generated script
-    sbatch --parsable -q debug --clusters=cori -n 8 -C knl,quad,cache /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_
-    # Get return code
-    returncode=$?
-    # Exit with return code
-    exit $returncode
+        # Run executable
+        ./$_EXEC
+
+
+        ─ Test File: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/hello_world_open… ─
+        #!/bin/bash
+        export BUILDTEST_TEST_NAME=hello_world_openmp
+        export BUILDTEST_TEST_ROOT=/global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367
+        export BUILDTEST_BUILDSPEC_DIR=/global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/apps/openmp
+        export BUILDTEST_STAGE_DIR=/global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_scale/hello_world_openmp/ce755367/stage
+        export BUILDTEST_NUMPROCS=8
+        # source executor startup script
+        source /global/u1/s/siddiq90/gitrepos/buildtest/var/executor/cori.slurm.knl_debug/before_script.sh
+        # Run generated script
+        sbatch --parsable -q debug --clusters=cori -n 8 -C knl,quad,cache /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/openmp_
+        # Get return code
+        returncode=$?
+        # Exit with return code
+        exit $returncode
 
 .. _cray_burstbuffer_datawarp:
 

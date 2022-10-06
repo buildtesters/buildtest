@@ -297,5 +297,7 @@ check you can specify on command line such as ``--no-black`` will disable black 
 Shown below is an example output of what style check will report. By default, black and isort will report changes that
 will need to be fixed, if you want to apply those changes to buildtest codebase you can pass the ``--apply`` option.
 
-.. command-output:: buildtest stylecheck
+.. dropdown:: ``buildtest stylecheck``
+
+    .. command-output:: buildtest stylecheck
 
