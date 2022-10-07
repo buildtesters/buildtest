@@ -42,11 +42,15 @@ options like ``cflags``, ``fflags``, ``cxxflags``, ``ldflags`` to customize comp
 
 Shown below is an example build for this test.
 
-.. program-output:: cat buildtest_tutorial_examples/compilers/build/gnu_hello_fortran.txt
+.. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/compilers/gnu_hello_fortran.yml``
+
+    .. program-output:: cat buildtest_tutorial_examples/compilers/build/gnu_hello_fortran.txt
 
 The generated test for test name **hello_f** is the following:
 
-.. program-output:: cat buildtest_tutorial_examples/compilers/inspect/gnu_hello_fortran.txt
+.. dropdown:: ``buildtest inspect query -t hello_f``
+
+    .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/gnu_hello_fortran.txt
 
 
 How does buildtest detect programming language?
@@ -80,7 +84,9 @@ and path to ``cc``, ``fc``, ``cxx`` wrapper. In addition one can specify ``modul
 to modulefile. If `module` property is defined you can specify list of modules to load via ``load`` property and buildtest will
 automatically load these modules when using the compiler.
 
-.. program-output:: cat buildtest_tutorial_examples/compilers/compilers_list.txt
+.. dropdown:: ``buildtest config compilers -y``
+
+    .. program-output:: cat buildtest_tutorial_examples/compilers/compilers_list.txt
 
 buildtest selects compiler based on ``name`` property which is a list of regular expression
 applied for available compilers defined in buildtest configuration. In this next example, we will
@@ -94,7 +100,9 @@ this code requires we specify ``-lm`` flag to link with math library.
 
 We expect buildtest to generate one test per gcc compiler as you can see below.
 
-.. program-output:: cat buildtest_tutorial_examples/compilers/build/vecadd.txt
+.. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/compilers/vecadd.yml``
+
+    .. program-output:: cat buildtest_tutorial_examples/compilers/build/vecadd.txt
 
 Customize Compiler Option
 ---------------------------
@@ -111,12 +119,16 @@ options for each compiler name.
 
 Let's build this test, we will see there is one builder instance for each compiler.
 
-.. program-output:: cat buildtest_tutorial_examples/compilers/build/gnu_hello_c.txt
+.. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/compilers/gnu_hello_c.yml``
+
+    .. program-output:: cat buildtest_tutorial_examples/compilers/build/gnu_hello_c.txt
 
 If we inspect the following test, we see each test has its own compiler flags. The default cflag
 is ``-O1`` while **gcc_6.5.0** will use ``-O2`` and **gcc_8.3.0** will use ``-O3``.
 
-.. program-output:: cat buildtest_tutorial_examples/compilers/inspect/gnu_hello_c.txt
+.. dropdown:: ``buildtest inspect query -t hello_c/``
+
+    .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/gnu_hello_c.txt
 
 Excluding Compilers
 --------------------
@@ -133,7 +145,9 @@ found based on regular expression via ``name`` property.  In this next example, 
 Now if we run this test, we will notice that there is only one build for this test even though buildtest
 discovered both ``gcc_6.5.0`` and ``gcc_8.3.0`` compilers.
 
-.. program-output:: cat buildtest_tutorial_examples/compilers/build/compiler_exclude.txt
+.. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/compilers/compiler_exclude.yml``
+
+    .. program-output:: cat buildtest_tutorial_examples/compilers/build/compiler_exclude.txt
 
 Setting environment variables
 ------------------------------
@@ -151,12 +165,16 @@ we will set ``OMP_NUM_THREADS=2``
 
 Now let's build this test.
 
-.. program-output:: cat buildtest_tutorial_examples/compilers/build/openmp_hello.txt
+.. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/compilers/openmp_hello.yml``
+
+    .. program-output:: cat buildtest_tutorial_examples/compilers/build/openmp_hello.txt
 
 We can see the generated test using ``buildtest inspect query`` given the name of test. Take a close
 look at the ``export OMP_NUM_THREADS`` in the generated test.
 
-.. program-output:: cat buildtest_tutorial_examples/compilers/inspect/openmp_hello.txt
+.. dropdown:: ``buildtest inspect query -t openmp_hello_c_example``
+
+    .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/openmp_hello.txt
 
 We can define environment variables per compiler instance. buildtest will automatically override
 any key in ``defaults`` with one matched under ``config`` for the compiler name. In this next example,
@@ -174,7 +192,9 @@ Next, let's see the generated test by running ``buildtest inspect query -d all -
 ``-d all`` will display all test records for ``override_environmentvars``. Take a note that we have
 ``export OMP_NUM_THREADS=4`` for `gcc_8.3.0` test and ``export OMP_NUM_THREADS=2`` for system gcc.
 
-.. program-output:: cat buildtest_tutorial_examples/compilers/inspect/envvar_override.txt
+.. dropdown:: ``buildtest inspect query -t override_environmentvars/``
+
+    .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/envvar_override.txt
 
 Tweak how test are passed
 --------------------------
@@ -201,12 +221,16 @@ we have have specified test will pass if we get a returncode 1 based on ``defaul
 ``gcc_8.3.0`` compiler test we have defined a ``status`` property to check based on regular expression.
 We will expect both tests to fail since we will have a mismatch on returncode and regular expression
 
-.. program-output:: cat buildtest_tutorial_examples/compilers/build/compiler_status_regex.txt
+.. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/compilers/compiler_status_regex.yml``
+
+    .. program-output:: cat buildtest_tutorial_examples/compilers/build/compiler_status_regex.txt
 
 For the second test, we see the generated output is **final result: 1.000000** but our regular expression
 has a different expected value therefore this test will fail even though we have a exitcode of 0.
 
-.. program-output:: cat buildtest_tutorial_examples/compilers/inspect/compiler_status_regex.txt
+.. dropdown:: ``buildtest inspect query -o override_status_regex/``
+
+    .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/compiler_status_regex.txt
 
 
 Customize Run Line
@@ -230,7 +254,9 @@ You can build this test by running the following::
 Once test is complete let's inspect the generated test. We see that buildtest will insert the line specified
 by ``run`` property after compilation and run the executable.
 
-.. program-output::  cat buildtest_tutorial_examples/compilers/inspect/custom_run.txt
+.. dropdown:: ``buildtest inspect query -b  -t custom_run_by_compilers/``
+
+    .. program-output::  cat buildtest_tutorial_examples/compilers/inspect/custom_run.txt
 
 Pre/Post sections for build and run section
 --------------------------------------------
@@ -272,7 +298,9 @@ You can run this example by running the following command::
 If we inspect the content of test we see that buildtest will insert the shell commands
 for ``pre_build``, ``post_build``, ``pre_run`` and ``post_run`` in its corresponding section.
 
-.. program-output:: cat buildtest_tutorial_examples/compilers/inspect/pre_post_build_run.txt
+.. dropdown:: ``buildtest inspect query -t pre_post_build_run``
+
+    .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/pre_post_build_run.txt
 
 Running Stream Benchmark with multiple compilers
 ----------------------------------------------------
@@ -300,12 +328,16 @@ set environment ``OMP_NUM_THREADS`` to control number of OpenMP threads when run
 
 If we build this test we see one test is created per compiler instance defined in our configuration file.
 
-.. program-output:: cat buildtest_tutorial_examples/compilers/build/stream_example.txt
+.. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/compilers/stream_example.yml``
+
+    .. program-output:: cat buildtest_tutorial_examples/compilers/build/stream_example.txt
 
 Next, let's see the generated test using ``buildtest inspect query``, we notice buildtest will set variables ``BUILDTEST_*`` for
 each test to map to each compiler.
 
-.. program-output:: cat buildtest_tutorial_examples/compilers/inspect/stream_example.txt
+.. dropdown:: ``buildtest inspect query -t stream_openmp_c/``
+
+    .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/stream_example.txt
 
 In the next example, we will run STREAM benchmark and extract metrics from test results and assign them to metrics name
 ``copy``, ``add``, ``scale``, ``triad``. Each metrics will be searched using regular expression against stdout stream
@@ -317,4 +349,6 @@ In the next example, we will run STREAM benchmark and extract metrics from test 
 buildtest will record the metrics in the test report and ``buildtest inspect query`` will display metrics
 if found in test. Shown below we see the output of the metrics and its corresponding values.
 
-.. program-output:: cat buildtest_tutorial_examples/compilers/inspect/stream_openmp_metrics.txt
+.. dropdown:: ``buildtest inspect query -o stream_openmp_metrics/``
+
+    .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/stream_openmp_metrics.txt
