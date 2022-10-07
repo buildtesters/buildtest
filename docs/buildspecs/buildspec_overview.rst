@@ -532,8 +532,10 @@ In this next example we set ``skip: yes``, buildtest will skip the buildspec and
 
 If you try building this buildspec, you will see buildtest will skip the buildspec and terminate.
 
-.. command-output:: buildtest build -b tutorials/skip_buildspec.yml
-   :returncode: 1
+.. dropdown:: ``buildtest build -b tutorials/skip_buildspec.yml``
+
+    .. command-output:: buildtest build -b tutorials/skip_buildspec.yml
+       :returncode: 1
 
 .. _metrics:
 
