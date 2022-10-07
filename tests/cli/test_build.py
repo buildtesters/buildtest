@@ -229,6 +229,13 @@ def test_skip_field():
     )
     cmd.build()
 
+    cmd = BuildTest(
+        buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "skip_buildspec.yml")],
+        configuration=configuration,
+        buildtest_system=system,
+    )
+    cmd.build()
+
 
 @pytest.mark.cli
 def test_build_by_stages():

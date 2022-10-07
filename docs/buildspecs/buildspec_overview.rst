@@ -516,6 +516,25 @@ stage
 
 .. command-output:: buildtest build -b tutorials/skip_tests.yml
 
+Skipping a buildspec
+---------------------
+
+Sometimes you may want to skip all test in a buildspec instead of updating every test with ``skip`` property, this can be done by setting
+**skip** at the top-level. This can be useful if you are running several test in a directory such as ``buildtest build -b dir1/`` and you don't
+want to explicitly exclude file via ``-x``  option every time, instead you can hardcode this into the buildspec. A typical use-case of skipping
+test is when a test is broken and you don't want to run it then its good idea to set ``skip: yes`` on the buildspec and fix it later.
+
+In this next example we set ``skip: yes``, buildtest will skip the buildspec and no test will be processed even if ``skip`` is set in each test.
+
+.. literalinclude:: ../tutorials/skip_buildspec.yml
+   :language: yaml
+   :emphasize-lines: 1
+
+If you try building this buildspec, you will see buildtest will skip the buildspec and terminate.
+
+.. command-output:: buildtest build -b tutorials/skip_buildspec.yml
+   :returncode: 1
+
 .. _metrics:
 
 Defining Metrics

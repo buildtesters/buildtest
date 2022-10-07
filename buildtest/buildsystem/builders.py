@@ -70,6 +70,13 @@ class Builder:
 
         self.builders = []
 
+        # skip property defined at top-level then skip test
+        if self.bp.recipe.get("skip"):
+            console.print(
+                f"{self.bp.buildspec}: skipping all test since 'skip' is defined"
+            )
+            return
+
         if deep_get(self.filters, "maintainers"):
 
             if not self.bp.recipe.get("maintainers"):

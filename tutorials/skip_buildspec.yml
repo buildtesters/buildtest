@@ -1,0 +1,16 @@
+skip: yes
+buildspecs:
+  skip_all_tests:
+    type: script
+    executor: generic.local.bash
+    description: "All test in this buildspec are skipped"
+    tags: [tutorials]
+    run: hostname
+
+  this_test_is_also_skipped:
+    type: script
+    skip: no
+    executor: generic.local.bash
+    description: "This test is also skipped even if skip is defined in test"
+    tags: [ tutorials ]
+    run: hostname
