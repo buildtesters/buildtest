@@ -191,13 +191,16 @@ a Linux command.
 
 Next we build this test by running ``buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml``.
 
-.. command-output:: buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml
-    :shell:
+.. dropdown:: ``buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml``
+
+   .. command-output:: buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml
 
 Let's check the generated script from the previous build, you can run ``buildtest inspect query -o variables_bash`` where
 `-o` refers to output file for testname `variables_bash`. Take note of the output file we
 
-.. command-output:: buildtest inspect query -o variables_bash
+.. dropdown:: ``buildtest inspect query -o variables_bash``
+
+   .. command-output:: buildtest inspect query -o variables_bash
 
 .. _status:
 
@@ -228,8 +231,10 @@ will ``PASS``.
 Let's build this test and pay close attention to the **status**
 column in output.
 
-.. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml
-   :shell:
+.. dropdown:: ``buildtest build -b tutorials/test_status/pass_returncode.yml``
+
+   .. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml
+      :shell:
 
 The ``returncode`` field can be an integer or list of integers but it may not accept
 duplicate values. If you specify a list of exit codes, buildtest will check actual returncode
@@ -272,7 +277,9 @@ on output file.
 Now if we run this test, we will see first test will pass while second one will fail even though the returncode is
 a 0. Take a close look at the **status** property
 
-.. command-output:: buildtest build -b tutorials/test_status/status_regex.yml
+.. dropdown:: ``buildtest build -b tutorials/test_status/status_regex.yml``
+
+   .. command-output:: buildtest build -b tutorials/test_status/status_regex.yml
 
 .. _runtime:
 
@@ -295,12 +302,16 @@ In test **timelimit_min**, we sleep for 2 seconds and it will pass because minim
    :language: yaml
    :emphasize-lines: 9-11,20-21,30-31,40-41,50-51
 
-.. command-output:: buildtest build -b tutorials/test_status/runtime_status_test.yml
+.. dropdown:: ``buildtest build -b tutorials/test_status/runtime_status_test.yml``
+
+   .. command-output:: buildtest build -b tutorials/test_status/runtime_status_test.yml
 
 If we look at the test results, we expect the first three tests **timelimit_min**, **timelimit_max**, **timelimit_min_max**
 will pass while the last two tests fail because it fails to comply with runtime property.
 
-.. command-output:: buildtest report --filter buildspec=tutorials/test_status/runtime_status_test.yml --format name,id,state,runtime --latest
+.. dropdown:: ``buildtest report --filter buildspec=tutorials/test_status/runtime_status_test.yml --format name,id,state,runtime --latest``
+
+   .. command-output:: buildtest report --filter buildspec=tutorials/test_status/runtime_status_test.yml --format name,id,state,runtime --latest
 
 Explicitly Declaring Status of Test
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -322,7 +333,9 @@ their is a match on the returncode.
 
 If we build this test, we expect buildtest to honor the value of ``state`` property
 
-.. command-output:: buildtest build -b tutorials/test_status/explicit_state.yml
+.. dropdown:: ``buildtest build -b tutorials/test_status/explicit_state.yml``
+
+   .. command-output:: buildtest build -b tutorials/test_status/explicit_state.yml
 
 .. _define_tags:
 
@@ -455,7 +468,9 @@ with stdout stream.
 
 Now let's run this test as we see the following.
 
-.. command-output:: buildtest build -b tutorials/shebang.yml
+.. dropdown:: ``buildtest build -b tutorials/shebang.yml``
+
+   .. command-output:: buildtest build -b tutorials/shebang.yml
 
 If we look at the generated test for **bash_login_shebang** we see the shebang line
 is passed into the script:
@@ -514,7 +529,9 @@ while **unskipped** will be processed as usual.
 Here is an example build, notice message ``[skip] test is skipped`` during the build
 stage
 
-.. command-output:: buildtest build -b tutorials/skip_tests.yml
+.. dropdown:: ``buildtest build -b tutorials/skip_tests.yml``
+
+   .. command-output:: buildtest build -b tutorials/skip_tests.yml
 
 .. _metrics:
 
@@ -543,15 +560,18 @@ a regular expression, the metric will be defined as an empty string.
 
 Let's build this test.
 
-.. command-output:: buildtest build -b tutorials/metrics_regex.yml
+.. dropdown:: ``buildtest build -b tutorials/metrics_regex.yml``
+
+   .. command-output:: buildtest build -b tutorials/metrics_regex.yml
 
 We can query the metrics via ``buildtest report`` which will display all metrics as a comma separted
 **Key/Value** pair. We can use ``buildtest report --format metrics`` to extract all metrics for a test.
 Internally, we store the metrics as a dictionary but when we print them out via ``buildtest report`` we
 join them together into a single string. Shown below is the metrics for the previous build.
 
+.. dropdown:: ``buildtest report --filter buildspec=tutorials/metrics_regex.yml --format name,metrics``
 
-.. command-output:: buildtest report --filter buildspec=tutorials/metrics_regex.yml --format name,metrics
+   .. command-output:: buildtest report --filter buildspec=tutorials/metrics_regex.yml --format name,metrics
 
 You can define a metric based on :ref:`variables <variables>` or :ref:`environment variables <environment_variables>`
 which requires you have set ``vars`` or ``env`` property in the buildspec. The ``vars`` and
@@ -583,7 +603,9 @@ all test must finish prior to running test.
 
 Let's run this test, and take a note that buildtest will run test `jobA`, followed by `jobB` then `jobC`.
 
-.. command-output:: buildtest build -b tutorials/job_dependency/ex1.yml
+.. dropdown:: ``buildtest build -b tutorials/job_dependency/ex1.yml``
+
+   .. command-output:: buildtest build -b tutorials/job_dependency/ex1.yml
 
 Test Dependency by returncode
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -602,7 +624,9 @@ to return a returncode of 2 because of ``exit 2`` statement so we expect all thr
 
 Let's build this test and take note of execution order of test.
 
-.. command-output:: buildtest build -b tutorials/job_dependency/ex2.yml
+.. dropdown:: ``buildtest build -b tutorials/job_dependency/ex2.yml``
+
+   .. command-output:: buildtest build -b tutorials/job_dependency/ex2.yml
 
 Test Dependency by state
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -623,8 +647,9 @@ must have returncode of 1.
 
 Let's build this test and take note all tests are run.
 
-.. command-output:: buildtest build -b tutorials/job_dependency/ex3.yml
+.. dropdown:: ``buildtest build -b tutorials/job_dependency/ex3.yml``
 
+   .. command-output:: buildtest build -b tutorials/job_dependency/ex3.yml
 
 In this next example, we have three tests the first test will ``runtime_test`` will sleep for 5 seconds but it will fail due to runtime
 requirement of 2sec. The next two tests ``runtime_test_pass`` and ``runtime_test_fail`` both depend on ``runtime_test`` however due to condition
@@ -639,7 +664,9 @@ test based on the negative condition.
 Let's build this test and take note that we only run two tests and **runtime_test_fail** was skipped because test **runtime_test** has a
 ``state: PASS``.
 
-.. command-output:: buildtest build -b tutorials/job_dependency/ex4.yml
+.. dropdown:: ``buildtest build -b tutorials/job_dependency/ex4.yml``
+
+   .. command-output:: buildtest build -b tutorials/job_dependency/ex4.yml
 
 .. _multiple_executors:
 
@@ -660,7 +687,9 @@ on the regular expression.
 
 If we build this test, notice that there are two tests, one for each executor.
 
-.. command-output:: buildtest build -b tutorials/multi_executors/executor_regex_script.yml
+.. dropdown:: ``buildtest build -b tutorials/multi_executors/executor_regex_script.yml``
+
+   .. command-output:: buildtest build -b tutorials/multi_executors/executor_regex_script.yml
 
 Multiple Executors
 ~~~~~~~~~~~~~~~~~~~
@@ -681,13 +710,17 @@ we define variables ``X``, ``Y`` and environment ``SHELL`` based on executors **
 
 Let's build this test.
 
-.. command-output:: buildtest build -b tutorials/multi_executors/executors_var_env_declaration.yml
+.. dropdown:: ``buildtest build -b tutorials/multi_executors/executors_var_env_declaration.yml``
+
+   .. command-output:: buildtest build -b tutorials/multi_executors/executors_var_env_declaration.yml
 
 Now let's look at the generated content of the test as follows. We will see that buildtest will
 set **X=1**, **Y=3** and **SHELL=bash** for ``generic.local.bash`` and **X=2**, **Y=4** and **SHELL=sh** for
 ``generic.local.sh``
 
-.. command-output:: buildtest inspect query -t executors_vars_env_declaration/
+.. dropdown:: ``buildtest inspect query -t executors_vars_env_declaration/``
+
+   .. command-output:: buildtest inspect query -t executors_vars_env_declaration/
 
 Scheduler Directives
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -701,12 +734,16 @@ will override the ``sbatch`` property defined in the top-level file otherwise it
    :language: yaml
 
 
-.. command-output:: buildtest build -b tutorials/multi_executors/executor_scheduler.yml
+.. dropdown:: ``buildtest build -b tutorials/multi_executors/executor_scheduler.yml``
+
+   .. command-output:: buildtest build -b tutorials/multi_executors/executor_scheduler.yml
 
 If we inspect this test, we will see each each test have different ``#SBATCH`` directives for each test
 based on the ``sbatch`` property defined in the ``executors`` field.
 
-.. command-output:: buildtest inspect query -t executors_sbatch_declaration/
+.. dropdown:: ``buildtest inspect query -t executors_sbatch_declaration/``
+
+   .. command-output:: buildtest inspect query -t executors_sbatch_declaration/
 
 Cray Burst Buffer and Data Warp
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -734,4 +771,6 @@ match for returncode **0** or **2** while second test will use executor ``generi
 Now let's run this test and we will see the test using executor **generic.local.sh** will fail because
 we have a returncode mismatch even though both tests got a 0 returncode as its actual value.
 
-.. command-output:: buildtest build -b tutorials/multi_executors/status_by_executors.yml
+.. dropdown:: ``buildtest build -b tutorials/multi_executors/status_by_executors.yml``
+
+   .. command-output:: buildtest build -b tutorials/multi_executors/status_by_executors.yml
