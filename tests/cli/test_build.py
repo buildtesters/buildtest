@@ -234,7 +234,8 @@ def test_skip_field():
         configuration=configuration,
         buildtest_system=system,
     )
-    cmd.build()
+    with pytest.raises(SystemExit):
+        cmd.build()
 
 
 @pytest.mark.cli
