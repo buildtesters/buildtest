@@ -7,6 +7,9 @@
   "required": ["buildspecs"],
   "additionalProperties": false,
   "properties": {
+    "skip": {
+      "$ref": "definitions.schema.json#/definitions/skip"
+    },
     "maintainers": {
       "type": "array",
       "description": "One or more maintainers or aliases",
