@@ -194,6 +194,7 @@ Next we build this test by running ``buildtest build -b $BUILDTEST_ROOT/tutorial
 .. dropdown:: ``buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml``
 
    .. command-output:: buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml
+      :shell:
 
 Let's check the generated script from the previous build, you can run ``buildtest inspect query -o variables_bash`` where
 `-o` refers to output file for testname `variables_bash`. Take note of the output file we
