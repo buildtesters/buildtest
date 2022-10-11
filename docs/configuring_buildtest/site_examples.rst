@@ -5,7 +5,7 @@ NERSC
 -----
 
 `NERSC <http://nersc.gov/>`_ provides High Performance Computing system to support research in the Office of Science program
-offices. Currently, NERSC provides two HPC systems including `Perlmutter <https://docs.nersc.gov/systems/perlmutter/system_details/>`_ and
+offices. Currently, NERSC provides two HPC systems including `Perlmutter <https://docs.nersc.gov/systems/perlmutter/architecture/>`_ and
 `Cori <https://docs.nersc.gov/systems/cori/>`_. In example below we see the configuration for Cori and Perlmutter. Note that we can define a
 single configuration for both systems. Perlmutter is using `Lmod` while Cori is running `environment-modules`. We define Local executors and
 Slurm executors for each system which are mapped to qos provided by our Slurm cluster.
