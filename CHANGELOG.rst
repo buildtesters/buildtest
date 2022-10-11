@@ -4,6 +4,13 @@ CHANGELOG
 v1.0 (T.B.D)
 --------------
 
+- Add positional arguments ``buildtest config compilers test`` to test specific compilers `#1239 <https://github.com/buildtesters/buildtest/pull/1239>`_
+- Add options ``buildtest buildspec find --filterfields`` and ``buildtest buildspec find --formatfields`` to print filter and format fileds as raw text `#1238 <https://github.com/buildtesters/buildtest/pull/1238>`_
+- Rename option ``buildtest build --keep-stage-dir`` to ``buildtest build --remove-stagedir`` `#1237 <https://github.com/buildtesters/buildtest/pull/1237>`_
+- Rename option ``buildtest rt --failure`` to ``buildtest rt --fail`` and ``buildtest rt --passed`` to ``buildtest rt --pass``for retrieving pass and failed test from report `#1234 <https://github.com/buildtesters/buildtest/pull/1234>`_
+- Add command aliases for several buildtest commands `#1233 <https://github.com/buildtesters/buildtest/pull/1233>`_
+- Add ``set -e`` when running Cori CI pipeline `#1223 <https://github.com/buildtesters/buildtest/pull/1223>`_
+- Add pagination support for ``buildtest config view`` `#1218 <https://github.com/buildtesters/buildtest/pull/1218>`_
 - Add support for color themes via **buildtest buildspec show --theme** and **buildtest buildspec show-fail --theme** that changes output based in input theme. `#1215 <https://github.com/buildtesters/buildtest/pull/1215>`_
 - Add color theme option **buildtest config view --theme** to change output for buildtest configuration `#1216 <https://github.com/buildtesters/buildtest/pull/1216>`_
 - Add option ``buildtest report --passed`` to show only pass test results from report file `#1140 <https://github.com/buildtesters/buildtest/pull/1140>`_
