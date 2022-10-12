@@ -393,16 +393,14 @@ class BuildtestCompilers:
                 self.compilers[name][module]["module"]["purge"] = False
 
                 # PrgEnv compiler wrappers
-                if self.enable_prgenv:
+                if self.enable_prgenv and deep_get(self.valid_prgenvs, name):
                     self.compilers[name][module]["cc"] = "cc"
                     self.compilers[name][module]["cxx"] = "CC"
                     self.compilers[name][module]["fc"] = "ftn"
-
-                    if deep_get(self.valid_prgenvs, name):
-                        self.compilers[name][module]["module"]["load"] = [
-                            self.valid_prgenvs[name],
-                            module,
-                        ]
+                    self.compilers[name][module]["module"]["load"] = [
+                        self.valid_prgenvs[name],
+                        module,
+                    ]
 
     def print_json(self):
         """Prints compiler section in JSON, this implements ``buildtest config compilers --json``"""
