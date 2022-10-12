@@ -10,11 +10,11 @@ v1.0 (T.B.D)
 - Add option ``buildtest history list --color`` to colorize output of history table `#1258 <https://github.com/buildtesters/buildtest/pull/1258>`_
 - Add option to limit row count using ``buildtest report --row-count`` and limit output of buildspec cache using ``buildtest buildspec find --count`` `#1249 <https://github.com/buildtesters/buildtest/pull/1249>`_, `#1250 <https://github.com/buildtesters/buildtest/pull/1250>`_
 - Add options ``buildtest report --filterfields`` and ``buildtest report --formatfields`` to print filter and format fileds as raw text `#1246 <https://github.com/buildtesters/buildtest/pull/1246>`_
-- Use sphinx_designs to leverage fropdown feature in documentation `#1243 <https://github.com/buildtesters/buildtest/pull/1243>`_
+- Use sphinx_designs to leverage dropdown feature in documentation `#1243 <https://github.com/buildtesters/buildtest/pull/1243>`_
 - Add positional arguments ``buildtest config compilers test`` to test specific compilers `#1239 <https://github.com/buildtesters/buildtest/pull/1239>`_
 - Add options ``buildtest buildspec find --filterfields`` and ``buildtest buildspec find --formatfields`` to print filter and format fileds as raw text `#1238 <https://github.com/buildtesters/buildtest/pull/1238>`_
 - Rename option ``buildtest build --keep-stage-dir`` to ``buildtest build --remove-stagedir`` `#1237 <https://github.com/buildtesters/buildtest/pull/1237>`_
-- Rename option ``buildtest rt --failure`` to ``buildtest rt --fail`` and ``buildtest rt --passed`` to ``buildtest rt --pass``for retrieving pass and failed test from report `#1234 <https://github.com/buildtesters/buildtest/pull/1234>`_
+- Rename option ``buildtest rt --failure`` to ``buildtest rt --fail`` and ``buildtest rt --passed`` to ``buildtest rt --pass`` for retrieving pass and failed test from report `#1234 <https://github.com/buildtesters/buildtest/pull/1234>`_
 - Add command aliases for several buildtest commands `#1233 <https://github.com/buildtesters/buildtest/pull/1233>`_
 - Add ``set -e`` when running Cori CI pipeline `#1223 <https://github.com/buildtesters/buildtest/pull/1223>`_
 - Add pagination support for ``buildtest config view`` `#1218 <https://github.com/buildtesters/buildtest/pull/1218>`_
