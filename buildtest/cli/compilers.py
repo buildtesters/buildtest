@@ -205,6 +205,12 @@ class BuildtestCompilers:
             self.configuration.target_config, "compilers", "modulepath"
         )
 
+        self.enable_prgenv = deep_get(
+            self.configuration.target_config, "compilers", "enable_prgenv"
+        )
+        self.prgenv_modules = deep_get(
+            self.configuration.target_config, "compilers", "prgenv_modules"
+        )
         # override default modulepath if --modulepath is specified
         if modulepath:
             self.modulepath = ":".join(modulepath)
@@ -306,7 +312,6 @@ class BuildtestCompilers:
 
         # ignore entry where value is empty list
         module_dict = {k: v for k, v in module_dict.items() if v}
-
         if not module_dict:
             raise BuildTestError("No modules discovered")
 
@@ -329,7 +334,7 @@ class BuildtestCompilers:
             table.add_column("Name")
             for modules in module_dict.values():
                 for name in modules:
-                    table.add_row(f"{name}")
+                    table.add_row(name)
             console.print(table)
 
         self.valid_compilers = {}
@@ -346,6 +351,18 @@ class BuildtestCompilers:
                     self.valid_compilers[name].append(module)
                 else:
                     self.invalid_compilers[name].append(module)
+
+        # test programming environment modules
+
+        self.valid_prgenvs = {}
+
+        if self.enable_prgenv and self.prgenv_modules:
+            console.print("Testing Programming Environment Modules")
+            for name, module in self.prgenv_modules.items():
+                cmd = Module(module, debug=self.detailed)
+                ret = cmd.test_modules(login=True)
+                if ret == 0:
+                    self.valid_prgenvs[name] = module
 
         # if self.detailed:
         #    console.print("PASS Compilers: ", self.valid_compilers)
@@ -372,7 +389,20 @@ class BuildtestCompilers:
                 # set by buildtest but user may want to tweak this later.
                 self.compilers[name][module]["module"] = {}
                 self.compilers[name][module]["module"]["load"] = [module]
+
                 self.compilers[name][module]["module"]["purge"] = False
+
+                # PrgEnv compiler wrappers
+                if self.enable_prgenv:
+                    self.compilers[name][module]["cc"] = "cc"
+                    self.compilers[name][module]["cxx"] = "CC"
+                    self.compilers[name][module]["fc"] = "ftn"
+
+                    if deep_get(self.valid_prgenvs, name):
+                        self.compilers[name][module]["module"]["load"] = [
+                            self.valid_prgenvs[name],
+                            module,
+                        ]
 
     def print_json(self):
         """Prints compiler section in JSON, this implements ``buildtest config compilers --json``"""

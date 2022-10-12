@@ -94,7 +94,46 @@
           "description": "Declare compiler section for defining system compilers that can be referenced in buildspec.",
           "additionalProperties": false,
           "properties": {
+            "enable_prgenv": {
+              "type": "boolean",
+              "description": "Enable support for Programming Environment"
+            },
             "modulepath": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
+            "prgenv_modules": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "gcc": {
+                  "type": "string",
+                  "description": "Specify name of Programming Environment module for gcc",
+                  "enum": [
+                    "PrgEnv-gnu"
+                  ]
+                },
+                "intel": {
+                  "type": "string",
+                  "description": "Specify name of Programming Environment module for intel",
+                  "enum": [
+                    "PrgEnv-intel"
+                  ]
+                },
+                "cray": {
+                  "type": "string",
+                  "description": "Specify name of Programming Environment module for cray",
+                  "enum": [
+                    "PrgEnv-cray"
+                  ]
+                },
+                "nvhpc": {
+                  "type": "string",
+                  "description": "Specify name of Programming Environment module for nvhpc",
+                  "enum": [
+                    "PrgEnv-nvhpc",
+                    "PrgEnv-nvidia"
+                  ]
+                }
+              }
+            },
             "find": {
               "type": "object",
               "additionalProperties": false,
