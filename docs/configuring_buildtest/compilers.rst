@@ -222,6 +222,281 @@ add the compiler instance into the appropriate compiler group.
               - gcc/9.3.0-n7p74fd
               purge: false
 
+Enable Programming Environments
+--------------------------------
+
+If you have a Cray based system, you would be familiar with Programming Environments (``PrgEnv-*``) modulefiles that will be present on your system. We can configure
+buildtest to enable programming environment support which will detect for Programming Environment and test ``PrgEnv-*`` modules, if they are present buildtest will automatically
+add the modules into the corresponding compiler instance.
+
+To demonstrate this let's take a look at the following configuration that is available on Cori. To enable programming environment
+support you need to set ``enable_prgenv`` which is a boolean that determines whether to detect for programming environments. The
+property ``prgenv_modules`` is a mapping of compiler groups to the corresponding ``PrgEnv-*`` modulefile. For instance **PrgEnv-gnu**
+is the programming environment modulefile that will load the GNU compiler on Cray systems.
+
+.. literalinclude:: ../tests/settings/cori.yml
+    :emphasize-lines: 6-10
+
+Now let's run **buildtest config compilers find --detailed** and take note of the generated compilers, you will see that ``PrgEnv-*`` modules for each compiler group
+that has the programming environment. Furthermore, we see the cray wrappers **cc**, **CC**, and **ftn** are used instead of the compiler wrappers.
+
+.. dropdown:: ``buildtest config compilers find --detailed``
+
+    .. codeblock:: console
+
+        (buildtest)  ~/gitrepos/buildtest/tests/settings/ [prgenv_support] buildtest config compilers find --detailed
+        MODULEPATH: /opt/cray/pe/perftools/21.12.0/modulefiles:/opt/cray/pe/craype-targets/default/modulefiles:/opt/cray/ari/modulefiles:/opt/cray/pe/modulefiles:/opt/cray/modulefiles:/opt/modulefiles:/global/common/software/nersc/cle7up03/modulefiles:/global/common/software/nersc/cle7up03/extra_modulefiles:/global/common/cori_cle7up03/ftg/modulefiles
+        Searching modules by parsing content of command: module av -t
+          Discovered Modules
+        ┏━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ Name                ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━┩
+        │ gcc/7.3.0           │
+        ├─────────────────────┤
+        │ gcc/8.1.0           │
+        ├─────────────────────┤
+        │ gcc/8.3.0           │
+        ├─────────────────────┤
+        │ gcc/10.3.0          │
+        ├─────────────────────┤
+        │ gcc/11.2.0          │
+        ├─────────────────────┤
+        │ craype/2.6.2        │
+        ├─────────────────────┤
+        │ craype/2.7.10       │
+        ├─────────────────────┤
+        │ intel/19.0.3.199    │
+        ├─────────────────────┤
+        │ intel/19.1.2.254    │
+        ├─────────────────────┤
+        │ intel/19.1.0.166    │
+        ├─────────────────────┤
+        │ intel/19.1.1.217    │
+        ├─────────────────────┤
+        │ intel/19.1.2.275    │
+        ├─────────────────────┤
+        │ intel/19.1.3.304    │
+        ├─────────────────────┤
+        │ upcxx/2021.9.0      │
+        ├─────────────────────┤
+        │ upcxx/2022.3.0      │
+        ├─────────────────────┤
+        │ upcxx/2022.9.0      │
+        ├─────────────────────┤
+        │ upcxx/bleeding-edge │
+        ├─────────────────────┤
+        │ upcxx/nightly       │
+        └─────────────────────┘
+        [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/7.3.0  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/8.1.0  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/8.3.0  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/10.3.0  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/11.2.0  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load craype/2.6.2  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load craype/2.7.10  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load intel/19.0.3.199  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load intel/19.1.2.254  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load intel/19.1.0.166  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load intel/19.1.1.217  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load intel/19.1.2.275  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load intel/19.1.3.304  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load upcxx/2021.9.0  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load upcxx/2022.3.0  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load upcxx/2022.9.0  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load upcxx/bleeding-edge  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load upcxx/nightly  "
+        [DEBUG] Return Code: 0
+        Testing Programming Environment Modules
+        [DEBUG] Executing module command: bash -l -c "module purge && module load PrgEnv-gnu  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load PrgEnv-cray  "
+        [DEBUG] Return Code: 0
+        [DEBUG] Executing module command: bash -l -c "module purge && module load PrgEnv-intel  "
+        [DEBUG] Return Code: 0
+        ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Detect Compilers ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+        cray:
+          craype/2.6.2:
+            cc: cc
+            cxx: CC
+            fc: ftn
+            module:
+              load:
+              - PrgEnv-cray
+              - craype/2.6.2
+              purge: false
+          craype/2.7.10:
+            cc: cc
+            cxx: CC
+            fc: ftn
+            module:
+              load:
+              - PrgEnv-cray
+              - craype/2.7.10
+              purge: false
+        gcc:
+          builtin_gcc:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran
+          gcc/10.3.0:
+            cc: cc
+            cxx: CC
+            fc: ftn
+            module:
+              load:
+              - PrgEnv-gnu
+              - gcc/10.3.0
+              purge: false
+          gcc/11.2.0:
+            cc: cc
+            cxx: CC
+            fc: ftn
+            module:
+              load:
+              - PrgEnv-gnu
+              - gcc/11.2.0
+              purge: false
+          gcc/7.3.0:
+            cc: cc
+            cxx: CC
+            fc: ftn
+            module:
+              load:
+              - PrgEnv-gnu
+              - gcc/7.3.0
+              purge: false
+          gcc/8.1.0:
+            cc: cc
+            cxx: CC
+            fc: ftn
+            module:
+              load:
+              - PrgEnv-gnu
+              - gcc/8.1.0
+              purge: false
+          gcc/8.3.0:
+            cc: cc
+            cxx: CC
+            fc: ftn
+            module:
+              load:
+              - PrgEnv-gnu
+              - gcc/8.3.0
+              purge: false
+        intel:
+          intel/19.0.3.199:
+            cc: cc
+            cxx: CC
+            fc: ftn
+            module:
+              load:
+              - PrgEnv-intel
+              - intel/19.0.3.199
+              purge: false
+          intel/19.1.0.166:
+            cc: cc
+            cxx: CC
+            fc: ftn
+            module:
+              load:
+              - PrgEnv-intel
+              - intel/19.1.0.166
+              purge: false
+          intel/19.1.1.217:
+            cc: cc
+            cxx: CC
+            fc: ftn
+            module:
+              load:
+              - PrgEnv-intel
+              - intel/19.1.1.217
+              purge: false
+          intel/19.1.2.254:
+            cc: cc
+            cxx: CC
+            fc: ftn
+            module:
+              load:
+              - PrgEnv-intel
+              - intel/19.1.2.254
+              purge: false
+          intel/19.1.2.275:
+            cc: cc
+            cxx: CC
+            fc: ftn
+            module:
+              load:
+              - PrgEnv-intel
+              - intel/19.1.2.275
+              purge: false
+          intel/19.1.3.304:
+            cc: cc
+            cxx: CC
+            fc: ftn
+            module:
+              load:
+              - PrgEnv-intel
+              - intel/19.1.3.304
+              purge: false
+        upcxx:
+          upcxx/2021.9.0:
+            cc: upcxx
+            cxx: upcxx
+            fc: None
+            module:
+              load:
+              - upcxx/2021.9.0
+              purge: false
+          upcxx/2022.3.0:
+            cc: upcxx
+            cxx: upcxx
+            fc: None
+            module:
+              load:
+              - upcxx/2022.3.0
+              purge: false
+          upcxx/2022.9.0:
+            cc: upcxx
+            cxx: upcxx
+            fc: None
+            module:
+              load:
+              - upcxx/2022.9.0
+              purge: false
+          upcxx/bleeding-edge:
+            cc: upcxx
+            cxx: upcxx
+            fc: None
+            module:
+              load:
+              - upcxx/bleeding-edge
+              purge: false
+          upcxx/nightly:
+            cc: upcxx
+            cxx: upcxx
+            fc: None
+            module:
+              load:
+              - upcxx/nightly
+              purge: false
+
 Test Compilers (Experimental Feature)
 --------------------------------------
 
