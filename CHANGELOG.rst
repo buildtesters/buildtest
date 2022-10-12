@@ -4,6 +4,13 @@ CHANGELOG
 v1.0 (T.B.D)
 --------------
 
+- Remove Spell Check CI `#1267 <https://github.com/buildtesters/buildtest/pull/1267>`_
+- Add support to skip buildspec via **skip** property to skip all test in a buildspec instead of updating every test with **skip** property `#1265 <https://github.com/buildtesters/buildtest/pull/1265>`_
+- Add subcommand ``buildtest report path`` to print path to the report file being used `#1260 <https://github.com/buildtesters/buildtest/pull/1260>`_
+- Add option ``buildtest history list --color`` to colorize output of history table `#1258 <https://github.com/buildtesters/buildtest/pull/1258>`_
+- Add option to limit row count using ``buildtest report --row-count`` and limit output of buildspec cache using ``buildtest buildspec find --count`` `#1249 <https://github.com/buildtesters/buildtest/pull/1249>`_, `#1250 <https://github.com/buildtesters/buildtest/pull/1250>`_
+- Add options ``buildtest report --filterfields`` and ``buildtest report --formatfields`` to print filter and format fileds as raw text `#1246 <https://github.com/buildtesters/buildtest/pull/1246>`_
+- Use sphinx_designs to leverage fropdown feature in documentation `#1243 <https://github.com/buildtesters/buildtest/pull/1243>`_
 - Add positional arguments ``buildtest config compilers test`` to test specific compilers `#1239 <https://github.com/buildtesters/buildtest/pull/1239>`_
 - Add options ``buildtest buildspec find --filterfields`` and ``buildtest buildspec find --formatfields`` to print filter and format fileds as raw text `#1238 <https://github.com/buildtesters/buildtest/pull/1238>`_
 - Rename option ``buildtest build --keep-stage-dir`` to ``buildtest build --remove-stagedir`` `#1237 <https://github.com/buildtesters/buildtest/pull/1237>`_
