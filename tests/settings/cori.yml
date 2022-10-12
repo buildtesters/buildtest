@@ -3,19 +3,23 @@ system:
     hostnames: ["cori*"]
     moduletool: environment-modules
     compilers:
+      enable_prgenv: true
+      prgenv_modules:
+        gcc: PrgEnv-gnu
+        cray: PrgEnv-cray
+        intel: PrgEnv-intel
       find:
-        gcc: "^(PrgEnv-gnu)"
-        cray: "^(PrgEnv-cray)"
-        intel: "^(PrgEnv-intel)"
-        cuda: "^(cudatoolkit)"
-        upcxx: "^(upcxx)"
+        gcc: '^gcc'
+        cray: '^(craype/)'
+        intel: '^intel'
+        cuda: '^(cuda/)'
+        upcxx: '^(upcxx/)'
       compiler:
         gcc:
           builtin_gcc:
             cc: /usr/bin/gcc
             cxx: /usr/bin/g++
             fc: /usr/bin/gfortran
-
     executors:
       defaults:
         pollinterval: 30

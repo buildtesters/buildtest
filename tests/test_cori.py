@@ -3,7 +3,7 @@ import socket
 
 import pytest
 from buildtest.cli.build import BuildTest
-from buildtest.cli.compilers import BuildtestCompilers, compiler_test
+from buildtest.cli.compilers import BuildtestCompilers, compiler_find, compiler_test
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.system import BuildTestSystem
@@ -105,6 +105,9 @@ def test_compiler_find_cori():
     # testing buildtest config compilers find
     compilers = BuildtestCompilers(configuration=bc)
     compilers.find_compilers()
+
+    # test entry point for 'buildtest config compilers find --detailed'
+    compiler_find(configuration=bc, detailed=True)
 
 
 def test_compiler_test_cori():
