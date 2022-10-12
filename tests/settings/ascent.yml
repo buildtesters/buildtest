@@ -26,7 +26,7 @@ system:
           queue: batch
     compilers:
       find:
-        gcc: ^(gcc)
+        gcc: '^(gcc)'
       compiler:
         gcc:
           builtin_gcc:
