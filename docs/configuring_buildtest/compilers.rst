@@ -1,7 +1,7 @@
 .. _compilers:
 
-Defining Compilers at your site
-=================================
+Defining Compilers
+===================
 
 buildtest provides a mechanism to declare compilers in your configuration file, this
 is defined in ``compilers`` top-level section. The compilers should reflect compilers
@@ -225,20 +225,21 @@ add the compiler instance into the appropriate compiler group.
 Enable Programming Environments
 --------------------------------
 
-If you have a Cray based system, you would be familiar with Programming Environments (``PrgEnv-*``) modulefiles that will be present on your system. We can configure
-buildtest to enable programming environment support which will detect for Programming Environment and test ``PrgEnv-*`` modules, if they are present buildtest will automatically
-add the modules into the corresponding compiler instance.
+If you have a Cray based system, you will be using the Cray Programming Environments (``PrgEnv-*``) modulefiles to access the compilers which is the recommended
+way to use compilers in Cray environment. In buildtest, you can enable programming environment support which will detect and test ``PrgEnv-*`` modules.
+If the modules are present, buildtest will automatically add the the ``PrgEnv-*`` modules into compiler instance.
 
 To demonstrate this let's take a look at the following configuration that is available on Cori. To enable programming environment
-support you need to set ``enable_prgenv`` which is a boolean that determines whether to detect for programming environments. The
+support, we set ``enable_prgenv: true`` which is a boolean that enables support for Programming Environments. The
 property ``prgenv_modules`` is a mapping of compiler groups to the corresponding ``PrgEnv-*`` modulefile. For instance **PrgEnv-gnu**
 is the programming environment modulefile that will load the GNU compiler on Cray systems.
 
 .. literalinclude:: ../tests/settings/cori.yml
     :emphasize-lines: 6-10
 
-Now let's run **buildtest config compilers find --detailed** and take note of the generated compilers, you will see that ``PrgEnv-*`` modules for each compiler group
-that has the programming environment. Furthermore, we see the cray wrappers **cc**, **CC**, and **ftn** are used instead of the compiler wrappers.
+Now let's run **buildtest config compilers find --detailed** and take note of the generated compilers, you will see that ``PrgEnv-*`` modules will be found in each
+compiler instance under the ``module``, ``load`` section. Furthermore, you will see the cray wrappers **cc**, **CC**, and **ftn** are used
+instead of the compiler wrappers when defining a compiler instance that uses a Programming Environment module.
 
 .. dropdown:: ``buildtest config compilers find --detailed``
 
