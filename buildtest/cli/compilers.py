@@ -211,6 +211,8 @@ class BuildtestCompilers:
         self.prgenv_modules = deep_get(
             self.configuration.target_config, "compilers", "prgenv_modules"
         )
+        self.purge = deep_get(self.configuration.target_config, "compilers", "purge")
+
         # override default modulepath if --modulepath is specified
         if modulepath:
             self.modulepath = ":".join(modulepath)
@@ -390,7 +392,7 @@ class BuildtestCompilers:
                 self.compilers[name][module]["module"] = {}
                 self.compilers[name][module]["module"]["load"] = [module]
 
-                self.compilers[name][module]["module"]["purge"] = False
+                self.compilers[name][module]["module"]["purge"] = self.purge or False
 
                 # PrgEnv compiler wrappers
                 if self.enable_prgenv and deep_get(self.valid_prgenvs, name):

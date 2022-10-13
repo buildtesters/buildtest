@@ -235,6 +235,7 @@ property ``prgenv_modules`` is a mapping of compiler groups to the corresponding
 is the programming environment modulefile that will load the GNU compiler on Cray systems.
 
 .. literalinclude:: ../tests/settings/cori.yml
+    :language: yaml
     :emphasize-lines: 6-10
 
 Now let's run **buildtest config compilers find --detailed** and take note of the generated compilers, you will see that ``PrgEnv-*`` modules will be found in each
