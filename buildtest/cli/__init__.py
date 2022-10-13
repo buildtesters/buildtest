@@ -1077,6 +1077,11 @@ def report_menu(subparsers):
         help="Print output of report table with the selected color.",
     )
     parser_report.add_argument(
+        "--helpcolor",
+        action="store_true",
+        help="Print available color options in a table format.",
+    )
+    parser_report.add_argument(
         "--pager", action="store_true", help="Enable PAGING when viewing result"
     )
     parser_report_summary.add_argument(

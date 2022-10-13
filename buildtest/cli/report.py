@@ -8,6 +8,7 @@ from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, resolve_path
 from buildtest.utils.tools import checkColor
+from rich.color import ANSI_COLOR_NAMES
 from rich.table import Table
 
 logger = logging.getLogger(__name__)
@@ -479,6 +480,19 @@ class Report:
                         else:
                             self.display_table[field].append(test[field])
 
+    def print_available_colors(self):
+
+        # print(list(ANSI_COLOR_NAMES.keys()))
+        table = Table(
+            "[blue]Number",
+            "[blue]Color",
+            title="Available Colors",
+        )
+        for color, number in ANSI_COLOR_NAMES.items():
+            table.add_row(f"[black]{number}", f"[black]{color}", style="on " + color)
+
+        console.print(table)
+
     def print_format_fields(self):
         """Displays list of format field which implements command ``buildtest report --helpformat``"""
         table = Table(
@@ -837,6 +851,10 @@ def report_cmd(args, report_file=None):
 
     if args.formatfields:
         results.print_raw_format_fields()
+        return
+
+    if args.helpcolor:
+        results.print_available_colors()
         return
     if args.pager:
         with console.pager():
