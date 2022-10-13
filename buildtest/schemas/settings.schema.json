@@ -99,6 +99,7 @@
               "description": "Enable support for Programming Environment"
             },
             "modulepath": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
+            "purge": {"type": "boolean", "description": "A boolean to determine whether to purge modules via ``module purge`` when generating compiler declaration"},
             "prgenv_modules": {
               "type": "object",
               "additionalProperties": false,

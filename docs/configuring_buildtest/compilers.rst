@@ -67,6 +67,12 @@ Detect Compilers (Experimental Feature)
     API to detect and test all modules. If ``moduletool: environment-modules`` is set, buildtest
     will retrieve modules using output of ``module -t av``.
 
+.. Note::
+
+    ``buildtest config compilers find`` will not update the buildtest configuration with new compilers, you will need to use ``--update`` option
+    to override the configuration file.
+
+
 buildtest can detect compilers based on modulefiles and generate compiler section
 that way you don't have to specify each compiler manually.
 This can be done via ``buildtest config compilers find`` command. Buildtest expects
@@ -102,24 +108,20 @@ package manager, we will attempt to add both modules as compiler instance in bui
     gcc/9.3.0-n7p74fd
     gcc/10.2.0-37fmsw7
 
-
 Next we run ``buildtest config compilers find`` which will search all modules based on
 regular expression and add compilers in their respective group. In this example, buildtest
 automatically add ``gcc/9.2.0-n7p74fd`` and ``gcc/10.2.0-37fmsw7`` modules as compiler
-instance. Depending on the compiler group, buildtest will apply the compiler wrapper
-``cc``, ``cxx``, ``fc`` however these can be updated manually. The module section
-is generated with the module to load. One can further tweak the module behavior
-along with purging or swap modules. In the output below buildtest will show the compilers detected in YAML format.
-
-.. Note::
-
-    ``buildtest config compilers find`` will not update the buildtest configuration with new compilers, you will need to use ``--update`` option
-    to override the configuration file.
-
+instance. Depending on the compiler group, buildtest will update the properties
+``cc``, ``cxx``, ``fc`` to the appropriate compiler wrapper. The ``module`` property defines
+the module configuration to be used to access the compiler, the ``load`` property is a list of modules to load.
+The ``purge`` property is a boolean that determines whether to run **module purge** prior to loading modules when using the compiler.
+If ``purge: true`` is set then we will do **module purge**.
 
 .. dropdown:: ``buildtest config compilers``
 
     .. code-block:: console
+       :emphasize-lines: 9-24
+       :linenos:
 
         $ buildtest config compilers find
         MODULEPATH: /Users/siddiq90/projects/spack/share/spack/lmod/darwin-catalina-x86_64/Core:/usr/local/Cellar/lmod/8.6.14/modulefiles/Darwin:/usr/local/Cellar/lmod/8.6.14/modulefiles/Core
@@ -222,6 +224,83 @@ add the compiler instance into the appropriate compiler group.
               - gcc/9.3.0-n7p74fd
               purge: false
 
+
+Module Purge
+~~~~~~~~~~~~~~
+
+We can configure each compiler instance to run ``module purge`` behavior by setting ``purge`` property as part of the **compilers** section. buildtest
+will set ``purge: true`` in each of the compiler section when running ``buildtest config compilers find``.
+
+.. code-block:: yaml
+   :emphasize-lines: 25
+   :linenos:
+
+    system:
+      generic:
+        hostnames:
+        - .*
+        description: Generic System
+        moduletool: lmod
+        executors:
+          local:
+            bash:
+              description: submit jobs on local machine using bash shell
+              shell: bash
+            sh:
+              description: submit jobs on local machine using sh shell
+              shell: sh
+            csh:
+              description: submit jobs on local machine using csh shell
+              shell: csh
+            zsh:
+              description: submit jobs on local machine using zsh shell
+              shell: zsh
+            python:
+              description: submit jobs on local machine using python shell
+              shell: python
+        compilers:
+          purge: true
+          find:
+            gcc: ^(gcc)
+          compiler:
+            gcc:
+              builtin_gcc:
+                cc: /usr/bin/gcc
+                fc: /usr/bin/gfortran
+                cxx: /usr/bin/g++
+
+Now take a look at generated compilers upon running ``buildtest config compiler find``, you will see **purge: true** is set in each compiler instance
+
+
+.. code-block:: console
+   :linenos:
+   :emphasize-lines: 16,24
+
+       (buildtest)  ~/Documents/github/ buildtest config compilers find
+       MODULEPATH: /Users/siddiq90/projects/spack/share/spack/lmod/darwin-catalina-x86_64/Core:/usr/local/Cellar/lmod/8.6.14/modulefiles/Darwin:/usr/local/Cellar/lmod/8.6.14/modulefiles/Core
+       ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Detect Compilers ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+       gcc:
+         builtin_gcc:
+           cc: /usr/bin/gcc
+           cxx: /usr/bin/g++
+           fc: /usr/bin/gfortran
+         gcc/10.2.0-37fmsw7:
+           cc: gcc
+           cxx: g++
+           fc: gfortran
+           module:
+             load:
+             - gcc/10.2.0-37fmsw7
+             purge: true
+         gcc/9.3.0-n7p74fd:
+           cc: gcc
+           cxx: g++
+           fc: gfortran
+           module:
+             load:
+             - gcc/9.3.0-n7p74fd
+             purge: true
+
 Enable Programming Environments
 --------------------------------
 
@@ -235,6 +314,7 @@ property ``prgenv_modules`` is a mapping of compiler groups to the corresponding
 is the programming environment modulefile that will load the GNU compiler on Cray systems.
 
 .. literalinclude:: ../tests/settings/cori.yml
+    :language: yaml
     :emphasize-lines: 6-10
 
 Now let's run **buildtest config compilers find --detailed** and take note of the generated compilers, you will see that ``PrgEnv-*`` modules will be found in each
@@ -497,6 +577,7 @@ instead of the compiler wrappers when defining a compiler instance that uses a P
               load:
               - upcxx/nightly
               purge: false
+
 
 Test Compilers (Experimental Feature)
 --------------------------------------
