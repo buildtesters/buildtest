@@ -6,8 +6,9 @@ from rich.table import Table
 def print_available_colors():
     """Print the available color options in a table format on background of the color option."""
     table = Table(
-        "[blue]Number",
-        "[blue]Color",
+        "Number",
+        "Color",
+        header_style="blue",
         title="Available Colors",
     )
     for color, number in ANSI_COLOR_NAMES.items():

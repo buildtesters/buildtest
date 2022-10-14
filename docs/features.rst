@@ -82,6 +82,15 @@ To access `schema docs <https://buildtesters.github.io/buildtest>`_ you can run:
 
   buildtest schemadocs
 
+Listing available color options (``buildtest --helpcolor``)
+-------------------------------------------------------------
+
+The ``buildtest --helpcolor`` command can be used to list the available color options in a tabular format on background of that specific color option.
+
+.. dropdown:: ``buildtest --helpcolor``
+
+    .. command-output:: buildtest --helpcolor
+
 Disabling Colored Output
 --------------------------
 
