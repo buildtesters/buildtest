@@ -1,9 +1,10 @@
 CHANGELOG
 =========
 
-v1.0 (T.B.D)
---------------
+v1.0 (Oct 14th 2022)
+---------------------
 
+- Add support for configuring programming environment in buildtest configuration `#1270 <https://github.com/buildtesters/buildtest/pull/1270>`_
 - Remove Spell Check CI `#1267 <https://github.com/buildtesters/buildtest/pull/1267>`_
 - Add support to skip buildspec via **skip** property to skip all test in a buildspec instead of updating every test with **skip** property `#1265 <https://github.com/buildtesters/buildtest/pull/1265>`_
 - Add subcommand ``buildtest report path`` to print path to the report file being used `#1260 <https://github.com/buildtesters/buildtest/pull/1260>`_
