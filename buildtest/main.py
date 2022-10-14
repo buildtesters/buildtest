@@ -24,6 +24,7 @@ from buildtest.cli.compilers import compiler_cmd
 from buildtest.cli.config import config_cmd
 from buildtest.cli.debugreport import print_debug_report
 from buildtest.cli.help import buildtest_help
+from buildtest.cli.helpcolor import print_available_colors
 from buildtest.cli.history import build_history
 from buildtest.cli.info import buildtest_info
 from buildtest.cli.inspect import inspect_cmd
@@ -92,6 +93,11 @@ def main():
         else:
             console.print(content)
 
+        return
+
+    # print the available color options in a table format if buildtest --helpcolor is specified
+    if args.helpcolor:
+        print_available_colors()
         return
 
     # print full path to the lastlog file if buildtest --logpath is specified

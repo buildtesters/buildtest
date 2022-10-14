@@ -437,7 +437,7 @@ _buildtest ()
     *)
       local cmds="build buildspec cd cdash clean config debugreport docs help info inspect history path report schema schemadocs stats stylecheck unittests"
       local alias_cmds="bd bc cg debug it h hy rt style test"
-      local opts="--config --debug --editor --help --logpath --print-log --no-color --report --version --view-log -c -d -h -r -V"
+      local opts="--config --debug --editor --help --helpcolor --logpath --print-log --no-color --report --version --view-log -c -d -h -r -V"
 
       case "${cur}" in
       # print main options to buildtest

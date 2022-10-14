@@ -204,6 +204,11 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     parser.add_argument(
         "--no-color", help="Disable colored output", action="store_true"
     )
+    parser.add_argument(
+        "--helpcolor",
+        action="store_true",
+        help="Print available color options in a table format.",
+    )
     parser.add_argument("-r", "--report", help="Specify path to test report file")
 
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
@@ -1075,11 +1080,6 @@ def report_menu(subparsers):
         type=supported_color,
         metavar="COLOR",
         help="Print output of report table with the selected color.",
-    )
-    parser_report.add_argument(
-        "--helpcolor",
-        action="store_true",
-        help="Print available color options in a table format.",
     )
     parser_report.add_argument(
         "--pager", action="store_true", help="Enable PAGING when viewing result"
