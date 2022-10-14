@@ -89,7 +89,7 @@ The ``buildtest --helpcolor`` command can be used to list the available color op
 
 .. dropdown:: ``buildtest --helpcolor``
 
-    .. command-output:: buildtest --helpcolor
+    .. image:: ./_static/helpcolor.png
 
 Disabling Colored Output
 --------------------------
