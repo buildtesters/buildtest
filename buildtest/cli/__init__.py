@@ -202,6 +202,12 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         help="Print content of last log without pagination",
     )
     parser.add_argument(
+        "--color",
+        type=supported_color,
+        metavar="COLOR",
+        help="Print output of table with the selected color.",
+    )
+    parser.add_argument(
         "--no-color", help="Disable colored output", action="store_true"
     )
     parser.add_argument(
@@ -395,12 +401,6 @@ def history_menu(subparsers):
     )
     list_parser.add_argument(
         "--pager", action="store_true", help="Enabling PAGING when viewing result"
-    )
-    list_parser.add_argument(
-        "--color",
-        type=supported_color,
-        metavar="COLOR",
-        help="Print output of table with the selected color.",
     )
 
     query = history_subparser.add_parser(
@@ -757,12 +757,6 @@ def buildspec_menu(subparsers):
         action="append",
     )
     buildspec_find.add_argument(
-        "--color",
-        type=supported_color,
-        metavar="COLOR",
-        help="Print output of table with the selected color.",
-    )
-    buildspec_find.add_argument(
         "-q",
         "--quiet",
         help="Don't print output of buildspec cache when rebuilding cache",
@@ -1074,12 +1068,6 @@ def report_menu(subparsers):
         "--row-count",
         action="store_true",
         help="Print total count of records from the table.",
-    )
-    parser_report.add_argument(
-        "--color",
-        type=supported_color,
-        metavar="COLOR",
-        help="Print output of report table with the selected color.",
     )
     parser_report.add_argument(
         "--pager", action="store_true", help="Enable PAGING when viewing result"

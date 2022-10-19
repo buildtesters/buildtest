@@ -195,7 +195,7 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--color --end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse  -e -f -h -n -p -s -t c clear l list p path sm summary"
+      local opts="--end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse  -e -f -h -n -p -s -t c clear l list p path sm summary"
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       case ${prev} in --color)
         COMPREPLY=( $( compgen -W "$(_supported_colors)" -- $cur ) )
@@ -301,7 +301,7 @@ _buildtest ()
            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
          # completion for rest of arguments
          *)
-           local longopts="--buildspec --color --count --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --tags --root --terse"
+           local longopts="--buildspec --count --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --tags --root --terse"
            local shortopts="-b -e -h -n -p -q -r -t"
            local subcmds="invalid"
            local allopts="${longopts} ${shortopts} ${subcmds}"
@@ -389,7 +389,7 @@ _buildtest ()
 
       case ${COMP_WORDS[2]} in
       list)
-        local opts="--help --color --no-header --pager --terse -h -n -t"
+        local opts="--help --no-header --pager --terse -h -n -t"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
         if [[ "${prev}" == "--color" ]]; then
@@ -437,7 +437,7 @@ _buildtest ()
     *)
       local cmds="build buildspec cd cdash clean config debugreport docs help info inspect history path report schema schemadocs stats stylecheck unittests"
       local alias_cmds="bd bc cg debug it h hy rt style test"
-      local opts="--config --debug --editor --help --helpcolor --logpath --print-log --no-color --report --version --view-log -c -d -h -r -V"
+      local opts="--color --config --debug --editor --help --helpcolor --logpath --print-log --no-color --report --version --view-log -c -d -h -r -V"
 
       case "${cur}" in
       # print main options to buildtest

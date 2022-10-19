@@ -82,6 +82,11 @@ To access `schema docs <https://buildtesters.github.io/buildtest>`_ you can run:
 
   buildtest schemadocs
 
+Enabling colored output for table entries
+-------------------------------------------------------------
+
+The ``buildtest --color <COLOR> <COMMAND>`` command can be used to select a color while printing output in a tabular format for several buildtest commands.
+
 Listing available color options (``buildtest --helpcolor``)
 -------------------------------------------------------------
 

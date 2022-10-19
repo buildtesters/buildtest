@@ -43,15 +43,6 @@ You may find it useful to fetch all failed records and determine pass/fail crite
 .. note::
    ``buildtest rt`` is an alias for ``buildtest report`` command.
 
-Color output of buildtest report (buildtest report --color)
-------------------------------------------------------------
-
-If you would like to change the output color for either ``buildtest report`` and ``buildtest report summary`` you can use the ``--color`` option.
-This will print the output of the previous two commands in the provided color. The color must be one of the supported colors by rich console::
-
-    buildtest report --color red 
-    buildtest report --color red summary --detailed
-
 .. _report_format_fields:
 
 Format Reports (``buildtest report --format``)
