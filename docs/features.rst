@@ -85,8 +85,7 @@ To access `schema docs <https://buildtesters.github.io/buildtest>`_ you can run:
 Listing available color options (``buildtest --helpcolor``)
 -------------------------------------------------------------
 
-The ``buildtest --helpcolor`` command can be used to list the available color options in a tabular format. Running the command on the command line lists the color options
-with background of that specific color.
+The ``buildtest --helpcolor`` command can be used to list the available color options in a tabular format which can be used with the `--color` option to select a color when printing table entries from several buildtest commands. This option will list all the colors printed in the background for the specified color
 
 .. dropdown:: ``buildtest --helpcolor``
 
