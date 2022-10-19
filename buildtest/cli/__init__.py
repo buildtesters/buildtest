@@ -204,6 +204,11 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     parser.add_argument(
         "--no-color", help="Disable colored output", action="store_true"
     )
+    parser.add_argument(
+        "--helpcolor",
+        action="store_true",
+        help="Print available color options in a table format.",
+    )
     parser.add_argument("-r", "--report", help="Specify path to test report file")
 
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
