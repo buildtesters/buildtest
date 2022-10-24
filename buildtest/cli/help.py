@@ -140,10 +140,6 @@ def print_buildspec_help():
         "buildtest buildspec find --count=5",
         "Limit output of buildspec cache to 5 elements",
     )
-    table.add_row(
-        "buildtest buildspec find --color=blue",
-        "Color output using a pre-selected color such as 'blue'",
-    )
     table.add_row("buildtest buildspec find invalid", "Show invalid buildspecs")
     table.add_row(
         "buildtest buildspec find invalid --error",
@@ -387,9 +383,6 @@ def print_history_help():
 
     table.add_row("buildtest history list", "List all build history files")
     table.add_row("buildtest history list --terse", "Print output in terse format")
-    table.add_row(
-        "buildtest history list --color blue", "Print output using the color 'blue'"
-    )
     table.add_row(
         "buildtest history query 0", "Query content of history build identifier '0'"
     )

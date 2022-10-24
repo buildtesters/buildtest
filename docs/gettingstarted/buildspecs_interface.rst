@@ -53,8 +53,6 @@ let's limit output to 5 entries, we can run the following
 
     .. command-output:: buildtest buildspec find --count=5
 
-You can also color the output via ``--color=<COLOR>`` which will color output of each entry with the selected color.
-
 Finding buildspec files
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
