@@ -865,18 +865,12 @@ def report_summary(report, detailed=None, color=None):
     """
     consoleColor = checkColor(color)
     test_breakdown = report.breakdown_by_test_names()
-    if not consoleColor:
-        table = Table(title="Breakdown by test", header_style="blue")
-        table.add_column("Name", style="cyan")
-        table.add_column("Total Pass", style="green")
-        table.add_column("Total Fail", style="red")
-        table.add_column("Total Runs", style="blue")
-    else:
-        table = Table(title="Breakdown by test", header_style=consoleColor)
-        table.add_column("Name", style=consoleColor)
-        table.add_column("Total Pass", style=consoleColor)
-        table.add_column("Total Fail", style=consoleColor)
-        table.add_column("Total Runs", style=consoleColor)
+
+    table = Table(title="Breakdown by test", header_style=consoleColor)
+    table.add_column("Name", style=consoleColor)
+    table.add_column("Total Pass", style=consoleColor)
+    table.add_column("Total Fail", style=consoleColor)
+    table.add_column("Total Runs", style=consoleColor)
 
     for k in test_breakdown.keys():
         table.add_row(
@@ -933,7 +927,5 @@ def print_report_summary_output(
         return
 
     console.print(table)
-    pass_color = "green"
-    fail_color = "red"
-    pass_results.print_report(title="PASS Tests", color=pass_color)
-    fail_results.print_report(title="FAIL Tests", color=fail_color)
+    pass_results.print_report(title="PASS Tests", color=color)
+    fail_results.print_report(title="FAIL Tests", color=color)
