@@ -157,6 +157,8 @@ add the compiler instance into the appropriate compiler group.
 .. dropdown:: ``buildtest config compilers --detailed``
 
     .. code-block:: console
+       :linenos:
+       :emphasize-lines: 4-43
 
         $ buildtest config compilers find --detailed
         MODULEPATH: /Users/siddiq90/projects/spack/share/spack/lmod/darwin-catalina-x86_64/Core:/usr/local/Cellar/lmod/8.6.14/modulefiles/Darwin:/usr/local/Cellar/lmod/8.6.14/modulefiles/Core
@@ -197,9 +199,9 @@ add the compiler instance into the appropriate compiler group.
         ├────────────────────┤
         │ gcc/10.2.0-37fmsw7 │
         └────────────────────┘
-        [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/9.3.0-n7p74fd  "
+        [DEBUG] Executing module command: bash -l -c "module load gcc/9.3.0-n7p74fd  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/10.2.0-37fmsw7  "
+        [DEBUG] Executing module command: bash -l -c "module load gcc/10.2.0-37fmsw7  "
         [DEBUG] Return Code: 0
         ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Detect Compilers ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
         gcc:
@@ -229,7 +231,8 @@ Module Purge
 ~~~~~~~~~~~~~~
 
 We can configure each compiler instance to run ``module purge`` behavior by setting ``purge`` property as part of the **compilers** section. buildtest
-will set ``purge: true`` in each of the compiler section when running ``buildtest config compilers find``.
+will set ``purge: true`` in each of the compiler section when running ``buildtest config compilers find``. The ``purge`` property is optional, if its not defined
+then buildtest will assume ``purge: false`` as the value
 
 .. code-block:: yaml
    :emphasize-lines: 25
