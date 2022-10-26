@@ -3,12 +3,24 @@
 Buildtest Schemas
 ==========================
 
+buildtest uses JSON Schema for validating buildspecs and :ref:`buildtest configuration file <configuring_buildtest>`.
+The json schemas are published at https://buildtesters.github.io/buildtest/ and we
+provide a command line interface to view schema files and examples.
+
+Schema Naming Convention
+------------------------
+
+All schema files use the file extension **.schema.json** to distinguish itself
+as a json schema definition from an ordinary json file. The schema files are located
+in `buildtest/schemas <https://github.com/buildtesters/buildtest/tree/devel/buildtest/schemas>`_
+directory.
+
 .. _buildtest_schemas:
 
 CLI for buildtest schemas (``buildtest schema``)
 -------------------------------------------------
 
-buildtest uses JSON Schema for validating buildspecs and :ref:`buildtest configuration file <configuring_buildtest>`.
+
 You can use ``buildtest schema`` command to see the list of schemas
 supported by buildtest. The schema files are denoted by ``.schema.json`` file extension.
 
@@ -22,20 +34,10 @@ Shown below is the command usage of ``buildtest schema``
 
     .. command-output:: buildtest schema --help
 
-The json schemas are published at https://buildtesters.github.io/buildtest/ and we
-provide a command line interface to view schema files and examples. You must use the
-``--name`` option to select a schema, for instance if you want to view the JSON Schema for
+You must use the ``--name`` option to select a schema, for instance if you want to view the JSON Schema for
 **script.schema.json** you can run the following::
 
     buildtest schema --name script.schema.json --json
-
-Schema Naming Convention
-------------------------
-
-All schema files use the file extension **.schema.json** to distinguish itself
-as a json schema definition from an ordinary json file. The schema files are located
-in `buildtest/schemas <https://github.com/buildtesters/buildtest/tree/devel/buildtest/schemas>`_
-directory.
 
 Schema Files
 --------------
