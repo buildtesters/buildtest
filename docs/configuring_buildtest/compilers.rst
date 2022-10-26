@@ -157,6 +157,8 @@ add the compiler instance into the appropriate compiler group.
 .. dropdown:: ``buildtest config compilers --detailed``
 
     .. code-block:: console
+       :linenos:
+       :emphasize-lines: 4-43
 
         $ buildtest config compilers find --detailed
         MODULEPATH: /Users/siddiq90/projects/spack/share/spack/lmod/darwin-catalina-x86_64/Core:/usr/local/Cellar/lmod/8.6.14/modulefiles/Darwin:/usr/local/Cellar/lmod/8.6.14/modulefiles/Core
@@ -197,9 +199,9 @@ add the compiler instance into the appropriate compiler group.
         ├────────────────────┤
         │ gcc/10.2.0-37fmsw7 │
         └────────────────────┘
-        [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/9.3.0-n7p74fd  "
+        [DEBUG] Executing module command: bash -l -c "module load gcc/9.3.0-n7p74fd  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/10.2.0-37fmsw7  "
+        [DEBUG] Executing module command: bash -l -c "module load gcc/10.2.0-37fmsw7  "
         [DEBUG] Return Code: 0
         ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Detect Compilers ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
         gcc:
@@ -229,7 +231,8 @@ Module Purge
 ~~~~~~~~~~~~~~
 
 We can configure each compiler instance to run ``module purge`` behavior by setting ``purge`` property as part of the **compilers** section. buildtest
-will set ``purge: true`` in each of the compiler section when running ``buildtest config compilers find``.
+will set ``purge: true`` in each of the compiler section when running ``buildtest config compilers find``. The ``purge`` property is optional, if its not defined
+then buildtest will assume ``purge: false`` as the value
 
 .. code-block:: yaml
    :emphasize-lines: 25
@@ -368,48 +371,48 @@ instead of the compiler wrappers when defining a compiler instance that uses a P
         ├─────────────────────┤
         │ upcxx/nightly       │
         └─────────────────────┘
-        [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/7.3.0  "
+        [DEBUG] Executing module command: bash -l -c "module load gcc/7.3.0  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/8.1.0  "
+        [DEBUG] Executing module command: bash -l -c "module load gcc/8.1.0  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/8.3.0  "
+        [DEBUG] Executing module command: bash -l -c "module load gcc/8.3.0  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/10.3.0  "
+        [DEBUG] Executing module command: bash -l -c "module load gcc/10.3.0  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load gcc/11.2.0  "
+        [DEBUG] Executing module command: bash -l -c "module load gcc/11.2.0  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load craype/2.6.2  "
+        [DEBUG] Executing module command: bash -l -c "module load craype/2.6.2  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load craype/2.7.10  "
+        [DEBUG] Executing module command: bash -l -c "module load craype/2.7.10  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load intel/19.0.3.199  "
+        [DEBUG] Executing module command: bash -l -c "module load intel/19.0.3.199  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load intel/19.1.2.254  "
+        [DEBUG] Executing module command: bash -l -c "module load intel/19.1.2.254  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load intel/19.1.0.166  "
+        [DEBUG] Executing module command: bash -l -c "module load intel/19.1.0.166  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load intel/19.1.1.217  "
+        [DEBUG] Executing module command: bash -l -c "module load intel/19.1.1.217  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load intel/19.1.2.275  "
+        [DEBUG] Executing module command: bash -l -c "module load intel/19.1.2.275  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load intel/19.1.3.304  "
+        [DEBUG] Executing module command: bash -l -c "module load intel/19.1.3.304  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load upcxx/2021.9.0  "
+        [DEBUG] Executing module command: bash -l -c "module load upcxx/2021.9.0  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load upcxx/2022.3.0  "
+        [DEBUG] Executing module command: bash -l -c "module load upcxx/2022.3.0  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load upcxx/2022.9.0  "
+        [DEBUG] Executing module command: bash -l -c "module load upcxx/2022.9.0  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load upcxx/bleeding-edge  "
+        [DEBUG] Executing module command: bash -l -c "module load upcxx/bleeding-edge  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load upcxx/nightly  "
+        [DEBUG] Executing module command: bash -l -c "module load upcxx/nightly  "
         [DEBUG] Return Code: 0
         Testing Programming Environment Modules
-        [DEBUG] Executing module command: bash -l -c "module purge && module load PrgEnv-gnu  "
+        [DEBUG] Executing module command: bash -l -c "module load PrgEnv-gnu  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load PrgEnv-cray  "
+        [DEBUG] Executing module command: bash -l -c "module load PrgEnv-cray  "
         [DEBUG] Return Code: 0
-        [DEBUG] Executing module command: bash -l -c "module purge && module load PrgEnv-intel  "
+        [DEBUG] Executing module command: bash -l -c "module load PrgEnv-intel  "
         [DEBUG] Return Code: 0
         ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Detect Compilers ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
         cray:

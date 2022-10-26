@@ -59,6 +59,9 @@ def compiler_test(configuration, compiler_names=None):
 
     compilers = configuration.target_config["compilers"]["compiler"]
 
+    # get value of module purge from configuration file, the default is False if not definied
+    module_purge = configuration.target_config["compilers"].get("purge") or False
+
     target_compilers = []
 
     if compiler_names:
@@ -78,13 +81,16 @@ def compiler_test(configuration, compiler_names=None):
                 continue
             if compilers[name][compiler_instance].get("module"):
                 module_test = compilers[name][compiler_instance]["module"]["load"]
-                cmd = Module(module_test, debug=False)
+                cmd = Module(module_test, purge=module_purge, debug=False)
                 ret = cmd.test_modules(login=True)
                 if ret == 0:
                     pass_compilers.append(compiler_instance)
                     continue
                 fail_compilers.append(compiler_instance)
             else:
+                console.print(
+                    f"[blue]Compiler '{compiler_instance}' has no 'modules' defined therefore skipping test"
+                )
                 pass_compilers.append(compiler_instance)
 
     compiler_pass = Table(title="Compilers Test Pass")
@@ -211,7 +217,9 @@ class BuildtestCompilers:
         self.prgenv_modules = deep_get(
             self.configuration.target_config, "compilers", "prgenv_modules"
         )
-        self.purge = deep_get(self.configuration.target_config, "compilers", "purge")
+        self.purge = (
+            deep_get(self.configuration.target_config, "compilers", "purge") or False
+        )
 
         # override default modulepath if --modulepath is specified
         if modulepath:
@@ -346,7 +354,7 @@ class BuildtestCompilers:
             self.valid_compilers[name] = []
             self.invalid_compilers[name] = []
             for module in module_list:
-                cmd = Module(module, debug=self.detailed)
+                cmd = Module(module, purge=self.purge, debug=self.detailed)
                 ret = cmd.test_modules(login=True)
                 # if module load test passed we add entry to list
                 if ret == 0:
@@ -392,7 +400,7 @@ class BuildtestCompilers:
                 self.compilers[name][module]["module"] = {}
                 self.compilers[name][module]["module"]["load"] = [module]
 
-                self.compilers[name][module]["module"]["purge"] = self.purge or False
+                self.compilers[name][module]["module"]["purge"] = self.purge
 
                 # PrgEnv compiler wrappers
                 if self.enable_prgenv and deep_get(self.valid_prgenvs, name):
