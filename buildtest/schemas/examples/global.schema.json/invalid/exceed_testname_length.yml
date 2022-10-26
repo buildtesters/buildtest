@@ -1,5 +1,6 @@
 # this test fails because it exceeds 32 character length for test name
 buildspecs:
-  this_test_exceeds_32_character_length:
+  _________this_test_exceeds_character_length______________:
     type: script
     run: hostname
+    executor: generic.local.bash
