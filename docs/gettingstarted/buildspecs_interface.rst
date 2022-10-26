@@ -263,9 +263,6 @@ If you want to see a listing of all maintainers you can use the ``--list`` as sh
 
     .. command-output:: buildtest buildspec maintainers --list
 
-If you want to see the table output of ``buildtest buildspec maintainers --list`` with a specific color option you can use ``buildtest --color=<COLOR> buildspec maintainers --list``
-command.
-
 If you prefer a machine readable format, then you can use ``--terse`` and ``--no-header``.
 
 .. dropdown:: ``buildtest buildspec maintainers --list --terse --no-header``
@@ -278,9 +275,6 @@ display the following information
 .. dropdown:: ``buildtest buildspec maintainers --breakdown``
 
     .. command-output:: buildtest buildspec maintainers --breakdown
-
-If you want to see the table output of ``buildtest buildspec maintainers --breakdown`` with a specific color option you can use ``buildtest --color=<COLOR> buildspec maintainers --breakdown``
-command.
 
 The ``buildtest buildspec maintainers find`` command can be used to report buildspec given a maintainer
 name which works similar to `--breakdown` but doesn't report information for all maintainers. Shown
