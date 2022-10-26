@@ -65,11 +65,11 @@ is defined in JSON as follows:
          "description": "This section is used to define one or more tests (buildspecs). Each test must be unique name",
          "propertyNames": {
            "pattern": "^[A-Za-z_.-][A-Za-z0-9_.-]*$",
-           "maxLength": 32
+           "maxLength": 48
          }
        }
 
-The test names are limited to 32 characters and follow the regular expression defined in **pattern** property. In previous example, the test name is **hello_world**.
+The test names are limited to 48 characters and follow the regular expression defined in **pattern** property. In previous example, the test name is **hello_world**.
 You must have unique testname in your **buildspecs** section, otherwise you will have an invalid buildspec file.
 
 .. Note:: We refer to the entire YAML content as **buildspec file**, this is not to be confused with the **buildspecs** field.
