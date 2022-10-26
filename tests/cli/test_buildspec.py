@@ -18,6 +18,7 @@ from buildtest.cli.report import Report
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
+from rich.color import Color
 
 configuration = SiteConfiguration()
 configuration.detect_system()
@@ -149,10 +150,18 @@ def test_buildspec_find_terse():
 @pytest.mark.cli
 def test_buildspec_maintainers():
     buildspec_maintainers(
-        configuration=configuration, list_maintainers=True, terse=True, header=True
+        configuration=configuration,
+        list_maintainers=True,
+        terse=True,
+        header=True,
+        color=Color.default().name,
     )
     buildspec_maintainers(
-        configuration=configuration, breakdown=True, terse=True, header=True
+        configuration=configuration,
+        breakdown=True,
+        terse=True,
+        header=True,
+        color=Color.default().name,
     )
     buildspec_maintainers(configuration=configuration, name="@shahzebsiddiqui")
 

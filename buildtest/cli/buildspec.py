@@ -805,8 +805,14 @@ class BuildspecCache:
         """Return a list of maintainers"""
         return self.cache["maintainers"]
 
-    def print_maintainer(self):
-        """This method prints maintainers from buildspec cache file which implements ``buildtest buildspec maintainers --list`` command."""
+    def print_maintainer(self, color=None):
+        """This method prints maintainers from buildspec cache file which implements ``buildtest buildspec maintainers --list`` command.
+
+        Args:
+            color (bool, optional): Print table output of ``buildtest buildspec maintainers --list`` with selected color
+        """
+
+        consoleColor = checkColor(color)
 
         if self.terse:
             if not self.header:
@@ -821,7 +827,7 @@ class BuildspecCache:
             Column("Maintainers", overflow="fold"),
             header_style="blue",
             title_style="red",
-            row_styles=["green"],
+            row_styles=[consoleColor],
         )
 
         for maintainer in self.cache["maintainers"].keys():
@@ -847,9 +853,15 @@ class BuildspecCache:
             for file in self.cache["maintainers"][name]:
                 console.print(file)
 
-    def print_maintainers_by_buildspecs(self):
+    def print_maintainers_by_buildspecs(self, color=None):
+        """This method prints maintainers breakdown by buildspecs. This method implements ``buildtest buildspec maintainers --breakdown``
 
-        """This method prints maintainers breakdown by buildspecs. This method implements ``buildtest buildspec maintainers --breakdown``"""
+        Args:
+            color (bool, optional): Print table output of ``buildtest buildspec maintainers --breakdown`` with selected color
+        """
+
+        consoleColor = checkColor(color)
+
         if self.terse:
             if not self.header:
                 print("maintainers|buildspec")
@@ -865,7 +877,7 @@ class BuildspecCache:
             header_style="blue",
             style="cyan",
             title_style="red",
-            row_styles=["green"],
+            row_styles=[consoleColor],
             show_lines=True,
         )
 
@@ -1273,6 +1285,7 @@ def buildspec_maintainers(
     breakdown=None,
     terse=None,
     header=None,
+    color=None,
     name=None,
 ):
     """Entry point for ``buildtest buildspec maintainers`` command.
@@ -1282,16 +1295,19 @@ def buildspec_maintainers(
         list_maintainers (bool, optional): List all maintainers
         terse (bool, optional): Print in terse mode
         header (bool, optional): If True disable printing of headers
+        color (bool, optional): Print output of table with selected color
         name (str, optional): List all buildspecs corresponding to maintainer name. This command is specified via ``buildtest buildspec maintainers find <name>``
     """
+
+    consoleColor = checkColor(color)
 
     cache = BuildspecCache(configuration=configuration, terse=terse, header=header)
 
     if list_maintainers:
-        cache.print_maintainer()
+        cache.print_maintainer(color=consoleColor)
 
     if breakdown:
-        cache.print_maintainers_by_buildspecs()
+        cache.print_maintainers_by_buildspecs(color=consoleColor)
 
     if name:
         cache.print_maintainers_find(name=name)

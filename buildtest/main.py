@@ -222,6 +222,7 @@ def main():
                 breakdown=args.breakdown,
                 terse=args.terse,
                 header=args.no_header,
+                color=args.color,
                 name=name,
             )
 
