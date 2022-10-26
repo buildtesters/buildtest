@@ -359,22 +359,8 @@ this test, we define a duplicate tag **network** which is not allowed.
 .. literalinclude:: ../tutorials/invalid_tags.yml
     :language: yaml
 
-If we run this test and inspect the logs we will see an error message in schema validation:
 
-.. code-block:: console
-
-    2020-09-29 10:56:43,175 [parser.py:179 - _validate() ] - [INFO] Validating test - 'duplicate_string_tags' with schemafile: script-v1.0.schema.json
-    2020-09-29 10:56:43,175 [buildspec.py:397 - parse_buildspecs() ] - [ERROR] ['network', 'network'] is not valid under any of the given schemas
-
-    Failed validating 'oneOf' in schema['properties']['tags']:
-        {'oneOf': [{'type': 'string'},
-                   {'$ref': '#/definitions/list_of_strings'}]}
-
-    On instance['tags']:
-        ['network', 'network']
-
-If tags is a list, it must contain one item, therefore an empty list (i.e ``tags: []``)
-is invalid.
+If tags is a list, it must contain atleast **one** item.
 
 Customize Shell
 -----------------

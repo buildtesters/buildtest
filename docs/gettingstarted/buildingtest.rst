@@ -254,34 +254,6 @@ can do the following:
 
     buildtest build -b tests --executor-type local
 
-.. _discover_buildspecs:
-
-Discover Buildspecs
---------------------
-
-Now, let's discuss how buildtest discovers buildspecs since there are several ways to build
-buildspecs.
-
-The buildspec search resolution is described as follows:
-
-- If file or directory specified by ``-b`` option doesn't exist we exit immediately.
-
-- If buildspec path is a directory, traverse directory recursively to find all ``.yml`` extensions
-
-- If buildspec path is a file, check if file extension is not ``.yml``,  exit immediately
-
-- If user specifies ``--tags`` or ``--executor`` we search in buildspec cache to discover buildspecs.
-
-Shown below is a diagram on how buildtest discovers buildspecs. The user can build buildspecs
-by ``--buildspec``, :ref:`--tags <build_by_tags>`, or :ref:`--executor <build_by_executor>`
-which will discover the buildspecs. You can :ref:`exclude buildspecs <exclude_buildspecs>`
-using ``--exclude`` option which is processed after discovering buildspecs. The
-excluded buildspecs are removed from list if found and final list of buildspecs
-is processed.
-
-.. image:: ../_static/DiscoverBuildspecs.jpg
-   :scale: 75 %
-
 .. _build_stage:
 
 Configure Build Stages

@@ -10,12 +10,35 @@ the buildspec will be ignored.
 
 .. image:: _static/GeneralPipeline.png
 
+.. _discover_buildspecs:
+
 Discover Buildspecs
 ---------------------
 
 buildtest will discover buildspecs based on command line arguments since you can
-build by file, directory, executor, or tags.  In **discover** stage, buildtest
-will detect buildspecs which is discussed in :ref:`discover_buildspecs` .
+build by file, directory, executor, or tags.
+
+The buildspec search resolution is described as follows:
+
+- If file or directory specified by ``--buildspec`` option doesn't exist we exit immediately.
+
+- If buildspec path is a directory, traverse directory recursively to find all ``.yml`` extensions
+
+- If buildspec path is a file, check if file extension is not ``.yml``,  exit immediately
+
+- If user specifies ``--tags`` or ``--executor`` we search in buildspec cache to discover buildspecs.
+
+Shown below is a diagram on how buildtest discovers buildspecs. The user can build buildspecs
+by ``--buildspec``, :ref:`--tags <build_by_tags>`, or :ref:`--executor <build_by_executor>`
+which will discover the buildspecs. You can :ref:`exclude buildspecs <exclude_buildspecs>`
+using ``--exclude`` option which is processed after discovering buildspecs. The
+excluded buildspecs are removed from list if found and final list of buildspecs
+is processed.
+
+.. image:: _static/DiscoverBuildspecs.jpg
+   :scale: 75 %
+
+
 
 For every discovered buildspecs, buildtest will validate the buildspecs in the **parse**
 stage which is performed using `jsonschema.validate <https://python-jsonschema.readthedocs.io/en/stable/validate/#jsonschema.validate>`_ library.

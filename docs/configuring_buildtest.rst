@@ -1,7 +1,7 @@
 .. _configuring_buildtest:
 
-Configuring buildtest
-======================
+How to configure buildtest
+===========================
 
 .. toctree::
    :maxdepth: 2
