@@ -8,6 +8,7 @@ import pytest
 from buildtest.cli.inspect import inspect_cmd
 from buildtest.cli.report import Report
 from buildtest.defaults import BUILDTEST_ROOT
+from rich.color import Color
 
 
 def test_buildtest_inspect_list():
@@ -19,6 +20,7 @@ def test_buildtest_inspect_list():
         terse = False
         no_header = False
         builder = False
+        color = Color.default().name
 
     inspect_cmd(args)
 
@@ -29,6 +31,7 @@ def test_buildtest_inspect_list():
         terse = True
         no_header = True
         builder = False
+        color = False
 
     inspect_cmd(args)
 
@@ -39,6 +42,7 @@ def test_buildtest_inspect_list():
         terse = True
         no_header = False
         builder = False
+        color = False
 
     inspect_cmd(args)
 
@@ -49,6 +53,7 @@ def test_buildtest_inspect_list():
         terse = False
         no_header = False
         builder = True
+        color = False
 
     inspect_cmd(args)
 

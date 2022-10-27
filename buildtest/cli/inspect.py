@@ -6,6 +6,7 @@ import sys
 from buildtest.cli.report import Report
 from buildtest.defaults import console
 from buildtest.utils.file import read_file, resolve_path
+from buildtest.utils.tools import checkColor
 from rich.pretty import pprint
 from rich.syntax import Syntax
 from rich.table import Column, Table
@@ -23,7 +24,11 @@ def inspect_cmd(args, report_file=None):
     # implements command 'buildtest inspect list'
     if args.inspect in ["list", "l"]:
         inspect_list(
-            report, terse=args.terse, header=args.no_header, builder=args.builder
+            report,
+            terse=args.terse,
+            header=args.no_header,
+            builder=args.builder,
+            color=args.color,
         )
         return
 
@@ -79,7 +84,7 @@ def fetch_test_names(report, names):
     return query_builders
 
 
-def inspect_list(report, terse=None, header=None, builder=None):
+def inspect_list(report, terse=None, header=None, builder=None, color=None):
     """This method list an output of test id, name, and buildspec file from the report cache. The default
     behavior is to display output in table format though this can be changed with terse format which will
     display in parseable format. This method implements command ``buildtest inspect list``
@@ -89,8 +94,10 @@ def inspect_list(report, terse=None, header=None, builder=None):
         terse (bool, optional): Print output in terse format
         header (bool, optional): Determine whether to print header in terse format.
         builder (bool, optional): Print output in builder format which can be done via ``buildtest inspect list --builder``
+        color (bool, optional): Print table output of ``buildtest inspect list`` with selected color
 
     """
+    consoleColor = checkColor(color)
 
     test_ids = report._testid_lookup()
 
@@ -119,12 +126,13 @@ def inspect_list(report, terse=None, header=None, builder=None):
         "[blue]name",
         Column(header="[blue]buildspec", overflow="fold"),
         title="Test Summary by name, id, buildspec",
+        row_styles=[consoleColor],
     )
     for identifier in test_ids.keys():
         table.add_row(
-            f"[red]{identifier}",
-            f"[cyan]{test_ids[identifier]['name']}",
-            f"[green]{test_ids[identifier]['buildspec']}",
+            f"{identifier}",
+            f"{test_ids[identifier]['name']}",
+            f"{test_ids[identifier]['buildspec']}",
         )
     console.print(table)
 
