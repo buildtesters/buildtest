@@ -4,10 +4,10 @@
 buildtest
 ==========
 
-This documentation was last rebuild on |today| and is intended for version |version|.
+This documentation was rebuilt on |today| and is intended for version |version|.
 
-If you are working off a latest release please see  https://buildtest.readthedocs.io/en/latest/ for documentation.
-If you are working off `devel <https://github.com/buildtesters/buildtest/tree/devel>`_ branch then please refer to
+If you are working off the latest release please see  https://buildtest.readthedocs.io/en/latest/ for documentation.
+If you are working off the `devel <https://github.com/buildtesters/buildtest/tree/devel>`_ branch then please refer to
 https://buildtest.readthedocs.io/en/devel/
 which references the `devel` branch.
 
@@ -50,10 +50,10 @@ Description
 
 `buildtest <https://github.com/buildtesters/buildtest>`_  is
 a testing framework to help HPC sites write test for their system as part of their
-routine acceptance & regression test. buildtest provides a YAML interface to write tests
-which buildtest can validate and generate shell scripts that can run on your HPC system.
-The test template (YAML) is called **buildspec** which can define one or more test instance
-that is validated by a `json schema <https://json-schema.org/>`_. buildtest supports the following batch schedulers:
+routine acceptance and regression testing. Buildtest provides a YAML interface to write tests
+which buildtest can validate and then use to generate shell scripts that run on your HPC system.
+The test template (YAML) is called a **buildspec** which can define one or more test instances
+and is validated by a `json schema <https://json-schema.org/>`_. Buildtest supports the following batch schedulers:
 `IBM Spectrum LSF <https://www.ibm.com/support/knowledgecenter/SSWRJV_10.1.0/lsf_welcome/lsf_welcome.html>`_,
 `Slurm <https://slurm.schedmd.com/>`_, `PBS <https://www.openpbs.org/>`_ and
 `Cobalt <https://trac.mcs.anl.gov/projects/cobalt>`_. We publish the schema documentation, json schemas,
