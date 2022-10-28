@@ -81,3 +81,29 @@ DocStrings
 We have enabled `napolean extension <https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html>`_ to support
 Google style docstring. Please follow this format when you are writting docstring for buildtest codebase. For more details
 on google style see: https://google.github.io/styleguide/pyguide.html
+
+Generating Documentation Examples for Buildtest Tutorial
+----------------------------------------------------------
+
+The documentation examples for the buildtest tutorial are run inside the container image
+ghcr.io/buildtesters/buildtest_spack:latest which means that some of the example output needs to be auto-generated manually. There
+is a script `doc-examples.py <https://github.com/buildtesters/buildtest/blob/devel/scripts/spack_container/doc-examples.py>`_ that
+is responsible for auto-generating the documentation examples inside the container. To get started you will need to run the
+following commands.
+
+.. code-block:: console
+
+    docker run -it -v  $BUILDTEST_ROOT:/home/spack/buildtest ghcr.io/buildtesters/buildtest_spack:latest
+    cd /home/spack/buildtest
+    source scripts/spack_container/setup.py
+
+
+You will need to volume mount $BUILDTEST_ROOT into `/home/spack/buildtest` in-order to get your buidltest code-base accessible inside container.
+
+Once you setup the environment, please run the python script and it will auto-generate the examples as follows::
+
+        python scripts/spack_container/doc-examples.py
+
+Please verify all the auto-generated examples that will be used in the documentation. Once you are content with all the changes please add all the changes
+``git add``.
+
