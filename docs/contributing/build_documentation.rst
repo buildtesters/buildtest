@@ -86,7 +86,7 @@ Generating Documentation Examples for Buildtest Tutorial
 ----------------------------------------------------------
 
 The documentation examples for the buildtest tutorial are run inside the container image
-ghcr.io/buildtesters/buildtest_spack:latest which means that some of the example output needs to be auto-generated manually. There
+ghcr.io/buildtesters/buildtest_spack:latest which means that some of the example output needs to be generated manually. There
 is a script `doc-examples.py <https://github.com/buildtesters/buildtest/blob/devel/scripts/spack_container/doc-examples.py>`_ that
 is responsible for auto-generating the documentation examples inside the container. To get started you will need to run the
 following commands.
@@ -98,12 +98,13 @@ following commands.
     source scripts/spack_container/setup.py
 
 
-You will need to volume mount $BUILDTEST_ROOT into `/home/spack/buildtest` in-order to get your buidltest code-base accessible inside container.
+You will need to volume mount **$BUILDTEST_ROOT** into `/home/spack/buildtest` in-order to get  buildtest code-base accessible inside
+the container.
 
-Once you setup the environment, please run the python script and it will auto-generate the examples as follows::
+Once you setup is complete, please run the python script and it will auto-generate the documentation examples ::
 
         python scripts/spack_container/doc-examples.py
 
-Please verify all the auto-generated examples that will be used in the documentation. Once you are content with all the changes please add all the changes
-``git add``.
+Please verify all the auto-generated examples that will be used in the documentation. Once you are content with all the changes please add all
+the changes via ``git add``.
 
