@@ -1214,7 +1214,7 @@ class BuildTest:
         if table.row_count:
             console.print(table)
 
-    def print_batch_builders(self, batch_builders):
+    def print_batch_builders(self, builders):
         """This method will print the builders that were run in batch mode. The builders will be displayed in table format along with
         builders by numnodes and numprocs."""
 
@@ -1225,7 +1225,7 @@ class BuildTest:
         batch_builders_table.add_column("executor", overflow="fold", style="green")
         batch_builders_table.add_column("buildspecs", overflow="fold", style="yellow")
 
-        for builder in batch_builder:
+        for builder in builders:
             batch_builders_table.add_row(
                 f"{builder}",
                 f"{builder.executor}",
@@ -1257,7 +1257,7 @@ class BuildTest:
                 "buildspecs", overflow="fold", style="yellow"
             )
 
-            for builder in batch_builder:
+            for builder in builders:
                 # skip builders that dont have attribute builder.numprocs which is set if buildtest build --procs is specified
                 if not builder.numprocs:
                     continue
@@ -1294,7 +1294,7 @@ class BuildTest:
                 "buildspecs", overflow="fold", style="yellow"
             )
 
-            for builder in batch_builder:
+            for builder in builders:
                 # skip builders that dont have attribute builder.numprocs which is set if buildtest build --procs is specified
                 if not builder.numnodes:
                     continue
