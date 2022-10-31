@@ -95,13 +95,13 @@ following commands.
 
     docker run -it -v  $BUILDTEST_ROOT:/home/spack/buildtest ghcr.io/buildtesters/buildtest_spack:latest
     cd /home/spack/buildtest
-    source scripts/spack_container/setup.py
+    source scripts/spack_container/setup.sh
 
 
 You will need to volume mount **$BUILDTEST_ROOT** into `/home/spack/buildtest` in-order to get  buildtest code-base accessible inside
 the container.
 
-Once you setup is complete, please run the python script and it will auto-generate the documentation examples ::
+Once you setup is complete, please run the python script and it will auto-generate the documentation examples::
 
         python scripts/spack_container/doc-examples.py
 
