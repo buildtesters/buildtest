@@ -584,17 +584,18 @@ class Report:
                 join_list.append(self.display_table[key])
 
             t = [list(i) for i in zip(*join_list)]
-
+            
             # limited number of rows to be printed in terse mode
             if count:
                 t = t[:count]
 
             if not noheader:
-                print("|".join(self.display_table.keys()))
+                console.print("|".join(self.display_table.keys()), style=consoleColor)
 
             for i in t:
-                print("|".join(i))
-
+                join_string = "|".join(i)
+                console.print(f"[{consoleColor}]{join_string}")
+                    
             return
 
         join_list = []

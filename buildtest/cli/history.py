@@ -102,38 +102,20 @@ def list_build_history(no_header=None, terse=None, pager=None, color=None):
 
     if terse:
 
+        join_list = []
+
+        for key in table.keys():
+            join_list.append(table[key])
+
+        t = [list(i) for i in zip(*join_list)]
+
         # We print the table columns if --no-header is not specified
         if not no_header:
-            console.print("|".join(table.keys()))
+            console.print("|".join(table.keys()), style=consoleColor)
 
-        for (
-            build_id,
-            hostname,
-            user,
-            system,
-            date,
-            pass_test,
-            fail_tests,
-            total_tests,
-            pass_rate,
-            fail_rate,
-            command,
-        ) in zip(
-            table["id"],
-            table["hostname"],
-            table["user"],
-            table["system"],
-            table["date"],
-            table["pass_tests"],
-            table["fail_tests"],
-            table["total_tests"],
-            table["pass_rate"],
-            table["fail_rate"],
-            table["command"],
-        ):
-            console.print(
-                f"{build_id}|{hostname}|{user}|{date}|{pass_test}|{fail_tests}|{total_tests}|{pass_rate}|{fail_rate}|{command}"
-            )
+        for i in t:
+            join_string = "|".join(i)
+            console.print(f"[{consoleColor}]{join_string}")
         return
 
     history_table = Table(

@@ -592,10 +592,10 @@ class BuildspecCache:
         if self.terse:
 
             if not self.header:
-                print("buildspec")
+                console.print("buildspec", style=self.color)
 
             for buildspec in self.cache["buildspecs"].keys():
-                print(buildspec)
+                console.print(f"[{self.color}]{buildspec}")
 
             return
 
@@ -623,10 +623,10 @@ class BuildspecCache:
         # if --terse option specified print list of all tags in machine readable format
         if self.terse:
             if not self.header:
-                print("tag")
+                console.print("tag", style=self.color)
 
             for tag in self.cache["unique_tags"]:
-                print(tag)
+                console.print(f"[{self.color}]{tag}")
 
             return
 
@@ -652,10 +652,10 @@ class BuildspecCache:
         if self.terse:
 
             if not self.header:
-                print("executor")
+                console.print("executor", style=self.color)
 
             for executor in self.cache["unique_executors"]:
-                print(executor)
+                console.print(f"[{self.color}]{executor}")
 
             return
 
@@ -681,13 +681,13 @@ class BuildspecCache:
         if self.terse:
 
             if not self.header:
-                print("executor|name|description")
+                console.print("executor|name|description", style=self.color)
 
             for executor_name in self.cache["executor"].keys():
                 for test_name, description in self.cache["executor"][
                     executor_name
                 ].items():
-                    print(f"{executor_name}|{test_name}|{description}")
+                    console.print(f"[{self.color}]{executor_name}|{test_name}|{description}")
             return
 
         table = Table(title="Tests by Executors", header_style="blue", show_lines=True)
@@ -712,12 +712,11 @@ class BuildspecCache:
         if self.terse:
 
             if not self.header:
-                print("tags|name|description")
+                console.print("tags|name|description", style=self.color)
 
             for tagname in self.cache["tags"].keys():
                 for test_name, description in self.cache["tags"][tagname].items():
-
-                    print(f"{tagname}|{test_name}|{description}")
+                    console.print(f"[{self.color}]{tagname}|{test_name}|{description}")
             return
 
         table = Table(title="Tests by Tags", header_style="blue", show_lines=True)
@@ -781,7 +780,7 @@ class BuildspecCache:
             # print terse output
 
             if not self.header:
-                print("|".join(self.table.keys()))
+                console.print("|".join(self.table.keys()), style=self.color)
 
             for row in t:
 
@@ -790,7 +789,8 @@ class BuildspecCache:
 
                 # if any entry contains None type we convert to empty string
                 row = ["" if item is None else item for item in row]
-                console.print("|".join(row))
+                join_string = "|".join(row)
+                console.print(f"[{self.color}]{join_string}")
 
             return
 

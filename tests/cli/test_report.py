@@ -7,6 +7,7 @@ import pytest
 from buildtest.cli.report import Report, report_cmd, report_summary
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
+from rich.color import Color
 
 
 @pytest.mark.cli
@@ -19,8 +20,8 @@ def test_report():
 
     result.print_report()
 
-    # run 'buildtest report --format name,state,returncode,buildspec --terse'
-    result.print_report(terse=True)
+    # run 'buildtest --color <Color> report --format name,state,returncode,buildspec --terse'
+    result.print_report(terse=True, color=Color.default().name)
 
     result.print_report(row_count=True)
 
