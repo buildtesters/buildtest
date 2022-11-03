@@ -447,7 +447,7 @@ _buildtest ()
         *)
           COMPREPLY=( $( compgen -W "${cmds} ${alias_cmds}" -- $cur ) )
           if [[ "${prev}" == "--color" ]]; then
-            COMPREPLY=( $( compgen -W "on off" -- $cur ) )
+            COMPREPLY=( $( compgen -W "$(_supported_colors)" -- $cur ) )
           fi
           ;;
       esac
