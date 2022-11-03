@@ -10,7 +10,7 @@ Talks
     :header: "Conference", "Talk", "Date", "Link"
     :widths:  40, 50, 20, 20
 
-    "HPCSYSPRO_ workshop at SC22_", "`An Automated Approach to Continuous Acceptance Testing of HPC Systems at NERSC <https://sc22.supercomputing.org/session/?sess=sess463>`_", "Nov 14, 2022", "`PDF <https://drive.google.com/file/d/1wrNj_E90Y_m3OA-Raaq9CKMx46alz8wX/view?usp=share_link>`__, `PPTX <https://docs.google.com/presentation/d/12hwHxONA_CEBiX3JB3jkqarkVpZnkZTOWsnmhNmGgog/edit?usp=share_link>`__"
+    "HPCSYSPRO_ workshop at SC22_", "`An Automated Approach to Continuous Acceptance Testing of HPC Systems at NERSC <https://sc22.supercomputing.org/session/?sess=sess463>`__", "Nov 14, 2022", "`PDF <https://drive.google.com/file/d/1wrNj_E90Y_m3OA-Raaq9CKMx46alz8wX/view?usp=share_link>`__, `PPTX <https://docs.google.com/presentation/d/12hwHxONA_CEBiX3JB3jkqarkVpZnkZTOWsnmhNmGgog/edit?usp=share_link>`__"
     "`PEARC22 <https://pearc.acm.org/pearc22/>`_", "**Testing your HPC System with Buildtest**", "July 11, 2022", "`PDF <https://drive.google.com/file/d/1bbbwCH62M7TSAE-lWecgt7R8myeHYhDV/view?usp=sharing>`__, `PPTX <https://docs.google.com/presentation/d/1nwk7dUhX7qEV75bE_P6lrR5Ion9M8AcG/edit?usp=sharing&ouid=102126664227037583807&rtpof=true&sd=true>`__"
     "`ECP Training Event <https://www.exascaleproject.org/training-events/>`_", "`Facility Testing of E4S via E4S Testsuite, Spack Test, and buildtest <https://www.exascaleproject.org/event/buildtest-21-09/>`_", "Sep 14, 2021", "`PDF <https://drive.google.com/file/d/1nfHm7Y3CXkMgNlMKYtVbwIciD637qhRL/view?usp=sharing>`__, `PPTX <https://docs.google.com/presentation/d/1DeguAqcSE8kZy2Hkzr_HNEssFEwaKXdt/edit?usp=sharing&ouid=115649024792605360450&rtpof=true&sd=true>`__"
     "`ECP Annual Meeting 2021 <https://www.exascaleproject.org/event/buildtest/>`_", "**HPC System and Software testing via buildtest**", "Apr 15, 2021", "`PDF <https://drive.google.com/file/d/134bZIWyp0AL60I1bW4oWywCYW0oV8ckB/view?usp=sharing>`__, `VIDEO <https://youtu.be/-IONWmF8YZs>`__"
@@ -27,7 +27,7 @@ Talks
 Publications
 --------------
 
-- Shahzeb Siddiqui , Erik Palmer,  Sijie Xiang, Prathmesh Sambrekar, Sameer Shende, Wyatt Spear. `An Automated Approach to Continuous Acceptance Testing of HPC Systems at NERSC <https://drive.google.com/file/d/1haOuYdVYrn4Xv17fXPzU3LSaLM1Z89ie/view?usp=share_link>`_, HPCSYSPRO22 Abstract Submission
+- Shahzeb Siddiqui , Erik Palmer,  Sijie Xiang, Prathmesh Sambrekar, Sameer Shende, Wyatt Spear. `An Automated Approach to Continuous Acceptance Testing of HPC Systems at NERSC <https://drive.google.com/file/d/1haOuYdVYrn4Xv17fXPzU3LSaLM1Z89ie/view?usp=share_link>`__, HPCSYSPRO22 Abstract Submission
 - Shahzeb Siddiqui, `Tutorial: Testing your HPC system with buildtest <https://drive.google.com/file/d/10rtBViF0t-SE5ewIFAALGFVMT1J80xfG/view?usp=share_link>`_, PEARC22 Abstract Submission
 - Siddiqui S. (2020) Buildtest: A Software Testing Framework with Module Operations for HPC Systems. In: Juckeland G., Chandrasekaran S. (eds) Tools and Techniques for High Performance Computing. HUST 2019, SE-HER 2019, WIHPC 2019. Communications in Computer and Information Science, vol 1190. Springer, Cham. https://doi.org/10.1007/978-3-030-44728-1_1
 
