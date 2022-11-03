@@ -91,12 +91,15 @@ is a script `doc-examples.py <https://github.com/buildtesters/buildtest/blob/dev
 is responsible for auto-generating the documentation examples inside the container. To get started you will need to run the
 following commands.
 
+.. Note::
+
+   You may need to `source /etc/profile` in your container if you see module command is not found.
+
 .. code-block:: console
 
     docker run -it -v  $BUILDTEST_ROOT:/home/spack/buildtest ghcr.io/buildtesters/buildtest_spack:latest
     cd /home/spack/buildtest
     source scripts/spack_container/setup.sh
-
 
 You will need to volume mount **$BUILDTEST_ROOT** into `/home/spack/buildtest` in-order to get  buildtest code-base accessible inside
 the container.
