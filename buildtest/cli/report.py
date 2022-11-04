@@ -584,7 +584,7 @@ class Report:
                 join_list.append(self.display_table[key])
 
             t = [list(i) for i in zip(*join_list)]
-            
+
             # limited number of rows to be printed in terse mode
             if count:
                 t = t[:count]
@@ -595,7 +595,7 @@ class Report:
             for i in t:
                 join_string = "|".join(i)
                 console.print(f"[{consoleColor}]{join_string}")
-                    
+
             return
 
         join_list = []

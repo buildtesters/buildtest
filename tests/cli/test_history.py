@@ -23,7 +23,9 @@ def test_build_history_list():
     list_build_history(terse=False, no_header=False, pager=True)
 
     # test with terse mode and with color: buildtest --color <Color> history list --terse
-    list_build_history(terse=True, no_header=False, pager=False, color=Color.default().name)
+    list_build_history(
+        terse=True, no_header=False, pager=False, color=Color.default().name
+    )
 
     # test with terse and no header: buildtest history list --terse --no-header
     list_build_history(terse=True, no_header=True, pager=False)

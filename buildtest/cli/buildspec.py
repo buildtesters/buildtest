@@ -687,7 +687,9 @@ class BuildspecCache:
                 for test_name, description in self.cache["executor"][
                     executor_name
                 ].items():
-                    console.print(f"[{self.color}]{executor_name}|{test_name}|{description}")
+                    console.print(
+                        f"[{self.color}]{executor_name}|{test_name}|{description}"
+                    )
             return
 
         table = Table(title="Tests by Executors", header_style="blue", show_lines=True)
