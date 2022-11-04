@@ -102,20 +102,20 @@ def list_build_history(no_header=None, terse=None, pager=None, color=None):
 
     if terse:
 
-        join_list = []
+        row_entry = []
 
         for key in table.keys():
-            join_list.append(table[key])
+            row_entry.append(table[key])
 
-        t = [list(i) for i in zip(*join_list)]
+        transpose_list = [list(i) for i in zip(*row_entry)]
 
         # We print the table columns if --no-header is not specified
         if not no_header:
             console.print("|".join(table.keys()), style=consoleColor)
 
-        for i in t:
-            join_string = "|".join(i)
-            console.print(f"[{consoleColor}]{join_string}")
+        for row in transpose_list:
+            line = "|".join(row)
+            console.print(f"[{consoleColor}]{line}")
         return
 
     history_table = Table(

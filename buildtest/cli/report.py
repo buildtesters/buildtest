@@ -578,33 +578,33 @@ class Report:
         """
         consoleColor = checkColor(color)
         if terse:
-            join_list = []
+            row_entry = []
 
             for key in self.display_table.keys():
-                join_list.append(self.display_table[key])
+                row_entry.append(self.display_table[key])
 
-            t = [list(i) for i in zip(*join_list)]
+            transpose_list = [list(i) for i in zip(*row_entry)]
 
             # limited number of rows to be printed in terse mode
             if count:
-                t = t[:count]
+                transpose_list = transpose_list[:count]
 
             if not noheader:
                 console.print("|".join(self.display_table.keys()), style=consoleColor)
 
-            for i in t:
-                join_string = "|".join(i)
-                console.print(f"[{consoleColor}]{join_string}")
+            for row in transpose_list:
+                line = "|".join(row)
+                console.print(f"[{consoleColor}]{line}")
 
             return
 
-        join_list = []
+        row_entry = []
         title = title or f"Report File: {self.reportfile()}"
         table = Table(title=title, show_lines=True, expand=True)
         for field in self.display_table.keys():
             table.add_column(field, overflow="fold", style=consoleColor)
-            join_list.append(self.display_table[field])
-        transpose_list = [list(i) for i in zip(*join_list)]
+            row_entry.append(self.display_table[field])
+        transpose_list = [list(i) for i in zip(*row_entry)]
 
         # limited number of rows to be printed
         if count:
