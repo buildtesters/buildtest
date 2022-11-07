@@ -136,7 +136,12 @@ def test_func_buildspec_find():
 @pytest.mark.cli
 def test_buildspec_find_terse():
 
-    cache = BuildspecCache(configuration=configuration, terse=True, header=False)
+    cache = BuildspecCache(
+        configuration=configuration,
+        terse=True,
+        header=False,
+        color=Color.default().name,
+    )
     cache.print_buildspecs()
     cache.print_tags()
     cache.print_executors()

@@ -592,10 +592,10 @@ class BuildspecCache:
         if self.terse:
 
             if not self.header:
-                print("buildspec")
+                console.print("buildspec", style=self.color)
 
             for buildspec in self.cache["buildspecs"].keys():
-                print(buildspec)
+                console.print(f"[{self.color}]{buildspec}")
 
             return
 
@@ -623,10 +623,10 @@ class BuildspecCache:
         # if --terse option specified print list of all tags in machine readable format
         if self.terse:
             if not self.header:
-                print("tag")
+                console.print("tag", style=self.color)
 
             for tag in self.cache["unique_tags"]:
-                print(tag)
+                console.print(f"[{self.color}]{tag}")
 
             return
 
@@ -652,10 +652,10 @@ class BuildspecCache:
         if self.terse:
 
             if not self.header:
-                print("executor")
+                console.print("executor", style=self.color)
 
             for executor in self.cache["unique_executors"]:
-                print(executor)
+                console.print(f"[{self.color}]{executor}")
 
             return
 
@@ -681,13 +681,15 @@ class BuildspecCache:
         if self.terse:
 
             if not self.header:
-                print("executor|name|description")
+                console.print("executor|name|description", style=self.color)
 
             for executor_name in self.cache["executor"].keys():
                 for test_name, description in self.cache["executor"][
                     executor_name
                 ].items():
-                    print(f"{executor_name}|{test_name}|{description}")
+                    console.print(
+                        f"[{self.color}]{executor_name}|{test_name}|{description}"
+                    )
             return
 
         table = Table(title="Tests by Executors", header_style="blue", show_lines=True)
@@ -712,12 +714,11 @@ class BuildspecCache:
         if self.terse:
 
             if not self.header:
-                print("tags|name|description")
+                console.print("tags|name|description", style=self.color)
 
             for tagname in self.cache["tags"].keys():
                 for test_name, description in self.cache["tags"][tagname].items():
-
-                    print(f"{tagname}|{test_name}|{description}")
+                    console.print(f"[{self.color}]{tagname}|{test_name}|{description}")
             return
 
         table = Table(title="Tests by Tags", header_style="blue", show_lines=True)
@@ -781,7 +782,7 @@ class BuildspecCache:
             # print terse output
 
             if not self.header:
-                print("|".join(self.table.keys()))
+                console.print("|".join(self.table.keys()), style=self.color)
 
             for row in t:
 
@@ -790,7 +791,8 @@ class BuildspecCache:
 
                 # if any entry contains None type we convert to empty string
                 row = ["" if item is None else item for item in row]
-                console.print("|".join(row))
+                join_string = "|".join(row)
+                console.print(f"[{self.color}]{join_string}")
 
             return
 
@@ -805,21 +807,15 @@ class BuildspecCache:
         """Return a list of maintainers"""
         return self.cache["maintainers"]
 
-    def print_maintainer(self, color=None):
-        """This method prints maintainers from buildspec cache file which implements ``buildtest buildspec maintainers --list`` command.
-
-        Args:
-            color (bool, optional): Print table output of ``buildtest buildspec maintainers --list`` with selected color
-        """
-
-        consoleColor = checkColor(color)
+    def print_maintainer(self):
+        """This method prints maintainers from buildspec cache file which implements ``buildtest buildspec maintainers --list`` command."""
 
         if self.terse:
             if not self.header:
-                print("maintainers")
+                console.print("maintainers", style=self.color)
 
             for maintainer in self.cache["maintainers"]:
-                print(maintainer)
+                console.print(f"[{self.color}]{maintainer}")
 
             return
 
@@ -827,7 +823,7 @@ class BuildspecCache:
             Column("Maintainers", overflow="fold"),
             header_style="blue",
             title_style="red",
-            row_styles=[consoleColor],
+            row_styles=[self.color],
         )
 
         for maintainer in self.cache["maintainers"].keys():
@@ -853,21 +849,15 @@ class BuildspecCache:
             for file in self.cache["maintainers"][name]:
                 console.print(file)
 
-    def print_maintainers_by_buildspecs(self, color=None):
-        """This method prints maintainers breakdown by buildspecs. This method implements ``buildtest buildspec maintainers --breakdown``
-
-        Args:
-            color (bool, optional): Print table output of ``buildtest buildspec maintainers --breakdown`` with selected color
-        """
-
-        consoleColor = checkColor(color)
+    def print_maintainers_by_buildspecs(self):
+        """This method prints maintainers breakdown by buildspecs. This method implements ``buildtest buildspec maintainers --breakdown``."""
 
         if self.terse:
             if not self.header:
-                print("maintainers|buildspec")
+                console.print("maintainers|buildspec", style=self.color)
 
             for maintainer, buildspecs in self.cache["maintainers"].items():
-                print(f"{maintainer}|{':'.join(buildspecs)}")
+                console.print(f"[{self.color}]{maintainer}|{':'.join(buildspecs)}")
             return
 
         table = Table(
@@ -877,7 +867,7 @@ class BuildspecCache:
             header_style="blue",
             style="cyan",
             title_style="red",
-            row_styles=[consoleColor],
+            row_styles=[self.color],
             show_lines=True,
         )
 
@@ -1299,15 +1289,15 @@ def buildspec_maintainers(
         name (str, optional): List all buildspecs corresponding to maintainer name. This command is specified via ``buildtest buildspec maintainers find <name>``
     """
 
-    consoleColor = checkColor(color)
-
-    cache = BuildspecCache(configuration=configuration, terse=terse, header=header)
+    cache = BuildspecCache(
+        configuration=configuration, terse=terse, header=header, color=color
+    )
 
     if list_maintainers:
-        cache.print_maintainer(color=consoleColor)
+        cache.print_maintainer()
 
     if breakdown:
-        cache.print_maintainers_by_buildspecs(color=consoleColor)
+        cache.print_maintainers_by_buildspecs()
 
     if name:
         cache.print_maintainers_find(name=name)
