@@ -971,14 +971,14 @@ class BuildspecCache:
         method implements command ``buildtest buildspec find --filterfields``
         """
         for field in self.filter_fields:
-            console.print(f"[{self.color}]{field}")
+            console.print(field, style=self.color)
 
     def print_raw_format_fields(self):
         """This method prints the raw format fields available for buildspec cache. This
         method implements command ``buildtest buildspec find --formatfields``
         """
         for field in self.format_fields:
-            console.print(f"[{self.color}]{field}")
+            console.print(field, style=self.color)
 
     def print_paths(self):
         """This method print buildspec paths, this implements command ``buildtest buildspec find --paths``"""
