@@ -131,6 +131,10 @@ def test_func_buildspec_find():
     cache.print_tags()
     cache.print_by_executors()
     cache.print_by_tags()
+    cache.print_filter_fields()
+    cache.print_format_fields()
+    cache.print_raw_filter_fields()
+    cache.print_raw_format_fields()
 
 
 @pytest.mark.cli

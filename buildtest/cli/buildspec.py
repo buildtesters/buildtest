@@ -930,8 +930,7 @@ class BuildspecCache:
             pprint(value)
         sys.exit(1)
 
-    @staticmethod
-    def print_filter_fields():
+    def print_filter_fields(self):
         """This method prints filter fields available for buildspec cache. This
         method implements command ``buildtest buildspec find --helpfilter``
         """
@@ -939,9 +938,9 @@ class BuildspecCache:
         table = Table(
             title="Filter Field Description", header_style="blue", show_lines=True
         )
-        table.add_column("Field", style="red", overflow="fold")
-        table.add_column("Type", style="green", overflow="fold")
-        table.add_column("Description", style="cyan", overflow="fold")
+        table.add_column("Field", style=self.color, overflow="fold")
+        table.add_column("Type", style=self.color, overflow="fold")
+        table.add_column("Description", style=self.color, overflow="fold")
 
         table.add_row("buildspecs", "Filter tests by buildspec", "FILE")
         table.add_row("executor", "Filter by executor name", "STRING")
@@ -949,16 +948,15 @@ class BuildspecCache:
         table.add_row("type", "Filter by schema type ", "STRING")
         console.print(table)
 
-    @staticmethod
-    def print_format_fields():
+    def print_format_fields(self):
         """This method prints format fields available for buildspec cache. This
         method implements command ``buildtest buildspec find --helpformat``
         """
         table = Table(
             title="Format Field Description", header_style="blue", show_lines=True
         )
-        table.add_column("Field", style="red", overflow="fold")
-        table.add_column("Description", style="green", overflow="fold")
+        table.add_column("Field", style=self.color, overflow="fold")
+        table.add_column("Description", style=self.color, overflow="fold")
 
         table.add_row("buildspec", "Display name of buildspec file")
         table.add_row("description", "Show description of test")
@@ -973,14 +971,14 @@ class BuildspecCache:
         method implements command ``buildtest buildspec find --filterfields``
         """
         for field in self.filter_fields:
-            console.print(field)
+            console.print(field, style=self.color)
 
     def print_raw_format_fields(self):
         """This method prints the raw format fields available for buildspec cache. This
         method implements command ``buildtest buildspec find --formatfields``
         """
         for field in self.format_fields:
-            console.print(field)
+            console.print(field, style=self.color)
 
     def print_paths(self):
         """This method print buildspec paths, this implements command ``buildtest buildspec find --paths``"""
