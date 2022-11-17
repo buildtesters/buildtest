@@ -261,11 +261,17 @@ def test_report_list():
 
     report_cmd(args)
 
+    backupfile = BUILDTEST_REPORTS + ".bak"
+    shutil.copy2(BUILDTEST_REPORTS, backupfile)
+
     # now removing report summary it should print a message
     os.remove(BUILDTEST_REPORTS)
 
     with pytest.raises(SystemExit):
         report_cmd(args)
+
+    shutil.move(backupfile, BUILDTEST_REPORTS)
+    assert BUILDTEST_REPORTS
 
 
 @pytest.mark.cli
@@ -282,14 +288,22 @@ def test_report_clear():
         no_header = None
         color = None
 
-    backupfile = BUILD_REPORT + ".bak"
-    shutil.copy2(BUILD_REPORT, backupfile)
+    backupfile_report = BUILD_REPORT + ".bak"
+    shutil.copy2(BUILD_REPORT, backupfile_report)
+
+    backupfile_list_report = BUILDTEST_REPORTS + ".bak"
+    shutil.copy2(BUILDTEST_REPORTS, backupfile_list_report)
+
+    report_cmd(args)
 
     # buildtest report clear will raise an error since file doesn't exist
     with pytest.raises(SystemExit):
         report_cmd(args)
 
-    shutil.move(backupfile, BUILD_REPORT)
+    shutil.move(backupfile_report, BUILD_REPORT)
+
+    shutil.move(backupfile_list_report, BUILDTEST_REPORTS)
+
     assert BUILD_REPORT
 
 
