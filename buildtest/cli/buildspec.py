@@ -1161,37 +1161,39 @@ def buildspec_validate(
     console.print("[green]All buildspecs passed validation!!!")
 
 
-def summarize_buildspec_cache(pager, configuration):
+def summarize_buildspec_cache(pager, configuration, color=None):
     """entry point for ``buildtest buildspec summary``
 
     Args:
         configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
-        pager (bool): Bolean control output of summary with paging
+        pager (bool): Boolean control output of summary with paging
+        color (str, optional): An instance of str, color that the summary should be printed in
     """
     if pager:
         with console.pager():
             summary_print(configuration)
             return
-    summary_print(configuration)
+    summary_print(configuration, color)
 
 
-def summary_print(configuration):
+def summary_print(configuration, color=None):
     """Prints summary of buildspec cache which is run via command ``buildtest buildspec summary``
 
     Args:
         configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
+        color (str, optional): An instance of str, color that the summary should be printed in
     """
     cache = BuildspecCache(configuration=configuration)
+    consoleColor = checkColor(color)
     msg = f"""
-    [yellow]Reading Buildspec Cache File:[/yellow]   [cyan]{BUILDSPEC_CACHE_FILE}[/cyan] 
-    [yellow]Total Valid Buildspecs:[/yellow]         [cyan]{len(cache.get_valid_buildspecs())}[/cyan] 
-    [yellow]Total Invalid Buildspecs:[/yellow]       [cyan]{len(cache.get_invalid_buildspecs())}[/cyan] 
-    [yellow]Total Unique Tags:[/yellow]              [cyan]{len(cache.get_unique_tags())}[/cyan] 
-    [yellow]Total Maintainers:[/yellow]              [cyan]{len(cache.get_maintainers())}[/cyan] 
+    [yellow]Reading Buildspec Cache File:[/yellow]  [cyan]{BUILDSPEC_CACHE_FILE}[/cyan] 
+    [yellow]Total Valid Buildspecs:[/yellow]        [cyan]{len(cache.get_valid_buildspecs())}[/cyan] 
+    [yellow]Total Invalid Buildspecs:[/yellow]      [cyan]{len(cache.get_invalid_buildspecs())}[/cyan] 
+    [yellow]Total Unique Tags:[/yellow]             [cyan]{len(cache.get_unique_tags())}[/cyan] 
+    [yellow]Total Maintainers:[/yellow]             [cyan]{len(cache.get_maintainers())}[/cyan] 
 """
 
     console.print(Panel.fit(msg))
-
     layout = Layout()
     layout.split_column(Layout(name="top"), Layout(name="bottom"))
 
@@ -1205,8 +1207,8 @@ def summary_print(configuration):
     tag_table = Table(title="Tag Breakdown", header_style="blue")
     # tag_table.overflow="fold"
 
-    tag_table.add_column("tag", style="red", overflow="fold")
-    tag_table.add_column("total tests", style="green", overflow="fold")
+    tag_table.add_column("tag", style=consoleColor, overflow="fold")
+    tag_table.add_column("total tests", style=consoleColor, overflow="fold")
 
     tag_summary = cache.tag_breakdown()
     for tag, tag_count in tag_summary.items():
@@ -1215,10 +1217,10 @@ def summary_print(configuration):
     ################ Executor Breakdown #################
     executor_table = Table(title="Executor Breakdown")
     executor_table.add_column(
-        "executor", style="red", header_style="blue", overflow="fold"
+        "executor", style=consoleColor, header_style="blue", overflow="fold"
     )
     executor_table.add_column(
-        "total tests", style="green", header_style="blue", overflow="fold"
+        "total tests", style=consoleColor, header_style="blue", overflow="fold"
     )
 
     executor_summary = cache.executor_breakdown()
@@ -1228,10 +1230,10 @@ def summary_print(configuration):
     ################ Maintainers #################
     maintainer_table = Table(title="Maintainers Breakdown")
     maintainer_table.add_column(
-        "maintainers", style="red", header_style="blue", overflow="fold"
+        "maintainers", style=consoleColor, header_style="blue", overflow="fold"
     )
     maintainer_table.add_column(
-        "total buildspecs", style="green", header_style="blue", overflow="fold"
+        "total buildspecs", style=consoleColor, header_style="blue", overflow="fold"
     )
 
     for maintainer in cache.list_maintainers():
@@ -1241,9 +1243,9 @@ def summary_print(configuration):
     buildspec_table = Table(
         title="Test Breakdown by buildspec", show_lines=True, header_style="blue"
     )
-    buildspec_table.add_column("Tests", style="red", overflow="fold")
-    buildspec_table.add_column("Total", style="cyan", overflow="fold")
-    buildspec_table.add_column("Buildspec", style="green", overflow="fold")
+    buildspec_table.add_column("Tests", style=consoleColor, overflow="fold")
+    buildspec_table.add_column("Total", style=consoleColor, overflow="fold")
+    buildspec_table.add_column("Buildspec", style=consoleColor, overflow="fold")
 
     ################ Test Breakdown by Buildspec #################
     buildspec_summary = cache.test_breakdown_by_buildspec()
@@ -1253,7 +1255,9 @@ def summary_print(configuration):
     invalid_buildspecs_table = Table(
         title="Invalid Buildspecs", show_lines=True, header_style="blue"
     )
-    invalid_buildspecs_table.add_column("Buildspecs", style="red", overflow="fold")
+    invalid_buildspecs_table.add_column(
+        "Buildspecs", style=consoleColor, overflow="fold"
+    )
 
     for buildspec in cache.get_invalid_buildspecs():
         invalid_buildspecs_table.add_row(buildspec)

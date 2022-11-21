@@ -188,7 +188,9 @@ def main():
         if args.buildspecs_subcommand in ["find", "f"]:
             buildspec_find(args=args, configuration=configuration)
         elif args.buildspecs_subcommand in ["summary", "sm"]:
-            summarize_buildspec_cache(pager=args.pager, configuration=configuration)
+            summarize_buildspec_cache(
+                pager=args.pager, configuration=configuration, color=args.color
+            )
         elif args.buildspecs_subcommand in ["show", "s"]:
             show_buildspecs(
                 test_names=args.name, configuration=configuration, theme=args.theme
