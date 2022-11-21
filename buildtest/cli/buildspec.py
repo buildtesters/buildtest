@@ -1186,11 +1186,11 @@ def summary_print(configuration, color=None):
     cache = BuildspecCache(configuration=configuration)
     consoleColor = checkColor(color)
     msg = f"""
-    [{consoleColor}]Reading Buildspec Cache File:   {BUILDSPEC_CACHE_FILE} 
-    [{consoleColor}]Total Valid Buildspecs:         {len(cache.get_valid_buildspecs())} 
-    [{consoleColor}]Total Invalid Buildspecs:       {len(cache.get_invalid_buildspecs())} 
-    [{consoleColor}]Total Unique Tags:              {len(cache.get_unique_tags())} 
-    [{consoleColor}]Total Maintainers:              {len(cache.get_maintainers())} 
+    [yellow]Reading Buildspec Cache File:[/yellow]  [cyan]{BUILDSPEC_CACHE_FILE}[/cyan] 
+    [yellow]Total Valid Buildspecs:[/yellow]        [cyan]{len(cache.get_valid_buildspecs())}[/cyan] 
+    [yellow]Total Invalid Buildspecs:[/yellow]      [cyan]{len(cache.get_invalid_buildspecs())}[/cyan] 
+    [yellow]Total Unique Tags:[/yellow]             [cyan]{len(cache.get_unique_tags())}[/cyan] 
+    [yellow]Total Maintainers:[/yellow]             [cyan]{len(cache.get_maintainers())}[/cyan] 
 """
 
     console.print(Panel.fit(msg))
