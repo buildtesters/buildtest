@@ -302,6 +302,7 @@ def test_report_clear():
     with pytest.raises(SystemExit):
         report_cmd(args)
 
+    assert not is_file(BUILD_REPORT)
     # move back the backe-up files since report_cmd() function removes the files BUILD_REPORT and BUILDTEST_REPORTS
     shutil.move(backupfile_report.name, BUILD_REPORT)
 
