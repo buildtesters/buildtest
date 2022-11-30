@@ -104,6 +104,8 @@ automate module load testing. For more details on lmodule see https://github.com
    features
    schema_examples
    facility_examples
+   api
+   command
    references
 
 .. toctree::
@@ -111,8 +113,6 @@ automate module load testing. For more details on lmodule see https://github.com
    :caption: Development Guide
 
    contributing
-   api
-   command
 
 License
 --------
