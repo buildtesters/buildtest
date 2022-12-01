@@ -114,6 +114,13 @@ automate module load testing. For more details on lmodule see https://github.com
 
    contributing
 
+.. toctree::
+    :caption: Useful Links
+
+    Buildtest Github repo <https://github.com/buildtesters/buildtest>
+    Buildtest Slack <https://hpcbuildtest.slack.com>
+    buildtest at NERSC <https://github.com/buildtesters/buildtest-nersc>
+
 License
 --------
 
