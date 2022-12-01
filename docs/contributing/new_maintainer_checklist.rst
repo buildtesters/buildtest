@@ -49,7 +49,7 @@ Onboarding Checklist
 
  - Add member to `buildtest repository <https://github.com/buildtesters/buildtest/settings/access>`_ with **Role: Maintain**.
 
- - Invite member to join `slack channel <https://hpcbuildtest.herokuapp.com/>`_ and preferably install Slack on your workstation and phone. Please follow instructions to download slack for `Windows <https://slack.com/downloads/windows>`_, `Mac <https://slack.com/downloads/mac>`_,  or `Android <https://slack.com/downloads/android>`_. Slack is available on Apple Store and Google Play Store.
+ - Invite member to join `slack channel <https://communityinviter.com/apps/hpcbuildtest/buildtest-slack-invitation>`_ and preferably install Slack on your workstation and phone. Please follow instructions to download slack for `Windows <https://slack.com/downloads/windows>`_, `Mac <https://slack.com/downloads/mac>`_,  or `Android <https://slack.com/downloads/android>`_. Slack is available on Apple Store and Google Play Store.
 
  - Once member is added to Slack, ensure member has the appropriate account type. Generally you will want member to be a **Workspace Admin** for more details see `Slack Roles & Permissions <https://slack.com/help/categories/360000049043-Getting-started#understand-roles-permissions>`_.
 
