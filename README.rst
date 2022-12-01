@@ -131,7 +131,7 @@ Slack
 ------
 
 Slack is the **preferred** method for communication and user support with buildtest.
-If you haven't joined slack click the `link <https://hpcbuildtest.herokuapp.com/>`_
+If you haven't joined slack click the `link <https://communityinviter.com/apps/hpcbuildtest/buildtest-slack-invitation>`_
 to register your account. Once you have an account you can access slack channel at https://hpcbuildtest.slack.com and post
 your questions in **#general** channel.
 

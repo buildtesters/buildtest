@@ -40,7 +40,7 @@ Useful Links
 - ReadTheDocs: https://readthedocs.org/projects/buildtest/
 - CodeCov: https://codecov.io/gh/buildtesters/buildtest
 - Slack Channel: http://hpcbuildtest.slack.com
-- Slack Invite: https://hpcbuildtest.herokuapp.com
+- Slack Invite: https://communityinviter.com/apps/hpcbuildtest/buildtest-slack-invitation
 - CodeFactor: https://www.codefactor.io/repository/github/buildtesters/buildtest
 - Snyk: https://app.snyk.io/org/buildtesters/
 - NERSC Test Repository: https://github.com/buildtesters/buildtest-nersc
