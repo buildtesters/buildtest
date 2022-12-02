@@ -309,6 +309,7 @@ def test_report_clear():
     shutil.move(backupfile_list_report.name, BUILDTEST_REPORTS)
 
     assert is_file(BUILD_REPORT)
+    assert is_file(BUILDTEST_REPORTS)
 
 
 @pytest.mark.cli
