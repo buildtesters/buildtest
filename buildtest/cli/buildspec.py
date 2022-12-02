@@ -220,7 +220,9 @@ class BuildspecCache:
         with console.status("Processing buildspecs", spinner="aesthetic"):
             for buildspec in buildspecs:
                 try:
-                    parse = BuildspecParser(buildspec, buildexecutor)
+                    parse = BuildspecParser(
+                        buildspec, buildexecutor, executor_match=True
+                    )
                 # any buildspec that raises SystemExit or ValidationError imply
                 # buildspec is not valid, we add this to invalid list along with
                 # error message and skip to next buildspec
