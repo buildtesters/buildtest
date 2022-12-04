@@ -47,6 +47,7 @@ from buildtest.log import init_logfile
 from buildtest.system import BuildTestSystem
 from buildtest.tools.editor import set_editor
 from buildtest.tools.stylecheck import run_style_checks
+from buildtest.tools.tutorialexamples import generate_tutorial_examples
 from buildtest.tools.unittests import run_unit_tests
 from buildtest.utils.file import (
     create_dir,
@@ -320,6 +321,9 @@ def main():
             sourcefiles=args.sourcefiles,
             enable_coverage=args.coverage,
         )
+
+    elif args.subcommands == "tutorial-examples":
+        generate_tutorial_examples()
 
     elif args.subcommands in ["stylecheck", "style"]:
         run_style_checks(

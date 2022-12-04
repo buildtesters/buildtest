@@ -463,7 +463,7 @@ def print_stylecheck_help():
 
 
 def print_unittests_help():
-    """This method will print help message for command ``buildtest help stylecheck``"""
+    """This method will print help message for command ``buildtest help unittests``"""
 
     table = Table(title="Buildtest unittests", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -489,6 +489,20 @@ def print_unittests_help():
         "Specify a list of files to run unittests instead of running all tests",
     )
 
+    console.print(table)
+
+
+def print_tutorialexamples_help():
+    """This method will print help message for command ``buildtest help tutorial-examples``"""
+
+    table = Table(title="Generate tuotial examples", show_lines=False)
+    table.add_column("Command", justify="left", style="cyan")
+    table.add_column("Description", justify="left", style="magenta")
+
+    table.add_row(
+        "buildtest tutorial-examples",
+        "Generate documentation examples for Buildtest Tutorial",
+    )
     console.print(table)
 
 
@@ -554,3 +568,5 @@ def buildtest_help(command):
         print_stylecheck_help()
     elif command in ["unittests", "test"]:
         print_unittests_help()
+    elif command == "tutorial-examples":
+        print_tutorialexamples_help()
