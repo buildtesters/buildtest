@@ -492,20 +492,6 @@ def print_unittests_help():
     console.print(table)
 
 
-def print_tutorialexamples_help():
-    """This method will print help message for command ``buildtest help tutorial-examples``"""
-
-    table = Table(title="Generate tuotial examples", show_lines=False)
-    table.add_column("Command", justify="left", style="cyan")
-    table.add_column("Description", justify="left", style="magenta")
-
-    table.add_row(
-        "buildtest tutorial-examples",
-        "Generate documentation examples for Buildtest Tutorial",
-    )
-    console.print(table)
-
-
 def print_path_help():
     """This method will print help message for command ``buildtest help schema``"""
 
@@ -568,5 +554,3 @@ def buildtest_help(command):
         print_stylecheck_help()
     elif command in ["unittests", "test"]:
         print_unittests_help()
-    elif command == "tutorial-examples":
-        print_tutorialexamples_help()

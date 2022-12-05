@@ -296,7 +296,6 @@ def misc_menu(subparsers):
             "style",
             "stylecheck",
             "test",
-            "tutorial-examples",
             "unittests",
         ],
         help="Show help message for command",

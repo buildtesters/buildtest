@@ -429,12 +429,12 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
     tutorial-examples)
-      local opts=""
+      local opts="-h --help"
 
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
     help|h)
-      local subcommands="build buildspec cdash config history inspect path report schema stylecheck tutorial-examples unittests"
+      local subcommands="build buildspec cdash config history inspect path report schema stylecheck unittests"
       local alias_cmds="bd bc cg hy it rt style test"
       local cmds="$subcommands $alias_cmds"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
