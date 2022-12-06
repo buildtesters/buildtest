@@ -110,4 +110,9 @@ Once you setup is complete, please run the python script and it will auto-genera
 
 Please verify all the auto-generated examples that will be used in the documentation. Once you are content with all the changes please add all
 the changes via ``git add``.
+The script `doc-examples.py <https://github.com/buildtesters/buildtest/blob/devel/scripts/spack_container/doc-examples.py>`_ can also be invoked via the 
+command **buildtest tutorial-examples**.
+.. dropdown:: ``buildtest tutorial-examples``
+
+    .. command-output:: buildtest tutorial-examples
 
