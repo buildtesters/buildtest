@@ -104,7 +104,7 @@ following commands.
 You will need to volume mount **$BUILDTEST_ROOT** into `/home/spack/buildtest` in-order to get buildtest code-base accessible inside
 the container.
 
-Once you setup is complete, the python script that will auto-generate the documentation examples can be invoked by using the folllowing buildtest command ::
+Once your setup is complete, you can auto-generate documentation examples by running the folllowing ::
 
         buildtest tutorial-examples
 
