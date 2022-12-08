@@ -223,7 +223,7 @@ def test_edit_file():
     edit_buildspec_file(
         buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml")],
         configuration=configuration,
-        editor="",
+        editor=None,
     )
 
 
