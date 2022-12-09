@@ -463,7 +463,7 @@ def print_stylecheck_help():
 
 
 def print_unittests_help():
-    """This method will print help message for command ``buildtest help stylecheck``"""
+    """This method will print help message for command ``buildtest help unittests``"""
 
     table = Table(title="Buildtest unittests", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")

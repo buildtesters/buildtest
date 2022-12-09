@@ -231,6 +231,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     unittest_menu(subparsers)
     stylecheck_menu(subparsers)
     misc_menu(subparsers)
+    tutorial_examples_menu(subparsers)
 
     return parser
 
@@ -343,6 +344,15 @@ def unittest_menu(subparsers):
         type=str,
         help="Specify path to file or directory when running regression test",
         action="append",
+    )
+
+
+def tutorial_examples_menu(subparsers):
+    """This method builds the command line menu for ``buildtest tutorial-examples`` command"""
+
+    subparsers.add_parser(
+        "tutorial-examples",
+        help="Generate documentation examples for Buildtest Tutorial",
     )
 
 
