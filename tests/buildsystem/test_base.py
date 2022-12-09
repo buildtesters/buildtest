@@ -92,12 +92,12 @@ def test_BuildspecParser(tmp_path):
 
     # A directory is not allowed either, this will raise an error.
     with pytest.raises(InvalidBuildspec):
-        BuildspecParser(valid_buildspecs_directory, executors)
+        BuildspecParser(buildspec=valid_buildspecs_directory, buildexecutor=executors)
 
     # Test loading Buildspec files
     for buildspec in walk_tree(valid_buildspecs_directory, ".yml"):
         buildspecfile = os.path.join(valid_buildspecs_directory, buildspec)
-        bp = BuildspecParser(buildspecfile, executors)
+        bp = BuildspecParser(buildspec=buildspecfile, buildexecutor=executors)
         assert hasattr(bp, "recipe")
         assert hasattr(bp, "buildspec")
         assert hasattr(bp, "buildexecutors")
