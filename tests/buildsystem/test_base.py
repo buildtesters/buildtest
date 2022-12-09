@@ -10,7 +10,12 @@ from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import DEFAULT_SETTINGS_FILE
-from buildtest.exceptions import BuildspecError, BuildTestError
+from buildtest.exceptions import (
+    BuildTestError,
+    InvalidBuildspec,
+    InvalidBuildspecExecutor,
+    InvalidBuildspecSchemaType,
+)
 from buildtest.executors.setup import BuildExecutor
 from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
@@ -28,22 +33,36 @@ def test_BuildspecParser(tmp_path):
     system = BuildTestSystem()
 
     # Invalid path to buildspec file should exit
-    with pytest.raises(BuildTestError):
-        BuildspecParser("", executors)
+    with pytest.raises(InvalidBuildspec):
+        BuildspecParser(buildspec="", buildexecutor=executors)
 
     # Passing 'None' will raise an error
-    with pytest.raises(BuildTestError):
-        BuildspecParser(None, executors)
+    with pytest.raises(InvalidBuildspec):
+        BuildspecParser(buildspec=None, buildexecutor=executors)
 
     directory = os.path.join(here, "invalid_buildspecs")
     fnames = [
         os.path.join(directory, "invalid_type.yml"),
         os.path.join(directory, "missing_type.yml"),
     ]
+    # Testing buildspecs with invalid schema type
     for buildspec in fnames:
         print("Processing buildspec: ", buildspec)
-        with pytest.raises(BuildspecError):
+        with pytest.raises(InvalidBuildspecSchemaType):
             BuildspecParser(buildspec, executors)
+
+    # Testing buildspecs with invalid executor
+    with pytest.raises(InvalidBuildspecExecutor):
+        BuildspecParser(
+            buildspec=os.path.join(directory, "invalid_executor.yml"),
+            buildexecutor=executors,
+        )
+
+    with pytest.raises(InvalidBuildspecExecutor):
+        BuildspecParser(
+            buildspec=os.path.join(directory, "missing_executor.yml"),
+            buildexecutor=executors,
+        )
 
     directory = os.path.join(here, "invalid_builds")
     # invalid builds for compiler schema tests. These tests will raise BuildTestError exception upon building
@@ -72,7 +91,7 @@ def test_BuildspecParser(tmp_path):
     valid_buildspecs_directory = os.path.join(here, "valid_buildspecs")
 
     # A directory is not allowed either, this will raise an error.
-    with pytest.raises(BuildTestError):
+    with pytest.raises(InvalidBuildspec):
         BuildspecParser(valid_buildspecs_directory, executors)
 
     # Test loading Buildspec files

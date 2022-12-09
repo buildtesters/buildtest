@@ -8,8 +8,12 @@ expose functions to run builds.
 import logging
 import os
 
-from buildtest.defaults import console
-from buildtest.exceptions import BuildspecError, BuildTestError
+from buildtest.exceptions import (
+    ExecutorError,
+    InvalidBuildspec,
+    InvalidBuildspecExecutor,
+    InvalidBuildspecSchemaType,
+)
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.defaults import custom_validator, schema_table
 from buildtest.schemas.utils import load_recipe
@@ -42,13 +46,14 @@ class BuildspecParser:
             buildexecutor (buildtest.executors.setup.BuildExecutor): Instance object of class BuildExecutor used for accessing executors which is created based on configuration file
             executor_match (bool, optional): This boolean determines whether to check for 'executor' property in buildspec and see if it matches one of the valid executor names. By default this check is not enforced during `buildtest build` however this is relevant when loading buildspecs into cache via `buildtest buildspec find`
         Raises:
-            BuildTestError: Raise exception if there is issue with buildexecutor, or buildspec is not resolved to file path. If buildspec is a directory path we raise an exception
+            ExecutorError (buildtest.exceptions.ExecutorError): Raise exception if there is issue with buildexecutor, or buildspec is not resolved to file path. If buildspec is a directory path we raise an exception
+            InvalidBuildspec (buildtest.exceptions.InvalidBuildspec): Raise exception when buildspec is invalid.
         """
 
         self.logger = logging.getLogger(__name__)
 
         if not isinstance(buildexecutor, BuildExecutor):
-            raise BuildTestError(
+            raise ExecutorError(
                 "Invalid type argument for 'buildexecutor', must be of type BuildExecutor"
             )
 
@@ -56,27 +61,30 @@ class BuildspecParser:
         self.executor_match = executor_match
 
         # if invalid input for buildspec
-        if not buildspec:
-            raise BuildTestError(
-                "Invalid input type for Buildspec, must be of type 'string'."
+        if not buildspec or not isinstance(buildspec, str):
+            raise InvalidBuildspec(
+                buildspec=buildspec,
+                msg="Invalid input type for Buildspec, must be of type 'string'.",
             )
 
         self.buildspec = resolve_path(buildspec)
 
         if not self.buildspec:
-            raise BuildTestError("There is no file named: %s " % buildspec)
+            raise InvalidBuildspec(
+                buildspec=buildspec, msg=f"Unable to find file: {buildspec}"
+            )
 
         if is_dir(self.buildspec):
-            raise BuildTestError(
-                f"Detected {self.buildspec} is a directory, please provide a file path (not a directory path) to BuildspecParser."
+            raise InvalidBuildspec(
+                buildspec=self.buildspec,
+                msg=f"Detected {self.buildspec} is a directory, please provide a file path (not a directory path) to BuildspecParser.",
             )
 
         self.recipe = load_recipe(self.buildspec)
 
         if not self.recipe:
-            msg = f"[red]Unable to load buildspec file: {self.buildspec}. The file appears to be invalid"
-            console.print(msg)
-            raise BuildTestError(msg)
+            msg = f"Unable to load buildspec file: {self.buildspec}. The file appears to be invalid"
+            raise InvalidBuildspec(buildspec=self.buildspec, msg=msg)
 
         # validate each schema defined in the recipes
         self.validate()
@@ -94,30 +102,19 @@ class BuildspecParser:
             test (str): Name of test in ``buildspecs`` property of buildspec file
 
         Raises:
-            BuildspecError: If there is no match with ``type`` property in test with available schema types
+            InvalidBuildspecSchemaType (buildtest.exceptions.InvalidBuildspecSchemaType): If there is no match with ``type`` property in test with available schema types
         """
 
         # extract type field from test, if not found set to None
         self.schema_type = self.recipe["buildspecs"][test].get("type")
 
-        # if type not found in section, raise an error since every test
+        # if type not found in section or not a valid type , raise an exception since every test
         # must be associated to a schema which is controlled by 'type' key
-        if not self.schema_type:
-            msg = f"Did not find 'type' key in test section: {test}"
-            raise BuildspecError(self.buildspec, msg)
+        if not self.schema_type or self.schema_type not in schema_table["types"]:
+            msg = f"Schema type must be one of the following: {schema_table['types']}. "
+            raise InvalidBuildspecSchemaType(self.buildspec, msg)
 
         self.logger.info("Detected field 'type: %s'", self.schema_type)
-
-        # Ensure we have a Buildspec recipe with a valid type
-        if self.schema_type not in schema_table["types"]:
-            msg = f"type {self.schema_type} is not known to buildtest."
-            raise BuildspecError(self.buildspec, msg)
-
-        self.logger.info(
-            "Checking '%s' in supported type schemas: %s",
-            self.schema_type,
-            schema_table["types"],
-        )
 
     def _check_executor(self, test):
         """This method checks if ``executor`` property is not None and executor
@@ -125,33 +122,28 @@ class BuildspecParser:
         Args:
             test (str): Name of test in ``buildspecs`` property of buildspec file
         Raises:
-            BuildspecError: If there is no match with ``executor`` property in test with list of available executors
+            InvalidBuildspecExecutor (buildtest.exceptions.InvalidBuildspecExecutor): If there is no match with ``executor`` property in test with list of available executors
         """
 
         # extract type field from test, if not found
         executor = self.recipe["buildspecs"][test].get("executor")
 
         if not executor:
-            raise BuildspecError(self.buildspec, "No 'executor' key found in buildspec")
+            raise InvalidBuildspecExecutor(
+                buildspec=self.buildspec, msg="No 'executor' key found in buildspec"
+            )
 
-        # match = False
-        # match = any[True if re.match(executor,name) else False for name in self.buildexecutors.names()]
         match = any(
             [
                 True if name == executor else False
                 for name in self.buildexecutors.names()
             ]
         )
-        """    
-        for name in self.buildexecutors.names():
-            if re.match(executor, name):
-                match = True
-                break
-        """
+
         if not match:
-            raise BuildspecError(
-                self.buildspec,
-                f"Unable to find executor: {executor} in {self.buildexecutors.names()}",
+            raise InvalidBuildspecExecutor(
+                buildspec=self.buildspec,
+                msg=f"Unable to find executor: {executor} in {self.buildexecutors.names()}",
             )
 
         self.logger.debug(
@@ -162,11 +154,10 @@ class BuildspecParser:
         """This method will validate the entire buildspec file with global schema
         and each test section with a sub-schema. The global validation ensures
         that the overall structure of the file is sound for further parsing.
-        We load in the global.schema.json for this purpose.
 
         A buildspec is composed of one or more tests, each section is validated
         with a sub-schema. The ``type`` field is used for sub-schema lookup
-        from schema library. Finally we validate loaded recipe with sub-schema.
+        from schema library. Finally, we validate loaded recipe with sub-schema.
         """
 
         self.logger.info(
@@ -187,8 +178,6 @@ class BuildspecParser:
             )
 
             self._check_schema_type(test)
-            if self.executor_match:
-                self._check_executor(test)
 
             self.schema_file = os.path.basename(
                 schema_table[f"{self.schema_type}.schema.json"]["path"]
@@ -198,6 +187,9 @@ class BuildspecParser:
                 recipe=self.recipe["buildspecs"][test],
                 schema=schema_table[f"{self.schema_type}.schema.json"]["recipe"],
             )
+
+            if self.executor_match:
+                self._check_executor(test)
 
     def get_test_names(self):
         """Return a list of test names from a buildspec file. The test names are defined under the 'buildspecs' property"""
