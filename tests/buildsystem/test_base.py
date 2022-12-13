@@ -82,7 +82,7 @@ def test_BuildspecParser_exceptions():
             executor_match=True,
         )
 
-    with pytest.raises(ValidationError):
+    with pytest.raises(InvalidBuildspecExecutor):
         BuildspecParser(
             buildspec=os.path.join(directory, "missing_executor.yml"),
             buildexecutor=executors,
