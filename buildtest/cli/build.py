@@ -31,7 +31,11 @@ from buildtest.defaults import (
     DEFAULT_LOGDIR,
     console,
 )
-from buildtest.exceptions import BuildspecError, BuildTestError
+from buildtest.exceptions import (
+    BuildTestError,
+    InvalidBuildspec,
+    InvalidBuildspecSchemaType,
+)
 from buildtest.executors.setup import BuildExecutor
 from buildtest.log import init_logfile
 from buildtest.schemas.defaults import schema_table
@@ -852,8 +856,14 @@ class BuildTest:
         for buildspec in self.detected_buildspecs:
             try:
                 # Read in Buildspec file here, loading each will validate the buildspec file
-                bp = BuildspecParser(buildspec, self.buildexecutor)
-            except (BuildTestError, BuildspecError, ValidationError) as err:
+                bp = BuildspecParser(
+                    buildspec=buildspec, buildexecutor=self.buildexecutor
+                )
+            except (
+                InvalidBuildspec,
+                InvalidBuildspecSchemaType,
+                ValidationError,
+            ) as err:
                 self.invalid_buildspecs.append(buildspec)
                 logger.error(err)
                 continue

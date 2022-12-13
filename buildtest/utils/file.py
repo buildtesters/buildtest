@@ -85,7 +85,7 @@ def walk_tree(root_dir, ext=None):
             else:
                 list_files.append(os.path.join(root, fname))
 
-    return list_files
+    return [os.path.abspath(fname) for fname in list_files]
 
 
 def create_dir(dirname):

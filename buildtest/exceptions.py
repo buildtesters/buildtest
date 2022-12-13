@@ -26,12 +26,27 @@ class BuildTestError(Exception):
 class BuildspecError(Exception):
     """Exception if there is an issue with parsing a Buildspec or building test"""
 
-    def __init__(self, buildspec, msg):
+    def __init__(self, msg, buildspec=None):
         self.buildspec = buildspec
         self.msg = msg
 
     def __str__(self):
+        if not self.buildspec:
+            return f"{self.msg}"
+
         return repr(f"[{self.buildspec}]: {self.msg}")
+
+
+class InvalidBuildspec(BuildspecError):
+    """This class raises exception for InvalidBuildspec"""
+
+
+class InvalidBuildspecSchemaType(BuildspecError):
+    """This exception is raised when buildspec contains invalid schema 'type'"""
+
+
+class InvalidBuildspecExecutor(BuildspecError):
+    """This exception is raised when there is invalid 'executor' in buildspec"""
 
 
 class ExecutorError(Exception):

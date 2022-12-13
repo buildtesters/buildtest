@@ -15,7 +15,13 @@ from buildtest.defaults import (
     BUILDTEST_BUILDSPEC_DIR,
     console,
 )
-from buildtest.exceptions import BuildspecError, BuildTestError
+from buildtest.exceptions import (
+    BuildTestError,
+    ExecutorError,
+    InvalidBuildspec,
+    InvalidBuildspecExecutor,
+    InvalidBuildspecSchemaType,
+)
 from buildtest.executors.setup import BuildExecutor
 from buildtest.utils.file import (
     create_dir,
@@ -220,12 +226,25 @@ class BuildspecCache:
         with console.status("Processing buildspecs", spinner="aesthetic"):
             for buildspec in buildspecs:
                 try:
-                    parse = BuildspecParser(buildspec, buildexecutor)
+                    parse = BuildspecParser(
+                        buildspec, buildexecutor, executor_match=True
+                    )
                 # any buildspec that raises SystemExit or ValidationError imply
                 # buildspec is not valid, we add this to invalid list along with
                 # error message and skip to next buildspec
-                except (BuildTestError, BuildspecError, ValidationError) as err:
-                    self.invalid_buildspecs[buildspec] = err
+                except (
+                    InvalidBuildspec,
+                    InvalidBuildspecSchemaType,
+                    InvalidBuildspecExecutor,
+                    ExecutorError,
+                    ValidationError,
+                ) as err:
+
+                    self.invalid_buildspecs[buildspec] = {
+                        "msg": repr(err),
+                        "exception": repr(type(err)),
+                    }
+
                     continue
 
                 valid_buildspecs.append(parse)
@@ -298,10 +317,11 @@ class BuildspecCache:
         parsers = self._validate_buildspecs(buildspecs)
 
         if self.invalid_buildspecs:
+            console.print(self.invalid_buildspecs)
             for buildspec in self.invalid_buildspecs.keys():
-                self.update_cache["invalids"][buildspec] = str(
-                    self.invalid_buildspecs[buildspec]
-                )
+                self.update_cache["invalids"][buildspec] = self.invalid_buildspecs[
+                    buildspec
+                ]
 
         # for every parsers (valid buildspecs) we update cache to build an index
         for parser in parsers:
@@ -913,14 +933,15 @@ class BuildspecCache:
         if not error:
             table = Table(
                 "Buildspec",
+                "Exception",
                 title="Invalid Buildspecs",
                 header_style="blue",
                 style="cyan",
                 title_style="red",
-                row_styles=["red"],
+                row_styles=[self.color],
             )
             for buildspec in self.cache["invalids"].keys():
-                table.add_row(buildspec)
+                table.add_row(buildspec, self.cache["invalids"][buildspec]["exception"])
             console.print(table)
             sys.exit(1)
 
@@ -1016,7 +1037,7 @@ def edit_buildspec_test(test_names, configuration, editor):
         be = BuildExecutor(configuration)
         try:
             BuildspecParser(buildspec, be)
-        except (BuildTestError, BuildspecError, ValidationError):
+        except ValidationError:
             console.print(f"[red]{buildspec} is invalid")
             continue
         console.print(f"[green]{buildspec} is valid")
@@ -1048,7 +1069,7 @@ def edit_buildspec_file(buildspecs, configuration, editor):
         be = BuildExecutor(configuration)
         try:
             BuildspecParser(buildspec, be)
-        except (BuildTestError, BuildspecError, ValidationError):
+        except ValidationError:
             console.print(f"[red]{buildspec} is invalid")
             continue
         console.print(f"[green]{buildspec} is valid")
@@ -1144,16 +1165,22 @@ def buildspec_validate(
     exception_counter = 0
     for buildspec in detected_buildspecs:
         try:
-            BuildspecParser(buildspec=buildspec, buildexecutor=buildexecutor)
-        except (BuildTestError, BuildspecError, ValidationError) as err:
+            BuildspecParser(
+                buildspec=buildspec, buildexecutor=buildexecutor, executor_match=True
+            )
+        except (
+            InvalidBuildspec,
+            InvalidBuildspecSchemaType,
+            InvalidBuildspecExecutor,
+            ExecutorError,
+            ValidationError,
+        ) as err:
             exception_counter += 1
             console.rule(buildspec)
-            pprint(err)
-
+            console.print(err, style="red on white")
             print("\n")
-
-        finally:
-            print(f"Processing buildspec: {buildspec}")
+        else:
+            console.print(f"[green]buildspec: {buildspec} is valid")
 
     if exception_counter > 0:
         console.print(f"[red]{exception_counter} buildspecs failed to validate")
