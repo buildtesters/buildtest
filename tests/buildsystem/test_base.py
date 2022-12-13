@@ -3,6 +3,7 @@ BuildspecParser: testing functions
 """
 
 import os
+import tempfile
 
 import pytest
 from buildtest.buildsystem.builders import Builder
@@ -12,6 +13,7 @@ from buildtest.config import SiteConfiguration
 from buildtest.defaults import DEFAULT_SETTINGS_FILE
 from buildtest.exceptions import (
     BuildTestError,
+    ExecutorError,
     InvalidBuildspec,
     InvalidBuildspecExecutor,
     InvalidBuildspecSchemaType,
@@ -19,6 +21,7 @@ from buildtest.exceptions import (
 from buildtest.executors.setup import BuildExecutor
 from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
+from jsonschema.exceptions import ValidationError
 
 testroot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 here = os.path.dirname(os.path.abspath(__file__))
@@ -40,6 +43,22 @@ def test_BuildspecParser(tmp_path):
     with pytest.raises(InvalidBuildspec):
         BuildspecParser(buildspec=None, buildexecutor=executors)
 
+    # The 'buildexecutor' must be of an instance of 'BuildExecutor', otherwise will raise exception 'ExecutorError'
+    with pytest.raises(ExecutorError):
+        BuildspecParser(buildspec=None, buildexecutor="")
+
+    # raise exception when content of buildspec is not valid
+    with pytest.raises(InvalidBuildspec):
+        tf = tempfile.NamedTemporaryFile(delete=True, suffix=".yml")
+        BuildspecParser(buildspec=tf.name, buildexecutor=executors)
+        tf.close()
+
+    # raise exception when path to buildspec is invalid. We close file but retain path to buildspec
+    with pytest.raises(InvalidBuildspec):
+        tf = tempfile.NamedTemporaryFile(delete=True, suffix=".yml")
+        tf.close()
+        BuildspecParser(buildspec=tf.name, buildexecutor=executors)
+
     directory = os.path.join(here, "invalid_buildspecs")
     fnames = [
         os.path.join(directory, "invalid_type.yml"),
@@ -56,12 +75,14 @@ def test_BuildspecParser(tmp_path):
         BuildspecParser(
             buildspec=os.path.join(directory, "invalid_executor.yml"),
             buildexecutor=executors,
+            executor_match=True,
         )
 
-    with pytest.raises(InvalidBuildspecExecutor):
+    with pytest.raises(ValidationError):
         BuildspecParser(
             buildspec=os.path.join(directory, "missing_executor.yml"),
             buildexecutor=executors,
+            executor_match=True,
         )
 
     directory = os.path.join(here, "invalid_builds")

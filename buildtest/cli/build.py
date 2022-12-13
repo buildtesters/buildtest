@@ -33,9 +33,7 @@ from buildtest.defaults import (
 )
 from buildtest.exceptions import (
     BuildTestError,
-    ExecutorError,
     InvalidBuildspec,
-    InvalidBuildspecExecutor,
     InvalidBuildspecSchemaType,
 )
 from buildtest.executors.setup import BuildExecutor
@@ -858,12 +856,12 @@ class BuildTest:
         for buildspec in self.detected_buildspecs:
             try:
                 # Read in Buildspec file here, loading each will validate the buildspec file
-                bp = BuildspecParser(buildspec, self.buildexecutor)
+                bp = BuildspecParser(
+                    buildspec=buildspec, buildexecutor=self.buildexecutor
+                )
             except (
                 InvalidBuildspec,
                 InvalidBuildspecSchemaType,
-                InvalidBuildspecExecutor,
-                ExecutorError,
                 ValidationError,
             ) as err:
                 self.invalid_buildspecs.append(buildspec)

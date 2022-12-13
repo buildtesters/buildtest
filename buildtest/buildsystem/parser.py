@@ -179,6 +179,9 @@ class BuildspecParser:
 
             self._check_schema_type(test)
 
+            if self.executor_match:
+                self._check_executor(test)
+
             self.schema_file = os.path.basename(
                 schema_table[f"{self.schema_type}.schema.json"]["path"]
             )
@@ -187,9 +190,6 @@ class BuildspecParser:
                 recipe=self.recipe["buildspecs"][test],
                 schema=schema_table[f"{self.schema_type}.schema.json"]["recipe"],
             )
-
-            if self.executor_match:
-                self._check_executor(test)
 
     def get_test_names(self):
         """Return a list of test names from a buildspec file. The test names are defined under the 'buildspecs' property"""
