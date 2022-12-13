@@ -27,17 +27,21 @@ testroot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 here = os.path.dirname(os.path.abspath(__file__))
 
 
-def test_BuildspecParser(tmp_path):
+def test_BuildspecParser_exceptions():
     config = SiteConfiguration(DEFAULT_SETTINGS_FILE)
     config.detect_system()
     config.validate()
     executors = BuildExecutor(config)
 
-    system = BuildTestSystem()
-
     # Invalid path to buildspec file should exit
     with pytest.raises(InvalidBuildspec):
         BuildspecParser(buildspec="", buildexecutor=executors)
+
+    # A directory is not allowed either, this will raise an error.
+    with pytest.raises(InvalidBuildspec):
+        BuildspecParser(
+            buildspec=os.path.join(here, "valid_buildspecs"), buildexecutor=executors
+        )
 
     # Passing 'None' will raise an error
     with pytest.raises(InvalidBuildspec):
@@ -85,14 +89,21 @@ def test_BuildspecParser(tmp_path):
             executor_match=True,
         )
 
+
+def test_BuildspecParser(tmp_path):
+    config = SiteConfiguration(DEFAULT_SETTINGS_FILE)
+    config.detect_system()
+    config.validate()
+    executors = BuildExecutor(config)
+
+    system = BuildTestSystem()
+
     directory = os.path.join(here, "invalid_builds")
     # invalid builds for compiler schema tests. These tests will raise BuildTestError exception upon building
     # even though they are valid buildspecs.\
     bc = BuildtestCompilers(configuration=config)
     for buildspec in walk_tree(directory, ".yml"):
-        buildspecfile = os.path.join(directory, buildspec)
-        print("Processing buildspec", buildspecfile)
-        bp = BuildspecParser(buildspecfile, executors)
+        bp = BuildspecParser(buildspec, executors)
 
         with pytest.raises(BuildTestError):
             builder = Builder(
@@ -111,14 +122,9 @@ def test_BuildspecParser(tmp_path):
     # Examples folder
     valid_buildspecs_directory = os.path.join(here, "valid_buildspecs")
 
-    # A directory is not allowed either, this will raise an error.
-    with pytest.raises(InvalidBuildspec):
-        BuildspecParser(buildspec=valid_buildspecs_directory, buildexecutor=executors)
-
     # Test loading Buildspec files
     for buildspec in walk_tree(valid_buildspecs_directory, ".yml"):
-        buildspecfile = os.path.join(valid_buildspecs_directory, buildspec)
-        bp = BuildspecParser(buildspec=buildspecfile, buildexecutor=executors)
+        bp = BuildspecParser(buildspec=buildspec, buildexecutor=executors)
         assert hasattr(bp, "recipe")
         assert hasattr(bp, "buildspec")
         assert hasattr(bp, "buildexecutors")
