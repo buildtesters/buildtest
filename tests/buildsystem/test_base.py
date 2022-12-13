@@ -21,7 +21,6 @@ from buildtest.exceptions import (
 from buildtest.executors.setup import BuildExecutor
 from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
-from jsonschema.exceptions import ValidationError
 
 testroot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 here = os.path.dirname(os.path.abspath(__file__))
