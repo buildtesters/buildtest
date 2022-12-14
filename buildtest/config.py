@@ -10,7 +10,7 @@ from buildtest.defaults import (
 from buildtest.exceptions import BuildTestError, ConfigurationError
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_recipe, load_schema
-from buildtest.system import LSF, PBS, BuildTestSystem, Cobalt, Slurm
+from buildtest.system import LSF, PBS, Cobalt, Slurm
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import resolve_path
 from buildtest.utils.shell import Shell
@@ -119,11 +119,12 @@ class SiteConfiguration:
 
         # self.localexecutors = list(self.target_config["executors"]["local"].keys())
 
-    def validate(self, validate_executors=True):
+    def validate(self, validate_executors=True, moduletool=None):
         """This method validates the site configuration with schema and checks executor setting.
 
         Args:
              validate_executors (bool): Check executor settings. This is the default behavior but can be disabled
+             moduletool (bool, optional): Check whether module system (Lmod, environment-modules) match what is specified in configuration file. Valid options are ``Lmod``, ``environment-modules``
         """
 
         logger.debug(f"Loading default settings schema: {DEFAULT_SETTINGS_SCHEMA}")
@@ -138,16 +139,14 @@ class SiteConfiguration:
         if validate_executors:
             self._executor_check()
 
-        system = BuildTestSystem()
-
         if (
             self.target_config.get("moduletool") != "N/A"
-            and self.target_config.get("moduletool") != system.system["moduletool"]
+            and self.target_config.get("moduletool") != moduletool
         ):
             raise ConfigurationError(
                 self.config,
                 self.file,
-                f"There is a module tool mismatch, we have detected '{system.system['moduletool']}' but configuration property 'moduletool' specifies  '{self.target_config['moduletool']}'",
+                f"There is a module tool mismatch, we have detected '{moduletool}' but configuration property 'moduletool' specifies  '{self.target_config['moduletool']}'",
             )
 
     def _executor_check(self):

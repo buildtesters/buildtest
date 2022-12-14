@@ -57,22 +57,22 @@ class BuildTestSystem:
         self.system["host"] = platform.node()
         self.system["machine"] = platform.machine()
 
-        self.logger.debug(f"Machine: {self.system['machine']}")
-        self.logger.debug(f"Host: {self.system['host']}")
-        self.logger.debug(f"User: {self.system['user']}")
-        self.logger.debug(f"Operating System: {self.system['os']}")
-        self.logger.debug(
+        self.logger.info(f"Machine: {self.system['machine']}")
+        self.logger.info(f"Host: {self.system['host']}")
+        self.logger.info(f"User: {self.system['user']}")
+        self.logger.info(f"Operating System: {self.system['os']}")
+        self.logger.info(
             f"System Kernel: {platform.uname().system} and Kernel Release: {platform.uname().release}"
         )
-        self.logger.debug(f"Python Path: {self.system['python']}")
-        self.logger.debug(f"Python Version: {self.system['pyver']}")
-        self.logger.debug(f"BUILDTEST_ROOT: {BUILDTEST_ROOT}")
-        self.logger.debug(f"Path to Buildtest: {shutil.which('buildtest')}")
+        self.logger.info(f"Python Path: {self.system['python']}")
+        self.logger.info(f"Python Version: {self.system['pyver']}")
+        self.logger.info(f"BUILDTEST_ROOT: {BUILDTEST_ROOT}")
+        self.logger.info(f"Path to Buildtest: {shutil.which('buildtest')}")
 
         self.detect_module_tool()
         self.check_scheduler()
 
-        self.logger.debug("Finished System Compatibility Check")
+        self.logger.info("Finished System Compatibility Check")
 
     def check_scheduler(self):
         """Check existence of batch scheduler and if so determine which scheduler
@@ -120,11 +120,11 @@ class BuildTestSystem:
 
         if lmod_version:
             self.system["moduletool"] = "lmod"
-            self.logger.debug(f"Detected Lmod with version: {lmod_version}")
+            self.logger.info(f"Detected Lmod with version: {lmod_version}")
 
         if environmodules_version:
             self.system["moduletool"] = "environment-modules"
-            self.logger.debug(
+            self.logger.info(
                 f"Detected environment-modules with version: {environmodules_version}"
             )
 

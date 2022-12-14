@@ -109,7 +109,7 @@ def main():
     if is_file(BUILDTEST_LOGFILE):
         remove_file(BUILDTEST_LOGFILE)
 
-    logger = init_logfile(debug=args.debug)
+    logger = init_logfile(debug=args.debug, loglevel=args.loglevel)
 
     create_dir(BUILDTEST_USER_HOME)
     create_dir(BUILDTEST_EXECUTOR_DIR)
@@ -128,7 +128,7 @@ def main():
     )
     configuration = SiteConfiguration(config_file)
     configuration.detect_system()
-    configuration.validate(validate_executors)
+    configuration.validate(validate_executors, moduletool=system.system["moduletool"])
 
     buildtest_editor = set_editor(args.editor)
     logger.info(f"[red]Processing buildtest configuration file: {configuration.file}")

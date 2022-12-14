@@ -442,17 +442,21 @@ _buildtest ()
     *)
       local cmds="build buildspec cd cdash clean config debugreport docs help info inspect history path report schema schemadocs stats stylecheck tutorial-examples unittests"
       local alias_cmds="bd bc cg debug it h hy rt style test"
-      local opts="--color --config --debug --editor --help --helpcolor --logpath --print-log --no-color --report --version --view-log -c -d -h -r -V"
+      local opts="--color --config --debug --editor --help --helpcolor --logpath --loglevel --print-log --no-color --report --version --view-log -c -d -h -l -r -V"
 
       case "${cur}" in
       # print main options to buildtest
         -*)
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
+
       # print main sub-commands to buildtest
         *)
           COMPREPLY=( $( compgen -W "${cmds} ${alias_cmds}" -- $cur ) )
           if [[ "${prev}" == "--color" ]]; then
             COMPREPLY=( $( compgen -W "$(_supported_colors)" -- $cur ) )
+          fi
+          if [[ "${prev}" == "--loglevel" ]] || [[ "${prev}" == "-l" ]]; then
+            COMPREPLY=( $( compgen -W "DEBUG INFO WARNING ERROR CRITICAL" -- $cur ) )
           fi
           ;;
       esac

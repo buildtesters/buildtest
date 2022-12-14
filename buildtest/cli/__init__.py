@@ -183,7 +183,14 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         "-c", "--config", dest="configfile", help="Specify Path to Configuration File"
     )
     parser.add_argument(
-        "-d", "--debug", action="store_true", help="Print debug messages to screen"
+        "-d", "--debug", action="store_true", help="Stream log messages to stdout"
+    )
+    parser.add_argument(
+        "-l",
+        "--loglevel",
+        help="Filter log messages based on logging level",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        default="DEBUG",
     )
     parser.add_argument(
         "--editor",

@@ -653,7 +653,7 @@ class BuildTest:
 
         self.system = buildtest_system
 
-        if not self.system:
+        if not isinstance(self.system, BuildTestSystem):
             self.system = BuildTestSystem()
 
         self._validate_filters()
