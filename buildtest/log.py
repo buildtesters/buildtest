@@ -9,12 +9,15 @@ from buildtest.utils.file import create_dir
 from rich.logging import RichHandler
 
 
-def init_logfile(logfile=BUILDTEST_LOGFILE, debug=None):
+def init_logfile(logfile=BUILDTEST_LOGFILE, debug=None, loglevel="DEBUG"):
     """Initialize a log file intended for a builder. This requires
     passing the filename intended for the log (from the builder)
     and returns the logger.
-    :param logfile: logfile name
-    :type logfile: str
+
+    Args:
+        logfile (str): Path to logfile where buildtest will write logs
+        debug (bool, optional): To enable debugging of logs to stdout. This option is enabled via ``buildtest --debug``
+        loglevel (str, optional): This option will configure the loglevel by running `logging.setLevel <https://docs.python.org/3/library/logging.html#logging.Logger.setLevel>`_. This option is passed via ``buildtest --loglevel``
     """
 
     formatter = logging.Formatter(
@@ -29,7 +32,7 @@ def init_logfile(logfile=BUILDTEST_LOGFILE, debug=None):
     fh = logging.FileHandler(logfile)
     fh.setFormatter(formatter)
     logger.addHandler(fh)
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(loglevel)
 
     # enable StreamHandler when --debug option is enabled
     if debug:
@@ -37,11 +40,11 @@ def init_logfile(logfile=BUILDTEST_LOGFILE, debug=None):
             console=console,
             rich_tracebacks=True,
             markup=True,
-            show_time=False,
-            show_level=False,
+            show_time=True,
+            show_level=True,
             level=logging.NOTSET,
         )
-        rich_handler.setFormatter(formatter)
+
         logger.addHandler(rich_handler)
 
     return logger

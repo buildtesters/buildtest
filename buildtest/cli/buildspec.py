@@ -446,9 +446,9 @@ class BuildspecCache:
         needs to be skipped.
 
         Args:
-            executor (str): ``executor`` property from buildspec
-            tags (str): ``tags`` property from buildspec
-            schema_type (str): ``type`` property from buildspec
+            executor (str): ``executor`` property in buildspec
+            tags (list): `List of tagnames specified via `tags`` property in buildspec
+            schema_type (str): ``type`` property in buildspec
 
         Returns:
             bool: Return True if there is **no** match otherwise returns False
@@ -517,14 +517,14 @@ class BuildspecCache:
                 tags = test_recipe.get("tags") or []
                 description = test_recipe.get("description")
 
+                # convert tags to string if its a list for printing purposes
+                if isinstance(tags, list):
+                    tags = " ".join(tags)
+
                 # filters buildspecs by executor, tags, type field. The return
                 # is a boolean, if its True we skip the test
                 if self._filter_buildspecs(executor, tags, schema_type):
                     continue
-
-                # convert tags to string if its a list for printing purposes
-                if isinstance(tags, list):
-                    tags = " ".join(tags)
 
                 if self.format:
                     for field in self.table.keys():
