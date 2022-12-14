@@ -124,6 +124,7 @@ class SiteConfiguration:
 
         Args:
              validate_executors (bool): Check executor settings. This is the default behavior but can be disabled
+             moduletool (bool, optional): Check whether module system (Lmod, environment-modules) match what is specified in configuration file. Valid options are ``Lmod``, ``environment-modules``
         """
 
         logger.debug(f"Loading default settings schema: {DEFAULT_SETTINGS_SCHEMA}")
@@ -137,8 +138,6 @@ class SiteConfiguration:
 
         if validate_executors:
             self._executor_check()
-
-        # system = BuildTestSystem()
 
         if (
             self.target_config.get("moduletool") != "N/A"
