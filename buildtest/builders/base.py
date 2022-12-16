@@ -1052,7 +1052,6 @@ class BuilderBase(ABC):
         # iterate over each metric in buildspec and determine reference check for each metric
         for metric in self.status["assert_ge"]:
             name = metric["name"]
-            ref_value = metric["ref"]
 
             # if metric is not valid, then mark as False
             if name not in metric_names:
@@ -1062,6 +1061,10 @@ class BuilderBase(ABC):
                 assert_check.append(False)
                 continue
 
+            metric_value = self.metadata["metrics"][name]
+            ref_value = metric["ref"]
+            conv_value = None
+
             # if metrics is empty string mark as False since we can't convert item to int or float
             if self.metadata["metrics"][name] == "":
                 assert_check.append(False)
@@ -1070,18 +1073,22 @@ class BuilderBase(ABC):
             # convert metric value and reference value to int
             if self.metrics[name]["type"] == "int":
                 try:
-                    conv_value = int(self.metadata["metrics"][name])
+                    conv_value = int(metric_value)
                 except ValueError:
                     console.print_exception(show_locals=True)
                     assert_check.append(False)
+                    continue
+
                 ref_value = int(ref_value)
+
             # convert metric value and reference value to float
             elif self.metrics[metric["name"]]["type"] == "float":
                 try:
-                    conv_value = float(self.metadata["metrics"][name])
+                    conv_value = float(metric_value)
                 except ValueError:
                     console.print_exception(show_locals=True)
                     assert_check.append(False)
+                    continue
 
                 ref_value = float(ref_value)
             elif self.metrics[name]["type"] == "str":
@@ -1089,6 +1096,7 @@ class BuilderBase(ABC):
                 console.print(msg)
                 self.logger.warning(msg)
                 assert_check.append(False)
+                continue
 
             console.print(
                 f"[blue]{self}[/]: testing metric: {name} if {conv_value} >= {ref_value}"

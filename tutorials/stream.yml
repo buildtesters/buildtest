@@ -22,9 +22,25 @@ buildspecs:
           exp: 'Scale:\s+(\S+)\s+.*'
           stream: stdout
           item: 1
+      add:
+        type: float
+        regex:
+          exp: 'Add:\s+(\S+)\s+.*'
+          stream: stdout
+          item: 1
+      triad:
+        type: float
+        regex:
+          exp: 'Triad:\s+(\S+)\s+.*'
+          stream: stdout
+          item: 1
     status:
       assert_ge:
         - name: copy
           ref: 5000
         - name: scale
-          ref: 5000
+          ref: 5500
+        - name: add
+          ref: 6000
+        - name: triad
+          ref: 6500

@@ -338,6 +338,32 @@ If we build this test, we expect buildtest to honor the value of ``state`` prope
 
    .. command-output:: buildtest build -b tutorials/test_status/explicit_state.yml
 
+Performance Checks
+~~~~~~~~~~~~~~~~~~~~
+
+buildtest can determine status check based on performance check. In this next example, we will run the
+`STREAM <https://www.cs.virginia.edu/stream/>` memory benchmark and capture metrics named `copy`, `scale`
+`add` and `triad` from the output and perform an Assertion Greater Equal (``assert_ge``) with a reference value.
+
+.. literalinclude:: ../tutorials/stream.yml
+    :language: yaml
+    :emphasize-lines: 12-46
+
+
+In this test, we define :ref:`metrics <metrics>` that will capture key performance metrics from the STREAM test and
+define them in the metric name. The ``assert_ge`` is comprised of list of assertions where each metric name referenced via ``name`` is compared (**>=**)
+with reference value `ref`.
+
+buildtest will evaluate each operation as a logical AND when determining status for ``assert_ge``.
+
+Let's build this test
+
+.. dropdown:: ``buildtest build -b tutorials/stream.yml``
+
+    .. command-output:: buildtest build -b tutorials/stream.yml
+
+    .. command-output:: buildtest inspect query -o stream_test
+
 .. _define_tags:
 
 Defining Tags
