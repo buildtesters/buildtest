@@ -858,9 +858,14 @@ class BuilderBase(ABC):
                 pattern = self.metrics[key]["regex"]["exp"]
                 match = re.search(pattern, content)
 
+                group_number = self.metrics[key]["regex"].get("item") or 0
+
                 # if pattern match found we assign value to metric
                 if match:
-                    self.metadata["metrics"][key] = match.group()
+                    try:
+                        self.metadata["metrics"][key] = match.group(group_number)
+                    except IndexError:
+                        self.metadata["metrics"][key] = ""
 
         # convert all metrics to string types
         for key in self.metadata["metrics"].keys():
@@ -904,10 +909,10 @@ class BuilderBase(ABC):
         console.print(
             f"[blue]{self}[/]: Writing error file - [red3]{self.metadata['errfile']}"
         )
-
+        self.add_metrics()
         self.check_test_state()
 
-        self.add_metrics()
+        # self.add_metrics()
 
         # mark job is success if it finished all post run steps
         self.complete()
@@ -1033,6 +1038,66 @@ class BuilderBase(ABC):
             )
             return actual_runtime < float(max_time)
 
+    def _check_assert_ge(self):
+        """Perform check on assert greater and equal when ``assert_ge`` is specified in buildspec. The return is a boolean value that determines if the check has passed.
+        One can specify multiple assert checks to check each metric with its reference value. When multiple items are specified, the operation is a logical AND and all checks
+        must be ``True``.
+        """
+
+        # a list containing booleans to evaluate reference check for each metric
+        assert_check = []
+
+        metric_names = list(self.metadata["metrics"].keys())
+
+        # iterate over each metric in buildspec and determine reference check for each metric
+        for metric in self.status["assert_ge"]:
+            name = metric["name"]
+            ref_value = metric["ref"]
+
+            # if metric is not valid, then mark as False
+            if name not in metric_names:
+                msg = f"[blue]{self}[/]: Unable to find metric: [red]{name}[/red]. List of valid metrics are the following: {metric_names}"
+                console.print(msg)
+                self.logger.warning(msg)
+                assert_check.append(False)
+                continue
+
+            # if metrics is empty string mark as False since we can't convert item to int or float
+            if self.metadata["metrics"][name] == "":
+                assert_check.append(False)
+                continue
+
+            # convert metric value and reference value to int
+            if self.metrics[name]["type"] == "int":
+                try:
+                    conv_value = int(self.metadata["metrics"][name])
+                except ValueError:
+                    console.print_exception(show_locals=True)
+                    assert_check.append(False)
+                ref_value = int(ref_value)
+            # convert metric value and reference value to float
+            elif self.metrics[metric["name"]]["type"] == "float":
+                try:
+                    conv_value = float(self.metadata["metrics"][name])
+                except ValueError:
+                    console.print_exception(show_locals=True)
+                    assert_check.append(False)
+
+                ref_value = float(ref_value)
+            elif self.metrics[name]["type"] == "str":
+                msg = f"[blue]{self}[/]: Unable to convert metric for comparison, must be 'int' or 'float'. "
+                console.print(msg)
+                self.logger.warning(msg)
+                assert_check.append(False)
+
+            console.print(
+                f"[blue]{self}[/]: testing metric: {name} if {conv_value} >= {ref_value}"
+            )
+            assert_check.append(conv_value >= ref_value)
+
+        # perform a logical AND on the list and return the boolean result
+        return all(assert_check)
+
     def check_test_state(self):
         """This method is responsible for detecting state of test (PASS/FAIL) based on returncode or regular expression."""
 
@@ -1047,6 +1112,7 @@ class BuilderBase(ABC):
             slurm_job_state_match = False
             pbs_job_state_match = False
             lsf_job_state_match = False
+            assert_ge_match = False
 
             # returncode_match is boolean to check if reference returncode matches return code from test
             returncode_match = self._returncode_check()
@@ -1072,6 +1138,9 @@ class BuilderBase(ABC):
             if self.status.get("lsf_job_state") and isinstance(self.job, LSFJob):
                 lsf_job_state_match = self.status["lsf_job_state"] == self.job.state()
 
+            if self.status.get("assert_ge"):
+                assert_ge_match = self._check_assert_ge()
+
             # if any of checks is True we set the 'state' to PASS
             state = any(
                 [
@@ -1081,6 +1150,7 @@ class BuilderBase(ABC):
                     pbs_job_state_match,
                     lsf_job_state_match,
                     runtime_match,
+                    assert_ge_match,
                 ]
             )
             if state:
