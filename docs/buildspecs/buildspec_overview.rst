@@ -361,12 +361,17 @@ from the regular expression search. The item must be non-negative number.
 buildtest will evaluate each assertion in the list and use a logical AND to determine the final
 status of ``assert_ge``.
 
-Let's build this test and run ``buildtest inspect query -o stream_test``. Take a close look at the output
-of ``buildtest build`` and output of test.
+Let's build this test, take a close look at the output of ``buildtest build`` and take note of the assertion
+statement.
+
 
 .. dropdown:: ``buildtest build -b tutorials/stream.yml``
 
     .. command-output:: buildtest build -b tutorials/stream.yml
+
+Let's run ``buildtest inspect query -o stream_test`` to retrieve the test details and output of STREAM test.
+
+.. dropdown:: ``buildtest inspect query -o stream_test``
 
     .. command-output:: buildtest inspect query -o stream_test
 
