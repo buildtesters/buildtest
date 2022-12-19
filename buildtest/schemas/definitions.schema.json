@@ -63,6 +63,7 @@
         },
         "item": {
           "type": "integer",
+          "minimum": 0,
           "description": "Specify the item number used to index element in `match.group() <https://docs.python.org/3/library/re.html#match-objects>`_"
         }
       }
@@ -216,6 +217,7 @@
         },
         "assert_ge": {
           "type": "array",
+          "description": "Perform assertion of greater and equal (>=) with reference value",
           "items": {
             "type": "object",
             "additionalProperties": false,
@@ -229,7 +231,8 @@
                 "description": "Name of metric to use for comparison"
               },
               "ref": {
-                "type": "number"
+                "type": "number",
+                "description": "Specify reference value (int,float) for comparison"
               }
             }
           }
