@@ -60,6 +60,11 @@
         "exp": {
           "type": "string",
           "description": "Specify a regular expression to run with input stream specified by ``stream`` field. buildtest uses re.search when performing regex"
+        },
+        "item": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Specify the item number used to index element in `match.group() <https://docs.python.org/3/library/re.html#match-objects>`_"
         }
       }
     },
@@ -123,6 +128,11 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "type": {
+          "type": "string",
+          "description": "Specify python data-type (str, int, float) to convert metric. ",
+          "enum": ["str", "int", "float"]
+        },
         "regex": {
           "$ref": "#/definitions/regex"
         }
@@ -202,6 +212,28 @@
               "type": "number",
               "minimum": 0,
               "description": "Specify a maximum runtime in seconds. The test will PASS if actual runtime is less than max time"
+            }
+          }
+        },
+        "assert_ge": {
+          "type": "array",
+          "description": "Perform assertion of greater and equal (>=) with reference value",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "ref": {
+                "type": "number",
+                "description": "Specify reference value (int,float) for comparison"
+              }
             }
           }
         },
