@@ -381,10 +381,10 @@ Let's run ``buildtest inspect query -o stream_test`` to retrieve the test detail
 Assert Equal
 ~~~~~~~~~~~~~~
 
-In the next example, we will demonstrate how to run an equality check with metrics and its corresponding reference value.
-This test defines four metrics **x**, **y**, **first**, and **last** which will be used for comparison via ``assert_eq`` by
-
-converting each reference to its appropriate type (``int``, ``float``, ``str``).
+buildtest can perform assert equality check with metrics to determine status of test. In this next example, we define
+four metrics **x**, **y**, **first**, and **last** which will be compared with its reference value. We introduce a new
+property ``assert_eq`` which is composed of list of assertions. Each reference is converted to its appropriate
+type (``int``, ``float``, ``str``).
 
 .. literalinclude:: ../tutorials/perf_checks/assert_eq.yml
     :language: yaml
@@ -401,14 +401,16 @@ This test is expected to pass where all assertions are **True**. Let's build the
 
     .. command-output:: buildtest inspect query -o assert_eq_example
 
-In the next example we show two example tests to highlight some exceptions. In the first test, we define an invalid metric name `invalid_metric`
-in ``assert_eq`` since this metric was not defined in ``metrics`` field, therefore this test will fail. In the second example, will fail because we have
-a mismatch in value captured by metric `x` which is 1 however the reference value is 2.
+In the next example, we have two tests to highlight some exceptions. In the first test, we define an invalid metric name **invalid_metric**
+in ``assert_eq`` since this metric was not defined in ``metrics`` field, therefore this test will fail. The second test will fail because we have
+a mismatch in value captured by metric ``x`` which is **1** however the reference value is **2**.
 
 .. literalinclude:: ../tutorials/perf_checks/assert_eq_exceptions.yml
     :language: yaml
     :emphasize-lines: 21-22,27-28,33,40,41
     :linenos:
+
+Let's build this test and see the output.
 
 .. dropdown:: ``buildtest build -b tutorials/perf_checks/assert_eq_exceptions.yml``
 
