@@ -34,18 +34,6 @@ buildspecs:
           exp: 'Triad:\s+(\S+)\s+.*'
           stream: stdout
           item: 1
-      int_metric:
-        type: int
-        regex:
-          exp: 'Triad:\s+(\S+)\s+.*'
-          stream: stdout
-          item: 1
-      string_metric:
-        type: str
-        regex:
-          exp: 'Triad:\s+(\S+)\s+.*'
-          stream: stdout
-          item: 1
     status:
       assert_ge:
         - name: copy
@@ -56,8 +44,6 @@ buildspecs:
           ref: 6000
         - name: triad
           ref: 6500
-        - name: invalid_metric
-          ref: 128
 
   stream_test_assert_ge_exception:
     type: script

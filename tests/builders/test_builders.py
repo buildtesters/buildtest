@@ -4,10 +4,8 @@ import pytest
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.build import BuildTest
-from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import DEFAULT_SETTINGS_FILE
-from buildtest.executors.setup import BuildExecutor
 from buildtest.system import BuildTestSystem
 
 here = os.path.dirname(os.path.abspath(__file__))
@@ -15,9 +13,7 @@ here = os.path.dirname(os.path.abspath(__file__))
 config = SiteConfiguration(DEFAULT_SETTINGS_FILE)
 config.detect_system()
 config.validate()
-executors = BuildExecutor(config)
 system = BuildTestSystem()
-bc = BuildtestCompilers(configuration=config)
 
 
 def test_assert_ge():

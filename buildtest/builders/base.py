@@ -1153,7 +1153,7 @@ class BuilderBase(ABC):
         assert_check = []
 
         metric_names = list(self.metadata["metrics"].keys())
-        console.print(self.metadata["metrics"])
+
         # iterate over each metric in buildspec and determine reference check for each metric
         for metric in self.status["assert_eq"]:
             name = metric["name"]

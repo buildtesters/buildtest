@@ -127,6 +127,7 @@
     "metrics_field": {
       "type": "object",
       "additionalProperties": false,
+      "required": ["type"],
       "properties": {
         "type": {
           "type": "string",

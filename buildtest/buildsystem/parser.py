@@ -190,7 +190,6 @@ class BuildspecParser:
                 recipe=self.recipe["buildspecs"][test],
                 schema=schema_table[f"{self.schema_type}.schema.json"]["recipe"],
             )
-            print("Validating test with schema ", self.schema_file)
 
     def get_test_names(self):
         """Return a list of test names from a buildspec file. The test names are defined under the 'buildspecs' property"""

@@ -339,7 +339,10 @@ If we build this test, we expect buildtest to honor the value of ``state`` prope
    .. command-output:: buildtest build -b tutorials/test_status/explicit_state.yml
 
 Performance Checks
-~~~~~~~~~~~~~~~~~~~~
+--------------------
+
+Assert Greater Equal
+~~~~~~~~~~~~~~~~~~~~~~~
 
 buildtest can determine status check based on performance check. In this next example, we will run the
 `STREAM <https://www.cs.virginia.edu/stream/>`_ memory benchmark and capture :ref:`metrics <metrics>` named ``copy``, ``scale``
@@ -374,6 +377,42 @@ Let's run ``buildtest inspect query -o stream_test`` to retrieve the test detail
 .. dropdown:: ``buildtest inspect query -o stream_test``
 
     .. command-output:: buildtest inspect query -o stream_test
+
+Assert Equal
+~~~~~~~~~~~~~~
+
+In the next example, we will demonstrate how to run an equality check with metrics and its corresponding reference value.
+This test defines four metrics **x**, **y**, **first**, and **last** which will be used for comparison via ``assert_eq`` by
+
+converting each reference to its appropriate type (``int``, ``float``, ``str``).
+
+.. literalinclude:: ../tutorials/perf_checks/assert_eq.yml
+    :language: yaml
+    :emphasize-lines: 40-49
+    :linenos:
+
+This test is expected to pass where all assertions are **True**. Let's build the test and see the output
+
+.. dropdown:: ``buildtest build -b tutorials/perf_checks/assert_eq.yml``
+
+    .. command-output:: buildtest build -b tutorials/perf_checks/assert_eq.yml
+
+.. dropdown:: ``buildtest inspect query -o assert_eq_example``
+
+    .. command-output:: buildtest inspect query -o assert_eq_example
+
+In the next example we show two example tests to highlight some exceptions. In the first test, we define an invalid metric name `invalid_metric`
+in ``assert_eq`` since this metric was not defined in ``metrics`` field, therefore this test will fail. In the second example, will fail because we have
+a mismatch in value captured by metric `x` which is 1 however the reference value is 2.
+
+.. literalinclude:: ../tutorials/perf_checks/assert_eq_exceptions.yml
+    :language: yaml
+    :emphasize-lines: 21-22,27-28,33,40,41
+    :linenos:
+
+.. dropdown:: ``buildtest build -b tutorials/perf_checks/assert_eq_exceptions.yml``
+
+    .. command-output:: buildtest build -b tutorials/perf_checks/assert_eq_exceptions.yml
 
 .. _define_tags:
 
@@ -593,7 +632,7 @@ where we define two metrics named ``hpcg_rating`` and ``hpcg_state``.
 
 .. literalinclude:: ../tutorials/metrics_regex.yml
     :language: yaml
-    :emphasize-lines: 8-17
+    :emphasize-lines: 8-19
 
 The metrics will not impact behavior of test, it will only impact the test report. By default
 a metric will be an empty dictionary if there is no ``metrics`` property. If we fail to match
