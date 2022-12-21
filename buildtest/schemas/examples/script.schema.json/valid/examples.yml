@@ -269,6 +269,7 @@ buildspecs:
     run: echo "HPCG result is VALID with a GFLOP/s rating of=63.6515"
     metrics:
       hpcg_rating:
+        type: float
         regex:
           exp: 'rating of=(\d+\.\d+)$'
           stream: stdout
@@ -364,6 +365,7 @@ buildspecs:
       generic.local.bash:
         metrics:
           hello:
+            type: str
             regex:
               stream: stdout
               exp: "(Hello)"
@@ -371,6 +373,7 @@ buildspecs:
         metrics:
           world:
             regex:
+              type: str
               stream: stdout
               exp: "(World)"
 
