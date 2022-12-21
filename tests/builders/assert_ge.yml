@@ -1,5 +1,5 @@
 buildspecs:
-  stream_test:
+  stream_test_assert_ge:
     type: script
     executor: generic.local.bash
     description: Run stream test with metrics example using assert greater equal
@@ -34,18 +34,6 @@ buildspecs:
           exp: 'Triad:\s+(\S+)\s+.*'
           stream: stdout
           item: 1
-      int_metric:
-        type: int
-        regex:
-          exp: 'Triad:\s+(\S+)\s+.*'
-          stream: stdout
-          item: 1
-      string_metric:
-        type: str
-        regex:
-          exp: 'Triad:\s+(\S+)\s+.*'
-          stream: stdout
-          item: 1
     status:
       assert_ge:
         - name: copy
@@ -56,5 +44,25 @@ buildspecs:
           ref: 6000
         - name: triad
           ref: 6500
-        - name: invalid_metric
-          ref: 128
+
+  stream_test_assert_ge_exception:
+    type: script
+    executor: generic.local.bash
+    description: Run stream test with testing exception for assert_ge
+    env:
+      OMP_NUM_THREADS: 4
+    run: |
+      wget https://raw.githubusercontent.com/jeffhammond/STREAM/master/stream.c
+      gcc -openmp -o stream stream.c
+      ./stream
+    metrics:
+      copy:
+        type: str
+        regex:
+          exp: 'Copy:\s+(\S+)\s+.*'
+          stream: stdout
+          item: 1
+    status:
+      assert_ge:
+        - name: copy
+          ref: 5000

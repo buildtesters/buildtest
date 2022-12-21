@@ -7,11 +7,13 @@ buildspecs:
     tags: tutorials
     metrics:
       hpcg_rating:
+        type: float
         regex:
           exp: '(\d+\.\d+)$'
           stream: stdout
 
       hpcg_state:
+        type: str
         regex:
           exp: '(VALID)'
           stream: stdout

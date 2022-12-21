@@ -1038,6 +1038,48 @@ class BuilderBase(ABC):
             )
             return actual_runtime < float(max_time)
 
+    def is_valid_metric(self, name):
+        if name not in list(self.metadata["metrics"].keys()):
+            return False
+
+        return True
+
+    def _convert_metrics(self, metric_value, ref_value, dtype):
+        """This method will convert input argument ``metric_value`` and ``ref_value`` to the datatype defined
+        by ``dtype`` which can be **int**, **float**, or **str**
+
+        Args:
+            metric_value: Value assigned to metric that is converted to its type defined by dtype
+            ref_value: Reference value for the metric that is converted to its type defined by dtype
+            dtype (str): A string value which can be 'str', 'int', 'float'
+
+        Returns:
+            Tuple: A tuple consisting of (metric_value, ref_value)
+        """
+        conv_metric_val = None
+        conv_ref_val = None
+
+        if dtype == "int":
+            try:
+                conv_metric_val = int(metric_value)
+                conv_ref_val = int(ref_value)
+            except ValueError:
+                console.print_exception(show_locals=True)
+        elif dtype == "float":
+            try:
+                conv_metric_val = float(metric_value)
+                conv_ref_val = float(ref_value)
+            except ValueError:
+                console.print_exception(show_locals=True)
+        elif dtype == "str":
+            try:
+                conv_metric_val = str(metric_value)
+                conv_ref_val = str(ref_value)
+            except ValueError:
+                console.print_exception(show_locals=True)
+
+        return conv_metric_val, conv_ref_val
+
     def _check_assert_ge(self):
         """Perform check on assert greater and equal when ``assert_ge`` is specified in buildspec. The return is a boolean value that determines if the check has passed.
         One can specify multiple assert checks to check each metric with its reference value. When multiple items are specified, the operation is a logical AND and all checks
@@ -1054,7 +1096,7 @@ class BuilderBase(ABC):
             name = metric["name"]
 
             # if metric is not valid, then mark as False
-            if name not in metric_names:
+            if not self.is_valid_metric(name):
                 msg = f"[blue]{self}[/]: Unable to find metric: [red]{name}[/red]. List of valid metrics are the following: {metric_names}"
                 console.print(msg)
                 self.logger.warning(msg)
@@ -1072,27 +1114,17 @@ class BuilderBase(ABC):
 
             # convert metric value and reference value to int
             if self.metrics[name]["type"] == "int":
-                try:
-                    conv_value = int(metric_value)
-                except ValueError:
-                    console.print_exception(show_locals=True)
-                    assert_check.append(False)
-                    continue
-
-                ref_value = int(ref_value)
+                conv_value, ref_value = self._convert_metrics(
+                    metric_value, ref_value, dtype="int"
+                )
 
             # convert metric value and reference value to float
             elif self.metrics[metric["name"]]["type"] == "float":
-                try:
-                    conv_value = float(metric_value)
-                except ValueError:
-                    console.print_exception(show_locals=True)
-                    assert_check.append(False)
-                    continue
-
-                ref_value = float(ref_value)
+                conv_value, ref_value = self._convert_metrics(
+                    metric_value, ref_value, dtype="float"
+                )
             elif self.metrics[name]["type"] == "str":
-                msg = f"[blue]{self}[/]: Unable to convert metric for comparison, must be 'int' or 'float'. "
+                msg = f"[blue]{self}[/]: Unable to convert metric: [red]'{name}'[/red] for comparison. The type must be 'int' or 'float' but recieved [red]{self.metrics[name]['type']}[/red]. "
                 console.print(msg)
                 self.logger.warning(msg)
                 assert_check.append(False)
@@ -1101,7 +1133,77 @@ class BuilderBase(ABC):
             console.print(
                 f"[blue]{self}[/]: testing metric: {name} if {conv_value} >= {ref_value}"
             )
+
+            # if there is a type mismatch then let's stop now before we do comparison
+            if (
+                (type(conv_value) != type(ref_value))
+                or (conv_value is None)
+                or (ref_value is None)
+            ):
+                assert_check.append(False)
+                continue
+
             assert_check.append(conv_value >= ref_value)
+
+        # perform a logical AND on the list and return the boolean result
+        return all(assert_check)
+
+    def _check_assert_eq(self):
+        # a list containing booleans to evaluate reference check for each metric
+        assert_check = []
+
+        metric_names = list(self.metadata["metrics"].keys())
+
+        # iterate over each metric in buildspec and determine reference check for each metric
+        for metric in self.status["assert_eq"]:
+            name = metric["name"]
+
+            # if metric is not valid, then mark as False
+            if not self.is_valid_metric(name):
+                msg = f"[blue]{self}[/]: Unable to find metric: [red]{name}[/red]. List of valid metrics are the following: {metric_names}"
+                console.print(msg)
+                self.logger.warning(msg)
+                assert_check.append(False)
+                continue
+
+            metric_value = self.metadata["metrics"][name]
+            ref_value = metric["ref"]
+            conv_value = None
+
+            # if metrics is empty string mark as False since we can't convert item to int or float
+            if self.metadata["metrics"][name] == "":
+                assert_check.append(False)
+                continue
+
+            # convert metric value and reference value to int
+            if self.metrics[name]["type"] == "int":
+                conv_value, ref_value = self._convert_metrics(
+                    metric_value, ref_value, dtype="int"
+                )
+
+            # convert metric value and reference value to float
+            elif self.metrics[metric["name"]]["type"] == "float":
+                conv_value, ref_value = self._convert_metrics(
+                    metric_value, ref_value, dtype="float"
+                )
+            elif self.metrics[name]["type"] == "str":
+                conv_value, ref_value = self._convert_metrics(
+                    metric_value, ref_value, dtype="str"
+                )
+            console.print(
+                f"[blue]{self}[/]: testing metric: [red]{name}[/red] if [yellow]{conv_value}[/yellow] == [yellow]{ref_value}[/yellow]"
+            )
+
+            # if there is a type mismatch then let's stop now before we do comparison
+            if (
+                (type(conv_value) != type(ref_value))
+                or (conv_value is None)
+                or (ref_value is None)
+            ):
+                assert_check.append(False)
+                continue
+
+            assert_check.append(conv_value == ref_value)
 
         # perform a logical AND on the list and return the boolean result
         return all(assert_check)
@@ -1121,6 +1223,7 @@ class BuilderBase(ABC):
             pbs_job_state_match = False
             lsf_job_state_match = False
             assert_ge_match = False
+            assert_eq_match = False
 
             # returncode_match is boolean to check if reference returncode matches return code from test
             returncode_match = self._returncode_check()
@@ -1149,6 +1252,9 @@ class BuilderBase(ABC):
             if self.status.get("assert_ge"):
                 assert_ge_match = self._check_assert_ge()
 
+            if self.status.get("assert_eq"):
+                assert_eq_match = self._check_assert_eq()
+
             # if any of checks is True we set the 'state' to PASS
             state = any(
                 [
@@ -1159,6 +1265,7 @@ class BuilderBase(ABC):
                     lsf_job_state_match,
                     runtime_match,
                     assert_ge_match,
+                    assert_eq_match,
                 ]
             )
             if state:

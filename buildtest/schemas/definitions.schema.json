@@ -127,6 +127,7 @@
     "metrics_field": {
       "type": "object",
       "additionalProperties": false,
+      "required": ["type"],
       "properties": {
         "type": {
           "type": "string",
@@ -233,6 +234,36 @@
               "ref": {
                 "type": "number",
                 "description": "Specify reference value (int,float) for comparison"
+              }
+            }
+          }
+        },
+        "assert_eq":
+        {
+          "description": "Perform assertion of equality (=) with reference value",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "ref": {
+                "description": "Specify reference value (str, int,float) for comparison",
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
               }
             }
           }
@@ -346,32 +377,32 @@
       "description": "Specify a series of commands to run."
     },
     "module": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-             "purge": {
-               "type": "boolean",
-                "description": "Run ``module purge`` if purge is set"
-             },
-             "load": {
-               "$ref": "definitions.schema.json#/definitions/list_of_strings",
-               "description": "Load one or more modules via ``module load``"
-             },
-             "restore": {
-               "description": "Load a collection name via ``module restore``",
-               "type": "string"
-             },
-             "swap": {
-               "description": "Swap modules using ``module swap``. The swap property expects 2 unique modules.",
-               "type": "array",
-               "uniqueItems": true,
-               "minItems": 2,
-               "maxItems": 2,
-               "items": {
-                 "type": "string"
-               }
-             }
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+         "purge": {
+           "type": "boolean",
+            "description": "Run ``module purge`` if purge is set"
+         },
+         "load": {
+           "$ref": "definitions.schema.json#/definitions/list_of_strings",
+           "description": "Load one or more modules via ``module load``"
+         },
+         "restore": {
+           "description": "Load a collection name via ``module restore``",
+           "type": "string"
+         },
+         "swap": {
+           "description": "Swap modules using ``module swap``. The swap property expects 2 unique modules.",
+           "type": "array",
+           "uniqueItems": true,
+           "minItems": 2,
+           "maxItems": 2,
+           "items": {
+             "type": "string"
            }
-}
+         }
+       }
+    }
   }
 }

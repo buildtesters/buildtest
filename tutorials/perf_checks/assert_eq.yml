@@ -1,0 +1,49 @@
+buildspecs:
+  assert_eq_example:
+    type: script
+    executor: generic.local.bash
+    description: Test for assert equality
+    vars:
+      X: 1
+      Y: 1.5
+      first: John
+      last: Smith
+    run: |
+      echo "X: $X"
+      echo "Y: $Y"
+      echo "Name: $first $last"
+    metrics:
+      x:
+        type: int
+        regex:
+          stream: stdout
+          exp: 'X:\s+(\S+)\s+.*'
+          item: 1
+      y:
+        type: float
+        regex:
+          stream: stdout
+          exp: 'Y:\s+(\S+)\s+.*'
+          item: 1
+      first:
+        type: str
+        regex:
+          stream: stdout
+          exp: 'Name:\s+(\S+)\s+.*'
+          item: 1
+      last:
+        type: str
+        regex:
+          stream: stdout
+          exp: '(Smith)$'
+          item: 1
+    status:
+      assert_eq:
+        - name: x
+          ref: 1
+        - name: y
+          ref: 1.5
+        - name: first
+          ref: John
+        - name: last
+          ref: Smith
