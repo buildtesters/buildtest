@@ -1,8 +1,5 @@
 import os
 
-import pytest
-from buildtest.buildsystem.builders import Builder
-from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.build import BuildTest
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import DEFAULT_SETTINGS_FILE
