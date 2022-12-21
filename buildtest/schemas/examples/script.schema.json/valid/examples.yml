@@ -372,8 +372,8 @@ buildspecs:
       generic.local.sh:
         metrics:
           world:
+            type: str
             regex:
-              type: str
               stream: stdout
               exp: "(World)"
 
