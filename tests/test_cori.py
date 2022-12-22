@@ -24,7 +24,7 @@ def test_cori_burstbuffer():
 
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
-    bc.validate()
+    bc.validate(moduletool="environment-modules")
 
     cmd = BuildTest(
         configuration=bc,
@@ -52,7 +52,7 @@ def test_cori_slurm_hostname():
 
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
-    bc.validate()
+    bc.validate(moduletool="environment-modules")
 
     cmd = BuildTest(
         configuration=bc,
@@ -74,7 +74,7 @@ def test_cori_slurm_max_pend():
 
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
-    bc.validate()
+    bc.validate(moduletool="environment-modules")
 
     system = BuildTestSystem()
 
@@ -100,7 +100,7 @@ def test_compiler_find_cori():
 
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
-    bc.validate()
+    bc.validate(moduletool="environment-modules")
 
     # testing buildtest config compilers find
     compilers = BuildtestCompilers(configuration=bc)
@@ -117,7 +117,7 @@ def test_compiler_test_cori():
 
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
-    bc.validate()
+    bc.validate(moduletool="environment-modules")
 
     # testing buildtest config compilers test
     compiler_test(configuration=bc)

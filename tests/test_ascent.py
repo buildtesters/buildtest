@@ -21,7 +21,7 @@ def test_ascent():
 
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
-    bc.validate()
+    bc.validate(moduletool="lmod")
 
     system = BuildTestSystem()
 
@@ -56,7 +56,7 @@ def test_compilers_find_ascent():
 
     config = SiteConfiguration(settings_file)
     config.detect_system()
-    config.validate()
+    bc.validate(moduletool="lmod")
 
     # testing buildtest config compilers find
     bc = BuildtestCompilers(configuration=config)
