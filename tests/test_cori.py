@@ -3,6 +3,7 @@ import socket
 
 import pytest
 from buildtest.cli.build import BuildTest
+from buildtest.cli.buildspec import BuildspecCache
 from buildtest.cli.compilers import BuildtestCompilers, compiler_find, compiler_test
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
@@ -25,7 +26,7 @@ def test_cori_burstbuffer():
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
     bc.validate(moduletool="environment-modules")
-
+    BuildspecCache(rebuild=True, configuration=bc)
     cmd = BuildTest(
         configuration=bc,
         buildspecs=[

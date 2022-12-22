@@ -3,6 +3,7 @@ import socket
 
 import pytest
 from buildtest.cli.build import BuildTest
+from buildtest.cli.buildspec import BuildspecCache
 from buildtest.cli.compilers import BuildtestCompilers, compiler_test
 from buildtest.config import SiteConfiguration
 from buildtest.system import BuildTestSystem
@@ -22,6 +23,7 @@ def test_ascent():
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
     bc.validate(moduletool="lmod")
+    BuildspecCache(rebuild=True, configuration=bc)
 
     system = BuildTestSystem()
 
