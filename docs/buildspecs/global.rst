@@ -24,6 +24,7 @@ Example Buildspec
 
 .. literalinclude:: ../tutorials/hello_world.yml
    :language: yaml
+   :emphasize-lines: 1,2,4
 
 The field  ``buildspecs`` and ``maintainers`` are validated with **global.schema.json**
 using `jsonschema.validate <https://python-jsonschema.readthedocs.io/en/stable/_modules/jsonschema/validators/#validate>`_
@@ -51,6 +52,7 @@ be unique names, generally this can be your name or preferably a github or gitla
 
 .. literalinclude:: ../tutorials/maintainers_example.yml
    :language: yaml
+   :emphasize-lines: 11-13
 
 Test Names
 -----------
