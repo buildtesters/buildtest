@@ -3,6 +3,7 @@ import socket
 
 import pytest
 from buildtest.cli.build import BuildTest
+from buildtest.cli.buildspec import BuildspecCache
 from buildtest.cli.compilers import BuildtestCompilers, compiler_test
 from buildtest.config import SiteConfiguration
 from buildtest.system import BuildTestSystem
@@ -21,7 +22,8 @@ def test_ascent():
 
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
-    bc.validate()
+    bc.validate(moduletool="lmod")
+    BuildspecCache(rebuild=True, configuration=bc)
 
     system = BuildTestSystem()
 
@@ -56,7 +58,7 @@ def test_compilers_find_ascent():
 
     config = SiteConfiguration(settings_file)
     config.detect_system()
-    config.validate()
+    config.validate(moduletool="lmod")
 
     # testing buildtest config compilers find
     bc = BuildtestCompilers(configuration=config)
