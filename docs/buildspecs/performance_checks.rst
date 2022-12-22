@@ -50,7 +50,7 @@ environment variable ``FOO``.
 
 
 Assert Greater Equal
-~~~~~~~~~~~~~~~~~~~~~~~
+----------------------
 
 buildtest can determine status check based on performance check. In this next example, we will run the
 `STREAM <https://www.cs.virginia.edu/stream/>`_ memory benchmark and capture :ref:`metrics <metrics>` named ``copy``, ``scale``
@@ -87,7 +87,7 @@ Let's run ``buildtest inspect query -o stream_test`` to retrieve the test detail
     .. command-output:: buildtest inspect query -o stream_test
 
 Assert Equal
-~~~~~~~~~~~~~~
+---------------
 
 buildtest can perform assert equality check with metrics to determine status of test. In this next example, we define
 four metrics **x**, **y**, **first**, and **last** which will be compared with its reference value. We introduce a new
