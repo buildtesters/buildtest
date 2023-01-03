@@ -143,3 +143,6 @@ Let's build this test and see the output
 .. dropdown:: ``buildtest build -b tutorials/perf_checks/assert_range.yml``
 
     .. command-output:: buildtest build -b tutorials/perf_checks/assert_range.yml
+
+Note that performance results may vary on your system and depending on the metric value you may want to adjust the
+lower and upper bound to match your requirement.
