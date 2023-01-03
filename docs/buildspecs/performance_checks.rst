@@ -63,7 +63,7 @@ expression. The ``type`` field in the metric section is used for the type conver
 The ``item`` is a numeric field used in `match.group <https://docs.python.org/3/library/re.html#re.Match.group>`_ to retrieve the output
 from the regular expression search. The item must be non-negative number.
 
-.. literalinclude:: ../tutorials/stream.yml
+.. literalinclude:: ../tutorials/perf_checks/assert_ge.yml
     :language: yaml
     :emphasize-lines: 12-46
     :linenos:
@@ -76,9 +76,9 @@ Let's build this test, take a close look at the output of ``buildtest build`` an
 statement.
 
 
-.. dropdown:: ``buildtest build -b tutorials/stream.yml``
+.. dropdown:: ``buildtest build -b tutorials/perf_checks/assert_ge.yml``
 
-    .. command-output:: buildtest build -b tutorials/stream.yml
+    .. command-output:: buildtest build -b tutorials/perf_checks/assert_ge.yml
 
 Let's run ``buildtest inspect query -o stream_test`` to retrieve the test details and output of STREAM test.
 
