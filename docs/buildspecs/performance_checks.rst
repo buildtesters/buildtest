@@ -123,3 +123,23 @@ Let's build this test and see the output.
 .. dropdown:: ``buildtest build -b tutorials/perf_checks/assert_eq_exceptions.yml``
 
     .. command-output:: buildtest build -b tutorials/perf_checks/assert_eq_exceptions.yml
+
+Assert Range
+-------------
+
+The ``assert_range`` property can be used to test performance for a metric given a lower and upper bound. This property expects
+one to specify ``lower`` and ``upper`` field which must be an integer or floating point number to perform comparison. buildtest will
+perform an assertion, if metric value is in the range specified by **lower** and **upper**, then test will pass. Shown below
+is an example using the ``assert_range`` property with stream benchmark.
+
+.. literalinclude:: ../tutorials/perf_checks/assert_range.yml
+    :language: yaml
+    :emphasize-lines: 37-50
+    :linenos:
+
+Let's build this test and see the output
+
+
+.. dropdown:: ``buildtest build -b tutorials/perf_checks/assert_range.yml``
+
+    .. command-output:: buildtest build -b tutorials/perf_checks/assert_range.yml

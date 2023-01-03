@@ -1060,9 +1060,10 @@ class BuilderBase(ABC):
         conv_ref_val = None
 
         if dtype == "int":
+            # the metric_value is a string therefore to convert to int, one must convert to float before converting to int
             try:
-                conv_metric_val = int(metric_value)
-                conv_ref_val = int(ref_value)
+                conv_metric_val = int(float(metric_value))
+                conv_ref_val = int(float(ref_value))
             except ValueError:
                 console.print_exception(show_locals=True)
         elif dtype == "float":
@@ -1084,6 +1085,9 @@ class BuilderBase(ABC):
         """Perform check on assert greater and equal when ``assert_ge`` is specified in buildspec. The return is a boolean value that determines if the check has passed.
         One can specify multiple assert checks to check each metric with its reference value. When multiple items are specified, the operation is a logical AND and all checks
         must be ``True``.
+
+        Returns:
+            bool: True or False for performance check ``assert_ge``
         """
 
         # a list containing booleans to evaluate reference check for each metric
@@ -1135,11 +1139,7 @@ class BuilderBase(ABC):
             )
 
             # if there is a type mismatch then let's stop now before we do comparison
-            if (
-                (type(conv_value) != type(ref_value))
-                or (conv_value is None)
-                or (ref_value is None)
-            ):
+            if (conv_value is None) or (ref_value is None):
                 assert_check.append(False)
                 continue
 
@@ -1149,6 +1149,14 @@ class BuilderBase(ABC):
         return all(assert_check)
 
     def _check_assert_eq(self):
+        """This method is perform Assert Equality used when ``assert_eq`` property is specified
+        in status check. This method will evaluate each metric value reference value and
+        store assertion in list. The list of assertion is logically AND which will return a True or False
+        for the status check.
+
+        Returns:
+            bool: True or False for performance check ``assert_eq``
+        """
         # a list containing booleans to evaluate reference check for each metric
         assert_check = []
 
@@ -1194,12 +1202,8 @@ class BuilderBase(ABC):
                 f"[blue]{self}[/]: testing metric: [red]{name}[/red] if [yellow]{conv_value}[/yellow] == [yellow]{ref_value}[/yellow]"
             )
 
-            # if there is a type mismatch then let's stop now before we do comparison
-            if (
-                (type(conv_value) != type(ref_value))
-                or (conv_value is None)
-                or (ref_value is None)
-            ):
+            # if either converted value and reference value is None stop here before proceeding to equality check
+            if (conv_value is None) or (ref_value is None):
                 assert_check.append(False)
                 continue
 
@@ -1209,6 +1213,15 @@ class BuilderBase(ABC):
         return all(assert_check)
 
     def _check_assert_range(self):
+        """This method is perform Assert Range used when ``assert_range`` property is specified
+        in status check. This method will evaluate each metric value with lower and upper bound and
+        store assertion in list. The list of assertion is logically AND which will return a True or False
+        for the status check.
+
+        Returns:
+            bool: True or False for performance check ``assert_range``
+        """
+
         # a list containing booleans to evaluate reference check for each metric
         assert_check = []
 
@@ -1264,12 +1277,8 @@ class BuilderBase(ABC):
                 f"[blue]{self}[/]: testing metric: {name} if {lower_bound} <= {conv_value} <= {upper_bound}"
             )
 
-            # if there is a type mismatch then let's stop now before we do comparison
-            if (
-                type(conv_value) != type(upper_bound)
-                or type(conv_value) != type(upper_bound)
-                or any(item is None for item in [conv_value, lower_bound, upper_bound])
-            ):
+            # if any item is None we stop before we run comparison
+            if any(item is None for item in [conv_value, lower_bound, upper_bound]):
                 assert_check.append(False)
                 continue
 
