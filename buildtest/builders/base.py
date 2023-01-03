@@ -1208,6 +1208,76 @@ class BuilderBase(ABC):
         # perform a logical AND on the list and return the boolean result
         return all(assert_check)
 
+    def _check_assert_range(self):
+        # a list containing booleans to evaluate reference check for each metric
+        assert_check = []
+
+        metric_names = list(self.metadata["metrics"].keys())
+
+        # iterate over each metric in buildspec and determine reference check for each metric
+        for metric in self.status["assert_range"]:
+            name = metric["name"]
+
+            # if metric is not valid, then mark as False
+            if not self.is_valid_metric(name):
+                msg = f"[blue]{self}[/]: Unable to find metric: [red]{name}[/red]. List of valid metrics are the following: {metric_names}"
+                console.print(msg)
+                self.logger.warning(msg)
+                assert_check.append(False)
+                continue
+
+            metric_value = self.metadata["metrics"][name]
+            lower_bound = metric["lower"]
+            upper_bound = metric["upper"]
+            conv_value = None
+
+            # if metrics is empty string mark as False since we can't convert item to int or float
+            if self.metadata["metrics"][name] == "":
+                assert_check.append(False)
+                continue
+
+            # convert metric value and reference value to int
+            if self.metrics[name]["type"] == "int":
+                conv_value, lower_bound = self._convert_metrics(
+                    metric_value, lower_bound, dtype="int"
+                )
+                conv_value, upper_bound = self._convert_metrics(
+                    metric_value, upper_bound, dtype="int"
+                )
+
+            # convert metric value and reference value to float
+            elif self.metrics[metric["name"]]["type"] == "float":
+                conv_value, lower_bound = self._convert_metrics(
+                    metric_value, lower_bound, dtype="float"
+                )
+                conv_value, upper_bound = self._convert_metrics(
+                    metric_value, upper_bound, dtype="float"
+                )
+            elif self.metrics[name]["type"] == "str":
+                msg = f"[blue]{self}[/]: Unable to convert metric: [red]'{name}'[/red] for comparison. The type must be 'int' or 'float' but recieved [red]{self.metrics[name]['type']}[/red]. "
+                console.print(msg)
+                self.logger.warning(msg)
+                assert_check.append(False)
+                continue
+
+            console.print(
+                f"[blue]{self}[/]: testing metric: {name} if {lower_bound} <= {conv_value} <= {upper_bound}"
+            )
+
+            # if there is a type mismatch then let's stop now before we do comparison
+            if (
+                type(conv_value) != type(upper_bound)
+                or type(conv_value) != type(upper_bound)
+                or any(item is None for item in [conv_value, lower_bound, upper_bound])
+            ):
+                assert_check.append(False)
+                continue
+
+            assert_check.append(lower_bound <= conv_value <= upper_bound)
+
+        # perform a logical AND on the list and return the boolean result
+        return all(assert_check)
+
     def check_test_state(self):
         """This method is responsible for detecting state of test (PASS/FAIL) based on returncode or regular expression."""
 
@@ -1224,6 +1294,7 @@ class BuilderBase(ABC):
             lsf_job_state_match = False
             assert_ge_match = False
             assert_eq_match = False
+            assert_range_match = False
 
             # returncode_match is boolean to check if reference returncode matches return code from test
             returncode_match = self._returncode_check()
@@ -1255,6 +1326,8 @@ class BuilderBase(ABC):
             if self.status.get("assert_eq"):
                 assert_eq_match = self._check_assert_eq()
 
+            if self.status.get("assert_range"):
+                assert_range_match = self._check_assert_range()
             # if any of checks is True we set the 'state' to PASS
             state = any(
                 [
@@ -1266,6 +1339,7 @@ class BuilderBase(ABC):
                     runtime_match,
                     assert_ge_match,
                     assert_eq_match,
+                    assert_range_match,
                 ]
             )
             if state:

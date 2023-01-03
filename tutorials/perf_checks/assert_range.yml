@@ -1,0 +1,50 @@
+buildspecs:
+  assert_range_ex:
+    type: script
+    executor: generic.local.bash
+    description: Example on assert_range
+    env:
+      OMP_NUM_THREADS: 4
+    run: |
+      wget https://raw.githubusercontent.com/jeffhammond/STREAM/master/stream.c
+      gcc -openmp -o stream stream.c
+      ./stream
+    metrics:
+      copy:
+        type: float
+        regex:
+          exp: 'Copy:\s+(\S+)\s+.*'
+          stream: stdout
+          item: 1
+      scale:
+        type: float
+        regex:
+          exp: 'Scale:\s+(\S+)\s+.*'
+          stream: stdout
+          item: 1
+      add:
+        type: float
+        regex:
+          exp: 'Add:\s+(\S+)\s+.*'
+          stream: stdout
+          item: 1
+      triad:
+        type: float
+        regex:
+          exp: 'Triad:\s+(\S+)\s+.*'
+          stream: stdout
+          item: 1
+    status:
+      assert_range:
+        - name: copy
+          lower: 5000
+          upper: 20000
+        - name: scale
+          lower: 4500
+          upper: 20000
+        - name: add
+          lower: 4300
+          upper: 20000
+        - name: triad
+          lower: 5600
+          upper: 20000
