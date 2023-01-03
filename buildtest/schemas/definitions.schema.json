@@ -268,6 +268,35 @@
             }
           }
         },
+        "assert_range":
+        {
+          "description": "Perform assertion based on lower and upper bound",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "lower",
+              "upper"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "lower": {
+                "description": "Specify reference value for lower bound",
+                "type": "number"
+              },
+              "upper": {
+                "description": "Specify reference value for upper bound",
+                "type": "number"
+              }
+
+            }
+          }
+        },
         "state": {
           "$ref": "#/definitions/state",
           "description": "explicitly mark state of test regardless of status calculation"

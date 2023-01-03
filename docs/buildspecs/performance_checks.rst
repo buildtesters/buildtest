@@ -63,7 +63,7 @@ expression. The ``type`` field in the metric section is used for the type conver
 The ``item`` is a numeric field used in `match.group <https://docs.python.org/3/library/re.html#re.Match.group>`_ to retrieve the output
 from the regular expression search. The item must be non-negative number.
 
-.. literalinclude:: ../tutorials/stream.yml
+.. literalinclude:: ../tutorials/perf_checks/assert_ge.yml
     :language: yaml
     :emphasize-lines: 12-46
     :linenos:
@@ -76,9 +76,9 @@ Let's build this test, take a close look at the output of ``buildtest build`` an
 statement.
 
 
-.. dropdown:: ``buildtest build -b tutorials/stream.yml``
+.. dropdown:: ``buildtest build -b tutorials/perf_checks/assert_ge.yml``
 
-    .. command-output:: buildtest build -b tutorials/stream.yml
+    .. command-output:: buildtest build -b tutorials/perf_checks/assert_ge.yml
 
 Let's run ``buildtest inspect query -o stream_test`` to retrieve the test details and output of STREAM test.
 
@@ -123,3 +123,26 @@ Let's build this test and see the output.
 .. dropdown:: ``buildtest build -b tutorials/perf_checks/assert_eq_exceptions.yml``
 
     .. command-output:: buildtest build -b tutorials/perf_checks/assert_eq_exceptions.yml
+
+Assert Range
+-------------
+
+The ``assert_range`` property can be used to test performance for a metric given a lower and upper bound. This property expects
+one to specify ``lower`` and ``upper`` field which must be an integer or floating point number to perform comparison. buildtest will
+perform an assertion, if metric value is in the range specified by **lower** and **upper**, then test will pass. Shown below
+is an example using the ``assert_range`` property with stream benchmark.
+
+.. literalinclude:: ../tutorials/perf_checks/assert_range.yml
+    :language: yaml
+    :emphasize-lines: 37-50
+    :linenos:
+
+Let's build this test and see the output
+
+
+.. dropdown:: ``buildtest build -b tutorials/perf_checks/assert_range.yml``
+
+    .. command-output:: buildtest build -b tutorials/perf_checks/assert_range.yml
+
+Note that performance results may vary on your system and depending on the metric value you may want to adjust the
+lower and upper bound to match your requirement.
