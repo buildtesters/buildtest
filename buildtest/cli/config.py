@@ -11,12 +11,13 @@ from rich.syntax import Syntax
 from rich.table import Column, Table
 
 
-def config_cmd(args, configuration, editor):
+def config_cmd(args, configuration, editor, system):
     """Entry point for ``buildtest config`` command. This method will invoke other methods depending on input argument.
 
     Args:
         args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        system (buildtest.system.BuildTestSystem): An instance of BuildTestSystem class
     """
     if args.config in ["view", "v"]:
         view_configuration(configuration, theme=args.theme, pager=args.pager)
@@ -33,7 +34,7 @@ def config_cmd(args, configuration, editor):
         )
 
     elif args.config == "validate":
-        validate_config(configuration)
+        validate_config(configuration, system.system["moduletool"])
 
     elif args.config == "systems":
         view_system(configuration)
@@ -88,7 +89,7 @@ def view_system(configuration):
     console.print(table)
 
 
-def validate_config(configuration):
+def validate_config(configuration, moduletool):
     """This method implements ``buildtest config validate`` which attempts to
     validate buildtest schema file `settings.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/settings.schema.json>`_.
     If it's not validate an exception is raised which could be
@@ -107,13 +108,14 @@ def validate_config(configuration):
 
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        moduletool (str): Name of moduletool for validating module system
 
     Raises:
         SystemExit: If exception is raised during validating configuration file.
     """
 
     try:
-        configuration.validate()
+        configuration.validate(moduletool=moduletool)
     except (ValidationError, ConfigurationError) as err:
         print(err)
         raise sys.exit(f"{configuration.file} is not valid")
