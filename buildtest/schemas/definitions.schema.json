@@ -297,6 +297,18 @@
             }
           }
         },
+        "exists": {
+          "description": "Check for list of file or directory path for existences using os.path.exists",
+          "ref": "#/definitions/list_of_strings"
+        },
+        "is_dir": {
+          "description": "Check for list of filepaths are directories",
+          "ref": "#/definitions/list_of_strings"
+        },
+        "is_file": {
+          "description": "Check for list of filepaths are files",
+          "ref": "#/definitions/list_of_strings"
+        },
         "state": {
           "$ref": "#/definitions/state",
           "description": "explicitly mark state of test regardless of status calculation"

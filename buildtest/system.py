@@ -120,12 +120,12 @@ class BuildTestSystem:
 
         if lmod_version:
             self.system["moduletool"] = "lmod"
-            self.logger.info(f"Detected module system: lmod")
+            self.logger.info("Detected module system: lmod")
             self.logger.info(f"Detected Lmod with version: {lmod_version}")
 
         if environmodules_version:
             self.system["moduletool"] = "environment-modules"
-            self.logger.info(f"Detected module system: environment-modules")
+            self.logger.info("Detected module system: environment-modules")
             self.logger.info(
                 f"Detected environment-modules with version: {environmodules_version}"
             )
