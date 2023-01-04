@@ -234,8 +234,13 @@ Test Status
 
 buildtest will record state of each test which can be ``PASS`` or ``FAIL``. By default a 0 exit code is
 PASS and everything else is a FAIL. The ``status`` property can be used to determine how test will report its state.
-Currently, we can match state based on :ref:`returncode <returncode>`, :ref:`runtime <runtime>`, or
-:ref:`regular expression <regex>`.
+Currently, we can match state based on the following:
+
+  - :ref:`Return Code <returncode>`
+  - :ref:`Runtime <runtime>`
+  - :ref:`Regular Expression <regex>`
+  - :ref:`Performance Check <perf_checks>`
+  - :ref:`Explicit Test Status <explicit_status>`
 
 .. _returncode:
 
@@ -338,6 +343,8 @@ will pass while the last two tests fail because it fails to comply with runtime 
 
    .. command-output:: buildtest report --filter buildspec=tutorials/test_status/runtime_status_test.yml --format name,id,state,runtime --latest
 
+.. _explicit_status:
+
 Explicitly Declaring Status of Test
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -361,6 +368,41 @@ If we build this test, we expect buildtest to honor the value of ``state`` prope
 .. dropdown:: ``buildtest build -b tutorials/test_status/explicit_state.yml``
 
    .. command-output:: buildtest build -b tutorials/test_status/explicit_state.yml
+
+File Existence Check
+~~~~~~~~~~~~~~~~~~~~~~
+
+buildtest supports ability to check for file existences as part of status check. This can be done by using ``exists`` property
+which expects a list of file or directory names to check. This can be useful if you are running a test that will write some output file
+or directory and test will pass if file exists. In the example below we show two tests, first test will pass. We check for files and directory
+path, note variable and shell expansion is supported.
+
+In the second example, we expect this test to fail where we are expected to check for file `bar`.
+
+.. literalinclude:: ../tutorials/test_status/exists.yml
+   :language: yaml
+   :emphasize-lines: 10-15,21-23
+
+We can run this test by running the following, take a close look at the output
+
+.. dropdown:: ``buildtest build -b tutorials/test_status/exists.yml``
+
+   .. command-output:: buildtest build -b tutorials/test_status/exists.yml
+
+In the next example, we introduce checks for files and directory via `is_file` and `is_dir` property, which behavior similar to
+``exists`` except they will check if each item is a file or directory. We expect the first test to fail, because **$HOME/.bashrc** is
+not a directory but a file. The second test will incorporate the same test and use ``is_file`` for status check which we expect to pass
+
+
+.. literalinclude:: ../tutorials/test_status/file_and_dir_check.yml
+   :language: yaml
+   :emphasize-lines: 7-11,17-22
+
+Let's build the test and see the output.
+
+.. dropdown:: ``buildtest build -b tutorials/test_status/file_and_dir_check.yml``
+
+   .. command-output:: buildtest build -b tutorials/test_status/file_and_dir_check.yml
 
 Skipping test
 -------------
