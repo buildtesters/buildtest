@@ -249,6 +249,22 @@ class BuilderBase(ABC):
 
         return False
 
+    def is_slurm_executor(self):
+        """Return True if current builder executor type is LocalExecutor otherwise returns False.
+
+        Returns:
+            bool: returns True if builder is using executor type LocalExecutor otherwise returns False
+
+        """
+
+        # import issue when putting this at top of file
+        from buildtest.executors.local import SlurmExecutor
+
+        if isinstance(self.buildexecutor.executors[self.executor], SlurmExecutor):
+            return True
+
+        return False
+
     def is_batch_job(self):
         """Return True/False if builder.job attribute is of type Job instance if not returns False.
         This method indicates if builder has a job submitted to queue
@@ -890,6 +906,10 @@ class BuilderBase(ABC):
         such as output, error and test script. We will check state of test and mark job is complete.
         """
 
+        if self.is_slurm_executor():
+            print(f"{self} workdir: ", os.getcwd())
+            os.chdir(os.getenv("SLURM_SUBMIT_DIR"))
+            print(f"{self} Changing directory to ", os.getcwd())
         self._output = read_file(self.metadata["outfile"])
         self._error = read_file(self.metadata["errfile"])
 
