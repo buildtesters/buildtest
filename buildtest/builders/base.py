@@ -244,10 +244,7 @@ class BuilderBase(ABC):
         # import issue when putting this at top of file
         from buildtest.executors.local import LocalExecutor
 
-        if isinstance(self.buildexecutor.executors[self.executor], LocalExecutor):
-            return True
-
-        return False
+        return isinstance(self.buildexecutor.executors[self.executor], LocalExecutor)
 
     def is_slurm_executor(self):
         """Return True if current builder executor type is LocalExecutor otherwise returns False.
@@ -258,22 +255,16 @@ class BuilderBase(ABC):
         """
 
         # import issue when putting this at top of file
-        from buildtest.executors.local import SlurmExecutor
+        from buildtest.executors.slurm import SlurmExecutor
 
-        if isinstance(self.buildexecutor.executors[self.executor], SlurmExecutor):
-            return True
-
-        return False
+        return isinstance(self.buildexecutor.executors[self.executor], SlurmExecutor)
 
     def is_batch_job(self):
         """Return True/False if builder.job attribute is of type Job instance if not returns False.
         This method indicates if builder has a job submitted to queue
         """
 
-        if isinstance(self.job, Job):
-            return True
-
-        return False
+        return isinstance(self.job, Job)
 
     def start(self):
         """Keep internal timer for test using class :class:`buildtest.utils.timer.Timer`. This method will start the timer for builder which is invoked upon running test."""

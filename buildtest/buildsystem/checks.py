@@ -1,3 +1,5 @@
+import os
+
 from buildtest.defaults import console
 from buildtest.utils.file import is_dir, is_file, resolve_path
 
@@ -12,6 +14,8 @@ def exists_check(builder, status):
     Returns:
         bool: A boolean for exists status check
     """
+    console.print(f"{self} working directory is {os.getcwd()}")
+
     assert_exists = all(resolve_path(file, exist=True) for file in status["exists"])
     console.print(
         f"[blue]{builder}[/]: Test all files:  {status['exists']}  existences "
