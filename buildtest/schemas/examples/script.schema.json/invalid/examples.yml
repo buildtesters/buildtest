@@ -264,3 +264,11 @@ buildspecs:
         sbatch: ["-n 8", "-N 1", "-t 60"]
       generic.local.zsh:
         sbatch: ["-n 16", "-N 2", "-t 120"]
+
+  file_exists_failure:
+    type: script
+    executor: generic.local.bash
+    description: this test will fail validation, because item must be a string
+    run: mkdir -p 1
+    status:
+      exists: [ 1 ]

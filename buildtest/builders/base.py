@@ -17,6 +17,7 @@ import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
 
+from buildtest.buildsystem.checks import exists_check, is_dir_check, is_file_check
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
 from buildtest.exceptions import BuildTestError, RuntimeFailure
@@ -1304,6 +1305,9 @@ class BuilderBase(ABC):
             assert_ge_match = False
             assert_eq_match = False
             assert_range_match = False
+            assert_exists = False
+            assert_is_dir = False
+            assert_is_file = False
 
             # returncode_match is boolean to check if reference returncode matches return code from test
             returncode_match = self._returncode_check()
@@ -1337,6 +1341,16 @@ class BuilderBase(ABC):
 
             if self.status.get("assert_range"):
                 assert_range_match = self._check_assert_range()
+
+            if self.status.get("exists"):
+                assert_exists = exists_check(builder=self, status=self.status)
+
+            if self.status.get("is_dir"):
+                assert_is_dir = is_dir_check(builder=self, status=self.status)
+
+            if self.status.get("is_file"):
+                assert_is_file = is_file_check(builder=self, status=self.status)
+
             # if any of checks is True we set the 'state' to PASS
             state = any(
                 [
@@ -1349,6 +1363,9 @@ class BuilderBase(ABC):
                     assert_ge_match,
                     assert_eq_match,
                     assert_range_match,
+                    assert_exists,
+                    assert_is_dir,
+                    assert_is_file,
                 ]
             )
             if state:

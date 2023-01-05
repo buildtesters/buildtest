@@ -542,3 +542,23 @@ buildspecs:
       assert_ge:
         - name: copy
           ref: 5000
+
+  file_exists_pass:
+    type: script
+    executor: generic.local.bash
+    description: this test will pass
+    run: mkdir -p 1
+    status:
+      exists: [ '1' ]
+
+  combined_file_and_dir_checks:
+    type: script
+    executor: generic.local.bash
+    description: status check for files and directories
+    run: hostname
+    status:
+      is_dir:
+        - $HOME
+        - /tmp
+      is_file:
+        - $HOME/.bashrc

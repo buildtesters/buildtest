@@ -1,3 +1,5 @@
+.. _perf_checks:
+
 Performance Checks
 ====================
 
