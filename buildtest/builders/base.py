@@ -897,10 +897,10 @@ class BuilderBase(ABC):
         such as output, error and test script. We will check state of test and mark job is complete.
         """
 
-        if self.is_slurm_executor():
-            print(f"{self} workdir: ", os.getcwd())
-            os.chdir(os.getenv("SLURM_SUBMIT_DIR"))
-            print(f"{self} Changing directory to ", os.getcwd())
+        # ensure we are back in stage directory before processing. For batch jobs like Slurm the
+        # current working directory is changed to the submit line which can cause issues for file checks
+        os.chdir(self.stage_dir)
+
         self._output = read_file(self.metadata["outfile"])
         self._error = read_file(self.metadata["errfile"])
 
