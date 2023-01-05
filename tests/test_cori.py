@@ -94,6 +94,31 @@ def test_cori_slurm_max_pend():
         cmd.build()
 
 
+def test_cori_slurm_file_exists():
+
+    if not hostname.startswith("cori"):
+        pytest.skip("This test runs on Cori Login nodes ('cori*')")
+
+    bc = SiteConfiguration(settings_file)
+    bc.detect_system()
+    bc.validate(moduletool="environment-modules")
+
+    system = BuildTestSystem()
+
+    cmd = BuildTest(
+        configuration=bc,
+        buildspecs=[
+            os.path.join(
+                os.getenv("BUILDTEST_ROOT"), "tests", "examples", "cori", "exists.yml"
+            )
+        ],
+        buildtest_system=system,
+        poll_interval=5,
+        maxpendtime=120,
+    )
+    cmd.build()
+
+
 def test_compiler_find_cori():
 
     if not hostname.startswith("cori"):
