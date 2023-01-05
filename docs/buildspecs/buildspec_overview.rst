@@ -370,9 +370,9 @@ If we build this test, we expect buildtest to honor the value of ``state`` prope
 
    .. command-output:: buildtest build -b tutorials/test_status/explicit_state.yml
 
-.. _file_check:
+.. _file_checks:
 
-File Check
+File Checks
 ~~~~~~~~~~~~~
 
 buildtest supports various file checks that can be used as means for passing test.
