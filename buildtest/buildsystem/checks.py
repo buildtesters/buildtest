@@ -17,7 +17,7 @@ def exists_check(builder, status):
         f"[blue]{builder}[/]: Test all files:  {status['exists']}  existences "
     )
     for fname in status["exists"]:
-        resolved_fname = resolve_path(fname, exist=True)
+        resolved_fname = resolve_path(fname)
         if resolved_fname:
             console.print(f"[blue]{builder}[/]: file: {resolved_fname} exists")
         else:
@@ -71,7 +71,7 @@ def is_dir_check(builder, status):
         f"[blue]{builder}[/]: Test all files:  {status['is_dir']}  existences "
     )
     for dirname in status["is_dir"]:
-        resolved_dirname = resolve_path(dirname, exist=True)
+        resolved_dirname = resolve_path(dirname)
         if is_dir(resolved_dirname):
             console.print(
                 f"[blue]{builder}[/]: file: {resolved_dirname} is a directory "

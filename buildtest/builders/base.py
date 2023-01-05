@@ -301,6 +301,7 @@ class BuilderBase(ABC):
 
         self.metadata["command"] = cmd
 
+        console.print(f"[blue]{self}[/]: Current Working Directory : {os.getcwd()}")
         # capture output of 'env' and write to file 'build-env.sh' prior to running test
         command = BuildTestCommand("env")
         command.execute()
