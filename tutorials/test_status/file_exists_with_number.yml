@@ -1,0 +1,8 @@
+buildspecs:
+  file_exists_pass:
+    type: script
+    executor: generic.local.bash
+    description: this test will pass
+    run: mkdir -p 1
+    status:
+      exists: [ '1' ]

@@ -3,7 +3,7 @@ buildspecs:
    type: script
    executor: generic.local.bash
    description: status check for files and directories
-   run: exit 0
+   run: hostname
    status:
      is_dir:
        - $HOME
@@ -13,7 +13,7 @@ buildspecs:
     type: script
     executor: generic.local.bash
     description: status check for files and directories
-    run: exit 0
+    run: hostname
     status:
       is_dir:
         - $HOME
