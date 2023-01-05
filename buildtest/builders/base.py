@@ -17,6 +17,7 @@ import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
 
+from buildtest.buildsystem.checks import exists_check, is_dir_check, is_file_check
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
 from buildtest.exceptions import BuildTestError, RuntimeFailure
@@ -26,14 +27,7 @@ from buildtest.scheduler.pbs import PBSJob
 from buildtest.scheduler.slurm import SlurmJob
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import (
-    create_dir,
-    is_dir,
-    is_file,
-    read_file,
-    resolve_path,
-    write_file,
-)
+from buildtest.utils.file import create_dir, read_file, write_file
 from buildtest.utils.shell import Shell, is_csh_shell
 from buildtest.utils.timer import Timer
 from buildtest.utils.tools import deep_get
@@ -1349,58 +1343,14 @@ class BuilderBase(ABC):
                 assert_range_match = self._check_assert_range()
 
             if self.status.get("exists"):
-                assert_exists = all(
-                    resolve_path(file, exist=True) for file in self.status["exists"]
-                )
-                console.print(
-                    f"[blue]{self}[/]: Test all files:  {self.status['exists']}  existences "
-                )
-                for fname in self.status["exists"]:
-                    resolved_fname = resolve_path(fname, exist=True)
-                    if resolved_fname:
-                        console.print(f"[blue]{self}[/]: file: {resolved_fname} exists")
-                    else:
-                        console.print(f"[blue]{self}[/]: file: {fname} does not exist")
-
-                console.print(f"[blue]{self}[/]: Exist Check: {assert_exists}")
+                assert_exists = exists_check(builder=self, status=self.status)
 
             if self.status.get("is_dir"):
-                assert_is_dir = all(is_dir(file) for file in self.status["is_dir"])
-                console.print(
-                    f"[blue]{self}[/]: Test all files:  {self.status['is_dir']}  existences "
-                )
-                for dirname in self.status["is_dir"]:
-                    resolved_dirname = resolve_path(dirname, exist=True)
-                    if is_dir(resolved_dirname):
-                        console.print(
-                            f"[blue]{self}[/]: file: {resolved_dirname} is a directory "
-                        )
-                    else:
-                        console.print(
-                            f"[blue]{self}[/]: file: {dirname} is not a directory"
-                        )
-
-                console.print(
-                    f"[blue]{self}[/]: Directory Existence Check: {assert_is_dir}"
-                )
+                assert_is_dir = is_dir_check(builder=self, status=self.status)
 
             if self.status.get("is_file"):
-                assert_is_file = all(is_file(file) for file in self.status["is_file"])
-                console.print(
-                    f"[blue]{self}[/]: Test all files:  {self.status['is_file']}  existences "
-                )
-                for fname in self.status["is_file"]:
-                    resolved_fname = resolve_path(fname, exist=True)
-                    if is_file(resolved_fname):
-                        console.print(
-                            f"[blue]{self}[/]: file: {resolved_fname} is a file "
-                        )
-                    else:
-                        console.print(f"[blue]{self}[/]: file: {fname} is not a file")
+                assert_is_file = is_file_check(builder=self, status=self.status)
 
-                console.print(
-                    f"[blue]{self}[/]: File Existence Check: {assert_is_file}"
-                )
             # if any of checks is True we set the 'state' to PASS
             state = any(
                 [
