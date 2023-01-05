@@ -423,11 +423,11 @@ Let's validate and build this test.
 
 .. dropdown:: ``buildtest bc validate -b tutorials/test_status/file_exists_with_number.yml``
 
-    .. command-output:: buildtest bc validate -b tutorials/test_status/file_exists_exception.yml
+    .. command-output:: buildtest bc validate -b tutorials/test_status/file_exists_with_number.yml
 
 .. dropdown:: ``buildtest build -b tutorials/test_status/file_exists_with_number.yml``
 
-    .. command-output:: buildtest build -b tutorials/test_status/file_exists_exception.yml
+    .. command-output:: buildtest build -b tutorials/test_status/file_exists_with_number.yml
 
 In the next example, we introduce checks for files and directory via ``is_file`` and
 ``is_dir`` property, which behaves similar to ``exists`` except they will check if each item
