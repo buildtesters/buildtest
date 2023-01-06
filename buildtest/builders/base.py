@@ -24,6 +24,8 @@ from buildtest.buildsystem.checks import (
     exists_check,
     is_dir_check,
     is_file_check,
+    returncode_check,
+    runtime_check,
 )
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
@@ -991,73 +993,6 @@ class BuilderBase(ABC):
         # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
         return regex is not None
 
-    def _returncode_check(self):
-        """Check status check of ``returncode`` field if specified in status property."""
-
-        returncode_match = False
-
-        # if 'returncode' field set for 'status' check the returncode if its not set we return False
-        if "returncode" in self.status.keys():
-
-            # returncode can be an integer or list of integers
-            buildspec_returncode = self.status["returncode"]
-
-            # if buildspec returncode field is integer we convert to list for check
-            if isinstance(buildspec_returncode, int):
-                buildspec_returncode = [buildspec_returncode]
-
-            self.logger.debug("Conducting Return Code check")
-            self.logger.debug(
-                "Status Return Code: %s   Result Return Code: %s"
-                % (
-                    buildspec_returncode,
-                    self.metadata["result"]["returncode"],
-                )
-            )
-            # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
-            returncode_match = (
-                self.metadata["result"]["returncode"] in buildspec_returncode
-            )
-            console.print(
-                f"[blue]{self}[/]: Checking returncode - {self.metadata['result']['returncode']} is matched in list {buildspec_returncode}"
-            )
-
-        return returncode_match
-
-    def _check_runtime(self):
-        """This method will return a boolean (True/False) based on runtime specified in buildspec and check with test runtime.
-        User can specify both `min` and `max`, or just specify `min` or `max`.
-        """
-
-        if not self.status.get("runtime"):
-            return False
-
-        min_time = self.status["runtime"].get("min") or 0
-        max_time = self.status["runtime"].get("max")
-
-        actual_runtime = self.get_runtime()
-
-        # if both min and max are specified
-        if min_time and max_time:
-            self.logger.debug(
-                f"Checking test: {self.name} runtime: {actual_runtime} is greater than min: {float(min_time)} and less than max: {float(max_time)}"
-            )
-            return float(min_time) < actual_runtime < float(max_time)
-
-        # if min specified
-        if min_time and not max_time:
-            self.logger.debug(
-                f"Checking test: {self.name} runtime: {actual_runtime} is greater than min: {float(min_time)}"
-            )
-            return float(min_time) < actual_runtime
-
-        # if max specified
-        if not min_time and max_time:
-            self.logger.debug(
-                f"Checking test: {self.name} runtime: {actual_runtime} is less than max: {float(max_time)}"
-            )
-            return actual_runtime < float(max_time)
-
     def is_valid_metric(self, name):
         if name not in list(self.metadata["metrics"].keys()):
             return False
@@ -1086,13 +1021,13 @@ class BuilderBase(ABC):
             assert_is_file = False
 
             # returncode_match is boolean to check if reference returncode matches return code from test
-            returncode_match = self._returncode_check()
+            returncode_match = returncode_check(self)
 
             # check regex against output or error stream based on regular expression
             # defined in status property. Return value is a boolean
             regex_match = self._check_regex()
 
-            runtime_match = self._check_runtime()
+            runtime_match = runtime_check(self)
 
             self.metadata["check"]["regex"] = regex_match
             self.metadata["check"]["runtime"] = runtime_match

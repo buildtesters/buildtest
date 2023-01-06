@@ -6,6 +6,81 @@ from buildtest.utils.file import is_dir, is_file, resolve_path
 logger = logging.getLogger(__name__)
 
 
+def returncode_check(builder):
+    """Check status check of ``returncode`` field if specified in status property.
+
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+    """
+
+    returncode_match = False
+
+    # if 'returncode' field set for 'status' check the returncode if its not set we return False
+    if "returncode" in builder.status.keys():
+
+        # returncode can be an integer or list of integers
+        buildspec_returncode = builder.status["returncode"]
+
+        # if buildspec returncode field is integer we convert to list for check
+        if isinstance(buildspec_returncode, int):
+            buildspec_returncode = [buildspec_returncode]
+
+        logger.debug("Conducting Return Code check")
+        logger.debug(
+            "Status Return Code: %s   Result Return Code: %s"
+            % (
+                buildspec_returncode,
+                builder.metadata["result"]["returncode"],
+            )
+        )
+        # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
+        returncode_match = (
+            builder.metadata["result"]["returncode"] in buildspec_returncode
+        )
+        console.print(
+            f"[blue]{builder}[/]: Checking returncode - {builder.metadata['result']['returncode']} is matched in list {buildspec_returncode}"
+        )
+
+    return returncode_match
+
+
+def runtime_check(builder):
+    """This method will return a boolean (True/False) based on runtime specified in buildspec and check with test runtime.
+    User can specify both `min` and `max`, or just specify `min` or `max`.
+
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+    """
+
+    if not builder.status.get("runtime"):
+        return False
+
+    min_time = builder.status["runtime"].get("min") or 0
+    max_time = builder.status["runtime"].get("max")
+
+    actual_runtime = builder.get_runtime()
+
+    # if min specified
+    if min_time and not max_time:
+        console.print(
+            f"[blue]{builder}[/]: Checking  mintime < runtime: {float(min_time)} < {actual_runtime}"
+        )
+        return float(min_time) < actual_runtime
+
+    # if max specified
+    if not min_time and max_time:
+        console.print(
+            f"[blue]{builder}[/]: Checking runtime < maxtime: {actual_runtime} < {float(max_time)} "
+        )
+        return actual_runtime < float(max_time)
+
+    # if both min and max are specified
+    console.print(
+        f"[blue]{builder}[/]: Checking mintime < runtime < maxtime: {float(min_time)} < {actual_runtime} < {float(max_time)} "
+    )
+    return float(min_time) < actual_runtime < float(max_time)
+
+
 def exists_check(builder, status):
     """This method will perform status check for ``exists`` property. Each value is tested for file
     existence and returns a boolean to inform if all files exist or not.
