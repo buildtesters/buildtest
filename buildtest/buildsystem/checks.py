@@ -150,7 +150,7 @@ def exists_check(builder):
     console.print(
         f"[blue]{builder}[/]: Test all files:  {builder.status['exists']}  existences "
     )
-    for fname in status["exists"]:
+    for fname in builder.status["exists"]:
         resolved_fname = resolve_path(fname)
         if resolved_fname:
             console.print(f"[blue]{builder}[/]: file: {resolved_fname} exists")
@@ -176,7 +176,7 @@ def is_file_check(builder):
     console.print(
         f"[builder]{builder}[/]: Test all files:  {builder.status['is_file']}  existences "
     )
-    for fname in status["is_file"]:
+    for fname in builder.status["is_file"]:
         resolved_fname = resolve_path(fname, exist=True)
         if is_file(resolved_fname):
             console.print(f"[blue]{builder}[/]: file: {resolved_fname} is a file ")
@@ -202,7 +202,7 @@ def is_dir_check(builder):
     console.print(
         f"[blue]{builder}[/]: Test all files:  {builder.status['is_dir']}  existences "
     )
-    for dirname in status["is_dir"]:
+    for dirname in builder.status["is_dir"]:
         resolved_dirname = resolve_path(dirname)
         if is_dir(resolved_dirname):
             console.print(
