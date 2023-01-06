@@ -1,6 +1,37 @@
 CHANGELOG
 =========
 
+v1.1 (Jan 6th, 2023)
+-----------------------
+
+**Buildspec Updates:**
+
+- Add support for Performance checks: **Assert Equality** (``assert_eq``), **Assert Range** (``assert_range``), **Assert Greater Equal** (``assert_ge``) `#1313 <https://github.com/buildtesters/buildtest/pull/1313>`_, `#1320 <https://github.com/buildtesters/buildtest/pull/1320>`_, `#1326 <https://github.com/buildtesters/buildtest/pull/1326>`_
+- Add support for File checks such as file existence, is file or is directory via properties ``exists``, ``is_file``, ``is_dir``  `#1329 <https://github.com/buildtesters/buildtest/pull/1329>`_
+- Change behavior of buildspec parser to check for executor check and raise different exceptions based on the validation error `#1309 <https://github.com/buildtesters/buildtest/pull/1309>`_
+- Increase test length for buildspecs from 32 to 48 characters `#1286 <https://github.com/buildtesters/buildtest/pull/1286>`_
+
+**Command Line Updates:**
+
+- Add new command **buildtest tutorial-examples** that will auto-generate tutorial examples `#1307 <https://github.com/buildtesters/buildtest/pull/1307>`_
+- Add top-level argument ``buildtest --color`` to control coloring option `#1280 <https://github.com/buildtesters/buildtest/pull/1280>`_
+- Add color support for **buildtest buildspec maintainers**, **buildtest inspect list** command `#1284 <https://github.com/buildtesters/buildtest/pull/1284>`_, `#1287 <https://github.com/buildtesters/buildtest/pull/1287>`_
+- Add color support for terse output formats. This includes coloring for ``buildtest report --terse``, ``buildtest buildspec maintainers --list``, ``buildtest buildspec maintainers --breakdown``, ``buildtest buildspec find --terse``, ``buildtest history list --terse`` `#1292 <https://github.com/buildtesters/buildtest/pull/1292>`_
+- Add color support for ``buildtest buildspec summary`` `#1298 <https://github.com/buildtesters/buildtest/pull/1298>`_
+- Add support for filtering logs by loglevel via ``buildtest --loglevel`` `#1312 <https://github.com/buildtesters/buildtest/pull/1312>`_
+
+
+**Documentation Updates:**
+
+
+- Add documentation on how to generate buildtest tutorial `#1289 <https://github.com/buildtesters/buildtest/pull/1289>`_
+- Redesign documentation for buildtest into based on `divio <https://documentation.divio.com/>`_ `#1285 <https://github.com/buildtesters/buildtest/pull/1285>`_
+- Rearrange content of **Buildspec Overview** into sub-pages `#1323 <https://github.com/buildtesters/buildtest/pull/1323>`_
+- Move APIs under **Reference** `#1304 <https://github.com/buildtesters/buildtest/pull/1304>`_
+- Add link to SC22, PEARC22 talk and paper submission `#1294 <https://github.com/buildtesters/buildtest/pull/1294>`_ , `#1291 <https://github.com/buildtesters/buildtest/pull/1291>`_
+- Add section **Useful Links** on left navigation side-bar `#1305 <https://github.com/buildtesters/buildtest/pull/1305/>`_
+- Change slack invitation link to `communityiniviter <https://communityinviter.com/>`_ instead of heroku. `#1306 <https://github.com/buildtesters/buildtest/pull/1306>`_
+
 v1.0 (Oct 14th 2022)
 ---------------------
 
