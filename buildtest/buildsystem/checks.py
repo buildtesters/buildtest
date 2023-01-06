@@ -92,6 +92,9 @@ def regex_check(builder):
     will return a boolean True indicates there is a match otherwise False
     if ``regex`` object not defined or ``re.search`` doesn't find a match.
 
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+
     Returns:
         bool: Returns True if their is a regex match otherwise returns False.
     """
@@ -132,19 +135,20 @@ def regex_check(builder):
     return True
 
 
-def exists_check(builder, status):
+def exists_check(builder):
     """This method will perform status check for ``exists`` property. Each value is tested for file
     existence and returns a boolean to inform if all files exist or not.
 
     Args:
         builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
-        status (dict): A dictionary containing the ``status`` property from the buildspec
     Returns:
         bool: A boolean for exists status check
     """
-    assert_exists = all(resolve_path(file, exist=True) for file in status["exists"])
+    assert_exists = all(
+        resolve_path(file, exist=True) for file in builder.status["exists"]
+    )
     console.print(
-        f"[blue]{builder}[/]: Test all files:  {status['exists']}  existences "
+        f"[blue]{builder}[/]: Test all files:  {builder.status['exists']}  existences "
     )
     for fname in status["exists"]:
         resolved_fname = resolve_path(fname)
@@ -157,21 +161,20 @@ def exists_check(builder, status):
     return assert_exists
 
 
-def is_file_check(builder, status):
+def is_file_check(builder):
     """This method will perform status check for ``is_file`` property. Each item in ``is_file`` is
      checked by determining if its a file. The return is a single boolean where we perform a logical AND
      to determine final status check for is_file
 
     Args:
         builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
-        status (dict): A dictionary containing the ``status`` property from the buildspec
     Returns:
         bool: A boolean for is_file status check
     """
 
-    assert_is_file = all(is_file(file) for file in status["is_file"])
+    assert_is_file = all(is_file(file) for file in builder.status["is_file"])
     console.print(
-        f"[builder]{builder}[/]: Test all files:  {status['is_file']}  existences "
+        f"[builder]{builder}[/]: Test all files:  {builder.status['is_file']}  existences "
     )
     for fname in status["is_file"]:
         resolved_fname = resolve_path(fname, exist=True)
@@ -184,21 +187,20 @@ def is_file_check(builder, status):
     return assert_is_file
 
 
-def is_dir_check(builder, status):
+def is_dir_check(builder):
     """This method will perform status check for ``is_dir`` property. Each item in ``is_dir`` is
      checked by determining if its a directory. The return is a single boolean where we perform a logical AND
      to determine final status check for ``is_dir``
 
     Args:
         builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
-        status (dict): A dictionary containing the ``status`` property from the buildspec
     Returns:
         bool: A boolean for ``is_dir`` status check
     """
 
-    assert_is_dir = all(is_dir(file) for file in status["is_dir"])
+    assert_is_dir = all(is_dir(file) for file in builder.status["is_dir"])
     console.print(
-        f"[blue]{builder}[/]: Test all files:  {status['is_dir']}  existences "
+        f"[blue]{builder}[/]: Test all files:  {builder.status['is_dir']}  existences "
     )
     for dirname in status["is_dir"]:
         resolved_dirname = resolve_path(dirname)

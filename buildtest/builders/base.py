@@ -1002,13 +1002,13 @@ class BuilderBase(ABC):
                 assert_range_match = assert_range_check(self)
 
             if self.status.get("exists"):
-                assert_exists = exists_check(builder=self, status=self.status)
+                assert_exists = exists_check(builder=self)
 
             if self.status.get("is_dir"):
-                assert_is_dir = is_dir_check(builder=self, status=self.status)
+                assert_is_dir = is_dir_check(builder=self)
 
             if self.status.get("is_file"):
-                assert_is_file = is_file_check(builder=self, status=self.status)
+                assert_is_file = is_file_check(builder=self)
 
             # if any of checks is True we set the 'state' to PASS
             state = any(
