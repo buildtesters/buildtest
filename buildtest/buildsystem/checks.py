@@ -1,5 +1,3 @@
-import os
-
 from buildtest.defaults import console
 from buildtest.utils.file import is_dir, is_file, resolve_path
 
