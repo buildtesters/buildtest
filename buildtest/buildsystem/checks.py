@@ -1,4 +1,5 @@
 import logging
+import re
 
 from buildtest.defaults import console
 from buildtest.utils.file import is_dir, is_file, resolve_path
@@ -79,6 +80,56 @@ def runtime_check(builder):
         f"[blue]{builder}[/]: Checking mintime < runtime < maxtime: {float(min_time)} < {actual_runtime} < {float(max_time)} "
     )
     return float(min_time) < actual_runtime < float(max_time)
+
+
+def regex_check(builder):
+    """This method conducts a regular expression check using
+    `re.search <https://docs.python.org/3/library/re.html#re.search>`_
+    with regular expression defined in Buildspec. User must specify an
+    output stream (stdout, stderr) to select when performing regex. In
+    buildtest, this would read the .out or .err file based on stream and
+    run the regular expression to see if there is a match. This method
+    will return a boolean True indicates there is a match otherwise False
+    if ``regex`` object not defined or ``re.search`` doesn't find a match.
+
+    Returns:
+        bool: Returns True if their is a regex match otherwise returns False.
+    """
+
+    if not builder.status.get("regex"):
+        return False
+
+    file_stream = None
+    if builder.status["regex"]["stream"] == "stdout":
+        logger.debug(
+            f"Detected regex stream 'stdout' so reading output file: {builder.metadata['outfile']}"
+        )
+        content = builder.output()
+
+        file_stream = builder.metadata["outfile"]
+
+    elif builder.status["regex"]["stream"] == "stderr":
+        logger.debug(
+            f"Detected regex stream 'stderr' so reading error file: {builder.metadata['errfile']}"
+        )
+        content = builder.error()
+
+        file_stream = builder.metadata["errfile"]
+
+    logger.debug(f"Applying re.search with exp: {builder.status['regex']['exp']}")
+
+    regex = re.search(builder.status["regex"]["exp"], content)
+
+    console.print(
+        f"[blue]{builder}[/]: performing regular expression - '{builder.status['regex']['exp']}' on file: {file_stream}"
+    )
+    if not regex:
+        console.print(f"[blue]{builder}[/]: Regular Expression Match - [red]Failed![/]")
+        return False
+
+    console.print(f"[blue]{builder}[/]: Regular Expression Match - [green]Success![/]")
+
+    return True
 
 
 def exists_check(builder, status):

@@ -24,6 +24,7 @@ from buildtest.buildsystem.checks import (
     exists_check,
     is_dir_check,
     is_file_check,
+    regex_check,
     returncode_check,
     runtime_check,
 )
@@ -939,60 +940,6 @@ class BuilderBase(ABC):
         # mark job is success if it finished all post run steps
         self.complete()
 
-    def _check_regex(self):
-        """This method conducts a regular expression check using
-        `re.search <https://docs.python.org/3/library/re.html#re.search>`_
-        with regular expression defined in Buildspec. User must specify an
-        output stream (stdout, stderr) to select when performing regex. In
-        buildtest, this would read the .out or .err file based on stream and
-        run the regular expression to see if there is a match. This method
-        will return a boolean True indicates there is a match otherwise False
-        if ``regex`` object not defined or ``re.search`` doesn't find a match.
-
-        Returns:
-            bool: Returns True if their is a regex match otherwise returns False.
-        """
-
-        regex_match = False
-
-        if not self.status.get("regex"):
-            return regex_match
-
-        file_stream = None
-        if self.status["regex"]["stream"] == "stdout":
-            self.logger.debug(
-                f"Detected regex stream 'stdout' so reading output file: {self.metadata['outfile']}"
-            )
-            content = self.output()
-
-            file_stream = self.metadata["outfile"]
-
-        elif self.status["regex"]["stream"] == "stderr":
-            self.logger.debug(
-                f"Detected regex stream 'stderr' so reading error file: {self.metadata['errfile']}"
-            )
-            content = self.error()
-
-            file_stream = self.metadata["errfile"]
-        self.logger.debug(f"Applying re.search with exp: {self.status['regex']['exp']}")
-
-        regex = re.search(self.status["regex"]["exp"], content)
-
-        console.print(
-            f"[blue]{self}[/]: performing regular expression - '{self.status['regex']['exp']}' on file: {file_stream}"
-        )
-        if regex:
-            console.print(
-                f"[blue]{self}[/]: Regular Expression Match - [green]Success![/]"
-            )
-        else:
-            console.print(
-                f"[blue]{self}[/]: Regular Expression Match - [red]Failed![/]"
-            )
-
-        # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
-        return regex is not None
-
     def is_valid_metric(self, name):
         if name not in list(self.metadata["metrics"].keys()):
             return False
@@ -1025,7 +972,7 @@ class BuilderBase(ABC):
 
             # check regex against output or error stream based on regular expression
             # defined in status property. Return value is a boolean
-            regex_match = self._check_regex()
+            regex_match = regex_check(self)
 
             runtime_match = runtime_check(self)
 
