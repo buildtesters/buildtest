@@ -13,13 +13,16 @@ from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, SCHEMA_ROOT
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_recipe, load_schema
+from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
 
 pytest_root = os.path.dirname(os.path.dirname(__file__))
 
+system = BuildTestSystem()
+
 configuration = SiteConfiguration()
 configuration.detect_system()
-configuration.validate()
+configuration.validate(moduletool=system.system["moduletool"])
 
 
 @pytest.mark.cli
@@ -56,7 +59,7 @@ def test_valid_config_schemas():
 
 @pytest.mark.cli
 def test_config_validate():
-    validate_config(configuration)
+    validate_config(configuration=configuration, moduletool=system.system["moduletool"])
 
 
 @pytest.mark.cli
