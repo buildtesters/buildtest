@@ -17,7 +17,17 @@ import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-from buildtest.buildsystem.checks import exists_check, is_dir_check, is_file_check
+from buildtest.buildsystem.checks import (
+    assert_eq_check,
+    assert_ge_check,
+    assert_range_check,
+    exists_check,
+    is_dir_check,
+    is_file_check,
+    regex_check,
+    returncode_check,
+    runtime_check,
+)
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
 from buildtest.exceptions import BuildTestError, RuntimeFailure
@@ -930,375 +940,11 @@ class BuilderBase(ABC):
         # mark job is success if it finished all post run steps
         self.complete()
 
-    def _check_regex(self):
-        """This method conducts a regular expression check using
-        `re.search <https://docs.python.org/3/library/re.html#re.search>`_
-        with regular expression defined in Buildspec. User must specify an
-        output stream (stdout, stderr) to select when performing regex. In
-        buildtest, this would read the .out or .err file based on stream and
-        run the regular expression to see if there is a match. This method
-        will return a boolean True indicates there is a match otherwise False
-        if ``regex`` object not defined or ``re.search`` doesn't find a match.
-
-        Returns:
-            bool: Returns True if their is a regex match otherwise returns False.
-        """
-
-        regex_match = False
-
-        if not self.status.get("regex"):
-            return regex_match
-
-        file_stream = None
-        if self.status["regex"]["stream"] == "stdout":
-            self.logger.debug(
-                f"Detected regex stream 'stdout' so reading output file: {self.metadata['outfile']}"
-            )
-            content = self.output()
-
-            file_stream = self.metadata["outfile"]
-
-        elif self.status["regex"]["stream"] == "stderr":
-            self.logger.debug(
-                f"Detected regex stream 'stderr' so reading error file: {self.metadata['errfile']}"
-            )
-            content = self.error()
-
-            file_stream = self.metadata["errfile"]
-        self.logger.debug(f"Applying re.search with exp: {self.status['regex']['exp']}")
-
-        regex = re.search(self.status["regex"]["exp"], content)
-
-        console.print(
-            f"[blue]{self}[/]: performing regular expression - '{self.status['regex']['exp']}' on file: {file_stream}"
-        )
-        if regex:
-            console.print(
-                f"[blue]{self}[/]: Regular Expression Match - [green]Success![/]"
-            )
-        else:
-            console.print(
-                f"[blue]{self}[/]: Regular Expression Match - [red]Failed![/]"
-            )
-
-        # perform a regex search based on value of 'exp' key defined in Buildspec with content file (output or error)
-        return regex is not None
-
-    def _returncode_check(self):
-        """Check status check of ``returncode`` field if specified in status property."""
-
-        returncode_match = False
-
-        # if 'returncode' field set for 'status' check the returncode if its not set we return False
-        if "returncode" in self.status.keys():
-
-            # returncode can be an integer or list of integers
-            buildspec_returncode = self.status["returncode"]
-
-            # if buildspec returncode field is integer we convert to list for check
-            if isinstance(buildspec_returncode, int):
-                buildspec_returncode = [buildspec_returncode]
-
-            self.logger.debug("Conducting Return Code check")
-            self.logger.debug(
-                "Status Return Code: %s   Result Return Code: %s"
-                % (
-                    buildspec_returncode,
-                    self.metadata["result"]["returncode"],
-                )
-            )
-            # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
-            returncode_match = (
-                self.metadata["result"]["returncode"] in buildspec_returncode
-            )
-            console.print(
-                f"[blue]{self}[/]: Checking returncode - {self.metadata['result']['returncode']} is matched in list {buildspec_returncode}"
-            )
-
-        return returncode_match
-
-    def _check_runtime(self):
-        """This method will return a boolean (True/False) based on runtime specified in buildspec and check with test runtime.
-        User can specify both `min` and `max`, or just specify `min` or `max`.
-        """
-
-        if not self.status.get("runtime"):
-            return False
-
-        min_time = self.status["runtime"].get("min") or 0
-        max_time = self.status["runtime"].get("max")
-
-        actual_runtime = self.get_runtime()
-
-        # if both min and max are specified
-        if min_time and max_time:
-            self.logger.debug(
-                f"Checking test: {self.name} runtime: {actual_runtime} is greater than min: {float(min_time)} and less than max: {float(max_time)}"
-            )
-            return float(min_time) < actual_runtime < float(max_time)
-
-        # if min specified
-        if min_time and not max_time:
-            self.logger.debug(
-                f"Checking test: {self.name} runtime: {actual_runtime} is greater than min: {float(min_time)}"
-            )
-            return float(min_time) < actual_runtime
-
-        # if max specified
-        if not min_time and max_time:
-            self.logger.debug(
-                f"Checking test: {self.name} runtime: {actual_runtime} is less than max: {float(max_time)}"
-            )
-            return actual_runtime < float(max_time)
-
     def is_valid_metric(self, name):
         if name not in list(self.metadata["metrics"].keys()):
             return False
 
         return True
-
-    def _convert_metrics(self, metric_value, ref_value, dtype):
-        """This method will convert input argument ``metric_value`` and ``ref_value`` to the datatype defined
-        by ``dtype`` which can be **int**, **float**, or **str**
-
-        Args:
-            metric_value: Value assigned to metric that is converted to its type defined by dtype
-            ref_value: Reference value for the metric that is converted to its type defined by dtype
-            dtype (str): A string value which can be 'str', 'int', 'float'
-
-        Returns:
-            Tuple: A tuple consisting of (metric_value, ref_value)
-        """
-        conv_metric_val = None
-        conv_ref_val = None
-
-        if dtype == "int":
-            # the metric_value is a string therefore to convert to int, one must convert to float before converting to int
-            try:
-                conv_metric_val = int(float(metric_value))
-                conv_ref_val = int(float(ref_value))
-            except ValueError:
-                console.print_exception(show_locals=True)
-        elif dtype == "float":
-            try:
-                conv_metric_val = float(metric_value)
-                conv_ref_val = float(ref_value)
-            except ValueError:
-                console.print_exception(show_locals=True)
-        elif dtype == "str":
-            try:
-                conv_metric_val = str(metric_value)
-                conv_ref_val = str(ref_value)
-            except ValueError:
-                console.print_exception(show_locals=True)
-
-        return conv_metric_val, conv_ref_val
-
-    def _check_assert_ge(self):
-        """Perform check on assert greater and equal when ``assert_ge`` is specified in buildspec. The return is a boolean value that determines if the check has passed.
-        One can specify multiple assert checks to check each metric with its reference value. When multiple items are specified, the operation is a logical AND and all checks
-        must be ``True``.
-
-        Returns:
-            bool: True or False for performance check ``assert_ge``
-        """
-
-        # a list containing booleans to evaluate reference check for each metric
-        assert_check = []
-
-        metric_names = list(self.metadata["metrics"].keys())
-
-        # iterate over each metric in buildspec and determine reference check for each metric
-        for metric in self.status["assert_ge"]:
-            name = metric["name"]
-
-            # if metric is not valid, then mark as False
-            if not self.is_valid_metric(name):
-                msg = f"[blue]{self}[/]: Unable to find metric: [red]{name}[/red]. List of valid metrics are the following: {metric_names}"
-                console.print(msg)
-                self.logger.warning(msg)
-                assert_check.append(False)
-                continue
-
-            metric_value = self.metadata["metrics"][name]
-            ref_value = metric["ref"]
-            conv_value = None
-
-            # if metrics is empty string mark as False since we can't convert item to int or float
-            if self.metadata["metrics"][name] == "":
-                assert_check.append(False)
-                continue
-
-            # convert metric value and reference value to int
-            if self.metrics[name]["type"] == "int":
-                conv_value, ref_value = self._convert_metrics(
-                    metric_value, ref_value, dtype="int"
-                )
-
-            # convert metric value and reference value to float
-            elif self.metrics[metric["name"]]["type"] == "float":
-                conv_value, ref_value = self._convert_metrics(
-                    metric_value, ref_value, dtype="float"
-                )
-            elif self.metrics[name]["type"] == "str":
-                msg = f"[blue]{self}[/]: Unable to convert metric: [red]'{name}'[/red] for comparison. The type must be 'int' or 'float' but recieved [red]{self.metrics[name]['type']}[/red]. "
-                console.print(msg)
-                self.logger.warning(msg)
-                assert_check.append(False)
-                continue
-
-            console.print(
-                f"[blue]{self}[/]: testing metric: {name} if {conv_value} >= {ref_value}"
-            )
-
-            # if there is a type mismatch then let's stop now before we do comparison
-            if (conv_value is None) or (ref_value is None):
-                assert_check.append(False)
-                continue
-
-            assert_check.append(conv_value >= ref_value)
-
-        # perform a logical AND on the list and return the boolean result
-        return all(assert_check)
-
-    def _check_assert_eq(self):
-        """This method is perform Assert Equality used when ``assert_eq`` property is specified
-        in status check. This method will evaluate each metric value reference value and
-        store assertion in list. The list of assertion is logically AND which will return a True or False
-        for the status check.
-
-        Returns:
-            bool: True or False for performance check ``assert_eq``
-        """
-        # a list containing booleans to evaluate reference check for each metric
-        assert_check = []
-
-        metric_names = list(self.metadata["metrics"].keys())
-
-        # iterate over each metric in buildspec and determine reference check for each metric
-        for metric in self.status["assert_eq"]:
-            name = metric["name"]
-
-            # if metric is not valid, then mark as False
-            if not self.is_valid_metric(name):
-                msg = f"[blue]{self}[/]: Unable to find metric: [red]{name}[/red]. List of valid metrics are the following: {metric_names}"
-                console.print(msg)
-                self.logger.warning(msg)
-                assert_check.append(False)
-                continue
-
-            metric_value = self.metadata["metrics"][name]
-            ref_value = metric["ref"]
-            conv_value = None
-
-            # if metrics is empty string mark as False since we can't convert item to int or float
-            if self.metadata["metrics"][name] == "":
-                assert_check.append(False)
-                continue
-
-            # convert metric value and reference value to int
-            if self.metrics[name]["type"] == "int":
-                conv_value, ref_value = self._convert_metrics(
-                    metric_value, ref_value, dtype="int"
-                )
-
-            # convert metric value and reference value to float
-            elif self.metrics[metric["name"]]["type"] == "float":
-                conv_value, ref_value = self._convert_metrics(
-                    metric_value, ref_value, dtype="float"
-                )
-            elif self.metrics[name]["type"] == "str":
-                conv_value, ref_value = self._convert_metrics(
-                    metric_value, ref_value, dtype="str"
-                )
-            console.print(
-                f"[blue]{self}[/]: testing metric: [red]{name}[/red] if [yellow]{conv_value}[/yellow] == [yellow]{ref_value}[/yellow]"
-            )
-
-            # if either converted value and reference value is None stop here before proceeding to equality check
-            if (conv_value is None) or (ref_value is None):
-                assert_check.append(False)
-                continue
-
-            assert_check.append(conv_value == ref_value)
-
-        # perform a logical AND on the list and return the boolean result
-        return all(assert_check)
-
-    def _check_assert_range(self):
-        """This method is perform Assert Range used when ``assert_range`` property is specified
-        in status check. This method will evaluate each metric value with lower and upper bound and
-        store assertion in list. The list of assertion is logically AND which will return a True or False
-        for the status check.
-
-        Returns:
-            bool: True or False for performance check ``assert_range``
-        """
-
-        # a list containing booleans to evaluate reference check for each metric
-        assert_check = []
-
-        metric_names = list(self.metadata["metrics"].keys())
-
-        # iterate over each metric in buildspec and determine reference check for each metric
-        for metric in self.status["assert_range"]:
-            name = metric["name"]
-
-            # if metric is not valid, then mark as False
-            if not self.is_valid_metric(name):
-                msg = f"[blue]{self}[/]: Unable to find metric: [red]{name}[/red]. List of valid metrics are the following: {metric_names}"
-                console.print(msg)
-                self.logger.warning(msg)
-                assert_check.append(False)
-                continue
-
-            metric_value = self.metadata["metrics"][name]
-            lower_bound = metric["lower"]
-            upper_bound = metric["upper"]
-            conv_value = None
-
-            # if metrics is empty string mark as False since we can't convert item to int or float
-            if self.metadata["metrics"][name] == "":
-                assert_check.append(False)
-                continue
-
-            # convert metric value and reference value to int
-            if self.metrics[name]["type"] == "int":
-                conv_value, lower_bound = self._convert_metrics(
-                    metric_value, lower_bound, dtype="int"
-                )
-                conv_value, upper_bound = self._convert_metrics(
-                    metric_value, upper_bound, dtype="int"
-                )
-
-            # convert metric value and reference value to float
-            elif self.metrics[metric["name"]]["type"] == "float":
-                conv_value, lower_bound = self._convert_metrics(
-                    metric_value, lower_bound, dtype="float"
-                )
-                conv_value, upper_bound = self._convert_metrics(
-                    metric_value, upper_bound, dtype="float"
-                )
-            elif self.metrics[name]["type"] == "str":
-                msg = f"[blue]{self}[/]: Unable to convert metric: [red]'{name}'[/red] for comparison. The type must be 'int' or 'float' but recieved [red]{self.metrics[name]['type']}[/red]. "
-                console.print(msg)
-                self.logger.warning(msg)
-                assert_check.append(False)
-                continue
-
-            console.print(
-                f"[blue]{self}[/]: testing metric: {name} if {lower_bound} <= {conv_value} <= {upper_bound}"
-            )
-
-            # if any item is None we stop before we run comparison
-            if any(item is None for item in [conv_value, lower_bound, upper_bound]):
-                assert_check.append(False)
-                continue
-
-            assert_check.append(lower_bound <= conv_value <= upper_bound)
-
-        # perform a logical AND on the list and return the boolean result
-        return all(assert_check)
 
     def check_test_state(self):
         """This method is responsible for detecting state of test (PASS/FAIL) based on returncode or regular expression."""
@@ -1322,13 +968,13 @@ class BuilderBase(ABC):
             assert_is_file = False
 
             # returncode_match is boolean to check if reference returncode matches return code from test
-            returncode_match = self._returncode_check()
+            returncode_match = returncode_check(self)
 
             # check regex against output or error stream based on regular expression
             # defined in status property. Return value is a boolean
-            regex_match = self._check_regex()
+            regex_match = regex_check(self)
 
-            runtime_match = self._check_runtime()
+            runtime_match = runtime_check(self)
 
             self.metadata["check"]["regex"] = regex_match
             self.metadata["check"]["runtime"] = runtime_match
@@ -1346,22 +992,23 @@ class BuilderBase(ABC):
                 lsf_job_state_match = self.status["lsf_job_state"] == self.job.state()
 
             if self.status.get("assert_ge"):
-                assert_ge_match = self._check_assert_ge()
+                assert_ge_match = assert_ge_check(self)
 
             if self.status.get("assert_eq"):
-                assert_eq_match = self._check_assert_eq()
+                assert_eq_match = assert_eq_check(self)
 
             if self.status.get("assert_range"):
-                assert_range_match = self._check_assert_range()
+
+                assert_range_match = assert_range_check(self)
 
             if self.status.get("exists"):
-                assert_exists = exists_check(builder=self, status=self.status)
+                assert_exists = exists_check(builder=self)
 
             if self.status.get("is_dir"):
-                assert_is_dir = is_dir_check(builder=self, status=self.status)
+                assert_is_dir = is_dir_check(builder=self)
 
             if self.status.get("is_file"):
-                assert_is_file = is_file_check(builder=self, status=self.status)
+                assert_is_file = is_file_check(builder=self)
 
             # if any of checks is True we set the 'state' to PASS
             state = any(

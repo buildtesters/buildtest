@@ -1,22 +1,156 @@
+import logging
+import re
+
 from buildtest.defaults import console
 from buildtest.utils.file import is_dir, is_file, resolve_path
 
+logger = logging.getLogger(__name__)
 
-def exists_check(builder, status):
+
+def returncode_check(builder):
+    """Check status check of ``returncode`` field if specified in status property.
+
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+    """
+
+    returncode_match = False
+
+    # if 'returncode' field set for 'status' check the returncode if its not set we return False
+    if "returncode" in builder.status.keys():
+
+        # returncode can be an integer or list of integers
+        buildspec_returncode = builder.status["returncode"]
+
+        # if buildspec returncode field is integer we convert to list for check
+        if isinstance(buildspec_returncode, int):
+            buildspec_returncode = [buildspec_returncode]
+
+        logger.debug("Conducting Return Code check")
+        logger.debug(
+            "Status Return Code: %s   Result Return Code: %s"
+            % (
+                buildspec_returncode,
+                builder.metadata["result"]["returncode"],
+            )
+        )
+        # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
+        returncode_match = (
+            builder.metadata["result"]["returncode"] in buildspec_returncode
+        )
+        console.print(
+            f"[blue]{builder}[/]: Checking returncode - {builder.metadata['result']['returncode']} is matched in list {buildspec_returncode}"
+        )
+
+    return returncode_match
+
+
+def runtime_check(builder):
+    """This method will return a boolean (True/False) based on runtime specified in buildspec and check with test runtime.
+    User can specify both `min` and `max`, or just specify `min` or `max`.
+
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+    """
+
+    if not builder.status.get("runtime"):
+        return False
+
+    min_time = builder.status["runtime"].get("min") or 0
+    max_time = builder.status["runtime"].get("max")
+
+    actual_runtime = builder.get_runtime()
+
+    # if min specified
+    if min_time and not max_time:
+        console.print(
+            f"[blue]{builder}[/]: Checking  mintime < runtime: {float(min_time)} < {actual_runtime}"
+        )
+        return float(min_time) < actual_runtime
+
+    # if max specified
+    if not min_time and max_time:
+        console.print(
+            f"[blue]{builder}[/]: Checking runtime < maxtime: {actual_runtime} < {float(max_time)} "
+        )
+        return actual_runtime < float(max_time)
+
+    # if both min and max are specified
+    console.print(
+        f"[blue]{builder}[/]: Checking mintime < runtime < maxtime: {float(min_time)} < {actual_runtime} < {float(max_time)} "
+    )
+    return float(min_time) < actual_runtime < float(max_time)
+
+
+def regex_check(builder):
+    """This method conducts a regular expression check using
+    `re.search <https://docs.python.org/3/library/re.html#re.search>`_
+    with regular expression defined in Buildspec. User must specify an
+    output stream (stdout, stderr) to select when performing regex. In
+    buildtest, this would read the .out or .err file based on stream and
+    run the regular expression to see if there is a match. This method
+    will return a boolean True indicates there is a match otherwise False
+    if ``regex`` object not defined or ``re.search`` doesn't find a match.
+
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+
+    Returns:
+        bool: Returns True if their is a regex match otherwise returns False.
+    """
+
+    if not builder.status.get("regex"):
+        return False
+
+    file_stream = None
+    if builder.status["regex"]["stream"] == "stdout":
+        logger.debug(
+            f"Detected regex stream 'stdout' so reading output file: {builder.metadata['outfile']}"
+        )
+        content = builder.output()
+
+        file_stream = builder.metadata["outfile"]
+
+    elif builder.status["regex"]["stream"] == "stderr":
+        logger.debug(
+            f"Detected regex stream 'stderr' so reading error file: {builder.metadata['errfile']}"
+        )
+        content = builder.error()
+
+        file_stream = builder.metadata["errfile"]
+
+    logger.debug(f"Applying re.search with exp: {builder.status['regex']['exp']}")
+
+    regex = re.search(builder.status["regex"]["exp"], content)
+
+    console.print(
+        f"[blue]{builder}[/]: performing regular expression - '{builder.status['regex']['exp']}' on file: {file_stream}"
+    )
+    if not regex:
+        console.print(f"[blue]{builder}[/]: Regular Expression Match - [red]Failed![/]")
+        return False
+
+    console.print(f"[blue]{builder}[/]: Regular Expression Match - [green]Success![/]")
+
+    return True
+
+
+def exists_check(builder):
     """This method will perform status check for ``exists`` property. Each value is tested for file
     existence and returns a boolean to inform if all files exist or not.
 
     Args:
         builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
-        status (dict): A dictionary containing the ``status`` property from the buildspec
     Returns:
         bool: A boolean for exists status check
     """
-    assert_exists = all(resolve_path(file, exist=True) for file in status["exists"])
-    console.print(
-        f"[blue]{builder}[/]: Test all files:  {status['exists']}  existences "
+    assert_exists = all(
+        resolve_path(file, exist=True) for file in builder.status["exists"]
     )
-    for fname in status["exists"]:
+    console.print(
+        f"[blue]{builder}[/]: Test all files:  {builder.status['exists']}  existences "
+    )
+    for fname in builder.status["exists"]:
         resolved_fname = resolve_path(fname)
         if resolved_fname:
             console.print(f"[blue]{builder}[/]: file: {resolved_fname} exists")
@@ -27,23 +161,22 @@ def exists_check(builder, status):
     return assert_exists
 
 
-def is_file_check(builder, status):
+def is_file_check(builder):
     """This method will perform status check for ``is_file`` property. Each item in ``is_file`` is
      checked by determining if its a file. The return is a single boolean where we perform a logical AND
      to determine final status check for is_file
 
     Args:
         builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
-        status (dict): A dictionary containing the ``status`` property from the buildspec
     Returns:
         bool: A boolean for is_file status check
     """
 
-    assert_is_file = all(is_file(file) for file in status["is_file"])
+    assert_is_file = all(is_file(file) for file in builder.status["is_file"])
     console.print(
-        f"[builder]{builder}[/]: Test all files:  {status['is_file']}  existences "
+        f"[builder]{builder}[/]: Test all files:  {builder.status['is_file']}  existences "
     )
-    for fname in status["is_file"]:
+    for fname in builder.status["is_file"]:
         resolved_fname = resolve_path(fname, exist=True)
         if is_file(resolved_fname):
             console.print(f"[blue]{builder}[/]: file: {resolved_fname} is a file ")
@@ -54,23 +187,22 @@ def is_file_check(builder, status):
     return assert_is_file
 
 
-def is_dir_check(builder, status):
+def is_dir_check(builder):
     """This method will perform status check for ``is_dir`` property. Each item in ``is_dir`` is
      checked by determining if its a directory. The return is a single boolean where we perform a logical AND
      to determine final status check for ``is_dir``
 
     Args:
         builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
-        status (dict): A dictionary containing the ``status`` property from the buildspec
     Returns:
         bool: A boolean for ``is_dir`` status check
     """
 
-    assert_is_dir = all(is_dir(file) for file in status["is_dir"])
+    assert_is_dir = all(is_dir(file) for file in builder.status["is_dir"])
     console.print(
-        f"[blue]{builder}[/]: Test all files:  {status['is_dir']}  existences "
+        f"[blue]{builder}[/]: Test all files:  {builder.status['is_dir']}  existences "
     )
-    for dirname in status["is_dir"]:
+    for dirname in builder.status["is_dir"]:
         resolved_dirname = resolve_path(dirname)
         if is_dir(resolved_dirname):
             console.print(
@@ -81,3 +213,227 @@ def is_dir_check(builder, status):
 
     console.print(f"[blue]{builder}[/]: Directory Existence Check: {assert_is_dir}")
     return assert_is_dir
+
+
+def convert_metrics(metric_value, ref_value, dtype):
+    """This method will convert input argument ``metric_value`` and ``ref_value`` to the datatype defined
+    by ``dtype`` which can be **int**, **float**, or **str**
+
+    Args:
+        metric_value: Value assigned to metric that is converted to its type defined by dtype
+        ref_value: Reference value for the metric that is converted to its type defined by dtype
+        dtype (str): A string value which can be 'str', 'int', 'float'
+
+    Returns:
+        Tuple: A tuple consisting of (metric_value, ref_value)
+    """
+    conv_metric_val = None
+    conv_ref_val = None
+
+    if dtype == "int":
+        # the metric_value is a string therefore to convert to int, one must convert to float before converting to int
+        try:
+            conv_metric_val = int(float(metric_value))
+            conv_ref_val = int(float(ref_value))
+        except ValueError:
+            console.print_exception(show_locals=True)
+    elif dtype == "float":
+        try:
+            conv_metric_val = float(metric_value)
+            conv_ref_val = float(ref_value)
+        except ValueError:
+            console.print_exception(show_locals=True)
+    elif dtype == "str":
+        try:
+            conv_metric_val = str(metric_value)
+            conv_ref_val = str(ref_value)
+        except ValueError:
+            console.print_exception(show_locals=True)
+
+    return conv_metric_val, conv_ref_val
+
+
+def assert_ge_check(builder):
+    """Perform check on assert greater and equal when ``assert_ge`` is specified in buildspec. The return is a boolean value that determines if the check has passed.
+    One can specify multiple assert checks to check each metric with its reference value. When multiple items are specified, the operation is a logical AND and all checks
+    must be ``True``.
+
+    Returns:
+        bool: True or False for performance check ``assert_ge``
+    """
+
+    # a list containing booleans to evaluate reference check for each metric
+    assert_check = []
+
+    metric_names = list(builder.metadata["metrics"].keys())
+
+    # iterate over each metric in buildspec and determine reference check for each metric
+    for metric in builder.status["assert_ge"]:
+        name = metric["name"]
+        ref_value = metric["ref"]
+
+        # if metric is not valid, then mark as False
+        if not builder.is_valid_metric(name):
+            msg = f"[blue]{builder}[/]: Unable to find metric: [red]{name}[/red]. List of valid metrics are the following: {metric_names}"
+            console.print(msg)
+            logger.warning(msg)
+            assert_check.append(False)
+            continue
+
+        metric_value = builder.metadata["metrics"][name]
+
+        # if metrics is empty string mark as False since we can't convert item to int or float
+        if builder.metadata["metrics"][name] == "":
+            assert_check.append(False)
+            continue
+
+        if builder.metrics[name]["type"] == "str":
+            msg = f"[blue]{builder}[/]: Unable to convert metric: [red]'{name}'[/red] for comparison. The type must be 'int' or 'float' but recieved [red]{builder.metrics[name]['type']}[/red]. "
+            console.print(msg)
+            logger.warning(msg)
+            assert_check.append(False)
+            continue
+
+        # convert metric value and reference value to int
+        conv_value, ref_value = convert_metrics(
+            metric_value=metric_value,
+            ref_value=ref_value,
+            dtype=builder.metrics[name]["type"],
+        )
+
+        console.print(
+            f"[blue]{builder}[/]: testing metric: {name} if {conv_value} >= {ref_value}"
+        )
+
+        # if there is a type mismatch then let's stop now before we do comparison
+        if (conv_value is None) or (ref_value is None):
+            assert_check.append(False)
+            continue
+
+        assert_check.append(conv_value >= ref_value)
+
+    # perform a logical AND on the list and return the boolean result
+    return all(assert_check)
+
+
+def assert_eq_check(builder):
+    """This method is perform Assert Equality used when ``assert_eq`` property is specified
+    in status check. This method will evaluate each metric value reference value and
+    store assertion in list. The list of assertion is logically AND which will return a True or False
+    for the status check.
+
+    Returns:
+        bool: True or False for performance check ``assert_eq``
+    """
+    # a list containing booleans to evaluate reference check for each metric
+    assert_check = []
+
+    metric_names = list(builder.metadata["metrics"].keys())
+
+    # iterate over each metric in buildspec and determine reference check for each metric
+    for metric in builder.status["assert_eq"]:
+        name = metric["name"]
+        ref_value = metric["ref"]
+
+        # if metric is not valid, then mark as False
+        if not builder.is_valid_metric(name):
+            msg = f"[blue]{builder}[/]: Unable to find metric: [red]{name}[/red]. List of valid metrics are the following: {metric_names}"
+            console.print(msg)
+            logger.warning(msg)
+            assert_check.append(False)
+            continue
+
+        metric_value = builder.metadata["metrics"][name]
+
+        # if metrics is empty string mark as False since we can't convert item to int or float
+        if builder.metadata["metrics"][name] == "":
+            assert_check.append(False)
+            continue
+
+        conv_value, ref_value = convert_metrics(
+            metric_value=metric_value,
+            ref_value=ref_value,
+            dtype=builder.metrics[name]["type"],
+        )
+
+        console.print(
+            f"[blue]{builder}[/]: testing metric: [red]{name}[/red] if [yellow]{conv_value}[/yellow] == [yellow]{ref_value}[/yellow]"
+        )
+
+        # if either converted value and reference value is None stop here before proceeding to equality check
+        if (conv_value is None) or (ref_value is None):
+            assert_check.append(False)
+            continue
+
+        assert_check.append(conv_value == ref_value)
+
+    # perform a logical AND on the list and return the boolean result
+    return all(assert_check)
+
+
+def assert_range_check(builder):
+    """This method is perform Assert Range used when ``assert_range`` property is specified
+    in status check. This method will evaluate each metric value with lower and upper bound and
+    store assertion in list. The list of assertion is logically AND which will return a True or False
+    for the status check.
+
+    Returns:
+        bool: True or False for performance check ``assert_range``
+    """
+
+    # a list containing booleans to evaluate reference check for each metric
+    assert_check = []
+
+    metric_names = list(builder.metadata["metrics"].keys())
+
+    # iterate over each metric in buildspec and determine reference check for each metric
+    for metric in builder.status["assert_range"]:
+        name = metric["name"]
+        lower_bound = metric["lower"]
+        upper_bound = metric["upper"]
+
+        # if metric is not valid, then mark as False
+        if not builder.is_valid_metric(name):
+            msg = f"[blue]{builder}[/]: Unable to find metric: [red]{name}[/red]. List of valid metrics are the following: {metric_names}"
+            console.print(msg)
+            logger.warning(msg)
+            assert_check.append(False)
+            continue
+
+        metric_value = builder.metadata["metrics"][name]
+
+        # if metrics is empty string mark as False since we can't convert item to int or float
+        if builder.metadata["metrics"][name] == "":
+            assert_check.append(False)
+            continue
+
+        if builder.metrics[name]["type"] == "str":
+            msg = f"[blue]{builder}[/]: Unable to convert metric: [red]'{name}'[/red] for comparison. The type must be 'int' or 'float' but recieved [red]{builder.metrics[name]['type']}[/red]. "
+            console.print(msg)
+            logger.warning(msg)
+            assert_check.append(False)
+            continue
+
+        conv_value, lower_bound = convert_metrics(
+            metric_value=metric_value,
+            ref_value=lower_bound,
+            dtype=builder.metrics[name]["type"],
+        )
+        conv_value, upper_bound = convert_metrics(
+            metric_value=metric_value,
+            ref_value=upper_bound,
+            dtype=builder.metrics[name]["type"],
+        )
+        console.print(
+            f"[blue]{builder}[/]: testing metric: {name} if {lower_bound} <= {conv_value} <= {upper_bound}"
+        )
+
+        # if any item is None we stop before we run comparison
+        if any(item is None for item in [conv_value, lower_bound, upper_bound]):
+            assert_check.append(False)
+            continue
+
+        assert_check.append(lower_bound <= conv_value <= upper_bound)
+
+    # perform a logical AND on the list and return the boolean result
+    return all(assert_check)
