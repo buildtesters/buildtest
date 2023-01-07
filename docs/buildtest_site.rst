@@ -32,7 +32,7 @@ that provides how buildtest is configured at NERSC. Once you have defined your c
 Writing Test
 -------------
 
-If you are going to write test, we assume you have read :ref:`writing_buildspecs` section which covers
+If you are going to write test, we assume you have read :ref:`buildspec_tutorial` section which covers
 how to write buildspecs. You should consider reviewing the Schema Documentation: https://buildtesters.github.io/buildtest/
 which goes in detail about each schema and buildspec attributes.
 
