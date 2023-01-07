@@ -1,3 +1,5 @@
+.. _quick_start:
+
 Quick Start Guide
 ==================
 
@@ -22,6 +24,12 @@ buildtest can exclude buildspecs via ``-x`` option which can operate on file or 
 if you want to run tests in a directory but exclude one file. For example you can do the following to exclude test ``examples/hello.yml``::
 
   buildtest build -b examples -x examples/hello.yml
+
+To build tests by tagname you can use the ``-t`` option where buildtest will discover all tests that belong to the corresponding tag.
+For instance to run all tests for tagname **network** you can do the following::
+
+  buildtest build -t network
+
 
 Inspecting a test
 --------------------
@@ -81,12 +89,15 @@ all available filter fields via ``buildtest report --helpfilter``. To filter by 
 
   buildtest report --filter returncode=1
 
+If you want to see a summary of the report file you can run::
+
+  buildtest report summary
 Developing a test
 ------------------
 
 When you are creating a test known as **buildspec** you will want to make sure buildspec is valid, this can
-be done by running **buildtest buildspec validate**. The command works similar to ``buildtest build`` where one
-can specify file or directory. To validate multiple buildspecs you can do the following::
+be done by running **buildtest buildspec validate**. This command works similar to ``buildtest build`` where one
+can specify file or directory to search for buildspecs. To validate multiple buildspecs you can do the following::
 
   buildtest buildspec validate -b <file1> -b <file2>
   buildtest buildspec validate -b <dir1> -b <file1>
@@ -96,7 +107,7 @@ search for test maintainers and much more. To see all available buildspecs in th
 
   buildtest buildspec find
 
-If you want to see a summary you can run::
+If you want to see a summary of the buildspec cache you can run::
 
   buildtest buildspec summary
 
@@ -105,17 +116,41 @@ To see all invalid buildspecs in your cache you can run::
   buildtest buildspec find invalid
 
 The ``buildtest buildspec edit-test`` and ``buildtest buildspec edit-file`` are builtin commands to open
-buildspeec in editor similar to how one would open in your preferred editor. The one benefit of using these commands,
+buildspec in editor similar to how one would open in your preferred editor. The one benefit of using these commands,
 is buildtest will validate the test after closing file. The difference between the two commands is one operates on test
-names while the later operates on file names. Shown below is an example::
+names while the later operates on filepaths. Shown below is example usage for both commands::
 
     buildtest buildspec edit-test hello_world
     buildtest buildspec edit-file examples/foo.yml
 
-You can view content of buildspec via ``buildtest buildspec show`` where argument is name of test. You can
+To view content of buildspec, you can use ``buildtest buildspec show`` where argument is name of test. You can
 specify multiple test name to see content of all tests such as shown below::
 
     buildtest buildspec show hello_world foo_bar
 
 The ``buildtest buildspec show-fail`` command will show content of all buildspecs that failed tests during execution which
 are all tests reported by ``buildtest report --fail``. Note this is not to be confused with all invalid buildspecs.
+
+Buildtest Configuration
+-------------------------
+
+The buildtest configuration file is used to :ref:`configure_buildtest` for your system. In order to use buildtest, your
+configuration file must be valid. You can validate the configuration file by running::
+
+  buildtest config validate
+
+To view content of your configuration file you can run::
+
+  buildtest config view
+
+You can retrieve path to configuration file by running::
+
+  buildtest config path
+
+When building tests, you can specify configuration file to use via::
+
+  buildtest -c <config> build -b <file>
+
+To see a list of available :ref:`executors <configuring_executors>` defined in your configuration file you can run::
+
+  buildtest config executors
