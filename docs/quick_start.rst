@@ -92,6 +92,7 @@ all available filter fields via ``buildtest report --helpfilter``. To filter by 
 If you want to see a summary of the report file you can run::
 
   buildtest report summary
+
 Developing a test
 ------------------
 
