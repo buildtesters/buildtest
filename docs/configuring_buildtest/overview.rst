@@ -49,6 +49,11 @@ cluster called ``generic`` which is a dummy cluster used for running tutorial ex
 
     "required": ["executors", "moduletool", "hostnames", "compilers"]
 
+.. _config_hostnames:
+
+Configuring Hostnames
+----------------------
+
 The ``hostnames`` field is a list of nodes that belong to the cluster where buildtest should be run. Generally,
 these hosts should be your login nodes in your cluster. buildtest will process **hostnames** field across
 all system entry using `re.match <https://docs.python.org/3/library/re.html#re.match>`_ until a hostname is found, if

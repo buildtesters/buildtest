@@ -96,6 +96,7 @@ automate module load testing. For more details on lmodule see https://github.com
 
    configuring_buildtest
    batch_support
+   troubleshooting
 
 .. toctree::
    :maxdepth: 2
