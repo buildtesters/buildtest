@@ -1,6 +1,8 @@
 Additional Features
 =====================
 
+.. _build_history:
+
 Accessing build history (``buildtest history``)
 ------------------------------------------------
 
