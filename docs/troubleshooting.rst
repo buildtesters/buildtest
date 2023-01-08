@@ -1,17 +1,16 @@
 Troubleshooting Buildtest
 ===========================
 
-This guide will discuss how to troubleshoot buildtest when you face issues.
+This guide will discuss how to troubleshoot buildtest when you encounter issues.
 
 How to enable debugging?
 ---------------------------
 
 Whenever you run into issues with buildtest, you should enable debug mode by running
-``buildtest --debug <command>`` which will stream debug messages to console. The debugging
-messages can help pinpoint issues and provide additional details into the issue.
+``buildtest --debug <command>`` which will stream debug messages to console. The debug
+messages can help pinpoint issues and provide additional details.
 
-buildtest will write output to log file, you can view content of log file via one of the
-following commands::
+buildtest will write a log file, you can view content of log via::
 
     buildtest --view-log
     buildtest --print-log
@@ -88,5 +87,5 @@ To view output of ``buildtest build`` command for a given build you can run::
     buildtest history query -o <id>
 
 The build history is valid until files are removed, which could be done via ``buildtest clean`` or
-removing them manually. The build history provides a means for accessing old builds along with logfile
+files are remove manually. The build history provides a means for accessing old builds along with logfile
 for each build.
