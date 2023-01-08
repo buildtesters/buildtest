@@ -135,7 +135,7 @@ are all tests reported by ``buildtest report --fail``. Note this is not to be co
 Buildtest Configuration
 -------------------------
 
-The buildtest configuration file is used to :ref:`configure_buildtest` for your system. In order to use buildtest, your
+The buildtest configuration file is used to :ref:`configuring_buildtest` for your system. In order to use buildtest, your
 configuration file must be valid. You can validate the configuration file by running::
 
   buildtest config validate
