@@ -76,9 +76,16 @@ automate module load testing. For more details on lmodule see https://github.com
 
 .. toctree::
    :maxdepth: 2
-   :caption: Tutorial
+   :caption: Getting Started
 
    installing_buildtest
+   quick_start
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Tutorial
+
+
    getting_started
    buildspec_tutorial
 
@@ -101,12 +108,13 @@ automate module load testing. For more details on lmodule see https://github.com
    :maxdepth: 2
    :caption: Reference
 
+   writing_buildspecs
    features
    schema_examples
    facility_examples
    api
    command
-   references
+   conferences
 
 .. toctree::
    :maxdepth: 2

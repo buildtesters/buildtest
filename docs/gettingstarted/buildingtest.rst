@@ -4,7 +4,7 @@ Building Test via buildtest (``buildtest build``)
 =================================================
 
 This guide will get you familiar with buildtest command line interface. Once
-you complete this section, you can proceed to :ref:`writing buildspecs <writing_buildspecs>`
+you complete this section, you can proceed to :ref:`writing buildspecs <buildspec_tutorial>`
 section where we will cover how to write buildspecs.
 
 Once you install buildtest, you should find the `buildtest` command in your **$PATH**.

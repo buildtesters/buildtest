@@ -1,4 +1,4 @@
-.. _writing_buildspecs:
+.. _buildspec_tutorial:
 
 Buildspec Tutorial
 ====================
@@ -6,12 +6,8 @@ Buildspec Tutorial
 .. toctree::
    :maxdepth: 1
 
-   buildspecs/global
    buildspecs/buildspec_overview
-   buildspecs/customize_shell
    buildspecs/performance_checks
-   buildspecs/test_dependency
-   buildspecs/multi_executor
    buildspecs/compiler
    buildspecs/spack
 

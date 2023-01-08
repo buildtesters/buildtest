@@ -112,4 +112,4 @@ use buildtest. Shown below is the output
 
     .. command-output:: buildtest --help
 
-If you have got this far, please go to the next section on :ref:`getting_started`
+If you have got this far, you can check out the :ref:`quick_start` or :ref:`getting_started`
