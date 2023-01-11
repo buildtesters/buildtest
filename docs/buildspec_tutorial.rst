@@ -10,7 +10,6 @@ Buildspec Tutorial
    buildspecs/performance_checks
    buildspecs/compiler
    buildspecs/spack
-   buildspecs/buildtest_perlmutter
 
 
 Please proceed to :ref:`buildspec_overview` to get an overview of how to write buildspecs. This section can be done on your workstation.
