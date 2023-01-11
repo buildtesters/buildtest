@@ -88,7 +88,7 @@ automate module load testing. For more details on lmodule see https://github.com
 
    getting_started
    buildspec_tutorial
-
+   buildtest_perlmutter
 
 .. toctree::
    :maxdepth: 2
