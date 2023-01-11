@@ -51,6 +51,8 @@ In this next example, we define two metrics ``gflop`` and ``foo`` that are assig
 environment variable ``FOO``.
 
 
+.. _assert_ge:
+
 Assert Greater Equal
 ----------------------
 

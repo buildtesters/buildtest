@@ -1,0 +1,24 @@
+buildspecs:
+  stream_test:
+    type: script
+    executor: perlmutter.local.bash
+    description: Run stream test
+    env:
+      OMP_NUM_THREADS: 4
+    run: |
+      wget https://raw.githubusercontent.com/jeffhammond/STREAM/master/stream.c
+      gcc -openmp -o stream stream.c
+      ./stream
+    metrics:
+      copy:
+        type: float
+        regex:
+          exp: 'Copy:\s+(\S+)\s+.*'
+          stream: stdout
+          item: 1
+      scale:
+        type: float
+        regex:
+          exp: 'Scale:\s+(\S+)\s+.*'
+          stream: stdout
+          item: 1

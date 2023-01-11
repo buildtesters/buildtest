@@ -81,7 +81,7 @@ In this task you will be required to do the following
 7. Show content of buildspec
 8. Show content of test ``hello_world_openmp``
 
-Exercise 4 Querying Test Reports:
+Exercise 4: Querying Test Reports
 ----------------------------------
 
 In this exercise you will be learn how to :ref:`query test report <test_reports>`. This can be done by
@@ -98,3 +98,20 @@ Let's upload the test to CDASH by running the following::
 
 Take some time to analyze the output in CDASH by opening the link including PASS/FAIL test.
 
+Exercise 5: Specifying Performance Checks
+--------------------------------------------
+
+In this task, we will using :ref:`performance checks <perf_checks>`_ to determine state of test.
+In this exercise, we will be running the STREAM benchmark. Shown below is an example buildspec that you
+will be working with
+
+.. literalinclude:: ../perlmutter_tutorial/ex5/stream.yml
+   :language: yaml
+
+First, let's build this test and analyze the output::
+
+  buildtest build -b perlmutter_tutorial/ex5/stream.yml
+  buildtest inspect query -o stream_test
+
+Take a close look at the metrics value. In this task, you are requested to use use :ref:`assert_ge` with metric ``copy`` and
+``scale`` with reference value. For reference value please experiment with different metrics and see if test pass/fail.
