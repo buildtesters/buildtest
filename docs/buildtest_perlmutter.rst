@@ -78,8 +78,7 @@ In this task you will be required to do the following
 4. Filter buildspec by tag ``e4s``
 5. List all invalid buildspecs
 6. Validate all buildspecs by tag ``e4s``
-7. Show content of buildspec
-8. Show content of test ``hello_world_openmp``
+7. Show content of test ``hello_world_openmp``
 
 Exercise 4: Querying Test Reports
 ----------------------------------
@@ -89,7 +88,7 @@ running ``buildtest report``. In this task please do the following
 
 1. List all filter and format fields
 2. Query all test by returncode 0
-3. Query all test by tag
+3. Query all test by tag ``e4s``
 4. Print total count of failed tests
 
 Let's upload the test to CDASH by running the following::
