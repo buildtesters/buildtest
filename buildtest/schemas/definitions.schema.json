@@ -240,7 +240,7 @@
         },
         "assert_le": {
           "type": "array",
-          "description": "Perform assertion of greater and equal (<=) with reference value",
+          "description": "Perform assertion of less than and equal (<=) with reference value",
           "items": {
             "type": "object",
             "additionalProperties": false,
