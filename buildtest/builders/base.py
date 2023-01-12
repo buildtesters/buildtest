@@ -995,7 +995,7 @@ class BuilderBase(ABC):
 
             if self.status.get("assert_ge"):
                 assert_ge_match = assert_ge_check(self)
-            
+
             if self.status.get("assert_le"):
                 assert_le_match = assert_le_check(self)
 
