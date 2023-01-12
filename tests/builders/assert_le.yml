@@ -1,8 +1,8 @@
 buildspecs:
-  stream_test:
+  assert_le_example:
     type: script
     executor: generic.local.bash
-    description: Run stream test with metrics example using assert greater equal
+    description: Run stream test with metrics example using assert less than equal
     env:
       OMP_NUM_THREADS: 4
     run: |
