@@ -89,7 +89,7 @@ Let's run ``buildtest inspect query -o stream_test`` to retrieve the test detail
 .. dropdown:: ``buildtest inspect query -o stream_test``
 
     .. command-output:: buildtest inspect query -o stream_test
-
+        
 Assert Equal
 ---------------
 
