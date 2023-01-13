@@ -260,7 +260,7 @@ def assert_ge_check(builder):
 
     Args:
         builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
-        
+
     Returns:
         bool: True or False for performance check ``assert_ge``
     """
