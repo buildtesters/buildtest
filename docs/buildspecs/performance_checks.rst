@@ -87,42 +87,7 @@ Let's run ``buildtest inspect query -o stream_test`` to retrieve the test detail
 .. dropdown:: ``buildtest inspect query -o stream_test``
 
     .. command-output:: buildtest inspect query -o stream_test
-
-Assert Less Than Equal
-----------------------
-
-buildtest can determine status check based on performance check. In this next example, we will run the
-`STREAM <https://www.cs.virginia.edu/stream/>`_ memory benchmark and capture :ref:`metrics <metrics>` named ``copy``, ``scale``
-``add`` and ``triad`` from the output and perform an Assertion Less Than Equal (``assert_le``) with a reference value.
-
-The ``assert_le`` contains a list of assertions where each metric name is
-referenced via ``name`` that is compared with the reference value defined by ``ref`` property. The comparison
-is ``metric_value <= ref``, where **metric_value** is the value assigned to the metric name captured by the regular
-expression. The ``type`` field in the metric section is used for the type conversion which can be **float**, **int**, or **string**.
-The ``item`` is a numeric field used in `match.group <https://docs.python.org/3/library/re.html#re.Match.group>`_ to retrieve the output
-from the regular expression search. The item must be non-negative number.
-
-.. literalinclude:: ../tutorials/perf_checks/assert_le.yml
-    :language: yaml
-    :emphasize-lines: 12-46
-    :linenos:
-
-
-buildtest will evaluate each assertion in the list and use a logical AND to determine the final
-status of ``assert_le``.
-
-Let's build this test, take a close look at the output of ``buildtest build`` and take note of the assertion
-statement.
-
-.. dropdown:: ``buildtest build -b tutorials/perf_checks/assert_le.yml``
-
-    .. command-output:: buildtest build -b tutorials/perf_checks/assert_le.yml
-
-
-.. dropdown:: ``buildtest inspect query -o assert_le_example``
-
-    .. command-output:: buildtest inspect query -o assert_le_example 
-
+        
 Assert Equal
 ---------------
 
