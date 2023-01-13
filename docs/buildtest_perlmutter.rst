@@ -100,7 +100,7 @@ Take some time to analyze the output in CDASH by opening the link including PASS
 Exercise 5: Specifying Performance Checks
 --------------------------------------------
 
-In this task, we will using :ref:`performance checks <perf_checks>`_ to determine state of test.
+In this task, we will using :ref:`performance checks <perf_checks>` to determine state of test.
 In this exercise, we will be running the STREAM benchmark. Shown below is an example buildspec that you
 will be working with
 
