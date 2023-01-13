@@ -258,6 +258,9 @@ def assert_ge_check(builder):
     One can specify multiple assert checks to check each metric with its reference value. When multiple items are specified, the operation is a logical AND and all checks
     must be ``True``.
 
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+        
     Returns:
         bool: True or False for performance check ``assert_ge``
     """
@@ -320,6 +323,9 @@ def assert_le_check(builder):
     """Perform check on assert less than and equal when ``assert_le`` is specified in buildspec. The return is a boolean value that determines if the check has passed.
     One can specify multiple assert checks to check each metric with its reference value. When multiple items are specified, the operation is a logical AND and all checks
     must be ``True``.
+
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
 
     Returns:
         bool: True or False for performance check ``assert_le``
