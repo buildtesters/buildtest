@@ -16,12 +16,12 @@ To get started please load the **python** module since you will need python 3.7 
 
     module load python
 
-Next, you should `Install buildtest <installing_buildtest>`_ by cloning the repository in your $HOME directory.
+Next, you should :ref:`Install buildtest <installing_buildtest>` by cloning the repository in your $HOME directory.
 
 Once you have buildtest setup, please clone the following repository https://github.com/buildtesters/buildtest-nersc in your $HOME directory as follows::
 
     cd $HOME
-    git clone https://github.com/buildtesters/buildtest $HOME/buildtest-nersc
+    git clone https://github.com/buildtesters/buildtest-nersc $HOME/buildtest-nersc
     export BUILDTEST_CONFIGFILE=$HOME/buildtest-nersc/config.yml
 
 Once you are done, please navigate back to root of buildtest which can be done by running::
@@ -38,7 +38,7 @@ In this exercise, we will submit a batch job that will run `hostname` in the slu
 
 Let's run this test and poll interval for 10 secs::
 
-   buildtest build -b perlmutter_tutorial/ex1/hostname.yml --pollinterval=10
+   buildtest build -b $BUILDTEST_ROOT/perlmutter_tutorial/ex1/hostname.yml --pollinterval=10
 
 Once test is complete, check the output of test by running::
 
