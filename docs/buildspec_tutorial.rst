@@ -71,7 +71,7 @@ Next add the following content in `storage.conf`::
         mount_program = "/usr/bin/fuse-overlayfs"
         mountopt = ""
 
-**Please update the path ``/tmp/<USER>/storage`` to your username.**
+**Please update the path /tmp/<USER>/storage to your username.**
 
 We need to install buildtest and setup environment for this tutorial. We recommend you clone buildtest in your HOME directory.
 This can be done as follows::
