@@ -57,8 +57,8 @@ ensure buildspec is a valid YAML file according to schema json schema.
 Parse Buildspecs
 ---------------------
 
-buildtest will validate each buildspec via JSON schema. The validation is done via `jsonschema.validate <https://python-jsonschema.readthedocs.io/en/stable/validate/#jsonschema.validate>`_ library.
-The parser will validate every buildspec with the :ref:`global_schema` using schema file
+buildtest will validate each buildspec via JSON schema using `jsonschema.validate <https://python-jsonschema.readthedocs.io/en/stable/validate/#jsonschema.validate>`_
+library. The parser will validate every buildspec with the :ref:`global_schema` using schema file
 `global.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/global.schema.json>`_.
 
 A buildspec is composed of one or more test sections specified via ``buildspec``
