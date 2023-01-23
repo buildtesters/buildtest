@@ -99,7 +99,7 @@ Typical use-case:
   - Run tests for newly installed software package typically requested by user.
 
 If you are interested trying out buildtest check out :ref:`getting_started` and
-`Join Slack Channel <https://hpcbuildtest.herokuapp.com/>`_.
+`Join Slack Channel <https://communityinviter.com/apps/hpcbuildtest/buildtest-slack-invitation>`_.
 
 Related Projects and community efforts
 ---------------------------------------
