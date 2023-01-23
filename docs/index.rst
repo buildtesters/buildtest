@@ -1,4 +1,4 @@
-| |license| |docs| |codecov| |slack| |regressiontest|
+| |license| |docs| |codecov| |regressiontest|
 
 
 buildtest
@@ -16,9 +16,6 @@ which references the `devel` branch.
     :target: https://buildtest.readthedocs.io/en/latest/?badge=latest
 
 .. |license| image:: https://img.shields.io/github/license/buildtesters/buildtest.svg
-
-.. |slack| image:: http://hpcbuildtest.herokuapp.com/badge.svg
-    :target: http://hpcbuildtest.slack.com
 
 .. |codecov| image:: https://codecov.io/gh/buildtesters/buildtest/branch/devel/graph/badge.svg
     :target: https://codecov.io/gh/buildtesters/buildtest
