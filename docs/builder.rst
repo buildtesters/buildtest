@@ -9,8 +9,8 @@ one or more buildspecs.
 Every buildspec goes through a pipeline that includes the following stages:
 
 - :ref:`Discover <discover_buildspecs>`
-- :ref:`Parse <parse_stage>`
-- :ref:`Build <build_stage>`
+- :ref:`Parse <parse_buildspecs>`
+- :ref:`Build <building_buildspecs>`
 - :ref:`Run <run_stage>`
 - :ref:`Sanity Check <sanity_stage>`
 - :ref:`Update Report <update_report_stage>`
@@ -49,10 +49,10 @@ is processed.
    :scale: 75 %
 
 
-For every discovered buildspecs, buildtest will validate the buildspecs in the :ref:`parse stage <parse_stage>` to
+For every discovered buildspecs, buildtest will validate the buildspecs in the :ref:`parse stage <_parse_buildspecs>` to
 ensure buildspec is a valid YAML file according to schema json schema.
 
-.. _parse_stage:
+.. _parse_buildspecs:
 
 Parse Buildspecs
 ---------------------
@@ -68,18 +68,36 @@ this test with schema ``script.schema.json``.
 
 buildtest will ignore any buildspecs that fail validation process for instance you may have an
 :ref:`invalid buildspec <invalid_buildspecs>`. buildtest will send valid buildspecs to the
-:ref:`build stage <build_stage>` which is responsible for building a shell-script.
+:ref:`build stage <building_buildspecs>` which is responsible for building a shell-script.
 
 .. image:: _static/ParserDiagram.png
 
-.. _build_stage:
+.. _building_buildspecs:
 
 Building Buildspecs
 ---------------------
 
 In this stage, buildtest is responsible for building a shell-script by parsing the content of buildspec and writing test to disk.
 Buildtest will create a **Builder** object that is an instance of `BuilderBase <https://github.com/buildtesters/buildtest/blob/devel/buildtest/builders/base.py>`_  class
-which embodies the test that will be run.
+which embodies the test that will be run. Every **Builder** object has a unique hash that is used to identify the test. The hash is used to create
+unique directory on disk where buildtest will write contents of test and corresponding files. Assuming a test was run successfully, you can
+use ``buildtest path`` to retrieve directory path. In example below we show root directory of a test and content of the directory.
+For each test (`always_fail`), buildtest will write **.out** and **.err** files which correspond to output and error file. The generated script is ``always_fail.sh`` and
+a wrapper script ``always_fail_build.sh`` is the script ran by buildtest which will invoke the generated script.
+.. code-block:: console
+
+      buildtest path always_fail/b758eb5a-854e-4ef4-909c-b4376d970117
+    /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.sh/explicit_state/always_fail/b758eb5a
+
+     ls -l $(buildtest path always_fail/b758eb5a-854e-4ef4-909c-b4376d970117)
+    total 24
+    -rw-r--r--   1 siddiq90  92503     0 Jan 23 13:29 always_fail.err
+    -rw-r--r--   1 siddiq90  92503     0 Jan 23 13:29 always_fail.out
+    -rwxr-xr-x   1 siddiq90  92503    42 Jan 23 13:29 always_fail.sh
+    -rwxr-xr-x   1 siddiq90  92503   771 Jan 23 13:29 always_fail_build.sh
+    -rw-r--r--   1 siddiq90  92503  3220 Jan 23 13:29 build-env.txt
+    drwxr-xr-x  15 siddiq90  92503   480 Jan 23 13:29 stage
+
 
 In the event of failure, buildtest will raise an exception and buildspec will be ignored.
 
@@ -93,7 +111,7 @@ select the executor defined by ``executor`` property in buildspec which is respo
 `BaseExecutor <https://github.com/buildtesters/buildtest/blob/devel/buildtest/executors/base.py>`_ that is a base-class for
 all executors. buildtest will run tests in parallel and wait for completion.
 buildtest can submit jobs to :ref:`batch scheduler <batch_support>` depending on content of test, in this event buildtest will
-dispatch job, retrieve jobID and poll job until job is complete.
+dispatch job, retrieve jobID and poll job until completion.
 
 Once test is complete, buildtest will write output and error to disk.
 
