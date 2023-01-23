@@ -6,9 +6,6 @@
     :scale: 100%
     :target: https://buildtest.readthedocs.io/en/latest/?badge=latest
 
-.. |slack| image:: http://hpcbuildtest.herokuapp.com/badge.svg
-    :target: http://hpcbuildtest.slack.com
-
 .. |license| image:: https://img.shields.io/github/license/buildtesters/buildtest.svg
 
 .. |release| image:: https://img.shields.io/github/v/release/buildtesters/buildtest.svg
@@ -60,7 +57,7 @@
 buildtest
 ---------
 
-| |license| |docs| |codecov| |slack| |release| |installation| |regressiontest| |gh_pages_devel| |checkurls| |codefactor| |blackformat|  |black| |isort| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
+| |license| |docs| |codecov| |release| |installation| |regressiontest| |gh_pages_devel| |checkurls| |codefactor| |blackformat|  |black| |isort| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
 
 `buildtest <https://buildtest.rtfd.io/>`_ is a testing framework that automates build/execution of tests which allows HPC facilities to develop
 test for their system. In buildtest, tests are written as test recipes called **Buildspecs** which is a `YAML <https://yaml.org/>`_
