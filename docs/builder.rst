@@ -3,9 +3,19 @@
 Build and Test Process
 ======================
 
-The `buildtest build` command is responsible for building and running tests. Every buildspec
-goes through a pipeline that discovers buildspecs, validates the buildspec and builds and runs
-the test. The buildspec must go through each stage of the pipeline, if it fails in one of the stage,
+The **buildtest build** command is responsible for building and running tests on your system given
+one or more buildspecs.
+
+Every buildspec goes through a pipeline that includes the following stages:
+
+- :ref:`Discover <discover_buildspecs>`
+- :ref:`Parse <parse_stage>`
+- :ref:`Build <build_stage>`
+- :ref:`Run <run_stage>`
+- :ref:`Sanity Check <sanity_stage>`
+- :ref:`Update Report <update_report_stage>`
+
+The buildspec must go through each stage of the pipeline, if it fails in one of the stage,
 the buildspec will be ignored.
 
 .. image:: _static/GeneralPipeline.png
@@ -39,49 +49,73 @@ is processed.
    :scale: 75 %
 
 
-
-For every discovered buildspecs, buildtest will validate the buildspecs in the **parse**
-stage which is performed using `jsonschema.validate <https://python-jsonschema.readthedocs.io/en/stable/validate/#jsonschema.validate>`_ library.
-The parser will validate every buildspec with the global schema named `global.schema.json <https://github.com/buildtesters/buildtest/blob/gh-pages/pages/schemas/global.schema.json>`_
-and one of the sub-schemas, check :ref:`parsing buildspecs <parse_stage>` section for more details.
+For every discovered buildspecs, buildtest will validate the buildspecs in the :ref:`parse stage <parse_stage>` to
+ensure buildspec is a valid YAML file according to schema json schema.
 
 .. _parse_stage:
 
 Parse Buildspecs
 ---------------------
 
-A buildspec file may contain one or more test sections specified via ``buildspec``
-field. Each test is validated by a sub-schema specified by ``type`` field.
-buildtest will validate the buildspec with global schema first and one of the subschemas used to validate
-the test instance specified by `type` field. buildtest will seek the schema from its schema library
-and validate the test section ``hello_world`` with schema ``script.schema.json``.
-Buildspecs will be ignored if it fails validation process for instance you may have an :ref:`invalid_buildspecs`.
-Invalid buildspecs won't be sent to **build** stage since we can't reliably build a test-script.
+buildtest will validate each buildspec via JSON schema. The validation is done via `jsonschema.validate <https://python-jsonschema.readthedocs.io/en/stable/validate/#jsonschema.validate>`_ library.
+The parser will validate every buildspec with the :ref:`global_schema` using schema file
+`global.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/global.schema.json>`_.
+
+A buildspec is composed of one or more test sections specified via ``buildspec``
+field. Each test is validated by a sub-schema specified by ``type`` field. In this diagram below,
+we have a test **hello_world**  that uses ``type: script`` which informs buildtest to validate
+this test with schema ``script.schema.json``.
+
+buildtest will ignore any buildspecs that fail validation process for instance you may have an
+:ref:`invalid buildspec <invalid_buildspecs>`. buildtest will send valid buildspecs to the
+:ref:`build stage <build_stage>` which is responsible for building a shell-script.
 
 .. image:: _static/ParserDiagram.png
+
+.. _build_stage:
 
 Building Buildspecs
 ---------------------
 
-buildtest will send all valid buildspecs to **build** phase which is responsible for building
-a shell-script from the buildspec file. In this stage, we create a **Builder** object
-that is an instance of `BuilderBase <https://github.com/buildtesters/buildtest/blob/devel/buildtest/builders/base.py>`_  class that is a base
-class for building a buildspec.
+In this stage, buildtest is responsible for building a shell-script by parsing the content of buildspec and writing test to disk.
+Buildtest will create a **Builder** object that is an instance of `BuilderBase <https://github.com/buildtesters/buildtest/blob/devel/buildtest/builders/base.py>`_  class
+which embodies the test that will be run.
 
-During build phase, there are additional checks on buildspecs to ensure we can generate a test-script. In the event
-of failure, buildtest will raise an exception and buildspec will be ignored. The ignored buildspecs are not sent to **run**
-stage
+In the event of failure, buildtest will raise an exception and buildspec will be ignored.
+
+.. _run_stage:
 
 Running Buildspecs
 ---------------------
 
 In this stage, we run the test based on :ref:`executors <configuring_executors>` defined in configuration file. buildtest will
-select the executor defined by ``executor`` property in buildspec which is responsible for running the test. There is a `BaseExecutor <https://github.com/buildtesters/buildtest/blob/devel/buildtest/executors/base.py>`_
-that is a base-class for all executors. We have sub-class for each executor type (Local, Slurm, Cobalt, PBS, Cobalt). In this stage,
-we run the test and get output, error, returncode and detect status of test (``PASS``, ``FAIL``). If test is run via scheduler,
-we submit job to scheduler and poll jobID until it is finished.
+select the executor defined by ``executor`` property in buildspec which is responsible for running the test. There is a
+`BaseExecutor <https://github.com/buildtesters/buildtest/blob/devel/buildtest/executors/base.py>`_ that is a base-class for
+all executors. buildtest will run tests in parallel and wait for completion.
+buildtest can submit jobs to :ref:`batch scheduler <batch_support>` depending on content of test, in this event buildtest will
+dispatch job, retrieve jobID and poll job until job is complete.
 
-Upon completion of test, we update the **Builder** object with the test results which is written to report file.
+Once test is complete, buildtest will write output and error to disk.
+
+.. _sanity_stage:
+
+Sanity Check
+-------------
+
+Once test is complete, buildtest will run a series of sanity check to determine state of test which can be ``PASS`` or ``FAIL``.
+The default behavior is returncode, if its 0 test is ``PASS`` otherwise its a ``FAIL``. buildtest supports several :ref:`status <status>` checks
+in addition to :ref:`performance checks <perf_checks>`.
+
+.. _update_report_stage:
+
+Update Report
+---------------
+
+Buildtest will write all tests and corresponding metadata for each test to report file. The report file is a JSON file that is
+updated upon every **buildtest build** command which allows buildtest to keep track of previous builds. The report file can be queried
+via ``buildtest report`` or ``buildtest inspect``.
+
+buildtest will write report to default report file unless ``buildtest build -r /path/to/report.json`` is specified.
 
 
 
