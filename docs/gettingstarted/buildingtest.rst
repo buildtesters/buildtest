@@ -7,14 +7,6 @@ This reference guide will get you familiar with buildtest command line interface
 you complete this section, you can proceed to :ref:`writing buildspecs <buildspec_tutorial>`
 section where we will cover how to write buildspecs.
 
-Once you install buildtest, you should find the `buildtest` command in your **$PATH**.
-You can check the path to buildtest command by running::
-
-      $ which buildtest
-
-If you don't see buildtest go back and :ref:`install buildtest <installing_buildtest>`.
-
-
 When you clone buildtest, you also get a set of buildspecs that you can run on your
 system. The ``buildtest build`` command is used for building and running tests.
 Buildtest will read one or more buildspecs file that adheres to one of the
