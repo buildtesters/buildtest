@@ -1,9 +1,9 @@
 .. _building_test:
 
-Building Test via buildtest (``buildtest build``)
-=================================================
+Building Test  (``buildtest build``)
+======================================
 
-This guide will get you familiar with buildtest command line interface. Once
+This reference guide will get you familiar with buildtest command line interface. Once
 you complete this section, you can proceed to :ref:`writing buildspecs <buildspec_tutorial>`
 section where we will cover how to write buildspecs.
 
