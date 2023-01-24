@@ -152,4 +152,4 @@ contents. By default ``buildtest path`` will retrieve root directory of test. Yo
     buildtest path -o hello_world
     buildtest path -e hello_world
 
-We encourage you review :ref:`<test_reports>` for a detailed guide on how to query test in buildtest.
+We encourage you review :ref:`test_reports` for a detailed guide on how to query test in buildtest.
