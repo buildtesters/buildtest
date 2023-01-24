@@ -1,0 +1,9 @@
+buildspecs:
+  test_lmod_version:
+    type: script
+    executor: perlmutter.local.bash
+    run: echo $LMOD_VERSION
+    status:
+      regex:
+        stream: stdout
+        exp: '^8.3.1$'
