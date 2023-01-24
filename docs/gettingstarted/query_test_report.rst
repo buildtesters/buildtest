@@ -321,7 +321,7 @@ filter test and only report tests in the range of [start, end] dates.
         └────────────────────────────────────────────────────────┴──────────────┴──────────────────────────────────────────┴─────────────────────────────────────────┘
 
 Limit number of test records (``buildtest report --count``)
---------------------------------------------------------
+-------------------------------------------------------------
 
 The ``buildtest report`` command will show all test results from the report file and the output can be quite long. 
 If you want to limit the number of records that get printed then you can use ``buildtest report --count`` 
