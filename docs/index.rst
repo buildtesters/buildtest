@@ -82,7 +82,6 @@ automate module load testing. For more details on lmodule see https://github.com
    :maxdepth: 2
    :caption: Tutorial
 
-
    getting_started
    buildspec_tutorial
    buildtest_perlmutter
@@ -106,6 +105,7 @@ automate module load testing. For more details on lmodule see https://github.com
    :maxdepth: 2
    :caption: Reference
 
+   getting_started
    writing_buildspecs
    features
    schema_examples
