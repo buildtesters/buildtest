@@ -7,6 +7,7 @@ expose functions to run builds.
 
 import logging
 import os
+import re
 
 from buildtest.exceptions import (
     ExecutorError,
@@ -137,7 +138,7 @@ class BuildspecParser:
 
         match = any(
             [
-                True if name == executor else False
+                True if re.fullmatch(executor, name) else False
                 for name in self.buildexecutors.names()
             ]
         )
