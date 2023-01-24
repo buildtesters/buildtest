@@ -35,7 +35,7 @@ buildspecs:
           stream: stdout
           item: 1
     status:
-      assert_ge:
+      assert_gt:
         - name: copy
           ref: 5000
         - name: scale
