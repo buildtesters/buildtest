@@ -84,6 +84,7 @@ unique directory on disk where buildtest will write contents of test and corresp
 use ``buildtest path`` to retrieve directory path. In example below we show root directory of a test and content of the directory.
 For each test (`always_fail`), buildtest will write **.out** and **.err** files which correspond to output and error file. The generated script is ``always_fail.sh`` and
 a wrapper script ``always_fail_build.sh`` is the script ran by buildtest which will invoke the generated script.
+
 .. code-block:: console
 
       buildtest path always_fail/b758eb5a-854e-4ef4-909c-b4376d970117
