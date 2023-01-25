@@ -153,3 +153,121 @@ contents. By default ``buildtest path`` will retrieve root directory of test. Yo
     buildtest path -e hello_world
 
 We encourage you review :ref:`test_reports` for a detailed guide on how to query test in buildtest.
+
+Interacting with Buildspecs
+----------------------------
+
+buildtest supports several ways to interact with buildspecs, such as querying buildspec cache,
+validating buildspecs, showing content of buildspecs, and editing buildspecs in editor.
+The ``buildtest buildspec`` command contains several subcommands that we will discuss in this
+session. To learn more we encourage you see :ref:`buildspec_interface` for detailed guide.
+
+The ``buildtest help`` command can be used to provide a brief help message for each subcommand. Let's run
+the following command since there are lots of commands that can be used to query buildspec.
+
+.. dropdown:: ``buildtest help buildspec``
+
+    .. command-output:: buildtest help buildspec
+
+To build the buildspec cache you will need to run the following::
+
+    buildtest buildspec find --rebuild -q
+
+The ``--rebuild`` option will rebuild the cache and ``-q`` will supress output. If you want to see all
+valid buildspecs in cache you can run::
+
+    buildtest buildspec find
+
+To retrieve all tags you can run::
+
+    buildtest buildspec find --tags
+
+We can filter tests via ``--filter`` option which expects a **key=value** pair. Let's filter by tagname ``python`` by running::
+
+    buildtest buildspec find --filter tags=python
+
+We can format the columns using ``--format`` option where each field is comma separated. Let's format by fields
+``name``, ``tags``, ``description`` ::
+
+    buildtest buildspec find --filter tags=python --format name,tags,description
+
+To see all filter and format fields you can use ``--helpfilter`` and ``--helpformat`` to list all fields and their description.
+
+If you want to see a summary of the buildspec cache you can run::
+
+    buildtest buildspec summary
+
+buildtest has an alias ``buildtest bc`` for **buildtest buildspec** command so let's use this going forward.
+
+
+To validate a buildspec you can use **buildtest bc validate** command there are several options analogous to ``buildtest build``
+for discovering buildspecs such as ``-b``, ``-x``, ``-t``, ``-e``. For instance let's validate the following buildspecs::
+
+    buildtest bc validate -b tutorials/hello_world.yml -b general_tests/configuration
+    buildtest bc validate -t python
+
+Let's try validating an invalid buildspec so you can see what happens
+
+.. dropdown:: ``buildtest bc validate -b tutorials/invalid_executor.yml``
+
+    .. command-output:: buildtest bc validate -b tutorials/invalid_executor.yml
+       :returncode: 1
+
+To see content of buildspec you can use ``buildtest bc show`` which expects name of test. Note tab completion
+is supported.
+
+Let's run the following::
+
+    buildtest bc show sleep hello_world
+
+buildtest uses `rich <https://rich.readthedocs.io/>`_ python library for coloring which is used extensively throughout the buildtest output.
+Rich supports several built-in themes that can be used for your preference. The ``buildtest bc show -t <THEME>`` can be used
+select a color theme.
+
+Currently, buildtest supports the following themes, feel free to tab complete::
+
+       buildtest bc show -t
+abap                borland             emacs               gruvbox-dark        lovelace            native              paraiso-light       sas                 stata-dark          vs
+algol               bw                  friendly            gruvbox-light       manni               nord                pastie              solarized-dark      stata-light         xcode
+algol_nu            colorful            friendly_grayscale  igor                material            nord-darker         perldoc             solarized-light     tango               zenburn
+arduino             default             fruity              inkpot              monokai             one-dark            rainbow_dash        staroffice          trac
+autumn              dracula             github-dark         lilypond            murphy              paraiso-dark        rrt                 stata               vim
+
+Let's try running the same example with ``emacs`` theme::
+
+    buildtest bc show -t emacs sleep
+
+If you want to see list of invalid buildspecs you can run::
+
+    buildtest bc find invalid
+
+Note, if you fix your invalid buildspec, buildtest will have no way of knowing if buildspec is valid until you
+rebuild the buildspec cache ``buildtest bc find --rebuild``.
+
+Buildtest Configuration
+------------------------
+
+In order to use buildtest, you need to :ref:`configure buildtest <configuring_buildtest>`. We will not discuss
+buildtest configuration in this tutorial, but show how you can interact with configuration file via command line.
+
+Buildtest provides a default configuration file that is sufficient to get started. To view path to configuration file you can run::
+
+    buildtest config path
+
+We have an alias ``buildtest cg`` for **buildtest config** command. If you want to view content of configuration file you can run
+
+.. dropdown:: ``buildtest cg view``
+
+    .. command-output:: buildtest cg view
+
+We also support color themes (``buildtest cg view --theme <theme>``) and paging ``buildtest cg view --pager``.
+
+buildtest configuration file defines one or more :ref:`executors <configuring_executors>` that are used when
+writing test. Every test must be run by an executor. To retrieve all executors in a flat-listing you can run::
+
+    buildtest cg executors
+
+buildtest can show executor details in JSON and YAML format, you can fetch the details by running::
+
+    buildtest cg executors --json
+    buildtest cg executors --yaml
