@@ -20,6 +20,7 @@ from pathlib import Path
 from buildtest.buildsystem.checks import (
     assert_eq_check,
     assert_ge_check,
+    assert_gt_check,
     assert_le_check,
     assert_range_check,
     exists_check,
@@ -963,6 +964,7 @@ class BuilderBase(ABC):
             lsf_job_state_match = False
             assert_ge_match = False
             assert_le_match = False
+            assert_gt_match = False
             assert_eq_match = False
             assert_range_match = False
             assert_exists = False
@@ -999,6 +1001,9 @@ class BuilderBase(ABC):
             if self.status.get("assert_le"):
                 assert_le_match = assert_le_check(self)
 
+            if self.status.get("assert_gt"):
+                assert_gt_match = assert_gt_check(self)
+
             if self.status.get("assert_eq"):
                 assert_eq_match = assert_eq_check(self)
 
@@ -1026,6 +1031,7 @@ class BuilderBase(ABC):
                     runtime_match,
                     assert_ge_match,
                     assert_le_match,
+                    assert_gt_match,
                     assert_eq_match,
                     assert_range_match,
                     assert_exists,
