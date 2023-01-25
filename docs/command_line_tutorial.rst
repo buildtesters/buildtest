@@ -227,11 +227,11 @@ select a color theme.
 Currently, buildtest supports the following themes, feel free to tab complete::
 
        buildtest bc show -t
-abap                borland             emacs               gruvbox-dark        lovelace            native              paraiso-light       sas                 stata-dark          vs
-algol               bw                  friendly            gruvbox-light       manni               nord                pastie              solarized-dark      stata-light         xcode
-algol_nu            colorful            friendly_grayscale  igor                material            nord-darker         perldoc             solarized-light     tango               zenburn
-arduino             default             fruity              inkpot              monokai             one-dark            rainbow_dash        staroffice          trac
-autumn              dracula             github-dark         lilypond            murphy              paraiso-dark        rrt                 stata               vim
+    abap                borland             emacs               gruvbox-dark        lovelace            native              paraiso-light       sas                 stata-dark          vs
+    algol               bw                  friendly            gruvbox-light       manni               nord                pastie              solarized-dark      stata-light         xcode
+    algol_nu            colorful            friendly_grayscale  igor                material            nord-darker         perldoc             solarized-light     tango               zenburn
+    arduino             default             fruity              inkpot              monokai             one-dark            rainbow_dash        staroffice          trac
+    autumn              dracula             github-dark         lilypond            murphy              paraiso-dark        rrt                 stata               vim
 
 Let's try running the same example with ``emacs`` theme::
 
