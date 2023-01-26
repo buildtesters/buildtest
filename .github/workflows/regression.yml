@@ -3,6 +3,9 @@ name: regressiontest
 on:
   pull_request:
     branches: [ devel ]
+    paths:
+      - 'buildtest/**'
+      - 'tests/**'
 
 jobs:
 
