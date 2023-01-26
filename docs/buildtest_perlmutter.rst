@@ -30,6 +30,8 @@ Once you are done, please navigate back to the root of buildtest::
 
     cd $BUILDTEST_ROOT
 
+**If you get stuck on any exercise, you can see the solution to each exercise in file ".solution.txt"**
+
 Exercise 1: Running a Batch Job
 --------------------------------
 
