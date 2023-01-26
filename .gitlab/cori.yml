@@ -37,6 +37,7 @@ perlmutter_regression_test:
   script:
     - set -e
     - whoami
+    - export NERSC_HOST=`cat /etc/clustername`
     - module load python/3.9-anaconda-2021.11
     - git branch
     - conda create -p $CI_PROJECT_DIR/.conda python=3.9 -y
