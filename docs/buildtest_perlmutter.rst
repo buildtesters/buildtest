@@ -88,14 +88,24 @@ Exercise 2: Performing Status Check
 ------------------------------------
 
 In this exercise, we will check the version of Lmod using the environment variable **LMOD_VERSION** and specifying the
-the output using a :ref:`regular expression <regex>`.
+the output using a :ref:`regular expression <regex>`. We will run the test with an invalid regular expression and see if test fails and
+rerun example until it passes
 
 .. literalinclude:: ../perlmutter_tutorial/ex2/module_version.yml
    :language: yaml
 
-This buildspec is invalid, your first task is to make sure buildspec is valid. Once you have accomplished this task, try building
-the test and check the output of test. If your test passes, try updating the regular expression and see if test fails. Revert the change
-back and make the test pass.
+First let's try running this test, you will notice the test will fail validation::
+
+    buildtest build -b perlmutter_tutorial/ex2/module_version.yml
+
+
+**TODO:**
+
+- Validate the buildspec using ``buildtest buildspec validate``
+- Add a regular expression on ``stdout`` stream and make sure test fails
+- Check output of test via ``buildtest inspect query``
+- Update regular expression to match output and rerun test until it passes.
+
 
 Exercise 3: Querying Buildspec Cache
 -------------------------------------
@@ -105,6 +115,8 @@ In this exercise you will learn how to use the :ref:`buildspec_interface`. Let's
     buildtest buildspec find --root $HOME/buildtest-nersc/buildspecs --rebuild -q
 
 In this task you will be required to do the following
+
+**TODO:**
 
 1. Find all tags
 2. List all filters and format fields
@@ -145,5 +157,8 @@ First, let's build this test and analyze the output::
   buildtest build -b perlmutter_tutorial/ex5/stream.yml
   buildtest inspect query -o stream_test
 
-Take a close look at the metrics value. In this task, you are requested to use use :ref:`assert_ge` with metric ``copy`` and
-``scale`` with a reference value. For the reference value please experiment with different metrics and see if test passes or fails.
+**TODO**
+
+- Check the output of metrics ``copy`` and ``scale`` in the command **buildtest inspect query -o stream_test**
+- Use :ref:`assert_ge` check with metric ``copy`` and ``scale`` and specify a reference value. Specify a reference value (pick some high number) that will make test fail and rerun test.
+- Next try different reference values and make sure test will pass.
