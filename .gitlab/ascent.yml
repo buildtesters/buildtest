@@ -11,6 +11,9 @@ ascent_pr_regression_test:
   stage: regression
   rules:
     - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" && $CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
+      changes:
+        - buildtest/**/*
+        - tests/**/*
 
   script:
     - set -e
