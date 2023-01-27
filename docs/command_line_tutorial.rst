@@ -44,7 +44,7 @@ In the next example try running the following commands::
     buildtest build -b general_tests/configuration -x general_tests/configuration/ulimits.yml
     buildtest build -b general_tests/configuration -x general_tests/configuration
 
-You will notice in the 2nd command when buildtest has no buildspecs to build it will terminate immediately.
+You will notice in the second command when buildtest has no buildspecs to build it will terminate immediately.
 
 Buildtest supports test timeout which can be used if you don't want to wait indefinitely for test to complete. You
 can use ``--timeout`` option which will terminate test if it exceeds the timelimit. The timeout is in number of
@@ -54,7 +54,7 @@ seconds. Let's try running the following example and take note of how timeout af
     buildtest build -b tutorials/sleep.yml --timeout=1
     buildtest build -b tutorials/sleep.yml --timeout=5
 
-buildtest supports test discovery based on :ref:`tags <build_by_tags>`  via
+Buildtest supports test discovery based on :ref:`tags <build_by_tags>`  via
 ``buildtest build --tags`` or short option ``-t``. Let's try running the following test, take note
 of the output as buildtest will show discovered buildspecs based on tag names
 
@@ -68,7 +68,7 @@ To learn more about how to run tests, please refer to :ref:`building_test` guide
 Querying Test Report
 -----------------------
 
-buildtest will keep track of all tests in a report file (JSON) that can be used to display content of all test runs
+Buildtest will keep track of all tests in a report file (JSON) that can be used to display content of all test runs
 and query metadata specific to test. To fetch all test runs you can use ``buildtest report`` command which will displays
 output in a table format.
 
@@ -76,7 +76,7 @@ You can fetch the path to report file by running::
 
     buildtest report path
 
-buildtest can write test results to alternate report file if ``buildtest --report`` is used, you can list all report files by
+Buildtest can write test results to alternate report file if ``buildtest --report`` is used, you can list all report files by
 running::
 
     buildtest report list
@@ -95,7 +95,7 @@ displays total row count. Let's run the following and see total fail count::
 
 The ``buildtest rt summary`` can be useful if you want to summary of report file.
 
-buildtest supports paging support with ``buildtest rt`` which can be useful when you
+Buildtest supports paging support with ``buildtest rt`` which can be useful when you
 have lots of tests. To enable pagination you can run::
 
     buildtest rt --pager
@@ -157,7 +157,7 @@ We encourage you review :ref:`test_reports` for a detailed guide on how to query
 Interacting with Buildspecs
 ----------------------------
 
-buildtest supports several ways to interact with buildspecs, such as querying buildspec cache,
+Buildtest supports several ways to interact with buildspecs, such as querying buildspec cache,
 validating buildspecs, showing content of buildspecs, and editing buildspecs in editor.
 The ``buildtest buildspec`` command contains several subcommands that we will discuss in this
 session. To learn more we encourage you see :ref:`buildspec_interface` for detailed guide.
@@ -197,7 +197,7 @@ If you want to see a summary of the buildspec cache you can run::
 
     buildtest buildspec summary
 
-buildtest has an alias ``buildtest bc`` for **buildtest buildspec** command so let's use this going forward.
+Buildtest has an alias ``buildtest bc`` for **buildtest buildspec** command so let's use this going forward.
 
 
 To validate a buildspec you can use **buildtest bc validate** command there are several options analogous to ``buildtest build``
@@ -220,7 +220,7 @@ Let's run the following::
 
     buildtest bc show sleep hello_world
 
-buildtest uses `rich <https://rich.readthedocs.io/>`_ python library for coloring which is used extensively throughout the buildtest output.
+Buildtest uses `rich <https://rich.readthedocs.io/>`_ python library for coloring which is used extensively throughout the buildtest output.
 Rich supports several built-in themes that can be used for your preference. The ``buildtest bc show -t <THEME>`` can be used
 select a color theme.
 
@@ -262,12 +262,12 @@ We have an alias ``buildtest cg`` for **buildtest config** command. If you want 
 
 We also support color themes (``buildtest cg view --theme <theme>``) and paging ``buildtest cg view --pager``.
 
-buildtest configuration file defines one or more :ref:`executors <configuring_executors>` that are used when
+Buildtest configuration file defines one or more :ref:`executors <configuring_executors>` that are used when
 writing test. Every test must be run by an executor. To retrieve all executors in a flat-listing you can run::
 
     buildtest cg executors
 
-buildtest can show executor details in JSON and YAML format, you can fetch the details by running::
+Buildtest can show executor details in JSON and YAML format, you can fetch the details by running::
 
     buildtest cg executors --json
     buildtest cg executors --yaml
