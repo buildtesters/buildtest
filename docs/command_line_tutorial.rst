@@ -17,11 +17,8 @@ Building Test
 
 The ``buildtest build`` command is used for running a test on your system given a :ref:`buildspec <what_is_buildspec>`
 file (YAML). The most common way to build a test is specifying a file path via ``buildtest build -b <path>``. To get started,
-let's build our first test by running the following::
+let's build our first test by running the following.
 
-    buildtest build -b $BUILDTEST_ROOT/tutorials/hello_world.yml
-
-If you ran this successfully, you should see the following output
 
 .. dropdown:: ``buildtest build -b $BUILDTEST_ROOT/tutorials/hello_world.yml``
 
