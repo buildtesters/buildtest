@@ -7,7 +7,7 @@ This tutorial will be conducted on the `Perlmutter <https://docs.nersc.gov/syste
 Setup
 ------
 
-Once you have a NERSC account, you can any `connect to NERSC system <https://docs.nersc.gov/connect/>`_.
+Once you have a NERSC account, you can `connect to any NERSC system <https://docs.nersc.gov/connect/>`_.
 terminal client and ssh into perlmutter as follows::
 
     ssh <user>@perlmutter-p1.nersc.gov
@@ -18,11 +18,11 @@ To get started please load the **python** module since you will need python 3.7 
 
 Next, you should :ref:`Install buildtest <installing_buildtest>` by cloning the repository into your home directory::
 
+    cd $HOME
     git clone https://github.com/buildtesters/buildtest.git
 
-Once you have buildtest setup, please clone the following repository in your home directory as follows::
+Once you have buildtest setup, please clone the following repository into your home directory as follows::
 
-    cd $HOME
     git clone https://github.com/buildtesters/buildtest-nersc $HOME/buildtest-nersc
     export BUILDTEST_CONFIGFILE=$HOME/buildtest-nersc/config.yml
 
@@ -106,7 +106,7 @@ First let's try running this test, you will notice the test will fail validation
 - Validate the buildspec using ``buildtest buildspec validate``
 - Add a regular expression on ``stdout`` stream and make sure test fails
 - Check output of test via ``buildtest inspect query``
-- Update regular expression to match output and rerun test until it passes.
+- Update regular expression to match output with value of **$LMOD_VERSION** reported in test and rerun test until it passes.
 
 
 Exercise 3: Querying Buildspec Cache
@@ -131,19 +131,31 @@ In this task you will be required to do the following
 Exercise 4: Querying Test Reports
 ----------------------------------
 
-In this exercise you will be learn how to :ref:`query test reports <test_reports>`. This can be done by
+In this exercise you will learn how to :ref:`query test reports <test_reports>`. This can be done by
 running ``buildtest report``. In this task please do the following
 
 1. List all filters and format fields
 2. Query all tests by returncode 0
 3. Query all tests by tag ``e4s``
-4. Print total count of all failed tests
+4. Print the total count of all failed tests
 
 Let's upload the tests to CDASH by running the following::
 
     buildtest cdash upload $USER-buildtest-tutorial
 
-Take some time to analyze the output in CDASH by opening the link.
+If you were successful, you should see a link to https://my.cdash.org with link to test results, please click on the link
+to view your test results and briefly analyze the test results.
+
+.. code-block:: console
+
+       buildtest cdash upload $USER-buildtest-tutorial
+    Reading report file:  /Users/siddiq90/Documents/github/buildtest/var/report.json
+    Uploading 110 tests
+    Build Name:  siddiq90-buildtest-tutorial
+    site:  generic
+    MD5SUM: a589c72bcdabdab9038600a2789e429f
+    You can view the results at: https://my.cdash.org//viewTest.php?buildid=2278337
+
 
 Exercise 5: Specifying Performance Checks
 --------------------------------------------
@@ -162,5 +174,5 @@ First, let's build this test and analyze the output::
 **TODO**
 
 - Check the output of metrics ``copy`` and ``scale`` in the command **buildtest inspect query -o stream_test**
-- Use :ref:`assert_ge` check with metric ``copy`` and ``scale`` and specify a reference value. Specify a reference value (pick some high number) that will make test fail and rerun test.
-- Next try different reference values and make sure test will pass.
+- Use the :ref:`assert_ge` check with metric ``copy`` and ``scale``. Specify a reference value (pick some high number) for metric **copy** and **scale*** that will cause test to **FAIL**.
+- Next try different reference values and make sure test will **PASS**.
