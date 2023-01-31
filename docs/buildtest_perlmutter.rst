@@ -52,38 +52,19 @@ Next, let's update the test such that it runs on both the **regular** and **debu
 specify a regular expression. Please refer to :ref:`Multiple Executors <multiple_executors>` for reference. You can retrieve a list of available executors
 by running ``buildtest config executors``.
 
-Once you have updated and re-run the test, you should see two runs for the same test. If you ran this successfully, you should
-see the following when running the test
+Once you have updated and re-run the test, you should see two test runs for **hostname_perlmutter**, one for each executor. If you ran this successfully, in output of
+``buildtest build`` you should see a test summary with two executors
 
 .. code-block:: console
 
-    hostname_perlmutter/80e317c1 does not have any dependencies adding test to queue
-    hostname_perlmutter/b1d7b318 does not have any dependencies adding test to queue
-    In this iteration we are going to run the following tests: [hostname_perlmutter/80e317c1, hostname_perlmutter/b1d7b318]
-    hostname_perlmutter/b1d7b318: Current Working Directory : /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.regular/solution/hostname_perlmutter/b1d7b318/stage
-    hostname_perlmutter/80e317c1: Current Working Directory : /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/solution/hostname_perlmutter/80e317c1/stage
-    hostname_perlmutter/b1d7b318: Running Test via command: bash --norc --noprofile -eo pipefail hostname_perlmutter_build.sh
-    hostname_perlmutter/80e317c1: Running Test via command: bash --norc --noprofile -eo pipefail hostname_perlmutter_build.sh
-    hostname_perlmutter/80e317c1: JobID 4990982 dispatched to scheduler
-    hostname_perlmutter/b1d7b318: JobID 4990983 dispatched to scheduler
-    Polling Jobs in 30 seconds
-    hostname_perlmutter/80e317c1: Job 4990982 is complete!
-    hostname_perlmutter/80e317c1: Test completed in 30.248888 seconds
-    hostname_perlmutter/80e317c1: Test completed with returncode: 0
-    hostname_perlmutter/80e317c1: Writing output file -  /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/solution/hostname_perlmutter/80e317c1/hostname_perlmutter.out
-    hostname_perlmutter/80e317c1: Writing error file - /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/solution/hostname_perlmutter/80e317c1/hostname_perlmutter.err
-                                    Pending and Suspended Jobs
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
-    ┃ builder                      ┃ executor                 ┃ jobid   ┃ jobstate ┃ runtime ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
-    │ hostname_perlmutter/b1d7b318 │ perlmutter.slurm.regular │ 4990983 │ PENDING  │ 30.455  │
-    └──────────────────────────────┴──────────────────────────┴─────────┴──────────┴─────────┘
-                                          Completed Jobs
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
-    ┃ builder                      ┃ executor               ┃ jobid   ┃ jobstate  ┃ runtime   ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━┩
-    │ hostname_perlmutter/80e317c1 │ perlmutter.slurm.debug │ 4990982 │ COMPLETED │ 30.248888 │
-    └──────────────────────────────┴────────────────────────┴─────────┴───────────┴───────────┘
+                                                                Test Summary
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ builder                               ┃ executor                    ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime  ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ hostname_perlmutter/80e317c1          │ perlmutter.slurm.regular    │ PASS   │ N/A N/A N/A                         │ 0          │ 45.324512│
+├───────────────────────────────────────┼─────────────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+│ hostname_perlmutter/b1d7b318          │ perlmutter.slurm.debug      │ PASS   │ N/A N/A N/A                         │ 0          │ 75.54278 │
+└───────────────────────────────────────┴─────────────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
 
 Exercise 2: Performing Status Check
