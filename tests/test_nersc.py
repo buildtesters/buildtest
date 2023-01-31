@@ -12,7 +12,7 @@ from buildtest.system import BuildTestSystem
 hostname = socket.getfqdn()
 here = os.path.dirname(os.path.abspath(__file__))
 
-settings_file = os.path.join(here, "settings", "cori.yml")
+settings_file = os.path.join(here, "settings", "nersc.yml")
 
 
 def test_cori_burstbuffer():
@@ -144,6 +144,36 @@ def test_compiler_test_cori():
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
     bc.validate(moduletool="environment-modules")
+
+    # testing buildtest config compilers test
+    compiler_test(configuration=bc)
+
+
+def test_compiler_find_perlmutter():
+
+    if not hostname.startswith("login"):
+        pytest.skip("This test runs on Perlmutter Login nodes ('login*')")
+
+    bc = SiteConfiguration(settings_file)
+    bc.detect_system()
+    bc.validate(moduletool="lmod")
+
+    # testing buildtest config compilers find
+    compilers = BuildtestCompilers(configuration=bc)
+    compilers.find_compilers()
+
+    # test entry point for 'buildtest config compilers find --detailed'
+    compiler_find(configuration=bc, detailed=True)
+
+
+def test_compiler_test_perlmutter():
+
+    if not hostname.startswith("login"):
+        pytest.skip("This test runs on Perlmutter Login nodes ('login*')")
+
+    bc = SiteConfiguration(settings_file)
+    bc.detect_system()
+    bc.validate(moduletool="lmod")
 
     # testing buildtest config compilers test
     compiler_test(configuration=bc)

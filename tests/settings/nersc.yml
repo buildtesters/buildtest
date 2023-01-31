@@ -56,3 +56,40 @@ system:
           qos: bigmem
           cluster: escori
           description: large memory jobs
+
+  perlmutter:
+    hostnames: ["login*"]
+    moduletool: lmod
+    compilers:
+      enable_prgenv: true
+      prgenv_modules:
+        gcc: PrgEnv-gnu
+        cray: PrgEnv-cray
+        nvhpc: PrgEnv-nvhpc
+      find:
+        gcc: '^(gcc)'
+        cray: '^(cce)'
+        nvhpc: '^(nvhpc)'
+      compiler:
+        gcc:
+          builtin_gcc:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran
+    executors:
+      defaults:
+        pollinterval: 30
+        maxpendtime: 86400
+      local:
+        bash:
+          description: submit jobs on local machine using bash shell
+          shell: bash
+        sh:
+          description: submit jobs on local machine using sh shell
+          shell: sh
+        csh:
+          description: submit jobs on local machine using csh shell
+          shell: csh
+        zsh:
+          description: submit jobs on local machine using zsh shell
+          shell: zsh
