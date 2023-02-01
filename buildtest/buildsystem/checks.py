@@ -506,6 +506,61 @@ def assert_eq_check(builder):
     return all(assert_check)
 
 
+def assert_ne_check(builder):
+    """This method performs Assert not Equal and is used when ``assert_ne`` property is specified
+    in status check. This method will evaluate each metric value reference value and
+    store assertion in list. The list of assertion is logically AND which will return a True or False
+    for the status check.
+
+    Returns:
+        bool: True or False for performance check ``assert_ne``
+    """
+    # a list containing booleans to evaluate reference check for each metric
+    assert_check = []
+
+    metric_names = list(builder.metadata["metrics"].keys())
+
+    # iterate over each metric in buildspec and determine reference check for each metric
+    for metric in builder.status["assert_ne"]:
+        name = metric["name"]
+        ref_value = metric["ref"]
+
+        # if metric is not valid, then mark as False
+        if not builder.is_valid_metric(name):
+            msg = f"[blue]{builder}[/]: Unable to find metric: [red]{name}[/red]. List of valid metrics are the following: {metric_names}"
+            console.print(msg)
+            logger.warning(msg)
+            assert_check.append(False)
+            continue
+
+        metric_value = builder.metadata["metrics"][name]
+
+        # if metrics is empty string mark as False since we can't convert item to int or float
+        if builder.metadata["metrics"][name] == "":
+            assert_check.append(False)
+            continue
+
+        conv_value, ref_value = convert_metrics(
+            metric_value=metric_value,
+            ref_value=ref_value,
+            dtype=builder.metrics[name]["type"],
+        )
+
+        console.print(
+            f"[blue]{builder}[/]: testing metric: [red]{name}[/red] if [yellow]{conv_value}[/yellow] != [yellow]{ref_value}[/yellow]"
+        )
+
+        # if either converted value and reference value is None stop here before proceeding to the not equal check
+        if (conv_value is None) or (ref_value is None):
+            assert_check.append(False)
+            continue
+
+        assert_check.append(conv_value != ref_value)
+
+    # perform a logical AND on the list and return the boolean result
+    return all(assert_check)
+
+
 def assert_range_check(builder):
     """This method is perform Assert Range used when ``assert_range`` property is specified
     in status check. This method will evaluate each metric value with lower and upper bound and
