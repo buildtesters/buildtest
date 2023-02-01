@@ -1,13 +1,13 @@
 Buildtest Tutorial on Perlmutter
 ===================================
 
-This tutorial will be conducted on `Perlmutter <https://docs.nersc.gov/systems/perlmutter/>`_ system. If you need account access please
+This tutorial will be conducted on the `Perlmutter <https://docs.nersc.gov/systems/perlmutter/>`_ system. If you need account access please
 `obtain a user account <https://docs.nersc.gov/accounts/>`_.
 
 Setup
 ------
 
-Once you have a NERSC account, you can `connect to NERSC system <https://docs.nersc.gov/connect/>`_. You will need access to a
+Once you have a NERSC account, you can `connect to any NERSC system <https://docs.nersc.gov/connect/>`_.
 terminal client and ssh into perlmutter as follows::
 
     ssh <user>@perlmutter-p1.nersc.gov
@@ -16,17 +16,21 @@ To get started please load the **python** module since you will need python 3.7 
 
     module load python
 
-Next, you should :ref:`Install buildtest <installing_buildtest>` by cloning the repository in your $HOME directory.
-
-Once you have buildtest setup, please clone the following repository https://github.com/buildtesters/buildtest-nersc in your $HOME directory as follows::
+Next, you should :ref:`Install buildtest <installing_buildtest>` by cloning the repository into your home directory::
 
     cd $HOME
+    git clone https://github.com/buildtesters/buildtest.git
+
+Once you have buildtest setup, please clone the following repository into your home directory as follows::
+
     git clone https://github.com/buildtesters/buildtest-nersc $HOME/buildtest-nersc
     export BUILDTEST_CONFIGFILE=$HOME/buildtest-nersc/config.yml
 
-Once you are done, please navigate back to root of buildtest which can be done by running::
+Once you are done, please navigate back to the root of buildtest::
 
     cd $BUILDTEST_ROOT
+
+**If you get stuck on any exercise, you can see the solution to each exercise in file ".solution.txt"**
 
 Exercise 1: Running a Batch Job
 --------------------------------
@@ -36,32 +40,55 @@ In this exercise, we will submit a batch job that will run `hostname` in the slu
 .. literalinclude:: ../perlmutter_tutorial/ex1/hostname.yml
    :language: yaml
 
-Let's run this test and poll interval for 10 secs::
+Let's run this test with a poll interval of ten seconds::
 
    buildtest build -b $BUILDTEST_ROOT/perlmutter_tutorial/ex1/hostname.yml --pollinterval=10
 
-Once test is complete, check the output of test by running::
+Once test is complete, check the output of the test by running::
 
     buildtest inspect query -o hostname_perlmutter
 
-Next, let's update the test such that it runs on both **regular** and **debug** queue. You will need to update the **executor** property and
+Next, let's update the test such that it runs on both the **regular** and **debug** queue. You will need to update the **executor** property and
 specify a regular expression. Please refer to :ref:`Multiple Executors <multiple_executors>` for reference. You can retrieve a list of available executors
 by running ``buildtest config executors``.
 
-Once you have updated the test, please rerun the test, now you should expect to see two runs for same test.
+Once you have updated and re-run the test, you should see two test runs for **hostname_perlmutter**, one for each executor. If you ran this successfully, in output of
+``buildtest build`` you should see a test summary with two executors
+
+.. code-block:: console
+
+                                                                    Test Summary
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+    ┃ builder                               ┃ executor                    ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime  ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+    │ hostname_perlmutter/80e317c1          │ perlmutter.slurm.regular    │ PASS   │ N/A N/A N/A                         │ 0          │ 45.324512│
+    ├───────────────────────────────────────┼─────────────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+    │ hostname_perlmutter/b1d7b318          │ perlmutter.slurm.debug      │ PASS   │ N/A N/A N/A                         │ 0          │ 75.54278 │
+    └───────────────────────────────────────┴─────────────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
+
 
 Exercise 2: Performing Status Check
 ------------------------------------
 
-In this exercise, we will check version of Lmod via environment **LMOD_VERSION** and specify the
-the output using :ref:`regular expression <regex>`.
+In this exercise, we will check the version of Lmod using the environment variable **LMOD_VERSION** and specifying the
+the output using a :ref:`regular expression <regex>`. We will run the test with an invalid regular expression and see if test fails and
+rerun example until it passes
 
 .. literalinclude:: ../perlmutter_tutorial/ex2/module_version.yml
    :language: yaml
 
-This buildspec is invalid, your first task is to make sure buildspec is valid. Once you have accomplished this task, try building
-the test and check the output of test. If your test passes, try updating the regular expression and see if test fails. Revert the change
-back and make the test pass.
+First let's try running this test, you will notice the test will fail validation::
+
+    buildtest build -b perlmutter_tutorial/ex2/module_version.yml
+
+
+**TODO:**
+
+- Validate the buildspec using ``buildtest buildspec validate``
+- Add a regular expression on ``stdout`` stream and make sure test fails
+- Check output of test via ``buildtest inspect query``
+- Update regular expression to match output with value of **$LMOD_VERSION** reported in test and rerun test until it passes.
+
 
 Exercise 3: Querying Buildspec Cache
 -------------------------------------
@@ -72,10 +99,12 @@ In this exercise you will learn how to use the :ref:`buildspec_interface`. Let's
 
 In this task you will be required to do the following
 
+**TODO:**
+
 1. Find all tags
-2. List all filter and format fields
-3. Format table via fields ``name``, ``description``
-4. Filter buildspec by tag ``e4s``
+2. List all filters and format fields
+3. Format tables via fields ``name``, ``description``
+4. Filter buildspecs by tag ``e4s``
 5. List all invalid buildspecs
 6. Validate all buildspecs by tag ``e4s``
 7. Show content of test ``hello_world_openmp``
@@ -83,26 +112,40 @@ In this task you will be required to do the following
 Exercise 4: Querying Test Reports
 ----------------------------------
 
-In this exercise you will be learn how to :ref:`query test report <test_reports>`. This can be done by
+In this exercise you will learn how to :ref:`query test reports <test_reports>`. This can be done by
 running ``buildtest report``. In this task please do the following
 
-1. List all filter and format fields
-2. Query all test by returncode 0
-3. Query all test by tag ``e4s``
-4. Print total count of failed tests
+1. List all filters and format fields
+2. Query all tests by returncode 0
+3. Query all tests by tag ``e4s``
+4. Print the total count of all failed tests
 
-Let's upload the test to CDASH by running the following::
+Let's upload the tests to CDASH by running the following::
 
     buildtest cdash upload $USER-buildtest-tutorial
 
-Take some time to analyze the output in CDASH by opening the link including PASS/FAIL test.
+Buildtest :ref:`cdash integration <cdash_integration>` via ``buildtest cdash upload`` allows buildtest to push test results to CDASH server. The test results
+are captured in report file typically shown via ``buildtest report``. CDASH allows one to easily process the test results in web-interface.
+
+If you were successful in running above command, you should see a link to CDASH server https://my.cdash.org with link to test results, please click on the link
+to view your test results and briefly analyze the test results.
+
+.. code-block:: console
+
+       buildtest cdash upload $USER-buildtest-tutorial
+    Reading report file:  /Users/siddiq90/Documents/github/buildtest/var/report.json
+    Uploading 110 tests
+    Build Name:  siddiq90-buildtest-tutorial
+    site:  generic
+    MD5SUM: a589c72bcdabdab9038600a2789e429f
+    You can view the results at: https://my.cdash.org//viewTest.php?buildid=2278337
+
 
 Exercise 5: Specifying Performance Checks
 --------------------------------------------
 
-In this task, we will using :ref:`performance checks <perf_checks>` to determine state of test.
-In this exercise, we will be running the STREAM benchmark. Shown below is an example buildspec that you
-will be working with
+In this task, we will running the STREAM benchmark and use :ref:`performance checks <perf_checks>` to determine if
+test will pass based on the performance results. Shown below is stream example that we will be using for this exercise
 
 .. literalinclude:: ../perlmutter_tutorial/ex5/stream.yml
    :language: yaml
@@ -112,5 +155,8 @@ First, let's build this test and analyze the output::
   buildtest build -b perlmutter_tutorial/ex5/stream.yml
   buildtest inspect query -o stream_test
 
-Take a close look at the metrics value. In this task, you are requested to use use :ref:`assert_ge` with metric ``copy`` and
-``scale`` with reference value. For reference value please experiment with different metrics and see if test pass/fail.
+**TODO**
+
+- Check the output of metrics ``copy`` and ``scale`` in the command **buildtest inspect query -o stream_test**
+- Use the :ref:`assert_ge` check with metric ``copy`` and ``scale``. Specify a reference value (pick some high number) for metric **copy** and **scale*** that will cause test to **FAIL**.
+- Next try different reference values and make sure test will **PASS**.

@@ -123,13 +123,11 @@ into CDASH. You must specify a buildname when using **buildtest cdash upload** i
 specify a buildname called `tutorials`::
 
     $ buildtest cdash upload tutorials
-    Reading configuration file:  /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/config.yml
-    Reading report file:  /Users/siddiq90/.buildtest/report.json
-    build name:  tutorials
+    Reading report file:  /Users/siddiq90/Documents/github/buildtest/var/report.json
+    Uploading 110 tests
+    Build Name:  tutorials
     site:  generic
-    stamp:  20210428-1512-Experimental
     MD5SUM: d7651cb3fbdd19298b0188c441704c3a
-    PUT STATUS: 200
     You can view the results at: https://my.cdash.org//viewTest.php?buildid=2004360
 
 We can see the output of these tests in CDASH if we go to url https://my.cdash.org//viewTest.php?buildid=2004360

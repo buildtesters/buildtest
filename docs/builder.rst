@@ -49,8 +49,8 @@ is processed.
    :scale: 75 %
 
 
-For every discovered buildspecs, buildtest will validate the buildspecs in the :ref:`parse stage <parse_buildspecs>` to
-ensure buildspec is a valid YAML file according to schema json schema.
+For every discovered buildspec, buildtest will validate the content in the :ref:`parse stage <parse_buildspecs>` to
+ensure buildspec complies to the JSON schema.
 
 .. _parse_buildspecs:
 
