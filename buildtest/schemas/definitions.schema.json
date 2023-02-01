@@ -371,6 +371,28 @@
             }
           }
         },
+        "contains": {
+          "description": "Check if metric value is in a list of reference values ",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "ref": {
+                "type": "array",
+                "minItems": 1,
+                "description": "Specify a list of reference value"
+              }
+            }
+          }
+        },
         "exists": {
           "description": "Check for list of file or directory path for existences using os.path.exists",
           "$ref": "#/definitions/list_of_strings"

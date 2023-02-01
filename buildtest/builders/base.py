@@ -24,6 +24,7 @@ from buildtest.buildsystem.checks import (
     assert_le_check,
     assert_ne_check,
     assert_range_check,
+    contains_check,
     exists_check,
     is_dir_check,
     is_file_check,
@@ -969,6 +970,7 @@ class BuilderBase(ABC):
             assert_eq_match = False
             assert_ne_match = False
             assert_range_match = False
+            assert_contains_match = False
             assert_exists = False
             assert_is_dir = False
             assert_is_file = False
@@ -1013,9 +1015,10 @@ class BuilderBase(ABC):
                 assert_ne_match = assert_ne_check(self)
 
             if self.status.get("assert_range"):
-
                 assert_range_match = assert_range_check(self)
 
+            if self.status.get("contains"):
+                assert_contains_match = contains_check(self)
             if self.status.get("exists"):
                 assert_exists = exists_check(builder=self)
 
@@ -1040,6 +1043,7 @@ class BuilderBase(ABC):
                     assert_eq_match,
                     assert_ne_match,
                     assert_range_match,
+                    assert_contains_match,
                     assert_exists,
                     assert_is_dir,
                     assert_is_file,
