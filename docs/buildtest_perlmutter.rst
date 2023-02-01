@@ -124,7 +124,10 @@ Let's upload the tests to CDASH by running the following::
 
     buildtest cdash upload $USER-buildtest-tutorial
 
-If you were successful, you should see a link to https://my.cdash.org with link to test results, please click on the link
+Buildtest :ref:`cdash integration <cdash_integration>` via ``buildtest cdash upload`` allows buildtest to push test results to CDASH server. The test results
+are captured in report file typically shown via ``buildtest report``. CDASH allows one to easily process the test results in web-interface.
+
+If you were successful in running above command, you should see a link to CDASH server https://my.cdash.org with link to test results, please click on the link
 to view your test results and briefly analyze the test results.
 
 .. code-block:: console
