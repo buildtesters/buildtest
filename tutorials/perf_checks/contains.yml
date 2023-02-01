@@ -1,8 +1,8 @@
 buildspecs:
-  contains_pass:
+  contains_and_not_contains:
     type: script
     executor: generic.local.bash
-    description: Status check based on contains where test pass
+    description: Status check based on contains and not contains where test pass
     vars:
       X: 1
     run: |
@@ -18,6 +18,9 @@ buildspecs:
       contains:
         - name: x
           ref: [1, 2, 4, 8]
+      not_contains:
+        - name: x
+          ref: [2, 4]
   assert_contains_fail:
     type: script
     executor: generic.local.bash

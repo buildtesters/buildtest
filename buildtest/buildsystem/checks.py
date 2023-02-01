@@ -667,6 +667,69 @@ def contains_check(builder):
     return bool_check
 
 
+def notcontains_check(builder):
+    """This method perform Not Contains check when ``not_contains`` property is specified
+    in status check. This method will each metric value is in list of reference values.
+    The list of assertion is logically AND which will return a True or False
+    for the status check.
+
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+
+    Returns:
+        bool: True or False for performance check ``not_contains``
+    """
+    # a list containing booleans to evaluate reference check for each metric
+    assert_check = []
+
+    metric_names = list(builder.metadata["metrics"].keys())
+
+    # iterate over each metric in buildspec and determine reference check for each metric
+    for metric in builder.status["not_contains"]:
+        name = metric["name"]
+        ref_value = metric["ref"]
+
+        # if metric is not valid, then mark as False
+        if not builder.is_valid_metric(name):
+            msg = f"[blue]{builder}[/]: Unable to find metric: [red]{name}[/red]. List of valid metrics are the following: {metric_names}"
+            console.print(msg)
+            logger.warning(msg)
+            assert_check.append(False)
+            continue
+
+        metric_value = builder.metadata["metrics"][name]
+
+        if not is_metrics_defined(builder, name):
+            assert_check.append(False)
+            continue
+
+        conv_value = convert_metrics(
+            metric_value=metric_value,
+            dtype=builder.metrics[name]["type"],
+        )
+
+        # if either converted value and reference value is None stop here before proceeding to the not equal check
+        if (conv_value is None) or (ref_value is None):
+            console.print(
+                f"[blue]{builder}[/]: Skipping metrics check {name} since value is undefined"
+            )
+            assert_check.append(False)
+            continue
+
+        bool_check = conv_value not in ref_value
+        assert_check.append(bool_check)
+
+        console.print(
+            f"[blue]{builder}[/]: testing metric: [red]{name}[/red] if [yellow]{conv_value}[/yellow] not in [yellow]{ref_value}[/yellow] - Check: {bool_check}"
+        )
+
+    # perform a logical AND on the list and return the boolean result
+    bool_check = all(assert_check)
+
+    console.print(f"[blue]{builder}[/]: Not Contains Check: {bool_check}")
+    return bool_check
+
+
 def assert_range_check(builder):
     """This method is perform Assert Range used when ``assert_range`` property is specified
     in status check. This method will evaluate each metric value with lower and upper bound and

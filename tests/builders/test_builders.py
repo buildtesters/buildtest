@@ -61,6 +61,15 @@ def test_assert_ne():
     cmd.build()
 
 
+def test_assert_contains():
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "contains.yml")],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()
+
+
 def test_assert_range():
     cmd = BuildTest(
         buildspecs=[os.path.join(here, "assert_range.yml")],
