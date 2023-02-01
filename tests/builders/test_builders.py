@@ -52,6 +52,15 @@ def test_assert_eq():
     cmd.build()
 
 
+def test_assert_ne():
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "assert_ne.yml")],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()
+
+
 def test_assert_range():
     cmd = BuildTest(
         buildspecs=[os.path.join(here, "assert_range.yml")],

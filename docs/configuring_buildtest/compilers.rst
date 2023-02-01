@@ -316,7 +316,7 @@ support, we set ``enable_prgenv: true`` which is a boolean that enables support 
 property ``prgenv_modules`` is a mapping of compiler groups to the corresponding ``PrgEnv-*`` modulefile. For instance **PrgEnv-gnu**
 is the programming environment modulefile that will load the GNU compiler on Cray systems.
 
-.. literalinclude:: ../tests/settings/cori.yml
+.. literalinclude:: ../tests/settings/nersc.yml
     :language: yaml
     :emphasize-lines: 6-10
 
