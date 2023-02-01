@@ -457,6 +457,9 @@ def assert_eq_check(builder):
     store assertion in list. The list of assertion is logically AND which will return a True or False
     for the status check.
 
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+
     Returns:
         bool: True or False for performance check ``assert_eq``
     """
@@ -512,6 +515,9 @@ def assert_ne_check(builder):
     store assertion in list. The list of assertion is logically AND which will return a True or False
     for the status check.
 
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+
     Returns:
         bool: True or False for performance check ``assert_ne``
     """
@@ -566,6 +572,9 @@ def assert_range_check(builder):
     in status check. This method will evaluate each metric value with lower and upper bound and
     store assertion in list. The list of assertion is logically AND which will return a True or False
     for the status check.
+
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
 
     Returns:
         bool: True or False for performance check ``assert_range``

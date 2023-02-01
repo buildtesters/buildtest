@@ -329,7 +329,7 @@
                 "description": "Name of metric to use for comparison"
               },
               "ref": {
-                "description": "Specify reference value (str, int,float) for comparison",
+                "description": "Specify reference value (str, int, float) for comparison",
                 "oneOf": [
                   {
                     "type": "number"
