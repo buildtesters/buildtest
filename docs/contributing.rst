@@ -42,7 +42,7 @@ We recommend you review one the following guides to help you learn `git`:
 - https://guides.github.com/introduction/git-handbook/
 - https://git-scm.com/docs/gittutorial
 - https://guides.github.com/
-- https://lab.github.com/
+- https://skills.github.com/
 
 buildtest documentation is built on `sphinx <https://www.sphinx-doc.org/en/master/>`_
 and hosted via `readthedocs <https://readthedocs.org/>`_. Be sure to check out

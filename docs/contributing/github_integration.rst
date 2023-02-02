@@ -43,7 +43,7 @@ The project mirrors are located in the following location
 - OLCF: https://code.ornl.gov/ecpcitest/buildtest
 
 We have configured each gitlab project to point to the gitlab configuration file. For instance, at NERSC we use
-`.gitlab/cori.yml <https://github.com/buildtesters/buildtest/blob/devel/.gitlab/cori.yml>`_ that runs CI on Cori, this can be configured at
+`.gitlab/nersc.yml <https://github.com/buildtesters/buildtest/blob/devel/.gitlab/nersc.yml>`_ that runs CI on Cori, this can be configured at
 **Settings > CI/CD > General pipelines** with the path to gitlab configuration. For more details see https://docs.gitlab.com/ee/ci/pipelines/settings.html#custom-cicd-configuration-path
 
 GitHub Bots
