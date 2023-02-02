@@ -166,6 +166,8 @@ Let's build this test and see the output.
 
     .. command-output:: buildtest build -b tutorials/perf_checks/assert_eq_exceptions.yml
 
+.. _assert_ne:
+
 Assert Not Equal
 ~~~~~~~~~~~~~~~~~~
 
