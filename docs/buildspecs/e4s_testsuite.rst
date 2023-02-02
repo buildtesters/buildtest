@@ -1,0 +1,46 @@
+.. Note:: Please see :ref:`tutorial_setup` before you proceed with this section
+
+.. _buildtest_spack_integration:
+
+Buildtest E4S Testsuite Integration
+===================================
+
+The `E4S Testsuite <https://github.com/E4S-Project/testsuite/>`_ is a collection of tests that can be applied to 
+software products provided by `E4S <https://e4s.io>`_ deployments. 
+E4S is a spack based software stack but because not all spack packages provide internal testing functionality it 
+is useful to have an alternative framework for testing deployed software.
+
+The E4S Testsuite operates on a hierarchy of shell scripts with each test containing its own setup, clean, compile 
+and run scripts. The top level driver script sets up the test environment based on a configuration which sets 
+compilers, mpi run commands and other environment specific parameters. It then iterates through the selected tests 
+and generates output consisting of log files for individual test runs and a summary listing of each test’s success or failure.
+
+Tests in the testsuite typically include source code and build files needed to build a small test application against 
+libraries provided by the spack install. These are often extracted from test functionality in the product’s source 
+tree that is not included in the final install. An application may have multiple test definitions to support different 
+configurations such as the use of different hardware accelerators.  Products with spack packages that include spack test 
+functionality are trivial to add to the E4S Testsuite, as opposed to fully implementing a distinct test.
+
+Buildspecs using E4S Testsuite
+------------------------------
+
+Because the E4S Testsuite provides and maintains pre-contructed tests for a number of products deployed at NERSC it often 
+makes sense to invoke these tests rather than develop new ones. Buildtest buildspecs that make use of the E4S testsuite 
+follow the pattern of loading the relevant spack modules, acquiring the testsuite and executing the test driver script on 
+the selected test. Buildtest ascertains and reports success or failure based on the return code provided by the E4S Testsuite driver script. 
+
+This buildspec present a typical e4s-testsuite invocation for a spack install of mpich. Before launching buildtest with this spec make sure mpich is available
+in your spack environment by doing ``spack install mpich``.
+
+SAMPLE TEST
+
+Typically a buildspec employing the E4S Testsuite will test a single application. However, the structure of the E4S 
+Testsuite also supports succinct buildspec definitions that can test a set of applications.
+
+TestGen
+-------
+
+Because buildspecs using E4S Testsuite are very similar, usually varying only in the name of the application 
+to be tested, a `script <https://github.com/buildtesters/buildtest-nersc/tree/devel/buildspecs/e4s/testgen>`_ was 
+developed to generate multiple buildspecs from a template. Templated tests simplify maintenance 
+of buildspecs and generation of new sets of tests to be deployed in different environments or with new software stacks.
