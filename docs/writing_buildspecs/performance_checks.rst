@@ -50,11 +50,23 @@ of variable or environment variable. If you reference an invalid name, buildtest
 In this next example, we define two metrics ``gflop`` and ``foo`` that are assigned to variable ``GFLOPS`` and
 environment variable ``FOO``.
 
+Comparison Operators
+----------------------
+
+buildtest supports several comparison operators as part of status check such as **>**, **>=**, **<=**, **<**, **==**, **!=**. Each metric
+is compared with a reference value that can be useful when running performance checks. In this section we will cover the following comparison:
+
+- :ref:`assert_ge`
+- :ref:`assert_gt`
+- :ref:`assert_le`
+- :ref:`assert_eq`
+- :ref:`assert_ne`
+- :ref:`assert_range`
 
 .. _assert_ge:
 
-Assert Greater Equal
-----------------------
+Greater Equal
+~~~~~~~~~~~~~~
 
 buildtest can determine status check based on performance check. In this next example, we will run the
 `STREAM <https://www.cs.virginia.edu/stream/>`_ memory benchmark and capture :ref:`metrics <metrics>` named ``copy``, ``scale``
@@ -89,9 +101,35 @@ Let's run ``buildtest inspect query -o stream_test`` to retrieve the test detail
 .. dropdown:: ``buildtest inspect query -o stream_test``
 
     .. command-output:: buildtest inspect query -o stream_test
-        
+
+.. _assert_gt:
+
+Greater Than
+~~~~~~~~~~~~~~
+
+In this example, we perform a **>** operation, this can be done via ``assert_gt`` property
+
+.. literalinclude:: ../tutorials/perf_checks/assert_gt.yml
+    :language: yaml
+    :emphasize-lines: 37-46
+    :linenos:
+
+.. _assert_le:
+
+Less Than Equal
+~~~~~~~~~~~~~~~~~
+
+In this example, we perform a **<=** operation, this can be done via ``assert_le`` property
+
+.. literalinclude:: ../tutorials/perf_checks/assert_le.yml
+    :language: yaml
+    :emphasize-lines: 37-46
+    :linenos:
+
+.. _assert_eq:
+
 Assert Equal
----------------
+~~~~~~~~~~~~~~
 
 buildtest can perform assert equality check with metrics to determine status of test. In this next example, we define
 four metrics **x**, **y**, **first**, and **last** which will be compared with its reference value. We introduce a new
@@ -128,8 +166,32 @@ Let's build this test and see the output.
 
     .. command-output:: buildtest build -b tutorials/perf_checks/assert_eq_exceptions.yml
 
+.. _assert_ne:
+
+Assert Not Equal
+~~~~~~~~~~~~~~~~~~
+
+In this section, we will discuss the inverse equality operation **Not Equal** check (**!=**) with reference value.
+
+We can use ``assert_ne`` property to perform **!=** check, it works similar to **assert_eq** with data types **int**,
+**float** and **str**. In this example, we check the metrics ``x``, ``y``, ``first`` and ``last`` and each metric
+should pass. The reference value is converted to the data-type (``type`` field) for each metrics
+
+.. literalinclude:: ../tutorials/perf_checks/assert_ne.yml
+    :language: yaml
+    :emphasize-lines: 17,23,29,35,41-49
+    :linenos:
+
+We expect this test to pass. In order to run this test, you can do the following
+
+.. dropdown:: ``buildtest build -b tutorials/perf_checks/assert_ne.yml``
+
+    .. command-output:: buildtest build -b tutorials/perf_checks/assert_ne.yml
+
+.. _assert_range:
+
 Assert Range
--------------
+~~~~~~~~~~~~~
 
 The ``assert_range`` property can be used to test performance for a metric given a lower and upper bound. This property expects
 one to specify ``lower`` and ``upper`` field which must be an integer or floating point number to perform comparison. buildtest will
@@ -150,3 +212,25 @@ Let's build this test and see the output
 
 Note that performance results may vary on your system and depending on the metric value you may want to adjust the
 lower and upper bound to match your requirement.
+
+Contains and Not Contains
+--------------------------
+
+Buildtest can perform status check with a list of reference values and check if metrics value is in the list. The
+property ``contains`` and ``not_contains`` can be used to perform this type of check. The ``ref`` property is a list of
+reference values that a metric must have to pass metrics check.
+
+In example below we have two tests, the first test perform ``contains`` and ``not_contains`` on metrics **x**. We expect both
+status check will pass. The second test is expected to fail because metric ``x`` will store integer value **1** but the list has
+string equivalent **'1'**.
+
+.. literalinclude:: ../tutorials/perf_checks/contains.yml
+    :language: yaml
+    :emphasize-lines: 17-23,39-42
+    :linenos:
+
+You can run this test, by running the following command
+
+.. dropdown:: ``buildtest build -b tutorials/perf_checks/contains.yml``
+
+    .. command-output:: buildtest build -b tutorials/perf_checks/contains.yml
