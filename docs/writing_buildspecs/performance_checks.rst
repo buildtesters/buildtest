@@ -119,7 +119,7 @@ In this example, we perform a **>** operation, this can be done via ``assert_gt`
 Less Than Equal
 ~~~~~~~~~~~~~~~~~
 
-In this example, we perform a **<=>** operation, this can be done via ``assert_le`` property
+In this example, we perform a **<=** operation, this can be done via ``assert_le`` property
 
 .. literalinclude:: ../tutorials/perf_checks/assert_le.yml
     :language: yaml
