@@ -7,7 +7,6 @@ Buildspec Tutorial
    :maxdepth: 1
 
    buildspecs/buildspec_overview
-   buildspecs/performance_checks
    buildspecs/compiler
    buildspecs/spack
 

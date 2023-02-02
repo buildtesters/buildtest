@@ -89,7 +89,9 @@ Let's run ``buildtest inspect query -o stream_test`` to retrieve the test detail
 .. dropdown:: ``buildtest inspect query -o stream_test``
 
     .. command-output:: buildtest inspect query -o stream_test
-        
+
+.. _assert_eq:
+
 Assert Equal
 ---------------
 
@@ -128,6 +130,26 @@ Let's build this test and see the output.
 
     .. command-output:: buildtest build -b tutorials/perf_checks/assert_eq_exceptions.yml
 
+Assert Not Equal
+------------------
+
+In this section, we will discuss the inverse equality operation **Not Equal** check (**!=**) with reference value.
+
+We can use ``assert_ne`` property to perform **!=** check, it works similar to **assert_eq** with data types **int**,
+**float** and **str**. In this example, we check the metrics ``x``, ``y``, ``first`` and ``last`` and each metric
+should pass. The reference value is converted to the data-type (``type`` field) for each metrics
+
+.. literalinclude:: ../tutorials/perf_checks/assert_ne.yml
+    :language: yaml
+    :emphasize-lines: 17,23,29,35,41-49
+    :linenos:
+
+We expect this test to pass. In order to run this test, you can do the following
+
+.. dropdown:: ``buildtest build -b tutorials/perf_checks/assert_ne.yml``
+
+    .. command-output:: buildtest build -b tutorials/perf_checks/assert_ne.yml
+
 Assert Range
 -------------
 
@@ -150,3 +172,26 @@ Let's build this test and see the output
 
 Note that performance results may vary on your system and depending on the metric value you may want to adjust the
 lower and upper bound to match your requirement.
+
+Contains and Not Contains
+--------------------------
+
+We can perform status check based on list of reference values and check if metrics value is in the list. The
+property ``contains`` and ``not_contains`` can be used to perform this type of check. The ``ref`` property is a list of reference
+values that one can specify in-order to pass a metrics check. This can be useful if you have a list of expected values one is
+expected to use for comparison.
+
+In example below we have two tests, the first test perform ``contains`` and ``not_contains`` on metrics **x**. We expect both
+status check will pass. The second test is expected to fail because we don't have the number
+**1** in the list but instead we the string equivalent **'1'**.
+
+.. literalinclude:: ../tutorials/perf_checks/contains.yml
+    :language: yaml
+    :emphasize-lines: 17-23,39-42
+    :linenos:
+
+In order to run the test you can run the following
+
+.. dropdown:: ``buildtest build -b tutorials/perf_checks/contains.yml``
+
+    .. command-output:: buildtest build -b tutorials/perf_checks/contains.yml
