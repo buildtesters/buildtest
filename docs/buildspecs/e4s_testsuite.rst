@@ -46,4 +46,4 @@ View the test output by running this command. Note that the E4S Testsuite typica
 
 .. dropdown:: ``buildtest inspect query -o -e -t mpich_e4s_testsuite``
 
-    .. program-output:: cat buildtest_tutorial_examples/spack/inspect/e4s_testuite_mpich.yml
+    .. program-output:: cat buildtest_tutorial_examples/spack/inspect/e4s_testuite_mpich.txt
