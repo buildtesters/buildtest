@@ -38,6 +38,29 @@ you can use `podman <https://podman.io/>`_ or `shifter <https://github.com/NERSC
 
     .. tab-item:: podman
 
+        If you are using podman on Perlmutter, please do the following::
+        
+            mkdir -p $HOME/.config/containers
+            touch $HOME/.config/containers/storage.conf
+        
+                Next add the following content in `storage.conf`::
+        
+        
+            [storage]
+              driver = "overlay"
+              graphroot = "/tmp/<USER>/storage"
+              [storage.options]
+                size = ""
+                remap-uids = ""
+                remap-gids = ""
+                ignore_chown_errors = "true"
+                remap-user = ""
+                remap-group = ""
+                mount_program = "/usr/bin/fuse-overlayfs"
+                mountopt = ""
+
+        **Please update the path /tmp/<USER>/storage to your username.**
+
         .. code-block:: console
 
             podman pull ghcr.io/buildtesters/buildtest_spack:latest
@@ -48,29 +71,6 @@ you can use `podman <https://podman.io/>`_ or `shifter <https://github.com/NERSC
         .. code-block:: console
 
             shifter -E --image=registry.services.nersc.gov/siddiq90/buildtest_spack:latest -- /bin/bash --login
-
-If you are using podman on Perlmutter, please do the following::
-
-    mkdir -p $HOME/.config/containers
-    touch $HOME/.config/containers/storage.conf
-
-Next add the following content in `storage.conf`::
-
-
-    [storage]
-      driver = "overlay"
-      graphroot = "/tmp/<USER>/storage"
-      [storage.options]
-        size = ""
-        remap-uids = ""
-        remap-gids = ""
-        ignore_chown_errors = "true"
-        remap-user = ""
-        remap-group = ""
-        mount_program = "/usr/bin/fuse-overlayfs"
-        mountopt = ""
-
-**Please update the path /tmp/<USER>/storage to your username.**
 
 We need to install buildtest and setup environment for this tutorial. We recommend you clone buildtest in your HOME directory.
 This can be done as follows::
