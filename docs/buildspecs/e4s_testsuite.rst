@@ -1,6 +1,6 @@
 .. Note:: Please see :ref:`tutorial_setup` before you proceed with this section
 
-.. _buildtest_spack_integration:
+.. _buildtest_e4s_testsuite:
 
 Buildtest E4S Testsuite Integration
 ===================================
@@ -11,9 +11,9 @@ E4S is a spack based software stack but because not all spack packages provide i
 is useful to have an alternative framework for testing deployed software.
 
 The E4S Testsuite operates on a hierarchy of shell scripts with each test containing its own setup, clean, compile 
-and run scripts. The top level driver script sets up the test environment based on a configuration file which sets 
+and run scripts. The `top level driver script <https://github.com/E4S-Project/testsuite/blob/master/test-all.sh>`_ sets up the test environment based on a configuration file which sets 
 compilers, mpi run commands and other environment specific parameters. It then iterates through the selected tests 
-and generates output consisting of log files for individual test runs and a summary listing of each test’s success or failure.
+and generates output consisting of log files for individual test runs and a summary listing of each test’s success or failure. The `README <https://github.com/E4S-Project/testsuite/blob/master/README.md>`_ provides more detail on its structure and usage.
 
 Tests in the testsuite typically include source code and build files needed to build a small test application against 
 libraries provided by the spack install along with any input files required for the subsequent run test. These are 
@@ -47,14 +47,3 @@ View the test output by running this command. Note that the E4S Testsuite typica
 .. dropdown:: ``buildtest inspect query -o -e -t mpich_e4s_testsuite``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/e4s_testuite_mpich.yml
-
-Typically a buildspec employing the E4S Testsuite will test a single application. However, the structure of the E4S 
-Testsuite also supports succinct buildspec definitions that can test a set of applications.
-
-TestGen
--------
-
-Because buildspecs using E4S Testsuite are very similar, usually varying only in the name of the application 
-to be tested, a `script <https://github.com/buildtesters/buildtest-nersc/tree/devel/buildspecs/e4s/testgen>`_ was 
-developed to generate multiple buildspecs from a template. Templated tests simplify maintenance 
-of buildspecs and generation of new sets of tests to be deployed in different environments or with new software stacks. Additional templates can be added to support other use cases.
