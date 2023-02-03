@@ -2,6 +2,7 @@ buildspecs:
   mpich_e4s_testsuite:
     type: script
     #executor: '(perlmutter|muller).slurm.regular'
+    executor: generic.local.bash
     description: Run E4S Testsuite mpich test
     tags: [e4s]
     #sbatch: ["-t 30", "-N 1", "-G 1", "-A <ALLOC>", "-C gpu"]
@@ -11,4 +12,4 @@ buildspecs:
       #spack load cmake
       git clone https://github.com/E4S-Project/testsuite
       cd testsuite
-      sh test-all.sh --color-off validation_tests/mpich --print-logs # --settings settings.cray.sh
+      bash test-all.sh --color-off validation_tests/mpich --print-logs # --settings settings.cray.sh
