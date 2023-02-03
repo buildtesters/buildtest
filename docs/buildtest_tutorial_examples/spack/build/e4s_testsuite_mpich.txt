@@ -1,0 +1,79 @@
+$ buildtest build -b /home/spack/buildtest/examples/spack/e4s_testuite_mpich.yml 
+╭────────────────────────── buildtest summary ───────────────────────────╮
+│                                                                        │
+│ User:               spack                                              │
+│ Hostname:           00cfb796b67c                                       │
+│ Platform:           Linux                                              │
+│ Current Time:       2023/02/03 00:48:46                                │
+│ buildtest path:     /home/spack/buildtest/bin/buildtest                │
+│ buildtest version:  1.1                                                │
+│ python path:        /home/spack/pyenv/buildtest/bin/python3            │
+│ python version:     3.8.6                                              │
+│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_con │
+│ Test Directory:     /home/spack/runs                                   │
+│ Report File:        /home/spack/buildtest/var/report.json              │
+│ Command:            /home/spack/buildtest/bin/buildtest build -b /home │
+│                                                                        │
+╰────────────────────────────────────────────────────────────────────────╯
+────────────────────────  Discovering Buildspecs ─────────────────────────
+                     Discovered buildspecs                     
+╔═════════════════════════════════════════════════════════════╗
+║ buildspec                                                   ║
+╟─────────────────────────────────────────────────────────────╢
+║ /home/spack/buildtest/examples/spack/e4s_testuite_mpich.yml ║
+╚═════════════════════════════════════════════════════════════╝
+
+
+Total Discovered Buildspecs:  1
+Total Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
+─────────────────────────── Parsing Buildspecs ───────────────────────────
+Valid Buildspecs: 1
+Invalid Buildspecs: 0
+/home/spack/buildtest/examples/spack/e4s_testuite_mpich.yml: VALID
+Total builder objects created: 1
+                         Builders by type=script                          
+┏━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━┓
+┃ builder ┃ type   ┃ execu… ┃ compil… ┃ nodes ┃ procs ┃ descr… ┃ builds… ┃
+┡━━━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━┩
+│ mpich_… │ script │ gener… │ None    │ None  │ None  │ Run    │ /home/… │
+│         │        │        │         │       │       │ E4S    │         │
+│         │        │        │         │       │       │ Tests… │         │
+│         │        │        │         │       │       │ mpich  │         │
+│         │        │        │         │       │       │ test   │         │
+└─────────┴────────┴────────┴─────────┴───────┴───────┴────────┴─────────┘
+───────────────────────────── Building Test ──────────────────────────────
+mpich_e4s_testsuite/fcb8796f: Creating test directory: /home/spack/runs/generic.local.bash/e4s_testuite_mpich/mpich_e4s_testsuite/fcb8796f
+mpich_e4s_testsuite/fcb8796f: Creating the stage directory: /home/spack/runs/generic.local.bash/e4s_testuite_mpich/mpich_e4s_testsuite/fcb8796f/stage
+mpich_e4s_testsuite/fcb8796f: Writing build script: /home/spack/runs/generic.local.bash/e4s_testuite_mpich/mpich_e4s_testsuite/fcb8796f/mpich_e4s_testsuite_build.sh
+───────────────────────────── Running Tests ──────────────────────────────
+Spawning 24 processes for processing builders
+────────────────────────────── Iteration 1 ───────────────────────────────
+mpich_e4s_testsuite/fcb8796f does not have any dependencies adding test to queue
+In this iteration we are going to run the following tests: [mpich_e4s_testsuite/fcb8796f]
+mpich_e4s_testsuite/fcb8796f: Current Working Directory : /home/spack/runs/generic.local.bash/e4s_testuite_mpich/mpich_e4s_testsuite/fcb8796f/stage
+mpich_e4s_testsuite/fcb8796f: Running Test via command: bash --norc --noprofile -eo pipefail mpich_e4s_testsuite_build.sh
+mpich_e4s_testsuite/fcb8796f: Test completed in 10.210439 seconds
+mpich_e4s_testsuite/fcb8796f: Test completed with returncode: 0
+mpich_e4s_testsuite/fcb8796f: Writing output file -  /home/spack/runs/generic.local.bash/e4s_testuite_mpich/mpich_e4s_testsuite/fcb8796f/mpich_e4s_testsuite.out
+mpich_e4s_testsuite/fcb8796f: Writing error file - /home/spack/runs/generic.local.bash/e4s_testuite_mpich/mpich_e4s_testsuite/fcb8796f/mpich_e4s_testsuite.err
+                               Test Summary                               
+┏━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┓
+┃            ┃            ┃        ┃ checks     ┃            ┃           ┃
+┃            ┃            ┃        ┃ (ReturnCod ┃            ┃           ┃
+┃            ┃            ┃        ┃ e, Regex,  ┃            ┃           ┃
+┃ builder    ┃ executor   ┃ status ┃ Runtime)   ┃ returncode ┃ runtime   ┃
+┡━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━┩
+│ mpich_e4s_ │ generic.l… │ PASS   │ N/A N/A    │ 0          │ 10.210439 │
+│ testsuite/ │            │        │ N/A        │            │           │
+│ fcb8796f   │            │        │            │            │           │
+└────────────┴────────────┴────────┴────────────┴────────────┴───────────┘
+
+
+
+Passed Tests: 1/1 Percentage: 100.000%
+Failed Tests: 0/1 Percentage: 0.000%
+
+
+Adding 1 test results to /home/spack/buildtest/var/report.json
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_ce0mqq4r.log
