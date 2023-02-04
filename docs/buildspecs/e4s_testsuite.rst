@@ -38,12 +38,12 @@ in your spack environment by doing ``spack install mpich``. The example buildspe
 
 We can see an example of the E4S Testsuite in action by running the following command.
 
-.. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/spack/e4s_testuite_mpich.yml``
+.. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/spack/e4s_testsuite_mpich.yml``
 
-    .. program-output:: cat buildtest_tutorial_examples/spack/build/e4s_testuite_mpich.txt
+    .. program-output:: cat buildtest_tutorial_examples/spack/build/e4s_testsuite_mpich.txt
 
 View the test output by running this command. Note that the E4S Testsuite typically prints its results to the standard error output so we included the ``-e`` flag.
 
 .. dropdown:: ``buildtest inspect query -o -e -t mpich_e4s_testsuite``
 
-    .. program-output:: cat buildtest_tutorial_examples/spack/inspect/e4s_testuite_mpich.txt
+    .. program-output:: cat buildtest_tutorial_examples/spack/inspect/e4s_testsuite_mpich.txt

@@ -5,6 +5,7 @@ buildspecs:
     description: Run E4S Testsuite mpich test
     tags: [e4s]
     run: |
+      spack install mpich
       git clone https://github.com/E4S-Project/testsuite
       cd testsuite
       bash test-all.sh --color-off validation_tests/mpich --print-logs
