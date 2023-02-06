@@ -15,6 +15,7 @@ v1.2 (Feb 6th, 2023)
 **Buildspec Changes**
 
 - Add performance check for `assert_le` (`#1339 <https://github.com/buildtesters/buildtest/pull/1339>`_), `assert_ne` (`#1361 <https://github.com/buildtesters/buildtest/pull/1361>`_), `assert_ge` (`#1354 <https://github.com/buildtesters/buildtest/pull/1354>`_)
+- Add support for `contains` and `not_contains` for status check `#1364 <https://github.com/buildtesters/buildtest/pull/1364>`_
 - Change executor match in parse stage from equality check to `re.fullmatch`  `#1350 <https://github.com/buildtesters/buildtest/pull/1350>`_
 
 **CI changes**
