@@ -9,6 +9,7 @@ Buildspec Tutorial
    buildspecs/buildspec_overview
    buildspecs/compiler
    buildspecs/spack
+   buildspecs/e4s_testsuite
 
 
 Please proceed to :ref:`buildspec_overview` to get an overview of how to write buildspecs. This section can be done on your workstation.

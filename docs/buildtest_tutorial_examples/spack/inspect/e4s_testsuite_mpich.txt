@@ -1,0 +1,119 @@
+$ buildtest inspect query -o -e -t mpich_e4s_testsuite 
+──────────────────────────────────────────────────────────────────────────── mpich_e4s_testsuite/8e1959e8-0594-4653-baa3-8f302affe286 ─────────────────────────────────────────────────────────────────────────────
+Executor: generic.local.bash
+Description: Run E4S Testsuite mpich test
+State: PASS
+Returncode: 0
+Runtime: 13.130319 sec
+Starttime: 2023/02/04 00:24:21
+Endtime: 2023/02/04 00:24:34
+Command: bash --norc --noprofile -eo pipefail mpich_e4s_testsuite_build.sh
+Test Script: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/8e1959e8/mpich_e4s_testsuite.sh
+Build Script: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/8e1959e8/mpich_e4s_testsuite_build.sh
+Output File: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/8e1959e8/mpich_e4s_testsuite.out
+Error File: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/8e1959e8/mpich_e4s_testsuite.err
+Log File: /home/spack/buildtest/var/logs/buildtest_r7ram4ey.log
+──────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/8e1959e8/mpich_e4s_testsuite.out ────────────────────────────────────────────
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/libsigsegv-2.12-lbrx7lnfz46ukewxbhxnucmx76g23c6q                                                                                       
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/berkeley-db-18.1.40-4ihuiazsglf22f3pntq5hc4kyszqzexn                                                                                   
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/pkgconf-1.7.3-4sh6pymrm2ms4auu3ajbjjr6fiuhz5g7                                                                                         
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/util-macros-1.19.1-gs6ag7ktdoiirb62t7bcagjw62szrrg2                                                                                    
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/libiconv-1.16-jearpk4xci4zc7dkrza4fufaqfkq7rfl                                                                                         
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/xz-5.2.5-komekkmyciga3kl24edjmredhj3uyt7v                                                                                              
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/zlib-1.2.11-smoyzzo2qhzpn6mg6rd3l2p7b23enshg                                                                                           
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/m4-1.4.18-mkc3u4x2p2wie6jfhuku7g5rkovcrxps                                                                                             
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/ncurses-6.2-crhlefo3dv7lmsv5pf4icsy4gepkdorm                                                                                           
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/libxml2-2.9.10-yn2r3wfhiilelyulh5toteicdtxjhw7d                                                                                        
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/libtool-2.4.6-jdxbjftheiotj6solpomva7dowrhlerl                                                                                         
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/readline-8.0-t54jzdy2jj4snltjazlm3br2urcilc6v                                                                                          
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/libpciaccess-0.16-bob4o5m3uku6vtdil5imasprgy775zg7                                                                                     
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/gdbm-1.18.1-4av4gywgpaspkhy3dvbb62nulqogtzbb                                                                                           
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/hwloc-2.2.0-a4cxlu767bxxceahypqpj2gjdt7hmhvm                                                                                           
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/perl-5.32.0-zfdvt2jjuaees43ffrrtphqs2ky3o22t                                                                                           
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/texinfo-6.5-p46ba5qb5wvx6a2bneh4vlurqusz35bj                                                                                           
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/autoconf-2.69-mm33a3ocsv3jsh2tfxc4mlab4xsurtdd                                                                                         
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/automake-1.16.2-d2krmb5gweivlnztcymhklzsqbrpatt6                                                                                       
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/findutils-4.6.0-hrv4dx5txigi2la7siu3qsa7cervn7tv                                                                                       
+[+] /home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/mpich-3.3.2-vbelg5sthuytvkxbrvue2alphviggiur                                                                                           
+===                                                                                                                                                                                                                
+validation_tests/mpich                                                                                                                                                                                             
+---RUN LOG---                                                                                                                                                                                                      
+                                                                                                                                                                                                                   
+──────────────────────────────────────────── Error File: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/8e1959e8/mpich_e4s_testsuite.err ─────────────────────────────────────────────
+Cloning into 'testsuite'...                                                                                                                                                                                        
+Updating files:  61% (8613/14026)                                                                                                                                                                                  
+Updating files:  62% (8697/14026)                                                                                                                                                                                  
+Updating files:  63% (8837/14026)                                                                                                                                                                                  
+Updating files:  64% (8977/14026)                                                                                                                                                                                  
+Updating files:  65% (9117/14026)                                                                                                                                                                                  
+Updating files:  66% (9258/14026)                                                                                                                                                                                  
+Updating files:  67% (9398/14026)                                                                                                                                                                                  
+Updating files:  68% (9538/14026)                                                                                                                                                                                  
+Updating files:  69% (9678/14026)                                                                                                                                                                                  
+Updating files:  70% (9819/14026)                                                                                                                                                                                  
+Updating files:  71% (9959/14026)                                                                                                                                                                                  
+Updating files:  72% (10099/14026)                                                                                                                                                                                 
+Updating files:  73% (10239/14026)                                                                                                                                                                                 
+Updating files:  74% (10380/14026)                                                                                                                                                                                 
+Updating files:  75% (10520/14026)                                                                                                                                                                                 
+Updating files:  76% (10660/14026)                                                                                                                                                                                 
+Updating files:  77% (10801/14026)                                                                                                                                                                                 
+Updating files:  78% (10941/14026)                                                                                                                                                                                 
+Updating files:  79% (11081/14026)                                                                                                                                                                                 
+Updating files:  80% (11221/14026)                                                                                                                                                                                 
+Updating files:  81% (11362/14026)                                                                                                                                                                                 
+Updating files:  82% (11502/14026)                                                                                                                                                                                 
+Updating files:  83% (11642/14026)                                                                                                                                                                                 
+Updating files:  84% (11782/14026)                                                                                                                                                                                 
+Updating files:  85% (11923/14026)                                                                                                                                                                                 
+Updating files:  86% (12063/14026)                                                                                                                                                                                 
+Updating files:  87% (12203/14026)                                                                                                                                                                                 
+Updating files:  88% (12343/14026)                                                                                                                                                                                 
+Updating files:  89% (12484/14026)                                                                                                                                                                                 
+Updating files:  90% (12624/14026)                                                                                                                                                                                 
+Updating files:  91% (12764/14026)                                                                                                                                                                                 
+Updating files:  92% (12904/14026)                                                                                                                                                                                 
+Updating files:  93% (13045/14026)                                                                                                                                                                                 
+Updating files:  94% (13185/14026)                                                                                                                                                                                 
+Updating files:  95% (13325/14026)                                                                                                                                                                                 
+Updating files:  96% (13465/14026)                                                                                                                                                                                 
+Updating files:  97% (13606/14026)                                                                                                                                                                                 
+Updating files:  98% (13746/14026)                                                                                                                                                                                 
+Updating files:  99% (13886/14026)                                                                                                                                                                                 
+Updating files: 100% (14026/14026)                                                                                                                                                                                 
+Updating files: 100% (14026/14026), done.                                                                                                                                                                          
+mpich : vbelg5s                                                                                                                                                                                                    
+Cleaning /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/8e1959e8/stage/testsuite/validation_tests/mpich                                                                               
+---CLEANUP LOG---                                                                                                                                                                                                  
+rm -f *.o initfinalize sendrecv broadcast onesided                                                                                                                                                                 
+Compiling /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/8e1959e8/stage/testsuite/validation_tests/mpich                                                                              
+---COMPILE LOG---                                                                                                                                                                                                  
+Skipping load: Environment already setup                                                                                                                                                                           
+mpicc  -Wall -g -c initfinalize.c                                                                                                                                                                                  
+mpicc  -o initfinalize initfinalize.o                                                                                                                                                                              
+mpicc  -Wall -g -c sendrecv.c                                                                                                                                                                                      
+mpicc  -o sendrecv sendrecv.o                                                                                                                                                                                      
+mpicc  -Wall -g -c broadcast.c                                                                                                                                                                                     
+mpicc  -o broadcast broadcast.o                                                                                                                                                                                    
+mpicc  -Wall -g -c onesided.c                                                                                                                                                                                      
+mpicc  -o onesided onesided.o                                                                                                                                                                                      
+Running /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/8e1959e8/stage/testsuite/validation_tests/mpich                                                                                
+Skipping load: Environment already setup                                                                                                                                                                           
+Running initfinalize                                                                                                                                                                                               
+                                 [PASSED]                                                                                                                                                                          
+Running sendrecv                                                                                                                                                                                                   
+                                 [PASSED]                                                                                                                                                                          
+Running broadcast                                                                                                                                                                                                  
+                                 [PASSED]                                                                                                                                                                          
+Running onesided                                                                                                                                                                                                   
+                                 [PASSED]                                                                                                                                                                          
+Success                                                                                                                                                                                                            
+                                                                                                                                                                                                                   
+───────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/8e1959e8/mpich_e4s_testsuite.sh ──────────────────────────────────────────────
+#!/bin/bash                                                                                                                                                                                                        
+# Content of run section                                                                                                                                                                                           
+spack install mpich                                                                                                                                                                                                
+git clone https://github.com/E4S-Project/testsuite                                                                                                                                                                 
+cd testsuite                                                                                                                                                                                                       
+bash test-all.sh --color-off validation_tests/mpich --print-logs                                                                                                                                                   
+                                                                                                                                                                                                                   
