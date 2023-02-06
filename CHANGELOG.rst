@@ -1,6 +1,30 @@
 CHANGELOG
 =========
 
+v1.2 (Feb 6th, 2023)
+----------------------
+
+**Documentation Updates**
+
+- Buildtest Command Line Tutorial `#1353 <https://github.com/buildtesters/buildtest/pull/1353>`_
+- Buildtest Tutorial on Perlmutter `#1338 <https://github.com/buildtesters/buildtest/pull/1338>`_, `#1357 <https://github.com/buildtesters/buildtest/pull/1357>`_
+- Troubleshooting guide for buildtest `#1336 <https://github.com/buildtesters/buildtest/pull/1336>`_
+- Add Quick Start Guide `#1335 <https://github.com/buildtesters/buildtest/pull/1335>`_
+- Rewrite page for Building and Test Process `#1345 <https://github.com/buildtesters/buildtest/pull/1345>`_
+
+**Buildspec Changes**
+
+- Add performance check for `assert_le` (`#1339 <https://github.com/buildtesters/buildtest/pull/1339>`_), `assert_ne` (`#1361 <https://github.com/buildtesters/buildtest/pull/1361>`_), `assert_ge` (`#1354 <https://github.com/buildtesters/buildtest/pull/1354>`_)
+- Add support for `contains` and `not_contains` for status check `#1364 <https://github.com/buildtesters/buildtest/pull/1364>`_
+- Change executor match in parse stage from equality check to `re.fullmatch`  `#1350 <https://github.com/buildtesters/buildtest/pull/1350>`_
+
+**CI changes**
+
+- Run Gitlab CI on Perlmutter `#1359 <https://github.com/buildtesters/buildtest/pull/1359>`_
+- Trigger Gitlab pipelines based on code changes to framework or regression test. This avoids having facility pipeline run on every commit  `#1358 <https://github.com/buildtesters/buildtest/pull/1358>`_.
+- Add test coverage by running Perlmutter specific tests `#1360 <https://github.com/buildtesters/buildtest/pull/1360>`_
+- Run Github regression test on file changes `#1356 <https://github.com/buildtesters/buildtest/pull/1356>`_
+
 v1.1 (Jan 6th, 2023)
 -----------------------
 
