@@ -15,7 +15,7 @@ and ``run.sh`` scripts. The `top level driver script <https://github.com/E4S-Pro
 compilers, mpi run commands and other environment specific parameters. It then iterates through the selected tests 
 and generates output consisting of log files for individual test runs and a summary listing of each test’s success or failure. The `README <https://github.com/E4S-Project/testsuite/blob/master/README.md>`_ provides more detail on its structure and usage.
 
-The provided tests typically include source code, build, and input files for quick-running example applications. Some import test code from the spack install location or invoke spack internal tests directly.
+The provided tests typically include source code, build, and input files for quick-running example applications. Some import test code from the installed product's directory or invoke spack internal tests (``spack test run``) directly.
 
 Buildspecs using E4S Testsuite
 ------------------------------
