@@ -7,7 +7,7 @@ Buildtest E4S Testsuite Integration
 
 The `E4S Testsuite <https://github.com/E4S-Project/testsuite/>`_ is a collection of lightweight tests assembled for over 100 
 software products provided by Extreme Scale Scientific Software Stack `(E4S) <https://e4s.io>`_ deployments. 
-E4S provides a spack based software stack. Because not all spack packages provide internal tests and internal test definitions are static and potentially difficult to modify it is useful to have an alternative framework for testing spack-deployed software.
+E4S provides a spack based software stack. Not all spack packages provide internal tests and package-provided tests are static and potentially difficult to modify for use at facility systems. The E4S Testsuite provides a flexible, alternative testing framework for verifying spack-deployed software.
 
 The E4S Testsuite operates on a hierarchy of shell scripts with each test containing its own ``setup.sh``, ``clean.sh``, ``compile.sh`` 
 and ``run.sh`` scripts. The `top level driver script <https://github.com/E4S-Project/testsuite/blob/master/test-all.sh>`_ sets up the test environment based on a configuration file which sets 
