@@ -1,57 +1,52 @@
 $ buildtest inspect query -t pre_post_build_run 
-──────── pre_post_build_run/5b8d06ce-c010-4299-8349-be340b754aa5 ────────
+───────────────────────────────────────────────────────────────────────────────────────── pre_post_build_run/aee93675-6a3c-4423-9cf1-19a37fddba65 ─────────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
-Description: example using pre_build, post_build, pre_run, post_run 
-example
+Description: example using pre_build, post_build, pre_run, post_run example
 State: PASS
 Returncode: 0
-Runtime: 0.061087 sec
-Starttime: 2022/06/29 17:27:37
-Endtime: 2022/06/29 17:27:38
+Runtime: 0.060811 sec
+Starttime: 2023/02/06 21:16:42
+Endtime: 2023/02/06 21:16:42
 Command: bash --norc --noprofile -eo pipefail pre_post_build_run_build.sh
-Test Script: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_p
-ost_build_run/5b8d06ce/pre_post_build_run.sh
-Build Script: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_
-post_build_run/5b8d06ce/pre_post_build_run_build.sh
-Output File: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_p
-ost_build_run/5b8d06ce/pre_post_build_run.out
-Error File: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_po
-st_build_run/5b8d06ce/pre_post_build_run.err
-Log File: /home/spack/buildtest/var/logs/buildtest_emxk6zsu.log
-─ Test File: /home/spack/runs/generic.local.bash/pre_post_build_run/pr… ─
-#!/bin/bash                                                              
-                                                                         
-                                                                         
-# name of executable                                                     
-_EXEC=hello.c.exe                                                        
-### START OF PRE BUILD SECTION ###                                       
-echo "These are commands run before compilation"                         
-                                                                         
-### END OF PRE BUILD SECTION   ###                                       
-                                                                         
-                                                                         
-# Compilation Line                                                       
-/usr/bin/gcc -Wall -o $_EXEC /home/spack/buildtest/examples/compilers/src
-                                                                         
-                                                                         
-### START OF POST BUILD SECTION ###                                      
-echo "These are commands run after compilation"                          
-                                                                         
-### END OF POST BUILD SECTION ###                                        
-                                                                         
-                                                                         
-### START OF PRE RUN SECTION ###                                         
-echo "These are commands run before running script"                      
-                                                                         
-### END OF PRE RUN SECTION   ###                                         
-                                                                         
-                                                                         
-# Run executable                                                         
-./$_EXEC                                                                 
-                                                                         
-                                                                         
-### START OF POST RUN SECTION ###                                        
-echo "These are commands run after running script"                       
-### END OF POST RUN SECTION   ###                                        
-                                                                         
-                                                                         
+Test Script: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_post_build_run/aee93675/pre_post_build_run.sh
+Build Script: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_post_build_run/aee93675/pre_post_build_run_build.sh
+Output File: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_post_build_run/aee93675/pre_post_build_run.out
+Error File: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_post_build_run/aee93675/pre_post_build_run.err
+Log File: /home/spack/buildtest/var/logs/buildtest_0_8ztrgm.log
+─────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/pre_post_build_run/pre_post_build_run/aee93675/pre_post_build_run.sh ───────────────────────────────────────────────────────────
+#!/bin/bash                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                           
+# name of executable                                                                                                                                                                                                                       
+_EXEC=hello.c.exe                                                                                                                                                                                                                          
+### START OF PRE BUILD SECTION ###                                                                                                                                                                                                         
+echo "These are commands run before compilation"                                                                                                                                                                                           
+                                                                                                                                                                                                                                           
+### END OF PRE BUILD SECTION   ###                                                                                                                                                                                                         
+                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                           
+# Compilation Line                                                                                                                                                                                                                         
+/usr/bin/gcc -Wall -o $_EXEC /home/spack/buildtest/examples/compilers/src/hello.c                                                                                                                                                          
+                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                           
+### START OF POST BUILD SECTION ###                                                                                                                                                                                                        
+echo "These are commands run after compilation"                                                                                                                                                                                            
+                                                                                                                                                                                                                                           
+### END OF POST BUILD SECTION ###                                                                                                                                                                                                          
+                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                           
+### START OF PRE RUN SECTION ###                                                                                                                                                                                                           
+echo "These are commands run before running script"                                                                                                                                                                                        
+                                                                                                                                                                                                                                           
+### END OF PRE RUN SECTION   ###                                                                                                                                                                                                           
+                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                           
+# Run executable                                                                                                                                                                                                                           
+./$_EXEC                                                                                                                                                                                                                                   
+                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                           
+### START OF POST RUN SECTION ###                                                                                                                                                                                                          
+echo "These are commands run after running script"                                                                                                                                                                                         
+### END OF POST RUN SECTION   ###                                                                                                                                                                                                          
+                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                           

@@ -1,23 +1,21 @@
 $ buildtest build -b /home/spack/buildtest/examples/compilers/openmp_hello.yml 
-╭────────────────────────── buildtest summary ──────────────────────────╮
-│                                                                       │
-│ User:               spack                                             │
-│ Hostname:           356ea13b3433                                      │
-│ Platform:           Linux                                             │
-│ Current Time:       2022/06/29 17:27:27                               │
-│ buildtest path:     /home/spack/buildtest/bin/buildtest               │
-│ buildtest version:  0.14.0                                            │
-│ python path:        /home/spack/pyenv/buildtest/bin/python3           │
-│ python version:     3.8.6                                             │
-│ Configuration File:                                                   │
-│ /home/spack/buildtest/buildtest/settings/spack_container.yml          │
-│ Test Directory:     /home/spack/runs                                  │
-│ Report File:        /home/spack/buildtest/var/report.json             │
-│ Command:            /home/spack/buildtest/bin/buildtest build -b      │
-│ /home/spack/buildtest/examples/compilers/openmp_hello.yml             │
-│                                                                       │
-╰───────────────────────────────────────────────────────────────────────╯
-────────────────────────  Discovering Buildspecs ────────────────────────
+╭──────────────────────────────────────────────────── buildtest summary ─────────────────────────────────────────────────────╮                                                                                                             
+│                                                                                                                            │                                                                                                             
+│ User:               spack                                                                                                  │                                                                                                             
+│ Hostname:           f215b09d0d2f                                                                                           │                                                                                                             
+│ Platform:           Linux                                                                                                  │                                                                                                             
+│ Current Time:       2023/02/06 21:16:32                                                                                    │                                                                                                             
+│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                    │                                                                                                             
+│ buildtest version:  1.1                                                                                                    │                                                                                                             
+│ python path:        /home/spack/pyenv/buildtest/bin/python3                                                                │                                                                                                             
+│ python version:     3.8.6                                                                                                  │                                                                                                             
+│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                           │                                                                                                             
+│ Test Directory:     /home/spack/runs                                                                                       │                                                                                                             
+│ Report File:        /home/spack/buildtest/var/report.json                                                                  │                                                                                                             
+│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/compilers/openmp_hello.yml │                                                                                                             
+│                                                                                                                            │                                                                                                             
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                                                             
+─────────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────────────
                     Discovered buildspecs                    
 ╔═══════════════════════════════════════════════════════════╗
 ║ buildspec                                                 ║
@@ -29,61 +27,38 @@ $ buildtest build -b /home/spack/buildtest/examples/compilers/openmp_hello.yml
 Total Discovered Buildspecs:  1
 Total Excluded Buildspecs:  0
 Detected Buildspecs after exclusion:  1
-────────────────────────── Parsing Buildspecs ───────────────────────────
-Buildtest will parse 1 buildspecs
+─────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
 /home/spack/buildtest/examples/compilers/openmp_hello.yml: VALID
 Total builder objects created: 1
-Total compiler builder: 1
-Total script builder: 0
-Total spack builder: 0
-                        Compiler Builder Details                         
-┏━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓
-┃ builder  ┃ executor ┃ compiler ┃ nodes ┃ procs ┃ descript… ┃ buildsp… ┃
-┡━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━┩
-│ openmp_… │ generic… │ gcc_7.5… │ None  │ None  │ OpenMP    │ /home/s… │
-│          │          │          │       │       │ Hello     │          │
-│          │          │          │       │       │ World C   │          │
-│          │          │          │       │       │ example   │          │
-└──────────┴──────────┴──────────┴───────┴───────┴───────────┴──────────┘
-───────────────────────────── Building Test ─────────────────────────────
-openmp_hello_c_example/67ae1ee5: Creating test directory: /home/spack/run
-s/generic.local.bash/openmp_hello/openmp_hello_c_example/67ae1ee5
-openmp_hello_c_example/67ae1ee5: Creating the stage directory: /home/spac
-k/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/67ae1ee5/st
-age
-openmp_hello_c_example/67ae1ee5: Writing build script: /home/spack/runs/g
-eneric.local.bash/openmp_hello/openmp_hello_c_example/67ae1ee5/openmp_hel
-lo_c_example_build.sh
-───────────────────────────── Running Tests ─────────────────────────────
+                                                                                Builders by type=compiler                                                                                 
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ builder                         ┃ type     ┃ executor           ┃ compiler  ┃ nodes ┃ procs ┃ description                  ┃ buildspecs                                                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ openmp_hello_c_example/559c9f80 │ compiler │ generic.local.bash │ gcc_7.5.0 │ None  │ None  │ OpenMP Hello World C example │ /home/spack/buildtest/examples/compilers/openmp_hello.yml │
+└─────────────────────────────────┴──────────┴────────────────────┴───────────┴───────┴───────┴──────────────────────────────┴───────────────────────────────────────────────────────────┘
+────────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+openmp_hello_c_example/559c9f80: Creating test directory: /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/559c9f80
+openmp_hello_c_example/559c9f80: Creating the stage directory: /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/559c9f80/stage
+openmp_hello_c_example/559c9f80: Writing build script: /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/559c9f80/openmp_hello_c_example_build.sh
+────────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Spawning 4 processes for processing builders
-────────────────────────────── Iteration 1 ──────────────────────────────
-openmp_hello_c_example/67ae1ee5 does not have any dependencies adding 
-test to queue
-openmp_hello_c_example/67ae1ee5: Running Test via command: bash --norc 
---noprofile -eo pipefail openmp_hello_c_example_build.sh
-openmp_hello_c_example/67ae1ee5: Test completed in 0.062474 seconds
-openmp_hello_c_example/67ae1ee5: Test completed with returncode: 0
-openmp_hello_c_example/67ae1ee5: Writing output file -  /home/spack/runs/
-generic.local.bash/openmp_hello/openmp_hello_c_example/67ae1ee5/openmp_he
-llo_c_example.out
-openmp_hello_c_example/67ae1ee5: Writing error file - /home/spack/runs/ge
-neric.local.bash/openmp_hello/openmp_hello_c_example/67ae1ee5/openmp_hell
-o_c_example.err
-In this iteration we are going to run the following tests: [openmp_hello_c_example/67ae1ee5]
-                              Test Summary                               
-┏━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-┃            ┃            ┃        ┃ checks (Re ┃            ┃          ┃
-┃            ┃            ┃        ┃ turnCode,  ┃            ┃          ┃
-┃            ┃            ┃        ┃ Regex,     ┃            ┃          ┃
-┃ builder    ┃ executor   ┃ status ┃ Runtime)   ┃ returnCode ┃ runtime  ┃
-┡━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ openmp_hel │ generic.l… │ PASS   │ N/A N/A    │ 0          │ 0.062474 │
-│ lo_c_examp │            │        │ N/A        │            │          │
-│ le/67ae1ee │            │        │            │            │          │
-│ 5          │            │        │            │            │          │
-└────────────┴────────────┴────────┴────────────┴────────────┴──────────┘
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+openmp_hello_c_example/559c9f80 does not have any dependencies adding test to queue
+openmp_hello_c_example/559c9f80: Current Working Directory : /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/559c9f80/stage
+openmp_hello_c_example/559c9f80: Running Test via command: bash --norc --noprofile -eo pipefail openmp_hello_c_example_build.sh
+openmp_hello_c_example/559c9f80: Test completed in 0.231787 seconds
+openmp_hello_c_example/559c9f80: Test completed with returncode: 0
+openmp_hello_c_example/559c9f80: Writing output file -  /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/559c9f80/openmp_hello_c_example.out
+openmp_hello_c_example/559c9f80: Writing error file - /home/spack/runs/generic.local.bash/openmp_hello/openmp_hello_c_example/559c9f80/openmp_hello_c_example.err
+In this iteration we are going to run the following tests: [openmp_hello_c_example/559c9f80]
+                                                         Test Summary                                                          
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ builder                         ┃ executor           ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime  ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ openmp_hello_c_example/559c9f80 │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.231787 │
+└─────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
 
 
@@ -92,4 +67,4 @@ Failed Tests: 0/1 Percentage: 0.000%
 
 
 Adding 1 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_szn8um4h.log
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_hscajvbf.log

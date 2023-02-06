@@ -1,23 +1,21 @@
 $ buildtest build -b /home/spack/buildtest/examples/compilers/envvar_override.yml 
-╭────────────────────────── buildtest summary ──────────────────────────╮
-│                                                                       │
-│ User:               spack                                             │
-│ Hostname:           356ea13b3433                                      │
-│ Platform:           Linux                                             │
-│ Current Time:       2022/06/29 17:27:30                               │
-│ buildtest path:     /home/spack/buildtest/bin/buildtest               │
-│ buildtest version:  0.14.0                                            │
-│ python path:        /home/spack/pyenv/buildtest/bin/python3           │
-│ python version:     3.8.6                                             │
-│ Configuration File:                                                   │
-│ /home/spack/buildtest/buildtest/settings/spack_container.yml          │
-│ Test Directory:     /home/spack/runs                                  │
-│ Report File:        /home/spack/buildtest/var/report.json             │
-│ Command:            /home/spack/buildtest/bin/buildtest build -b      │
-│ /home/spack/buildtest/examples/compilers/envvar_override.yml          │
-│                                                                       │
-╰───────────────────────────────────────────────────────────────────────╯
-────────────────────────  Discovering Buildspecs ────────────────────────
+╭────────────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────────╮                                                                                                          
+│                                                                                                                               │                                                                                                          
+│ User:               spack                                                                                                     │                                                                                                          
+│ Hostname:           f215b09d0d2f                                                                                              │                                                                                                          
+│ Platform:           Linux                                                                                                     │                                                                                                          
+│ Current Time:       2023/02/06 21:16:34                                                                                       │                                                                                                          
+│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                       │                                                                                                          
+│ buildtest version:  1.1                                                                                                       │                                                                                                          
+│ python path:        /home/spack/pyenv/buildtest/bin/python3                                                                   │                                                                                                          
+│ python version:     3.8.6                                                                                                     │                                                                                                          
+│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                              │                                                                                                          
+│ Test Directory:     /home/spack/runs                                                                                          │                                                                                                          
+│ Report File:        /home/spack/buildtest/var/report.json                                                                     │                                                                                                          
+│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/compilers/envvar_override.yml │                                                                                                          
+│                                                                                                                               │                                                                                                          
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                                                          
+─────────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────────────
                      Discovered buildspecs                      
 ╔══════════════════════════════════════════════════════════════╗
 ║ buildspec                                                    ║
@@ -29,91 +27,52 @@ $ buildtest build -b /home/spack/buildtest/examples/compilers/envvar_override.ym
 Total Discovered Buildspecs:  1
 Total Excluded Buildspecs:  0
 Detected Buildspecs after exclusion:  1
-────────────────────────── Parsing Buildspecs ───────────────────────────
-Buildtest will parse 1 buildspecs
+─────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
 /home/spack/buildtest/examples/compilers/envvar_override.yml: VALID
 Total builder objects created: 2
-Total compiler builder: 2
-Total script builder: 0
-Total spack builder: 0
-                        Compiler Builder Details                         
-┏━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓
-┃ builder  ┃ executor ┃ compiler ┃ nodes ┃ procs ┃ descript… ┃ buildsp… ┃
-┡━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━┩
-│ overrid… │ generic… │ gcc_7.5… │ None  │ None  │ override  │ /home/s… │
-│          │          │          │       │       │ default   │          │
-│          │          │          │       │       │ environm… │          │
-│          │          │          │       │       │ variables │          │
-├──────────┼──────────┼──────────┼───────┼───────┼───────────┼──────────┤
-│ overrid… │ generic… │ gcc_8.3… │ None  │ None  │ override  │ /home/s… │
-│          │          │          │       │       │ default   │          │
-│          │          │          │       │       │ environm… │          │
-│          │          │          │       │       │ variables │          │
-└──────────┴──────────┴──────────┴───────┴───────┴───────────┴──────────┘
-───────────────────────────── Building Test ─────────────────────────────
-override_environmentvars/c552e0e2: Creating test directory: /home/spack/r
-uns/generic.local.bash/envvar_override/override_environmentvars/c552e0e2
-override_environmentvars/c552e0e2: Creating the stage directory: /home/sp
-ack/runs/generic.local.bash/envvar_override/override_environmentvars/c552
-e0e2/stage
-override_environmentvars/c552e0e2: Writing build script: /home/spack/runs
-/generic.local.bash/envvar_override/override_environmentvars/c552e0e2/ove
-rride_environmentvars_build.sh
-override_environmentvars/d3fcdf11: Creating test directory: /home/spack/r
-uns/generic.local.bash/envvar_override/override_environmentvars/d3fcdf11
-override_environmentvars/d3fcdf11: Creating the stage directory: /home/sp
-ack/runs/generic.local.bash/envvar_override/override_environmentvars/d3fc
-df11/stage
-override_environmentvars/d3fcdf11: Writing build script: /home/spack/runs
-/generic.local.bash/envvar_override/override_environmentvars/d3fcdf11/ove
-rride_environmentvars_build.sh
-───────────────────────────── Running Tests ─────────────────────────────
+                                                                                        Builders by type=compiler                                                                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ builder                           ┃ type     ┃ executor           ┃ compiler  ┃ nodes ┃ procs ┃ description                            ┃ buildspecs                                                   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ override_environmentvars/4512576c │ compiler │ generic.local.bash │ gcc_7.5.0 │ None  │ None  │ override default environment variables │ /home/spack/buildtest/examples/compilers/envvar_override.yml │
+├───────────────────────────────────┼──────────┼────────────────────┼───────────┼───────┼───────┼────────────────────────────────────────┼──────────────────────────────────────────────────────────────┤
+│ override_environmentvars/b8b359fa │ compiler │ generic.local.bash │ gcc_8.3.0 │ None  │ None  │ override default environment variables │ /home/spack/buildtest/examples/compilers/envvar_override.yml │
+└───────────────────────────────────┴──────────┴────────────────────┴───────────┴───────┴───────┴────────────────────────────────────────┴──────────────────────────────────────────────────────────────┘
+────────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+override_environmentvars/4512576c: Creating test directory: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/4512576c
+override_environmentvars/4512576c: Creating the stage directory: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/4512576c/stage
+override_environmentvars/4512576c: Writing build script: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/4512576c/override_environmentvars_build.sh
+override_environmentvars/b8b359fa: Creating test directory: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/b8b359fa
+override_environmentvars/b8b359fa: Creating the stage directory: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/b8b359fa/stage
+override_environmentvars/b8b359fa: Writing build script: /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/b8b359fa/override_environmentvars_build.sh
+────────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Spawning 4 processes for processing builders
-────────────────────────────── Iteration 1 ──────────────────────────────
-override_environmentvars/d3fcdf11 does not have any dependencies adding 
-test to queue
-override_environmentvars/c552e0e2 does not have any dependencies adding 
-test to queue
-override_environmentvars/d3fcdf11: Running Test via command: bash --norc 
---noprofile -eo pipefail override_environmentvars_build.sh
-override_environmentvars/c552e0e2: Running Test via command: bash --norc 
---noprofile -eo pipefail override_environmentvars_build.sh
-override_environmentvars/c552e0e2: Test completed in 0.067774 seconds
-override_environmentvars/c552e0e2: Test completed with returncode: 0
-override_environmentvars/c552e0e2: Writing output file -  /home/spack/run
-s/generic.local.bash/envvar_override/override_environmentvars/c552e0e2/ov
-erride_environmentvars.out
-override_environmentvars/c552e0e2: Writing error file - /home/spack/runs/
-generic.local.bash/envvar_override/override_environmentvars/c552e0e2/over
-ride_environmentvars.err
-override_environmentvars/d3fcdf11: Test completed in 0.096485 seconds
-override_environmentvars/d3fcdf11: Test completed with returncode: 0
-override_environmentvars/d3fcdf11: Writing output file -  /home/spack/run
-s/generic.local.bash/envvar_override/override_environmentvars/d3fcdf11/ov
-erride_environmentvars.out
-override_environmentvars/d3fcdf11: Writing error file - /home/spack/runs/
-generic.local.bash/envvar_override/override_environmentvars/d3fcdf11/over
-ride_environmentvars.err
-In this iteration we are going to run the following tests: [override_environmentvars/d3fcdf11, override_environmentvars/c552e0e2]
-                              Test Summary                               
-┏━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-┃            ┃            ┃        ┃ checks (Re ┃            ┃          ┃
-┃            ┃            ┃        ┃ turnCode,  ┃            ┃          ┃
-┃            ┃            ┃        ┃ Regex,     ┃            ┃          ┃
-┃ builder    ┃ executor   ┃ status ┃ Runtime)   ┃ returnCode ┃ runtime  ┃
-┡━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ override_e │ generic.l… │ PASS   │ N/A N/A    │ 0          │ 0.067774 │
-│ nvironment │            │        │ N/A        │            │          │
-│ vars/c552e │            │        │            │            │          │
-│ 0e2        │            │        │            │            │          │
-├────────────┼────────────┼────────┼────────────┼────────────┼──────────┤
-│ override_e │ generic.l… │ PASS   │ N/A N/A    │ 0          │ 0.096485 │
-│ nvironment │            │        │ N/A        │            │          │
-│ vars/d3fcd │            │        │            │            │          │
-│ f11        │            │        │            │            │          │
-└────────────┴────────────┴────────┴────────────┴────────────┴──────────┘
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+override_environmentvars/b8b359fa does not have any dependencies adding test to queue
+override_environmentvars/4512576c does not have any dependencies adding test to queue
+override_environmentvars/b8b359fa: Current Working Directory : /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/b8b359fa/stage
+override_environmentvars/4512576c: Current Working Directory : /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/4512576c/stage
+override_environmentvars/b8b359fa: Running Test via command: bash --norc --noprofile -eo pipefail override_environmentvars_build.sh
+override_environmentvars/4512576c: Running Test via command: bash --norc --noprofile -eo pipefail override_environmentvars_build.sh
+override_environmentvars/4512576c: Test completed in 0.07792 seconds
+override_environmentvars/4512576c: Test completed with returncode: 0
+override_environmentvars/4512576c: Writing output file -  /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/4512576c/override_environmentvars.out
+override_environmentvars/4512576c: Writing error file - /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/4512576c/override_environmentvars.err
+override_environmentvars/b8b359fa: Test completed in 0.102525 seconds
+override_environmentvars/b8b359fa: Test completed with returncode: 0
+override_environmentvars/b8b359fa: Writing output file -  /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/b8b359fa/override_environmentvars.out
+override_environmentvars/b8b359fa: Writing error file - /home/spack/runs/generic.local.bash/envvar_override/override_environmentvars/b8b359fa/override_environmentvars.err
+In this iteration we are going to run the following tests: [override_environmentvars/b8b359fa, override_environmentvars/4512576c]
+                                                          Test Summary                                                           
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ builder                           ┃ executor           ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime  ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ override_environmentvars/4512576c │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.07792  │
+├───────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+│ override_environmentvars/b8b359fa │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.102525 │
+└───────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
 
 
@@ -122,4 +81,4 @@ Failed Tests: 0/2 Percentage: 0.000%
 
 
 Adding 2 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_nhaaefle.log
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_v6igvzj9.log
