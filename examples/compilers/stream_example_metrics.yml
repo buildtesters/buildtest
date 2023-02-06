@@ -17,18 +17,26 @@ buildspecs:
       ./stream
     metrics:
       copy:
+        type: float
         regex:
           stream: stdout
           exp: 'Copy:\s+(\S+)\s+.*'
+          item: 1
       scale:
+        type: float
         regex:
           stream: stdout
           exp: 'Scale:\s+(\S+)\s+.*'
+          item: 1
       add:
+        type: float
         regex:
           stream: stdout
           exp: 'Add:\s+(\S+)\s+.*'
+          item: 1
       triad:
+        type: float
         regex:
           stream: stdout
           exp: 'Triad:\s+(\S+)\s+.*'
+          item: 1

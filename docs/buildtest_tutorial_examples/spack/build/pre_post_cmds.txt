@@ -1,23 +1,21 @@
 $ buildtest build -b /home/spack/buildtest/examples/spack/pre_post_cmds.yml 
-╭────────────────────────── buildtest summary ──────────────────────────╮
-│                                                                       │
-│ User:               spack                                             │
-│ Hostname:           356ea13b3433                                      │
-│ Platform:           Linux                                             │
-│ Current Time:       2022/06/29 17:26:55                               │
-│ buildtest path:     /home/spack/buildtest/bin/buildtest               │
-│ buildtest version:  0.14.0                                            │
-│ python path:        /home/spack/pyenv/buildtest/bin/python3           │
-│ python version:     3.8.6                                             │
-│ Configuration File:                                                   │
-│ /home/spack/buildtest/buildtest/settings/spack_container.yml          │
-│ Test Directory:     /home/spack/runs                                  │
-│ Report File:        /home/spack/buildtest/var/report.json             │
-│ Command:            /home/spack/buildtest/bin/buildtest build -b      │
-│ /home/spack/buildtest/examples/spack/pre_post_cmds.yml                │
-│                                                                       │
-╰───────────────────────────────────────────────────────────────────────╯
-────────────────────────  Discovering Buildspecs ────────────────────────
+╭─────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────╮                                                                                                                
+│                                                                                                                         │                                                                                                                
+│ User:               spack                                                                                               │                                                                                                                
+│ Hostname:           f215b09d0d2f                                                                                        │                                                                                                                
+│ Platform:           Linux                                                                                               │                                                                                                                
+│ Current Time:       2023/02/06 21:15:45                                                                                 │                                                                                                                
+│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                 │                                                                                                                
+│ buildtest version:  1.1                                                                                                 │                                                                                                                
+│ python path:        /home/spack/pyenv/buildtest/bin/python3                                                             │                                                                                                                
+│ python version:     3.8.6                                                                                               │                                                                                                                
+│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                        │                                                                                                                
+│ Test Directory:     /home/spack/runs                                                                                    │                                                                                                                
+│ Report File:        /home/spack/buildtest/var/report.json                                                               │                                                                                                                
+│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/spack/pre_post_cmds.yml │                                                                                                                
+│                                                                                                                         │                                                                                                                
+╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                                                                
+─────────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────────────
                   Discovered buildspecs                   
 ╔════════════════════════════════════════════════════════╗
 ║ buildspec                                              ║
@@ -29,58 +27,38 @@ $ buildtest build -b /home/spack/buildtest/examples/spack/pre_post_cmds.yml
 Total Discovered Buildspecs:  1
 Total Excluded Buildspecs:  0
 Detected Buildspecs after exclusion:  1
-────────────────────────── Parsing Buildspecs ───────────────────────────
-Buildtest will parse 1 buildspecs
+─────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
 /home/spack/buildtest/examples/spack/pre_post_cmds.yml: VALID
 Total builder objects created: 1
-Total compiler builder: 0
-Total script builder: 0
-Total spack builder: 1
-                          Spack Builder Details                          
-┏━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
-┃ builder  ┃ executor ┃ compiler ┃ nodes ┃ procs   ┃ descrip… ┃ builds… ┃
-┡━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
-│ run_pre… │ generic… │ None     │ None  │ Install │ /home/s… │         │
-│          │          │          │       │ zlib    │          │         │
-└──────────┴──────────┴──────────┴───────┴─────────┴──────────┴─────────┘
-───────────────────────────── Building Test ─────────────────────────────
-run_pre_post_commands/c6a63ba3: Creating test directory: /home/spack/runs
-/generic.local.bash/pre_post_cmds/run_pre_post_commands/c6a63ba3
-run_pre_post_commands/c6a63ba3: Creating the stage directory: /home/spack
-/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/c6a63ba3/sta
-ge
-run_pre_post_commands/c6a63ba3: Writing build script: /home/spack/runs/ge
-neric.local.bash/pre_post_cmds/run_pre_post_commands/c6a63ba3/run_pre_pos
-t_commands_build.sh
-───────────────────────────── Running Tests ─────────────────────────────
+                                                                      Builders by type=spack                                                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ builder                        ┃ type  ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description  ┃ buildspecs                                             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ run_pre_post_commands/3462c60f │ spack │ generic.local.bash │ None     │ None  │ None  │ Install zlib │ /home/spack/buildtest/examples/spack/pre_post_cmds.yml │
+└────────────────────────────────┴───────┴────────────────────┴──────────┴───────┴───────┴──────────────┴────────────────────────────────────────────────────────┘
+────────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+run_pre_post_commands/3462c60f: Creating test directory: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/3462c60f
+run_pre_post_commands/3462c60f: Creating the stage directory: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/3462c60f/stage
+run_pre_post_commands/3462c60f: Writing build script: /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/3462c60f/run_pre_post_commands_build.sh
+────────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Spawning 4 processes for processing builders
-────────────────────────────── Iteration 1 ──────────────────────────────
-run_pre_post_commands/c6a63ba3 does not have any dependencies adding test
-to queue
-run_pre_post_commands/c6a63ba3: Running Test via command: bash --norc 
---noprofile -eo pipefail run_pre_post_commands_build.sh
-run_pre_post_commands/c6a63ba3: Test completed in 1.571065 seconds
-run_pre_post_commands/c6a63ba3: Test completed with returncode: 0
-run_pre_post_commands/c6a63ba3: Writing output file -  /home/spack/runs/g
-eneric.local.bash/pre_post_cmds/run_pre_post_commands/c6a63ba3/run_pre_po
-st_commands.out
-run_pre_post_commands/c6a63ba3: Writing error file - /home/spack/runs/gen
-eric.local.bash/pre_post_cmds/run_pre_post_commands/c6a63ba3/run_pre_post
-_commands.err
-In this iteration we are going to run the following tests: [run_pre_post_commands/c6a63ba3]
-                              Test Summary                               
-┏━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-┃            ┃            ┃        ┃ checks (Re ┃            ┃          ┃
-┃            ┃            ┃        ┃ turnCode,  ┃            ┃          ┃
-┃            ┃            ┃        ┃ Regex,     ┃            ┃          ┃
-┃ builder    ┃ executor   ┃ status ┃ Runtime)   ┃ returnCode ┃ runtime  ┃
-┡━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ run_pre_po │ generic.l… │ PASS   │ N/A N/A    │ 0          │ 1.571065 │
-│ st_command │            │        │ N/A        │            │          │
-│ s/c6a63ba3 │            │        │            │            │          │
-└────────────┴────────────┴────────┴────────────┴────────────┴──────────┘
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+run_pre_post_commands/3462c60f does not have any dependencies adding test to queue
+run_pre_post_commands/3462c60f: Current Working Directory : /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/3462c60f/stage
+run_pre_post_commands/3462c60f: Running Test via command: bash --norc --noprofile -eo pipefail run_pre_post_commands_build.sh
+run_pre_post_commands/3462c60f: Test completed in 2.131195 seconds
+run_pre_post_commands/3462c60f: Test completed with returncode: 0
+run_pre_post_commands/3462c60f: Writing output file -  /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/3462c60f/run_pre_post_commands.out
+run_pre_post_commands/3462c60f: Writing error file - /home/spack/runs/generic.local.bash/pre_post_cmds/run_pre_post_commands/3462c60f/run_pre_post_commands.err
+In this iteration we are going to run the following tests: [run_pre_post_commands/3462c60f]
+                                                         Test Summary                                                         
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ builder                        ┃ executor           ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime  ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ run_pre_post_commands/3462c60f │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 2.131195 │
+└────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
 
 
@@ -89,4 +67,4 @@ Failed Tests: 0/1 Percentage: 0.000%
 
 
 Adding 1 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_xlxjubga.log
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_j5nd58l8.log

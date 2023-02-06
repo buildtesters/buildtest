@@ -1,23 +1,21 @@
 $ buildtest build -b /home/spack/buildtest/examples/compilers/custom_run.yml 
-╭────────────────────────── buildtest summary ──────────────────────────╮
-│                                                                       │
-│ User:               spack                                             │
-│ Hostname:           356ea13b3433                                      │
-│ Platform:           Linux                                             │
-│ Current Time:       2022/06/29 17:27:34                               │
-│ buildtest path:     /home/spack/buildtest/bin/buildtest               │
-│ buildtest version:  0.14.0                                            │
-│ python path:        /home/spack/pyenv/buildtest/bin/python3           │
-│ python version:     3.8.6                                             │
-│ Configuration File:                                                   │
-│ /home/spack/buildtest/buildtest/settings/spack_container.yml          │
-│ Test Directory:     /home/spack/runs                                  │
-│ Report File:        /home/spack/buildtest/var/report.json             │
-│ Command:            /home/spack/buildtest/bin/buildtest build -b      │
-│ /home/spack/buildtest/examples/compilers/custom_run.yml               │
-│                                                                       │
-╰───────────────────────────────────────────────────────────────────────╯
-────────────────────────  Discovering Buildspecs ────────────────────────
+╭─────────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────────╮                                                                                                               
+│                                                                                                                          │                                                                                                               
+│ User:               spack                                                                                                │                                                                                                               
+│ Hostname:           f215b09d0d2f                                                                                         │                                                                                                               
+│ Platform:           Linux                                                                                                │                                                                                                               
+│ Current Time:       2023/02/06 21:16:39                                                                                  │                                                                                                               
+│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                  │                                                                                                               
+│ buildtest version:  1.1                                                                                                  │                                                                                                               
+│ python path:        /home/spack/pyenv/buildtest/bin/python3                                                              │                                                                                                               
+│ python version:     3.8.6                                                                                                │                                                                                                               
+│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                         │                                                                                                               
+│ Test Directory:     /home/spack/runs                                                                                     │                                                                                                               
+│ Report File:        /home/spack/buildtest/var/report.json                                                                │                                                                                                               
+│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/compilers/custom_run.yml │                                                                                                               
+│                                                                                                                          │                                                                                                               
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                                                               
+─────────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────────────
                    Discovered buildspecs                   
 ╔═════════════════════════════════════════════════════════╗
 ║ buildspec                                               ║
@@ -29,93 +27,52 @@ $ buildtest build -b /home/spack/buildtest/examples/compilers/custom_run.yml
 Total Discovered Buildspecs:  1
 Total Excluded Buildspecs:  0
 Detected Buildspecs after exclusion:  1
-────────────────────────── Parsing Buildspecs ───────────────────────────
-Buildtest will parse 1 buildspecs
+─────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Valid Buildspecs: 1
 Invalid Buildspecs: 0
 /home/spack/buildtest/examples/compilers/custom_run.yml: VALID
 Total builder objects created: 2
-Total compiler builder: 2
-Total script builder: 0
-Total spack builder: 0
-                        Compiler Builder Details                         
-┏━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━┓
-┃ builder  ┃ executor ┃ compiler ┃ nodes ┃ procs ┃ descript… ┃ buildsp… ┃
-┡━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━┩
-│ custom_… │ generic… │ gcc_7.5… │ None  │ None  │ Customize │ /home/s… │
-│          │          │          │       │       │ binary    │          │
-│          │          │          │       │       │ launch    │          │
-│          │          │          │       │       │ based on  │          │
-│          │          │          │       │       │ compiler  │          │
-├──────────┼──────────┼──────────┼───────┼───────┼───────────┼──────────┤
-│ custom_… │ generic… │ gcc_8.3… │ None  │ None  │ Customize │ /home/s… │
-│          │          │          │       │       │ binary    │          │
-│          │          │          │       │       │ launch    │          │
-│          │          │          │       │       │ based on  │          │
-│          │          │          │       │       │ compiler  │          │
-└──────────┴──────────┴──────────┴───────┴───────┴───────────┴──────────┘
-───────────────────────────── Building Test ─────────────────────────────
-custom_run_by_compilers/2536736f: Creating test directory: /home/spack/ru
-ns/generic.local.bash/custom_run/custom_run_by_compilers/2536736f
-custom_run_by_compilers/2536736f: Creating the stage directory: /home/spa
-ck/runs/generic.local.bash/custom_run/custom_run_by_compilers/2536736f/st
-age
-custom_run_by_compilers/2536736f: Writing build script: /home/spack/runs/
-generic.local.bash/custom_run/custom_run_by_compilers/2536736f/custom_run
-_by_compilers_build.sh
-custom_run_by_compilers/2b1553e4: Creating test directory: /home/spack/ru
-ns/generic.local.bash/custom_run/custom_run_by_compilers/2b1553e4
-custom_run_by_compilers/2b1553e4: Creating the stage directory: /home/spa
-ck/runs/generic.local.bash/custom_run/custom_run_by_compilers/2b1553e4/st
-age
-custom_run_by_compilers/2b1553e4: Writing build script: /home/spack/runs/
-generic.local.bash/custom_run/custom_run_by_compilers/2b1553e4/custom_run
-_by_compilers_build.sh
-───────────────────────────── Running Tests ─────────────────────────────
+                                                                                      Builders by type=compiler                                                                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ builder                          ┃ type     ┃ executor           ┃ compiler  ┃ nodes ┃ procs ┃ description                               ┃ buildspecs                                              ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ custom_run_by_compilers/0652c62c │ compiler │ generic.local.bash │ gcc_7.5.0 │ None  │ None  │ Customize binary launch based on compiler │ /home/spack/buildtest/examples/compilers/custom_run.yml │
+├──────────────────────────────────┼──────────┼────────────────────┼───────────┼───────┼───────┼───────────────────────────────────────────┼─────────────────────────────────────────────────────────┤
+│ custom_run_by_compilers/00777c4e │ compiler │ generic.local.bash │ gcc_8.3.0 │ None  │ None  │ Customize binary launch based on compiler │ /home/spack/buildtest/examples/compilers/custom_run.yml │
+└──────────────────────────────────┴──────────┴────────────────────┴───────────┴───────┴───────┴───────────────────────────────────────────┴─────────────────────────────────────────────────────────┘
+────────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+custom_run_by_compilers/0652c62c: Creating test directory: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/0652c62c
+custom_run_by_compilers/0652c62c: Creating the stage directory: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/0652c62c/stage
+custom_run_by_compilers/0652c62c: Writing build script: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/0652c62c/custom_run_by_compilers_build.sh
+custom_run_by_compilers/00777c4e: Creating test directory: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/00777c4e
+custom_run_by_compilers/00777c4e: Creating the stage directory: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/00777c4e/stage
+custom_run_by_compilers/00777c4e: Writing build script: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/00777c4e/custom_run_by_compilers_build.sh
+────────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Spawning 4 processes for processing builders
-────────────────────────────── Iteration 1 ──────────────────────────────
-custom_run_by_compilers/2536736f does not have any dependencies adding 
-test to queue
-custom_run_by_compilers/2b1553e4 does not have any dependencies adding 
-test to queue
-custom_run_by_compilers/2536736f: Running Test via command: bash --norc 
---noprofile -eo pipefail custom_run_by_compilers_build.sh
-custom_run_by_compilers/2b1553e4: Running Test via command: bash --norc 
---noprofile -eo pipefail custom_run_by_compilers_build.sh
-custom_run_by_compilers/2536736f: Test completed in 0.456091 seconds
-custom_run_by_compilers/2536736f: Test completed with returncode: 0
-custom_run_by_compilers/2536736f: Writing output file -  /home/spack/runs
-/generic.local.bash/custom_run/custom_run_by_compilers/2536736f/custom_ru
-n_by_compilers.out
-custom_run_by_compilers/2536736f: Writing error file - /home/spack/runs/g
-eneric.local.bash/custom_run/custom_run_by_compilers/2536736f/custom_run_
-by_compilers.err
-custom_run_by_compilers/2b1553e4: Test completed in 0.525561 seconds
-custom_run_by_compilers/2b1553e4: Test completed with returncode: 0
-custom_run_by_compilers/2b1553e4: Writing output file -  /home/spack/runs
-/generic.local.bash/custom_run/custom_run_by_compilers/2b1553e4/custom_ru
-n_by_compilers.out
-custom_run_by_compilers/2b1553e4: Writing error file - /home/spack/runs/g
-eneric.local.bash/custom_run/custom_run_by_compilers/2b1553e4/custom_run_
-by_compilers.err
-In this iteration we are going to run the following tests: [custom_run_by_compilers/2536736f, custom_run_by_compilers/2b1553e4]
-                              Test Summary                               
-┏━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-┃            ┃            ┃        ┃ checks (Re ┃            ┃          ┃
-┃            ┃            ┃        ┃ turnCode,  ┃            ┃          ┃
-┃            ┃            ┃        ┃ Regex,     ┃            ┃          ┃
-┃ builder    ┃ executor   ┃ status ┃ Runtime)   ┃ returnCode ┃ runtime  ┃
-┡━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ custom_run │ generic.l… │ PASS   │ N/A N/A    │ 0          │ 0.525561 │
-│ _by_compil │            │        │ N/A        │            │          │
-│ ers/2b1553 │            │        │            │            │          │
-│ e4         │            │        │            │            │          │
-├────────────┼────────────┼────────┼────────────┼────────────┼──────────┤
-│ custom_run │ generic.l… │ PASS   │ N/A N/A    │ 0          │ 0.456091 │
-│ _by_compil │            │        │ N/A        │            │          │
-│ ers/253673 │            │        │            │            │          │
-│ 6f         │            │        │            │            │          │
-└────────────┴────────────┴────────┴────────────┴────────────┴──────────┘
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
+custom_run_by_compilers/00777c4e does not have any dependencies adding test to queue
+custom_run_by_compilers/0652c62c does not have any dependencies adding test to queue
+custom_run_by_compilers/00777c4e: Current Working Directory : /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/00777c4e/stage
+custom_run_by_compilers/0652c62c: Current Working Directory : /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/0652c62c/stage
+custom_run_by_compilers/00777c4e: Running Test via command: bash --norc --noprofile -eo pipefail custom_run_by_compilers_build.sh
+custom_run_by_compilers/0652c62c: Running Test via command: bash --norc --noprofile -eo pipefail custom_run_by_compilers_build.sh
+custom_run_by_compilers/0652c62c: Test completed in 0.070924 seconds
+custom_run_by_compilers/0652c62c: Test completed with returncode: 0
+custom_run_by_compilers/0652c62c: Writing output file -  /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/0652c62c/custom_run_by_compilers.out
+custom_run_by_compilers/0652c62c: Writing error file - /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/0652c62c/custom_run_by_compilers.err
+custom_run_by_compilers/00777c4e: Test completed in 0.081841 seconds
+custom_run_by_compilers/00777c4e: Test completed with returncode: 0
+custom_run_by_compilers/00777c4e: Writing output file -  /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/00777c4e/custom_run_by_compilers.out
+custom_run_by_compilers/00777c4e: Writing error file - /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/00777c4e/custom_run_by_compilers.err
+In this iteration we are going to run the following tests: [custom_run_by_compilers/00777c4e, custom_run_by_compilers/0652c62c]
+                                                          Test Summary                                                          
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+┃ builder                          ┃ executor           ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime  ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+│ custom_run_by_compilers/00777c4e │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.081841 │
+├──────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+│ custom_run_by_compilers/0652c62c │ generic.local.bash │ PASS   │ N/A N/A N/A                         │ 0          │ 0.070924 │
+└──────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
 
 
@@ -124,4 +81,4 @@ Failed Tests: 0/2 Percentage: 0.000%
 
 
 Adding 2 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_ljkmzoae.log
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_xmxrzfnb.log

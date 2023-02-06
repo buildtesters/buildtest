@@ -1,97 +1,87 @@
 $ buildtest inspect query -b  -t custom_run_by_compilers/ 
-───── custom_run_by_compilers/2536736f-c0f1-4afc-9be6-dd8d323cdc4c ──────
+────────────────────────────────────────────────────────────────────────────────────── custom_run_by_compilers/00777c4e-fba1-4dab-b197-972a4111470a ───────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Customize binary launch based on compiler
 State: PASS
 Returncode: 0
-Runtime: 0.456091 sec
-Starttime: 2022/06/29 17:27:34
-Endtime: 2022/06/29 17:27:35
-Command: bash --norc --noprofile -eo pipefail 
-custom_run_by_compilers_build.sh
-Test Script: /home/spack/runs/generic.local.bash/custom_run/custom_run_by
-_compilers/2536736f/custom_run_by_compilers.sh
-Build Script: /home/spack/runs/generic.local.bash/custom_run/custom_run_b
-y_compilers/2536736f/custom_run_by_compilers_build.sh
-Output File: /home/spack/runs/generic.local.bash/custom_run/custom_run_by
-_compilers/2536736f/custom_run_by_compilers.out
-Error File: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_
-compilers/2536736f/custom_run_by_compilers.err
-Log File: /home/spack/buildtest/var/logs/buildtest_ljkmzoae.log
-─ Test File: /home/spack/runs/generic.local.bash/custom_run/custom_run… ─
-#!/bin/bash                                                              
-                                                                         
-                                                                         
-# name of executable                                                     
-_EXEC=argc.c.exe                                                         
-# Compilation Line                                                       
-/usr/bin/gcc -o $_EXEC /home/spack/buildtest/examples/compilers/src/argc.
-                                                                         
-                                                                         
-# Run executable                                                         
-./$_EXEC 1 3                                                             
-                                                                         
-                                                                         
-─ Test File: /home/spack/runs/generic.local.bash/custom_run/custom_run… ─
-#!/bin/bash                                                              
-export BUILDTEST_TEST_NAME=custom_run_by_compilers                       
-export BUILDTEST_TEST_ROOT=/home/spack/runs/generic.local.bash/custom_run
-export BUILDTEST_BUILDSPEC_DIR=/home/spack/buildtest/examples/compilers  
-export BUILDTEST_STAGE_DIR=/home/spack/runs/generic.local.bash/custom_run
-# source executor startup script                                         
-source /home/spack/buildtest/var/executor/generic.local.bash/before_scrip
-# Run generated script                                                   
-/home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/25
-# Get return code                                                        
-returncode=$?                                                            
-# Exit with return code                                                  
-exit $returncode                                                         
-───── custom_run_by_compilers/2b1553e4-975f-4282-a3dc-3e9d3f48bd1a ──────
+Runtime: 0.081841 sec
+Starttime: 2023/02/06 21:16:39
+Endtime: 2023/02/06 21:16:39
+Command: bash --norc --noprofile -eo pipefail custom_run_by_compilers_build.sh
+Test Script: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/00777c4e/custom_run_by_compilers.sh
+Build Script: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/00777c4e/custom_run_by_compilers_build.sh
+Output File: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/00777c4e/custom_run_by_compilers.out
+Error File: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/00777c4e/custom_run_by_compilers.err
+Log File: /home/spack/buildtest/var/logs/buildtest_xmxrzfnb.log
+────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/00777c4e/custom_run_by_compilers.sh ──────────────────────────────────────────────────────────
+#!/bin/bash                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                           
+# name of executable                                                                                                                                                                                                                       
+_EXEC=argc.c.exe                                                                                                                                                                                                                           
+# Loading modules                                                                                                                                                                                                                          
+module load gcc/8.3.0-gcc-7.5.0                                                                                                                                                                                                            
+# Compilation Line                                                                                                                                                                                                                         
+gcc -o $_EXEC /home/spack/buildtest/examples/compilers/src/argc.c                                                                                                                                                                          
+                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                           
+# Run executable                                                                                                                                                                                                                           
+./$_EXEC 100 120                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                           
+─────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/00777c4e/custom_run_by_compilers_build.sh ───────────────────────────────────────────────────────
+#!/bin/bash                                                                                                                                                                                                                                
+export BUILDTEST_TEST_NAME=custom_run_by_compilers                                                                                                                                                                                         
+export BUILDTEST_TEST_ROOT=/home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/00777c4e                                                                                                                                 
+export BUILDTEST_BUILDSPEC_DIR=/home/spack/buildtest/examples/compilers                                                                                                                                                                    
+export BUILDTEST_STAGE_DIR=/home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/00777c4e/stage                                                                                                                           
+# source executor startup script                                                                                                                                                                                                           
+source /home/spack/buildtest/var/executor/generic.local.bash/before_script.sh                                                                                                                                                              
+# Run generated script                                                                                                                                                                                                                     
+/home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/00777c4e/stage/custom_run_by_compilers.sh                                                                                                                           
+# Get return code                                                                                                                                                                                                                          
+returncode=$?                                                                                                                                                                                                                              
+# Exit with return code                                                                                                                                                                                                                    
+exit $returncode                                                                                                                                                                                                                           
+────────────────────────────────────────────────────────────────────────────────────── custom_run_by_compilers/0652c62c-3aac-427d-89d8-b8f525119a49 ───────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Customize binary launch based on compiler
 State: PASS
 Returncode: 0
-Runtime: 0.525561 sec
-Starttime: 2022/06/29 17:27:34
-Endtime: 2022/06/29 17:27:35
-Command: bash --norc --noprofile -eo pipefail 
-custom_run_by_compilers_build.sh
-Test Script: /home/spack/runs/generic.local.bash/custom_run/custom_run_by
-_compilers/2b1553e4/custom_run_by_compilers.sh
-Build Script: /home/spack/runs/generic.local.bash/custom_run/custom_run_b
-y_compilers/2b1553e4/custom_run_by_compilers_build.sh
-Output File: /home/spack/runs/generic.local.bash/custom_run/custom_run_by
-_compilers/2b1553e4/custom_run_by_compilers.out
-Error File: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_
-compilers/2b1553e4/custom_run_by_compilers.err
-Log File: /home/spack/buildtest/var/logs/buildtest_ljkmzoae.log
-─ Test File: /home/spack/runs/generic.local.bash/custom_run/custom_run… ─
-#!/bin/bash                                                              
-                                                                         
-                                                                         
-# name of executable                                                     
-_EXEC=argc.c.exe                                                         
-# Loading modules                                                        
-module load gcc/8.3.0-gcc-7.5.0                                          
-# Compilation Line                                                       
-gcc -o $_EXEC /home/spack/buildtest/examples/compilers/src/argc.c        
-                                                                         
-                                                                         
-# Run executable                                                         
-./$_EXEC 100 120                                                         
-                                                                         
-                                                                         
-─ Test File: /home/spack/runs/generic.local.bash/custom_run/custom_run… ─
-#!/bin/bash                                                              
-export BUILDTEST_TEST_NAME=custom_run_by_compilers                       
-export BUILDTEST_TEST_ROOT=/home/spack/runs/generic.local.bash/custom_run
-export BUILDTEST_BUILDSPEC_DIR=/home/spack/buildtest/examples/compilers  
-export BUILDTEST_STAGE_DIR=/home/spack/runs/generic.local.bash/custom_run
-# source executor startup script                                         
-source /home/spack/buildtest/var/executor/generic.local.bash/before_scrip
-# Run generated script                                                   
-/home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/2b
-# Get return code                                                        
-returncode=$?                                                            
-# Exit with return code                                                  
-exit $returncode                                                         
+Runtime: 0.070924 sec
+Starttime: 2023/02/06 21:16:39
+Endtime: 2023/02/06 21:16:39
+Command: bash --norc --noprofile -eo pipefail custom_run_by_compilers_build.sh
+Test Script: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/0652c62c/custom_run_by_compilers.sh
+Build Script: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/0652c62c/custom_run_by_compilers_build.sh
+Output File: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/0652c62c/custom_run_by_compilers.out
+Error File: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/0652c62c/custom_run_by_compilers.err
+Log File: /home/spack/buildtest/var/logs/buildtest_xmxrzfnb.log
+────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/0652c62c/custom_run_by_compilers.sh ──────────────────────────────────────────────────────────
+#!/bin/bash                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                           
+# name of executable                                                                                                                                                                                                                       
+_EXEC=argc.c.exe                                                                                                                                                                                                                           
+# Compilation Line                                                                                                                                                                                                                         
+/usr/bin/gcc -o $_EXEC /home/spack/buildtest/examples/compilers/src/argc.c                                                                                                                                                                 
+                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                           
+# Run executable                                                                                                                                                                                                                           
+./$_EXEC 1 3                                                                                                                                                                                                                               
+                                                                                                                                                                                                                                           
+                                                                                                                                                                                                                                           
+─────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/0652c62c/custom_run_by_compilers_build.sh ───────────────────────────────────────────────────────
+#!/bin/bash                                                                                                                                                                                                                                
+export BUILDTEST_TEST_NAME=custom_run_by_compilers                                                                                                                                                                                         
+export BUILDTEST_TEST_ROOT=/home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/0652c62c                                                                                                                                 
+export BUILDTEST_BUILDSPEC_DIR=/home/spack/buildtest/examples/compilers                                                                                                                                                                    
+export BUILDTEST_STAGE_DIR=/home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/0652c62c/stage                                                                                                                           
+# source executor startup script                                                                                                                                                                                                           
+source /home/spack/buildtest/var/executor/generic.local.bash/before_script.sh                                                                                                                                                              
+# Run generated script                                                                                                                                                                                                                     
+/home/spack/runs/generic.local.bash/custom_run/custom_run_by_compilers/0652c62c/stage/custom_run_by_compilers.sh                                                                                                                           
+# Get return code                                                                                                                                                                                                                          
+returncode=$?                                                                                                                                                                                                                              
+# Exit with return code                                                                                                                                                                                                                    
+exit $returncode                                                                                                                                                                                                                           
