@@ -28,7 +28,7 @@ check the path and source the startup script. The ``install`` field is a JSON ob
 contains a ``specs`` property which is a list of strings types that are name of spack packages to install. Each item in the
 ``specs`` property will be added as a separate ``spack install`` command. In the second test,
 we run the same example except we clone spack and install zlib. When ``root`` property is not specified buildtest
-will clone buildtest and automatically source the setup script.
+will clone spack and automatically source the spack setup script (`source $SPACK_ROOT/share/spack/setup-env.sh`).
 
 The schema is designed to mimic spack commands which will be clear with more examples.
 
