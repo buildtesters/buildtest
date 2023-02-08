@@ -53,7 +53,7 @@ let's limit output to 5 entries, we can run the following
 
     .. command-output:: buildtest buildspec find --count=5
 
-You can use the ``--row-count`` option to retrieve total number of records from the ``buildtest buildspec find`` query. In the next example, we show retrieve number of 
+You can use the ``--row-count`` option to retrieve total number of records from the ``buildtest buildspec find`` query. In the next example, we show retrieved number of 
 tests available in the buildspec cache by running the following.
 
 .. dropdown:: ``buildtest buildspec find --row-count``

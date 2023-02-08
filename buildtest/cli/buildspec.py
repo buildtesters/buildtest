@@ -593,12 +593,13 @@ class BuildspecCache:
 
         return buildspec_summary
 
-    def print_buildspecfiles(self, terse=None, header=None):
+    def print_buildspecfiles(self, terse=None, header=None, row_count=None):
         """This method implements ``buildtest buildspec find --buildspec`` which reports all buildspec files in cache.
 
         Args:
             terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
             header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
+            row_count (bool, optional): Print total number of records from the table
         """
 
         self.terse = terse or self.terse
@@ -627,11 +628,18 @@ class BuildspecCache:
                 console.print(table)
             return
 
+        if row_count:
+            print(table.row_count)
+            return
+
         console.print(table)
 
-    def print_tags(self):
+    def print_tags(self, row_count=None):
         """This method implements ``buildtest buildspec find --tags`` which
         reports a list of unique tags from all buildspecs in cache file.
+
+        Args:
+            row_count (bool, optional): Print total number of records from the table
         """
 
         # if --terse option specified print list of all tags in machine readable format
@@ -658,10 +666,18 @@ class BuildspecCache:
                 console.print(table)
             return
 
+        if row_count:
+            print(table.row_count)
+            return
+
         console.print(table)
 
-    def print_executors(self):
-        """This method implements ``buildtest buildspec find --executors`` which reports all executors from cache."""
+    def print_executors(self, row_count=None):
+        """This method implements ``buildtest buildspec find --executors`` which reports all executors from cache.
+
+        Args:
+            row_count (bool, optional): Print total number of records from the table
+        """
 
         if self.terse:
 
@@ -685,6 +701,10 @@ class BuildspecCache:
         if self.pager:
             with console.pager():
                 console.print(table)
+            return
+
+        if row_count:
+            print(table.row_count)
             return
 
         console.print(table)
@@ -1360,12 +1380,12 @@ def buildspec_find(args, configuration):
 
     # buildtest buildspec find --tags
     if args.tags:
-        cache.print_tags()
+        cache.print_tags(row_count=args.row_count)
         return
 
     # buildtest buildspec find --buildspec
     if args.buildspec:
-        cache.print_buildspecfiles()
+        cache.print_buildspecfiles(row_count=args.row_count)
         return
 
     # buildtest buildspec find --paths
@@ -1375,7 +1395,7 @@ def buildspec_find(args, configuration):
 
     # buildtest buildspec find --executors
     if args.executors:
-        cache.print_executors()
+        cache.print_executors(row_count=args.row_count)
         return
 
     # buildtest buildspec find --group-by-executors
