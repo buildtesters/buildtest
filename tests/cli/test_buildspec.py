@@ -123,6 +123,9 @@ def test_func_buildspec_find():
     # buildtest buildspec find --quiet
     cache.print_buildspecs(quiet=True)
 
+    # buildtest buildspec find --row-count
+    cache.print_buildspecs(row_count=True)
+
     # test buildspec cache with color 'blue'
     cache = BuildspecCache(rebuild=True, configuration=configuration, color="blue")
     cache.print_buildspecs()

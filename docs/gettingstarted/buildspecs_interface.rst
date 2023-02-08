@@ -53,6 +53,20 @@ let's limit output to 5 entries, we can run the following
 
     .. command-output:: buildtest buildspec find --count=5
 
+The ``buildtest buildspec find`` command will fetch all buildspecs and display them in a table format, if you want to know how many records are displayed in the table you can use ``buildtest buildspec find --row-count`` which will display   
+a raw count of records in the table. In the example below we will run ``buildtest buildspec find --row-count`` which will show number of buildspecs from buildspec cache.
+
+.. dropdown:: ``buildtest buildspec find --row-count``
+
+    .. command-output:: buildtest buildspec find --row-count
+
+You may find it useful to use the ``--row-count`` feature while filtering the buildspec cache. For instance, you can get the number of buildspecs in the cache with
+the script schema type, this can be done by running ``buildtest bc find --filter type=script --row-count`` as shown below.
+
+.. dropdown:: ``buildtest buildspec find --filter type=script --row-count``
+
+    .. command-output:: buildtest buildspec find --filter type=script --row-count
+
 Finding buildspec files
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 

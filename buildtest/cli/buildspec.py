@@ -751,7 +751,7 @@ class BuildspecCache:
 
         console.print(table)
 
-    def print_buildspecs(self, terse=None, header=None, quiet=None):
+    def print_buildspecs(self, terse=None, header=None, quiet=None, row_count=None):
         """Print buildspec table. This method is typically called when running ``buildtest buildspec find`` or options
         with ``--filter`` and ``--format``.
 
@@ -759,6 +759,7 @@ class BuildspecCache:
             terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
             header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
             quiet (bool, optional): If this option is set we return immediately and don't anything. This is specified via ``buildtest buildspec find --quiet`` which can be useful when rebuilding cache without displaying output
+            row_count (bool, optional): Print total number of records from the table
         """
 
         # Don't print anything if --quiet is set
@@ -813,6 +814,10 @@ class BuildspecCache:
         if self.pager:
             with console.pager():
                 console.print(table)
+            return
+
+        if row_count:
+            console.print(table.row_count)
             return
 
         console.print(table)
@@ -1403,4 +1408,4 @@ def buildspec_find(args, configuration):
         cache.print_raw_format_fields()
         return
 
-    cache.print_buildspecs(quiet=args.quiet)
+    cache.print_buildspecs(quiet=args.quiet, row_count=args.row_count)
