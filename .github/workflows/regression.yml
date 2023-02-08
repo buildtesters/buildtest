@@ -7,6 +7,9 @@ on:
       - 'buildtest/**'
       - 'tests/**'
 
+  schedule:
+    - cron: '0 0 * * *'
+
 jobs:
 
   buildtest_regtest:
@@ -19,7 +22,15 @@ jobs:
         python-version: ['3.7', '3.8', '3.9', '3.10']
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Run actions/checkout@v3
+      if: ${{ github.event_name != 'schedule' }}
+      uses: actions/checkout@v3
+
+    - name: Run nightly regression test on master branch
+      if: ${{ github.event_name == 'schedule' }}
+      uses: actions/checkout@v3
+      with:
+        ref: master
 
     - name: Setup Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4.5.0
