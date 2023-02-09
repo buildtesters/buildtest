@@ -159,6 +159,9 @@ def inspect_query(report, args):
     for name, test_record in records.items():
         for tests in test_record:
             for full_id, test in tests.items():
+
+                theme = args.theme or "monokai"
+
                 console.rule(f"[cyan]{name}/{full_id}")
 
                 console.print(f"[blue]Executor: {test['executor']}")
@@ -196,7 +199,7 @@ def inspect_query(report, args):
                     content = read_file(test["errfile"])
                     console.rule(f"Error File: {test['errfile']}")
 
-                    syntax = Syntax(content, "text")
+                    syntax = Syntax(content, "text", theme=theme)
                     console.print(syntax)
 
                 # print content of testpath when 'buildtest inspect query --testpath' is set
@@ -204,7 +207,7 @@ def inspect_query(report, args):
                     content = read_file(test["testpath"])
                     console.rule(f"Test File: {test['testpath']}")
 
-                    syntax = Syntax(content, "shell", theme="emacs")
+                    syntax = Syntax(content, "shell", theme=theme)
                     console.print(syntax)
 
                 # print content of build script when 'buildtest inspect query --buildscript' is set
@@ -212,14 +215,14 @@ def inspect_query(report, args):
                     content = read_file(test["build_script"])
                     console.rule(f"Test File: {test['build_script']}")
 
-                    syntax = Syntax(content, lexer="shell", theme="emacs")
+                    syntax = Syntax(content, lexer="shell", theme=theme)
                     console.print(syntax)
 
                 if args.buildenv:
                     content = read_file(test["buildenv"])
                     console.rule(f"Test File: {test['buildenv']}")
 
-                    syntax = Syntax(content, lexer="text", theme="emacs")
+                    syntax = Syntax(content, lexer="text", theme=theme)
                     console.print(syntax)
 
 

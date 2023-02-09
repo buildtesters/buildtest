@@ -1166,6 +1166,12 @@ def inspect_menu(subparsers):
         "-t", "--testpath", action="store_true", help="Print content of testpath"
     )
     query_list.add_argument(
+        "--theme",
+        metavar="Color Themes",
+        help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themese",
+        choices=list(STYLE_MAP.keys()),
+    )
+    query_list.add_argument(
         "name", nargs="*", help="Name of builder to query in report file"
     )
 
