@@ -803,7 +803,7 @@ class BuildspecCache:
                 if not isinstance(row, list):
                     continue
 
-                # if any entry contains 'None' type we convert to empty string
+                # if any entry contains None type we convert to empty string
                 row = ["" if item is None else item for item in row]
                 join_string = "|".join(row)
                 console.print(f"[{self.color}]{join_string}")
