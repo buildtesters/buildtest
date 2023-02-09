@@ -759,6 +759,11 @@ def buildspec_menu(subparsers):
         help="Limit number of entries queried in output",
     )
     buildspec_find.add_argument(
+        "--row-count",
+        action="store_true",
+        help="Print total count of records from the table.",
+    )
+    buildspec_find.add_argument(
         "--pager", action="store_true", help="Enable PAGING when viewing result"
     )
     buildspec_find.add_argument(
