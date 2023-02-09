@@ -22,15 +22,7 @@ jobs:
         python-version: ['3.7', '3.8', '3.9', '3.10']
 
     steps:
-    - name: Run actions/checkout@v3
-      if: ${{ github.event_name != 'schedule' }}
-      uses: actions/checkout@v3
-
-    - name: Run nightly regression test on master branch
-      if: ${{ github.event_name == 'schedule' }}
-      uses: actions/checkout@v3
-      with:
-        ref: master
+    - uses: actions/checkout@v3
 
     - name: Setup Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4.5.0
