@@ -1011,7 +1011,7 @@ class BuilderBase(ABC):
 
             if self.status.get("assert_gt"):
                 assert_gt_match = assert_gt_check(self)
-            
+
             if self.status.get("assert_lt"):
                 assert_lt_match = assert_lt_check(self)
 
