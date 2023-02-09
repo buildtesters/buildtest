@@ -83,6 +83,9 @@ def print_build_help():
         "buildtest build -b <file> --timeout 60",
         "Test will run till it reaches timeout of 60sec and then it will be cancelled if it exceeds the limit.",
     )
+    table.add_row(
+        "buildtest build -t python --limit=5", "Limit number of test runs to 5"
+    )
 
     console.print(table)
 
