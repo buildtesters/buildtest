@@ -530,16 +530,6 @@ def build_menu(subparsers):
         type=str,
         help="Specify project account used to charge batch jobs (applicable for batch jobs only)",
     )
-    extra_group.add_argument(
-        "--disable-executor-check",
-        action="store_false",
-        help="Disable executor check during configuration check. By default these checks are enforced for Local, Slurm, PBS, LSF, and Cobalt Executor.",
-    )
-    extra_group.add_argument(
-        "--remove-stagedir",
-        action="store_true",
-        help="Remove stage directory after job completion.",
-    )
     batch_group.add_argument(
         "--maxpendtime",
         type=positive_number,
@@ -561,6 +551,21 @@ def build_menu(subparsers):
         help="Specify number of nodes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
         nargs="+",
         type=positive_number,
+    )
+    extra_group.add_argument(
+        "--disable-executor-check",
+        action="store_false",
+        help="Disable executor check during configuration check. By default these checks are enforced for Local, Slurm, PBS, LSF, and Cobalt Executor.",
+    )
+    extra_group.add_argument(
+        "--limit",
+        type=positive_number,
+        help="Limit number of tests that can be run.",
+    )
+    extra_group.add_argument(
+        "--remove-stagedir",
+        action="store_true",
+        help="Remove stage directory after job completion.",
     )
     extra_group.add_argument(
         "--rebuild",

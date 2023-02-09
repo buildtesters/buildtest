@@ -500,6 +500,7 @@ class BuildTest:
         rerun=None,
         executor_type=None,
         timeout=None,
+        limit=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -531,6 +532,7 @@ class BuildTest:
             rerun (bool, optional): Rerun last successful **buildtest build** command. This is specified via ``buildtest build --rerun``. All other options will be ignored and buildtest will read buildtest options from file **BUILDTEST_RERUN_FILE**.
             executor_type (bool, optional): Filter test by executor type. This option will filter test after discovery by local or batch executors. This can be specified via ``buildtest build --exec-type``
             timeout (int, optional): Test timeout in seconds specified by ``buildtest build --timeout``
+            limit (int, optional): Limit number of tests that can be run. This option is specified by ``buildtest build --limit``
         """
 
         if buildspecs and not isinstance(buildspecs, list):
@@ -568,6 +570,10 @@ class BuildTest:
             if timeout <= 0:
                 raise BuildTestError("Timeout must be greater than 0")
 
+        if limit:
+            if not isinstance(limit, int):
+                raise BuildTestError(f"{timeout} is not of type int")
+
         self.remove_stagedir = remove_stagedir
         self.configuration = configuration
         self.buildspecs = buildspecs
@@ -590,6 +596,7 @@ class BuildTest:
         self.numnodes = numnodes
         self.executor_type = executor_type
         self.timeout = timeout
+        self.limit = limit
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
@@ -715,6 +722,7 @@ class BuildTest:
         self.numprocs = content["numprocs"]
         self.executor_type = content["executor_type"]
         self.timeout = content["timeout"]
+        self.limit = content["limit"]
 
     def save_rerun_file(self):
         """Record buildtest command options and save them into rerun file which is read when invoking ``buildtest build --rerun``."""
@@ -741,6 +749,7 @@ class BuildTest:
             "numnodes": self.numnodes,
             "executor_type": self.executor_type,
             "timeout": self.timeout,
+            "limit": self.limit,
         }
 
         with open(BUILDTEST_RERUN_FILE, "w") as fd:
@@ -805,6 +814,13 @@ class BuildTest:
         # if no builders found or  --stage=parse set we return from method
         if not self.builders or self.stage == "parse":
             return
+
+        if self.limit:
+            self.builders = self.builders[: self.limit]
+            console.print(
+                f"[red]Limit number of tests to {self.limit} for Building and Running. "
+            )
+            console.print(f"The following test will be run: {self.builders}")
 
         self.build_phase()
 

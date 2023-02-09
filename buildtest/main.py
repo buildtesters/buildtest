@@ -172,6 +172,7 @@ def main():
                 rerun=args.rerun,
                 executor_type=args.executor_type,
                 timeout=args.timeout,
+                limit=args.limit,
             )
             cmd.build()
 
