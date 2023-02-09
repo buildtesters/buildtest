@@ -570,9 +570,12 @@ class BuildTest:
             if timeout <= 0:
                 raise BuildTestError("Timeout must be greater than 0")
 
-        if limit:
+        if limit is not None:
+            print("LIMITT!!!")
             if not isinstance(limit, int):
                 raise BuildTestError(f"{timeout} is not of type int")
+            if limit <= 0:
+                raise BuildTestError("Limit must be greater than 0")
 
         self.remove_stagedir = remove_stagedir
         self.configuration = configuration

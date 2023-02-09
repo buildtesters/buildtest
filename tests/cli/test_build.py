@@ -280,6 +280,52 @@ def test_build_rebuild():
 
 
 @pytest.mark.cli
+def test_build_limit():
+
+    system = BuildTestSystem()
+
+    # rebuild 5 times (buildtest build -t python --rebuild=5 --limit=2
+    cmd = BuildTest(
+        configuration=configuration,
+        tags=["python"],
+        rebuild=5,
+        buildtest_system=system,
+        limit=2,
+    )
+    cmd.build()
+
+    # should raise error when --limit=0 testing special case
+    with pytest.raises(BuildTestError):
+        BuildTest(
+            configuration=configuration,
+            tags=["python"],
+            rebuild=5,
+            buildtest_system=system,
+            limit=0,
+        )
+
+    # should raise error when --limit is a negative number
+    with pytest.raises(BuildTestError):
+        BuildTest(
+            configuration=configuration,
+            tags=["python"],
+            rebuild=5,
+            buildtest_system=system,
+            limit=-99,
+        )
+
+    # should raise error when --limit is not an int
+    with pytest.raises(BuildTestError):
+        BuildTest(
+            configuration=configuration,
+            tags=["python"],
+            rebuild=5,
+            buildtest_system=system,
+            limit=1.5,
+        )
+
+
+@pytest.mark.cli
 def test_invalid_buildspes():
 
     system = BuildTestSystem()
@@ -312,6 +358,7 @@ def test_jobdeps():
     cmd.build()
 
 
+@pytest.mark.cli
 def test_timeout():
 
     system = BuildTestSystem()
@@ -336,7 +383,7 @@ def test_timeout():
 
 
 @pytest.mark.cli
-def test_remove_stagedi():
+def test_remove_stagedir():
 
     system = BuildTestSystem()
 
