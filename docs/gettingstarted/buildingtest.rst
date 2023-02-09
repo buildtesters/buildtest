@@ -85,6 +85,7 @@ by ``-x`` option. You can specify ``-x`` multiple times just like ``-b`` option.
 For example, we can undo discovery by passing same option to ``-b`` and ``-x``  as follows
 
 .. dropdown:: ``buildtest bd -b tutorials/ -x tutorials/``
+   :color: warning
 
     .. command-output:: buildtest bd -b tutorials/ -x tutorials/
         :returncode: 1
@@ -331,6 +332,38 @@ If you try to exceed this bound you will get an error such as
 
     .. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml --rebuild 51
         :returncode: 1
+
+Limit Number of Tests
+----------------------
+
+The `buildtest build` command can limit the number of tests that can run via ``--limit`` option. This
+can be useful when running large number of tests and you have no idea
+how many tests will run. The ``--limit <NUM>`` option expects a positive number which will
+limit number of tests to the total limit. If there are less tests to run than the
+value specified by ``--limit``, then buildtest will run all the test. When buildtest has more
+tests to run than the value specified by ``--limitt``, then buildtest will exclude some tests.
+
+To demonstrate this feature, we will run the same command with and without **--limit** option.
+
+In first example, we will run a test that will run 4 tests.
+
+.. dropdown:: ``buildtest build -b tutorials/test_status/pass_returncode.yml``
+
+    .. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml
+
+Now let's run this same test with ``--limit=2`` and notice buildtest will run **2/4** tests
+
+.. dropdown:: ``buildtest build -b tutorials/test_status/pass_returncode.yml --limit=2``
+
+    .. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml --limit=2
+
+If you specify 0 or negative number you will get an error as follows
+
+.. dropdown:: ``buildtest build -b tutorials/test_status/pass_returncode.yml --limit=0``
+    :color: warning
+
+    .. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml --limit=0
+        :returncode: 2
 
 Rerun Last command
 -------------------

@@ -571,7 +571,6 @@ class BuildTest:
                 raise BuildTestError("Timeout must be greater than 0")
 
         if limit is not None:
-            print("LIMITT!!!")
             if not isinstance(limit, int):
                 raise BuildTestError(f"{timeout} is not of type int")
             if limit <= 0:
@@ -823,7 +822,6 @@ class BuildTest:
             console.print(
                 f"[red]Limit number of tests to {self.limit} for Building and Running. "
             )
-            console.print(f"The following test will be run: {self.builders}")
 
         self.build_phase()
 
