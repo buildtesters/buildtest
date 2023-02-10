@@ -172,6 +172,7 @@ def test_buildtest_query():
         testpath = True
         buildscript = True
         buildenv = True
+        theme = "emacs"
 
     # check buildtest inspect query --output --error --testpath --buildscript --buildenv <name1> <name2> ...
     inspect_cmd(args)
@@ -186,6 +187,7 @@ def test_buildtest_query():
         testpath = False
         buildscript = False
         buildenv = False
+        theme = None
 
     # check invalid test name when querying result which will result in exception SystemExit
     with pytest.raises(SystemExit):
