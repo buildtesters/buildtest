@@ -140,6 +140,10 @@ def print_buildspec_help():
     table.add_row("buildtest buildspec find --helpformat", "Show all format fields")
     table.add_row("buildtest buildspec find --terse", "Display output in terse format")
     table.add_row(
+        "buildtest buildspec find --row-count",
+        "Print total count of records from the table",
+    )
+    table.add_row(
         "buildtest buildspec find --count=5",
         "Limit output of buildspec cache to 5 elements",
     )

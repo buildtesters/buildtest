@@ -282,6 +282,28 @@
             }
           }
         },
+        "assert_lt": {
+          "type": "array",
+          "description": "Perform assertion of less than (<) with reference value",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "ref": {
+                "type": "number",
+                "description": "Specify reference value (int,float) for comparison"
+              }
+            }
+          }
+        },
         "assert_eq":
         {
           "description": "Perform assertion of equality (=) with reference value",

@@ -478,6 +478,77 @@ def assert_gt_check(builder):
     return bool_check
 
 
+def assert_lt_check(builder):
+    """Perform check on assert less than when ``assert_lt`` is specified in buildspec. The return is a boolean value that determines if the check has passed.
+    One can specify multiple assert checks to check each metric with its reference value. When multiple items are specified, the operation is a logical AND and all checks
+    must be ``True``.
+
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+
+    Returns:
+        bool: True or False for performance check ``assert_lt``
+    """
+
+    # a list containing booleans to evaluate reference check for each metric
+    assert_check = []
+
+    metric_names = list(builder.metadata["metrics"].keys())
+
+    # iterate over each metric in buildspec and determine reference check for each metric
+    for metric in builder.status["assert_lt"]:
+        name = metric["name"]
+        ref_value = metric["ref"]
+
+        # if metric is not valid, then mark as False
+        if not builder.is_valid_metric(name):
+            msg = f"[blue]{builder}[/]: Unable to find metric: [red]{name}[/red]. List of valid metrics are the following: {metric_names}"
+            console.print(msg)
+            logger.warning(msg)
+            assert_check.append(False)
+            continue
+
+        metric_value = builder.metadata["metrics"][name]
+
+        if not is_metrics_defined(builder, name):
+            assert_check.append(False)
+            continue
+
+        if builder.metrics[name]["type"] == "str":
+            msg = f"[blue]{builder}[/]: Unable to convert metric: [red]'{name}'[/red] for comparison. The type must be 'int' or 'float' but recieved [red]{builder.metrics[name]['type']}[/red]. "
+            console.print(msg)
+            logger.warning(msg)
+            assert_check.append(False)
+            continue
+
+        # convert metric value and reference value to int
+        conv_value = convert_metrics(
+            metric_value=metric_value,
+            dtype=builder.metrics[name]["type"],
+        )
+        ref_value = convert_metrics(
+            metric_value=ref_value,
+            dtype=builder.metrics[name]["type"],
+        )
+
+        # if there is a type mismatch then let's stop now before we do comparison
+        if (conv_value is None) or (ref_value is None):
+            assert_check.append(False)
+            continue
+
+        bool_check = conv_value < ref_value
+        console.print(
+            f"[blue]{builder}[/]: testing metric: {name} if {conv_value} < {ref_value} - Check: {bool_check}"
+        )
+        assert_check.append(bool_check)
+
+    # perform a logical AND on the list and return the boolean result
+    bool_check = all(assert_check)
+
+    console.print(f"[blue]{builder}[/]: Less Than Check: {bool_check}")
+    return bool_check
+
+
 def assert_eq_check(builder):
     """This method is perform Assert Equality used when ``assert_eq`` property is specified
     in status check. This method will evaluate each metric value reference value and

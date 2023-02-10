@@ -22,6 +22,7 @@ from buildtest.buildsystem.checks import (
     assert_ge_check,
     assert_gt_check,
     assert_le_check,
+    assert_lt_check,
     assert_ne_check,
     assert_range_check,
     contains_check,
@@ -968,6 +969,7 @@ class BuilderBase(ABC):
             assert_ge_match = False
             assert_le_match = False
             assert_gt_match = False
+            assert_lt_match = False
             assert_eq_match = False
             assert_ne_match = False
             assert_range_match = False
@@ -1010,6 +1012,9 @@ class BuilderBase(ABC):
             if self.status.get("assert_gt"):
                 assert_gt_match = assert_gt_check(self)
 
+            if self.status.get("assert_lt"):
+                assert_lt_match = assert_lt_check(self)
+
             if self.status.get("assert_eq"):
                 assert_eq_match = assert_eq_check(self)
 
@@ -1046,6 +1051,7 @@ class BuilderBase(ABC):
                     assert_ge_match,
                     assert_le_match,
                     assert_gt_match,
+                    assert_lt_match,
                     assert_eq_match,
                     assert_ne_match,
                     assert_range_match,

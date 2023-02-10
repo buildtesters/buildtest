@@ -764,6 +764,11 @@ def buildspec_menu(subparsers):
         help="Limit number of entries queried in output",
     )
     buildspec_find.add_argument(
+        "--row-count",
+        action="store_true",
+        help="Print total count of records from the table.",
+    )
+    buildspec_find.add_argument(
         "--pager", action="store_true", help="Enable PAGING when viewing result"
     )
     buildspec_find.add_argument(
@@ -1164,6 +1169,12 @@ def inspect_menu(subparsers):
     )
     query_list.add_argument(
         "-t", "--testpath", action="store_true", help="Print content of testpath"
+    )
+    query_list.add_argument(
+        "--theme",
+        metavar="Color Themes",
+        help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themese",
+        choices=list(STYLE_MAP.keys()),
     )
     query_list.add_argument(
         "name", nargs="*", help="Name of builder to query in report file"

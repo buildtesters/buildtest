@@ -280,9 +280,13 @@ _buildtest ()
         query|q)
           COMPREPLY=( $( compgen -W "$(_builder_names)" -- $cur ) )
           if [[ $cur == -* ]] ; then
-            local opts="--buildscript --buildenv --error --help --output --testpath -b -be -e -o -h -o -t"
+            local opts="--buildscript --buildenv --error --help --output --testpath --theme -b -be -e -o -h -o -t"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           fi
+          case "${prev}" in --theme)
+            COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
+            return
+          esac
           ;;
       esac
       ;;
@@ -301,7 +305,7 @@ _buildtest ()
            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
          # completion for rest of arguments
          *)
-           local longopts="--buildspec --count --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --tags --root --terse"
+           local longopts="--buildspec --count --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --row-count --tags --root --terse"
            local shortopts="-b -e -h -n -p -q -r -t"
            local subcmds="invalid"
            local allopts="${longopts} ${shortopts} ${subcmds}"
