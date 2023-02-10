@@ -43,6 +43,16 @@ def test_assert_gt():
     cmd.build()
 
 
+def test_assert_lt():
+
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "assert_lt.yml")],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()
+
+
 def test_assert_eq():
     cmd = BuildTest(
         buildspecs=[os.path.join(here, "assert_eq.yml")],
