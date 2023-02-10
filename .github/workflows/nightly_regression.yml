@@ -7,12 +7,10 @@ on:
     branches: [devel]
   schedule:
     - cron: '*/5 * * * *'
-  workflow_dispatch:
-
 
 jobs:
 
-  buildtest_regtest:
+  buildtest_nightly_regression_test:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
