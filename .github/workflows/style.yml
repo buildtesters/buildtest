@@ -48,5 +48,5 @@ jobs:
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: devel
-          YAML_CONFIG_FILE: .yamllint.yml
+          # YAML_CONFIG_FILE: .yamllint.yml
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
