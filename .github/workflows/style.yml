@@ -1,4 +1,4 @@
-name: Black Formatter
+name: Style Checks
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
         - devel
 
 jobs:
-  blackformat:
+  style_checks:
     runs-on: ubuntu-latest
     steps:
 
@@ -20,12 +20,16 @@ jobs:
       - uses: actions/setup-python@v4.5.0
         with:
           python-version: 3.8
-      - uses: jamescurtin/isort-action@master
+
+      - name: Running isort check
+        uses: jamescurtin/isort-action@master
         with:
           #requirementsFiles: "requirements.txt docs/requirements.txt"
           sortPaths: "buildtest tests docs"
+
+      - name: Running black check
       # use black github action see https://black.readthedocs.io/en/stable/integrations/github_actions.html
-      - uses: psf/black@stable
+        uses: psf/black@stable
         with:
           options: "--check --verbose"
           src: "buildtest tests scripts"
@@ -34,3 +38,13 @@ jobs:
         run: |
           pip install pyflakes
           pyflakes buildtest tests scripts
+
+      ################################
+      # Run Linter against code base #
+      ################################
+      - name: Lint Code Base
+        uses: github/super-linter/slim@v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: devel
+          #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
