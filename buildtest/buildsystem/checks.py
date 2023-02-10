@@ -479,7 +479,7 @@ def assert_gt_check(builder):
 
 
 def assert_lt_check(builder):
-    """Perform check on assert greater than when ``assert_lt`` is specified in buildspec. The return is a boolean value that determines if the check has passed.
+    """Perform check on assert less than when ``assert_lt`` is specified in buildspec. The return is a boolean value that determines if the check has passed.
     One can specify multiple assert checks to check each metric with its reference value. When multiple items are specified, the operation is a logical AND and all checks
     must be ``True``.
 
@@ -545,7 +545,7 @@ def assert_lt_check(builder):
     # perform a logical AND on the list and return the boolean result
     bool_check = all(assert_check)
 
-    console.print(f"[blue]{builder}[/]: Greater Check: {bool_check}")
+    console.print(f"[blue]{builder}[/]: Less Than Check: {bool_check}")
     return bool_check
 
 
