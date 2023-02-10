@@ -1,11 +1,8 @@
 name: regressiontest
 
 on:
-  pull_request:
-    branches: [ devel ]
-    paths:
-      - 'buildtest/**'
-      - 'tests/**'
+
+  workflow_dispatch:
 
   schedule:
     - cron: '0 0 * * *'
