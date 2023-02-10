@@ -1,4 +1,4 @@
-name: regressiontest
+name: nightly_regressiontest
 
 on:
 
