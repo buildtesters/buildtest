@@ -48,7 +48,7 @@
 .. |regressiontest| image:: https://github.com/buildtesters/buildtest/workflows/regressiontest/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
 
-.. |nightly_regression_test| image:: https://github.com/buildtesters/buildtest/workflows/nightly_regression/badge.svg
+.. |nightly_regression_test| image:: https://github.com/buildtesters/buildtest/actions/workflows/nightly_regression.yml/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
 
 .. |gh_pages_devel| image:: https://github.com/buildtesters/buildtest/workflows/Schema%20Documentation/badge.svg
