@@ -1,12 +1,9 @@
 name: Nightly Regression Test
 
 on:
-  push:
-    branches: [devel]
-  pull_request:
-    branches: [devel]
+ 
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '0 0 * * *'
 
 jobs:
 
