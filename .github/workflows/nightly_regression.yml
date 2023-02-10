@@ -1,11 +1,10 @@
-name: nightly_regressiontest
+name: Nightly Regression Test
 
 on:
-
-  workflow_dispatch:
-
   schedule:
     - cron: '0 0 * * *'
+  workflow_dispatch:
+
 
 jobs:
 
@@ -39,7 +38,7 @@ jobs:
         python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
         returncode=$?
         if [ $returncode != 0 ]; then exit $returncode; fi
-        buildtest cdash upload --site=github unittests
+        buildtest cdash upload --site=github nightly-$(date)
 
     - name: Setup tmate session
       if: ${{ failure() }}
