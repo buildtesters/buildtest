@@ -7,7 +7,6 @@ from buildtest.cli.report import Report
 
 
 def test_path():
-
     report = Report()
     names = report.get_names()
     name = names[0]

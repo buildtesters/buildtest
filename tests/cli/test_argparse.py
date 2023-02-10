@@ -12,7 +12,6 @@ def test_positive_number():
 
 
 def test_handle_kv_string():
-
     assert {"tags": "fail"} == handle_kv_string("tags=fail")
 
     assert {"tags": "fail", "type": "script"} == handle_kv_string(
@@ -25,7 +24,6 @@ def test_handle_kv_string():
 
 
 def test_arg_parse():
-
     parser = get_parser()
     print(parser)
 

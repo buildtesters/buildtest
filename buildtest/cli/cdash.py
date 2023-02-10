@@ -53,7 +53,6 @@ def cdash_cmd(args, default_configuration=None, open_browser=True, report_file=N
         )
 
     if args.cdash == "upload":
-
         upload_test_cdash(
             build_name=args.buildname,
             configuration=configuration,

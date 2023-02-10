@@ -118,7 +118,6 @@ def test_write_file(tmp_path):
 
 @pytest.mark.utility
 def test_write_file_exceptions(tmp_path):
-
     temporary_directory = str(tmp_path)
     msg = "hi my name is Bob"
     file = os.path.join(temporary_directory, "name.txt")
@@ -221,7 +220,6 @@ def test_load_json():
 
 @pytest.mark.utility
 def test_remove_file():
-
     assert not remove_file(None)
 
     with tempfile.TemporaryDirectory() as tmpdir:

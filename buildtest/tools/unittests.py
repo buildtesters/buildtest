@@ -84,7 +84,6 @@ def run_unit_tests(pytestopts=None, sourcefiles=None, enable_coverage=False):
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser(
         prog="unittest",
         description="Run buildtest unit tests",

@@ -4,7 +4,6 @@ from buildtest.system import BuildTestSystem
 
 
 def test_buildtest_info():
-
     config = SiteConfiguration()
     config.detect_system()
     config.validate()

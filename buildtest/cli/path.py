@@ -53,7 +53,6 @@ def path_cmd(
 
     # if input name contains a '/' followed by TEST ID we will match id
     if name.find("/") != -1:
-
         for builder in builders:
             if builder.startswith(name):
                 tid = builder.split("/")[1]

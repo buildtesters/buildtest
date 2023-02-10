@@ -134,7 +134,6 @@ class LSFExecutor(BaseExecutor):
 
         builder.stop()
         if builder.job.is_suspended() or builder.job.is_pending():
-
             self.logger.debug(f"Time Duration: {builder.duration}")
             self.logger.debug(f"Max Pend Time: {self.maxpendtime}")
 

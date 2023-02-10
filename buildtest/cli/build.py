@@ -55,6 +55,7 @@ from rich.table import Column, Table
 
 logger = logging.getLogger(__name__)
 
+
 # Context manager that copies stdout and any exceptions to a log file
 class Tee(object):
     def __init__(self, filename):
@@ -188,7 +189,6 @@ def discover_buildspecs(
     # if user pass buildspecs to be excluded (buildtest build -x <buildspec>) then
     # discover all excluded buildspecs and remove from discovered list
     if exclude_buildspecs:
-
         # discover all excluded buildspecs, if its file add to list,
         # if its directory traverse all .yml files
         for name in exclude_buildspecs:
@@ -242,7 +242,6 @@ def print_discovered_buildspecs(buildspec_dict):
 
     # if any buildspecs removed due to -x option we print them to screen
     if buildspec_dict["excluded"]:
-
         table = Table(
             title="Excluded buildspecs", box=box.DOUBLE_EDGE, header_style="blue"
         )
@@ -254,7 +253,6 @@ def print_discovered_buildspecs(buildspec_dict):
 
     # print breakdown of buildspecs by tags
     if buildspec_dict.get("tags"):
-
         for tagname in buildspec_dict["tags"].keys():
             table = Table(
                 title=f"Buildspecs By Tag={tagname}",
@@ -268,7 +266,6 @@ def print_discovered_buildspecs(buildspec_dict):
 
     # print breakdown of buildspecs by executors
     if buildspec_dict.get("executors"):
-
         for executorname in buildspec_dict["executors"].keys():
             table = Table(
                 title=f"Buildspecs by Executor={executorname}",
@@ -319,7 +316,6 @@ def discover_buildspecs_by_tags(buildspec_cache, tagnames):
 
         for buildspecfile in buildspec_cache["buildspecs"].keys():
             for test in buildspec_cache["buildspecs"][buildspecfile].keys():
-
                 # if input tag is not of type str we skip the tag name since it is not valid
                 if not isinstance(name, str):
                     logger.warning(f"Tag: {name} is not of type 'str'")
@@ -366,7 +362,6 @@ def discover_buildspecs_by_executor(buildspec_cache, executors):
 
         for buildspecfile in buildspec_cache["buildspecs"].keys():
             for test in buildspec_cache["buildspecs"][buildspecfile].keys():
-
                 # check if executor in buildspec matches one in argument (buildtest build --executor <EXECUTOR>)
                 if name == buildspec_cache["buildspecs"][buildspecfile][test].get(
                     "executor"
@@ -623,7 +618,6 @@ class BuildTest:
         )
 
         if self.logdir:
-
             create_dir(self.logdir)
             self.logfile.name = os.path.join(
                 self.logdir, os.path.basename(self.logfile.name)
@@ -686,7 +680,8 @@ class BuildTest:
     def load_rerun_file(self):
         """This will load content of file BUILDTEST_RERUN_FILE that contains a dictionary of key/value pair
         that keeps track of last ``buildtest build`` command. This is used with ``buildtest build --rerun``. Upon loading
-        file we reinitalize all class variables that store argument for ``buildtest build`` options"""
+        file we reinitalize all class variables that store argument for ``buildtest build`` options
+        """
 
         if not is_file(BUILDTEST_RERUN_FILE):
             raise BuildTestError(
@@ -911,14 +906,12 @@ class BuildTest:
         console.print(f"[red]Invalid Buildspecs: {len(self.invalid_buildspecs)}")
 
         for buildspec in valid_buildspecs:
-
             msg = f"[green]{buildspec}: VALID"
             console.print(msg)
 
         # print any skipped buildspecs if they failed to validate during build stage
         if self.invalid_buildspecs:
             for buildspec in self.invalid_buildspecs:
-
                 msg = f"[red]{buildspec}: INVALID"
                 console.print(msg)
 
@@ -1339,7 +1332,6 @@ class BuildTest:
     def print_builders(
         self, compiler_builder, spack_builder, script_builder, batch_builder
     ):
-
         """Print detected builders during build phase"""
 
         self.print_builders_by_type(script_builder, builder_type="script")

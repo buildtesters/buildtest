@@ -78,7 +78,6 @@ class Builder:
             return
 
         if deep_get(self.filters, "maintainers"):
-
             if not self.bp.recipe.get("maintainers"):
                 console.print(
                     f"{self.bp.buildspec}: skipping test because [italic]'maintainers'[/italic] field is not specified in buildspec."
@@ -112,7 +111,6 @@ class Builder:
                 # Add the builder for the script or spack schema
 
                 if recipe["type"] in ["script", "compiler", "spack"]:
-
                     builders = self.build(name, recipe)
                     if builders:
                         self.builders += builders
@@ -202,7 +200,6 @@ class Builder:
     def create_compiler_builders(
         self, name, recipe, executor, nodes=None, procs=None, compiler_name=None
     ):
-
         """Create builder objects by calling :class:`buildtest.builders.compiler.CompilerBuilder` class.
 
         args:
@@ -403,7 +400,6 @@ class Builder:
         for compiler_pattern in recipe["compilers"]["name"]:
             for bc_name in discovered_compilers:
                 if re.match(compiler_pattern, bc_name):
-
                     builder = self.generate_builders(
                         name=name, recipe=recipe, compiler_name=bc_name
                     )
@@ -463,7 +459,6 @@ class Builder:
         """
 
         if self.filters.get("type"):
-
             found = self.filters["type"] == recipe["type"]
 
             if not found:

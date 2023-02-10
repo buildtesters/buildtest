@@ -12,7 +12,6 @@ hostname = socket.getfqdn()
 
 
 def test_jlse():
-
     if not hostname.endswith("alcf.anl.gov"):
         pytest.skip("Test runs only on JLSE Login Nodes with domain name alcf.anl.gov")
 

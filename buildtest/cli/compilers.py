@@ -17,7 +17,6 @@ from rich.table import Table
 
 
 def compiler_cmd(args, configuration):
-
     if args.compilers == "find":
         compiler_find(
             configuration,
@@ -337,7 +336,6 @@ class BuildtestCompilers:
         """
 
         if self.detailed:
-
             table = Table(
                 title="Discovered Modules", show_lines=True, header_style="blue"
             )

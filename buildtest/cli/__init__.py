@@ -150,7 +150,6 @@ def valid_time(value):
 
 
 def get_parser():
-
     epilog_str = f"""
 References
 

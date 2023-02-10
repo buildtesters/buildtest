@@ -158,7 +158,6 @@ class SiteConfiguration:
         self._validate_pbs_executors()
 
     def is_executor_disabled(self, executor):
-
         if executor.get("disable"):
             return True
 
@@ -217,7 +216,6 @@ class SiteConfiguration:
 
         # check all executors have defined valid queues and check queue state.
         for executor in lsf_executors:
-
             executor_name = f"{self.name()}.{executor_type}.{executor}"
             if self.is_executor_disabled(lsf_executors[executor]):
                 self.disabled_executors.append(executor_name)
@@ -235,7 +233,6 @@ class SiteConfiguration:
 
                 # check queue record for Status
                 for name in record:
-
                     # skip record until we find matching queue
                     if name["QUEUE_NAME"] != queue:
                         continue
@@ -271,7 +268,6 @@ class SiteConfiguration:
             return
 
         for executor in slurm_executor:
-
             executor_name = f"{self.name()}.{executor_type}.{executor}"
 
             if self.is_executor_disabled(slurm_executor[executor]):
@@ -280,7 +276,6 @@ class SiteConfiguration:
 
             # if 'partition' key defined check if its valid partition
             if slurm_executor[executor].get("partition"):
-
                 if slurm_executor[executor]["partition"] not in slurm.partitions:
                     self.invalid_executors(executor_name)
                     logger.error(
@@ -409,7 +404,6 @@ class SiteConfiguration:
             return
 
         for executor in pbs_executor:
-
             executor_name = f"{self.name()}.{executor_type}.{executor}"
 
             if self.is_executor_disabled(pbs_executor[executor]):
@@ -428,7 +422,6 @@ class SiteConfiguration:
                 pbs.queue_summary["Queue"][queue]["enabled"] != "True"
                 or pbs.queue_summary["Queue"][queue]["started"] != "True"
             ):
-
                 self.invalid_executors.append(executor_name)
                 logger.info("Queue configuration")
                 logger.info(json.dumps(pbs.queue_summary, indent=2))

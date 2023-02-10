@@ -26,7 +26,6 @@ class ScriptBuilder(BuilderBase):
         numnodes=None,
         compiler=None,
     ):
-
         super().__init__(
             name=name,
             recipe=recipe,
@@ -123,7 +122,6 @@ class ScriptBuilder(BuilderBase):
             lines += sched_lines
 
         if self.burstbuffer:
-
             burst_buffer_lines = self._get_burst_buffer(self.burstbuffer)
             if burst_buffer_lines:
                 lines += burst_buffer_lines

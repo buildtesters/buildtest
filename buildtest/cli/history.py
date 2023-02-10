@@ -101,7 +101,6 @@ def list_build_history(no_header=None, terse=None, pager=None, color=None):
         table["fail_rate"].append(content["test_summary"]["fail_rate"])
 
     if terse:
-
         row_entry = []
 
         for key in table.keys():

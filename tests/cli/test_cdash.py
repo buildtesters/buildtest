@@ -16,7 +16,6 @@ configuration.validate()
 
 @pytest.mark.cli
 def test_cdash_view():
-
     cdash_config = deep_get(configuration.target_config, "cdash")
     view_cdash_project(
         cdash_config=cdash_config, config_file=configuration.file, open_browser=False
@@ -25,7 +24,6 @@ def test_cdash_view():
 
 @pytest.mark.cli
 def test_cdash_upload():
-
     system = BuildTestSystem()
     cmd = BuildTest(
         buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "shell_examples.yml")],
@@ -43,7 +41,6 @@ def test_cdash_upload():
 
 
 def test_cdash_upload_exceptions():
-
     # a buildname must be specified, a None will result in error
     with pytest.raises(SystemExit):
         upload_test_cdash(

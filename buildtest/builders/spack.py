@@ -211,13 +211,11 @@ class SpackBuilder(BuilderBase):
             lines.append(f"spack env rm -y {spack_env['rm']['name']}")
 
         if spack_env.get("create"):
-
             opts = spack_env["create"].get("options") or ""
             cmd = ["spack env create", opts]
 
             # create spack environment from name
             if spack_env["create"].get("name"):
-
                 # if remove_environment is defined we remove the environment before creating it
                 if spack_env["create"].get("remove_environment"):
                     lines.append(f"spack env rm -y {spack_env['create']['name']}")
@@ -246,7 +244,6 @@ class SpackBuilder(BuilderBase):
 
             # activate spack environment via directory 'spack env activate -d <dir>'
             elif spack_env["activate"].get("dir"):
-
                 env_dir = resolve_path(spack_env["activate"]["dir"], exist=False)
                 if not env_dir:
                     raise BuildTestError(

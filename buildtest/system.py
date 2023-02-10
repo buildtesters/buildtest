@@ -169,7 +169,6 @@ class Slurm(Scheduler):
     binaries = ["sbatch", "sacct", "sacctmgr", "sinfo", "scancel"]
 
     def __init__(self):
-
         self.logger = logging.getLogger(__name__)
 
         self.state = self.check_binaries(self.binaries)
@@ -182,7 +181,8 @@ class Slurm(Scheduler):
 
     def active(self):
         """Slurm scheduler is active if we are able to retrieve partitions or qos from scheduler. This method
-        will return a boolean type where ``True`` indicates that slurm executors can be validated."""
+        will return a boolean type where ``True`` indicates that slurm executors can be validated.
+        """
 
         return hasattr(self, "partitions") or hasattr(self, "qos")
 
@@ -264,7 +264,6 @@ class LSF(Scheduler):
     binaries = ["bsub", "bqueues", "bkill", "bjobs"]
 
     def __init__(self):
-
         self.logger = logging.getLogger(__name__)
 
         self.state = self.check_binaries(self.binaries)
@@ -365,7 +364,6 @@ class PBS(Scheduler):
             self.queues = self._get_queues()
 
     def check(self, binaries):
-
         binary_validation = super().check_binaries(binaries)
 
         if not binary_validation:

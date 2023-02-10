@@ -27,7 +27,6 @@ configuration.validate(moduletool=system.system["moduletool"])
 
 @pytest.mark.cli
 def test_config_systems():
-
     schema_files = os.path.join(
         SCHEMA_ROOT, "examples", "settings.schema.json", "valid"
     )
@@ -49,7 +48,6 @@ def test_view_configuration():
 
 
 def test_valid_config_schemas():
-
     valid_schema_dir = os.path.join(pytest_root, "examples", "config_schemas", "valid")
     schema_config = load_schema(DEFAULT_SETTINGS_SCHEMA)
     for schema in walk_tree(valid_schema_dir, ".yml"):

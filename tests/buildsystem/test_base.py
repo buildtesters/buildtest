@@ -143,7 +143,6 @@ def test_BuildspecParser(tmp_path):
         assert builders
 
         for builder in builders:
-
             # Builders (on init) set up metadata attribute
             assert hasattr(builder, "metadata")
 

@@ -39,7 +39,6 @@ class TestShell:
 
     @pytest.mark.utility()
     def test_bash_shell(self):
-
         shell = Shell("/bin/bash")
         assert shell.name == "/bin/bash"
         assert shell.path == shutil.which("/bin/bash")
@@ -52,7 +51,6 @@ class TestShell:
 
     @pytest.mark.utility()
     def test_zsh_shell(self):
-
         if not shutil.which("bin/zsh"):
             pytest.skip("Skipping test for zsh shell")
 
@@ -68,7 +66,6 @@ class TestShell:
 
     @pytest.mark.utility()
     def test_csh_shell(self):
-
         if not shutil.which("bin/csh"):
             pytest.skip("Skipping test for csh shell")
 
@@ -84,7 +81,6 @@ class TestShell:
 
     @pytest.mark.utility()
     def test_tcsh_shell(self):
-
         if not shutil.which("bin/tcsh"):
             pytest.skip("Skipping test for tcsh shell")
 
@@ -100,7 +96,6 @@ class TestShell:
 
     @pytest.mark.utility
     def test_update_instance(self):
-
         # create a sh shell
         shell = Shell("sh")
         assert shell.name == "sh"

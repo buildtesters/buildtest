@@ -79,7 +79,6 @@ def main():
 
     # print content of BUILDTEST_LOGFILE if buildtest --view-log or buildtest --print-log is specified which should contain output of last log
     if args.view_log or args.print_log:
-
         # if logfile is not present we should raise exception since this file is only created upon running 'buildtest build'
         if not is_file(BUILDTEST_LOGFILE):
             raise BuildTestError(
@@ -186,7 +185,6 @@ def main():
 
     # implementation for 'buildtest buildspec find'
     elif args.subcommands in ["buildspec", "bc"]:
-
         if args.buildspecs_subcommand in ["find", "f"]:
             buildspec_find(args=args, configuration=configuration)
         elif args.buildspecs_subcommand in ["summary", "sm"]:
@@ -273,7 +271,6 @@ def main():
 
     # running buildtest cdash
     elif args.subcommands == "cdash":
-
         cdash_config = deep_get(configuration.target_config, "cdash")
 
         if not cdash_config:

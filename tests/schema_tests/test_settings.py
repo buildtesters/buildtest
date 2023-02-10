@@ -12,7 +12,6 @@ settings_schema_examples = os.path.join(SCHEMA_ROOT, "examples", schema_file)
 
 @pytest.mark.schema
 def test_settings_examples():
-
     # load schema and ensure type is a dict
     recipe = load_schema(settings_schema)
 
@@ -23,7 +22,6 @@ def test_settings_examples():
     assert valid_recipes
     # check all valid recipes
     for example in valid_recipes:
-
         filepath = os.path.join(valid, example)
         print(f"Loading Recipe File: {filepath}")
         example_recipe = load_recipe(filepath)
