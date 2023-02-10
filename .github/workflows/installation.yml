@@ -2,7 +2,7 @@ name: installation
 
 on:
   pull_request:
-    branches: [ devel ]
+    branches: [devel]
 
 
 jobs:
@@ -13,8 +13,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-latest, ubuntu-latest ]
-        python-version: [ '3.7', '3.8', '3.9', '3.10' ]
+        os: [macos-latest, ubuntu-latest]
+        python-version: ['3.7', '3.8', '3.9', '3.10']
 
     steps:
     - uses: actions/checkout@v3

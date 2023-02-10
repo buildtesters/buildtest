@@ -44,40 +44,40 @@ jobs:
     needs: jsonschemadocs
     runs-on: ubuntu-latest
     steps:
-
-     - name: Checkout 🛎️
-       uses: actions/checkout@v3 # If you're using actions/checkout@v3 you must set persist-credentials to false in most cases for the deployment to work correctly.
-       with:
+      - name: Checkout 🛎️
+        # If you're using actions/checkout@v3 you must set persist-credentials
+        # to false in most cases for the deployment to work correctly.
+        uses: actions/checkout@v3
+        with:
           persist-credentials: false
 
-     - name: Download Schemas
-       uses: actions/download-artifact@v3
-       with:
-         name: schemafiles
-         path: downloads/schemas
+      - name: Download Schemas
+        uses: actions/download-artifact@v3
+        with:
+          name: schemafiles
+          path: downloads/schemas
 
-     - name: Download Schema Examples
-       uses: actions/download-artifact@v3
-       with:
-         name: schemaexamples
-         path: downloads/examples
+      - name: Download Schema Examples
+        uses: actions/download-artifact@v3
+        with:
+          name: schemaexamples
+          path: downloads/examples
 
-     - name: Download Schema Docs
-       uses: actions/download-artifact@v3
-       with:
+      - name: Download Schema Docs
+        uses: actions/download-artifact@v3
+        with:
           name: schemadocs
           path: downloads/schemadocs
 
-     - name: Display content of downloaded directory
-       run: |
-         ls -R downloads
+      - name: Display content of downloaded directory
+        run: |
+          ls -R downloads
 
-
-     - name: Deploy to GitHub Pages 🚀
-       uses: JamesIves/github-pages-deploy-action@v4.4.1
-       with:
-         # ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-         branch: gh-pages 
-         folder: downloads 
-         target-folder: pages
-         clean: true
+      - name: Deploy to GitHub Pages 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        with:
+          # ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          branch: gh-pages
+          folder: downloads
+          target-folder: pages
+          clean: true
