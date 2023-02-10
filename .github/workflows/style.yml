@@ -21,6 +21,11 @@ jobs:
         with:
           python-version: 3.8
 
+      - name: Check imports with pyflakes
+        run: |
+          pip install pyflakes
+          pyflakes buildtest tests scripts
+
       - name: Running isort check
         uses: jamescurtin/isort-action@master
         with:
@@ -33,11 +38,7 @@ jobs:
         with:
           options: "--check --verbose"
           src: "buildtest tests scripts"
-
-      - name: Check imports with pyflakes
-        run: |
-          pip install pyflakes
-          pyflakes buildtest tests scripts
+          version: "~= 22.0"
 
       ################################
       # Run Linter against code base #
