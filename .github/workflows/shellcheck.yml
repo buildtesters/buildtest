@@ -16,6 +16,6 @@ jobs:
         uses: actions/checkout@v3
       - name: Run Shell Check
         run: |
-          apt install shellcheck
+          sudo apt-get install -y shellcheck
           shellcheck --version
           shellcheck bin/buildtest setup.sh scripts/spack_container/*.sh
