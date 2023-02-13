@@ -31,4 +31,3 @@ ascent_pr_regression_test:
     - codecov -t $CODECOV_TOKEN
     - source deactivate
     - rm -rf $CI_PROJECT_DIR/.conda
-

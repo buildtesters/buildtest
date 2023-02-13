@@ -2,7 +2,7 @@ name: Build Container
 
 on:
   pull_request:
-    branches: [ devel ]
+    branches: [devel]
 
 jobs:  
   build_container:

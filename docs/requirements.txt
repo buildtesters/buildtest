@@ -11,3 +11,4 @@ sphinxcontrib-programoutput
 sphinxext-remoteliteralinclude
 sphinx-copybutton
 readthedocs-sphinx-search
+yamllint

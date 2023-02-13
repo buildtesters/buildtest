@@ -97,7 +97,7 @@ buildspecs:
         cray:
           fflags: "-O1"
         all:
-          sbatch: ["-t 10", "-n 2", "-C haswell" ]
+          sbatch: ["-t 10", "-n 2", "-C haswell"]
       config:
         PrgEnv-cray@2.6.2:
           module:
@@ -141,10 +141,10 @@ buildspecs:
       default:
         gcc:
           fflags: "-O1"
-          sbatch: ["-t 10", "-n 2", "-C haswell" ]
+          sbatch: ["-t 10", "-n 2", "-C haswell"]
         intel:
           fflags: "-O2"
-          sbatch: ["-t 10", "-n 2", "-C knl" ]
+          sbatch: ["-t 10", "-n 2", "-C knl"]
       config:
         gcc@8.1.0:
           sbatch: ["-t 60", "-n 2", "-C knl"]
@@ -162,15 +162,15 @@ buildspecs:
       default:
         gcc:
           fflags: "-O1"
-          bsub: ["-W 00:30", "-n 2" ]
+          bsub: ["-W 00:30", "-n 2"]
         intel:
           fflags: "-O2"
-          bsub: ["-W 00:30", "-n 4" ]
+          bsub: ["-W 00:30", "-n 4"]
       config:
         gcc@8.1.0:
-           bsub: ["-W 00:30", "-n 6" ]
-           module:
-             swap: [PrgEnv-intel, PrgEnv-gnu/6.1.0]
+          bsub: ["-W 00:30", "-n 6"]
+          module:
+            swap: [PrgEnv-intel, PrgEnv-gnu/6.1.0]
 
   env_example:
     type: compiler

@@ -5,7 +5,7 @@ system:
     poolsize: 1
     executors:
       defaults:
-         maxpendtime: 30
+        maxpendtime: 30
       local:
         bash:
           description: submit jobs via bash shell

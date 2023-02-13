@@ -1,0 +1,21 @@
+name: Shell Check
+
+on:
+  push:
+    branches:
+      - devel
+  pull_request:
+    branches:
+      - devel
+
+jobs:
+  style_checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Run Shell Check
+        run: |
+          sudo apt-get install -y shellcheck
+          shellcheck --version
+          shellcheck -x  setup.sh scripts/spack_container/*.sh

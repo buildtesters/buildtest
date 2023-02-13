@@ -1,7 +1,7 @@
 #!/bin/bash
 # MIT License
 
-# Copyright (c) 2021-2022, The Regents of the University of California,
+# Copyright (c) 2021-2023, The Regents of the University of California,
 # through Lawrence Berkeley National Laboratory (subject to receipt of
 # any required approvals from the U.S. Dept. of Energy), Shahzeb Siddiqui,
 # and Vanessa Sochat. All rights reserved.
@@ -44,7 +44,7 @@ returncode=$?
 # if we are unable to import buildtest.main then install buildtest dependencies
 if [ $returncode -ne 0 ]; then
   #$pip install --target ${buildtest_root}/.packages -r ${buildtest_root}/requirements.txt &> /dev/null
-  $pip install -r ${buildtest_root}/requirements.txt &> /dev/null
+  $pip install -r "${buildtest_root}/requirements.txt" &> /dev/null
 fi
 
 export BUILDTEST_ROOT=$buildtest_root
@@ -58,7 +58,7 @@ export PATH=${buildtest_root}/bin:$PATH
 #fi
 
 # enable bash completion script
-source $buildtest_root/bash_completion.sh
+source "$buildtest_root/bash_completion.sh"
 
 # allow buildtest source code to PYTHONPATH so python can import buildtest
 if [ -z "$PYTHONPATH" ]; then

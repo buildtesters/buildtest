@@ -21,4 +21,3 @@ updates:
       time: "02:00"
     labels:
       - "pip dependencies"
-

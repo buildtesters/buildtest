@@ -36,7 +36,7 @@
 .. |checkurls| image:: https://github.com/buildtesters/buildtest/workflows/Check%20URLs/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
 
-.. |blackformat| image:: https://github.com/buildtesters/buildtest/workflows/Black%20Formatter/badge.svg
+.. |style| image:: https://github.com/buildtesters/buildtest/workflows/Style%20Checks/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
     
 .. |isort| image:: https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336
@@ -60,7 +60,8 @@
 buildtest
 ---------
 
-| |license| |docs| |codecov| |release| |installation| |regressiontest| |nightly_regression_test| |gh_pages_devel| |checkurls| |codefactor| |blackformat|  |black| |isort| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
+| |license| |docs| |codecov| |release| |installation| |regressiontest| |nightly_regression_test| |gh_pages_devel| |checkurls| |codefactor| |style|  |black| |isort| |issues| |open_pr| |commit_activity_yearly| |commit_activity_monthly| |core_infrastructure| |zenodo|
+=======
 
 `buildtest <https://buildtest.rtfd.io/>`_ is a testing framework that automates build/execution of tests which allows HPC facilities to develop
 test for their system. In buildtest, tests are written as test recipes called **Buildspecs** which is a `YAML <https://yaml.org/>`_
