@@ -285,7 +285,7 @@ Running yamllint
 ------------------
 
 We are using `yamllint <https://yamllint.readthedocs.io/en/stable/>`_, which is a linter for YAML files. This package can
-be installed when installing the development dependencies (`pip install -r docs/requirements.txt`). We have a
+be installed when installing the development dependencies (``pip install -r docs/requirements.txt``). We have a
 configuration file `.yamllint.yml <https://github.com/buildtesters/buildtest/blob/devel/.yamllint.yml>`_ used for configuring
 yamllint.
 
@@ -298,11 +298,12 @@ You can run `yamllint` against any file or and it will show the lint errors such
       18:81     warning  line too long (103 > 80 characters)  (line-length)
       36:81     warning  line too long (107 > 80 characters)  (line-length)
 
-You **don't** need to specify path to configuration file (i.e `yamllint -c /path/to/.yamllint.yml`) because `.yamllint.yml` is a known file.
+You **don't** need to specify path to configuration file (i.e ``yamllint -c /path/to/.yamllint.yml``) because **.yamllint.yml** is a default
+configuration file by the linter.
 Please refer to https://yamllint.readthedocs.io/en/stable/configuration.html for more details on configuration options for the linter.
 
-Please refer to the github workflow https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/style.yml for more details
-on the style checks.
+The `Style Check <https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/style.yml>`_ workflow is responsible for running the
+`yamllinter` check on the buildtest codebase. Please refer to the CI check, when debugging linter errors.
 
 Shell Check
 ------------
