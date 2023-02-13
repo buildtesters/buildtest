@@ -10,10 +10,10 @@ on:
 
 jobs:
   style_checks:
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-  latest
   steps:
-    - uses: actions/checkout@v3
+    - name: Checkout Repository
+      uses: actions/checkout@v3
     - name: Run Shell Check
       run: |
         apt install shellcheck
