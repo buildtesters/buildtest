@@ -281,6 +281,82 @@ buildtest source code and regression test. You can do that by running::
 
     pyflakes buildtest tests
 
+Running yamllint
+------------------
+
+We are using `yamllint <https://yamllint.readthedocs.io/en/stable/>`_, which is a linter for YAML files. This package can
+be installed when installing the development dependencies (`pip install -r docs/requirements.txt`). We have a
+configuration file `.yamllint.yml <https://github.com/buildtesters/buildtest/blob/devel/.yamllint.yml>`_ used for configuring
+yamllint.
+
+You can run `yamllint` against any file or and it will show the lint errors such as this example below
+
+.. code-block:: console
+
+     yamllint .github/workflows/style.yml
+    .github/workflows/style.yml
+      18:81     warning  line too long (103 > 80 characters)  (line-length)
+      36:81     warning  line too long (107 > 80 characters)  (line-length)
+
+You **don't** need to specify path to configuration file (i.e `yamllint -c /path/to/.yamllint.yml`) because `.yamllint.yml` is a known file.
+Please refer to https://yamllint.readthedocs.io/en/stable/configuration.html for more details on configuration options for the linter.
+
+Please refer to the github workflow https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/style.yml for more details
+on the style checks.
+
+Shell Check
+------------
+
+We are using `shellcheck <https://github.com/koalaman/shellcheck>`_ a static analysis tool for checking shell scripts. This package can be installed
+in your system using package manager of your choice. Please refer to `README <https://github.com/koalaman/shellcheck#readme>`_ for more details on
+installation.
+
+The `shellcheck` binary can be used to check `bash` or `sh` scripts. A typical output will consist of list of error codes with line number where error
+appears such as one below
+
+.. code-block:: console
+
+      shellcheck bin/buildtest
+
+    In bin/buildtest line 14:
+            export BUILDTEST_PYTHON="$(command -v "$cmd")"
+                   ^--------------^ SC2155 (warning): Declare and assign separately to avoid masking return values.
+
+
+    In bin/buildtest line 21:
+    ":"""
+    ^---^ SC2317 (info): Command appears to be unreachable. Check usage (or ignore if invoked indirectly).
+
+
+    In bin/buildtest line 23:
+    import os
+    ^-------^ SC2317 (info): Command appears to be unreachable. Check usage (or ignore if invoked indirectly).
+
+
+    In bin/buildtest line 24:
+    import sys
+    ^--------^ SC2317 (info): Command appears to be unreachable. Check usage (or ignore if invoked indirectly).
+
+
+    In bin/buildtest line 26:
+    buildtest_file=os.path.realpath(os.path.expanduser(__file__))
+    ^------------^ SC2034 (warning): buildtest_file appears unused. Verify use (or export if used externally).
+    ^-----------------------------^ SC2317 (info): Command appears to be unreachable. Check usage (or ignore if invoked indirectly).
+                                   ^-- SC1036 (error): '(' is invalid here. Did you forget to escape it?
+                                   ^-- SC1088 (error): Parsing stopped here. Invalid use of parentheses?
+
+    For more information:
+      https://www.shellcheck.net/wiki/SC2034 -- buildtest_file appears unused. Ve...
+      https://www.shellcheck.net/wiki/SC2155 -- Declare and assign separately to ...
+      https://www.shellcheck.net/wiki/SC2317 -- Command appears to be unreachable...
+
+We have configured `shellcheck` with a configuration file `.shellcheckrc <https://github.com/buildtesters/buildtest/blob/devel/.shellcheckrc>`_ that
+can be used to disable certain error codes from checks. This is equivalent to running `shellcheck -e <CODE1>,<CODE2>` but we included this in configuration
+file to make it the default setting.
+
+We have a shellcheck workflow https://github.com/buildtesters/buildtest/blob/devel/.github/workflows/shellcheck.yml that will perform check on shell
+scripts, please refer to the CI results when troubleshooting errors.
+
 Running stylechecks via ``buildtest stylecheck``
 ---------------------------------------------------
 
