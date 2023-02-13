@@ -6,10 +6,10 @@
 module load python
 
 # setup python environment
-python -m venv ~/pyenv/buildtest
-source ~/pyenv/buildtest/bin/activate
+python -m venv "$HOME/pyenv/buildtest"
+source "$HOME/pyenv/buildtest/bin/activate"
 
-cd ~/buildtest
+cd ~/buildtest || { echo "Unable to cd to 'buildtest' directory"; exit 1;}
 # installing buildtest
 source setup.sh
 

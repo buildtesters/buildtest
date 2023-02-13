@@ -23,8 +23,8 @@ exit 1
 import os
 import sys
 
-buildtest_file = os.path.realpath(os.path.expanduser(__file__))
-prefix = os.path.dirname(os.path.dirname(buildtest_file))
+buildtest_file=os.path.realpath(os.path.expanduser(__file__))
+prefix=os.path.dirname(os.path.dirname(buildtest_file))
 
 sys.path.insert(0, prefix)
 
