@@ -546,7 +546,6 @@ class BuilderBase(ABC):
         if modules:
             lines.append("# Specify list of modules to load")
             for module in modules.split(","):
-
                 lines.append(f"module load {module}")
 
         lines += [
@@ -716,13 +715,11 @@ class BuilderBase(ABC):
             lines += [f"#BSUB -e {self.name}.err"]
 
         if self.pbs:
-
             for line in self.pbs:
                 lines.append(f"#PBS {line}")
             lines.append(f"#PBS -N {self.name}")
 
         if self.cobalt:
-
             for line in self.cobalt:
                 lines.append(f"#COBALT {line}")
             lines.append(f"#COBALT --jobname={self.name}")
@@ -868,13 +865,11 @@ class BuilderBase(ABC):
             return
 
         for key in self.metrics.keys():
-
             # default value of metric is empty string
             self.metadata["metrics"][key] = ""
 
             # apply regex on stdout/stderr and assign value to metrics
             if self.metrics[key].get("regex"):
-
                 if self.metrics[key]["regex"]["stream"] == "stdout":
                     content = self._output
                 elif self.metrics[key]["regex"]["stream"] == "stderr":
@@ -962,7 +957,6 @@ class BuilderBase(ABC):
 
         # if status is defined in Buildspec, then check for returncode and regex
         if self.status:
-
             slurm_job_state_match = False
             pbs_job_state_match = False
             lsf_job_state_match = False

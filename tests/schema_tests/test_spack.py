@@ -47,7 +47,6 @@ def check_valid_recipes(recipes, valids, loaded):
 
 @pytest.mark.schema
 def test_spack_examples():
-
     print("Testing schema %s" % schema_file)
     loaded = load_schema(schema_path)
 

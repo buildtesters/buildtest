@@ -5,7 +5,6 @@ from buildtest.cli.schema import schema_cmd
 @pytest.mark.schema
 @pytest.mark.cli
 def test_schema_cmd():
-
     supported_schemas = [
         "definitions.schema.json",
         "global.schema.json",

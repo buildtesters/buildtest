@@ -50,7 +50,6 @@ def test_ascent():
 
 
 def test_compilers_find_ascent():
-
     if not hostname.endswith("ascent.olcf.ornl.gov"):
         pytest.skip("This test must run on domain ascent.olcf.ornl.gov")
 

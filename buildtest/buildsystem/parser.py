@@ -175,7 +175,6 @@ class BuildspecParser:
         # with sub schema
 
         for test in self.get_test_names():
-
             self.logger.info(
                 "Validating test - '%s' in recipe: %s" % (test, self.buildspec)
             )

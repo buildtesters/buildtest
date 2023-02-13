@@ -30,7 +30,6 @@ class SlurmExecutor(BaseExecutor):
     def __init__(
         self, name, settings, site_configs, account=None, maxpendtime=None, timeout=None
     ):
-
         self.maxpendtime = maxpendtime
         self.account = account
         super().__init__(name, settings, site_configs, timeout=timeout)
@@ -129,7 +128,6 @@ class SlurmExecutor(BaseExecutor):
 
         # if job state in PENDING check if we need to cancel job by checking internal timer
         if builder.job.is_pending() or builder.job.is_suspended():
-
             self.logger.debug(f"Time Duration: {builder.duration}")
             self.logger.debug(f"Max Pend Time: {self.maxpendtime}")
 

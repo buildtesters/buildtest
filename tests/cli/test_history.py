@@ -32,7 +32,6 @@ def test_build_history_list():
 
 
 def test_build_history_query():
-
     fname = os.path.join(VAR_DIR, "output.txt")
     configuration = SiteConfiguration()
 
@@ -66,7 +65,6 @@ def test_build_history_query():
 
 
 def test_invalid_buildid():
-
     with pytest.raises(SystemExit):
         query_builds(build_id=-1, log_option=True, output=False)
 

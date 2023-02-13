@@ -6,7 +6,6 @@ from buildtest.utils.command import BuildTestCommand
 @pytest.mark.utility
 class TestBuildTestCommand:
     def test_command(self):
-
         cmd = "hostname"
         a = BuildTestCommand(cmd)
         a.execute()
@@ -20,7 +19,6 @@ class TestBuildTestCommand:
         assert 0 == ret
 
     def test_error_command(self):
-
         cmd = "xyz"
         a = BuildTestCommand(cmd)
         a.execute()

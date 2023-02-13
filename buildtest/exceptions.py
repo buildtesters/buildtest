@@ -27,7 +27,6 @@ class BuildspecError(Exception):
     """Exception if there is an issue with parsing a Buildspec or building test"""
 
     def __init__(self, msg, buildspec=None):
-
         self.msg = msg
         if buildspec:
             self.msg = f"[{buildspec}]: {msg}"

@@ -27,7 +27,6 @@ configuration.validate()
 
 @pytest.mark.cli
 def test_buildspec_validate():
-
     buildspecs = [
         os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml"),
         os.path.join(BUILDTEST_ROOT, "tutorials", "compilers"),
@@ -54,7 +53,6 @@ def test_buildspec_validate():
 
 @pytest.mark.cli
 def test_func_buildspec_find():
-
     # buildtest buildspec find --rebuild --terse --no-header
     cache = BuildspecCache(
         rebuild=True, configuration=configuration, terse=True, header=False
@@ -152,7 +150,6 @@ def test_func_buildspec_find():
 
 @pytest.mark.cli
 def test_buildspec_find_terse():
-
     cache = BuildspecCache(
         configuration=configuration,
         terse=True,
@@ -242,7 +239,6 @@ def test_edit_file():
 
 @pytest.mark.cli
 def test_buildspec_find_filter():
-
     # testing buildtest buildspec find --filter tags=fail
     cache = BuildspecCache(filterfields={"tags": "fail"}, configuration=configuration)
     cache.print_buildspecs()
@@ -294,7 +290,6 @@ def test_buildspec_find_filter():
 
 @pytest.mark.cli
 def test_buildspec_find_format():
-
     # testing buildtest buildspec find --format name,type,tags,executor,description,buildspec
     cache = BuildspecCache(
         formatfields="name,type,tags,executor,description,buildspec",
@@ -304,7 +299,6 @@ def test_buildspec_find_format():
 
     # Any invalid format fields will raise an exception of type BuildTestError
     with pytest.raises(BuildTestError):
-
         # testing buildtest buildspec find --format field1
         cache = BuildspecCache(formatfields="field1", configuration=configuration)
         cache.print_buildspecs()
@@ -312,7 +306,6 @@ def test_buildspec_find_format():
 
 @pytest.mark.cli
 def test_buildspec_find_roots():
-
     root_buildspecs = [
         os.path.join(BUILDTEST_ROOT, "tests", "buildsystem"),
         os.path.join(BUILDTEST_ROOT, "tutorials"),
@@ -358,7 +351,6 @@ def test_buildspec_show():
 
 @pytest.mark.cli
 def test_buildspec_show_fail():
-
     # Query some random test name that doesn't exist
 
     random_testname = "".join(random.choices(string.ascii_letters, k=10))

@@ -79,7 +79,6 @@ def shell_lookup():
     }
 
     for name in shells.keys():
-
         cmd = BuildTestCommand(f"which -a {name}")
         cmd.execute()
         out = cmd.get_output()

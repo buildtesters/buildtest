@@ -12,7 +12,6 @@ from rich.color import Color
 
 
 def test_buildtest_inspect_list():
-
     # running buildtest inspect list
     class args:
         subcommands = "inspect"
@@ -59,7 +58,6 @@ def test_buildtest_inspect_list():
 
 
 def test_buildtest_inspect_name():
-
     r = Report()
 
     # select a random test name
@@ -112,7 +110,6 @@ def test_buildtest_inspect_name():
 
 
 def test_buildspec_inspect_buildspec():
-
     tf = tempfile.NamedTemporaryFile(delete=True)
 
     class args:
@@ -159,7 +156,6 @@ def test_buildspec_inspect_buildspec():
 
 
 def test_buildtest_query():
-
     report = Report()
     names = report.get_names()
 

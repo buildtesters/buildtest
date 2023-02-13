@@ -159,7 +159,6 @@ def inspect_query(report, args):
     for name, test_record in records.items():
         for tests in test_record:
             for full_id, test in tests.items():
-
                 theme = args.theme or "monokai"
 
                 console.rule(f"[cyan]{name}/{full_id}")
@@ -187,7 +186,6 @@ def inspect_query(report, args):
 
                 # print content of output file when 'buildtest inspect query --output' is set
                 if args.output:
-
                     content = read_file(test["outfile"])
                     console.rule(f"Output File: {test['outfile']}")
 

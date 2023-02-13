@@ -46,7 +46,6 @@ def schema_cmd(args):
 
     schema_examples = walk_tree(examples, ".yml")
     for example in schema_examples:
-
         if args.example:
             content = read_file(example)
             console.rule(example)

@@ -14,7 +14,6 @@ system = BuildTestSystem()
 
 
 def test_assert_ge():
-
     cmd = BuildTest(
         buildspecs=[os.path.join(here, "assert_ge.yml")],
         buildtest_system=system,
@@ -24,7 +23,6 @@ def test_assert_ge():
 
 
 def test_assert_le():
-
     cmd = BuildTest(
         buildspecs=[os.path.join(here, "assert_le.yml")],
         buildtest_system=system,
@@ -34,7 +32,6 @@ def test_assert_le():
 
 
 def test_assert_gt():
-
     cmd = BuildTest(
         buildspecs=[os.path.join(here, "assert_gt.yml")],
         buildtest_system=system,
@@ -44,7 +41,6 @@ def test_assert_gt():
 
 
 def test_assert_lt():
-
     cmd = BuildTest(
         buildspecs=[os.path.join(here, "assert_lt.yml")],
         buildtest_system=system,

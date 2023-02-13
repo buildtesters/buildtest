@@ -185,7 +185,6 @@ def view_executors(
         return
 
     if disabled:
-
         if not configuration.disabled_executors:
             console.print("There are no disabled executors")
             return
@@ -195,7 +194,6 @@ def view_executors(
         return
 
     if invalid:
-
         if not configuration.invalid_executors:
             console.print("There are no invalid executors")
             return

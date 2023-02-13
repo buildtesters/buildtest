@@ -37,7 +37,6 @@ logger = logging.getLogger(__name__)
 
 
 class BuildspecCache:
-
     table = {}
     filter_fields = ["type", "executor", "tags", "buildspec"]
     default_format_fields = ["name", "type", "executor", "tags", "description"]
@@ -134,7 +133,6 @@ class BuildspecCache:
         # we resolve path and if path exist add to self.paths. The path must be a
         # directory. If its file, we ignore it
         if self.roots:
-
             for root in self.roots:
                 path = resolve_path(root, exist=False)
                 if not os.path.exists(path):
@@ -231,7 +229,6 @@ class BuildspecCache:
                     ExecutorError,
                     ValidationError,
                 ) as err:
-
                     if isinstance(err, BuildspecError):
                         self.invalid_buildspecs[buildspec] = {
                             "msg": err.get_exception()
@@ -319,12 +316,10 @@ class BuildspecCache:
 
         # for every parsers (valid buildspecs) we update cache to build an index
         for parser in parsers:
-
             recipe = parser.recipe["buildspecs"]
 
             # if maintainer field specified add all maintainers from buildspec to list
             if parser.recipe.get("maintainers"):
-
                 for author in parser.recipe["maintainers"]:
                     if not self.update_cache["maintainers"].get(author):
                         self.update_cache["maintainers"][author] = []
@@ -335,7 +330,6 @@ class BuildspecCache:
                 self.update_cache["buildspecs"][parser.buildspec] = {}
 
             for name in recipe.keys():
-
                 self.update_cache["buildspecs"][parser.buildspec][name] = recipe[name]
                 tags = recipe[name].get("tags")
                 executor = recipe[name].get("executor")
@@ -389,7 +383,6 @@ class BuildspecCache:
         self.type_filter = None
 
         if self.filter:
-
             filter_error = False
             # check if filter keys are accepted filter fields, if not we raise error
             for key in self.filter.keys():
@@ -417,7 +410,6 @@ class BuildspecCache:
             self.table[field] = []
 
         if self.format:
-
             format_error = False
             for key in self.format.split(","):
                 if key not in self.format_fields:
@@ -501,9 +493,7 @@ class BuildspecCache:
                 filtered_buildspecs = [buildspec]
 
         for buildspecfile in filtered_buildspecs:
-
             for test in self.cache["buildspecs"][buildspecfile].keys():
-
                 test_recipe = self.cache["buildspecs"][buildspecfile][test]
                 schema_type = test_recipe.get("type")
                 executor = test_recipe.get("executor")
@@ -537,7 +527,6 @@ class BuildspecCache:
                             self.table[field].append(test_recipe.get(field))
 
                 else:
-
                     self.table["name"].append(test)
                     self.table["type"].append(schema_type)
                     self.table["executor"].append(executor)
@@ -605,7 +594,6 @@ class BuildspecCache:
         self.terse = terse or self.terse
         self.header = header or self.header
         if self.terse:
-
             if not self.header:
                 console.print("buildspec", style=self.color)
 
@@ -680,7 +668,6 @@ class BuildspecCache:
         """
 
         if self.terse:
-
             if not self.header:
                 console.print("executor", style=self.color)
 
@@ -713,7 +700,6 @@ class BuildspecCache:
         """This method prints executors by tests and implements ``buildtest buildspec find --group-by-executor`` command"""
 
         if self.terse:
-
             if not self.header:
                 console.print("executor|name|description", style=self.color)
 
@@ -746,7 +732,6 @@ class BuildspecCache:
         """This method prints tags by tests and implements ``buildtest buildspec find --group-by-tags`` command"""
 
         if self.terse:
-
             if not self.header:
                 console.print("tags|name|description", style=self.color)
 
@@ -820,7 +805,6 @@ class BuildspecCache:
                 console.print("|".join(self.table.keys()), style=self.color)
 
             for row in t:
-
                 if not isinstance(row, list):
                     continue
 
@@ -1071,7 +1055,6 @@ def edit_buildspec_file(buildspecs, configuration, editor):
         editor (str): Path to editor to use when opening file
     """
     for file in buildspecs:
-
         buildspec = resolve_path(file, exist=False)
         if is_dir(buildspec):
             console.print(

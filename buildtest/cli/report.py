@@ -153,7 +153,6 @@ class Report:
 
         # check if filter arguments (--filter) are valid fields
         if self.filter:
-
             logger.debug(f"Checking filter fields: {self.filter}")
 
             # check if filter keys are accepted filter fields, if not we raise error
@@ -185,7 +184,6 @@ class Report:
         # if buildtest report --format specified split field by "," and validate each
         # format field and reassign display_table
         if self.format:
-
             logger.debug(f"Checking format fields: {self.format}")
 
             self.display_format_fields = self.format.split(",")
@@ -210,7 +208,6 @@ class Report:
         """
 
         if self.end:
-
             current_time = datetime.datetime.now()
             logger.debug(f"checking end field: {self.end}")
 
@@ -403,10 +400,8 @@ class Report:
     def process_report(self):
         # process all filtered buildspecs and add rows to display_table.
         for buildspec in self.filtered_buildspecs:
-
             # process each test in buildspec file
             for name in self.report[buildspec].keys():
-
                 if self.filter:
                     if self._filter_by_names(name):
                         continue
@@ -438,7 +433,6 @@ class Report:
                 # process all tests for an associated script. There can be multiple
                 # test runs for a single test depending on how many tests were run
                 for test in tests:
-
                     if self.filter:
                         # filter by tags, if filter tag not found in test tag list we skip test
                         if self._filter_by_tags(test):
@@ -502,7 +496,6 @@ class Report:
         )
 
         for field, value in self.filter_field_description.items():
-
             table.add_row(
                 f"[red]{field}",
                 f"[green]{value['description']}",

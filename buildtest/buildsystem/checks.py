@@ -35,7 +35,6 @@ def returncode_check(builder):
 
     # if 'returncode' field set for 'status' check the returncode if its not set we return False
     if "returncode" in builder.status.keys():
-
         # returncode can be an integer or list of integers
         buildspec_returncode = builder.status["returncode"]
 

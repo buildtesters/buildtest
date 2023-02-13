@@ -222,7 +222,6 @@ class BuildExecutor:
         # any test. Test will be executed async but when checking if test is complete via
         # .is_complete() we need the builders to be processed to get updated state.
         for builder in builders:
-
             if not builder.recipe.get("needs"):
                 console.print(
                     f"[green]{builder} does not have any dependencies adding test to queue"
@@ -233,7 +232,6 @@ class BuildExecutor:
             builder.dependency = False
             #
             for name in builder.recipe["needs"]:
-
                 # if element in needs is a string then we check if job is complete
                 if isinstance(name, str):
                     if name not in list(testnames.keys()):
@@ -259,14 +257,12 @@ class BuildExecutor:
                         break
 
                     if "state" in name[testname]:
-
                         match_state = (
                             name[testname]["state"]
                             == testnames[testname].metadata["result"]["state"]
                         )
 
                         if not match_state:
-
                             if testnames[testname].is_pending():
                                 builder.dependency = True
                                 console.print(
@@ -294,7 +290,6 @@ class BuildExecutor:
                             not in rc
                         )
                         if no_match:
-
                             if testnames[testname].is_pending():
                                 console.print(
                                     f"[red]{builder} is cancelled because it expects one of these returncode {rc} from {testnames[testname]} but test has {testnames[testname].metadata['result']['returncode']} "
@@ -344,7 +339,6 @@ class BuildExecutor:
         console.print(f"Spawning {num_workers} processes for processing builders")
         count = 0
         while True:
-
             active_builders = []
             count += 1
             console.rule(f"Iteration {count}")
@@ -417,7 +411,6 @@ class BuildExecutor:
 
             # for every pending job poll job and mark if job is finished or cancelled
             for job in jobs:
-
                 # get executor instance for corresponding builder. This would be one of the following: SlurmExecutor, PBSExecutor, LSFExecutor, CobaltExecutor
                 executor = self.get(job.executor)
                 # if builder is local executor we shouldn't be polling so we set job to
@@ -455,7 +448,6 @@ class BuildExecutor:
             completed_jobs_table.add_column(column)
 
         for builder in active_jobs:
-
             if builder.job.is_pending() or builder.job.is_suspended():
                 pending_jobs_table.add_row(
                     f"[blue]{str(builder)}",

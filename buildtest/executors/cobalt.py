@@ -31,14 +31,12 @@ class CobaltExecutor(BaseExecutor):
     def __init__(
         self, name, settings, site_configs, account=None, maxpendtime=None, timeout=None
     ):
-
         self.account = account
         self.maxpendtime = maxpendtime
         super().__init__(name, settings, site_configs, timeout=timeout)
         self.queue = self._settings.get("queue")
 
     def launcher_command(self, numprocs, numnodes):
-
         batch_cmd = ["qsub"]
 
         if self.queue:

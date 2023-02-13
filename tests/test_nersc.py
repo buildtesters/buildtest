@@ -45,7 +45,6 @@ def test_cori_burstbuffer():
 
 
 def test_cori_slurm_hostname():
-
     if not hostname.startswith("cori"):
         pytest.skip("This test runs on Cori Login nodes ('cori*')")
 
@@ -69,7 +68,6 @@ def test_cori_slurm_hostname():
 
 
 def test_cori_slurm_max_pend():
-
     if not hostname.startswith("cori"):
         pytest.skip("This test runs on Cori Login nodes ('cori*')")
 
@@ -95,7 +93,6 @@ def test_cori_slurm_max_pend():
 
 
 def test_cori_slurm_file_exists():
-
     if not hostname.startswith("cori"):
         pytest.skip("This test runs on Cori Login nodes ('cori*')")
 
@@ -120,7 +117,6 @@ def test_cori_slurm_file_exists():
 
 
 def test_compiler_find_cori():
-
     if not hostname.startswith("cori"):
         pytest.skip("This test runs on Cori Login nodes ('cori*')")
 
@@ -137,7 +133,6 @@ def test_compiler_find_cori():
 
 
 def test_compiler_test_cori():
-
     if not hostname.startswith("cori"):
         pytest.skip("This test runs on Cori Login nodes ('cori*')")
 
@@ -150,7 +145,6 @@ def test_compiler_test_cori():
 
 
 def test_compiler_find_perlmutter():
-
     if not hostname.startswith("login"):
         pytest.skip("This test runs on Perlmutter Login nodes ('login*')")
 
@@ -167,7 +161,6 @@ def test_compiler_find_perlmutter():
 
 
 def test_compiler_test_perlmutter():
-
     if not hostname.startswith("login"):
         pytest.skip("This test runs on Perlmutter Login nodes ('login*')")
 

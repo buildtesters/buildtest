@@ -429,7 +429,6 @@ class CompilerBuilder(BuilderBase):
 
         # if default compiler setting provided in buildspec let's assign it.
         if deep_get(self.compiler_section, "default", self.compiler_group):
-
             self.cc = (
                 self.compiler_section["default"][self.compiler_group].get("cc")
                 or self.cc
@@ -462,7 +461,6 @@ class CompilerBuilder(BuilderBase):
             )
         # if compiler instance defined in config section read from buildspec. This overrides default section if specified
         if deep_get(self.compiler_section, "config", self.compiler):
-
             self.logger.debug(
                 f"[{self.name}]: Detected compiler: {self.compiler} in 'config' scope overriding default compiler group setting for: {self.compiler_group}"
             )

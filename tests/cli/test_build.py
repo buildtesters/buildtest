@@ -29,7 +29,6 @@ def test_clean():
 
 @pytest.mark.cli
 def test_build_by_tags():
-
     system = BuildTestSystem()
 
     # ensure we rebuild cache file before running any buildspecs commands
@@ -50,7 +49,6 @@ def test_build_by_tags():
 
 @pytest.mark.cli
 def test_build_rerun():
-
     system = BuildTestSystem()
 
     #  testing buildtest build --rerun
@@ -64,7 +62,6 @@ def test_build_rerun():
 
 @pytest.mark.cli
 def test_build_executor_type():
-
     system = BuildTestSystem()
     #  testing buildtest build --tags python --executor-type local
     cmd = BuildTest(
@@ -88,7 +85,6 @@ def test_build_executor_type():
 
 @pytest.mark.cli
 def test_build_filter_check():
-
     system = BuildTestSystem()
 
     #  testing buildtest build --tags pass --filter tags=pass
@@ -149,7 +145,6 @@ def test_build_filter_check():
 
 @pytest.mark.cli
 def test_build_buildspecs():
-
     system = BuildTestSystem()
 
     buildspec_paths = os.path.join(test_root, "buildsystem", "valid_buildspecs")
@@ -187,7 +182,6 @@ def test_build_buildspecs():
 
 @pytest.mark.cli
 def test_buildspec_tag_executor():
-
     system = BuildTestSystem()
 
     # testing buildtest build --tags fail --executor generic.local.csh
@@ -202,7 +196,6 @@ def test_buildspec_tag_executor():
 
 @pytest.mark.cli
 def test_build_csh_executor():
-
     if not shutil.which("csh"):
         pytest.skip("Unable to run this test since it requires 'csh'")
 
@@ -219,7 +212,6 @@ def test_build_csh_executor():
 
 @pytest.mark.cli
 def test_skip_field():
-
     system = BuildTestSystem()
 
     cmd = BuildTest(
@@ -240,7 +232,6 @@ def test_skip_field():
 
 @pytest.mark.cli
 def test_build_by_stages():
-
     system = BuildTestSystem()
 
     # testing buildtest build --tags python --stage=parse
@@ -264,7 +255,6 @@ def test_build_by_stages():
 
 @pytest.mark.cli
 def test_build_rebuild():
-
     system = BuildTestSystem()
 
     buildspec_file = os.path.join(BUILDTEST_ROOT, "tutorials", "python-shell.yml")
@@ -280,8 +270,52 @@ def test_build_rebuild():
 
 
 @pytest.mark.cli
-def test_invalid_buildspes():
+def test_build_limit():
+    system = BuildTestSystem()
 
+    # rebuild 5 times (buildtest build -t python --rebuild=5 --limit=2
+    cmd = BuildTest(
+        configuration=configuration,
+        tags=["python"],
+        rebuild=5,
+        buildtest_system=system,
+        limit=2,
+    )
+    cmd.build()
+
+    # should raise error when --limit=0 testing special case
+    with pytest.raises(BuildTestError):
+        BuildTest(
+            configuration=configuration,
+            tags=["python"],
+            rebuild=5,
+            buildtest_system=system,
+            limit=0,
+        )
+
+    # should raise error when --limit is a negative number
+    with pytest.raises(BuildTestError):
+        BuildTest(
+            configuration=configuration,
+            tags=["python"],
+            rebuild=5,
+            buildtest_system=system,
+            limit=-99,
+        )
+
+    # should raise error when --limit is not an int
+    with pytest.raises(BuildTestError):
+        BuildTest(
+            configuration=configuration,
+            tags=["python"],
+            rebuild=5,
+            buildtest_system=system,
+            limit=1.5,
+        )
+
+
+@pytest.mark.cli
+def test_invalid_buildspes():
     system = BuildTestSystem()
 
     buildspec_file = [
@@ -312,8 +346,8 @@ def test_jobdeps():
     cmd.build()
 
 
+@pytest.mark.cli
 def test_timeout():
-
     system = BuildTestSystem()
 
     buildspecs = [os.path.join(BUILDTEST_ROOT, "tutorials", "sleep.yml")]
@@ -336,8 +370,7 @@ def test_timeout():
 
 
 @pytest.mark.cli
-def test_remove_stagedi():
-
+def test_remove_stagedir():
     system = BuildTestSystem()
 
     buildspec_file = [os.path.join(BUILDTEST_ROOT, "tutorials", "python-shell.yml")]
@@ -351,7 +384,6 @@ def test_remove_stagedi():
 
 
 def test_discover():
-
     # test single buildspec file
     buildspec = [os.path.join(valid_buildspecs, "environment.yml")]
 
@@ -380,7 +412,6 @@ def test_discover():
 
 
 def test_BuildTest_type():
-
     # buildspec must be a list not a string
     buildspec = os.path.join(valid_buildspecs, "environment.yml")
     with pytest.raises(BuildTestError):

@@ -27,7 +27,6 @@ class PBSExecutor(BaseExecutor):
     def __init__(
         self, name, settings, site_configs, account=None, maxpendtime=None, timeout=None
     ):
-
         self.maxpendtime = maxpendtime
         self.account = account
         super().__init__(name, settings, site_configs, timeout=timeout)

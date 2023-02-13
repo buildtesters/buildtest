@@ -13,7 +13,6 @@ from rich.color import Color
 
 @pytest.mark.cli
 def test_report():
-
     # assert os.path.exists(BUILD_REPORT)
 
     result = Report()
@@ -44,7 +43,6 @@ def test_report():
 
 @pytest.mark.cli
 def test_report_format():
-
     # buildtest report --helpformat
     report = Report()
     report.print_format_fields()
@@ -59,7 +57,6 @@ def test_report_format():
 
 @pytest.mark.cli
 def test_report_filter():
-
     # run 'buildtest report --helpfilter'
     report = Report()
     report.print_filter_fields()
@@ -113,7 +110,6 @@ def test_report_filter():
 
 @pytest.mark.cli
 def test_report_oldest_and_latest():
-
     # buildtest report --filter tags=tutorials --latest
     Report(filter_args={"tags": "tutorials"}, latest=True)
 
@@ -126,21 +122,18 @@ def test_report_oldest_and_latest():
 
 @pytest.mark.cli
 def test_report_failure():
-
     # buildtest report --filter tags=tutorials --failure
     Report(filter_args={"tags": "tutorials"}, failure=True)
 
 
 @pytest.mark.cli
 def test_report_passed():
-
     # buildtest report --filter tags=tutorials --passed
     Report(filter_args={"tags": "tutorials"}, passed=True)
 
 
 @pytest.mark.cli
 def test_report_start_and_end():
-
     start_date = datetime.datetime.strptime("2022-06-07 00:00:00", "%Y-%m-%d %X")
     end_date = datetime.datetime.now()
 
@@ -156,7 +149,6 @@ def test_report_start_and_end():
 
 @pytest.mark.cli
 def test_invalid_filters():
-
     # run 'buildtest report --filter state=UNKNOWN --format name,state',
     # this raises error because UNKNOWN is not valid value for state field
     with pytest.raises(BuildTestError):
@@ -187,7 +179,6 @@ def test_invalid_filters():
 
 @pytest.mark.cli
 def test_invalid_report_files():
-
     tf = tempfile.NamedTemporaryFile(delete=True)
 
     # reading a report file not in JSON format will result in exception BuildTestError
@@ -314,7 +305,6 @@ def test_report_clear():
 
 @pytest.mark.cli
 def test_report_limited_rows():
-
     report = Report()
     report.print_report(count=5)
     report.print_report(terse=True, count=5)

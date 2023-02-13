@@ -29,7 +29,6 @@ def clean(configuration, yes):
 
     # request user prompt when 'buildtest clean' is specified without '-y' option. Default selection is 'y' for confirmation
     if not yes:
-
         remove_testdir = Prompt.ask(
             f"Remove Test Directory {resolved_testdir}",
             default="y",

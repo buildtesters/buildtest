@@ -42,5 +42,4 @@ def generate_tutorial_examples():
 
 
 if __name__ == "__main__":
-
     generate_tutorial_examples()

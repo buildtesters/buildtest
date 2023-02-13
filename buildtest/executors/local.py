@@ -22,7 +22,6 @@ class LocalExecutor(BaseExecutor):
     type = "local"
 
     def load(self):
-
         self.shell = shlex.split(self._settings["shell"])[0]
         shell_options = shlex.split(self._settings["shell"])[1:]
 

@@ -55,6 +55,7 @@ from rich.table import Column, Table
 
 logger = logging.getLogger(__name__)
 
+
 # Context manager that copies stdout and any exceptions to a log file
 class Tee(object):
     def __init__(self, filename):
@@ -188,7 +189,6 @@ def discover_buildspecs(
     # if user pass buildspecs to be excluded (buildtest build -x <buildspec>) then
     # discover all excluded buildspecs and remove from discovered list
     if exclude_buildspecs:
-
         # discover all excluded buildspecs, if its file add to list,
         # if its directory traverse all .yml files
         for name in exclude_buildspecs:
@@ -242,7 +242,6 @@ def print_discovered_buildspecs(buildspec_dict):
 
     # if any buildspecs removed due to -x option we print them to screen
     if buildspec_dict["excluded"]:
-
         table = Table(
             title="Excluded buildspecs", box=box.DOUBLE_EDGE, header_style="blue"
         )
@@ -254,7 +253,6 @@ def print_discovered_buildspecs(buildspec_dict):
 
     # print breakdown of buildspecs by tags
     if buildspec_dict.get("tags"):
-
         for tagname in buildspec_dict["tags"].keys():
             table = Table(
                 title=f"Buildspecs By Tag={tagname}",
@@ -268,7 +266,6 @@ def print_discovered_buildspecs(buildspec_dict):
 
     # print breakdown of buildspecs by executors
     if buildspec_dict.get("executors"):
-
         for executorname in buildspec_dict["executors"].keys():
             table = Table(
                 title=f"Buildspecs by Executor={executorname}",
@@ -319,7 +316,6 @@ def discover_buildspecs_by_tags(buildspec_cache, tagnames):
 
         for buildspecfile in buildspec_cache["buildspecs"].keys():
             for test in buildspec_cache["buildspecs"][buildspecfile].keys():
-
                 # if input tag is not of type str we skip the tag name since it is not valid
                 if not isinstance(name, str):
                     logger.warning(f"Tag: {name} is not of type 'str'")
@@ -366,7 +362,6 @@ def discover_buildspecs_by_executor(buildspec_cache, executors):
 
         for buildspecfile in buildspec_cache["buildspecs"].keys():
             for test in buildspec_cache["buildspecs"][buildspecfile].keys():
-
                 # check if executor in buildspec matches one in argument (buildtest build --executor <EXECUTOR>)
                 if name == buildspec_cache["buildspecs"][buildspecfile][test].get(
                     "executor"
@@ -500,6 +495,7 @@ class BuildTest:
         rerun=None,
         executor_type=None,
         timeout=None,
+        limit=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -531,6 +527,7 @@ class BuildTest:
             rerun (bool, optional): Rerun last successful **buildtest build** command. This is specified via ``buildtest build --rerun``. All other options will be ignored and buildtest will read buildtest options from file **BUILDTEST_RERUN_FILE**.
             executor_type (bool, optional): Filter test by executor type. This option will filter test after discovery by local or batch executors. This can be specified via ``buildtest build --exec-type``
             timeout (int, optional): Test timeout in seconds specified by ``buildtest build --timeout``
+            limit (int, optional): Limit number of tests that can be run. This option is specified by ``buildtest build --limit``
         """
 
         if buildspecs and not isinstance(buildspecs, list):
@@ -568,6 +565,12 @@ class BuildTest:
             if timeout <= 0:
                 raise BuildTestError("Timeout must be greater than 0")
 
+        if limit is not None:
+            if not isinstance(limit, int):
+                raise BuildTestError(f"{timeout} is not of type int")
+            if limit <= 0:
+                raise BuildTestError("Limit must be greater than 0")
+
         self.remove_stagedir = remove_stagedir
         self.configuration = configuration
         self.buildspecs = buildspecs
@@ -590,6 +593,7 @@ class BuildTest:
         self.numnodes = numnodes
         self.executor_type = executor_type
         self.timeout = timeout
+        self.limit = limit
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
@@ -614,7 +618,6 @@ class BuildTest:
         )
 
         if self.logdir:
-
             create_dir(self.logdir)
             self.logfile.name = os.path.join(
                 self.logdir, os.path.basename(self.logfile.name)
@@ -677,7 +680,8 @@ class BuildTest:
     def load_rerun_file(self):
         """This will load content of file BUILDTEST_RERUN_FILE that contains a dictionary of key/value pair
         that keeps track of last ``buildtest build`` command. This is used with ``buildtest build --rerun``. Upon loading
-        file we reinitalize all class variables that store argument for ``buildtest build`` options"""
+        file we reinitalize all class variables that store argument for ``buildtest build`` options
+        """
 
         if not is_file(BUILDTEST_RERUN_FILE):
             raise BuildTestError(
@@ -715,6 +719,7 @@ class BuildTest:
         self.numprocs = content["numprocs"]
         self.executor_type = content["executor_type"]
         self.timeout = content["timeout"]
+        self.limit = content["limit"]
 
     def save_rerun_file(self):
         """Record buildtest command options and save them into rerun file which is read when invoking ``buildtest build --rerun``."""
@@ -741,6 +746,7 @@ class BuildTest:
             "numnodes": self.numnodes,
             "executor_type": self.executor_type,
             "timeout": self.timeout,
+            "limit": self.limit,
         }
 
         with open(BUILDTEST_RERUN_FILE, "w") as fd:
@@ -805,6 +811,12 @@ class BuildTest:
         # if no builders found or  --stage=parse set we return from method
         if not self.builders or self.stage == "parse":
             return
+
+        if self.limit:
+            self.builders = self.builders[: self.limit]
+            console.print(
+                f"[red]Limit number of tests to {self.limit} for Building and Running. "
+            )
 
         self.build_phase()
 
@@ -894,14 +906,12 @@ class BuildTest:
         console.print(f"[red]Invalid Buildspecs: {len(self.invalid_buildspecs)}")
 
         for buildspec in valid_buildspecs:
-
             msg = f"[green]{buildspec}: VALID"
             console.print(msg)
 
         # print any skipped buildspecs if they failed to validate during build stage
         if self.invalid_buildspecs:
             for buildspec in self.invalid_buildspecs:
-
                 msg = f"[red]{buildspec}: INVALID"
                 console.print(msg)
 
@@ -1322,7 +1332,6 @@ class BuildTest:
     def print_builders(
         self, compiler_builder, spack_builder, script_builder, batch_builder
     ):
-
         """Print detected builders during build phase"""
 
         self.print_builders_by_type(script_builder, builder_type="script")
