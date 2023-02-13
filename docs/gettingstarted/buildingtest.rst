@@ -341,7 +341,7 @@ can be useful when running large number of tests and you have no idea
 how many tests will run. The ``--limit <NUM>`` option expects a positive number which will
 limit number of tests to the total limit. If there are less tests to run than the
 value specified by ``--limit``, then buildtest will run all the test. When buildtest has more
-tests to run than the value specified by ``--limitt``, then buildtest will exclude some tests.
+tests to run than the value specified by ``--limit``, then buildtest will exclude some tests.
 
 To demonstrate this feature, we will run the same command with and without **--limit** option.
 
