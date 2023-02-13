@@ -10,12 +10,12 @@ on:
 
 jobs:
   style_checks:
-    runs-on: ubuntu-  latest
-  steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-    - name: Run Shell Check
-      run: |
-        apt install shellcheck
-        shellcheck --version
-        shellcheck bin/buildtest setup.sh scripts/spack_container/*.sh
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Run Shell Check
+        run: |
+          apt install shellcheck
+          shellcheck --version
+          shellcheck bin/buildtest setup.sh scripts/spack_container/*.sh
