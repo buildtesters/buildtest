@@ -1,15 +1,13 @@
-name: regressiontest
+name: Nightly Regression Test
 
 on:
-  pull_request:
-    branches: [ devel ]
-    paths:
-      - 'buildtest/**'
-      - 'tests/**'
+ 
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
 
-  buildtest_regtest:
+  buildtest_nightly_regression_test:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
@@ -39,7 +37,7 @@ jobs:
         python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
         returncode=$?
         if [ $returncode != 0 ]; then exit $returncode; fi
-        buildtest cdash upload --site=github unittests
+        buildtest cdash upload --site=github nightly-$(date)
 
     - name: Setup tmate session
       if: ${{ failure() }}
