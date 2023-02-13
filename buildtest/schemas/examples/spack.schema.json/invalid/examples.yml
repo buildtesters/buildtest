@@ -50,7 +50,7 @@ buildspecs:
       root: /tmp/spack
       verify_spack: false
       install:
-        specs: ['m4', 'zlib' ]
+        specs: ['m4', 'zlib']
       test:
         FOO: BAR
         remove_tests: true
@@ -69,7 +69,7 @@ buildspecs:
       root: /tmp/spack
       verify_spack: false
       install:
-        specs: ['m4', 'zlib' ]
+        specs: ['m4', 'zlib']
       test:
         remove_tests: true
         run:
@@ -92,7 +92,7 @@ buildspecs:
       root: /tmp/spack
       verify_spack: false
       install:
-        specs: ['m4', 'zlib' ]
+        specs: ['m4', 'zlib']
       test:
         remove_tests: true
         run:
