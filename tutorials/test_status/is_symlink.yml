@@ -1,0 +1,10 @@
+buildspecs:
+  symlink_test:
+   type: script
+   executor: generic.local.bash
+   description: status check based on symbolic link
+   run: |
+      ln -s /tmp scratch
+   status:
+     exists:
+       - scratch
