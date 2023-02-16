@@ -822,10 +822,9 @@ def buildspec_menu(subparsers):
     )
 
     # buildtest buildspec summary
-    buildspec_summary = subparsers_buildspec.add_parser(
+    subparsers_buildspec.add_parser(
         "summary", aliases=["sm"], help="Print summary of buildspec cache"
     )
-    # buildtest buildspec summary options
     # buildtest buildspec validate
     buildspec_validate = subparsers_buildspec.add_parser(
         "validate", aliases=["val"], help="Validate buildspecs with JSON Schema"
