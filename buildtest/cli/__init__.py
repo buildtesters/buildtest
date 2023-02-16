@@ -221,6 +221,9 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         action="store_true",
         help="Print available color options in a table format.",
     )
+    parser.add_argument(
+        "-p", "--pager", action="store_true", help="Enable PAGING when viewing result"
+    )
     parser.add_argument("-r", "--report", help="Specify path to test report file")
 
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
@@ -414,9 +417,6 @@ def history_menu(subparsers):
         "--terse",
         action="store_true",
         help="Print output in machine readable format",
-    )
-    list_parser.add_argument(
-        "--pager", action="store_true", help="Enabling PAGING when viewing result"
     )
 
     query = history_subparser.add_parser(
@@ -768,9 +768,6 @@ def buildspec_menu(subparsers):
         help="Print total count of records from the table.",
     )
     buildspec_find.add_argument(
-        "--pager", action="store_true", help="Enable PAGING when viewing result"
-    )
-    buildspec_find.add_argument(
         "-r",
         "--rebuild",
         help="Rebuild buildspec cache and find all buildspecs again",
@@ -829,9 +826,6 @@ def buildspec_menu(subparsers):
         "summary", aliases=["sm"], help="Print summary of buildspec cache"
     )
     # buildtest buildspec summary options
-    buildspec_summary.add_argument(
-        "-p", "--pager", action="store_true", help="Enable PAGING when viewing result"
-    )
     # buildtest buildspec validate
     buildspec_validate = subparsers_buildspec.add_parser(
         "validate", aliases=["val"], help="Validate buildspecs with JSON Schema"
@@ -912,9 +906,6 @@ def config_menu(subparsers):
         metavar="Color Themes",
         help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themes",
         choices=list(STYLE_MAP.keys()),
-    )
-    view_parser.add_argument(
-        "-p", "--pager", action="store_true", help="Enable PAGING when viewing result"
     )
     executor_group = executors.add_mutually_exclusive_group()
 
@@ -1094,9 +1085,6 @@ def report_menu(subparsers):
         "--row-count",
         action="store_true",
         help="Print total count of records from the table.",
-    )
-    parser_report.add_argument(
-        "--pager", action="store_true", help="Enable PAGING when viewing result"
     )
     parser_report_summary.add_argument(
         "--detailed", "-d", action="store_true", help="Enable a more detailed report"
