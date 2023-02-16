@@ -315,6 +315,7 @@ variables in the script that is mapped to each compiler
 - **BUILDTEST_FC**: Path to Fortran compiler
 - **BUILDTEST_CFLAGS**: C compiler flags
 - **BUILDTEST_CXXFLAGS**: C++ compiler flags
+- **BUILDTEST_FFLAGS**: Fortran compiler flags
 - **BUILDTEST_CPPFLAGS**: C++ Pre Preprocessor flags
 - **BUILDTEST_LDFLAGS**: Linker Flags
 
