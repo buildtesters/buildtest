@@ -57,6 +57,7 @@ from buildtest.utils.file import (
     resolve_path,
 )
 from buildtest.utils.tools import deep_get
+from rich.color import ANSI_COLOR_NAMES
 from rich.traceback import install
 
 
@@ -97,7 +98,7 @@ def main():
 
     # print the available color options in a table format if buildtest --helpcolor is specified
     if args.helpcolor:
-        print_available_colors()
+        print_available_colors(ANSI_COLOR_NAMES)
         return
 
     # print full path to the lastlog file if buildtest --logpath is specified
