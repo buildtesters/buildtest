@@ -6,5 +6,5 @@ buildspecs:
    run: |
       ln -s /tmp scratch
    status:
-     exists:
+     is_symlink:
        - scratch

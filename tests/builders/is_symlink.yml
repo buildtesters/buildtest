@@ -1,10 +1,1 @@
-buildspecs:
-  symlink_test:
-   type: script
-   executor: generic.local.bash
-   description: status check based on symbolic link
-   run: |
-      ln -s /tmp scratch
-   status:
-     exists:
-       - scratch
+/Users/pratham/Documents/buildtest/tutorials/test_status/is_symlink.yml
