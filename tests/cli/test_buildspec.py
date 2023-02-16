@@ -250,11 +250,11 @@ def test_edit_file():
 
 @pytest.mark.cli
 def test_buildspec_find_filter():
-    # testing buildtest buildspec find --filter tags=fail
+    # buildtest buildspec find --filter tags=fail
     cache = BuildspecCache(filterfields={"tags": "fail"}, configuration=configuration)
     cache.print_buildspecs()
 
-    # testing buildtest buildspec find --filter buildspec=$BUILDTEST_ROOT/tutorials/hello_world.yml
+    # buildtest buildspec find --filter buildspec=$BUILDTEST_ROOT/tutorials/hello_world.yml
     cache = BuildspecCache(
         filterfields={
             "buildspec": os.path.join(BUILDTEST_ROOT, "tutorials", "hello_world.yml")
@@ -263,7 +263,7 @@ def test_buildspec_find_filter():
     )
     cache.print_buildspecs()
 
-    # testing buildtest buildspec find --filter type=script,executor=generic.local.sh,tags=fail
+    # buildtest buildspec find --filter type=script,executor=generic.local.sh,tags=fail
     cache = BuildspecCache(
         filterfields={
             "type": "script",
@@ -291,7 +291,7 @@ def test_buildspec_find_filter():
         # if we specify a directory path for buildspec filter this will raise an exception.
         BuildspecCache(filterfields={"buildspec": tf.name}, configuration=configuration)
 
-    # testing buildtest buildspec find --filter key1=val1,key2=val2
+    # buildtest buildspec find --filter key1=val1,key2=val2
     with pytest.raises(BuildTestError):
         cache = BuildspecCache(
             filterfields={"key1": "val1", "key2": "val2"}, configuration=configuration
@@ -301,7 +301,7 @@ def test_buildspec_find_filter():
 
 @pytest.mark.cli
 def test_buildspec_find_format():
-    # testing buildtest buildspec find --format name,type,tags,executor,description,buildspec
+    # buildtest buildspec find --format name,type,tags,executor,description,buildspec
     cache = BuildspecCache(
         formatfields="name,type,tags,executor,description,buildspec",
         configuration=configuration,
@@ -310,7 +310,7 @@ def test_buildspec_find_format():
 
     # Any invalid format fields will raise an exception of type BuildTestError
     with pytest.raises(BuildTestError):
-        # testing buildtest buildspec find --format field1
+        # buildtest buildspec find --format field1
         cache = BuildspecCache(formatfields="field1", configuration=configuration)
         cache.print_buildspecs()
 
@@ -321,10 +321,10 @@ def test_buildspec_find_roots():
         os.path.join(BUILDTEST_ROOT, "tests", "buildsystem"),
         os.path.join(BUILDTEST_ROOT, "tutorials"),
     ]
-    # testing buildtest buildspec find --root $BUILDTEST_ROOT/tests/buildsystem --root $BUILDTEST_ROOT/tutorials
+    # buildtest buildspec find --root $BUILDTEST_ROOT/tests/buildsystem --root $BUILDTEST_ROOT/tutorials
     BuildspecCache(roots=root_buildspecs, configuration=configuration)
 
-    # running buildtest buildspec find --root $BUILDTEST_ROOT/README.rst --root $BUILDTEST_ROOT/environment.yml
+    # buildtest buildspec find --root $BUILDTEST_ROOT/README.rst --root $BUILDTEST_ROOT/environment.yml
     BuildspecCache(
         roots=[
             os.path.join(BUILDTEST_ROOT, "README.rst"),
@@ -336,11 +336,11 @@ def test_buildspec_find_roots():
 
 @pytest.mark.cli
 def test_buildspec_summary():
-    # test buildtest buildspec summary
+    # buildtest buildspec summary
     summarize_buildspec_cache(
         configuration=configuration, pager=False, color=Color.default().name
     )
-    # test buildtest --pager buildspec summary
+    # buildtest --pager buildspec summary
     summarize_buildspec_cache(configuration=configuration, pager=True)
 
 
@@ -350,10 +350,10 @@ def test_buildspec_show():
 
     test_name = cache.get_random_tests(num_items=1)
 
-    # run buildtest buildspec show <test>
+    # buildtest buildspec show <test>
     show_buildspecs(test_name, configuration)
 
-    # run buildtest buildspec <test> show --theme monokai
+    # buildtest buildspec <test> show --theme monokai
     show_buildspecs(test_name, configuration, theme="monokai")
 
     # testing invalid buildspec name, it should not raise exception
@@ -377,7 +377,7 @@ def test_buildspec_show_fail():
     report = Report()
     # get a random failed test from report file to be used for showing content of buildspec file
     fail_tests = random.sample(report.get_test_by_state(state="FAIL"), 1)
-    # running buildtest buildspec show-fail <test> --theme monokai
+    # buildtest buildspec show-fail <test> --theme monokai
     show_failed_buildspecs(
         configuration=configuration, test_names=fail_tests, theme="monokai"
     )
