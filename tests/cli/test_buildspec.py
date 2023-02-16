@@ -95,19 +95,19 @@ def test_func_buildspec_find():
     # buildtest buildspec find --group-by-tags
     cache.print_by_tags()
 
-    # implements buildtest buildspec find --helpfilter
+    # buildtest buildspec find --helpfilter
     cache.print_filter_fields()
 
-    # implements buildtest buildspec find --helpformat
+    # buildtest buildspec find --helpformat
     cache.print_format_fields()
 
-    # implements buildtest buildspec find --filterfields
+    # buildtest buildspec find --filterfields
     cache.print_raw_filter_fields()
 
-    # implements buildtest buildspec find --formatfields
+    # buildtest buildspec find --formatfields
     cache.print_raw_format_fields()
 
-    # buildtest buildspec find --pager
+    # buildtest --pager buildspec find
     cache = BuildspecCache(configuration=configuration, pager=True)
     cache.print_tags()
     cache.print_buildspecfiles()
@@ -134,17 +134,28 @@ def test_func_buildspec_find():
     # buildtest buildspec find --row-count --executors
     cache.print_executors(row_count=True)
 
-    # test buildspec cache with color 'blue'
+    # test all commands with color 'blue'
+    # buildtest --color blue buildspec find --rebuild
     cache = BuildspecCache(rebuild=True, configuration=configuration, color="blue")
+    # buildtest --color blue buildspec find
     cache.print_buildspecs()
+    # buildtest --color blue buildspec find -b
     cache.print_buildspecfiles()
+    # buildtest --color blue buildspec find -e
     cache.print_executors()
+    # buildtest --color blue buildspec find -t
     cache.print_tags()
+    # buildtest --color blue buildspec find --group-by-executor
     cache.print_by_executors()
+    # buildtest --color blue buildspec find --group-by-tags
     cache.print_by_tags()
+    # buildtest --color blue buildspec find --helpfilter
     cache.print_filter_fields()
+    # buildtest --color blue buildspec find --helpformat
     cache.print_format_fields()
+    # buildtest --color blue buildspec find --filterfields
     cache.print_raw_filter_fields()
+    # buildtest --color blue buildspec find --formatfields
     cache.print_raw_format_fields()
 
 
@@ -329,6 +340,7 @@ def test_buildspec_summary():
     summarize_buildspec_cache(
         configuration=configuration, pager=False, color=Color.default().name
     )
+    # test buildtest --pager buildspec summary
     summarize_buildspec_cache(configuration=configuration, pager=True)
 
 

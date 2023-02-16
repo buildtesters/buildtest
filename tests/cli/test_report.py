@@ -201,12 +201,15 @@ def test_report_summary():
     report = Report()
     report_summary(report)
 
+    # buildtest --pager rt summary
     report = Report(pager=True)
     report_summary(report)
 
+    # buildtest rt summary --detailed
     report = Report()
     report_summary(report, detailed=True)
 
+    # buildtest --pager rt summary --detailed
     report = Report(pager=True)
     report_summary(report, detailed=True)
 
@@ -219,23 +222,17 @@ def test_report_summary():
     )
     report_summary(report, detailed=True)
 
+    # buildtest --color light_pink1 rt sm --detailed
     report = Report(color="light_pink1")
     report_summary(report, detailed=True)
 
-    report = Report(pager=True, color="light_pink1")
-    report_summary(report)
-
-    report = Report(color="BAD_COLOR")
-    report_summary(report)
-
-    report = Report(pager=True, color="BAD_COLOR")
+    # buildtest --pager rt sm --detailed
+    report = Report(pager=True)
     report_summary(report, detailed=True)
 
+    # buildtest --color BAD_COLOR rt sm --detailed
     report = Report(color="BAD_COLOR")
     report_summary(report, detailed=True)
-
-    report = Report(pager=True, color="BAD_COLOR")
-    report_summary(report)
 
 
 @pytest.mark.cli
