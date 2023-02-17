@@ -5,6 +5,26 @@ from buildtest.defaults import BUILDTEST_ROOT, console
 from buildtest.utils.command import BuildTestCommand
 
 
+def run_command(cmd, msg):
+    """This method is a wrapper to BuildTestCommand used with running black, isort, and pyflakes during style check
+
+    Args:
+        cmd (str): Name of command to run
+        msg (str): Message printed during style check
+    """
+    console.print(f"{msg}: {cmd}")
+    result = BuildTestCommand(cmd)
+    out, err = result.execute()
+    if result.returncode() == 0:
+        console.print(f"[green]{msg} PASSED")
+    else:
+        console.print(f"[red]{msg} FAILED")
+    console.rule(f"{msg} output message")
+    console.print("".join(out))
+    console.rule(f"{msg} error message")
+    console.print("".join(err))
+
+
 def run_black(source_files, black_opts):
     """This method will run `black <https://black.readthedocs.io/>`_ check given a set of source files and black options.
     If black is not available we will return immediately otherwise we run black checks and print output and error message
@@ -18,22 +38,8 @@ def run_black(source_files, black_opts):
     if not shutil.which("black"):
         return
 
-    source_files = " ".join(source_files)
-    black_cmd = f"black {black_opts} {source_files}"
-    console.print(f"Running black check: {black_cmd}")
-    cmd = BuildTestCommand(black_cmd)
-    out, err = cmd.execute()
-
-    if cmd.returncode() == 0:
-        console.print("[green]black style check PASSED")
-    else:
-        console.print("[red]black style check FAILED")
-
-    console.rule("black output message")
-    console.print("".join(out))
-
-    console.rule("black error message")
-    console.print("".join(err))
+    cmd = f"black {black_opts} {' '.join(source_files)}"
+    run_command(cmd, "Running black check")
 
 
 def run_isort(source_files, isort_opts):
@@ -48,24 +54,9 @@ def run_isort(source_files, isort_opts):
     if not shutil.which("isort"):
         return
 
-    source_files = " ".join(source_files)
-
-    isort_cmd = f"isort --settings-path {os.path.join(BUILDTEST_ROOT, '.isort.cfg')} {isort_opts} {source_files}"
-    console.print(f"Running isort check: {isort_cmd}")
-
-    cmd = BuildTestCommand(isort_cmd)
-    out, err = cmd.execute()
-
-    if cmd.returncode() == 0:
-        console.print("[green]isort style check PASSED")
-    else:
-        console.print("[red]Black style check FAILED")
-
-    console.rule("isort output message")
-    console.print("".join(out))
-
-    console.rule("isort error message")
-    console.print("".join(err))
+    # source_files = " ".join(source_files)
+    cmd = f"isort --settings-path {os.path.join(BUILDTEST_ROOT, '.isort.cfg')} {isort_opts} {' '.join(source_files)}"
+    run_command(cmd, "Running isort check")
 
 
 def run_pyflakes(source_files):
@@ -79,24 +70,8 @@ def run_pyflakes(source_files):
     if not shutil.which("pyflakes"):
         return
 
-    source_files = " ".join(source_files)
-
-    pyflakes_cmd = f"pyflakes {source_files}"
-    console.print(f"Running pyflakes check: {pyflakes_cmd}")
-
-    cmd = BuildTestCommand(pyflakes_cmd)
-    out, err = cmd.execute()
-
-    if cmd.returncode() == 0:
-        console.print("[green]pyflakes style check PASSED")
-    else:
-        console.print("[red]pyflakes style check FAILED")
-
-    console.rule("pyflakes output message")
-    console.print("".join(out))
-
-    console.rule("pyflakes error message")
-    console.print("".join(err))
+    cmd = f"pyflakes {' '.join(source_files)}"
+    run_command(cmd, "Running pyflakes check")
 
 
 def run_style_checks(no_black, no_isort, no_pyflakes, apply_stylechecks):

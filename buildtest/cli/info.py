@@ -66,20 +66,19 @@ def buildtest_info(configuration, buildtest_system):
     )
     console.print(Panel.fit(system_details, title="system details"), justify="left")
 
-    cmd = BuildTestCommand("black --version")
+    print_version_info("black")
+    print_version_info("pyflakes")
+    print_version_info("isort")
+
+
+def print_version_info(command_name):
+    """Print version information for any command by running --version
+
+    Args:
+        command_name (str): Name of command to run with --version
+    """
+    cmd = BuildTestCommand(f"{command_name} --version")
     cmd.execute()
 
-    console.print(f"black: {shutil.which('black')}")
-    console.print(f"black version: {''.join(cmd.get_output())}")
-
-    cmd = BuildTestCommand("pyflakes --version")
-    cmd.execute()
-
-    console.print(f"pyflakes: {shutil.which('pyflakes')}")
-    console.print(f"pyflakes version: {''.join(cmd.get_output())}")
-
-    cmd = BuildTestCommand("isort --version")
-    cmd.execute()
-
-    console.print(f"isort: {shutil.which('isort')}")
-    console.print(f"{' '.join(cmd.get_output())}")
+    console.print(f"{command_name}: {shutil.which(command_name)}")
+    console.print(f"{command_name} version: {''.join(cmd.get_output())}")
