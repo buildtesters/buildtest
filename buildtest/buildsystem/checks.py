@@ -161,23 +161,30 @@ def is_symlink_check(builder):
     Returns:
         bool: A boolean for is_symlink status check
     """
-    assert_exists = all(os.path.islink(file) for file in builder.status["is_symlink"])
+    assert_exists = []
     console.print(
         f"[blue]{builder}[/]: Check all items:  {builder.status['is_symlink']}  for symbolic links"
     )
     for sym_link in builder.status["is_symlink"]:
+
+        expanded_sym_link = os.path.expandvars(sym_link)
+        expanded_sym_link = os.path.expanduser(expanded_sym_link)
         resolved_sym_link = resolve_path(sym_link)
-        if os.path.islink(sym_link):
+
+        if os.path.islink(expanded_sym_link) and resolved_sym_link:
             console.print(
                 f"[blue]{builder}[/]: item: {sym_link} is a symbolic link to {resolved_sym_link}"
             )
+            assert_exists.append(True)
         else:
             console.print(
-                f"[blue]{builder}[/]: item: {sym_link} is not a symbolic link"
+                f"[blue]{builder}[/]: item: {sym_link} is broken or not a symbolic link"
             )
+            assert_exists.append(False)
 
-    console.print(f"[blue]{builder}[/]: Symlink Check: {assert_exists}")
-    return assert_exists
+    bool_check = all(assert_exists)
+    console.print(f"[blue]{builder}[/]: Symlink Check: {bool_check}")
+    return bool_check
 
 
 def exists_check(builder):
