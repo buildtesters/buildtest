@@ -1,0 +1,40 @@
+buildspecs:
+  regex_on_multiple_files:
+    type: script
+    executor: generic.local.bash
+    description: Test regex on multiple files
+    run: |
+      echo "Hello" > hello.txt
+      buildtest --help > buildtest_help.txt
+    status:
+      file_regex:
+        - file: hello.txt
+          exp: '^(Hello)$'
+        - file: buildtest_help.txt
+          exp: '^(usage: buildtest)'
+
+  regex_on_directory_not_supported:
+    type: script
+    executor: generic.local.bash
+    description: Test regex on directory is not supported
+    run: |
+      mkdir -p hello
+      echo "Hello" > hello/hello.txt
+    status:
+      file_regex:
+        - file: hello
+          exp: '^(Hello)$'
+
+  file_expansion_supported:
+    type: script
+    executor: generic.local.bash
+    description: Test regex with variable and shell expansion
+    run: |
+      echo "Hello" > $BUILDTEST_ROOT/hello.txt
+      echo "Hello" > $HOME/hello.txt
+    status:
+      file_regex:
+        - file: $BUILDTEST_ROOT/hello.txt
+          exp: '^(Hello)$'
+        - file: ~/hello.txt
+          exp: '^(Hello)$'

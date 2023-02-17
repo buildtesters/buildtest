@@ -27,6 +27,7 @@ from buildtest.buildsystem.checks import (
     assert_range_check,
     contains_check,
     exists_check,
+    file_regex_check,
     is_dir_check,
     is_file_check,
     notcontains_check,
@@ -972,6 +973,7 @@ class BuilderBase(ABC):
             assert_exists = False
             assert_is_dir = False
             assert_is_file = False
+            file_regex_match = False
 
             # returncode_match is boolean to check if reference returncode matches return code from test
             returncode_match = returncode_check(self)
@@ -985,6 +987,9 @@ class BuilderBase(ABC):
             self.metadata["check"]["regex"] = regex_match
             self.metadata["check"]["runtime"] = runtime_match
             self.metadata["check"]["returncode"] = returncode_match
+
+            if self.status.get("file_regex"):
+                file_regex_match = file_regex_check(self)
 
             if self.status.get("slurm_job_state") and isinstance(self.job, SlurmJob):
                 slurm_job_state_match = (
@@ -1038,6 +1043,7 @@ class BuilderBase(ABC):
                 [
                     returncode_match,
                     regex_match,
+                    file_regex_match,
                     slurm_job_state_match,
                     pbs_job_state_match,
                     lsf_job_state_match,

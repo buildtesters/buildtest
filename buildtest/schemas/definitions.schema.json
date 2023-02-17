@@ -40,6 +40,28 @@
         }
       ]
     },
+    "file_regex": {
+      "type": "array",
+      "description": "Specify a list of regular expressions to match files in the current working directory. The regular expression is matched using ``re.search`` python module. ",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "file",
+          "exp"
+        ],
+        "properties": {
+          "file": {
+              "type": "string",
+              "description": "Specify a file name to match with regular expression"
+          },
+          "exp": {
+              "type": "string",
+              "description": "Specify a regular expression to run on the selected file name"
+          }
+        }
+      }
+    },
     "regex": {
       "type": "object",
       "description": "Perform regular expression search using ``re.search`` python module on stdout/stderr stream for reporting if test ``PASS``. ",
@@ -200,6 +222,11 @@
           "$ref": "#/definitions/regex",
           "description": "Determine state (PASS/FAIL) of test based on regular expression on output or error stream"
         },
+        "file_regex": {
+          "$ref": "#/definitions/file_regex",
+          "description": "Perform a regular expression search on a list of arbitrary files, if expression matches for any file buildtest will report as ``PASS``. This field is useful for checking output of a test that is not captured in stdout or stderr. "
+        },
+
         "runtime": {
           "type": "object",
           "description": "The runtime section will pass test based on min and max values and compare with actual runtime. ",
