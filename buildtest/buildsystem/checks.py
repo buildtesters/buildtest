@@ -3,7 +3,7 @@ import os.path
 import re
 
 from buildtest.defaults import console
-from buildtest.utils.file import is_dir, is_file, resolve_path
+from buildtest.utils.file import is_dir, is_file, is_symlink, resolve_path
 
 logger = logging.getLogger(__name__)
 
@@ -167,13 +167,9 @@ def is_symlink_check(builder):
     )
     for sym_link in builder.status["is_symlink"]:
 
-        expanded_sym_link = os.path.expandvars(sym_link)
-        expanded_sym_link = os.path.expanduser(expanded_sym_link)
-        resolved_sym_link = resolve_path(sym_link)
-
-        if os.path.islink(expanded_sym_link) and resolved_sym_link:
+        if is_symlink(sym_link):
             console.print(
-                f"[blue]{builder}[/]: item: {sym_link} is a symbolic link to {resolved_sym_link}"
+                f"[blue]{builder}[/]: item: {sym_link} is a symbolic link to {resolve_path(sym_link)}"
             )
             assert_exists.append(True)
         else:
