@@ -57,26 +57,26 @@ def is_dir(dirname):
     return os.path.isdir(dirname)
 
 
-def is_symlink(sym_link):
+def is_symlink(filename):
     """Check if the given link is a symlink and return ``True``, if it is not a symlink or the symlink is broken return ``False``.
 
     Args:
-        sym_link (str): input link to check.
+        filename (str): Input filename to check if its a symbolic link
 
     Returns:
-        bool: True if input link is a symlink and is not broken otherwise return False.
+        bool: True if filename is a symbolic link otherwise return False if its not a symbolic link or broken link
     """
 
     # apply shell expansion  when file includes something like $HOME/example
-    expanded_sym_link = os.path.expandvars(sym_link)
+    expanded_filepath = os.path.expandvars(filename)
 
     # apply user expansion when file includes something like  ~/example
-    expanded_sym_link = os.path.expanduser(expanded_sym_link)
+    expanded_filepath = os.path.expanduser(expanded_filepath)
 
     # resolve path will return canonical path eliminating any symbolic links encountered
-    resolved_sym_link = resolve_path(sym_link)
+    resolved_sym_link = resolve_path(filename)
 
-    return os.path.islink(expanded_sym_link) and resolved_sym_link
+    return os.path.islink(expanded_filepath) and resolved_sym_link
 
 
 def walk_tree(root_dir, ext=None):

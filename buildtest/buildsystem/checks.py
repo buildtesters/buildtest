@@ -169,12 +169,12 @@ def is_symlink_check(builder):
 
         if is_symlink(sym_link):
             console.print(
-                f"[blue]{builder}[/]: item: {sym_link} is a symbolic link to {resolve_path(sym_link)}"
+                f"[blue]{builder}[/]: {sym_link} is a symbolic link to {resolve_path(sym_link)}"
             )
             assert_exists.append(True)
         else:
             console.print(
-                f"[blue]{builder}[/]: item: {sym_link} is broken or not a symbolic link"
+                f"[blue]{builder}[/]: {sym_link} is broken or not a symbolic link"
             )
             assert_exists.append(False)
 
