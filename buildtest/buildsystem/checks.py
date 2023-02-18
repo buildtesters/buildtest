@@ -165,16 +165,16 @@ def is_symlink_check(builder):
     console.print(
         f"[blue]{builder}[/]: Check all items:  {builder.status['is_symlink']}  for symbolic links"
     )
-    for sym_link in builder.status["is_symlink"]:
+    for filename in builder.status["is_symlink"]:
 
-        if is_symlink(sym_link):
+        if is_symlink(filename):
             console.print(
-                f"[blue]{builder}[/]: {sym_link} is a symbolic link to {resolve_path(sym_link)}"
+                f"[blue]{builder}[/]: {filename} is a symbolic link to {resolve_path(filename)}"
             )
             assert_exists.append(True)
         else:
             console.print(
-                f"[blue]{builder}[/]: {sym_link} is broken or not a symbolic link"
+                f"[blue]{builder}[/]: {filename} is broken or not a symbolic link"
             )
             assert_exists.append(False)
 

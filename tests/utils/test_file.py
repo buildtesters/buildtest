@@ -11,6 +11,7 @@ from buildtest.utils.file import (
     create_dir,
     is_dir,
     is_file,
+    is_symlink,
     load_json,
     read_file,
     remove_file,
@@ -33,6 +34,38 @@ def test_checking_file():
     file_name = str(uuid.uuid4())
     assert not is_file(file_name)
     assert is_file("/bin/bash")
+
+
+@pytest.mark.utility
+def test_is_symlink():
+    # Target path of the symbolic link
+    link_target = os.path.join("$HOME", "test_dir")
+    # creating directory
+    create_dir(link_target)
+
+    # Symbolic link path
+    link_path = os.path.join("$HOME", "test_dir_symlink")
+
+    # Create symbolic link
+    os.symlink(resolve_path(link_target), os.path.expandvars(link_path))
+
+    # test for shell expansion
+    assert is_symlink(link_path)
+
+    # test for user expansion
+    assert is_symlink("~/test_dir_symlink")
+
+    # test when link is not a symbolic link
+    assert not is_symlink(link_target)
+
+    # delete the target directory
+    os.rmdir(resolve_path(link_target))
+
+    # test for broken symbolic link
+    assert not is_symlink(link_path)
+
+    # remove the symbolic link path
+    os.remove(os.path.expandvars(link_path))
 
 
 @pytest.mark.utility
