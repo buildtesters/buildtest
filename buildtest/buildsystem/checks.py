@@ -1,5 +1,4 @@
 import logging
-import os.path
 import re
 
 from buildtest.defaults import console
