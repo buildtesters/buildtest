@@ -329,15 +329,15 @@ In this example, we have three tests that make use of ``file_regex`` property. T
 on multiple file names. The second test will attempt to check on a directory name which is not supported since regular expression must
 be applied to file name. The third test will show that variable expansion and environment variable expansion is supported.
 
-.. literalinclude:: ../tutorials/test_status/file_regex.yml
+.. literalinclude:: ../tutorials/test_status/regex_on_filename.yml
    :language: yaml
    :emphasize-lines: 9-14,23-26,35-40
 
 We can build this test by running the following command:
 
-.. dropdown:: ``buildtest build -b tutorials/test_status/file_regex.yml``
+.. dropdown:: ``buildtest build -b tutorials/test_status/regex_on_filename.yml``
 
-   .. command-output:: buildtest build -b tutorials/test_status/file_regex.yml
+   .. command-output:: buildtest build -b tutorials/test_status/regex_on_filename.yml
 
 
 .. _runtime:
