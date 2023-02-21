@@ -57,6 +57,28 @@ def is_dir(dirname):
     return os.path.isdir(dirname)
 
 
+def is_symlink(filename):
+    """Check if the given link is a symlink and return ``True``, if it is not a symlink or the symlink is broken return ``False``.
+
+    Args:
+        filename (str): Input filename to check if its a symbolic link
+
+    Returns:
+        bool: True if filename is a symbolic link otherwise return False if its not a symbolic link or broken link
+    """
+
+    # apply shell expansion  when file includes something like $HOME/example
+    expanded_filepath = os.path.expandvars(filename)
+
+    # apply user expansion when file includes something like  ~/example
+    expanded_filepath = os.path.expanduser(expanded_filepath)
+
+    # resolve path will return canonical path eliminating any symbolic links encountered
+    resolved_sym_link = resolve_path(filename)
+
+    return os.path.islink(expanded_filepath) and resolved_sym_link
+
+
 def walk_tree(root_dir, ext=None):
     """This method will traverse a directory tree and return list of files
     based on extension type. This method invokes :func:`is_dir` to check if directory

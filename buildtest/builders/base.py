@@ -30,6 +30,7 @@ from buildtest.buildsystem.checks import (
     file_regex_check,
     is_dir_check,
     is_file_check,
+    is_symlink_check,
     notcontains_check,
     regex_check,
     returncode_check,
@@ -970,6 +971,7 @@ class BuilderBase(ABC):
             assert_range_match = False
             assert_contains_match = False
             assert_notcontains_match = False
+            assert_is_symlink = False
             assert_exists = False
             assert_is_dir = False
             assert_is_file = False
@@ -1029,6 +1031,9 @@ class BuilderBase(ABC):
             if self.status.get("not_contains"):
                 assert_notcontains_match = notcontains_check(self)
 
+            if self.status.get("is_symlink"):
+                assert_is_symlink = is_symlink_check(builder=self)
+
             if self.status.get("exists"):
                 assert_exists = exists_check(builder=self)
 
@@ -1057,6 +1062,7 @@ class BuilderBase(ABC):
                     assert_range_match,
                     assert_contains_match,
                     assert_notcontains_match,
+                    assert_is_symlink,
                     assert_exists,
                     assert_is_dir,
                     assert_is_file,

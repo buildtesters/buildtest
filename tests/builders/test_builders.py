@@ -85,6 +85,15 @@ def test_assert_range():
     cmd.build()
 
 
+def test_assert_is_symlink():
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "is_symlink.yml")],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()
+
+
 def test_assert_exists():
     cmd = BuildTest(
         buildspecs=[os.path.join(here, "exists.yml")],
