@@ -50,7 +50,7 @@ def test_is_symlink():
     os.symlink(link_target.name, link_path.name)
 
     # get filename from the path
-    filename = os.path.split(link_path.name)[-1]
+    filename = os.path.basename(link_path.name)
 
     # test for shell expansion
     assert is_symlink(os.path.join("$HOME", filename))
