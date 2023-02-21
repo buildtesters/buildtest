@@ -454,10 +454,9 @@ Passing test based on Symbolic Link
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 buildtest can configure PASS/FAIL of test based on the status of symbolic link. This can be useful if your test will create a symbolic link to a file or directory and 
-will pass if the symbolic link is not broken.  
+test will pass if the symbolic link is present.  
 
-You can use the ``is_symlink`` property which expects a list of values that are checked for symbolic links.
-In the example below, the test will pass as all the values are valid symbolic links and are not broken. Note that variable and shell expansion
+You can use the ``is_symlink`` property which expects a list of values that are checked for symbolic links. In the example below, the test will pass as all the values are valid symbolic links and are not broken. Note that variable and shell expansion
 is supported.
 
 .. literalinclude:: ../tutorials/test_status/is_symlink.yml
