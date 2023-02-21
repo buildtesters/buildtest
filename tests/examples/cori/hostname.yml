@@ -5,4 +5,3 @@ buildspecs:
     description: "Run hostname via KNL debug queue"
     sbatch: ["-t 5", "-n 1"]
     run: hostname
-
