@@ -562,3 +562,16 @@ buildspecs:
         - /tmp
       is_file:
         - $HOME/.bashrc
+
+  is_symlink_example:
+    type: script
+    executor: generic.local.bash
+    description: status check based on symbolic link
+    run: |
+        ln -s /tmp scratch
+        ln -s $HOME/.bash_profile $HOME/bash_profile
+    status:
+      is_symlink:
+        - scratch
+        - $HOME/bash_profile
+        - ~/bash_profile
