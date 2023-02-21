@@ -102,7 +102,7 @@ buildspecs:
     description: The returncode must be an int and not a number
     run: exit 1
     status:
-      returncode:  1.01
+      returncode: 1.01
 
   non_int_returncodes_list:
     type: script
@@ -110,7 +110,7 @@ buildspecs:
     description: The returncode must be a list of integers and no numbers
     run: exit 1
     status:
-      returncode:  [1, 2.230]
+      returncode: [1, 2.230]
 
   invalid_shell_type:
     type: script
@@ -151,7 +151,7 @@ buildspecs:
     type: script
     executor: generic.local.bash
     description: invalid tag value must be all string items
-    tags: ["network", 400 ]
+    tags: ["network", 400]
     run: hostname
 
   additionalProperties_test:
@@ -165,7 +165,7 @@ buildspecs:
     type: script
     executor: generic.local.bash
     description: test additional properties in status object. This is not allowed
-    sbatch: [ "-n 2", "-q normal", "-t 10"]
+    sbatch: ["-n 2", "-q normal", "-t 10"]
     run: hostname
     status:
       slurm_job_state: "COMPLETED"
@@ -271,4 +271,4 @@ buildspecs:
     description: this test will fail validation, because item must be a string
     run: mkdir -p 1
     status:
-      exists: [ 1 ]
+      exists: [1]

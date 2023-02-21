@@ -2,7 +2,7 @@ name: regressiontest
 
 on:
   pull_request:
-    branches: [ devel ]
+    branches: [devel]
     paths:
       - 'buildtest/**'
       - 'tests/**'

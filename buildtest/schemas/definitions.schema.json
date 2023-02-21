@@ -437,6 +437,10 @@
             }
           }
         },
+        "is_symlink": {
+          "description": "Check for list of files or directory paths that are symbolic links",
+          "$ref": "#/definitions/list_of_strings"
+        },
         "exists": {
           "description": "Check for list of file or directory path for existences using os.path.exists",
           "$ref": "#/definitions/list_of_strings"

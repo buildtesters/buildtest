@@ -30,7 +30,7 @@ buildspecs:
     description: declaring variables
     vars:
       First: Bob
-      Last:  Bill
+      Last: Bill
     run: |
       echo "First:" $First
       echo "Last:" $Last
@@ -165,7 +165,6 @@ buildspecs:
       regex:
         stream: stdout
         exp: "^hello"
-
 
   status_runtime_min_max:
     type: script
@@ -549,7 +548,7 @@ buildspecs:
     description: this test will pass
     run: mkdir -p 1
     status:
-      exists: [ '1' ]
+      exists: ['1']
 
   combined_file_and_dir_checks:
     type: script
@@ -562,3 +561,16 @@ buildspecs:
         - /tmp
       is_file:
         - $HOME/.bashrc
+
+  is_symlink_example:
+    type: script
+    executor: generic.local.bash
+    description: status check based on symbolic link
+    run: |
+        ln -s /tmp scratch
+        ln -s $HOME/.bash_profile $HOME/bash_profile
+    status:
+      is_symlink:
+        - scratch
+        - $HOME/bash_profile
+        - ~/bash_profile

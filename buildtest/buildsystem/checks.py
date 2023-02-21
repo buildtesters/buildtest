@@ -2,7 +2,7 @@ import logging
 import re
 
 from buildtest.defaults import console
-from buildtest.utils.file import is_dir, is_file, resolve_path
+from buildtest.utils.file import is_dir, is_file, is_symlink, resolve_path
 
 logger = logging.getLogger(__name__)
 
@@ -149,6 +149,37 @@ def regex_check(builder):
     console.print(f"[blue]{builder}[/]: Regular Expression Match - [green]Success![/]")
 
     return True
+
+
+def is_symlink_check(builder):
+    """This method will perform symlink status check for ``is_symlink`` property. Each item is tested for symblolic link
+    and returns a boolean to inform if all items are symbolic links or not.
+
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+    Returns:
+        bool: A boolean for is_symlink status check
+    """
+    assert_exists = []
+    console.print(
+        f"[blue]{builder}[/]: Check all items:  {builder.status['is_symlink']}  for symbolic links"
+    )
+    for filename in builder.status["is_symlink"]:
+
+        if is_symlink(filename):
+            console.print(
+                f"[blue]{builder}[/]: {filename} is a symbolic link to {resolve_path(filename)}"
+            )
+            assert_exists.append(True)
+        else:
+            console.print(
+                f"[blue]{builder}[/]: {filename} is broken or not a symbolic link"
+            )
+            assert_exists.append(False)
+
+    bool_check = all(assert_exists)
+    console.print(f"[blue]{builder}[/]: Symlink Check: {bool_check}")
+    return bool_check
 
 
 def exists_check(builder):

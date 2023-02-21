@@ -244,6 +244,7 @@ Currently, we can match state based on the following:
   - :ref:`Performance Check <perf_checks>`
   - :ref:`Explicit Test Status <explicit_status>`
   - :ref:`File Checks <file_checks>`
+  - :ref:`Symbolic Link Check <symlink_check>`
 
 .. _returncode:
 
@@ -446,6 +447,27 @@ Let's build the test and see the output.
 .. dropdown:: ``buildtest build -b tutorials/test_status/file_and_dir_check.yml``
 
    .. command-output:: buildtest build -b tutorials/test_status/file_and_dir_check.yml
+
+.. _symlink_check:
+
+Passing test based on Symbolic Link
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+buildtest can configure PASS/FAIL of test based on the status of symbolic link. This can be useful if your test will create a symbolic link to a file or directory and 
+test will pass if the symbolic link is present.  
+
+You can use the ``is_symlink`` property which expects a list of values that are checked for symbolic links. In the example below, the test will pass as all the values are valid symbolic links and are not broken. Note that variable and shell expansion
+is supported.
+
+.. literalinclude:: ../tutorials/test_status/is_symlink.yml
+   :language: yaml
+   :emphasize-lines: 9-13
+
+We can run this test by running the following.
+
+.. dropdown:: ``buildtest build -b tutorials/test_status/is_symlink.yml``
+
+   .. command-output:: buildtest build -b tutorials/test_status/is_symlink.yml
 
 Skipping test
 -------------

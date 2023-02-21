@@ -4,8 +4,8 @@ system:
     moduletool: N/A
     executors:
       defaults:
-         pollinterval: 5
-         maxpendtime: 30
+        pollinterval: 5
+        maxpendtime: 30
       local:
         bash:
           description: submit jobs on local machine using bash shell
