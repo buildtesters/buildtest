@@ -39,15 +39,13 @@ def test_checking_file():
 @pytest.mark.utility
 def test_is_symlink():
     # Target path of the symbolic link
-    link_target = os.path.join("$HOME", "test_dir")
-    # creating directory
-    create_dir(link_target)
+    link_target = tempfile.mkdtemp()
 
     # Symbolic link path
     link_path = os.path.join("$HOME", "test_dir_symlink")
 
     # Create symbolic link
-    os.symlink(resolve_path(link_target), os.path.expandvars(link_path))
+    os.symlink(link_target, os.path.expandvars(link_path))
 
     # test for shell expansion
     assert is_symlink(link_path)
@@ -59,7 +57,7 @@ def test_is_symlink():
     assert not is_symlink(link_target)
 
     # delete the target directory
-    os.rmdir(resolve_path(link_target))
+    os.rmdir(link_target)
 
     # test for broken symbolic link
     assert not is_symlink(link_path)
