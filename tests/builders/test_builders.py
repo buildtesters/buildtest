@@ -101,3 +101,12 @@ def test_assert_is_file_is_dir():
         configuration=config,
     )
     cmd.build()
+
+
+def test_assert_is_symlink():
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "regex_on_filename.yml")],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()
