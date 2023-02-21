@@ -195,7 +195,7 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse  -e -f -h -n -p -s -t c clear l list p path sm summary"
+      local opts="--end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pass --row-count --start --terse  -e -f -h -n -p -s -t c clear l list p path sm summary"
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       case ${prev} in --color)
         COMPREPLY=( $( compgen -W "$(_supported_colors)" -- $cur ) )
@@ -241,7 +241,7 @@ _buildtest ()
           local opts="-h --help"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         view|v)
-          local opts="--help --pager --theme -h -p -t"
+          local opts="--help --theme -h -p -t"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
           case "${prev}" in --theme|-t)
@@ -305,7 +305,7 @@ _buildtest ()
            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
          # completion for rest of arguments
          *)
-           local longopts="--buildspec --count --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --row-count --tags --root --terse"
+           local longopts="--buildspec --count --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --paths --quiet --rebuild --row-count --tags --root --terse"
            local shortopts="-b -e -h -n -p -q -r -t"
            local subcmds="invalid"
            local allopts="${longopts} ${shortopts} ${subcmds}"
@@ -329,8 +329,8 @@ _buildtest ()
          case ${COMP_WORDS[3]} in
          # completion for rest of arguments
          *)
-           local longopts="--pager"
-           local shortopts="-p"
+           local longopts="--help"
+           local shortopts="-h"
            local allopts="${longopts} ${shortopts}"
            COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) );;
          esac
@@ -393,7 +393,7 @@ _buildtest ()
 
       case ${COMP_WORDS[2]} in
       list)
-        local opts="--help --no-header --pager --terse -h -n -t"
+        local opts="--help --no-header --terse -h -n -t"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
         if [[ "${prev}" == "--color" ]]; then
@@ -446,7 +446,7 @@ _buildtest ()
     *)
       local cmds="build buildspec cd cdash clean config debugreport docs help info inspect history path report schema schemadocs stats stylecheck tutorial-examples unittests"
       local alias_cmds="bd bc cg debug it h hy rt style test"
-      local opts="--color --config --debug --editor --help --helpcolor --logpath --loglevel --print-log --no-color --report --version --view-log -c -d -h -l -r -V"
+      local opts="--color --config --debug --editor --help --helpcolor --logpath --loglevel --print-log --no-color --pager --report --version --view-log -c -d -h -l -p -r -V"
 
       case "${cur}" in
       # print main options to buildtest
