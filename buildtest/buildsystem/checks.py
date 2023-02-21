@@ -2,7 +2,7 @@ import logging
 import re
 
 from buildtest.defaults import console
-from buildtest.utils.file import is_dir, is_file, is_symlink, resolve_path
+from buildtest.utils.file import is_dir, is_file, is_symlink, read_file, resolve_path
 
 logger = logging.getLogger(__name__)
 
