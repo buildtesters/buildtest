@@ -1,7 +1,7 @@
 .. image:: https://github.com/buildtesters/buildtest/blob/devel/logos/BuildTest_Primary_Center_4x3.png
    :width: 400
    
-.. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
+.. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=devel
     :alt: Documentation Status
     :scale: 100%
     :target: https://readthedocs.org/projects/buildtest/builds/

@@ -11,7 +11,7 @@ If you are working off the `devel <https://github.com/buildtesters/buildtest/tre
 https://buildtest.readthedocs.io/en/devel/
 which references the `devel` branch.
 
-.. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
+.. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=devel
     :alt: Documentation Status
     :target: https://readthedocs.org/projects/buildtest/builds/
 
