@@ -240,7 +240,8 @@ Currently, we can match state based on the following:
 
   - :ref:`Return Code <returncode>`
   - :ref:`Runtime <runtime>`
-  - :ref:`Regular Expression <regex>`
+  - :ref:`Regular Expression on output/error file <regex>`
+  - :ref:`Regular Expression on arbitrary file <file_regex>`
   - :ref:`Performance Check <perf_checks>`
   - :ref:`Explicit Test Status <explicit_status>`
   - :ref:`File Checks <file_checks>`
@@ -314,6 +315,31 @@ a 0. Take a close look at the **status** property
 .. dropdown:: ``buildtest build -b tutorials/test_status/status_regex.yml``
 
    .. command-output:: buildtest build -b tutorials/test_status/status_regex.yml
+
+.. _file_regex:
+
+Specify Regular Expression on arbitrary filenames
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In the previous example, we applied :ref:`regular expression on output or error file <regex>`; however, you may want to apply
+regular expression on arbitrary files. This can be done by specifying ``file_regex`` property. The ``file_regex`` property is
+an array of assertions, where each assertion must have ``filename`` and ``exp`` property. The ``filename`` property is the path
+to filename and ``exp`` is the regular expression you want to apply.
+
+In this example, we have three tests that make use of ``file_regex`` property. The first test will perform a regular expression
+on multiple file names. The second test will attempt to check on a directory name which is not supported since regular expression must
+be applied to file name. The third test will show that variable expansion and environment variable expansion is supported.
+
+.. literalinclude:: ../tutorials/test_status/regex_on_filename.yml
+   :language: yaml
+   :emphasize-lines: 9-14,23-26,35-40
+
+We can build this test by running the following command:
+
+.. dropdown:: ``buildtest build -b tutorials/test_status/regex_on_filename.yml``
+
+   .. command-output:: buildtest build -b tutorials/test_status/regex_on_filename.yml
+
 
 .. _runtime:
 

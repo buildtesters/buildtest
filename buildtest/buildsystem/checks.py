@@ -2,7 +2,7 @@ import logging
 import re
 
 from buildtest.defaults import console
-from buildtest.utils.file import is_dir, is_file, is_symlink, resolve_path
+from buildtest.utils.file import is_dir, is_file, is_symlink, read_file, resolve_path
 
 logger = logging.getLogger(__name__)
 
@@ -96,6 +96,60 @@ def runtime_check(builder):
         f"[blue]{builder}[/]: Checking mintime < runtime < maxtime: {float(min_time)} < {actual_runtime} < {float(max_time)} "
     )
     return float(min_time) < actual_runtime < float(max_time)
+
+
+def file_regex_check(builder):
+    """This method will check if file exists and conduct a regular expression check using
+    `re.search <https://docs.python.org/3/library/re.html#re.search>`_ method. This method is invoked if ``file_regex`` is defined in ``status`` field.
+    If file doesn't exist we return False. If file exists we read the file and apply regular expression for every file specified in ``file_regex`` field.
+
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+
+    Returns:
+        bool: Returns True if there is a regex match otherwise returns False.
+    """
+
+    assert_file_regex = []
+
+    for file_check in builder.status["file_regex"]:
+        fname = file_check["file"]
+        resolved_fname = resolve_path(fname)
+        if not resolved_fname:
+            msg = f"[blue]{builder}[/]: Unable to resolve file path: {fname}"
+            logger.error(msg)
+            console.print(msg, style="red")
+            assert_file_regex.append(False)
+            continue
+
+        if not is_file(resolved_fname):
+            msg = f"[blue]{builder}[/]: File: {resolved_fname} is not a file"
+            logger.error(msg)
+            console.print(msg, style="red")
+            assert_file_regex.append(False)
+            continue
+
+        # read file and apply regex
+        content = read_file(resolved_fname)
+        regex = re.search(file_check["exp"], content)
+        console.print(
+            f"[blue]{builder}[/]: Performing regex expression '{file_check['exp']}' on file {resolved_fname}"
+        )
+
+        if not regex:
+            msg = f"[blue]{builder}[/]: Regular expression: '{file_check['exp']}' is not found in file: {resolved_fname}"
+            logger.error(msg)
+            console.print(msg, style="red")
+            assert_file_regex.append(False)
+            continue
+
+        assert_file_regex.append(True)
+
+        console.print(
+            f"[blue]{builder}[/]: [green]Regular expression on file {resolved_fname} is a MATCH![/green]"
+        )
+
+    return all(assert_file_regex)
 
 
 def regex_check(builder):
