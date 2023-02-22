@@ -241,7 +241,7 @@ Currently, we can match state based on the following:
   - :ref:`Return Code <returncode>`
   - :ref:`Runtime <runtime>`
   - :ref:`Regular Expression on output/error file <regex>`
-  - :ref:`Regular Expression on arbitrary file <regex_file>`
+  - :ref:`Regular Expression on arbitrary file <file_regex>`
   - :ref:`Performance Check <perf_checks>`
   - :ref:`Explicit Test Status <explicit_status>`
   - :ref:`File Checks <file_checks>`
