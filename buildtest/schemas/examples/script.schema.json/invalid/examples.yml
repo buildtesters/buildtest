@@ -272,3 +272,26 @@ buildspecs:
     run: mkdir -p 1
     status:
       exists: [1]
+
+  invalid_property_filename:
+    type: script
+    executor: generic.local.bash
+    description: Invalid property name filename under file_regex
+    run: |
+      echo "Hello" > hello.txt
+    status:
+      file_regex:
+        - filename: hello.txt
+          exp: '^(Hello)$'
+
+  testing_additionalProperties_file_regex:
+    type: script
+    executor: generic.local.bash
+    description: Testing for additional properties in file_regex
+    run: |
+      echo "Hello" > hello.txt
+    status:
+      file_regex:
+        - file: hello.txt
+          exp: '^(Hello)$'
+          FOO: BAR

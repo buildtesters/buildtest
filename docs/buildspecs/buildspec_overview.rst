@@ -321,7 +321,7 @@ a 0. Take a close look at the **status** property
 Specify Regular Expression on arbitrary filenames
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In the previous example, we applied regular expression on output or error file. However, you may want to apply
+In the previous example, we applied :ref:`regular expression on output or error file <regex>`; however, you may want to apply
 regular expression on arbitrary files. This can be done by specifying ``file_regex`` property. The ``file_regex`` property is
 an array of assertions, where each assertion must have ``filename`` and ``exp`` property. The ``filename`` property is the path
 to filename and ``exp`` is the regular expression you want to apply.
