@@ -19,9 +19,6 @@ build:
     - zsh
     - tcsh
 
-formats:
-  - pdf
-
 python:
   install:
     - requirements: requirements.txt
