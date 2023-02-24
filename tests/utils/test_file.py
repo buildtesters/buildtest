@@ -154,6 +154,10 @@ def test_search_files():
     assert len(files) == 1
     print(files)
 
+    # invalid regular expression will raise exception since re.compile will raise exception of type re.error. We also raise BuildTestError
+    with pytest.raises(BuildTestError):
+        search_files(here, regex_pattern=r"*foo[1-5]$", max_depth=1)
+
 
 @pytest.mark.utility
 def test_walk_tree_no_files(tmp_path):
