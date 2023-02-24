@@ -2,7 +2,15 @@ import logging
 import re
 
 from buildtest.defaults import console
-from buildtest.utils.file import is_dir, is_file, is_symlink, read_file, resolve_path
+from buildtest.utils.file import (
+    is_dir,
+    is_file,
+    is_symlink,
+    read_file,
+    resolve_path,
+    search_files,
+    walk_tree,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -219,7 +227,6 @@ def is_symlink_check(builder):
         f"[blue]{builder}[/]: Check all items:  {builder.status['is_symlink']}  for symbolic links"
     )
     for filename in builder.status["is_symlink"]:
-
         if is_symlink(filename):
             console.print(
                 f"[blue]{builder}[/]: {filename} is a symbolic link to {resolve_path(filename)}"
@@ -962,3 +969,59 @@ def assert_range_check(builder):
 
     console.print(f"[blue]{builder}[/]: Range Check: {range_check}")
     return range_check
+
+
+def file_count_check(builder):
+    """This method is used to perform file count check when ``file_count`` property is specified
+    in status check. This method will evaluate the number of files in a directory and compare it
+    with the reference specified via ``count``. The comparison is done using ``==`` operator.
+
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+
+    Returns:
+        bool: True or False for performance check ``file_count``
+    """
+    # a list containing booleans to evaluate reference check for each metric
+    assert_check = []
+
+    # iterate over each metric in buildspec and determine reference check for each metric
+    for dir_check in builder.status["file_count"]:
+        if not is_dir(dir_check["dir"]):
+            msg = f"[blue]{builder}[/]: Unable to find directory: [red]{dir_check['dir']}[/red]."
+            console.print(msg)
+            logger.warning(msg)
+            assert_check.append(False)
+            continue
+
+        files = walk_tree(
+            dir_check["dir"], ext=dir_check.get("ext"), max_depth=dir_check.get("depth")
+        )
+
+        # if 'filename' attribute is specified we will search for files via search_files method which will perform directory traversal based on regular expression
+        if dir_check.get("filename"):
+            filtered_files = search_files(
+                dir_check["dir"],
+                regex_pattern=dir_check["filename"],
+                max_depth=dir_check.get("depth"),
+            )
+            files = filtered_files
+
+        bool_check = len(files) == dir_check["count"]
+        assert_check.append(bool_check)
+
+        # need to get a resolved path for printing purposes. User can specify arbitrary directory name it may not exist on filesystem
+        resolved_dirname = resolve_path(dir_check["dir"], exist=False)
+
+        console.print(
+            f"[blue]{builder}[/]: Found the following files: {files} in directory: {resolved_dirname}"
+        )
+        console.print(
+            f"[blue]{builder}[/]: Found {len(files)} file in directory: {resolved_dirname}. Comparing with reference count: {dir_check['count']}. Comparison check is {len(files)} == {dir_check['count']} is {bool_check}"
+        )
+
+    # perform a logical AND on the list and return the boolean result
+    bool_check = all(assert_check)
+
+    console.print(f"[blue]{builder}[/]: File Count Check: {bool_check}")
+    return bool_check

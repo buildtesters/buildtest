@@ -6,6 +6,7 @@ import tempfile
 import uuid
 
 import pytest
+from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import (
     create_dir,
@@ -16,6 +17,7 @@ from buildtest.utils.file import (
     read_file,
     remove_file,
     resolve_path,
+    search_files,
     walk_tree,
     write_file,
 )
@@ -101,9 +103,56 @@ def test_walk_tree():
     files = walk_tree(here)
     assert files
 
-    list_of_files = walk_tree(here, ".py")
+    list_of_files = walk_tree(here, ext=".py")
     print(f"Detected {len(list_of_files)} .py files found in directory: {here}")
     assert len(list_of_files) > 0
+
+    # traverse by depth
+    files = walk_tree(root_dir=BUILDTEST_ROOT, ext=".rst", max_depth=1)
+    print(
+        f"Detected {len(files)} .rst files found in directory: {BUILDTEST_ROOT} with max depth of 2"
+    )
+    assert len(files) > 0
+
+    # traverse by directory using variable expansion
+    files = walk_tree(root_dir="~", max_depth=1)
+    print(
+        f"Detected {len(files)} files found in directory: {os.path.expanduser('~')} with max depth of 1"
+    )
+
+
+def test_search_files():
+    # search for all files ending in .py extension
+    files = search_files(here, regex_pattern=r".py$")
+    print(f"Detected {len(files)} .py files found in directory: {here}")
+    assert files
+    print(files)
+
+    # search for all files ending in .rst or .sh extension
+    files = search_files(BUILDTEST_ROOT, regex_pattern=r"(.rst|.sh)$")
+    print(
+        f"Detected {len(files)} .rst or .sh files found in directory: {BUILDTEST_ROOT}"
+    )
+    assert files
+    print(files)
+
+    # search for files with conf.py and main.py
+    files = search_files("$BUILDTEST_ROOT", regex_pattern=r"(conf|main).py$")
+    print(
+        f"Detected {len(files)} conf.py or main.py files found in directory: {BUILDTEST_ROOT}"
+    )
+    assert files
+    print(files)
+
+    # search for file starting with 'buildtest' in directory $BUILDTEST_ROOT/bin
+    files = search_files(
+        "$BUILDTEST_ROOT/bin", regex_pattern=r"^buildtest$", max_depth=1
+    )
+    print(
+        f"Detected file {files} found in directory: {os.path.join(BUILDTEST_ROOT,'bin')} with max depth of 1"
+    )
+    assert len(files) == 1
+    print(files)
 
 
 @pytest.mark.utility

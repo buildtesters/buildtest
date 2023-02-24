@@ -10,6 +10,7 @@ include the following:
 
 import json
 import os
+import re
 
 from buildtest.exceptions import BuildTestError
 
@@ -79,7 +80,41 @@ def is_symlink(filename):
     return os.path.islink(expanded_filepath) and resolved_sym_link
 
 
-def walk_tree(root_dir, ext=None):
+def search_files(root_dir, regex_pattern, max_depth=None):
+    """
+    This method will search for files in a directory based on a regex pattern.
+
+    Args:
+        root_dir (str): Root directory to search for files
+        regex_pattern: A regex pattern to search for files
+
+    Returns: A list of files that match the regex pattern
+
+    """
+    files_list = []
+    pattern = re.compile(regex_pattern)
+
+    if not is_dir(root_dir):
+        return files_list
+
+    resolved_dirpath = resolve_path(root_dir, exist=True)
+
+    for root, dirs, files in os.walk(resolved_dirpath):
+        if (
+            max_depth is not None
+            and root.count(os.sep) - resolved_dirpath.count(os.sep) >= max_depth
+        ):
+            del dirs[:]
+            continue
+        for file in files:
+            if pattern.search(file):
+                file_path = os.path.join(root, file)
+                files_list.append(file_path)
+
+    return [os.path.abspath(fname) for fname in files_list]
+
+
+def walk_tree(root_dir, ext=None, max_depth=None):
     """This method will traverse a directory tree and return list of files
     based on extension type. This method invokes :func:`is_dir` to check if directory
     exists before traversal.
@@ -87,27 +122,31 @@ def walk_tree(root_dir, ext=None):
     Args:
         root_dir (str): directory path to traverse
         ext (str): File extension to search in traversal
+        max_depth (int, optional): Maximum depth to traverse
 
     Returns:
         list: A list of file paths for a directory traversal based on extension type. If ``ext`` is **None** we retrieve all files
     """
 
-    list_files = []
-    # if directory doesn't exist let's return empty list before doing a directory traversal since no files to traverse
+    files_list = []
     if not is_dir(root_dir):
-        return list_files
+        return files_list
 
-    for root, subdir, files in os.walk(root_dir):
-        for fname in files:
-            # if ext is provided check if file ends with extension and add to list, otherwise
-            # add all files to list and return
-            if ext:
-                if fname.endswith(ext):
-                    list_files.append(os.path.join(root, fname))
-            else:
-                list_files.append(os.path.join(root, fname))
+    resolved_dirpath = resolve_path(root_dir, exist=True)
 
-    return [os.path.abspath(fname) for fname in list_files]
+    for root, dirs, files in os.walk(resolved_dirpath):
+        if (
+            max_depth is not None
+            and root.count(os.sep) - resolved_dirpath.count(os.sep) >= max_depth
+        ):
+            del dirs[:]
+            continue
+        for file in files:
+            if ext is None or file.endswith(ext):
+                file_path = os.path.join(root, file)
+                files_list.append(file_path)
+
+    return [os.path.abspath(fname) for fname in files_list]
 
 
 def create_dir(dirname):
