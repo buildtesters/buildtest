@@ -500,16 +500,16 @@
                 "description": "Number of files expected in directory",
                 "minimum": 0
               },
-              "ext": {
-                "type": "string",
-                "description": "File extension to filter files in directory"
-              },
               "depth": {
                 "type": "integer",
                 "description": "Depth of directory to search for files",
                 "minimum": 0
               },
-              "filename": {
+              "ext": {
+                "type": "string",
+                "description": "File extension to filter files in directory"
+              },
+              "filepattern": {
                 "type": "string",
                 "description": "Specify a regular expression when searching for files in directory"
               }
