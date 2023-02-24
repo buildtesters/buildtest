@@ -7,7 +7,6 @@ import unittest
 import uuid
 
 import pytest
-from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import (
     create_dir,
@@ -84,6 +83,14 @@ def test_directory_expansion():
     assert is_dir(dir2)
 
 
+def test_create_file():
+    dirname = tempfile.mkdtemp()
+    create_file(os.path.join(dirname, "test.txt"))
+
+    with pytest.raises(BuildTestError):
+        create_file("/xyz.txt")
+
+
 @pytest.mark.utility
 def test_create_dir(tmp_path):
     # since tmp_path creates a directory we will create a subdirectory "test" in tmp_path using create_dir
@@ -98,47 +105,6 @@ def test_create_dir(tmp_path):
 
     with pytest.raises(BuildTestError):
         create_dir("/xyz")
-
-
-@pytest.mark.utility
-def test_walk_tree():
-    files = walk_tree(here)
-    assert files
-
-    list_of_files = walk_tree(here, ext=".py")
-    print(f"Detected {len(list_of_files)} .py files found in directory: {here}")
-    assert len(list_of_files) > 0
-
-    list_of_files = walk_tree(here, ext=".py", numfiles=1)
-    print(f"Detected {len(list_of_files)} .py files found in directory: {here}")
-    assert len(list_of_files) == 1
-
-    # limit directory traversal to 5 files
-    files = walk_tree(root_dir=BUILDTEST_ROOT, file_traverse_limit=5)
-    assert len(files) == 5
-    print(
-        f"Detected {len(files)} files found in directory: {BUILDTEST_ROOT} with file_traverse_limit=5"
-    )
-
-    # limit directory traversal to 5 files and numfiles to 2. We should expect to see 2 files returned
-    files = walk_tree(root_dir=BUILDTEST_ROOT, file_traverse_limit=5, numfiles=2)
-    assert len(files) == 2
-    print(
-        f"Detected {len(files)} files found in directory: {BUILDTEST_ROOT} with file_traverse_limit=5 and numfiles=2"
-    )
-
-    # traverse by depth
-    files = walk_tree(root_dir=BUILDTEST_ROOT, ext=[".rst", ".py"], max_depth=1)
-    print(
-        f"Detected {len(files)} .rst files found in directory: {BUILDTEST_ROOT} with max depth of 2"
-    )
-    assert len(files) > 0
-
-    # traverse by directory using variable expansion
-    files = walk_tree(root_dir="~", max_depth=1)
-    print(
-        f"Detected {len(files)} files found in directory: {os.path.expanduser('~')} with max depth of 1"
-    )
 
 
 class TestWalkTree(unittest.TestCase):
@@ -158,8 +124,7 @@ class TestWalkTree(unittest.TestCase):
         os.makedirs(os.path.join(self.tempdir.name, "subdir"))
         os.makedirs(os.path.join(self.tempdir.name, "subdir2"))
         for filepath in self.filepaths:
-            with open(filepath, "w") as f:
-                f.write("test")
+            create_file(filepath)
 
     def test_walk_tree_no_ext(self):
         result = walk_tree(self.tempdir.name)
@@ -257,56 +222,6 @@ class TestSearchFiles(unittest.TestCase):
         # invalid regular expression will return an empty list
         files = search_files(here, regex_pattern=r"foo[1-5]$", max_depth=1)
         assert len(files) == 0
-
-
-def test_search_files():
-    # search for all files ending in .py extension
-    files = search_files(here, regex_pattern=r".py$")
-    print(f"Detected {len(files)} .py files found in directory: {here}")
-    assert files
-
-    # search for all files ending in .rst or .sh extension
-    files = search_files(BUILDTEST_ROOT, regex_pattern=r"(.rst|.sh)$")
-    print(
-        f"Detected {len(files)} .rst or .sh files found in directory: {BUILDTEST_ROOT}"
-    )
-    assert files
-
-    # limit directory traversal to 5 files
-    files = search_files(
-        root_dir=BUILDTEST_ROOT, regex_pattern=r".*", file_traverse_limit=5
-    )
-    assert len(files) == 5
-    print(
-        f"Detected {len(files)} files found in directory: {BUILDTEST_ROOT} with file_traverse_limit=5"
-    )
-
-    # limit directory traversal to 5 files and numfiles to 2. We should expect to see 2 files returned
-    files = search_files(
-        root_dir=BUILDTEST_ROOT, regex_pattern=r".*", file_traverse_limit=5, numfiles=2
-    )
-    assert len(files) == 2
-    print(
-        f"Detected {len(files)} files found in directory: {BUILDTEST_ROOT} with file_traverse_limit=5 and numfiles=2"
-    )
-
-    # invalid regular expression will return an empty list
-    files = search_files(here, regex_pattern=r"foo[1-5]$", max_depth=1)
-    assert len(files) == 0
-
-
-@pytest.mark.utility
-def test_walk_tree_invalid_dir(tmp_path):
-    # we want to test an invalid directory so we remove temporary directory created by tmp_path
-    shutil.rmtree(str(tmp_path))
-    print(
-        f"Removing directory: {tmp_path} first before doing directory traversal on invalid directory"
-    )
-    list_of_files = walk_tree(str(tmp_path), ".py")
-    print(
-        f"Returned following files: {list_of_files} with .py extension for path: {tmp_path}"
-    )
-    assert not list_of_files
 
 
 @pytest.mark.utility
