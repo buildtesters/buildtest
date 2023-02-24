@@ -1,17 +1,17 @@
 buildspecs:
   status_exists_slurm:
-   type: script
-   executor: cori.slurm.knl_debug
-   description: status check based for file and directory
-   sbatch: ['-n 1', '-t 5', '-C knl']
-   run: |
-     mkdir -p a/b/c
-     touch foo
-   status:
-     exists:
-       - a/b/c
-       - foo
-     is_dir:
-       - a/b/c
-     is_file:
-       - foo
+    type: script
+    executor: cori.slurm.knl_debug
+    description: status check based for file and directory
+    sbatch: ['-n 1', '-t 5', '-C knl']
+    run: |
+      mkdir -p a/b/c
+      touch foo
+    status:
+      exists:
+        - a/b/c
+        - foo
+      is_dir:
+        - a/b/c
+      is_file:
+        - foo
