@@ -86,13 +86,22 @@ def search_files(root_dir, regex_pattern, max_depth=None):
 
     Args:
         root_dir (str): Root directory to search for files
-        regex_pattern: A regex pattern to search for files
+        regex_pattern (str): A regex pattern to search for files
+        max_depth (int, optional): Specify maximum depth to traverse during directory walk.
 
     Returns: A list of files that match the regex pattern
 
     """
     files_list = []
-    pattern = re.compile(regex_pattern)
+
+    # re.compile can raise exception if regex pattern is not valid which will raise re.error
+    try:
+        pattern = re.compile(regex_pattern)
+    except re.error as err:
+        print(err)
+        raise BuildTestError(
+            f"Unable to compile regular expression: {regex_pattern}, please try again"
+        )
 
     if not is_dir(root_dir):
         return files_list

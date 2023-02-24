@@ -999,10 +999,10 @@ def file_count_check(builder):
         )
 
         # if 'filename' attribute is specified we will search for files via search_files method which will perform directory traversal based on regular expression
-        if dir_check.get("filename"):
+        if dir_check.get("filepattern"):
             filtered_files = search_files(
                 dir_check["dir"],
-                regex_pattern=dir_check["filename"],
+                regex_pattern=dir_check["filepattern"],
                 max_depth=dir_check.get("depth"),
             )
             files = filtered_files
