@@ -295,3 +295,41 @@ buildspecs:
         - file: hello.txt
           exp: '^(Hello)$'
           FOO: BAR
+  file_count_property_count_failure:
+    type: script
+    executor: generic.local.bash
+    description: The count property in file_count must be greater than 0
+    run: hostname
+    status:
+      file_count:
+        - dir: /tmp
+          count: -1
+
+  file_count_property_depth_failure:
+    type: script
+    executor: generic.local.bash
+    description: The depth property in file_count must be greater than 0
+    run: hostname
+    status:
+      file_count:
+        - dir: /tmp
+          count: 0
+          depth: -1
+  file_count_required_property_check:
+    type: script
+    executor: generic.local.bash
+    description: The dir property in file_count is required
+    run: hostname
+    status:
+      file_count:
+        - count: 0
+  file_count_additionalProperties_check:
+    type: script
+    executor: generic.local.bash
+    description: Testing for additional properties in file_count
+    run: hostname
+    status:
+      file_count:
+        - dir: /tmp
+          count: 0
+          FOO: BAR
