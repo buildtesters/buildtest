@@ -33,12 +33,17 @@ buildspecs:
     run: |
       mkdir -p /tmp
       touch /tmp/foo{1..5}.txt
+      ls -l /tmp/foo*.txt
+      filenames=$(find $BUILDTEST_ROOT/buildtest -type f  \( -name "defaults.py" -o -name "main.py" \) -maxdepth 1)
+      totalfiles=$(find $BUILDTEST_ROOT/buildtest -type f  \( -name "defaults.py" -o -name "main.py" \) -maxdepth 1 | wc -l)
+      echo "Filenames: $filenames"
+      echo "Total files: $totalfiles"
     status:
       file_count:
         - dir: /tmp
-          filename: 'foo[1-5].txt$'
+          filepattern: 'foo[1-5].txt$'
           count: 5
         - dir: '$BUILDTEST_ROOT/buildtest'
-          filename: '(defaults|main).py$'
+          filepattern: '(defaults|main).py$'
           count: 2
           depth: 1
