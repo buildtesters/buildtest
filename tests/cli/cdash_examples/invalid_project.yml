@@ -6,7 +6,7 @@ system:
     moduletool: N/A
     cdash:
       url: "https://my.cdash.org"
-      project:  INVALID-PROJECT
+      project: INVALID-PROJECT
       site: laptop
     executors:
       local:
