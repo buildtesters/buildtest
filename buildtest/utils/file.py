@@ -311,6 +311,11 @@ def read_file(filepath):
     return content
 
 
+def create_file(filepath):
+    """This method will create an empty file"""
+    write_file(filepath, content="")
+
+
 def write_file(filepath, content):
     """This method is used to write an input ``content`` to a file specified by
     ``filepath``. Both filepath and content must be a str. An error is raised

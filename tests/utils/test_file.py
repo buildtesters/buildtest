@@ -3,6 +3,7 @@ import random
 import shutil
 import string
 import tempfile
+import unittest
 import uuid
 
 import pytest
@@ -10,6 +11,7 @@ from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import (
     create_dir,
+    create_file,
     is_dir,
     is_file,
     is_symlink,
@@ -139,6 +141,124 @@ def test_walk_tree():
     )
 
 
+class TestWalkTree(unittest.TestCase):
+    def setUp(self):
+        # Create a temporary directory with some files for testing
+        self.tempdir = tempfile.TemporaryDirectory()
+        self.filepaths = [
+            os.path.join(self.tempdir.name, "file1.txt"),
+            os.path.join(self.tempdir.name, "file2.txt"),
+            os.path.join(self.tempdir.name, "file3.doc"),
+            os.path.join(self.tempdir.name, "subdir", "file4.txt"),
+            os.path.join(self.tempdir.name, "subdir", "file5.txt"),
+            os.path.join(self.tempdir.name, "subdir", "file6.doc"),
+            os.path.join(self.tempdir.name, "subdir2", "file7.txt"),
+            os.path.join(self.tempdir.name, "subdir2", "file8.doc"),
+        ]
+        os.makedirs(os.path.join(self.tempdir.name, "subdir"))
+        os.makedirs(os.path.join(self.tempdir.name, "subdir2"))
+        for filepath in self.filepaths:
+            with open(filepath, "w") as f:
+                f.write("test")
+
+    def test_walk_tree_no_ext(self):
+        result = walk_tree(self.tempdir.name)
+        assert len(result) == 8
+
+    def test_walk_tree_single_ext(self):
+        result = walk_tree(self.tempdir.name, ext=".txt")
+        # check all resulting files have extension .txt
+        for fname in result:
+            assert fname.endswith(".txt")
+
+    def test_walk_tree_multiple_ext(self):
+        result = walk_tree(self.tempdir.name, ext=[".txt", ".doc"])
+        # check all resulting files with extensions .txt and .doc
+        for fname in result:
+            assert fname.endswith(".txt") or fname.endswith(".doc")
+
+    def test_walk_tree_no_files(self):
+        result = walk_tree(self.tempdir.name, ext=".xyz")
+        assert len(result) == 0
+
+    def test_walk_tree_invalid_directory(self):
+        result = walk_tree("/xyz")
+        assert len(result) == 0
+
+    def test_walk_tree_max_depth(self):
+        result = walk_tree(self.tempdir.name, max_depth=1)
+        assert len(result) == 3
+
+    def test_walk_tree_numfiles(self):
+        result = walk_tree(self.tempdir.name, numfiles=2)
+        assert len(result) == 2
+
+    def test_walk_tree_file_traverse_limit(self):
+        result = walk_tree(self.tempdir.name, file_traverse_limit=6)
+        assert len(result) == 6
+
+    def tearDown(self):
+        self.tempdir.cleanup()
+
+
+class TestSearchFiles(unittest.TestCase):
+    def setUp(self):
+        self.temp_dir = tempfile.mkdtemp()
+        self.files = [
+            "file1.txt",
+            "file2.jpg",
+            "file3.txt",
+            "file4.jpg",
+            "file5.txt",
+        ]
+        for f in self.files:
+            with open(os.path.join(self.temp_dir, f), "w") as file:
+                file.write(f)
+
+    def tearDown(self):
+        shutil.rmtree(self.temp_dir)
+
+    def test_search_files_with_pattern(self):
+        # Test searching files with regex pattern
+        result = search_files(self.temp_dir, r"^file\d+\.txt$")
+        assert len(result) == 3
+
+    def test_search_files_with_numfiles(self):
+        # Test searching files with numfiles parameter
+        result = search_files(self.temp_dir, r".*", numfiles=3)
+        assert len(result) == 3
+
+    def test_search_files_with_max_depth(self):
+        # Test searching files with max_depth parameter
+        subdir_path = os.path.join(self.temp_dir, "subdir")
+        os.mkdir(subdir_path)
+
+        create_file(os.path.join(subdir_path, "subfile.txt"))
+
+        result = search_files(subdir_path, r".*", max_depth=1)
+        assert len(result) == 1
+
+    def test_search_files_invalid_directory(self):
+        result = search_files(root_dir="/xyz", regex_pattern=r".*")
+        print(result)
+        assert len(result) == 0
+
+    def test_search_files_home_dir(self):
+        # search for files based on variable expansion $HOME
+        result = search_files(
+            root_dir="$HOME", regex_pattern=r".*", file_traverse_limit=10
+        )
+        assert len(result) == 10
+
+        result = search_files(root_dir="~", regex_pattern=r".*", file_traverse_limit=10)
+        assert len(result) == 10
+
+    def test_search_files_invalid_regex(self):
+        # invalid regular expression will return an empty list
+        files = search_files(here, regex_pattern=r"foo[1-5]$", max_depth=1)
+        assert len(files) == 0
+
+
 def test_search_files():
     # search for all files ending in .py extension
     files = search_files(here, regex_pattern=r".py$")
@@ -170,42 +290,9 @@ def test_search_files():
         f"Detected {len(files)} files found in directory: {BUILDTEST_ROOT} with file_traverse_limit=5 and numfiles=2"
     )
 
-    # search for files with conf.py and main.py
-    files = search_files("$BUILDTEST_ROOT", regex_pattern=r"(conf|main).py$")
-    print(
-        f"Detected {len(files)} conf.py or main.py files found in directory: {BUILDTEST_ROOT}"
-    )
-    assert files
-
-    # limit number of files returned based on numfiles argument
-    files = search_files(
-        "$BUILDTEST_ROOT", regex_pattern=r"(conf|main).py$", numfiles=1
-    )
-    print(f"Detected {len(files)} files found in directory: {BUILDTEST_ROOT}")
-    assert len(files) == 1
-
-    # search for file starting with 'buildtest' in directory $BUILDTEST_ROOT/bin
-    files = search_files(
-        "$BUILDTEST_ROOT/bin", regex_pattern=r"^buildtest$", max_depth=1
-    )
-    print(
-        f"Detected file {files} found in directory: {os.path.join(BUILDTEST_ROOT,'bin')} with max depth of 1"
-    )
-    assert len(files) == 1
-
     # invalid regular expression will return an empty list
     files = search_files(here, regex_pattern=r"foo[1-5]$", max_depth=1)
     assert len(files) == 0
-
-
-@pytest.mark.utility
-def test_walk_tree_no_files(tmp_path):
-    # need to convert tmp_path to str since its of type PosixPath
-    list_of_files = walk_tree(str(tmp_path), ".py")
-    print(
-        f"Detected {len(list_of_files)} .py files found in directory: {str(tmp_path)}"
-    )
-    assert 0 == len(list_of_files)
 
 
 @pytest.mark.utility
