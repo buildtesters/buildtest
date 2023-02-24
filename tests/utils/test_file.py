@@ -107,8 +107,26 @@ def test_walk_tree():
     print(f"Detected {len(list_of_files)} .py files found in directory: {here}")
     assert len(list_of_files) > 0
 
+    list_of_files = walk_tree(here, ext=".py", numfiles=1)
+    print(f"Detected {len(list_of_files)} .py files found in directory: {here}")
+    assert len(list_of_files) == 1
+
+    # limit directory traversal to 5 files
+    files = walk_tree(root_dir=BUILDTEST_ROOT, file_traverse_limit=5)
+    assert len(files) == 5
+    print(
+        f"Detected {len(files)} files found in directory: {BUILDTEST_ROOT} with file_traverse_limit=5"
+    )
+
+    # limit directory traversal to 5 files and numfiles to 2. We should expect to see 2 files returned
+    files = walk_tree(root_dir=BUILDTEST_ROOT, file_traverse_limit=5, numfiles=2)
+    assert len(files) == 2
+    print(
+        f"Detected {len(files)} files found in directory: {BUILDTEST_ROOT} with file_traverse_limit=5 and numfiles=2"
+    )
+
     # traverse by depth
-    files = walk_tree(root_dir=BUILDTEST_ROOT, ext=".rst", max_depth=1)
+    files = walk_tree(root_dir=BUILDTEST_ROOT, ext=[".rst", ".py"], max_depth=1)
     print(
         f"Detected {len(files)} .rst files found in directory: {BUILDTEST_ROOT} with max depth of 2"
     )
@@ -126,7 +144,6 @@ def test_search_files():
     files = search_files(here, regex_pattern=r".py$")
     print(f"Detected {len(files)} .py files found in directory: {here}")
     assert files
-    print(files)
 
     # search for all files ending in .rst or .sh extension
     files = search_files(BUILDTEST_ROOT, regex_pattern=r"(.rst|.sh)$")
@@ -134,7 +151,24 @@ def test_search_files():
         f"Detected {len(files)} .rst or .sh files found in directory: {BUILDTEST_ROOT}"
     )
     assert files
-    print(files)
+
+    # limit directory traversal to 5 files
+    files = search_files(
+        root_dir=BUILDTEST_ROOT, regex_pattern=r".*", file_traverse_limit=5
+    )
+    assert len(files) == 5
+    print(
+        f"Detected {len(files)} files found in directory: {BUILDTEST_ROOT} with file_traverse_limit=5"
+    )
+
+    # limit directory traversal to 5 files and numfiles to 2. We should expect to see 2 files returned
+    files = search_files(
+        root_dir=BUILDTEST_ROOT, regex_pattern=r".*", file_traverse_limit=5, numfiles=2
+    )
+    assert len(files) == 2
+    print(
+        f"Detected {len(files)} files found in directory: {BUILDTEST_ROOT} with file_traverse_limit=5 and numfiles=2"
+    )
 
     # search for files with conf.py and main.py
     files = search_files("$BUILDTEST_ROOT", regex_pattern=r"(conf|main).py$")
@@ -142,7 +176,13 @@ def test_search_files():
         f"Detected {len(files)} conf.py or main.py files found in directory: {BUILDTEST_ROOT}"
     )
     assert files
-    print(files)
+
+    # limit number of files returned based on numfiles argument
+    files = search_files(
+        "$BUILDTEST_ROOT", regex_pattern=r"(conf|main).py$", numfiles=1
+    )
+    print(f"Detected {len(files)} files found in directory: {BUILDTEST_ROOT}")
+    assert len(files) == 1
 
     # search for file starting with 'buildtest' in directory $BUILDTEST_ROOT/bin
     files = search_files(
@@ -152,11 +192,10 @@ def test_search_files():
         f"Detected file {files} found in directory: {os.path.join(BUILDTEST_ROOT,'bin')} with max depth of 1"
     )
     assert len(files) == 1
-    print(files)
 
-    # invalid regular expression will raise exception since re.compile will raise exception of type re.error. We also raise BuildTestError
-    with pytest.raises(BuildTestError):
-        search_files(here, regex_pattern=r"*foo[1-5]$", max_depth=1)
+    # invalid regular expression will return an empty list
+    files = search_files(here, regex_pattern=r"foo[1-5]$", max_depth=1)
+    assert len(files) == 0
 
 
 @pytest.mark.utility

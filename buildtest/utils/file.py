@@ -12,6 +12,7 @@ import json
 import os
 import re
 
+from buildtest.defaults import console
 from buildtest.exceptions import BuildTestError
 
 
@@ -80,28 +81,36 @@ def is_symlink(filename):
     return os.path.islink(expanded_filepath) and resolved_sym_link
 
 
-def search_files(root_dir, regex_pattern, max_depth=None):
+def search_files(
+    root_dir, regex_pattern, numfiles=None, max_depth=None, file_traverse_limit=999999
+):
     """
     This method will search for files in a directory based on a regex pattern.
 
     Args:
         root_dir (str): Root directory to search for files
         regex_pattern (str): A regex pattern to search for files
+        numfiles (int, optional): Specify number of files to return. If not specified, all files will be returned.
         max_depth (int, optional): Specify maximum depth to traverse during directory walk.
+        file_traverse_limit (int, optional): Maximum number of files to traverse during directory walk
 
     Returns: A list of files that match the regex pattern
 
     """
     files_list = []
+    files_traversed = 0
+    file_traverse_limit = min(file_traverse_limit, 999999)
 
     # re.compile can raise exception if regex pattern is not valid which will raise re.error
     try:
         pattern = re.compile(regex_pattern)
     except re.error as err:
         print(err)
-        raise BuildTestError(
-            f"Unable to compile regular expression: {regex_pattern}, please try again"
+        console.print(
+            f"Unable to compile regular expression: {regex_pattern}, please try again",
+            style="bold red",
         )
+        return files_list
 
     if not is_dir(root_dir):
         return files_list
@@ -116,22 +125,37 @@ def search_files(root_dir, regex_pattern, max_depth=None):
             del dirs[:]
             continue
         for file in files:
+            # if we have reached the file traverse limit then we return list of files
+            if files_traversed >= file_traverse_limit:
+                return [os.path.abspath(fname) for fname in files_list]
+
+            # if numfiles is specified then we return list of files once we reach the number of files
+            if numfiles is not None:
+                if len(files_list) >= numfiles:
+                    return [os.path.abspath(fname) for fname in files_list]
+
             if pattern.search(file):
                 file_path = os.path.join(root, file)
                 files_list.append(file_path)
 
+            files_traversed += 1
+
     return [os.path.abspath(fname) for fname in files_list]
 
 
-def walk_tree(root_dir, ext=None, max_depth=None):
+def walk_tree(
+    root_dir, ext=None, max_depth=None, numfiles=None, file_traverse_limit=999999
+):
     """This method will traverse a directory tree and return list of files
     based on extension type. This method invokes :func:`is_dir` to check if directory
     exists before traversal.
 
     Args:
         root_dir (str): directory path to traverse
-        ext (str): File extension to search in traversal
+        ext (str or list, optional): File extension or list of file extensions to search in traversal
         max_depth (int, optional): Maximum depth to traverse
+        numfiles (int, optional): Number of files to return
+        file_traverse_limit (int, optional): Maximum number of files to traverse during directory walk
 
     Returns:
         list: A list of file paths for a directory traversal based on extension type. If ``ext`` is **None** we retrieve all files
@@ -141,7 +165,14 @@ def walk_tree(root_dir, ext=None, max_depth=None):
     if not is_dir(root_dir):
         return files_list
 
+    if isinstance(ext, str):
+        ext = [ext]
+
     resolved_dirpath = resolve_path(root_dir, exist=True)
+    files_traversed = 0
+
+    # user may pass a file_traverse_limit that is too large, so we set a limit to 999999
+    file_traverse_limit = min(file_traverse_limit, 999999)
 
     for root, dirs, files in os.walk(resolved_dirpath):
         if (
@@ -151,9 +182,20 @@ def walk_tree(root_dir, ext=None, max_depth=None):
             del dirs[:]
             continue
         for file in files:
-            if ext is None or file.endswith(ext):
+            # if we have reached the file traverse limit then we return list of files
+            if files_traversed >= file_traverse_limit:
+                return [os.path.abspath(fname) for fname in files_list]
+
+            # if numfiles is specified then we return list of files once we reach the number of files
+            if numfiles is not None:
+                if len(files_list) >= numfiles:
+                    return [os.path.abspath(fname) for fname in files_list]
+
+            if ext is None or os.path.splitext(file)[1] in ext:
                 file_path = os.path.join(root, file)
                 files_list.append(file_path)
+
+            files_traversed += 1
 
     return [os.path.abspath(fname) for fname in files_list]
 
