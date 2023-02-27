@@ -177,8 +177,7 @@ class TestSearchFiles(unittest.TestCase):
             "file5.txt",
         ]
         for f in self.files:
-            with open(os.path.join(self.temp_dir, f), "w") as file:
-                file.write(f)
+            create_file(os.path.join(self.temp_dir, f))
 
     def tearDown(self):
         shutil.rmtree(self.temp_dir)
@@ -220,7 +219,7 @@ class TestSearchFiles(unittest.TestCase):
 
     def test_search_files_invalid_regex(self):
         # invalid regular expression will return an empty list
-        files = search_files(here, regex_pattern=r"foo[1-5]$", max_depth=1)
+        files = search_files(here, regex_pattern=r"*foo[1-5]$", max_depth=1)
         assert len(files) == 0
 
 

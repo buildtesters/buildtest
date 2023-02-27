@@ -506,7 +506,7 @@
                 "minimum": 0
               },
               "ext": {
-                "type": "string",
+                "$ref": "#/definitions/string_or_list",
                 "description": "File extension to filter files in directory"
               },
               "filepattern": {
