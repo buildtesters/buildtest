@@ -17,7 +17,7 @@ buildspecs:
     run: |
       mkdir -p foo/bar
       touch foo/{1..5}.sh
-      touch foo/bar/{1..3}.py foo/bar/{1..3}.sh
+      touch foo/bar/{1..3}.py foo/bar/{1..3}.txt
     status:
       file_count:
         - dir: foo
@@ -25,5 +25,5 @@ buildspecs:
           depth: 1
           count: 5
         - dir: foo/bar
-          ext: ['.py', '.sh']
+          ext: ['.py', '.txt']
           count: 6
