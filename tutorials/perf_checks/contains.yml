@@ -39,4 +39,4 @@ buildspecs:
     status:
       contains:
         - name: x
-          ref: [ '1', 2, 4, 8 ]
+          ref: ['1', 2, 4, 8]

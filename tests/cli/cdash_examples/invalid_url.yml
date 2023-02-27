@@ -6,7 +6,7 @@ system:
     moduletool: N/A
     cdash:
       url: "https://my.cdash.XYZ.org"
-      project:  buildtest
+      project: buildtest
       site: laptop
     executors:
       local:
