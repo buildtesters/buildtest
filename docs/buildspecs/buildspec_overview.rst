@@ -405,7 +405,7 @@ File Checks
 ~~~~~~~~~~~~~
 
 buildtest supports various file checks that can be used as means for passing test. This can include
-checking for :ref:`file existence`, :ref:`file_and_directory_check`, :ref:`symlink_check`, and :ref:`file_count`.
+checking for :ref:`file_existence`, :ref:`file_and_directory_check`, :ref:`symlink_check`, and :ref:`file_count`.
 
 .. _file_existence:
 
@@ -465,7 +465,7 @@ Let's validate and build this test.
 
     .. command-output:: buildtest build -b tutorials/test_status/file_exists_with_number.yml
 
-.. file_and_directory_check:
+.. _file_and_directory_check:
 
 File and Directory Checks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -507,6 +507,8 @@ We can run this test by running the following.
 
    .. command-output:: buildtest build -b tutorials/test_status/is_symlink.yml
 
+.. _file_count:
+
 File Count
 ~~~~~~~~~~~~
 
@@ -517,8 +519,8 @@ property is a list of assertion, where each item is an object. The ``dir`` and `
 The ``dir`` is the path to directory to perform directory traversal, and ``count`` key is the number of expected files that will be
 used for comparison. In the first test, we perform a directory walk and expect 5 files in the directory. We can perform directory
 search based on file extension by using ``ext`` key. The ``ext`` property can be a string or a list. The second test will perform
-directory walk on `foo` and search for file extensions `.sh`, `.py`, `txt`. The ``depth`` property controls the depth of directory
-to perform directory traversal, this must be of an integer type. The ``depth`` property is optional and if not specified, we will
+directory walk on directory named **foo** and search for file extensions **.sh**, **.py**, **.txt**. The ``depth`` property controls
+the maximum depth for directory traversal, this must be of an integer type. The ``depth`` property is optional and if not specified, we will
 perform full directory traversal.
 
 .. literalinclude:: ../tutorials/test_status/file_count.yml
@@ -532,7 +534,7 @@ We can run this test by running the following.
 
    .. command-output:: buildtest build -b tutorials/test_status/file_count.yml
 
-In the next example, we introduce ``filepattern`` property which allows you to check for files based on a pattern. The filepattern
+In the next example, we introduce ``filepattern`` property which allows you to check for files based on a pattern. The ``filepattern`` property
 is a regular expression which is compiled via `re.compile <https://docs.python.org/3/library/re.html#re.compile>`_ and applied to a
 directory path. Please note the regular expression must be valid, otherwise buildtest will not return any files during directory traversal.
 
