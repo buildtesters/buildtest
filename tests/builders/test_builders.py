@@ -128,7 +128,10 @@ def test_assert_is_file_is_dir():
 def test_file_count():
     """This test buildspec using status check with  'file_count'"""
     cmd = BuildTest(
-        buildspecs=[os.path.join(here, "file_count.yml")],
+        buildspecs=[
+            os.path.join(here, "file_count.yml"),
+            os.path.join(here, "file_count_pattern.yml"),
+        ],
         buildtest_system=system,
         configuration=config,
     )
