@@ -539,16 +539,16 @@ directory path. Please note the regular expression must be valid, otherwise buil
 You can use ``filepattern`` and ``ext`` property together to search for files. If both are specified, then we will search for files
 with both methods and join the two list prior to performing comparison.
 
-.. literalinclude:: ../tutorials/test_status/filepattern.yml
+.. literalinclude:: ../tutorials/test_status/file_count_pattern.yml
    :language: yaml
    :emphasize-lines: 14-22,32-37
 
 
 Let's build this test by running the following:
 
-.. dropdown:: ``buildtest build -b tutorials/test_status/filepattern.yml``
+.. dropdown:: ``buildtest build -b tutorials/test_status/file_count_pattern.yml``
 
-   .. command-output:: buildtest build -b tutorials/test_status/filepattern.yml
+   .. command-output:: buildtest build -b tutorials/test_status/file_count_pattern.yml
 
 Skipping test
 -------------
