@@ -13,37 +13,17 @@ buildspecs:
   file_count_by_extension:
     type: script
     executor: generic.local.bash
-    description: file recursive search
+    description: file count by extension
     run: |
-      find $BUILDTEST_ROOT/tests -type f -name '*.py' | wc -l 
-      find $BUILDTEST_ROOT/tutorials -type f -name '*.yml' -maxdepth 2 | wc -l
+      mkdir -p foo/bar
+      touch foo/{1..5}.sh
+      touch foo/bar/{1..3}.py foo/bar/{1..3}.sh
     status:
       file_count:
-        - dir: $BUILDTEST_ROOT/tests
-          ext: '.py'
-          count: 50
-        - dir: $BUILDTEST_ROOT/tutorials
-          ext: '.yml'
-          depth: 2
-          count: 25
-  file_count_by_expression:
-    type: script
-    executor: generic.local.bash
-    description: file count by expression
-    run: |
-      mkdir -p /tmp
-      touch /tmp/foo{1..5}.txt
-      ls -l /tmp/foo*.txt
-      filenames=$(find $BUILDTEST_ROOT/buildtest -type f  \( -name "defaults.py" -o -name "main.py" \) -maxdepth 1)
-      totalfiles=$(find $BUILDTEST_ROOT/buildtest -type f  \( -name "defaults.py" -o -name "main.py" \) -maxdepth 1 | wc -l)
-      echo "Filenames: $filenames"
-      echo "Total files: $totalfiles"
-    status:
-      file_count:
-        - dir: /tmp
-          filepattern: 'foo[1-5].txt$'
-          count: 5
-        - dir: '$BUILDTEST_ROOT/buildtest'
-          filepattern: '(defaults|main).py$'
-          count: 2
+        - dir: foo
+          ext: '.sh'
           depth: 1
+          count: 5
+        - dir: foo/bar
+          ext: ['.py', '.sh']
+          count: 6

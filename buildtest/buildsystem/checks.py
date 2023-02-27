@@ -994,30 +994,36 @@ def file_count_check(builder):
             assert_check.append(False)
             continue
 
-        files = walk_tree(
-            dir_check["dir"], ext=dir_check.get("ext"), max_depth=dir_check.get("depth")
-        )
+        files_by_directory_walk = []
+        files_by_regex = []
 
-        # if 'filename' attribute is specified we will search for files via search_files method which will perform directory traversal based on regular expression
+        # need to walk directory tree if 'ext' attribute is specified or 'filepattern' attribute is not specified.
+        if dir_check.get("ext") or not dir_check.get("filepattern"):
+            files_by_directory_walk = walk_tree(
+                dir_check["dir"],
+                ext=dir_check.get("ext"),
+                max_depth=dir_check.get("depth"),
+            )
+        # if 'filepattern' attribute is specified we will search for files via search_files method which will perform directory traversal based on regular expression
         if dir_check.get("filepattern"):
-            filtered_files = search_files(
+            files_by_regex = search_files(
                 dir_check["dir"],
                 regex_pattern=dir_check["filepattern"],
                 max_depth=dir_check.get("depth"),
             )
-            files = filtered_files
 
-        bool_check = len(files) == dir_check["count"]
+        total_files = list(set(files_by_directory_walk + files_by_regex))
+        bool_check = len(total_files) == dir_check["count"]
         assert_check.append(bool_check)
 
         # need to get a resolved path for printing purposes. User can specify arbitrary directory name it may not exist on filesystem
         resolved_dirname = resolve_path(dir_check["dir"], exist=False)
 
         console.print(
-            f"[blue]{builder}[/]: Found the following files: {files} in directory: {resolved_dirname}"
+            f"[blue]{builder}[/]: Found the following files: {total_files} in directory: {resolved_dirname}"
         )
         console.print(
-            f"[blue]{builder}[/]: Found {len(files)} file in directory: {resolved_dirname}. Comparing with reference count: {dir_check['count']}. Comparison check is {len(files)} == {dir_check['count']} is {bool_check}"
+            f"[blue]{builder}[/]: Found {len(total_files)} file in directory: {resolved_dirname}. Comparing with reference count: {dir_check['count']}. Comparison check is {len(total_files)} == {dir_check['count']} is {bool_check}"
         )
 
     # perform a logical AND on the list and return the boolean result
