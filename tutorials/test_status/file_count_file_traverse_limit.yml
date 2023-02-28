@@ -3,7 +3,7 @@ buildspecs:
     type: script
     executor: generic.local.bash
     description: Use of file_traverse_limit to limit number of files searched in a directory
-    run: | 
+    run: |
       mkdir foo
       touch foo/{1..99}.txt
     status:
