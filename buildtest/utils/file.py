@@ -82,7 +82,12 @@ def is_symlink(filename):
 
 
 def search_files(
-    root_dir, regex_pattern, numfiles=None, max_depth=None, file_traverse_limit=999999
+    root_dir,
+    regex_pattern,
+    numfiles=None,
+    max_depth=None,
+    file_traverse_limit=999999,
+    file_type="file",
 ):
     """
     This method will search for files in a directory based on a regex pattern.
@@ -93,6 +98,7 @@ def search_files(
         numfiles (int, optional): Specify number of files to return. If not specified, all files will be returned.
         max_depth (int, optional): Specify maximum depth to traverse during directory walk.
         file_traverse_limit (int, optional): Maximum number of files to traverse during directory walk
+        file_type (str, optional): Type of files to return, either 'file', 'dir', or 'symlink'. Default is 'file'.
 
     Returns: A list of files that match the regex pattern
 
@@ -124,6 +130,11 @@ def search_files(
         ):
             del dirs[:]
             continue
+
+        # by default 'root' is a directory during os.walk so we just append it to list
+        if file_type == "dir":
+            files_list.append(root)
+
         for file in files:
             # if we have reached the file traverse limit then we return list of files
             if files_traversed >= file_traverse_limit:
@@ -134,17 +145,34 @@ def search_files(
                 if len(files_list) >= numfiles:
                     return [os.path.abspath(fname) for fname in files_list]
 
+            file_path = os.path.join(root, file)
+            if file_type == "file" and pattern.search(file):
+                files_list.append(file_path)
+
+            elif (
+                file_type == "symlink"
+                and is_symlink(file_path)
+                and pattern.search(file)
+            ):
+                files_list.append(file_path)
+
+            """                
             if pattern.search(file):
                 file_path = os.path.join(root, file)
                 files_list.append(file_path)
-
+            """
             files_traversed += 1
 
     return [os.path.abspath(fname) for fname in files_list]
 
 
 def walk_tree(
-    root_dir, ext=None, max_depth=None, numfiles=None, file_traverse_limit=999999
+    root_dir,
+    ext=None,
+    max_depth=None,
+    numfiles=None,
+    file_traverse_limit=999999,
+    file_type="file",
 ):
     """This method will traverse a directory tree and return list of files
     based on extension type. This method invokes :func:`is_dir` to check if directory
@@ -156,6 +184,8 @@ def walk_tree(
         max_depth (int, optional): Maximum depth to traverse
         numfiles (int, optional): Number of files to return
         file_traverse_limit (int, optional): Maximum number of files to traverse during directory walk
+        file_type (str, optional): Type of files to return, either 'file', 'dir', or 'symlink'. Default is 'file'.
+
 
     Returns:
         list: A list of file paths for a directory traversal based on extension type. If ``ext`` is **None** we retrieve all files
@@ -181,6 +211,11 @@ def walk_tree(
         ):
             del dirs[:]
             continue
+
+        # by default 'root' is a directory during os.walk so we just append it to list
+        if file_type == "dir":
+            files_list.append(root)
+
         for file in files:
             # if we have reached the file traverse limit then we return list of files
             if files_traversed >= file_traverse_limit:
@@ -191,8 +226,19 @@ def walk_tree(
                 if len(files_list) >= numfiles:
                     return [os.path.abspath(fname) for fname in files_list]
 
-            if ext is None or os.path.splitext(file)[1] in ext:
-                file_path = os.path.join(root, file)
+            file_path = os.path.join(root, file)
+
+            # if file_type is 'file' and extension matches then we append file to list. If extension is None the statement is True.
+            if file_type == "file" and (
+                ext is None or os.path.splitext(file)[1] in ext
+            ):
+                files_list.append(file_path)
+            # if file_type is 'symlink' and file is a symlink and extension matches then we append file to list. If extension is None the statement is True.
+            elif (
+                file_type == "symlink"
+                and os.path.islink(file_path)
+                and (ext is None or os.path.splitext(file)[1] in ext)
+            ):
                 files_list.append(file_path)
 
             files_traversed += 1

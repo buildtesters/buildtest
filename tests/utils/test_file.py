@@ -162,6 +162,20 @@ class TestWalkTree(unittest.TestCase):
         result = walk_tree(self.tempdir.name, file_traverse_limit=6)
         assert len(result) == 6
 
+    def test_walk_tree_by_directory(self):
+        result = walk_tree(self.tempdir.name, file_type="dir")
+        assert len(result) == 3
+
+    def test_walk_tree_by_symlink(self):
+        os.symlink(self.filepaths[0], os.path.join(self.tempdir.name, "file1.link"))
+        result = walk_tree(self.tempdir.name, file_type="symlink")
+        assert len(result) == 1
+
+        os.symlink(self.filepaths[0], os.path.join(self.tempdir.name, "file1.rst"))
+        os.symlink(self.filepaths[0], os.path.join(self.tempdir.name, "file1.md"))
+        result = walk_tree(self.tempdir.name, file_type="symlink", ext=[".rst", ".md"])
+        assert len(result) == 2
+
     def tearDown(self):
         self.tempdir.cleanup()
 
@@ -221,6 +235,25 @@ class TestSearchFiles(unittest.TestCase):
         # invalid regular expression will return an empty list
         files = search_files(here, regex_pattern=r"*foo[1-5]$", max_depth=1)
         assert len(files) == 0
+
+    def test_search_files_by_symlink(self):
+        # create a symlink to a file
+        os.symlink(
+            os.path.join(self.temp_dir, self.files[0]),
+            os.path.join(self.temp_dir, f"{self.files[0]}.link"),
+        )
+        result = search_files(self.temp_dir, r".*", file_type="symlink")
+        assert len(result) == 1
+
+    def test_search_files_by_directory(self):
+        result = search_files(self.temp_dir, r".*", file_type="dir")
+        assert len(result) == 1
+
+        for subdir in ["subdir1", "subdir2", "subdir3"]:
+            os.mkdir(os.path.join(self.temp_dir, subdir))
+
+        result = search_files(self.temp_dir, r".*", file_type="dir")
+        assert len(result) == 4
 
 
 @pytest.mark.utility
