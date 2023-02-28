@@ -146,7 +146,8 @@ class TestWalkTree(unittest.TestCase):
         result = walk_tree(self.tempdir.name, ext=".xyz")
         assert len(result) == 0
 
-    def test_walk_tree_invalid_directory(self):
+    @staticmethod
+    def test_walk_tree_invalid_directory():
         result = walk_tree("/xyz")
         assert len(result) == 0
 
@@ -216,12 +217,14 @@ class TestSearchFiles(unittest.TestCase):
         result = search_files(subdir_path, r".*", max_depth=1)
         assert len(result) == 1
 
-    def test_search_files_invalid_directory(self):
+    @staticmethod
+    def test_search_files_invalid_directory():
         result = search_files(root_dir="/xyz", regex_pattern=r".*")
         print(result)
         assert len(result) == 0
 
-    def test_search_files_home_dir(self):
+    @staticmethod
+    def test_search_files_home_dir():
         # search for files based on variable expansion $HOME
         result = search_files(
             root_dir="$HOME", regex_pattern=r".*", file_traverse_limit=10
@@ -231,7 +234,8 @@ class TestSearchFiles(unittest.TestCase):
         result = search_files(root_dir="~", regex_pattern=r".*", file_traverse_limit=10)
         assert len(result) == 10
 
-    def test_search_files_invalid_regex(self):
+    @staticmethod
+    def test_search_files_invalid_regex():
         # invalid regular expression will return an empty list
         files = search_files(here, regex_pattern=r"*foo[1-5]$", max_depth=1)
         assert len(files) == 0
