@@ -521,6 +521,13 @@
                   "dir",
                   "symlink"
                 ]
+              },
+              "file_traverse_limit": {
+                "type": "integer",
+                "description": "Limit the number of files to traverse when searching for files in directory",
+                "minimum": 1,
+                "default": 10000,
+                "maximum": 999999
               }
             }
           }

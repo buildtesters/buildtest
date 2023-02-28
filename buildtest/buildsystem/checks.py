@@ -1004,6 +1004,7 @@ def file_count_check(builder):
                 ext=dir_check.get("ext"),
                 max_depth=dir_check.get("depth"),
                 file_type=dir_check.get("filetype"),
+                file_traverse_limit=dir_check.get("file_traverse_limit"),
             )
         # if 'filepattern' attribute is specified we will search for files via search_files method which will perform directory traversal based on regular expression
         if dir_check.get("filepattern"):
@@ -1012,6 +1013,7 @@ def file_count_check(builder):
                 regex_pattern=dir_check["filepattern"],
                 max_depth=dir_check.get("depth"),
                 file_type=dir_check.get("filetype"),
+                file_traverse_limit=dir_check.get("file_traverse_limit"),
             )
 
         total_files = list(set(files_by_directory_walk + files_by_regex))
