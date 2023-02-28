@@ -131,6 +131,7 @@ def test_file_count():
         buildspecs=[
             os.path.join(here, "file_count.yml"),
             os.path.join(here, "file_count_pattern.yml"),
+            os.path.join(here, "file_count_filetype.yml"),
         ],
         buildtest_system=system,
         configuration=config,
