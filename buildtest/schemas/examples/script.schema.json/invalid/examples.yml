@@ -333,3 +333,42 @@ buildspecs:
         - dir: /tmp
           count: 0
           FOO: BAR
+    file_count_minimum_check_on_count:
+      type: script
+      executor: generic.local.bash
+      description: The count property must be 0 or greater
+      run: mkdir foo
+      status:
+        file_count:
+          - dir: foo
+            count: -1
+  file_count_filetype_invalid_value:
+    type: script
+    executor: generic.local.bash
+    description: Invalid value for filetype, it must be 'file', 'dir' or 'symlink'
+    run: mkdir foo
+    status:
+      file_count:
+        - dir: foo
+          count: -1
+          filetype: 'filename'
+  minimum_check_file_traverse_limit:
+    type: script
+    executor: generic.local.bash
+    description: The minimum value for file_traverse_limit is 1
+    run: mkdir foo
+    status:
+      file_count:
+        - dir: foo
+          count: 1
+          file_traverse_limit: 0
+  maximum_check_file_traverse_limit:
+    type: script
+    executor: generic.local.bash
+    description: The minimum value for file_traverse_limit is 999999
+    run: mkdir foo
+    status:
+      file_count:
+        - dir: foo
+          count: 1
+          file_traverse_limit: 1000000
