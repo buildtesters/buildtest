@@ -1022,12 +1022,12 @@ def file_count_check(builder):
 
         # need to get a resolved path for printing purposes. User can specify arbitrary directory name it may not exist on filesystem
         resolved_dirname = resolve_path(dir_check["dir"], exist=False)
-
-        console.print(
+        logger.debug(
             f"[blue]{builder}[/]: Found the following files: {total_files} in directory: {resolved_dirname}"
         )
+
         console.print(
-            f"[blue]{builder}[/]: Found {len(total_files)} file in directory: {resolved_dirname}. Comparing with reference count: {dir_check['count']}. Comparison check is {len(total_files)} == {dir_check['count']} is {bool_check}"
+            f"[blue]{builder}[/]: Found {len(total_files)} file in directory: {resolved_dirname}. Comparing with reference count: {dir_check['count']}. Comparison check is {len(total_files)} == {dir_check['count']} which evaluates to {bool_check}"
         )
 
     # perform a logical AND on the list and return the boolean result

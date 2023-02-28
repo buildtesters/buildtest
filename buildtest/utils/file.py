@@ -15,6 +15,8 @@ import re
 from buildtest.defaults import console
 from buildtest.exceptions import BuildTestError
 
+max_files_traversed = 999999
+
 
 def is_file(fname):
     """Check if file exist and returns True/False
@@ -105,7 +107,12 @@ def search_files(
     """
     files_list = []
     files_traversed = 0
-    file_traverse_limit = min(file_traverse_limit, 999999)
+
+    # if file_traverse_limit is None then we set it to max_files_traversed
+    file_traverse_limit = file_traverse_limit or max_files_traversed
+
+    # if user specified file_traverse_limit take the minimum of file_traverse_limit and max_files_traversed
+    file_traverse_limit = min(file_traverse_limit, max_files_traversed)
     # if file_type is None then we set it to 'file' by default
     file_type = file_type or "file"
 
@@ -158,11 +165,6 @@ def search_files(
             ):
                 files_list.append(file_path)
 
-            """                
-            if pattern.search(file):
-                file_path = os.path.join(root, file)
-                files_list.append(file_path)
-            """
             files_traversed += 1
 
     return [os.path.abspath(fname) for fname in files_list]
@@ -206,8 +208,11 @@ def walk_tree(
     resolved_dirpath = resolve_path(root_dir, exist=True)
     files_traversed = 0
 
+    # if file_traverse_limit is None then we set it to max_files_traversed
+    file_traverse_limit = file_traverse_limit or max_files_traversed
+
     # user may pass a file_traverse_limit that is too large, so we set a limit to 999999
-    file_traverse_limit = min(file_traverse_limit, 999999)
+    file_traverse_limit = min(file_traverse_limit, max_files_traversed)
 
     for root, dirs, files in os.walk(resolved_dirpath):
         if (
