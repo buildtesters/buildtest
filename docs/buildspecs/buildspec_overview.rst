@@ -552,6 +552,22 @@ Let's build this test by running the following:
 
    .. command-output:: buildtest build -b tutorials/test_status/file_count_pattern.yml
 
+In the next example, we will introduce ``filetype`` property that can be used to filter directory search based on file type.
+The ``filetype`` property can one of the following values **file**, **dir**, **symlink**. Once set, the directory traversal will
+seek out files based on the file type. Note that when ``filetype`` is set to ``dir`` we will return the parent directory and
+all sub-directories. This test will create a few subdirectories and create symbolic link, next we will perform directory search
+by directory and symbolic link. We expect this test to pass as we will find 3 directories and 2 symbolic links.
+
+.. literalinclude:: ../tutorials/test_status/file_count_filetype.yml
+   :language: yaml
+   :emphasize-lines: 11-18
+
+Let's build this test by running the following:
+
+.. dropdown:: ``buildtest build -b tutorials/test_status/file_count_filetype.yml``
+
+   .. command-output:: buildtest build -b tutorials/test_status/file_count_filetype.yml
+
 Skipping test
 -------------
 
