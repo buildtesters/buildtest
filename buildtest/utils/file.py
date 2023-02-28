@@ -106,6 +106,8 @@ def search_files(
     files_list = []
     files_traversed = 0
     file_traverse_limit = min(file_traverse_limit, 999999)
+    # if file_type is None then we set it to 'file' by default
+    file_type = file_type or "file"
 
     # re.compile can raise exception if regex pattern is not valid which will raise re.error
     try:
@@ -197,6 +199,9 @@ def walk_tree(
 
     if isinstance(ext, str):
         ext = [ext]
+
+    # if file_type is None then we set it to 'file' by default
+    file_type = file_type or "file"
 
     resolved_dirpath = resolve_path(root_dir, exist=True)
     files_traversed = 0
