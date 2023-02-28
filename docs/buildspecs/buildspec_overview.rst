@@ -568,6 +568,26 @@ Let's build this test by running the following:
 
    .. command-output:: buildtest build -b tutorials/test_status/file_count_filetype.yml
 
+Buildtest will perform a directory walk when using ``file_count``, which can run into performance issues if you have a large directory.
+We have added a safety check during directory traversal to a maximum of **999999** files. You have the option to configure the directory
+traversal limit using ``file_traversal_limit`` which is an integer, the default value is **10000** if not specified. The minimum value and
+maximum value can be 1 and 999999 respectively.
+
+In this next example, we will illustrate how this feature works. We will create 99 *.txt* files in directory **foo**. We will
+perform two assertions with different values for ``file_traversal_limit``. In the first example, we will set this to 50 and
+expect 50 files returned. We expect this check to be **True**. In the next example, we will set ``file_traversal_limit`` to 20 and
+set ``count: 10`` where we should expect a failure. In principle, we should retrieve 20 files but this will mismatch the comparison check.
+
+.. literalinclude:: ../tutorials/test_status/file_count_file_traverse_limit.yml
+   :language: yaml
+   :emphasize-lines: 9-16
+
+We can try building this test by running the following:
+
+.. dropdown:: ``buildtest build -b tutorials/test_status/file_count_file_traverse_limit.yml``
+
+   .. command-output:: buildtest build -b tutorials/test_status/file_count_file_traverse_limit.yml
+
 Skipping test
 -------------
 
