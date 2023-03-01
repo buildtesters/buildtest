@@ -48,6 +48,10 @@ def inspect_cmd(args, report_file=None):
 def fetch_test_names(report, names):
     """Return a list of builders given input test names by search the report file for valid records. If test is found it will be returned as a builder name. If names
     are specified without test ID then we retrieve latest record for test name. If names are specified with ID we find the first matching test record.
+
+    Args:
+        report (buildtest.cli.report.Report): An instance of Report class
+        names (list): A list of test names
     """
     query_builders = []
     name_lookup = report.lookup()
