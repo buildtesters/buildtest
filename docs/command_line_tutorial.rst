@@ -95,7 +95,7 @@ The ``buildtest rt summary`` can be useful if you want to summary of report file
 Buildtest supports paging support with ``buildtest rt`` which can be useful when you
 have lots of tests. To enable pagination you can run::
 
-    buildtest --pager rt
+    buildtest rt --pager
 
 Finally we can filter test records and format table columns via ``--filter`` and ``--format`` option. Let's try
 running the following command
