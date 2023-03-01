@@ -258,7 +258,7 @@ _buildtest ()
           local opts="--builder --help --no-header --pager --terse -b -h -n -t"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         name|n)
-          COMPREPLY=( $( compgen -W "$(_builder_names)" -- $cur ) )
+          COMPREPLY=( $( compgen -W "$(_test_name)" -- $cur ) )
 
           if [[ $cur == -* ]] ; then
             local opts="--all --help --pager -a -h"
