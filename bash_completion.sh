@@ -195,12 +195,8 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pass --row-count --start --terse  -e -f -h -n -p -s -t c clear l list p path sm summary"
+      local opts="--end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse  -e -f -h -n -p -s -t c clear l list p path sm summary"
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-      case ${prev} in --color)
-        COMPREPLY=( $( compgen -W "$(_supported_colors)" -- $cur ) )
-        return
-      esac
       case "${prev}" in --filter)
         COMPREPLY=( $( compgen -W "$(_avail_report_filterfields)" -- $cur ) )
         return
@@ -241,7 +237,7 @@ _buildtest ()
           local opts="-h --help"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         view|v)
-          local opts="--help --theme -h -p -t"
+          local opts="--help --pager --theme -h -t"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
           case "${prev}" in --theme|-t)
@@ -259,13 +255,13 @@ _buildtest ()
       # case statement to handle completion for buildtest inspect [name|id|list] command
       case "${COMP_WORDS[2]}" in
         list|l)
-          local opts="--builder --help --no-header --terse -b -h -n -t"
+          local opts="--builder --help --no-header --pager --terse -b -h -n -t"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         name|n)
           COMPREPLY=( $( compgen -W "$(_builder_names)" -- $cur ) )
 
           if [[ $cur == -* ]] ; then
-            local opts="--all --help -a -h"
+            local opts="--all --help --pager -a -h"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           fi
           ;;
@@ -273,7 +269,7 @@ _buildtest ()
           COMPREPLY=( $( compgen -W "$(_test_buildspec)" -- $cur ) )
 
           if [[ $cur == -* ]] ; then
-            local opts="--all --help -a -h"
+            local opts="--all --help --pager -a -h"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           fi
           ;;
@@ -305,7 +301,7 @@ _buildtest ()
            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
          # completion for rest of arguments
          *)
-           local longopts="--buildspec --count --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --paths --quiet --rebuild --row-count --tags --root --terse"
+           local longopts="--buildspec --count --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --row-count --tags --root --terse"
            local shortopts="-b -e -h -n -p -q -r -t"
            local subcmds="invalid"
            local allopts="${longopts} ${shortopts} ${subcmds}"
@@ -318,10 +314,6 @@ _buildtest ()
              COMPREPLY=( $( compgen -W "$(_avail_buildspec_formatfields)" -- $cur ) )
              return
            esac
-           case ${prev} in --color)
-            COMPREPLY=( $( compgen -W "$(_supported_colors)" -- $cur ) )
-            return
-           esac
            ;;
          esac
         ;;
@@ -329,7 +321,7 @@ _buildtest ()
          case ${COMP_WORDS[3]} in
          # completion for rest of arguments
          *)
-           local longopts="--help"
+           local longopts="--help --pager"
            local shortopts="-h"
            local allopts="${longopts} ${shortopts}"
            COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) );;
@@ -388,17 +380,13 @@ _buildtest ()
       ;;
 
     history|hy)
-      local cmds="--help -h list query"
+      local cmds="--help --pager -h list query"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       case ${COMP_WORDS[2]} in
       list)
         local opts="--help --no-header --terse -h -n -t"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-
-        if [[ "${prev}" == "--color" ]]; then
-          COMPREPLY=( $( compgen -W "$(_supported_colors)" -- $cur ) )
-        fi
         ;;
       query)
         local opts="--help --log --output -h -l -o"
@@ -446,7 +434,7 @@ _buildtest ()
     *)
       local cmds="build buildspec cd cdash clean config debugreport docs help info inspect history path report schema schemadocs stats stylecheck tutorial-examples unittests"
       local alias_cmds="bd bc cg debug it h hy rt style test"
-      local opts="--color --config --debug --editor --help --helpcolor --logpath --loglevel --print-log --no-color --pager --report --version --view-log -c -d -h -l -p -r -V"
+      local opts="--color --config --debug --editor --help --helpcolor --logpath --loglevel --print-log --no-color --report --version --view-log -c -d -h -l -p -r -V"
 
       case "${cur}" in
       # print main options to buildtest

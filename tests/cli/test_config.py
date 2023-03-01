@@ -43,7 +43,7 @@ def test_view_configuration():
     # buildtest config view --theme emacs
     view_configuration(configuration, theme="emacs")
 
-    # buildtest --pager config view
+    # buildtest config view --pager
     view_configuration(configuration, pager=True)
 
 

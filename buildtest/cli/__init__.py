@@ -221,20 +221,21 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         action="store_true",
         help="Print available color options in a table format.",
     )
-    parser.add_argument(
-        "-p", "--pager", action="store_true", help="Enable PAGING when viewing result"
-    )
     parser.add_argument("-r", "--report", help="Specify path to test report file")
 
+    parent_parser = argparse.ArgumentParser(add_help=False)
+    parent_parser.add_argument(
+        "--pager", action="store_true", help="Enable PAGING when viewing result"
+    )
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 
     build_menu(subparsers)
-    buildspec_menu(subparsers)
-    config_menu(subparsers)
-    report_menu(subparsers)
-    inspect_menu(subparsers)
+    buildspec_menu(subparsers, parent_parser)
+    config_menu(subparsers, parent_parser)
+    report_menu(subparsers, parent_parser)
+    inspect_menu(subparsers, parent_parser)
     path_menu(subparsers)
-    history_menu(subparsers)
+    history_menu(subparsers, parent_parser)
     schema_menu(subparsers)
     cdash_menu(subparsers)
     unittest_menu(subparsers)
@@ -246,7 +247,11 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
 
 
 def misc_menu(subparsers):
-    """Build the command line menu for some miscellaneous commands"""
+    """Build the command line menu for some miscellaneous commands
+
+    Args:
+        subparsers (argparse._SubParsersAction): Subparser object to add subparser
+    """
 
     cd_parser = subparsers.add_parser(
         "cd", help="change directory to root of test given a test name"
@@ -312,7 +317,11 @@ def misc_menu(subparsers):
 
 
 def stylecheck_menu(subparsers):
-    """This method will create command options for ``buildtest stylecheck``"""
+    """This method will create command options for ``buildtest stylecheck``
+
+    Args:
+        subparsers (argparse._SubParsersAction): Subparser object to add subparser
+    """
 
     stylecheck_parser = subparsers.add_parser(
         "stylecheck", aliases=["style"], help="Run buildtest style checks"
@@ -333,7 +342,11 @@ def stylecheck_menu(subparsers):
 
 
 def unittest_menu(subparsers):
-    """This method builds the command line menu for ``buildtest unittests`` command"""
+    """This method builds the command line menu for ``buildtest unittests`` command
+
+    Args:
+        subparsers (argparse._SubParsersAction): Subparser object to add subparser
+    """
 
     unittests_parser = subparsers.add_parser(
         "unittests", help="Run buildtest unit tests", aliases=["test"]
@@ -357,7 +370,11 @@ def unittest_menu(subparsers):
 
 
 def tutorial_examples_menu(subparsers):
-    """This method builds the command line menu for ``buildtest tutorial-examples`` command"""
+    """This method builds the command line menu for ``buildtest tutorial-examples`` command
+
+    Args:
+        subparsers (argparse._SubParsersAction): Subparser object to add subparser
+    """
 
     subparsers.add_parser(
         "tutorial-examples",
@@ -366,7 +383,11 @@ def tutorial_examples_menu(subparsers):
 
 
 def path_menu(subparsers):
-    """This method builds the command line menu for ``buildtest path`` command"""
+    """This method builds the command line menu for ``buildtest path`` command
+
+    Args:
+        subparsers (argparse._SubParsersAction): Subparser object to add subparser
+    """
 
     path = subparsers.add_parser("path", help="Show path attributes for a given test")
     path_group = path.add_mutually_exclusive_group()
@@ -392,8 +413,13 @@ def path_menu(subparsers):
     path.add_argument("name", help="Name of test")
 
 
-def history_menu(subparsers):
-    """This method builds the command line menu for ``buildtest history`` command"""
+def history_menu(subparsers, parent_parser):
+    """This method builds the command line menu for ``buildtest history`` command
+
+    Args:
+        subparsers (argparse._SubParsersAction): Subparser object to add subparser
+        parent_parser (argparse.ArgumentParser): Parent parser object to add to subparser
+    """
 
     history_subcmd = subparsers.add_parser(
         "history", aliases=["hy"], help="Query build history"
@@ -404,7 +430,7 @@ def history_menu(subparsers):
     )
 
     list_parser = history_subparser.add_parser(
-        "list", help="List a summary of all builds"
+        "list", help="List a summary of all builds", parents=[parent_parser]
     )
     list_parser.add_argument(
         "-n",
@@ -438,7 +464,11 @@ def history_menu(subparsers):
 
 
 def build_menu(subparsers):
-    """This method implements command line menu for ``buildtest build`` command."""
+    """This method implements command line menu for ``buildtest build`` command.
+
+    Args:
+        subparsers (argparse._SubParsersAction): Subparser object to add subparser
+    """
 
     parser_build = subparsers.add_parser(
         "build", aliases=["bd"], help="Build and Run test"
@@ -594,8 +624,13 @@ def build_menu(subparsers):
     )
 
 
-def buildspec_menu(subparsers):
-    """This method implements ``buildtest buildspec`` command"""
+def buildspec_menu(subparsers, parent_parser):
+    """This method implements ``buildtest buildspec`` command
+
+    Args:
+        subparsers (argparse._SubParsersAction): Subparser object
+        parent_parser (argparse.ArgumentParser): Parent parser object
+    """
 
     parser_buildspec = subparsers.add_parser(
         "buildspec", aliases=["bc"], help="Buildspec Interface"
@@ -630,7 +665,10 @@ def buildspec_menu(subparsers):
     # buildtest buildspec find
 
     buildspec_find = subparsers_buildspec.add_parser(
-        "find", aliases=["f"], help="Query information from buildspecs cache"
+        "find",
+        aliases=["f"],
+        help="Query information from buildspecs cache",
+        parents=[parent_parser],
     )
 
     # buildtest buildspec maintainers
@@ -823,7 +861,10 @@ def buildspec_menu(subparsers):
 
     # buildtest buildspec summary
     subparsers_buildspec.add_parser(
-        "summary", aliases=["sm"], help="Print summary of buildspec cache"
+        "summary",
+        aliases=["sm"],
+        help="Print summary of buildspec cache",
+        parents=[parent_parser],
     )
     # buildtest buildspec validate
     buildspec_validate = subparsers_buildspec.add_parser(
@@ -862,11 +903,18 @@ def buildspec_menu(subparsers):
     )
 
 
-def config_menu(subparsers):
-    """This method adds argparse argument for ``buildtest config``"""
+def config_menu(subparsers, parent_parser):
+    """This method adds argparse argument for ``buildtest config``
+
+    Args:
+        subparsers (argparse._SubParsersAction): Subparser object
+        parent_parser (argparse.ArgumentParser): Parent parser object
+    """
 
     parser_config = subparsers.add_parser(
-        "config", aliases=["cg"], help="Query buildtest configuration"
+        "config",
+        aliases=["cg"],
+        help="Query buildtest configuration",
     )
 
     subparsers_config = parser_config.add_subparsers(
@@ -897,7 +945,7 @@ def config_menu(subparsers):
         "validate", help="Validate buildtest settings file with schema."
     )
     view_parser = subparsers_config.add_parser(
-        "view", aliases=["v"], help="View configuration file"
+        "view", aliases=["v"], help="View configuration file", parents=[parent_parser]
     )
     view_parser.add_argument(
         "-t",
@@ -975,11 +1023,16 @@ def config_menu(subparsers):
     )
 
 
-def report_menu(subparsers):
-    """This method implements the ``buildtest report`` command options"""
+def report_menu(subparsers, parent_parser):
+    """This method implements the ``buildtest report`` command options
+
+    Args:
+        subparsers (argparse._SubParsersAction): Subparser object
+        parent_parser (argparse.ArgumentParser): Parent parser object
+    """
 
     parser_report = subparsers.add_parser(
-        "report", aliases=["rt"], help="Query test report"
+        "report", aliases=["rt"], help="Query test report", parents=[parent_parser]
     )
     subparsers = parser_report.add_subparsers(
         description="Fetch test results from report file and print them in table format",
@@ -992,7 +1045,7 @@ def report_menu(subparsers):
         "path", aliases=["p"], help="Print full path to the report file being used"
     )
     parser_report_summary = subparsers.add_parser(
-        "summary", aliases=["sm"], help="Summarize test report"
+        "summary", aliases=["sm"], help="Summarize test report", parents=[parent_parser]
     )
 
     # buildtest report
@@ -1090,8 +1143,13 @@ def report_menu(subparsers):
     )
 
 
-def inspect_menu(subparsers):
-    """This method builds argument for ``buildtest inspect`` command"""
+def inspect_menu(subparsers, parent_parser):
+    """This method builds argument for ``buildtest inspect`` command
+
+    Args:
+        subparsers (argparse._SubParsersAction): Subparser object
+        parent_parser (argparse.ArgumentParser): Parent parser object
+    """
 
     parser_inspect = subparsers.add_parser(
         "inspect", aliases=["it"], help="Inspect a test based on NAME or ID "
@@ -1103,9 +1161,14 @@ def inspect_menu(subparsers):
         metavar="",
     )
     inspect_buildspec = subparser.add_parser(
-        "buildspec", aliases=["b"], help="Inspect a test based on buildspec"
+        "buildspec",
+        aliases=["b"],
+        help="Inspect a test based on buildspec",
+        parents=[parent_parser],
     )
-    name = subparser.add_parser("name", aliases=["n"], help="Specify name of test")
+    name = subparser.add_parser(
+        "name", aliases=["n"], help="Specify name of test", parents=[parent_parser]
+    )
     query_list = subparser.add_parser(
         "query", aliases=["q"], help="Query fields from record"
     )
@@ -1125,6 +1188,7 @@ def inspect_menu(subparsers):
         "list",
         aliases=["l"],
         help="List all test names, ids, and corresponding buildspecs",
+        parents=[parent_parser],
     )
     inspect_list.add_argument(
         "-n",
@@ -1168,7 +1232,11 @@ def inspect_menu(subparsers):
 
 
 def schema_menu(subparsers):
-    """This method builds menu for ``buildtest schema``"""
+    """This method builds menu for ``buildtest schema``
+
+    Args:
+        subparsers (argparse._SubParsersAction): Subparser object
+    """
 
     parser_schema = subparsers.add_parser(
         "schema", help="List schema contents and examples"
@@ -1192,7 +1260,11 @@ def schema_menu(subparsers):
 
 
 def cdash_menu(subparsers):
-    """This method builds arguments for ``buildtest cdash`` command."""
+    """This method builds arguments for ``buildtest cdash`` command.
+
+    Args:
+        subparsers (argparse._SubParsersAction): Subparser object
+    """
 
     parser_cdash = subparsers.add_parser("cdash", help="Upload test to CDASH server")
 
