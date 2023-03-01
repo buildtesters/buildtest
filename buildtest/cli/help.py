@@ -103,7 +103,7 @@ def print_buildspec_help():
     )
     table.add_row("buildtest buildspec find --rebuild", "Rebuild cache file")
     table.add_row(
-        "buildtest --pager buildspec find", "Paginate output of buildspec cache"
+        "buildtest buildspec find --pager", "Paginate output of buildspec cache"
     )
     table.add_row(
         "buildtest buildspec find --root /tmp --rebuild",
@@ -186,7 +186,7 @@ def print_buildspec_help():
 
     table.add_row("buildtest buildspec summary", "Show summary of buildspec cache file")
     table.add_row(
-        "buildtest --pager buildspec summary",
+        "buildtest buildspec summary --pager",
         "Paginate the output of summary for buildspec cache",
     )
     table.add_row(
@@ -242,7 +242,7 @@ def print_config_help():
 
     table.add_row("buildtest config view", "View content of configuration file")
     table.add_row(
-        "buildtest --pager config view", "Paginate output of configuration file"
+        "buildtest config view --pager", "Paginate output of configuration file"
     )
     table.add_row(
         "buildtest config validate", "Validate configuration file with JSON schema"
@@ -343,7 +343,7 @@ def print_report_help():
     table.add_column("Description", justify="left", style="magenta")
 
     table.add_row("buildtest report", "Display all test results")
-    table.add_row("buildtest --pager report", "Paginate output of test results")
+    table.add_row("buildtest report --pager", "Paginate output of test results")
     table.add_row(
         "buildtest report --filter returncode=0", "Filter test results by returncode=0"
     )
@@ -387,7 +387,7 @@ def print_report_help():
         "buildtest report summary --detailed", "Show detailed summary of test report"
     )
     table.add_row(
-        "buildtest --pager report summary", "Paginate output of report summary"
+        "buildtest report summary --pager", "Paginate output of report summary"
     )
     console.print(table)
 

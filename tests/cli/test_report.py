@@ -201,7 +201,7 @@ def test_report_summary():
     report = Report()
     report_summary(report)
 
-    # buildtest --pager rt summary
+    # buildtest rt summary --pager
     report = Report(pager=True)
     report_summary(report)
 
@@ -209,7 +209,7 @@ def test_report_summary():
     report = Report()
     report_summary(report, detailed=True)
 
-    # buildtest --pager rt summary --detailed
+    # buildtest rt summary --detailed --pager
     report = Report(pager=True)
     report_summary(report, detailed=True)
 
@@ -226,7 +226,7 @@ def test_report_summary():
     report = Report(color="light_pink1")
     report_summary(report, detailed=True)
 
-    # buildtest --pager rt sm --detailed
+    # buildtest rt sm --detailed --pager
     report = Report(pager=True)
     report_summary(report, detailed=True)
 

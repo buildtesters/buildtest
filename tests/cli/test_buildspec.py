@@ -107,7 +107,7 @@ def test_func_buildspec_find():
     # buildtest buildspec find --formatfields
     cache.print_raw_format_fields()
 
-    # buildtest --pager buildspec find
+    # buildtest buildspec find --pager
     cache = BuildspecCache(configuration=configuration, pager=True)
     cache.print_tags()
     cache.print_buildspecfiles()
@@ -340,7 +340,7 @@ def test_buildspec_summary():
     summarize_buildspec_cache(
         configuration=configuration, pager=False, color=Color.default().name
     )
-    # buildtest --pager buildspec summary
+    # buildtest buildspec summary --pager
     summarize_buildspec_cache(configuration=configuration, pager=True)
 
 
