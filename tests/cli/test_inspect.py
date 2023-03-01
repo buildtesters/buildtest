@@ -2,7 +2,6 @@ import os
 import random
 import string
 import tempfile
-import uuid
 
 import pytest
 from buildtest.cli.inspect import inspect_cmd
@@ -73,21 +72,9 @@ def test_buildtest_inspect_name():
     # buildtest inspect name <name1> <name2>
     inspect_cmd(args)
 
-    test_names = r.get_random_builder_names(num_items=2)
-
-    class args:
-        subcommands = "inspect"
-        inspect = "name"
-        name = test_names
-        report = None
-
-    print(f"Querying test names: {args.name}")
-    # buildtest inspect name <name1>/<ID> <name2>/<ID>
-    inspect_cmd(args)
-
     random_test = [
         "".join(random.choices(string.ascii_letters, k=10)),
-        "".join(random.choices(string.ascii_letters, k=10)) + "/" + str(uuid.uuid4()),
+        "".join(random.choices(string.ascii_letters, k=10)),
     ]
 
     class args:
@@ -171,6 +158,21 @@ def test_buildtest_query():
         theme = "emacs"
 
     # check buildtest inspect query --output --error --testpath --buildscript --buildenv <name1> <name2> ...
+    inspect_cmd(args)
+
+    class args:
+        subcommands = "inspect"
+        inspect = "query"
+        name = ["stream_test"]
+        output = False
+        error = False
+        testpath = False
+        buildscript = False
+        buildenv = False
+        theme = None
+
+    # buildtest inspect query stream_test
+    # the 'stream_test' will add coverage where metrics are printed in output of 'buildtest inspect query'
     inspect_cmd(args)
 
     class args:
