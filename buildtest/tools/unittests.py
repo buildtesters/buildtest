@@ -72,6 +72,7 @@ def run_unit_tests(pytestopts=None, sourcefiles=None, enable_coverage=False):
 
     if enable_coverage:
         cov.stop()
+        cov.combine()
         cov.html_report(title="buildtest unittests coverage report", directory=html_dir)
         cov.json_report(outfile=os.path.join(BUILDTEST_ROOT, "coverage.json"))
         cov.report(ignore_errors=True, skip_empty=True, sort="-cover", precision=2)
