@@ -25,50 +25,56 @@ def buildtest_info(configuration, buildtest_system):
 
     be = BuildExecutor(configuration)
 
-    buildtest_details = f"""
-[red]Buildtest Version:[/red]        [green]{BUILDTEST_VERSION}[/green]
-[red]Buildtest Path:[/red]           [green]{shutil.which('buildtest')}[/green]
-[red]Configuration File:[/red]       [green]{configuration.file}[/green]
-[red]Available Systems:[/red]        [green]{configuration.systems}[/green]
-[red]Active System:[/red]            [green]{configuration.name()}[/green]
-[red]Available Executors:[/red]      [green]{be.names()}[/green]
-"""
-
-    system_details = f"""
-[red]Python Path:[/red]         [green]{buildtest_system.system['python']}[/green]
-[red]Python Version:[/red]      [green]{buildtest_system.system['pyver']}[/green]
-[red]Processor:[/red]           [green]{buildtest_system.system['processor']}[/green]
-[red]Host:[/red]                [green]{buildtest_system.system['host']}[/green]
-[red]Machine:[/red]             [green]{buildtest_system.system['machine']}[/green]
-[red]Operating System:[/red]    [green]{buildtest_system.system['os']}[/green]
-[red]Module System:[/red]       [green]{buildtest_system.system['moduletool']}[/green]
-"""
+    buildtest_details = [
+        f"[red]Buildtest Version:[/red]        [green]{BUILDTEST_VERSION}[/green]",
+        f"[red]Buildtest Path:[/red]           [green]{shutil.which('buildtest')}[/green]",
+        f"[red]Configuration File:[/red]       [green]{configuration.file}[/green]",
+        f"[red]Available Systems:[/red]        [green]{configuration.systems}[/green]",
+        f"[red]Active System:[/red]            [green]{configuration.name()}[/green]",
+        f"[red]Available Executors:[/red]      [green]{be.names()}[/green]",
+    ]
+    system_details = [
+        f"[red]Python Path:[/red]         [green]{buildtest_system.system['python']}[/green]",
+        f"[red]Python Version:[/red]      [green]{buildtest_system.system['pyver']}[/green]",
+        f"[red]Processor:[/red]           [green]{buildtest_system.system['processor']}[/green]",
+        f"[red]Host:[/red]                [green]{buildtest_system.system['host']}[/green]",
+        f"[red]Machine:[/red]             [green]{buildtest_system.system['machine']}[/green]",
+        f"[red]Operating System:[/red]    [green]{buildtest_system.system['os']}[/green]",
+        f"[red]Module System:[/red]       [green]{buildtest_system.system['moduletool']}[/green]",
+    ]
 
     if is_dir(BUILD_HISTORY_DIR):
-        buildtest_details += f"[red]Build History Directory:[/red]  [green]{BUILD_HISTORY_DIR}[/green] \n"
-        buildtest_details += f"[red]Number of builds:[/red]         [green]{len(os.listdir(BUILD_HISTORY_DIR))}[/green] \n"
-
-    if is_file(BUILDSPEC_CACHE_FILE):
-        buildtest_details += f"[red]Buildspec Cache File:[/red]     [green]{BUILDSPEC_CACHE_FILE}[/green] \n"
-    else:
-        buildtest_details += "[red]Buildspec Cache File does not exist"
-
-    if is_file(BUILD_REPORT):
-        buildtest_details += (
-            f"[red]Default Report File:[/red]      [green]{BUILD_REPORT}[/green]"
+        buildtest_details.extend(
+            [
+                f"[red]Build History Directory:[/red]  [green]{BUILD_HISTORY_DIR}[/green]",
+                f"[red]Number of builds:[/red]         [green]{len(os.listdir(BUILD_HISTORY_DIR))}[/green]",
+            ]
         )
 
+    if is_file(BUILDSPEC_CACHE_FILE):
+        buildtest_details.append(
+            f"[red]Buildspec Cache File:[/red]     [green]{BUILDSPEC_CACHE_FILE}[/green]"
+        )
     else:
-        buildtest_details += "[red]Default report file does not exist"
+        buildtest_details.append("[red]Buildspec Cache File does not exist")
+
+    if is_file(BUILD_REPORT):
+        buildtest_details.append(
+            f"[red]Default Report File:[/red]      [green]{BUILD_REPORT}[/green]"
+        )
+    else:
+        buildtest_details.append("[red]Default report file does not exist")
 
     console.print(
-        Panel.fit(buildtest_details, title="buildtest details"), justify="left"
+        Panel.fit("\n".join(buildtest_details), title="buildtest details"),
+        justify="left",
     )
-    console.print(Panel.fit(system_details, title="system details"), justify="left")
+    console.print(
+        Panel.fit("\n".join(system_details), title="system details"), justify="left"
+    )
 
-    print_version_info("black")
-    print_version_info("pyflakes")
-    print_version_info("isort")
+    for package in ["black", "pyflakes", "isort"]:
+        print_version_info(package)
 
 
 def print_version_info(command_name):

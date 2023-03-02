@@ -180,6 +180,21 @@ def test_build_buildspecs():
         cmd.build()
 
 
+def test_run_all_perf_checks():
+    system = BuildTestSystem()
+    buildspecs = walk_tree(
+        root_dir=os.path.join(BUILDTEST_ROOT, "tutorials", "perf_checks"), ext=".yml"
+    )
+
+    #  buildtest build --buildspec $BUILDTEST_ROOT/tutorials/perf_checks
+    cmd = BuildTest(
+        configuration=configuration,
+        buildspecs=buildspecs,
+        buildtest_system=system,
+    )
+    cmd.build()
+
+
 @pytest.mark.cli
 def test_buildspec_tag_executor():
     system = BuildTestSystem()

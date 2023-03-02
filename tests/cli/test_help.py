@@ -6,6 +6,7 @@ def test_buildtest_help():
     buildtest_help(command="buildspec")
     buildtest_help(command="config")
     buildtest_help(command="cdash")
+    buildtest_help(command="path")
     buildtest_help(command="history")
     buildtest_help(command="inspect")
     buildtest_help(command="report")
