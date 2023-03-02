@@ -1,6 +1,9 @@
 [run]
 branch = True
+parallel = True
+concurrency = multiprocessing
 source = buildtest
+
 omit =
     buildtest/main.py
     buildtest/defaults.py
