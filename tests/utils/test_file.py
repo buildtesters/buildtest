@@ -3,12 +3,14 @@ import random
 import shutil
 import string
 import tempfile
+import unittest
 import uuid
 
 import pytest
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import (
     create_dir,
+    create_file,
     is_dir,
     is_file,
     is_symlink,
@@ -16,6 +18,7 @@ from buildtest.utils.file import (
     read_file,
     remove_file,
     resolve_path,
+    search_files,
     walk_tree,
     write_file,
 )
@@ -80,6 +83,14 @@ def test_directory_expansion():
     assert is_dir(dir2)
 
 
+def test_create_file():
+    dirname = tempfile.mkdtemp()
+    create_file(os.path.join(dirname, "test.txt"))
+
+    with pytest.raises(BuildTestError):
+        create_file("/xyz.txt")
+
+
 @pytest.mark.utility
 def test_create_dir(tmp_path):
     # since tmp_path creates a directory we will create a subdirectory "test" in tmp_path using create_dir
@@ -96,38 +107,157 @@ def test_create_dir(tmp_path):
         create_dir("/xyz")
 
 
-@pytest.mark.utility
-def test_walk_tree():
-    files = walk_tree(here)
-    assert files
+class TestWalkTree(unittest.TestCase):
+    def setUp(self):
+        # Create a temporary directory with some files for testing
+        self.tempdir = tempfile.TemporaryDirectory()
+        self.filepaths = [
+            os.path.join(self.tempdir.name, "file1.txt"),
+            os.path.join(self.tempdir.name, "file2.txt"),
+            os.path.join(self.tempdir.name, "file3.doc"),
+            os.path.join(self.tempdir.name, "subdir", "file4.txt"),
+            os.path.join(self.tempdir.name, "subdir", "file5.txt"),
+            os.path.join(self.tempdir.name, "subdir", "file6.doc"),
+            os.path.join(self.tempdir.name, "subdir2", "file7.txt"),
+            os.path.join(self.tempdir.name, "subdir2", "file8.doc"),
+        ]
+        os.makedirs(os.path.join(self.tempdir.name, "subdir"))
+        os.makedirs(os.path.join(self.tempdir.name, "subdir2"))
+        for filepath in self.filepaths:
+            create_file(filepath)
 
-    list_of_files = walk_tree(here, ".py")
-    print(f"Detected {len(list_of_files)} .py files found in directory: {here}")
-    assert len(list_of_files) > 0
+    def test_walk_tree_no_ext(self):
+        result = walk_tree(self.tempdir.name)
+        assert len(result) == 8
+
+    def test_walk_tree_single_ext(self):
+        result = walk_tree(self.tempdir.name, ext=".txt")
+        # check all resulting files have extension .txt
+        for fname in result:
+            assert fname.endswith(".txt")
+
+    def test_walk_tree_multiple_ext(self):
+        result = walk_tree(self.tempdir.name, ext=[".txt", ".doc"])
+        # check all resulting files with extensions .txt and .doc
+        for fname in result:
+            assert fname.endswith(".txt") or fname.endswith(".doc")
+
+    def test_walk_tree_no_files(self):
+        result = walk_tree(self.tempdir.name, ext=".xyz")
+        assert len(result) == 0
+
+    @staticmethod
+    def test_walk_tree_invalid_directory():
+        result = walk_tree("/xyz")
+        assert len(result) == 0
+
+    def test_walk_tree_max_depth(self):
+        result = walk_tree(self.tempdir.name, max_depth=1)
+        assert len(result) == 3
+
+    def test_walk_tree_numfiles(self):
+        result = walk_tree(self.tempdir.name, numfiles=2)
+        assert len(result) == 2
+
+    def test_walk_tree_file_traverse_limit(self):
+        result = walk_tree(self.tempdir.name, file_traverse_limit=6)
+        assert len(result) == 6
+
+    def test_walk_tree_by_directory(self):
+        result = walk_tree(self.tempdir.name, file_type="dir")
+        assert len(result) == 3
+
+    def test_walk_tree_by_symlink(self):
+        os.symlink(self.filepaths[0], os.path.join(self.tempdir.name, "file1.link"))
+        result = walk_tree(self.tempdir.name, file_type="symlink")
+        assert len(result) == 1
+
+        os.symlink(self.filepaths[0], os.path.join(self.tempdir.name, "file1.rst"))
+        os.symlink(self.filepaths[0], os.path.join(self.tempdir.name, "file1.md"))
+        result = walk_tree(self.tempdir.name, file_type="symlink", ext=[".rst", ".md"])
+        assert len(result) == 2
+
+    def tearDown(self):
+        self.tempdir.cleanup()
 
 
-@pytest.mark.utility
-def test_walk_tree_no_files(tmp_path):
-    # need to convert tmp_path to str since its of type PosixPath
-    list_of_files = walk_tree(str(tmp_path), ".py")
-    print(
-        f"Detected {len(list_of_files)} .py files found in directory: {str(tmp_path)}"
-    )
-    assert 0 == len(list_of_files)
+class TestSearchFiles(unittest.TestCase):
+    def setUp(self):
+        self.temp_dir = tempfile.mkdtemp()
+        self.files = [
+            "file1.txt",
+            "file2.jpg",
+            "file3.txt",
+            "file4.jpg",
+            "file5.txt",
+        ]
+        for f in self.files:
+            create_file(os.path.join(self.temp_dir, f))
 
+    def tearDown(self):
+        shutil.rmtree(self.temp_dir)
 
-@pytest.mark.utility
-def test_walk_tree_invalid_dir(tmp_path):
-    # we want to test an invalid directory so we remove temporary directory created by tmp_path
-    shutil.rmtree(str(tmp_path))
-    print(
-        f"Removing directory: {tmp_path} first before doing directory traversal on invalid directory"
-    )
-    list_of_files = walk_tree(str(tmp_path), ".py")
-    print(
-        f"Returned following files: {list_of_files} with .py extension for path: {tmp_path}"
-    )
-    assert not list_of_files
+    def test_search_files_with_pattern(self):
+        # Test searching files with regex pattern
+        result = search_files(self.temp_dir, r"^file\d+\.txt$")
+        assert len(result) == 3
+
+    def test_search_files_with_numfiles(self):
+        # Test searching files with numfiles parameter
+        result = search_files(self.temp_dir, r".*", numfiles=3)
+        assert len(result) == 3
+
+    def test_search_files_with_max_depth(self):
+        # Test searching files with max_depth parameter
+        subdir_path = os.path.join(self.temp_dir, "subdir")
+        os.mkdir(subdir_path)
+
+        create_file(os.path.join(subdir_path, "subfile.txt"))
+
+        result = search_files(subdir_path, r".*", max_depth=1)
+        assert len(result) == 1
+
+    @staticmethod
+    def test_search_files_invalid_directory():
+        result = search_files(root_dir="/xyz", regex_pattern=r".*")
+        print(result)
+        assert len(result) == 0
+
+    @staticmethod
+    def test_search_files_home_dir():
+        # search for files based on variable expansion $HOME
+        result = search_files(
+            root_dir="$HOME", regex_pattern=r".*", file_traverse_limit=10
+        )
+        assert len(result) == 10
+
+        result = search_files(root_dir="~", regex_pattern=r".*", file_traverse_limit=10)
+        assert len(result) == 10
+
+    @staticmethod
+    def test_search_files_invalid_regex():
+        # invalid regular expression will return an empty list
+        files = search_files(here, regex_pattern=r"*foo[1-5]$", max_depth=1)
+        assert len(files) == 0
+
+    def test_search_files_by_symlink(self):
+        # create a symlink to a file
+        os.symlink(
+            os.path.join(self.temp_dir, self.files[0]),
+            os.path.join(self.temp_dir, f"{self.files[0]}.link"),
+        )
+        result = search_files(self.temp_dir, r".*", file_type="symlink")
+        assert len(result) == 1
+
+    def test_search_files_by_directory(self):
+        result = search_files(self.temp_dir, r".*", file_type="dir")
+        assert len(result) == 1
+
+        for subdir in ["subdir1", "subdir2", "subdir3"]:
+            os.mkdir(os.path.join(self.temp_dir, subdir))
+
+        result = search_files(self.temp_dir, r".*", file_type="dir")
+        assert len(result) == 4
 
 
 @pytest.mark.utility

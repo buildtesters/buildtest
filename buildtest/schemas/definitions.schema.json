@@ -442,7 +442,7 @@
             }
           }
         },
-         "not_contains": {
+        "not_contains": {
           "description": "Check if metric value not in a list of reference values ",
           "items": {
             "type": "object",
@@ -479,6 +479,58 @@
         "is_file": {
           "description": "Check for list of filepaths are files",
           "$ref": "#/definitions/list_of_strings"
+        },
+        "file_count": {
+          "description": "Perform assertion check by comparing file count in a directory",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "dir",
+              "count"
+            ],
+            "properties": {
+              "dir": {
+                "type": "string",
+                "description": "Directory path to check for file count"
+              },
+              "count": {
+                "type": "integer",
+                "description": "Number of files expected in directory",
+                "minimum": 0
+              },
+              "depth": {
+                "type": "integer",
+                "description": "Depth of directory to search for files",
+                "minimum": 0
+              },
+              "ext": {
+                "$ref": "#/definitions/string_or_list",
+                "description": "File extension to filter files in directory"
+              },
+              "filepattern": {
+                "type": "string",
+                "description": "Specify a regular expression when searching for files in directory"
+              },
+              "filetype": {
+                "type": "string",
+                "description": "Specify file type when searching for files in directory. It can be 'file', 'dir' or 'symlink'",
+                "enum": [
+                  "file",
+                  "dir",
+                  "symlink"
+                ]
+              },
+              "file_traverse_limit": {
+                "type": "integer",
+                "description": "Limit the number of files to traverse when searching for files in directory",
+                "minimum": 1,
+                "default": 10000,
+                "maximum": 999999
+              }
+            }
+          }
         },
         "state": {
           "$ref": "#/definitions/state",

@@ -404,7 +404,14 @@ If we build this test, we expect buildtest to honor the value of ``state`` prope
 File Checks
 ~~~~~~~~~~~~~
 
-buildtest supports various file checks that can be used as means for passing test.
+buildtest supports various file checks that can be used as means for passing test. This can include
+checking for :ref:`file_existence`, :ref:`file_and_directory_check`, :ref:`symlink_check`, and :ref:`file_count`.
+
+.. _file_existence:
+
+File Existence
+~~~~~~~~~~~~~~~
+
 
 For instance, if you want to check for file existence, you can use  ``exists`` property
 which expects a list of file or directory names to check. This can be useful if your test
@@ -458,6 +465,11 @@ Let's validate and build this test.
 
     .. command-output:: buildtest build -b tutorials/test_status/file_exists_with_number.yml
 
+.. _file_and_directory_check:
+
+File and Directory Checks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 In the next example, we introduce checks for files and directory via ``is_file`` and
 ``is_dir`` property, which behaves similar to ``exists`` except they will check if each item
 is a file or directory. We expect the first test to fail, because **$HOME/.bashrc** is
@@ -476,8 +488,8 @@ Let's build the test and see the output.
 
 .. _symlink_check:
 
-Passing test based on Symbolic Link
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Symbolic Link Check
+~~~~~~~~~~~~~~~~~~~~
 
 buildtest can configure PASS/FAIL of test based on the status of symbolic link. This can be useful if your test will create a symbolic link to a file or directory and 
 test will pass if the symbolic link is present.  
@@ -494,6 +506,87 @@ We can run this test by running the following.
 .. dropdown:: ``buildtest build -b tutorials/test_status/is_symlink.yml``
 
    .. command-output:: buildtest build -b tutorials/test_status/is_symlink.yml
+
+.. _file_count:
+
+File Count
+~~~~~~~~~~~~
+
+buildtest can check for number of files in a directory. This can be useful if your test writes number of files and you
+want to check if the number of files is as expected. You can use the ``file_count`` property to perform file count. This
+property is a list of assertion, where each item is an object. The ``dir`` and ``count`` are required keys.
+
+The ``dir`` is the path to directory to perform directory traversal, and ``count`` key is the number of expected files that will be
+used for comparison. In the first test, we perform a directory walk and expect 5 files in the directory. We can perform directory
+search based on file extension by using ``ext`` key. The ``ext`` property can be a string or a list. The second test will perform
+directory walk on directory named **foo** and search for file extensions **.sh**, **.py**, **.txt**. The ``depth`` property controls
+the maximum depth for directory traversal, this must be of an integer type. The ``depth`` property is optional and if not specified, we will
+perform full directory traversal.
+
+.. literalinclude:: ../tutorials/test_status/file_count.yml
+   :language: yaml
+   :emphasize-lines: 9-12,21-29
+
+
+We can run this test by running the following.
+
+.. dropdown:: ``buildtest build -b tutorials/test_status/file_count.yml``
+
+   .. command-output:: buildtest build -b tutorials/test_status/file_count.yml
+
+In the next example, we introduce ``filepattern`` property which allows you to check for files based on a pattern. The ``filepattern`` property
+is a regular expression which is compiled via `re.compile <https://docs.python.org/3/library/re.html#re.compile>`_ and applied to a
+directory path. Please note the regular expression must be valid, otherwise buildtest will not return any files during directory traversal.
+
+You can use ``filepattern`` and ``ext`` property together to search for files. If both are specified, then we will search for files
+with both methods and join the two list prior to performing comparison.
+
+.. literalinclude:: ../tutorials/test_status/file_count_pattern.yml
+   :language: yaml
+   :emphasize-lines: 14-22,32-37
+
+
+Let's build this test by running the following:
+
+.. dropdown:: ``buildtest build -b tutorials/test_status/file_count_pattern.yml``
+
+   .. command-output:: buildtest build -b tutorials/test_status/file_count_pattern.yml
+
+In the next example, we will introduce ``filetype`` property that can be used to filter directory search based on file type.
+The ``filetype`` property can one of the following values **file**, **dir**, **symlink**. Once set, the directory traversal will
+seek out files based on the file type. Note that when ``filetype`` is set to ``dir`` we will return the parent directory and
+all sub-directories. This test will create a few subdirectories and create symbolic link, next we will perform directory search
+by directory and symbolic link. We expect this test to pass as we will find 3 directories and 2 symbolic links.
+
+.. literalinclude:: ../tutorials/test_status/file_count_filetype.yml
+   :language: yaml
+   :emphasize-lines: 11-18
+
+Let's build this test by running the following:
+
+.. dropdown:: ``buildtest build -b tutorials/test_status/file_count_filetype.yml``
+
+   .. command-output:: buildtest build -b tutorials/test_status/file_count_filetype.yml
+
+Buildtest will perform a directory walk when using ``file_count``, which can run into performance issues if you have a large directory.
+We have added a safety check during directory traversal to a maximum of **999999** files. You have the option to configure the directory
+traversal limit using ``file_traversal_limit`` which is an integer, the default value is **10000** if not specified. The minimum value and
+maximum value can be 1 and 999999 respectively.
+
+In this next example, we will illustrate how this feature works. We will create 99 *.txt* files in directory **foo**. We will
+perform two assertions with different values for ``file_traversal_limit``. In the first example, we will set this to 50 and
+expect 50 files returned. We expect this check to be **True**. In the next example, we will set ``file_traversal_limit`` to 20 and
+set ``count: 10`` where we should expect a failure. In principle, we should retrieve 20 files but this will mismatch the comparison check.
+
+.. literalinclude:: ../tutorials/test_status/file_count_file_traverse_limit.yml
+   :language: yaml
+   :emphasize-lines: 9-16
+
+We can try building this test by running the following:
+
+.. dropdown:: ``buildtest build -b tutorials/test_status/file_count_file_traverse_limit.yml``
+
+   .. command-output:: buildtest build -b tutorials/test_status/file_count_file_traverse_limit.yml
 
 Skipping test
 -------------

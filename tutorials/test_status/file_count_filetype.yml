@@ -1,0 +1,18 @@
+buildspecs:
+  file_count_by_filetype:
+    type: script
+    executor: generic.local.bash
+    description: Count the number of directories and symbolic links
+    run: |
+      mkdir -p foo/{bar,baz}
+      find foo -type dir
+      ln -s foo/bar foo/bar.link
+      ln -s foo/baz foo/baz.link
+    status:
+      file_count:
+        - dir: foo
+          count: 3
+          filetype: 'dir'
+        - dir: foo
+          count: 2
+          filetype: 'symlink'

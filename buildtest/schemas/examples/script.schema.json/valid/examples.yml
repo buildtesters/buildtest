@@ -613,3 +613,81 @@ buildspecs:
           exp: '^(Hello)$'
         - file: ~/hello.txt
           exp: '^(Hello)$'
+
+  file_count_on_directory:
+    type: script
+    executor: generic.local.bash
+    description: file count check in directory
+    run: |
+      mkdir -p foo
+      touch foo/{1..5}
+    status:
+      file_count:
+        - dir: foo
+          count: 5
+  file_count_by_extension:
+    type: script
+    executor: generic.local.bash
+    description: file count by extension
+    run: |
+      mkdir -p foo/bar
+      touch foo/{1..5}.sh
+      touch foo/bar/{1..3}.py foo/bar/{1..3}.txt
+    status:
+      file_count:
+        - dir: foo
+          ext: '.sh'
+          depth: 1
+          count: 5
+        - dir: foo/bar
+          ext: ['.py', '.txt']
+          count: 6
+
+  file_extension_and_filepattern:
+    type: script
+    executor: generic.local.bash
+    description: file count by file extension and file pattern
+    run: |
+      touch foo{1..5}.txt
+      touch {conf,main}.py
+      ls -l
+    status:
+      file_count:
+        - dir: .
+          ext: '.txt'
+          filepattern: '(conf|main).py$'
+          count: 7
+
+  file_count_by_filetype:
+    type: script
+    executor: generic.local.bash
+    description: Count the number of directories and symbolic links
+    run: |
+      mkdir -p foo/{bar,baz}
+      find foo -type dir
+      ln -s foo/bar foo/bar.link
+      ln -s foo/baz foo/baz.link
+    status:
+      file_count:
+        - dir: foo
+          count: 3
+          filetype: 'dir'
+        - dir: foo
+          count: 2
+          filetype: 'symlink'
+
+  file_traverse_limit:
+    type: script
+    executor: generic.local.bash
+    description: Use of file_traverse_limit to limit number of files searched in a directory
+    run: |
+      mkdir foo
+      touch foo/{1..99}.txt
+    status:
+      file_count:
+        - dir: foo
+          count: 50
+          file_traverse_limit: 50
+        - dir: foo
+          count: 10
+          file_traverse_limit: 20

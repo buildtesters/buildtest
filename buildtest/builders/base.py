@@ -27,6 +27,7 @@ from buildtest.buildsystem.checks import (
     assert_range_check,
     contains_check,
     exists_check,
+    file_count_check,
     file_regex_check,
     is_dir_check,
     is_file_check,
@@ -976,6 +977,7 @@ class BuilderBase(ABC):
             assert_is_dir = False
             assert_is_file = False
             file_regex_match = False
+            assert_file_count = False
 
             # returncode_match is boolean to check if reference returncode matches return code from test
             returncode_match = returncode_check(self)
@@ -1043,6 +1045,9 @@ class BuilderBase(ABC):
             if self.status.get("is_file"):
                 assert_is_file = is_file_check(builder=self)
 
+            if self.status.get("file_count"):
+                assert_file_count = file_count_check(builder=self)
+
             # if any of checks is True we set the 'state' to PASS
             state = any(
                 [
@@ -1066,6 +1071,7 @@ class BuilderBase(ABC):
                     assert_exists,
                     assert_is_dir,
                     assert_is_file,
+                    assert_file_count,
                 ]
             )
             if state:
