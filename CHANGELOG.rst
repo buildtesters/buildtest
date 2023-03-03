@@ -1,6 +1,29 @@
 CHANGELOG
 =========
 
+v1.3 (TBD)
+------------
+
+**Command Line Updates:**
+
+- Add option ``buildtest inspect query --theme`` to select the color theme. `#1383 <https://github.com/buildtesters/buildtest/pull/1383>`_
+- Add option ``buildtest buildspec find --row-count`` to report number of rows for for a buildspec query `1377 <https://github.com/buildtesters/buildtest/pull/1377>`_
+- Add option ``buildtest build --limit`` to limit the number of tests to run `#1381 <https://github.com/buildtesters/buildtest/pull/1381>`_
+
+**Buildspec Updates:**
+
+- Add Assert Less Than performance check via property `assert_lt` `#1382 <https://github.com/buildtesters/buildtest/pull/1382>`_
+- Add Symbolic Link check via property `is_symlink` `#1394 <https://github.com/buildtesters/buildtest/pull/1394>`_
+- Add support for running regular expression on arbitrary files via property ``file_regex`` `#1396 <https://github.com/buildtesters/buildtest/pull/1396>`_
+- Add support for file count via property ``file_count`` that can perform directory traversal. This also includes traversal by file extension, regular expression. We can filter by file type (file, dir, symlink) and control traversal depth. `#1405 <https://github.com/buildtesters/buildtest/pull/1405>`_
+
+**Misc Updates:**
+
+- Added precommit ci for auto-updating `.pre-commit-config.yaml` `#1389 <https://github.com/buildtesters/buildtest/pull/1389>`_
+- Add a nightly regression test github workflow `#1384 <https://github.com/buildtesters/buildtest/pull/1384>`_, `#1378 <https://github.com/buildtesters/buildtest/pull/1378>`_
+- Add `yamllint <https://yamllint.readthedocs.io/en/stable/>`_ and `shellcheck <https://github.com/koalaman/shellcheck>`_ check for lint check on YAML and shell scripts. Update contributing guide and fix all yamllint issues `#1385 <https://github.com/buildtesters/buildtest/pull/1385>`_, `#1390 <https://github.com/buildtesters/buildtest/pull/1390>`_, `#1404 <https://github.com/buildtesters/buildtest/pull/1404>`_
+- Fix issue with regression coverage with multiprocessing library `#1408 <https://github.com/buildtesters/buildtest/pull/1408>`_
+
 v1.2 (Feb 6th, 2023)
 ----------------------
 
