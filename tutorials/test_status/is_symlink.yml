@@ -5,9 +5,9 @@ buildspecs:
     description: status check based on symbolic link
     run: |
       ln -s /tmp scratch
-      ln -s $HOME/.bash_profile $HOME/bash_profile
+      ln -s $HOME/.bashrc $HOME/.bashrc_link
     status:
       is_symlink:
         - scratch
-        - $HOME/bash_profile
-        - ~/bash_profile
+        - $HOME/.bashrc_link
+        - ~/.bashrc_link
