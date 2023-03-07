@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-v1.3 (TBD)
-------------
+v1.3 (Mar 7th, 2023)
+----------------------
 
 **Command Line Updates:**
 
