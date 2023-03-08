@@ -46,6 +46,14 @@ def test_build_by_tags():
     )
     cmd.build()
 
+    #  testing multiple tags as comma seperated list:  buildtest build --tags fail,pass --tags python,ping --tags network
+    cmd = BuildTest(
+        configuration=configuration,
+        tags=["fail,pass", "python,ping", "network"],
+        buildtest_system=system,
+    )
+    cmd.build()
+
 
 @pytest.mark.cli
 def test_build_rerun():
