@@ -1007,6 +1007,12 @@ def config_menu(subparsers, parent_parser):
         help="Update configuration file with new compilers",
     )
     compiler_find.add_argument(
+        "-f",
+        "--file",
+        action="store_true",
+        help="Wrtie configuration file to a new filepath",
+    )
+    compiler_find.add_argument(
         "-m",
         "--modulepath",
         type=str,
