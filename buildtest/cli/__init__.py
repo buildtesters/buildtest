@@ -1010,7 +1010,7 @@ def config_menu(subparsers, parent_parser):
         "-f",
         "--file",
         action="store_true",
-        help="Wrtie configuration file to a new filepath",
+        help="Wrtie configuration file to a new file",
     )
     compiler_find.add_argument(
         "-m",
