@@ -23,6 +23,7 @@ def compiler_cmd(args, configuration):
             modulepath=args.modulepath,
             detailed=args.detailed,
             update=args.update,
+            filepath=args.file,
         )
         return
 
@@ -116,7 +117,7 @@ def compiler_test(configuration, compiler_names=None):
         console.print(compiler_fail)
 
 
-def compiler_find(configuration, modulepath=None, detailed=None, update=None):
+def compiler_find(configuration, modulepath=None, detailed=None, update=None, filepath=None):
     """This method implements ``buildtest config compilers find`` which detects
     new compilers based on module names defined in configuration. If system has
     Lmod we use Lmodule API to detect the compilers. For environment-modules we
@@ -127,6 +128,7 @@ def compiler_find(configuration, modulepath=None, detailed=None, update=None):
         modulepath (List, optional): An instance of List, a list of directories to search for modules via MODULEPATH to detect compilers
         detailed (bool, optional): An instance of bool, flag for printing a detailed report.
         update (bool, optional): An instance of bool, flag for updating configuration file with new compilers
+        filepath (str, optional): An instance of str, an option to specify an alternative filepath where configuration file will be run
     """
 
     bc = BuildtestCompilers(
@@ -151,6 +153,9 @@ def compiler_find(configuration, modulepath=None, detailed=None, update=None):
     # print out all compilers from existing configuration file
     # run buildtest config compilers find --update to update existing configuration file
 
+    if filepath and filepath.split(".")[-1] != ".yml":
+        raise ValueError("alternative file specified should be a yml file")
+
     # if --update is specified we update existing configuration file and write backup in same directory
     if update:
         fname = (
@@ -158,7 +163,7 @@ def compiler_find(configuration, modulepath=None, detailed=None, update=None):
             + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
             + ".yml"
         )
-        backup_file = os.path.join(os.path.dirname(configuration.file), fname)
+        backup_file = filepath or os.path.join(os.path.dirname(configuration.file), fname)
         copyfile(configuration.file, backup_file)
         print("Writing backup configuration file to: ", backup_file)
         print(f"Updating configuration file: {configuration.file}")
