@@ -153,8 +153,9 @@ def compiler_find(configuration, modulepath=None, detailed=None, update=None, fi
     # print out all compilers from existing configuration file
     # run buildtest config compilers find --update to update existing configuration file
 
-    if filepath and filepath.split(".")[-1] != ".yml":
-        raise ValueError("alternative file specified should be a yml file")
+    # check for edge case and raise exception when --file specifies a directory path
+    if filepath and os.path.isdir(filepath):
+        raise ValueError("alternative file specified should not be a directory")
 
     # if --update is specified we update existing configuration file and write backup in same directory
     if update:
