@@ -59,6 +59,16 @@ buildspecs:
         stream: file
         exp: "world$"
 
+  invalid_regex_with_stream_and_file:
+    type: script
+    executor: generic.local.bash
+    description: This test fails because stream and file can't be specified together
+    run: hostname
+    status:
+      regex:
+        stream: stdout
+        file: file.txt
+        exp: "world$"
 
   regex_additionalProperties_test:
     type: script
@@ -211,6 +221,27 @@ buildspecs:
     metrics:
       foo:
         variable: FOO
+  missing_regex_in_metrics:
+    type: script
+    executor: generic.local.bash
+    description: Test for missing regex in metrics property, which should result in error
+    run: echo "hello"
+    metrics:
+      foo:
+        type: str
+
+  test_stream_file_in_metrics:
+    type: script
+    executor: generic.local.bash
+    description: Test for stream and file in metrics property, which should result in error
+    run: echo "hello" > file.txt
+    metrics:
+      foo:
+        type: str
+        regex:
+          stream: stdout
+          file: file.txt
+          exp: "BAR"
 
   invalid_metrics_type:
     type: script

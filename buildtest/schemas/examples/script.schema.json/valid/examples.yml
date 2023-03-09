@@ -155,6 +155,16 @@ buildspecs:
         stream: stdout
         exp: "^$"
 
+  status_regex_with_file:
+    executor: generic.local.bash
+    type: script
+    description: This test pass with a regular expression by reading a file
+    run: hostname > host.txt
+    status:
+      regex:
+        file: "host.txt"
+        exp: "^$"
+
   status_regex_returncode:
     executor: generic.local.bash
     type: script
@@ -272,6 +282,18 @@ buildspecs:
         regex:
           exp: 'rating of=(\d+\.\d+)$'
           stream: stdout
+
+  metrics_regex_with_file:
+    type: script
+    executor: generic.local.bash
+    description: metrics regular expression example
+    run: echo "HPCG result is VALID with a GFLOP/s rating of=63.6515" > hpcg.txt
+    metrics:
+      hpcg_rating:
+        type: float
+        regex:
+          exp: 'rating of=(\d+\.\d+)$'
+          file: hpcg.txt
 
   multi_executor_vars:
     type: script
