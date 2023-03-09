@@ -59,7 +59,8 @@ def test_build_by_tags():
         tags=[",,"],
         buildtest_system=system,
     )
-    cmd.build()
+    with pytest.raises(SystemExit):
+        cmd.build()
 
     cmd = BuildTest(
         configuration=configuration,
