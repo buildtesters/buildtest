@@ -64,14 +64,14 @@ def test_build_by_tags():
 
     cmd = BuildTest(
         configuration=configuration,
-        tags=["python,"],
+        tags=[",python,fail,,"],
         buildtest_system=system,
     )
     cmd.build()
 
     cmd = BuildTest(
         configuration=configuration,
-        tags=[",python"],
+        tags=["python, fail,network ,"],
         buildtest_system=system,
     )
     cmd.build()
