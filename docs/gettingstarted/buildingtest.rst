@@ -138,8 +138,8 @@ tags by running ``buildtest buildspec find --tags``.
 .. Note:: The ``--tags`` is used for discovering buildspec file and not filtering tests
    by tag.
 
-You can also build by multiple tags by providing tagnames as comma seperated list. In the below
-example we build all tests with tag names ``pass``, ``fail`` and ``network``. Note that you can still specify ``--tags`` multiple times.
+You can also build by multiple tags by providing tagnames as comma seperated list. In the
+example below we build all tests with tag names ``pass``, ``fail`` and ``network``.
 
 .. dropdown:: ``buildtest build -t pass,fail -t network``
 

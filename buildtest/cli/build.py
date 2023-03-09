@@ -308,14 +308,16 @@ def discover_buildspecs_by_tags(buildspec_cache, tagnames):
     buildspecs_by_tags = {}
 
     buildspecs = []
-    multiple_taglist = []
     # query all buildspecs from BUILDSPEC_CACHE_FILE for tags keyword and
     # if it matches input_tag we add buildspec to list
-  
-    for name in tagnames:
-        multiple_taglist.extend(name.split(","))
+    tagnames = [
+        tag.strip() for tagname in tagnames for tag in tagname.split(",") if tag != ""
+    ]
 
-    for name in multiple_taglist:
+    if not tagnames:
+        return buildspecs, buildspecs_by_tags
+
+    for name in tagnames:
         buildspecs_by_tags[name] = set()
 
         for buildspecfile in buildspec_cache["buildspecs"].keys():
