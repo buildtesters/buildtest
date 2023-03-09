@@ -125,10 +125,10 @@ def compiler_find(configuration, modulepath=None, detailed=None, update=None, fi
 
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
-        modulepath (List, optional): An instance of List, a list of directories to search for modules via MODULEPATH to detect compilers
-        detailed (bool, optional): An instance of bool, flag for printing a detailed report.
-        update (bool, optional): An instance of bool, flag for updating configuration file with new compilers
-        filepath (str, optional): An instance of str, an option to specify an alternative filepath where configuration file will be run
+        modulepath (List, optional): A list of directories to search for modules via MODULEPATH to detect compilers
+        detailed (bool, optional): Flag for printing a detailed report.
+        update (bool, optional): Flag for updating configuration file with new compilers
+        filepath (str, optional): An option to specify an alternative filepath where configuration file will be written
     """
 
     bc = BuildtestCompilers(
