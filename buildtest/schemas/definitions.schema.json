@@ -64,13 +64,17 @@
     },
     "regex": {
       "type": "object",
+      "additionalProperties": false,
       "description": "Perform regular expression search using ``re.search`` python module on stdout/stderr stream for reporting if test ``PASS``. ",
       "required": [
-        "stream",
         "exp"
       ],
       "additionalProperties": false,
       "properties": {
+        "file": {
+            "type": "string",
+            "description": "Specify a file name to match with regular expression"
+        },
         "stream": {
           "type": "string",
           "enum": [
@@ -88,7 +92,15 @@
           "minimum": 0,
           "description": "Specify the item number used to index element in `match.group() <https://docs.python.org/3/library/re.html#match-objects>`_"
         }
-      }
+      },
+      "oneOf": [
+        { "required": [ "stream" ],
+          "not": { "required": [ "file" ] }
+        },
+        { "required": [ "file" ],
+            "not": { "required": [ "stream"  ] }
+        }
+      ]
     },
     "env": {
       "type": "object",
@@ -149,12 +161,18 @@
     "metrics_field": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type"],
+      "required": [
+        "type", "regex"
+      ],
       "properties": {
         "type": {
           "type": "string",
           "description": "Specify python data-type (str, int, float) to convert metric. ",
-          "enum": ["str", "int", "float"]
+          "enum": [
+            "str",
+            "int",
+            "float"
+          ]
         },
         "regex": {
           "$ref": "#/definitions/regex"
@@ -167,7 +185,8 @@
       "patternProperties": {
         "^.*$": {
           "$ref": "#/definitions/metrics_field",
-          "description": "Name of metric"
+          "description": "Name of metric",
+          "additionalProperties": false
         }
       }
     },
