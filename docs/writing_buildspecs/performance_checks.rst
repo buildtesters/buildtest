@@ -9,20 +9,20 @@ Defining Metrics
 ------------------
 
 buildtest provides a method to define test metrics in the buildspecs which can be used to
-store arbitrary content from the output/error file into named metric. A metric is
-defined using the ``metrics`` property where each element under the **metrics** property
-is the name of the metric which must be a unique name. A metric can apply regular expression
-on stdout, stderr like in this example below. The metrics are captured in the test report which can
-be queried via ``buildtest report`` or ``buildtest inspect``. Shown below is an example
-where we define two metrics named ``hpcg_rating`` and ``hpcg_state``.
+store arbitrary content from the output/error file or an arbitrary file into named metric. The
+``metrics`` property is used to define a list of metric names using regular expression to assign a value
+to the metric. In this example, we have two tests that define metrics ``hpcg_rate_stream``, ``hpcg_state_stream``
+in the first test and ``hpcg_rate_file``, ``hpcg_state_file`` in the second test. The ``stream`` property is used
+to read from stdout/stderr and apply the regular expression defined by ``exp``, whereas ``file`` will read
+from an arbitrary file name of your choice.
 
 .. literalinclude:: ../tutorials/metrics_regex.yml
     :language: yaml
-    :emphasize-lines: 8-19
+    :emphasize-lines: 8-19,27-37
 
-The metrics will not impact behavior of test, it will only impact the test report. By default
-a metric will be an empty dictionary if there is no ``metrics`` property. If we fail to match
-a regular expression, the metric will be defined as an empty string.
+The metrics can be used with :ref:`comparison_operators` for performing more sophisticated status checks.
+By default, a metric will be an empty dictionary if there is no ``metrics`` property. If we fail to match
+a regular expression, the metric will be defined as an empty string (``''``).
 
 .. Note::
    If your regular expression contains an escape character ``\`` you must surround your
@@ -34,7 +34,15 @@ Let's build this test.
 
    .. command-output:: buildtest build -b tutorials/metrics_regex.yml
 
-We can query the metrics via ``buildtest report`` which will display all metrics as a comma separted
+The metrics are captured in the test report which can
+be queried via ``buildtest report`` or ``buildtest inspect query``. Metrics can be seen in the test metadata,
+for instance you can run ``buildtest inspect query`` and you will see metrics shown in table output.
+
+.. dropdown:: ``buildtest inspect query metric_regex_example metric_file_regex
+
+    .. command-output:: buildtest inspect query metric_regex_example metric_file_regex
+
+We can query the metrics via ``buildtest report`` which will display all metrics as a comma seperated
 **Key/Value** pair. We can use ``buildtest report --format metrics`` to extract all metrics for a test.
 Internally, we store the metrics as a dictionary but when we print them out via ``buildtest report`` we
 join them together into a single string. Shown below is the metrics for the previous build.
@@ -43,12 +51,7 @@ join them together into a single string. Shown below is the metrics for the prev
 
    .. command-output:: buildtest report --filter buildspec=tutorials/metrics_regex.yml --format name,metrics
 
-You can define a metric based on :ref:`variables <variables>` or :ref:`environment variables <environment_variables>`
-which requires you have set ``vars`` or ``env`` property in the buildspec. The ``vars`` and
-``env`` is a property under the metric name that can be used to reference name
-of variable or environment variable. If you reference an invalid name, buildtest will assign the metric an empty string.
-In this next example, we define two metrics ``gflop`` and ``foo`` that are assigned to variable ``GFLOPS`` and
-environment variable ``FOO``.
+.. _comparison_operators:
 
 Comparison Operators
 ----------------------
