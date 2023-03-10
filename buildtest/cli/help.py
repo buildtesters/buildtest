@@ -26,6 +26,10 @@ def print_build_help():
         "Build buildspecs by tagname 'pass' and 'python'",
     )
     table.add_row(
+        "buildtest build -t pass,fail",
+        "Build buildspecs by tagnames that are specified as comma sperated list",
+    )
+    table.add_row(
         "buildtest build -e <executor1> -e <executor2>",
         "Building buildspecs by executor",
     )
