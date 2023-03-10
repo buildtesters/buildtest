@@ -46,7 +46,13 @@ from buildtest.scheduler.pbs import PBSJob
 from buildtest.scheduler.slurm import SlurmJob
 from buildtest.schemas.defaults import schema_table
 from buildtest.utils.command import BuildTestCommand
-from buildtest.utils.file import create_dir, read_file, write_file
+from buildtest.utils.file import (
+    create_dir,
+    is_file,
+    read_file,
+    resolve_path,
+    write_file,
+)
 from buildtest.utils.shell import Shell, is_csh_shell
 from buildtest.utils.timer import Timer
 from buildtest.utils.tools import deep_get
@@ -867,10 +873,43 @@ class BuilderBase(ABC):
         if not self.metrics:
             return
 
+        for key, metric in self.metrics.items():
+            # Default value of metric is an empty string
+            self.metadata["metrics"][key] = ""
+            regex = metric["regex"]
+            stream = regex.get("stream")
+            content = None
+            if stream == "stdout":
+                content = self._output
+            elif stream == "stderr":
+                content = self._error
+            else:
+                fname = regex.get("file")
+                if fname:
+                    resolved_fname = resolve_path(fname)
+                    if is_file(resolved_fname):
+                        content = read_file(resolved_fname)
+                    else:
+                        msg = f"[blue]{self}[/]: Unable to read file path: {fname} for metric: {key}"
+                        self.logger.error(msg)
+                        console.print(msg, style="red")
+                        continue
+
+            match = re.search(regex["exp"], content) if content else None
+
+            # If a pattern match is found, assign the value to the metric
+            if match:
+                self.metadata["metrics"][key] = str(match.group(regex.get("item", 0)))
+
+            self.metadata["metrics"][key] = str(self.metadata["metrics"][key])
+
+        """
+        if not self.metrics:
+            return
+
         for key in self.metrics.keys():
             # default value of metric is empty string
             self.metadata["metrics"][key] = ""
-
             # apply regex on stdout/stderr and assign value to metrics
             if self.metrics[key].get("regex"):
                 if self.metrics[key]["regex"]["stream"] == "stdout":
@@ -893,6 +932,7 @@ class BuilderBase(ABC):
         # convert all metrics to string types
         for key in self.metadata["metrics"].keys():
             self.metadata["metrics"][key] = str(self.metadata["metrics"][key])
+        """
 
     def output(self):
         """Return output content"""
@@ -938,8 +978,6 @@ class BuilderBase(ABC):
         )
         self.add_metrics()
         self.check_test_state()
-
-        # self.add_metrics()
 
         # mark job is success if it finished all post run steps
         self.complete()
