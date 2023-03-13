@@ -155,16 +155,6 @@ buildspecs:
         stream: stdout
         exp: "^$"
 
-  status_regex_with_file:
-    executor: generic.local.bash
-    type: script
-    description: This test pass with a regular expression by reading a file
-    run: hostname > host.txt
-    status:
-      regex:
-        file: "host.txt"
-        exp: "^$"
-
   status_regex_returncode:
     executor: generic.local.bash
     type: script
@@ -291,7 +281,7 @@ buildspecs:
     metrics:
       hpcg_rating:
         type: float
-        regex:
+        file_regex:
           exp: 'rating of=(\d+\.\d+)$'
           file: hpcg.txt
 

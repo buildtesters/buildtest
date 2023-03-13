@@ -230,18 +230,20 @@ buildspecs:
       foo:
         type: str
 
-  test_stream_file_in_metrics:
+  test_regex_and_file_regex_in_metrics:
     type: script
     executor: generic.local.bash
-    description: Test for stream and file in metrics property, which should result in error
+    description: Test for regex and file_regex in metrics. Only one is allowed at a time
     run: echo "hello" > file.txt
     metrics:
       foo:
         type: str
+        file_regex:
+          file: file.txt
+          exp: "hello"
         regex:
           stream: stdout
-          file: file.txt
-          exp: "BAR"
+          exp: "hello"
 
   invalid_metrics_type:
     type: script
