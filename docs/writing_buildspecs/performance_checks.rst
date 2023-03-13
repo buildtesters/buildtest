@@ -38,7 +38,7 @@ The metrics are captured in the test report which can
 be queried via ``buildtest report`` or ``buildtest inspect query``. Metrics can be seen in the test metadata,
 for instance you can run ``buildtest inspect query`` and you will see metrics shown in table output.
 
-.. dropdown:: ``buildtest inspect query metric_regex_example metric_file_regex
+.. dropdown:: ``buildtest inspect query metric_regex_example metric_file_regex``
 
     .. command-output:: buildtest inspect query metric_regex_example metric_file_regex
 
