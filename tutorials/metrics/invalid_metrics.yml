@@ -1,0 +1,15 @@
+buildspecs:
+  metrics_with_regex_and_file_regex_not_allowed:
+    type: script
+    executor: generic.local.bash
+    description: This is an invalid metric because 'file_regex' and 'regex' are both specified
+    run: echo "hello" > file.txt
+    metrics:
+      hello:
+        type: str
+        file_regex:
+          file: file.txt
+          exp: "BAR"
+        regex:
+          stream: stdout
+          exp: "BAR"

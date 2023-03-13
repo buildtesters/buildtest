@@ -13,12 +13,12 @@ store arbitrary content from the output/error file or an arbitrary file into nam
 ``metrics`` property is used to define a list of metric names using regular expression to assign a value
 to the metric. In this example, we have two tests that define metrics ``hpcg_rate_stream``, ``hpcg_state_stream``
 in the first test and ``hpcg_rate_file``, ``hpcg_state_file`` in the second test. The ``stream`` property is used
-to read from stdout/stderr and apply the regular expression defined by ``exp``, whereas ``file`` will read
-from an arbitrary file name of your choice.
+to read from stdout/stderr and apply the regular expression defined by ``exp``, whereas ``file_regex`` is used
+to define metrics from an arbitrary file where ``file`` is the path to file.
 
-.. literalinclude:: ../tutorials/metrics_regex.yml
+.. literalinclude:: ../tutorials/metrics/metrics_regex.yml
     :language: yaml
-    :emphasize-lines: 8-19,27-37
+    :emphasize-lines: 8-18,26-36
 
 The metrics can be used with :ref:`comparison_operators` for performing more sophisticated status checks.
 By default, a metric will be an empty dictionary if there is no ``metrics`` property. If we fail to match
@@ -30,9 +30,9 @@ a regular expression, the metric will be defined as an empty string (``''``).
 
 Let's build this test.
 
-.. dropdown:: ``buildtest build -b tutorials/metrics_regex.yml``
+.. dropdown:: ``buildtest build -b tutorials/metrics/metrics_regex.yml``
 
-   .. command-output:: buildtest build -b tutorials/metrics_regex.yml
+   .. command-output:: buildtest build -b tutorials/metrics/metrics_regex.yml
 
 The metrics are captured in the test report which can
 be queried via ``buildtest report`` or ``buildtest inspect query``. Metrics can be seen in the test metadata,
@@ -47,9 +47,39 @@ We can query the metrics via ``buildtest report`` which will display all metrics
 Internally, we store the metrics as a dictionary but when we print them out via ``buildtest report`` we
 join them together into a single string. Shown below is the metrics for the previous build.
 
-.. dropdown:: ``buildtest report --filter buildspec=tutorials/metrics_regex.yml --format name,metrics``
+.. dropdown:: ``buildtest report --filter buildspec=tutorials/metrics/metrics_regex.yml --format name,metrics``
 
-   .. command-output:: buildtest report --filter buildspec=tutorials/metrics_regex.yml --format name,metrics
+   .. command-output:: buildtest report --filter buildspec=tutorials/metrics/metrics_regex.yml --format name,metrics
+
+
+Invalid Metrics
+~~~~~~~~~~~~~~~~~
+
+We will discuss a few edge-cases when defining metrics that can lead to validation error. The `file_regex` and
+`regex` property can't be declared at the same time when defining a metric. In example below
+we have defined a metric named ``hello`` that uses both ``regex`` and ``file_regex``.
+
+.. literalinclude:: ../tutorials/metrics/invalid_metrics.yml
+    :language: yaml
+    :emphasize-lines: 10-15
+
+If we try to validate this buildspec, we will get an error message that ``regex`` and ``file_regex`` can't be specified
+at the same time.
+
+.. dropdown:: ``buildtest buildspec validate  -b tutorials/metrics/invalid_metrics.yml``
+    :color: warning
+
+   .. command-output:: buildtest buildspec validate  -b tutorials/metrics/invalid_metrics.yml
+      :returncode: 1
+
+When defining a metrics, you must specify ``regex`` or ``file_regex`` property in order to capture metric. If its not
+specified, you will run into validation error. In this example, we define a metrics named ``foo``, but we don't
+specify the ``regex`` or ``file_regex`` property therefore, this metric is invalid.
+
+.. literalinclude:: ../tutorials/metrics/missing_required_in_metrics.yml
+    :language: yaml
+    :emphasize-lines: 7-9
+
 
 .. _comparison_operators:
 

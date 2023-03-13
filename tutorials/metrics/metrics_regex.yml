@@ -11,7 +11,6 @@ buildspecs:
         regex:
           exp: '(\d+\.\d+)$'
           stream: stdout
-
       hpcg_state_stream:
         type: str
         regex:
@@ -21,17 +20,17 @@ buildspecs:
   metric_file_regex:
     executor: generic.local.sh
     type: script
-    description: capture result metric from output
+    description: capture result metric from file path
     run: echo "HPCG result is VALID with a GFLOP/s rating of=63.6515" > hpcg.txt
     tags: tutorials
     metrics:
       hpcg_rating_file:
         type: float
-        regex:
+        file_regex:
           exp: '(\d+\.\d+)$'
           file: hpcg.txt
       hpcg_state_file:
         type: str
-        regex:
+        file_regex:
           exp: '(VALID)'
-          file: hpcg.txt
+          file: hpcg1.txt
