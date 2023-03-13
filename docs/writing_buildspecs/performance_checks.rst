@@ -67,7 +67,7 @@ If we try to validate this buildspec, we will get an error message that ``regex`
 at the same time.
 
 .. dropdown:: ``buildtest buildspec validate  -b tutorials/metrics/invalid_metrics.yml``
-    :color: warning
+   :color: warning
 
    .. command-output:: buildtest buildspec validate  -b tutorials/metrics/invalid_metrics.yml
       :returncode: 1

@@ -33,4 +33,4 @@ buildspecs:
         type: str
         file_regex:
           exp: '(VALID)'
-          file: hpcg1.txt
+          file: hpcg.txt
