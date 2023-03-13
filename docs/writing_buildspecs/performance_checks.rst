@@ -80,6 +80,21 @@ specify the ``regex`` or ``file_regex`` property therefore, this metric is inval
     :language: yaml
     :emphasize-lines: 7-9
 
+The metrics must follow a pattern, this is typically alphanumeric characters including dot (``.``), hypen (``-``)
+and underscore (``_``). In this example below, we have an invalid metric that doesn't conform to pattern.
+
+.. literalinclude:: ../tutorials/metrics/invalid_metric_name.yml
+    :language: yaml
+    :emphasize-lines: 8
+
+Let's try validating the buildspec to see the error message.
+
+.. dropdown:: ``buildtest buildspec validate  -b tutorials/metrics/invalid_metric_name.yml``
+   :color: warning
+
+   .. command-output:: buildtest buildspec validate  -b tutorials/metrics/invalid_metric_name.yml
+      :returncode: 1
+
 
 .. _comparison_operators:
 

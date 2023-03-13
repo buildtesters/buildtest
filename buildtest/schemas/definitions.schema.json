@@ -202,10 +202,11 @@
     "metrics": {
       "type": "object",
       "description": "This field is used for defining one or more metrics that is recorded for each test. A metric must have a unique name which is recorded in the test metadata.",
-      "patternProperties": {
-        "^.*$": {
-          "$ref": "#/definitions/metrics_field"
-        }
+      "propertyNames": {
+        "pattern": "^[A-Za-z0-9_.-]+$"
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/metrics_field"
       }
     },
     "state": {
