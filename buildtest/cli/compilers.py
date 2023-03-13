@@ -10,6 +10,7 @@ from buildtest.config import SiteConfiguration
 from buildtest.defaults import console
 from buildtest.exceptions import BuildTestError, ConfigurationError
 from buildtest.schemas.defaults import custom_validator, schema_table
+from buildtest.utils.file import is_dir, resolve_path
 from buildtest.utils.tools import deep_get
 from lmod.module import Module
 from lmod.spider import Spider
@@ -154,8 +155,12 @@ def compiler_find(configuration, modulepath=None, detailed=None, update=None, fi
     # run buildtest config compilers find --update to update existing configuration file
 
     # check for edge case and raise exception when --file specifies a directory path
-    if filepath and os.path.isdir(filepath):
-        raise ValueError("alternative file specified should not be a directory")
+    resolved_filepath = None
+    if filepath:
+        resolved_filepath = resolve_path(filepath, exist=False)
+
+        if is_dir(resolved_filepath):
+            raise BuildTestError(f"The file: {resolved_filepath} is a directory, please specify a file path")
 
     # if --update is specified we update existing configuration file and write backup in same directory
     if update:
@@ -164,7 +169,7 @@ def compiler_find(configuration, modulepath=None, detailed=None, update=None, fi
             + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
             + ".yml"
         )
-        backup_file = filepath or os.path.join(os.path.dirname(configuration.file), fname)
+        backup_file = resolved_filepath or os.path.join(os.path.dirname(configuration.file), fname)
         copyfile(configuration.file, backup_file)
         print("Writing backup configuration file to: ", backup_file)
         print(f"Updating configuration file: {configuration.file}")
