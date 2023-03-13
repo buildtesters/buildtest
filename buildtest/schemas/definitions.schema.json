@@ -79,6 +79,11 @@
         "exp": {
             "type": "string",
             "description": "Specify a regular expression to run on the selected file name"
+        },
+        "item": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Specify the item number used to index element in `match.group() <https://docs.python.org/3/library/re.html#match-objects>`_"
         }
       }
     },

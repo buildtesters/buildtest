@@ -876,63 +876,50 @@ class BuilderBase(ABC):
         for key, metric in self.metrics.items():
             # Default value of metric is an empty string
             self.metadata["metrics"][key] = ""
-            regex = metric["regex"]
-            stream = regex.get("stream")
-            content = None
-            if stream == "stdout":
-                content = self._output
-            elif stream == "stderr":
-                content = self._error
-            else:
-                fname = regex.get("file")
+            regex = metric.get("regex")
+            file_regex = metric.get("file_regex")
+            self.metadata["metrics"][key] = ""
+
+            if regex:
+                stream = regex.get("stream")
+                content = self._output if stream == "stdout" else self._error
+                match = re.search(regex["exp"], content)
+
+                if match:
+                    try:
+                        self.metadata["metrics"][key] = match.group(
+                            regex.get("item", 0)
+                        )
+                    except IndexError:
+                        self.logger.error(
+                            f"Unable to fetch match group: {regex.get('item', 0)} for metric: {key}."
+                        )
+                        continue
+            elif file_regex:
+                fname = file_regex["file"]
                 if fname:
                     resolved_fname = resolve_path(fname)
-                    if is_file(resolved_fname):
-                        content = read_file(resolved_fname)
-                    else:
-                        msg = f"[blue]{self}[/]: Unable to read file path: {fname} for metric: {key}"
+                    if not is_file(resolved_fname):
+                        msg = f"[blue]{self}[/]: Unable to resolve file path: {fname} for metric: {key}"
                         self.logger.error(msg)
                         console.print(msg, style="red")
                         continue
 
-            match = re.search(regex["exp"], content) if content else None
+                    content = read_file(resolved_fname)
+                    match = re.search(file_regex["exp"], content) if content else None
 
-            # If a pattern match is found, assign the value to the metric
-            if match:
-                self.metadata["metrics"][key] = str(match.group(regex.get("item", 0)))
+                    if match:
+                        try:
+                            self.metadata["metrics"][key] = match.group(
+                                file_regex.get("item", 0)
+                            )
+                        except IndexError:
+                            self.logger.error(
+                                f"Unable to fetch match group: {file_regex.get('item', 0)} for metric: {key}."
+                            )
+                            continue
 
             self.metadata["metrics"][key] = str(self.metadata["metrics"][key])
-
-        """
-        if not self.metrics:
-            return
-
-        for key in self.metrics.keys():
-            # default value of metric is empty string
-            self.metadata["metrics"][key] = ""
-            # apply regex on stdout/stderr and assign value to metrics
-            if self.metrics[key].get("regex"):
-                if self.metrics[key]["regex"]["stream"] == "stdout":
-                    content = self._output
-                elif self.metrics[key]["regex"]["stream"] == "stderr":
-                    content = self._error
-
-                pattern = self.metrics[key]["regex"]["exp"]
-                match = re.search(pattern, content)
-
-                group_number = self.metrics[key]["regex"].get("item") or 0
-
-                # if pattern match found we assign value to metric
-                if match:
-                    try:
-                        self.metadata["metrics"][key] = match.group(group_number)
-                    except IndexError:
-                        self.metadata["metrics"][key] = ""
-
-        # convert all metrics to string types
-        for key in self.metadata["metrics"].keys():
-            self.metadata["metrics"][key] = str(self.metadata["metrics"][key])
-        """
 
     def output(self):
         """Return output content"""
