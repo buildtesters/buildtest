@@ -118,7 +118,9 @@ def compiler_test(configuration, compiler_names=None):
         console.print(compiler_fail)
 
 
-def compiler_find(configuration, modulepath=None, detailed=None, update=None, filepath=None):
+def compiler_find(
+    configuration, modulepath=None, detailed=None, update=None, filepath=None
+):
     """This method implements ``buildtest config compilers find`` which detects
     new compilers based on module names defined in configuration. If system has
     Lmod we use Lmodule API to detect the compilers. For environment-modules we
@@ -160,7 +162,9 @@ def compiler_find(configuration, modulepath=None, detailed=None, update=None, fi
         resolved_filepath = resolve_path(filepath, exist=False)
 
         if is_dir(resolved_filepath):
-            raise BuildTestError(f"The file: {resolved_filepath} is a directory, please specify a file path")
+            raise BuildTestError(
+                f"The file: {resolved_filepath} is a directory, please specify a file path"
+            )
 
     # if --update is specified we update existing configuration file and write backup in same directory
     if update:
@@ -169,7 +173,9 @@ def compiler_find(configuration, modulepath=None, detailed=None, update=None, fi
             + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
             + ".yml"
         )
-        backup_file = resolved_filepath or os.path.join(os.path.dirname(configuration.file), fname)
+        backup_file = resolved_filepath or os.path.join(
+            os.path.dirname(configuration.file), fname
+        )
         copyfile(configuration.file, backup_file)
         print("Writing backup configuration file to: ", backup_file)
         print(f"Updating configuration file: {configuration.file}")
