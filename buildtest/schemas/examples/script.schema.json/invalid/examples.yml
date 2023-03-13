@@ -221,6 +221,19 @@ buildspecs:
     metrics:
       foo:
         variable: FOO
+
+  invalid_metrics_name:
+    type: script
+    executor: generic.local.bash
+    description: "Metrics name does not follow pattern"
+    run: echo "hello" > file.txt
+    metrics:
+      (foo-bar:
+        type: str
+        regex:
+          stream: stdout
+          exp: "BAR"
+
   missing_regex_in_metrics:
     type: script
     executor: generic.local.bash
