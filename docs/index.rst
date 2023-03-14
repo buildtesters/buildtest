@@ -16,13 +16,10 @@ which references the `devel` branch.
     :target: https://readthedocs.org/projects/buildtest/builds/
 
 .. |license| image:: https://img.shields.io/github/license/buildtesters/buildtest.svg
+    :target: https://github.com/buildtesters/buildtest/blob/devel/LICENSE
 
 .. |codecov| image:: https://codecov.io/gh/buildtesters/buildtest/branch/devel/graph/badge.svg
     :target: https://codecov.io/gh/buildtesters/buildtest
-
-.. |codefactor| image:: https://www.codefactor.io/repository/github/buildtesters/buildtest/badge
-    :target: https://www.codefactor.io/repository/github/buildtesters/buildtest
-    :alt: CodeFactor
 
 .. |regressiontest| image:: https://github.com/buildtesters/buildtest/workflows/regressiontest/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
