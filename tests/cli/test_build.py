@@ -180,6 +180,18 @@ def test_build_buildspecs():
         cmd.build()
 
 
+def test_run_metrics():
+    system = BuildTestSystem()
+    cmd = BuildTest(
+        configuration=configuration,
+        buildspecs=[
+            os.path.join(BUILDTEST_ROOT, "tutorials", "metrics", "metrics_regex.yml")
+        ],
+        buildtest_system=system,
+    )
+    cmd.build()
+
+
 def test_run_all_perf_checks():
     system = BuildTestSystem()
     buildspecs = walk_tree(
