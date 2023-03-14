@@ -7,6 +7,7 @@
     :target: https://readthedocs.org/projects/buildtest/builds/
 
 .. |license| image:: https://img.shields.io/github/license/buildtesters/buildtest.svg
+   :target: https://github.com/buildtesters/buildtest/blob/devel/LICENSE
 
 .. |release| image:: https://img.shields.io/github/v/release/buildtesters/buildtest.svg
    :target: https://github.com/buildtesters/buildtest/releases
@@ -18,10 +19,13 @@
     :target: https://github.com/buildtesters/buildtest/pulls
     
 .. |commit_activity_yearly| image:: https://img.shields.io/github/commit-activity/y/buildtesters/buildtest.svg
- 
+   :target: https://github.com/buildtesters/buildtest/pulse
+
 .. |commit_activity_monthly| image:: https://img.shields.io/github/commit-activity/m/buildtesters/buildtest.svg
+   :target: https://github.com/buildtesters/buildtest/pulse
 
 .. |core_infrastructure| image:: https://bestpractices.coreinfrastructure.org/projects/3469/badge
+   :target: https://bestpractices.coreinfrastructure.org/projects/3469
 
 .. |codecov| image:: https://codecov.io/gh/buildtesters/buildtest/branch/devel/graph/badge.svg
     :target: https://codecov.io/gh/buildtesters/buildtest
@@ -56,7 +60,7 @@
 
 .. |zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3967143.svg
    :target: https://doi.org/10.5281/zenodo.3967143
-   
+
 buildtest
 ---------
 
