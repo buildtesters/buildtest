@@ -59,7 +59,6 @@ buildspecs:
         stream: file
         exp: "world$"
 
-
   regex_additionalProperties_test:
     type: script
     executor: generic.local.bash
@@ -211,6 +210,42 @@ buildspecs:
     metrics:
       foo:
         variable: FOO
+
+  invalid_metrics_name:
+    type: script
+    executor: generic.local.bash
+    description: "Metrics name does not follow pattern"
+    run: echo "hello" > file.txt
+    metrics:
+      (foo-bar:
+        type: str
+        regex:
+          stream: stdout
+          exp: "BAR"
+
+  missing_regex_in_metrics:
+    type: script
+    executor: generic.local.bash
+    description: Test for missing regex in metrics property, which should result in error
+    run: echo "hello"
+    metrics:
+      foo:
+        type: str
+
+  test_regex_and_file_regex_in_metrics:
+    type: script
+    executor: generic.local.bash
+    description: Test for regex and file_regex in metrics. Only one is allowed at a time
+    run: echo "hello" > file.txt
+    metrics:
+      foo:
+        type: str
+        file_regex:
+          file: file.txt
+          exp: "hello"
+        regex:
+          stream: stdout
+          exp: "hello"
 
   invalid_metrics_type:
     type: script
