@@ -59,17 +59,6 @@ buildspecs:
         stream: file
         exp: "world$"
 
-  invalid_regex_with_stream_and_file:
-    type: script
-    executor: generic.local.bash
-    description: This test fails because stream and file can't be specified together
-    run: hostname
-    status:
-      regex:
-        stream: stdout
-        file: file.txt
-        exp: "world$"
-
   regex_additionalProperties_test:
     type: script
     executor: generic.local.bash
