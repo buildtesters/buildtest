@@ -185,7 +185,13 @@ def test_run_metrics():
     cmd = BuildTest(
         configuration=configuration,
         buildspecs=[
-            os.path.join(BUILDTEST_ROOT, "tutorials", "metrics", "metrics_regex.yml")
+            os.path.join(BUILDTEST_ROOT, "tutorials", "metrics", "metrics_regex.yml"),
+            os.path.join(
+                BUILDTEST_ROOT,
+                "tutorials",
+                "metrics",
+                "metrics_file_regex_invalid_file.yml",
+            ),
         ],
         buildtest_system=system,
     )
