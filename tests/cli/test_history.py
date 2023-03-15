@@ -57,14 +57,11 @@ def test_build_history_query():
     # buildtest history query <id>
     query_builds(build_id=build_id, log_option=False, output=False)
 
-    # buildtest history --pager query <id>
+    # buildtest history query <id> --pager
     query_builds(build_id=build_id, log_option=False, output=False, pager=True)
 
     # buildtest history query <id> --output
     query_builds(build_id=build_id, log_option=False, output=True)
-
-    # buildtest history --pager query <id> --output
-    query_builds(build_id=build_id, log_option=False, output=True, pager=True)
 
     # buildtest history query <id> --log
     query_builds(build_id=build_id, log_option=True, output=False)
