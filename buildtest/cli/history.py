@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 def build_history(args):
-    """This is the entry point for command ``buildtest build history`` command which reports
+    """This is the entry point for command ``buildtest history`` command which reports
 
     Args:
         args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
