@@ -203,12 +203,11 @@ def query_builds(build_id, log_option=None, output=None, pager=None):
         return
 
     if output:
-        content = read_file(
+        output_content = read_file(
             os.path.join(BUILD_HISTORY_DIR, str(build_id), "output.txt")
         )
-        if not pager:
-            print(content)
-            return
+        print(output_content)
+        return
 
     if pager:
         with console.pager():

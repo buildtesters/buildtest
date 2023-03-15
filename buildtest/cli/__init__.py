@@ -413,16 +413,16 @@ def path_menu(subparsers):
     path.add_argument("name", help="Name of test")
 
 
-def history_menu(subparsers, parent_parser):
+def history_menu(subparsers, pager_option):
     """This method builds the command line menu for ``buildtest history`` command
 
     Args:
         subparsers (argparse._SubParsersAction): Subparser object to add subparser
-        parent_parser (argparse.ArgumentParser): Parent parser object to add to subparser
+        pager_option (argparse.ArgumentParser): Parent parser object to add to subparser
     """
 
     history_subcmd = subparsers.add_parser(
-        "history", aliases=["hy"], help="Query build history", parents=[parent_parser]
+        "history", aliases=["hy"], help="Query build history"
     )
 
     history_subparser = history_subcmd.add_subparsers(
@@ -430,7 +430,7 @@ def history_menu(subparsers, parent_parser):
     )
 
     list_parser = history_subparser.add_parser(
-        "list", help="List a summary of all builds"
+        "list", help="List a summary of all builds", parents=[pager_option]
     )
     list_parser.add_argument(
         "-n",
@@ -446,7 +446,7 @@ def history_menu(subparsers, parent_parser):
     )
 
     query = history_subparser.add_parser(
-        "query", help="Query information for a particular build"
+        "query", help="Query information for a particular build", parents=[pager_option]
     )
     query.add_argument("id", type=int, help="Select a build ID")
     query.add_argument(

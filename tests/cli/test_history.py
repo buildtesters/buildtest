@@ -19,7 +19,7 @@ def test_build_history_list():
         terse=False, no_header=False, pager=False, color=Color.default().name
     )
 
-    # test with pager support: buildtest history --pager list
+    # buildtest history list --pager
     list_build_history(terse=False, no_header=False, pager=True)
 
     # test with terse mode and with color: buildtest --color <Color> history list --terse
@@ -54,19 +54,19 @@ def test_build_history_query():
     build_id = list(range(len(os.listdir(BUILD_HISTORY_DIR))))[-1]
     print(build_id)
 
-    # run buildtest history query <id>
+    # buildtest history query <id>
     query_builds(build_id=build_id, log_option=False, output=False)
 
-    # run buildtest history --pager query <id>
+    # buildtest history --pager query <id>
     query_builds(build_id=build_id, log_option=False, output=False, pager=True)
 
-    # run buildtest history query <id> --output
+    # buildtest history query <id> --output
     query_builds(build_id=build_id, log_option=False, output=True)
 
-    # run buildtest history --pager query <id> --output
+    # buildtest history --pager query <id> --output
     query_builds(build_id=build_id, log_option=False, output=True, pager=True)
 
-    # run buildtest history query <id> --log
+    # buildtest history query <id> --log
     query_builds(build_id=build_id, log_option=True, output=False)
 
 
