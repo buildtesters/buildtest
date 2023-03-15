@@ -28,7 +28,9 @@ def build_history(args):
         )
 
     if args.history == "query":
-        query_builds(build_id=args.id, log_option=args.log, output=args.output)
+        query_builds(
+            build_id=args.id, log_option=args.log, output=args.output, pager=args.pager
+        )
 
 
 def sorted_alphanumeric(data):
@@ -170,14 +172,15 @@ def list_build_history(no_header=None, terse=None, pager=None, color=None):
     console.print(history_table)
 
 
-def query_builds(build_id, log_option, output):
+def query_builds(build_id, log_option=None, output=None, pager=None):
     """This method is called when user runs `buildtest history query` which will
     report the build.json and logfile.
 
     Args:
         build_id (int): Build Identifier which is used for querying history file. The indentifier is an integer starting from 0
-        log_option (bool): Option to control whether log file is opened in editor. This is specified via ``buildtest history query -l <id>``
-        output (bool): Display output.txt file which contains output of ``buildtest build`` command. This is passed via ``buildtest history query -o``
+        log_option (bool, optional): Option to control whether log file is opened in editor. This is specified via ``buildtest history query -l <id>``
+        output (bool, optional): Display output.txt file which contains output of ``buildtest build`` command. This is passed via ``buildtest history query -o``
+        pager (bool, optional): Print output in paging format
     """
 
     if not is_dir(BUILD_HISTORY_DIR):
@@ -200,10 +203,16 @@ def query_builds(build_id, log_option, output):
         return
 
     if output:
-        output_content = read_file(
+        content = read_file(
             os.path.join(BUILD_HISTORY_DIR, str(build_id), "output.txt")
         )
-        print(output_content)
+        if not pager:
+            print(content)
+            return
+
+    if pager:
+        with console.pager():
+            console.print(content)
         return
 
     pprint(content)

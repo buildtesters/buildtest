@@ -406,7 +406,18 @@ def print_history_help():
     table.add_row("buildtest history list", "List all build history files")
     table.add_row("buildtest history list --terse", "Print output in terse format")
     table.add_row(
+        "buildtest history --pager list", "Paginate output of the history list"
+    )
+    table.add_row(
         "buildtest history query 0", "Query content of history build identifier '0'"
+    )
+    table.add_row(
+        "buildtest history --pager query 0",
+        "Paginate the query content of history build identifier '0'",
+    )
+    table.add_row(
+        "buildtest history --pager query 0 --output",
+        "Paginate the output file content of history build identifier '0'",
     )
     table.add_row(
         "buildtest history query 0 --log", "Open logfile for build identifier '0'"

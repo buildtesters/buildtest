@@ -422,7 +422,7 @@ def history_menu(subparsers, parent_parser):
     """
 
     history_subcmd = subparsers.add_parser(
-        "history", aliases=["hy"], help="Query build history"
+        "history", aliases=["hy"], help="Query build history", parents=[parent_parser]
     )
 
     history_subparser = history_subcmd.add_subparsers(
@@ -430,7 +430,7 @@ def history_menu(subparsers, parent_parser):
     )
 
     list_parser = history_subparser.add_parser(
-        "list", help="List a summary of all builds", parents=[parent_parser]
+        "list", help="List a summary of all builds"
     )
     list_parser.add_argument(
         "-n",
