@@ -1,3 +1,4 @@
+import contextlib
 import logging
 import os
 import re
@@ -103,21 +104,18 @@ def list_build_history(no_header=None, terse=None, pager=None, color=None):
         table["fail_rate"].append(content["test_summary"]["fail_rate"])
 
     if terse:
-        row_entry = []
-
-        for key in table.keys():
-            row_entry.append(table[key])
-
+        row_entry = [table[key] for key in table.keys()]
         transpose_list = [list(i) for i in zip(*row_entry)]
 
-        # We print the table columns if --no-header is not specified
-        if not no_header:
-            console.print("|".join(table.keys()), style=consoleColor)
+        with console.pager() if pager else contextlib.suppress():
+            # We print the table columns if --no-header is not specified
+            if not no_header:
+                console.print("|".join(table.keys()), style=consoleColor)
 
-        for row in transpose_list:
-            line = "|".join(row)
-            console.print(f"[{consoleColor}]{line}")
-        return
+            for row in transpose_list:
+                line = "|".join(row)
+                console.print(f"[{consoleColor}]{line}")
+            return
 
     history_table = Table(
         header_style="blue", show_lines=True, row_styles=[consoleColor]
