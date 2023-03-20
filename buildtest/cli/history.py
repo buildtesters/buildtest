@@ -128,7 +128,7 @@ def list_build_history(no_header=None, terse=None, pager=None, color=None):
         if pager:
             with console.pager():
                 print_terse(table, no_header, consoleColor)
-                return
+            return
 
         print_terse(table, no_header, consoleColor)
         return
