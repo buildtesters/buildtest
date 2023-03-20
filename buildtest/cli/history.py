@@ -1,4 +1,3 @@
-import contextlib
 import logging
 import os
 import re
@@ -47,6 +46,28 @@ def sorted_alphanumeric(data):
     convert = lambda text: int(text) if text.isdigit() else text.lower()
     alphanum_key = lambda key: [convert(c) for c in re.split("([0-9]+)", key)]
     return sorted(data, key=alphanum_key)
+
+
+def print_terse(table, no_header=None, consoleColor=None):
+    """This method prints the buildtest history list in terse mode which is run via command ``buildtest history list --terse``
+
+    Args:
+        table (dict): Table with columns required for the ``buildtest history list`` command.
+        no_header (bool, optional): Control whether header columns are displayed with terse format
+        consoleColor (bool, optional): Select desired color when displaying results
+    """
+
+    row_entry = [table[key] for key in table.keys()]
+    transpose_list = [list(i) for i in zip(*row_entry)]
+    header = "|".join(table.keys())
+
+    # We print the table columns if --no-header is not specified
+    if not no_header:
+        console.print(header, style=consoleColor)
+
+    for row in transpose_list:
+        line = "|".join(row)
+        console.print(f"[{consoleColor}]{line}")
 
 
 def list_build_history(no_header=None, terse=None, pager=None, color=None):
@@ -104,18 +125,13 @@ def list_build_history(no_header=None, terse=None, pager=None, color=None):
         table["fail_rate"].append(content["test_summary"]["fail_rate"])
 
     if terse:
-        row_entry = [table[key] for key in table.keys()]
-        transpose_list = [list(i) for i in zip(*row_entry)]
+        if pager:
+            with console.pager():
+                print_terse(table, no_header, consoleColor)
+                return
 
-        with console.pager() if pager else contextlib.suppress():
-            # We print the table columns if --no-header is not specified
-            if not no_header:
-                console.print("|".join(table.keys()), style=consoleColor)
-
-            for row in transpose_list:
-                line = "|".join(row)
-                console.print(f"[{consoleColor}]{line}")
-            return
+        print_terse(table, no_header, consoleColor)
+        return
 
     history_table = Table(
         header_style="blue", show_lines=True, row_styles=[consoleColor]

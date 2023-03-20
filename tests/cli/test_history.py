@@ -11,10 +11,10 @@ from rich.color import Color
 
 
 def test_build_history_list():
-    # Testing command:  buildtest history list
+    # buildtest history list
     list_build_history(terse=False, no_header=False, pager=False)
 
-    # test with a color: buildtest history list --color <color>
+    # buildtest history list --color <color>
     list_build_history(
         terse=False, no_header=False, pager=False, color=Color.default().name
     )
@@ -22,12 +22,12 @@ def test_build_history_list():
     # buildtest history list --pager
     list_build_history(terse=False, no_header=False, pager=True)
 
-    # test with terse mode with color and pager: buildtest --color <Color> history list --terse --pager
+    # buildtest --color <Color> history list --terse --pager
     list_build_history(
         terse=True, no_header=False, pager=True, color=Color.default().name
     )
 
-    # test with terse and no header: buildtest history list --terse --no-header
+    # buildtest history list --terse --no-header
     list_build_history(terse=True, no_header=True, pager=False)
 
 
