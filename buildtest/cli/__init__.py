@@ -1007,12 +1007,6 @@ def config_menu(subparsers, parent_parser):
         help="Update configuration file with new compilers",
     )
     compiler_find.add_argument(
-        "-f",
-        "--file",
-        action="store_true",
-        help="Wrtie configuration file to a new file",
-    )
-    compiler_find.add_argument(
         "-m",
         "--modulepath",
         type=str,
@@ -1027,6 +1021,11 @@ def config_menu(subparsers, parent_parser):
     compiler_test.add_argument(
         "compiler_names", nargs="*", help="Specify compiler name to test"
     )
+    # use parent parser for defining --file option
+    file_parser = argparse.ArgumentParser(parents=[parent_parser])
+    file_parser.add_argument( 
+        "--file", action="store_true", help="Wrtie configuration file to a new file" 
+    ) 
 
 
 def report_menu(subparsers, parent_parser):
