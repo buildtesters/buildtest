@@ -43,7 +43,12 @@ def inspect_cmd(args, report_file=None):
         return
 
     if args.inspect in ["buildspec", "b"]:
-        inspect_buildspec(report, input_buildspecs=args.buildspec, all_records=args.all)
+        inspect_buildspec(
+            report,
+            input_buildspecs=args.buildspec,
+            all_records=args.all,
+            pager=args.pager,
+        )
 
 
 def fetch_test_names(report, names):
@@ -280,13 +285,14 @@ def inspect_query(report, args):
                     console.print(syntax)
 
 
-def inspect_buildspec(report, input_buildspecs, all_records):
+def inspect_buildspec(report, input_buildspecs, all_records, pager=None):
     """This method implements command ``buildtest inspect buildspec``
 
     Args:
         report (str): Path to report file
         input_buildspecs (list): List of buildspecs to search in report file. This is specified as positional arguments to ``buildtest inspect buildspec``
         all_records (bool): Determine whether to display all records for every test that matches the buildspec. By default we retrieve the latest record.
+        pager (bool, optional): Print output in paging format
     """
 
     search_buildspecs = []
@@ -339,6 +345,11 @@ def inspect_buildspec(report, input_buildspecs, all_records):
                 latest_records[buildspec][test] = records[buildspec][test][-1]
 
     records = latest_records or records
+
+    if pager:
+        with console.pager():
+            console.print(records)
+        return
 
     pprint(records)
 

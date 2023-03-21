@@ -136,6 +136,7 @@ def test_buildspec_inspect_buildspec():
         buildspec = [tf.name]
         report = None
         all = None
+        pager = False
 
     # if buildspec not in cache we raise error
     with pytest.raises(SystemExit):
@@ -158,8 +159,9 @@ def test_buildspec_inspect_buildspec():
         buildspec = search_buildspec
         report = None
         all = False
+        pager = False
 
-    # run buildtest inspect buildspec $BUILDTEST_ROOT/tutorials/vars.yml $BUILDTEST_ROOT/tutorials/pass_returncode.yml
+    # buildtest inspect buildspec $BUILDTEST_ROOT/tutorials/vars.yml $BUILDTEST_ROOT/tutorials/pass_returncode.yml
     inspect_cmd(args)
 
     class args:
@@ -168,8 +170,9 @@ def test_buildspec_inspect_buildspec():
         buildspec = search_buildspec
         report = None
         all = True
+        pager = True
 
-    # run buildtest inspect buildspec --all $BUILDTEST_ROOT/tutorials/vars.yml $BUILDTEST_ROOT/tutorials/pass_returncode.yml
+    # buildtest inspect buildspec --all --pager $BUILDTEST_ROOT/tutorials/vars.yml $BUILDTEST_ROOT/tutorials/pass_returncode.yml
     inspect_cmd(args)
 
 
