@@ -187,7 +187,9 @@ def inspect_list(
     inspect_table.add_column("name")
     inspect_table.add_column("buildspec")
 
-    for (identifier, name, buildspec) in zip(table["id"], table["name"], table["buildspec"]):
+    for (identifier, name, buildspec) in zip(
+        table["id"], table["name"], table["buildspec"]
+    ):
         inspect_table.add_row(identifier, name, buildspec)
 
     if pager:
