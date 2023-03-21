@@ -190,8 +190,9 @@ def test_buildtest_query():
         buildscript = True
         buildenv = True
         theme = "emacs"
+        pager = True
 
-    # check buildtest inspect query --output --error --testpath --buildscript --buildenv <name1> <name2> ...
+    # buildtest inspect query --output --error --testpath --buildscript --buildenv <name1> <name2> ...
     inspect_cmd(args)
 
     class args:
@@ -204,10 +205,11 @@ def test_buildtest_query():
         buildscript = False
         buildenv = False
         theme = None
+        pager = False
 
     # buildtest inspect query stream_test
     # the 'stream_test' will add coverage where metrics are printed in output of 'buildtest inspect query'
-    inspect_cmd(args)
+    iinspect_cmd(args)
 
     class args:
         subcommands = "inspect"
@@ -220,6 +222,7 @@ def test_buildtest_query():
         buildscript = False
         buildenv = False
         theme = None
+        pager = False
 
     # check invalid test name when querying result which will result in exception SystemExit
     with pytest.raises(SystemExit):

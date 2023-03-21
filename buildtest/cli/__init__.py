@@ -1170,7 +1170,7 @@ def inspect_menu(subparsers, pager_option):
         "name", aliases=["n"], help="Specify name of test", parents=[pager_option]
     )
     query_list = subparser.add_parser(
-        "query", aliases=["q"], help="Query fields from record"
+        "query", aliases=["q"], help="Query fields from record", parents=[pager_option]
     )
 
     # buildtest inspect buildspec

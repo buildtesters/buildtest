@@ -39,7 +39,7 @@ def inspect_cmd(args, report_file=None):
         return
 
     if args.inspect in ["query", "q"]:
-        inspect_query(report, args)
+        inspect_query(report, args, args.pager)
         return
 
     if args.inspect in ["buildspec", "b"]:
@@ -111,7 +111,7 @@ def print_terse(table, no_header=None, consoleColor=None):
 
     Args:
         table (dict): Table with columns required for the ``buildtest inspect list`` command.
-        header (bool, optional): Determine whether to print header in terse format.
+        no_header (bool, optional): Determine whether to print header in terse format.
         consoleColor (bool, optional): Select desired color when displaying results
     """
 
@@ -198,12 +198,12 @@ def inspect_list(
     console.print(inspect_table)
 
 
-def inspect_query(report, args):
-    """Entry point for ``buildtest inspect query`` command.
+def print_by_query(report, args):
+    """This method prints the test records when they are queried using ``buildtest inspect query`` command.
 
     Args:
-        args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
         report (str): Path to report file
+        args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
     """
 
     records = {}
@@ -283,6 +283,23 @@ def inspect_query(report, args):
 
                     syntax = Syntax(content, lexer="text", theme=theme)
                     console.print(syntax)
+
+
+def inspect_query(report, args, pager=None):
+    """Entry point for ``buildtest inspect query`` command.
+
+    Args:
+        report (str): Path to report file
+        args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
+        pager (bool, optional): Print output in paging format
+    """
+
+    if pager:
+        with console.pager():
+            print_by_query(report, args)
+        return
+
+    print_by_query(report, args)
 
 
 def inspect_buildspec(report, input_buildspecs, all_records, pager=None):
