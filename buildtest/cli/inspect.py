@@ -26,9 +26,10 @@ def inspect_cmd(args, report_file=None):
         inspect_list(
             report,
             terse=args.terse,
-            header=args.no_header,
+            no_header=args.no_header,
             builder=args.builder,
             color=args.color,
+            pager=args.pager,
         )
         return
 
@@ -88,7 +89,43 @@ def fetch_test_names(report, names):
     return query_builders
 
 
-def inspect_list(report, terse=None, header=None, builder=None, color=None):
+def print_builders(report):
+    """This method prints all the builders.
+
+    Args:
+        report (str): Path to report file
+    """
+
+    builders = report.builder_names()
+    for name in builders:
+        console.print(name)
+
+
+def print_terse(table, no_header=None, consoleColor=None):
+    """This method prints the buildtest inspect list in terse mode which is run via command ``buildtest inspect list --terse``
+
+    Args:
+        table (dict): Table with columns required for the ``buildtest inspect list`` command.
+        header (bool, optional): Determine whether to print header in terse format.
+        consoleColor (bool, optional): Select desired color when displaying results
+    """
+
+    row_entry = [table[key] for key in table.keys()]
+    transpose_list = [list(i) for i in zip(*row_entry)]
+    header = "|".join(table.keys())
+
+    # We print the table columns if --no-header is not specified
+    if not no_header:
+        console.print(header, style=consoleColor)
+
+    for row in transpose_list:
+        line = "|".join(row)
+        console.print(f"[{consoleColor}]{line}")
+
+
+def inspect_list(
+    report, terse=None, no_header=None, builder=None, color=None, pager=None
+):
     """This method list an output of test id, name, and buildspec file from the report cache. The default
     behavior is to display output in table format though this can be changed with terse format which will
     display in parseable format. This method implements command ``buildtest inspect list``
@@ -96,10 +133,10 @@ def inspect_list(report, terse=None, header=None, builder=None, color=None):
     Args:
         report (str): Path to report file
         terse (bool, optional): Print output in terse format
-        header (bool, optional): Determine whether to print header in terse format.
+        no_header (bool, optional): Determine whether to print header in terse format.
         builder (bool, optional): Print output in builder format which can be done via ``buildtest inspect list --builder``
         color (bool, optional): Print table output of ``buildtest inspect list`` with selected color
-
+        pager (bool, optional): Print output in paging format
     """
     consoleColor = checkColor(color)
 
@@ -107,38 +144,53 @@ def inspect_list(report, terse=None, header=None, builder=None, color=None):
 
     # implement command 'buildtest inspect list --builder'
     if builder:
-        builders = report.builder_names()
-        for name in builders:
-            print(name)
+        if pager:
+            with console.pager():
+                print_builders(report)
+            return
+
+        print_builders(report)
         return
+
+    table = {
+        "id": [],
+        "name": [],
+        "buildspec": [],
+    }
+
+    for identifier in test_ids.keys():
+        table["id"].append(identifier)
+        table["name"].append(test_ids[identifier]["name"])
+        table["buildspec"].append(test_ids[identifier]["buildspec"])
 
     # print output in terse format
     if terse:
-        # print column headers if --no-header is not specified
-        if not header:
-            console.print("[blue]id|name|buildspec")
+        if pager:
+            with console.pager():
+                print_terse(table, no_header, consoleColor)
+            return
 
-        for identifier in test_ids.keys():
-            console.print(
-                f"{identifier}|{test_ids[identifier]['name']}|{test_ids[identifier]['buildspec']}"
-            )
-
+        print_terse(table, no_header, consoleColor)
         return
 
-    table = Table(
-        "[blue]id",
-        "[blue]name",
-        Column(header="[blue]buildspec", overflow="fold"),
-        title="Test Summary by name, id, buildspec",
+    inspect_table = Table(
+        header_style="blue",
+        title="Test Summary by id, name, buildspec",
         row_styles=[consoleColor],
     )
-    for identifier in test_ids.keys():
-        table.add_row(
-            f"{identifier}",
-            f"{test_ids[identifier]['name']}",
-            f"{test_ids[identifier]['buildspec']}",
-        )
-    console.print(table)
+    inspect_table.add_column("id")
+    inspect_table.add_column("name")
+    inspect_table.add_column("buildspec")
+
+    for (id, name, buildspec) in zip(table["id"], table["name"], table["buildspec"]):
+        inspect_table.add_row(id, name, buildspec)
+
+    if pager:
+        with console.pager():
+            console.print(inspect_table)
+        return
+
+    console.print(inspect_table)
 
 
 def inspect_query(report, args):

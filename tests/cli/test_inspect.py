@@ -11,7 +11,7 @@ from rich.color import Color
 
 
 def test_buildtest_inspect_list():
-    # running buildtest inspect list
+    # buildtest inspect list
     class args:
         subcommands = "inspect"
         inspect = "list"
@@ -19,10 +19,23 @@ def test_buildtest_inspect_list():
         no_header = False
         builder = False
         color = Color.default().name
+        pager = False
 
     inspect_cmd(args)
 
-    # running buildtest inspect list --terse --no-header
+    # buildtest inspect list --pager
+    class args:
+        subcommands = "inspect"
+        inspect = "list"
+        terse = False
+        no_header = False
+        builder = False
+        color = Color.default().name
+        pager = True
+
+    inspect_cmd(args)
+
+    # buildtest inspect list --terse --no-header
     class args:
         subcommands = "inspect"
         inspect = "list"
@@ -30,10 +43,11 @@ def test_buildtest_inspect_list():
         no_header = True
         builder = False
         color = False
+        pager = False
 
     inspect_cmd(args)
 
-    # running buildtest inspect list --terse
+    # buildtest inspect list --terse --pager
     class args:
         subcommands = "inspect"
         inspect = "list"
@@ -41,10 +55,11 @@ def test_buildtest_inspect_list():
         no_header = False
         builder = False
         color = False
+        pager = True
 
     inspect_cmd(args)
 
-    # running buildtest inspect list --builder
+    # buildtest inspect list --builder
     class args:
         subcommands = "inspect"
         inspect = "list"
@@ -52,6 +67,19 @@ def test_buildtest_inspect_list():
         no_header = False
         builder = True
         color = False
+        pager = False
+
+    inspect_cmd(args)
+
+    # buildtest inspect list --builder --pager
+    class args:
+        subcommands = "inspect"
+        inspect = "list"
+        terse = False
+        no_header = False
+        builder = True
+        color = False
+        pager = True
 
     inspect_cmd(args)
 
