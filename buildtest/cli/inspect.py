@@ -9,7 +9,7 @@ from buildtest.utils.file import read_file, resolve_path
 from buildtest.utils.tools import checkColor
 from rich.pretty import pprint
 from rich.syntax import Syntax
-from rich.table import Column, Table
+from rich.table import Table
 
 
 def inspect_cmd(args, report_file=None):
