@@ -35,7 +35,7 @@ def inspect_cmd(args, report_file=None):
 
     # implements command 'buildtest inspect name'
     if args.inspect in ["name", "n"]:
-        inspect_by_name(report, args.name)
+        inspect_by_name(report, args.name, args.pager)
         return
 
     if args.inspect in ["query", "q"]:
@@ -343,18 +343,8 @@ def inspect_buildspec(report, input_buildspecs, all_records):
     pprint(records)
 
 
-def inspect_by_name(report, names):
-    """Implements command ``buildtest inspect name`` which will print all test records by given name in JSON format.
-
-    .. code-block:: console
-
-        # get last run for test exit1_fail
-        buildtest inspect name exit1_fail
-
-    .. code-block:: console
-
-        # get record exit1_fail that starts with id 123
-        buildtest inspect name exit1_fail/123
+def print_by_name(report, names):
+    """This method prints test records by given name in JSON format.
 
     Args:
         report (str): Path to report file
@@ -376,4 +366,32 @@ def inspect_by_name(report, names):
 
         records[name].append(report.fetch_records_by_ids([tid]))
 
-    pprint(records)
+    console.print(records)
+
+
+def inspect_by_name(report, names, pager=None):
+    """Implements command ``buildtest inspect name`` which will print all test records by given name in JSON format.
+
+    .. code-block:: console
+
+        # get last run for test exit1_fail
+        buildtest inspect name exit1_fail
+
+    .. code-block:: console
+
+        # get record exit1_fail that starts with id 123
+        buildtest inspect name exit1_fail/123
+
+    Args:
+        report (str): Path to report file
+        names (list): List of test names to search in report file. This is specified as positional arguments to ``buildtest inspect name``
+        pager (bool, optional): Print output in paging format
+    """
+
+    if pager:
+        with console.pager():
+            print_by_name(report, names)
+        return
+
+    print_by_name(report, names)
+    return

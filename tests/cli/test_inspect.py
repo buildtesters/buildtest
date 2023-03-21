@@ -95,6 +95,7 @@ def test_buildtest_inspect_name():
         inspect = "name"
         name = test_names
         report = None
+        pager = True
 
     print(f"Querying test names: {args.name}")
     # buildtest inspect name <name1> <name2>
@@ -110,6 +111,7 @@ def test_buildtest_inspect_name():
         inspect = "name"
         name = random_test
         report = None
+        pager = False
 
     print(f"Querying test names: {args.name}")
     with pytest.raises(SystemExit):
@@ -120,6 +122,7 @@ def test_buildtest_inspect_name():
         inspect = "name"
         name = [r.builder_names()[0]]
         report = None
+        pager = False
 
     inspect_cmd(args)
 
