@@ -1023,9 +1023,9 @@ def config_menu(subparsers, parent_parser):
     )
     # use parent parser for defining --file option
     file_parser = argparse.ArgumentParser(parents=[parent_parser])
-    file_parser.add_argument( 
-        "--file", action="store_true", help="Wrtie configuration file to a new file" 
-    ) 
+    file_parser.add_argument(
+        "--file", action="store_true", help="Wrtie configuration file to a new file"
+    )
 
 
 def report_menu(subparsers, parent_parser):
