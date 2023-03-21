@@ -209,7 +209,7 @@ def test_buildtest_query():
 
     # buildtest inspect query stream_test
     # the 'stream_test' will add coverage where metrics are printed in output of 'buildtest inspect query'
-    iinspect_cmd(args)
+    inspect_cmd(args)
 
     class args:
         subcommands = "inspect"
