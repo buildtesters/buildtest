@@ -245,7 +245,8 @@ Currently, we can match state based on the following:
   - :ref:`Performance Check <perf_checks>`
   - :ref:`Explicit Test Status <explicit_status>`
   - :ref:`File Checks <file_checks>`
-  - :ref:`Symbolic Link Check <symlink_check>`
+  - :ref:`File Count <file_count>`
+
 
 .. _returncode:
 
@@ -587,6 +588,28 @@ We can try building this test by running the following:
 .. dropdown:: ``buildtest build -b tutorials/test_status/file_count_file_traverse_limit.yml``
 
    .. command-output:: buildtest build -b tutorials/test_status/file_count_file_traverse_limit.yml
+
+Status Mode
+~~~~~~~~~~~~~~
+
+By default, the status check performed by buildtest is a logical OR, where if any of the status check is True, then the test will
+PASS. However, if you want to change this behavior to logical AND, you can use the `mode` property. The valid values are
+``or``, ``and``. In the example below, we show two tests that illustrate the use of ``mode``.
+
+.. literalinclude:: ../tutorials/test_status/mode.yml
+   :language: yaml
+   :emphasize-lines: 10,24,25-28
+
+In the first test, we use ``mode: and`` which implies all status check are evaluated logical AND, we expect this test to PASS.
+In the second test, we use ``mode: or`` where status check are evalued as logical OR which is the default behavior. Note if ``mode``
+is not specified, it is equivalent to ``mode: or``. In second test, we expect this to pass because **regex** check will PASS however,
+the **returncode** check will fail. If we had changed this to ``mode: and`` then we would expect this test to fail.
+
+Shown below is the output of running this test.
+
+.. dropdown:: ``buildtest build -b tutorials/test_status/mode.yml``
+
+   .. command-output:: buildtest build -b tutorials/test_status/mode.yml
 
 Skipping test
 -------------
