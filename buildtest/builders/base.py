@@ -1090,7 +1090,7 @@ class BuilderBase(ABC):
 
             state = (
                 all(status_checks)
-                if self.status.get("mode") == "and"
+                if self.status.get("mode") == "all"
                 else any(status_checks)
             )
             self.metadata["result"]["state"] = "PASS" if state else "FAIL"

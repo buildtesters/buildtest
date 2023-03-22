@@ -7,7 +7,7 @@ buildspecs:
       echo "This is a test"
       exit 1
     status:
-      mode: and
+      mode: all
       returncode: 1
       regex:
         stream: stdout
@@ -21,7 +21,7 @@ buildspecs:
       echo "This is a test"
       exit 1
     status:
-      mode: or
+      mode: any
       returncode: 0
       regex:
         stream: stdout

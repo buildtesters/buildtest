@@ -576,7 +576,7 @@
         "mode": {
           "type": "string",
           "description": "Determine how the status check is resolved, for instance it can be logical AND or OR",
-          "enum": ["or", "and"]
+          "enum": ["any", "all"]
         }
       }
     },

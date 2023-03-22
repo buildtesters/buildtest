@@ -600,10 +600,10 @@ PASS. However, if you want to change this behavior to logical AND, you can use t
    :language: yaml
    :emphasize-lines: 10,24,25-28
 
-In the first test, we use ``mode: and`` which implies all status check are evaluated logical AND, we expect this test to PASS.
-In the second test, we use ``mode: or`` where status check are evalued as logical OR which is the default behavior. Note if ``mode``
-is not specified, it is equivalent to ``mode: or``. In second test, we expect this to pass because **regex** check will PASS however,
-the **returncode** check will fail. If we had changed this to ``mode: and`` then we would expect this test to fail.
+In the first test, we use ``mode: all`` which implies all status check are evaluated logical AND, we expect this test to PASS.
+In the second test, we use ``mode: any`` where status check are evalued as logical OR which is the default behavior. Note if ``mode``
+is not specified, it is equivalent to ``mode: any``. In second test, we expect this to pass because **regex** check will PASS however,
+the **returncode** check will fail. If we had changed this to ``mode: all`` then we would expect this test to fail.
 
 Shown below is the output of running this test.
 
