@@ -315,10 +315,6 @@ def print_inspect_help():
         "buildtest inspect name hello", "Display last run for test name 'hello'"
     )
     table.add_row(
-        "buildtest inspect name hello --pager",
-        "Paginate output of last run for test name 'hello'",
-    )
-    table.add_row(
         "buildtest inspect name hello/9ac bar/ac9",
         "Display record for test 'hello/9ac' and 'bar/ac9'. Will find first match for each test ID",
     )
@@ -327,16 +323,8 @@ def print_inspect_help():
         "Fetch latest runs for all tests in buildspec file 'tutorials/vars.yml'",
     )
     table.add_row(
-        "buildtest inspect buildspec tutorials/vars.yml --pager",
-        "Paginate output of test runs for the tests in file 'tutorials/vars.yml'",
-    )
-    table.add_row(
         "buildtest inspect query -o exit1_fail",
         "Display content of output file for latest run for test name 'exit1_fail'",
-    )
-    table.add_row(
-        "buildtest inspect query -o exit1_fail --pager",
-        "Paginate content of output file for latest run for test name 'exit1_fail'",
     )
     table.add_row(
         "buildtest inspect query -e hello",
