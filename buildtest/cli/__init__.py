@@ -1143,7 +1143,7 @@ def report_menu(subparsers, parent_parser):
     )
 
 
-def inspect_menu(subparsers, parent_parser):
+def inspect_menu(subparsers, pager_option):
     """This method builds argument for ``buildtest inspect`` command
 
     Args:
@@ -1164,13 +1164,13 @@ def inspect_menu(subparsers, parent_parser):
         "buildspec",
         aliases=["b"],
         help="Inspect a test based on buildspec",
-        parents=[parent_parser],
+        parents=[pager_option],
     )
     name = subparser.add_parser(
-        "name", aliases=["n"], help="Specify name of test", parents=[parent_parser]
+        "name", aliases=["n"], help="Specify name of test", parents=[pager_option]
     )
     query_list = subparser.add_parser(
-        "query", aliases=["q"], help="Query fields from record"
+        "query", aliases=["q"], help="Query fields from record", parents=[pager_option]
     )
 
     # buildtest inspect buildspec
@@ -1188,7 +1188,7 @@ def inspect_menu(subparsers, parent_parser):
         "list",
         aliases=["l"],
         help="List all test names, ids, and corresponding buildspecs",
-        parents=[parent_parser],
+        parents=[pager_option],
     )
     inspect_list.add_argument(
         "-n",

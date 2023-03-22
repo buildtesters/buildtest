@@ -310,6 +310,7 @@ def print_inspect_help():
         "Display all test names, ids, and corresponding buildspec file",
     )
     table.add_row("buildtest inspect list -t", "Show output in terse format")
+    table.add_row("buildtest inspect list --pager", "Paginate output of inspect list")
     table.add_row(
         "buildtest inspect name hello", "Display last run for test name 'hello'"
     )
