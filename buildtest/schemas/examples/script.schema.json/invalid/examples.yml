@@ -407,3 +407,11 @@ buildspecs:
         - dir: foo
           count: 1
           file_traverse_limit: 1000000
+  invalid_value_for_mode:
+    type: script
+    executor: generic.local.bash
+    description: The status mode must be 'or' or 'and'
+    run: exit 0
+    status:
+      returncode: 0
+      mode: 'any'
