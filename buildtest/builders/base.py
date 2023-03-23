@@ -231,8 +231,29 @@ class BuilderBase(ABC):
         self.metadata["compiler"] = None
 
         self.metadata["result"] = {"state": "N/A", "returncode": "-1", "runtime": 0}
-        self.metadata["check"] = {"returncode": "N/A", "regex": "N/A", "runtime": "N/A"}
-
+        status_check_names = [
+            "regex",
+            "returncode",
+            "runtime",
+            "file_regex",
+            "slurm_job_state",
+            "pbs_job_state",
+            "lsf_job_state",
+            "assert_ge",
+            "assert_gt",
+            "assert_le",
+            "assert_lt",
+            "assert_eq",
+            "assert_ne",
+            "contains",
+            "not_contains",
+            "is_symlink",
+            "exists",
+            "is_dir",
+            "is_file",
+            "file_count",
+        ]
+        self.metadata["check"] = {name: None for name in status_check_names}
         self.metadata["metrics"] = {}
 
         # used to store job id from batch scheduler
@@ -985,128 +1006,93 @@ class BuilderBase(ABC):
 
         # if status is defined in Buildspec, then check for returncode and regex
         if self.status:
-            slurm_job_state_match = False
-            pbs_job_state_match = False
-            lsf_job_state_match = False
-            assert_ge_match = False
-            assert_le_match = False
-            assert_gt_match = False
-            assert_lt_match = False
-            assert_eq_match = False
-            assert_ne_match = False
-            assert_range_match = False
-            assert_contains_match = False
-            assert_notcontains_match = False
-            assert_is_symlink = False
-            assert_exists = False
-            assert_is_dir = False
-            assert_is_file = False
-            file_regex_match = False
-            assert_file_count = False
-
-            # returncode_match is boolean to check if reference returncode matches return code from test
-            returncode_match = returncode_check(self)
-
-            # check regex against output or error stream based on regular expression
-            # defined in status property. Return value is a boolean
-            regex_match = regex_check(self)
-
-            runtime_match = runtime_check(self)
-
-            self.metadata["check"]["regex"] = regex_match
-            self.metadata["check"]["runtime"] = runtime_match
-            self.metadata["check"]["returncode"] = returncode_match
-
-            if self.status.get("file_regex"):
-                file_regex_match = file_regex_check(self)
-
-            if self.status.get("slurm_job_state") and isinstance(self.job, SlurmJob):
-                slurm_job_state_match = (
-                    self.status["slurm_job_state"] == self.job.state()
-                )
-
-            if self.status.get("pbs_job_state") and isinstance(self.job, PBSJob):
-                pbs_job_state_match = self.status["pbs_job_state"] == self.job.state()
-
-            if self.status.get("lsf_job_state") and isinstance(self.job, LSFJob):
-                lsf_job_state_match = self.status["lsf_job_state"] == self.job.state()
-
-            if self.status.get("assert_ge"):
-                assert_ge_match = assert_ge_check(self)
-
-            if self.status.get("assert_le"):
-                assert_le_match = assert_le_check(self)
-
-            if self.status.get("assert_gt"):
-                assert_gt_match = assert_gt_check(self)
-
-            if self.status.get("assert_lt"):
-                assert_lt_match = assert_lt_check(self)
-
-            if self.status.get("assert_eq"):
-                assert_eq_match = assert_eq_check(self)
-
-            if self.status.get("assert_ne"):
-                assert_ne_match = assert_ne_check(self)
-
-            if self.status.get("assert_range"):
-                assert_range_match = assert_range_check(self)
-
-            if self.status.get("contains"):
-                assert_contains_match = contains_check(self)
-
-            if self.status.get("not_contains"):
-                assert_notcontains_match = notcontains_check(self)
-
-            if self.status.get("is_symlink"):
-                assert_is_symlink = is_symlink_check(builder=self)
-
-            if self.status.get("exists"):
-                assert_exists = exists_check(builder=self)
-
-            if self.status.get("is_dir"):
-                assert_is_dir = is_dir_check(builder=self)
-
-            if self.status.get("is_file"):
-                assert_is_file = is_file_check(builder=self)
-
-            if self.status.get("file_count"):
-                assert_file_count = file_count_check(builder=self)
-
-            # if any of checks is True we set the 'state' to PASS
-            state = any(
-                [
-                    returncode_match,
-                    regex_match,
-                    file_regex_match,
-                    slurm_job_state_match,
-                    pbs_job_state_match,
-                    lsf_job_state_match,
-                    runtime_match,
-                    assert_ge_match,
-                    assert_le_match,
-                    assert_gt_match,
-                    assert_lt_match,
-                    assert_eq_match,
-                    assert_ne_match,
-                    assert_range_match,
-                    assert_contains_match,
-                    assert_notcontains_match,
-                    assert_is_symlink,
-                    assert_exists,
-                    assert_is_dir,
-                    assert_is_file,
-                    assert_file_count,
-                ]
-            )
-            if state:
-                self.metadata["result"]["state"] = "PASS"
-            else:
-                self.metadata["result"]["state"] = "FAIL"
 
             # if 'state' property is specified explicitly honor this value regardless of what is calculated
             if self.status.get("state"):
                 self.metadata["result"]["state"] = self.status["state"]
+                return
+
+            if self.status.get("returncode"):
+                self.metadata["check"]["returncode"] = returncode_check(self)
+
+            # check regex against output or error stream based on regular expression defined in status property. Return value is a boolean
+            if self.status.get("regex"):
+                self.metadata["check"]["regex"] = regex_check(self)
+
+            if self.status.get("runtime"):
+                self.metadata["check"]["runtime"] = runtime_check(self)
+
+            if self.status.get("file_regex"):
+                self.metadata["check"]["file_regex"] = file_regex_check(self)
+
+            if self.status.get("slurm_job_state") and isinstance(self.job, SlurmJob):
+                self.metadata["check"]["slurm_job_state"] = (
+                    self.status["slurm_job_state"] == self.job.state()
+                )
+
+            if self.status.get("pbs_job_state") and isinstance(self.job, PBSJob):
+                self.metadata["check"]["pbs_job_state"] = (
+                    self.status["pbs_job_state"] == self.job.state()
+                )
+
+            if self.status.get("lsf_job_state") and isinstance(self.job, LSFJob):
+                self.metadata["check"]["lsf_job_state"] = (
+                    self.status["lsf_job_state"] == self.job.state()
+                )
+
+            if self.status.get("assert_ge"):
+                self.metadata["check"]["assert_ge"] = assert_ge_check(self)
+
+            if self.status.get("assert_le"):
+                self.metadata["check"]["assert_le"] = assert_le_check(self)
+
+            if self.status.get("assert_gt"):
+                self.metadata["check"]["assert_gt"] = assert_gt_check(self)
+
+            if self.status.get("assert_lt"):
+                self.metadata["check"]["assert_lt"] = assert_lt_check(self)
+
+            if self.status.get("assert_eq"):
+                self.metadata["check"]["assert_eq"] = assert_eq_check(self)
+
+            if self.status.get("assert_ne"):
+                self.metadata["check"]["assert_ne"] = assert_ne_check(self)
+
+            if self.status.get("assert_range"):
+                self.metadata["check"]["assert_range"] = assert_range_check(self)
+
+            if self.status.get("contains"):
+                self.metadata["check"]["contains"] = contains_check(self)
+
+            if self.status.get("not_contains"):
+                self.metadata["check"]["not_contains"] = notcontains_check(self)
+
+            if self.status.get("is_symlink"):
+                self.metadata["check"]["is_symlink"] = is_symlink_check(builder=self)
+
+            if self.status.get("exists"):
+                self.metadata["check"]["exists"] = exists_check(builder=self)
+
+            if self.status.get("is_dir"):
+                self.metadata["check"]["is_dir"] = is_dir_check(builder=self)
+
+            if self.status.get("is_file"):
+                self.metadata["check"]["is_file"] = is_file_check(builder=self)
+
+            if self.status.get("file_count"):
+                self.metadata["check"]["file_count"] = file_count_check(builder=self)
+
+            # filter out any None values from status check
+            status_checks = [
+                value for value in self.metadata["check"].values() if value is not None
+            ]
+
+            state = (
+                all(status_checks)
+                if self.status.get("mode") == "all"
+                else any(status_checks)
+            )
+            self.metadata["result"]["state"] = "PASS" if state else "FAIL"
 
     def _process_compiler_config(self):
         """This method is responsible for setting cc, fc, cxx class variables based

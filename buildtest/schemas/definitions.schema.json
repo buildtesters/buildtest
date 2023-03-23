@@ -254,7 +254,6 @@
             "EXIT"
           ]
         },
-
         "returncode": { "$ref": "#/definitions/returncode" },
         "regex": {
           "$ref": "#/definitions/regex",
@@ -573,6 +572,11 @@
         "state": {
           "$ref": "#/definitions/state",
           "description": "explicitly mark state of test regardless of status calculation"
+        },
+        "mode": {
+          "type": "string",
+          "description": "Determine how the status check is resolved, for instance it can be logical AND or OR",
+          "enum": ["any", "all"]
         }
       }
     },
