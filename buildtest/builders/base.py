@@ -1012,7 +1012,6 @@ class BuilderBase(ABC):
                 self.metadata["result"]["state"] = self.status["state"]
                 return
 
-            # returncode_match is boolean to check if reference returncode matches return code from test
             if self.status.get("returncode"):
                 self.metadata["check"]["returncode"] = returncode_check(self)
 
