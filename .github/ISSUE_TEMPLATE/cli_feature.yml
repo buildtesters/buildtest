@@ -1,4 +1,4 @@
-name: Buildtest Feature Request
+name: Feature Request
 description: Feature request for buildtest program
 title: "[FEATURE]: "
 labels: [feature, triage]
@@ -8,8 +8,18 @@ body:
   - type: textarea
     id: feature_description
     attributes:
-      label: Feature request description
-      description: Please provide a detailed summary of the feature including its intended behavior
+      label: Please describe your feature
+      description: Please provide a detailed summary of the feature including its intended behavior. Please attach any related issues or pull requests
+        and relevant example of Buildspec or Buildtest configuration if necessary.
+      placeholder: |
+        ```yaml
+            version: "1.0"
+            buildspecs:
+              hello_world:
+                type: script
+                executor: generic.local.sh
+                run: echo "hello world"
+        ``` 
     validations:
       required: true
 
@@ -19,13 +29,13 @@ body:
       label: Suggest potential solution
       description: Please describe a solution or action items you would like to propose
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: notes
     attributes:
-      label: Additional notes
-      description: Add any other details or notes to consider
+      label: Additional Information
+      description: Please provide any additional information that may include screenshots, attachments
     validations:
       required: false
 
