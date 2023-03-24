@@ -14,7 +14,6 @@ body:
       placeholder: |
         Describe your feature here
 
-        
         Include Buildspec or Buildtest configuration here if necessary
         ```yaml
             version: "1.0"
