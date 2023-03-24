@@ -12,6 +12,10 @@ body:
       description: Please provide a detailed summary of the feature including its intended behavior. Please attach any related issues or pull requests
         and relevant example of Buildspec or Buildtest configuration if necessary.
       placeholder: |
+        Describe your feature here
+
+        
+        Include Buildspec or Buildtest configuration here if necessary
         ```yaml
             version: "1.0"
             buildspecs:
