@@ -16,7 +16,6 @@ body:
 
         Include Buildspec or Buildtest configuration here if necessary
         ```yaml
-            version: "1.0"
             buildspecs:
               hello_world:
                 type: script
@@ -38,7 +37,7 @@ body:
     id: notes
     attributes:
       label: Additional Information
-      description: Please provide any additional information that may include screenshots, attachments
+      description: Please provide any additional information that may include screenshots or attachments that can help describe your feature request.
     validations:
       required: false
 
