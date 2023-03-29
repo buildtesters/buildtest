@@ -52,7 +52,7 @@ body:
     attributes:
       label: Relevant log output
       description: |
-        Please copy and paste any relevant log output. Please provide the output of the commands "buildtest info" and "buildtest debugreport" 
+        Please copy and paste any relevant log output. Please provide the output of the commands "buildtest info" and "buildtest debugreport"
         in order for us to know about the buildtest setup and configuration.
       render: shell
     validations:
