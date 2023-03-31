@@ -128,7 +128,6 @@ _buildtest ()
 {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   local prev="${COMP_WORDS[COMP_CWORD-1]}"
-  local next=
   declare -i offset="0"
 
   COMPREPLY=()   # Array variable storing the possible completions.
@@ -154,7 +153,7 @@ _buildtest ()
 
   done
 
-  next=${COMP_WORDS[1+offset]}
+  local next=${COMP_WORDS[1+offset]}
 
   case "$next" in
   #case "${prev}" in
