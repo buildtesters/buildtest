@@ -8,5 +8,5 @@ rich
 coverage
 pytest
 isort
-black==23.1.0
+black==23.3.0
 pyflakes
