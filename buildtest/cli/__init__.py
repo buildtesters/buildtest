@@ -430,7 +430,7 @@ def history_menu(subparsers, parent_parser):
 
     Args:
         subparsers (argparse._SubParsersAction): Subparser object to add subparser
-        pager_option (argparse.ArgumentParser): Parent parser object to add to subparser
+        parent_parser (argparse.ArgumentParser): Parent parser object
     """
 
     history_subcmd = subparsers.add_parser(
