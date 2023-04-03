@@ -155,12 +155,12 @@ class ParentParser:
 
         self.parent_parser["pager"] = argparse.ArgumentParser(add_help=False)
         self.parent_parser["pager"].add_argument(
-                "--pager", action="store_true", help="Enable PAGING when viewing result"
-            )
-        
+            "--pager", action="store_true", help="Enable PAGING when viewing result"
+        )
+
         self.parent_parser["file"] = argparse.ArgumentParser(add_help=False)
         self.parent_parser["file"].add_argument(
-                "--file", action="store_true", help="Wrtie configuration file to a new file"
+            "--file", action="store_true", help="Wrtie configuration file to a new file"
         )
 
 
@@ -238,11 +238,19 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     )
     parser.add_argument("-r", "--report", help="Specify path to test report file")
 
-    # parent_parser = argparse.ArgumentParser(add_help=False)
-    # parent_parser.add_argument(
-    #     "--pager", action="store_true", help="Enable PAGING when viewing result"
-    # )
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
+
+    parent_parser = {}
+
+    parent_parser["pager"] = argparse.ArgumentParser(add_help=False)
+    parent_parser["pager"].add_argument(
+        "--pager", action="store_true", help="Enable PAGING when viewing result"
+    )
+
+    parent_parser["file"] = argparse.ArgumentParser(add_help=False)
+    parent_parser["file"].add_argument(
+        "--file", action="store_true", help="Wrtie configuration file to a new file"
+    )
 
     build_menu(subparsers)
     buildspec_menu(subparsers, parent_parser)
@@ -960,7 +968,10 @@ def config_menu(subparsers, parent_parser):
         "validate", help="Validate buildtest settings file with schema."
     )
     view_parser = subparsers_config.add_parser(
-        "view", aliases=["v"], help="View configuration file", parents=[parent_parser["pager"]]
+        "view",
+        aliases=["v"],
+        help="View configuration file",
+        parents=[parent_parser["pager"]],
     )
     view_parser.add_argument(
         "-t",
@@ -1006,9 +1017,7 @@ def config_menu(subparsers, parent_parser):
     )
 
     compiler_find = subparsers_compiler.add_parser(
-        "find",
-        help="Find compilers",
-        parents=[parent_parser["file"]]
+        "find", help="Find compilers", parents=[parent_parser["file"]]
     )
     compiler_find.add_argument(
         "-d",
@@ -1037,7 +1046,7 @@ def config_menu(subparsers, parent_parser):
     compiler_test.add_argument(
         "compiler_names", nargs="*", help="Specify compiler name to test"
     )
-    
+
 
 def report_menu(subparsers, parent_parser):
     """This method implements the ``buildtest report`` command options
@@ -1048,7 +1057,10 @@ def report_menu(subparsers, parent_parser):
     """
 
     parser_report = subparsers.add_parser(
-        "report", aliases=["rt"], help="Query test report", parents=[parent_parser["pager"]]
+        "report",
+        aliases=["rt"],
+        help="Query test report",
+        parents=[parent_parser["pager"]],
     )
     subparsers = parser_report.add_subparsers(
         description="Fetch test results from report file and print them in table format",
@@ -1061,7 +1073,10 @@ def report_menu(subparsers, parent_parser):
         "path", aliases=["p"], help="Print full path to the report file being used"
     )
     parser_report_summary = subparsers.add_parser(
-        "summary", aliases=["sm"], help="Summarize test report", parents=[parent_parser["pager"]]
+        "summary",
+        aliases=["sm"],
+        help="Summarize test report",
+        parents=[parent_parser["pager"]],
     )
 
     # buildtest report
@@ -1183,7 +1198,10 @@ def inspect_menu(subparsers, parent_parser):
         parents=[parent_parser["pager"]],
     )
     name = subparser.add_parser(
-        "name", aliases=["n"], help="Specify name of test", parents=[parent_parser["pager"]]
+        "name",
+        aliases=["n"],
+        help="Specify name of test",
+        parents=[parent_parser["pager"]],
     )
     query_list = subparser.add_parser(
         "query", aliases=["q"], help="Query fields from record"
