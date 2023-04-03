@@ -32,7 +32,7 @@ body:
     attributes:
       label: Steps to reproduce the error
       description: |
-        Please provide a list of steps to reproduce the error inorder for us to troubleshoot your issue.
+        Please provide a list of steps to reproduce the error in-order for us to troubleshoot your issue.
     validations:
       required: true
 
@@ -41,7 +41,7 @@ body:
     attributes:
       label: Version and HEAD commit
       description: |
-        Please copy and paste output of the commands "buildtest --version" and "git log -1" in order for us to know the
+        Please copy and paste output of the commands `buildtest --version` and `git log -1` in order for us to know the
         version of the buildtest you are using and the HEAD commit. This will be automatically formatted into code, so no need for backticks.
       render: shell
     validations:
@@ -52,8 +52,7 @@ body:
     attributes:
       label: Relevant log output
       description: |
-        Please copy and paste any relevant log output. Please provide the output of the commands "buildtest info" and "buildtest debugreport"
-        in order for us to know about the buildtest setup and configuration.
+        Please copy and paste any relevant log output. Please provide the output of the commands `buildtest info` and `buildtest debugreport`.
       render: shell
     validations:
       required: false
