@@ -4,7 +4,7 @@ import os
 import shutil
 import webbrowser
 
-from buildtest.cli import get_parser, ParentParser
+from buildtest.cli import get_parser
 from buildtest.cli.build import BuildTest, Tee
 from buildtest.cli.buildspec import (
     BuildspecCache,
@@ -63,8 +63,7 @@ from rich.traceback import install
 def main():
     """Entry point to buildtest."""
 
-    parent_parser = ParentParser()
-    parser = get_parser(parent_parser)
+    parser = get_parser()
     args = parser.parse_args()
 
     install(show_locals=True)
