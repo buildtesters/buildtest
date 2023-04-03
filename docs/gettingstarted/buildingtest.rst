@@ -138,6 +138,13 @@ tags by running ``buildtest buildspec find --tags``.
 .. Note:: The ``--tags`` is used for discovering buildspec file and not filtering tests
    by tag.
 
+You can specify multiple tag names as a comma separated list. In the
+example below we build all tests with tag names ``pass``, ``fail`` and ``network``.
+
+.. dropdown:: ``buildtest build -t pass,fail -t network``
+
+    .. command-output:: buildtest build -t pass,fail -t network
+
 You can combine ``--tags`` with ``--buildspec`` to discover buildspecs in a single command.
 buildtest will query tags and buildspecs independently and combine all discovered
 buildspecs together.

@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 def build_history(args):
-    """This is the entry point for command ``buildtest build history`` command which reports
+    """This is the entry point for command ``buildtest history`` command which reports
 
     Args:
         args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
@@ -28,7 +28,9 @@ def build_history(args):
         )
 
     if args.history == "query":
-        query_builds(build_id=args.id, log_option=args.log, output=args.output)
+        query_builds(
+            build_id=args.id, log_option=args.log, output=args.output, pager=args.pager
+        )
 
 
 def sorted_alphanumeric(data):
@@ -44,6 +46,28 @@ def sorted_alphanumeric(data):
     convert = lambda text: int(text) if text.isdigit() else text.lower()
     alphanum_key = lambda key: [convert(c) for c in re.split("([0-9]+)", key)]
     return sorted(data, key=alphanum_key)
+
+
+def print_terse(table, no_header=None, consoleColor=None):
+    """This method prints the buildtest history list in terse mode which is run via command ``buildtest history list --terse``
+
+    Args:
+        table (dict): Table with columns required for the ``buildtest history list`` command.
+        no_header (bool, optional): Control whether header columns are displayed with terse format
+        consoleColor (bool, optional): Select desired color when displaying results
+    """
+
+    row_entry = [table[key] for key in table.keys()]
+    transpose_list = [list(i) for i in zip(*row_entry)]
+    header = "|".join(table.keys())
+
+    # We print the table columns if --no-header is not specified
+    if not no_header:
+        console.print(header, style=consoleColor)
+
+    for row in transpose_list:
+        line = "|".join(row)
+        console.print(f"[{consoleColor}]{line}")
 
 
 def list_build_history(no_header=None, terse=None, pager=None, color=None):
@@ -101,20 +125,12 @@ def list_build_history(no_header=None, terse=None, pager=None, color=None):
         table["fail_rate"].append(content["test_summary"]["fail_rate"])
 
     if terse:
-        row_entry = []
+        if pager:
+            with console.pager():
+                print_terse(table, no_header, consoleColor)
+            return
 
-        for key in table.keys():
-            row_entry.append(table[key])
-
-        transpose_list = [list(i) for i in zip(*row_entry)]
-
-        # We print the table columns if --no-header is not specified
-        if not no_header:
-            console.print("|".join(table.keys()), style=consoleColor)
-
-        for row in transpose_list:
-            line = "|".join(row)
-            console.print(f"[{consoleColor}]{line}")
+        print_terse(table, no_header, consoleColor)
         return
 
     history_table = Table(
@@ -170,14 +186,15 @@ def list_build_history(no_header=None, terse=None, pager=None, color=None):
     console.print(history_table)
 
 
-def query_builds(build_id, log_option, output):
+def query_builds(build_id, log_option=None, output=None, pager=None):
     """This method is called when user runs `buildtest history query` which will
     report the build.json and logfile.
 
     Args:
         build_id (int): Build Identifier which is used for querying history file. The indentifier is an integer starting from 0
-        log_option (bool): Option to control whether log file is opened in editor. This is specified via ``buildtest history query -l <id>``
-        output (bool): Display output.txt file which contains output of ``buildtest build`` command. This is passed via ``buildtest history query -o``
+        log_option (bool, optional): Option to control whether log file is opened in editor. This is specified via ``buildtest history query -l <id>``
+        output (bool, optional): Display output.txt file which contains output of ``buildtest build`` command. This is passed via ``buildtest history query -o``
+        pager (bool, optional): Print output in paging format
     """
 
     if not is_dir(BUILD_HISTORY_DIR):
@@ -204,6 +221,11 @@ def query_builds(build_id, log_option, output):
             os.path.join(BUILD_HISTORY_DIR, str(build_id), "output.txt")
         )
         print(output_content)
+        return
+
+    if pager:
+        with console.pager():
+            console.print(content)
         return
 
     pprint(content)

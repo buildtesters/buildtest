@@ -26,6 +26,10 @@ def print_build_help():
         "Build buildspecs by tagname 'pass' and 'python'",
     )
     table.add_row(
+        "buildtest build -t pass,fail",
+        "Build buildspecs by tagnames that are specified as comma sperated list",
+    )
+    table.add_row(
         "buildtest build -e <executor1> -e <executor2>",
         "Building buildspecs by executor",
     )
@@ -306,6 +310,7 @@ def print_inspect_help():
         "Display all test names, ids, and corresponding buildspec file",
     )
     table.add_row("buildtest inspect list -t", "Show output in terse format")
+    table.add_row("buildtest inspect list --pager", "Paginate output of inspect list")
     table.add_row(
         "buildtest inspect name hello", "Display last run for test name 'hello'"
     )
@@ -402,7 +407,14 @@ def print_history_help():
     table.add_row("buildtest history list", "List all build history files")
     table.add_row("buildtest history list --terse", "Print output in terse format")
     table.add_row(
+        "buildtest history list --pager", "Paginate output of the history list"
+    )
+    table.add_row(
         "buildtest history query 0", "Query content of history build identifier '0'"
+    )
+    table.add_row(
+        "buildtest history query 0 --pager",
+        "Paginate the query content of history build identifier '0'",
     )
     table.add_row(
         "buildtest history query 0 --log", "Open logfile for build identifier '0'"

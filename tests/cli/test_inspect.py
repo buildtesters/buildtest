@@ -11,7 +11,7 @@ from rich.color import Color
 
 
 def test_buildtest_inspect_list():
-    # running buildtest inspect list
+    # buildtest inspect list
     class args:
         subcommands = "inspect"
         inspect = "list"
@@ -19,10 +19,23 @@ def test_buildtest_inspect_list():
         no_header = False
         builder = False
         color = Color.default().name
+        pager = False
 
     inspect_cmd(args)
 
-    # running buildtest inspect list --terse --no-header
+    # buildtest inspect list --pager
+    class args:
+        subcommands = "inspect"
+        inspect = "list"
+        terse = False
+        no_header = False
+        builder = False
+        color = Color.default().name
+        pager = True
+
+    inspect_cmd(args)
+
+    # buildtest inspect list --terse --no-header
     class args:
         subcommands = "inspect"
         inspect = "list"
@@ -30,10 +43,11 @@ def test_buildtest_inspect_list():
         no_header = True
         builder = False
         color = False
+        pager = False
 
     inspect_cmd(args)
 
-    # running buildtest inspect list --terse
+    # buildtest inspect list --terse --pager
     class args:
         subcommands = "inspect"
         inspect = "list"
@@ -41,10 +55,11 @@ def test_buildtest_inspect_list():
         no_header = False
         builder = False
         color = False
+        pager = True
 
     inspect_cmd(args)
 
-    # running buildtest inspect list --builder
+    # buildtest inspect list --builder
     class args:
         subcommands = "inspect"
         inspect = "list"
@@ -52,6 +67,19 @@ def test_buildtest_inspect_list():
         no_header = False
         builder = True
         color = False
+        pager = False
+
+    inspect_cmd(args)
+
+    # buildtest inspect list --builder --pager
+    class args:
+        subcommands = "inspect"
+        inspect = "list"
+        terse = False
+        no_header = False
+        builder = True
+        color = False
+        pager = True
 
     inspect_cmd(args)
 
@@ -67,6 +95,7 @@ def test_buildtest_inspect_name():
         inspect = "name"
         name = test_names
         report = None
+        pager = True
 
     print(f"Querying test names: {args.name}")
     # buildtest inspect name <name1> <name2>
@@ -82,6 +111,7 @@ def test_buildtest_inspect_name():
         inspect = "name"
         name = random_test
         report = None
+        pager = False
 
     print(f"Querying test names: {args.name}")
     with pytest.raises(SystemExit):
@@ -92,6 +122,7 @@ def test_buildtest_inspect_name():
         inspect = "name"
         name = [r.builder_names()[0]]
         report = None
+        pager = False
 
     inspect_cmd(args)
 
@@ -105,6 +136,7 @@ def test_buildspec_inspect_buildspec():
         buildspec = [tf.name]
         report = None
         all = None
+        pager = False
 
     # if buildspec not in cache we raise error
     with pytest.raises(SystemExit):
@@ -127,8 +159,9 @@ def test_buildspec_inspect_buildspec():
         buildspec = search_buildspec
         report = None
         all = False
+        pager = False
 
-    # run buildtest inspect buildspec $BUILDTEST_ROOT/tutorials/vars.yml $BUILDTEST_ROOT/tutorials/pass_returncode.yml
+    # buildtest inspect buildspec $BUILDTEST_ROOT/tutorials/vars.yml $BUILDTEST_ROOT/tutorials/pass_returncode.yml
     inspect_cmd(args)
 
     class args:
@@ -137,8 +170,9 @@ def test_buildspec_inspect_buildspec():
         buildspec = search_buildspec
         report = None
         all = True
+        pager = True
 
-    # run buildtest inspect buildspec --all $BUILDTEST_ROOT/tutorials/vars.yml $BUILDTEST_ROOT/tutorials/pass_returncode.yml
+    # buildtest inspect buildspec --all --pager $BUILDTEST_ROOT/tutorials/vars.yml $BUILDTEST_ROOT/tutorials/pass_returncode.yml
     inspect_cmd(args)
 
 
@@ -156,8 +190,9 @@ def test_buildtest_query():
         buildscript = True
         buildenv = True
         theme = "emacs"
+        pager = True
 
-    # check buildtest inspect query --output --error --testpath --buildscript --buildenv <name1> <name2> ...
+    # buildtest inspect query --output --error --testpath --buildscript --buildenv <name1> <name2> ...
     inspect_cmd(args)
 
     class args:
@@ -170,6 +205,7 @@ def test_buildtest_query():
         buildscript = False
         buildenv = False
         theme = None
+        pager = False
 
     # buildtest inspect query stream_test
     # the 'stream_test' will add coverage where metrics are printed in output of 'buildtest inspect query'
@@ -186,6 +222,7 @@ def test_buildtest_query():
         buildscript = False
         buildenv = False
         theme = None
+        pager = False
 
     # check invalid test name when querying result which will result in exception SystemExit
     with pytest.raises(SystemExit):

@@ -273,6 +273,18 @@ buildspecs:
           exp: 'rating of=(\d+\.\d+)$'
           stream: stdout
 
+  metrics_regex_with_file:
+    type: script
+    executor: generic.local.bash
+    description: metrics regular expression example
+    run: echo "HPCG result is VALID with a GFLOP/s rating of=63.6515" > hpcg.txt
+    metrics:
+      hpcg_rating:
+        type: float
+        file_regex:
+          exp: 'rating of=(\d+\.\d+)$'
+          file: hpcg.txt
+
   multi_executor_vars:
     type: script
     executor: 'generic.local.(sh|bash)'
@@ -691,3 +703,31 @@ buildspecs:
         - dir: foo
           count: 10
           file_traverse_limit: 20
+
+  status_logical_and:
+    type: script
+    executor: 'generic.local.bash'
+    description: 'Using logical AND to check status'
+    run: |
+      echo "This is a test"
+      exit 1
+    status:
+      mode: all
+      returncode: 1
+      regex:
+        stream: stdout
+        exp: 'This is a test'
+
+  status_logical_or:
+    type: script
+    executor: 'generic.local.bash'
+    description: 'Using logical OR to check status'
+    run: |
+      echo "This is a test"
+      exit 1
+    status:
+      mode: any
+      returncode: 0
+      regex:
+        stream: stdout
+        exp: 'This is a test'

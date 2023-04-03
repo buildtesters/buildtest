@@ -46,6 +46,29 @@ def test_build_by_tags():
     )
     cmd.build()
 
+    #  testing multiple tags as comma seperated list:  buildtest build --tags fail,python --tags network
+    cmd = BuildTest(
+        configuration=configuration,
+        tags=["fail,python", "network"],
+        buildtest_system=system,
+    )
+    cmd.build()
+
+    cmd = BuildTest(
+        configuration=configuration,
+        tags=[",,"],
+        buildtest_system=system,
+    )
+    with pytest.raises(SystemExit):
+        cmd.build()
+
+    cmd = BuildTest(
+        configuration=configuration,
+        tags=["  ,python,  fail,   ,,"],
+        buildtest_system=system,
+    )
+    cmd.build()
+
 
 @pytest.mark.cli
 def test_build_rerun():
@@ -178,6 +201,24 @@ def test_build_buildspecs():
             buildtest_system=system,
         )
         cmd.build()
+
+
+def test_run_metrics():
+    system = BuildTestSystem()
+    cmd = BuildTest(
+        configuration=configuration,
+        buildspecs=[
+            os.path.join(BUILDTEST_ROOT, "tutorials", "metrics", "metrics_regex.yml"),
+            os.path.join(
+                BUILDTEST_ROOT,
+                "tutorials",
+                "metrics",
+                "metrics_file_regex_invalid_file.yml",
+            ),
+        ],
+        buildtest_system=system,
+    )
+    cmd.build()
 
 
 def test_run_all_perf_checks():

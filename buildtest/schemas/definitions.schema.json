@@ -62,14 +62,39 @@
         }
       }
     },
-    "regex": {
+    "file_regex_in_metrics": {
       "type": "object",
-      "description": "Perform regular expression search using ``re.search`` python module on stdout/stderr stream for reporting if test ``PASS``. ",
+      "additionalProperties": false,
+      "description": "Specify a regular expressions on a filepath used for assigning value to metrics. The regular expression is matched using ``re.search`` python module. ",
       "required": [
-        "stream",
+        "file",
         "exp"
       ],
+      "properties": {
+        "additionalProperties": false,
+        "file": {
+            "type": "string",
+            "description": "Specify a file name to match with regular expression"
+        },
+        "exp": {
+            "type": "string",
+            "description": "Specify a regular expression to run on the selected file name"
+        },
+        "item": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Specify the item number used to index element in `match.group() <https://docs.python.org/3/library/re.html#match-objects>`_"
+        }
+      }
+    },
+    "regex": {
+      "type": "object",
       "additionalProperties": false,
+      "description": "Perform regular expression search using ``re.search`` python module on stdout/stderr stream for reporting if test ``PASS``. ",
+      "required": [
+        "exp",
+        "stream"
+      ],
       "properties": {
         "stream": {
           "type": "string",
@@ -149,26 +174,39 @@
     "metrics_field": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["type"],
+      "required": [
+        "type"
+      ],
       "properties": {
         "type": {
           "type": "string",
           "description": "Specify python data-type (str, int, float) to convert metric. ",
-          "enum": ["str", "int", "float"]
+          "enum": [
+            "str",
+            "int",
+            "float"
+          ]
         },
         "regex": {
           "$ref": "#/definitions/regex"
+        },
+        "file_regex": {
+          "$ref": "#/definitions/file_regex_in_metrics"
         }
-      }
+      },
+        "oneOf": [
+          { "required": ["regex" ] },
+          { "required": [ "file_regex"] }
+        ]
     },
     "metrics": {
       "type": "object",
       "description": "This field is used for defining one or more metrics that is recorded for each test. A metric must have a unique name which is recorded in the test metadata.",
-      "patternProperties": {
-        "^.*$": {
-          "$ref": "#/definitions/metrics_field",
-          "description": "Name of metric"
-        }
+      "propertyNames": {
+        "pattern": "^[A-Za-z0-9_.-]+$"
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/metrics_field"
       }
     },
     "state": {
@@ -216,7 +254,6 @@
             "EXIT"
           ]
         },
-
         "returncode": { "$ref": "#/definitions/returncode" },
         "regex": {
           "$ref": "#/definitions/regex",
@@ -535,6 +572,11 @@
         "state": {
           "$ref": "#/definitions/state",
           "description": "explicitly mark state of test regardless of status calculation"
+        },
+        "mode": {
+          "type": "string",
+          "description": "Determine how the status check is resolved, for instance it can be logical AND or OR",
+          "enum": ["any", "all"]
         }
       }
     },

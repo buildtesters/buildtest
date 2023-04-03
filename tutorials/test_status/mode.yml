@@ -1,0 +1,28 @@
+buildspecs:
+  status_logical_and:
+    type: script
+    executor: 'generic.local.bash'
+    description: 'Using logical AND to check status'
+    run: |
+      echo "This is a test"
+      exit 1
+    status:
+      mode: all
+      returncode: 1
+      regex:
+        stream: stdout
+        exp: 'This is a test'
+
+  status_logical_or:
+    type: script
+    executor: 'generic.local.bash'
+    description: 'Using logical OR to check status'
+    run: |
+      echo "This is a test"
+      exit 1
+    status:
+      mode: any
+      returncode: 0
+      regex:
+        stream: stdout
+        exp: 'This is a test'

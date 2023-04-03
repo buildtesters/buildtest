@@ -39,32 +39,26 @@ def returncode_check(builder):
         builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
     """
 
-    returncode_match = False
+    # returncode can be an integer or list of integers
+    buildspec_returncode = builder.status["returncode"]
 
-    # if 'returncode' field set for 'status' check the returncode if its not set we return False
-    if "returncode" in builder.status.keys():
-        # returncode can be an integer or list of integers
-        buildspec_returncode = builder.status["returncode"]
+    # if buildspec returncode field is integer we convert to list for check
+    if isinstance(buildspec_returncode, int):
+        buildspec_returncode = [buildspec_returncode]
 
-        # if buildspec returncode field is integer we convert to list for check
-        if isinstance(buildspec_returncode, int):
-            buildspec_returncode = [buildspec_returncode]
-
-        logger.debug("Conducting Return Code check")
-        logger.debug(
-            "Status Return Code: %s   Result Return Code: %s"
-            % (
-                buildspec_returncode,
-                builder.metadata["result"]["returncode"],
-            )
+    logger.debug("Conducting Return Code check")
+    logger.debug(
+        "Status Return Code: %s   Result Return Code: %s"
+        % (
+            buildspec_returncode,
+            builder.metadata["result"]["returncode"],
         )
-        # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
-        returncode_match = (
-            builder.metadata["result"]["returncode"] in buildspec_returncode
-        )
-        console.print(
-            f"[blue]{builder}[/]: Checking returncode - {builder.metadata['result']['returncode']} is matched in list {buildspec_returncode}"
-        )
+    )
+    # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
+    returncode_match = builder.metadata["result"]["returncode"] in buildspec_returncode
+    console.print(
+        f"[blue]{builder}[/]: Checking returncode - {builder.metadata['result']['returncode']} is matched in list {buildspec_returncode}"
+    )
 
     return returncode_match
 
@@ -76,9 +70,6 @@ def runtime_check(builder):
     Args:
         builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
     """
-
-    if not builder.status.get("runtime"):
-        return False
 
     min_time = builder.status["runtime"].get("min") or 0
     max_time = builder.status["runtime"].get("max")
@@ -176,9 +167,6 @@ def regex_check(builder):
     Returns:
         bool: Returns True if their is a regex match otherwise returns False.
     """
-
-    if not builder.status.get("regex"):
-        return False
 
     file_stream = None
     if builder.status["regex"]["stream"] == "stdout":

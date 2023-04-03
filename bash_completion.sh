@@ -276,7 +276,7 @@ _buildtest ()
         query|q)
           COMPREPLY=( $( compgen -W "$(_builder_names)" -- $cur ) )
           if [[ $cur == -* ]] ; then
-            local opts="--buildscript --buildenv --error --help --output --testpath --theme -b -be -e -o -h -o -t"
+            local opts="--buildscript --buildenv --error --help --output --pager --testpath --theme -b -be -e -o -h -o -t"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           fi
           case "${prev}" in --theme)

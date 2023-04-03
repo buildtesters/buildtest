@@ -430,7 +430,7 @@ def history_menu(subparsers, parent_parser):
 
     Args:
         subparsers (argparse._SubParsersAction): Subparser object to add subparser
-        parent_parser (argparse.ArgumentParser): Parent parser object to add to subparser
+        pager_option (argparse.ArgumentParser): Parent parser object to add to subparser
     """
 
     history_subcmd = subparsers.add_parser(
@@ -458,7 +458,7 @@ def history_menu(subparsers, parent_parser):
     )
 
     query = history_subparser.add_parser(
-        "query", help="Query information for a particular build"
+        "query", help="Query information for a particular build", parents=[parent_parser["pager"]]
     )
     query.add_argument("id", type=int, help="Select a build ID")
     query.add_argument(
@@ -1193,7 +1193,7 @@ def inspect_menu(subparsers, parent_parser):
         parents=[parent_parser["pager"]],
     )
     query_list = subparser.add_parser(
-        "query", aliases=["q"], help="Query fields from record"
+        "query", aliases=["q"], help="Query fields from record", parents=[parent_parser["pager"]]
     )
 
     # buildtest inspect buildspec
