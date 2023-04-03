@@ -149,22 +149,7 @@ def valid_time(value):
     return dt_object
 
 
-class ParentParser:
-    def __init__(self):
-        self.parent_parser = {}
-
-        self.parent_parser["pager"] = argparse.ArgumentParser(add_help=False)
-        self.parent_parser["pager"].add_argument(
-            "--pager", action="store_true", help="Enable PAGING when viewing result"
-        )
-
-        self.parent_parser["file"] = argparse.ArgumentParser(add_help=False)
-        self.parent_parser["file"].add_argument(
-            "--file", action="store_true", help="Wrtie configuration file to a new file"
-        )
-
-
-def get_parser(parent_parser):
+def get_parser():
     epilog_str = f"""
 References
 
@@ -240,18 +225,22 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
 
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 
-    parent_parser = {}
+    def get_parent_parser():
 
-    parent_parser["pager"] = argparse.ArgumentParser(add_help=False)
-    parent_parser["pager"].add_argument(
-        "--pager", action="store_true", help="Enable PAGING when viewing result"
-    )
+        parent_parser = {}
 
-    parent_parser["file"] = argparse.ArgumentParser(add_help=False)
-    parent_parser["file"].add_argument(
-        "--file", action="store_true", help="Wrtie configuration file to a new file"
-    )
+        parent_parser["pager"] = argparse.ArgumentParser(add_help=False)
+        parent_parser["pager"].add_argument(
+            "--pager", action="store_true", help="Enable PAGING when viewing result"
+        )
 
+        parent_parser["file"] = argparse.ArgumentParser(add_help=False)
+        parent_parser["file"].add_argument(
+            "--file", action="store_true", help="Wrtie configuration file to a new file"
+        )
+        return parent_parser
+
+    parent_parser = get_parent_parser()
     build_menu(subparsers)
     buildspec_menu(subparsers, parent_parser)
     config_menu(subparsers, parent_parser)
