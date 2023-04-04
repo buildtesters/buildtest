@@ -231,12 +231,12 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
 
         parent_parser["pager"] = argparse.ArgumentParser(add_help=False)
         parent_parser["pager"].add_argument(
-            "--pager", action="store_true", help="Enable PAGING when viewing result"
+            "--pager", help="Enable PAGING when viewing result"
         )
 
         parent_parser["file"] = argparse.ArgumentParser(add_help=False)
         parent_parser["file"].add_argument(
-            "--file", action="store_true", help="Wrtie configuration file to a new file"
+            "--file", help="Wrtie configuration file to a new file"
         )
         return parent_parser
 
