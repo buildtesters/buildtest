@@ -174,6 +174,9 @@ def test_compiler_test_perlmutter():
 
 
 def test_compiler_find_alternative_filepath():
+    if not hostname.startswith("login"):
+        pytest.skip("This test runs on Perlmutter Login nodes ('login*')")
+        
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
     bc.validate(moduletool="lmod")
