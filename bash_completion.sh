@@ -141,7 +141,7 @@ _buildtest ()
 
         if [[ "$command" == "$element" ]]; then
           
-          if [[ "$command" == "--color" ]] || [[ "$command" == "--config" ]] || [[ "$command" == "-c" ]] || [[ "$command" == "--report" ]] || [[ "$command" == "-r" ]];
+          if [[ "$command" == "--color" ]] || [[ "$command" == "--config" ]] || [[ "$command" == "-c" ]] || [[ "$command" == "--report" ]] || [[ "$command" == "-r" ]] || [[ "$command" == "--loglevel" ]] || [[ "$command" == "-l" ]] || [[ "$command" == "--editor" ]];
           then
             ((offset+=2))
           else
