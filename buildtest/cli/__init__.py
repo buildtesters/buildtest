@@ -223,12 +223,24 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     )
     parser.add_argument("-r", "--report", help="Specify path to test report file")
 
-    parent_parser = argparse.ArgumentParser(add_help=False)
-    parent_parser.add_argument(
-        "--pager", action="store_true", help="Enable PAGING when viewing result"
-    )
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 
+    def get_parent_parser():
+
+        parent_parser = {}
+
+        parent_parser["pager"] = argparse.ArgumentParser(add_help=False)
+        parent_parser["pager"].add_argument(
+            "--pager", help="Enable PAGING when viewing result"
+        )
+
+        parent_parser["file"] = argparse.ArgumentParser(add_help=False)
+        parent_parser["file"].add_argument(
+            "--file", help="Wrtie configuration file to a new file"
+        )
+        return parent_parser
+
+    parent_parser = get_parent_parser()
     build_menu(subparsers)
     buildspec_menu(subparsers, parent_parser)
     config_menu(subparsers, parent_parser)
@@ -413,12 +425,12 @@ def path_menu(subparsers):
     path.add_argument("name", help="Name of test")
 
 
-def history_menu(subparsers, pager_option):
+def history_menu(subparsers, parent_parser):
     """This method builds the command line menu for ``buildtest history`` command
 
     Args:
         subparsers (argparse._SubParsersAction): Subparser object to add subparser
-        pager_option (argparse.ArgumentParser): Parent parser object to add to subparser
+        parent_parser (argparse.ArgumentParser): Parent parser object
     """
 
     history_subcmd = subparsers.add_parser(
@@ -430,7 +442,7 @@ def history_menu(subparsers, pager_option):
     )
 
     list_parser = history_subparser.add_parser(
-        "list", help="List a summary of all builds", parents=[pager_option]
+        "list", help="List a summary of all builds", parents=[parent_parser["pager"]]
     )
     list_parser.add_argument(
         "-n",
@@ -446,7 +458,9 @@ def history_menu(subparsers, pager_option):
     )
 
     query = history_subparser.add_parser(
-        "query", help="Query information for a particular build", parents=[pager_option]
+        "query",
+        help="Query information for a particular build",
+        parents=[parent_parser["pager"]],
     )
     query.add_argument("id", type=int, help="Select a build ID")
     query.add_argument(
@@ -668,7 +682,7 @@ def buildspec_menu(subparsers, parent_parser):
         "find",
         aliases=["f"],
         help="Query information from buildspecs cache",
-        parents=[parent_parser],
+        parents=[parent_parser["pager"]],
     )
 
     # buildtest buildspec maintainers
@@ -864,7 +878,7 @@ def buildspec_menu(subparsers, parent_parser):
         "summary",
         aliases=["sm"],
         help="Print summary of buildspec cache",
-        parents=[parent_parser],
+        parents=[parent_parser["pager"]],
     )
     # buildtest buildspec validate
     buildspec_validate = subparsers_buildspec.add_parser(
@@ -945,7 +959,10 @@ def config_menu(subparsers, parent_parser):
         "validate", help="Validate buildtest settings file with schema."
     )
     view_parser = subparsers_config.add_parser(
-        "view", aliases=["v"], help="View configuration file", parents=[parent_parser]
+        "view",
+        aliases=["v"],
+        help="View configuration file",
+        parents=[parent_parser["pager"]],
     )
     view_parser.add_argument(
         "-t",
@@ -991,8 +1008,7 @@ def config_menu(subparsers, parent_parser):
     )
 
     compiler_find = subparsers_compiler.add_parser(
-        "find",
-        help="Find compilers",
+        "find", help="Find compilers", parents=[parent_parser["file"]]
     )
     compiler_find.add_argument(
         "-d",
@@ -1032,7 +1048,10 @@ def report_menu(subparsers, parent_parser):
     """
 
     parser_report = subparsers.add_parser(
-        "report", aliases=["rt"], help="Query test report", parents=[parent_parser]
+        "report",
+        aliases=["rt"],
+        help="Query test report",
+        parents=[parent_parser["pager"]],
     )
     subparsers = parser_report.add_subparsers(
         description="Fetch test results from report file and print them in table format",
@@ -1045,7 +1064,10 @@ def report_menu(subparsers, parent_parser):
         "path", aliases=["p"], help="Print full path to the report file being used"
     )
     parser_report_summary = subparsers.add_parser(
-        "summary", aliases=["sm"], help="Summarize test report", parents=[parent_parser]
+        "summary",
+        aliases=["sm"],
+        help="Summarize test report",
+        parents=[parent_parser["pager"]],
     )
 
     # buildtest report
@@ -1143,7 +1165,7 @@ def report_menu(subparsers, parent_parser):
     )
 
 
-def inspect_menu(subparsers, pager_option):
+def inspect_menu(subparsers, parent_parser):
     """This method builds argument for ``buildtest inspect`` command
 
     Args:
@@ -1164,13 +1186,19 @@ def inspect_menu(subparsers, pager_option):
         "buildspec",
         aliases=["b"],
         help="Inspect a test based on buildspec",
-        parents=[pager_option],
+        parents=[parent_parser["pager"]],
     )
     name = subparser.add_parser(
-        "name", aliases=["n"], help="Specify name of test", parents=[pager_option]
+        "name",
+        aliases=["n"],
+        help="Specify name of test",
+        parents=[parent_parser["pager"]],
     )
     query_list = subparser.add_parser(
-        "query", aliases=["q"], help="Query fields from record", parents=[pager_option]
+        "query",
+        aliases=["q"],
+        help="Query fields from record",
+        parents=[parent_parser["pager"]],
     )
 
     # buildtest inspect buildspec
@@ -1188,7 +1216,7 @@ def inspect_menu(subparsers, pager_option):
         "list",
         aliases=["l"],
         help="List all test names, ids, and corresponding buildspecs",
-        parents=[pager_option],
+        parents=[parent_parser["pager"]],
     )
     inspect_list.add_argument(
         "-n",
