@@ -178,7 +178,7 @@ def test_compiler_find_alternative_filepath():
     bc.detect_system()
     bc.validate(moduletool="lmod")
 
-   # testing buildtest config compilers find
+    # testing buildtest config compilers find
     compilers = BuildtestCompilers(configuration=bc)
     compilers.find_compilers()
 
