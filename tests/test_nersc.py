@@ -184,5 +184,5 @@ def test_compiler_find_alternative_filepath():
 
     # test entry point for 'buildtest config compilers find --file'
     temp_path = tempfile.NamedTemporaryFile(dir=os.path.expanduser("~"))
-    compiler_find(configuration=bc, filepath=temp_path)
+    compiler_find(configuration=bc, filepath=temp_path.name)
     temp_path.close()
