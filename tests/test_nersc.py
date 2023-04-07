@@ -1,5 +1,6 @@
 import os
 import socket
+import tempfile
 
 import pytest
 from buildtest.cli.build import BuildTest
@@ -170,3 +171,18 @@ def test_compiler_test_perlmutter():
 
     # testing buildtest config compilers test
     compiler_test(configuration=bc)
+
+
+def test_compiler_find_alternative_filepath():
+    bc = SiteConfiguration(settings_file)
+    bc.detect_system()
+    bc.validate(moduletool="lmod")
+
+   # testing buildtest config compilers find
+    compilers = BuildtestCompilers(configuration=bc)
+    compilers.find_compilers()
+
+    # test entry point for 'buildtest config compilers find --file'
+    temp_path = tempfile.NamedTemporaryFile(dir=os.path.expanduser("~"))
+    compiler_find(configuration=bc, filepath=temp_path)
+    temp_path.close()
