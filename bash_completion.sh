@@ -132,8 +132,10 @@ _buildtest ()
 
   COMPREPLY=()   # Array variable storing the possible completions.
 
-  declare -a buildtest_opts=("--color" "--config" "--debug" "--editor" "--help" "--helpcolor" "--logpath" "--loglevel" "--print-log" "--no-color" "--report" "--version" "--view-log" "-c" "-d" "-h" "-l" "-p" "-r" "-V") 
-  
+  declare -a buildtest_opts=("--color" "--config" "--debug" "--editor" "--help" "--helpcolor" "--logpath" "--loglevel" "--print-log" "--no-color" "--report" "--version" "--view-log" "-c" "-d" "-h" "-l" "-p" "-r" "-V")
+
+  commands=( "--color" "--config" "-c" "--report" "-r" "--loglevel" "-l" "--editor" )   # Array variable storing commands which require an input argument from the user.
+
   for command in "${COMP_WORDS[@]}"
   do
     for element in "${buildtest_opts[@]}"
@@ -141,7 +143,7 @@ _buildtest ()
 
         if [[ "$command" == "$element" ]]; then
           
-          if [[ "$command" == "--color" ]] || [[ "$command" == "--config" ]] || [[ "$command" == "-c" ]] || [[ "$command" == "--report" ]] || [[ "$command" == "-r" ]] || [[ "$command" == "--loglevel" ]] || [[ "$command" == "-l" ]] || [[ "$command" == "--editor" ]];
+          if [[ "${commands[*]}" =~ "$command" ]];
           then
             ((offset+=2))
           else
