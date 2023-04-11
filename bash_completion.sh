@@ -143,7 +143,7 @@ _buildtest ()
 
         if [[ "$command" == "$element" ]]; then
           
-          if [[ "${commands[*]}" =~ "$command" ]];
+          if [[ "${commands[*]}" =~ $command ]];
           then
             ((offset+=2))
           else
