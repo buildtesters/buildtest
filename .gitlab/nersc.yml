@@ -26,6 +26,8 @@ cori_pr_regression_test:
     - pip install -r docs/requirements.txt
     - python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
     - echo $?
+    - curl -Os https://uploader.codecov.io/latest/linux/codecov
+    - chmod +x codecov
     # CODECOV_TOKEN environment must be set, this value is stored in CI/CD variable at https://software.nersc.gov/NERSC/buildtest/-/settings/ci_cd
     - codecov -t $CODECOV_TOKEN
     - source deactivate
@@ -52,6 +54,8 @@ perlmutter_regression_test:
     - pip install -r docs/requirements.txt
     - python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
     - echo $?
+    - curl -Os https://uploader.codecov.io/latest/linux/codecov
+    - chmod +x codecov
     # CODECOV_TOKEN environment must be set, this value is stored in CI/CD variable at https://software.nersc.gov/NERSC/buildtest/-/settings/ci_cd
     - codecov -t $CODECOV_TOKEN
     - source deactivate
