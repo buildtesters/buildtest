@@ -4,6 +4,7 @@ import pytest
 from buildtest.defaults import SCHEMA_ROOT
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_recipe, load_schema
+from jsonschema.exceptions import ValidationError
 
 schema_file = "settings.schema.json"
 settings_schema = os.path.join(SCHEMA_ROOT, schema_file)
@@ -19,7 +20,7 @@ def test_settings_examples():
     assert valid
 
     valid_recipes = os.listdir(valid)
-    assert valid_recipes
+
     # check all valid recipes
     for example in valid_recipes:
         filepath = os.path.join(valid, example)
@@ -29,3 +30,14 @@ def test_settings_examples():
 
         print(f"Expecting Recipe File: {filepath} to be valid")
         custom_validator(recipe=example_recipe, schema=recipe)
+
+    invalid = os.path.join(settings_schema_examples, "invalid")
+    for example in os.listdir(invalid):
+        filepath = os.path.join(invalid, example)
+        print(f"Loading Recipe File: {filepath}")
+        example_recipe = load_recipe(filepath)
+        assert example_recipe
+
+        print(f"Expecting Recipe File: {filepath} to be invalid")
+        with pytest.raises(ValidationError):
+            custom_validator(recipe=example_recipe, schema=recipe)

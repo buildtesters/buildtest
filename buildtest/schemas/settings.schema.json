@@ -252,46 +252,51 @@
               "local": {
                 "type": "object",
                 "description": "The ``local`` section is used for declaring local executors for running jobs on local machine",
-                "patternProperties": {
-                  "^.*$": {
-                    "$ref": "#/definitions/local"
-                  }
+                "propertyNames": {
+                  "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "additionalProperties": {
+                  "$ref": "#/definitions/local"
                 }
               },
               "lsf": {
                 "type": "object",
                 "description": "The ``lsf`` section is used for declaring LSF executors for running jobs using LSF scheduler",
-                "patternProperties": {
-                  "^.*$": {
-                    "$ref": "#/definitions/lsf"
-                  }
+                "propertyNames": {
+                  "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "additionalProperties": {
+                  "$ref": "#/definitions/lsf"
                 }
               },
               "slurm": {
                 "type": "object",
                 "description": "The ``slurm`` section is used for declaring Slurm executors for running jobs using Slurm scheduler",
-                "patternProperties": {
-                  "^.*$": {
-                    "$ref": "#/definitions/slurm"
-                  }
+                "propertyNames": {
+                  "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "additionalProperties": {
+                  "$ref": "#/definitions/slurm"
                 }
               },
               "cobalt": {
                 "type": "object",
                 "description": "The ``cobalt`` section is used for declaring Cobalt executors for running jobs using Cobalt scheduler",
-                "patternProperties": {
-                  "^.*$": {
-                    "$ref": "#/definitions/cobalt"
-                  }
+                "propertyNames": {
+                  "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "additionalProperties": {
+                  "$ref": "#/definitions/cobalt"
                 }
               },
               "pbs": {
                 "type": "object",
                 "description": "The ``pbs`` section is used for declaring PBS executors for running jobs using PBS scheduler",
-                "patternProperties": {
-                  "^.*$": {
-                    "$ref": "#/definitions/pbs"
-                  }
+                "propertyNames": {
+                  "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "additionalProperties": {
+                  "$ref": "#/definitions/pbs"
                 }
               }
             }

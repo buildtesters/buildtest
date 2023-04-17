@@ -226,7 +226,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 
     def get_parent_parser():
-
         parent_parser = {}
 
         parent_parser["pager"] = argparse.ArgumentParser(add_help=False)
