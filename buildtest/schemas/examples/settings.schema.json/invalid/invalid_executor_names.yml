@@ -1,0 +1,32 @@
+system:
+  generic:
+    hostnames: ['.*']
+    moduletool: N/A
+    executors:
+      local:
+        # the line below is invalid due to pattern property
+        ==bash:
+          description: submit jobs on local machine
+          shell: bash -v
+      slurm:
+        # the line below is invalid due to pattern property
+        $haswell:
+          launcher: sbatch
+          options: ["-p haswell", "-t 00:10"]
+      lsf:
+        <>batch:
+          launcher: bsub
+          queue: batch
+          options: ["-q batch", "-t 00:10"]
+      cobalt:
+        <normal>:
+          launcher: qsub
+          queue: normal
+          options: ["-n 1", "-t 10"]
+    compilers:
+      compiler:
+        gcc:
+          default:
+            cc: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fc: /usr/bin/gfortran

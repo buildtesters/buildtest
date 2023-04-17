@@ -184,7 +184,7 @@ def inspect_list(
     for column in table.keys():
         inspect_table.add_column(column)
 
-    for (identifier, name, buildspec) in zip(
+    for identifier, name, buildspec in zip(
         table["id"], table["name"], table["buildspec"]
     ):
         inspect_table.add_row(identifier, name, buildspec)
