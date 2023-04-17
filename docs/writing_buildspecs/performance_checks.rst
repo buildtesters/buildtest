@@ -178,7 +178,7 @@ In this example, we perform a **<=** operation, this can be done via ``assert_le
 .. _assert_lt:
 
 Less Than
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
 
 In this example, we perform a **<** operation, this can be done via ``assert_lt`` property
 
