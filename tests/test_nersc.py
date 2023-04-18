@@ -15,6 +15,9 @@ class TestNersc:
     hostname = socket.getfqdn()
     here = os.path.dirname(os.path.abspath(__file__))
 
+    if not hostname.startswith("login"):
+        pytest.skip("This test runs on Perlmutter Login nodes ('login*')")
+
     settings_file = os.path.join(here, "settings", "nersc.yml")
 
     system = BuildTestSystem()
@@ -23,9 +26,6 @@ class TestNersc:
     bc.detect_system()
     bc.validate(moduletool="lmod")
     BuildspecCache(rebuild=True, configuration=bc)
-
-    if not hostname.startswith("login"):
-        pytest.skip("This test runs on Perlmutter Login nodes ('login*')")
 
     def test_slurm_hostname(self):
         cmd = BuildTest(
