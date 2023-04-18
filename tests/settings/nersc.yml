@@ -35,3 +35,7 @@ system:
         zsh:
           description: submit jobs on local machine using zsh shell
           shell: zsh
+      slurm:
+        debug:
+          description: submit jobs on perlmutter using slurm debug queue
+          qos: debug
