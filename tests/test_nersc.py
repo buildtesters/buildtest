@@ -4,6 +4,7 @@ import tempfile
 
 import pytest
 from buildtest.cli.build import BuildTest
+from buildtest.cli.buildspec import BuildspecCache
 from buildtest.cli.compilers import BuildtestCompilers, compiler_find, compiler_test
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
@@ -21,6 +22,7 @@ class TestNersc:
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
     bc.validate(moduletool="lmod")
+    BuildspecCache(rebuild=True, configuration=bc)
 
     if not hostname.startswith("login"):
         pytest.skip("This test runs on Perlmutter Login nodes ('login*')")
