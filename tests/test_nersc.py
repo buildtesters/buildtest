@@ -16,7 +16,10 @@ class TestNersc:
     here = os.path.dirname(os.path.abspath(__file__))
 
     if not hostname.startswith("login"):
-        pytest.skip("This test runs on Perlmutter Login nodes ('login*')")
+        pytest.skip(
+            "This test runs on Perlmutter Login nodes ('login*')",
+            allow_module_level=True,
+        )
 
     settings_file = os.path.join(here, "settings", "nersc.yml")
 
