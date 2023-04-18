@@ -1,62 +1,4 @@
 system:
-  cori:
-    hostnames: ["cori*"]
-    moduletool: environment-modules
-    compilers:
-      enable_prgenv: true
-      prgenv_modules:
-        gcc: PrgEnv-gnu
-        cray: PrgEnv-cray
-        intel: PrgEnv-intel
-      find:
-        gcc: '^gcc'
-        cray: '^(craype/)'
-        intel: '^intel'
-        cuda: '^(cuda/)'
-        upcxx: '^(upcxx/)'
-      compiler:
-        gcc:
-          builtin_gcc:
-            cc: /usr/bin/gcc
-            cxx: /usr/bin/g++
-            fc: /usr/bin/gfortran
-    executors:
-      defaults:
-        pollinterval: 30
-        maxpendtime: 300
-      local:
-        bash:
-          description: submit jobs on local machine using bash shell
-          shell: bash
-        sh:
-          description: submit jobs on local machine using sh shell
-          shell: sh
-        csh:
-          description: submit jobs on local machine using csh shell
-          shell: csh
-        python:
-          description: submit jobs on local machine using python shell
-          shell: python
-
-      slurm:
-        haswell_debug:
-          qos: debug
-          cluster: cori
-          options:
-          - -C haswell
-          description: debug queue on Haswell partition
-
-        knl_debug:
-          qos: debug
-          cluster: cori
-          options:
-            - -C knl
-          description: debug queue on KNL partition
-        bigmem:
-          qos: bigmem
-          cluster: escori
-          description: large memory jobs
-
   perlmutter:
     hostnames: ["login*"]
     moduletool: lmod
@@ -93,3 +35,7 @@ system:
         zsh:
           description: submit jobs on local machine using zsh shell
           shell: zsh
+      slurm:
+        debug:
+          description: submit jobs on perlmutter using slurm debug queue
+          qos: debug
