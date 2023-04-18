@@ -1,0 +1,7 @@
+buildspecs:
+  hostname:
+    type: script
+    executor: perlmutter.slurm.debug
+    description: "Run hostname via slurm debug queue"
+    sbatch: ["-t 5", "-n 1", "-C cpu"]
+    run: hostname
