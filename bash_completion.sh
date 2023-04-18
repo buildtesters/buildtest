@@ -156,9 +156,7 @@ _buildtest ()
   done
 
   local next=${COMP_WORDS[1+offset]}
-  local offset_by_two=2+offset
-  local offset_by_three=3+offset
-
+  
   case "$next" in
   #case "${prev}" in
     build|bd)
@@ -243,7 +241,7 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
 
-      case "${COMP_WORDS[offset_by_two]}" in
+      case "${COMP_WORDS[2+offset]}" in
         compilers|co)
           local opts="--help --json --yaml -h -j -y find test"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
@@ -278,7 +276,7 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # case statement to handle completion for buildtest inspect [name|id|list] command
-      case "${COMP_WORDS[offset_by_two]}" in
+      case "${COMP_WORDS[2+offset]}" in
         list|l)
           local opts="--builder --help --no-header --pager --terse -b -h -n -t"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
@@ -317,9 +315,9 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
-      case ${COMP_WORDS[offset_by_two]} in
+      case ${COMP_WORDS[2+offset]} in
       find|f)
-         case ${COMP_WORDS[offset_by_three]} in
+         case ${COMP_WORDS[3+offset]} in
          # completion for 'buildtest buildspec find invalid'
          invalid)
            local opts="--error --help -e -h"
@@ -343,7 +341,7 @@ _buildtest ()
          esac
         ;;
       summary|sm)
-         case ${COMP_WORDS[offset_by_three]} in
+         case ${COMP_WORDS[3+offset]} in
          # completion for rest of arguments
          *)
            local longopts="--help --pager"
@@ -383,7 +381,7 @@ _buildtest ()
         local opts="--breakdown --list --help --terse --no-header -b -h -l -n find"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
-        case ${COMP_WORDS[offset_by_three]} in
+        case ${COMP_WORDS[3+offset]} in
         find)
           COMPREPLY=( $( compgen -W "$(_avail_maintainers)" -- $cur ) );;
         esac
@@ -408,7 +406,7 @@ _buildtest ()
       local cmds="--help --pager -h list query"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
-      case ${COMP_WORDS[offset_by_two]} in
+      case ${COMP_WORDS[2+offset]} in
       list)
         local opts="--help --no-header --terse -h -n -t"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
