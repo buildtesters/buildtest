@@ -128,12 +128,35 @@ _buildtest ()
 {
   local cur="${COMP_WORDS[COMP_CWORD]}"
   local prev="${COMP_WORDS[COMP_CWORD-1]}"
+  declare -i offset="0"
 
   COMPREPLY=()   # Array variable storing the possible completions.
 
-  next=${COMP_WORDS[1]}
+  declare -a buildtest_opts=("--color" "--config" "--debug" "--editor" "--help" "--helpcolor" "--logpath" "--loglevel" "--print-log" "--no-color" "--report" "--version" "--view-log" "-c" "-d" "-h" "-l" "-p" "-r" "-V")
 
+  commands_with_input=( "--color" "--config" "-c" "--report" "-r" "--loglevel" "-l" "--editor" )   # Array variable storing commands which require an input argument from the user.
 
+  for command in "${COMP_WORDS[@]}"
+  do
+    for element in "${buildtest_opts[@]}"
+    do
+
+        if [[ "$command" == "$element" ]]; then
+          
+          if [[ "${commands_with_input[*]}" =~ $command ]];
+          then
+            ((offset+=2))
+          else
+            ((offset+=1))
+          fi
+        fi
+
+    done
+
+  done
+
+  local next=${COMP_WORDS[1+offset]}
+  
   case "$next" in
   #case "${prev}" in
     build|bd)
@@ -205,7 +228,7 @@ _buildtest ()
         COMPREPLY=( $( compgen -W "$(_avail_report_formatfields)" -- $cur ) )
         return
       esac
-      case "$prev" in summary)
+      case "$prev" in summary|sm)
         local opts="-d -h --detailed --help"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
         return
@@ -218,7 +241,7 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
 
-      case "${COMP_WORDS[COMP_CWORD-2]}" in
+      case "${COMP_WORDS[2+offset]}" in
         compilers|co)
           local opts="--help --json --yaml -h -j -y find test"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
@@ -226,7 +249,7 @@ _buildtest ()
             local opts="--detailed --file --help --modulepath --update -d -h -m -u"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           fi
-          if [[ "${prev}" == "test"  ]]; then
+          if [[ "${prev}" == "test" ]]; then
             COMPREPLY=( $( compgen -W "$(_avail_compilers)" -- $cur ) )
           fi
           ;;
@@ -253,7 +276,7 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # case statement to handle completion for buildtest inspect [name|id|list] command
-      case "${COMP_WORDS[2]}" in
+      case "${COMP_WORDS[2+offset]}" in
         list|l)
           local opts="--builder --help --no-header --pager --terse -b -h -n -t"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
@@ -292,9 +315,9 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
-      case ${COMP_WORDS[2]} in
+      case ${COMP_WORDS[2+offset]} in
       find|f)
-         case ${COMP_WORDS[3]} in
+         case ${COMP_WORDS[3+offset]} in
          # completion for 'buildtest buildspec find invalid'
          invalid)
            local opts="--error --help -e -h"
@@ -318,7 +341,7 @@ _buildtest ()
          esac
         ;;
       summary|sm)
-         case ${COMP_WORDS[3]} in
+         case ${COMP_WORDS[3+offset]} in
          # completion for rest of arguments
          *)
            local longopts="--help --pager"
@@ -358,7 +381,7 @@ _buildtest ()
         local opts="--breakdown --list --help --terse --no-header -b -h -l -n find"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
-        case ${COMP_WORDS[3]} in
+        case ${COMP_WORDS[3+offset]} in
         find)
           COMPREPLY=( $( compgen -W "$(_avail_maintainers)" -- $cur ) );;
         esac
@@ -383,7 +406,7 @@ _buildtest ()
       local cmds="--help --pager -h list query"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
-      case ${COMP_WORDS[2]} in
+      case ${COMP_WORDS[2+offset]} in
       list)
         local opts="--help --no-header --terse -h -n -t"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
@@ -449,6 +472,9 @@ _buildtest ()
           fi
           if [[ "${prev}" == "--loglevel" ]] || [[ "${prev}" == "-l" ]]; then
             COMPREPLY=( $( compgen -W "DEBUG INFO WARNING ERROR CRITICAL" -- $cur ) )
+          fi
+          if [[ "${prev}" == "--editor" ]]; then
+            COMPREPLY=( $( compgen -W "vi vim emacs nano" -- $cur ) )
           fi
           ;;
       esac
