@@ -267,7 +267,7 @@ which will retrieve the test log.
     :language: yaml
     :emphasize-lines: 9-13
 
- The **spack test run --alias** option is used to query results by suitename which can be used by ``spack test results`` command.
+The **spack test run --alias** option is used to query results by suitename which can be used by ``spack test results`` command.
 **buildtest will create a unique suite name for every run so you don't have to remember the suite name when writing the buildspec.**
 
 .. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/spack/spack_test.yml``
