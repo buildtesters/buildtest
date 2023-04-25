@@ -254,26 +254,28 @@ which is of ``type: object`` in JSON and ``run`` is a required property. The ``r
 that is responsible for running tests for a list of specs that are specified using the ``specs`` property.
 
 Upon running the tests, we can retrieve results using ``spack test results`` which is configured using the ``results``
-property. The **results** property expects one to specify the ``specs`` or ``suite`` or both in order to retrieve results.
+property. The **results** property can query test results based via one of the following ways:
 
-The ``suite`` property is used to retrieve test results based on suite name, whereas ``specs`` property can be used to retrieve based
-on spec format. Both properties are a list of string types.
+1. Spec Format: ``spack test results -- <spec>``
+2. Suitename: ``spack test results <suitename>``
+
 
 In example below we will test `m4` package by running ``spack test run m4`` and report the results with log file.
 
 .. literalinclude:: ../../examples/spack/spack_test.yml
     :language: yaml
-    :emphasize-lines: 9-14
+    :emphasize-lines: 9-13
 
 If we look at the generated test, buildtest will install m4 followed by running the test. The **spack test run --alias**
 option is used to reference name of suitename which can be used to reference suitename when using ``spack test results``
-to search for test results. **buildtest will create the suite name based on name of test.** If `--alias` is not specified,
-spack will generate a random text for suitename which you won't know at time of writing test that is required by
-``spack test results`` to fetch the results.
+to search for test results. **buildtest will create a unique suite name for every run.**
 
 .. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/spack/spack_test.yml``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/build/spack_test.txt
+
+Take note of the suite name in generated test. By default spack creates a unique suite name when running `spack test run` but since this suitename
+is not known in advance in-order to run `spack test results`, buildtest will take care of this for you.
 
 .. dropdown:: ``buildtest inspect query -o -t spack_test_m4``
 
@@ -281,7 +283,7 @@ spack will generate a random text for suitename which you won't know at time of 
 
 
 We can search for test results using the spec format instead of suite name. In the ``results`` property we can
-use ``specs`` field instead of ``suite`` property to specify a list of spec names to run. In spack, you can retrieve
+use ``specs`` field i to specify a list of spec names to run. In spack, you can retrieve
 the results using ``spack test results -- <spec>``, note that double dash ``--`` is in front of spec name. We can
 pass options to ``spack test results`` using the **option** property which is available for ``results`` and
 ``run`` property. Currently, spack will write test results in ``$HOME/.spack/tests`` and we can use ``spack test remove``
