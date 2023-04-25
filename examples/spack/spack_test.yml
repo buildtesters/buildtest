@@ -10,5 +10,4 @@ buildspecs:
         run:
           specs: ['m4']
         results:
-          suite: ['spack_test_m4']
           option: "-l"
