@@ -1,41 +1,41 @@
 $ buildtest inspect query -o -t spack_test_m4 
-─────────────────────────────────────────────────────────────────────────────────────────── spack_test_m4/460eadb0-6966-41db-bc77-1a00af9fe500 ────────────────────────────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────────────────── spack_test_m4/63314812-fcd6-4aeb-a51e-c6cb3924d171 ──────────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Run spack test for m4 package and report results
 State: PASS
 Returncode: 0
-Runtime: 2.1575 sec
-Starttime: 2023/02/06 21:15:51
-Endtime: 2023/02/06 21:15:53
+Runtime: 1.39538 sec
+Starttime: 2023/04/25 13:45:42
+Endtime: 2023/04/25 13:45:44
 Command: bash --norc --noprofile -eo pipefail spack_test_m4_build.sh
-Test Script: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/460eadb0/spack_test_m4.sh
-Build Script: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/460eadb0/spack_test_m4_build.sh
-Output File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/460eadb0/spack_test_m4.out
-Error File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/460eadb0/spack_test_m4.err
-Log File: /home/spack/buildtest/var/logs/buildtest_bpf4x5c3.log
-────────────────────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/460eadb0/spack_test_m4.out ───────────────────────────────────────────────────────────────────
-==> Spack test spack_test_m4                                                                                                                                                                                                               
-==> Testing package m4-1.4.18-mkc3u4x                                                                                                                                                                                                      
-==> Results for test suite 'spack_test_m4':                                                                                                                                                                                                
-==>   m4-1.4.18-mkc3u4x PASSED                                                                                                                                                                                                             
-==> Testing package m4-1.4.18-mkc3u4x                                                                                                                                                                                                      
-==> [2023-02-06-21:15:53.383170] test: ensuring m4 version is 1.4.18                                                                                                                                                                       
-==> [2023-02-06-21:15:53.384286] '/home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/m4-1.4.18-mkc3u4x2p2wie6jfhuku7g5rkovcrxps/bin/m4' '--version'                                                                   
-m4 (GNU M4) 1.4.18                                                                                                                                                                                                                         
-Copyright (C) 2016 Free Software Foundation, Inc.                                                                                                                                                                                          
-License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.                                                                                                                                                             
-This is free software: you are free to change and redistribute it.                                                                                                                                                                         
-There is NO WARRANTY, to the extent permitted by law.                                                                                                                                                                                      
-Written by Rene' Seindal.                                                                                                                                                                                                                  
-PASSED                                                                                                                                                                                                                                     
-==> [2023-02-06-21:15:53.392419] test: ensuring m4 example succeeds                                                                                                                                                                        
-==> [2023-02-06-21:15:53.392722] '/home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/m4-1.4.18-mkc3u4x2p2wie6jfhuku7g5rkovcrxps/bin/m4' '/home/spack/.spack/test/5mpugnenojhehp5km573ucervxz46odi/m4-1.4.18-mkc3u4x/da
-// macro is defined                                                                                                                                                                                                                        
-Hello, World!                                                                                                                                                                                                                              
-PASSED                                                                                                                                                                                                                                     
-                                                                                                                                                                                                                                           
-──────────────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/460eadb0/spack_test_m4.sh ────────────────────────────────────────────────────────────────────
-#!/bin/bash                                                                                                                                                                                                                                
-source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                                                                          
-spack test run --alias spack_test_m4 m4                                                                                                                                                                                                    
-spack test results -l spack_test_m4                                                                                                                                                                                                        
+Test Script: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/63314812/spack_test_m4.sh
+Build Script: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/63314812/spack_test_m4_build.sh
+Output File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/63314812/spack_test_m4.out
+Error File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/63314812/spack_test_m4.err
+Log File: /home/spack/buildtest/var/logs/buildtest_q357l26y.log
+───────────────────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/63314812/spack_test_m4.out ─────────────────────────────────────────────────────────────────
+==> Spack test 2f2840ce-3f38-4c2d-afde-9e1065dfbe86
+==> Testing package m4-1.4.18-mkc3u4x
+==> Results for test suite '2f2840ce-3f38-4c2d-afde-9e1065dfbe86':
+==>   m4-1.4.18-mkc3u4x PASSED
+==> Testing package m4-1.4.18-mkc3u4x
+==> [2023-04-25-13:45:43.698955] test: ensuring m4 version is 1.4.18
+==> [2023-04-25-13:45:43.699920] '/home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/m4-1.4.18-mkc3u4x2p2wie6jfhuku7g5rkovcrxps/bin/m4' '--version'
+m4 (GNU M4) 1.4.18
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Written by Rene' Seindal.
+PASSED
+==> [2023-04-25-13:45:43.704828] test: ensuring m4 example succeeds
+==> [2023-04-25-13:45:43.705080] '/home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/m4-1.4.18-mkc3u4x2p2wie6jfhuku7g5rkovcrxps/bin/m4' '/home/spack/.spack/test/j22esx4avlcbuqpourbkp7wzftm7ilj3/m4-1.4.18-mkc3u4x
+// macro is defined
+Hello, World!
+PASSED
+
+────────────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/63314812/spack_test_m4.sh ───────────────────────────────────────────────────────────────────
+#!/bin/bash
+source /home/spack/spack/share/spack/setup-env.sh
+spack test run --alias 2f2840ce-3f38-4c2d-afde-9e1065dfbe86 m4
+spack test results -l 2f2840ce-3f38-4c2d-afde-9e1065dfbe86
