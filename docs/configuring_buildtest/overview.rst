@@ -521,12 +521,10 @@ a **.log** extension.
 Configuring Buildspec Cache
 ----------------------------
 
-The :ref:`buildtest buildspec find <find_buildspecs>`_ command can be configured using the configuration file to provide sensible
+The :ref:`buildtest buildspec find <find_buildspecs>` command can be configured using the configuration file to provide sensible
 defaults. This can be shown in the configuration file below:
 
-.. code-block::
-
-    :language: yaml
+.. code-block:: yaml
 
         buildspecs:
           # whether to rebuild cache file automatically when running `buildtest buildspec find`
