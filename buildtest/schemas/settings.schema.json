@@ -96,6 +96,11 @@
             "terse": {
               "type": "boolean",
               "description": "A boolean to determine whether to enable terse mode when viewing buildspec cache"
+            },
+            "pager":
+            {
+              "type": "boolean",
+              "description": "A boolean to determine whether to enable paging when viewing buildspec cache"
             }
           }
         },

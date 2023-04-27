@@ -24,6 +24,9 @@ system:
 
       # enable terse mode
       terse: False
+
+      # determine whether to enable pagination
+      pager: False
     executors:
       # define local executors for running jobs locally
       local:
