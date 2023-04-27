@@ -778,7 +778,7 @@ class BuildspecCache:
         """
 
         # Don't print anything if --quiet is set
-        if quiet:
+        if quiet and self.rebuild:
             return
 
         self.terse = terse or self.terse
