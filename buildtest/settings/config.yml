@@ -21,10 +21,8 @@ system:
       count: 15
       # format fields to display when running `buildtest buildspec find`, By default we will show name,description
       formatfields: "name,description"
-
       # enable terse mode
       terse: False
-
       # determine whether to enable pagination
       pager: False
     executors:
