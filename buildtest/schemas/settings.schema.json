@@ -74,6 +74,36 @@
           "minimum": 1,
           "description": "Specify timeout duration in number of seconds"
         },
+        "buildspecs":
+        {
+          "type": "object",
+          "description": "Specify configuration for ``buildtest buildspec`` command",
+          "additionalProperties": false,
+          "properties": {
+            "rebuild": {
+              "type": "boolean",
+              "description": "A boolean to determine whether to rebuild buildspec cache"
+            },
+            "count": {
+              "type": "integer",
+               "minimum": 1,
+              "description": "Determine number of records to display when running ``buildtest buildspec find``"
+            },
+            "formatfields": {
+              "type": "string",
+              "description": "Determine the format fields to display when running ``buildtest buildspec find``"
+            },
+            "terse": {
+              "type": "boolean",
+              "description": "A boolean to determine whether to enable terse mode when viewing buildspec cache"
+            },
+            "pager":
+            {
+              "type": "boolean",
+              "description": "A boolean to determine whether to enable paging when viewing buildspec cache"
+            }
+          }
+        },
         "processor": {
           "type": "object",
           "description": "Specify processor information",

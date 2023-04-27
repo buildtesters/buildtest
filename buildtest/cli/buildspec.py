@@ -80,10 +80,16 @@ class BuildspecCache:
 
         self.configuration = configuration
         self.filter = filterfields
-        self.format = formatfields
+        self.format = formatfields or self.configuration.target_config[
+            "buildspecs"
+        ].get("formatfields")
         self.header = header
-        self.pager = pager
-        self.count = count
+        self.pager = pager or self.configuration.target_config["buildspecs"].get(
+            "pager"
+        )
+        self.count = count or self.configuration.target_config["buildspecs"].get(
+            "count"
+        )
         # if --root is not specified we set to empty list instead of None
         self.roots = roots or []
 
@@ -93,10 +99,14 @@ class BuildspecCache:
         # stores invalid buildspecs and the error messages
         self.invalid_buildspecs = {}
 
-        self.terse = terse
+        self.terse = terse or self.configuration.target_config["buildspecs"].get(
+            "terse"
+        )
         self.color = checkColor(color)
 
-        self.rebuild = rebuild
+        self.rebuild = rebuild or self.configuration.target_config["buildspecs"].get(
+            "rebuild"
+        )
         self.cache = {}
 
         self.load_paths()
@@ -768,7 +778,7 @@ class BuildspecCache:
         """
 
         # Don't print anything if --quiet is set
-        if quiet:
+        if quiet and self.rebuild:
             return
 
         self.terse = terse or self.terse
