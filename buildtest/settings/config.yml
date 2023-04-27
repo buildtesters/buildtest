@@ -25,6 +25,9 @@ system:
       terse: False
       # determine whether to enable pagination
       pager: False
+      # specify list of directories to search for buildspecs when building cache
+      # root: [ $BUILDTEST_ROOT/examples, /tmp/buildspecs ]
+
     executors:
       # define local executors for running jobs locally
       local:

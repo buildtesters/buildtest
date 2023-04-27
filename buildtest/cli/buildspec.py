@@ -122,15 +122,17 @@ class BuildspecCache:
         return self.cache
 
     def load_paths(self):
-        """Add all paths to search for buildspecs. We must read configuration file
-        and check property ``buildspec_roots`` for list of directories to search.
-        We check all directories exist, if any fail we don't add them to path.
+        """Add all paths to search for buildspecs. We read configuration file
+        and check whether we need to load buildspecs from list of directories.
+        We check if directories exist, if any fail we don't add them to path.
         If no root directories are specified we load the default buildspec roots which are
         `tutorials <https://github.com/buildtesters/buildtest/tree/devel/tutorials>`_
         and `general_tests <https://github.com/buildtesters/buildtest/tree/devel/general_tests>`_ directory.
         """
 
-        buildspec_paths = self.configuration.target_config.get("buildspec_roots") or []
+        buildspec_paths = (
+            self.configuration.target_config["buildspecs"].get("root") or []
+        )
 
         if buildspec_paths:
             self.roots += buildspec_paths
