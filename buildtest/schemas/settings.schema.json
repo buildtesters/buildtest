@@ -45,13 +45,6 @@
           "minimum": 1,
           "description": "Specify size of Process Pool for parallel processing using ``multiprocessing.Pool``"
         },
-        "buildspec_roots": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "Specify a list of directory paths to search buildspecs. This field can be used with ``buildtest buildspec find`` to rebuild buildspec cache or build tests using ``buildtest build`` command"
-        },
         "testdir": {
           "type": "string",
           "description": "Specify full path to test directory where buildtest will write tests."
@@ -101,6 +94,13 @@
             {
               "type": "boolean",
               "description": "A boolean to determine whether to enable paging when viewing buildspec cache"
+            },
+            "root": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Specify a list of directory paths to search buildspecs. This field can be used with ``buildtest buildspec find`` to rebuild buildspec cache or build tests using ``buildtest build`` command"
             }
           }
         },

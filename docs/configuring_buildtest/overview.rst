@@ -546,26 +546,24 @@ with ``pager: False`` but if you want to enable pagination you can run ``buildte
 buildspec roots
 -----------------
 
-buildtest can discover buildspec using ``buildspec_roots`` keyword. This field is a list
+buildtest can discover buildspec using ``root`` keyword. This field is a list
 of directory paths to search for buildspecs. For example we clone the repo
 https://github.com/buildtesters/buildtest-nersc at **$HOME/buildtest-nersc** and assign
-this to **buildspec_roots** as follows:
+this to **root** as follows:
 
 .. code-block:: yaml
 
-    buildspec_roots:
+    buildspecs:
+      root:
       - $HOME/buildtest-nersc
 
 This field is used with the ``buildtest buildspec find`` command. If you rebuild
 your buildspec cache via ``--rebuild`` option, buildtest will search for all buildspecs in
-directories specified by **buildspec_roots** property. buildtest will recursively
+directories specified by **root** property. buildtest will recursively
 find all **.yml** extension and validate each buildspec with appropriate schema.
 
 By default buildtest will add the ``$BUILDTEST_ROOT/tutorials`` and ``$BUILDTEST_ROOT/general_tests``
-to search path when searching for buildspecs with ``buildtest buildspec find`` command. This
-is only true if there is no root buildspec directory specified which can be done via `buildspec_roots`
-or `--root` option.
-
+to search path when searching for buildspecs with ``buildtest buildspec find`` command.
 
 .. _cdash_configuration:
 
