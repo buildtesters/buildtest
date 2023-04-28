@@ -5,6 +5,7 @@ from buildtest.cli.report import Report
 
 def path_cmd(
     name,
+    configuration,
     testpath=None,
     outfile=None,
     errfile=None,
@@ -39,6 +40,7 @@ def path_cmd(
 
     Args:
         name (str): Name of test to search in report file
+        configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
         testpath (bool): Retrieve path to testpath for a given test
         outfile (bool): Retrieve path output file for a given test
         errfile (bool): Retrieve path to error file for a given test
@@ -46,7 +48,7 @@ def path_cmd(
         stagedir (bool): Retrieve path to stage directory for a given test
         buildenv (bool): Retrieve path to buildenv for a given test
     """
-    report = Report()
+    report = Report(configuration=configuration)
 
     tid = None
     builders = report.builder_names()

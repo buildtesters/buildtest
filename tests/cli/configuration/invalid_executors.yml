@@ -12,7 +12,17 @@ system:
       numcpus: 8
       threads_per_core: 2
       model: "Intel(R) Core(TM) i7-8569U CPU @ 2.80GHz"
-
+    buildspecs:
+      rebuild: False
+      count: 15
+      format: "name,description"
+      terse: False
+    report:
+      count: 25
+      terse: False
+      format: "name,id,state,runtime,returncode"
+      latest: True
+      oldest: False
     executors:
       local:
         bash:
