@@ -3,6 +3,7 @@ system:
     hostnames:
     - login1.ascent.olcf.ornl.gov
     moduletool: lmod
+    pager: False
     executors:
       defaults:
         pollinterval: 30

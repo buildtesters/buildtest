@@ -84,9 +84,7 @@ class BuildspecCache:
             "buildspecs"
         ].get("formatfields")
         self.header = header
-        self.pager = pager or self.configuration.target_config["buildspecs"].get(
-            "pager"
-        )
+        self.pager = pager or self.configuration.target_config.get("pager")
         self.count = count or self.configuration.target_config["buildspecs"].get(
             "count"
         )

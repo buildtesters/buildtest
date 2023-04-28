@@ -2,6 +2,7 @@ system:
   perlmutter:
     hostnames: ["login*"]
     moduletool: lmod
+    pager: False
     compilers:
       enable_prgenv: true
       prgenv_modules:

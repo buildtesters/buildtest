@@ -14,6 +14,9 @@ system:
     # pool size for parallel processing using multiprocessing.Pool. Pool Size must be 1 or higher. The pool size is calculated as follows: poolsize = min(poolsize, os.cpu_count())
     poolsize: 1
 
+    # determine whether to enable pagination
+    pager: False
+
     buildspecs:
       # whether to rebuild cache file automatically when running `buildtest buildspec find`
       rebuild: False
@@ -23,8 +26,7 @@ system:
       formatfields: "name,description"
       # enable terse mode
       terse: False
-      # determine whether to enable pagination
-      pager: False
+
       # specify list of directories to search for buildspecs when building cache
       #root: [ $BUILDTEST_ROOT/examples, /tmp/buildspecs ]
     executors:
