@@ -5,7 +5,15 @@ system:
     description: Generic System
     moduletool: lmod
     testdir: "~/runs"
-    buildspec_roots: [$BUILDTEST_ROOT/examples]
+    pager: False
+
+    buildspecs:
+      rebuild: False
+      count: 15
+      formatfields: "name,description"
+      terse: False
+      root: [$BUILDTEST_ROOT/examples]
+
     executors:
       local:
         bash:

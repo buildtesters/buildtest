@@ -3,6 +3,7 @@ system:
     hostnames:
     - jlselogin*
     moduletool: environment-modules
+    pager: False
     executors:
       defaults:
         pollinterval: 30
