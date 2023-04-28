@@ -253,7 +253,7 @@ def main():
 
     # buildtest report
     elif args.subcommands in ["report", "rt"]:
-        report_cmd(args, report_file)
+        report_cmd(args, configuration=configuration, report_file=report_file)
 
     elif args.subcommands == "path":
         path_cmd(
