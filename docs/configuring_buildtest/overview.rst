@@ -532,38 +532,61 @@ defaults. This can be shown in the configuration file below:
           # limit number of records to display when running `buildtest buildspec find`
           count: 15
           # format fields to display when running `buildtest buildspec find`, By default we will show name,description
-          formatfields: "name,description"
+          format: "name,description"
           # enable terse mode
           terse: False
-          # determine whether to enable pagination
-          pager: False
+          # specify list of directories to search for buildspecs when building cache
+          #root: [ $BUILDTEST_ROOT/examples, /tmp/buildspecs ]
 
-Each configuration can be overridden by command line option. For instance, the default behavior for pagination is disabled
-with ``pager: False`` but if you want to enable pagination you can run ``buildtest buildspec find --pager``.
+
+The ``rebuild: False`` means buildtest won't rebuild the buildcache every time you run `buildtest buildspec find`. If the
+cache file is not present, it will automatically rebuild the cache, otherwise it will build the cache if one specifies
+``--rebuild`` option or ``rebuild: True`` is set in the configuration file.
+
+The buildspec cache is built by reading the contents of the buildspec file on the filesystem; therefore if you make changes
+to the buildspecs, you will need to rebuild the buildspec cache by running `buildtest buildspec find --rebuild`.
+
+The configuration options such as ``count``, ``format``, ``terse`` can  be tweaked to your preference. These configuration values
+can be overridden by command line option.
 
 .. _buildspec_roots:
 
-buildspec roots
------------------
+Root directory for searching buildspecs when building the buildspec cache
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-buildtest can discover buildspec using ``root`` keyword. This field is a list
-of directory paths to search for buildspecs. For example we clone the repo
-https://github.com/buildtesters/buildtest-nersc at **$HOME/buildtest-nersc** and assign
-this to **root** as follows:
+In-order to build the buildspec cache, buildtest needs a list of directories to search for buildspecs on the filesystem. This
+can be done by using the ``root`` property where you can specify a list of directories to search. By default, this field is commented out.
+You can specify the paths via ``buildtest buildspec find --root <dir>`` or specify them in the configuration file.
 
-.. code-block:: yaml
-
-    buildspecs:
-      root:
-      - $HOME/buildtest-nersc
-
-This field is used with the ``buildtest buildspec find`` command. If you rebuild
-your buildspec cache via ``--rebuild`` option, buildtest will search for all buildspecs in
-directories specified by **root** property. buildtest will recursively
-find all **.yml** extension and validate each buildspec with appropriate schema.
+If you rebuild your buildspec cache via ``--rebuild`` option, buildtest will search for all buildspecs in
+directories specified by **root** property. buildtest will recursively find all **.yml** extension and validate
+each buildspec with appropriate schema.
 
 By default buildtest will add the ``$BUILDTEST_ROOT/tutorials`` and ``$BUILDTEST_ROOT/general_tests``
 to search path when searching for buildspecs with ``buildtest buildspec find`` command.
+
+Configuring behavior for buildtest report
+------------------------------------------
+
+The ``report`` section in configuration file allows you to configure behavior of ``buildtest report`` command. The
+``report`` section is shown below:
+
+.. code-block:: yaml
+
+    report:
+      count: 25
+      #enable terse mode for report
+      terse: False
+      format: "name,id,state,runtime,returncode"
+      # show the latest for every test
+      latest: True
+      # show the oldest for every test
+      oldest: False
+
+The ``count`` property limits the number of records to display when running ``buildtest report`` command. The ``format`` property
+controls the fields to display when running ``buildtest report``. The ``terse`` property enables terse mode for ``buildtest report``.
+By default we will show the latest run for each test when running ``buildtest report``. The ``latest`` property can be set to ``False``
+if you want to change this behavior.
 
 .. _cdash_configuration:
 
