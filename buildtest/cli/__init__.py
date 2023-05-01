@@ -237,6 +237,11 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         parent_parser["file"].add_argument(
             "--file", help="Write configuration file to a new file"
         )
+
+        parent_parser["row-count"] = argparse.ArgumentParser(add_help=False)
+        parent_parser["row-count"].add_argument(
+            "--row-count", action="store_true", help="Show row count as a global option"
+        )
         return parent_parser
 
     parent_parser = get_parent_parser()
@@ -681,7 +686,7 @@ def buildspec_menu(subparsers, parent_parser):
         "find",
         aliases=["f"],
         help="Query information from buildspecs cache",
-        parents=[parent_parser["pager"]],
+        parents=[parent_parser["pager"], parent_parser["row-count"]],
     )
 
     # buildtest buildspec maintainers
@@ -812,11 +817,6 @@ def buildspec_menu(subparsers, parent_parser):
         "--count",
         type=positive_number,
         help="Limit number of entries queried in output",
-    )
-    buildspec_find.add_argument(
-        "--row-count",
-        action="store_true",
-        help="Print total count of records from the table.",
     )
     buildspec_find.add_argument(
         "-r",
@@ -1050,7 +1050,7 @@ def report_menu(subparsers, parent_parser):
         "report",
         aliases=["rt"],
         help="Query test report",
-        parents=[parent_parser["pager"]],
+        parents=[parent_parser["pager"], parent_parser["row-count"]],
     )
     subparsers = parser_report.add_subparsers(
         description="Fetch test results from report file and print them in table format",
@@ -1153,11 +1153,6 @@ def report_menu(subparsers, parent_parser):
         "--terse",
         action="store_true",
         help="Print output in machine readable format",
-    )
-    parser_report.add_argument(
-        "--row-count",
-        action="store_true",
-        help="Print total count of records from the table.",
     )
     parser_report_summary.add_argument(
         "--detailed", "-d", action="store_true", help="Enable a more detailed report"
