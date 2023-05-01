@@ -226,6 +226,7 @@ def main():
                 header=args.no_header,
                 color=args.color,
                 name=name,
+                row_count=args.row_count,
             )
 
         elif args.buildspecs_subcommand in ["validate", "val"]:

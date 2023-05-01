@@ -1320,6 +1320,7 @@ def buildspec_maintainers(
     header=None,
     color=None,
     name=None,
+    row_count=None,
 ):
     """Entry point for ``buildtest buildspec maintainers`` command.
 
@@ -1335,6 +1336,9 @@ def buildspec_maintainers(
     cache = BuildspecCache(
         configuration=configuration, terse=terse, header=header, color=color
     )
+
+    if row_count:
+        return len(cache.list_maintainers())
 
     if list_maintainers:
         cache.print_maintainer()
