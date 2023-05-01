@@ -6,7 +6,7 @@ v1.4 (May 4th, 2023)
 
 **Buildspec Changes**
 
-- Add support for logical AND in status check by introducing a new property `mode` `#1429 <https://github.com/buildtesters/buildtest/pull/1429>`_
+- Add support for logical AND in status check by introducing a new property ``mode`` `#1429 <https://github.com/buildtesters/buildtest/pull/1429>`_
 - Remove `suite` property in spack schema to ensure suitenames are auto-generated when running `spack test results` `1451 <https://github.com/buildtesters/buildtest/pull/1451>`_
 
 **Command Line Changes**
@@ -17,7 +17,7 @@ v1.4 (May 4th, 2023)
 
 **Configuration Changes**
 
-- Add support for ``buildspecs``in configuration file to configure behavior of ``buildtest buildspec find`` command. `#1455 <https://github.com/buildtesters/buildtest/pull/1455>`_
+- Add support for ``buildspecs`` in configuration file to configure behavior of ``buildtest buildspec find`` command. `#1455 <https://github.com/buildtesters/buildtest/pull/1455>`_
 - Rename ``buildspecs_root`` to ``root`` under the ``buildspecs`` section. `#1457 <https://github.com/buildtesters/buildtest/pull/1457>`_
 - Change pattern property for executor names to be alphanumeric `#1440 <https://github.com/buildtesters/buildtest/pull/1440>`_
 
