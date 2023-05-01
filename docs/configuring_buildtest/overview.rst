@@ -44,10 +44,7 @@ As you can see the layout of configuration starts with keyword ``system`` which 
 used to define one or more systems. Your HPC site may contain more than one cluster,
 so you should define your clusters with meaningful names as this will impact when you
 reference :ref:`executors <configuring_executors>` in buildspecs. In this example, we define one
-cluster called ``generic`` which is a dummy cluster used for running tutorial examples. The
-**required** fields in the system scope are the following::
-
-    "required": ["executors", "moduletool", "hostnames", "compilers"]
+cluster called ``generic`` which is a dummy cluster used for running tutorial examples.
 
 .. _config_hostnames:
 
