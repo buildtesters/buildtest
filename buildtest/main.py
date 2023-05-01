@@ -239,10 +239,10 @@ def main():
 
     # running buildtest inspect
     elif args.subcommands in ["inspect", "it"]:
-        inspect_cmd(args, report_file=report_file)
+        inspect_cmd(args, configuration=configuration, report_file=report_file)
 
     elif args.subcommands in ["stats"]:
-        stats_cmd(name=args.name, report_file=report_file)
+        stats_cmd(name=args.name, configuration=configuration, report_file=report_file)
     # running buildtest config
     elif args.subcommands in ["config", "cg"]:
         #  running buildtest config compilers
@@ -253,7 +253,7 @@ def main():
 
     # buildtest report
     elif args.subcommands in ["report", "rt"]:
-        report_cmd(args, report_file)
+        report_cmd(args, configuration=configuration, report_file=report_file)
 
     elif args.subcommands == "path":
         path_cmd(
@@ -264,6 +264,7 @@ def main():
             buildscript=args.buildscript,
             stagedir=args.stagedir,
             buildenv=args.buildenv,
+            configuration=configuration,
         )
     # running bnuildtest schema
     elif args.subcommands == "schema":
@@ -300,7 +301,7 @@ def main():
         clean(configuration=configuration, yes=args.yes)
 
     elif args.subcommands == "cd":
-        change_directory(args.test)
+        change_directory(args.test, configuration=configuration)
 
     elif args.subcommands == "docs":
         webbrowser.open("https://buildtest.readthedocs.io/")

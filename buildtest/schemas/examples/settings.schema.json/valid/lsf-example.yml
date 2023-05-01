@@ -3,6 +3,25 @@ system:
     hostnames: ['.*']
     moduletool: lmod
     poolsize: 1
+    buildspecs:
+      # whether to rebuild cache file automatically when running `buildtest buildspec find`
+      rebuild: False
+      # limit number of records to display when running `buildtest buildspec find`
+      count: 15
+      # format fields to display when running `buildtest buildspec find`, By default we will show name,description
+      format: "name,description"
+      # enable terse mode
+      terse: False
+
+    report:
+      count: 25
+      #enable terse mode for report
+      terse: False
+      format: "name,id,state,runtime,returncode"
+      # show the latest for every test
+      latest: True
+      # show the oldest for every test
+      oldest: False
     executors:
       defaults:
         pollinterval: 10

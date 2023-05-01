@@ -78,6 +78,7 @@ class Report:
 
     def __init__(
         self,
+        configuration,
         report_file=None,
         filter_args=None,
         format_args=None,
@@ -94,6 +95,7 @@ class Report:
     ):
         """
         Args:
+            configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class that is loaded buildtest configuration.
             report_file (str, optional): Full path to report file to read
             filter_args (str, optional): A comma separated list of Key=Value pair for filter arguments via ``buildtest report --filter``
             format (str, optional): A comma separated list of format fields for altering report table. This is specified via ``buildtest report --format``
@@ -108,14 +110,17 @@ class Report:
             color (str, optional): An instance of a string class that tells print_report what color the output should be printed in.
 
         """
+        self.configuration = configuration
         self.start = start
         self.end = end
         self.failure = failure
         self.passed = passed
-        self.latest = latest
-        self.oldest = oldest
+        self.latest = latest or self.configuration.target_config["report"].get("latest")
+        self.oldest = oldest or self.configuration.target_config["report"].get("oldest")
         self.filter = filter_args
-        self.format = format_args
+        self.format = format_args or self.configuration.target_config["report"].get(
+            "format"
+        )
         self.pager = pager
         self.color = color
         self.input_report = report_file
@@ -569,6 +574,8 @@ class Report:
             root_disk_usage|PASS|0
             root_disk_usage|PASS|0
         """
+        count = count or self.configuration.target_config["report"].get("count")
+        terse = terse or self.configuration.target_config["report"].get("terse")
         consoleColor = checkColor(color)
         if terse:
             row_entry = []
@@ -758,10 +765,11 @@ class Report:
         return records
 
 
-def report_cmd(args, report_file=None):
+def report_cmd(args, configuration, report_file=None):
     """Entry point for ``buildtest report`` command"""
 
     consoleColor = checkColor(args.color)
+    pager = args.pager or configuration.target_config.get("pager")
 
     if args.report_subcommand in ["clear", "c"]:
         # if BUILDTEST_REPORTS file is not present then we have no report files to delete since it tracks all report files that are created
@@ -793,6 +801,7 @@ def report_cmd(args, report_file=None):
         return
 
     results = Report(
+        configuration=configuration,
         filter_args=args.filter,
         format_args=args.format,
         start=args.start,
@@ -810,12 +819,22 @@ def report_cmd(args, report_file=None):
         return
 
     if args.report_subcommand in ["summary", "sm"]:
-        if args.pager:
+        if pager:
             with console.pager():
-                report_summary(results, detailed=args.detailed, color=consoleColor)
+                report_summary(
+                    results,
+                    detailed=args.detailed,
+                    color=consoleColor,
+                    configuration=configuration,
+                )
             return
 
-        report_summary(results, detailed=args.detailed, color=consoleColor)
+        report_summary(
+            results,
+            detailed=args.detailed,
+            color=consoleColor,
+            configuration=configuration,
+        )
         return
 
     if args.helpfilter:
@@ -833,7 +852,8 @@ def report_cmd(args, report_file=None):
     if args.formatfields:
         results.print_raw_format_fields()
         return
-    if args.pager:
+
+    if pager:
         with console.pager():
             results.print_report(
                 terse=args.terse,
@@ -851,7 +871,7 @@ def report_cmd(args, report_file=None):
     )
 
 
-def report_summary(report, detailed=None, color=None):
+def report_summary(report, configuration, detailed=None, color=None):
     """This method will print summary for report file which can be retrieved via ``buildtest report summary`` command
     Args:
         report (buildtest.cli.report.Report): An instance of Report class
@@ -878,12 +898,14 @@ def report_summary(report, detailed=None, color=None):
         filter_args={"state": "PASS"},
         format_args="name,id,executor,state,returncode,runtime",
         report_file=report.reportfile(),
+        configuration=configuration,
     )
 
     fail_results = Report(
         filter_args={"state": "FAIL"},
         format_args="name,id,executor,state,returncode,runtime",
         report_file=report.reportfile(),
+        configuration=configuration,
     )
 
     print_report_summary_output(

@@ -82,7 +82,7 @@ class BuildspecCache:
         self.filter = filterfields
         self.format = formatfields or self.configuration.target_config[
             "buildspecs"
-        ].get("formatfields")
+        ].get("format")
         self.header = header
         self.pager = pager or self.configuration.target_config.get("pager")
         self.count = count or self.configuration.target_config["buildspecs"].get(
@@ -1132,7 +1132,7 @@ def show_failed_buildspecs(
         report_file (str, optional): Full path to report file to read
         theme (str, optional): Color theme to choose. This is the Pygments style (https://pygments.org/docs/styles/#getting-a-list-of-available-styles) which is specified by ``--theme`` option
     """
-    results = Report(report_file=report_file)
+    results = Report(report_file=report_file, configuration=configuration)
     all_failed_tests = results.get_test_by_state(state="FAIL")
 
     if test_names:

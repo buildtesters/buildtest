@@ -18,12 +18,28 @@
     }
   },
   "definitions": {
+    "terse": {
+      "type": "boolean",
+      "description": "A boolean to determine whether to enable terse mode"
+    },
+    "format": {
+        "type": "string",
+        "description": "Determine the format fields to display when viewing table results"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Determine number of records to display in a table"
+    },
+
     "system": {
       "required": [
         "executors",
         "moduletool",
         "hostnames",
-        "compilers"
+        "compilers",
+        "buildspecs",
+        "report"
       ],
       "additionalProperties": false,
       "type": "object",
@@ -82,19 +98,11 @@
               "type": "boolean",
               "description": "A boolean to determine whether to rebuild buildspec cache"
             },
-            "count": {
-              "type": "integer",
-               "minimum": 1,
-              "description": "Determine number of records to display when running ``buildtest buildspec find``"
+            "count": { "$ref": "#/definitions/count" } ,
+            "format": {
+              "$ref": "#/definitions/format"
             },
-            "formatfields": {
-              "type": "string",
-              "description": "Determine the format fields to display when running ``buildtest buildspec find``"
-            },
-            "terse": {
-              "type": "boolean",
-              "description": "A boolean to determine whether to enable terse mode when viewing buildspec cache"
-            },
+            "terse": { "$ref": "#/definitions/terse" },
             "root": {
               "type": "array",
               "items": {
@@ -102,6 +110,17 @@
               },
               "description": "Specify a list of directory paths to search buildspecs. This field can be used with ``buildtest buildspec find`` to rebuild buildspec cache or build tests using ``buildtest build`` command"
             }
+          }
+        },
+        "report":
+        {
+          "type": "object",
+          "properties": {
+            "terse": { "$ref": "#/definitions/terse" },
+            "format": { "$ref": "#/definitions/format" },
+            "count": { "$ref": "#/definitions/count" },
+            "latest": {"type": "boolean", "description": "A boolean to determine whether to show latest test run"},
+            "oldest": {"type": "boolean", "description": "A boolean to determine whether to show oldest test run"}
           }
         },
         "processor": {

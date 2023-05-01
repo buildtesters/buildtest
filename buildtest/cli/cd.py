@@ -4,15 +4,16 @@ import sys
 from buildtest.cli.report import Report
 
 
-def change_directory(test):
+def change_directory(test, configuration):
     """Given a test name we will change directory to root of test for last test run. This
     method implements command ``buildtest cd``
 
     Args:
         test (str): Name of test found in test report. The test is specified via ``buildtest cd <test>``
+        configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
     """
 
-    report = Report()
+    report = Report(configuration=configuration)
 
     builders = report.builder_names()
 
