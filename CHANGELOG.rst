@@ -17,7 +17,8 @@ v1.4 (May 4th, 2023)
 
 **Configuration Changes**
 
-- Add support for ``buildspecs`` in configuration file to configure behavior of ``buildtest buildspec find`` command. `#1455 <https://github.com/buildtesters/buildtest/pull/1455>`_
+- Add support for ``buildspecs`` property in configuration file to configure behavior of ``buildtest buildspec find`` command. `#1455 <https://github.com/buildtesters/buildtest/pull/1455>`_
+- Add support for ``report`` section in configuration file to control behavior of ``buildtest report`` command `1459 <https://github.com/buildtesters/buildtest/pull/1459>`_
 - Rename ``buildspecs_root`` to ``root`` under the ``buildspecs`` section. `#1457 <https://github.com/buildtesters/buildtest/pull/1457>`_
 - Change pattern property for executor names to be alphanumeric `#1440 <https://github.com/buildtesters/buildtest/pull/1440>`_
 
