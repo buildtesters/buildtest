@@ -26,7 +26,8 @@ system:
       format: "name,description"
       # enable terse mode
       terse: False
-
+      # specify list of directories to search for buildspecs when building cache
+      #root: [ $BUILDTEST_ROOT/examples, /tmp/buildspecs ]
     report:
       count: 25
       #enable terse mode for report
@@ -37,8 +38,6 @@ system:
       # show the oldest for every test
       oldest: False
 
-      # specify list of directories to search for buildspecs when building cache
-      #root: [ $BUILDTEST_ROOT/examples, /tmp/buildspecs ]
     executors:
       # define local executors for running jobs locally
       local:
