@@ -67,6 +67,8 @@ def main():
     args = parser.parse_args()
 
     gvar = get_parent_parser()
+    for key in gvar:
+        gvar[key] = gvar[key].parse_args()
     print(gvar)
 
     install(show_locals=True)
