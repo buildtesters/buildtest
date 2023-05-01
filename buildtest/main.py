@@ -4,7 +4,7 @@ import os
 import shutil
 import webbrowser
 
-from buildtest.cli import get_parser
+from buildtest.cli import get_parser, get_parent_parser
 from buildtest.cli.build import BuildTest, Tee
 from buildtest.cli.buildspec import (
     BuildspecCache,
@@ -65,6 +65,9 @@ def main():
 
     parser = get_parser()
     args = parser.parse_args()
+
+    gvar = get_parent_parser()
+    print(gvar)
 
     install(show_locals=True)
     no_color = False
@@ -226,7 +229,7 @@ def main():
                 header=args.no_header,
                 color=args.color,
                 name=name,
-                row_count=args.row_count,
+                row_count=gvar.row_count,
             )
 
         elif args.buildspecs_subcommand in ["validate", "val"]:

@@ -149,6 +149,26 @@ def valid_time(value):
     return dt_object
 
 
+def get_parent_parser():
+    parent_parser = {}
+
+    parent_parser["pager"] = argparse.ArgumentParser(add_help=False)
+    parent_parser["pager"].add_argument(
+        "--pager", action="store_true", help="Enable PAGING when viewing result"
+    )
+
+    parent_parser["file"] = argparse.ArgumentParser(add_help=False)
+    parent_parser["file"].add_argument(
+        "--file", help="Write configuration file to a new file"
+    )
+
+    parent_parser["row-count"] = argparse.ArgumentParser(add_help=False)
+    parent_parser["row-count"].add_argument(
+        "--row-count", action="store_true", help="Show row count as a global option"
+    )
+    return parent_parser
+
+
 def get_parser():
     epilog_str = f"""
 References
@@ -224,27 +244,8 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     parser.add_argument("-r", "--report", help="Specify path to test report file")
 
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
-
-    def get_parent_parser():
-        parent_parser = {}
-
-        parent_parser["pager"] = argparse.ArgumentParser(add_help=False)
-        parent_parser["pager"].add_argument(
-            "--pager", action="store_true", help="Enable PAGING when viewing result"
-        )
-
-        parent_parser["file"] = argparse.ArgumentParser(add_help=False)
-        parent_parser["file"].add_argument(
-            "--file", help="Write configuration file to a new file"
-        )
-
-        parent_parser["row-count"] = argparse.ArgumentParser(add_help=False)
-        parent_parser["row-count"].add_argument(
-            "--row-count", action="store_true", help="Show row count as a global option"
-        )
-        return parent_parser
-
     parent_parser = get_parent_parser()
+    
     build_menu(subparsers)
     buildspec_menu(subparsers, parent_parser)
     config_menu(subparsers, parent_parser)
