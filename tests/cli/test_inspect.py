@@ -20,6 +20,7 @@ def test_buildtest_inspect_list():
         builder = False
         color = Color.default().name
         pager = False
+        row_count = False
 
     inspect_cmd(args)
 
@@ -32,6 +33,7 @@ def test_buildtest_inspect_list():
         builder = False
         color = Color.default().name
         pager = True
+        row_count = False
 
     inspect_cmd(args)
 
@@ -57,6 +59,7 @@ def test_buildtest_inspect_list():
         builder = False
         color = False
         pager = False
+        row_count = False
 
     inspect_cmd(args)
 
@@ -69,6 +72,7 @@ def test_buildtest_inspect_list():
         builder = False
         color = False
         pager = True
+        row_count = False
 
     inspect_cmd(args)
 
@@ -81,6 +85,7 @@ def test_buildtest_inspect_list():
         builder = True
         color = False
         pager = False
+        row_count = False
 
     inspect_cmd(args)
 
@@ -93,6 +98,7 @@ def test_buildtest_inspect_list():
         builder = True
         color = False
         pager = True
+        row_count = False
 
     inspect_cmd(args)
 
