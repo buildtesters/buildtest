@@ -243,7 +243,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
             "--row-count", action="store_true", help="Show row count as a global option"
         )
         return parent_parser
-    
+
     parent_parser = get_parent_parser()
     build_menu(subparsers)
     buildspec_menu(subparsers, parent_parser)
@@ -446,7 +446,9 @@ def history_menu(subparsers, parent_parser):
     )
 
     list_parser = history_subparser.add_parser(
-        "list", help="List a summary of all builds", parents=[parent_parser["pager"]]
+        "list",
+        help="List a summary of all builds",
+        parents=[parent_parser["pager"], parent_parser["row-count"]],
     )
     list_parser.add_argument(
         "-n",
@@ -691,7 +693,9 @@ def buildspec_menu(subparsers, parent_parser):
 
     # buildtest buildspec maintainers
     buildspec_maintainers = subparsers_buildspec.add_parser(
-        "maintainers", aliases=["m"], help="Query maintainers from buildspecs cache",
+        "maintainers",
+        aliases=["m"],
+        help="Query maintainers from buildspecs cache",
         parents=[parent_parser["row-count"]],
     )
 
