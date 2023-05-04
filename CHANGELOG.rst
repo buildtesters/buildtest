@@ -14,7 +14,7 @@ v1.4 (May 4th, 2023)
 - Add support for building multiple tags by comma separated list ``buildtest build --tags tag1,tag2,tag3``. `1419 <https://github.com/buildtesters/buildtest/pull/1419>`_
 - Add option ``buildtest config compilers find --file`` to save configuration file in alternative location. `#1420 <https://github.com/buildtesters/buildtest/pull/1420>`_
 - Add pagination support for ``buildtest history`` and ``buildtest inspect``. `#1424 <https://github.com/buildtesters/buildtest/pull/1424>`_, `#1428 <https://github.com/buildtesters/buildtest/pull/1428>`_
-
+- Add global option ``--row-count`` that can be used with ``buildtest inspect``, ``buildtest buildspec find``, ``buildtest buildspec invalid``, ``buildtest buildspec maintainers``, ``buildtest report`` and ``buildtest history`` command. `#1463 <https://github.com/buildtesters/buildtest/pull/1463>`_
 **Configuration Changes**
 
 - Add support for ``buildspecs`` property in configuration file to configure behavior of ``buildtest buildspec find`` command. `#1455 <https://github.com/buildtesters/buildtest/pull/1455>`_
