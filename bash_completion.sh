@@ -99,7 +99,7 @@ _failed_tests()
 
 _avail_maintainers()
 {
-  buildtest buildspec maintainers --terse -l --no-header | sort
+  buildtest buildspec maintainers --terse -l --no-header --row-count | sort
 }
 
 # list of filterfields
@@ -278,7 +278,7 @@ _buildtest ()
       # case statement to handle completion for buildtest inspect [name|id|list] command
       case "${COMP_WORDS[2+offset]}" in
         list|l)
-          local opts="--builder --help --no-header --pager --terse -b -h -n -t"
+          local opts="--builder --help --no-header --pager --row-count --terse -b -h -n -t"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         name|n)
           COMPREPLY=( $( compgen -W "$(_test_name)" -- $cur ) )
@@ -320,7 +320,7 @@ _buildtest ()
          case ${COMP_WORDS[3+offset]} in
          # completion for 'buildtest buildspec find invalid'
          invalid)
-           local opts="--error --help -e -h"
+           local opts="--error --help --row-count -e -h"
            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
          # completion for rest of arguments
          *)
@@ -378,7 +378,7 @@ _buildtest ()
         esac
         ;;
       maintainers|m)
-        local opts="--breakdown --list --help --terse --no-header -b -h -l -n find"
+        local opts="--breakdown --help --list --row-count --terse --no-header -b -h -l -n find"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
         case ${COMP_WORDS[3+offset]} in
@@ -408,7 +408,7 @@ _buildtest ()
 
       case ${COMP_WORDS[2+offset]} in
       list)
-        local opts="--help --no-header --terse -h -n -t"
+        local opts="--help --no-header --row-count --terse -h -n -t"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
         ;;
       query)
