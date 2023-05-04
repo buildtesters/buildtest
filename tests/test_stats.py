@@ -17,6 +17,6 @@ def test_stats():
     cmd = BuildTest(configuration=configuration, tags=["pass"], buildtest_system=system)
     cmd.build()
 
-    report = Report()
+    report = Report(configuration=configuration)
     name = report.get_random_tests()
-    stats_cmd(name[0])
+    stats_cmd(name[0], configuration=configuration)

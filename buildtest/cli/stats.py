@@ -4,7 +4,7 @@ from buildtest.cli.report import Report
 from buildtest.defaults import console
 
 
-def stats_cmd(name, report_file=None):
+def stats_cmd(name, configuration, report_file=None):
     """Entry Point for ``buildtest stats``
 
     Args:
@@ -15,6 +15,7 @@ def stats_cmd(name, report_file=None):
         filter_args={"name": name},
         format_args="name,state,returncode,starttime,endtime,runtime",
         report_file=report_file,
+        configuration=configuration,
     )
 
     first_result = Report(
@@ -22,12 +23,14 @@ def stats_cmd(name, report_file=None):
         format_args="starttime",
         report_file=report_file,
         oldest=True,
+        configuration=configuration,
     )
     last_result = Report(
         filter_args={"name": name},
         format_args="starttime",
         report_file=report_file,
         latest=True,
+        configuration=configuration,
     )
 
     console.print("Total Test Runs: ", len(results.display_table["name"]))

@@ -2,20 +2,28 @@ system:
   generic:
     hostnames: [".*"]
     moduletool: lmod
+    buildspecs:
+      rebuild: False
+      count: 15
+      format: "name,description"
+      terse: False
+    report:
+      count: 25
+      terse: False
+      format: "name,id,state,runtime,returncode"
+      latest: True
+      oldest: False
     executors:
       local:
         bash:
           description: submit jobs on local machine using bash shell
           shell: bash
-
         sh:
           description: submit jobs on local machine using sh shell
           shell: sh
-
         csh:
           description: submit jobs on local machine using csh shell
           shell: csh
-
         python:
           description: submit jobs on local machine using python shell
           shell: python

@@ -363,11 +363,11 @@ def test_buildspec_show_fail():
 
     # Query a test that is NOT in state=FAIL
 
-    results = Report()
+    results = Report(configuration=configuration)
     pass_test = random.sample(results.get_test_by_state(state="PASS"), 1)
     show_failed_buildspecs(configuration=configuration, test_names=[pass_test])
 
-    report = Report()
+    report = Report(configuration=configuration)
     # get a random failed test from report file to be used for showing content of buildspec file
     fail_tests = random.sample(report.get_test_by_state(state="FAIL"), 1)
     # buildtest buildspec show-fail <test> --theme monokai
