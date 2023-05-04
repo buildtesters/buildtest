@@ -691,7 +691,8 @@ def buildspec_menu(subparsers, parent_parser):
 
     # buildtest buildspec maintainers
     buildspec_maintainers = subparsers_buildspec.add_parser(
-        "maintainers", aliases=["m"], help="Query maintainers from buildspecs cache"
+        "maintainers", aliases=["m"], help="Query maintainers from buildspecs cache",
+        parents=[parent_parser["row-count"]],
     )
 
     subparsers_maintainers = buildspec_maintainers.add_subparsers()
