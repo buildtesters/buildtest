@@ -22,6 +22,9 @@ def test_build_history_list():
     # buildtest history list --pager
     list_build_history(terse=False, no_header=False, pager=True)
 
+    # buildtest history list --row-count
+    list_build_history(terse=False, no_header=False, pager=False, row_count=True)
+
     # buildtest --color <Color> history list --terse --pager
     list_build_history(
         terse=True, no_header=False, pager=True, color=Color.default().name

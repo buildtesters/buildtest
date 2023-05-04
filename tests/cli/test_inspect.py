@@ -35,6 +35,19 @@ def test_buildtest_inspect_list():
 
     inspect_cmd(args)
 
+    # buildtest inspect list --row-count
+    class args:
+        subcommands = "inspect"
+        inspect = "list"
+        terse = False
+        no_header = False
+        builder = False
+        color = Color.default().name
+        pager = False
+        row_count = True
+
+    inspect_cmd(args)
+
     # buildtest inspect list --terse --no-header
     class args:
         subcommands = "inspect"

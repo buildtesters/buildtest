@@ -193,6 +193,7 @@ def test_buildspec_maintainers():
         header=True,
         color=Color.default().name,
     )
+    buildspec_maintainers(configuration=configuration, row_count=True)
     buildspec_maintainers(configuration=configuration, name="@shahzebsiddiqui")
 
 
@@ -228,6 +229,11 @@ def test_buildspec_find_invalid():
 
     try:
         cache.print_invalid_buildspecs(error=False, terse=True, header=True)
+    except SystemExit:
+        pass
+
+    try:
+        cache.print_invalid_buildspecs(error=False, terse=False, header=False, row_count=True)
     except SystemExit:
         pass
 
