@@ -233,7 +233,9 @@ def test_buildspec_find_invalid():
         pass
 
     try:
-        cache.print_invalid_buildspecs(error=False, terse=False, header=False, row_count=True)
+        cache.print_invalid_buildspecs(
+            error=False, terse=False, header=False, row_count=True
+        )
     except SystemExit:
         pass
 
