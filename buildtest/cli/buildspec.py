@@ -914,13 +914,16 @@ class BuildspecCache:
 
         console.print(table)
 
-    def print_invalid_buildspecs(self, error=None, terse=None, header=None):
+    def print_invalid_buildspecs(
+        self, error=None, terse=None, header=None, row_count=None
+    ):
         """Print invalid buildspecs from cache file. This method implements command ``buildtest buildspec find invalid``
 
         Args:
             error (bool, optional): Display error messages for invalid buildspecs. Default is ``False`` where we only print list of invalid buildspecs
             terse (bool, optional): Display output in machine readable format.
             header (bool, optional): Determine whether to print header column in machine readable format.
+            row_count (bool, optional): Display row count of invalid buildspces table
         """
 
         terse = terse or self.terse
@@ -932,6 +935,10 @@ class BuildspecCache:
 
         if not self.get_invalid_buildspecs():
             console.print("There are no invalid buildspecs in cache")
+            return
+
+        if row_count:
+            print(len(self.cache["invalids"].keys()))
             return
 
         # implementation for machine readable format specified via --terse
@@ -1374,7 +1381,7 @@ def buildspec_find(args, configuration):
     )
 
     if args.buildspec_find_subcommand == "invalid":
-        cache.print_invalid_buildspecs(error=args.error)
+        cache.print_invalid_buildspecs(error=args.error, row_count=args.row_count)
         return
 
     # buildtest buildspec find --tags

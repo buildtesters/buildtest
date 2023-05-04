@@ -740,7 +740,7 @@ def buildspec_menu(subparsers, parent_parser):
         metavar="", dest="buildspec_find_subcommand"
     )
     invalid_buildspecs = subparsers_invalid.add_parser(
-        "invalid", help="Show invalid buildspecs"
+        "invalid", help="Show invalid buildspecs", parents=[parent_parser["row-count"]]
     )
 
     # buildtest buildspec find invalid options
