@@ -65,12 +65,9 @@ def main():
     
     parser, gvar = get_parser()
     args = parser.parse_args()
-
-    res = {}
-    for key, val in gvar.items():
-        res[key] = val.parse_args()
     
-    print(res)
+    print(args)
+    print(gvar)
 
     install(show_locals=True)
     no_color = False
