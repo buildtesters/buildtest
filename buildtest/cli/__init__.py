@@ -259,11 +259,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     misc_menu(subparsers)
     tutorial_examples_menu(subparsers)
 
-    res = {}
-    for key, val in parent_parser.items():
-        res[key] = val.parse_args()
-
-    return parser, res
+    return parser
 
 
 def misc_menu(subparsers):
