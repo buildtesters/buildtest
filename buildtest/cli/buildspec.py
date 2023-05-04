@@ -1339,7 +1339,8 @@ def buildspec_maintainers(
     )
 
     if row_count:
-        return len(cache.list_maintainers())
+        print(len(cache.list_maintainers()))
+        return
 
     if list_maintainers:
         cache.print_maintainer()

@@ -62,12 +62,9 @@ from rich.traceback import install
 
 def main():
     """Entry point to buildtest."""
-    
+
     parser = get_parser()
     args = parser.parse_args()
-    
-    print(parser)
-    print(args)
 
     install(show_locals=True)
     no_color = False
