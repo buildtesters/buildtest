@@ -6,8 +6,13 @@ import tempfile
 import pytest
 from buildtest.cli.inspect import inspect_cmd
 from buildtest.cli.report import Report
+from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
 from rich.color import Color
+
+configuration = SiteConfiguration()
+configuration.detect_system()
+configuration.validate()
 
 
 def test_buildtest_inspect_list():
@@ -22,7 +27,7 @@ def test_buildtest_inspect_list():
         pager = False
         row_count = False
 
-    inspect_cmd(args)
+    inspect_cmd(args, configuration=configuration)
 
     # buildtest inspect list --pager
     class args:
@@ -35,7 +40,7 @@ def test_buildtest_inspect_list():
         pager = True
         row_count = False
 
-    inspect_cmd(args)
+    inspect_cmd(args, configuration=configuration)
 
     # buildtest inspect list --row-count
     class args:
@@ -48,7 +53,7 @@ def test_buildtest_inspect_list():
         pager = False
         row_count = True
 
-    inspect_cmd(args)
+    inspect_cmd(args, configuration=configuration)
 
     # buildtest inspect list --terse --no-header
     class args:
@@ -61,7 +66,7 @@ def test_buildtest_inspect_list():
         pager = False
         row_count = False
 
-    inspect_cmd(args)
+    inspect_cmd(args, configuration=configuration)
 
     # buildtest inspect list --terse --pager
     class args:
@@ -74,7 +79,7 @@ def test_buildtest_inspect_list():
         pager = True
         row_count = False
 
-    inspect_cmd(args)
+    inspect_cmd(args, configuration=configuration)
 
     # buildtest inspect list --builder
     class args:
@@ -87,7 +92,7 @@ def test_buildtest_inspect_list():
         pager = False
         row_count = False
 
-    inspect_cmd(args)
+    inspect_cmd(args, configuration=configuration)
 
     # buildtest inspect list --builder --pager
     class args:
@@ -100,11 +105,11 @@ def test_buildtest_inspect_list():
         pager = True
         row_count = False
 
-    inspect_cmd(args)
+    inspect_cmd(args, configuration=configuration)
 
 
 def test_buildtest_inspect_name():
-    r = Report()
+    r = Report(configuration=configuration)
 
     # select a random test name
     test_names = r.get_random_tests(num_items=2)
@@ -118,7 +123,7 @@ def test_buildtest_inspect_name():
 
     print(f"Querying test names: {args.name}")
     # buildtest inspect name <name1> <name2>
-    inspect_cmd(args)
+    inspect_cmd(args, configuration=configuration)
 
     random_test = [
         "".join(random.choices(string.ascii_letters, k=10)),
@@ -134,7 +139,7 @@ def test_buildtest_inspect_name():
 
     print(f"Querying test names: {args.name}")
     with pytest.raises(SystemExit):
-        inspect_cmd(args)
+        inspect_cmd(args, configuration=configuration)
 
     class args:
         subcommands = "inspect"
@@ -143,7 +148,7 @@ def test_buildtest_inspect_name():
         report = None
         pager = False
 
-    inspect_cmd(args)
+    inspect_cmd(args, configuration=configuration)
 
 
 def test_buildspec_inspect_buildspec():
@@ -159,13 +164,13 @@ def test_buildspec_inspect_buildspec():
 
     # if buildspec not in cache we raise error
     with pytest.raises(SystemExit):
-        inspect_cmd(args)
+        inspect_cmd(args, configuration=configuration)
 
     # delete file
     tf.close()
     # invalid filepath will raise an error
     with pytest.raises(SystemExit):
-        inspect_cmd(args)
+        inspect_cmd(args, configuration=configuration)
 
     search_buildspec = [
         os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml"),
@@ -181,7 +186,7 @@ def test_buildspec_inspect_buildspec():
         pager = False
 
     # buildtest inspect buildspec $BUILDTEST_ROOT/tutorials/vars.yml $BUILDTEST_ROOT/tutorials/pass_returncode.yml
-    inspect_cmd(args)
+    inspect_cmd(args, configuration=configuration)
 
     class args:
         subcommands = "inspect"
@@ -192,11 +197,11 @@ def test_buildspec_inspect_buildspec():
         pager = True
 
     # buildtest inspect buildspec --all --pager $BUILDTEST_ROOT/tutorials/vars.yml $BUILDTEST_ROOT/tutorials/pass_returncode.yml
-    inspect_cmd(args)
+    inspect_cmd(args, configuration=configuration)
 
 
 def test_buildtest_query():
-    report = Report()
+    report = Report(configuration=configuration)
     names = report.get_names()
 
     class args:
@@ -212,7 +217,7 @@ def test_buildtest_query():
         pager = True
 
     # buildtest inspect query --output --error --testpath --buildscript --buildenv <name1> <name2> ...
-    inspect_cmd(args)
+    inspect_cmd(args, configuration=configuration)
 
     class args:
         subcommands = "inspect"
@@ -228,7 +233,7 @@ def test_buildtest_query():
 
     # buildtest inspect query stream_test
     # the 'stream_test' will add coverage where metrics are printed in output of 'buildtest inspect query'
-    inspect_cmd(args)
+    inspect_cmd(args, configuration=configuration)
 
     class args:
         subcommands = "inspect"
@@ -245,4 +250,4 @@ def test_buildtest_query():
 
     # check invalid test name when querying result which will result in exception SystemExit
     with pytest.raises(SystemExit):
-        inspect_cmd(args)
+        inspect_cmd(args, configuration=configuration)
