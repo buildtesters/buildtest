@@ -1215,7 +1215,7 @@ def inspect_menu(subparsers, parent_parser):
         "list",
         aliases=["l"],
         help="List all test names, ids, and corresponding buildspecs",
-        parents=[parent_parser["pager"]],
+        parents=[parent_parser["pager"], parent_parser["row-count"]],
     )
     inspect_list.add_argument(
         "-n",
