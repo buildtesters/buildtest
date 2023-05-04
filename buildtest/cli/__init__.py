@@ -259,7 +259,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     misc_menu(subparsers)
     tutorial_examples_menu(subparsers)
 
-    return parser, parent_parser
+    return parser
 
 
 def misc_menu(subparsers):

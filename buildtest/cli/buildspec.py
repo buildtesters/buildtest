@@ -1331,6 +1331,7 @@ def buildspec_maintainers(
         header (bool, optional): If True disable printing of headers
         color (bool, optional): Print output of table with selected color
         name (str, optional): List all buildspecs corresponding to maintainer name. This command is specified via ``buildtest buildspec maintainers find <name>``
+        row_count (bool, opotional): Return row count of the maintainer table. This command is specified via ``buildtest --row-count buildspec maintainers -l``
     """
 
     cache = BuildspecCache(

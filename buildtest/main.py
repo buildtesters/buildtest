@@ -62,16 +62,9 @@ from rich.traceback import install
 
 def main():
     """Entry point to buildtest."""
-
-    parser, gvar = get_parser()
+    
+    parser = get_parser()
     args = parser.parse_args()
-
-    print(gvar)
-    res = {}
-    for key in gvar:
-        res[key] = gvar[key].parse_args()
-
-    print(res)
 
     install(show_locals=True)
     no_color = False
@@ -233,7 +226,7 @@ def main():
                 header=args.no_header,
                 color=args.color,
                 name=name,
-                row_count=gvar.row_count,
+                row_count=args.row_count,
             )
 
         elif args.buildspecs_subcommand in ["validate", "val"]:
