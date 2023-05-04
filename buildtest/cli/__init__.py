@@ -228,17 +228,17 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     def get_parent_parser():
         parent_parser = {}
 
-        parent_parser["pager"] = argparse.ArgumentParser(description="global pager", add_help=False)
+        parent_parser["pager"] = argparse.ArgumentParser(add_help=False)
         parent_parser["pager"].add_argument(
             "--pager", action="store_true", help="Enable PAGING when viewing result"
         )
 
-        parent_parser["file"] = argparse.ArgumentParser(description="global file", add_help=False)
+        parent_parser["file"] = argparse.ArgumentParser(add_help=False)
         parent_parser["file"].add_argument(
             "--file", help="Write configuration file to a new file"
         )
 
-        parent_parser["row-count"] = argparse.ArgumentParser(description="global row-count", add_help=False)
+        parent_parser["row-count"] = argparse.ArgumentParser(add_help=False)
         parent_parser["row-count"].add_argument(
             "--row-count", action="store_true", help="Show row count as a global option"
         )
