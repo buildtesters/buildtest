@@ -3,53 +3,12 @@ to retrieve test record from report file in JSON format."""
 import re
 import sys
 
-from buildtest.cli.report import Report
 from buildtest.defaults import console
 from buildtest.utils.file import read_file, resolve_path
 from buildtest.utils.tools import checkColor
 from rich.pretty import pprint
 from rich.syntax import Syntax
 from rich.table import Table
-
-
-def inspect_cmd(args, configuration, report_file=None):
-    """Entry point for ``buildtest inspect`` command
-
-    Args:
-        args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
-    """
-
-    report = Report(configuration=configuration, report_file=report_file)
-
-    # implements command 'buildtest inspect list'
-    if args.inspect in ["list", "l"]:
-        inspect_list(
-            report,
-            terse=args.terse,
-            no_header=args.no_header,
-            builder=args.builder,
-            color=args.color,
-            pager=args.pager,
-            row_count=args.row_count,
-        )
-        return
-
-    # implements command 'buildtest inspect name'
-    if args.inspect in ["name", "n"]:
-        inspect_by_name(report, args.name, args.pager)
-        return
-
-    if args.inspect in ["query", "q"]:
-        inspect_query(report, args, args.pager)
-        return
-
-    if args.inspect in ["buildspec", "b"]:
-        inspect_buildspec(
-            report,
-            input_buildspecs=args.buildspec,
-            all_records=args.all,
-            pager=args.pager,
-        )
 
 
 def fetch_test_names(report, names):
@@ -209,16 +168,31 @@ def inspect_list(
     console.print(inspect_table)
 
 
-def print_by_query(report, args):
+def print_by_query(
+    report,
+    name,
+    theme=None,
+    output=None,
+    error=None,
+    testpath=None,
+    buildscript=None,
+    buildenv=None,
+):
     """This method prints the test records when they are queried using ``buildtest inspect query`` command.
 
     Args:
-        report (str): Path to report file
-        args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
+        report (buildtest.cli.report.Report): An instance of Report class
+        name (list): List of test names to query
+        theme (str, optional): Specify pygments theme for syntax highlighting
+        output (bool, optional): Print output file when set to True
+        error (bool, optional): Print error file when set to True
+        testpath (bool, optional): Print testpath when set to True
+        buildscript (bool, optional): Print buildscript when set to True
+        buildenv (bool, optional): Print buildenv when set to True
     """
 
     records = {}
-    query_builders = fetch_test_names(report, args.name)
+    query_builders = fetch_test_names(report, name)
 
     for builder in query_builders:
         tid = builder.split("/")[1]
@@ -231,7 +205,7 @@ def print_by_query(report, args):
     for name, test_record in records.items():
         for tests in test_record:
             for full_id, test in tests.items():
-                theme = args.theme or "monokai"
+                theme = theme or "monokai"
 
                 console.rule(f"[cyan]{name}/{full_id}")
 
@@ -257,7 +231,7 @@ def print_by_query(report, args):
                     console.print(table)
 
                 # print content of output file when 'buildtest inspect query --output' is set
-                if args.output:
+                if output:
                     content = read_file(test["outfile"])
                     console.rule(f"Output File: {test['outfile']}")
 
@@ -265,7 +239,7 @@ def print_by_query(report, args):
                     console.print(syntax)
 
                 # print content of error file when 'buildtest inspect query --error' is set
-                if args.error:
+                if error:
                     content = read_file(test["errfile"])
                     console.rule(f"Error File: {test['errfile']}")
 
@@ -273,7 +247,7 @@ def print_by_query(report, args):
                     console.print(syntax)
 
                 # print content of testpath when 'buildtest inspect query --testpath' is set
-                if args.testpath:
+                if testpath:
                     content = read_file(test["testpath"])
                     console.rule(f"Test File: {test['testpath']}")
 
@@ -281,14 +255,14 @@ def print_by_query(report, args):
                     console.print(syntax)
 
                 # print content of build script when 'buildtest inspect query --buildscript' is set
-                if args.buildscript:
+                if buildscript:
                     content = read_file(test["build_script"])
                     console.rule(f"Test File: {test['build_script']}")
 
                     syntax = Syntax(content, lexer="shell", theme=theme)
                     console.print(syntax)
 
-                if args.buildenv:
+                if buildenv:
                     content = read_file(test["buildenv"])
                     console.rule(f"Test File: {test['buildenv']}")
 
@@ -296,28 +270,62 @@ def print_by_query(report, args):
                     console.print(syntax)
 
 
-def inspect_query(report, args, pager=None):
+def inspect_query(
+    report,
+    name,
+    theme=None,
+    output=None,
+    error=None,
+    testpath=None,
+    buildscript=None,
+    buildenv=None,
+    pager=None,
+):
     """Entry point for ``buildtest inspect query`` command.
 
     Args:
-        report (str): Path to report file
-        args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
+        report (buildtest.cli.report.Report): An instance of Report class
+        name (list): List of test names to query
+        theme (str, optional): Specify pygments theme for syntax highlighting
+        output (bool, optional): Print output file when set to True
+        error (bool, optional): Print error file when set to True
+        testpath (bool, optional): Print testpath when set to True
+        buildscript (bool, optional): Print buildscript when set to True
+        buildenv (bool, optional): Print buildenv when set to True
         pager (bool, optional): Print output in paging format
     """
 
     if pager:
         with console.pager():
-            print_by_query(report, args)
+            print_by_query(
+                report,
+                name=name,
+                theme=theme,
+                output=output,
+                error=error,
+                testpath=testpath,
+                buildscript=buildscript,
+                buildenv=buildenv,
+            )
         return
 
-    print_by_query(report, args)
+    print_by_query(
+        report,
+        name=name,
+        theme=theme,
+        output=output,
+        error=error,
+        testpath=testpath,
+        buildscript=buildscript,
+        buildenv=buildenv,
+    )
 
 
-def inspect_buildspec(report, input_buildspecs, all_records, pager=None):
+def inspect_buildspec(report, input_buildspecs, all_records=None, pager=None):
     """This method implements command ``buildtest inspect buildspec``
 
     Args:
-        report (str): Path to report file
+        report (buildtest.cli.report.Report): An instance of Report class
         input_buildspecs (list): List of buildspecs to search in report file. This is specified as positional arguments to ``buildtest inspect buildspec``
         all_records (bool): Determine whether to display all records for every test that matches the buildspec. By default we retrieve the latest record.
         pager (bool, optional): Print output in paging format
@@ -386,7 +394,7 @@ def print_by_name(report, names):
     """This method prints test records by given name in JSON format.
 
     Args:
-        report (str): Path to report file
+        report (buildtest.cli.report.Report): An instance of Report class
         names (list): List of test names to search in report file. This is specified as positional arguments to ``buildtest inspect name``
     """
 
@@ -422,7 +430,7 @@ def inspect_by_name(report, names, pager=None):
         buildtest inspect name exit1_fail/123
 
     Args:
-        report (str): Path to report file
+        report (buildtest.cli.report.Report): An instance of Report class
         names (list): List of test names to search in report file. This is specified as positional arguments to ``buildtest inspect name``
         pager (bool, optional): Print output in paging format
     """
