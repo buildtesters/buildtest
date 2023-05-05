@@ -137,8 +137,6 @@ def main():
     buildtest_editor = set_editor(args.editor)
     logger.info(f"[red]Processing buildtest configuration file: {configuration.file}")
 
-    report = Report(configuration=configuration, report_file=report_file)
-
     # build buildspec cache file automatically if it doesn't exist
     if not is_file(BUILDSPEC_CACHE_FILE):
         root_buildspecs = []
@@ -184,10 +182,11 @@ def main():
 
         if cmd.build_success():
             build_history_dir = cmd.get_build_history_dir()
+
             shutil.move(fname, os.path.join(build_history_dir, "output.txt"))
 
     # buildtest build history
-    elif args.subcommands in ["history", "hy"]:
+    if args.subcommands in ["history", "hy"]:
         build_history(args)
 
     # implementation for 'buildtest buildspec find'
@@ -247,6 +246,7 @@ def main():
 
     # running buildtest inspect
     elif args.subcommands in ["inspect", "it"]:
+        report = Report(configuration=configuration, report_file=report_file)
         if args.inspect in ["list", "l"]:
             inspect_list(
                 report,

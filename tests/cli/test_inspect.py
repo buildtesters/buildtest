@@ -18,10 +18,9 @@ configuration = SiteConfiguration()
 configuration.detect_system()
 configuration.validate()
 
-buildtest_report = Report(configuration=configuration)
-
 
 def test_buildtest_inspect_list():
+    buildtest_report = Report(configuration=configuration)
     # buildtest inspect list
     inspect_list(report=buildtest_report)
 
@@ -45,6 +44,7 @@ def test_buildtest_inspect_list():
 
 
 def test_buildtest_inspect_name():
+    buildtest_report = Report(configuration=configuration)
     # select a random test name
     test_names = buildtest_report.get_random_tests(num_items=2)
 
@@ -66,15 +66,8 @@ def test_buildtest_inspect_name():
 
 
 def test_buildspec_inspect_buildspec():
+    buildtest_report = Report(configuration=configuration)
     tf = tempfile.NamedTemporaryFile(delete=True)
-
-    class args:
-        subcommands = "inspect"
-        inspect = "buildspec"
-        buildspec = [tf.name]
-        report = None
-        all = None
-        pager = False
 
     # if buildspec not in cache we raise error
     with pytest.raises(SystemExit):
@@ -101,6 +94,7 @@ def test_buildspec_inspect_buildspec():
 
 
 def test_buildtest_query():
+    buildtest_report = Report(configuration=configuration)
     names = buildtest_report.get_names()
 
     # buildtest inspect query --output --error --testpath --buildscript --buildenv --pager --theme=emacs <name1> <name2> ...
