@@ -30,6 +30,7 @@ def inspect_cmd(args, configuration, report_file=None):
             builder=args.builder,
             color=args.color,
             pager=args.pager,
+            row_count=args.row_count,
         )
         return
 
@@ -127,7 +128,13 @@ def print_terse(table, no_header=None, console_color=None):
 
 
 def inspect_list(
-    report, terse=None, no_header=None, builder=None, color=None, pager=None
+    report,
+    terse=None,
+    no_header=None,
+    builder=None,
+    color=None,
+    pager=None,
+    row_count=None,
 ):
     """This method list an output of test id, name, and buildspec file from the report cache. The default
     behavior is to display output in table format though this can be changed with terse format which will
@@ -140,10 +147,15 @@ def inspect_list(
         builder (bool, optional): Print output in builder format which can be done via ``buildtest inspect list --builder``
         color (bool, optional): Print table output of ``buildtest inspect list`` with selected color
         pager (bool, optional): Print output in paging format
+        row_count (bool, optional): Print total number of test runs
     """
     consoleColor = checkColor(color)
 
     test_ids = report._testid_lookup()
+
+    if row_count:
+        print(len(test_ids))
+        return
 
     # implement command 'buildtest inspect list --builder'
     if builder:

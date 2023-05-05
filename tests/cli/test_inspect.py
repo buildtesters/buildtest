@@ -25,6 +25,7 @@ def test_buildtest_inspect_list():
         builder = False
         color = Color.default().name
         pager = False
+        row_count = False
 
     inspect_cmd(args, configuration=configuration)
 
@@ -37,6 +38,20 @@ def test_buildtest_inspect_list():
         builder = False
         color = Color.default().name
         pager = True
+        row_count = False
+
+    inspect_cmd(args, configuration=configuration)
+
+    # buildtest inspect list --row-count
+    class args:
+        subcommands = "inspect"
+        inspect = "list"
+        terse = False
+        no_header = False
+        builder = False
+        color = Color.default().name
+        pager = False
+        row_count = True
 
     inspect_cmd(args, configuration=configuration)
 
@@ -49,6 +64,7 @@ def test_buildtest_inspect_list():
         builder = False
         color = False
         pager = False
+        row_count = False
 
     inspect_cmd(args, configuration=configuration)
 
@@ -61,6 +77,7 @@ def test_buildtest_inspect_list():
         builder = False
         color = False
         pager = True
+        row_count = False
 
     inspect_cmd(args, configuration=configuration)
 
@@ -73,6 +90,7 @@ def test_buildtest_inspect_list():
         builder = True
         color = False
         pager = False
+        row_count = False
 
     inspect_cmd(args, configuration=configuration)
 
@@ -85,6 +103,7 @@ def test_buildtest_inspect_list():
         builder = True
         color = False
         pager = True
+        row_count = False
 
     inspect_cmd(args, configuration=configuration)
 
