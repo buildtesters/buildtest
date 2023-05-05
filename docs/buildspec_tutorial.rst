@@ -25,7 +25,7 @@ Tutorials Setup
 
 
 To get started for this tutorial, you will need `docker <https://docs.docker.com/get-docker/>`_ on your machine to pull the container. At NERSC,
-you can use `podman <https://podman.io/>`_ or `shifter <https://github.com/NERSC/shifter>`_ to access the container, you will need to start an interactive shell.
+you can use `podman <https://docs.podman.io/en/latest/>`_ or `shifter <https://github.com/NERSC/shifter>`_ to access the container, you will need to start an interactive shell.
 
 .. tab-set::
 
