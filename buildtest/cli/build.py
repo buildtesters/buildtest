@@ -480,6 +480,7 @@ class BuildTest:
         buildspecs=None,
         exclude_buildspecs=None,
         tags=None,
+        exclude_tags=None,
         executors=None,
         testdir=None,
         stage=None,
@@ -511,7 +512,8 @@ class BuildTest:
             configuration (buildtest.config.SiteConfiguration, optional): Loaded configuration content which is an instance of SiteConfiguration
             buildspecs (list, optional): list of buildspecs from command line ``buildtest build --buildspec``
             exclude_buildspecs (list, optional): list of excluded buildspecs from command line ``buildtest build --exclude``
-            tags (list, optional): list if tags passed from command line ``buildtest build --tags``
+            tags (list, optional): list if tags to discover tests specified via command line ``buildtest build --tags``
+            exclude_tags (list, optional): list if tags to exclude specified via command line ``buildtest build --exclude-tags``
             executors (list, optional): list of executors passed from command line ``buildtest build --executors``
             testdir (str): Path to test directory where tests are written. This argument can be passed from command line ``buildtest build --testdir``
             stage (str, optional): Stop build after parse or build stage which can be configured via ``buildtest build --stage`` option
@@ -544,6 +546,9 @@ class BuildTest:
 
         if tags and not isinstance(tags, list):
             raise BuildTestError(f"{tags} is not of type list")
+
+        if exclude_tags and not isinstance(exclude_tags, list):
+            raise BuildTestError(f"{exclude_tags} is not of type list")
 
         if executors and not isinstance(executors, list):
             raise BuildTestError(f"{executors} is not of type list")
@@ -582,6 +587,7 @@ class BuildTest:
         self.buildspecs = buildspecs
         self.exclude_buildspecs = exclude_buildspecs
         self.tags = tags
+        self.exclude_tags = exclude_tags
         self.executors = executors
         self.maxpendtime = maxpendtime
         self.pollinterval = poll_interval
@@ -900,6 +906,7 @@ class BuildTest:
                 numprocs=self.numprocs,
                 numnodes=self.numnodes,
                 executor_type=self.executor_type,
+                exclude_tags=self.exclude_tags,
             )
 
             if not builder.get_builders():

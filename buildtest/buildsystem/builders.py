@@ -35,6 +35,7 @@ class Builder:
         numprocs=None,
         numnodes=None,
         executor_type=None,
+        exclude_tags=None,
     ):
         """Based on a loaded Buildspec file, return the correct builder
         for each based on the type. Each type is associated with a known
@@ -51,6 +52,7 @@ class Builder:
             numprocs (list, optional): List of processor values to create builder objects specified via ``buildtest build --procs``
             numnodes (list, optional): List of processor values to create builder objects specified via ``buildtest build --numnodes``
             executor_type (str, optional): Filter test by executor type (local, batch)
+            exclude_tags (list, optional): List of tags to exclude tests from buildspec file
         """
 
         self.configuration = configuration
@@ -63,6 +65,7 @@ class Builder:
         self.numprocs = numprocs
         self.numnodes = numnodes
         self.executor_type = executor_type
+        self.exclude_tags = exclude_tags
 
         self.bp = bp
         self.bc = buildtest_compilers
@@ -108,6 +111,9 @@ class Builder:
                     if self._skip_tests_by_type(recipe, name):
                         continue
 
+                if self.exclude_tags:
+                    if self._skip_tests_by_exclude_tags(recipe, name):
+                        continue
                 # Add the builder for the script or spack schema
 
                 if recipe["type"] in ["script", "compiler", "spack"]:
@@ -413,6 +419,29 @@ class Builder:
             return
 
         return builders
+
+    def _skip_tests_by_exclude_tags(self, recipe, name):
+        """This method determines if test should be skipped based on tag names specified
+        in exclude field that is specified on command line via ``buildtest build --exclude tags=<TAGNAME>``
+
+        Args:
+            recipe (dict): Loaded test recipe from buildspec
+            name (str): Name of test
+
+        Returns:
+            bool: False if ``buildtest build --exclude tags`` is not specified. If specified we return ``True`` if ``tags`` field is not in test recipe or there is a matching tag.
+
+        """
+        tags_in_tests = recipe.get("tags", [])
+        if isinstance(tags_in_tests, str):
+            tags_in_tests = [tags_in_tests]
+
+        tag_match = bool(set(self.exclude_tags) & set(tags_in_tests))
+        if tag_match:
+            msg = f"Skipping test: [blue]{name}[/blue] from buildspec: [red]{self.bp.buildspec}[/red] due to tag exclusion: {self.exclude_tags}"
+            console.print(msg)
+            self.logger.debug(msg)
+        return tag_match
 
     def _skip_tests_by_tags(self, recipe, name):
         """This method determines if test should be skipped based on tag names specified
