@@ -526,6 +526,13 @@ def build_menu(subparsers):
         help="Discover buildspecs by executor name found in buildspec cache",
     )
     discover_group.add_argument(
+        "-xt",
+        "--exclude-tags",
+        action="append",
+        type=str,
+        help="Exclude tests by one or more tagnames found in buildspec cache",
+    )
+    discover_group.add_argument(
         "-t",
         "--tags",
         action="append",
