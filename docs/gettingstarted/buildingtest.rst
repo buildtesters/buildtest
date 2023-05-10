@@ -157,6 +157,41 @@ As you may see, there are several ways to build buildspecs with buildtest. Tags 
 great way to build a whole collection of tests if you don't know path to all the files. You can
 specify multiple tags per buildspecs to classify how test can be run.
 
+Exclude by tags
+----------------
+
+You can exclude tests by tagname using ``--exclude-tags`` option or
+short option (``-xt``). Any tests that contains the ``tags`` field
+is searched with list of excluded tags. If there is a match, the test
+is skipped. If the test **does not** contain ``tags`` key, the test will be
+included to run.
+
+Let's take an example buildspec file which contains 4 tests.
+
+.. literalinclude:: ../tutorials/test_status/pass_returncode.yml
+    :language: yaml
+    :emphasize-lines: 7,15,24,33
+
+We will demonstrate this feature, by excluding tests with tag name ``pass``. Take note all tests
+are run except for those that include ``pass``.
+
+.. dropdown:: buildtest build -b tutorials/test_status/pass_returncode.yml -xt pass
+
+    .. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml -xt pass
+
+We can specify tags as a comma separated list to specify multiple
+tags so one can do ``-xt tag1,tag2`` which is equivalent to ``-xt tag1 -xt tag2``.
+You may even mix the two formats together where you can exclude tags: **tag1**, **tag2**, **tag3**
+by running ``-xt tag1 -xt tag2,tag3``.
+
+In this example below, we will exclude both  ``pass`` and ``fail`` tags which results in error message
+where no test are eligible to run after exclusion has been applied.
+
+.. dropdown:: buildtest build -b tutorials/test_status/pass_returncode.yml -xt pass,fail
+
+    .. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml -xt pass,fail
+        :returncode: 1
+
 .. _build_by_executor:
 
 Building by Executors
