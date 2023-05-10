@@ -712,6 +712,7 @@ class BuildTest:
 
         self.buildspecs = content["buildspecs"]
         self.tags = content["tags"]
+        self.exclude_tags = content["exclude_tags"]
         self.filter = content["filter"]
         self.exclude_buildspecs = content["exclude_buildspecs"]
         self.executors = content["executors"]
@@ -739,6 +740,7 @@ class BuildTest:
             "configuration": self.configuration.file,
             "buildspecs": self.buildspecs,
             "tags": self.tags,
+            "exclude_tags": self.exclude_tags,
             "filter": self.filter_buildspecs,
             "exclude_buildspecs": self.exclude_buildspecs,
             "executors": self.executors,
