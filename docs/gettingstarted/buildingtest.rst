@@ -168,7 +168,7 @@ included to run.
 
 Let's take an example buildspec file which contains 4 tests.
 
-.. literalinclude:: ./tutorials/test_status/pass_returncode.yml
+.. literalinclude:: ../tutorials/test_status/pass_returncode.yml
     :language: yaml
 
 We will demonstrate this feature, by excluding tests with tag name ``pass``. Take note all tests
