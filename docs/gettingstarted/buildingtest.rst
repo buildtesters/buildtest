@@ -170,6 +170,7 @@ Let's take an example buildspec file which contains 4 tests.
 
 .. literalinclude:: ../tutorials/test_status/pass_returncode.yml
     :language: yaml
+    :emphasize-lines: 7,15,24,33
 
 We will demonstrate this feature, by excluding tests with tag name ``pass``. Take note all tests
 are run except for those that include ``pass``.
@@ -183,8 +184,8 @@ tags so one can do ``-xt tag1,tag2`` which is equivalent to ``-xt tag1 -xt tag2`
 You may even mix the two formats together where you can exclude tags: **tag1**, **tag2**, **tag3**
 by running ``-xt tag1 -xt tag2,tag3``.
 
-In this example below, we will specify exclude both  ``pass`` and ``fail`` tags which will lead to message
-since no test can be run.
+In this example below, we will exclude both  ``pass`` and ``fail`` tags which results in error message
+where no test are eligible to run after exclusion has been applied.
 
 .. dropdown:: buildtest build -b tutorials/test_status/pass_returncode.yml -xt pass,fail
 

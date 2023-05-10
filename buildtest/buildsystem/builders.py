@@ -111,9 +111,8 @@ class Builder:
                     if self._skip_tests_by_type(recipe, name):
                         continue
 
-                if self.exclude_tags:
-                    if self._skip_tests_by_exclude_tags(recipe, name):
-                        continue
+                if self._skip_tests_by_exclude_tags(recipe, name):
+                    continue
                 # Add the builder for the script or spack schema
 
                 if recipe["type"] in ["script", "compiler", "spack"]:
@@ -432,15 +431,23 @@ class Builder:
             bool: False if ``buildtest build --exclude tags`` is not specified. If specified we return ``True`` if ``tags`` field is not in test recipe or there is a matching tag.
 
         """
+
+        # if no tags are specified we return False since no tests need to be skipped
+        if not self.exclude_tags:
+            return False
+
         tags_in_tests = recipe.get("tags", [])
+
+        # if tags are string in test recipe we need to convert to list
         if isinstance(tags_in_tests, str):
             tags_in_tests = [tags_in_tests]
-
+        # check if any excluded tags intersect with tags in test recipe and perform an intersection and return a boolean
         tag_match = bool(set(self.exclude_tags) & set(tags_in_tests))
         if tag_match:
             msg = f"Skipping test: [blue]{name}[/blue] from buildspec: [red]{self.bp.buildspec}[/red] due to tag exclusion: {self.exclude_tags}"
             console.print(msg)
             self.logger.debug(msg)
+
         return tag_match
 
     def _skip_tests_by_tags(self, recipe, name):
