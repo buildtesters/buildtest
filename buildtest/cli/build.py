@@ -616,6 +616,14 @@ class BuildTest:
         if self.helpfilter:
             print_filters()
             return
+        if self.exclude_tags:
+            # if tags are specified as comma separated list such as 'buildtest bd -xt tag1,tag2' then we split and convert to list:q
+            self.exclude_tags = [
+                tag.strip()
+                for tagname in self.exclude_tags
+                for tag in tagname.split(",")
+                if tag.strip()
+            ]
 
         # get real path to log directory which accounts for variable expansion, user expansion, and symlinks
         self.logdir = (
