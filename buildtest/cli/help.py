@@ -27,7 +27,15 @@ def print_build_help():
     )
     table.add_row(
         "buildtest build -t pass,fail",
-        "Build buildspecs by tagnames that are specified as comma sperated list",
+        "Build buildspecs by tagnames that are specified as comma separated list",
+    )
+    table.add_row(
+        "buildtest build -b <file> -xt python",
+        "Build buildspecs by file and exclude tests with tagname 'python'",
+    )
+    table.add_row(
+        "buildtest build -b <file> -xt pass,fail",
+        "Build buildspecs by file and exclude tests with tagname 'pass' and 'fail'. Tag names can be specified as comma separated list",
     )
     table.add_row(
         "buildtest build -e <executor1> -e <executor2>",
