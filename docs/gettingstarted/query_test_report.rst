@@ -343,8 +343,10 @@ value for ``--count`` then all records will be displayed.
 .. dropdown:: Query tests with ``--count`` at 0 and negative value
 
     .. command-output:: buildtest report --count=0 --no-header --terse | wc -l
+       :shell:
 
     .. command-output:: buildtest report --count=-5 --no-header --terse | wc -l
+       :shell:
 
 Terse Output
 -------------
