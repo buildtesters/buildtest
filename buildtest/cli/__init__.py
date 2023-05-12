@@ -240,7 +240,38 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
 
         parent_parser["row-count"] = argparse.ArgumentParser(add_help=False)
         parent_parser["row-count"].add_argument(
-            "--row-count", action="store_true", help="Show row count as a global option"
+            "--row-count",
+            action="store_true",
+            help="Display number of rows from query shown in table",
+        )
+        parent_parser["terse"] = argparse.ArgumentParser(add_help=False)
+        parent_parser["terse"].add_argument(
+            "-t",
+            "--terse",
+            action="store_true",
+            help="Print output in machine readable format",
+        )
+        parent_parser["no-header"] = argparse.ArgumentParser(add_help=False)
+        parent_parser["no-header"].add_argument(
+            "-n",
+            "--no-header",
+            action="store_true",
+            help="Do not print header columns in terse output (--terse)",
+        )
+        parent_parser["count"] = argparse.ArgumentParser(add_help=False)
+        parent_parser["count"].add_argument(
+            "-c",
+            "--count",
+            type=int,
+            help="Retrieve limited number of rows that get printed",
+        )
+        parent_parser["theme"] = argparse.ArgumentParser(add_help=False)
+        parent_parser["theme"].add_argument(
+            "-t",
+            "--theme",
+            metavar="Color Themes",
+            help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themese",
+            choices=list(STYLE_MAP.keys()),
         )
         return parent_parser
 
@@ -445,22 +476,15 @@ def history_menu(subparsers, parent_parser):
         metavar="", description="Query build history file", dest="history"
     )
 
-    list_parser = history_subparser.add_parser(
+    history_subparser.add_parser(
         "list",
         help="List a summary of all builds",
-        parents=[parent_parser["pager"], parent_parser["row-count"]],
-    )
-    list_parser.add_argument(
-        "-n",
-        "--no-header",
-        action="store_true",
-        help="Do not print header columns in terse output (--terse)",
-    )
-    list_parser.add_argument(
-        "-t",
-        "--terse",
-        action="store_true",
-        help="Print output in machine readable format",
+        parents=[
+            parent_parser["pager"],
+            parent_parser["row-count"],
+            parent_parser["terse"],
+            parent_parser["no-header"],
+        ],
     )
 
     query = history_subparser.add_parser(
@@ -695,20 +719,29 @@ def buildspec_menu(subparsers, parent_parser):
         "find",
         aliases=["f"],
         help="Query information from buildspecs cache",
-        parents=[parent_parser["pager"], parent_parser["row-count"]],
+        parents=[
+            parent_parser["pager"],
+            parent_parser["row-count"],
+            parent_parser["no-header"],
+            parent_parser["count"],
+        ],
     )
-
     # buildtest buildspec maintainers
     buildspec_maintainers = subparsers_buildspec.add_parser(
         "maintainers",
         aliases=["m"],
         help="Query maintainers from buildspecs cache",
-        parents=[parent_parser["row-count"]],
+        parents=[
+            parent_parser["row-count"],
+            parent_parser["terse"],
+            parent_parser["no-header"],
+        ],
     )
 
     subparsers_maintainers = buildspec_maintainers.add_subparsers()
     maintainers_find = subparsers_maintainers.add_parser(
-        "find", help="Find buildspecs based on maintainer name"
+        "find",
+        help="Find buildspecs based on maintainer name",
     )
 
     maintainers_find.add_argument(
@@ -723,15 +756,6 @@ def buildspec_menu(subparsers, parent_parser):
         "--breakdown",
         action="store_true",
         help="Breakdown of buildspecs by maintainers",
-    )
-    buildspec_maintainers.add_argument(
-        "--terse", help="Print output in machine readable format", action="store_true"
-    )
-    buildspec_maintainers.add_argument(
-        "-n",
-        "--no-header",
-        action="store_true",
-        help="Print output without header in terse output",
     )
 
     filter_group = buildspec_find.add_argument_group(
@@ -817,19 +841,9 @@ def buildspec_menu(subparsers, parent_parser):
     )
 
     terse_group.add_argument(
-        "-n",
-        "--no-header",
-        action="store_true",
-        help="Print output without header in terse output",
-    )
-    terse_group.add_argument(
         "--terse", help="Print output in machine readable format", action="store_true"
     )
-    buildspec_find.add_argument(
-        "--count",
-        type=int,
-        help="Limit number of entries queried in output",
-    )
+
     buildspec_find.add_argument(
         "-r",
         "--rebuild",
@@ -851,37 +865,28 @@ def buildspec_menu(subparsers, parent_parser):
 
     # buildtest buildspec show
     show_buildspecs = subparsers_buildspec.add_parser(
-        "show", aliases=["s"], help="Show content of buildspec file"
+        "show",
+        aliases=["s"],
+        help="Show content of buildspec file",
+        parents=[parent_parser["theme"]],
     )
     show_buildspecs.add_argument(
         "name",
         help="Show content of buildspec based on test name",
         nargs="*",
     )
-    show_buildspecs.add_argument(
-        "-t",
-        "--theme",
-        metavar="Color Themes",
-        help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themese",
-        choices=list(STYLE_MAP.keys()),
-    )
+
     # buildtest buildspec show-fail
     show_fail_buildspecs = subparsers_buildspec.add_parser(
         "show-fail",
         aliases=["sf"],
         help="Show content of buildspec file for all failed tests",
+        parents=[parent_parser["theme"]],
     )
     show_fail_buildspecs.add_argument(
         "name",
         help="Show content of buildspec based on failed test name",
         nargs="*",
-    )
-    show_fail_buildspecs.add_argument(
-        "-t",
-        "--theme",
-        metavar="Color Themes",
-        help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themes",
-        choices=list(STYLE_MAP.keys()),
     )
 
     # buildtest buildspec summary
@@ -965,23 +970,18 @@ def config_menu(subparsers, parent_parser):
     )
 
     subparsers_config.add_parser("systems", help="List all available systems")
-
+    # buildtest config validate
     subparsers_config.add_parser(
         "validate", help="Validate buildtest settings file with schema."
     )
-    view_parser = subparsers_config.add_parser(
+    # buildtest config view
+    subparsers_config.add_parser(
         "view",
         aliases=["v"],
         help="View configuration file",
-        parents=[parent_parser["pager"]],
+        parents=[parent_parser["pager"], parent_parser["theme"]],
     )
-    view_parser.add_argument(
-        "-t",
-        "--theme",
-        metavar="Color Themes",
-        help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themes",
-        choices=list(STYLE_MAP.keys()),
-    )
+
     executor_group = executors.add_mutually_exclusive_group()
 
     # buildtest config executors
@@ -1062,7 +1062,13 @@ def report_menu(subparsers, parent_parser):
         "report",
         aliases=["rt"],
         help="Query test report",
-        parents=[parent_parser["pager"], parent_parser["row-count"]],
+        parents=[
+            parent_parser["pager"],
+            parent_parser["row-count"],
+            parent_parser["terse"],
+            parent_parser["no-header"],
+            parent_parser["count"],
+        ],
     )
     subparsers = parser_report.add_subparsers(
         description="Fetch test results from report file and print them in table format",
@@ -1080,32 +1086,33 @@ def report_menu(subparsers, parent_parser):
         help="Summarize test report",
         parents=[parent_parser["pager"]],
     )
+    filter_group = parser_report.add_argument_group("filter", "Filter and Format table")
 
     # buildtest report
-    parser_report.add_argument(
+    filter_group.add_argument(
         "--filter",
         type=handle_kv_string,
         help="Filter report by filter fields. The filter fields must be a key=value pair and multiple fields can be comma separated in the following format: --filter key1=val1,key2=val2 . For list of filter fields run: --helpfilter.",
     )
 
-    parser_report.add_argument(
+    filter_group.add_argument(
         "--format",
         help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
     )
-    parser_report.add_argument(
+    filter_group.add_argument(
         "--helpfilter",
         action="store_true",
         help="List available filter fields to be used with --filter option",
     )
-    parser_report.add_argument(
+    filter_group.add_argument(
         "--helpformat", action="store_true", help="List of available format fields"
     )
-    parser_report.add_argument(
+    filter_group.add_argument(
         "--filterfields",
         action="store_true",
         help="Print raw filter fields for --filter option to filter the report",
     )
-    parser_report.add_argument(
+    filter_group.add_argument(
         "--formatfields",
         action="store_true",
         help="Print raw format fields for --format option to format the report",
@@ -1148,24 +1155,6 @@ def report_menu(subparsers, parent_parser):
         help="Retrieve oldest record of particular test",
         action="store_true",
     )
-    parser_report.add_argument(
-        "-c",
-        "--count",
-        type=int,
-        help="Retrieve limited number of rows that get printed",
-    )
-    parser_report.add_argument(
-        "-n",
-        "--no-header",
-        action="store_true",
-        help="Don't print headers column used with terse option (--terse).",
-    )
-    parser_report.add_argument(
-        "-t",
-        "--terse",
-        action="store_true",
-        help="Print output in machine readable format",
-    )
     parser_report_summary.add_argument(
         "--detailed", "-d", action="store_true", help="Enable a more detailed report"
     )
@@ -1204,9 +1193,8 @@ def inspect_menu(subparsers, parent_parser):
         "query",
         aliases=["q"],
         help="Query fields from record",
-        parents=[parent_parser["pager"]],
+        parents=[parent_parser["pager"], parent_parser["theme"]],
     )
-
     # buildtest inspect buildspec
     inspect_buildspec.add_argument(
         "buildspec", nargs="*", help="List of buildspecs to query"
@@ -1222,16 +1210,12 @@ def inspect_menu(subparsers, parent_parser):
         "list",
         aliases=["l"],
         help="List all test names, ids, and corresponding buildspecs",
-        parents=[parent_parser["pager"], parent_parser["row-count"]],
-    )
-    inspect_list.add_argument(
-        "-n",
-        "--no-header",
-        action="store_true",
-        help="Print output without header in terse format (--terse)",
-    )
-    inspect_list.add_argument(
-        "-t", "--terse", action="store_true", help="Print output in terse format"
+        parents=[
+            parent_parser["pager"],
+            parent_parser["row-count"],
+            parent_parser["terse"],
+            parent_parser["no-header"],
+        ],
     )
 
     inspect_list.add_argument(
@@ -1252,14 +1236,9 @@ def inspect_menu(subparsers, parent_parser):
         "-o", "--output", action="store_true", help="Print output file"
     )
     query_list.add_argument(
-        "-t", "--testpath", action="store_true", help="Print content of testpath"
+        "--testpath", action="store_true", help="Print content of testpath"
     )
-    query_list.add_argument(
-        "--theme",
-        metavar="Color Themes",
-        help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themese",
-        choices=list(STYLE_MAP.keys()),
-    )
+
     query_list.add_argument(
         "name", nargs="*", help="Name of builder to query in report file"
     )

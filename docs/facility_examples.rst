@@ -86,11 +86,11 @@ modules and load `impi/2020` module.
 
 The generated test script is show below, notice that ``mpiicc`` is used to compile the program and run via srun.
 
-.. dropdown:: ``buildtest inspect query -t laplace_mpi``
+.. dropdown:: ``buildtest inspect query --testpath laplace_mpi``
 
     .. code-block:: console
 
-        $ buildtest inspect query -t laplace_mpi
+        $ buildtest inspect query --testpath laplace_mpi
         ─────────────────────────────────────────────── laplace_mpi/1a4c7a6f-0f69-40e7-b451-f9f62843eee5 ────────────────────────────────────────────────
         Executor: cori.slurm.knl_debug
         Description: Laplace MPI code in C

@@ -343,8 +343,10 @@ value for ``--count`` then all records will be displayed.
 .. dropdown:: Query tests with ``--count`` at 0 and negative value
 
     .. command-output:: buildtest report --count=0 --no-header --terse | wc -l
+       :shell:
 
     .. command-output:: buildtest report --count=-5 --no-header --terse | wc -l
+       :shell:
 
 Terse Output
 -------------
@@ -516,9 +518,9 @@ If you want to see content of error file use the ``-e`` or ``--error`` flag. It 
 content of build script and generated test, which can be retrieved using ``--testpath`` and ``--buildscript``. Let's
 query test ``circle_area`` and report all of the content fields
 
-.. dropdown:: ``buildtest inspect query -o -e -t -b circle_area``
+.. dropdown:: ``buildtest inspect query -o -e --testpath -b circle_area``
 
-    .. command-output:: buildtest inspect query -o -e -t -b circle_area
+    .. command-output:: buildtest inspect query -o -e --testpath -b circle_area
 
 We can query multiple tests using ``buildtest inspect query`` since each test is a positional argument. Any
 options specified to `buildtest inspect query` will be applied to all test. For instance, let's fetch the output the
