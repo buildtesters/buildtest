@@ -240,7 +240,9 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
 
         parent_parser["row-count"] = argparse.ArgumentParser(add_help=False)
         parent_parser["row-count"].add_argument(
-            "--row-count", action="store_true", help="Show row count as a global option"
+            "--row-count",
+            action="store_true",
+            help="Display number of rows from query shown in table",
         )
         parent_parser["terse"] = argparse.ArgumentParser(add_help=False)
         parent_parser["terse"].add_argument(
@@ -1084,32 +1086,33 @@ def report_menu(subparsers, parent_parser):
         help="Summarize test report",
         parents=[parent_parser["pager"]],
     )
+    filter_group = parser_report.add_argument_group("filter", "Filter and Format table")
 
     # buildtest report
-    parser_report.add_argument(
+    filter_group.add_argument(
         "--filter",
         type=handle_kv_string,
         help="Filter report by filter fields. The filter fields must be a key=value pair and multiple fields can be comma separated in the following format: --filter key1=val1,key2=val2 . For list of filter fields run: --helpfilter.",
     )
 
-    parser_report.add_argument(
+    filter_group.add_argument(
         "--format",
         help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
     )
-    parser_report.add_argument(
+    filter_group.add_argument(
         "--helpfilter",
         action="store_true",
         help="List available filter fields to be used with --filter option",
     )
-    parser_report.add_argument(
+    filter_group.add_argument(
         "--helpformat", action="store_true", help="List of available format fields"
     )
-    parser_report.add_argument(
+    filter_group.add_argument(
         "--filterfields",
         action="store_true",
         help="Print raw filter fields for --filter option to filter the report",
     )
-    parser_report.add_argument(
+    filter_group.add_argument(
         "--formatfields",
         action="store_true",
         help="Print raw format fields for --format option to format the report",
@@ -1207,16 +1210,12 @@ def inspect_menu(subparsers, parent_parser):
         "list",
         aliases=["l"],
         help="List all test names, ids, and corresponding buildspecs",
-        parents=[parent_parser["pager"], parent_parser["row-count"]],
-    )
-    inspect_list.add_argument(
-        "-n",
-        "--no-header",
-        action="store_true",
-        help="Print output without header in terse format (--terse)",
-    )
-    inspect_list.add_argument(
-        "-t", "--terse", action="store_true", help="Print output in terse format"
+        parents=[
+            parent_parser["pager"],
+            parent_parser["row-count"],
+            parent_parser["terse"],
+            parent_parser["no-header"],
+        ],
     )
 
     inspect_list.add_argument(
