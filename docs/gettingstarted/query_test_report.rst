@@ -337,6 +337,15 @@ The ``--count`` option also works with terse mode ``--terse``, shown below is th
 
     .. command-output:: buildtest report --terse --count 2
 
+If you set ``--count=0`` no records will be displayed; however, if you set any negative
+value for ``--count`` then all records will be displayed.
+
+.. dropdown:: Query tests with ``--count`` at 0 and negative value
+
+    .. command-output:: buildtest report --count=0 --no-header --terse | wc -l
+
+    .. command-output:: buildtest report --count=-5 --no-header --terse | wc -l
+
 Terse Output
 -------------
 
