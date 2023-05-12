@@ -345,6 +345,11 @@ def test_report_limited_rows():
     report = Report(configuration=configuration)
     report.print_report(count=5)
     report.print_report(terse=True, count=5)
+    # test report query with 0 and negative number with and without terse mode
+    report.print_report(terse=False, count=0)
+    report.print_report(terse=False, count=-1)
+    report.print_report(terse=True, count=0)
+    report.print_report(terse=True, count=-1)
 
 
 @pytest.mark.cli
