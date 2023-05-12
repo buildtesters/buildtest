@@ -574,50 +574,59 @@ class Report:
             root_disk_usage|PASS|0
             root_disk_usage|PASS|0
         """
-        count = count or self.configuration.target_config["report"].get("count")
-        terse = terse or self.configuration.target_config["report"].get("terse")
+
+        count = (
+            self.configuration.target_config["report"].get("count")
+            if count is None
+            else count
+        )
+        terse = (
+            self.configuration.target_config["report"].get("terse")
+            if terse is None
+            else terse
+        )
+
         consoleColor = checkColor(color)
         if terse:
-            row_entry = []
-
-            for key in self.display_table.keys():
-                row_entry.append(self.display_table[key])
-
-            transpose_list = [list(i) for i in zip(*row_entry)]
-
-            # limited number of rows to be printed in terse mode
-            if count:
-                transpose_list = transpose_list[:count]
+            row_entry = [self.display_table[key] for key in self.display_table.keys()]
 
             if not noheader:
                 console.print("|".join(self.display_table.keys()), style=consoleColor)
 
+            transpose_list = [list(i) for i in zip(*row_entry)]
+
+            if count == 0:
+                return
+
+            # limited number of rows to be printed in terse mode. If count is negative we print all rows
+            transpose_list = transpose_list[:count] if count > 0 else transpose_list
+
             for row in transpose_list:
                 line = "|".join(row)
                 console.print(f"[{consoleColor}]{line}")
+        else:
+            row_entry = []
+            title = title or f"Report File: {self.reportfile()}"
+            table = Table(title=title, show_lines=True, expand=True)
+            for field, value in self.display_table.items():
+                table.add_column(field, overflow="fold", style=consoleColor)
+                row_entry.append(self.display_table[field])
 
-            return
+            transpose_list = [list(i) for i in zip(*row_entry)]
 
-        row_entry = []
-        title = title or f"Report File: {self.reportfile()}"
-        table = Table(title=title, show_lines=True, expand=True)
-        for field in self.display_table.keys():
-            table.add_column(field, overflow="fold", style=consoleColor)
-            row_entry.append(self.display_table[field])
-        transpose_list = [list(i) for i in zip(*row_entry)]
+            if count == 0:
+                console.print(table)
+                return
 
-        # limited number of rows to be printed
-        if count:
-            transpose_list = transpose_list[:count]
+            transpose_list = transpose_list[:count] if count > 0 else transpose_list
+            for row in transpose_list:
+                table.add_row(*row)
 
-        for row in transpose_list:
-            table.add_row(*row)
+            if row_count:
+                console.print(table.row_count)
+                return
 
-        if row_count:
-            console.print(table.row_count)
-            return
-
-        console.print(table)
+            console.print(table)
 
     def latest_testid_by_name(self, name):
         """Given a test name return test id of latest run

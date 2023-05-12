@@ -827,7 +827,7 @@ def buildspec_menu(subparsers, parent_parser):
     )
     buildspec_find.add_argument(
         "--count",
-        type=positive_number,
+        type=int,
         help="Limit number of entries queried in output",
     )
     buildspec_find.add_argument(
@@ -1151,7 +1151,7 @@ def report_menu(subparsers, parent_parser):
     parser_report.add_argument(
         "-c",
         "--count",
-        type=positive_number,
+        type=int,
         help="Retrieve limited number of rows that get printed",
     )
     parser_report.add_argument(

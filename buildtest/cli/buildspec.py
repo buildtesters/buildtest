@@ -84,9 +84,13 @@ class BuildspecCache:
             "buildspecs"
         ].get("format")
         self.header = header
-        self.pager = pager or self.configuration.target_config.get("pager")
-        self.count = count or self.configuration.target_config["buildspecs"].get(
-            "count"
+        self.pager = (
+            self.configuration.target_config.get("pager") if pager is None else pager
+        )
+        self.count = (
+            self.configuration.target_config["buildspecs"].get("count")
+            if count is None
+            else count
         )
         # if --root is not specified we set to empty list instead of None
         self.roots = roots or []
@@ -766,6 +770,31 @@ class BuildspecCache:
 
         console.print(table)
 
+    def _print_terse_format(self, tdata):
+        """This method will print the output of ``buildtest buildspec find`` in terse format.
+
+        Args:
+            tdata (list): Table data to print in terse format
+
+        Returns:
+
+        """
+        # print terse output
+        if not self.header:
+            console.print("|".join(self.table.keys()), style=self.color)
+
+        if self.count == 0:
+            return
+
+        for row in tdata:
+            if not isinstance(row, list):
+                continue
+
+            # if any entry contains None type we convert to empty string
+            row = ["" if item is None else item for item in row]
+            join_string = "|".join(row)
+            console.print(f"[{self.color}]{join_string}")
+
     def print_buildspecs(self, terse=None, header=None, quiet=None, row_count=None):
         """Print buildspec table. This method is typically called when running ``buildtest buildspec find`` or options
         with ``--filter`` and ``--format``.
@@ -796,44 +825,34 @@ class BuildspecCache:
 
         for key in self.table.keys():
             join_list.append(self.table[key])
-
             table.add_column(key, overflow="fold", header_style="blue")
 
-        t = [list(i) for i in zip(*join_list)]
-
+        tdata = [list(i) for i in zip(*join_list)]
         # if --count is specified then reduce list to length of self.count
-        if self.count:
-            t = t[: self.count]
-
-        for i in t:
-            table.add_row(*i)
+        tdata = tdata[: self.count] if self.count > 0 else tdata
 
         if self.terse:
-            # print terse output
-
-            if not self.header:
-                console.print("|".join(self.table.keys()), style=self.color)
-
-            for row in t:
-                if not isinstance(row, list):
-                    continue
-
-                # if any entry contains None type we convert to empty string
-                row = ["" if item is None else item for item in row]
-                join_string = "|".join(row)
-                console.print(f"[{self.color}]{join_string}")
-
+            self._print_terse_format(tdata)
             return
 
-        if self.pager:
-            with console.pager():
-                console.print(table)
+        # print table output
+        if self.count == 0:
+            console.print(table)
             return
+
+        for i in tdata:
+            table.add_row(*i)
 
         if row_count:
             console.print(table.row_count)
             return
 
+        # print with pager format
+        if self.pager:
+            with console.pager():
+                console.print(table)
+            return
+        # the default print format in table form
         console.print(table)
 
     def list_maintainers(self):
