@@ -816,6 +816,10 @@ class BuildTest:
         which will build the test script, and then we run the test and update report.
         """
 
+        # if --helpfilter is specified then return immediately.
+        if self.helpfilter:
+            return
+
         self.discovered_bp = discover_buildspecs(
             buildspecs=self.buildspecs,
             exclude_buildspecs=self.exclude_buildspecs,
