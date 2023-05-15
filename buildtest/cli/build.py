@@ -617,7 +617,7 @@ class BuildTest:
             print_filters()
             return
         if self.exclude_tags:
-            # if tags are specified as comma separated list such as 'buildtest bd -xt tag1,tag2' then we split and convert to list:q
+            # if tags are specified as comma separated list such as 'buildtest bd -xt tag1,tag2' then we split and convert to list
             self.exclude_tags = [
                 tag.strip()
                 for tagname in self.exclude_tags
