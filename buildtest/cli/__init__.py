@@ -12,6 +12,43 @@ from pygments.styles import STYLE_MAP
 from rich.color import Color, ColorParseError
 
 
+def build_filters_format(val):
+    """This method is used as validate argument type for ``buildtest build --filter``.
+    This method returns a dict of key, value pairs where input is in the format
+    **key1=val1,val2;key2=val3**. The semicolon is used to separate the keys and multiple values
+    can be specified via comma
+
+    Args:
+       val (str): Input string in ``key1=value1,val2;key2=value3`` format that is processed into a dictionary type
+
+    Returns:
+        dict: A dict mapping of key=value pairs
+    """
+
+    kv_dict = {}
+
+    if ";" in val:
+        entries = val.split(";")
+        for entry in entries:
+            if "=" not in entry:
+                raise argparse.ArgumentTypeError("Must specify k=v")
+
+            key, values = entry.split("=")[0], entry.split("=")[1]
+            value_list = values.split(",")
+            kv_dict[key] = value_list
+
+        return kv_dict
+
+    if "=" not in val:
+        raise argparse.ArgumentTypeError("Must specify in key=value format")
+
+    key, values = val.split("=")[0], val.split("=")[1]
+    value_list = values.split(",")
+    kv_dict[key] = value_list
+
+    return kv_dict
+
+
 def handle_kv_string(val):
     """This method is used as type field in --filter argument in ``buildtest buildspec find``.
     This method returns a dict of key,value pair where input is in format
@@ -572,8 +609,8 @@ def build_menu(subparsers):
     filter_group.add_argument(
         "-f",
         "--filter",
-        type=handle_kv_string,
-        help="Filter buildspec based on tags, type, or maintainers. Usage:  --filter key1=val1,key2=val2",
+        type=build_filters_format,
+        help="Filter buildspec based on tags, type, or maintainers. Usage:  --filter key1=val1,val2;key2=val3;key3=val4,val5",
     )
     filter_group.add_argument(
         "--helpfilter",

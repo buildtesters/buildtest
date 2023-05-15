@@ -87,7 +87,12 @@ class Builder:
                 )
                 return
 
-            if self.filters["maintainers"] not in self.bp.recipe.get("maintainers"):
+            maintainer_match = bool(
+                set(self.filters["maintainers"])
+                & set(self.bp.recipe.get("maintainers"))
+            )
+
+            if not maintainer_match:
                 console.print(
                     f"{self.bp.buildspec}: unable to find maintainer: {self.filters['maintainers']} in buildspec which contains the following maintainers: {self.bp.recipe.get('maintainers')} therefore we skip this test"
                 )
@@ -462,22 +467,29 @@ class Builder:
             bool: False if ``buildtest build --filter tags`` is not specified. If specified we return ``True`` if ``tags`` field is not in test recipe or there is a matching tag.
 
         """
+        # if no filter tags specified lets return immediately and test is not skipped
+        if not self.filters.get("tags"):
+            return False
 
-        if self.filters.get("tags"):
-            # if tags field in buildspec is empty, then we skip test only if user filters by tags
-            if not recipe.get("tags"):
-                return True
+        # if tags field in buildspec is empty, then we skip test only if user filters by tags
+        if not recipe.get("tags"):
+            return True
 
-            found = False
-            # for tagname in self.filters:
-            if self.filters["tags"] in recipe.get("tags"):
-                found = True
+        found = False
+        # the input tag names from test can be list or string
+        tests_in_tags = recipe["tags"]
+        # if input is string, convert to list otherwise we assume its a list
+        tests_in_tags = (
+            [tests_in_tags] if isinstance(tests_in_tags, str) else tests_in_tags
+        )
 
-            if not found:
-                msg = f"[{name}][{self.bp.buildspec}]: test is skipped because it is not in tag filter list: {self.filters}"
-                self.logger.info(msg)
-                print(msg)
-                return True
+        found = bool(set(self.filters["tags"]) & set(tests_in_tags))
+
+        if not found:
+            msg = f"[{name}][{self.bp.buildspec}]: test is skipped because it is not in tag filter list: {self.filters}"
+            self.logger.info(msg)
+            print(msg)
+            return True
 
         return False
 
@@ -493,15 +505,16 @@ class Builder:
             bool: False if ``buildtest build --filter type`` is not specified. If there is a match with input filter and ``type`` field in test we return ``True``
 
         """
+        if not self.filters.get("type"):
+            return False
 
-        if self.filters.get("type"):
-            found = self.filters["type"] == recipe["type"]
+        found = recipe["type"] in self.filters["type"]
 
-            if not found:
-                msg = f"[{name}][{self.bp.buildspec}]: test is skipped because it is not in type filter list: {self.filters['type']}"
-                self.logger.info(msg)
-                print(msg)
-                return True
+        if not found:
+            msg = f"[{name}][{self.bp.buildspec}]: test is skipped because it is not in type filter list: {self.filters['type']}"
+            self.logger.info(msg)
+            print(msg)
+            return True
 
         return False
 

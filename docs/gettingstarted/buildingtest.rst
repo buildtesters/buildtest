@@ -225,8 +225,8 @@ Filtering Buildspecs
 ---------------------
 
 buildtest has support for filtering buildspecs based on certain attributes defined in buildspec file. Upon :ref:`discover_buildspecs`, buildtest
-will filter out tests or entire buildspec files. The ``buildtest build --filter`` option can be used to filter buildspecs which expects a **single**
-key=value pair. Currently, buildtest can filter tests based on ``tags``, ``type`` and ``maintainers``.
+will filter out tests or entire buildspec files. The ``buildtest build --filter`` option can be used to filter tests where the format is ``key1=val1;key2=val2,val3``.
+The semicolon is used to specify multiple filter fields and the comma is used to specify multiple values for a given field.
 
 To see all available filter fields you can run ``buildtest build --helpfilter`` and buildtest will
 report the fields followed by description.

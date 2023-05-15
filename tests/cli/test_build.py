@@ -114,7 +114,7 @@ def test_build_filter_check():
     cmd = BuildTest(
         configuration=configuration,
         tags=["pass"],
-        filter_buildspecs={"tags": "pass"},
+        filter_buildspecs={"tags": ["pass"]},
         buildtest_system=system,
     )
     cmd.build()
@@ -123,7 +123,7 @@ def test_build_filter_check():
     cmd = BuildTest(
         configuration=configuration,
         buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials")],
-        filter_buildspecs={"maintainers": "@shahzebsiddiqui"},
+        filter_buildspecs={"maintainers": ["@shahzebsiddiqui"]},
         buildtest_system=system,
     )
     cmd.build()
@@ -132,7 +132,7 @@ def test_build_filter_check():
     cmd = BuildTest(
         configuration=configuration,
         buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "shell_examples.yml")],
-        filter_buildspecs={"type": "script"},
+        filter_buildspecs={"type": ["script"]},
         buildtest_system=system,
     )
     cmd.build()
@@ -144,7 +144,7 @@ def test_build_filter_check():
             buildspecs=[
                 os.path.join(BUILDTEST_ROOT, "tutorials", "shell_examples.yml")
             ],
-            filter_buildspecs={"type": "spack"},
+            filter_buildspecs={"type": ["spack"]},
             buildtest_system=system,
         )
         cmd.build()
@@ -248,6 +248,31 @@ def test_buildspec_tag_executor():
         buildtest_system=system,
     )
     cmd.build()
+
+
+# pytest.mark.cli
+def test_exclude_tags():
+    system = BuildTestSystem()
+
+    # testing buildtest build --tags fail --exclude-tags fail
+    cmd = BuildTest(
+        configuration=configuration,
+        tags=["fail"],
+        exclude_tags=["fail"],
+        buildtest_system=system,
+    )
+    cmd.build()
+
+    # testing buildtest build --buildspec $BUILDTEST_ROOT/tutorials/python-hello.yml --exclude-tags python
+    cmd = BuildTest(
+        configuration=configuration,
+        buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "python-hello.yml")],
+        exclude_tags=["python"],
+        buildtest_system=system,
+    )
+    # no test will be run
+    with pytest.raises(SystemExit):
+        cmd.build()
 
 
 @pytest.mark.cli
