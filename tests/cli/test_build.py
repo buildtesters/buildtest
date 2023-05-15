@@ -114,7 +114,7 @@ def test_build_filter_check():
     cmd = BuildTest(
         configuration=configuration,
         tags=["pass"],
-        filter_buildspecs={"tags": "pass"},
+        filter_buildspecs={"tags": ["pass"]},
         buildtest_system=system,
     )
     cmd.build()
@@ -123,7 +123,7 @@ def test_build_filter_check():
     cmd = BuildTest(
         configuration=configuration,
         buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials")],
-        filter_buildspecs={"maintainers": "@shahzebsiddiqui"},
+        filter_buildspecs={"maintainers": ["@shahzebsiddiqui"]},
         buildtest_system=system,
     )
     cmd.build()
@@ -132,7 +132,7 @@ def test_build_filter_check():
     cmd = BuildTest(
         configuration=configuration,
         buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "shell_examples.yml")],
-        filter_buildspecs={"type": "script"},
+        filter_buildspecs={"type": ["script"]},
         buildtest_system=system,
     )
     cmd.build()
@@ -144,7 +144,7 @@ def test_build_filter_check():
             buildspecs=[
                 os.path.join(BUILDTEST_ROOT, "tutorials", "shell_examples.yml")
             ],
-            filter_buildspecs={"type": "spack"},
+            filter_buildspecs={"type": ["spack"]},
             buildtest_system=system,
         )
         cmd.build()
