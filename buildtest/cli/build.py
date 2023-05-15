@@ -613,9 +613,12 @@ class BuildTest:
         self.builders = None
         self.finished_builders = None
 
+        # This command should just print available filters and exit
+        # buildtest build --helpfilter
         if self.helpfilter:
             print_filters()
             return
+
         if self.exclude_tags:
             # if tags are specified as comma separated list such as 'buildtest bd -xt tag1,tag2' then we split and convert to list
             self.exclude_tags = [
@@ -812,9 +815,6 @@ class BuildTest:
         the buildspecs and retrieve builder objects for each test. Each builder object will invoke :func:`buildtest.buildsystem.base.BuilderBase.build`
         which will build the test script, and then we run the test and update report.
         """
-
-        if self.helpfilter:
-            return
 
         self.discovered_bp = discover_buildspecs(
             buildspecs=self.buildspecs,

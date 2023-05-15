@@ -243,7 +243,6 @@ class TestBuildTest:
 
     @pytest.mark.cli
     def test_buildspec_tag_executor(self):
-
         # buildtest build --tags fail --executor generic.local.csh
         cmd = BuildTest(
             configuration=configuration,
@@ -329,7 +328,6 @@ class TestBuildTest:
 
     @pytest.mark.cli
     def test_build_rebuild(self):
-
         buildspec_file = os.path.join(BUILDTEST_ROOT, "tutorials", "python-shell.yml")
 
         # rebuild 5 times (buildtest build -b tutorials/python-shell.yml --rebuild=5
@@ -385,8 +383,6 @@ class TestBuildTest:
 
     @pytest.mark.cli
     def test_invalid_buildspes(self):
-        system = BuildTestSystem()
-
         buildspec_file = [
             os.path.join(BUILDTEST_ROOT, "tutorials", "invalid_tags.yml"),
             os.path.join(BUILDTEST_ROOT, "tutorials", "invalid_executor.yml"),
@@ -415,7 +411,6 @@ class TestBuildTest:
 
     @pytest.mark.cli
     def test_timeout(self):
-
         buildspecs = [os.path.join(BUILDTEST_ROOT, "tutorials", "sleep.yml")]
         cmd = BuildTest(
             configuration=configuration,
@@ -494,7 +489,6 @@ class TestBuildTest_TypeCheck:
             )
 
     def test_invalid_tag(self):
-
         # tags must be a list not a string
         with pytest.raises(BuildTestError):
             BuildTest(configuration=configuration, tags="pass")
@@ -541,3 +535,11 @@ class TestBuildTest_TypeCheck:
         # exclude_tags must be a list
         with pytest.raises(BuildTestError):
             BuildTest(configuration=configuration, tags=["pass"], exclude_tags=True)
+
+    def test_report_value_as_directory(self):
+        tempdir = tempfile.TemporaryDirectory()
+        # report must be a file not a directory
+        with pytest.raises(BuildTestError):
+            BuildTest(
+                configuration=configuration, tags=["pass"], report_file=tempdir.name
+            )
