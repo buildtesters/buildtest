@@ -795,7 +795,10 @@ class BuildTest:
                 )
 
             if key == "type":
-                if self.filter_buildspecs[key] not in schema_table["types"]:
+                if any(
+                    type_value not in schema_table["types"]
+                    for type_value in self.filter_buildspecs[key]
+                ):
                     raise BuildTestError(
                         f"Invalid value for filter 'type': '{self.filter_buildspecs[key]}', valid schema types are : {schema_table['types']}"
                     )
