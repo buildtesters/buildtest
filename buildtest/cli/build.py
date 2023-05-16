@@ -613,11 +613,14 @@ class BuildTest:
         self.builders = None
         self.finished_builders = None
 
+        # This command should just print available filters and exit
+        # buildtest build --helpfilter
         if self.helpfilter:
             print_filters()
             return
+
         if self.exclude_tags:
-            # if tags are specified as comma separated list such as 'buildtest bd -xt tag1,tag2' then we split and convert to list:q
+            # if tags are specified as comma separated list such as 'buildtest bd -xt tag1,tag2' then we split and convert to list
             self.exclude_tags = [
                 tag.strip()
                 for tagname in self.exclude_tags
@@ -813,6 +816,7 @@ class BuildTest:
         which will build the test script, and then we run the test and update report.
         """
 
+        # if --helpfilter is specified then return immediately.
         if self.helpfilter:
             return
 
