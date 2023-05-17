@@ -786,9 +786,6 @@ def buildspec_menu(subparsers, parent_parser):
     )
 
     buildspec_maintainers.add_argument(
-        "-l", "--list", action="store_true", help="List all maintainers"
-    )
-    buildspec_maintainers.add_argument(
         "-b",
         "--breakdown",
         action="store_true",

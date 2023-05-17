@@ -860,7 +860,7 @@ class BuildspecCache:
         return self.cache["maintainers"]
 
     def print_maintainer(self):
-        """This method prints maintainers from buildspec cache file which implements ``buildtest buildspec maintainers --list`` command."""
+        """This method prints maintainers from buildspec cache file which implements ``buildtest buildspec maintainers`` command."""
 
         if self.terse:
             if not self.header:
@@ -1340,7 +1340,6 @@ def summary_print(configuration, color=None):
 
 def buildspec_maintainers(
     configuration,
-    list_maintainers=None,
     breakdown=None,
     terse=None,
     header=None,
@@ -1352,7 +1351,6 @@ def buildspec_maintainers(
 
     Args:
         configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
-        list_maintainers (bool, optional): List all maintainers
         terse (bool, optional): Print in terse mode
         header (bool, optional): If True disable printing of headers
         color (bool, optional): Print output of table with selected color
@@ -1368,14 +1366,15 @@ def buildspec_maintainers(
         print(len(cache.list_maintainers()))
         return
 
-    if list_maintainers:
-        cache.print_maintainer()
-
     if breakdown:
         cache.print_maintainers_by_buildspecs()
+        return
 
     if name:
         cache.print_maintainers_find(name=name)
+        return
+
+    cache.print_maintainer()
 
 
 def buildspec_find(args, configuration):

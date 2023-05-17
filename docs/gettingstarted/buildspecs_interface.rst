@@ -271,17 +271,17 @@ Shown below is the help for ``buildtest buildspec maintainers --help``
 
     .. command-output:: buildtest buildspec maintainers --help
 
-If you want to see a listing of all maintainers you can use the ``--list`` as shown below
+If you want to see a listing of all maintainers you can run the following
 
-.. dropdown:: ``buildtest buildspec maintainers --list``
+.. dropdown:: ``buildtest buildspec maintainers``
 
-    .. command-output:: buildtest buildspec maintainers --list
+    .. command-output:: buildtest buildspec maintainers
 
 If you prefer a machine readable format, then you can use ``--terse`` and ``--no-header``.
 
-.. dropdown:: ``buildtest buildspec maintainers --list --terse --no-header``
+.. dropdown:: ``buildtest buildspec maintainers --terse --no-header``
 
-    .. command-output:: buildtest buildspec maintainers --list --terse --no-header
+    .. command-output:: buildtest buildspec maintainers --terse --no-header
 
 If you want to see a breakdown of all buildspecs by maintainers you can use `--breakdown` which will
 display the following information
