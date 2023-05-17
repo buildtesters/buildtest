@@ -235,15 +235,15 @@ def print_buildspec_help():
         "Find buildspec with maintainer name 'johndoe'",
     )
     table.add_row(
-        "buildtest buildspec maintainers --list",
+        "buildtest buildspec maintainers",
         "List all maintainers from buildspec cache",
     )
     table.add_row(
-        "buildtest buildspec maintainers --list --row-count",
+        "buildtest buildspec maintainers --row-count",
         "Print total count of records from the table",
     )
     table.add_row(
-        "buildtest buildspec maintainers --list --terse --no-header",
+        "buildtest buildspec maintainers --terse --no-header",
         "List all maintainers in machine readable format without header",
     )
     table.add_row(

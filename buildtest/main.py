@@ -227,7 +227,6 @@ def main():
                 name = args.name
             buildspec_maintainers(
                 configuration=configuration,
-                list_maintainers=args.list,
                 breakdown=args.breakdown,
                 terse=args.terse,
                 header=args.no_header,
