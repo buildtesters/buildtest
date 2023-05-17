@@ -19,6 +19,18 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Xiang18",
+      "name": "Xiang18",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39176411?v=4",
+      "profile": "https://github.com/xiang18",
+      "contributions": [
+        "code",
+        "test",
+        "doc",
+        "bug"
+      ]
     }
   ]
 }
