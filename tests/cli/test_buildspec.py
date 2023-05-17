@@ -188,15 +188,14 @@ def test_buildspec_find_terse():
 @pytest.mark.cli
 def test_buildspec_maintainers():
     buildspec_maintainers(configuration=configuration)
-    # buildtest buildspec maintainers --list --terse --no-header
+    # buildtest buildspec maintainers --terse --no-header
     buildspec_maintainers(
         configuration=configuration,
-        list_maintainers=True,
         terse=True,
         header=True,
         color=Color.default().name,
     )
-    # buildtest buildspec maintainers --list --terse --no-header --breakdown
+    # buildtest buildspec maintainers --terse --no-header --breakdown
     buildspec_maintainers(
         configuration=configuration,
         breakdown=True,
