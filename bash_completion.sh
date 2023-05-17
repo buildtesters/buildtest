@@ -378,7 +378,7 @@ _buildtest ()
         esac
         ;;
       maintainers|m)
-        local opts="--breakdown --help --list --row-count --terse --no-header -b -h -l -n find"
+        local opts="--breakdown --help --row-count --terse --no-header -b -h -n find"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
         case ${COMP_WORDS[3+offset]} in
