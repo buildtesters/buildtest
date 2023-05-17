@@ -97,9 +97,10 @@ _failed_tests()
   buildtest rt --fail --format name --terse --no-header | uniq
 }
 
+# list of available maintainers for tab completion for 'buildtest buildspec maintainers find'
 _avail_maintainers()
 {
-  buildtest buildspec maintainers --terse -l --no-header --row-count | sort
+  buildtest buildspec maintainers --terse --no-header | sort
 }
 
 # list of filterfields
