@@ -1,6 +1,6 @@
 {
   "projectName": "buildtest",
-  "projectOwner": "shahzebsiddiqui",
+  "projectOwner": "buildtesters",
   "files": [
     "ALL-CONTRIBUTORS.md"
   ],
@@ -9,5 +9,16 @@
   "contributorsPerLine": 7,
   "repoHost": "https://github.com",
   "commitConvention": "angular",
-  "skipCi": true
+  "skipCi": true,
+  "contributors": [
+    {
+      "login": "shahzebsiddiqui",
+      "name": "Shahzeb Siddiqui",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12942230?v=4",
+      "profile": "https://www.linkedin.com/in/shahzebmsiddiqui/",
+      "contributions": [
+        "code"
+      ]
+    }
+  ]
 }
