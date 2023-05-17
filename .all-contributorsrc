@@ -1,6 +1,6 @@
 {
   "projectName": "buildtest",
-  "projectOwner": "shahzebsiddiqui",
+  "projectOwner": "buildtesters",
   "files": [
     "ALL-CONTRIBUTORS.md"
   ],
@@ -9,5 +9,17 @@
   "contributorsPerLine": 7,
   "repoHost": "https://github.com",
   "commitConvention": "angular",
-  "skipCi": true
+  "skipCi": true,
+  "contributors": [
+    {
+      "login": "Xiangs18",
+      "name": "Sijie Xiang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22202096?v=4",
+      "profile": "https://www.linkedin.com/in/cj-xiang/",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    }
+  ]
 }
