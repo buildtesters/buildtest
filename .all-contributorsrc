@@ -1,0 +1,13 @@
+{
+  "projectName": "buildtest",
+  "projectOwner": "shahzebsiddiqui",
+  "files": [
+    "ALL-CONTRIBUTORS.md"
+  ],
+  "imageSize": 100,
+  "repoType": "github",
+  "contributorsPerLine": 7,
+  "repoHost": "https://github.com",
+  "commitConvention": "angular",
+  "skipCi": true
+}
