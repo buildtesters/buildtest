@@ -368,6 +368,16 @@
               "description": "Site Name reported in CDASH"
             }
           }
+        },
+        "profiles": {
+          "type": "object",
+          "description": "The profiles section is used for declaring one or more profiles that can be used to run ``buildtest build`` that are captured as command options ",
+            "propertyNames": {
+                "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            "additionalProperties": {
+              "$ref": "#/definitions/profiles"
+            }
         }
       }
     },
@@ -638,6 +648,29 @@
         "max_jobs": {"$ref":  "#/definitions/max_jobs"},
         "disable": {"$ref":  "#/definitions/disable"},
         "module": { "$ref": "#/definitions/module" }
+      }
+    },
+    "profiles":
+    {
+      "type": "object",
+      "properties": {
+        "buildspecs": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
+        "exclude-buildspecs": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
+        "tags": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
+        "exclude-tags": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
+        "executors": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
+        "module": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
+        "unload-modules": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
+        "module-purge": {"type": "boolean"},
+        "rebuild": {"type": "integer", "minimum": 1, "maximum": 50},
+        "limit": {"type": "integer", "minimum": 1},
+        "account": {"type": "string"},
+        "maxpendtime": {"type": "integer", "minimum": 1},
+        "pollinterval": {"type": "integer", "minimum": 1},
+        "procs": {"type": "integer", "minimum": 1},
+        "nodes": {"type": "integer", "minimum": 1},
+        "testdir": {"type": "string"},
+        "timeout": {"type": "integer", "minimum": 1}
       }
     }
   }
