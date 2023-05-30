@@ -1006,7 +1006,6 @@ class BuilderBase(ABC):
 
         # if status is defined in Buildspec, then check for returncode and regex
         if self.status:
-
             # if 'state' property is specified explicitly honor this value regardless of what is calculated
             if self.status.get("state"):
                 self.metadata["result"]["state"] = self.status["state"]

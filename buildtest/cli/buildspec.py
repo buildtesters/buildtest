@@ -80,10 +80,18 @@ class BuildspecCache:
 
         self.configuration = configuration
         self.filter = filterfields
-        self.format = formatfields
+        self.format = formatfields or self.configuration.target_config[
+            "buildspecs"
+        ].get("format")
         self.header = header
-        self.pager = pager
-        self.count = count
+        self.pager = (
+            self.configuration.target_config.get("pager") if pager is None else pager
+        )
+        self.count = (
+            self.configuration.target_config["buildspecs"].get("count")
+            if count is None
+            else count
+        )
         # if --root is not specified we set to empty list instead of None
         self.roots = roots or []
 
@@ -93,10 +101,14 @@ class BuildspecCache:
         # stores invalid buildspecs and the error messages
         self.invalid_buildspecs = {}
 
-        self.terse = terse
+        self.terse = terse or self.configuration.target_config["buildspecs"].get(
+            "terse"
+        )
         self.color = checkColor(color)
 
-        self.rebuild = rebuild
+        self.rebuild = rebuild or self.configuration.target_config["buildspecs"].get(
+            "rebuild"
+        )
         self.cache = {}
 
         self.load_paths()
@@ -112,15 +124,17 @@ class BuildspecCache:
         return self.cache
 
     def load_paths(self):
-        """Add all paths to search for buildspecs. We must read configuration file
-        and check property ``buildspec_roots`` for list of directories to search.
-        We check all directories exist, if any fail we don't add them to path.
+        """Add all paths to search for buildspecs. We read configuration file
+        and check whether we need to load buildspecs from list of directories.
+        We check if directories exist, if any fail we don't add them to path.
         If no root directories are specified we load the default buildspec roots which are
         `tutorials <https://github.com/buildtesters/buildtest/tree/devel/tutorials>`_
         and `general_tests <https://github.com/buildtesters/buildtest/tree/devel/general_tests>`_ directory.
         """
 
-        buildspec_paths = self.configuration.target_config.get("buildspec_roots") or []
+        buildspec_paths = (
+            self.configuration.target_config["buildspecs"].get("root") or []
+        )
 
         if buildspec_paths:
             self.roots += buildspec_paths
@@ -756,6 +770,31 @@ class BuildspecCache:
 
         console.print(table)
 
+    def _print_terse_format(self, tdata):
+        """This method will print the output of ``buildtest buildspec find`` in terse format.
+
+        Args:
+            tdata (list): Table data to print in terse format
+
+        Returns:
+
+        """
+        # print terse output
+        if not self.header:
+            console.print("|".join(self.table.keys()), style=self.color)
+
+        if self.count == 0:
+            return
+
+        for row in tdata:
+            if not isinstance(row, list):
+                continue
+
+            # if any entry contains None type we convert to empty string
+            row = ["" if item is None else item for item in row]
+            join_string = "|".join(row)
+            console.print(f"[{self.color}]{join_string}")
+
     def print_buildspecs(self, terse=None, header=None, quiet=None, row_count=None):
         """Print buildspec table. This method is typically called when running ``buildtest buildspec find`` or options
         with ``--filter`` and ``--format``.
@@ -768,7 +807,7 @@ class BuildspecCache:
         """
 
         # Don't print anything if --quiet is set
-        if quiet:
+        if quiet and self.rebuild:
             return
 
         self.terse = terse or self.terse
@@ -786,44 +825,34 @@ class BuildspecCache:
 
         for key in self.table.keys():
             join_list.append(self.table[key])
-
             table.add_column(key, overflow="fold", header_style="blue")
 
-        t = [list(i) for i in zip(*join_list)]
-
+        tdata = [list(i) for i in zip(*join_list)]
         # if --count is specified then reduce list to length of self.count
-        if self.count:
-            t = t[: self.count]
-
-        for i in t:
-            table.add_row(*i)
+        tdata = tdata[: self.count] if self.count > 0 else tdata
 
         if self.terse:
-            # print terse output
-
-            if not self.header:
-                console.print("|".join(self.table.keys()), style=self.color)
-
-            for row in t:
-                if not isinstance(row, list):
-                    continue
-
-                # if any entry contains None type we convert to empty string
-                row = ["" if item is None else item for item in row]
-                join_string = "|".join(row)
-                console.print(f"[{self.color}]{join_string}")
-
+            self._print_terse_format(tdata)
             return
 
-        if self.pager:
-            with console.pager():
-                console.print(table)
+        # print table output
+        if self.count == 0:
+            console.print(table)
             return
+
+        for i in tdata:
+            table.add_row(*i)
 
         if row_count:
             console.print(table.row_count)
             return
 
+        # print with pager format
+        if self.pager:
+            with console.pager():
+                console.print(table)
+            return
+        # the default print format in table form
         console.print(table)
 
     def list_maintainers(self):
@@ -831,7 +860,7 @@ class BuildspecCache:
         return self.cache["maintainers"]
 
     def print_maintainer(self):
-        """This method prints maintainers from buildspec cache file which implements ``buildtest buildspec maintainers --list`` command."""
+        """This method prints maintainers from buildspec cache file which implements ``buildtest buildspec maintainers`` command."""
 
         if self.terse:
             if not self.header:
@@ -904,13 +933,16 @@ class BuildspecCache:
 
         console.print(table)
 
-    def print_invalid_buildspecs(self, error=None, terse=None, header=None):
+    def print_invalid_buildspecs(
+        self, error=None, terse=None, header=None, row_count=None
+    ):
         """Print invalid buildspecs from cache file. This method implements command ``buildtest buildspec find invalid``
 
         Args:
             error (bool, optional): Display error messages for invalid buildspecs. Default is ``False`` where we only print list of invalid buildspecs
             terse (bool, optional): Display output in machine readable format.
             header (bool, optional): Determine whether to print header column in machine readable format.
+            row_count (bool, optional): Display row count of invalid buildspces table
         """
 
         terse = terse or self.terse
@@ -922,6 +954,10 @@ class BuildspecCache:
 
         if not self.get_invalid_buildspecs():
             console.print("There are no invalid buildspecs in cache")
+            return
+
+        if row_count:
+            print(len(self.cache["invalids"].keys()))
             return
 
         # implementation for machine readable format specified via --terse
@@ -1122,7 +1158,7 @@ def show_failed_buildspecs(
         report_file (str, optional): Full path to report file to read
         theme (str, optional): Color theme to choose. This is the Pygments style (https://pygments.org/docs/styles/#getting-a-list-of-available-styles) which is specified by ``--theme`` option
     """
-    results = Report(report_file=report_file)
+    results = Report(report_file=report_file, configuration=configuration)
     all_failed_tests = results.get_test_by_state(state="FAIL")
 
     if test_names:
@@ -1304,36 +1340,41 @@ def summary_print(configuration, color=None):
 
 def buildspec_maintainers(
     configuration,
-    list_maintainers=None,
     breakdown=None,
     terse=None,
     header=None,
     color=None,
     name=None,
+    row_count=None,
 ):
     """Entry point for ``buildtest buildspec maintainers`` command.
 
     Args:
         configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
-        list_maintainers (bool, optional): List all maintainers
         terse (bool, optional): Print in terse mode
         header (bool, optional): If True disable printing of headers
         color (bool, optional): Print output of table with selected color
         name (str, optional): List all buildspecs corresponding to maintainer name. This command is specified via ``buildtest buildspec maintainers find <name>``
+        row_count (bool, opotional): Print row count of the maintainer table. This command is specified via ``buildtest --row-count buildspec maintainers -l``
     """
 
     cache = BuildspecCache(
         configuration=configuration, terse=terse, header=header, color=color
     )
 
-    if list_maintainers:
-        cache.print_maintainer()
+    if row_count:
+        print(len(cache.list_maintainers()))
+        return
 
     if breakdown:
         cache.print_maintainers_by_buildspecs()
+        return
 
     if name:
         cache.print_maintainers_find(name=name)
+        return
+
+    cache.print_maintainer()
 
 
 def buildspec_find(args, configuration):
@@ -1358,7 +1399,7 @@ def buildspec_find(args, configuration):
     )
 
     if args.buildspec_find_subcommand == "invalid":
-        cache.print_invalid_buildspecs(error=args.error)
+        cache.print_invalid_buildspecs(error=args.error, row_count=args.row_count)
         return
 
     # buildtest buildspec find --tags

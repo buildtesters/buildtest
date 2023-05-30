@@ -25,6 +25,7 @@ def build_history(args):
             terse=args.terse,
             pager=args.pager,
             color=args.color,
+            row_count=args.row_count,
         )
 
     if args.history == "query":
@@ -70,7 +71,9 @@ def print_terse(table, no_header=None, consoleColor=None):
         console.print(f"[{consoleColor}]{line}")
 
 
-def list_build_history(no_header=None, terse=None, pager=None, color=None):
+def list_build_history(
+    no_header=None, terse=None, pager=None, color=None, row_count=None
+):
     """This method is entry point for ``buildtest history list`` which prints all previous builds
     stored in **BUILD_HISTORY_DIR**. Each directory has a ``build.json`` file that stores content
     of each build that was run by ``buildtest build``.
@@ -80,6 +83,7 @@ def list_build_history(no_header=None, terse=None, pager=None, color=None):
         terse (bool, optional): Print output in terse format
         pager (bool, optional): Print output in paging format
         color (bool, optional): Select desired color when displaying results
+        row_count (bool, optional): Print row count of all previous builds
     """
 
     consoleColor = checkColor(color)
@@ -89,6 +93,10 @@ def list_build_history(no_header=None, terse=None, pager=None, color=None):
 
     # only filter filters that are 'build.json'
     history_files = [f for f in history_files if os.path.basename(f) == "build.json"]
+
+    if row_count:
+        print(len(history_files))
+        return
 
     # sort all files alpha-numerically
     history_files = sorted_alphanumeric(history_files)

@@ -27,9 +27,14 @@ from buildtest.cli.help import buildtest_help
 from buildtest.cli.helpcolor import print_available_colors
 from buildtest.cli.history import build_history
 from buildtest.cli.info import buildtest_info
-from buildtest.cli.inspect import inspect_cmd
+from buildtest.cli.inspect import (
+    inspect_buildspec,
+    inspect_by_name,
+    inspect_list,
+    inspect_query,
+)
 from buildtest.cli.path import path_cmd
-from buildtest.cli.report import report_cmd
+from buildtest.cli.report import Report, report_cmd
 from buildtest.cli.schema import schema_cmd
 from buildtest.cli.stats import stats_cmd
 from buildtest.config import SiteConfiguration
@@ -151,6 +156,7 @@ def main():
                 exclude_buildspecs=args.exclude,
                 executors=args.executor,
                 tags=args.tags,
+                exclude_tags=args.exclude_tags,
                 filter_buildspecs=args.filter,
                 rebuild=args.rebuild,
                 stage=args.stage,
@@ -177,10 +183,11 @@ def main():
 
         if cmd.build_success():
             build_history_dir = cmd.get_build_history_dir()
+
             shutil.move(fname, os.path.join(build_history_dir, "output.txt"))
 
     # buildtest build history
-    elif args.subcommands in ["history", "hy"]:
+    if args.subcommands in ["history", "hy"]:
         build_history(args)
 
     # implementation for 'buildtest buildspec find'
@@ -220,12 +227,12 @@ def main():
                 name = args.name
             buildspec_maintainers(
                 configuration=configuration,
-                list_maintainers=args.list,
                 breakdown=args.breakdown,
                 terse=args.terse,
                 header=args.no_header,
                 color=args.color,
                 name=name,
+                row_count=args.row_count,
             )
 
         elif args.buildspecs_subcommand in ["validate", "val"]:
@@ -239,10 +246,45 @@ def main():
 
     # running buildtest inspect
     elif args.subcommands in ["inspect", "it"]:
-        inspect_cmd(args, report_file=report_file)
+        report = Report(configuration=configuration, report_file=report_file)
+        if args.inspect in ["list", "l"]:
+            inspect_list(
+                report,
+                terse=args.terse,
+                no_header=args.no_header,
+                builder=args.builder,
+                color=args.color,
+                pager=args.pager,
+                row_count=args.row_count,
+            )
+        # implements command 'buildtest inspect name'
+        if args.inspect in ["name", "n"]:
+            inspect_by_name(report, names=args.name, pager=args.pager)
+
+        if args.inspect in ["query", "q"]:
+            inspect_query(
+                report,
+                name=args.name,
+                theme=args.theme,
+                output=args.output,
+                error=args.error,
+                testpath=args.testpath,
+                buildscript=args.buildscript,
+                buildenv=args.buildenv,
+                pager=args.pager,
+            )
+
+        if args.inspect in ["buildspec", "b"]:
+            inspect_buildspec(
+                report,
+                input_buildspecs=args.buildspec,
+                all_records=args.all,
+                pager=args.pager,
+            )
+        return
 
     elif args.subcommands in ["stats"]:
-        stats_cmd(name=args.name, report_file=report_file)
+        stats_cmd(name=args.name, configuration=configuration, report_file=report_file)
     # running buildtest config
     elif args.subcommands in ["config", "cg"]:
         #  running buildtest config compilers
@@ -253,7 +295,7 @@ def main():
 
     # buildtest report
     elif args.subcommands in ["report", "rt"]:
-        report_cmd(args, report_file)
+        report_cmd(args, configuration=configuration, report_file=report_file)
 
     elif args.subcommands == "path":
         path_cmd(
@@ -264,6 +306,7 @@ def main():
             buildscript=args.buildscript,
             stagedir=args.stagedir,
             buildenv=args.buildenv,
+            configuration=configuration,
         )
     # running bnuildtest schema
     elif args.subcommands == "schema":
@@ -300,7 +343,7 @@ def main():
         clean(configuration=configuration, yes=args.yes)
 
     elif args.subcommands == "cd":
-        change_directory(args.test)
+        change_directory(args.test, configuration=configuration)
 
     elif args.subcommands == "docs":
         webbrowser.open("https://buildtest.readthedocs.io/")

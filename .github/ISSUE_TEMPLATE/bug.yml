@@ -10,8 +10,7 @@ body:
     attributes:
       label: Bug Description
       description: |
-        Please describe the bug you are facing with an output of buildtest command and expected error. In order for us to troubleshoot your issue,
-        we request you provide list of steps to reproduce the error. Please include content of buildspec file if issue is related.
+        Please describe the bug you are facing with an output of buildtest command and expected error. Please include content of buildspec file if issue is related.
       placeholder: |
         ```console
           $ buildtest <command>
@@ -19,38 +18,32 @@ body:
 
         Include content of buildspec if necessary
         ```yaml
-            version: "1.0"
             buildspecs:
               hello_world:
                 type: script
                 executor: generic.local.sh
                 run: echo "hello world"
         ```
-
     validations:
       required: true
-  - type: dropdown
-    id: version
+
+  - type: textarea
+    id: reproduce-error
     attributes:
-      label: Version
-      description: What version of buildtest are you using?
-      options:
-        - devel
-        - master
-        - v0.11.0
-        - v0.10.2
-        - v0.10.1
-        - v0.10.0
-        - v0.9.6
-        - v0.9.5
-        - v0.9.4
-        - v0.9.3
-        - v0.9.2
-        - v0.9.1
-        - v0.9.0
-        - v0.8.1
-        - v0.8.0
-        - other
+      label: Steps to reproduce the error
+      description: |
+        Please provide a list of steps to reproduce the error in-order for us to troubleshoot your issue.
+    validations:
+      required: true
+
+  - type: textarea
+    id: version-commit
+    attributes:
+      label: Version and HEAD commit
+      description: |
+        Please copy and paste output of the commands `buildtest --version` and `git log -1` in order for us to know the
+        version of the buildtest you are using and the HEAD commit. This will be automatically formatted into code, so no need for backticks.
+      render: shell
     validations:
       required: true
 
@@ -58,8 +51,11 @@ body:
     id: logs
     attributes:
       label: Relevant log output
-      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      description: |
+        Please copy and paste any relevant log output. Please provide the output of the commands `buildtest info` and `buildtest debugreport`.
       render: shell
+    validations:
+      required: false
 
   - type: checkboxes
     id: slackterms

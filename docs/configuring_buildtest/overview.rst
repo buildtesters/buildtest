@@ -44,10 +44,7 @@ As you can see the layout of configuration starts with keyword ``system`` which 
 used to define one or more systems. Your HPC site may contain more than one cluster,
 so you should define your clusters with meaningful names as this will impact when you
 reference :ref:`executors <configuring_executors>` in buildspecs. In this example, we define one
-cluster called ``generic`` which is a dummy cluster used for running tutorial examples. The
-**required** fields in the system scope are the following::
-
-    "required": ["executors", "moduletool", "hostnames", "compilers"]
+cluster called ``generic`` which is a dummy cluster used for running tutorial examples.
 
 .. _config_hostnames:
 
@@ -117,31 +114,6 @@ configure buildtest to use the module tool. This can be defined via ``moduletool
 
 
 The `moduletool` property is used for :ref:`detecting compilers <detect_compilers>` when you run ``buildtest config compilers find``.
-
-.. _buildspec_roots:
-
-buildspec roots
------------------
-
-buildtest can discover buildspec using ``buildspec_roots`` keyword. This field is a list
-of directory paths to search for buildspecs. For example we clone the repo
-https://github.com/buildtesters/buildtest-nersc at **$HOME/buildtest-nersc** and assign
-this to **buildspec_roots** as follows:
-
-.. code-block:: yaml
-
-    buildspec_roots:
-      - $HOME/buildtest-nersc
-
-This field is used with the ``buildtest buildspec find`` command. If you rebuild
-your buildspec cache via ``--rebuild`` option, buildtest will search for all buildspecs in
-directories specified by **buildspec_roots** property. buildtest will recursively
-find all **.yml** extension and validate each buildspec with appropriate schema.
-
-By default buildtest will add the ``$BUILDTEST_ROOT/tutorials`` and ``$BUILDTEST_ROOT/general_tests``
-to search path when searching for buildspecs with ``buildtest buildspec find`` command. This
-is only true if there is no root buildspec directory specified which can be done via `buildspec_roots`
-or `--root` option.
 
 .. _configuring_executors:
 
@@ -399,7 +371,7 @@ Alternately, you can override configuration setting via ``buildtest build --acco
 for all batch jobs.
 
 Poll Interval
-----------------
+~~~~~~~~~~~~~~
 
 The ``pollinterval`` field is used  to poll jobs at set interval in seconds
 when job is active in queue. The poll interval can be configured on command line
@@ -411,7 +383,7 @@ using ``buildtest build --pollinterval`` which overrides the configuration value
 
 
 Max Pend Time
----------------
+~~~~~~~~~~~~~~
 
 The ``maxpendtime`` is **maximum** time job can be pending
 within an executor, if it exceeds the limit buildtest will cancel the job.
@@ -441,7 +413,7 @@ For more details on `maxpendtime` click :ref:`here <max_pend_time>`.
 .. _pbs_executors:
 
 PBS Executors
---------------
+~~~~~~~~~~~~~~
 
 .. Note:: buildtest PBS support relies on job history set because buildtest needs to query job after completion using ``qstat -x``. This
           can be configured using ``qmgr`` by setting ``set server job_history_enable=True``. For more details see section **14.15.5.1 Enabling Job History** in `PBS 2021.1.3 Admin Guide <https://help.altair.com/2021.1.3/PBS%20Professional/PBSAdminGuide2021.1.3.pdf>`_
@@ -542,6 +514,76 @@ based on platform (Linux, Mac).
 
 The buildtest logs will start with **buildtest_** followed by random identifier with
 a **.log** extension.
+
+Configuring Buildspec Cache
+----------------------------
+
+The :ref:`buildtest buildspec find <find_buildspecs>` command can be configured using the configuration file to provide sensible
+defaults. This can be shown in the configuration file below:
+
+.. code-block:: yaml
+
+        buildspecs:
+          # whether to rebuild cache file automatically when running `buildtest buildspec find`
+          rebuild: False
+          # limit number of records to display when running `buildtest buildspec find`
+          count: 15
+          # format fields to display when running `buildtest buildspec find`, By default we will show name,description
+          format: "name,description"
+          # enable terse mode
+          terse: False
+          # specify list of directories to search for buildspecs when building cache
+          #root: [ $BUILDTEST_ROOT/examples, /tmp/buildspecs ]
+
+
+The ``rebuild: False`` means buildtest won't rebuild the buildcache every time you run `buildtest buildspec find`. If the
+cache file is not present, it will automatically rebuild the cache, otherwise it will build the cache if one specifies
+``--rebuild`` option or ``rebuild: True`` is set in the configuration file.
+
+The buildspec cache is built by reading the contents of the buildspec file on the filesystem; therefore if you make changes
+to the buildspecs, you will need to rebuild the buildspec cache by running `buildtest buildspec find --rebuild`.
+
+The configuration options such as ``count``, ``format``, ``terse`` can  be tweaked to your preference. These configuration values
+can be overridden by command line option.
+
+.. _buildspec_roots:
+
+Root directory for searching buildspecs when building the buildspec cache
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In-order to build the buildspec cache, buildtest needs a list of directories to search for buildspecs on the filesystem. This
+can be done by using the ``root`` property where you can specify a list of directories to search. By default, this field is commented out.
+You can specify the paths via ``buildtest buildspec find --root <dir>`` or specify them in the configuration file.
+
+If you rebuild your buildspec cache via ``--rebuild`` option, buildtest will search for all buildspecs in
+directories specified by **root** property. buildtest will recursively find all **.yml** extension and validate
+each buildspec with appropriate schema.
+
+By default buildtest will add the ``$BUILDTEST_ROOT/tutorials`` and ``$BUILDTEST_ROOT/general_tests``
+to search path when searching for buildspecs with ``buildtest buildspec find`` command.
+
+Configuring behavior for buildtest report
+------------------------------------------
+
+The ``report`` section in configuration file allows you to configure behavior of ``buildtest report`` command. The
+``report`` section is shown below:
+
+.. code-block:: yaml
+
+    report:
+      count: 25
+      #enable terse mode for report
+      terse: False
+      format: "name,id,state,runtime,returncode"
+      # show the latest for every test
+      latest: True
+      # show the oldest for every test
+      oldest: False
+
+The ``count`` property limits the number of records to display when running ``buildtest report`` command. The ``format`` property
+controls the fields to display when running ``buildtest report``. The ``terse`` property enables terse mode for ``buildtest report``.
+By default we will show the latest run for each test when running ``buildtest report``. The ``latest`` property can be set to ``False``
+if you want to change this behavior.
 
 .. _cdash_configuration:
 

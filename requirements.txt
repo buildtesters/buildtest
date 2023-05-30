@@ -10,3 +10,5 @@ pytest
 isort
 black==23.3.0
 pyflakes
+# https://urllib3.readthedocs.io/en/latest/v2-migration-guide.html
+urllib3==1.26.*

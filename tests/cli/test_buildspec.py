@@ -53,6 +53,10 @@ def test_buildspec_validate():
 
 @pytest.mark.cli
 def test_func_buildspec_find():
+    cache = BuildspecCache(configuration=configuration, rebuild=True)
+    # buildtest buildspec find --rebuild --quiet
+    cache.print_buildspecs(quiet=True)
+
     # buildtest buildspec find --rebuild --terse --no-header
     cache = BuildspecCache(
         rebuild=True, configuration=configuration, terse=True, header=False
@@ -73,6 +77,9 @@ def test_func_buildspec_find():
     # buildtest buildspec find --rebuild
     cache = BuildspecCache(rebuild=True, configuration=configuration)
     cache.print_buildspecs()
+    cache.print_buildspecs(row_count=0)
+    cache.print_buildspecs(row_count=5)
+    cache.print_buildspecs(row_count=-1)
 
     # buildtest buildspec find
     cache = BuildspecCache(configuration=configuration)
@@ -168,6 +175,7 @@ def test_buildspec_find_terse():
         color=Color.default().name,
     )
     cache.print_buildspecs()
+    cache.print_buildspecs(row_count=0)
     cache.print_tags()
     cache.print_executors()
     cache.print_buildspecfiles()
@@ -179,13 +187,15 @@ def test_buildspec_find_terse():
 
 @pytest.mark.cli
 def test_buildspec_maintainers():
+    buildspec_maintainers(configuration=configuration)
+    # buildtest buildspec maintainers --terse --no-header
     buildspec_maintainers(
         configuration=configuration,
-        list_maintainers=True,
         terse=True,
         header=True,
         color=Color.default().name,
     )
+    # buildtest buildspec maintainers --terse --no-header --breakdown
     buildspec_maintainers(
         configuration=configuration,
         breakdown=True,
@@ -193,6 +203,9 @@ def test_buildspec_maintainers():
         header=True,
         color=Color.default().name,
     )
+    # buildtest buildspec maintainers --row-count
+    buildspec_maintainers(configuration=configuration, row_count=True)
+    # buildtest buildspec maintainers find @shahzebsiddiqui
     buildspec_maintainers(configuration=configuration, name="@shahzebsiddiqui")
 
 
@@ -201,35 +214,27 @@ def test_buildspec_find_invalid():
     cache = BuildspecCache(configuration=configuration)
 
     # testing buildtest buildspec find invalid. This will assert SystemExit exception raised by sys.exit
-    try:
+    with pytest.raises(SystemExit):
         cache.print_invalid_buildspecs(error=True)
-    except SystemExit:
-        pass
 
-    try:
+    with pytest.raises(SystemExit):
         cache.print_invalid_buildspecs(error=False)
-    except SystemExit:
-        pass
 
-    try:
+    with pytest.raises(SystemExit):
         cache.print_invalid_buildspecs(error=True, terse=True)
-    except SystemExit:
-        pass
 
-    try:
+    with pytest.raises(SystemExit):
         cache.print_invalid_buildspecs(error=False, terse=True)
-    except SystemExit:
-        pass
 
-    try:
+    with pytest.raises(SystemExit):
         cache.print_invalid_buildspecs(error=True, terse=True, header=True)
-    except SystemExit:
-        pass
 
-    try:
+    with pytest.raises(SystemExit):
         cache.print_invalid_buildspecs(error=False, terse=True, header=True)
-    except SystemExit:
-        pass
+
+    cache.print_invalid_buildspecs(
+        error=False, terse=False, header=False, row_count=True
+    )
 
 
 @pytest.mark.cli
@@ -370,11 +375,11 @@ def test_buildspec_show_fail():
 
     # Query a test that is NOT in state=FAIL
 
-    results = Report()
+    results = Report(configuration=configuration)
     pass_test = random.sample(results.get_test_by_state(state="PASS"), 1)
     show_failed_buildspecs(configuration=configuration, test_names=[pass_test])
 
-    report = Report()
+    report = Report(configuration=configuration)
     # get a random failed test from report file to be used for showing content of buildspec file
     fail_tests = random.sample(report.get_test_by_state(state="FAIL"), 1)
     # buildtest buildspec show-fail <test> --theme monokai

@@ -1,6 +1,35 @@
 CHANGELOG
 =========
 
+v1.4 (May 4th, 2023)
+----------------------
+
+**Buildspec Changes**
+
+- Add support for logical AND in status check by introducing a new property ``mode`` `#1429 <https://github.com/buildtesters/buildtest/pull/1429>`_
+- Remove `suite` property in spack schema to ensure suitenames are auto-generated when running `spack test results` `1451 <https://github.com/buildtesters/buildtest/pull/1451>`_
+
+**Command Line Changes**
+
+- Add support for building multiple tags by comma separated list ``buildtest build --tags tag1,tag2,tag3``. `1419 <https://github.com/buildtesters/buildtest/pull/1419>`_
+- Add option ``buildtest config compilers find --file`` to save configuration file in alternative location. `#1420 <https://github.com/buildtesters/buildtest/pull/1420>`_
+- Add pagination support for ``buildtest history`` and ``buildtest inspect``. `#1424 <https://github.com/buildtesters/buildtest/pull/1424>`_, `#1428 <https://github.com/buildtesters/buildtest/pull/1428>`_
+- Add global option ``--row-count`` that can be used with ``buildtest inspect``, ``buildtest buildspec find``, ``buildtest buildspec invalid``, ``buildtest buildspec maintainers``, ``buildtest report`` and ``buildtest history`` command. `#1463 <https://github.com/buildtesters/buildtest/pull/1463>`_
+**Configuration Changes**
+
+- Add support for ``buildspecs`` property in configuration file to configure behavior of ``buildtest buildspec find`` command. `#1455 <https://github.com/buildtesters/buildtest/pull/1455>`_
+- Add support for ``report`` section in configuration file to control behavior of ``buildtest report`` command `1459 <https://github.com/buildtesters/buildtest/pull/1459>`_
+- Rename ``buildspecs_root`` to ``root`` under the ``buildspecs`` section. `#1457 <https://github.com/buildtesters/buildtest/pull/1457>`_
+- Change pattern property for executor names to be alphanumeric `#1440 <https://github.com/buildtesters/buildtest/pull/1440>`_
+
+**Misc Updates**
+
+- Update github issue templates `#1430 <https://github.com/buildtesters/buildtest/pull/1430>`_, `#1431 <https://github.com/buildtesters/buildtest/pull/1431>`_
+- Fix issue with tab-completion for subcommands at top-level options `#1432 <https://github.com/buildtesters/buildtest/pull/1432>`_
+- Remove ``codecov`` dependency `#1436 <https://github.com/buildtesters/buildtest/pull/1436>`_
+- Add documentation on Assert Less Than `#1439 <https://github.com/buildtesters/buildtest/pull/1439>`_
+- Remove CI job for Cori and refactor tests `#1442 <https://github.com/buildtesters/buildtest/pull/1442>`_
+
 v1.3 (Mar 7th, 2023)
 ----------------------
 

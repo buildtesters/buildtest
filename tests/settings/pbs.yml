@@ -2,6 +2,7 @@ system:
   generic:
     hostnames: ['.*']
     moduletool: N/A
+    pager: False
     executors:
       defaults:
         pollinterval: 5

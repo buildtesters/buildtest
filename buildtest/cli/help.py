@@ -27,7 +27,15 @@ def print_build_help():
     )
     table.add_row(
         "buildtest build -t pass,fail",
-        "Build buildspecs by tagnames that are specified as comma sperated list",
+        "Build buildspecs by tagnames that are specified as comma separated list",
+    )
+    table.add_row(
+        "buildtest build -b <file> -xt python",
+        "Build buildspecs by file and exclude tests with tagname 'python'",
+    )
+    table.add_row(
+        "buildtest build -b <file> -xt pass,fail",
+        "Build buildspecs by file and exclude tests with tagname 'pass' and 'fail'. Tag names can be specified as comma separated list",
     )
     table.add_row(
         "buildtest build -e <executor1> -e <executor2>",
@@ -159,6 +167,10 @@ def print_buildspec_help():
         "buildtest buildspec find invalid --error",
         "Show invalid buildspecs with error messages",
     )
+    table.add_row(
+        "buildtest buildspec find invalid --row-count",
+        "Print total count of records from the table",
+    )
     console.print(table)
 
     table = Table(title="Validating Buildspecs", show_lines=False)
@@ -223,11 +235,15 @@ def print_buildspec_help():
         "Find buildspec with maintainer name 'johndoe'",
     )
     table.add_row(
-        "buildtest buildspec maintainers --list",
+        "buildtest buildspec maintainers",
         "List all maintainers from buildspec cache",
     )
     table.add_row(
-        "buildtest buildspec maintainers --list --terse --no-header",
+        "buildtest buildspec maintainers --row-count",
+        "Print total count of records from the table",
+    )
+    table.add_row(
+        "buildtest buildspec maintainers --terse --no-header",
         "List all maintainers in machine readable format without header",
     )
     table.add_row(
@@ -311,6 +327,10 @@ def print_inspect_help():
     )
     table.add_row("buildtest inspect list -t", "Show output in terse format")
     table.add_row("buildtest inspect list --pager", "Paginate output of inspect list")
+    table.add_row(
+        "buildtest inspect list --row-count",
+        "Print total count of records from the table",
+    )
     table.add_row(
         "buildtest inspect name hello", "Display last run for test name 'hello'"
     )
@@ -406,6 +426,10 @@ def print_history_help():
 
     table.add_row("buildtest history list", "List all build history files")
     table.add_row("buildtest history list --terse", "Print output in terse format")
+    table.add_row(
+        "buildtest history list --row-count",
+        "Print total count of records from the table",
+    )
     table.add_row(
         "buildtest history list --pager", "Paginate output of the history list"
     )

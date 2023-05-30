@@ -107,6 +107,7 @@ is compared with a reference value that can be useful when running performance c
 - :ref:`assert_ge`
 - :ref:`assert_gt`
 - :ref:`assert_le`
+- :ref:`assert_lt`
 - :ref:`assert_eq`
 - :ref:`assert_ne`
 - :ref:`assert_range`
@@ -170,6 +171,18 @@ Less Than Equal
 In this example, we perform a **<=** operation, this can be done via ``assert_le`` property
 
 .. literalinclude:: ../tutorials/perf_checks/assert_le.yml
+    :language: yaml
+    :emphasize-lines: 37-46
+    :linenos:
+
+.. _assert_lt:
+
+Less Than
+~~~~~~~~~~~
+
+In this example, we perform a **<** operation, this can be done via ``assert_lt`` property
+
+.. literalinclude:: ../tutorials/perf_checks/assert_lt.yml
     :language: yaml
     :emphasize-lines: 37-46
     :linenos:

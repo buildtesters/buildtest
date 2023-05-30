@@ -210,19 +210,10 @@
           "type": "object",
           "description": "View test results via ``spack test results`` after running tests via ``spack test run``. Results can be viewed using suitename or installed specs or both.",
           "additionalProperties": false,
-          "anyOf": [
-                    {"required": ["specs"] },
-                    {"required": ["suite"] },
-                    {"required": ["specs","suite"] }
-          ],
           "properties": {
             "option": {
               "type": "string",
               "description": "Pass options to ``spack test results``"
-            },
-            "suite": {
-                  "$ref": "definitions.schema.json#/definitions/list_of_strings",
-                  "description": "Report results by  suite name by running ``spack test results <suite>``."
             },
             "specs": {
                   "$ref": "definitions.schema.json#/definitions/list_of_strings",

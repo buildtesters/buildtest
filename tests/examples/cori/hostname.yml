@@ -1,7 +1,0 @@
-buildspecs:
-  hostname_knl:
-    type: script
-    executor: cori.slurm.knl_debug
-    description: "Run hostname via KNL debug queue"
-    sbatch: ["-t 5", "-n 1"]
-    run: hostname

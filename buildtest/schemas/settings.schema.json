@@ -18,12 +18,28 @@
     }
   },
   "definitions": {
+    "terse": {
+      "type": "boolean",
+      "description": "A boolean to determine whether to enable terse mode"
+    },
+    "format": {
+        "type": "string",
+        "description": "Determine the format fields to display when viewing table results"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Determine number of records to display in a table"
+    },
+
     "system": {
       "required": [
         "executors",
         "moduletool",
         "hostnames",
-        "compilers"
+        "compilers",
+        "buildspecs",
+        "report"
       ],
       "additionalProperties": false,
       "type": "object",
@@ -44,13 +60,6 @@
           "type": "integer",
           "minimum": 1,
           "description": "Specify size of Process Pool for parallel processing using ``multiprocessing.Pool``"
-        },
-        "buildspec_roots": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "Specify a list of directory paths to search buildspecs. This field can be used with ``buildtest buildspec find`` to rebuild buildspec cache or build tests using ``buildtest build`` command"
         },
         "testdir": {
           "type": "string",
@@ -73,6 +82,46 @@
           "type": "integer",
           "minimum": 1,
           "description": "Specify timeout duration in number of seconds"
+        },
+        "pager":
+          {
+            "type": "boolean",
+            "description": "A boolean to determine whether to enable paging when viewing buildspec cache"
+          },
+        "buildspecs":
+        {
+          "type": "object",
+          "description": "Specify configuration for ``buildtest buildspec`` command",
+          "additionalProperties": false,
+          "properties": {
+            "rebuild": {
+              "type": "boolean",
+              "description": "A boolean to determine whether to rebuild buildspec cache"
+            },
+            "count": { "$ref": "#/definitions/count" } ,
+            "format": {
+              "$ref": "#/definitions/format"
+            },
+            "terse": { "$ref": "#/definitions/terse" },
+            "root": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Specify a list of directory paths to search buildspecs. This field can be used with ``buildtest buildspec find`` to rebuild buildspec cache or build tests using ``buildtest build`` command"
+            }
+          }
+        },
+        "report":
+        {
+          "type": "object",
+          "properties": {
+            "terse": { "$ref": "#/definitions/terse" },
+            "format": { "$ref": "#/definitions/format" },
+            "count": { "$ref": "#/definitions/count" },
+            "latest": {"type": "boolean", "description": "A boolean to determine whether to show latest test run"},
+            "oldest": {"type": "boolean", "description": "A boolean to determine whether to show oldest test run"}
+          }
         },
         "processor": {
           "type": "object",
@@ -252,46 +301,51 @@
               "local": {
                 "type": "object",
                 "description": "The ``local`` section is used for declaring local executors for running jobs on local machine",
-                "patternProperties": {
-                  "^.*$": {
-                    "$ref": "#/definitions/local"
-                  }
+                "propertyNames": {
+                  "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "additionalProperties": {
+                  "$ref": "#/definitions/local"
                 }
               },
               "lsf": {
                 "type": "object",
                 "description": "The ``lsf`` section is used for declaring LSF executors for running jobs using LSF scheduler",
-                "patternProperties": {
-                  "^.*$": {
-                    "$ref": "#/definitions/lsf"
-                  }
+                "propertyNames": {
+                  "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "additionalProperties": {
+                  "$ref": "#/definitions/lsf"
                 }
               },
               "slurm": {
                 "type": "object",
                 "description": "The ``slurm`` section is used for declaring Slurm executors for running jobs using Slurm scheduler",
-                "patternProperties": {
-                  "^.*$": {
-                    "$ref": "#/definitions/slurm"
-                  }
+                "propertyNames": {
+                  "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "additionalProperties": {
+                  "$ref": "#/definitions/slurm"
                 }
               },
               "cobalt": {
                 "type": "object",
                 "description": "The ``cobalt`` section is used for declaring Cobalt executors for running jobs using Cobalt scheduler",
-                "patternProperties": {
-                  "^.*$": {
-                    "$ref": "#/definitions/cobalt"
-                  }
+                "propertyNames": {
+                  "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "additionalProperties": {
+                  "$ref": "#/definitions/cobalt"
                 }
               },
               "pbs": {
                 "type": "object",
                 "description": "The ``pbs`` section is used for declaring PBS executors for running jobs using PBS scheduler",
-                "patternProperties": {
-                  "^.*$": {
-                    "$ref": "#/definitions/pbs"
-                  }
+                "propertyNames": {
+                  "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "additionalProperties": {
+                  "$ref": "#/definitions/pbs"
                 }
               }
             }

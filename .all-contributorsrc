@@ -1,0 +1,49 @@
+{
+  "projectName": "buildtest",
+  "projectOwner": "buildtesters",
+  "files": [
+    "ALL-CONTRIBUTORS.md"
+  ],
+  "imageSize": 100,
+  "repoType": "github",
+  "contributorsPerLine": 7,
+  "repoHost": "https://github.com",
+  "commitConvention": "angular",
+  "skipCi": true,
+  "contributors": [
+    {
+      "login": "prathmesh4321",
+      "name": "Prathmesh Sambrekar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35829130?v=4",
+      "profile": "https://github.com/prathmesh4321",
+      "contributions": [
+        "code",
+        "test",
+        "doc"
+      ]
+    },
+    {
+      "login": "shahzebsiddiqui",
+      "name": "Shahzeb Siddiqui",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12942230?v=4",
+      "profile": "https://www.linkedin.com/in/shahzebmsiddiqui/",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
+    },
+    {
+      "login": "Xiang18",
+      "name": "Xiang18",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39176411?v=4",
+      "profile": "https://github.com/xiang18",
+      "contributions": [
+        "code",
+        "test",
+        "doc",
+        "bug"
+      ]
+    }
+  ]
+}

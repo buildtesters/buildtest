@@ -4,6 +4,7 @@ schema definition 'spack.schema.json' that defines how buildspecs are written.
 """
 
 import os
+import uuid
 
 from buildtest.builders.base import BuilderBase
 from buildtest.exceptions import BuildTestError
@@ -147,8 +148,8 @@ class SpackBuilder(BuilderBase):
             spack_test_cmd.append(spack_configuration["test"]["run"]["option"])
 
         run_specs = spack_configuration["test"]["run"]["specs"]
-
-        spack_test_cmd.append(f"--alias {self.name}")
+        suite_name = str(uuid.uuid4())
+        spack_test_cmd.append(f"--alias {suite_name}")
 
         for spec in run_specs:
             spack_test_cmd.append(spec)
@@ -156,16 +157,13 @@ class SpackBuilder(BuilderBase):
         lines.append(" ".join(spack_test_cmd))
 
         opts = spack_configuration["test"]["results"].get("option") or ""
-        # fetch results using 'spack test results <suite>'
-        if spack_configuration["test"]["results"].get("suite"):
-            for suite in spack_configuration["test"]["results"]["suite"]:
-                lines.append(f"spack test results {opts} {suite}")
 
         # fetch results using 'spack test results -- <spec>'
         if spack_configuration["test"]["results"].get("specs"):
             for spec in spack_configuration["test"]["results"]["specs"]:
                 lines.append(f"spack test results {opts} -- {spec}")
-
+        else:
+            lines.append(f"spack test results {opts} {suite_name}")
         return lines
 
     def _resolve_spack_root(self, path, verify_spack=True):
