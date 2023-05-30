@@ -710,6 +710,10 @@ def build_menu(subparsers):
         help="Specify test timeout in number of seconds",
         type=positive_number,
     )
+    extra_group.add_argument(
+        "--save-profile",
+        help="Save buildtest command options into a profile and update configuration file",
+    )
 
 
 def buildspec_menu(subparsers, parent_parser):
