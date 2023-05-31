@@ -529,8 +529,8 @@ class BuildTest:
             retry (int, optional): Number of retry for failed jobs
             account (str, optional): Project account to charge jobs. This takes input argument ``buildtest build --account``
             helpfilter (bool, optional): Display available filter fields for ``buildtest build --filter`` command. This argument is set to ``True`` if one specifies ``buildtest build --helpfilter``
-            numprocs (str, optional): List of comma separated process values to run batch jobs specified via ``buildtest build --procs``
-            numnodes (str, optional): List of comma separated nodes values to run batch jobs specified via ``buildtest build --nodes``
+            numprocs (list, optional): List of comma separated process values to run batch jobs specified via ``buildtest build --procs``
+            numnodes (list, optional): List of comma separated nodes values to run batch jobs specified via ``buildtest build --nodes``
             modules (str, optional): List of modules to load for every test specified via ``buildtest build --modules``.
             modulepurge (bool, optional): Determine whether to run 'module purge' before running test. This is specified via ``buildtest build --modulepurge``.
             unload_modules (str, optional): List of modules to unload for every test specified via ``buildtest build --unload-modules``.
@@ -812,8 +812,13 @@ class BuildTest:
                 f"Unable to save profile to configuration file, configuration file {self.configuration.file} does not exist"
             )
 
+        # dictionary to store configuration for a profile
         profile_configuration = {
-            "buildspecs": self.buildspecs,
+            "buildspecs": [
+                resolve_path(file, exist=True)
+                for file in self.buildspecs
+                if resolve_path(file, exist=True)
+            ],
             "exclude-buildspecs": self.exclude_buildspecs,
             "tags": self.tags,
             "exclude-tags": self.exclude_tags,
@@ -829,6 +834,7 @@ class BuildTest:
             "testdir": self.testdir,
             "timeout": self.timeout,
         }
+        # iterate over profile configuration and remove keys that are None
         remove_keys = []
         for key, value in profile_configuration.items():
             if value is None:
@@ -836,20 +842,19 @@ class BuildTest:
         for key in remove_keys:
             del profile_configuration[key]
 
-        print(profile_configuration)
-        return
         system = self.configuration.name()
-        # delete system entry
+        # delete system entry since we need to update with new profile
         del self.configuration.config["system"][system]
         self.configuration.config["system"][system] = self.configuration.target_config
 
+        # if profile section does not exist we create it
         if not self.configuration.target_config.get("profiles"):
             self.configuration.target_config["profiles"] = {}
-
+        # update profile section with new profile. If profile already exist we override it
         self.configuration.target_config["profiles"][
             self.save_profile
         ] = profile_configuration
-
+        # validate entire buildtest configuration with schema to ensure configuration is valid
         custom_validator(
             self.configuration.config, schema_table["settings.schema.json"]["recipe"]
         )
@@ -906,7 +911,7 @@ class BuildTest:
         """
 
         # if --helpfilter is specified then return immediately.
-        if self.helpfilter:
+        if self.helpfilter or self.save_profile:
             return
 
         self.discovered_bp = discover_buildspecs(
