@@ -96,7 +96,7 @@ The schemas are found in top-level folder `buildtest/schemas/ <https://github.co
 and published via Github Pages at https://buildtesters.github.io/buildtest/. Each schema has a unique URI defined
 by `$id <https://json-schema.org/understanding-json-schema/structuring.html#the-id-property>`_.
 
-For any issues with schema, please create an `issue <https://github.com/buildtesters/buildtest/issues>`_ in buildtest.
+For any issues with schema, please create an `issue <https://github.com/buildtesters/buildtest/issues/new/choose>`_ in buildtest.
 
 References
 ------------
@@ -119,7 +119,7 @@ Documentation
 buildtest `documentation <http://buildtest.readthedocs.io/en/latest/>`_  is your
 source for getting help with buildtest. If you get stuck check out the
 `current issues <https://github.com/buildtesters/buildtest/issues>`_ to see
-if you face similar issue. If all else fails please create an `issue <https://buildtest.readthedocs.io/en/devel/what_is_buildtest.html>`_.
+if you face similar issue. If all else fails please create an `issue <https://github.com/buildtesters/buildtest/issues/new/choose>`_.
 
 Source Code
 ------------

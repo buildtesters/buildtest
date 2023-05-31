@@ -502,20 +502,20 @@ Using Profiles
 
 Buildtest has a concept of profiles, which allows one to run a set of ``buildtest build`` options without having to remember
 all the options. This can be useful if you are running a set of tests repeatedly. Inorder to use profiles you must first,
-create a profile by using `--save-profile`.
+create a profile by using ``--save-profile``.
 
-For example, let's create a profile called `python-tests` for all tests with tag `python`
+For example, let's create a profile called **python-tests** for all tests with tag ``python``
 
 .. dropdown:: ``buildtest build -t python --save-profile=python-tests``
 
     .. command-output:: buildtest build -t python --save-profile=python-tests
 
-Next, let's see our configuration file, you will notice a new section called `profiles`
-with a profile called `python-tests`
+Next, let's see our configuration file, you will notice a new section called ``profiles``
+with a profile called **python-tests**
 
 .. dropdown:: buildtest configuration with profile
 
-    .. command-output:: cat $BUILDTEST_ROOT/buildtest/settings/config.yml
+    .. command-output:: cat buildtest/settings/config.yml
         :shell:
 
 Next, let's run the profile `python-tests` and take note that it will run all tests with tag `python`
@@ -523,3 +523,18 @@ Next, let's run the profile `python-tests` and take note that it will run all te
 .. dropdown:: ``buildtest build --profile=python-tests``
 
     .. command-output:: buildtest build --profile=python-tests
+
+The profile can be configured with several other options, not limited to `tags`. Let's create anoother profile
+named ``profile-demo`` with the following options:
+
+.. dropdown:: buildtest build -b tutorials/job_dependency -x tutorials/job_dependency/ex1.yml --tags=python --exclude-tags=network --executor=generic.local.csh --limit=10 --rebuild=2 --account=dev --timeout=10 --nodes 1 2 --procs 2 4 --save-profile=profile-demo
+
+    .. command-output:: buildtest build -b tutorials/job_dependency -x tutorials/job_dependency/ex1.yml --tags=python --exclude-tags=network --executor=generic.local.csh --limit=10 --rebuild=2 --account=dev --timeout=10 --nodes 1 2 --procs 2 4 --save-profile=profile-demo
+
+With the ``--buildspecs`` and ``--exclude-buildspecs``, we will store the full path to buildspec file if it exists.
+Let's see the newly created profile ``profile-demo``.
+
+.. dropdown:: buildtest configuration with profile
+
+    .. command-output:: cat buildtest/settings/config.yml
+        :shell:
