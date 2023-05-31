@@ -89,3 +89,8 @@ system:
       project: buildtest
       site: generic
       buildname: tutorials
+    profiles:
+      python:
+        buildspecs: [tutorials/python-shell.yml]
+        tags: [python]
+        rebuild: 1

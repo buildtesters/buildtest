@@ -178,6 +178,7 @@ def main():
                 executor_type=args.executor_type,
                 timeout=args.timeout,
                 limit=args.limit,
+                save_profile=args.save_profile,
             )
             cmd.build()
 

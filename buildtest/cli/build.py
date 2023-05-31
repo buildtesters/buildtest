@@ -12,6 +12,7 @@ import tempfile
 import traceback
 from datetime import datetime
 
+import yaml
 from buildtest import BUILDTEST_VERSION
 from buildtest.builders.compiler import CompilerBuilder
 from buildtest.builders.script import ScriptBuilder
@@ -38,7 +39,7 @@ from buildtest.exceptions import (
 )
 from buildtest.executors.setup import BuildExecutor
 from buildtest.log import init_logfile
-from buildtest.schemas.defaults import schema_table
+from buildtest.schemas.defaults import custom_validator, schema_table
 from buildtest.system import BuildTestSystem
 from buildtest.utils.file import (
     create_dir,
@@ -503,6 +504,7 @@ class BuildTest:
         executor_type=None,
         timeout=None,
         limit=None,
+        save_profile=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -536,8 +538,20 @@ class BuildTest:
             executor_type (bool, optional): Filter test by executor type. This option will filter test after discovery by local or batch executors. This can be specified via ``buildtest build --exec-type``
             timeout (int, optional): Test timeout in seconds specified by ``buildtest build --timeout``
             limit (int, optional): Limit number of tests that can be run. This option is specified by ``buildtest build --limit``
+            save_profile (str, optional): Save profile to buildtest configuration specified by ``buildtest build --save-profile``
         """
 
+        # check for input arguments that are expected to be a list
+        for arg_name in [buildspecs, exclude_buildspecs, tags, exclude_tags, executors]:
+            if arg_name and not isinstance(arg_name, list):
+                raise BuildTestError(f"{arg_name} is not of type list")
+
+        # check for input arguments that are expected to be a string
+        for arg_name in [testdir, stage, save_profile]:
+            if arg_name and not isinstance(arg_name, str):
+                raise BuildTestError(f"{arg_name} is not of type str")
+
+        """    
         if buildspecs and not isinstance(buildspecs, list):
             raise BuildTestError(f"{buildspecs} is not of type list")
 
@@ -553,12 +567,13 @@ class BuildTest:
         if executors and not isinstance(executors, list):
             raise BuildTestError(f"{executors} is not of type list")
 
+        
         if testdir and not isinstance(testdir, str):
             raise BuildTestError(f"{testdir} is not of type str")
 
         if stage and not isinstance(stage, str):
             raise BuildTestError(f"{stage} is not of type str")
-
+        """
         # if --rebuild is specified check if its an integer and within 50 rebuild limit
         if rebuild:
             if not isinstance(rebuild, int):
@@ -606,6 +621,7 @@ class BuildTest:
         self.executor_type = executor_type
         self.timeout = timeout
         self.limit = limit
+        self.save_profile = save_profile
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
@@ -663,6 +679,10 @@ class BuildTest:
             raise BuildTestError(
                 f"{report_file} is a directory please specify a file name where report will be written"
             )
+
+        if self.save_profile:
+            self.save_profile_to_configuration()
+            return
 
         # if buildtest build --rerun is set read file then rerun last command regardless of input specified in command line.
         # the last command is stored in file BUILDTEST_RERUN_FILE which is a dictionary containing the input arguments.
@@ -776,6 +796,75 @@ class BuildTest:
 
         with open(BUILDTEST_RERUN_FILE, "w") as fd:
             fd.write(json.dumps(buildtest_cmd, indent=2))
+
+    def save_profile_to_configuration(self):
+        """This method will save profile to configuration file. This method is called when ``buildtest build --save-profile`` is invoked. We will open the configuration
+        file and update the profile section, if profile already exist we will override it, otherwise we will insert into the configuration file.
+        """
+
+        if not self.configuration.file:
+            raise BuildTestError(
+                "Unable to save profile to configuration file, please specify a configuration file with --config"
+            )
+
+        if not is_file(self.configuration.file):
+            raise BuildTestError(
+                f"Unable to save profile to configuration file, configuration file {self.configuration.file} does not exist"
+            )
+
+        profile_configuration = {
+            "buildspecs": self.buildspecs,
+            "exclude-buildspecs": self.exclude_buildspecs,
+            "tags": self.tags,
+            "exclude-tags": self.exclude_tags,
+            "executors": self.executors,
+            "module": self.modules,
+            "unload-modules": self.unload_modules,
+            "module-purge": self.modulepurge,
+            "rebuild": self.rebuild,
+            "limit": self.limit,
+            "account": self.account,
+            "procs": self.numprocs,
+            "nodes": self.numnodes,
+            "testdir": self.testdir,
+            "timeout": self.timeout,
+        }
+        remove_keys = []
+        for key, value in profile_configuration.items():
+            if value is None:
+                remove_keys.append(key)
+        for key in remove_keys:
+            del profile_configuration[key]
+
+        print(profile_configuration)
+        return
+        system = self.configuration.name()
+        # delete system entry
+        del self.configuration.config["system"][system]
+        self.configuration.config["system"][system] = self.configuration.target_config
+
+        if not self.configuration.target_config.get("profiles"):
+            self.configuration.target_config["profiles"] = {}
+
+        self.configuration.target_config["profiles"][
+            self.save_profile
+        ] = profile_configuration
+
+        custom_validator(
+            self.configuration.config, schema_table["settings.schema.json"]["recipe"]
+        )
+
+        console.print(
+            f"Saved profile {self.save_profile} to configuration file {self.configuration.file}"
+        )
+
+        with open(self.configuration.file, "w") as fd:
+            yaml.safe_dump(
+                self.configuration.config,
+                fd,
+                default_flow_style=False,
+                sort_keys=False,
+            )
 
     def _validate_filters(self):
         """Check filter fields provided by ``buildtest build --filter`` are valid types and supported. Currently
