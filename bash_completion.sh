@@ -162,7 +162,7 @@ _buildtest ()
   #case "${prev}" in
     build|bd)
       local shortoption="-b -e -et -f -m -s -t -u -x -xt"
-      local longoption="--buildspec --disable-executor-check --executor --executor-type --exclude --exclude-tags --filter --helpfilter --limit --maxpendtime --modules --module-purge --nodes --pollinterval --procs --rerun --remove-stagedir --retry --save-profile --stage --tags --timeout --unload-modules"
+      local longoption="--buildspec --disable-executor-check --executor --executor-type --exclude --exclude-tags --filter --helpfilter --limit --maxpendtime --modules --module-purge --nodes --pollinterval --procs --profile --rerun --remove-stagedir --retry --save-profile --stage --tags --timeout --unload-modules"
       local allopts="${longoption} ${shortoption}"
 
       COMPREPLY=( $( compgen -W "$allopts" -- $cur ) )
