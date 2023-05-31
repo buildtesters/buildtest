@@ -809,15 +809,6 @@ class BuildTest:
         file and update the profile section, if profile already exist we will override it, otherwise we will insert into the configuration file.
         """
 
-        if not self.configuration.file:
-            raise BuildTestError(
-                "Unable to save profile to configuration file, please specify a configuration file with --config"
-            )
-
-        if not is_file(self.configuration.file):
-            raise BuildTestError(
-                f"Unable to save profile to configuration file, configuration file {self.configuration.file} does not exist"
-            )
         resolved_buildspecs = []
         if self.buildspecs:
             for file in self.buildspecs:
@@ -841,6 +832,7 @@ class BuildTest:
             "testdir": self.testdir,
             "timeout": self.timeout,
         }
+
         # iterate over profile configuration and remove keys that are None
         remove_keys = []
         for key, value in profile_configuration.items():
@@ -852,15 +844,18 @@ class BuildTest:
         system = self.configuration.name()
         # delete system entry since we need to update with new profile
         del self.configuration.config["system"][system]
+
         self.configuration.config["system"][system] = self.configuration.target_config
 
         # if profile section does not exist we create it
         if not self.configuration.target_config.get("profiles"):
             self.configuration.target_config["profiles"] = {}
+
         # update profile section with new profile. If profile already exist we override it
         self.configuration.target_config["profiles"][
             self.save_profile
         ] = profile_configuration
+
         # validate entire buildtest configuration with schema to ensure configuration is valid
         custom_validator(
             self.configuration.config, schema_table["settings.schema.json"]["recipe"]
