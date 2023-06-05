@@ -98,7 +98,14 @@ def print_build_help():
     table.add_row(
         "buildtest build -t python --limit=5", "Limit number of test runs to 5"
     )
-
+    table.add_row(
+        "buildtest build -t python --save-profile=python-profile",
+        "Save buildtest options to profile name 'python-profile'",
+    )
+    table.add_row(
+        "buildtest build --profile=python-profile",
+        "Run buildtest from profile name 'python-profile'",
+    )
     console.print(table)
 
 
