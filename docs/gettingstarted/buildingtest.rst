@@ -497,44 +497,46 @@ run until completion.
 
     .. command-output:: buildtest build -b tutorials/sleep.yml --timeout 10
 
+.. _using_profiles:
+
 Using Profiles
 ---------------
 
 Buildtest has a concept of profiles, which allows one to run a set of ``buildtest build`` options without having to remember
-all the options. This can be useful if you are running a set of tests repeatedly. Inorder to use profiles you must first,
+all the options. This can be useful if you are running a set of tests repeatedly. In-order to use profiles you must first,
 create a profile by using ``--save-profile``.
 
-For example, let's create a profile called **python-tests** for all tests with tag ``python``
+For example, let's create a profile called **profile-1** for all tests with tag ``python``
 
-.. dropdown:: ``buildtest build -t python --save-profile=python-tests``
+.. dropdown:: ``buildtest build -t python --save-profile=profile-1``
 
     .. command-output:: buildtest build -t python --save-profile=python-tests
 
 Next, let's see our configuration file, you will notice a new section called ``profiles``
-with a profile called **python-tests**
+with a profile called **profile-1**
 
 .. dropdown:: buildtest configuration with profile
 
     .. command-output:: cat $BUILDTEST_ROOT/buildtest/settings/config.yml
         :shell:
 
-Next, let's run the profile `python-tests` and take note that it will run all tests with tag `python`
+Next, let's build the tests via newly created profile and take note that it will run all tests with tag `python`
 
-.. dropdown:: ``buildtest build --profile=python-tests``
+.. dropdown:: ``buildtest build --profile=profile-1``
 
-    .. command-output:: buildtest build --profile=python-tests
+    .. command-output:: buildtest build --profile=profile-1
 
-The profile can be configured with several other options, not limited to `tags`. Let's create anoother profile
-named ``profile-demo`` with the following options:
+The profile can be configured with several other options, not limited to `tags`. Let's create another profile
+named ``profile-2`` with the following options:
 
-.. dropdown:: buildtest build -b tutorials/job_dependency -x tutorials/job_dependency/ex1.yml --tags=python --exclude-tags=network --executor=generic.local.csh --limit=10 --rebuild=2 --account=dev --timeout=10 --nodes 1 2 --procs 2 4 --save-profile=profile-demo
+.. dropdown:: buildtest build -b tutorials/job_dependency -x tutorials/job_dependency/ex1.yml --tags=python --exclude-tags=network --executor=generic.local.csh --limit=10 --rebuild=2 --account=dev --timeout=10 --nodes 1 2 --procs 2 4 --executor-type=local --save-profile=profile-2
 
-    .. command-output:: buildtest build -b tutorials/job_dependency -x tutorials/job_dependency/ex1.yml --tags=python --exclude-tags=network --executor=generic.local.csh --limit=10 --rebuild=2 --account=dev --timeout=10 --nodes 1 2 --procs 2 4 --save-profile=profile-demo
+    .. command-output:: buildtest build -b tutorials/job_dependency -x tutorials/job_dependency/ex1.yml --tags=python --exclude-tags=network --executor=generic.local.csh --limit=10 --rebuild=2 --account=dev --timeout=10 --nodes 1 2 --procs 2 4 --executor-type=local --save-profile=profile-2
 
 With the ``--buildspecs`` and ``--exclude-buildspecs``, we will store the full path to buildspec file if it exists.
 Let's see the newly created profile ``profile-demo``.
 
-.. dropdown:: buildtest configuration with profile ``profile-demo``
+.. dropdown:: buildtest configuration with profile ``profile-2``
 
     .. command-output:: cat $BUILDTEST_ROOT/buildtest/settings/config.yml
         :shell:
