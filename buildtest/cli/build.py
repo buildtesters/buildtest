@@ -709,7 +709,8 @@ class BuildTest:
         if not isinstance(self.system, BuildTestSystem):
             self.system = BuildTestSystem()
 
-        self._validate_filters()
+        if self.filter_buildspecs:
+            self._validate_filters()
 
         msg = f"""
 [magenta]User:[/]               [cyan]{self.system.system['user']}
@@ -831,6 +832,7 @@ class BuildTest:
             "nodes": self.numnodes,
             "testdir": self.testdir,
             "timeout": self.timeout,
+            "filter": self.filter_buildspecs,
         }
 
         # iterate over profile configuration and remove keys that are None
@@ -894,6 +896,7 @@ class BuildTest:
         self.unload_modules = profile_configuration.get("unload-modules")
         self.modulepurge = profile_configuration.get("module-purge")
         self.rebuild = profile_configuration.get("rebuild")
+        self.filter_buildspecs = profile_configuration.get("filter")
 
     def _validate_filters(self):
         """Check filter fields provided by ``buildtest build --filter`` are valid types and supported. Currently
@@ -904,10 +907,6 @@ class BuildTest:
         """
 
         valid_fields = ["tags", "type", "maintainers"]
-
-        # if filter fields not specified there is no need to check fields
-        if not self.filter_buildspecs:
-            return
 
         for key in self.filter_buildspecs.keys():
             if key not in valid_fields:

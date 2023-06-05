@@ -659,6 +659,30 @@
         "tags": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
         "exclude-tags": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
         "executors": {"$ref": "definitions.schema.json#/definitions/list_of_strings"},
+        "filter": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "type": "array",
+              "description": "Specify the `type` field to determine which schema to use during filtering",
+              "uniqueItems": true,
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                 "enum": ["script", "compiler", "spack"]
+              }
+            },
+            "tags": {
+              "description": "Filter by tags",
+              "$ref": "definitions.schema.json#/definitions/list_of_strings"
+            },
+            "maintainers": {
+              "description": "Filter by maintainers",
+              "$ref": "definitions.schema.json#/definitions/list_of_strings"
+            }
+          }
+        },
         "module": {"type": "string"},
         "unload-modules": {"type": "string"},
         "module-purge": {"type": "boolean"},
