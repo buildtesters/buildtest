@@ -694,7 +694,12 @@
         "procs": {"$ref": "definitions.schema.json#/definitions/list_of_positive_integers"},
         "nodes": {"$ref": "definitions.schema.json#/definitions/list_of_positive_integers"},
         "testdir": {"type": "string"},
-        "timeout": {"type": "integer", "minimum": 1}
+        "timeout": {"type": "integer", "minimum": 1},
+        "executor-type": {
+          "type": "string",
+          "description": "Specify the `executor-type` field used by ``--executor-type`` option which determines if test will run by local or batch executor",
+          "enum": ["local", "batch"]
+        }
       }
     }
   }

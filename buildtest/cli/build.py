@@ -833,7 +833,12 @@ class BuildTest:
             "testdir": self.testdir,
             "timeout": self.timeout,
             "filter": self.filter_buildspecs,
+            "executor-type": self.executor_type,
         }
+        # we need to set module-purge to None if it is False. We delete all keys  that are 'None' before writing to configuration file
+        profile_configuration["module-purge"] = (
+            None if self.modulepurge is False else True
+        )
 
         # iterate over profile configuration and remove keys that are None
         remove_keys = []
@@ -897,6 +902,7 @@ class BuildTest:
         self.modulepurge = profile_configuration.get("module-purge")
         self.rebuild = profile_configuration.get("rebuild")
         self.filter_buildspecs = profile_configuration.get("filter")
+        self.executor_type = profile_configuration.get("executor-type")
 
     def _validate_filters(self):
         """Check filter fields provided by ``buildtest build --filter`` are valid types and supported. Currently
