@@ -553,29 +553,6 @@ class BuildTest:
             if arg_name and not isinstance(arg_name, str):
                 raise BuildTestError(f"{arg_name} is not of type str")
 
-        """    
-        if buildspecs and not isinstance(buildspecs, list):
-            raise BuildTestError(f"{buildspecs} is not of type list")
-
-        if exclude_buildspecs and not isinstance(exclude_buildspecs, list):
-            raise BuildTestError(f"{exclude_buildspecs} is not of type list")
-
-        if tags and not isinstance(tags, list):
-            raise BuildTestError(f"{tags} is not of type list")
-
-        if exclude_tags and not isinstance(exclude_tags, list):
-            raise BuildTestError(f"{exclude_tags} is not of type list")
-
-        if executors and not isinstance(executors, list):
-            raise BuildTestError(f"{executors} is not of type list")
-
-        
-        if testdir and not isinstance(testdir, str):
-            raise BuildTestError(f"{testdir} is not of type str")
-
-        if stage and not isinstance(stage, str):
-            raise BuildTestError(f"{stage} is not of type str")
-        """
         # if --rebuild is specified check if its an integer and within 50 rebuild limit
         if rebuild:
             if not isinstance(rebuild, int):

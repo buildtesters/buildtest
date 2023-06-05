@@ -475,11 +475,23 @@ class TestBuildTest:
             limit=10,
             rebuild=2,
             timeout=60,
+            executor_type="local",
             buildtest_system=self.system,
             save_profile="demo",
         )
         profile_configuration = buildtest_configuration.get_profile(profile_name="demo")
         pprint(profile_configuration)
+
+        # When --module-purge is not specified (i.e False) then this key should not be in profile configuration and set to None
+        BuildTest(
+            buildspecs=buildspecs,
+            configuration=buildtest_configuration,
+            modulepurge=False,
+            save_profile="module_purge_profile",
+        )
+        assert "module-purge" not in buildtest_configuration.get_profile(
+            profile_name="module_purge_profile"
+        )
 
         with pytest.raises(BuildTestError):
             buildtest_configuration.get_profile(profile_name="invalid_profile")
