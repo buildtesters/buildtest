@@ -515,7 +515,7 @@ with a profile called **python-tests**
 
 .. dropdown:: buildtest configuration with profile
 
-    .. command-output:: cat buildtest/settings/config.yml
+    .. command-output:: cat $BUILDTEST_ROOT/buildtest/settings/config.yml
         :shell:
 
 Next, let's run the profile `python-tests` and take note that it will run all tests with tag `python`
@@ -534,7 +534,7 @@ named ``profile-demo`` with the following options:
 With the ``--buildspecs`` and ``--exclude-buildspecs``, we will store the full path to buildspec file if it exists.
 Let's see the newly created profile ``profile-demo``.
 
-.. dropdown:: buildtest configuration with profile
+.. dropdown:: buildtest configuration with profile ``profile-demo``
 
-    .. command-output:: cat buildtest/settings/config.yml
+    .. command-output:: cat $BUILDTEST_ROOT/buildtest/settings/config.yml
         :shell:
