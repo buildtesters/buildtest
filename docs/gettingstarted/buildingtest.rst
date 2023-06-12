@@ -525,18 +525,3 @@ Next, let's build the tests via newly created profile and take note that it will
 .. dropdown:: ``buildtest build --profile=python-tests``
 
     .. command-output:: buildtest build --profile=python-tests
-
-The profile can be configured with several other options, not limited to `tags`. Let's create another profile
-named ``job_dep_profile`` with the following options:
-
-.. dropdown:: buildtest build -b tutorials/job_dependency -x tutorials/job_dependency/ex1.yml --tags=python --exclude-tags=network --executor=generic.local.csh --limit=10 --rebuild=2 --account=dev --timeout=10 --nodes 1 2 --procs 2 4 --executor-type=local --save-profile=job_dep_profile
-
-    .. command-output:: buildtest build -b tutorials/job_dependency -x tutorials/job_dependency/ex1.yml --tags=python --exclude-tags=network --executor=generic.local.csh --limit=10 --rebuild=2 --account=dev --timeout=10 --nodes 1 2 --procs 2 4 --executor-type=local --save-profile=job_dep_profile
-
-With the ``--buildspecs`` and ``--exclude-buildspecs``, we will store the full path to buildspec file if it exists.
-Let's see the newly created profile ``job_dep_profile``.
-
-.. dropdown:: buildtest configuration with profile ``job_dep_profile``
-
-    .. command-output:: cat $BUILDTEST_ROOT/buildtest/settings/config.yml
-        :shell:
