@@ -30,6 +30,15 @@
         "type": "integer"
       }
     },
+    "list_of_positive_integers": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
     "int_or_list": {
       "oneOf": [
         {

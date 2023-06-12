@@ -12,6 +12,7 @@ import tempfile
 import traceback
 from datetime import datetime
 
+import yaml
 from buildtest import BUILDTEST_VERSION
 from buildtest.builders.compiler import CompilerBuilder
 from buildtest.builders.script import ScriptBuilder
@@ -38,7 +39,7 @@ from buildtest.exceptions import (
 )
 from buildtest.executors.setup import BuildExecutor
 from buildtest.log import init_logfile
-from buildtest.schemas.defaults import schema_table
+from buildtest.schemas.defaults import custom_validator, schema_table
 from buildtest.system import BuildTestSystem
 from buildtest.utils.file import (
     create_dir,
@@ -503,6 +504,8 @@ class BuildTest:
         executor_type=None,
         timeout=None,
         limit=None,
+        save_profile=None,
+        profile=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -527,8 +530,8 @@ class BuildTest:
             retry (int, optional): Number of retry for failed jobs
             account (str, optional): Project account to charge jobs. This takes input argument ``buildtest build --account``
             helpfilter (bool, optional): Display available filter fields for ``buildtest build --filter`` command. This argument is set to ``True`` if one specifies ``buildtest build --helpfilter``
-            numprocs (str, optional): List of comma separated process values to run batch jobs specified via ``buildtest build --procs``
-            numnodes (str, optional): List of comma separated nodes values to run batch jobs specified via ``buildtest build --nodes``
+            numprocs (list, optional): List of comma separated process values to run batch jobs specified via ``buildtest build --procs``
+            numnodes (list, optional): List of comma separated nodes values to run batch jobs specified via ``buildtest build --nodes``
             modules (str, optional): List of modules to load for every test specified via ``buildtest build --modules``.
             modulepurge (bool, optional): Determine whether to run 'module purge' before running test. This is specified via ``buildtest build --modulepurge``.
             unload_modules (str, optional): List of modules to unload for every test specified via ``buildtest build --unload-modules``.
@@ -536,28 +539,19 @@ class BuildTest:
             executor_type (bool, optional): Filter test by executor type. This option will filter test after discovery by local or batch executors. This can be specified via ``buildtest build --exec-type``
             timeout (int, optional): Test timeout in seconds specified by ``buildtest build --timeout``
             limit (int, optional): Limit number of tests that can be run. This option is specified by ``buildtest build --limit``
+            save_profile (str, optional): Save profile to buildtest configuration specified by ``buildtest build --save-profile``
+            profile (str, optional): Profile to load from buildtest configuration specified by ``buildtest build --profile``
         """
 
-        if buildspecs and not isinstance(buildspecs, list):
-            raise BuildTestError(f"{buildspecs} is not of type list")
+        # check for input arguments that are expected to be a list
+        for arg_name in [buildspecs, exclude_buildspecs, tags, exclude_tags, executors]:
+            if arg_name and not isinstance(arg_name, list):
+                raise BuildTestError(f"{arg_name} is not of type list")
 
-        if exclude_buildspecs and not isinstance(exclude_buildspecs, list):
-            raise BuildTestError(f"{exclude_buildspecs} is not of type list")
-
-        if tags and not isinstance(tags, list):
-            raise BuildTestError(f"{tags} is not of type list")
-
-        if exclude_tags and not isinstance(exclude_tags, list):
-            raise BuildTestError(f"{exclude_tags} is not of type list")
-
-        if executors and not isinstance(executors, list):
-            raise BuildTestError(f"{executors} is not of type list")
-
-        if testdir and not isinstance(testdir, str):
-            raise BuildTestError(f"{testdir} is not of type str")
-
-        if stage and not isinstance(stage, str):
-            raise BuildTestError(f"{stage} is not of type str")
+        # check for input arguments that are expected to be a string
+        for arg_name in [testdir, stage, save_profile, profile]:
+            if arg_name and not isinstance(arg_name, str):
+                raise BuildTestError(f"{arg_name} is not of type str")
 
         # if --rebuild is specified check if its an integer and within 50 rebuild limit
         if rebuild:
@@ -606,6 +600,8 @@ class BuildTest:
         self.executor_type = executor_type
         self.timeout = timeout
         self.limit = limit
+        self.save_profile = save_profile
+        self.profile = profile
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
@@ -664,10 +660,18 @@ class BuildTest:
                 f"{report_file} is a directory please specify a file name where report will be written"
             )
 
+        if self.save_profile:
+            self.save_profile_to_configuration()
+            return
+
         # if buildtest build --rerun is set read file then rerun last command regardless of input specified in command line.
         # the last command is stored in file BUILDTEST_RERUN_FILE which is a dictionary containing the input arguments.
         if self.rerun:
             self.load_rerun_file()
+
+        # if --profile is invoked then we load profile from configuration file
+        if self.profile:
+            self.load_profile()
 
         self.buildexecutor = BuildExecutor(
             self.configuration,
@@ -682,7 +686,8 @@ class BuildTest:
         if not isinstance(self.system, BuildTestSystem):
             self.system = BuildTestSystem()
 
-        self._validate_filters()
+        if self.filter_buildspecs:
+            self._validate_filters()
 
         msg = f"""
 [magenta]User:[/]               [cyan]{self.system.system['user']}
@@ -777,6 +782,105 @@ class BuildTest:
         with open(BUILDTEST_RERUN_FILE, "w") as fd:
             fd.write(json.dumps(buildtest_cmd, indent=2))
 
+    def save_profile_to_configuration(self):
+        """This method will save profile to configuration file. This method is called when ``buildtest build --save-profile`` is invoked. We will open the configuration
+        file and update the profile section, if profile already exist we will override it, otherwise we will insert into the configuration file.
+        """
+
+        resolved_buildspecs = []
+        if self.buildspecs:
+            for file in self.buildspecs:
+                resolved_buildspecs.append(resolve_path(file, exist=True))
+
+        # dictionary to store configuration for a profile
+        profile_configuration = {
+            "buildspecs": resolved_buildspecs or None,
+            "exclude-buildspecs": self.exclude_buildspecs,
+            "tags": self.tags,
+            "exclude-tags": self.exclude_tags,
+            "executors": self.executors,
+            "module": self.modules,
+            "unload-modules": self.unload_modules,
+            "module-purge": self.modulepurge,
+            "rebuild": self.rebuild,
+            "limit": self.limit,
+            "account": self.account,
+            "procs": self.numprocs,
+            "nodes": self.numnodes,
+            "testdir": self.testdir,
+            "timeout": self.timeout,
+            "filter": self.filter_buildspecs,
+            "executor-type": self.executor_type,
+        }
+        # we need to set module-purge to None if it is False. We delete all keys  that are 'None' before writing to configuration file
+        profile_configuration["module-purge"] = (
+            None if self.modulepurge is False else True
+        )
+
+        # iterate over profile configuration and remove keys that are None
+        remove_keys = []
+        for key, value in profile_configuration.items():
+            if value is None:
+                remove_keys.append(key)
+        for key in remove_keys:
+            del profile_configuration[key]
+
+        system = self.configuration.name()
+        # delete system entry since we need to update with new profile
+        del self.configuration.config["system"][system]
+
+        self.configuration.config["system"][system] = self.configuration.target_config
+
+        # if profile section does not exist we create it
+        if not self.configuration.target_config.get("profiles"):
+            self.configuration.target_config["profiles"] = {}
+
+        # update profile section with new profile. If profile already exist we override it
+        self.configuration.target_config["profiles"][
+            self.save_profile
+        ] = profile_configuration
+
+        # validate entire buildtest configuration with schema to ensure configuration is valid
+        custom_validator(
+            self.configuration.config, schema_table["settings.schema.json"]["recipe"]
+        )
+
+        console.print(
+            f"Saved profile {self.save_profile} to configuration file {self.configuration.file}"
+        )
+
+        with open(self.configuration.file, "w") as fd:
+            yaml.safe_dump(
+                self.configuration.config,
+                fd,
+                default_flow_style=False,
+                sort_keys=False,
+            )
+
+    def load_profile(self):
+        """This method will load profile from configuration file and update class variables used for ``buildtest build`` command.
+        This method is called when ``buildtest build --profile`` is invoked."""
+
+        profile_configuration = self.configuration.get_profile(self.profile)
+
+        self.buildspecs = profile_configuration.get("buildspecs")
+        self.exclude_buildspecs = profile_configuration.get("exclude-buildspecs")
+        self.tags = profile_configuration.get("tags")
+        self.exclude_tags = profile_configuration.get("exclude-tags")
+        self.executors = profile_configuration.get("executors")
+        self.limit = profile_configuration.get("limit")
+        self.account = profile_configuration.get("account")
+        self.numprocs = profile_configuration.get("procs")
+        self.numnodes = profile_configuration.get("nodes")
+        self.testdir = profile_configuration.get("testdir")
+        self.timeout = profile_configuration.get("timeout")
+        self.modules = profile_configuration.get("module")
+        self.unload_modules = profile_configuration.get("unload-modules")
+        self.modulepurge = profile_configuration.get("module-purge")
+        self.rebuild = profile_configuration.get("rebuild")
+        self.filter_buildspecs = profile_configuration.get("filter")
+        self.executor_type = profile_configuration.get("executor-type")
+
     def _validate_filters(self):
         """Check filter fields provided by ``buildtest build --filter`` are valid types and supported. Currently
         supported filter fields are ``tags``, ``type``, ``maintainers``
@@ -786,10 +890,6 @@ class BuildTest:
         """
 
         valid_fields = ["tags", "type", "maintainers"]
-
-        # if filter fields not specified there is no need to check fields
-        if not self.filter_buildspecs:
-            return
 
         for key in self.filter_buildspecs.keys():
             if key not in valid_fields:
@@ -817,7 +917,7 @@ class BuildTest:
         """
 
         # if --helpfilter is specified then return immediately.
-        if self.helpfilter:
+        if self.helpfilter or self.save_profile:
             return
 
         self.discovered_bp = discover_buildspecs(

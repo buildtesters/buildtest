@@ -11,6 +11,7 @@ from buildtest.defaults import BUILDTEST_RERUN_FILE, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
+from rich.pretty import pprint
 
 test_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 root = os.path.dirname(test_root)
@@ -438,6 +439,64 @@ class TestBuildTest:
             buildtest_system=self.system,
             remove_stagedir=True,
         )
+        cmd.build()
+
+    def test_save_profile(self):
+        tf = tempfile.NamedTemporaryFile(suffix=".yml")
+        print(configuration.file)
+        print(tf.name)
+        shutil.copy2(configuration.file, tf.name)
+
+        buildtest_configuration = SiteConfiguration(settings_file=tf.name)
+        buildtest_configuration.detect_system()
+        buildtest_configuration.validate()
+
+        # this should raise exception when there is no profile created in configuration file
+        with pytest.raises(BuildTestError):
+            buildtest_configuration.get_profile(profile_name="invalid_profile")
+
+        buildspecs = walk_tree(
+            os.path.join(BUILDTEST_ROOT, "tutorials", "job_dependency")
+        )
+
+        BuildTest(
+            configuration=buildtest_configuration,
+            buildspecs=buildspecs,
+            exclude_buildspecs=buildspecs,
+            tags=["python"],
+            executors=["generic.local.csh"],
+            exclude_tags=["python"],
+            numnodes=[1],
+            numprocs=[2],
+            account="dev",
+            modules="gcc/9.1.0",
+            unload_modules="gcc",
+            modulepurge=True,
+            limit=10,
+            rebuild=2,
+            timeout=60,
+            executor_type="local",
+            buildtest_system=self.system,
+            save_profile="demo",
+        )
+        profile_configuration = buildtest_configuration.get_profile(profile_name="demo")
+        pprint(profile_configuration)
+
+        # When --module-purge is not specified (i.e False) then this key should not be in profile configuration and set to None
+        BuildTest(
+            buildspecs=buildspecs,
+            configuration=buildtest_configuration,
+            modulepurge=False,
+            save_profile="module_purge_profile",
+        )
+        assert "module-purge" not in buildtest_configuration.get_profile(
+            profile_name="module_purge_profile"
+        )
+
+        with pytest.raises(BuildTestError):
+            buildtest_configuration.get_profile(profile_name="invalid_profile")
+
+        cmd = BuildTest(profile="demo", configuration=buildtest_configuration)
         cmd.build()
 
 

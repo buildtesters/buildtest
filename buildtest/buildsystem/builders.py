@@ -50,7 +50,7 @@ class Builder:
             buildtest_system (buildtest.system.BuildTestSystem): Instance of BuildTestSystem class
             rebuild (int, option): Number of rebuild for test. This is specified via ``buildtest build --rebuild``. Defaults to 1
             numprocs (list, optional): List of processor values to create builder objects specified via ``buildtest build --procs``
-            numnodes (list, optional): List of processor values to create builder objects specified via ``buildtest build --numnodes``
+            numnodes (list, optional): List of processor values to create builder objects specified via ``buildtest build --nodes``
             executor_type (str, optional): Filter test by executor type (local, batch)
             exclude_tags (list, optional): List of tags to exclude tests from buildspec file
         """

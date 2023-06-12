@@ -496,3 +496,32 @@ run until completion.
 .. dropdown:: ``buildtest build -b tutorials/sleep.yml --timeout 10``
 
     .. command-output:: buildtest build -b tutorials/sleep.yml --timeout 10
+
+.. _using_profiles:
+
+Using Profiles
+---------------
+
+Buildtest has a concept of profiles, which allows one to run a set of ``buildtest build`` options without having to remember
+all the options. This can be useful if you are running a set of tests repeatedly. In-order to use profiles you must first,
+create a profile by using ``--save-profile``.
+
+For example, let's create a profile called **python-tests** for all tests with tag ``python``
+
+.. dropdown:: ``buildtest build -t python --save-profile=python-tests``
+
+    .. command-output:: buildtest build -t python --save-profile=python-tests
+
+Next, let's see our configuration file, you will notice a new section called ``profiles``
+with a profile called **python-tests**
+
+.. dropdown:: buildtest configuration with profile
+
+    .. command-output:: cat $BUILDTEST_ROOT/buildtest/settings/config.yml
+        :shell:
+
+Next, let's build the tests via newly created profile and take note that it will run all tests with tag `python`
+
+.. dropdown:: ``buildtest build --profile=python-tests``
+
+    .. command-output:: buildtest build --profile=python-tests

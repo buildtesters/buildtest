@@ -655,3 +655,74 @@ Shown below we set ``poolsize`` to 1.
         # timeout: 60
 
         poolsize: 1
+
+Managing Profiles
+------------------
+
+The ``profile`` section allows you to define build profiles that can be used to encapsulate ``buildtest build`` options.
+This section is auto-generated when using ``buildtest build --save-profile`` option, see :ref:`using_profiles` for more details.
+
+Shown below is an example profile, the ``python-tests`` is the name of the profile. The ``tags`` property is a list of tags to use
+which are used by ``buildtest build --tags`` option. The ``testdir`` option is the path where tests are written that is used by ``buildtest build --testdir``.
+
+.. code-block:: yaml
+    :emphasize-lines: 2-5
+
+    profiles:
+      python-tests:
+        tags:
+        - python
+        testdir: /Users/siddiq90/Documents/github/buildtest/var/tests
+
+
+The profile can be configured with many other options supported by ``buildtest build``, shown below are additional examples.
+Configuration properties like ``rebuild``, ``limit``, ``timeout`` are integer and must be positive numbers.
+
+.. code-block:: yaml
+
+   profiles:
+      profile-2:
+        buildspecs:
+        - /Users/siddiq90/Documents/github/buildtest/tutorials/job_dependency
+        exclude-buildspecs:
+        - tutorials/job_dependency/ex1.yml
+        tags:
+        - python
+        exclude-tags:
+        - network
+        executors:
+        - generic.local.csh
+        rebuild: 2
+        limit: 10
+        account: dev
+        procs:
+        - 2
+        - 4
+        nodes:
+        - 1
+        - 2
+        testdir: /Users/siddiq90/Documents/github/buildtest/var/tests
+        timeout: 10
+        executor-type: local
+
+Shown below is a generated profile using
+``buildtest build -b tutorials --filter "tags=pass;maintainers=@shahzebsiddiqui;type=script" --save-profile=filter_profile``. The ``filter``
+is an object and attributes ``tags``, ``maintainers``, ``type`` correspond to the filter fields.
+
+.. code-block:: yaml
+
+    profiles:
+      filter_profile:
+        buildspecs:
+        - /Users/siddiq90/Documents/github/buildtest/tutorials
+        testdir: /Users/siddiq90/Documents/github/buildtest/var/tests
+        filter:
+          tags:
+          - pass
+          maintainers:
+          - '@shahzebsiddiqui'
+          type:
+          - script
+
+We have added additional checks in the JSON schema for valid values for each type, for instance if you specify an invalid value for ``type`` field
+which is used to filter buildspecs by the ``type`` field, then you will get an invalid configuration file.

@@ -433,3 +433,25 @@ class SiteConfiguration:
             self.valid_executors[executor_type][executor_name] = {
                 "setting": pbs_executor[executor]
             }
+
+    def get_profile(self, profile_name):
+        """Return configuration for a given profile name
+
+        Args:
+            profile_name (str): name of profile to retrieve
+
+        Returns:
+            dict: dictionary containing a profile configuration
+        """
+
+        if not self.target_config.get("profiles"):
+            raise BuildTestError(
+                "There are no profiles defined in configuration file, please consider creating a profile using the --save-profile option"
+            )
+
+        if not self.target_config["profiles"].get(profile_name):
+            raise BuildTestError(
+                f"Unable to find profile: {profile_name} in configuration file. List of available profiles are: {list(self.target_config['profiles'].keys())}"
+            )
+
+        return self.target_config["profiles"][profile_name]
