@@ -534,7 +534,7 @@ named ``job_dep_profile`` with the following options:
     .. command-output:: buildtest build -b tutorials/job_dependency -x tutorials/job_dependency/ex1.yml --tags=python --exclude-tags=network --executor=generic.local.csh --limit=10 --rebuild=2 --account=dev --timeout=10 --nodes 1 2 --procs 2 4 --executor-type=local --save-profile=job_dep_profile
 
 With the ``--buildspecs`` and ``--exclude-buildspecs``, we will store the full path to buildspec file if it exists.
-Let's see the newly created profile ``profile-demo``.
+Let's see the newly created profile ``job_dep_profile``.
 
 .. dropdown:: buildtest configuration with profile ``job_dep_profile``
 
