@@ -123,3 +123,18 @@ def test_assert_is_file_is_dir():
         configuration=config,
     )
     cmd.build()
+
+
+def test_file_count():
+    """This test buildspec using status check with  'file_count'"""
+    cmd = BuildTest(
+        buildspecs=[
+            os.path.join(here, "file_count.yml"),
+            os.path.join(here, "file_count_pattern.yml"),
+            os.path.join(here, "file_count_filetype.yml"),
+            os.path.join(here, "file_count_file_traverse_limit.yml"),
+        ],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()
