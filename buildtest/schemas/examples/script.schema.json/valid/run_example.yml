@@ -1,0 +1,14 @@
+buildspecs:
+  multiline_run:
+    executor: generic.local.bash
+    type: script
+    description: multiline run command
+    run: |
+      echo "1"
+      echo "2"
+
+  single_command_run:
+    executor: generic.local.bash
+    type: script
+    description: single command as a string for run command
+    run: "hostname"

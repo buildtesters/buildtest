@@ -1,0 +1,42 @@
+buildspecs:
+  declare_shell_bin_zsh:
+    executor: generic.local.zsh
+    type: script
+    description: declare shell zsh
+    shell: "zsh"
+    run: hostname
+
+  declare_shell_zsh:
+    executor: generic.local.zsh
+    type: script
+    description: declare shell /bin/zsh
+    shell: "/bin/zsh"
+    run: hostname
+
+  declare_shell_bin_csh:
+    executor: generic.local.csh
+    type: script
+    description: declare shell /bin/csh
+    shell: "/bin/csh"
+    run: hostname
+
+  declare_shell_csh:
+    executor: generic.local.csh
+    type: script
+    description: declare shell /bin/tcsh
+    shell: "csh"
+    run: hostname
+
+  declare_shell_bin_tcsh:
+    executor: generic.local.csh
+    type: script
+    description: declare shell /bin/tcsh
+    shell: "/bin/tcsh"
+    run: hostname
+
+  declare_shell_tcsh:
+    executor: generic.local.csh
+    type: script
+    description: declare shell tcsh
+    shell: "tcsh"
+    run: hostname

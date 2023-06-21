@@ -1,0 +1,11 @@
+buildspecs:
+  declare_vars:
+    executor: generic.local.bash
+    type: script
+    description: declaring variables
+    vars:
+      First: Bob
+      Last: Bill
+    run: |
+      echo "First:" $First
+      echo "Last:" $Last
