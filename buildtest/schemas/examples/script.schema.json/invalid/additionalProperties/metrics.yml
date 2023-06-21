@@ -1,0 +1,11 @@
+buildspecs:
+  invalid_metrics_additional_property:
+    type: script
+    executor: generic.local.bash
+    description: Test for additional property for metrics property
+    vars:
+      FOO: BAR
+    run: echo $FOO
+    metrics:
+      foo:
+        variable: FOO

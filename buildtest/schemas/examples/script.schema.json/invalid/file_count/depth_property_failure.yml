@@ -1,0 +1,11 @@
+buildspecs:
+  file_count_property_depth_failure:
+    type: script
+    executor: generic.local.bash
+    description: The depth property in file_count must be greater than 0
+    run: hostname
+    status:
+      file_count:
+        - dir: /tmp
+          count: 0
+          depth: -1

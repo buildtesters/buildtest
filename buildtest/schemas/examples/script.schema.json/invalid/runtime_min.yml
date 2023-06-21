@@ -1,0 +1,9 @@
+buildspecs:
+  invalid_runtime_min:
+    type: script
+    executor: generic.local.sh
+    description: "Invalid type for min property in runtime. Must be an integer or float not a string"
+    run: sleep 2
+    status:
+      runtime:
+        min: "1"

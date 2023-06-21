@@ -1,0 +1,10 @@
+buildspecs:
+  file_count_property_count_failure:
+    type: script
+    executor: generic.local.bash
+    description: The count property in file_count must be greater than 0
+    run: hostname
+    status:
+      file_count:
+        - dir: /tmp
+          count: -1

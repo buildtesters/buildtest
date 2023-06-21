@@ -1,0 +1,9 @@
+buildspecs:
+  file_count_required_property_check:
+    type: script
+    executor: generic.local.bash
+    description: The dir property in file_count is required
+    run: hostname
+    status:
+      file_count:
+        - dir: /tmp

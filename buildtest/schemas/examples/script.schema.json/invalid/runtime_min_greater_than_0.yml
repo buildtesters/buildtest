@@ -1,0 +1,9 @@
+buildspecs:
+  runtime_min_must_exceed_0:
+    type: script
+    executor: generic.local.sh
+    description: "The runtime must exceed 0"
+    run: sleep 2
+    status:
+      runtime:
+        min: -1

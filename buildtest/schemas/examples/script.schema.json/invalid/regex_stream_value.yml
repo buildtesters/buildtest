@@ -1,0 +1,10 @@
+buildspecs:
+  invalid_regex_stream:
+    type: script
+    executor: generic.local.bash
+    description: This test fails because of invalid regex stream
+    run: hostname
+    status:
+      regex:
+        stream: file
+        exp: "world$"

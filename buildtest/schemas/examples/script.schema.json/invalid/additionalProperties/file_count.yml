@@ -1,0 +1,11 @@
+buildspecs:
+  file_count_additionalProperties_check:
+    type: script
+    executor: generic.local.bash
+    description: Testing for additional properties in file_count
+    run: hostname
+    status:
+      file_count:
+        - dir: /tmp
+          count: 0
+          FOO: BAR

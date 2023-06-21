@@ -1,0 +1,10 @@
+buildspecs:
+  executors_invalid_var_type:
+    type: script
+    executor: "generic.local.(bash|sh|zsh)"
+    description: Invalid type field for 'vars'
+    tags: [tutorials]
+    run: echo $FOO
+    executors:
+      generic.local.bash:
+        vars: ["FOO=BAR"]

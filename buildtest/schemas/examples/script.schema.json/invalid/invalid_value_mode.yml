@@ -1,0 +1,9 @@
+buildspecs:
+  invalid_value_for_mode:
+    type: script
+    executor: generic.local.bash
+    description: The status mode must be 'any' or 'all'
+    run: exit 0
+    status:
+      returncode: 0
+      mode: '1'

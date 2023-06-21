@@ -1,0 +1,18 @@
+buildspecs:
+  metric_type_property_test:
+    type: script
+    executor: generic.local.bash
+    description: metrics 'type' must be a 'str', 'float', 'int'
+    env:
+      OMP_NUM_THREADS: 4
+    run: |
+      wget https://raw.githubusercontent.com/jeffhammond/STREAM/master/stream.c
+      gcc -openmp -o stream stream.c
+      ./stream
+    metrics:
+      copy:
+        type: tuple
+        regex:
+          exp: 'Copy:\s+(\S+)\s+.*'
+          stream: stdout
+          item: 1

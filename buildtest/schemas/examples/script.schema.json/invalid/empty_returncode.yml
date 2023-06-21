@@ -1,0 +1,8 @@
+buildspecs:
+  empty_returncode_list:
+    type: script
+    executor: generic.local.bash
+    description: An empty returncode list will cause an error
+    run: hostname
+    status:
+      returncode: []

@@ -1,0 +1,8 @@
+buildspecs:
+  invalid_description:
+    type: script
+    executor: generic.local.bash
+    description:
+      - "Multi Line description"
+      - "is not accepted"
+    run: sleep 1

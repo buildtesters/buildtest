@@ -1,0 +1,8 @@
+buildspecs:
+  file_exists_failure:
+    type: script
+    executor: generic.local.bash
+    description: this test will fail validation, because item must be a string
+    run: mkdir -p 1
+    status:
+      exists: [1]

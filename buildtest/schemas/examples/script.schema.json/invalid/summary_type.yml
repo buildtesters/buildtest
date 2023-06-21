@@ -1,0 +1,7 @@
+buildspecs:
+  invalid_summary:
+    type: script
+    executor: generic.local.bash
+    description: summary field must be a string
+    summary: 1
+    run: sleep 1

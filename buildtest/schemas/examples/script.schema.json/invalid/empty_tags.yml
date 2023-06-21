@@ -1,0 +1,7 @@
+buildspecs:
+  empty_tags:
+    type: script
+    executor: generic.local.bash
+    description: tag list can't be empty, requires one item.
+    tags: []
+    run: hostname

@@ -1,0 +1,6 @@
+buildspecs:
+  invalid_test_name_&!@#$%:
+    type: script
+    executor: generic.local.bash
+    description: "invalid test name"
+    run: sleep 1

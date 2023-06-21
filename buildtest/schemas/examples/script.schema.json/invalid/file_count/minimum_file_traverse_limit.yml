@@ -1,0 +1,11 @@
+buildspecs:
+  minimum_check_file_traverse_limit:
+    type: script
+    executor: generic.local.bash
+    description: The minimum value for file_traverse_limit is 1
+    run: mkdir foo
+    status:
+      file_count:
+        - dir: foo
+          count: 1
+          file_traverse_limit: 0

@@ -1,0 +1,12 @@
+buildspecs:
+  invalid_slurm_job_state:
+    type: script
+    executor: generic.local.sh
+    description: invalid value for slurm_job_state, should raise error with enum values.
+    sbatch:
+      - "-n 2"
+      - "-q normal"
+      - "-t 10"
+    run: hostname
+    status:
+      slurm_job_state: "FINISH"

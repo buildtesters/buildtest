@@ -1,0 +1,9 @@
+buildspecs:
+  invalid_metrics_type:
+    type: script
+    executor: generic.local.bash
+    description: metrics property is an object, testing for type
+    vars:
+      FOO: BAR
+    run: echo $FOO
+    metrics: FOO
