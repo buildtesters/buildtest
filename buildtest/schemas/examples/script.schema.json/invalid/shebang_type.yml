@@ -3,5 +3,5 @@ buildspecs:
     type: script
     executor: generic.local.bash
     description: invalid type for shell shebang, must be a string
-    shebang: [ "#!/bin/bash" ]
+    shebang: ["#!/bin/bash"]
     run: hostname
