@@ -1,0 +1,13 @@
+buildspecs:
+  invalid_type_mirror_field:
+    type: spack
+    executor: generic.local.sh
+    description: The mirror field must be a key value pair
+    spack:
+      root: $HOME/spack
+      mirror: https://caches.e4s.io
+      env:
+        create:
+          name: myproject
+        specs:
+          - zlib

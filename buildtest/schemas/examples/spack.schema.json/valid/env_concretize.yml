@@ -1,0 +1,14 @@
+buildspecs:
+  env_concretized_install:
+    type: spack
+    description: run 'spack concretize -f' in an environment and install specs
+    executor: generic.local.sh
+    spack:
+      root: $HOME/spack/
+      env:
+        create:
+          name: myproject
+          manifest: $HOME/spack.yaml
+        concretize: true
+      install:
+        options: '--cache-only'

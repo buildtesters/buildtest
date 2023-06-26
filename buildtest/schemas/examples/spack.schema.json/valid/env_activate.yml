@@ -1,0 +1,15 @@
+buildspecs:
+  env_activate:
+    type: spack
+    executor: generic.local.sh
+    description: Activate spack environment by name
+    spack:
+      root: $HOME/spack/
+      env:
+        activate:
+          name: myproject
+        specs:
+          - m4
+          - zlib
+      install:
+        options: ''

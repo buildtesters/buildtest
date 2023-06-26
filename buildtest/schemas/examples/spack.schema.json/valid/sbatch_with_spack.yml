@@ -1,0 +1,11 @@
+buildspecs:
+  sbatch_field_with_spack:
+    type: spack
+    executor: generic.local.sh
+    description: Specify sbatch field with spack schema
+    sbatch: ["-N1", "-q normal", "-t 10", "-M 30M"]
+    spack:
+      root: $HOME/spack
+      install:
+        specs: ['m4']
+        options: "-v"
