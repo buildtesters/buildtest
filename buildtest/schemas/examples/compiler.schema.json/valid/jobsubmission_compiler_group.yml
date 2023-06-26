@@ -1,0 +1,40 @@
+buildspecs:
+  sbatch_compiler_group:
+    type: compiler
+    description: sbatch example in multiple compiler groups.
+    executor: generic.local.bash
+    source: src/hello.f90
+    compilers:
+      name: ["^(gcc|intel)"]
+      default:
+        gcc:
+          fflags: "-O1"
+          sbatch: ["-t 10", "-n 2", "-C haswell"]
+        intel:
+          fflags: "-O2"
+          sbatch: ["-t 10", "-n 2", "-C knl"]
+      config:
+        gcc@8.1.0:
+          sbatch: ["-t 60", "-n 2", "-C knl"]
+          module:
+            swap: [PrgEnv-intel, PrgEnv-gnu/6.1.0]
+
+  bsub_compiler_group:
+    type: compiler
+    description: bsub example in multiple compiler groups.
+    executor: generic.local.bash
+    source: src/hello.f90
+    compilers:
+      name: ["^(gcc|intel)"]
+      default:
+        gcc:
+          fflags: "-O1"
+          bsub: ["-W 00:30", "-n 2"]
+        intel:
+          fflags: "-O2"
+          bsub: ["-W 00:30", "-n 4"]
+      config:
+        gcc@8.1.0:
+          bsub: ["-W 00:30", "-n 6"]
+          module:
+            swap: [PrgEnv-intel, PrgEnv-gnu/6.1.0]

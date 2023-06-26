@@ -1,0 +1,12 @@
+buildspecs:
+  module_load_min_items:
+    executor: local.bash
+    type: compiler
+    description: "The load property expects a minimum of 1 item"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
+      config:
+        gcc/9.2.0:
+          module:
+            load: []

@@ -1,0 +1,12 @@
+buildspecs:
+  module_swap_max_items:
+    executor: generic.local.bash
+    type: compiler
+    description: "The swap property expects a maximum of 2 items"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
+      config:
+        gcc/9.2.0:
+          module:
+            swap: [gcc/8.0, gcc/9.0, gcc/10.0]

@@ -1,0 +1,15 @@
+buildspecs:
+  mpi_launcher_example:
+    type: compiler
+    description: mpi launcher example
+    executor: generic.local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: [gcc]
+      default:
+        all:
+          run: mpirun -np 2 $_EXEC
+      config:
+        gcc@7.3.0:
+          cflags: "-O3"
+          cxx: mpicxx

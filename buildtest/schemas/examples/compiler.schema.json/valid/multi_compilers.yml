@@ -1,0 +1,36 @@
+buildspecs:
+  multi_compilers:
+    type: compiler
+    description: Select one or more compilers to run test
+    executor: local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: ["^(gcc|intel|pgi|cray)"]
+      exclude: [intel@18]
+      default:
+        gcc:
+          cflags: "-fopenmp"
+        intel:
+          cflags: "-qopenmp"
+        pgi:
+          cflags: "-fopenmp"
+        cray:
+          cflags: "-h omp"
+      config:
+        gcc@7.5.0:
+          cflags: "-O3"
+          module:
+            load: [gcc/7.5.0]
+        intel@17:
+          module:
+            load: [intel/2017]
+        intel@18:
+          module:
+            load: [intel/2018]
+        pgi/18.0:
+          module:
+            load: [pgi/18.0]
+        craype/2.6.2:
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray]
+            load: [craype/2.6.2]

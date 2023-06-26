@@ -1,0 +1,11 @@
+buildspecs:
+  invalid_type_module:
+    executor: generic.local.bash
+    type: compiler
+    description: "type for 'module' key, expecting a property but received 'string' "
+    source: src/hello.c
+    compilers:
+      name: [gcc]
+      config:
+        gcc/9.2.0:
+          module: "module load gcc/9.2.0"

@@ -1,0 +1,86 @@
+buildspecs:
+  gnu_example:
+    executor: generic.local.bash
+    type: compiler
+    description: "gnu example with modules, and cflags example"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
+      config:
+        gcc@8.4.0:
+          cflags: "-O3"
+
+  intel_example:
+    executor: generic.local.bash
+    type: compiler
+    description: "intel example using cflags"
+    source: src/hello.c
+    compilers:
+      name: [intel]
+      config:
+        intel@2018:
+          cflags: "-O1"
+
+  clang_example:
+    executor: generic.local.bash
+    type: compiler
+    description: "clang example using cflags"
+    source: src/hello.c
+    compilers:
+      name: [clang]
+      default:
+        clang:
+          cflags: "-O1"
+      config:
+        clang@11:
+          cflags: "-O2"
+
+  upcxx_example:
+    executor: generic.local.bash
+    type: compiler
+    description: "upcxx compiler declaration in default and config section "
+    source: src/hello.c
+    compilers:
+      name: [upcxx]
+      default:
+        upcxx:
+          cflags: "-g aries"
+      config:
+        upcxx@2020:
+          cflags: "-O1 -g aries"
+
+  pgi_example:
+    executor: generic.local.bash
+    type: compiler
+    description: "pgi example using cxxflags, ldflags in default and config section"
+    source: src/hello.cpp
+    compilers:
+      name: ["^(pgi|PrgEnv)"]
+      default:
+        pgi:
+          cxxflags: "-O1"
+          ldflags: "-lm"
+      config:
+        pgi@18.1:
+          module:
+            swap: [PrgEnv-gnu, PrgEnv-pgi]
+            load: [pgi/18.1]
+        pgi@18.2:
+          module:
+            swap: [PrgEnv-gnu, PrgEnv-pgi]
+            load: [pgi/18.2]
+
+  cray_example:
+    executor: generic.local.bash
+    type: compiler
+    description: "cray example using fflags and cppflags"
+    source: src/hello.f90
+    compilers:
+      name: ["PrgEnv-cray"]
+      default:
+        cray:
+          fflags: "-O1"
+      config:
+        PrgEnv-cray@2.6.2:
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
