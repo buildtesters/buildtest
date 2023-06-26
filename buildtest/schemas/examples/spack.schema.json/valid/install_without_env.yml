@@ -1,0 +1,10 @@
+buildspecs:
+  install_without_env:
+    type: spack
+    executor: generic.local.sh
+    description: install specs without environment
+    spack:
+      root: $HOME/spack/
+      install:
+        options: '--cache-only'
+        specs: ['m4', 'bzip2']

@@ -1,0 +1,21 @@
+buildspecs:
+  vars_multi_executors:
+    type: spack
+    executor: "generic.local.(sh|bash)"
+    description: "variable declaration with multiple executors"
+    tags: [spack]
+    executors:
+      generic.local.sh:
+        vars:
+          FOO: BAR
+      generic.local.bash:
+        vars:
+          HELLO: WORLD
+    spack:
+      root: $HOME/spack
+      env:
+        specs:
+          - 'm4'
+        activate:
+          name: m4
+        concretize: true

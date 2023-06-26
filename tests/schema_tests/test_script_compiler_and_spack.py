@@ -71,6 +71,11 @@ def test_compiler_examples():
     validate_examples(schema_file="compiler.schema.json")
 
 
+@pytest.mark.schema
+def test_spack_examples():
+    validate_examples(schema_file="spack.schema.json")
+
+
 def test_missing_type():
     """Test that exception is raised when schema type is missing"""
     buildspec = os.path.join(
