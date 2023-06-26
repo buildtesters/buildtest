@@ -5,7 +5,7 @@ buildspecs:
     executor: generic.local.bash
     source: "src/hello.cpp"
     compilers:
-      name: [ gcc ]
+      name: [gcc]
       default:
         all:
           run: mpirun -np 2 $_EXEC
