@@ -1,0 +1,59 @@
+buildspecs:
+  sbatch_example_all_compiler_groups:
+    type: compiler
+    description: sbatch example to for all compiler groups
+    executor: generic.local.bash
+    source: src/hello.f90
+    compilers:
+      name: ["PrgEnv-cray"]
+      default:
+        cray:
+          fflags: "-O1"
+        all:
+          sbatch: ["-t 10", "-n 2", "-C haswell"]
+      config:
+        PrgEnv-cray@2.6.2:
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]
+
+  bsub_all_compiler_groups:
+    type: compiler
+    description: bsub example for all compiler groups
+    executor: generic.local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: [intel]
+      default:
+        all:
+          bsub: ["-W 00:30", "-n 2"]
+      config:
+        intel@2019:
+          cxxflags: "-O1"
+
+  cobalt_all_compiler_groups:
+    type: compiler
+    description: cobalt example for all compiler groups
+    executor: generic.local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: [intel]
+      default:
+        all:
+          cobalt: ["-t 30", "-n 1"]
+      config:
+        intel@2019:
+          cxxflags: "-O1"
+
+  pbs_all_compiler_groups:
+    type: compiler
+    description: pbs example for all compiler groups
+    executor: generic.local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: [intel]
+      default:
+        all:
+          pbs: ["-l nodes=1", "-l walltime=00:02:00"]
+      config:
+        intel@2019:
+          cxxflags: "-O1"

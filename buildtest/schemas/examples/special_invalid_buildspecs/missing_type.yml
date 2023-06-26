@@ -1,0 +1,7 @@
+buildspecs:
+  missing_type:
+    executor: generic.local.bash
+    description: "type key is missing, this is a required field"
+    source: "src/hello.c"
+    compilers:
+      name: [intel]

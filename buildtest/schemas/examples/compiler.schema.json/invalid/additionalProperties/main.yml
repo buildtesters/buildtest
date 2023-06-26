@@ -1,0 +1,9 @@
+buildspecs:
+  additionalProperties_main:
+    executor: generic.local.bash
+    type: compiler
+    description: "test additionalProperties in main schema"
+    foo: bar
+    source: src/hello.c
+    compilers:
+      name: [gcc]

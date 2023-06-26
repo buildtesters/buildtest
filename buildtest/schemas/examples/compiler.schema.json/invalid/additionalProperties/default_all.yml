@@ -1,0 +1,16 @@
+buildspecs:
+  additionalProperties_compiler_default_all:
+    executor: generic.local.bash
+    type: compiler
+    description: "Test additionalProperies in compiler default all section"
+    source: src/hello.f90
+    compilers:
+      name: ["PrgEnv-cray"]
+      default:
+        all:
+          XYZ: 123
+      config:
+        PrgEnv-cray@2.6.2:
+          fflags: "-O1"
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]

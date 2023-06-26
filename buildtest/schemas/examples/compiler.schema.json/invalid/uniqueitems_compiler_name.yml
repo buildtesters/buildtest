@@ -1,0 +1,13 @@
+buildspecs:
+  uniqueItems_compiler_name:
+    executor: generic.local.bash
+    type: compiler
+    description: "Test unique items in 'name' field in compilers section"
+    source: src/hello.f90
+    compilers:
+      name: ["^(PrgEnv-cray)", "^(PrgEnv-cray)"]
+      config:
+        PrgEnv-cray@2.6.2:
+          fflags: "-O1"
+          module:
+            swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]

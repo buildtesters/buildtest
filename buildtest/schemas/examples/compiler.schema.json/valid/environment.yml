@@ -1,0 +1,45 @@
+buildspecs:
+  env_example:
+    type: compiler
+    description: Setting environment variables
+    executor: generic.local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: ["^(gcc)"]
+      default:
+        all:
+          env:
+            OMP_NUM_THREADS: 2
+          run: $_EXEC 1 2 4
+      config:
+        gcc@10.2.0:
+          cxxflags: "-fopenmp"
+
+  custom_env_by_compiler_group:
+    type: compiler
+    description: Setting environment variables in compiler groups
+    executor: generic.local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: ["^(gcc|pgi)"]
+      default:
+        all:
+          run: $_EXEC 1 2 4
+        gcc:
+          cxxflags: "-fopenmp"
+          env:
+            OMP_NUM_THREADS: 4
+        pgi:
+          cxxflags: "-mp"
+          env:
+            OMP_NUM_THREADS: 6
+      config:
+        gcc@10.2.0:
+          env:
+            OMP_NUM_THREADS: 6
+        gcc@9.2.0:
+          env:
+            OMP_NUM_THREADS: 8
+        pgi@9.2.0:
+          env:
+            OMP_NUM_THREADS: 10

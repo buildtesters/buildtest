@@ -1,0 +1,29 @@
+buildspecs:
+  pre_post_build_run_sections:
+    type: compiler
+    description: Run commands pre and post build section
+    executor: generic.local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: ["^(gcc)"]
+      default:
+        all:
+          pre_build: echo "pre-build section for ALL compilers"
+          post_build: echo "post-build section for ALL Compilers"
+          pre_run: echo "pre-run section for ALL compilers"
+          post_run: echo "post-run section for ALL Compilers"
+        gcc:
+          pre_build: echo "pre-build section for GCC compilers"
+          post_build: echo "post-build section for GCC compilers"
+          pre_run: echo "pre-run section for ALL compilers"
+          post_run: echo "post-run section for ALL Compilers"
+      config:
+        gcc@7.3.0:
+          pre_build: echo "pre-build section for gcc@7.3.0"
+          post_build: echo "post-build section for gcc@7.3.0"
+          pre_run: echo "pre-run section for ALL compilers"
+          post_run: echo "post-run section for ALL Compilers"
+          cflags: "-O3"
+        gcc@8.2.0:
+          pre_build: echo "gcc --version"
+          cflags: "-O3"
