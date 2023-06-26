@@ -16,14 +16,13 @@ configuration.validate()
 buildexecutor = BuildExecutor(configuration)
 
 
-def check_invalid_buildspecs(buildspecs, buildexecutor):
+def check_invalid_buildspecs(buildspecs):
     """This function is responsible for validating all invalid buildspecs
 
     Args:
         buildspecs (list): List of buildspecs to validate
-        buildexecutor (BuildExecutor): BuildExecutor object
-
     """
+
     for buildspec in buildspecs:
         with pytest.raises(ValidationError) as excinfo:
             BuildspecParser(buildspec=buildspec, buildexecutor=buildexecutor)
@@ -31,13 +30,11 @@ def check_invalid_buildspecs(buildspecs, buildexecutor):
         print(excinfo.value)
 
 
-def check_valid_buildspecs(buildspecs, buildexecutor):
+def check_valid_buildspecs(buildspecs):
     """This function is responsible for validating all valid buildspecs
 
     Args:
         buildspecs (list): List of buildspecs to validate
-        buildexecutor (BuildExecutor): BuildExecutor object
-
     """
 
     for buildspec in buildspecs:
@@ -60,8 +57,8 @@ def validate_examples(schema_file):
     invalid_buildspecs = walk_tree(os.path.join(schema_examples, "invalid"))
     valid_buildspecs = walk_tree(os.path.join(schema_examples, "valid"))
 
-    check_valid_buildspecs(valid_buildspecs, buildexecutor)
-    check_invalid_buildspecs(invalid_buildspecs, buildexecutor)
+    check_valid_buildspecs(valid_buildspecs)
+    check_invalid_buildspecs(invalid_buildspecs)
 
 
 @pytest.mark.schema
