@@ -1,0 +1,11 @@
+buildspecs:
+  file_count_filetype_invalid_value:
+    type: script
+    executor: generic.local.bash
+    description: Invalid value for filetype, it must be 'file', 'dir' or 'symlink'
+    run: mkdir foo
+    status:
+      file_count:
+        - dir: foo
+          count: -1
+          filetype: 'filename'

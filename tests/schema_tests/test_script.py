@@ -1,10 +1,11 @@
 import os
-import re
 
 import pytest
+from buildtest.buildsystem.parser import BuildspecParser
+from buildtest.config import SiteConfiguration
 from buildtest.defaults import SCHEMA_ROOT
-from buildtest.schemas.defaults import custom_validator
-from buildtest.schemas.utils import load_recipe, load_schema
+from buildtest.executors.setup import BuildExecutor
+from buildtest.utils.file import walk_tree
 from jsonschema.exceptions import ValidationError
 
 schema_name = "script"
@@ -13,34 +14,34 @@ schema_path = os.path.join(SCHEMA_ROOT, schema_file)
 schema_examples = os.path.join(SCHEMA_ROOT, "examples", schema_file)
 
 
-def check_invalid_recipes(recipes, invalids, loaded):
-    for recipe in recipes:
-        assert recipe
-        assert re.search("(yml|yaml)$", recipe)
-        recipe_path = os.path.join(invalids, recipe)
-        content = load_recipe(recipe_path)
+def check_invalid_recipes(buildspecs, buildexecutor):
+    """This function is responsible for validating all invalid buildspecs
 
-        # For each section, assume folder type and validate
-        for name in content["buildspecs"].keys():
-            with pytest.raises(ValidationError) as excinfo:
-                print("Testing %s from recipe %s should be invalid" % (name, recipe))
-                custom_validator(recipe=content["buildspecs"][name], schema=loaded)
-            print(excinfo.exconly())
-            # print("Testing %s from recipe %s should be invalid" % (name, recipe))
+    Args:
+        buildspecs (list): List of buildspecs to validate
+        buildexecutor (BuildExecutor): BuildExecutor object
+
+    """
+
+    for buildspec in buildspecs:
+        with pytest.raises(ValidationError) as excinfo:
+            BuildspecParser(buildspec=buildspec, buildexecutor=buildexecutor)
+        print(f"buildspec file: {buildspec} is invalid")
+        print(excinfo.value)
 
 
-def check_valid_recipes(recipes, valids, loaded):
-    for recipe in recipes:
-        assert recipe
-        assert re.search("(yml|yaml)$", recipe)
-        recipe_path = os.path.join(valids, recipe)
-        content = load_recipe(recipe_path)
+def check_valid_recipes(buildspecs, buildexecutor):
+    """This function is responsible for validating all valid buildspecs
 
-        # For each section, assume folder type and validate
-        for name in content["buildspecs"].keys():
-            print(content["buildspecs"][name])
-            custom_validator(recipe=content["buildspecs"][name], schema=loaded)
-            print("Testing %s from recipe %s should be valid" % (name, recipe))
+    Args:
+        buildspecs (list): List of buildspecs to validate
+        buildexecutor (BuildExecutor): BuildExecutor object
+
+    """
+
+    for buildspec in buildspecs:
+        BuildspecParser(buildspec=buildspec, buildexecutor=buildexecutor)
+        print(f"buildspec file: {buildspec} is valid!")
 
 
 @pytest.mark.schema
@@ -52,17 +53,19 @@ def test_script_examples(tmp_path):
     folder. Invalid examples should be under ./invalid/script.
     """
 
+    configuration = SiteConfiguration()
+    configuration.detect_system()
+    configuration.validate()
+
+    buildexecutor = BuildExecutor(configuration)
+
     print("Testing schema %s" % schema_file)
-    loaded = load_schema(schema_path)
 
     invalids = os.path.join(schema_examples, "invalid")
     valids = os.path.join(schema_examples, "valid")
 
-    invalid_recipes = os.listdir(invalids)
-    valid_recipes = os.listdir(valids)
+    invalid_buildspecs = walk_tree(invalids)
+    valid_buildspecs = walk_tree(valids)
 
-    assert invalid_recipes
-    assert valid_recipes
-
-    check_valid_recipes(valid_recipes, valids, loaded)
-    check_invalid_recipes(invalid_recipes, invalids, loaded)
+    check_valid_recipes(valid_buildspecs, buildexecutor)
+    check_invalid_recipes(invalid_buildspecs, buildexecutor)

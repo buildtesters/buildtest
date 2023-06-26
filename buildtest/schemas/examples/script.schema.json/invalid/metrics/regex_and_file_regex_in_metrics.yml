@@ -1,0 +1,15 @@
+buildspecs:
+  test_regex_and_file_regex_in_metrics:
+    type: script
+    executor: generic.local.bash
+    description: Test for regex and file_regex in metrics. Only one is allowed at a time
+    run: echo "hello" > file.txt
+    metrics:
+      foo:
+        type: str
+        file_regex:
+          file: file.txt
+          exp: "hello"
+        regex:
+          stream: stdout
+          exp: "hello"

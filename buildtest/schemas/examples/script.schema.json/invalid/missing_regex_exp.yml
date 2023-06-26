@@ -1,0 +1,9 @@
+buildspecs:
+  missing_regex_exp:
+    type: script
+    executor: generic.local.bash
+    description: This test fails because of missing key 'exp' in regex
+    run: hostname
+    status:
+      regex:
+        stream: stdout

@@ -1,0 +1,7 @@
+buildspecs:
+  invalid_tags_value:
+    type: script
+    executor: generic.local.bash
+    description: invalid tag value must be all string items
+    tags: ["network", 400]
+    run: hostname
