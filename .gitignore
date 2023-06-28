@@ -47,3 +47,6 @@ env.bak/
 Pipfile
 Pipfile.lock
 coverage.json
+
+# ignore .idea
+.idea

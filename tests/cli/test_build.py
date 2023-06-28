@@ -501,7 +501,11 @@ class TestBuildTest:
 
     @pytest.mark.cli
     def test_retry(self):
-        buildspecs = [os.path.join(BUILDTEST_ROOT, "tutorials", "test_status", "pass_returncode.yml")]
+        buildspecs = [
+            os.path.join(
+                BUILDTEST_ROOT, "tutorials", "test_status", "pass_returncode.yml"
+            )
+        ]
         cmd = BuildTest(
             configuration=configuration,
             buildspecs=buildspecs,

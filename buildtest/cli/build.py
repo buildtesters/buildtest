@@ -581,14 +581,13 @@ class BuildTest:
             if retry <= 0:
                 raise BuildTestError("Retry must be greater than 0")
 
-        #if (timeout) or (limit is not None) or (retry is not None):
-            #list1 = [timeout, limit, retry]
-            #for x in list1:
-                #if not isinstance(x, int):
-                #    raise BuildTestError(f"{x} is not of type int")
-                #if x <= 0:
-                #    raise BuildTestError(f"{x} must be greater than 0")
-
+        # if (timeout) or (limit is not None) or (retry is not None):
+        #   list1 = [timeout, limit, retry]
+        #   for x in list1:
+        #       if not isinstance(x, int):
+        #           raise BuildTestError(f"{x} is not of type int")
+        #       if x <= 0:
+        #           raise BuildTestError(f"{x} must be greater than 0")
 
         self.remove_stagedir = remove_stagedir
         self.configuration = configuration
