@@ -563,18 +563,12 @@ class BuildTest:
                     f"--rebuild {rebuild} exceeds maximum rebuild limit of 50"
                 )
 
-        if timeout:
-            if not isinstance(timeout, int):
-                raise BuildTestError(f"{timeout} is not of type int")
-
-            if timeout <= 0:
-                raise BuildTestError("Timeout must be greater than 0")
-
-        if limit is not None:
-            if not isinstance(limit, int):
-                raise BuildTestError(f"{timeout} is not of type int")
-            if limit <= 0:
-                raise BuildTestError("Limit must be greater than 0")
+        for field in [timeout, limit, retry]:
+            if field is not None:
+                if not isinstance(field, int):
+                    raise BuildTestError(f"{field} is not of type int")
+                if field <= 0:
+                    raise BuildTestError(f"{field} must be greater than 0")
 
         self.remove_stagedir = remove_stagedir
         self.configuration = configuration
