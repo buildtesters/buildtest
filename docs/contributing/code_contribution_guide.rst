@@ -34,7 +34,7 @@ Adding Upstream Remote
 First you need to add the ``upstream`` repo, to do this you can issue the
 following::
 
- git remote add upstream git@github.com/buildtesters/buildtest.git
+ git remote add upstream git@github.com:buildtesters/buildtest.git
 
 The ``upstream`` tag is used to sync changes from upstream repo to keep your
 repo in sync before you contribute back.
