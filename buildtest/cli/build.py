@@ -568,7 +568,7 @@ class BuildTest:
                 if not isinstance(field, int):
                     raise BuildTestError(f"{field} is not of type int")
                 if field <= 0:
-                    raise BuildTestError("Limit must be greater than 0")
+                    raise BuildTestError(f"{field} must be greater than 0")
 
         self.remove_stagedir = remove_stagedir
         self.configuration = configuration
