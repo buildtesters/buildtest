@@ -196,41 +196,7 @@ class TestBuildTest:
             exclude_buildspecs=[excluded_buildspecs[0]],
             buildtest_system=self.system,
         )
-
-        class BuildTest:
-            def __init__(self,filename):
-                    configuration=configuration,
-                    buildspecs=[buildspec_paths],
-                    exclude_buildspecs=[excluded_buildspecs[0]],
-                    tags=None,
-                    exclude_tags=None,
-                    executors=None,
-                    testdir=None,
-                    stage=None,
-                    filter_buildspecs=None,
-                    rebuild=None,
-                    buildtest_system=self.system,
-                    report_file=None,
-                    maxpendtime=None,
-                    poll_interval=None,
-                    remove_stagedir=None,
-                    retry=None,
-                    account=None,
-                    helpfilter=None,
-                    numprocs=None,
-                    numnodes=None,
-                    modules=None,
-                    modulepurge=None,
-                    unload_modules=None,
-                    rerun=None,
-                    executor_type=None,
-                    timeout=None,
-                    limit=None,
-                    save_profile=None,
-                    profile=None,
-
-
-
+        cmd = Buildtest(...)
         cmd.build()
 
         #  testing buildtest build --buildspec tests/examples/buildspecs --exclude tests/examples/buildspecs
