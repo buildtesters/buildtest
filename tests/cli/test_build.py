@@ -499,6 +499,21 @@ class TestBuildTest:
         cmd = BuildTest(profile="demo", configuration=buildtest_configuration)
         cmd.build()
 
+    @pytest.mark.cli
+    def test_retry(self):
+        buildspecs = [
+            os.path.join(
+                BUILDTEST_ROOT, "tutorials", "test_status", "pass_returncode.yml"
+            )
+        ]
+        cmd = BuildTest(
+            configuration=configuration,
+            buildspecs=buildspecs,
+            buildtest_system=self.system,
+            retry=2,
+        )
+        cmd.build()
+
 
 def test_discover():
     # test single buildspec file
