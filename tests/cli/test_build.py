@@ -510,7 +510,7 @@ class TestBuildTest:
             configuration=configuration,
             buildspecs=buildspecs,
             buildtest_system=self.system,
-            retry=2,
+            retry=3,
         )
         cmd.build()
 
