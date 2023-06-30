@@ -196,7 +196,12 @@ class TestBuildTest:
             exclude_buildspecs=[excluded_buildspecs[0]],
             buildtest_system=self.system,
         )
-        cmd = Buildtest(...)
+        cmd = Buildtest(
+            configuration=configuration,
+            buildspecs=[buildspec_paths],
+            exclude_buildspecs=[excluded_buildspecs[0]],
+            buildtest_system=self.system,
+        )
         cmd.build()
 
         #  testing buildtest build --buildspec tests/examples/buildspecs --exclude tests/examples/buildspecs
