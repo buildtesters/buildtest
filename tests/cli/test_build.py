@@ -197,7 +197,8 @@ class TestBuildTest:
             buildtest_system=self.system,
         )
         cmd = Buildtest(
-            configuration=configuration,
+            profile="demo",
+            configuration=buildtest_configuration,
             buildspecs=[buildspec_paths],
             exclude_buildspecs=[excluded_buildspecs[0]],
             buildtest_system=self.system,
