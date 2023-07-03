@@ -6,6 +6,7 @@ on:
     paths:
       - 'buildtest/**'
       - 'tests/**'
+      - '.github/workflows/regression.yml'
 
 jobs:
 
