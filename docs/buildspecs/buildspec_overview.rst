@@ -22,10 +22,11 @@ prints the sum of X+Y.
 
 .. literalinclude:: ../tutorials/add_numbers.yml
    :language: yaml
+   :emphasize-lines: 1-3,7-10
 
-buildtest will validate the entire file with ``global.schema.json``, the schema
-requires **version** and **buildspec** in order to validate file. The **buildspec**
-is where you define each test. The name of the test is **add_numbers**.
+buildtest will validate the entire buildspec with `global.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/global.schema.json>`_,
+and use one of the sub-schema to validate the test defined in *buildspec* section. The **buildspec**
+is where you define a test, in the example above the name of the test is **add_numbers**.
 The test requires a **type** field which is the sub-schema used to validate the
 test section. In this example ``type: script`` informs buildtest to use the :ref:`script_schema`
 when validating test section.
@@ -40,6 +41,7 @@ example using the `script` schema with test name called
 
 .. literalinclude:: ../../general_tests/configuration/systemd-default-target.yml
     :language: yaml
+    :emphasize-lines: 8-14
 
 The test name **systemd_default_target** defined in **buildspec** section is
 validated with the following pattern ``"^[A-Za-z_][A-Za-z0-9_]*$"``. This test
@@ -48,6 +50,7 @@ with an executor name `bash` defined in the buildtest settings. The default
 buildtest settings will provide a bash executor as follows:
 
 .. code-block:: yaml
+   :emphasize-lines: 4-8
 
     system:
       generic:
@@ -92,7 +95,7 @@ Shown below is schema header for `script.schema.json <https://github.com/buildte
 
 .. literalinclude:: ../../buildtest/schemas/script.schema.json
    :language: json
-   :lines: 1-8
+   :lines: 1-9
 
 The ``"type": "object"`` means sub-schema is a JSON `object <http://json-schema.org/understanding-json-schema/reference/object.html>`_
 where we define a list of key/value pair. The ``"required"`` field specifies a list of
@@ -121,6 +124,7 @@ variable with default shell (bash), csh, and tcsh
 
 .. literalinclude:: ../tutorials/environment.yml
    :language: yaml
+   :emphasize-lines: 6-8,20,22-23,30,32-33
 
 This test can be run by issuing the following command: ``buildtest build -b tutorials/environment.yml``.
 If we inspect one of the test script we will see that buildtest generates a build script that invokes the test using the
@@ -190,6 +194,7 @@ a Linux command.
 
 .. literalinclude::  ../tutorials/vars.yml
    :language: yaml
+   :emphasize-lines: 7-17
 
 Next we build this test by running ``buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml``.
 
