@@ -55,9 +55,9 @@ Buildtest supports test discovery based on :ref:`tags <build_by_tags>`  via
 ``buildtest build --tags`` or short option ``-t``. Let's try running the following test, take note
 of the output as buildtest will show discovered buildspecs based on tag names
 
-.. dropdown:: ``buildtest build -t python``
+.. dropdown:: ``buildtest build -t network``
 
-    .. command-output:: buildtest build -t python
+    .. command-output:: buildtest build -t network
        :shell:
 
 To learn more about how to run tests, please refer to :ref:`building_test` guide.
