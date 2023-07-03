@@ -143,7 +143,7 @@ def test_file_regex():
     """This test buildspec using status check with 'file_regex'"""
     cmd = BuildTest(
         buildspecs=[
-            os.path.join(here, "file_regex.yml")
+            os.path.join(here, "status_regex.yml")
         ],
         buildtest_system=system,
         configuration=config,
