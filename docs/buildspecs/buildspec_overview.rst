@@ -41,7 +41,7 @@ example using the `script` schema with test name called
 
 .. literalinclude:: ../../general_tests/configuration/systemd-default-target.yml
     :language: yaml
-    :emphasize-lines: 8-14
+    :emphasize-lines: 7-14
 
 The test name **systemd_default_target** defined in **buildspec** section is
 validated with the following pattern ``"^[A-Za-z_][A-Za-z0-9_]*$"``. This test
@@ -95,7 +95,7 @@ Shown below is schema header for `script.schema.json <https://github.com/buildte
 
 .. literalinclude:: ../../buildtest/schemas/script.schema.json
    :language: json
-   :lines: 1-9
+   :lines: 1-12
 
 The ``"type": "object"`` means sub-schema is a JSON `object <http://json-schema.org/understanding-json-schema/reference/object.html>`_
 where we define a list of key/value pair. The ``"required"`` field specifies a list of
@@ -230,6 +230,7 @@ this test, we define a duplicate tag **network** which is not allowed.
 
 .. literalinclude:: ../tutorials/invalid_tags.yml
     :language: yaml
+    :emphasize-lines: 6
 
 
 If tags is a list, it must contain atleast **one** item.
