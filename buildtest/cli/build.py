@@ -1058,7 +1058,7 @@ class BuildTest:
             )
 
             print(f"\nPlease see logfile: {BUILDTEST_LOGFILE}")
-            sys.exit(1)
+            sys.exit(0)
 
         console.print("Total builder objects created:", len(self.builders))
 
