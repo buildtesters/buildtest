@@ -211,6 +211,11 @@ class TestBuildTest:
 
     def test_module(self):
         """Specifying buildtest for modules and unload modules """
+        buildspecs = [
+            os.path.join(
+                BUILDTEST_ROOT, "tutorials", "test_status", "mode.yml"
+            )
+        ]
         cmd = BuildTest(
                 configuration=configuration,
                 buildspecs=buildspecs,
