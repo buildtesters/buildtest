@@ -210,9 +210,10 @@ class TestBuildTest:
             cmd.build()
 
     def test_module(self):
+        """Specifying buildtest for modules and unload modules """
         cmd = BuildTest(
                 configuration=configuration,
-                buildspecs=[buildspec_paths],
+                buildspecs=buildspecs,
                 buildtest_system=self.system,
             )
         cmd.build()
