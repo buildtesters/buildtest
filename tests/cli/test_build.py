@@ -196,13 +196,6 @@ class TestBuildTest:
             exclude_buildspecs=[excluded_buildspecs[0]],
             buildtest_system=self.system,
         )
-        cmd = Buildtest(
-            profile="demo",
-            configuration=buildtest_configuration,
-            buildspecs=[buildspec_paths],
-            exclude_buildspecs=[excluded_buildspecs[0]],
-            buildtest_system=self.system,
-        )
         cmd.build()
 
         #  testing buildtest build --buildspec tests/examples/buildspecs --exclude tests/examples/buildspecs
@@ -215,6 +208,14 @@ class TestBuildTest:
                 buildtest_system=self.system,
             )
             cmd.build()
+
+    def test_module(self):
+        cmd = BuildTest(
+                configuration=configuration,
+                buildspecs=[buildspec_paths],
+                buildtest_system=self.system,
+            )
+        cmd.build()
 
     def test_run_metrics(self):
         cmd = BuildTest(
