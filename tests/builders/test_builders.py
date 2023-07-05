@@ -138,3 +138,13 @@ def test_file_count():
         configuration=config,
     )
     cmd.build()
+
+
+def test_process_compiler_config():
+    """This test buildspec using status check with  'script file'"""
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "stream_example.yml")],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()
