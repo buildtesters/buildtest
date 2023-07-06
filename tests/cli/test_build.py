@@ -215,7 +215,7 @@ class TestBuildTest:
                 configuration=configuration,
                 buildspecs=[os.path.join(here, "mode.yml")],
                 buildtest_system=self.system,
-            )
+        )
         cmd.build()
 
     def test_run_metrics(self):
