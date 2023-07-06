@@ -210,15 +210,10 @@ class TestBuildTest:
             cmd.build()
 
     def test_module(self):
-        """Specifying buildtest for modules and unload modules """
-        buildspecs = [
-            os.path.join(
-                BUILDTEST_ROOT, "tutorials", "test_status", "mode.yml"
-            )
-        ]
+        """This test buildspec using status check with 'module'"""
         cmd = BuildTest(
                 configuration=configuration,
-                buildspecs=buildspecs,
+                buildspecs=[os.path.join(here, "mode.yml")],
                 buildtest_system=self.system,
             )
         cmd.build()
