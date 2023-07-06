@@ -425,11 +425,11 @@ class Report:
                 # retrieve first record of every test if --oldest is specified
                 elif self.oldest:
                     tests = [self.report[buildspec][name][0]]
-                # retrieve all records of failure tests if --failure is specified
-                elif self.failure:
+                # retrieve all records of failure tests if --fail is specified
+                if self.failure:
                     tests = [test for test in tests if test["state"] == "FAIL"]
-                # retrieve all records of passed tests if --passed is specified
-                elif self.passed:
+                # retrieve all records of passed tests if --pass is specified
+                if self.passed:
                     tests = [test for test in tests if test["state"] == "PASS"]
                 # retrieve all records of tests filtered by start or end if --start and end are specified
                 elif self.start or self.end:
