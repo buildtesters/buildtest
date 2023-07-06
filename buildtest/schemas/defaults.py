@@ -1,7 +1,9 @@
 import os
 
 from buildtest.schemas.utils import load_schema
-from jsonschema import Draft7Validator, RefResolver
+from jsonschema import Draft7Validator
+from referencing import Registry, Resource
+from referencing.jsonschema import DRAFT7
 
 here = os.path.dirname(os.path.abspath(__file__))
 
@@ -81,16 +83,20 @@ schema_store = {
     ]["recipe"],
 }
 
-resolver = RefResolver.from_schema(
-    schema_table["definitions.schema.json"]["recipe"], store=schema_store
+# RefResolver has been deprecated in favor of Registry in release: https://github.com/python-jsonschema/jsonschema/releases/tag/v4.18.0
+# resolver = RefResolver.from_schema(schema_table["definitions.schema.json"]["recipe"], store=schema_store)
+
+# see Registry documentation: https://referencing.readthedocs.io/en/latest/registry.html
+registry = Registry().with_resource(
+    "definitions.schema.json",
+    DRAFT7.create_resource(schema_table["definitions.schema.json"]["recipe"]),
 )
 
 
 def custom_validator(recipe, schema):
     """This is a custom validator for validating JSON documents. We implement a
-    custom resolver using `RefResolver <https://python-jsonschema.readthedocs.io/en/stable/references/#jsonschema.RefResolver>`_
-    to find schemas locally in order to validate buildspecs with schema files on local filesystem. This ensures changes to
-    schema can be done in sync with change to code base.
+    custom resolver to find schemas locally in order to validate buildspecs with schema files on local filesystem.
+    This ensures changes to schema can be done in sync with change to code base.
 
     This method uses `Draft7Validator <https://python-jsonschema.readthedocs.io/en/stable/validate/#jsonschema.Draft7Validator>`_
     for validating schemas. If there is an error during validation jsonschema will raise an exception of type
@@ -108,5 +114,6 @@ def custom_validator(recipe, schema):
     assert isinstance(recipe, dict)
     assert isinstance(schema, dict)
 
-    validator = Draft7Validator(schema, resolver=resolver)
+    # validator = Draft7Validator(schema, resolver=resolver)
+    validator = Draft7Validator(schema, registry=registry)
     validator.validate(recipe)
