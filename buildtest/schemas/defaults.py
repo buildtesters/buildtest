@@ -2,7 +2,7 @@ import os
 
 from buildtest.schemas.utils import load_schema
 from jsonschema import Draft7Validator
-from referencing import Registry, Resource
+from referencing import Registry
 from referencing.jsonschema import DRAFT7
 
 here = os.path.dirname(os.path.abspath(__file__))
