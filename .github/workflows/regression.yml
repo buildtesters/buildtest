@@ -6,6 +6,7 @@ on:
     paths:
       - 'buildtest/**'
       - 'tests/**'
+      - '.github/workflows/regression.yml'
 
 jobs:
 
@@ -15,8 +16,8 @@ jobs:
       fail-fast: true
 
       matrix:
-        os: [macos-latest, ubuntu-latest]
-        python-version: ['3.7', '3.8', '3.9', '3.10']
+        os: [macos-latest, macos-13, ubuntu-latest]
+        python-version: ['3.8', '3.9', '3.10', '3.11']
 
     steps:
     - uses: actions/checkout@v3
