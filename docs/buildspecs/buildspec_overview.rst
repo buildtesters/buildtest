@@ -309,12 +309,12 @@ if you are expecting a certain output from the test as pose to returncode check.
 In this example we introduce, the ``regex`` field which is part of **status** that expects
 a regular expression via ``exp``. The ``stream`` property must be  **stdout** or **stderr** which indicates
 buildtest will read output or error file and apply regular expression. If there is a match, buildtest will record the
-test state as **PASS** otherwise it will be a **FAIL**. In this example, we have two tests that will apply regular expression
-on output file.
+test state as **PASS** otherwise it will be a **FAIL**. In this example, we have four tests that will apply two regular expression
+on output file and two regular expression on error file.
 
 .. literalinclude:: ../tutorials/test_status/status_regex.yml
    :language: yaml
-   :emphasize-lines: 9-11,20-22
+   :emphasize-lines: 9-11,20-22,31-33,42-44
 
 Now if we run this test, we will see first test will pass while second one will fail even though the returncode is
 a 0. Take a close look at the **status** property
