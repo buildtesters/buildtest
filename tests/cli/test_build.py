@@ -209,15 +209,18 @@ class TestBuildTest:
             )
             cmd.build()
 
-    def test_module(self):
-        """This test buildspec using status check with 'mode'"""
+    @pytest.mark.cli
+    def test_buildspec_with_module_injection(self):
+        """This test run a buildspec with module injection. This will load and unload modules"""
+
+        # buildtest build --tags python --modules gcc/9.1.0 --unload-modules gcc --module-purge
         cmd = BuildTest(
-                configuration=configuration,
-                buildspecs=[os.path.join(here, "mode.yml")],
-                buildtest_system=self.system,
-                modulepurge=True,
-                modules="gcc/9.1.0",
-                unload_modules="gcc",
+            configuration=configuration,
+            tags=["python"],
+            buildtest_system=self.system,
+            modulepurge=True,
+            modules="gcc/9.1.0",
+            unload_modules="gcc",
         )
         cmd.build()
 
