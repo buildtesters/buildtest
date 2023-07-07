@@ -67,8 +67,6 @@ In this exercise you will learn how to use the :ref:`buildspec_interface`. Let's
 
     buildtest buildspec find --root $HOME/buildtest-nersc/buildspecs --rebuild -q
 
-In this task you will be required to do the following:
-
 .. todo::
 
     1. Find all tags
@@ -82,7 +80,7 @@ In this task you will be required to do the following:
 Exercise 3: Query Test Report
 -------------------------------
 
-In this exercise you will learn how to :ref:`query test reports <test_reports>`. This can be done by
+In this exercise you will learn how to :ref:`query test report <test_reports>`. This can be done by
 running ``buildtest report``. In this task please do the following
 
 .. todo::
@@ -138,29 +136,20 @@ In this exercise, you will submit a batch job that will run `hostname` in the sl
 .. literalinclude:: ../perlmutter_tutorial/ex5/hostname.yml
    :language: yaml
 
-Let's run this test with a poll interval of ten seconds::
+.. todo::
 
-   buildtest build -b $BUILDTEST_ROOT/perlmutter_tutorial/ex5/hostname.yml --pollinterval=10
+    - Run the test with poll interval for 10 sec for file ``$BUILDTEST_ROOT/perlmutter_tutorial/ex5/hostname.yml`` and take note of output, you should see job is submitted to batch scheduler
+    - Check the output of test via ``buildtest inspect query``
+    - Update the test to make use of :ref:`Multiple Executors <multiple_executors>` and run test on both **regular** and **debug** queue and rerun the test.
+    - Rerun same test and you should see two test runs for **hostname_perlmutter** one for each executor.
 
-Once test is complete, check the output of the test by running::
+    .. code-block:: console
 
-    buildtest inspect query -o hostname_perlmutter
-
-Next, let's update the test such that it runs on both the **regular** and **debug** queue. You will need to update the **executor** property and
-specify a regular expression. Please refer to :ref:`Multiple Executors <multiple_executors>` for reference. You can retrieve a list of available executors
-by running ``buildtest config executors``.
-
-Once you have updated and re-run the test, you should see two test runs for **hostname_perlmutter**, one for each executor. If you ran this successfully, in output of
-``buildtest build`` you should see a test summary with two executors
-
-.. code-block:: console
-
-                                                                    Test Summary
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-    ┃ builder                               ┃ executor                    ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime  ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-    │ hostname_perlmutter/80e317c1          │ perlmutter.slurm.regular    │ PASS   │ N/A N/A N/A                         │ 0          │ 45.324512│
-    ├───────────────────────────────────────┼─────────────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
-    │ hostname_perlmutter/b1d7b318          │ perlmutter.slurm.debug      │ PASS   │ N/A N/A N/A                         │ 0          │ 75.54278 │
-    └───────────────────────────────────────┴─────────────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
-
+                                                                        Test Summary
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder                               ┃ executor                    ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime  ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ hostname_perlmutter/80e317c1          │ perlmutter.slurm.regular    │ PASS   │ N/A N/A N/A                         │ 0          │ 45.324512│
+        ├───────────────────────────────────────┼─────────────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+        │ hostname_perlmutter/b1d7b318          │ perlmutter.slurm.debug      │ PASS   │ N/A N/A N/A                         │ 0          │ 75.54278 │
+        └───────────────────────────────────────┴─────────────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
