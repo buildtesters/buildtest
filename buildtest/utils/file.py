@@ -18,7 +18,7 @@ from buildtest.exceptions import BuildTestError
 max_files_traversed = 999999
 
 
-def is_file(fname):
+def is_file(fname: str) -> bool:
     """Check if file exist and returns True/False
 
     Args:
@@ -39,7 +39,7 @@ def is_file(fname):
     return os.path.isfile(fname)
 
 
-def is_dir(dirname):
+def is_dir(dirname: str) -> bool:
     """Check if input directory exist and is a directory. If so return ``True`` otherwise returns ``False``.
     We resolve path by invoking :func:`resolve_path`
 
@@ -61,7 +61,7 @@ def is_dir(dirname):
     return os.path.isdir(dirname)
 
 
-def is_symlink(filename):
+def is_symlink(filename: str) -> bool:
     """Check if the given link is a symlink and return ``True``, if it is not a symlink or the symlink is broken return ``False``.
 
     Args:
@@ -256,15 +256,20 @@ def walk_tree(
     return [os.path.abspath(fname) for fname in files_list]
 
 
-def create_dir(dirname):
+def create_dir(dirname: str) -> None:
     """Create a directory if it doesn't exist. If directory contains variable
     expansion (**$HOME**) or user expansion (**~**), we resolve this before creating directory.
     If there is an error creating directory we raise an exception BuildTestError
 
-    :param dirname: directory path to create
-    :type dirname: str, required
-    :return: creates the directory or print an exception message upon failure
-    :rtype: Catches exception of type OSError and raise exception BuildTestError or returns None
+    Args:
+        dirname (str): directory path to create
+
+    Raises:
+        BuildTestError: If there is an error creating directory we raise an exception BuildTestError
+
+    Returns:
+        None: creates the directory or print an exception message upon failure
+
     """
 
     # these three lines implement same as ``resolve_path`` will return None when it's not a known file. We expect
@@ -281,7 +286,7 @@ def create_dir(dirname):
             raise BuildTestError(f"Cannot create directory {dirname}")
 
 
-def resolve_path(path, exist=True):
+def resolve_path(path: str, exist: bool = True) -> str:
     """This method will resolve a file path to account for shell expansion and resolve paths in
     when a symlink is provided in the file. This method assumes file already exists.
 
@@ -322,7 +327,7 @@ def resolve_path(path, exist=True):
         return real_path
 
 
-def read_file(filepath):
+def read_file(filepath: str) -> str:
     """This method is used to read a file and return content of file.
     If filepath is not a string we raise an error. We run :func:`resolve_path`
     to get realpath to file and account for shell or user expansion. The
@@ -367,12 +372,12 @@ def read_file(filepath):
     return content
 
 
-def create_file(filepath):
+def create_file(filepath: str) -> None:
     """This method will create an empty file"""
     write_file(filepath, content="")
 
 
-def write_file(filepath, content):
+def write_file(filepath: str, content: str) -> None:
     """This method is used to write an input ``content`` to a file specified by
     ``filepath``. Both filepath and content must be a str. An error is raised
     if filepath is not a string or a directory. If ``content`` is not a str,
@@ -418,7 +423,7 @@ def write_file(filepath, content):
         raise BuildTestError(f"Failed to write: {filepath}: {err}")
 
 
-def remove_file(fpath):
+def remove_file(fpath: str) -> None:
     """This method is responsible for removing a file. The input path is an absolute path
     to file. We check for exceptions first, and return immediately before removing file.
 
@@ -452,7 +457,7 @@ def remove_file(fpath):
         raise BuildTestError(f"Unable to delete file: {fpath}")
 
 
-def load_json(fname):
+def load_json(fname: str) -> dict:
     """Given a filename, resolves full path to file and loads json file. This method will
     catch exception :class:`json.JSONDecodeError` and raise an exception with useful message. If there is no
     error we return content of json file
