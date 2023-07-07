@@ -210,11 +210,14 @@ class TestBuildTest:
             cmd.build()
 
     def test_module(self):
-        """This test buildspec using status check with 'module'"""
+        """This test buildspec using status check with 'mode'"""
         cmd = BuildTest(
                 configuration=configuration,
                 buildspecs=[os.path.join(here, "mode.yml")],
                 buildtest_system=self.system,
+                modulepurge=True,
+                modules="gcc/9.1.0",
+                unload_modules="gcc",
         )
         cmd.build()
 
