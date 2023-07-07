@@ -9,7 +9,7 @@ Requirements
 You need the following packages to install buildtest.
 
 - `git <https://git-scm.com/downloads>`_
-- `Python <https://www.python.org/downloads/>`_ >= 3.7
+- `Python <https://www.python.org/downloads/>`_ >= 3.8
 
 Cloning buildtest
 ------------------
@@ -37,7 +37,7 @@ If you prefer the latest release, you can clone the **master** branch::
 Installing buildtest
 -----------------------
 
-buildtest requires a python 3.7 or higher, we recommend you setup a python environment in order
+buildtest requires a python 3.8 or higher, we recommend you setup a python environment in order
 to install buildtest. You can use `venv <https://docs.python.org/3/library/venv.html>`_, `conda <https://conda.io/>`_,
 or `pipenv <https://pipenv.readthedocs.io/en/latest/>`_ to manage your python environment depending on your preference.
 Assuming you have cloned buildtest in your HOME directory you will need to follow these instructions to install buildtest.
@@ -66,7 +66,7 @@ Assuming you have cloned buildtest in your HOME directory you will need to follo
 
        .. code-block:: console
 
-           conda create -n buildtest python=3.7
+           conda create -n buildtest python=3.8
            source activate buildtest
            source $HOME/buildtest/setup.sh
 
@@ -74,7 +74,7 @@ Assuming you have cloned buildtest in your HOME directory you will need to follo
 
        .. code-block:: console
 
-           pipenv --python 3.7
+           pipenv --python 3.8
            pipenv shell
            source $HOME/buildtest/setup.sh
 
@@ -92,7 +92,7 @@ Specify Python Wrapper via BUILDTEST_PYTHON
 The `buildtest <https://github.com/buildtesters/buildtest/blob/devel/bin/buildtest>`_ program will search for
 a python wrapper (`python`, `python3`) to run buildtest, however you can specify an alternate python wrapper by
 setting environment variable ``BUILDTEST_PYTHON`` wrapper. This variable will be set during execution of buildtest,
-please note the python wrapper must be 3.7 or higher in-order for buildtest to function properly.
+please note the python wrapper must be 3.8 or higher in-order for buildtest to function properly.
 
 Development Dependencies (Optional)
 ------------------------------------
