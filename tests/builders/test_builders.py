@@ -140,10 +140,20 @@ def test_file_count():
     cmd.build()
 
 
-def test_process_compiler_config():
-    """This test buildspec using status check with  'script file'"""
+def test_multicompilers_with_script_schema():
+    """This test will run the stream benchmark with multiple compilers using the 'compilers' keyword in script schema"""
     cmd = BuildTest(
         buildspecs=[os.path.join(here, "stream_example.yml")],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()
+
+
+def test_regex_check():
+    """This test buildspec using status check with  'status_regex'"""
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "status_regex.yml")],
         buildtest_system=system,
         configuration=config,
     )
