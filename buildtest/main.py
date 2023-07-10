@@ -23,7 +23,6 @@ from buildtest.cli.clean import clean
 from buildtest.cli.compilers import compiler_cmd
 from buildtest.cli.config import config_cmd
 from buildtest.cli.debugreport import print_debug_report
-from buildtest.cli.show import buildtest_help
 from buildtest.cli.helpcolor import print_available_colors
 from buildtest.cli.history import build_history
 from buildtest.cli.info import buildtest_info
@@ -36,6 +35,7 @@ from buildtest.cli.inspect import (
 from buildtest.cli.path import path_cmd
 from buildtest.cli.report import Report, report_cmd
 from buildtest.cli.schema import schema_cmd
+from buildtest.cli.show import buildtest_help
 from buildtest.cli.stats import stats_cmd
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import (
