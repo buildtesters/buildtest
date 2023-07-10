@@ -368,12 +368,12 @@ def misc_menu(subparsers):
 
     subparsers.add_parser("info", help="Show details regarding current buildtest setup")
 
-    help_subparser = subparsers.add_parser(
+    show_subparser = subparsers.add_parser(
         "show",
         aliases=["s"],
         help="buildtest command guide",
     )
-    help_subparser.add_argument(
+    show_subparser.add_argument(
         "command",
         choices=[
             "bd",
