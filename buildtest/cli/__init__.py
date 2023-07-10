@@ -259,7 +259,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         help="Print available color options in a table format.",
     )
     parser.add_argument("-r", "--report", help="Specify path to test report file")
-    #parser.add_argument("-s", "--show", help="Displays ALL subcommands")
 
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 
