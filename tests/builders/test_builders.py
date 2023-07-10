@@ -140,7 +140,7 @@ def test_file_count():
     cmd.build()
 
 
-def test_file_regex():
+def test_regex_check():
      """This test buildspec using status check with  'status_regex'"""
      cmd = BuildTest(
          buildspecs=[
