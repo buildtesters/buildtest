@@ -24,7 +24,7 @@ buildspecs:
   status_regex_stderr_pass:
     executor: generic.local.bash
     type: script
-    tags: [ system ]
+    tags: [system]
     description: Pass test based on regular expression
     run: echo "PASS"
     status:
@@ -35,7 +35,7 @@ buildspecs:
   status_regex_stderr_fail:
     executor: generic.local.bash
     type: script
-    tags: [ system ]
+    tags: [system]
     description: Pass test based on regular expression
     run: echo "FAIL"
     status:
