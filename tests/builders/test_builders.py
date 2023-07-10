@@ -141,13 +141,10 @@ def test_file_count():
 
 
 def test_file_regex():
-    """This test will perform status check with regular expression on file via 'file_regex'"""
+    """This test will perform status check with regular expression on file"""
     cmd = BuildTest(
-        buildspecs=[
-            os.path.join(here, "regex_on_filename.yml")
-        ],
+        buildspecs=[os.path.join(here, "regex_on_filename.yml")],
         buildtest_system=system,
         configuration=config,
     )
     cmd.build()
-    
