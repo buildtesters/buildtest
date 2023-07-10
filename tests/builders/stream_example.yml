@@ -5,7 +5,7 @@ buildspecs:
     description: "STREAM Microbenchmark C Test with OpenMP"
     tags: ["benchmark"]
     compilers:
-      name: ['^(gcc)']
+      name: ['^(builtin_gcc)']
       default:
         gcc:
           cflags: -fopenmp -O2
