@@ -7,7 +7,7 @@ from buildtest.system import BuildTestSystem
 
 here = os.path.dirname(os.path.abspath(__file__))
 
-config: SiteConfiguration = SiteConfiguration(DEFAULT_SETTINGS_FILE)
+config = SiteConfiguration(DEFAULT_SETTINGS_FILE)
 config.detect_system()
 config.validate()
 system = BuildTestSystem()
@@ -141,9 +141,20 @@ def test_file_count():
 
 
 def test_file_regex():
+     """This test buildspec using status check with  'status_regex'"""
+     cmd = BuildTest(
+         buildspecs=[
+             os.path.join(here, "status_regex.yml")],
+         buildtest_system=system,
+         configuration=config,
+     )
+     cmd.build()
+
+
+def test_file_regex():
     """This test will perform status check with regular expression on file"""
     cmd = BuildTest(
-        buildspecs=[os.path.join(here, "exists.yml","regex_on_filename.yml")],
+        buildspecs=[os.path.join(here, "regex_on_filename.yml")],
         buildtest_system=system,
         configuration=config,
     )
