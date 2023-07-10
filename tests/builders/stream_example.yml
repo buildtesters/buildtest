@@ -5,12 +5,12 @@ buildspecs:
     description: "STREAM Microbenchmark C Test with OpenMP"
     tags: ["benchmark"]
     compilers:
-      name: ['^(builtin_gcc)']
+      name: ['^(gcc)']
       default:
         gcc:
           cflags: -fopenmp -O2
           env:
-           OMP_NUM_THREADS: 8
+            OMP_NUM_THREADS: 8
     run: |
       wget https://www.cs.virginia.edu/stream/FTP/Code/stream.c
       $BUILDTEST_CC $BUILDTEST_CFLAGS stream.c -o stream
