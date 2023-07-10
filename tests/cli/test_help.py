@@ -1,4 +1,4 @@
-from buildtest.cli.help import buildtest_help
+from buildtest.cli.show import buildtest_help
 
 
 def test_buildtest_help():
