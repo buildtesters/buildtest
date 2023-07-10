@@ -146,5 +146,7 @@ def test_file_regex():
         buildspecs=[os.path.join(here, "regex_on_filename.yml")],
         buildtest_system=system,
         configuration=config,
+        tags=["tutorials"],
+        file_regex=False,
     )
     cmd.build()
