@@ -154,7 +154,7 @@ def test_regex_check():
 def test_file_regex():
     """This test will perform status check with regular expression on file"""
     cmd = BuildTest(
-        buildspecs=[os.path.join(here, "regex_on_filename.yml")],
+        buildspecs=[os.path.join(here, "regex_on_filename.yml"), os.path.join(here, "regex_on_invalids.yml")],
         buildtest_system=system,
         configuration=config,
     )
