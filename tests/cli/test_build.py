@@ -209,6 +209,21 @@ class TestBuildTest:
             )
             cmd.build()
 
+    @pytest.mark.cli
+    def test_buildspec_with_module_injection(self):
+        """This test run a buildspec with module injection. This will load and unload modules"""
+
+        # buildtest build --tags python --modules gcc/9.1.0 --unload-modules gcc --module-purge
+        cmd = BuildTest(
+            configuration=configuration,
+            tags=["python"],
+            buildtest_system=self.system,
+            modulepurge=True,
+            modules="gcc/9.1.0",
+            unload_modules="gcc",
+        )
+        cmd.build()
+
     def test_run_metrics(self):
         cmd = BuildTest(
             configuration=configuration,
