@@ -1145,7 +1145,7 @@ def report_menu(subparsers, parent_parser):
         "-d",
         "--detailed",
         action="store_true",
-        help="print detailed report table with some fields by running buildtest report --detailed",
+        help="Print a detailed summary of the test results",
     )
 
     filter_group.add_argument(
