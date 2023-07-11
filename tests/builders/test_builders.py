@@ -151,21 +151,22 @@ def test_multicompilers_with_script_schema():
 
 
 def test_regex_check():
-     """This test buildspec using status check with  regex"""
-     cmd = BuildTest(
-         buildspecs=[
-             os.path.join(here, "status_regex.yml")],
-         buildtest_system=system,
-         configuration=config,
-     )
-     cmd.build()
+    """This test buildspec using status check with  regex"""
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "status_regex.yml")],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()
 
 
 def test_file_regex():
     """This test will perform status check with regular expression on file"""
     cmd = BuildTest(
-        buildspecs=[os.path.join(here, "regex_on_filename.yml"),
-                    os.path.join(here, "regex_on_invalids.yml")],
+        buildspecs=[
+            os.path.join(here, "regex_on_filename.yml"),
+            os.path.join(here, "regex_on_invalids.yml"),
+        ],
         buildtest_system=system,
         configuration=config,
     )
