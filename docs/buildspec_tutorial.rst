@@ -39,12 +39,14 @@ you can use `podman <https://docs.podman.io/en/latest/>`_ or `shifter <https://g
 
     .. tab-item:: podman
 
-        If you are using podman on Perlmutter, please do the following::
-        
+        If you are using podman on Perlmutter, please do the following
+
+        .. code-block:: console
+
             mkdir -p $HOME/.config/containers
             touch $HOME/.config/containers/storage.conf
         
-                Next add the following content in `storage.conf`::
+        Next add the following content in `storage.conf`::
         
         
             [storage]
@@ -61,6 +63,8 @@ you can use `podman <https://docs.podman.io/en/latest/>`_ or `shifter <https://g
                 mountopt = ""
 
         **Please update the path /tmp/<USER>/storage to your username.**
+
+        Next, you can pull the container and run an interactive shell as follows
 
         .. code-block:: console
 

@@ -11,6 +11,7 @@ import sys
 import tempfile
 import traceback
 from datetime import datetime
+from typing import Dict, List, Optional
 
 import yaml
 from buildtest import BUILDTEST_VERSION
@@ -81,7 +82,7 @@ class Tee(object):
         self.stdout.flush()
 
 
-def resolve_testdirectory(configuration, testdir=None):
+def resolve_testdirectory(configuration: SiteConfiguration, testdir: str = None) -> str:
     """This method resolves which test directory to select. For example, one
     can specify test directory via command line ``buildtest build --testdir <path>``
     or path in configuration file. The default is $HOME/.buildtest/var/tests
@@ -112,8 +113,11 @@ def resolve_testdirectory(configuration, testdir=None):
 
 
 def discover_buildspecs(
-    buildspecs=None, exclude_buildspecs=None, executors=None, tags=None
-):
+    buildspecs: Optional[List[str]] = None,
+    exclude_buildspecs: Optional[List[str]] = None,
+    executors: Optional[List[str]] = None,
+    tags: Optional[List[str]] = None,
+) -> Dict[str, List[str]]:
     """This method discovers all buildspecs based on --buildspecs, --tags, --executor
     and excluding buildspecs (--exclude).
 
@@ -382,7 +386,7 @@ def discover_buildspecs_by_executor(buildspec_cache, executors):
     return buildspecs, buildspecs_by_executors
 
 
-def discover_by_buildspecs(buildspec):
+def discover_by_buildspecs(buildspec: str) -> list:
     """Given a buildspec file specified by the user with ``buildtest build --buildspec``,
     discover one or more files and return a list for buildtest to process.
     This method is called once per argument of ``--buildspec`` or ``--exclude``
