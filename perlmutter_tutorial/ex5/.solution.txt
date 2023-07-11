@@ -1,30 +1,8 @@
 buildspecs:
-  stream_test:
+  hostname_perlmutter:
+    description: run hostname on perlmutter
     type: script
-    executor: perlmutter.local.bash
-    description: Run stream test
-    env:
-      OMP_NUM_THREADS: 4
-    run: |
-      wget https://raw.githubusercontent.com/jeffhammond/STREAM/master/stream.c
-      gcc -openmp -o stream stream.c
-      ./stream
-    metrics:
-      copy:
-        type: float
-        regex:
-          exp: 'Copy:\s+(\S+)\s+.*'
-          stream: stdout
-          item: 1
-      scale:
-        type: float
-        regex:
-          exp: 'Scale:\s+(\S+)\s+.*'
-          stream: stdout
-          item: 1
-    status:
-      assert_ge:
-        - name: copy
-          ref: 8000
-        - name: scale
-          ref: 8000
+    executor: 'perlmutter.slurm.(regular|debug)'
+    tags: ["queues","jobs"]
+    sbatch: ["-t 5", "-n 1", "-N 1", "-C cpu"]
+    run: hostname
