@@ -35,7 +35,7 @@ from buildtest.cli.inspect import (
 from buildtest.cli.path import path_cmd
 from buildtest.cli.report import Report, report_cmd
 from buildtest.cli.schema import schema_cmd
-from buildtest.cli.show import buildtest_help
+from buildtest.cli.show import buildtest_show
 from buildtest.cli.stats import stats_cmd
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import (
@@ -339,7 +339,7 @@ def main():
             )
 
     elif args.subcommands in ["show", "s"]:
-        buildtest_help(command=args.command)
+        buildtest_show(command=args.command)
 
     elif args.subcommands == "clean":
         clean(configuration=configuration, yes=args.yes)
