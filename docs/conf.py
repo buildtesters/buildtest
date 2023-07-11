@@ -81,6 +81,9 @@ extensions = [
     "sphinx_search.extension",
 ]
 
+gettext_uuid = True
+gettext_compact = False
+
 todo_include_todos = True
 
 # Sphinx AutoApi configuration see https://sphinx-autoapi.readthedocs.io/en/latest/
