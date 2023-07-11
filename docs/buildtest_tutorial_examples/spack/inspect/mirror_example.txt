@@ -1,4 +1,4 @@
-$ buildtest inspect query -o  -t add_mirror add_mirror_in_spack_env 
+$ buildtest inspect query -o --testpath add_mirror add_mirror_in_spack_env
 ────────────────────────────────────────────────────────────────────────────────────── add_mirror_in_spack_env/a1846e85-149f-4efb-9c20-cab8fd43c5f0 ───────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Declare spack mirror in spack environment

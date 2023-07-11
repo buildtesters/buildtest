@@ -1,4 +1,4 @@
-$ buildtest inspect query -t openmp_hello_c_example 
+$ buildtest inspect query --testpath openmp_hello_c_example
 ─────────────────────────────────────────────────────────────────────────────────────── openmp_hello_c_example/559c9f80-0ead-48d9-84c5-6ecb2c4c8213 ───────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: OpenMP Hello World C example

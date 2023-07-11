@@ -1,4 +1,4 @@
-$ buildtest inspect query -o -t spack_env_directory 
+$ buildtest inspect query -o --testpath spack_env_directory
 ──────────────────────────────────────────────────────────────────────────────────────── spack_env_directory/c5e078b9-e1a7-44a7-b00c-662e89d196db ─────────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: create spack environment in directory

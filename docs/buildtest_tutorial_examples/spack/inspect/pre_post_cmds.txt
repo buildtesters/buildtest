@@ -1,4 +1,4 @@
-$ buildtest inspect query -o -t run_pre_post_commands 
+$ buildtest inspect query -o --testpath run_pre_post_commands
 ─────────────────────────────────────────────────────────────────────────────────────── run_pre_post_commands/3462c60f-14df-43a3-8729-59b3d12c06a0 ────────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Install zlib

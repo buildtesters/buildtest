@@ -239,7 +239,7 @@ If we look at the generated script for both tests, we see that mirror is added f
 one can have mirrors defined in their ``spack.yaml`` or one of the `configuration scopes <https://spack.readthedocs.io/en/latest/configuration.html#configuration-scopes>`_
 defined by spack.
 
-.. dropdown:: ``buildtest inspect query -o  --testpath add_mirror add_mirror_in_spack_env``
+.. dropdown:: ``buildtest inspect query -o --testpath add_mirror add_mirror_in_spack_env``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/mirror_example.txt
 

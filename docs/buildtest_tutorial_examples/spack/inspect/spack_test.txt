@@ -1,4 +1,4 @@
-$ buildtest inspect query -o -t spack_test_m4 
+$ buildtest inspect query -o --testpath spack_test_m4
 ────────────────────────────────────────────────────────────────────────────────────────── spack_test_m4/63314812-fcd6-4aeb-a51e-c6cb3924d171 ──────────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Run spack test for m4 package and report results

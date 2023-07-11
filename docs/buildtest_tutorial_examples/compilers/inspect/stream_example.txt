@@ -1,4 +1,4 @@
-$ buildtest inspect query -t stream_openmp_c/ 
+$ buildtest inspect query --testpath stream_openmp_c/
 ────────────────────────────────────────────────────────────────────────────────────────── stream_openmp_c/8f8b6c26-a782-41ef-b004-1313107c6102 ───────────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: STREAM Microbenchmark C Test with OpenMP

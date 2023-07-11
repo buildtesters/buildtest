@@ -48,7 +48,7 @@ Shown below is an example build for this test.
 
 The generated test for test name **hello_f** is the following:
 
-.. dropdown:: ``buildtest inspect query -t hello_f``
+.. dropdown:: ``buildtest inspect query --testpath hello_f``
 
     .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/gnu_hello_fortran.txt
 
@@ -126,7 +126,7 @@ Let's build this test, we will see there is one builder instance for each compil
 If we inspect the following test, we see each test has its own compiler flags. The default cflag
 is ``-O1`` while **gcc_6.5.0** will use ``-O2`` and **gcc_8.3.0** will use ``-O3``.
 
-.. dropdown:: ``buildtest inspect query -t hello_c/``
+.. dropdown:: ``buildtest inspect query --testpath hello_c/``
 
     .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/gnu_hello_c.txt
 
@@ -172,7 +172,7 @@ Now let's build this test.
 We can see the generated test using ``buildtest inspect query`` given the name of test. Take a close
 look at the ``export OMP_NUM_THREADS`` in the generated test.
 
-.. dropdown:: ``buildtest inspect query -t openmp_hello_c_example``
+.. dropdown:: ``buildtest inspect query --testpath openmp_hello_c_example``
 
     .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/openmp_hello.txt
 
@@ -188,11 +188,11 @@ We can build this test by running::
 
     buildtest build -b $BUILDTEST_ROOT/examples/compilers/envvar_override.yml
 
-Next, let's see the generated test by running ``buildtest inspect query -d all -t override_environmentvars``. The
+Next, let's see the generated test by running ``buildtest inspect query -d all --testpath override_environmentvars``. The
 ``-d all`` will display all test records for ``override_environmentvars``. Take a note that we have
 ``export OMP_NUM_THREADS=4`` for `gcc_8.3.0` test and ``export OMP_NUM_THREADS=2`` for system gcc.
 
-.. dropdown:: ``buildtest inspect query -t override_environmentvars/``
+.. dropdown:: ``buildtest inspect query --testpath override_environmentvars/``
 
     .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/envvar_override.txt
 
@@ -254,7 +254,7 @@ You can build this test by running the following::
 Once test is complete let's inspect the generated test. We see that buildtest will insert the line specified
 by ``run`` property after compilation and run the executable.
 
-.. dropdown:: ``buildtest inspect query -b  -t custom_run_by_compilers/``
+.. dropdown:: ``buildtest inspect query -b  --testpath custom_run_by_compilers/``
 
     .. program-output::  cat buildtest_tutorial_examples/compilers/inspect/custom_run.txt
 
@@ -298,7 +298,7 @@ You can run this example by running the following command::
 If we inspect the content of test we see that buildtest will insert the shell commands
 for ``pre_build``, ``post_build``, ``pre_run`` and ``post_run`` in its corresponding section.
 
-.. dropdown:: ``buildtest inspect query -t pre_post_build_run``
+.. dropdown:: ``buildtest inspect query --testpath pre_post_build_run``
 
     .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/pre_post_build_run.txt
 
@@ -336,7 +336,7 @@ If we build this test we see one test is created per compiler instance defined i
 Next, let's see the generated test using ``buildtest inspect query``, we notice buildtest will set variables ``BUILDTEST_*`` for
 each test to map to each compiler.
 
-.. dropdown:: ``buildtest inspect query -t stream_openmp_c/``
+.. dropdown:: ``buildtest inspect query --testpath stream_openmp_c/``
 
     .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/stream_example.txt
 

@@ -1,4 +1,4 @@
-$ buildtest inspect query -o -t spack_env_create_from_manifest 
+$ buildtest inspect query -o --testpath spack_env_create_from_manifest
 ─────────────────────────────────────────────────────────────────────────────────── spack_env_create_from_manifest/28fc5836-60b1-41d2-9b72-677bb011d12f ───────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Create spack environment from spack.yaml

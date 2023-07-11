@@ -1,4 +1,4 @@
-$ buildtest inspect query -t remove_environment_automatically remove_environment_explicit 
+$ buildtest inspect query --testpath remove_environment_automatically remove_environment_explicit
 ────────────────────────────────────────────────────────────────────────────────── remove_environment_automatically/e9de2b6c-8d1e-4859-b15d-2a3cfc34ad34 ──────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: remove spack environment automatically before creating a new environment
