@@ -122,11 +122,6 @@ def main():
     # Create a build test system, and check requirements
     system = BuildTestSystem()
 
-    validate_executors = True
-    # if buildtest build --disable-executor-check is specified store the value
-    if hasattr(args, "disable_executor_check"):
-        validate_executors = args.disable_executor_check
-
     config_file = (
         resolve_path(args.configfile) or os.getenv("BUILDTEST_CONFIGFILE") or None
     )
