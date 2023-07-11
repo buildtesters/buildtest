@@ -18,4 +18,3 @@ buildspecs:
       file_regex:
         - file: jump.txt
           exp: '^(Hello)$'
-          
