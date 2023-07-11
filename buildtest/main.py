@@ -127,7 +127,7 @@ def main():
     )
     configuration = SiteConfiguration(config_file)
     configuration.detect_system()
-    configuration.validate(validate_executors, moduletool=system.system["moduletool"])
+    configuration.validate(moduletool=system.system["moduletool"])
 
     buildtest_editor = set_editor(args.editor)
     logger.info(f"[red]Processing buildtest configuration file: {configuration.file}")
