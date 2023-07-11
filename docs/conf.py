@@ -75,10 +75,13 @@ extensions = [
     "sphinx.ext.imgmath",
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
+    "sphinx.ext.todo",
     "sphinx.ext.viewcode",
     "sphinx_copybutton",
     "sphinx_search.extension",
 ]
+
+todo_include_todos = True
 
 # Sphinx AutoApi configuration see https://sphinx-autoapi.readthedocs.io/en/latest/
 autoapi_type = "python"
