@@ -119,7 +119,7 @@ class SiteConfiguration:
 
         # self.localexecutors = list(self.target_config["executors"]["local"].keys())
 
-    def validate(self, validate_executors=True, moduletool=None):
+    def validate(self, moduletool=None):
         """This method validates the site configuration with schema and checks executor setting.
 
         Args:
@@ -135,9 +135,6 @@ class SiteConfiguration:
         )
         custom_validator(recipe=self.config, schema=config_schema)
         logger.debug("Validation was successful")
-
-        if validate_executors:
-            self._executor_check()
 
         if (
             self.target_config.get("moduletool") != "N/A"
