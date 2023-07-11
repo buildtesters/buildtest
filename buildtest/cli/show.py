@@ -3,7 +3,7 @@ from rich.table import Table
 
 
 def print_build_help():
-    """This method will print help message for command ``buildtest help build``"""
+    """This method will print help message for command ``buildtest show build``"""
 
     table = Table(title="Building buildspecs", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -110,7 +110,7 @@ def print_build_help():
 
 
 def print_buildspec_help():
-    """This method will print help message for command ``buildtest help buildspec``"""
+    """This method will print help message for command ``buildtest show buildspec``"""
 
     table = Table(title="Finding Buildspecs", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -261,7 +261,7 @@ def print_buildspec_help():
 
 
 def print_config_help():
-    """This method will print help message for command ``buildtest help config``"""
+    """This method will print help message for command ``buildtest show config``"""
 
     table = Table(title="Configuring Buildtest", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -322,7 +322,7 @@ def print_config_help():
 
 
 def print_inspect_help():
-    """This method will print help message for command ``buildtest help inspect``"""
+    """This method will print help message for command ``buildtest show inspect``"""
 
     table = Table(title="Inspecting a test", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -368,7 +368,7 @@ def print_inspect_help():
 
 
 def print_report_help():
-    """This method will print help message for command ``buildtest help report``"""
+    """This method will print help message for command ``buildtest show report``"""
 
     table = Table(title="Viewing Test Report", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -425,7 +425,7 @@ def print_report_help():
 
 
 def print_history_help():
-    """This method will print help message for command ``buildtest help history``"""
+    """This method will print help message for command ``buildtest show history``"""
 
     table = Table(title="Editing buildspec", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -455,7 +455,7 @@ def print_history_help():
 
 
 def print_cdash_help():
-    """This method will print help message for command ``buildtest help cdash``"""
+    """This method will print help message for command ``buildtest show cdash``"""
 
     table = Table(title="Editing buildspec", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -484,7 +484,7 @@ def print_cdash_help():
 
 
 def print_schema_help():
-    """This method will print help message for command ``buildtest help schema``"""
+    """This method will print help message for command ``buildtest show schema``"""
 
     table = Table(title="Buildtest Schemas", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -503,7 +503,7 @@ def print_schema_help():
 
 
 def print_stylecheck_help():
-    """This method will print help message for command ``buildtest help stylecheck``"""
+    """This method will print help message for command ``buildtest show stylecheck``"""
 
     table = Table(title="Buildtest stylecheck", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -524,7 +524,7 @@ def print_stylecheck_help():
 
 
 def print_unittests_help():
-    """This method will print help message for command ``buildtest help unittests``"""
+    """This method will print help message for command ``buildtest show unittests``"""
 
     table = Table(title="Buildtest unittests", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -554,7 +554,7 @@ def print_unittests_help():
 
 
 def print_path_help():
-    """This method will print help message for command ``buildtest help schema``"""
+    """This method will print help message for command ``buildtest show schema``"""
 
     table = Table(title="Get Path to Test", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -587,10 +587,10 @@ def print_path_help():
 
 
 def buildtest_help(command):
-    """Entry point for ``buildtest help`` which display a summary of how to use buildtest commands
+    """Entry point for ``buildtest show`` which display a summary of how to use buildtest commands
 
     Args:
-        command (str): Name of buildtest command specified by ``buildtest help <command>``
+        command (str): Name of buildtest command specified by ``buildtest show <command>``
     """
 
     if command in ["build", "bd"]:

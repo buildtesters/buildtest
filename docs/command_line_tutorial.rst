@@ -159,12 +159,12 @@ validating buildspecs, showing content of buildspecs, and editing buildspecs in 
 The ``buildtest buildspec`` command contains several subcommands that we will discuss in this
 session. To learn more we encourage you see :ref:`buildspec_interface` for detailed guide.
 
-The ``buildtest help`` command can be used to provide a brief help message for each subcommand. Let's run
+The ``buildtest show`` command can be used to provide a brief help message for each subcommand. Let's run
 the following command since there are lots of commands that can be used to query buildspec.
 
-.. dropdown:: ``buildtest help buildspec``
+.. dropdown:: ``buildtest show buildspec``
 
-    .. command-output:: buildtest help buildspec
+    .. command-output:: buildtest show buildspec
 
 To build the buildspec cache you will need to run the following::
 
