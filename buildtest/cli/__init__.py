@@ -1140,6 +1140,14 @@ def report_menu(subparsers, parent_parser):
         "--format",
         help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
     )
+
+    filter_group.add_argument(
+        "-d",
+        "--detailed",
+        action="store_true",
+        help="print detailed report table with some fields by running buildtest report --detailed",
+    )
+
     filter_group.add_argument(
         "--helpfilter",
         action="store_true",
