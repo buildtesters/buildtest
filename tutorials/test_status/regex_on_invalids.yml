@@ -1,0 +1,22 @@
+build specs:
+  regex_on_invalid_fname:
+    type: script
+    executor: generic.local.bash
+    description: Test regex on an invalid file name
+    run: |
+      echo "Hello" > hello.txt
+    status:
+      file_regex:
+      - file: /fox.txt
+      - exp: '^(Hello)$'
+
+regex_where_validfname_invaildregex:
+  type: script
+  executor: generic.local.bash
+  description: Test regex on a valid file where regex is invaild
+  run: |
+    echo "Jump" > jump.txt
+  status:
+    file_regex:
+      - file: foo/bar.txt
+      - exp: '^(Hello)$'
