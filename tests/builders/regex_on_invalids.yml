@@ -7,7 +7,7 @@ buildspecs:
     status:
       file_regex:
       - file: /fox.txt
-      - exp: '^(Hello)$'
+        exp: '^(Hello)$'
 
   file_regex_with_invalid_expression:
     type: script
@@ -17,4 +17,4 @@ buildspecs:
     status:
       file_regex:
         - file: jump.txt
-        - exp: '^(Hello)$'
+          exp: '^(Hello)$'
