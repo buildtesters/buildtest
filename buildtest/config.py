@@ -120,7 +120,7 @@ class SiteConfiguration:
         # self.localexecutors = list(self.target_config["executors"]["local"].keys())
 
     def validate(self, moduletool=None):
-        """This method validates the site configuration with schema and checks executor setting.
+        """This method validates the site configuration with schema.
 
         Args:
              moduletool (bool, optional): Check whether module system (Lmod, environment-modules) match what is specified in configuration file. Valid options are ``Lmod``, ``environment-modules``
