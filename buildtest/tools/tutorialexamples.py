@@ -26,7 +26,6 @@ def generate_tutorial_examples():
 
     config = SiteConfiguration(settings_file=TUTORIALS_SETTINGS_FILE)
     config.detect_system()
-    config.validate(validate_executors=True)
 
     if is_file(autogen_examples_dir):
         os.remove(autogen_examples_dir)
