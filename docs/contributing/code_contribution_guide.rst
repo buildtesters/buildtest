@@ -175,12 +175,7 @@ To configure pre-commit hook, make sure you install `pre-commit <https://pre-com
 ``pip install pre-commit``. The `pre-commit` utility should be available if you install
 extra dependencies from buildtest (``pip install -r docs/requirements.txt``).
 
-You can configure ``.pre-commit-config.yaml`` with the version of python you are using.
-It is currently setup to run for python 3.7 version as follows::
-
-    language_version: python3.7
-
-Alter this value based on python version you are using or refer to `black version control integration <https://black.readthedocs.io/en/stable/integrations/source_version_control.html>`_.
+The pre-commit hook configuration can be found in `.pre-commit-config.yaml <https://github.com/buildtesters/buildtest/blob/devel/.pre-commit-config.yaml>`_
 
 To install the pre-commit hook run:
 
