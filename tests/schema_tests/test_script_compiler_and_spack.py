@@ -1,13 +1,14 @@
 import os
 
 import pytest
+from jsonschema.exceptions import ValidationError
+
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import SCHEMA_ROOT
 from buildtest.exceptions import InvalidBuildspecSchemaType
 from buildtest.executors.setup import BuildExecutor
 from buildtest.utils.file import walk_tree
-from jsonschema.exceptions import ValidationError
 
 configuration = SiteConfiguration()
 configuration.detect_system()

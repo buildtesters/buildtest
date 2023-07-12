@@ -1,10 +1,11 @@
 import os
 
 import pytest
+from jsonschema.exceptions import ValidationError
+
 from buildtest.defaults import SCHEMA_ROOT
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_recipe, load_schema
-from jsonschema.exceptions import ValidationError
 
 schema_file = "settings.schema.json"
 settings_schema = os.path.join(SCHEMA_ROOT, schema_file)

@@ -4,6 +4,8 @@ BuildExecutor: testing functions
 
 import os
 
+from jsonschema.exceptions import ValidationError
+
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.compilers import BuildtestCompilers
@@ -11,7 +13,6 @@ from buildtest.config import SiteConfiguration
 from buildtest.exceptions import BuildspecError, BuildTestError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.system import BuildTestSystem
-from jsonschema.exceptions import ValidationError
 
 pytest_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

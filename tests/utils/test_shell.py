@@ -1,6 +1,7 @@
 import shutil
 
 import pytest
+
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.shell import Shell
 

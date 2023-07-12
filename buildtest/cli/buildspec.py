@@ -6,6 +6,13 @@ import subprocess
 import sys
 import time
 
+from jsonschema.exceptions import ValidationError
+from rich.layout import Layout
+from rich.panel import Panel
+from rich.pretty import pprint
+from rich.syntax import Syntax
+from rich.table import Column, Table
+
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.build import discover_buildspecs
 from buildtest.cli.report import Report
@@ -26,12 +33,6 @@ from buildtest.utils.file import (
     walk_tree,
 )
 from buildtest.utils.tools import checkColor
-from jsonschema.exceptions import ValidationError
-from rich.layout import Layout
-from rich.panel import Panel
-from rich.pretty import pprint
-from rich.syntax import Syntax
-from rich.table import Column, Table
 
 logger = logging.getLogger(__name__)
 
@@ -238,11 +239,7 @@ class BuildspecCache:
                 # any buildspec that raises SystemExit or ValidationError imply
                 # buildspec is not valid, we add this to invalid list along with
                 # error message and skip to next buildspec
-                except (
-                    BuildspecError,
-                    ExecutorError,
-                    ValidationError,
-                ) as err:
+                except (BuildspecError, ExecutorError, ValidationError) as err:
                     if isinstance(err, BuildspecError):
                         self.invalid_buildspecs[buildspec] = {
                             "msg": err.get_exception()
@@ -1206,11 +1203,7 @@ def buildspec_validate(
             BuildspecParser(
                 buildspec=buildspec, buildexecutor=buildexecutor, executor_match=True
             )
-        except (
-            BuildspecError,
-            ExecutorError,
-            ValidationError,
-        ) as err:
+        except (BuildspecError, ExecutorError, ValidationError) as err:
             exception_counter += 1
             console.rule(buildspec)
             if isinstance(err, BuildspecError):

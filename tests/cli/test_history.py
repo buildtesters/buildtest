@@ -2,12 +2,13 @@ import os
 import shutil
 
 import pytest
+from rich.color import Color
+
 from buildtest.cli.build import BuildTest, Tee
 from buildtest.cli.history import BUILD_HISTORY_DIR, list_build_history, query_builds
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT, VAR_DIR
 from buildtest.system import BuildTestSystem
-from rich.color import Color
 
 
 def test_build_history_list():
@@ -15,9 +16,7 @@ def test_build_history_list():
     list_build_history(terse=False, no_header=False, pager=False)
 
     # buildtest history list --color <color>
-    list_build_history(
-        terse=False, no_header=False, pager=False, color=Color.default().name
-    )
+    list_build_history(terse=False, no_header=False, pager=False, color=Color.default().name)
 
     # buildtest history list --pager
     list_build_history(terse=False, no_header=False, pager=True)
@@ -26,9 +25,7 @@ def test_build_history_list():
     list_build_history(terse=False, no_header=False, pager=False, row_count=True)
 
     # buildtest --color <Color> history list --terse --pager
-    list_build_history(
-        terse=True, no_header=False, pager=True, color=Color.default().name
-    )
+    list_build_history(terse=True, no_header=False, pager=True, color=Color.default().name)
 
     # buildtest history list --terse --no-header
     list_build_history(terse=True, no_header=True, pager=False)

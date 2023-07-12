@@ -4,12 +4,8 @@ import string
 import tempfile
 
 import pytest
-from buildtest.cli.inspect import (
-    inspect_buildspec,
-    inspect_by_name,
-    inspect_list,
-    inspect_query,
-)
+
+from buildtest.cli.inspect import inspect_buildspec, inspect_by_name, inspect_list, inspect_query
 from buildtest.cli.report import Report
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
@@ -60,9 +56,7 @@ def test_buildtest_inspect_name():
     with pytest.raises(SystemExit):
         inspect_by_name(report=buildtest_report, names=random_testnames)
 
-    inspect_by_name(
-        report=buildtest_report, names=[buildtest_report.builder_names()[0]]
-    )
+    inspect_by_name(report=buildtest_report, names=[buildtest_report.builder_names()[0]])
 
 
 def test_buildspec_inspect_buildspec():
@@ -86,10 +80,7 @@ def test_buildspec_inspect_buildspec():
 
     # buildtest inspect buildspec $BUILDTEST_ROOT/tutorials/vars.yml $BUILDTEST_ROOT/tutorials/pass_returncode.yml --pager --all
     inspect_buildspec(
-        report=buildtest_report,
-        input_buildspecs=search_buildspec,
-        pager=True,
-        all_records=True,
+        report=buildtest_report, input_buildspecs=search_buildspec, pager=True, all_records=True
     )
 
 
@@ -116,6 +107,5 @@ def test_buildtest_query():
     # specifying an invalid test name will raise an exception
     with pytest.raises(SystemExit):
         inspect_query(
-            report=buildtest_report,
-            name=["".join(random.choices(string.ascii_letters, k=10))],
+            report=buildtest_report, name=["".join(random.choices(string.ascii_letters, k=10))]
         )

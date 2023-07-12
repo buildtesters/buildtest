@@ -1,7 +1,8 @@
 import os
 
-from buildtest.schemas.utils import load_schema
 from jsonschema import Draft7Validator, RefResolver
+
+from buildtest.schemas.utils import load_schema
 
 here = os.path.dirname(os.path.abspath(__file__))
 

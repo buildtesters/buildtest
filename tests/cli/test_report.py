@@ -4,12 +4,13 @@ import shutil
 import tempfile
 
 import pytest
+from rich.color import Color
+
 from buildtest.cli.report import Report, report_cmd, report_summary
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file
-from rich.color import Color
 
 configuration = SiteConfiguration()
 configuration.detect_system()
@@ -31,9 +32,7 @@ def test_report():
     result.print_report(row_count=True)
 
     # run 'buildtest report --format name,state,returncode,buildspec'
-    result = Report(
-        configuration=configuration, format_args="name,state,returncode,buildspec"
-    )
+    result = Report(configuration=configuration, format_args="name,state,returncode,buildspec")
     result.print_report()
 
     result = Report(configuration, pager=True)
@@ -77,9 +76,7 @@ def test_report_filter():
     report = Report(configuration, filter_args={"state": "PASS"})
     report.print_report()
 
-    report = Report(
-        configuration, filter_args={"state": "PASS"}, format_args="name,state"
-    )
+    report = Report(configuration, filter_args={"state": "PASS"}, format_args="name,state")
     report.print_report()
 
     # run 'buildtest report --filter returncode=0,executor=generic.local.bash --format name,returncode,executor
@@ -134,10 +131,7 @@ def test_report_oldest_and_latest():
 
     # buildtest report --filter tags=tutorials --oldest --latest
     Report(
-        configuration=configuration,
-        filter_args={"tags": "tutorials"},
-        oldest=True,
-        latest=True,
+        configuration=configuration, filter_args={"tags": "tutorials"}, oldest=True, latest=True
     )
 
 
@@ -159,9 +153,7 @@ def test_report_start_and_end():
     end_date = datetime.datetime.now()
 
     # buildtest report --filter tags=tutorials --start
-    Report(
-        configuration=configuration, filter_args={"tags": "tutorials"}, start=start_date
-    )
+    Report(configuration=configuration, filter_args={"tags": "tutorials"}, start=start_date)
 
     # buildtest report --filter tags=tutorials --end
     Report(configuration=configuration, filter_args={"tags": "tutorials"}, end=end_date)
@@ -181,9 +173,7 @@ def test_invalid_filters():
     # this raises error because UNKNOWN is not valid value for state field
     with pytest.raises(BuildTestError):
         Report(
-            configuration=configuration,
-            filter_args={"state": "UNKNOWN"},
-            format_args="name,state",
+            configuration=configuration, filter_args={"state": "UNKNOWN"}, format_args="name,state"
         )
 
     tf = tempfile.NamedTemporaryFile(delete=True)
@@ -253,11 +243,7 @@ def test_report_summary():
     report = Report(configuration=configuration, color="light_pink1")
     report_summary(report, configuration=configuration)
 
-    report = Report(
-        configuration=configuration,
-        pager=True,
-        color="light_pink1",
-    )
+    report = Report(configuration=configuration, pager=True, color="light_pink1")
     report_summary(report, configuration=configuration, detailed=True)
 
     # buildtest --color light_pink1 rt sm --detailed

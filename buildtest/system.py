@@ -11,6 +11,7 @@ import shutil
 import sys
 
 import distro
+
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.command import BuildTestCommand
@@ -143,9 +144,7 @@ class Scheduler:
     def check_binaries(self, binaries):
         """Check if binaries exist binary exist in $PATH"""
 
-        self.logger.debug(
-            f"We will check the following binaries {binaries} for existence."
-        )
+        self.logger.debug(f"We will check the following binaries {binaries} for existence.")
         for command in binaries:
             if not shutil.which(command):
                 self.logger.debug(f"Cannot find {command} command in $PATH")
@@ -309,9 +308,7 @@ class LSF(Scheduler):
             try:
                 queues = json.loads(out)
             except json.JSONDecodeError:
-                raise BuildTestError(
-                    f"Unable to process LSF Queues when running: {query}"
-                )
+                raise BuildTestError(f"Unable to process LSF Queues when running: {query}")
 
         return queues
 

@@ -2,6 +2,7 @@ import os
 import socket
 
 import pytest
+
 from buildtest.cli.build import BuildTest
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
@@ -25,9 +26,7 @@ def test_jlse():
 
     buildspec_files = walk_tree(os.path.join(here, "examples", "jlse"))
 
-    cmd = BuildTest(
-        configuration=bc, buildspecs=buildspec_files, buildtest_system=system
-    )
+    cmd = BuildTest(configuration=bc, buildspecs=buildspec_files, buildtest_system=system)
     cmd.build()
 
     # testing buildtest config compilers find

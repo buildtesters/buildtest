@@ -115,9 +115,7 @@ class BuildspecParser:
             msg = f"Schema type must be one of the following: {schema_table['types']}. "
             raise InvalidBuildspecSchemaType(self.buildspec, msg)
 
-        self.logger.info(
-            f"Test: '{test}' is using schema type: '{self.schema_type}'",
-        )
+        self.logger.info(f"Test: '{test}' is using schema type: '{self.schema_type}'")
 
     def _check_executor(self, test):
         """This method checks if ``executor`` property is not None and executor

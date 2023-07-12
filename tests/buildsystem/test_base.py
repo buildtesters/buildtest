@@ -6,6 +6,7 @@ import os
 import tempfile
 
 import pytest
+
 from buildtest.buildsystem.builders import Builder
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.compilers import BuildtestCompilers
