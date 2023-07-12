@@ -13,7 +13,7 @@ Overview
 ---------
 
 buildtest codebase is written in Python 3, so if you are new to Python you will want to
-check out the python 3 tutorial: https://docs.python.org/3/tutorial/. This is a good
+check out the `python 3 tutorial <https://docs.python.org/3/tutorial/>`_. This is a good
 starting point to understand python basics. If you are familiar with Python 2 you may want to review
 the `Python 2-3 cheat sheet <http://python-future.org/compatible_idioms.html>`_.
 
@@ -44,10 +44,10 @@ We recommend you review one the following guides to help you learn `git`:
 - https://guides.github.com/
 - https://skills.github.com/
 
-buildtest documentation is built on `sphinx <https://www.sphinx-doc.org/en/master/>`_
+Documentation is built via `sphinx <https://www.sphinx-doc.org/en/master/>`_
 and hosted via `readthedocs <https://readthedocs.org/>`_. Be sure to check out
-`documentation on readthedocs  <https://docs.readthedocs.io/en/stable/>`_ to understand
-how it works. The buildtest project is hosted at https://readthedocs.org/projects/buildtest/ which
+`readthedocs documentation <https://docs.readthedocs.io/en/stable/>`_ to understand
+how this platform works. The buildtest project is hosted at https://readthedocs.org/projects/buildtest/ which
 hosts the public documentation at https://buildtest.readthedocs.io/. The documentation
 pages are written in `reStructured Text (rST) <https://docutils.sourceforge.io/rst.html>`_
 which is Sphinx's markup language when hosting the docs.
