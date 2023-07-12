@@ -1,21 +1,12 @@
 #1
-buildtest buildspec find --tags
+buildtest report --helpfilter
+buildtest report --helpformat
 
 #2
-buildtest buildspec find --helpfilter
-buildtest buildspec find --helpformat
+buildtest report --filter returncode=0
 
 #3
-buildtest buildspec find --format name,description
+buildtest report --filter tags=e4s
 
 #4
-buildtest buildspec find --filter tags=e4s
-
-#5
-buildtest buildspec find invalid
-
-#6 
-buildtest buildspec validate -t e4s
-
-#7
-buildtest buildspec show hello_world_openmp
+buildtest report --fail --row-count
