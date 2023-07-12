@@ -123,7 +123,6 @@ class SiteConfiguration:
         """This method validates the site configuration with schema and checks executor setting.
 
         Args:
-             validate_executors (bool): Check executor settings. This is the default behavior but can be disabled
              moduletool (bool, optional): Check whether module system (Lmod, environment-modules) match what is specified in configuration file. Valid options are ``Lmod``, ``environment-modules``
         """
 
