@@ -1,6 +1,8 @@
 import os
 import shutil
 
+from rich.panel import Panel
+
 from buildtest import BUILDTEST_VERSION
 from buildtest.defaults import (
     BUILD_HISTORY_DIR,
@@ -11,7 +13,6 @@ from buildtest.defaults import (
 from buildtest.executors.setup import BuildExecutor
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import is_dir, is_file
-from rich.panel import Panel
 
 
 def buildtest_info(configuration, buildtest_system):

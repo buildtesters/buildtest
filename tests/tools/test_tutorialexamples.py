@@ -1,4 +1,5 @@
 import pytest
+
 from buildtest.tools.tutorialexamples import generate_tutorial_examples
 
 

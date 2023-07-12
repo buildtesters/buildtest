@@ -1,5 +1,6 @@
-from buildtest.defaults import console
 from rich.table import Table
+
+from buildtest.defaults import console
 
 
 def print_build_show():
@@ -221,12 +222,10 @@ def print_buildspec_show():
         "Use color theme 'emacs' for showing content of test",
     )
     table.add_row(
-        "buildtest buildspec show-fail",
-        "Show content of buildspec on all failed tests",
+        "buildtest buildspec show-fail", "Show content of buildspec on all failed tests"
     )
     table.add_row(
-        "buildtest buildspec show-fail exit1_fail",
-        "Show content of test 'exit1_fail'",
+        "buildtest buildspec show-fail exit1_fail", "Show content of test 'exit1_fail'"
     )
     table.add_row(
         "buildtest buildspec edit-test python_hello",
@@ -242,8 +241,7 @@ def print_buildspec_show():
         "Find buildspec with maintainer name 'johndoe'",
     )
     table.add_row(
-        "buildtest buildspec maintainers",
-        "List all maintainers from buildspec cache",
+        "buildtest buildspec maintainers", "List all maintainers from buildspec cache"
     )
     table.add_row(
         "buildtest buildspec maintainers --row-count",

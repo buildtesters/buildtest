@@ -4,12 +4,13 @@ import shutil
 import tempfile
 
 import pytest
+from rich.color import Color
+
 from buildtest.cli.report import Report, report_cmd, report_summary
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file
-from rich.color import Color
 
 configuration = SiteConfiguration()
 configuration.detect_system()
@@ -253,11 +254,7 @@ def test_report_summary():
     report = Report(configuration=configuration, color="light_pink1")
     report_summary(report, configuration=configuration)
 
-    report = Report(
-        configuration=configuration,
-        pager=True,
-        color="light_pink1",
-    )
+    report = Report(configuration=configuration, pager=True, color="light_pink1")
     report_summary(report, configuration=configuration, detailed=True)
 
     # buildtest --color light_pink1 rt sm --detailed

@@ -1,11 +1,12 @@
 import json
 import os
 
+from rich.syntax import Syntax
+
 from buildtest.defaults import console
 from buildtest.schemas.defaults import schema_table
 from buildtest.schemas.utils import here
 from buildtest.utils.file import read_file, walk_tree
-from rich.syntax import Syntax
 
 
 def schema_cmd(args):

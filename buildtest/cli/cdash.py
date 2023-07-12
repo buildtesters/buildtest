@@ -13,6 +13,7 @@ from urllib.request import Request, urlopen
 
 import requests
 import yaml
+
 from buildtest.defaults import BUILD_REPORT, console
 from buildtest.utils.file import is_file, resolve_path
 from buildtest.utils.tools import deep_get
@@ -81,8 +82,7 @@ def view_cdash_project(cdash_config, config_file, open_browser=None):
         print(err)
 
         print(
-            "\nShown below is the CDASH settings from configuration file:",
-            config_file,
+            "\nShown below is the CDASH settings from configuration file:", config_file
         )
         print(yaml.dump(cdash_config, indent=2))
         sys.exit(f"Invalid URL: {target_url}")
@@ -377,10 +377,7 @@ def upload_test_cdash(
         ET.SubElement(metrics, "Value").text = test["metrics"]
 
         job = ET.SubElement(
-            results_element,
-            "NamedMeasurement",
-            type="text/preformatted",
-            name="Job",
+            results_element, "NamedMeasurement", type="text/preformatted", name="Job"
         )
         ET.SubElement(job, "Value").text = test["job"]
 
