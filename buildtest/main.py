@@ -28,7 +28,12 @@ from buildtest.cli.debugreport import print_debug_report
 from buildtest.cli.helpcolor import print_available_colors
 from buildtest.cli.history import build_history
 from buildtest.cli.info import buildtest_info
-from buildtest.cli.inspect import inspect_buildspec, inspect_by_name, inspect_list, inspect_query
+from buildtest.cli.inspect import (
+    inspect_buildspec,
+    inspect_by_name,
+    inspect_list,
+    inspect_query,
+)
 from buildtest.cli.path import path_cmd
 from buildtest.cli.report import Report, report_cmd
 from buildtest.cli.schema import schema_cmd
@@ -51,7 +56,13 @@ from buildtest.tools.editor import set_editor
 from buildtest.tools.stylecheck import run_style_checks
 from buildtest.tools.tutorialexamples import generate_tutorial_examples
 from buildtest.tools.unittests import run_unit_tests
-from buildtest.utils.file import create_dir, is_file, read_file, remove_file, resolve_path
+from buildtest.utils.file import (
+    create_dir,
+    is_file,
+    read_file,
+    remove_file,
+    resolve_path,
+)
 from buildtest.utils.tools import deep_get
 
 
@@ -117,7 +128,9 @@ def main():
     if hasattr(args, "disable_executor_check"):
         validate_executors = args.disable_executor_check
 
-    config_file = resolve_path(args.configfile) or os.getenv("BUILDTEST_CONFIGFILE") or None
+    config_file = (
+        resolve_path(args.configfile) or os.getenv("BUILDTEST_CONFIGFILE") or None
+    )
     configuration = SiteConfiguration(config_file)
     configuration.detect_system()
     configuration.validate(validate_executors, moduletool=system.system["moduletool"])
@@ -189,7 +202,9 @@ def main():
                 pager=args.pager, configuration=configuration, color=args.color
             )
         elif args.buildspecs_subcommand in ["show", "s"]:
-            show_buildspecs(test_names=args.name, configuration=configuration, theme=args.theme)
+            show_buildspecs(
+                test_names=args.name, configuration=configuration, theme=args.theme
+            )
         elif args.buildspecs_subcommand in ["show-fail", "sf"]:
             show_failed_buildspecs(
                 configuration=configuration,
@@ -199,11 +214,15 @@ def main():
             )
         elif args.buildspecs_subcommand in ["edit-test", "et"]:
             edit_buildspec_test(
-                test_names=args.name, configuration=configuration, editor=buildtest_editor
+                test_names=args.name,
+                configuration=configuration,
+                editor=buildtest_editor,
             )
         elif args.buildspecs_subcommand in ["edit-file", "ef"]:
             edit_buildspec_file(
-                buildspecs=args.file, configuration=configuration, editor=buildtest_editor
+                buildspecs=args.file,
+                configuration=configuration,
+                editor=buildtest_editor,
             )
         elif args.buildspecs_subcommand in ["maintainers", "m"]:
             name = None
@@ -260,7 +279,10 @@ def main():
 
         if args.inspect in ["buildspec", "b"]:
             inspect_buildspec(
-                report, input_buildspecs=args.buildspec, all_records=args.all, pager=args.pager
+                report,
+                input_buildspecs=args.buildspec,
+                all_records=args.all,
+                pager=args.pager,
             )
         return
 
@@ -304,7 +326,9 @@ def main():
 
         if args.cdash == "view":
             view_cdash_project(
-                cdash_config=cdash_config, config_file=configuration.file, open_browser=True
+                cdash_config=cdash_config,
+                config_file=configuration.file,
+                open_browser=True,
             )
         elif args.cdash == "upload":
             upload_test_cdash(
@@ -337,7 +361,9 @@ def main():
 
     elif args.subcommands in ["unittests", "test"]:
         run_unit_tests(
-            pytestopts=args.pytestopts, sourcefiles=args.sourcefiles, enable_coverage=args.coverage
+            pytestopts=args.pytestopts,
+            sourcefiles=args.sourcefiles,
+            enable_coverage=args.coverage,
         )
 
     elif args.subcommands == "tutorial-examples":

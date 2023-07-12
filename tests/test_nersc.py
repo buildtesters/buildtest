@@ -17,7 +17,10 @@ class TestNersc:
     here = os.path.dirname(os.path.abspath(__file__))
 
     if not hostname.startswith("login"):
-        pytest.skip("This test runs on Perlmutter Login nodes ('login*')", allow_module_level=True)
+        pytest.skip(
+            "This test runs on Perlmutter Login nodes ('login*')",
+            allow_module_level=True,
+        )
 
     settings_file = os.path.join(here, "settings", "nersc.yml")
 
@@ -32,7 +35,9 @@ class TestNersc:
         cmd = BuildTest(
             configuration=self.bc,
             buildspecs=[
-                os.path.join(BUILDTEST_ROOT, "tests", "examples", "perlmutter", "hostname.yml")
+                os.path.join(
+                    BUILDTEST_ROOT, "tests", "examples", "perlmutter", "hostname.yml"
+                )
             ],
             buildtest_system=self.system,
             poll_interval=5,
@@ -46,7 +51,11 @@ class TestNersc:
             configuration=self.bc,
             buildspecs=[
                 os.path.join(
-                    os.getenv("BUILDTEST_ROOT"), "tests", "examples", "perlmutter", "hold_job.yml"
+                    os.getenv("BUILDTEST_ROOT"),
+                    "tests",
+                    "examples",
+                    "perlmutter",
+                    "hold_job.yml",
                 )
             ],
             buildtest_system=self.system,

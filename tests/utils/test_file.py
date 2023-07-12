@@ -221,7 +221,9 @@ class TestSearchFiles(unittest.TestCase):
     @staticmethod
     def test_search_files_home_dir():
         # search for files based on variable expansion $HOME
-        result = search_files(root_dir="$HOME", regex_pattern=r".*", file_traverse_limit=10)
+        result = search_files(
+            root_dir="$HOME", regex_pattern=r".*", file_traverse_limit=10
+        )
         assert len(result) == 10
 
         result = search_files(root_dir="~", regex_pattern=r".*", file_traverse_limit=10)
@@ -291,7 +293,9 @@ def test_write_file_exceptions(tmp_path):
     assert is_dir(temporary_directory)
     # testing if directory is passed as filepath, this is also not allowed and expected to raise error
     with pytest.raises(BuildTestError):
-        print(f"Passing directory: {temporary_directory} as input filestream to method write_file")
+        print(
+            f"Passing directory: {temporary_directory} as input filestream to method write_file"
+        )
         write_file(tmp_path, msg)
 
     filename = "".join(random.choices(string.ascii_letters, k=10))

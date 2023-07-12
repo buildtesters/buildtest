@@ -119,7 +119,9 @@ class Report:
         self.latest = latest or self.configuration.target_config["report"].get("latest")
         self.oldest = oldest or self.configuration.target_config["report"].get("oldest")
         self.filter = filter_args
-        self.format = format_args or self.configuration.target_config["report"].get("format")
+        self.format = format_args or self.configuration.target_config["report"].get(
+            "format"
+        )
         self.pager = pager
         self.color = color
         self.input_report = report_file
@@ -239,7 +241,9 @@ class Report:
 
         if not self._reportfile:
             sys.exit(
-                console.print(f"[red]Unable to resolve path to report file: {self.input_report}")
+                console.print(
+                    f"[red]Unable to resolve path to report file: {self.input_report}"
+                )
             )
 
         if not is_file(self._reportfile):
@@ -288,7 +292,9 @@ class Report:
 
             # if file not found in cache we exit
             if not resolved_buildspecs in self.report.keys():
-                raise BuildTestError(f"buildspec file: {resolved_buildspecs} not found in cache")
+                raise BuildTestError(
+                    f"buildspec file: {resolved_buildspecs} not found in cache"
+                )
 
             # need to set as a list since we will loop over all tests
             self.filtered_buildspecs = [resolved_buildspecs]
@@ -315,7 +321,9 @@ class Report:
 
         if self.start and self.end:
             end_include = self.end + datetime.timedelta(days=1)
-            return True if test_start >= self.start and test_end <= end_include else False
+            return (
+                True if test_start >= self.start and test_end <= end_include else False
+            )
 
         if self.start:
             return True if test_start >= self.start else False
@@ -334,7 +342,9 @@ class Report:
         if not self.filter.get("name"):
             return False
 
-        logger.debug(f"Checking if test: '{name}' matches filter name: '{self.filter['name']}'")
+        logger.debug(
+            f"Checking if test: '{name}' matches filter name: '{self.filter['name']}'"
+        )
 
         return not name == self.filter["name"]
 
@@ -360,7 +370,9 @@ class Report:
             test (dict): Test recorded loaded as dictionary
         """
 
-        if self.filter.get("executor") and self.filter.get("executor") != test.get("executor"):
+        if self.filter.get("executor") and self.filter.get("executor") != test.get(
+            "executor"
+        ):
             return True
 
         return False
@@ -404,7 +416,10 @@ class Report:
 
                 # if --latest and --oldest specified together we retrieve first and last record
                 if self.latest and self.oldest:
-                    tests = [self.report[buildspec][name][0], self.report[buildspec][name][-1]]
+                    tests = [
+                        self.report[buildspec][name][0],
+                        self.report[buildspec][name][-1],
+                    ]
                 # retrieve last record of every test if --latest is specified
                 elif self.latest:
                     tests = [self.report[buildspec][name][-1]]
@@ -476,12 +491,17 @@ class Report:
         """Displays list of help filters which implements command ``buildtest report --helpfilter``"""
 
         table = Table(
-            "[blue]Field", "[blue]Description", "[blue]Expected Value", title="Filter Fields"
+            "[blue]Field",
+            "[blue]Description",
+            "[blue]Expected Value",
+            title="Filter Fields",
         )
 
         for field, value in self.filter_field_description.items():
             table.add_row(
-                f"[red]{field}", f"[green]{value['description']}", f"[magenta]{value['type']}"
+                f"[red]{field}",
+                f"[green]{value['description']}",
+                f"[magenta]{value['type']}",
             )
         console.print(table)
 
@@ -496,7 +516,13 @@ class Report:
             console.print(field)
 
     def print_report(
-        self, terse=None, row_count=None, noheader=None, title=None, count=None, color=None
+        self,
+        terse=None,
+        row_count=None,
+        noheader=None,
+        title=None,
+        count=None,
+        color=None,
     ):
         """This method will print report table after processing report file. By default we print output in
         table format but this can be changed to terse format which will print output in parseable format.
@@ -546,8 +572,16 @@ class Report:
             root_disk_usage|PASS|0
         """
 
-        count = self.configuration.target_config["report"].get("count") if count is None else count
-        terse = self.configuration.target_config["report"].get("terse") if terse is None else terse
+        count = (
+            self.configuration.target_config["report"].get("count")
+            if count is None
+            else count
+        )
+        terse = (
+            self.configuration.target_config["report"].get("terse")
+            if terse is None
+            else terse
+        )
 
         consoleColor = checkColor(color)
         if terse:
@@ -802,7 +836,10 @@ def report_cmd(args, configuration, report_file=None):
             return
 
         report_summary(
-            results, detailed=args.detailed, color=consoleColor, configuration=configuration
+            results,
+            detailed=args.detailed,
+            color=consoleColor,
+            configuration=configuration,
         )
         return
 
@@ -825,7 +862,10 @@ def report_cmd(args, configuration, report_file=None):
     if pager:
         with console.pager():
             results.print_report(
-                terse=args.terse, noheader=args.no_header, count=args.count, color=consoleColor
+                terse=args.terse,
+                noheader=args.no_header,
+                count=args.count,
+                color=consoleColor,
             )
         return
     results.print_report(

@@ -158,7 +158,11 @@ def search_files(
             if file_type == "file" and pattern.search(file):
                 files_list.append(file_path)
 
-            elif file_type == "symlink" and is_symlink(file_path) and pattern.search(file):
+            elif (
+                file_type == "symlink"
+                and is_symlink(file_path)
+                and pattern.search(file)
+            ):
                 files_list.append(file_path)
 
             files_traversed += 1
@@ -167,7 +171,12 @@ def search_files(
 
 
 def walk_tree(
-    root_dir, ext=None, max_depth=None, numfiles=None, file_traverse_limit=999999, file_type="file"
+    root_dir,
+    ext=None,
+    max_depth=None,
+    numfiles=None,
+    file_traverse_limit=999999,
+    file_type="file",
 ):
     """This method will traverse a directory tree and return list of files
     based on extension type. This method invokes :func:`is_dir` to check if directory
@@ -230,7 +239,9 @@ def walk_tree(
             file_path = os.path.join(root, file)
 
             # if file_type is 'file' and extension matches then we append file to list. If extension is None the statement is True.
-            if file_type == "file" and (ext is None or os.path.splitext(file)[1] in ext):
+            if file_type == "file" and (
+                ext is None or os.path.splitext(file)[1] in ext
+            ):
                 files_list.append(file_path)
             # if file_type is 'symlink' and file is a symlink and extension matches then we append file to list. If extension is None the statement is True.
             elif (
@@ -302,7 +313,9 @@ def resolve_path(path: str, exist: bool = True) -> str:
         return
 
     if not isinstance(path, str):
-        raise BuildTestError(f"Input must be a string type, {path} is of type {type(path)}")
+        raise BuildTestError(
+            f"Input must be a string type, {path} is of type {type(path)}"
+        )
 
     # apply shell expansion  when file includes something like $HOME/example
     path = os.path.expandvars(path)
@@ -336,7 +349,9 @@ def read_file(filepath: str) -> str:
 
     # ensure filepath is a string, if not, we raise an error.
     if not isinstance(filepath, str):
-        raise BuildTestError(f"Invalid type for file: {filepath} must be of type 'str' ")
+        raise BuildTestError(
+            f"Invalid type for file: {filepath} must be of type 'str' "
+        )
 
     input_file = filepath
     # resolve_path will handle shell and user expansion and account for any symlinks and check for file existence.
@@ -385,15 +400,21 @@ def write_file(filepath: str, content: str) -> None:
 
     # ensure filepath is a string, if not we raise an error
     if not isinstance(filepath, str):
-        raise BuildTestError(f"Invalid type for file: {filepath} must be of type 'str' ")
+        raise BuildTestError(
+            f"Invalid type for file: {filepath} must be of type 'str' "
+        )
 
     #  if filepath is a directory, we raise an exception noting that user must specify a filepath
     if is_dir(filepath):
-        raise BuildTestError(f"Detected {filepath} is a directory, please specify a file path.")
+        raise BuildTestError(
+            f"Detected {filepath} is a directory, please specify a file path."
+        )
 
     # ensure content is of type string
     if not isinstance(content, str):
-        raise BuildTestError(f"Expecting type str but got type: {type(content)} when writing file")
+        raise BuildTestError(
+            f"Expecting type str but got type: {type(content)} when writing file"
+        )
 
     try:
         with open(filepath, "w") as fd:
@@ -426,7 +447,9 @@ def remove_file(fpath: str) -> None:
 
     # if its not a file return
     if not is_file(fpath):
-        raise BuildTestError(f"The filepath: {fpath} must be a file and must exist on file system")
+        raise BuildTestError(
+            f"The filepath: {fpath} must be a file and must exist on file system"
+        )
 
     try:
         os.remove(fpath)

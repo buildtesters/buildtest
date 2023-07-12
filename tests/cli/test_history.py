@@ -16,7 +16,9 @@ def test_build_history_list():
     list_build_history(terse=False, no_header=False, pager=False)
 
     # buildtest history list --color <color>
-    list_build_history(terse=False, no_header=False, pager=False, color=Color.default().name)
+    list_build_history(
+        terse=False, no_header=False, pager=False, color=Color.default().name
+    )
 
     # buildtest history list --pager
     list_build_history(terse=False, no_header=False, pager=True)
@@ -25,7 +27,9 @@ def test_build_history_list():
     list_build_history(terse=False, no_header=False, pager=False, row_count=True)
 
     # buildtest --color <Color> history list --terse --pager
-    list_build_history(terse=True, no_header=False, pager=True, color=Color.default().name)
+    list_build_history(
+        terse=True, no_header=False, pager=True, color=Color.default().name
+    )
 
     # buildtest history list --terse --no-header
     list_build_history(terse=True, no_header=True, pager=False)

@@ -9,7 +9,9 @@ root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 
 
 @pytest.mark.utility
-@pytest.mark.xfail(reason="Invalid File Extension for loading schema", raises=SystemExit)
+@pytest.mark.xfail(
+    reason="Invalid File Extension for loading schema", raises=SystemExit
+)
 def test_load_schema_invalid_ext():
     # invalid file extension should fail
     load_schema(os.path.join(root, "README.rst"))

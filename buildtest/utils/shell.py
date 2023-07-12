@@ -131,7 +131,9 @@ class Shell:
 
         # enforce input argument 'shell' to be a string
         if not isinstance(shell, str):
-            raise BuildTestError(f"Invalid type for input: {shell} must be of type 'str'")
+            raise BuildTestError(
+                f"Invalid type for input: {shell} must be of type 'str'"
+            )
 
         self.name = shell.split()[0]
 
@@ -205,7 +207,9 @@ class Shell:
 
         # if input shell is not in list of valid shells we raise error.
         if self.name not in self.valid_shells:
-            raise BuildTestError(f"Please select one of the following shells: {self.valid_shells}")
+            raise BuildTestError(
+                f"Please select one of the following shells: {self.valid_shells}"
+            )
 
         self._path = path
 
@@ -214,4 +218,9 @@ class Shell:
 
     def get(self):
         """Return shell attributes as a dictionary"""
-        return {"name": self.name, "opts": self._opts, "path": self._path, "shebang": self.shebang}
+        return {
+            "name": self.name,
+            "opts": self._opts,
+            "path": self._path,
+            "shebang": self.shebang,
+        }

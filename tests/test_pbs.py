@@ -24,7 +24,9 @@ def test_pbs():
 
     buildspec_files = walk_tree(os.path.join(here, "examples", "pbs"))
 
-    cmd = BuildTest(configuration=bc, buildspecs=buildspec_files, buildtest_system=system)
+    cmd = BuildTest(
+        configuration=bc, buildspecs=buildspec_files, buildtest_system=system
+    )
     cmd.build()
 
     cmd = BuildTest(

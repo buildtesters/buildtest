@@ -32,7 +32,9 @@ def run_unit_tests(pytestopts=None, sourcefiles=None, enable_coverage=False):
     """
 
     if not os.getenv("BUILDTEST_ROOT"):
-        sys.exit("Please check your buildtest installation by running 'source setup.sh'")
+        sys.exit(
+            "Please check your buildtest installation by running 'source setup.sh'"
+        )
 
     pytestopts = pytestopts.split() if pytestopts else []
     sources = []
@@ -84,7 +86,9 @@ def run_unit_tests(pytestopts=None, sourcefiles=None, enable_coverage=False):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(prog="unittest", description="Run buildtest unit tests")
+    parser = argparse.ArgumentParser(
+        prog="unittest", description="Run buildtest unit tests"
+    )
     parser.add_argument(
         "-c",
         "--coverage",
@@ -102,5 +106,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     run_unit_tests(
-        pytestopts=args.pytestopts, sourcefiles=args.sourcefiles, enable_coverage=args.coverage
+        pytestopts=args.pytestopts,
+        sourcefiles=args.sourcefiles,
+        enable_coverage=args.coverage,
     )

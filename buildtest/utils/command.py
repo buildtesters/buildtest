@@ -111,7 +111,10 @@ class BuildTestCommand:
         # Capturing provides temporary output and error files
         with Capturing() as capture:
             process = subprocess.Popen(
-                cmd, stdout=capture.stdout, stderr=capture.stderr, universal_newlines=True
+                cmd,
+                stdout=capture.stdout,
+                stderr=capture.stderr,
+                universal_newlines=True,
             )
             try:
                 process.communicate(timeout=timeout)
