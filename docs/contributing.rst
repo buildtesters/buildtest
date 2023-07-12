@@ -28,7 +28,7 @@ to help you learn YAML for instance you can check out:
 buildtest has a regression test that is run via `pytest <https://docs.pytest.org/en/stable/>`_. You
 should be familiar with pytest and it's usage and documentation as it will help you write
 regression test. The regression test makes use of `coverage <https://coverage.readthedocs.io/>`_
-to measure code coverage of buildtest source code. This is configured using `.coveragerc <https://github.com/buildtesters/buildtest/blob/devel/.coveragerc>`_ file located
+to measure code coverage of buildtest source code. This is configured in `pyproject.toml <https://github.com/buildtesters/buildtest/blob/devel/pyproject.toml>`_ file located
 in top of repo. The coverage data is pushed to `codecov <https://docs.codecov.io/docs>`_ at https://codecov.io/gh/buildtesters/buildtest/.
 
 buildtest has several CI checks written in GitHub workflows. These are found in `.github/workflows <https://github.com/buildtesters/buildtest/tree/devel/.github/workflows>`_
