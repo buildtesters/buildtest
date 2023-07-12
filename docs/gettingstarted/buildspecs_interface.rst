@@ -165,7 +165,7 @@ You can see a list of all format fields by ``--helpformat`` option as shown belo
 In the next example, we utilize ``--format`` field to show how format fields affect table columns.
 buildtest will display the table in order of format fields specified in command line.
 
-.. dropdown:: ``buildtest buildspec find --format name,description,buildspec ``
+.. dropdown:: ``buildtest buildspec find --format name,description,buildspec``
 
     .. command-output:: buildtest buildspec find --format name,description,buildspec
 
