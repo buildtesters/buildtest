@@ -102,7 +102,7 @@ running the following command
 
 .. dropdown:: ``buildtest rt --filter tags=network --format name,id,tags``
 
-    .. command-output:: buildtest rt --filter tags=python --format name,id,tags
+    .. command-output:: buildtest rt --filter tags=network --format name,id,tags
 
 The ``--format`` option are comma separated list of format fields while ``--filter`` option are **key=value** pair. To see
 list of available format and filter fields you can run::
