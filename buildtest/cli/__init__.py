@@ -260,7 +260,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     )
     parser.add_argument("-r", "--report", help="Specify path to test report file")
 
-    subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar=""
+    subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 
 
 
