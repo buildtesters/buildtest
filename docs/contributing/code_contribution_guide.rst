@@ -162,7 +162,7 @@ General Tips
 
 - If you open an issue, please respond back during the discussion, if there is no activity the issue will be closed.
 
-- Please refrain from a opening duplicate issue, check if there is an existing issue addressing similar problems. You can ask questions in slack to report your issue or contact project maintainers.
+- Please refrain from opening a duplicate issue, check if there is an existing issue addressing similar problems. You can ask questions in slack to report your issue or contact project maintainers.
 
 - There should not be any branches other than ``master`` or ``devel``. Feature branches should be pushed to your fork and not to origin.
 
