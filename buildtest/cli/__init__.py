@@ -363,26 +363,7 @@ def misc_menu(subparsers):
     clean.add_argument(
         "-y", "--yes", action="store_true", help="Confirm yes for all prompts"
     )
-    profile = argparse.ArgumentParser(
 
-        profile.add_list(
-
-        choices=[
-            "compilers",
-            "co",
-            "edit",
-            "e",
-            "executors",
-            "ex",
-            "path",
-            "p",
-            "systems",
-            "validate",
-            "view",
-            "-v"
-        ],
-
-        )
     subparsers.add_parser(
         "debugreport",
         help="Display system information and additional information for debugging purposes.",
@@ -427,6 +408,28 @@ def misc_menu(subparsers):
         help="Show help message for command",
     )
 
+    profile_argparse = subparsers.add_parser(
+        "help",
+        config=["-h"],
+        compliers="config profiles list",
+    )
+    profile.add_list(
+        "command",
+        choices=[
+            "compilers",
+            "co",
+            "edit",
+            "e",
+            "executors",
+            "ex",
+            "path",
+            "p",
+            "systems",
+            "validate",
+            "view",
+            "-v"
+        ],
+    )
 
 def stylecheck_menu(subparsers):
     """This method will create command options for ``buildtest stylecheck``
