@@ -2,8 +2,8 @@ from buildtest.defaults import console
 from rich.table import Table
 
 
-def print_build_help():
-    """This method will print help message for command ``buildtest help build``"""
+def print_build_show():
+    """This method will print help message for command ``buildtest show build``"""
 
     table = Table(title="Building buildspecs", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -109,8 +109,8 @@ def print_build_help():
     console.print(table)
 
 
-def print_buildspec_help():
-    """This method will print help message for command ``buildtest help buildspec``"""
+def print_buildspec_show():
+    """This method will print help message for command ``buildtest show buildspec``"""
 
     table = Table(title="Finding Buildspecs", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -260,8 +260,8 @@ def print_buildspec_help():
     console.print(table)
 
 
-def print_config_help():
-    """This method will print help message for command ``buildtest help config``"""
+def print_config_show():
+    """This method will print help message for command ``buildtest show config``"""
 
     table = Table(title="Configuring Buildtest", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -321,8 +321,8 @@ def print_config_help():
     console.print(table)
 
 
-def print_inspect_help():
-    """This method will print help message for command ``buildtest help inspect``"""
+def print_inspect_show():
+    """This method will print help message for command ``buildtest show inspect``"""
 
     table = Table(title="Inspecting a test", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -367,8 +367,8 @@ def print_inspect_help():
     console.print(table)
 
 
-def print_report_help():
-    """This method will print help message for command ``buildtest help report``"""
+def print_report_show():
+    """This method will print help message for command ``buildtest show report``"""
 
     table = Table(title="Viewing Test Report", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -424,8 +424,8 @@ def print_report_help():
     console.print(table)
 
 
-def print_history_help():
-    """This method will print help message for command ``buildtest help history``"""
+def print_history_show():
+    """This method will print help message for command ``buildtest show history``"""
 
     table = Table(title="Editing buildspec", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -454,8 +454,8 @@ def print_history_help():
     console.print(table)
 
 
-def print_cdash_help():
-    """This method will print help message for command ``buildtest help cdash``"""
+def print_cdash_show():
+    """This method will print help message for command ``buildtest show cdash``"""
 
     table = Table(title="Editing buildspec", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -483,8 +483,8 @@ def print_cdash_help():
     console.print(table)
 
 
-def print_schema_help():
-    """This method will print help message for command ``buildtest help schema``"""
+def print_schema_show():
+    """This method will print help message for command ``buildtest show schema``"""
 
     table = Table(title="Buildtest Schemas", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -502,8 +502,8 @@ def print_schema_help():
     console.print(table)
 
 
-def print_stylecheck_help():
-    """This method will print help message for command ``buildtest help stylecheck``"""
+def print_stylecheck_show():
+    """This method will print help message for command ``buildtest show stylecheck``"""
 
     table = Table(title="Buildtest stylecheck", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -523,8 +523,8 @@ def print_stylecheck_help():
     console.print(table)
 
 
-def print_unittests_help():
-    """This method will print help message for command ``buildtest help unittests``"""
+def print_unittests_show():
+    """This method will print help message for command ``buildtest show unittests``"""
 
     table = Table(title="Buildtest unittests", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -553,8 +553,8 @@ def print_unittests_help():
     console.print(table)
 
 
-def print_path_help():
-    """This method will print help message for command ``buildtest help schema``"""
+def print_path_show():
+    """This method will print help message for command ``buildtest show schema``"""
 
     table = Table(title="Get Path to Test", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
@@ -586,32 +586,32 @@ def print_path_help():
     console.print(table)
 
 
-def buildtest_help(command):
-    """Entry point for ``buildtest help`` which display a summary of how to use buildtest commands
+def buildtest_show(command):
+    """Entry point for ``buildtest show`` which display a summary of how to use buildtest commands
 
     Args:
-        command (str): Name of buildtest command specified by ``buildtest help <command>``
+        command (str): Name of buildtest command specified by ``buildtest show <command>``
     """
 
     if command in ["build", "bd"]:
-        print_build_help()
+        print_build_show()
     elif command in ["buildspec", "bc"]:
-        print_buildspec_help()
+        print_buildspec_show()
     elif command in ["config", "cg"]:
-        print_config_help()
+        print_config_show()
     elif command in ["inspect", "it"]:
-        print_inspect_help()
+        print_inspect_show()
     elif command in ["report", "rt"]:
-        print_report_help()
+        print_report_show()
     elif command == "path":
-        print_path_help()
+        print_path_show()
     elif command in ["history", "hy"]:
-        print_history_help()
+        print_history_show()
     elif command == "cdash":
-        print_cdash_help()
+        print_cdash_show()
     elif command == "schema":
-        print_schema_help()
+        print_schema_show()
     elif command in ["stylecheck", "style"]:
-        print_stylecheck_help()
+        print_stylecheck_show()
     elif command in ["unittests", "test"]:
-        print_unittests_help()
+        print_unittests_show()

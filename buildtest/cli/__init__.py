@@ -348,13 +348,12 @@ def misc_menu(subparsers):
         help="Remove all generate files from buildtest including test directory, log files, report file, buildspec cache, history files.",
     )
 
-    subparsers.add_parser("docs", help="Open buildtest docs in browser")
-    subparsers.add_parser("schemadocs", help="Open buildtest schema docs in browser")
-
     clean.add_argument(
         "-y", "--yes", action="store_true", help="Confirm yes for all prompts"
     )
 
+    subparsers.add_parser("docs", help="Open buildtest docs in browser")
+    subparsers.add_parser("schemadocs", help="Open buildtest schema docs in browser")
     subparsers.add_parser(
         "debugreport",
         help="Display system information and additional information for debugging purposes.",
@@ -368,12 +367,12 @@ def misc_menu(subparsers):
 
     subparsers.add_parser("info", help="Show details regarding current buildtest setup")
 
-    help_subparser = subparsers.add_parser(
-        "help",
-        aliases=["h"],
+    show_subparser = subparsers.add_parser(
+        "show",
+        aliases=["s"],
         help="buildtest command guide",
     )
-    help_subparser.add_argument(
+    show_subparser.add_argument(
         "command",
         choices=[
             "bd",
