@@ -110,7 +110,7 @@ Let's take a look at the available filter fields that are acceptable with filter
 
 The ``--filter`` option expects an arguments in **key=value** format as follows::
 
-    buildtest buildspec find --filter key1=value1;key2=value2;key3=value3
+    buildtest buildspec find --filter key1=value1,key2=value2,key3=value3
 
 We can filter buildspec cache by ``tags=fail`` which will query all tests with
 associated tag field in test.
@@ -130,9 +130,9 @@ example we query all tests by **type** property
 Finally, we can combine multiple filter fields separated by comma, in the next example
 we can query all buildspecs with ``tags=tutorials``, ``executor=generic.local.sh``, and ``type=script``
 
-.. dropdown:: ``buildtest buildspec find --format name,tags,executor,type --filter tags=tutorials;executor=generic.local.sh;type=script``
+.. dropdown:: ``buildtest buildspec find --format name,tags,executor,type --filter tags=tutorials,executor=generic.local.sh,type=script``
 
-    .. command-output:: buildtest buildspec find --format name,tags,executor,type --filter tags=tutorials;executor=generic.local.sh;type=script
+    .. command-output:: buildtest buildspec find --format name,tags,executor,type --filter tags=tutorials,executor=generic.local.sh,type=script
 
 We can filter output of buildspec cache by buildspec using ``--filter buildspec=<path>`` which
 expects a path to buildspec file.  The buildspec must be in the cache and file path must exist in order to
