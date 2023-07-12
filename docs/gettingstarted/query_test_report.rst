@@ -63,12 +63,12 @@ To print just the raw format fields use the command ``buildtest report --formatf
 
     .. command-output:: buildtest report --formatfields
 
-Format Reports (``buildtest report --detailed``)
+Detailed Reports (``buildtest report --detailed``)
 -----------------------------------------------
 
-The **buildtest report --helpformat** command displays a list of all available format fields, which can be quite long.
-If you want to format the report table by detailed fields, run the below command. These detailed fields are user, state, id, name, buildspecs, errfile, outfile, runtime, and returncode.
-You can run buildtest report --detailed command as shown below.
+The **buildtest report --detailed** option can be used to show a detailed test report that may be of interest when
+examining a test. This option is synonymous to running ``buildtest report --format name, id, user, state, returncode,
+runtime, outfile, errfile, buildspec``. Shown below is an example output.
 
 .. dropdown:: ``buildtest report --detailed``
 
