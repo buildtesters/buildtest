@@ -260,7 +260,9 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     )
     parser.add_argument("-r", "--report", help="Specify path to test report file")
 
-    subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
+    subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar=""
+
+
 
     def get_parent_parser():
         parent_parser = {}
@@ -312,6 +314,13 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         )
         return parent_parser
 
+    parser = argparse.ArgumentParser(
+        prog="buildtest",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        description="buildtest is a HPC testing framework for building and running tests.",
+        usage="%(prog)s [options] [COMMANDS]",
+        epilog=epilog_str,
+    )
     parent_parser = get_parent_parser()
     build_menu(subparsers)
     buildspec_menu(subparsers, parent_parser)
@@ -354,7 +363,26 @@ def misc_menu(subparsers):
     clean.add_argument(
         "-y", "--yes", action="store_true", help="Confirm yes for all prompts"
     )
+    profile = argparse.ArgumentParser(
 
+        profile.add_list(
+
+        choices=[
+            "compilers",
+            "co",
+            "edit",
+            "e",
+            "executors",
+            "ex",
+            "path",
+            "p",
+            "systems",
+            "validate",
+            "view",
+            "-v"
+        ],
+
+        )
     subparsers.add_parser(
         "debugreport",
         help="Display system information and additional information for debugging purposes.",
