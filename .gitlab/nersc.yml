@@ -1,13 +1,10 @@
 # This pipeline is run at NERSC at https://software.nersc.gov/NERSC/buildtest
 
-variables:
-  SCHEDULER_PARAMETERS: "-N 1 -M escori -q compile -t 360"
-
 stages:
   - regression
 
 perlmutter_regression_test:
-  tags: ["bdtest-perlmutter"]
+  tags: [perlmutter-bdtest]
   stage: regression
   rules:
     - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" && $CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
