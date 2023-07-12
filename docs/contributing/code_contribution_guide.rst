@@ -90,6 +90,19 @@ branch which is your feature branch pushed at your fork.
 .. note::
     Do not push to ``master`` or ``devel`` branch on your fork or upstream.
 
+Best Practices When Creating Pull Request
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- It's good practice to link PR to an issue during commit message. Such as stating ``Fix #132`` for fixing issue 132.
+
+- Please create a meaningful title and PR description to help outline your proposed changes.
+
+- Assign PR to yourself when creating the issue. You should @ mention (`@shahzebsiddiqui <https://github.com/shahzebsiddiqui>`_) the project maintainers to get their attention.
+
+- If your PR is not ready for review, please add ``WIP:`` to your PR title to indicate that it's a work in progress and make it a draft PR. This will prevent maintainers from reviewing your PR until it's ready.
+
+- Check the CI checks corresponding to your PR to ensure all checks are passed. If you see any failures, please fix them especially regression test failures.
+
 Pull Request Review
 --------------------
 
@@ -143,25 +156,15 @@ Once you have synced your branch push your changes and check if file conflicts a
 General Tips
 -------------
 
-1. It's good practice to link PR to an issue during commit message. Such as
-stating ``Fix #132`` for fixing issue 132.
+- If you have an issue, ask your question in slack before reporting the issue. If your issue is not resolved check any open issues for resolution before creating a new issue.
 
-2. If you have an issue, ask your question in slack before reporting issue. If
-your issue is not resolved check any open issues for resolution before creating
-a new issue.
+- For new features or significant code refactors, please notify maintainers and open an issue before working on task to keep everyone informed.
 
-3. For new features or significant code refactor please notify maintainers and
-open an issue before working on task to keep everyone informed.
+- If you open an issue, please respond back during the discussion, if there is no activity the issue will be closed.
 
-4. If you open an issue, please respond back during discussion, if there is no
-activity the issue will be closed.
+- Please refrain from opening a duplicate issue, check if there is an existing issue addressing similar problems. You can ask questions in slack to report your issue or contact project maintainers.
 
-5. Please refrain from opening duplicate issue, check if there is an existing
-issue addressing similar problem, instead you can participate in discussion in
-the issue or contact appropriate individuals directly in slack.
-
-6. There should not be any branches other than ``master`` or ``devel``. Feature
-branches should be pushed to your fork and not to origin.
+- There should not be any branches other than ``master`` or ``devel``. Feature branches should be pushed to your fork and not to origin.
 
 .. _black_hook:
 
