@@ -314,13 +314,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         )
         return parent_parser
 
-    parser = argparse.ArgumentParser(
-        prog="buildtest",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        description="buildtest is a HPC testing framework for building and running tests.",
-        usage="%(prog)s [options] [COMMANDS]",
-        epilog=epilog_str,
-    )
     parent_parser = get_parent_parser()
     build_menu(subparsers)
     buildspec_menu(subparsers, parent_parser)
