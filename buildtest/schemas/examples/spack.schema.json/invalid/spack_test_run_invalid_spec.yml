@@ -1,0 +1,23 @@
+buildspecs:
+  spack_test_run_invalid_spec:
+    type: spack
+    executor: generic.local.sh
+    description: "specs property requires a list of strings. "
+    tags: [spack]
+    pre_cmds: |
+      cd /tmp
+      git clone https://github.com/spack/spack
+    spack:
+      root: /tmp/spack
+      verify_spack: false
+      install:
+        specs: ['m4', 'zlib']
+      test:
+        remove_tests: true
+        run:
+          specs: ['m4', 1]
+        results:
+          option: '-f'
+    post_cmds: |
+      spack find
+      rm -rf $SPACK_ROOT

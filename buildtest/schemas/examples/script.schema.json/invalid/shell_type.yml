@@ -1,0 +1,7 @@
+buildspecs:
+  invalid_shell_type:
+    type: script
+    executor: generic.local.bash
+    description: invalid shell type must be a string
+    shell: ["/bin/bash"]
+    run: hostname

@@ -1,0 +1,10 @@
+buildspecs:
+  additionalProperties_status:
+    type: script
+    executor: generic.local.bash
+    description: test additional properties in status object. This is not allowed
+    sbatch: ["-n 2", "-q normal", "-t 10"]
+    run: hostname
+    status:
+      slurm_job_state: "COMPLETED"
+      FOO: BAR

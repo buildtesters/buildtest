@@ -1,0 +1,15 @@
+buildspecs:
+  pre_post_cmd_spack_install:
+    type: spack
+    executor: generic.local.sh
+    description: run commands before and after spack using pre_cmds and post_cmds
+    pre_cmds: |
+      cd $HOME
+      git clone https://github.com/spack/spack
+    spack:
+      root: $HOME/spack/
+      install:
+        options: '--cache-only'
+        specs: ['m4', 'bzip2']
+    post_cmds: |
+      spack find

@@ -1,0 +1,16 @@
+buildspecs:
+  remove_spack_environment:
+    type: spack
+    executor: generic.local.sh
+    description: remove spack environment explicitly before creating environment
+    spack:
+      root: $HOME/spack
+      env:
+        rm:
+          name: m4
+        create:
+          name: m4
+        activate:
+          name: m4
+        specs:
+          - 'm4'

@@ -1,0 +1,12 @@
+buildspecs:
+  module_load_duplicate_items:
+    executor: generic.local.bash
+    type: compiler
+    description: "The load property expects unique items"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
+      config:
+        gcc/9.2.0:
+          module:
+            load: [gcc/9.2.0, gcc/9.2.0]

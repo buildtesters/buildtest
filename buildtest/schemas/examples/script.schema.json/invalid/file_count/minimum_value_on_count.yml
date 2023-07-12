@@ -1,0 +1,10 @@
+buildspecs:
+  file_count_minimum_check_on_count:
+    type: script
+    executor: generic.local.bash
+    description: The count property must be 0 or greater
+    run: mkdir foo
+    status:
+      file_count:
+        - dir: foo
+          count: -1

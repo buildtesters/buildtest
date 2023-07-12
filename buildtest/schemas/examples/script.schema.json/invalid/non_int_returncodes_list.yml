@@ -1,0 +1,8 @@
+buildspecs:
+  non_int_returncodes_list:
+    type: script
+    executor: generic.local.bash
+    description: The returncode must be a list of integers and no numbers
+    run: exit 1
+    status:
+      returncode: [1, 2.230]

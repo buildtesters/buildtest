@@ -108,7 +108,7 @@ class BuilderBase(ABC):
 
         self.numprocs = numprocs
         self.numnodes = numnodes
-        self._retry = 1
+        self._retry = None
         self.timer = Timer()
 
         # store state of builder which can be True/False. This value is changed by self.success(), self.failure()
@@ -375,7 +375,7 @@ class BuilderBase(ABC):
         ret = command.returncode()
         err_msg = " ".join(command.get_error())
 
-        if ret == 0 or self.is_local_executor():
+        if not self._retry or ret == 0:
             return command
 
         err = f"{self} failed to submit job with returncode: {ret} \n"
@@ -407,6 +407,7 @@ class BuilderBase(ABC):
             console.print(f"[red]{err}")
             console.print(f"[red]{err_msg}")
 
+        return command
         raise RuntimeFailure(err)
 
     def record_starttime(self):

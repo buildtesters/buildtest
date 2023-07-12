@@ -1,0 +1,7 @@
+buildspecs:
+  additionalProperties_test:
+    type: script
+    executor: generic.local.bash
+    description: additional properties are not allowed so any invalid key/value pair will result in error
+    FOO: BAR
+    run: hostname

@@ -1,0 +1,8 @@
+buildspecs:
+  invalid_env_type:
+    type: script
+    executor: generic.local.bash
+    description: env key should be a dictionary
+    env:
+      - FOO=BAR
+    run: echo $FOO

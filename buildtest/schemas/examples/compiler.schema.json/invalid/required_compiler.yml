@@ -1,0 +1,14 @@
+buildspecs:
+  missing_required_compiler_name:
+    executor: generic.local.bash
+    type: compiler
+    description: "'name' field in compilers section is required field"
+    source: src/hello.f90
+    compilers:
+    default:
+      cray:
+        fflags: "-O1"
+    config:
+      PrgEnv-cray@2.6.2:
+        module:
+          swap: [PrgEnv-intel, PrgEnv-cray/2.6.2]

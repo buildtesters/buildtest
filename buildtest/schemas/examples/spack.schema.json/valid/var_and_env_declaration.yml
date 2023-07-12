@@ -1,0 +1,14 @@
+buildspecs:
+  var_declaration_in_spack:
+    type: spack
+    executor: generic.local.sh
+    description: Define variables and environment variables in spack
+    vars:
+      FOO: "BAR"
+    env:
+      SPACK_GNUPGHOME: "$HOME/.gnupg"
+    spack:
+      root: $HOME/spack
+      install:
+        specs: ['m4']
+        options: "-v"

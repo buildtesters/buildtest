@@ -1,0 +1,15 @@
+buildspecs:
+  env_mirror:
+    type: spack
+    executor: generic.local.sh
+    description: declare spack mirror 'spack mirror add h5 /path/to/mirror' in environment
+    spack:
+      root: $HOME/spack/
+      env:
+        mirror:
+          h5: /path/to/mirror
+        create:
+          name: myproject
+          manifest: $HOME/spack.yaml
+      install:
+        options: '--cache-only'

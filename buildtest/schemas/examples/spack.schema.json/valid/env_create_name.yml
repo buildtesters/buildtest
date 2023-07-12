@@ -1,0 +1,15 @@
+buildspecs:
+  env_create_name:
+    type: spack
+    executor: generic.local.sh
+    description: Create spack environment by name
+    spack:
+      root: $HOME/spack/
+      env:
+        create:
+          name: myproject
+        specs:
+          - m4
+          - zlib
+      install:
+        options: ''

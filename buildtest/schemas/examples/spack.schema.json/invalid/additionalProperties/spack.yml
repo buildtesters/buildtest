@@ -1,0 +1,13 @@
+buildspecs:
+  additionalProperties_spack_field:
+    type: spack
+    executor: generic.local.sh
+    description: additional Properties can't be specified in spack section
+    spack:
+      root: $HOME/spack
+      FOO: BAR
+      env:
+        create:
+          name: myproject
+        specs:
+          - zlib

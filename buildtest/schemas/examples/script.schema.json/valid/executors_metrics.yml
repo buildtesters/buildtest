@@ -1,0 +1,22 @@
+buildspecs:
+  executors_metrics_declaration:
+    type: script
+    executor: 'generic.local.(bash|sh)'
+    description: Declaring metrics by executors section
+    tags: [tutorials]
+    run: echo "Hello World"
+    executors:
+      generic.local.bash:
+        metrics:
+          hello:
+            type: str
+            regex:
+              stream: stdout
+              exp: "(Hello)"
+      generic.local.sh:
+        metrics:
+          world:
+            type: str
+            regex:
+              stream: stdout
+              exp: "(World)"

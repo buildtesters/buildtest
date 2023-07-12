@@ -1,0 +1,12 @@
+buildspecs:
+  module_swap_duplicate_check:
+    executor: generic.local.bash
+    type: compiler
+    description: "The swap property expects two unique items"
+    source: src/hello.c
+    compilers:
+      name: [gcc]
+      config:
+        gcc/9.2.0:
+          module:
+            swap: [gcc/8.0, gcc/8.0]

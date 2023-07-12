@@ -15,7 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      # use isort github action see https://pycqa.github.io/isort/docs/configuration/github_action.html
+      # use isort github action see
+      #https://pycqa.github.io/isort/docs/configuration/github_action.html
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4.5.0
         with:
@@ -33,12 +34,13 @@ jobs:
           sortPaths: "buildtest tests docs"
 
       - name: Running black check
-      # use black github action see https://black.readthedocs.io/en/stable/integrations/github_actions.html
+      # use black github action see
+      #https://black.readthedocs.io/en/stable/integrations/github_actions.html
         uses: psf/black@stable
         with:
           options: "--check --verbose"
           src: "buildtest tests scripts"
-          version: "~= 22.0"
+          version: "~= 23.3.0"
 
       - name: Run yamllint
         run: |

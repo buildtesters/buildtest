@@ -1,0 +1,13 @@
+buildspecs:
+  env_create_from_manifest:
+    type: spack
+    executor: generic.local.sh
+    description: Create spack enviromment from manifest file
+    spack:
+      root: $HOME/spack/
+      env:
+        create:
+          name: myproject
+          manifest: $HOME/spack.yaml
+      install:
+        options: '--cache-only'
