@@ -4,6 +4,8 @@ import os
 import shutil
 import webbrowser
 
+from rich.traceback import install
+
 from buildtest.cli import get_parser
 from buildtest.cli.build import BuildTest, Tee
 from buildtest.cli.buildspec import (
@@ -62,7 +64,6 @@ from buildtest.utils.file import (
     resolve_path,
 )
 from buildtest.utils.tools import deep_get
-from rich.traceback import install
 
 
 def main():

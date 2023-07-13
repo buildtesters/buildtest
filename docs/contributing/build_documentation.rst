@@ -11,8 +11,10 @@ by ReadTheDocs at https://readthedocs.org which is a documentation platform for
 building and hosting your docs.
 
 buildtest project can be found at https://readthedocs.org/projects/buildtest/
-which will show the recent builds and project setting. If you are interested
-in becoming a maintainer, please contact **Shahzeb Siddiqui** (``shahzebmsiddiqui@gmail.com``)
+which will show the recent builds and project setting. The file `.readthedocs.yaml <https://github.com/buildtesters/buildtest/blob/devel/.readthedocs.yaml>`_
+is a special configuration file used to configure the build process for ReadTheDocs. Please refer to this file to tweak changes to ReadTheDocs.
+
+If you are interested in becoming a maintainer, please contact **Shahzeb Siddiqui** (``shahzebmsiddiqui@gmail.com``)
 to grant access to this project.
 
 Setup

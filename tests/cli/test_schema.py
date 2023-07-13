@@ -1,4 +1,5 @@
 import pytest
+
 from buildtest.cli.schema import schema_cmd
 
 
