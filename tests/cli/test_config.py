@@ -6,7 +6,8 @@ from buildtest.cli.config import (
     view_configuration,
     view_executors,
     view_path,
-    view_system, view_profiles,
+    view_system,
+    view_profiles,
 )
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, SCHEMA_ROOT

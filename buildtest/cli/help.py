@@ -615,6 +615,6 @@ def buildtest_help(command):
         print_unittests_help()
 
 
-def buildtest_help_config():
+def buildtest_show_config():
     if command in ["profiles", "v"]:
-        print_profiles_help()
+        print_profiles_show()
