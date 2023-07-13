@@ -12,11 +12,12 @@ v1.5 (TBD)
 - Remove option ``buildtest buildspec maintainers --list`` `#1474 <https://github.com/buildtesters/buildtest/pull/1474>`_
 - Add support for `profiles <https://buildtest.readthedocs.io/en/devel/gettingstarted/buildingtest.html#using-profiles>`_ which allows one to run a set of `buildtest build` options given a profile name via command ``buildtest build --profile=<NAME>``. Add support for saving profile via ``buildtest build --save-profile`` which will record command and save into buildtest configuration file. `#1489 <https://github.com/buildtesters/buildtest/pull/1489>`_
 - Rename ``buildtest help`` to ``buildtest show`` `#1530 <https://github.com/buildtesters/buildtest/pull/1530>`_
-
+- Remove option ``buildtest build --disable-executor-check`` `#1541 <https://github.com/buildtesters/buildtest/pull/1541>`_
 
 **Misc Updates**
 
-- Deprecate support for Python 3.7 and update CI checks. `#1512 <https://github.com/buildtesters/buildtest/pull/1512>`_, `#1514 <https://github.com/buildtesters/buildtest/pull/1514>`_
+- buildtest now uses `pyproject.toml` to specify project dependencies, coverage, black and isort configuration. The installation script will no longer install from requirements.txt, instead it will use content from `pyproject.toml`. `#1545 <https://github.com/buildtesters/buildtest/pull/1545>`_, `#1547 <https://github.com/buildtesters/buildtest/pull/1547>`_
+- Deprecate support for Python 3.7  `#1514 <https://github.com/buildtesters/buildtest/pull/1514>`_
 - Add a `security page <https://github.com/buildtesters/buildtest/blob/devel/SECURITY.md>`_ to report vulnerability  `#1473 <https://github.com/buildtesters/buildtest/pull/1473>`_
 - Reorganize example buildspecs for script.schema.json, compilers.schema.json and spack.schema.json into separate buildspecs used for regression tests. This was addressed in `#1496 <https://github.com/buildtesters/buildtest/pull/1496>`_, `#1498 <https://github.com/buildtesters/buildtest/pull/1498>`_, `#1499 <https://github.com/buildtesters/buildtest/pull/1499>`_
 - Improve regression test coverage `#1501 <https://github.com/buildtesters/buildtest/pull/1501>`_,  `#1503 <https://github.com/buildtesters/buildtest/pull/1503>`_, `#1507 <https://github.com/buildtesters/buildtest/pull/1507>`_, `#1511 <https://github.com/buildtesters/buildtest/pull/1511>`_, `#1515 <https://github.com/buildtesters/buildtest/pull/1515>`_
@@ -24,6 +25,11 @@ v1.5 (TBD)
 - Fix bug with ``buildtest report --pass`` and ``buildtest report --fail`` where test records were not filtered properly `#1524 <https://github.com/buildtesters/buildtest/pull/1524>`_
 - Fix error in buildtest configuration file used for tutorials `#1513 <https://github.com/buildtesters/buildtest/pull/1513>`_
 - Hardcode version dependency for jsonschema package to 4.18 since RefResolver is deprecated `#1520 <https://github.com/buildtesters/buildtest/pull/1520>`_. This will be addressed in https://github.com/buildtesters/buildtest/issues/1521
+
+**CI checks**
+
+- Update regression test and installation workflow to use python 3.8-3.11. Also run tests on `macos-13`  `#1512 <https://github.com/buildtesters/buildtest/pull/1512>`_,
+- Update installation workflow to add support for `zsh` and `csh` shell `#1548 <https://github.com/buildtesters/buildtest/pull/1548>`_, `#1549 <https://github.com/buildtesters/buildtest/pull/1549>`_
 
 v1.4 (May 4th, 2023)
 ----------------------
