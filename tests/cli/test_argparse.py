@@ -1,6 +1,7 @@
 import argparse
 
 import pytest
+
 from buildtest.cli import (
     build_filters_format,
     get_parser,

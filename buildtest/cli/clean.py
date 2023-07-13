@@ -1,6 +1,8 @@
 import os
 import shutil
 
+from rich.prompt import Prompt
+
 from buildtest.cli.build import resolve_testdirectory
 from buildtest.defaults import (
     BUILD_HISTORY_DIR,
@@ -9,7 +11,6 @@ from buildtest.defaults import (
     BUILDTEST_REPORTS,
 )
 from buildtest.utils.file import is_dir, is_file
-from rich.prompt import Prompt
 
 
 def clean(configuration, yes):

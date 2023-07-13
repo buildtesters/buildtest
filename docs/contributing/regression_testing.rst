@@ -143,7 +143,7 @@ or run ``pytest --help``.
 Running test via coverage
 --------------------------
 
-There is a coverage configuration file `.coveragerc <https://github.com/buildtesters/buildtest/blob/devel/.coveragerc>`_ located
+The coverage configuration is managed by `pyproject.toml <https://github.com/buildtesters/buildtest/blob/devel/pyproject.toml>`_ located
 in root of buildtest that is read by **coverage** utility. The `buildtest/tools/unittests.py <https://github.com/buildtesters/buildtest/blob/devel/buildtest/tools/unittests.py>`_  script
 will collect coverage details upon completion of regression test which is equivalent to running ``coverage run -m pytest`` but we make some additional checks when
 running the script.
