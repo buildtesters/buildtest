@@ -22,6 +22,9 @@ def config_cmd(args, configuration, editor, system):
     if args.config in ["view", "v"]:
         view_configuration(configuration, theme=args.theme, pager=args.pager)
 
+    if args.config in ["profile", "v"]:
+        view_profiles(configuration, theme=args.theme, pager=args.pager)
+
     elif args.config in ["executors", "ex"]:
         buildexecutor = BuildExecutor(configuration)
         view_executors(
@@ -88,7 +91,6 @@ def view_system(configuration):
         table.add_row(name, desc, moduletool, hosts)
     console.print(table)
 
-
 def validate_config(configuration, moduletool):
     """This method implements ``buildtest config validate`` which attempts to
     validate buildtest schema file `settings.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/settings.schema.json>`_.
@@ -152,6 +154,9 @@ def view_configuration(configuration, theme=None, pager=None):
     console.rule(configuration.file)
     console.print(syntax)
 
+def view_profiles(configuration, theme=None, pager=None):
+    """Display the list of profiles for buildtest configuration file.This implements command ``buildtest config profiles list`
+    """
 
 def view_executors(
     configuration,

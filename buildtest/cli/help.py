@@ -262,7 +262,6 @@ def print_buildspec_help():
 
 def print_config_help():
     """This method will print help message for command ``buildtest help config``"""
-
     table = Table(title="Configuring Buildtest", show_lines=False)
     table.add_column("Command", justify="left", style="cyan")
     table.add_column("Description", justify="left", style="magenta")
@@ -585,7 +584,6 @@ def print_path_help():
     )
     console.print(table)
 
-
 def buildtest_help(command):
     """Entry point for ``buildtest help`` which display a summary of how to use buildtest commands
 
@@ -615,3 +613,8 @@ def buildtest_help(command):
         print_stylecheck_help()
     elif command in ["unittests", "test"]:
         print_unittests_help()
+
+
+def buildtest_help_config():
+    if command in ["profiles", "v"]:
+        print_profiles_help()
