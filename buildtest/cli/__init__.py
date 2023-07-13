@@ -668,9 +668,7 @@ def build_menu(subparsers):
         type=positive_number,
     )
     extra_group.add_argument(
-        "--limit",
-        type=positive_number,
-        help="Limit number of tests that can be run.",
+        "--limit", type=positive_number, help="Limit number of tests that can be run."
     )
     extra_group.add_argument(
         "--remove-stagedir",
