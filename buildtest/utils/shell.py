@@ -71,12 +71,7 @@ def get_python_shells():
 
 def shell_lookup():
     """Return a dictionary of shell types and list of all shell interpreter. If shell is not present the entry will be an empty list."""
-    shells = {
-        "bash": ["bash"],
-        "sh": ["sh"],
-        "csh": ["csh"],
-        "zsh": ["zsh"],
-    }
+    shells = {"bash": ["bash"], "sh": ["sh"], "csh": ["csh"], "zsh": ["zsh"]}
 
     for name in shells.keys():
         cmd = BuildTestCommand(f"which -a {name}")

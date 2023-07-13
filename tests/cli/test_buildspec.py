@@ -4,6 +4,8 @@ import string
 import tempfile
 
 import pytest
+from rich.color import Color
+
 from buildtest.cli.buildspec import (
     BuildspecCache,
     buildspec_maintainers,
@@ -18,7 +20,6 @@ from buildtest.cli.report import Report
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
-from rich.color import Color
 
 configuration = SiteConfiguration()
 configuration.detect_system()
@@ -190,10 +191,7 @@ def test_buildspec_maintainers():
     buildspec_maintainers(configuration=configuration)
     # buildtest buildspec maintainers --terse --no-header
     buildspec_maintainers(
-        configuration=configuration,
-        terse=True,
-        header=True,
-        color=Color.default().name,
+        configuration=configuration, terse=True, header=True, color=Color.default().name
     )
     # buildtest buildspec maintainers --terse --no-header --breakdown
     buildspec_maintainers(

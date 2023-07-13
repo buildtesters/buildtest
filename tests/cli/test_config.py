@@ -1,6 +1,7 @@
 import os
 
 import pytest
+
 from buildtest.cli.config import (
     validate_config,
     view_configuration,

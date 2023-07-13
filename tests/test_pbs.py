@@ -2,6 +2,7 @@ import os
 import shutil
 
 import pytest
+
 from buildtest.cli.build import BuildTest
 from buildtest.config import SiteConfiguration
 from buildtest.system import BuildTestSystem

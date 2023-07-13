@@ -4,6 +4,8 @@ import os
 import shutil
 import webbrowser
 
+from rich.traceback import install
+
 from buildtest.cli import get_parser
 from buildtest.cli.build import BuildTest, Tee
 from buildtest.cli.buildspec import (
@@ -23,7 +25,6 @@ from buildtest.cli.clean import clean
 from buildtest.cli.compilers import compiler_cmd
 from buildtest.cli.config import config_cmd
 from buildtest.cli.debugreport import print_debug_report
-from buildtest.cli.help import buildtest_help
 from buildtest.cli.helpcolor import print_available_colors
 from buildtest.cli.history import build_history
 from buildtest.cli.info import buildtest_info
@@ -36,6 +37,7 @@ from buildtest.cli.inspect import (
 from buildtest.cli.path import path_cmd
 from buildtest.cli.report import Report, report_cmd
 from buildtest.cli.schema import schema_cmd
+from buildtest.cli.show import buildtest_show
 from buildtest.cli.stats import stats_cmd
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import (
@@ -62,7 +64,6 @@ from buildtest.utils.file import (
     resolve_path,
 )
 from buildtest.utils.tools import deep_get
-from rich.traceback import install
 
 
 def main():
@@ -338,8 +339,8 @@ def main():
                 open_browser=args.open,
             )
 
-    elif args.subcommands in ["help", "h"]:
-        buildtest_help(command=args.command)
+    elif args.subcommands in ["show", "s"]:
+        buildtest_show(command=args.command)
 
     elif args.subcommands == "clean":
         clean(configuration=configuration, yes=args.yes)

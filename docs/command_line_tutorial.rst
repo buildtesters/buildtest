@@ -100,9 +100,9 @@ have lots of tests. To enable pagination you can run::
 Finally we can filter test records and format table columns via ``--filter`` and ``--format`` option. Let's try
 running the following command
 
-.. dropdown:: ``buildtest rt --filter tags=python --format name,id,tags``
+.. dropdown:: ``buildtest rt --filter tags=network --format name,id,tags``
 
-    .. command-output:: buildtest rt --filter tags=python --format name,id,tags
+    .. command-output:: buildtest rt --filter tags=network --format name,id,tags
 
 The ``--format`` option are comma separated list of format fields while ``--filter`` option are **key=value** pair. To see
 list of available format and filter fields you can run::
@@ -159,12 +159,12 @@ validating buildspecs, showing content of buildspecs, and editing buildspecs in 
 The ``buildtest buildspec`` command contains several subcommands that we will discuss in this
 session. To learn more we encourage you see :ref:`buildspec_interface` for detailed guide.
 
-The ``buildtest help`` command can be used to provide a brief help message for each subcommand. Let's run
+The ``buildtest show`` command can be used to provide a brief help message for each subcommand. Let's run
 the following command since there are lots of commands that can be used to query buildspec.
 
-.. dropdown:: ``buildtest help buildspec``
+.. dropdown:: ``buildtest show buildspec``
 
-    .. command-output:: buildtest help buildspec
+    .. command-output:: buildtest show buildspec
 
 To build the buildspec cache you will need to run the following::
 
@@ -241,11 +241,11 @@ If you want to see list of invalid buildspecs you can run::
 Note, if you fix your invalid buildspec, buildtest will have no way of knowing if buildspec is valid until you
 rebuild the buildspec cache ``buildtest bc find --rebuild``.
 
-Buildtest Configuration
-------------------------
+Query Details from Buildtest Configuration
+--------------------------------------------
 
-In order to use buildtest, you need to :ref:`configure buildtest <configuring_buildtest>`. We will not discuss
-buildtest configuration in this tutorial, but show how you can interact with configuration file via command line.
+In order to use buildtest, you need to :ref:`configure buildtest <configuring_buildtest>`. We will not discuss how to
+configure buildtest in this tutorial, but show how you can interact with configuration file via command line.
 
 Buildtest provides a default configuration file that is sufficient to get started. To view path to configuration file you can run::
 
@@ -260,11 +260,20 @@ We have an alias ``buildtest cg`` for **buildtest config** command. If you want 
 We also support color themes (``buildtest cg view --theme <theme>``) when showing content of buildtest configuration.
 
 Buildtest configuration file defines one or more :ref:`executors <configuring_executors>` that are used when
-writing test. Every test must be run by an executor. To retrieve all executors in a flat-listing you can run::
+writing test. Every test must be run by an executor. To retrieve all executors in a flat-listing you can run the following
 
-    buildtest cg executors
+.. dropdown:: ``buildtest cg executors``
 
-Buildtest can show executor details in JSON and YAML format, you can fetch the details by running::
+    .. command-output:: buildtest cg executors
 
-    buildtest cg executors --json
-    buildtest cg executors --yaml
+
+Buildtest can show executor details in JSON and YAML format, you can fetch the details by running the following
+
+.. dropdown:: ``buildtest cg executors --json``
+
+    .. command-output:: buildtest cg executors --json
+
+
+.. dropdown:: ``buildtest cg executors --yaml``
+
+    .. command-output:: buildtest cg executors --yaml

@@ -49,10 +49,7 @@ def returncode_check(builder):
     logger.debug("Conducting Return Code check")
     logger.debug(
         "Status Return Code: %s   Result Return Code: %s"
-        % (
-            buildspec_returncode,
-            builder.metadata["result"]["returncode"],
-        )
+        % (buildspec_returncode, builder.metadata["result"]["returncode"])
     )
     # checks if test returncode matches returncode specified in Buildspec and assign boolean to returncode_match
     returncode_match = builder.metadata["result"]["returncode"] in buildspec_returncode
@@ -389,12 +386,10 @@ def assert_ge_check(builder):
 
         # convert metric value and reference value to int
         conv_value = convert_metrics(
-            metric_value=metric_value,
-            dtype=builder.metrics[name]["type"],
+            metric_value=metric_value, dtype=builder.metrics[name]["type"]
         )
         ref_value = convert_metrics(
-            metric_value=ref_value,
-            dtype=builder.metrics[name]["type"],
+            metric_value=ref_value, dtype=builder.metrics[name]["type"]
         )
 
         # if there is a type mismatch then let's stop now before we do comparison
@@ -460,12 +455,10 @@ def assert_le_check(builder):
 
         # convert metric value and reference value to int
         conv_value = convert_metrics(
-            metric_value=metric_value,
-            dtype=builder.metrics[name]["type"],
+            metric_value=metric_value, dtype=builder.metrics[name]["type"]
         )
         ref_value = convert_metrics(
-            metric_value=ref_value,
-            dtype=builder.metrics[name]["type"],
+            metric_value=ref_value, dtype=builder.metrics[name]["type"]
         )
 
         # if there is a type mismatch then let's stop now before we do comparison
@@ -531,12 +524,10 @@ def assert_gt_check(builder):
 
         # convert metric value and reference value to int
         conv_value = convert_metrics(
-            metric_value=metric_value,
-            dtype=builder.metrics[name]["type"],
+            metric_value=metric_value, dtype=builder.metrics[name]["type"]
         )
         ref_value = convert_metrics(
-            metric_value=ref_value,
-            dtype=builder.metrics[name]["type"],
+            metric_value=ref_value, dtype=builder.metrics[name]["type"]
         )
 
         # if there is a type mismatch then let's stop now before we do comparison
@@ -602,12 +593,10 @@ def assert_lt_check(builder):
 
         # convert metric value and reference value to int
         conv_value = convert_metrics(
-            metric_value=metric_value,
-            dtype=builder.metrics[name]["type"],
+            metric_value=metric_value, dtype=builder.metrics[name]["type"]
         )
         ref_value = convert_metrics(
-            metric_value=ref_value,
-            dtype=builder.metrics[name]["type"],
+            metric_value=ref_value, dtype=builder.metrics[name]["type"]
         )
 
         # if there is a type mismatch then let's stop now before we do comparison
@@ -665,12 +654,10 @@ def assert_eq_check(builder):
             continue
 
         conv_value = convert_metrics(
-            metric_value=metric_value,
-            dtype=builder.metrics[name]["type"],
+            metric_value=metric_value, dtype=builder.metrics[name]["type"]
         )
         ref_value = convert_metrics(
-            metric_value=ref_value,
-            dtype=builder.metrics[name]["type"],
+            metric_value=ref_value, dtype=builder.metrics[name]["type"]
         )
 
         # if either converted value and reference value is None stop here before proceeding to equality check
@@ -728,12 +715,10 @@ def assert_ne_check(builder):
             continue
 
         conv_value = convert_metrics(
-            metric_value=metric_value,
-            dtype=builder.metrics[name]["type"],
+            metric_value=metric_value, dtype=builder.metrics[name]["type"]
         )
         ref_value = convert_metrics(
-            metric_value=ref_value,
-            dtype=builder.metrics[name]["type"],
+            metric_value=ref_value, dtype=builder.metrics[name]["type"]
         )
 
         # if either converted value and reference value is None stop here before proceeding to the not equal check
@@ -791,8 +776,7 @@ def contains_check(builder):
             continue
 
         conv_value = convert_metrics(
-            metric_value=metric_value,
-            dtype=builder.metrics[name]["type"],
+            metric_value=metric_value, dtype=builder.metrics[name]["type"]
         )
 
         # if either converted value and reference value is None stop here before proceeding to the not equal check
@@ -854,8 +838,7 @@ def notcontains_check(builder):
             continue
 
         conv_value = convert_metrics(
-            metric_value=metric_value,
-            dtype=builder.metrics[name]["type"],
+            metric_value=metric_value, dtype=builder.metrics[name]["type"]
         )
 
         # if either converted value and reference value is None stop here before proceeding to the not equal check
@@ -926,20 +909,16 @@ def assert_range_check(builder):
             continue
 
         conv_value = convert_metrics(
-            metric_value=metric_value,
-            dtype=builder.metrics[name]["type"],
+            metric_value=metric_value, dtype=builder.metrics[name]["type"]
         )
         lower_bound = convert_metrics(
-            metric_value=lower_bound,
-            dtype=builder.metrics[name]["type"],
+            metric_value=lower_bound, dtype=builder.metrics[name]["type"]
         )
         lower_bound = convert_metrics(
-            metric_value=lower_bound,
-            dtype=builder.metrics[name]["type"],
+            metric_value=lower_bound, dtype=builder.metrics[name]["type"]
         )
         upper_bound = convert_metrics(
-            metric_value=upper_bound,
-            dtype=builder.metrics[name]["type"],
+            metric_value=upper_bound, dtype=builder.metrics[name]["type"]
         )
 
         # if any item is None we stop before we run comparison

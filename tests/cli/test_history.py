@@ -2,12 +2,13 @@ import os
 import shutil
 
 import pytest
+from rich.color import Color
+
 from buildtest.cli.build import BuildTest, Tee
 from buildtest.cli.history import BUILD_HISTORY_DIR, list_build_history, query_builds
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT, VAR_DIR
 from buildtest.system import BuildTestSystem
-from rich.color import Color
 
 
 def test_build_history_list():

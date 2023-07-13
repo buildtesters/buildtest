@@ -56,27 +56,27 @@ run all the tests which led to `buildtest`.
 Preview of buildtest
 ----------------------
 
-You can run ``buildtest help`` followed by name of command and it will provide an overview of the buildtest.
+You can run ``buildtest show`` followed by name of command and it will provide an overview of the buildtest.
 
-.. dropdown:: ``buildtest help build``
+.. dropdown:: ``buildtest show build``
 
-    .. command-output:: buildtest help build
+    .. command-output:: buildtest show build
 
-.. dropdown:: ``buildtest help buildspec``
+.. dropdown:: ``buildtest show buildspec``
 
-    .. command-output:: buildtest help buildspec
+    .. command-output:: buildtest show buildspec
 
-.. dropdown:: ``buildtest help report``
+.. dropdown:: ``buildtest show report``
 
-    .. command-output:: buildtest help report
+    .. command-output:: buildtest show report
 
-.. dropdown:: ``buildtest help inspect``
+.. dropdown:: ``buildtest show inspect``
 
-    .. command-output:: buildtest help inspect
+    .. command-output:: buildtest show inspect
 
-.. dropdown:: ``buildtest help config``
+.. dropdown:: ``buildtest show config``
 
-    .. command-output:: buildtest help config
+    .. command-output:: buildtest show config
 
 Target Audience & Use Case
 ---------------------------
