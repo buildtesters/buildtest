@@ -14,7 +14,7 @@ authors = [
 
 dependencies=[
    'distro',
-   'jsonschema < 4.18',
+   'jsonschema < 4.19',
    'lmodule',
    'PyYAML >= 5.12',
    'requests',
