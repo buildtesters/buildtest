@@ -41,15 +41,8 @@ path = "buildtest/__init__.py"
 dev = [
     'docutils==0.16',
     'pre-commit',
-    'Sphinx',
-    'sphinx-design',
-    'sphinx-argparse',
-    'sphinx-autoapi',
-    'sphinx-rtd-theme',
-    'sphinxcontrib-programoutput',
-    'sphinxext-remoteliteralinclude',
-    'sphinx-copybutton',
-    'readthedocs-sphinx-search',
+    'isort',
+    'black==23.3.0',
     'yamllint'
 ]
 [tool.black]
