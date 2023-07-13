@@ -12,7 +12,7 @@ Coverage
 We use `coverage <https://coverage.readthedocs.io/en/latest/>`_ to measure code
 coverage of buildtest when running regression test. We use CodeCov to display
 coverage reports through web interface. The coverage configuration
-is managed by `.coveragerc <https://github.com/buildtesters/buildtest/blob/devel/.coveragerc>`_ file
+is managed by `pyproject.toml <https://github.com/buildtesters/buildtest/blob/devel/pyproject.toml>`_ file
 found in the root of the repo.
 
 Whenever you add new feature to buildtest, please add regression test with test

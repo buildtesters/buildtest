@@ -3,6 +3,8 @@ import shutil
 import tempfile
 
 import pytest
+from rich.pretty import pprint
+
 from buildtest.cli.build import BuildTest, discover_buildspecs
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.cli.clean import clean
@@ -11,7 +13,6 @@ from buildtest.defaults import BUILDTEST_RERUN_FILE, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
-from rich.pretty import pprint
 
 test_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 root = os.path.dirname(test_root)
@@ -62,9 +63,7 @@ class TestBuildTest:
         # testing no tag names
         # buildtest build --tags ,,
         cmd = BuildTest(
-            configuration=configuration,
-            tags=[",,"],
-            buildtest_system=self.system,
+            configuration=configuration, tags=[",,"], buildtest_system=self.system
         )
         with pytest.raises(SystemExit):
             cmd.build()
@@ -251,9 +250,7 @@ class TestBuildTest:
 
         #  buildtest build --buildspec $BUILDTEST_ROOT/tutorials/perf_checks
         cmd = BuildTest(
-            configuration=configuration,
-            buildspecs=buildspecs,
-            buildtest_system=system,
+            configuration=configuration, buildspecs=buildspecs, buildtest_system=system
         )
         cmd.build()
 
@@ -596,9 +593,7 @@ class TestBuildTest_TypeCheck:
         # invalid value for testdir argument, must be a str
         with pytest.raises(BuildTestError):
             BuildTest(
-                configuration=configuration,
-                tags=["pass"],
-                testdir=list(BUILDTEST_ROOT),
+                configuration=configuration, tags=["pass"], testdir=list(BUILDTEST_ROOT)
             )
 
     def test_invalid_type_rebuild(self):

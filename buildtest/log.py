@@ -4,9 +4,10 @@ Methods related to buildtest logging
 import logging
 import os
 
+from rich.logging import RichHandler
+
 from buildtest.defaults import BUILDTEST_LOGFILE, console
 from buildtest.utils.file import create_dir
-from rich.logging import RichHandler
 
 
 def init_logfile(logfile=BUILDTEST_LOGFILE, debug=None, loglevel="DEBUG"):
