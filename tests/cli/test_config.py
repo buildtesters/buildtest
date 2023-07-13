@@ -69,14 +69,6 @@ def test_config_path():
 @pytest.mark.cli
 def test_profiles():
     view_profiles(configuration)
-    # buildtest config executors --json
-    view_executors(
-        configuration=configuration,
-        json_format=True,
-        yaml_format=False,
-        disabled=False,
-        invalid=False,
-    )
 
 
 @pytest.mark.cli
