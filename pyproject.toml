@@ -1,3 +1,57 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "buildtest"
+dynamic = ["version"]
+readme = "README.rst"
+requires-python = ">=3.8"
+license = "MIT"
+authors = [
+  { name = "Shahzeb Siddiqui", email = "shahzebmsiddiqui@gmail.com" },
+]
+
+dependencies=[
+   'distro',
+   'jsonschema < 4.18',
+   'lmodule',
+   'PyYAML >= 5.12',
+   'requests',
+   'rich',
+   'coverage',
+   'pytest',
+   'black==23.3.0',
+   'pyflakes',
+   'urllib3 >=1.26',
+]
+
+
+[project.urls]
+Documentation = "https://buildtest.readthedocs.io/en/latest/"
+Source = "https://github.com/buildtesters/buildtest"
+
+[tool.hatch.envs.default.scripts]
+buildtest = "./bin/buildtest"
+
+[tool.hatch.version]
+path = "buildtest/__init__.py"
+
+[project.optional-dependencies]
+dev = [
+    'docutils==0.16',
+    'pre-commit',
+    'Sphinx',
+    'sphinx-design',
+    'sphinx-argparse',
+    'sphinx-autoapi',
+    'sphinx-rtd-theme',
+    'sphinxcontrib-programoutput',
+    'sphinxext-remoteliteralinclude',
+    'sphinx-copybutton',
+    'readthedocs-sphinx-search',
+    'yamllint'
+]
 [tool.black]
 required-version = '23.3.0'
 target-version = ['py38', 'py39', 'py310', 'py311']
