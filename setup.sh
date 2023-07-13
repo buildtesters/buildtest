@@ -24,13 +24,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# Bash or sh
 if [ -n "$BASH_VERSION" ]; then
   buildtest_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)"
+# Zsh
 elif [ -n "$ZSH_VERSION" ]; then
-  # Zsh
   buildtest_root=$(cd "$(dirname "$0")" && pwd)
 else
-  echo "Shell not supported. Please use bash or zsh"
+  echo "Shell not supported. Please use bash, sh or zsh"
   exit 1
 fi
 
