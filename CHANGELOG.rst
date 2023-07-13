@@ -29,7 +29,7 @@ v1.5 (TBD)
 **CI checks**
 
 - Update regression test and installation workflow to use python 3.8-3.11. Also run tests on `macos-13`  `#1512 <https://github.com/buildtesters/buildtest/pull/1512>`_,
-- Update installation workflow to add support for `zsh` and `csh` shell `#1548 <https://github.com/buildtesters/buildtest/pull/1548>`_, `#1549 <https://github.com/buildtesters/buildtest/pull/1549>`_
+- Update installation workflow to add support for `zsh` `#1548 <https://github.com/buildtesters/buildtest/pull/1548>`_
 
 v1.4 (May 4th, 2023)
 ----------------------
