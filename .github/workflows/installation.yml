@@ -45,7 +45,7 @@ jobs:
     - name: Buildtest Installation for os - ${{ matrix.os }}, python version - ${{ matrix.python-version }}, shell - zsh
       env:
         OS: '${{ matrix.os }}'
-      shell: zsh
+      shell: zsh {0}
       run: |        
         echo "$SHELL"        
         pip install -U pip                
