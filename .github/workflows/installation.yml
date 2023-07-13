@@ -34,7 +34,6 @@ jobs:
     - name: Buildtest Installation for os - ${{ matrix.os }}, python version - ${{ matrix.python-version }}, shell - bash
       shell: bash
       run: |
-        set -v
         echo "$SHELL"        
         pip install -U pip                
         source setup.sh        
@@ -44,7 +43,6 @@ jobs:
     - name: Buildtest Installation for os - ${{ matrix.os }}, python version - ${{ matrix.python-version }}, shell - zsh
       shell: zsh {0}
       run: |   
-        set -v
         echo "$SHELL"        
         pip install -U pip                
         source setup.sh        
@@ -54,7 +52,6 @@ jobs:
     - name: Buildtest Installation for os - ${{ matrix.os }}, python version - ${{ matrix.python-version }}, shell - csh
       shell: csh {0}
       run: |
-        set echo
         echo "$SHELL"        
         pip install -U pip                
         source setup.csh        
