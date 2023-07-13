@@ -45,6 +45,18 @@ dev = [
     'black==23.3.0',
     'yamllint'
 ]
+docs = [
+    "docutils==0.16",
+    "readthedocs-sphinx-search==0.3.1",
+    "sphinx==5.3.0",
+    "sphinx-design==0.4.1",
+    "sphinx-argparse==0.4.0",
+    "sphinx-autoapi==2.1.1",
+    "sphinx-rtd-theme==1.2.2",
+    "sphinxcontrib-programoutput==0.17",
+    "sphinxext-remoteliteralinclude==0.4.0",
+    "sphinx-copybutton==0.5.2"
+]
 [tool.black]
 required-version = '23.3.0'
 target-version = ['py38', 'py39', 'py310']
