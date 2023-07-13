@@ -71,7 +71,6 @@ def test_profiles():
     # buildtest config executors --json
     view_executors(
         configuration=configuration,
-        buildexecutor=buildexecutor,
         json_format=True,
         yaml_format=False,
         disabled=False,
