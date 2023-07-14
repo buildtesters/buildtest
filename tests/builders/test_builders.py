@@ -1,6 +1,7 @@
 import os
 
 from buildtest.cli.build import BuildTest
+from buildtest.cli.buildspec import BuildspecCache
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import DEFAULT_SETTINGS_FILE
 from buildtest.system import BuildTestSystem
@@ -11,6 +12,9 @@ config = SiteConfiguration(DEFAULT_SETTINGS_FILE)
 config.detect_system()
 config.validate()
 system = BuildTestSystem()
+
+#BuildspecCache(rebuild=True, configuration=configuration) is fixing a bug
+#it is needed to run once for in order to do regression test
 
 
 def test_assert_ge():

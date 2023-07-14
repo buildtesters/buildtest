@@ -135,6 +135,8 @@ class SiteConfiguration:
         custom_validator(recipe=self.config, schema=config_schema)
         logger.debug("Validation was successful")
 
+        self._executor_check()
+
         if (
             self.target_config.get("moduletool") != "N/A"
             and self.target_config.get("moduletool") != moduletool
