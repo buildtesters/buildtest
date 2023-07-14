@@ -188,8 +188,7 @@ We can build this test by running::
 
     buildtest build -b $BUILDTEST_ROOT/examples/compilers/envvar_override.yml
 
-Next, let's see the generated test by running ``buildtest inspect query -d all --testpath override_environmentvars``. The
-``-d all`` will display all test records for ``override_environmentvars``. Take a note that we have
+Next, let's see the generated test by running ``buildtest inspect query --testpath override_environmentvars``. Take a note that we have
 ``export OMP_NUM_THREADS=4`` for `gcc_8.3.0` test and ``export OMP_NUM_THREADS=2`` for system gcc.
 
 .. dropdown:: ``buildtest inspect query --testpath override_environmentvars/``
