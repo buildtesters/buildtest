@@ -239,7 +239,7 @@ If we look at the generated script for both tests, we see that mirror is added f
 one can have mirrors defined in their ``spack.yaml`` or one of the `configuration scopes <https://spack.readthedocs.io/en/latest/configuration.html#configuration-scopes>`_
 defined by spack.
 
-.. dropdown:: ``buildtest inspect query -o  --testpath add_mirror add_mirror_in_spack_env``
+.. dropdown:: ``buildtest inspect query -o --testpath add_mirror add_mirror_in_spack_env``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/mirror_example.txt
 
@@ -325,10 +325,15 @@ since we are not using the a slurm executor.
 
 .. literalinclude:: ../../examples/spack/spack_sbatch.yml
     :language: yaml
+    :emphasize-lines: 7
 
 buildtest will generate the shell script with the job directives and set the name, output and error
 files based on name of test. If we build this test, and inspect the generated test we see that
 **#SBATCH** directives are written based on the **sbatch** field.
+
+.. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/spack/spack_sbatch.yml``
+
+    .. program-output:: cat buildtest_tutorial_examples/spack/build/spack_sbatch.txt
 
 .. dropdown:: ``buildtest inspect query --testpath spack_sbatch_example``
 
@@ -344,4 +349,5 @@ Shown below is an example buildspec that will specify ``sbatch`` directives for
 
 .. literalinclude:: ../../examples/spack/spack_multiple_executor_sbatch.yml
   :language: yaml
+  :emphasize-lines: 7-11
 
