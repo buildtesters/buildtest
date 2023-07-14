@@ -668,11 +668,6 @@ def build_menu(subparsers):
         type=positive_number,
     )
     extra_group.add_argument(
-        "--disable-executor-check",
-        action="store_false",
-        help="Disable executor check during configuration check. By default these checks are enforced for Local, Slurm, PBS, LSF, and Cobalt Executor.",
-    )
-    extra_group.add_argument(
         "--limit", type=positive_number, help="Limit number of tests that can be run."
     )
     extra_group.add_argument(

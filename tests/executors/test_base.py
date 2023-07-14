@@ -20,7 +20,7 @@ pytest_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def test_build_executor(tmp_path):
     bc = SiteConfiguration()
     bc.detect_system()
-    bc.validate(validate_executors=True)
+    bc.validate()
 
     # Load BuildExecutor
     be = BuildExecutor(bc)
