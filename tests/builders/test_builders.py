@@ -12,6 +12,9 @@ config.detect_system()
 config.validate()
 system = BuildTestSystem()
 
+# BuildspecCache(rebuild=True, configuration=configuration) is fixing a bug
+# it is needed to run once for in order to do regression test
+
 
 def test_assert_ge():
     """This test buildspec using status check with  'assert_ge'"""
