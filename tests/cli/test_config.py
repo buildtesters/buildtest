@@ -67,7 +67,7 @@ def test_config_path():
     view_path(configuration)
 
 @pytest.mark.cli
-def test_profile():
+def test_config_profile():
     view_profile(configuration)
 
 
