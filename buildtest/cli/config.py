@@ -155,9 +155,19 @@ def view_configuration(configuration, theme=None, pager=None):
     console.rule(configuration.file)
     console.print(syntax)
 
-def view_profiles(configuration, theme=None, pager=None):
-    """Display the list of profiles for buildtest configuration file.This implements command ``buildtest config profiles list`
+def view_profile(configuration, theme=None, pager=None):
+    """Display the list of profile for buildtest configuration file.This implements command ``buildtest config profiles list`
     """
+    theme = theme or "monokai"
+    with open(configuration.file, "profile") as bc:
+        syntax = Syntax(bc.read(), "yaml", line_numbers=True, theme=theme)
+    yaml_format = False,
+    if yaml_format:
+        console.print(yaml.dump(default_flow_style=False))
+        return
+
+    console.print(configuration.file)
+    console.print(syntax)
 
 def view_executors(
     configuration,

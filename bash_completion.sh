@@ -237,7 +237,7 @@ _buildtest ()
     ;;
 
     config|cg)
-      local cmds="-h --help co compilers e edit ex executors p path systems validate v view profiles"
+      local cmds="-h --help co compilers e edit ex executors p path systems validate v view profile"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
@@ -261,9 +261,7 @@ _buildtest ()
           local opts="-h --help"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         view|v)
-        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
-        profiles)
-          local opts="--help --pager --theme -h -t --yaml"
+          local opts="--help --pager --theme -h -t"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
           case "${prev}" in --theme|-t)
@@ -271,6 +269,14 @@ _buildtest ()
             return
           esac
         ;;
+        profile)
+          local opts="--help --pager --theme -h -t --yaml"
+          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+
+          case "${prev}" in --theme|-t)
+            COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
+            return
+          esac
       esac
       ;;
     inspect|it)
