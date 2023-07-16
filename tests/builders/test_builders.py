@@ -171,3 +171,13 @@ def test_file_regex():
         configuration=config,
     )
     cmd.build()
+
+
+def test_runtime_check():
+    """This test buildspec using status check with  runtim"""
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "runtime_status_check.yml")],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()
