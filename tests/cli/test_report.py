@@ -4,12 +4,13 @@ import shutil
 import tempfile
 
 import pytest
+from rich.color import Color
+
 from buildtest.cli.report import Report, report_cmd, report_summary
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file
-from rich.color import Color
 
 configuration = SiteConfiguration()
 configuration.detect_system()
@@ -33,6 +34,12 @@ def test_report():
     # run 'buildtest report --format name,state,returncode,buildspec'
     result = Report(
         configuration=configuration, format_args="name,state,returncode,buildspec"
+    )
+    result.print_report()
+
+    # run 'buildtest report --detailed'
+    result = Report(
+        configuration=configuration, format_args="name,id,user,state,returncode,runtime,outfile,errfile,buildspec"
     )
     result.print_report()
 
@@ -253,11 +260,7 @@ def test_report_summary():
     report = Report(configuration=configuration, color="light_pink1")
     report_summary(report, configuration=configuration)
 
-    report = Report(
-        configuration=configuration,
-        pager=True,
-        color="light_pink1",
-    )
+    report = Report(configuration=configuration, pager=True, color="light_pink1")
     report_summary(report, configuration=configuration, detailed=True)
 
     # buildtest --color light_pink1 rt sm --detailed
@@ -286,6 +289,7 @@ def test_report_list():
         terse = None
         color = None
         pager = None
+        detailed = False
 
     report_cmd(args, configuration=configuration)
 
@@ -317,6 +321,7 @@ def test_report_clear():
         no_header = None
         color = None
         pager = None
+        detailed = False
 
     backupfile_report = tempfile.NamedTemporaryFile()
     shutil.copy2(BUILD_REPORT, backupfile_report.name)
