@@ -176,7 +176,7 @@ def test_file_regex():
 def test_runtime_check():
     """This test buildspec using status check with  runtim"""
     cmd = BuildTest(
-        buildspecs=[os.path.join(here, "runtime_status_check.yml")],
+        buildspecs=[os.path.join(here, "runtime_status_test.yml")],
         buildtest_system=system,
         configuration=config,
     )
