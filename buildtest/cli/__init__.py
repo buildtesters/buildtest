@@ -398,13 +398,13 @@ def misc_menu(subparsers):
         ],
         help="Show help message for command",
     )
-
-    profile_argparse = subparsers.add_parser(
+def profile_menu(subparsers):
+    profile_parser = subparsers.add_parser(
         "help",
         config=["-h"],
-        compliers="config profiles list",
+        compliers="config profile list",
     )
-    profile.add_list(
+    profile_parser.add_arguments(
         "command",
         choices=[
             "compilers",
