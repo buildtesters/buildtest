@@ -4,13 +4,12 @@ import shutil
 import tempfile
 
 import pytest
-from rich.color import Color
-
 from buildtest.cli.report import Report, report_cmd, report_summary
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file
+from rich.color import Color
 
 configuration = SiteConfiguration()
 configuration.detect_system()
@@ -39,7 +38,8 @@ def test_report():
 
     # run 'buildtest report --detailed'
     result = Report(
-        configuration=configuration, format_args="name,id,user,state,returncode,runtime,outfile,errfile,buildspec"
+        configuration=configuration,
+        format_args="name,id,user,state,returncode,runtime,outfile,errfile,buildspec",
     )
     result.print_report()
 
