@@ -4,11 +4,12 @@ import os
 import random
 import sys
 
+from rich.table import Table
+
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, resolve_path
 from buildtest.utils.tools import checkColor
-from rich.table import Table
 
 logger = logging.getLogger(__name__)
 
@@ -77,21 +78,21 @@ class Report:
     }
 
     def __init__(
-        self,
-        configuration,
-        report_file=None,
-        filter_args=None,
-        format_args=None,
-        start=None,
-        end=None,
-        failure=None,
-        passed=None,
-        latest=None,
-        oldest=None,
-        count=None,
-        pager=None,
-        detailed=None,
-        color=None,
+            self,
+            configuration,
+            report_file=None,
+            filter_args=None,
+            format_args=None,
+            start=None,
+            end=None,
+            failure=None,
+            passed=None,
+            latest=None,
+            oldest=None,
+            count=None,
+            pager=None,
+            detailed=None,
+            color=None,
     ):
         """
         Args:
@@ -104,7 +105,7 @@ class Report:
             failure (bool, optional): Fetch failure run for all tests discovered. This is specified via ``buildtest report --fail``
             passed (bool, optional): Fetch passed run for all tests discovered. This is specified via ``buildtest report --pass``
             latest (bool, optional): Fetch latest run for all tests discovered. This is specified via ``buildtest report --latest``
-            oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
+            oldest (bool, optional): Fetch the oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
             count (int, optional): Fetch limited number of rows get printed for all tests discovered. This is specified via ``buildtest report --count``
             pager (bool, optional): Enabling PAGING output for ``buildtest report``. This can be specified via ``buildtest report --pager``
             color (str, optional): An instance of a string class that tells print_report what color the output should be printed in.
@@ -278,7 +279,7 @@ class Report:
             return
 
         if self.filter.get("buildspec"):
-            # resolve path for buildspec filter key, its possible if file doesn't exist method returns None
+            # resolve path for buildspec filter key, it's possible if file doesn't exist method returns None
             resolved_buildspecs = resolve_path(self.filter["buildspec"])
 
             logger.debug(f"Filter records by buildspec: {resolved_buildspecs}")
@@ -370,7 +371,7 @@ class Report:
         """
 
         if self.filter.get("executor") and self.filter.get("executor") != test.get(
-            "executor"
+                "executor"
         ):
             return True
 
@@ -480,11 +481,7 @@ class Report:
 
     def print_format_fields(self):
         """Displays list of format field which implements command ``buildtest report --helpformat``"""
-        table = Table(
-            "[blue]Field",
-            "[blue]Description",
-            title="Format Fields",
-        )
+        table = Table("[blue]Field", "[blue]Description", title="Format Fields")
         for field, description in self.format_field_description.items():
             table.add_row(f"[red]{field}", f"[green]{description}")
 
@@ -519,15 +516,15 @@ class Report:
             console.print(field)
 
     def print_report(
-        self,
-        terse=None,
-        row_count=None,
-        noheader=None,
-        title=None,
-        count=None,
-        color=None,
+            self,
+            terse=None,
+            row_count=None,
+            noheader=None,
+            title=None,
+            count=None,
+            color=None,
     ):
-        """This method will print report table after processing report file. By default we print output in
+        """This method will print report table after processing report file. By default, we print output in
         table format but this can be changed to terse format which will print output in parseable format.
 
         Args:
@@ -587,6 +584,7 @@ class Report:
         )
 
         consoleColor = checkColor(color)
+
         if terse:
             row_entry = [self.display_table[key] for key in self.display_table.keys()]
 
@@ -779,7 +777,7 @@ def report_cmd(args, configuration, report_file=None):
 
     consoleColor = checkColor(args.color)
     pager = args.pager or configuration.target_config.get("pager")
-
+    format_args = configuration.target_config.get("format")
     if args.report_subcommand in ["clear", "c"]:
         # if BUILDTEST_REPORTS file is not present then we have no report files to delete since it tracks all report files that are created
         if not is_file(BUILDTEST_REPORTS):
@@ -861,7 +859,9 @@ def report_cmd(args, configuration, report_file=None):
     if args.formatfields:
         results.print_raw_format_fields()
         return
-
+    if args.detailed:
+        report_detailed()
+        return
     if pager:
         with console.pager():
             results.print_report(
@@ -918,17 +918,12 @@ def report_summary(report, configuration, detailed=None, color=None):
     )
 
     print_report_summary_output(
-        report,
-        table,
-        pass_results,
-        fail_results,
-        color=color,
-        detailed=detailed,
+        report, table, pass_results, fail_results, color=color, detailed=detailed
     )
 
 
 def print_report_summary_output(
-    report, table, pass_results, fail_results, color=None, detailed=None
+        report, table, pass_results, fail_results, color=None, detailed=None
 ):
     """Print output of ``buildtest report summary``.
 
@@ -944,10 +939,7 @@ def print_report_summary_output(
     console.print("Report File: ", report.reportfile())
     console.print("Total Tests:", len(report.get_testids()))
     console.print("Total Tests by Names: ", len(report.get_names()))
-    console.print(
-        "Number of buildspecs in report: ",
-        len(report.get_buildspecs()),
-    )
+    console.print("Number of buildspecs in report: ", len(report.get_buildspecs()))
 
     if not detailed:
         return
@@ -955,3 +947,21 @@ def print_report_summary_output(
     console.print(table)
     pass_results.print_report(title="PASS Tests", color=color)
     fail_results.print_report(title="FAIL Tests", color=color)
+
+
+def report_detailed(report, configuration):
+    """This method will print detailed summary test results which can be retrieved via ``buildtest report --detailed`` command
+        Args:
+            report (buildtest.cli.report.Report): An instance of Report class
+            configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class that is loaded buildtest configuration.
+        """
+    detailed_results = Report(
+        format_args="name,id,user,state,returncode,runtime,outfile,errfile,buildspec",
+        report_file=report.reportfile(),
+        configuration=configuration,
+    )
+    detailed_results.print_report(
+        terse=False,
+        row_count=1,
+        args_count=9,
+    )
