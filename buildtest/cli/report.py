@@ -776,7 +776,6 @@ def report_cmd(args, configuration, report_file=None):
 
     consoleColor = checkColor(args.color)
     pager = args.pager or configuration.target_config.get("pager")
-    format_args = configuration.target_config.get("format")
     if args.report_subcommand in ["clear", "c"]:
         # if BUILDTEST_REPORTS file is not present then we have no report files to delete since it tracks all report files that are created
         if not is_file(BUILDTEST_REPORTS):
