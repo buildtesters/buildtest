@@ -8,7 +8,7 @@ from buildtest.cli.config import (
     view_executors,
     view_path,
     view_system,
-    view_profiles,
+    view_profile,
 )
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, SCHEMA_ROOT
@@ -67,8 +67,8 @@ def test_config_path():
     view_path(configuration)
 
 @pytest.mark.cli
-def test_profiles():
-    view_profiles(configuration)
+def test_profile():
+    view_profile(configuration)
 
 
 @pytest.mark.cli
