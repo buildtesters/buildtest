@@ -4,11 +4,15 @@ import os
 import random
 import sys
 
+
+from rich.table import Table
+
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, resolve_path
 from buildtest.utils.tools import checkColor
 from rich.table import Table
+
 
 logger = logging.getLogger(__name__)
 
@@ -105,6 +109,7 @@ class Report:
             passed (bool, optional): Fetch passed run for all tests discovered. This is specified via ``buildtest report --pass``
             latest (bool, optional): Fetch latest run for all tests discovered. This is specified via ``buildtest report --latest``
             oldest (bool, optional): Fetch the oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
+            oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
             count (int, optional): Fetch limited number of rows get printed for all tests discovered. This is specified via ``buildtest report --count``
             pager (bool, optional): Enabling PAGING output for ``buildtest report``. This can be specified via ``buildtest report --pager``
             color (str, optional): An instance of a string class that tells print_report what color the output should be printed in.
@@ -279,6 +284,7 @@ class Report:
 
         if self.filter.get("buildspec"):
             # resolve path for buildspec filter key, it's possible if file doesn't exist method returns None
+            # resolve path for buildspec filter key, it's possible if file doesn't exist method returns None
             resolved_buildspecs = resolve_path(self.filter["buildspec"])
 
             logger.debug(f"Filter records by buildspec: {resolved_buildspecs}")
@@ -371,6 +377,7 @@ class Report:
 
         if self.filter.get("executor") and self.filter.get("executor") != test.get(
             "executor"
+                "executor"
         ):
             return True
 
@@ -524,6 +531,15 @@ class Report:
         color=None,
     ):
         """This method will print report table after processing report file. By default, we print output in
+            self,
+            terse=None,
+            row_count=None,
+            noheader=None,
+            title=None,
+            count=None,
+            color=None,
+    ):
+        This method will print report table after processing report file. By default we print output in
         table format but this can be changed to terse format which will print output in parseable format.
 
         Args:
@@ -568,8 +584,8 @@ class Report:
             bash-3.2$ buildtest report --filter name=root_disk_usage --format name,state,returncode --terse --no-header
             root_disk_usage|PASS|0
             root_disk_usage|PASS|0
-            root_disk_usage|PASS|0
-        """
+            root_disk_usage|PASS|0"""
+
 
         count = (
             self.configuration.target_config["report"].get("count")
@@ -583,7 +599,6 @@ class Report:
         )
 
         consoleColor = checkColor(color)
-
         if terse:
             row_entry = [self.display_table[key] for key in self.display_table.keys()]
 
@@ -857,9 +872,15 @@ def report_cmd(args, configuration, report_file=None):
     if args.formatfields:
         results.print_raw_format_fields()
         return
+
     if args.detailed:
         report_detailed()
         return
+
+    if args.detailed:
+        report_detailed()
+        return
+
     if pager:
         with console.pager():
             results.print_report(
@@ -921,8 +942,7 @@ def report_summary(report, configuration, detailed=None, color=None):
 
 
 def print_report_summary_output(
-    report, table, pass_results, fail_results, color=None, detailed=None
-):
+        report, table, pass_results, fail_results, color=None, detailed=None):
     """Print output of ``buildtest report summary``.
 
     Args:
