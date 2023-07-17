@@ -54,8 +54,7 @@ def run_isort(source_files, isort_opts):
     if not shutil.which("isort"):
         return
 
-    # source_files = " ".join(source_files)
-    cmd = f"isort --settings-path {os.path.join(BUILDTEST_ROOT, '.isort.cfg')} {isort_opts} {' '.join(source_files)}"
+    cmd = f"isort {isort_opts} {' '.join(source_files)}"
     run_command(cmd, "Running isort check")
 
 

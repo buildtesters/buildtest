@@ -10,6 +10,8 @@ import multiprocessing as mp
 import os
 import time
 
+from rich.table import Table
+
 from buildtest.builders.base import BuilderBase
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
 from buildtest.exceptions import BuildTestError, ExecutorError
@@ -22,7 +24,6 @@ from buildtest.executors.slurm import SlurmExecutor
 from buildtest.tools.modules import get_module_commands
 from buildtest.utils.file import create_dir, write_file
 from buildtest.utils.tools import deep_get
-from rich.table import Table
 
 logger = logging.getLogger(__name__)
 

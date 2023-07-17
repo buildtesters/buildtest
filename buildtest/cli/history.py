@@ -3,11 +3,12 @@ import os
 import re
 import sys
 
+from rich.pretty import pprint
+from rich.table import Table
+
 from buildtest.defaults import BUILD_HISTORY_DIR, console
 from buildtest.utils.file import is_dir, load_json, read_file, walk_tree
 from buildtest.utils.tools import checkColor
-from rich.pretty import pprint
-from rich.table import Table
 
 logger = logging.getLogger(__name__)
 

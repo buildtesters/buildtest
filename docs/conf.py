@@ -39,10 +39,7 @@ configuration.detect_system()
 configuration.validate()
 # need to create buildspec cache
 
-cache = BuildspecCache(
-    rebuild=True,
-    configuration=configuration,
-)
+cache = BuildspecCache(rebuild=True, configuration=configuration)
 
 # -- Project information -----------------------------------------------------
 project = "buildtest"

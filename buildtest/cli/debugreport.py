@@ -1,9 +1,10 @@
 import os
 
+from rich.syntax import Syntax
+
 from buildtest.cli import BUILDTEST_VERSION
 from buildtest.cli.config import view_configuration
 from buildtest.defaults import console
-from rich.syntax import Syntax
 
 
 def print_debug_report(system, configuration):
