@@ -49,24 +49,3 @@ buildspecs:
     status:
       runtime:
         max: 1.0
-
-  timelimit_max_specified:
-    type: script
-    executor: generic.local.sh
-    description: "Run a sleep job for 2 seconds and test pass if it's within the specified maximum time"
-    tags: ["tutorials"]
-    run: sleep 2
-    status:
-      runtime:
-        max: 4.0
-
-  timelimit_min_max_specified:
-    type: script
-    executor: generic.local.sh
-    description: "Run a sleep job for 2 seconds and test pass if it's within the specified minimum and maximum time"
-    tags: ["tutorials"]
-    run: sleep 2
-    status:
-      runtime:
-        min: 1.5
-        max: 3.5
