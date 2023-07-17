@@ -8,10 +8,10 @@ from rich.color import Color
 
 from buildtest.cli.report import (
     Report,
-    report_cmd,
-    report_summary,
     clear_report,
     list_report,
+    report_cmd,
+    report_summary,
 )
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, BUILDTEST_ROOT
