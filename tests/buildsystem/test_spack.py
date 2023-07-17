@@ -2,6 +2,7 @@ import getpass
 import os
 
 import pytest
+
 from buildtest.cli.build import BuildTest
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.config import SiteConfiguration

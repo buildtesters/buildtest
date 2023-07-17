@@ -9,6 +9,7 @@ if here not in sys.path:
 
 import coverage
 import pytest
+
 from buildtest.defaults import (
     BUILDTEST_ROOT,
     BUILDTEST_UNITTEST_ROOT,
@@ -86,8 +87,7 @@ def run_unit_tests(pytestopts=None, sourcefiles=None, enable_coverage=False):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        prog="unittest",
-        description="Run buildtest unit tests",
+        prog="unittest", description="Run buildtest unit tests"
     )
     parser.add_argument(
         "-c",

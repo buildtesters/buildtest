@@ -3,12 +3,13 @@ to retrieve test record from report file in JSON format."""
 import re
 import sys
 
-from buildtest.defaults import console
-from buildtest.utils.file import read_file, resolve_path
-from buildtest.utils.tools import checkColor
 from rich.pretty import pprint
 from rich.syntax import Syntax
 from rich.table import Table
+
+from buildtest.defaults import console
+from buildtest.utils.file import read_file, resolve_path
+from buildtest.utils.tools import checkColor
 
 
 def fetch_test_names(report, names):
@@ -126,11 +127,7 @@ def inspect_list(
         print_builders(report)
         return
 
-    table = {
-        "id": [],
-        "name": [],
-        "buildspec": [],
-    }
+    table = {"id": [], "name": [], "buildspec": []}
 
     for identifier in test_ids.keys():
         table["id"].append(identifier)

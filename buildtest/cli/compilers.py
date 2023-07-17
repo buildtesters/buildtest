@@ -6,15 +6,16 @@ import subprocess
 from shutil import copyfile
 
 import yaml
+from lmod.module import Module
+from lmod.spider import Spider
+from rich.table import Table
+
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import console
 from buildtest.exceptions import BuildTestError, ConfigurationError
 from buildtest.schemas.defaults import custom_validator, schema_table
 from buildtest.utils.file import is_dir, resolve_path
 from buildtest.utils.tools import deep_get
-from lmod.module import Module
-from lmod.spider import Spider
-from rich.table import Table
 
 
 def compiler_cmd(args, configuration):
@@ -181,10 +182,7 @@ def compiler_find(
         print(f"Updating configuration file: {configuration.file}")
         with open(configuration.file, "w") as fd:
             yaml.safe_dump(
-                configuration.config,
-                fd,
-                default_flow_style=False,
-                sort_keys=False,
+                configuration.config, fd, default_flow_style=False, sort_keys=False
             )
 
 

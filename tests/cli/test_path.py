@@ -2,6 +2,7 @@ import random
 import string
 
 import pytest
+
 from buildtest.cli.path import path_cmd
 from buildtest.cli.report import Report
 from buildtest.config import SiteConfiguration
@@ -27,15 +28,9 @@ def test_path():
 
     builders = report.builder_names()
     # specify name in format 'buildtest path <name>/<testid>
-    path_cmd(
-        name=builders[0],
-        configuration=configuration,
-    )
+    path_cmd(name=builders[0], configuration=configuration)
 
     random_test_name = "".join(random.choices(string.ascii_letters, k=10))
 
     with pytest.raises(SystemExit):
-        path_cmd(
-            random_test_name,
-            configuration=configuration,
-        )
+        path_cmd(random_test_name, configuration=configuration)
