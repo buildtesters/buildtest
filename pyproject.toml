@@ -88,6 +88,7 @@ omit = [
     'buildtest/cli/cd.py',
     'buildtest/tools/docs.py',
     'buildtest/tools/unittests.py',
+    'buildtest/tools/tutorialexamples.py',
 ]
 
 [tool.coverage.report]
