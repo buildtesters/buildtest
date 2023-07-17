@@ -771,6 +771,37 @@ class Report:
         return records
 
 
+def list_report():
+    """This method will list all report files. This method will implement ``buildtest report list`` command."""
+    if not is_file(BUILDTEST_REPORTS):
+        sys.exit(
+            console.print(
+                "There are no report files, please run 'buildtest build' to generate a report file."
+            )
+        )
+
+    content = load_json(BUILDTEST_REPORTS)
+    for fname in content:
+        console.print(fname)
+
+
+def clear_report():
+    """This method will clear all report files. We read file BUILDTEST_REPORTS and remove all report files and also remove content of BUILDTEST_REPORTS.
+    This method will implement ``buildtest report clear`` command."""
+    if not is_file(BUILDTEST_REPORTS):
+        sys.exit("There is no report file to delete")
+
+    reports = load_json(BUILDTEST_REPORTS)
+    for report in reports:
+        console.print(f"Removing report file: {report}")
+        try:
+            os.remove(report)
+        except OSError:
+            continue
+
+    os.remove(BUILDTEST_REPORTS)
+
+
 def report_cmd(args, configuration, report_file=None):
     """Entry point for ``buildtest report`` command"""
 
@@ -778,32 +809,11 @@ def report_cmd(args, configuration, report_file=None):
     pager = args.pager or configuration.target_config.get("pager")
 
     if args.report_subcommand in ["clear", "c"]:
-        # if BUILDTEST_REPORTS file is not present then we have no report files to delete since it tracks all report files that are created
-        if not is_file(BUILDTEST_REPORTS):
-            sys.exit("There is no report file to delete")
-
-        reports = load_json(BUILDTEST_REPORTS)
-        for report in reports:
-            console.print(f"Removing report file: {report}")
-            try:
-                os.remove(report)
-            except OSError:
-                continue
-
-        os.remove(BUILDTEST_REPORTS)
+        clear_report()
         return
 
     if args.report_subcommand in ["list", "l"]:
-        if not is_file(BUILDTEST_REPORTS):
-            sys.exit(
-                console.print(
-                    "There are no report files, please run 'buildtest build' to generate a report file."
-                )
-            )
-
-        content = load_json(BUILDTEST_REPORTS)
-        for fname in content:
-            console.print(fname)
+        list_report()
         return
 
     results = Report(

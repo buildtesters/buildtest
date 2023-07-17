@@ -991,7 +991,9 @@ def config_menu(subparsers, parent_parser):
     subparsers_config.add_parser("systems", help="List all available systems")
     # buildtest config validate
     subparsers_config.add_parser(
-        "validate", help="Validate buildtest settings file with schema."
+        "validate",
+        aliases=["val"],
+        help="Validate buildtest settings file with schema.",
     )
     # buildtest config view
     subparsers_config.add_parser(

@@ -6,7 +6,13 @@ import tempfile
 import pytest
 from rich.color import Color
 
-from buildtest.cli.report import Report, report_cmd, report_summary
+from buildtest.cli.report import (
+    Report,
+    clear_report,
+    list_report,
+    report_cmd,
+    report_summary,
+)
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
@@ -151,13 +157,13 @@ def test_report_oldest_and_latest():
 
 @pytest.mark.cli
 def test_report_failure():
-    # buildtest report --filter tags=tutorials --failure
+    # buildtest report --filter tags=tutorials --fail
     Report(configuration=configuration, filter_args={"tags": "tutorials"}, failure=True)
 
 
 @pytest.mark.cli
 def test_report_passed():
-    # buildtest report --filter tags=tutorials --passed
+    # buildtest report --filter tags=tutorials --pass
     Report(configuration=configuration, filter_args={"tags": "tutorials"}, passed=True)
 
 
@@ -294,6 +300,7 @@ def test_report_list():
 
     report_cmd(args, configuration=configuration)
 
+    list_report()
     backupfile = tempfile.NamedTemporaryFile()
     shutil.copy2(BUILDTEST_REPORTS, backupfile.name)
 
@@ -301,7 +308,7 @@ def test_report_list():
     os.remove(BUILDTEST_REPORTS)
 
     with pytest.raises(SystemExit):
-        report_cmd(args, configuration=configuration)
+        list_report()
 
     # move back the removed BUILDTEST_REPORTS file
     shutil.move(backupfile.name, BUILDTEST_REPORTS)
@@ -330,11 +337,11 @@ def test_report_clear():
     backupfile_list_report = tempfile.NamedTemporaryFile()
     shutil.copy2(BUILDTEST_REPORTS, backupfile_list_report.name)
 
-    report_cmd(args, configuration=configuration)
+    clear_report()
 
     # buildtest report clear will raise an error since file doesn't exist
     with pytest.raises(SystemExit):
-        report_cmd(args, configuration=configuration)
+        clear_report()
 
     assert not is_file(BUILD_REPORT)
     # move back the backe-up files since report_cmd() function removes the files BUILD_REPORT and BUILDTEST_REPORTS
