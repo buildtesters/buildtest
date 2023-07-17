@@ -646,8 +646,7 @@ class BuilderBase(ABC):
         self._set_execute_perm(self.testpath)
         # copy testpath to run_dir
         shutil.copy2(
-            self.testpath,
-            os.path.join(self.test_root, os.path.basename(self.testpath)),
+            self.testpath, os.path.join(self.test_root, os.path.basename(self.testpath))
         )
 
     def _emit_command(self):

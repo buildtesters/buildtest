@@ -14,6 +14,11 @@ from datetime import datetime
 from typing import Dict, List, Optional
 
 import yaml
+from jsonschema.exceptions import ValidationError
+from rich import box
+from rich.panel import Panel
+from rich.table import Column, Table
+
 from buildtest import BUILDTEST_VERSION
 from buildtest.builders.compiler import CompilerBuilder
 from buildtest.builders.script import ScriptBuilder
@@ -50,10 +55,6 @@ from buildtest.utils.file import (
     resolve_path,
     walk_tree,
 )
-from jsonschema.exceptions import ValidationError
-from rich import box
-from rich.panel import Panel
-from rich.table import Column, Table
 
 logger = logging.getLogger(__name__)
 
@@ -849,10 +850,7 @@ class BuildTest:
 
         with open(self.configuration.file, "w") as fd:
             yaml.safe_dump(
-                self.configuration.config,
-                fd,
-                default_flow_style=False,
-                sort_keys=False,
+                self.configuration.config, fd, default_flow_style=False, sort_keys=False
             )
 
     def load_profile(self):
@@ -1375,9 +1373,7 @@ class BuildTest:
 
         for builder in builders:
             batch_builders_table.add_row(
-                f"{builder}",
-                f"{builder.executor}",
-                f"{builder.buildspec}",
+                f"{builder}", f"{builder.executor}", f"{builder.buildspec}"
             )
 
         if batch_builders_table.row_count:

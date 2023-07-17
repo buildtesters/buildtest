@@ -4,11 +4,12 @@ import os
 import random
 import sys
 
+from rich.table import Table
+
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, resolve_path
 from buildtest.utils.tools import checkColor
-from rich.table import Table
 
 logger = logging.getLogger(__name__)
 
@@ -480,11 +481,7 @@ class Report:
 
     def print_format_fields(self):
         """Displays list of format field which implements command ``buildtest report --helpformat``"""
-        table = Table(
-            "[blue]Field",
-            "[blue]Description",
-            title="Format Fields",
-        )
+        table = Table("[blue]Field", "[blue]Description", title="Format Fields")
         for field, description in self.format_field_description.items():
             table.add_row(f"[red]{field}", f"[green]{description}")
 
@@ -918,12 +915,7 @@ def report_summary(report, configuration, detailed=None, color=None):
     )
 
     print_report_summary_output(
-        report,
-        table,
-        pass_results,
-        fail_results,
-        color=color,
-        detailed=detailed,
+        report, table, pass_results, fail_results, color=color, detailed=detailed
     )
 
 
@@ -944,10 +936,7 @@ def print_report_summary_output(
     console.print("Report File: ", report.reportfile())
     console.print("Total Tests:", len(report.get_testids()))
     console.print("Total Tests by Names: ", len(report.get_names()))
-    console.print(
-        "Number of buildspecs in report: ",
-        len(report.get_buildspecs()),
-    )
+    console.print("Number of buildspecs in report: ", len(report.get_buildspecs()))
 
     if not detailed:
         return
