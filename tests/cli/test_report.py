@@ -150,13 +150,13 @@ def test_report_oldest_and_latest():
 
 @pytest.mark.cli
 def test_report_failure():
-    # buildtest report --filter tags=tutorials --failure
+    # buildtest report --filter tags=tutorials --fail
     Report(configuration=configuration, filter_args={"tags": "tutorials"}, failure=True)
 
 
 @pytest.mark.cli
 def test_report_passed():
-    # buildtest report --filter tags=tutorials --passed
+    # buildtest report --filter tags=tutorials --pass
     Report(configuration=configuration, filter_args={"tags": "tutorials"}, passed=True)
 
 
