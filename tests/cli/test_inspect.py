@@ -4,6 +4,7 @@ import string
 import tempfile
 
 import pytest
+
 from buildtest.cli.inspect import (
     inspect_buildspec,
     inspect_by_name,

@@ -4,11 +4,12 @@ import os
 import random
 import sys
 
+from rich.table import Table
+
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, resolve_path
 from buildtest.utils.tools import checkColor
-from rich.table import Table
 
 logger = logging.getLogger(__name__)
 

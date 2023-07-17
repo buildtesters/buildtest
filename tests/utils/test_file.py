@@ -7,6 +7,7 @@ import unittest
 import uuid
 
 import pytest
+
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import (
     create_dir,
@@ -184,13 +185,7 @@ class TestWalkTree(unittest.TestCase):
 class TestSearchFiles(unittest.TestCase):
     def setUp(self):
         self.temp_dir = tempfile.mkdtemp()
-        self.files = [
-            "file1.txt",
-            "file2.jpg",
-            "file3.txt",
-            "file4.jpg",
-            "file5.txt",
-        ]
+        self.files = ["file1.txt", "file2.jpg", "file3.txt", "file4.jpg", "file5.txt"]
         for f in self.files:
             create_file(os.path.join(self.temp_dir, f))
 
