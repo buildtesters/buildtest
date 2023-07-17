@@ -11,7 +11,6 @@ from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import is_file, load_json, resolve_path
 from buildtest.utils.tools import checkColor
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -869,10 +868,6 @@ def report_cmd(args, configuration, report_file=None):
 
     if args.formatfields:
         results.print_raw_format_fields()
-        return
-
-    if args.detailed:
-        report_detailed()
         return
 
     if args.detailed:
