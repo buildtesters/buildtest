@@ -78,21 +78,21 @@ class Report:
     }
 
     def __init__(
-        self,
-        configuration,
-        report_file=None,
-        filter_args=None,
-        format_args=None,
-        start=None,
-        end=None,
-        failure=None,
-        passed=None,
-        latest=None,
-        oldest=None,
-        count=None,
-        pager=None,
-        detailed=None,
-        color=None,
+            self,
+            configuration,
+            report_file=None,
+            filter_args=None,
+            format_args=None,
+            start=None,
+            end=None,
+            failure=None,
+            passed=None,
+            latest=None,
+            oldest=None,
+            count=None,
+            pager=None,
+            detailed=None,
+            color=None,
     ):
         """
         Args:
@@ -373,7 +373,7 @@ class Report:
         """
 
         if self.filter.get("executor") and self.filter.get("executor") != test.get(
-            "executor"
+                "executor"
                 "executor"
         ):
             return True
@@ -519,13 +519,13 @@ class Report:
             console.print(field)
 
     def print_report(
-        self,
-        terse=None,
-        row_count=None,
-        noheader=None,
-        title=None,
-        count=None,
-        color=None,
+            self,
+            terse=None,
+            row_count=None,
+            noheader=None,
+            title=None,
+            count=None,
+            color=None,
     ):
         """This method will print report table after processing report file. By default, we print output in
             self,
@@ -582,7 +582,6 @@ class Report:
             root_disk_usage|PASS|0
             root_disk_usage|PASS|0
             root_disk_usage|PASS|0"""
-
 
         count = (
             self.configuration.target_config["report"].get("count")
