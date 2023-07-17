@@ -143,7 +143,6 @@ _buildtest ()
     do
 
         if [[ "$command" == "$element" ]]; then
-          
           if [[ "${commands_with_input[*]}" =~ $command ]];
           then
             ((offset+=2))
@@ -157,12 +156,12 @@ _buildtest ()
   done
 
   local next=${COMP_WORDS[1+offset]}
-  
   case "$next" in
   #case "${prev}" in
     build|bd)
       local shortoption="-b -e -et -f -m -s -t -u -x -xt"
       local longoption="--buildspec --disable-executor-check --executor --executor-type --exclude --exclude-tags --filter --helpfilter --limit --maxpendtime --modules --module-purge --nodes --pollinterval --procs --profile --rerun --remove-stagedir --retry --save-profile --stage --tags --timeout --unload-modules"
+      local longoption="--buildspec --executor --executor-type --exclude --exclude-tags --filter --helpfilter --limit --maxpendtime --modules --module-purge --nodes --pollinterval --procs --profile --rerun --remove-stagedir --retry --save-profile --stage --tags --timeout --unload-modules"
       local allopts="${longoption} ${shortoption}"
 
       COMPREPLY=( $( compgen -W "$allopts" -- $cur ) )
@@ -219,7 +218,7 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--detailed --end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse  -e -f -h -n -p -s -t c clear l list p path sm summary"
+      local opts="--detailed --end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse  -d -e -f -h -n -p -s -t c clear l list p path sm summary"
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       case "${prev}" in --filter)
         COMPREPLY=( $( compgen -W "$(_avail_report_filterfields)" -- $cur ) )
@@ -327,6 +326,7 @@ _buildtest ()
          *)
            local longopts="--buildspec --count --detailed --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --row-count --tags --root --terse"
            local shortopts="-b -e -h -n -p -q -r -t"
+           local shortopts="-b -d -e -h -n -p -q -r -t"
            local subcmds="invalid"
            local allopts="${longopts} ${shortopts} ${subcmds}"
            COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) )
@@ -449,7 +449,7 @@ _buildtest ()
 
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
-    help|h)
+    show|s)
       local subcommands="build buildspec cdash config history inspect path report schema stylecheck unittests"
       local alias_cmds="bd bc cg hy it rt style test"
       local cmds="$subcommands $alias_cmds"
@@ -482,4 +482,3 @@ _buildtest ()
   esac
 }
 
-complete -o default -F _buildtest buildtest
