@@ -24,7 +24,7 @@ def config_cmd(args, configuration, editor, system):
         view_configuration(configuration, theme=args.theme, pager=args.pager)
 
     if args.config in ["profile"]:
-        view_profiles(configuration, theme=args.theme, pager=args.pager)
+        view_profile(configuration, theme=args.theme, pager=args.pager)
 
     elif args.config in ["executors", "ex"]:
         buildexecutor = BuildExecutor(configuration)
