@@ -34,7 +34,7 @@ def config_cmd(args, configuration, editor, system):
             args.invalid,
         )
 
-    elif args.config == "validate":
+    elif args.config in ["validate", "val"]:
         validate_config(configuration, system.system["moduletool"])
 
     elif args.config == "systems":

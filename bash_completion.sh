@@ -237,7 +237,7 @@ _buildtest ()
     ;;
 
     config|cg)
-      local cmds="-h --help co compilers e edit ex executors p path systems validate v view"
+      local cmds="-h --help co compilers e edit ex executors p path systems val validate v view"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
@@ -312,7 +312,7 @@ _buildtest ()
       ;;
 
     buildspec|bc)
-      local cmds="-h --help ef edit-file et edit-test f find maintainers s show sf show-fail sm summary val validate"
+      local cmds="-h --help ef edit-file et edit-test f find m maintainers s show sf show-fail sm summary val validate"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
