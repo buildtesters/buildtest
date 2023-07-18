@@ -3,7 +3,7 @@ buildspecs:
     type: script
     executor: generic.local.sh
     description: "Run a sleep job for 2 seconds and test pass if its within 1.0-3.0sec"
-    tags: ["tutorials"]
+    tags: [ "tutorials" ]
     run: sleep 2
     status:
       runtime:
@@ -14,7 +14,7 @@ buildspecs:
     type: script
     executor: generic.local.sh
     description: "Run a sleep job for 2 seconds and test pass if its exceeds min time of 1.0 sec"
-    tags: ["tutorials"]
+    tags: [ "tutorials" ]
     run: sleep 2
     status:
       runtime:
@@ -24,7 +24,7 @@ buildspecs:
     type: script
     executor: generic.local.sh
     description: "Run a sleep job for 2 seconds and test pass if it's within max time: 5.0 sec"
-    tags: ["tutorials"]
+    tags: [ "tutorials" ]
     run: sleep 2
     status:
       runtime:
@@ -34,7 +34,7 @@ buildspecs:
     type: script
     executor: generic.local.sh
     description: "This test fails because it runs less than mintime of 10 second"
-    tags: ["tutorials"]
+    tags: [ "tutorials" ]
     run: sleep 2
     status:
       runtime:
@@ -44,9 +44,8 @@ buildspecs:
     type: script
     executor: generic.local.sh
     description: "This test fails because it exceeds maxtime of 1.0 second"
-    tags: ["tutorials"]
+    tags: [ "tutorials" ]
     run: sleep 3
     status:
       runtime:
         max: 1.0
-        
