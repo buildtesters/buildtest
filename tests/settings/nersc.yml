@@ -2,7 +2,18 @@ system:
   perlmutter:
     hostnames: ["login*"]
     moduletool: lmod
-    pager: False
+    poolsize: 8
+    buildspecs:
+      rebuild: False
+      count: 15
+      format: "name,description"
+      terse: False
+    report:
+      count: 25
+      terse: False
+      format: "name,id,state,runtime,returncode"
+      latest: True
+      oldest: False
     compilers:
       enable_prgenv: true
       prgenv_modules:

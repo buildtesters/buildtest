@@ -8,7 +8,6 @@ import os
 import re
 
 from buildtest.defaults import console
-from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.scheduler.lsf import LSFJob
 
@@ -77,12 +76,11 @@ class LSFExecutor(BaseExecutor):
         cmd = f"bash {self._bashopts} {os.path.basename(builder.build_script)}"
 
         timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
+        command = builder.run(cmd, timeout)
 
-        try:
-            command = builder.run(cmd, timeout)
-        except RuntimeFailure as err:
-            self.logger.error(err)
-            return
+        if command.returncode() != 0:
+            builder.failed()
+            return builder
 
         out = command.get_output()
         out = " ".join(out)
@@ -95,7 +93,7 @@ class LSFExecutor(BaseExecutor):
         if not m:
             self.logger.debug(f"Unable to find LSF Job ID in output: '{out}'")
             builder.failed()
-            return
+            return builder
 
         try:
             job_id = int(m.group(0))
@@ -104,7 +102,7 @@ class LSFExecutor(BaseExecutor):
                 f"Unable to convert '{m.group(0)}' to int to extract Job ID"
             )
             builder.failed()
-            return
+            return builder
 
         builder.job = LSFJob(job_id)
 
