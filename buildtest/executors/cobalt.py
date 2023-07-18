@@ -8,7 +8,6 @@ import shutil
 import time
 
 from buildtest.defaults import console
-from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.scheduler.cobalt import CobaltJob
 from buildtest.utils.file import is_file, read_file
@@ -72,11 +71,11 @@ class CobaltExecutor(BaseExecutor):
 
         timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
 
-        try:
-            command = builder.run(cmd, timeout)
-        except RuntimeFailure as err:
-            self.logger.error(err)
-            return
+        command = builder.run(cmd, timeout)
+
+        if command.returncode() != 0:
+            builder.failed()
+            return builder
 
         out = command.get_output()
         out = " ".join(out)
