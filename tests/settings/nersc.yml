@@ -2,7 +2,7 @@ system:
   perlmutter:
     hostnames: ["login*"]
     moduletool: lmod
-    poolsize: 1
+    poolsize: 8
     buildspecs:
       rebuild: False
       count: 15
