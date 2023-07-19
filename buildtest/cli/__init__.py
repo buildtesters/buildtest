@@ -1104,6 +1104,13 @@ def report_menu(subparsers, parent_parser):
 
     # buildtest report
     filter_group.add_argument(
+        "-d",
+        "--detailed",
+        action="store_true",
+        help="Print a detailed summary of the test results",
+    )
+
+    filter_group.add_argument(
         "--filter",
         type=handle_kv_string,
         help="Filter report by filter fields. The filter fields must be a key=value pair and multiple fields can be comma separated in the following format: --filter key1=val1,key2=val2 . For list of filter fields run: --helpfilter.",
