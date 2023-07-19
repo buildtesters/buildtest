@@ -604,6 +604,7 @@ def build_menu(subparsers):
         action="store_true",
         help="Rerun last successful buildtest build command.",
     )
+
     filter_group.add_argument(
         "-f",
         "--filter",
@@ -1100,7 +1101,7 @@ def report_menu(subparsers, parent_parser):
         help="Summarize test report",
         parents=[parent_parser["pager"]],
     )
-    filter_group = parser_report.add_argument_group("filter", "Filter and Format table")
+    filter_group = parser_report.add_argument_group("filter", "Filter options")
 
     # buildtest report
     filter_group.add_argument(
@@ -1110,27 +1111,39 @@ def report_menu(subparsers, parent_parser):
     )
 
     filter_group.add_argument(
-        "--format",
-        help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
-    )
-    filter_group.add_argument(
         "--helpfilter",
         action="store_true",
         help="List available filter fields to be used with --filter option",
     )
-    filter_group.add_argument(
-        "--helpformat", action="store_true", help="List of available format fields"
-    )
+
     filter_group.add_argument(
         "--filterfields",
         action="store_true",
         help="Print raw filter fields for --filter option to filter the report",
     )
-    filter_group.add_argument(
+
+    format_group = parser_report.add_argument_group("format", "Format options")
+
+    # buildtest report
+    format_group.add_argument(
+        "--format",
+        type=handle_kv_string,
+        help="Format report by format fields. The format fields must be a key=value pair and multiple fields can be comma separated in the following format: --format key1=val1,key2=val2 . For list of format fields run: --helpformat.",
+    )
+    format_group.add_argument(
+        "-d", "--detailed", help="Print a detailed summary of the test results", action="store_true",
+    )
+
+    format_group.add_argument(
+        "--helpformat", action="store_true", help="List of available format fields"
+    )
+
+    format_group.add_argument(
         "--formatfields",
         action="store_true",
         help="Print raw format fields for --format option to format the report",
     )
+
     pass_fail = parser_report.add_mutually_exclusive_group()
 
     pass_fail.add_argument(
@@ -1159,12 +1172,6 @@ def report_menu(subparsers, parent_parser):
         "--oldest",
         help="Retrieve oldest record of particular test",
         action="store_true",
-    )
-    parser_report.add_argument(
-        "-d",
-        "--detailed",
-        action="store_true",
-        help="Print a detailed summary of the test results",
     )
     parser_report_summary.add_argument(
         "--detailed", "-d", action="store_true", help="Enable a more detailed report"
