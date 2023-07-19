@@ -2,11 +2,28 @@ def commands_cmd():
     """This method implements command ``buildtest commands`` which shows a list
     of buildtest commands"""
 
-    cmds_list = ["build", "buildspec", "config", "report", "inspect",
-                 "path", "history", "schemacdash", "unittests",
-                 "stylecheck", "cd", "clean", "docs", "schemadocs",
-                 "debugreport", "stats" "info", "help",
-                 "tutorial-examples"]
+    cmds_list = [
+        "build",
+        "buildspec",
+        "cd",
+        "cdash",
+        "clean",
+        "config",
+        "debugreport",
+        "docs",
+        "history",
+        "info",
+        "inspect",
+        "path",
+        "report",
+        "schema",
+        "schemadocs",
+        "show"
+        "stats",
+        "stylecheck",
+        "tutorial-examples",
+        "unittests"
+    ]
 
-    for x in cmds_list:
-        print(x, "\n")
+    for field in cmds_list:
+        print(field)
