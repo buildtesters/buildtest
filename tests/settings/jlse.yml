@@ -3,7 +3,18 @@ system:
     hostnames:
     - jlselogin*
     moduletool: environment-modules
-    pager: False
+    poolsize: 8
+    buildspecs:
+      rebuild: False
+      count: 15
+      format: "name,description"
+      terse: False
+    report:
+      count: 25
+      terse: False
+      format: "name,id,state,runtime,returncode"
+      latest: True
+      oldest: False
     executors:
       defaults:
         pollinterval: 30

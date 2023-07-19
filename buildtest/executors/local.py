@@ -7,7 +7,6 @@ when initializing the executors.
 import os
 import shlex
 
-from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.file import write_file
 from buildtest.utils.shell import is_bash_shell, is_csh_shell, is_sh_shell, is_zsh_shell
@@ -62,16 +61,12 @@ class LocalExecutor(BaseExecutor):
 
         # ---------- Start of Run ---------- #
         timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
-
-        try:
-            command = builder.run(run_cmd, timeout=timeout)
-        except RuntimeFailure as err:
-            # builder.failed()
-            self.logger.error(err)
-            # return
-
+        command = builder.run(run_cmd, timeout=timeout)
         builder.stop()
         builder.record_endtime()
+
+        if command.returncode() != 0:
+            builder.failed()
 
         out = command.get_output()
         err = command.get_error()
