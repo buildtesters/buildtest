@@ -37,6 +37,13 @@ def test_report():
 
     result.print_report(row_count=True)
 
+    # run 'buildtest report --detailed'
+    result = Report(
+        configuration=configuration,
+        format_args="name,id,user,state,returncode,runtime,outfile,errfile,buildspec",
+    )
+    result.print_report()
+
     # run 'buildtest report --format name,state,returncode,buildspec'
     result = Report(
         configuration=configuration, format_args="name,state,returncode,buildspec"
