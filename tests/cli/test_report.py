@@ -11,8 +11,8 @@ from buildtest.cli.report import (
     clear_report,
     list_report,
     report_cmd,
-    report_summary,
     report_detailed,
+    report_summary,
 )
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, BUILDTEST_ROOT
@@ -329,9 +329,11 @@ def test_report_limited_rows():
     report.print_report(terse=True, count=0)
     report.print_report(terse=True, count=-1)
 
+
 def test_report_detailed():
     report = Report(configuration=configuration)
     report_detailed(report, configuration)
+
 
 @pytest.mark.cli
 def test_report_path():
