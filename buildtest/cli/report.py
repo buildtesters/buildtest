@@ -854,7 +854,7 @@ def report_cmd(args, configuration, report_file=None):
         return
 
     if args.detailed:
-        report_detailed()
+        report_detailed(results,configuration)
         return
 
     if args.helpfilter:
@@ -959,6 +959,7 @@ def print_report_summary_output(
     pass_results.print_report(title="PASS Tests", color=color)
     fail_results.print_report(title="FAIL Tests", color=color)
 
+
 def report_detailed(report, configuration):
     """This method will print detailed summary test results which can be retrieved via ``buildtest report --detailed`` command
     Args:
@@ -970,8 +971,4 @@ def report_detailed(report, configuration):
         report_file=report.reportfile(),
         configuration=configuration,
     )
-    detailed_results.print_report(
-        terse=False,
-        row_count=1,
-        args_count=9,
-    )
+    detailed_results.print_report(count=1)
