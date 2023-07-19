@@ -13,9 +13,10 @@ from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import console
 from buildtest.schemas.defaults import schema_table
 
-help1 = '-H' in sys.argv
-help2 = '--help--all' in sys.argv
+help1 = "-H" in sys.argv
+help2 = "--help--all" in sys.argv
 show_all_help = help1 or help2
+
 
 def build_filters_format(val):
     """This method is used as validate argument type for ``buildtest build --filter``.
@@ -264,7 +265,9 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         help="Print available color options in a table format.",
     )
     parser.add_argument("-r", "--report", help="Specify path to test report file")
-    parser.add_argument("-H", "--help--all", help="Show help for all commands", action='help')
+    parser.add_argument(
+        "-H", "--help--all", help="Show help for all commands", action="help"
+    )
 
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 
@@ -359,7 +362,9 @@ def misc_menu(subparsers):
     )
 
     if show_all_help:
-        subparsers.add_parser("schemadocs", help="Open buildtest schema docs in browser")
+        subparsers.add_parser(
+            "schemadocs", help="Open buildtest schema docs in browser"
+        )
         subparsers.add_parser("docs", help="Open buildtest docs in browser")
     else:
         subparsers.add_parser("schemadocs")
@@ -418,9 +423,7 @@ def stylecheck_menu(subparsers):
             "stylecheck", aliases=["style"], help="Run buildtest style checks"
         )
     else:
-        stylecheck_parser = subparsers.add_parser(
-            "stylecheck", aliases=["style"]
-        )
+        stylecheck_parser = subparsers.add_parser("stylecheck", aliases=["style"])
 
     stylecheck_parser.add_argument(
         "--no-black", action="store_true", help="Don't run black style check"
@@ -444,12 +447,10 @@ def unittest_menu(subparsers):
     """
     if show_all_help:
         unittests_parser = subparsers.add_parser(
-            "unittests", help="Run buildtest unit tests",aliases=["test"]
+            "unittests", help="Run buildtest unit tests", aliases=["test"]
         )
     else:
-        unittests_parser = subparsers.add_parser(
-            "unittests", aliases=["test"]
-        )
+        unittests_parser = subparsers.add_parser("unittests", aliases=["test"])
     unittests_parser.add_argument(
         "-c",
         "--coverage",
@@ -480,9 +481,7 @@ def tutorial_examples_menu(subparsers):
             help="Generate documentation examples for Buildtest Tutorial",
         )
     else:
-        subparsers.add_parser(
-            "tutorial-examples",
-        )
+        subparsers.add_parser("tutorial-examples")
 
 
 def path_menu(subparsers):
