@@ -402,7 +402,7 @@ def profile_menu(subparsers):
     profile_parser = subparsers.add_parser(
         "help",
         config=["-h"],
-        compliers="config profile list",
+        compliers="buildtest config profile",
     )
     profile_parser.add_arguments(
         "command",
@@ -415,6 +415,7 @@ def profile_menu(subparsers):
             "ex",
             "path",
             "p",
+            "profile"
             "systems",
             "validate",
             "view",
