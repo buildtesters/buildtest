@@ -68,14 +68,14 @@
           "$ref": "#definitions/install",
           "description": "Install spack packages by running ``spack install``. "
         },
+        "load": {
+          "$ref": "#definitions/load",
+          "description": "load spack packages by running ``spack load`` "
+        },
         "verify_spack": {
           "type": "boolean",
           "description": "This boolean will determine if we need to check for file existence where spack is cloned via ``root`` property and file **$SPACK_ROOT/share/spack/setup-env.sh** exists. These checks can be disabled by setting this to ``False`` which can be useful if you dont want buildtest to raise exception during test generation process and test is skipped.",
           "default": true
-        },
-        "load": {
-          "$ref": "#definitions/load",
-          "description": "load spack packages by running ``spack load`` "
         },
         "test": {
           "$ref": "#definitions/test",
