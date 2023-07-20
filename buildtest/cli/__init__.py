@@ -407,17 +407,7 @@ def profile_menu(subparsers):
     profile_parser.add_arguments(
         "command",
         choices=[
-            "compilers",
-            "co",
-            "edit",
-            "e",
-            "executors",
-            "ex",
-            "path",
-            "p",
-            "profile"
-            "systems",
-            "validate",
+            "profile",
             "view",
             "-v"
         ],
