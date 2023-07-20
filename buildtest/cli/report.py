@@ -78,21 +78,22 @@ class Report:
     }
 
     def __init__(
-            self,
-            configuration,
-            report_file=None,
-            filter_args=None,
-            format_args=None,
-            start=None,
-            end=None,
-            failure=None,
-            passed=None,
-            latest=None,
-            oldest=None,
-            count=None,
-            pager=None,
-            detailed=None,
-            color=None,
+        self,
+        configuration,
+        report_file=None,
+        filter_args=None,
+        format_args=None,
+        start=None,
+        end=None,
+        failure=None,
+        passed=None,
+        latest=None,
+        oldest=None,
+        count=None,
+        pager=None,
+        format_detailed=None,
+        detailed=None,
+        color=None,
     ):
         """
         Args:
@@ -125,6 +126,11 @@ class Report:
         self.pager = pager
         self.color = color
         self.input_report = report_file
+
+        if format_detailed:
+            self.format = (
+                "name,id,user,state,returncode,runtime,outfile,errfile,buildspec"
+            )
 
         # if no report specified use default report
         if not self.input_report:
@@ -371,7 +377,7 @@ class Report:
         """
 
         if self.filter.get("executor") and self.filter.get("executor") != test.get(
-                "executor"
+            "executor"
         ):
             return True
 
@@ -516,13 +522,13 @@ class Report:
             console.print(field)
 
     def print_report(
-            self,
-            terse=None,
-            row_count=None,
-            noheader=None,
-            title=None,
-            count=None,
-            color=None,
+        self,
+        terse=None,
+        row_count=None,
+        noheader=None,
+        title=None,
+        count=None,
+        color=None,
     ):
         """This method will print report table after processing report file. By default we print output in
         table format but this can be changed to terse format which will print output in parseable format.
@@ -828,6 +834,7 @@ def report_cmd(args, configuration, report_file=None):
         oldest=args.oldest,
         report_file=report_file,
         count=args.count,
+        format_detailed=args.detailed,
     )
 
     if args.report_subcommand in ["path", "p"]:
@@ -851,10 +858,6 @@ def report_cmd(args, configuration, report_file=None):
             color=consoleColor,
             configuration=configuration,
         )
-        return
-
-    if args.detailed:
-        report_detailed(results, configuration)
         return
 
     if args.helpfilter:
@@ -934,7 +937,7 @@ def report_summary(report, configuration, detailed=None, color=None):
 
 
 def print_report_summary_output(
-        report, table, pass_results, fail_results, color=None, detailed=None
+    report, table, pass_results, fail_results, color=None, detailed=None
 ):
     """Print output of ``buildtest report summary``.
 
@@ -958,17 +961,3 @@ def print_report_summary_output(
     console.print(table)
     pass_results.print_report(title="PASS Tests", color=color)
     fail_results.print_report(title="FAIL Tests", color=color)
-
-
-def report_detailed(report, configuration):
-    """This method will print detailed summary test results which can be retrieved via ``buildtest report --detailed`` command
-    Args:
-        report (buildtest.cli.report.Report): An instance of Report class
-        configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class that is loaded buildtest configuration.
-    """
-    detailed_results = Report(
-        format_args="name,id,user,state,returncode,runtime,outfile,errfile,buildspec",
-        report_file=report.reportfile(),
-        configuration=configuration,
-    )
-    detailed_results.print_report(count=1)
