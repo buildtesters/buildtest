@@ -11,7 +11,6 @@ from buildtest.cli.report import (
     clear_report,
     list_report,
     report_cmd,
-    report_detailed,
     report_summary,
 )
 from buildtest.config import SiteConfiguration
@@ -64,6 +63,12 @@ def test_report_format():
 
     # buildtest report --formatfields
     report.print_raw_format_fields()
+
+    # buildtest report --detailed
+    report = Report(
+        configuration=configuration,
+        format_detailed=True
+    )
 
     # buildtest report --format XYZ is invalid format field
     with pytest.raises(BuildTestError):
@@ -330,9 +335,9 @@ def test_report_limited_rows():
     report.print_report(terse=True, count=-1)
 
 
-def test_report_detailed():
-    report = Report(configuration=configuration)
-    report_detailed(report, configuration)
+# def test_report_detailed():
+# report = Report(configuration=configuration)
+# report_detailed(report, configuration)
 
 
 @pytest.mark.cli
