@@ -237,7 +237,10 @@ _buildtest ()
     ;;
 
     config|cg)
+
+
       local cmds="-h --help co compilers e edit ex executors p path profile systems validate v view"
+
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
@@ -320,7 +323,7 @@ _buildtest ()
       ;;
 
     buildspec|bc)
-      local cmds="-h --help ef edit-file et edit-test f find maintainers s show sf show-fail sm summary val validate"
+      local cmds="-h --help ef edit-file et edit-test f find m maintainers s show sf show-fail sm summary val validate"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
@@ -397,7 +400,6 @@ _buildtest ()
         ;;
       validate|val)
         local opts="--buildspec --exclude --executor --tag -b -e -t -x "
-
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
         # auto completion for 'buildtest buildspec validate' options
         if [[ "${prev}" == "-b" ]] || [[ "${prev}" == "--buildspec" ]] || [[ "${prev}" == "-x" ]] || [[ "${prev}" == "--exclude" ]]; then

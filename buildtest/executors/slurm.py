@@ -8,7 +8,6 @@ import os
 import re
 
 from buildtest.defaults import console
-from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.scheduler.slurm import SlurmJob
 
@@ -81,18 +80,16 @@ class SlurmExecutor(BaseExecutor):
         cmd = f"bash {self._bashopts} {os.path.basename(builder.build_script)}"
 
         timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
+        command = builder.run(cmd, timeout)
 
-        try:
-            command = builder.run(cmd, timeout)
-        except RuntimeFailure as err:
-            self.logger.error(err)
-            return
+        if command.returncode() != 0:
+            builder.failed()
+            return builder
 
         # it is possible user can specify a before_script for Slurm executor which is run in build script. In order to get
         # slurm job it would be the last element in array. If before_script is not specified the last element should be the only
         # element in output
         parse_jobid = command.get_output()[-1]
-        # parse_jobid = " ".join(parse_jobid)
 
         # output of sbatch --parsable could be in format 'JobID;cluster' if so we split by colon to extract JobID
         if re.search(";", parse_jobid):
