@@ -49,12 +49,20 @@ Detailed Reports (``buildtest report --detailed``)
 ---------------------------------------------------
 
 The **buildtest report --detailed** option can be used to show a detailed test report that may be of interest when
-examining a test. This option is synonymous to running ``buildtest report --format name, id, user, state, returncode,
-runtime, outfile, errfile, buildspec``. Shown below is an example output.
+examining a test. This option is synonymous to running ``buildtest report --format name,id,user,state,returncode,runtime,outfile,errfile,buildspec``.
+Shown below is an example output.
 
 .. dropdown:: ``buildtest report --detailed``
 
     .. command-output:: buildtest report --detailed
+
+Note that ``--detailed`` and ``--format`` options can't be used together in ``buildtest report`` command they are
+mutually exclusive options that affect format fields.
+
+dropdown:: ``buildtest report --detailed --format name``
+
+    .. command-output:: buildtest report --detailed --format name
+        :returncode: 1
 
 Format Reports (``buildtest report --format``)
 -----------------------------------------------
