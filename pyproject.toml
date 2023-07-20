@@ -59,7 +59,7 @@ docs = [
 ]
 [tool.black]
 required-version = '23.3.0'
-target-version = ['py38', 'py39', 'py310']
+target-version = ['py38', 'py39', 'py310', 'py311']
 skip_magic_trailing_comma = true
 line-length = 88
 verbose = true
