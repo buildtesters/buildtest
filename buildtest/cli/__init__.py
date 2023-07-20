@@ -1123,15 +1123,11 @@ def report_menu(subparsers, parent_parser):
     )
 
     format_group = parser_report.add_argument_group("format", "Format options")
+    format_detailed_group = parser_report.add_mutually_exclusive_group()
 
-    # buildtest report
-    format_group.add_argument(
+    format_detailed_group.add_argument(
         "--format",
-        type=handle_kv_string,
-        help="Format report by format fields. The format fields must be a key=value pair and multiple fields can be comma separated in the following format: --format key1=val1,key2=val2 . For list of format fields run: --helpformat.",
-    )
-    format_group.add_argument(
-        "-d", "--detailed", help="Print a detailed summary of the test results", action="store_true",
+        help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
     )
 
     format_group.add_argument(
@@ -1142,6 +1138,13 @@ def report_menu(subparsers, parent_parser):
         "--formatfields",
         action="store_true",
         help="Print raw format fields for --format option to format the report",
+    )
+
+    format_detailed_group.add_argument(
+        "-d",
+        "--detailed",
+        help="Print a detailed summary of the test results",
+        action="store_true",
     )
 
     pass_fail = parser_report.add_mutually_exclusive_group()
@@ -1176,6 +1179,7 @@ def report_menu(subparsers, parent_parser):
     parser_report_summary.add_argument(
         "--detailed", "-d", action="store_true", help="Enable a more detailed report"
     )
+
 
 def inspect_menu(subparsers, parent_parser):
     """This method builds argument for ``buildtest inspect`` command
