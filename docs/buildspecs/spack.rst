@@ -352,7 +352,7 @@ buildtest will automatically clone spack if ``root`` is not specified in the bui
 where the test is executed. In example below have two tests, first one will clone spack automatically and second test will clone explicitly
 in `/tmp` where we specify ``root`` property.
 
-.. literalinclude:: ../../examples/spack/spack_clone.yml
+.. literalinclude:: ../../examples/spack/clone_spack.yml
   :language: yaml
   :emphasize-lines: 20-22
 
