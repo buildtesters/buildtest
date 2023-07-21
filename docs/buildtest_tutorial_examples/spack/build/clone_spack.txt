@@ -1,0 +1,84 @@
+$ buildtest build -b /home/spack/buildtest/examples/spack/clone_spack.yml 
+╭────────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────╮                                                                                                               
+│                                                                                                                       │                                                                                                               
+│ User:               spack                                                                                             │                                                                                                               
+│ Hostname:           6f06e7949c52                                                                                      │                                                                                                               
+│ Platform:           Linux                                                                                             │                                                                                                               
+│ Current Time:       2023/07/21 13:32:57                                                                               │                                                                                                               
+│ buildtest path:     /home/spack/buildtest/bin/buildtest                                                               │                                                                                                               
+│ buildtest version:  1.4                                                                                               │                                                                                                               
+│ python path:        /home/spack/pyenv/buildtest/bin/python3                                                           │                                                                                                               
+│ python version:     3.8.6                                                                                             │                                                                                                               
+│ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                      │                                                                                                               
+│ Test Directory:     /home/spack/runs                                                                                  │                                                                                                               
+│ Report File:        /home/spack/buildtest/var/report.json                                                             │                                                                                                               
+│ Command:            /home/spack/buildtest/bin/buildtest build -b /home/spack/buildtest/examples/spack/clone_spack.yml │                                                                                                               
+│                                                                                                                       │                                                                                                               
+╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                                                               
+───────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────
+                 Discovered buildspecs                  
+╔══════════════════════════════════════════════════════╗
+║ buildspec                                            ║
+╟──────────────────────────────────────────────────────╢
+║ /home/spack/buildtest/examples/spack/clone_spack.yml ║
+╚══════════════════════════════════════════════════════╝
+
+
+Total Discovered Buildspecs:  1
+Total Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
+────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+Valid Buildspecs: 1
+Invalid Buildspecs: 0
+/home/spack/buildtest/examples/spack/clone_spack.yml: VALID
+Total builder objects created: 2
+                                                                                      Builders by type=spack                                                                                      
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ builder                               ┃ type  ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                             ┃ buildspecs                                           ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ clone_spack_automatically/32829f81    │ spack │ generic.local.bash │ None     │ None  │ None  │ Clone spack automatically               │ /home/spack/buildtest/examples/spack/clone_spack.yml │
+├───────────────────────────────────────┼───────┼────────────────────┼──────────┼───────┼───────┼─────────────────────────────────────────┼──────────────────────────────────────────────────────┤
+│ clone_spack_and_specify_root/7c8764bd │ spack │ generic.local.bash │ None     │ None  │ None  │ Clone spack explicitly and specify root │ /home/spack/buildtest/examples/spack/clone_spack.yml │
+└───────────────────────────────────────┴───────┴────────────────────┴──────────┴───────┴───────┴─────────────────────────────────────────┴──────────────────────────────────────────────────────┘
+──────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+clone_spack_automatically/32829f81: Creating test directory: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/32829f81
+clone_spack_automatically/32829f81: Creating the stage directory: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/32829f81/stage
+clone_spack_automatically/32829f81: Writing build script: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/32829f81/clone_spack_automatically_build.sh
+clone_spack_and_specify_root/7c8764bd: Creating test directory: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/7c8764bd
+clone_spack_and_specify_root/7c8764bd: Creating the stage directory: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/7c8764bd/stage
+clone_spack_and_specify_root/7c8764bd: Writing build script: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/7c8764bd/clone_spack_and_specify_root_build.sh
+──────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Spawning 4 processes for processing builders
+───────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+clone_spack_and_specify_root/7c8764bd does not have any dependencies adding test to queue
+clone_spack_automatically/32829f81 does not have any dependencies adding test to queue
+clone_spack_and_specify_root/7c8764bd: Current Working Directory : /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/7c8764bd/stage
+clone_spack_automatically/32829f81: Current Working Directory : /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/32829f81/stage
+clone_spack_and_specify_root/7c8764bd: Running Test via command: bash --norc --noprofile -eo pipefail clone_spack_and_specify_root_build.sh
+clone_spack_automatically/32829f81: Running Test via command: bash --norc --noprofile -eo pipefail clone_spack_automatically_build.sh
+clone_spack_and_specify_root/7c8764bd: Test completed in 3.636492 seconds
+clone_spack_and_specify_root/7c8764bd: Test completed with returncode: 0
+clone_spack_and_specify_root/7c8764bd: Writing output file -  /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/7c8764bd/clone_spack_and_specify_root.out
+clone_spack_and_specify_root/7c8764bd: Writing error file - /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/7c8764bd/clone_spack_and_specify_root.err
+clone_spack_automatically/32829f81: Test completed in 32.998718 seconds
+clone_spack_automatically/32829f81: Test completed with returncode: 0
+clone_spack_automatically/32829f81: Writing output file -  /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/32829f81/clone_spack_automatically.out
+clone_spack_automatically/32829f81: Writing error file - /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/32829f81/clone_spack_automatically.err
+In this iteration we are going to run the following tests: [clone_spack_and_specify_root/7c8764bd, clone_spack_automatically/32829f81]
+                                                             Test Summary                                                             
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┓
+┃ builder                               ┃ executor           ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime   ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━┩
+│ clone_spack_automatically/32829f81    │ generic.local.bash │ PASS   │ None None None                      │ 0          │ 32.998718 │
+├───────────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼───────────┤
+│ clone_spack_and_specify_root/7c8764bd │ generic.local.bash │ PASS   │ None None None                      │ 0          │ 3.636492  │
+└───────────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴───────────┘
+
+
+
+Passed Tests: 2/2 Percentage: 100.000%
+Failed Tests: 0/2 Percentage: 0.000%
+
+
+Adding 2 test results to /home/spack/buildtest/var/report.json
+Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_vfshvbrm.log
