@@ -10,6 +10,7 @@ Talks
     :header: "Conference", "Talk", "Date", "Link"
     :widths:  40, 50, 20, 20
 
+    "`PEARC23 <https://pearc.acm.org/pearc23/>`_", "**Testing your HPC System with Buildtest**", "July 24th, 2023", "`PDF <https://drive.google.com/file/d/1SNI0JwCXjODSCVfGjKHX8Y_L5esCpiDq/view?usp=sharing>`__, `PPTX <https://docs.google.com/presentation/d/1x7ph7MmmwhE1JVthxdlei5DE0Nz-iMqI/edit?usp=sharing&ouid=102126664227037583807&rtpof=true&sd=true>`__"
     "`Improving Scientific Software 2023  <https://sea.ucar.edu/conference/2023>`_", "**Buildtest: A Framework for testing HPC systems**", "Apr 17, 2023", "`PDF <https://drive.google.com/file/d/19UUHtwYVuLrXumR4mn7DI2UvAWNsVRBt/view?usp=share_link>`__, `VIDEO <https://youtu.be/ur4I6kip-nY>`__"
     "ECP Project Tutorial", "**Automated Acceptance Testing in HPC with buildtest**", "Feb 7th, 2023", "`PPTX <https://docs.google.com/presentation/d/1zKm-AMLciBwCJOmZdNaCfqP36BAkl2OL/edit?rtpof=true>`_, `PDF <https://drive.google.com/file/d/1CnPH3Ct_YF8H7bLHx0X84TMf3mu_HKBz/view?usp=share_link>`_, `VIDEO <https://youtu.be/YxOm6aiDy3E>`_"
     "HPCSYSPRO_ workshop at SC22_", "`An Automated Approach to Continuous Acceptance Testing of HPC Systems at NERSC <https://sc22.supercomputing.org/session/?sess=sess463>`__", "Nov 14, 2022", "`PDF <https://drive.google.com/file/d/1BLJ0pfMBc3ZTitVIA6VGRDAZdI4gBBul/view?usp=share_link>`__, `PPTX <https://docs.google.com/presentation/d/12hwHxONA_CEBiX3JB3jkqarkVpZnkZTOWsnmhNmGgog/edit?usp=share_link>`__"
