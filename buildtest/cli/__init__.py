@@ -400,9 +400,9 @@ def misc_menu(subparsers):
         help="Show help message for command",
     )
 
-    commands_subparser = subparsers.add_parser("commands",
-                                               help="Display buildtest commands",
-                                               aliases=["cmd"])
+    subparsers.add_parser("commands",
+                          help="Display buildtest commands",
+                               aliases=["cmd"])
 
 
 

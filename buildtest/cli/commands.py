@@ -1,4 +1,4 @@
-def commands_cmd():
+def list_buildtest_commands():
     """This method implements command ``buildtest commands`` which shows a list
     of buildtest commands"""
 
