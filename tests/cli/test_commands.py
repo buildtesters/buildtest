@@ -1,4 +1,3 @@
-import pytest
 from buildtest.cli.commands import list_buildtest_commands
 
 
