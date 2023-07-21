@@ -360,7 +360,7 @@ Let's build the following test
 
 .. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/spack/spack_clone.yml``
 
-    .. program-output:: cat buildtest_tutorial_examples/spack/build/spack_clone.txt
+    .. program-output:: cat buildtest_tutorial_examples/spack/build/clone_spack.txt
 
 Let's check the generated output, take note in the output the full path to where ``spack`` binary is present in each test. You must
 clone spack in ``pre_cmds`` in second test in order for buildtest to find the spack binary since you need to specify this the ``root`` property in-order
@@ -368,4 +368,4 @@ for buildtest to install spack in the environment.
 
 .. dropdown:: ``buildtest inspect query --testpath clone_spack_automatically clone_spack_and_specify_root``
 
-    .. program-output:: cat buildtest_tutorial_examples/spack/inspect/spack_clone.txt
+    .. program-output:: cat buildtest_tutorial_examples/spack/inspect/clone_spack.txt
