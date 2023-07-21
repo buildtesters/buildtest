@@ -144,8 +144,8 @@ In this exercise, you will submit a batch job that will run ``hostname`` in the 
    :language: yaml
    :emphasize-lines: 5,7,8
 
-Take note that the test will run on executor `perlmutter.slurm.debug` which corresponds to ``debug`` queue on Perlmutter. The ``sbatch`` options
-specify the :ref:`batch directives <batch_support>`_ for running the job.
+Take note that the test will run on executor ``perlmutter.slurm.debug`` which corresponds to the slurm ``debug`` queue on Perlmutter. The ``sbatch`` options
+specify the :ref:`batch directives <batch_support>` for running the job.
 
 In this exercise you are requested to do the following:
 
@@ -156,7 +156,7 @@ In this exercise you are requested to do the following:
     - Update the test to make use of :ref:`Multiple Executors <multiple_executors>` and run test on both **regular** and **debug** queue and rerun the test.
     - Rerun same test and you should see two test runs for **hostname_perlmutter** one for each executor.
 
-    If you have done completed this exercise, you should expect the following output from ``buildtest build``.
+    If you have completed this exercise, you should expect the following output from ``buildtest build``.
 
     .. code-block:: console
 
