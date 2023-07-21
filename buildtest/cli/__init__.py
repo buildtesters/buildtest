@@ -15,7 +15,7 @@ from buildtest.schemas.defaults import schema_table
 
 # Variables needed to show all sub commands and their help mesaage
 help1 = "-H" in sys.argv
-help2 = "--help--all" in sys.argv
+help2 = "--help-all" in sys.argv
 show_all_help = help1 or help2
 
 
@@ -267,7 +267,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     )
     parser.add_argument("-r", "--report", help="Specify path to test report file")
     parser.add_argument(
-        "-H", "--help--all", help="Show help for all commands", action="help"
+        "-H", "--help-all", help="Show help for all commands", action="help"
     )
 
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
