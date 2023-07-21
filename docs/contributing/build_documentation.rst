@@ -27,7 +27,11 @@ If your environment setup, then you can skip this step.
 
 To install python dependencies for documentation build, you can run the following::
 
-  pip install -r docs/requirements.txt
+    # install from requirements file
+    pip install -r docs/requirements.txt
+
+    # install from pyproject.toml
+    pip install '.[docs]'
 
 Building docs locally
 -----------------------
