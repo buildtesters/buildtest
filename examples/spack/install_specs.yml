@@ -8,12 +8,3 @@ buildspecs:
       root: $HOME/spack
       install:
         specs: ['zlib']
-
-  clone_spack_and_install_zlib:
-    type: spack
-    executor: generic.local.bash
-    description: "Clone spack and install zlib spec"
-    tags: [spack]
-    spack:
-      install:
-        specs: ['zlib']
