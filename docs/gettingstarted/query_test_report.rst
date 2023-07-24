@@ -56,13 +56,22 @@ Shown below is an example output.
 
     .. command-output:: buildtest report --detailed
 
-Note that ``--detailed`` and ``--format`` options can't be used together in ``buildtest report`` command they are
-mutually exclusive options that affect format fields.
+Notes
+*******
 
-dropdown:: ``buildtest report --detailed --format name``
+.. note::
+The detailed and --format options are mutually exclusive options because both options will alter the format fields when displaying test results.
+Later in text after the note state the following.
+
+.. code-block:: RST
+
+ .. note::
+You will get the following error if you specify both options as shown below
+
+dropdown::``buildtest report --detailed --format name``
 
     .. command-output:: buildtest report --detailed --format name
-        :returncode: 1
+       :returncode: 1
 
 Format Reports (``buildtest report --format``)
 -----------------------------------------------
