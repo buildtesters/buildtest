@@ -14,9 +14,7 @@ from buildtest.defaults import console
 from buildtest.schemas.defaults import schema_table
 
 # Variables needed to show all sub commands and their help mesaage
-help1 = "-H" in sys.argv
-help2 = "--help-all" in sys.argv
-show_all_help = help1 or help2
+show_all_help = "-H" in sys.argv or "--help-all" in sys.argv
 
 
 def build_filters_format(val):
@@ -267,7 +265,7 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     )
     parser.add_argument("-r", "--report", help="Specify path to test report file")
     parser.add_argument(
-        "-H", "--help-all", help="Show help for all commands", action="help"
+        "-H", "--help-all", help="List all commands and options", action="help"
     )
 
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
@@ -347,6 +345,18 @@ def misc_menu(subparsers):
         subparsers (argparse._SubParsersAction): Subparser object to add subparser
     """
 
+    # Subcommands that do not need to be shown in --help
+    hidden_parser = {
+        "docs": "Open buildtest docs in browser",
+        "schemadocs": "Open buildtest schema docs in browser",
+    }
+
+    if show_all_help:
+        add_hidden_parser(subparsers, hidden_parser)
+
+    subparsers.add_parser("docs")
+    subparsers.add_parser("schemadocs")
+
     cd_parser = subparsers.add_parser(
         "cd", help="change directory to root of test given a test name"
     )
@@ -361,16 +371,6 @@ def misc_menu(subparsers):
     clean.add_argument(
         "-y", "--yes", action="store_true", help="Confirm yes for all prompts"
     )
-
-    # Subcommands that do not need to be shown in --help
-    if show_all_help:
-        subparsers.add_parser(
-            "schemadocs", help="Open buildtest schema docs in browser"
-        )
-        subparsers.add_parser("docs", help="Open buildtest docs in browser")
-    else:
-        subparsers.add_parser("schemadocs")
-        subparsers.add_parser("docs")
 
     subparsers.add_parser(
         "debugreport",
@@ -423,12 +423,14 @@ def stylecheck_menu(subparsers):
     """
 
     # Subcommands that do not need to be shown in --help
+    h_stylecheck = {
+        "command": "stylecheck",
+        "help_msg": "Run buildtest style checks",
+        "aliases": ["style"],
+    }
     if show_all_help:
-        stylecheck_parser = subparsers.add_parser(
-            "stylecheck", aliases=["style"], help="Run buildtest style checks"
-        )
-    else:
-        stylecheck_parser = subparsers.add_parser("stylecheck", aliases=["style"])
+        add_hidden_parser(subparsers, h_stylecheck)
+    stylecheck_parser = subparsers.add_parser("stylecheck", aliases=["style"])
 
     stylecheck_parser.add_argument(
         "--no-black", action="store_true", help="Don't run black style check"
@@ -452,12 +454,15 @@ def unittest_menu(subparsers):
     """
 
     # Subcommands that do not need to be shown in --help
+    h_unittests = {
+        "command": "unittests",
+        "help_msg": "Run buildtest unit tests",
+        "aliases": ["test"],
+    }
     if show_all_help:
-        unittests_parser = subparsers.add_parser(
-            "unittests", help="Run buildtest unit tests", aliases=["test"]
-        )
-    else:
-        unittests_parser = subparsers.add_parser("unittests", aliases=["test"])
+        add_hidden_parser(subparsers, h_unittests)
+
+    unittests_parser = subparsers.add_parser("unittests", aliases=["test"])
 
     unittests_parser.add_argument(
         "-c",
@@ -485,13 +490,14 @@ def tutorial_examples_menu(subparsers):
     """
 
     # Subcommands that do not need to be shown in --help
+    hidden_parser = {
+        "tutorial-examples": "Generate documentation examples for Buildtest Tutorial"
+    }
+
     if show_all_help:
-        subparsers.add_parser(
-            "tutorial-examples",
-            help="Generate documentation examples for Buildtest Tutorial",
-        )
-    else:
-        subparsers.add_parser("tutorial-examples")
+        add_hidden_parser(subparsers, hidden_parser)
+
+    subparsers.add_parser("tutorial-examples")
 
 
 def path_menu(subparsers):
@@ -1325,3 +1331,24 @@ def cdash_menu(subparsers):
     upload.add_argument(
         "-o", "--open", action="store_true", help="Open CDASH report in browser"
     )
+
+
+def add_hidden_parser(subparser, hidden_parser):
+    """This method adds a help message to certain parsers
+
+    Args:
+        subparsers (argparse._SubParsersAction): Subparser object
+        hidden_parser: dictionary
+    """
+    if "command" not in hidden_parser.keys():
+        for command, help_msg in hidden_parser.items():
+            subparser.add_parser(command, help=help_msg)
+        return
+
+    command = hidden_parser.get("command")
+    help_msg = hidden_parser.get("help_msg")
+    als = hidden_parser.get("aliases")
+
+    if type(hidden_parser.get("aliases")) is list:
+        subparser.add_parser(command, help=help_msg, aliases=als)
+        return
