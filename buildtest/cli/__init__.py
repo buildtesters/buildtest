@@ -1123,12 +1123,6 @@ def report_menu(subparsers, parent_parser):
     )
 
     format_group = parser_report.add_argument_group("format", "Format options")
-    format_detailed_group = parser_report.add_mutually_exclusive_group()
-
-    format_detailed_group.add_argument(
-        "--format",
-        help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
-    )
 
     format_group.add_argument(
         "--helpformat", action="store_true", help="List of available format fields"
@@ -1138,6 +1132,12 @@ def report_menu(subparsers, parent_parser):
         "--formatfields",
         action="store_true",
         help="Print raw format fields for --format option to format the report",
+    )
+
+    format_detailed_group = parser_report.add_mutually_exclusive_group()
+    format_detailed_group.add_argument(
+        "--format",
+        help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
     )
 
     format_detailed_group.add_argument(
