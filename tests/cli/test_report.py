@@ -331,6 +331,7 @@ def test_report_limited_rows():
     report.print_report(terse=True, count=0)
     report.print_report(terse=True, count=-1)
 
+
 @pytest.mark.cli
 def test_report_path():
     class args:
