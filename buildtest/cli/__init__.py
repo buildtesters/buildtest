@@ -708,6 +708,9 @@ def build_menu(subparsers):
     extra_group.add_argument(
         "--profile", help="Specify a profile to load from configuration file"
     )
+    extra_group.add_argument(
+        "--write-config-file", help="Save config file in a new location"
+    )
 
 
 def buildspec_menu(subparsers, parent_parser):

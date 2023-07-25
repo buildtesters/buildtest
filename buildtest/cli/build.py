@@ -511,6 +511,7 @@ class BuildTest:
         limit=None,
         save_profile=None,
         profile=None,
+        save_config=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -546,6 +547,7 @@ class BuildTest:
             limit (int, optional): Limit number of tests that can be run. This option is specified by ``buildtest build --limit``
             save_profile (str, optional): Save profile to buildtest configuration specified by ``buildtest build --save-profile``
             profile (str, optional): Profile to load from buildtest configuration specified by ``buildtest build --profile``
+            save_config(str,optional): Save the configuration in ann alternate location specified by ``buildtest build --write-config-file``
         """
 
         # check for input arguments that are expected to be a list
@@ -554,11 +556,11 @@ class BuildTest:
                 raise BuildTestError(f"{arg_name} is not of type list")
 
         # check for input arguments that are expected to be a string
-        for arg_name in [testdir, stage, save_profile, profile]:
+        for arg_name in [testdir, stage, save_profile, profile, save_config]:
             if arg_name and not isinstance(arg_name, str):
                 raise BuildTestError(f"{arg_name} is not of type str")
 
-        # if --rebuild is specified check if its an integer and within 50 rebuild limit
+        # if --rebuild is specified check if it's an integer and within 50 rebuild limit
         if rebuild:
             if not isinstance(rebuild, int):
                 raise BuildTestError(f"{rebuild} is not of type int")
@@ -601,6 +603,7 @@ class BuildTest:
         self.limit = limit
         self.save_profile = save_profile
         self.profile = profile
+        self.save_config = save_config
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
@@ -671,6 +674,10 @@ class BuildTest:
         # if --profile is invoked then we load profile from configuration file
         if self.profile:
             self.load_profile()
+
+        # if --write-config-file is invoked then a configuration file location is set
+        if self.save_config:
+            self.
 
         self.buildexecutor = BuildExecutor(
             self.configuration,
