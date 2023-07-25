@@ -1,3 +1,4 @@
+import argparse
 import datetime
 import logging
 import os
@@ -109,7 +110,7 @@ class Report:
             oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
             count (int, optional): Fetch limited number of rows get printed for all tests discovered. This is specified via ``buildtest report --count``
             pager (bool, optional): Enabling PAGING output for ``buildtest report``. This can be specified via ``buildtest report --pager``
-            format_detailed(bool,optional): Print a detailed summary of the test results. This can be specified via ``buildtest report --detailed``
+            format_detailed(bool, optional): Print a detailed summary of the test results. This can be specified via ``buildtest report --detailed``
             color (str, optional): An instance of a string class that tells print_report what color the output should be printed in.
 
         """
