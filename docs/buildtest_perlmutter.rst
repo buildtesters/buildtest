@@ -20,6 +20,8 @@ Next, you should :ref:`Install buildtest <installing_buildtest>` by cloning the 
 
     git clone https://github.com/buildtesters/buildtest.git $HOME/buildtest
 
+**Please make sure you create a python virtual environment before you proceed with the tutorial.**
+
 Once you have buildtest setup, please clone the following repository into your home directory as follows::
 
     git clone https://github.com/buildtesters/buildtest-nersc $HOME/buildtest-nersc
@@ -45,10 +47,11 @@ Exercise 1: Performing Status Check
 
 In this exercise, you will check the version of Lmod using the environment variable **LMOD_VERSION** and specify the
 the output using a :ref:`regular expression <regex>`. We will run the test with an invalid regular expression and see if test **FAIL** and
-rerun test until it **PASS**
+rerun test until it **PASS**. Shown below is the example buildspec and please fix the highlighting lines in the test
 
 .. literalinclude:: ../perlmutter_tutorial/ex1/module_version.yml
    :language: yaml
+   :emphasize-lines: 3-4
 
 .. todo::
 
@@ -81,7 +84,11 @@ Exercise 3: Query Test Report
 -------------------------------
 
 In this exercise you will learn how to :ref:`query test report <test_reports>`. This can be done by
-running ``buildtest report``. In this task please do the following
+running ``buildtest report``.
+
+Before you start, please run the following command::
+
+    buildtest bd -b $HOME/buildtest-nersc/buildspecs/apps/spack/
 
 .. todo::
 
@@ -124,24 +131,32 @@ test will pass based on the performance results. Shown below is the stream test 
 
     - Run the stream test by running ``buildtest build -b $BUILDTEST_ROOT/perlmutter_tutorial/ex4/stream.yml``
     - Check the output of metrics ``copy`` and ``scale`` by running **buildtest inspect query -o stream_test**
-    - Use the :ref:`assert_ge` check with metric ``copy`` and ``scale``. Specify a reference value (pick some high number) for metric **copy** and **scale*** that will cause test to **FAIL**.
-    - Run the same test and make sure test will **FAIL**.
-    - Next try different reference values and rerun test to make sure test will **PASS**.
+    - Use the :ref:`assert_ge` check with metric ``copy`` and ``scale``. Specify a reference value `50000` for metric **copy** and **scale***
+    - Run the same test and examine output
+    - Next try different reference value such as ``5000`` and rerun test and see output
 
 Exercise 5: Running a Batch Job
 --------------------------------
 
-In this exercise, you will submit a batch job that will run `hostname` in the slurm cluster. Shown below is the example buildspec
+In this exercise, you will submit a batch job that will run ``hostname`` in the slurm cluster. Shown below is the example buildspec
 
 .. literalinclude:: ../perlmutter_tutorial/ex5/hostname.yml
    :language: yaml
+   :emphasize-lines: 5,7,8
+
+Take note that the test will run on executor ``perlmutter.slurm.debug`` which corresponds to the slurm ``debug`` queue on Perlmutter. The ``sbatch`` options
+specify the :ref:`batch directives <batch_support>` for running the job.
+
+In this exercise you are requested to do the following:
 
 .. todo::
 
-    - Run the test with poll interval for 10 sec for file ``$BUILDTEST_ROOT/perlmutter_tutorial/ex5/hostname.yml`` and take note of output, you should see job is submitted to batch scheduler
+    - Run the test with poll interval for 10 sec ``$BUILDTEST_ROOT/perlmutter_tutorial/ex5/hostname.yml`` and take note of output, you should see job is submitted to batch scheduler. Refer to ``buildtest build --help`` for list of complete options
     - Check the output of test via ``buildtest inspect query``
     - Update the test to make use of :ref:`Multiple Executors <multiple_executors>` and run test on both **regular** and **debug** queue and rerun the test.
     - Rerun same test and you should see two test runs for **hostname_perlmutter** one for each executor.
+
+    If you have completed this exercise, you should expect the following output from ``buildtest build``.
 
     .. code-block:: console
 

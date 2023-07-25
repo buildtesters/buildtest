@@ -4,7 +4,6 @@ import logging
 import os
 
 from buildtest.defaults import console
-from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.scheduler.pbs import PBSJob
 
@@ -71,12 +70,11 @@ class PBSExecutor(BaseExecutor):
 
         timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
 
-        try:
-            command = builder.run(cmd, timeout=timeout)
-        except RuntimeFailure as err:
+        command = builder.run(cmd, timeout=timeout)
+
+        if command.returncode() != 0:
             builder.failed()
-            self.logger.error(err)
-            return
+            return builder
 
         out = command.get_output()
         JobID = " ".join(out).strip()

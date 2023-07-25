@@ -88,6 +88,7 @@ omit = [
     'buildtest/cli/cd.py',
     'buildtest/tools/docs.py',
     'buildtest/tools/unittests.py',
+    'buildtest/tools/tutorialexamples.py',
 ]
 
 [tool.coverage.report]
@@ -112,6 +113,7 @@ exclude_lines = [
     # buildtest methods that should not be coverred by regression tests
     'buildspec_find',
     'config_cmd',
+    'report_cmd',
     'build_history',
 ]
 ignore_errors = true

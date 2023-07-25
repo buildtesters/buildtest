@@ -78,7 +78,8 @@ def build_spack_examples(autogen_dir):
         f"{build_dir}/spack_test_specs.txt": f"buildtest build -b {SPACK_EXAMPLE_DIR}/spack_test_specs.yml",
         f"{build_dir}/spack_sbatch.txt": f"buildtest build -b {SPACK_EXAMPLE_DIR}/spack_sbatch.yml",
         f"{build_dir}/e4s_testsuite_mpich.txt": f"buildtest build -b {SPACK_EXAMPLE_DIR}/e4s_testsuite_mpich.yml",
-        f"{inspect_dir}/install_specs.txt": "buildtest inspect query -o --testpath install_specs_example clone_spack_and_install_zlib",
+        f"{build_dir}/clone_spack.txt": f"buildtest build -b {SPACK_EXAMPLE_DIR}/clone_spack.yml",
+        f"{inspect_dir}/install_specs.txt": "buildtest inspect query -o --testpath install_specs_example",
         f"{inspect_dir}/env_install.txt": "buildtest inspect query --testpath install_in_spack_env",
         f"{inspect_dir}/env_create_directory.txt": "buildtest inspect query -o --testpath spack_env_directory",
         f"{inspect_dir}/env_create_manifest.txt": "buildtest inspect query -o --testpath spack_env_create_from_manifest",
@@ -88,6 +89,7 @@ def build_spack_examples(autogen_dir):
         f"{inspect_dir}/spack_test.txt": "buildtest inspect query -o --testpath spack_test_m4",
         f"{inspect_dir}/spack_test_specs.txt": "buildtest inspect query -o --testpath spack_test_results_specs_format",
         f"{inspect_dir}/spack_sbatch.txt": "buildtest inspect query --testpath spack_sbatch_example",
+        f"{inspect_dir}/clone_spack.txt": "buildtest inspect query -o --testpath clone_spack_automatically clone_spack_and_specify_root",
         f"{inspect_dir}/e4s_testsuite_mpich.txt": "buildtest inspect query -o -e --testpath mpich_e4s_testsuite",
     }
 
