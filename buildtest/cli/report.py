@@ -129,6 +129,12 @@ class Report:
         self.color = color
         self.input_report = report_file
 
+        try:
+            report=Report(configuration=configuration, format_detailed=True, format_args="name,id,user")
+        except argparse.ArgumentError:
+            console.print_exception()
+            return True
+
         if format_detailed:
             self.format = (
                 "name,id,user,state,returncode,runtime,outfile,errfile,buildspec"
