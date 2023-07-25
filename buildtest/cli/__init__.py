@@ -426,7 +426,7 @@ def stylecheck_menu(subparsers):
     h_stylecheck = {
         "command": "stylecheck",
         "help_msg": "Run buildtest style checks",
-        "aliases": ["style"],
+        "aliases": ["style"]
     }
     if show_all_help:
         add_hidden_parser(subparsers, h_stylecheck)
