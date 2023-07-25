@@ -23,7 +23,7 @@ def config_cmd(args, configuration, editor, system):
     if args.config in ["view", "v"]:
         view_configuration(configuration, theme=args.theme, pager=args.pager)
 
-    if args.config in ["profile"]:
+    elif args.config in ["profile"]:
         view_profile(configuration, theme=args.theme, pager=args.pager)
 
     elif args.config in ["executors", "ex"]:

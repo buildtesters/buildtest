@@ -399,19 +399,23 @@ def misc_menu(subparsers):
         help="Show help message for command",
     )
 def profile_menu(subparsers):
-    profile_parser = subparsers.add_parser(
-        "help",
-        config=["-h"],
+
+    config_profiles = subparsers_buildpsec.add_parser(
+        parents=[parent_parser["theme"]],
+    )
+    parent_parser["theme"] = argparse.ArgumentParser(add_help=False)
+    parent_parser["theme"].add_argument(
+        "-t",
         compliers="buildtest config profile",
+        config=["-h"],
+        "help",
+        "--theme",
+        metavar="Color Themes",
+        help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themese",
+        choices=list(STYLE_MAP.keys()),
     )
-    profile_parser.add_arguments(
-        "command",
-        choices=[
-            "profile",
-            "view",
-            "-v"
-        ],
-    )
+    return parent_parser
+
 
 def stylecheck_menu(subparsers):
     """This method will create command options for ``buildtest stylecheck``
