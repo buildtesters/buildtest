@@ -456,9 +456,9 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       ;;
     *)
-      local cmds="build buildspec cd cdash clean config debugreport docs help info inspect history path report schema schemadocs stats stylecheck tutorial-examples unittests commands"
-      local alias_cmds="bd bc cg debug it h hy rt style test cmd"
-      local opts="--color --config --debug --editor --help --helpcolor --logpath --loglevel --print-log --no-color --report --version --view-log -c -d -h -l -p -r -V"
+      local cmds="build buildspec cd cdash clean commands config debugreport docs help history info inspect path report schema schemadocs stats stylecheck tutorial-examples unittests"
+      local alias_cmds="bd bc cg cmd debug h hy it rt style test"
+      local opts="--color --config --debug --editor --help --helpcolor --loglevel --logpath --no-color --print-log --report --version --view-log -c -d -h -l -p -r -v"
 
       case "${cur}" in
       # print main options to buildtest
