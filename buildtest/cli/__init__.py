@@ -471,6 +471,7 @@ def tutorial_examples_menu(subparsers):
 
     subparsers.add_parser("tutorial-examples")
 
+
 def path_menu(subparsers):
     """This method builds the command line menu for ``buildtest path`` command
 
@@ -1314,7 +1315,7 @@ def help_all(subparser):
     hidden_parser = {
         "tutorial-examples": "Generate documentation examples for Buildtest Tutorial",
         "docs": "Open buildtest docs in browser",
-        "schemadocs": "Open buildtest schema docs in browser"
+        "schemadocs": "Open buildtest schema docs in browser",
     }
     for command, help_msg in hidden_parser.items():
         subparser.add_parser(command, help=help_msg)
@@ -1328,7 +1329,7 @@ def help_all(subparser):
     h_stylecheck = {
         "command": "stylecheck",
         "help_msg": "Run buildtest style checks",
-        "aliases": ["style"]
+        "aliases": ["style"],
     }
     add_hidden_parser(subparser, h_unittests)
     add_hidden_parser(subparser, h_stylecheck)
