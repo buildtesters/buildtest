@@ -1,8 +1,7 @@
-def list_buildtest_commands():
-    """This method implements command ``buildtest commands`` which shows a list
-    of buildtest commands"""
+def list_buildtest_commands(): """This method implements command ``buildtest commands`` which shows a list of buildtest commands"""
 
-    cmds_list = [
+
+cmds_list = [
         "build",
         "buildspec",
         "cd",
@@ -25,5 +24,5 @@ def list_buildtest_commands():
         "unittests"
     ]
 
-    for field in cmds_list:
-        print(field)
+for field in cmds_list:
+    print(field)
