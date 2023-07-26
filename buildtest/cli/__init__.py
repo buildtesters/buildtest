@@ -320,6 +320,9 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         )
         return parent_parser
 
+    # Displays all hidden comands
+    if show_all_help:
+        help_all(subparsers)
     parent_parser = get_parent_parser()
     build_menu(subparsers)
     buildspec_menu(subparsers, parent_parser)
@@ -346,14 +349,6 @@ def misc_menu(subparsers):
     """
 
     # Subcommands that do not need to be shown in --help
-    hidden_parser = {
-        "docs": "Open buildtest docs in browser",
-        "schemadocs": "Open buildtest schema docs in browser",
-    }
-
-    if show_all_help:
-        add_hidden_parser(subparsers, hidden_parser)
-
     subparsers.add_parser("docs")
     subparsers.add_parser("schemadocs")
 
@@ -423,13 +418,6 @@ def stylecheck_menu(subparsers):
     """
 
     # Subcommands that do not need to be shown in --help
-    h_stylecheck = {
-        "command": "stylecheck",
-        "help_msg": "Run buildtest style checks",
-        "aliases": ["style"]
-    }
-    if show_all_help:
-        add_hidden_parser(subparsers, h_stylecheck)
     stylecheck_parser = subparsers.add_parser("stylecheck", aliases=["style"])
 
     stylecheck_parser.add_argument(
@@ -454,14 +442,6 @@ def unittest_menu(subparsers):
     """
 
     # Subcommands that do not need to be shown in --help
-    h_unittests = {
-        "command": "unittests",
-        "help_msg": "Run buildtest unit tests",
-        "aliases": ["test"],
-    }
-    if show_all_help:
-        add_hidden_parser(subparsers, h_unittests)
-
     unittests_parser = subparsers.add_parser("unittests", aliases=["test"])
 
     unittests_parser.add_argument(
@@ -489,16 +469,7 @@ def tutorial_examples_menu(subparsers):
         subparsers (argparse._SubParsersAction): Subparser object to add subparser
     """
 
-    # Subcommands that do not need to be shown in --help
-    hidden_parser = {
-        "tutorial-examples": "Generate documentation examples for Buildtest Tutorial"
-    }
-
-    if show_all_help:
-        add_hidden_parser(subparsers, hidden_parser)
-
     subparsers.add_parser("tutorial-examples")
-
 
 def path_menu(subparsers):
     """This method builds the command line menu for ``buildtest path`` command
@@ -1333,22 +1304,40 @@ def cdash_menu(subparsers):
     )
 
 
-def add_hidden_parser(subparser, hidden_parser):
-    """This method adds a help message to certain parsers
+def help_all(subparser):
+    """This method will add parser for hidden command that can be shown when using --help-all/-H
 
     Args:
         subparsers (argparse._SubParsersAction): Subparser object
-        hidden_parser: dictionary
     """
-    if "command" not in hidden_parser.keys():
-        for command, help_msg in hidden_parser.items():
-            subparser.add_parser(command, help=help_msg)
-        return
+    # Logic to create help message for parsers without aliases
+    hidden_parser = {
+        "tutorial-examples": "Generate documentation examples for Buildtest Tutorial",
+        "docs": "Open buildtest docs in browser",
+        "schemadocs": "Open buildtest schema docs in browser"
+    }
+    for command, help_msg in hidden_parser.items():
+        subparser.add_parser(command, help=help_msg)
 
-    command = hidden_parser.get("command")
-    help_msg = hidden_parser.get("help_msg")
-    als = hidden_parser.get("aliases")
+    # Logic to create help message for parsers with aliases
+    h_unittests = {
+        "command": "unittests",
+        "help_msg": "Run buildtest unit tests",
+        "aliases": ["test"],
+    }
+    h_stylecheck = {
+        "command": "stylecheck",
+        "help_msg": "Run buildtest style checks",
+        "aliases": ["style"]
+    }
+    add_hidden_parser(subparser, h_unittests)
+    add_hidden_parser(subparser, h_stylecheck)
 
-    if type(hidden_parser.get("aliases")) is list:
-        subparser.add_parser(command, help=help_msg, aliases=als)
-        return
+
+def add_hidden_parser(subparser, h_parser):
+    # Creates help message for parsers with aliases
+    command = h_parser.get("command")
+    help_msg = h_parser.get("help_msg")
+    als = h_parser.get("aliases")
+
+    subparser.add_parser(command, help=help_msg, aliases=als)
