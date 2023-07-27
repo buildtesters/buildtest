@@ -994,7 +994,9 @@ def config_menu(subparsers, parent_parser):
     compilers = subparsers_config.add_parser(
         "compilers", aliases=["co"], help="Search compilers"
     )
-
+    profile = subparsers_config.add_parser(
+        "profile", aliases=["profile"], help="Search profile"
+    )
     subparsers_config.add_parser(
         "edit", aliases=["e"], help="Open configuration file in editor"
     )
