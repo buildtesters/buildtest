@@ -320,9 +320,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         )
         return parent_parser
 
-    # Displays all hidden comands
-    if show_all_help:
-        help_all(subparsers)
     parent_parser = get_parent_parser()
     build_menu(subparsers)
     buildspec_menu(subparsers, parent_parser)
@@ -338,6 +335,10 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     misc_menu(subparsers)
     tutorial_examples_menu(subparsers)
 
+    # Displays all hidden comands
+    if show_all_help:
+        help_all(subparsers)
+
     return parser
 
 
@@ -348,7 +349,7 @@ def misc_menu(subparsers):
         subparsers (argparse._SubParsersAction): Subparser object to add subparser
     """
 
-    # Subcommands that do not need to be shown in --help
+    # Subcommands that do not need to be shown in ``--help``
     subparsers.add_parser("docs")
     subparsers.add_parser("schemadocs")
 
@@ -417,7 +418,7 @@ def stylecheck_menu(subparsers):
         subparsers (argparse._SubParsersAction): Subparser object to add subparser
     """
 
-    # Subcommands that do not need to be shown in --help
+    # Subcommands that do not need to be shown in ``--help``
     stylecheck_parser = subparsers.add_parser("stylecheck", aliases=["style"])
 
     stylecheck_parser.add_argument(
@@ -1306,7 +1307,7 @@ def cdash_menu(subparsers):
 
 
 def help_all(subparsers):
-    """This method will add parser for hidden command that can be shown when using --help-all/-H
+    """This method will add parser for hidden command that can be shown when using ``--help-all/-H``
 
     Args:
         subparsers (argparse._SubParsersAction): Subparser object
