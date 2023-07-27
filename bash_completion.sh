@@ -133,7 +133,7 @@ _buildtest ()
 
   COMPREPLY=()   # Array variable storing the possible completions.
 
-  declare -a buildtest_opts=("--color" "--config" "--debug" "--editor" "--help" "--helpcolor" "--logpath" "--loglevel" "--print-log" "--no-color" "--report" "--version" "--view-log" "-c" "-d" "-h" "-l" "-p" "-r" "-V")
+  declare -a buildtest_opts=("--color" "--config" "--debug" "--editor" "--help" "--helpcolor" "--help-all" "--logpath" "--loglevel" "--print-log" "--no-color" "--report" "--version" "--view-log" "-c" "-d" "-h" "-l" "-p" "-r" "-H" "-V")
 
   commands_with_input=( "--color" "--config" "-c" "--report" "-r" "--loglevel" "-l" "--editor" )   # Array variable storing commands which require an input argument from the user.
 
@@ -200,7 +200,7 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
       ;;
     path)
-      local opts="-b -be -e -h -o -s -t --buildscript --buildenv --errfile --help --outfile --stagedir --testpath"
+      local opts="-b -be -e -h -o -s -t --buildscript --buildenv --errfile --help  --outfile --stagedir --testpath"
       COMPREPLY=( $( compgen -W "$(_builder_names)" -- $cur ) )
       if [[ $cur == -* ]] ; then
         COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
@@ -458,7 +458,7 @@ _buildtest ()
     *)
       local cmds="build buildspec cd cdash clean config debugreport docs help info inspect history path report schema schemadocs stats stylecheck tutorial-examples unittests"
       local alias_cmds="bd bc cg debug it h hy rt style test"
-      local opts="--color --config --debug --editor --help --helpcolor --logpath --loglevel --print-log --no-color --report --version --view-log -c -d -h -l -p -r -V"
+      local opts="--color --config --debug --editor --help --helpcolor --help-all --logpath --loglevel --print-log --no-color --report --version --view-log -c -d -h -l -p -r -H -V"
 
       case "${cur}" in
       # print main options to buildtest
