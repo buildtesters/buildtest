@@ -8,7 +8,7 @@ from buildtest.cli.config import (
     view_executors,
     view_path,
     view_system,
-    view_profile,
+    list_profiles,
 )
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, SCHEMA_ROOT
@@ -68,7 +68,15 @@ def test_config_path():
 
 @pytest.mark.cli
 def test_config_profile():
-    view_profile(configuration)
+
+    # buildtest config profiles
+    list_profiles(configuration)
+
+    # buildtest config profiles --theme emacs --yaml
+    list_profiles(configuration, theme="emacs", print_yaml=True)
+
+    # buildtest config profiles --yaml
+    list_profiles(configuration, print_yaml=True)
 
 
 @pytest.mark.cli

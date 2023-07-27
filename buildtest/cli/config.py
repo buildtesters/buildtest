@@ -25,7 +25,8 @@ def config_cmd(args, configuration, editor, system):
         view_configuration(configuration, theme=args.theme, pager=args.pager)
 
     elif args.config in ["profile"]:
-        profile_cmd(configuration, args)
+        if args.profile == "list":
+            list_profiles(configuration, theme=args.theme, print_yaml=args.yaml)
 
     elif args.config in ["executors", "ex"]:
         buildexecutor = BuildExecutor(configuration)
@@ -156,27 +157,27 @@ def view_configuration(configuration, theme=None, pager=None):
     console.rule(configuration.file)
     console.print(syntax)
 
-def profile_cmd(configuration, args):
+def list_profiles(configuration, theme=None, print_yaml=None):
     """Display the list of profile for buildtest configuration file.This implements command ``buildtest config profiles list``
 
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
-        args (Namespace): An instance of Namespace class from argparse
+        theme (str, optional): Color theme to choose. This is the Pygments style (https://pygments.org/docs/styles/#getting-a-list-of-available-styles) which is specified by ``--theme`` option
+        print_yaml (bool, optional): Display profiles in yaml format. This is specified by ``--yaml`` option
     """
 
-    if args.profile in ["list"]:
-        if not configuration.target_config.get("profiles"):
-            sys.exit("No profiles found in configuration file")
+    if not configuration.target_config.get("profiles"):
+        sys.exit("No profiles found in configuration file")
 
-        if args.yaml:
-            profile_configuration = yaml.dump(configuration.target_config["profiles"], indent=2)
-            syntax = Syntax(profile_configuration, "yaml", theme=args.theme or "monokai")
-            console.print(syntax)
-            return
+    if print_yaml:
+        profile_configuration = yaml.dump(configuration.target_config["profiles"], indent=2)
+        syntax = Syntax(profile_configuration, "yaml", theme=theme or "monokai")
+        console.print(syntax)
+        return
 
-        # print profiles as raw text
-        for profile_name in configuration.target_config["profiles"].keys():
-            print(profile_name)
+    # print profiles as raw text
+    for profile_name in configuration.target_config["profiles"].keys():
+        print(profile_name)
 
 
 def view_executors(
