@@ -273,7 +273,7 @@ _buildtest ()
           esac
         ;;
         profile)
-          local opts="--help --pager --theme -h -t --yaml"
+          local opts="--help --theme --yaml -h -t -y"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
           case "${prev}" in --theme|-t)
