@@ -273,13 +273,18 @@ _buildtest ()
           esac
         ;;
         profile)
-          local opts="--help --theme --yaml -h -t -y"
+          local opts="--help -h list"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          if [[ "${prev}" == "list" ]]; then
+            local opts="--help  --theme --yaml -h -t -y"
+            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          fi
 
           case "${prev}" in --theme|-t)
-            COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
-            return
+              COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
+              return
           esac
+          ;;
       esac
       ;;
     inspect|it)
