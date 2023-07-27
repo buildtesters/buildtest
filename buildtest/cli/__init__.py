@@ -398,24 +398,6 @@ def misc_menu(subparsers):
         ],
         help="Show help message for command",
     )
-def profile_menu(subparsers):
-
-    config_profiles = subparsers_buildpsec.add_parser(
-        parents=[parent_parser["theme"]],
-    )
-    parent_parser["theme"] = argparse.ArgumentParser(add_help=False)
-    parent_parser["theme"].add_argument(
-        "-t",
-        compliers="buildtest config profile",
-        config=["-h"],
-        "help",
-        "--theme",
-        metavar="Color Themes",
-        help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themese",
-        choices=list(STYLE_MAP.keys()),
-    )
-    return parent_parser
-
 
 def stylecheck_menu(subparsers):
     """This method will create command options for ``buildtest stylecheck``
@@ -995,7 +977,7 @@ def config_menu(subparsers, parent_parser):
         "compilers", aliases=["co"], help="Search compilers"
     )
     profile = subparsers_config.add_parser(
-        "profile", aliases=["profile"], help="Search profile"
+        "profile", help="Search profile"
     )
     subparsers_config.add_parser(
         "edit", aliases=["e"], help="Open configuration file in editor"
@@ -1086,7 +1068,7 @@ def config_menu(subparsers, parent_parser):
 
     # buildtest config profile
     profile.add_argument(
-        "-y", "--yaml", "--theme","view", help="List Profile details in YAML Format"
+        "-y", "--yaml", help="List Profile details in YAML Format"
     )
 
 def report_menu(subparsers, parent_parser):

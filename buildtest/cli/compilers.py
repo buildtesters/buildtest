@@ -450,4 +450,3 @@ class BuildtestCompilers:
         for name in self._names:
             print(name)
 
-    def print_profile(self):
