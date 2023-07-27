@@ -122,8 +122,8 @@ class SpackBuilder(BuilderBase):
             else:
                 lines.append(f"spack install {opts}")
 
-        if spack_configuration.get("env"):
-            lines += self._spack_environment(spack_configuration["env"])
+        # if spack_configuration.get("env"):
+        #     lines += self._spack_environment(spack_configuration["env"])
 
         if spack_configuration.get("load"):
             opts = spack_configuration["load"].get("option") or ""
