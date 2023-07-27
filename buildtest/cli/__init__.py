@@ -1084,6 +1084,10 @@ def config_menu(subparsers, parent_parser):
         "compiler_names", nargs="*", help="Specify compiler name to test"
     )
 
+    # buildtest config profile
+    profile.add_argument(
+        "-y", "--yaml", "--theme","view", help="List Profile details in YAML Format"
+    )
 
 def report_menu(subparsers, parent_parser):
     """This method implements the ``buildtest report`` command options
