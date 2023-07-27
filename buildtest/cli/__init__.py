@@ -976,8 +976,10 @@ def config_menu(subparsers, parent_parser):
     compilers = subparsers_config.add_parser(
         "compilers", aliases=["co"], help="Search compilers"
     )
+    # buildtest config profile
     profile = subparsers_config.add_parser(
-        "profile", help="Search profile"
+        "profile", help="Query profile from buildtest configuration",
+        parents=[parent_parser["theme"]],
     )
     subparsers_config.add_parser(
         "edit", aliases=["e"], help="Open configuration file in editor"

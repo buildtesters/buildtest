@@ -341,12 +341,6 @@ class BuildtestCompilers:
 
         self._validate_modules(module_dict)
         self._update_compiler_section()
-    def profile(self,
-        configuration, settings_file=None, detailed=False, modulepath=None
-):
-
-        self.configuration = configuration
-        
 
     def _validate_modules(self, module_dict):
         """This method will validate modules by running ``module load`` test for all
@@ -449,4 +443,3 @@ class BuildtestCompilers:
         """
         for name in self._names:
             print(name)
-
