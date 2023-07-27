@@ -1305,40 +1305,24 @@ def cdash_menu(subparsers):
     )
 
 
-def help_all(subparser):
+def help_all(subparsers):
     """This method will add parser for hidden command that can be shown when using --help-all/-H
 
     Args:
         subparsers (argparse._SubParsersAction): Subparser object
     """
-    # Logic to create help message for parsers without aliases
     hidden_parser = {
         "tutorial-examples": "Generate documentation examples for Buildtest Tutorial",
         "docs": "Open buildtest docs in browser",
         "schemadocs": "Open buildtest schema docs in browser",
+        "unittests": {"help": "Run buildtest unit tests", "aliases": ["test"]},
+        "stylecheck": {"help": "Run buildtest style checks", "aliases": ["style"]},
     }
-    for command, help_msg in hidden_parser.items():
-        subparser.add_parser(command, help=help_msg)
 
-    # Logic to create help message for parsers with aliases
-    h_unittests = {
-        "command": "unittests",
-        "help_msg": "Run buildtest unit tests",
-        "aliases": ["test"],
-    }
-    h_stylecheck = {
-        "command": "stylecheck",
-        "help_msg": "Run buildtest style checks",
-        "aliases": ["style"],
-    }
-    add_hidden_parser(subparser, h_unittests)
-    add_hidden_parser(subparser, h_stylecheck)
-
-
-def add_hidden_parser(subparser, h_parser):
-    # Creates help message for parsers with aliases
-    command = h_parser.get("command")
-    help_msg = h_parser.get("help_msg")
-    als = h_parser.get("aliases")
-
-    subparser.add_parser(command, help=help_msg, aliases=als)
+    for command, val in hidden_parser.items():
+        if type(val) is dict:
+            subparsers.add_parser(
+                command, help=val.get("help"), aliases=val.get("aliases")
+            )
+        else:
+            subparsers.add_parser(command, help=val)
