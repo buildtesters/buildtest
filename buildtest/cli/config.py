@@ -20,11 +20,12 @@ def config_cmd(args, configuration, editor, system):
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
         system (buildtest.system.BuildTestSystem): An instance of BuildTestSystem class
     """
+
     if args.config in ["view", "v"]:
         view_configuration(configuration, theme=args.theme, pager=args.pager)
 
     elif args.config in ["profile"]:
-        view_profile(configuration, theme=args.theme, pager=args.pager)
+        profile_cmd(configuration, args)
 
     elif args.config in ["executors", "ex"]:
         buildexecutor = BuildExecutor(configuration)
@@ -155,11 +156,28 @@ def view_configuration(configuration, theme=None, pager=None):
     console.rule(configuration.file)
     console.print(syntax)
 
-def view_profile(configuration, theme=None, pager=None):
-    """Display the list of profile for buildtest configuration file.This implements command ``buildtest config profiles list`
+def profile_cmd(configuration, args):
+    """Display the list of profile for buildtest configuration file.This implements command ``buildtest config profiles list``
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        args (Namespace): An instance of Namespace class from argparse
     """
 
-    console.print(configuration.file)
+    if args.profile in ["list"]:
+        if not configuration.target_config.get("profiles"):
+            sys.exit("No profiles found in configuration file")
+
+        if args.yaml:
+            profile_configuration = yaml.dump(configuration.target_config["profiles"], indent=2)
+            syntax = Syntax(profile_configuration, "yaml", theme=args.theme or "monokai")
+            console.print(syntax)
+            return
+
+        # print profiles as raw text
+        for profile_name in configuration.target_config["profiles"].keys():
+            print(profile_name)
+
 
 def view_executors(
     configuration,
