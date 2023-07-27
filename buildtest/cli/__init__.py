@@ -263,8 +263,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
 
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 
-
-
     def get_parent_parser():
         parent_parser = {}
 
@@ -398,6 +396,7 @@ def misc_menu(subparsers):
         ],
         help="Show help message for command",
     )
+
 
 def stylecheck_menu(subparsers):
     """This method will create command options for ``buildtest stylecheck``
@@ -978,7 +977,7 @@ def config_menu(subparsers, parent_parser):
     )
     # buildtest config profile
     profile = subparsers_config.add_parser(
-        "profile", help="Query profile from buildtest configuration",
+        "profile", help="Query profile from buildtest configuration"
     )
     subparsers_profile = profile.add_subparsers(
         description="Query information about buildtest profiles",

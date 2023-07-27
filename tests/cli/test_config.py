@@ -3,12 +3,12 @@ import os
 import pytest
 
 from buildtest.cli.config import (
+    list_profiles,
     validate_config,
     view_configuration,
     view_executors,
     view_path,
     view_system,
-    list_profiles,
 )
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, SCHEMA_ROOT
@@ -66,9 +66,9 @@ def test_config_validate():
 def test_config_path():
     view_path(configuration)
 
+
 @pytest.mark.cli
 def test_config_profile():
-
     # buildtest config profiles
     list_profiles(configuration)
 

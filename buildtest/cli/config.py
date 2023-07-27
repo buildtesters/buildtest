@@ -94,6 +94,7 @@ def view_system(configuration):
         table.add_row(name, desc, moduletool, hosts)
     console.print(table)
 
+
 def validate_config(configuration, moduletool):
     """This method implements ``buildtest config validate`` which attempts to
     validate buildtest schema file `settings.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/settings.schema.json>`_.
@@ -157,6 +158,7 @@ def view_configuration(configuration, theme=None, pager=None):
     console.rule(configuration.file)
     console.print(syntax)
 
+
 def list_profiles(configuration, theme=None, print_yaml=None):
     """Display the list of profile for buildtest configuration file.This implements command ``buildtest config profiles list``
 
@@ -170,7 +172,9 @@ def list_profiles(configuration, theme=None, print_yaml=None):
         sys.exit("No profiles found in configuration file")
 
     if print_yaml:
-        profile_configuration = yaml.dump(configuration.target_config["profiles"], indent=2)
+        profile_configuration = yaml.dump(
+            configuration.target_config["profiles"], indent=2
+        )
         syntax = Syntax(profile_configuration, "yaml", theme=theme or "monokai")
         console.print(syntax)
         return
