@@ -52,16 +52,16 @@ The **buildtest report --detailed** option can be used to show a detailed test r
 examining a test. This option is synonymous to running ``buildtest report --format name,id,user,state,returncode,runtime,outfile,errfile,buildspec``.
 Shown below is an example output.
 
-    .. dropdown:: ``buildtest report --detailed``
-        .. command-output:: buildtest report --detailed
+.. dropdown:: ``buildtest report --detailed``
+    .. command-output:: buildtest report --detailed
 
-    .. note::
-        The --detailed and --format options are mutually exclusive options because both options will alter the format
-        fields when displaying test results.
+.. note::
+        The ``--detailed`` and ``--format`` options are mutually exclusive options because both options
+        will alter the format fields when displaying test results.
 
 You will get the following error if you specify both options as shown below
-    .. dropdown::``buildtest report --detailed --format name``
 
+.. dropdown:: ``buildtest report --detailed --format name``
     .. command-output:: buildtest report --detailed --format name
        :returncode: 1
 
