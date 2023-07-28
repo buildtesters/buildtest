@@ -117,24 +117,6 @@
               "description": "Create a spack environment in a specific directory. This will run ``spack env create -d <dir>``. Directory path does not have to exist prior to execution however user must have appropriate ACL in-order to create directory."
             }
           }
-        },"deactivate": {
-          "additionalProperties": false,
-          "type": "object",
-          "description": "Deactivate a spack environment prior to activating it via ``spack env deactivate``",
-          "properties": {
-            "name": {
-              "type": "boolean",
-              "description": "Deactivate any active spack environment before activating the environment. If set to ``True`` we will run ``spack env deactivate``."
-            },
-            "options": {
-              "type": "string",
-              "description": "Pass options to ``spack env deactivate`` command"
-            },
-            "dir": {
-              "type": "string",
-              "description": "deactivate spack environment from directory."
-            }
-          }
         },
         "activate": {
           "additionalProperties": false,
