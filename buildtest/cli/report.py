@@ -1,4 +1,3 @@
-import argparse
 import datetime
 import logging
 import os
@@ -129,15 +128,16 @@ class Report:
         self.color = color
         self.input_report = report_file
 
-        try:
-            report=Report(configuration=configuration, format_detailed=True, format_args="name,id,user")
-        except argparse.ArgumentError:
-            console.print_exception()
-            return True
-
+        # if detailed option is specified
         if format_detailed:
             self.format = (
                 "name,id,user,state,returncode,runtime,outfile,errfile,buildspec"
+            )
+
+        # if both format and detailed options are specified
+        if format_detailed and format_args:
+            raise BuildTestError(
+                "Argument -d/--detailed is not allowed with argument --format"
             )
 
         # if no report specified use default report
