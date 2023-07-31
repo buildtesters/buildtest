@@ -54,6 +54,7 @@ runtime,outfile,errfile,buildspec``.
 Shown below is an example output.
 
 .. dropdown:: ``buildtest report --detailed``
+
     .. command-output:: buildtest report --detailed
 
 .. note::
@@ -63,6 +64,7 @@ Shown below is an example output.
 You will get the following error if you specify both options as shown below
 
 .. dropdown:: ``buildtest report --detailed --format name``
+
     .. command-output:: buildtest report --detailed --format name
        :returncode: 1
 
