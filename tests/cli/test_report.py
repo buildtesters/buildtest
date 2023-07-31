@@ -58,6 +58,7 @@ def test_report():
 def test_report_detailed():
     # buildtest report --detailed
     Report(configuration=configuration, format_detailed=True)
+    Report(configuration=configuration, format_detailed=True, format_args="name")
 
 
 @pytest.mark.cli
@@ -68,9 +69,6 @@ def test_report_format():
 
     # buildtest report --formatfields
     report.print_raw_format_fields()
-
-    # buildtest report --detailed
-    # report = Report(configuration=configuration, format_detailed=True)
 
     # buildtest report --format XYZ is invalid format field
     with pytest.raises(BuildTestError):
