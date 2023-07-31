@@ -58,8 +58,8 @@ def test_report():
 def test_report_detailed():
     # buildtest report --detailed
     Report(configuration=configuration, format_detailed=True)
-    Report(configuration=configuration, format_detailed=True, format_args="name")
-
+    with pytest.raises(BuildTestError):
+        Report(configuration=configuration, format_detailed=True, format_args="name")
 
 @pytest.mark.cli
 def test_report_format():
