@@ -100,7 +100,7 @@ Development Dependencies (Optional)
 If you plan to contribute back to buildtest, you will need to install additional
 dependencies as follows::
 
-    $ pip install -r docs/requirements.txt
+    $ pip install '.[dev]'
 
 Usage (``buildtest --help``)
 ------------------------------

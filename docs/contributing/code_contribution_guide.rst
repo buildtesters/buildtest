@@ -173,7 +173,7 @@ Configuring Black Pre-Commit Hook
 
 To configure pre-commit hook, make sure you install `pre-commit <https://pre-commit.com/>`_ via
 ``pip install pre-commit``. The `pre-commit` utility should be available if you install
-extra dependencies from buildtest (``pip install -r docs/requirements.txt``).
+extra dependencies from buildtest (``pip install '.[dev]'``).
 
 The pre-commit hook configuration can be found in `.pre-commit-config.yaml <https://github.com/buildtesters/buildtest/blob/devel/.pre-commit-config.yaml>`_
 
@@ -271,8 +271,8 @@ pyflakes
 
 `pyflakes <https://pypi.org/project/pyflakes/>`_ is a program that checks for python source
 code for errors such as unused imports. We have configured an automated check to test your incoming PR using pyflakes.
-pyflakes should be available in your python environment if you installed buildtest extra
-dependencies in requirements.txt (``pip install -r docs/requirements.txt``).
+pyflakes should be available in your python environment if you installed the dev dependencies
+(``pip install '.[dev]'``).
 
 You can run pyflakes against any file or directory the ones of importance is running pyflakes against
 buildtest source code and regression test. You can do that by running::
@@ -282,8 +282,7 @@ buildtest source code and regression test. You can do that by running::
 Running yamllint
 ------------------
 
-We are using `yamllint <https://yamllint.readthedocs.io/en/stable/>`_, which is a linter for YAML files. This package can
-be installed when installing the development dependencies (``pip install -r docs/requirements.txt``). We have a
+We are using `yamllint <https://yamllint.readthedocs.io/en/stable/>`_, which is a linter for YAML files. We have a
 configuration file `.yamllint.yml <https://github.com/buildtesters/buildtest/blob/devel/.yamllint.yml>`_ used for configuring
 yamllint.
 

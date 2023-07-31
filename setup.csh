@@ -24,6 +24,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# if shell is not csh or tcsh exit
+if (`basename "$SHELL"` != "csh" && `basename "$SHELL"` != "tcsh") then
+  echo "Unsupported shell, please use 'csh' or 'tcsh' when sourcing this script"
+  exit 1
+endif
+
 # if BUILDTEST_ROOT not defined in current shell set, figure out directory path for 
 # sourced script (setup.csh) and set BUILDTEST_ROOT
 if (! $?BUILDTEST_ROOT) then
@@ -64,11 +70,12 @@ if ( ! -x `command -v $pip` ) then
   exit 1
 endif
 
-python3 -c "import buildtest.main" >& /dev/null || true
+python3 -c "import buildtest.main" >& /dev/null
 
 # if we unable to import buildtest.main module then install buildtest dependencies
 if ( $status != 0 ) then
-  $pip install -r ${BUILDTEST_ROOT}/requirements.txt >& /dev/null
+  #$pip install -r ${BUILDTEST_ROOT}/requirements.txt >& /dev/null
+  $pip install "${BUILDTEST_ROOT}/." >& /dev/null
 endif
 
 set path=($path ${BUILDTEST_ROOT}/bin)

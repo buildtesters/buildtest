@@ -15,7 +15,9 @@ if __name__ == "__main__":
             "This script can only be run inside container: ghcr.io/buildtesters/buildtest_spack:latest"
         )
 
-    autogen_examples_dir = os.path.join(BUILDTEST_ROOT, "docs", "buildtest_tutorial_examples")
+    autogen_examples_dir = os.path.join(
+        BUILDTEST_ROOT, "docs", "buildtest_tutorial_examples"
+    )
 
     config = SiteConfiguration(settings_file=TUTORIALS_SETTINGS_FILE)
     config.detect_system()
