@@ -218,12 +218,12 @@ Let's run the following::
     buildtest bc show sleep hello_world
 
 Buildtest uses `rich <https://rich.readthedocs.io/>`_ python library for coloring which is used extensively throughout the buildtest output.
-Rich supports several built-in themes that can be used for your preference. The ``buildtest bc show -t <THEME>`` can be used
+Rich supports several built-in themes that can be used for your preference. The ``buildtest bc show --theme <THEME>`` can be used
 select a color theme.
 
 Currently, buildtest supports the following themes, feel free to tab complete::
 
-       buildtest bc show -t
+       buildtest bc show --theme
     abap                borland             emacs               gruvbox-dark        lovelace            native              paraiso-light       sas                 stata-dark          vs
     algol               bw                  friendly            gruvbox-light       manni               nord                pastie              solarized-dark      stata-light         xcode
     algol_nu            colorful            friendly_grayscale  igor                material            nord-darker         perldoc             solarized-light     tango               zenburn
@@ -232,7 +232,7 @@ Currently, buildtest supports the following themes, feel free to tab complete::
 
 Let's try running the same example with ``emacs`` theme::
 
-    buildtest bc show -t emacs sleep
+    buildtest bc show --theme emacs sleep
 
 If you want to see list of invalid buildspecs you can run::
 
