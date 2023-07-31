@@ -49,7 +49,8 @@ Detailed Reports (``buildtest report --detailed``)
 ---------------------------------------------------
 
 The **buildtest report --detailed** option can be used to show a detailed test report that may be of interest when
-examining a test. This option is synonymous to running ``buildtest report --format name,id,user,state,returncode,runtime,outfile,errfile,buildspec``.
+examining a test. This option is synonymous to running ``buildtest report --format name,id,user,state,returncode,
+runtime,outfile,errfile,buildspec``.
 Shown below is an example output.
 
 .. dropdown:: ``buildtest report --detailed``
