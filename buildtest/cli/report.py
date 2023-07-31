@@ -77,6 +77,8 @@ class Report:
         "buildspec": [],
     }
 
+    format_fields_detailed = ("name,id,user,state,returncode,runtime,outfile,errfile,buildspec")
+
     def __init__(
         self,
         configuration,
@@ -130,9 +132,7 @@ class Report:
 
         # if detailed option is specified
         if format_detailed:
-            self.format = (
-                "name,id,user,state,returncode,runtime,outfile,errfile,buildspec"
-            )
+            self.format = self.format_fields_detailed
 
         # if both format and detailed options are specified
         if format_detailed and format_args:
