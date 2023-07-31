@@ -77,7 +77,9 @@ class Report:
         "buildspec": [],
     }
 
-    format_fields_detailed = ("name,id,user,state,returncode,runtime,outfile,errfile,buildspec")
+    format_fields_detailed = (
+        "name,id,user,state,returncode,runtime,outfile,errfile,buildspec"
+    )
 
     def __init__(
         self,

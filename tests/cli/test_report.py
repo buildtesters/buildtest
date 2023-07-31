@@ -61,6 +61,7 @@ def test_report_detailed():
     with pytest.raises(BuildTestError):
         Report(configuration=configuration, format_detailed=True, format_args="name")
 
+
 @pytest.mark.cli
 def test_report_format():
     # buildtest report --helpformat
