@@ -1,4 +1,5 @@
 import pytest
+
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.command import BuildTestCommand
 

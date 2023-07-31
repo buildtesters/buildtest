@@ -1,0 +1,28 @@
+buildspecs:
+  clone_spack_automatically:
+    type: spack
+    executor: generic.local.bash
+    description: "Clone spack automatically"
+    tags: [ spack ]
+    spack:
+      env:
+        create:
+          name: 'spack-develop'
+    post_cmds: |
+      spack env list
+      which spack
+
+  clone_spack_and_specify_root:
+    type: spack
+    executor: generic.local.bash
+    description: Clone spack explicitly and specify root
+    tags: [ spack ]
+    pre_cmds: git clone -b e4s-23.05 https://github.com/spack/spack.git /tmp/spack-demo
+    spack:
+      root: /tmp/spack-demo
+      env:
+        create:
+          name: 'e4s'
+    post_cmds: |
+      spack env list
+      which spack

@@ -12,6 +12,9 @@ config.detect_system()
 config.validate()
 system = BuildTestSystem()
 
+# BuildspecCache(rebuild=True, configuration=configuration) is fixing a bug
+# it is needed to run once for in order to do regression test
+
 
 def test_assert_ge():
     """This test buildspec using status check with  'assert_ge'"""
@@ -167,6 +170,16 @@ def test_file_regex():
             os.path.join(here, "regex_on_filename.yml"),
             os.path.join(here, "regex_on_invalids.yml"),
         ],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()
+
+
+def test_runtime_check():
+    """This test will perform status check with runtime"""
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "runtime_status_test.yml")],
         buildtest_system=system,
         configuration=config,
     )

@@ -39,7 +39,7 @@ from buildtest.buildsystem.checks import (
 )
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
-from buildtest.exceptions import BuildTestError, RuntimeFailure
+from buildtest.exceptions import BuildTestError
 from buildtest.scheduler.job import Job
 from buildtest.scheduler.lsf import LSFJob
 from buildtest.scheduler.pbs import PBSJob
@@ -397,18 +397,14 @@ class BuilderBase(ABC):
 
             self.logger.debug(f"Running Test via command: {cmd}")
             ret = command.returncode()
-            err_msg = " ".join(command.get_error())
 
             # if we recieve a returncode of 0 return immediately with the instance of command
             if ret == 0:
                 return command
-
-            err = f"{self} failed to submit job with returncode: {ret} \n"
+            err = f"{self}: failed to submit job with returncode: {ret} "
             console.print(f"[red]{err}")
-            console.print(f"[red]{err_msg}")
 
         return command
-        raise RuntimeFailure(err)
 
     def record_starttime(self):
         """This method will record the starttime when job starts execution by using
@@ -646,8 +642,7 @@ class BuilderBase(ABC):
         self._set_execute_perm(self.testpath)
         # copy testpath to run_dir
         shutil.copy2(
-            self.testpath,
-            os.path.join(self.test_root, os.path.basename(self.testpath)),
+            self.testpath, os.path.join(self.test_root, os.path.basename(self.testpath))
         )
 
     def _emit_command(self):

@@ -3,12 +3,13 @@ import subprocess
 import sys
 
 import yaml
-from buildtest.defaults import console
-from buildtest.exceptions import ConfigurationError
-from buildtest.executors.setup import BuildExecutor
 from jsonschema import ValidationError
 from rich.syntax import Syntax
 from rich.table import Column, Table
+
+from buildtest.defaults import console
+from buildtest.exceptions import ConfigurationError
+from buildtest.executors.setup import BuildExecutor
 
 
 def config_cmd(args, configuration, editor, system):
@@ -33,7 +34,7 @@ def config_cmd(args, configuration, editor, system):
             args.invalid,
         )
 
-    elif args.config == "validate":
+    elif args.config in ["validate", "val"]:
         validate_config(configuration, system.system["moduletool"])
 
     elif args.config == "systems":

@@ -133,7 +133,7 @@ _buildtest ()
 
   COMPREPLY=()   # Array variable storing the possible completions.
 
-  declare -a buildtest_opts=("--color" "--config" "--debug" "--editor" "--help" "--helpcolor" "--logpath" "--loglevel" "--print-log" "--no-color" "--report" "--version" "--view-log" "-c" "-d" "-h" "-l" "-p" "-r" "-V")
+  declare -a buildtest_opts=("--color" "--config" "--debug" "--editor" "--help" "--helpcolor" "--help-all" "--logpath" "--loglevel" "--print-log" "--no-color" "--report" "--version" "--view-log" "-c" "-d" "-h" "-l" "-p" "-r" "-H" "-V")
 
   commands_with_input=( "--color" "--config" "-c" "--report" "-r" "--loglevel" "-l" "--editor" )   # Array variable storing commands which require an input argument from the user.
 
@@ -162,7 +162,7 @@ _buildtest ()
   #case "${prev}" in
     build|bd)
       local shortoption="-b -e -et -f -m -s -t -u -x -xt"
-      local longoption="--buildspec --disable-executor-check --executor --executor-type --exclude --exclude-tags --filter --helpfilter --limit --maxpendtime --modules --module-purge --nodes --pollinterval --procs --profile --rerun --remove-stagedir --retry --save-profile --stage --tags --timeout --unload-modules"
+      local longoption="--buildspec --executor --executor-type --exclude --exclude-tags --filter --helpfilter --limit --maxpendtime --modules --module-purge --nodes --pollinterval --procs --profile --rerun --remove-stagedir --retry --save-profile --stage --tags --timeout --unload-modules"
       local allopts="${longoption} ${shortoption}"
 
       COMPREPLY=( $( compgen -W "$allopts" -- $cur ) )
@@ -200,7 +200,7 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
       ;;
     path)
-      local opts="-b -be -e -h -o -s -t --buildscript --buildenv --errfile --help --outfile --stagedir --testpath"
+      local opts="-b -be -e -h -o -s -t --buildscript --buildenv --errfile --help  --outfile --stagedir --testpath"
       COMPREPLY=( $( compgen -W "$(_builder_names)" -- $cur ) )
       if [[ $cur == -* ]] ; then
         COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
@@ -237,7 +237,7 @@ _buildtest ()
     ;;
 
     config|cg)
-      local cmds="-h --help co compilers e edit ex executors p path systems validate v view"
+      local cmds="-h --help co compilers e edit ex executors p path systems val validate v view"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
@@ -312,7 +312,7 @@ _buildtest ()
       ;;
 
     buildspec|bc)
-      local cmds="-h --help ef edit-file et edit-test f find maintainers s show sf show-fail sm summary val validate"
+      local cmds="-h --help ef edit-file et edit-test f find m maintainers s show sf show-fail sm summary val validate"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
@@ -449,7 +449,7 @@ _buildtest ()
 
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
-    help|h)
+    show|s)
       local subcommands="build buildspec cdash config history inspect path report schema stylecheck unittests"
       local alias_cmds="bd bc cg hy it rt style test"
       local cmds="$subcommands $alias_cmds"
@@ -458,7 +458,8 @@ _buildtest ()
     *)
       local cmds="build buildspec cd cdash clean commands config debugreport docs help history info inspect path report schema schemadocs stats stylecheck tutorial-examples unittests"
       local alias_cmds="bd bc cg cmd debug h hy it rt style test"
-      local opts="--color --config --debug --editor --help --helpcolor --loglevel --logpath --no-color --print-log --report --version --view-log -c -d -h -l -p -r -V"
+      local opts="--color --config --debug --editor --help --helpcolor --help-all --loglevel --logpath --no-color --print-log --report --version --view-log -c -d -h -l -p -r -V"
+
 
       case "${cur}" in
       # print main options to buildtest

@@ -4,12 +4,17 @@ interact with a global configuration for buildtest.
 """
 import argparse
 import datetime
+import sys
+
+from pygments.styles import STYLE_MAP
+from rich.color import Color, ColorParseError
 
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import console
 from buildtest.schemas.defaults import schema_table
-from pygments.styles import STYLE_MAP
-from rich.color import Color, ColorParseError
+
+# Variables needed to show all sub commands and their help mesaage
+show_all_help = "-H" in sys.argv or "--help-all" in sys.argv
 
 
 def build_filters_format(val):
@@ -259,6 +264,9 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         help="Print available color options in a table format.",
     )
     parser.add_argument("-r", "--report", help="Specify path to test report file")
+    parser.add_argument(
+        "-H", "--help-all", help="List all commands and options", action="help"
+    )
 
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 
@@ -327,6 +335,10 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     misc_menu(subparsers)
     tutorial_examples_menu(subparsers)
 
+    # Displays all hidden comands
+    if show_all_help:
+        help_all(subparsers)
+
     return parser
 
 
@@ -336,6 +348,10 @@ def misc_menu(subparsers):
     Args:
         subparsers (argparse._SubParsersAction): Subparser object to add subparser
     """
+
+    # Subcommands that do not need to be shown in ``--help``
+    subparsers.add_parser("docs")
+    subparsers.add_parser("schemadocs")
 
     cd_parser = subparsers.add_parser(
         "cd", help="change directory to root of test given a test name"
@@ -347,9 +363,6 @@ def misc_menu(subparsers):
         "clean",
         help="Remove all generate files from buildtest including test directory, log files, report file, buildspec cache, history files.",
     )
-
-    subparsers.add_parser("docs", help="Open buildtest docs in browser")
-    subparsers.add_parser("schemadocs", help="Open buildtest schema docs in browser")
 
     clean.add_argument(
         "-y", "--yes", action="store_true", help="Confirm yes for all prompts"
@@ -368,12 +381,10 @@ def misc_menu(subparsers):
 
     subparsers.add_parser("info", help="Show details regarding current buildtest setup")
 
-    help_subparser = subparsers.add_parser(
-        "help",
-        aliases=["h"],
-        help="buildtest command guide",
+    show_subparser = subparsers.add_parser(
+        "show", aliases=["s"], help="buildtest command guide"
     )
-    help_subparser.add_argument(
+    show_subparser.add_argument(
         "command",
         choices=[
             "bd",
@@ -411,9 +422,8 @@ def stylecheck_menu(subparsers):
         subparsers (argparse._SubParsersAction): Subparser object to add subparser
     """
 
-    stylecheck_parser = subparsers.add_parser(
-        "stylecheck", aliases=["style"], help="Run buildtest style checks"
-    )
+    # Subcommands that do not need to be shown in ``--help``
+    stylecheck_parser = subparsers.add_parser("stylecheck", aliases=["style"])
 
     stylecheck_parser.add_argument(
         "--no-black", action="store_true", help="Don't run black style check"
@@ -436,9 +446,9 @@ def unittest_menu(subparsers):
         subparsers (argparse._SubParsersAction): Subparser object to add subparser
     """
 
-    unittests_parser = subparsers.add_parser(
-        "unittests", help="Run buildtest unit tests", aliases=["test"]
-    )
+    # Subcommands that do not need to be shown in --help
+    unittests_parser = subparsers.add_parser("unittests", aliases=["test"])
+
     unittests_parser.add_argument(
         "-c",
         "--coverage",
@@ -464,10 +474,7 @@ def tutorial_examples_menu(subparsers):
         subparsers (argparse._SubParsersAction): Subparser object to add subparser
     """
 
-    subparsers.add_parser(
-        "tutorial-examples",
-        help="Generate documentation examples for Buildtest Tutorial",
-    )
+    subparsers.add_parser("tutorial-examples")
 
 
 def path_menu(subparsers):
@@ -674,14 +681,7 @@ def build_menu(subparsers):
         type=positive_number,
     )
     extra_group.add_argument(
-        "--disable-executor-check",
-        action="store_false",
-        help="Disable executor check during configuration check. By default these checks are enforced for Local, Slurm, PBS, LSF, and Cobalt Executor.",
-    )
-    extra_group.add_argument(
-        "--limit",
-        type=positive_number,
-        help="Limit number of tests that can be run.",
+        "--limit", type=positive_number, help="Limit number of tests that can be run."
     )
     extra_group.add_argument(
         "--remove-stagedir",
@@ -746,9 +746,7 @@ def buildspec_menu(subparsers, parent_parser):
         "edit-file", aliases=["ef"], help="Edit buildspec file based on filename"
     )
     edit_via_filename.add_argument(
-        "file",
-        help="Edit buildspec file in editor",
-        nargs="*",
+        "file", help="Edit buildspec file in editor", nargs="*"
     )
 
     # buildtest buildspec edit-test
@@ -756,9 +754,7 @@ def buildspec_menu(subparsers, parent_parser):
         "edit-test", aliases=["et"], help="Edit buildspec file based on test name"
     )
     edit_via_testname.add_argument(
-        "name",
-        help="Show content of buildspec based on test name",
-        nargs="*",
+        "name", help="Show content of buildspec based on test name", nargs="*"
     )
 
     # buildtest buildspec find
@@ -788,8 +784,7 @@ def buildspec_menu(subparsers, parent_parser):
 
     subparsers_maintainers = buildspec_maintainers.add_subparsers()
     maintainers_find = subparsers_maintainers.add_parser(
-        "find",
-        help="Find buildspecs based on maintainer name",
+        "find", help="Find buildspecs based on maintainer name"
     )
 
     maintainers_find.add_argument(
@@ -843,9 +838,7 @@ def buildspec_menu(subparsers, parent_parser):
         "--group-by-tags", action="store_true", help="Group tests by tag name"
     )
     query_group.add_argument(
-        "--group-by-executor",
-        action="store_true",
-        help="Group tests by executor name",
+        "--group-by-executor", action="store_true", help="Group tests by executor name"
     )
     query_group.add_argument(
         "-p", "--paths", help="print all root buildspec paths", action="store_true"
@@ -916,9 +909,7 @@ def buildspec_menu(subparsers, parent_parser):
         parents=[parent_parser["theme"]],
     )
     show_buildspecs.add_argument(
-        "name",
-        help="Show content of buildspec based on test name",
-        nargs="*",
+        "name", help="Show content of buildspec based on test name", nargs="*"
     )
 
     # buildtest buildspec show-fail
@@ -929,9 +920,7 @@ def buildspec_menu(subparsers, parent_parser):
         parents=[parent_parser["theme"]],
     )
     show_fail_buildspecs.add_argument(
-        "name",
-        help="Show content of buildspec based on failed test name",
-        nargs="*",
+        "name", help="Show content of buildspec based on failed test name", nargs="*"
     )
 
     # buildtest buildspec summary
@@ -987,9 +976,7 @@ def config_menu(subparsers, parent_parser):
     """
 
     parser_config = subparsers.add_parser(
-        "config",
-        aliases=["cg"],
-        help="Query buildtest configuration",
+        "config", aliases=["cg"], help="Query buildtest configuration"
     )
 
     subparsers_config = parser_config.add_subparsers(
@@ -1017,7 +1004,9 @@ def config_menu(subparsers, parent_parser):
     subparsers_config.add_parser("systems", help="List all available systems")
     # buildtest config validate
     subparsers_config.add_parser(
-        "validate", help="Validate buildtest settings file with schema."
+        "validate",
+        aliases=["val"],
+        help="Validate buildtest settings file with schema.",
     )
     # buildtest config view
     subparsers_config.add_parser(
@@ -1045,16 +1034,10 @@ def config_menu(subparsers, parent_parser):
 
     # buildtest config compilers
     compilers.add_argument(
-        "-j",
-        "--json",
-        action="store_true",
-        help="List compiler details in JSON format",
+        "-j", "--json", action="store_true", help="List compiler details in JSON format"
     )
     compilers.add_argument(
-        "-y",
-        "--yaml",
-        action="store_true",
-        help="List compiler details in YAML format",
+        "-y", "--yaml", action="store_true", help="List compiler details in YAML format"
     )
 
     subparsers_compiler = compilers.add_subparsers(
@@ -1087,8 +1070,7 @@ def config_menu(subparsers, parent_parser):
     )
 
     compiler_test = subparsers_compiler.add_parser(
-        "test",
-        help="Test each compiler instance by performing module load test",
+        "test", help="Test each compiler instance by performing module load test"
     )
     compiler_test.add_argument(
         "compiler_names", nargs="*", help="Specify compiler name to test"
@@ -1165,10 +1147,7 @@ def report_menu(subparsers, parent_parser):
     pass_fail = parser_report.add_mutually_exclusive_group()
 
     pass_fail.add_argument(
-        "-f",
-        "--fail",
-        help="Retrieve all FAIL tests",
-        action="store_true",
+        "-f", "--fail", help="Retrieve all FAIL tests", action="store_true"
     )
     pass_fail.add_argument(
         "-p",
@@ -1179,16 +1158,10 @@ def report_menu(subparsers, parent_parser):
     )
 
     parser_report.add_argument(
-        "-s",
-        "--start",
-        type=valid_time,
-        help="Retrieve tests by starttime",
+        "-s", "--start", type=valid_time, help="Retrieve tests by starttime"
     )
     parser_report.add_argument(
-        "-e",
-        "--end",
-        type=valid_time,
-        help="Retrieve tests by endtime",
+        "-e", "--end", type=valid_time, help="Retrieve tests by endtime"
     )
     parser_report.add_argument(
         "--latest",
@@ -1300,10 +1273,7 @@ def schema_menu(subparsers):
         "schema", help="List schema contents and examples"
     )
     parser_schema.add_argument(
-        "-e",
-        "--example",
-        action="store_true",
-        help="Show schema examples",
+        "-e", "--example", action="store_true", help="Show schema examples"
     )
     parser_schema.add_argument(
         "-j", "--json", action="store_true", help="Display json schema file"
@@ -1338,3 +1308,26 @@ def cdash_menu(subparsers):
     upload.add_argument(
         "-o", "--open", action="store_true", help="Open CDASH report in browser"
     )
+
+
+def help_all(subparsers):
+    """This method will add parser for hidden command that can be shown when using ``--help-all/-H``
+
+    Args:
+        subparsers (argparse._SubParsersAction): Subparser object
+    """
+    hidden_parser = {
+        "tutorial-examples": "Generate documentation examples for Buildtest Tutorial",
+        "docs": "Open buildtest docs in browser",
+        "schemadocs": "Open buildtest schema docs in browser",
+        "unittests": {"help": "Run buildtest unit tests", "aliases": ["test"]},
+        "stylecheck": {"help": "Run buildtest style checks", "aliases": ["style"]},
+    }
+
+    for command, val in hidden_parser.items():
+        if type(val) is dict:
+            subparsers.add_parser(
+                command, help=val.get("help"), aliases=val.get("aliases")
+            )
+        else:
+            subparsers.add_parser(command, help=val)

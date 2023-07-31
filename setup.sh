@@ -24,7 +24,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-buildtest_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)"
+# Bash or sh
+if [ -n "$BASH_VERSION" ]; then
+  buildtest_root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd)"
+# Zsh
+elif [ -n "$ZSH_VERSION" ]; then
+  buildtest_root=$(cd "$(dirname "$0")" && pwd)
+else
+  echo "Shell not supported. Please use bash, sh or zsh"
+  exit 1
+fi
+
 pip=pip3
 
 if ! [ -x "$(command -v $pip)" ]; then 
@@ -43,8 +53,8 @@ returncode=$?
 
 # if we are unable to import buildtest.main then install buildtest dependencies
 if [ $returncode -ne 0 ]; then
-  #$pip install --target ${buildtest_root}/.packages -r ${buildtest_root}/requirements.txt &> /dev/null
-  $pip install -r "${buildtest_root}/requirements.txt" &> /dev/null
+  #$pip install -r "${buildtest_root}/requirements.txt" &> /dev/null
+  pip install "${buildtest_root}/." &> /dev/null
 fi
 
 export BUILDTEST_ROOT=$buildtest_root

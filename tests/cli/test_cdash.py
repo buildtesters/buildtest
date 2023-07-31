@@ -2,6 +2,7 @@ import os
 
 import pytest
 import requests
+
 from buildtest.cli.build import BuildTest
 from buildtest.cli.cdash import upload_test_cdash, view_cdash_project
 from buildtest.config import SiteConfiguration
@@ -59,10 +60,7 @@ def test_cdash_upload_exceptions():
 
     # in configuration file we have invalid url to CDASH server
     with pytest.raises(requests.ConnectionError):
-        upload_test_cdash(
-            build_name="DEMO",
-            configuration=bc,
-        )
+        upload_test_cdash(build_name="DEMO", configuration=bc)
 
     bc = SiteConfiguration(
         os.path.abspath(os.path.join(here, "cdash_examples", "invalid_project.yml"))
