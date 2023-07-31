@@ -28,34 +28,77 @@ def is_int(val):
 
 class Report:
     # list of format fields
-    format_field_description = {"buildspec": "Buildspec File", "buildenv": "Show build environment file for test",
-        "command": "Command executed", "compiler": "Retrieve compiler used for test (applicable for compiler schema)",
-        "endtime": "End Time for test", "errfile": "Error File", "executor": "Name of executor used for running test",
-        "hostname": "Hostname of machine where job was submitted from", "full_id": "Fully qualified build identifier",
-        "id": "Unique build identifier", "metrics": "List all metrics for test", "name": "Name of test",
-        "outfile": "Output file", "returncode": "Return Code", "runtime": "Total runtime in seconds",
-        "schemafile": "Schema file used for validating test", "starttime": "Start time of test",
-        "state": "State of test (PASS/FAIL)", "tags": "Tag name", "testroot": "Root of test directory",
-        "testpath": "Path to test", "user": "User who ran the test", }
-    filter_field_description = {"buildspec": {"description": "Filter by buildspec file", "type": "FILE"},
+    format_field_description = {
+        "buildspec": "Buildspec File",
+        "buildenv": "Show build environment file for test",
+        "command": "Command executed",
+        "compiler": "Retrieve compiler used for test (applicable for compiler schema)",
+        "endtime": "End Time for test",
+        "errfile": "Error File",
+        "executor": "Name of executor used for running test",
+        "hostname": "Hostname of machine where job was submitted from",
+        "full_id": "Fully qualified build identifier",
+        "id": "Unique build identifier",
+        "metrics": "List all metrics for test",
+        "name": "Name of test",
+        "outfile": "Output file",
+        "returncode": "Return Code",
+        "runtime": "Total runtime in seconds",
+        "schemafile": "Schema file used for validating test",
+        "starttime": "Start time of test",
+        "state": "State of test (PASS/FAIL)",
+        "tags": "Tag name",
+        "testroot": "Root of test directory",
+        "testpath": "Path to test",
+        "user": "User who ran the test",
+    }
+    filter_field_description = {
+        "buildspec": {"description": "Filter by buildspec file", "type": "FILE"},
         "name": {"description": "Filter by test name", "type": "STRING"},
         "executor": {"description": "Filter by executor name", "type": "STRING"},
         "returncode": {"description": "Filter tests by returncode", "type": "INT"},
         "state": {"description": "Filter by test state", "type": "PASS/FAIL"},
-        "tags": {"description": "Filter tests by tag name", "type": "STRING"}, }
+        "tags": {"description": "Filter tests by tag name", "type": "STRING"},
+    }
     format_fields = format_field_description.keys()
     # list of filter fields
     filter_fields = filter_field_description.keys()
 
     # default table format fields
-    display_table = {"name": [], "id": [], "state": [], "returncode": [], "starttime": [], "endtime": [], "runtime": [],
-        "tags": [], "buildspec": [], }
+    display_table = {
+        "name": [],
+        "id": [],
+        "state": [],
+        "returncode": [],
+        "starttime": [],
+        "endtime": [],
+        "runtime": [],
+        "tags": [],
+        "buildspec": [],
+    }
 
-    format_fields_detailed = ("name,id,user,state,returncode,runtime,outfile,errfile,buildspec")
+    format_fields_detailed = (
+        "name,id,user,state,returncode,runtime,outfile,errfile,buildspec"
+    )
 
-    def __init__(self, configuration, report_file=None, filter_args=None, format_args=None, start=None, end=None,
-            failure=None, passed=None, latest=None, oldest=None, count=None, pager=None, format_detailed=None,
-            detailed=None, color=None, ):
+    def __init__(
+        self,
+        configuration,
+        report_file=None,
+        filter_args=None,
+        format_args=None,
+        start=None,
+        end=None,
+        failure=None,
+        passed=None,
+        latest=None,
+        oldest=None,
+        count=None,
+        pager=None,
+        format_detailed=None,
+        detailed=None,
+        color=None,
+    ):
         """
         Args:
             configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class that is loaded buildtest configuration.
@@ -82,7 +125,9 @@ class Report:
         self.latest = latest or self.configuration.target_config["report"].get("latest")
         self.oldest = oldest or self.configuration.target_config["report"].get("oldest")
         self.filter = filter_args
-        self.format = format_args or self.configuration.target_config["report"].get("format")
+        self.format = format_args or self.configuration.target_config["report"].get(
+            "format"
+        )
         self.pager = pager
         self.color = color
         self.input_report = report_file
@@ -93,7 +138,9 @@ class Report:
 
         # if both format and detailed options are specified
         if format_detailed and format_args:
-            raise BuildTestError("Argument -d/--detailed is not allowed with argument --format")
+            raise BuildTestError(
+                "Argument -d/--detailed is not allowed with argument --format"
+            )
 
         # if no report specified use default report
         if not self.input_report:
@@ -135,10 +182,13 @@ class Report:
                 if key not in self.filter_fields:
                     self.print_filter_fields()
                     raise BuildTestError(
-                        f"Invalid filter key: {key}, please run 'buildtest report --helpfilter' for list of available filter fields")
+                        f"Invalid filter key: {key}, please run 'buildtest report --helpfilter' for list of available filter fields"
+                    )
 
                 if key == "returncode" and not is_int(self.filter[key]):
-                    raise BuildTestError(f"Invalid returncode:{self.filter[key]} must be an integer")
+                    raise BuildTestError(
+                        f"Invalid returncode:{self.filter[key]} must be an integer"
+                    )
 
                 logger.debug(f"filter field: {key} is valid")
 
@@ -184,12 +234,16 @@ class Report:
             logger.debug(f"checking end field: {self.end}")
 
             if self.end > current_time:
-                raise BuildTestError(f"Invalid --end {self.end} is greater than current time {current_time}")
+                raise BuildTestError(
+                    f"Invalid --end {self.end} is greater than current time {current_time}"
+                )
 
             logger.debug(f"checking start field: {self.start}")
 
             if self.start and self.start > self.end:
-                raise BuildTestError(f"Invalid --start {self.start} is greater than --end {self.end}")
+                raise BuildTestError(
+                    f"Invalid --start {self.start} is greater than --end {self.end}"
+                )
 
     def load(self):
         """This method is responsible for loading report file. If file not found
@@ -202,11 +256,18 @@ class Report:
         """
 
         if not self._reportfile:
-            sys.exit(console.print(f"[red]Unable to resolve path to report file: {self.input_report}"))
+            sys.exit(
+                console.print(
+                    f"[red]Unable to resolve path to report file: {self.input_report}"
+                )
+            )
 
         if not is_file(self._reportfile):
-            sys.exit(console.print(
-                f"Unable to find report please check if {self._reportfile} is a file or run a test via 'buildtest build' to generate report file"))
+            sys.exit(
+                console.print(
+                    f"Unable to find report please check if {self._reportfile} is a file or run a test via 'buildtest build' to generate report file"
+                )
+            )
 
         report = load_json(self._reportfile)
 
@@ -215,8 +276,10 @@ class Report:
         # if report is None or issue with how json.load returns content of file we
         # raise error
         if not report:
-            sys.exit(f"Fail to process {self._reportfile} please check if file is valid json"
-                     f"or remove file")
+            sys.exit(
+                f"Fail to process {self._reportfile} please check if file is valid json"
+                f"or remove file"
+            )
         return report
 
     def filter_buildspecs_from_report(self):
@@ -239,11 +302,15 @@ class Report:
 
             # if file doesn't exist we terminate with message
             if not resolved_buildspecs:
-                raise BuildTestError(f"Invalid File Path for filter field 'buildspec': {self.filter['buildspec']}")
+                raise BuildTestError(
+                    f"Invalid File Path for filter field 'buildspec': {self.filter['buildspec']}"
+                )
 
             # if file not found in cache we exit
             if not resolved_buildspecs in self.report.keys():
-                raise BuildTestError(f"buildspec file: {resolved_buildspecs} not found in cache")
+                raise BuildTestError(
+                    f"buildspec file: {resolved_buildspecs} not found in cache"
+                )
 
             # need to set as a list since we will loop over all tests
             self.filtered_buildspecs = [resolved_buildspecs]
@@ -252,7 +319,8 @@ class Report:
         if self.filter.get("state"):
             if self.filter["state"] not in ["PASS", "FAIL"]:
                 raise BuildTestError(
-                    f"filter argument 'state' must be 'PASS' or 'FAIL' got value {self.filter['state']}")
+                    f"filter argument 'state' must be 'PASS' or 'FAIL' got value {self.filter['state']}"
+                )
 
     def filter_by_start_end(self, test):
         """This method will return a boolean (True/False) to check if test should be included from report. Given an input test, we
@@ -269,7 +337,9 @@ class Report:
 
         if self.start and self.end:
             end_include = self.end + datetime.timedelta(days=1)
-            return (True if test_start >= self.start and test_end <= end_include else False)
+            return (
+                True if test_start >= self.start and test_end <= end_include else False
+            )
 
         if self.start:
             return True if test_start >= self.start else False
@@ -288,7 +358,9 @@ class Report:
         if not self.filter.get("name"):
             return False
 
-        logger.debug(f"Checking if test: '{name}' matches filter name: '{self.filter['name']}'")
+        logger.debug(
+            f"Checking if test: '{name}' matches filter name: '{self.filter['name']}'"
+        )
 
         return not name == self.filter["name"]
 
@@ -314,7 +386,9 @@ class Report:
             test (dict): Test recorded loaded as dictionary
         """
 
-        if self.filter.get("executor") and self.filter.get("executor") != test.get("executor"):
+        if self.filter.get("executor") and self.filter.get("executor") != test.get(
+            "executor"
+        ):
             return True
 
         return False
@@ -358,7 +432,10 @@ class Report:
 
                 # if --latest and --oldest specified together we retrieve first and last record
                 if self.latest and self.oldest:
-                    tests = [self.report[buildspec][name][0], self.report[buildspec][name][-1], ]
+                    tests = [
+                        self.report[buildspec][name][0],
+                        self.report[buildspec][name][-1],
+                    ]
                 # retrieve last record of every test if --latest is specified
                 elif self.latest:
                     tests = [self.report[buildspec][name][-1]]
@@ -429,10 +506,19 @@ class Report:
     def print_filter_fields(self):
         """Displays list of help filters which implements command ``buildtest report --helpfilter``"""
 
-        table = Table("[blue]Field", "[blue]Description", "[blue]Expected Value", title="Filter Fields", )
+        table = Table(
+            "[blue]Field",
+            "[blue]Description",
+            "[blue]Expected Value",
+            title="Filter Fields",
+        )
 
         for field, value in self.filter_field_description.items():
-            table.add_row(f"[red]{field}", f"[green]{value['description']}", f"[magenta]{value['type']}", )
+            table.add_row(
+                f"[red]{field}",
+                f"[green]{value['description']}",
+                f"[magenta]{value['type']}",
+            )
         console.print(table)
 
     def print_raw_filter_fields(self):
@@ -445,7 +531,15 @@ class Report:
         for field in self.format_fields:
             console.print(field)
 
-    def print_report(self, terse=None, row_count=None, noheader=None, title=None, count=None, color=None, ):
+    def print_report(
+        self,
+        terse=None,
+        row_count=None,
+        noheader=None,
+        title=None,
+        count=None,
+        color=None,
+    ):
         """This method will print report table after processing report file. By default we print output in
         table format but this can be changed to terse format which will print output in parseable format.
 
@@ -494,8 +588,16 @@ class Report:
             root_disk_usage|PASS|0
         """
 
-        count = (self.configuration.target_config["report"].get("count") if count is None else count)
-        terse = (self.configuration.target_config["report"].get("terse") if terse is None else terse)
+        count = (
+            self.configuration.target_config["report"].get("count")
+            if count is None
+            else count
+        )
+        terse = (
+            self.configuration.target_config["report"].get("terse")
+            if terse is None
+            else terse
+        )
 
         consoleColor = checkColor(color)
         if terse:
@@ -660,7 +762,11 @@ class Report:
                     else:
                         fail_tests += 1
 
-                tests[name] = {"runs": len(self.report[buildspec][name]), "pass": pass_tests, "fail": fail_tests, }
+                tests[name] = {
+                    "runs": len(self.report[buildspec][name]),
+                    "pass": pass_tests,
+                    "fail": fail_tests,
+                }
         return tests
 
     def fetch_records_by_ids(self, testids):
@@ -684,7 +790,11 @@ class Report:
 def list_report():
     """This method will list all report files. This method will implement ``buildtest report list`` command."""
     if not is_file(BUILDTEST_REPORTS):
-        sys.exit(console.print("There are no report files, please run 'buildtest build' to generate a report file."))
+        sys.exit(
+            console.print(
+                "There are no report files, please run 'buildtest build' to generate a report file."
+            )
+        )
 
     content = load_json(BUILDTEST_REPORTS)
     for fname in content:
@@ -722,9 +832,20 @@ def report_cmd(args, configuration, report_file=None):
         list_report()
         return
 
-    results = Report(configuration=configuration, filter_args=args.filter, format_args=args.format, start=args.start,
-        end=args.end, failure=args.fail, passed=args.passed, latest=args.latest, oldest=args.oldest,
-        report_file=report_file, count=args.count, format_detailed=args.detailed, )
+    results = Report(
+        configuration=configuration,
+        filter_args=args.filter,
+        format_args=args.format,
+        start=args.start,
+        end=args.end,
+        failure=args.fail,
+        passed=args.passed,
+        latest=args.latest,
+        oldest=args.oldest,
+        report_file=report_file,
+        count=args.count,
+        format_detailed=args.detailed,
+    )
 
     if args.report_subcommand in ["path", "p"]:
         console.print(results.reportfile())
@@ -733,10 +854,20 @@ def report_cmd(args, configuration, report_file=None):
     if args.report_subcommand in ["summary", "sm"]:
         if pager:
             with console.pager():
-                report_summary(results, detailed=args.detailed, color=consoleColor, configuration=configuration, )
+                report_summary(
+                    results,
+                    detailed=args.detailed,
+                    color=consoleColor,
+                    configuration=configuration,
+                )
             return
 
-        report_summary(results, detailed=args.detailed, color=consoleColor, configuration=configuration, )
+        report_summary(
+            results,
+            detailed=args.detailed,
+            color=consoleColor,
+            configuration=configuration,
+        )
         return
 
     if args.helpfilter:
@@ -757,10 +888,20 @@ def report_cmd(args, configuration, report_file=None):
 
     if pager:
         with console.pager():
-            results.print_report(terse=args.terse, noheader=args.no_header, count=args.count, color=consoleColor, )
+            results.print_report(
+                terse=args.terse,
+                noheader=args.no_header,
+                count=args.count,
+                color=consoleColor,
+            )
         return
-    results.print_report(terse=args.terse, row_count=args.row_count, noheader=args.no_header, count=args.count,
-        color=consoleColor, )
+    results.print_report(
+        terse=args.terse,
+        row_count=args.row_count,
+        noheader=args.no_header,
+        count=args.count,
+        color=consoleColor,
+    )
 
 
 def report_summary(report, configuration, detailed=None, color=None):
@@ -780,18 +921,34 @@ def report_summary(report, configuration, detailed=None, color=None):
     table.add_column("Total Runs", style=consoleColor)
 
     for k in test_breakdown.keys():
-        table.add_row(k, str(test_breakdown[k]["pass"]), str(test_breakdown[k]["fail"]),
-            str(test_breakdown[k]["runs"]), )
-    pass_results = Report(filter_args={"state": "PASS"}, format_args="name,id,executor,state,returncode,runtime",
-        report_file=report.reportfile(), configuration=configuration, )
+        table.add_row(
+            k,
+            str(test_breakdown[k]["pass"]),
+            str(test_breakdown[k]["fail"]),
+            str(test_breakdown[k]["runs"]),
+        )
+    pass_results = Report(
+        filter_args={"state": "PASS"},
+        format_args="name,id,executor,state,returncode,runtime",
+        report_file=report.reportfile(),
+        configuration=configuration,
+    )
 
-    fail_results = Report(filter_args={"state": "FAIL"}, format_args="name,id,executor,state,returncode,runtime",
-        report_file=report.reportfile(), configuration=configuration, )
+    fail_results = Report(
+        filter_args={"state": "FAIL"},
+        format_args="name,id,executor,state,returncode,runtime",
+        report_file=report.reportfile(),
+        configuration=configuration,
+    )
 
-    print_report_summary_output(report, table, pass_results, fail_results, color=color, detailed=detailed)
+    print_report_summary_output(
+        report, table, pass_results, fail_results, color=color, detailed=detailed
+    )
 
 
-def print_report_summary_output(report, table, pass_results, fail_results, color=None, detailed=None):
+def print_report_summary_output(
+    report, table, pass_results, fail_results, color=None, detailed=None
+):
     """Print output of ``buildtest report summary``.
 
     Args:
