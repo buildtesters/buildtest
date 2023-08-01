@@ -219,7 +219,7 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse  -e -f -h -n -p -s -t c clear l list p path sm summary"
+      local opts="--detailed --end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse -d -e -f -h -n -p -s -t c clear l list p path sm summary"
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       case "${prev}" in --filter)
         COMPREPLY=( $( compgen -W "$(_avail_report_filterfields)" -- $cur ) )
@@ -456,9 +456,9 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       ;;
     *)
-      local cmds="build buildspec cd cdash clean commands config debugreport docs help history info inspect path report schema schemadocs stats stylecheck tutorial-examples unittests"
-      local alias_cmds="bd bc cg cmd debug h hy it rt style test"
-      local opts="--color --config --debug --editor --help --helpcolor --help-all --loglevel --logpath --no-color --print-log --report --version --view-log -c -d -h -l -p -r -V"
+      local cmds="build buildspec cd cdash clean commands config debugreport docs help history info inspect path report schema schemadocs show stats stylecheck tutorial-examples unittests"
+      local alias_cmds="bd bc cg cmd debug h hy it rt s style test"
+      local opts="--color --config --debug --editor --help --helpcolor --help-all --loglevel --logpath --no-color --print-log --report --version --view-log -c -d -h -l -p -r -H -V"
 
 
       case "${cur}" in
