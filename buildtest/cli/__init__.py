@@ -410,6 +410,10 @@ def misc_menu(subparsers):
         help="Show help message for command",
     )
 
+    subparsers.add_parser(
+        "commands", help="Display buildtest commands", aliases=["cmd"]
+    )
+
 
 def stylecheck_menu(subparsers):
     """This method will create command options for ``buildtest stylecheck``
