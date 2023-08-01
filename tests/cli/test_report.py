@@ -353,5 +353,6 @@ def test_report_path():
         count = None
         color = None
         pager = None
+        detailed = None
 
     report_cmd(args, configuration=configuration)
