@@ -613,6 +613,7 @@ def build_menu(subparsers):
         action="store_true",
         help="Rerun last successful buildtest build command.",
     )
+
     filter_group.add_argument(
         "-f",
         "--filter",
@@ -1109,7 +1110,7 @@ def report_menu(subparsers, parent_parser):
         help="Summarize test report",
         parents=[parent_parser["pager"]],
     )
-    filter_group = parser_report.add_argument_group("filter", "Filter and Format table")
+    filter_group = parser_report.add_argument_group("filter", "Filter options")
 
     # buildtest report
     filter_group.add_argument(
@@ -1119,27 +1120,42 @@ def report_menu(subparsers, parent_parser):
     )
 
     filter_group.add_argument(
-        "--format",
-        help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
-    )
-    filter_group.add_argument(
         "--helpfilter",
         action="store_true",
         help="List available filter fields to be used with --filter option",
     )
-    filter_group.add_argument(
-        "--helpformat", action="store_true", help="List of available format fields"
-    )
+
     filter_group.add_argument(
         "--filterfields",
         action="store_true",
         help="Print raw filter fields for --filter option to filter the report",
     )
-    filter_group.add_argument(
+
+    format_group = parser_report.add_argument_group("format", "Format options")
+
+    format_group.add_argument(
+        "--helpformat", action="store_true", help="List of available format fields"
+    )
+
+    format_group.add_argument(
         "--formatfields",
         action="store_true",
         help="Print raw format fields for --format option to format the report",
     )
+
+    format_detailed_group = parser_report.add_mutually_exclusive_group()
+    format_detailed_group.add_argument(
+        "--format",
+        help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
+    )
+
+    format_detailed_group.add_argument(
+        "-d",
+        "--detailed",
+        help="Print a detailed summary of the test results",
+        action="store_true",
+    )
+
     pass_fail = parser_report.add_mutually_exclusive_group()
 
     pass_fail.add_argument(

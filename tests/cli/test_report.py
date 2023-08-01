@@ -55,6 +55,15 @@ def test_report():
     result.print_report()
 
 
+def test_report_detailed():
+    # buildtest report --detailed
+    Report(configuration=configuration, format_detailed=True)
+
+    # buildtest report --detailed --format name
+    with pytest.raises(BuildTestError):
+        Report(configuration=configuration, format_detailed=True, format_args="name")
+
+
 @pytest.mark.cli
 def test_report_format():
     # buildtest report --helpformat
@@ -344,5 +353,6 @@ def test_report_path():
         count = None
         color = None
         pager = None
+        detailed = None
 
     report_cmd(args, configuration=configuration)

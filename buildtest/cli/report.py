@@ -77,6 +77,10 @@ class Report:
         "buildspec": [],
     }
 
+    format_fields_detailed = (
+        "name,id,user,state,returncode,runtime,outfile,errfile,buildspec"
+    )
+
     def __init__(
         self,
         configuration,
@@ -91,6 +95,7 @@ class Report:
         oldest=None,
         count=None,
         pager=None,
+        format_detailed=None,
         detailed=None,
         color=None,
     ):
@@ -108,6 +113,7 @@ class Report:
             oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
             count (int, optional): Fetch limited number of rows get printed for all tests discovered. This is specified via ``buildtest report --count``
             pager (bool, optional): Enabling PAGING output for ``buildtest report``. This can be specified via ``buildtest report --pager``
+            format_detailed(bool, optional): Print a detailed summary of the test results. This can be specified via ``buildtest report --detailed``
             color (str, optional): An instance of a string class that tells print_report what color the output should be printed in.
 
         """
@@ -125,6 +131,16 @@ class Report:
         self.pager = pager
         self.color = color
         self.input_report = report_file
+
+        # if detailed option is specified
+        if format_detailed:
+            self.format = self.format_fields_detailed
+
+        # if both format and detailed options are specified
+        if format_detailed and format_args:
+            raise BuildTestError(
+                "Argument -d/--detailed is not allowed with argument --format"
+            )
 
         # if no report specified use default report
         if not self.input_report:
@@ -828,6 +844,7 @@ def report_cmd(args, configuration, report_file=None):
         oldest=args.oldest,
         report_file=report_file,
         count=args.count,
+        format_detailed=args.detailed,
     )
 
     if args.report_subcommand in ["path", "p"]:
