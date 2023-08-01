@@ -13,6 +13,9 @@ v1.5 (TBD)
 - Add support for `profiles <https://buildtest.readthedocs.io/en/devel/gettingstarted/buildingtest.html#using-profiles>`_ which allows one to run a set of `buildtest build` options given a profile name via command ``buildtest build --profile=<NAME>``. Add support for saving profile via ``buildtest build --save-profile`` which will record command and save into buildtest configuration file. `#1489 <https://github.com/buildtesters/buildtest/pull/1489>`_
 - Rename ``buildtest help`` to ``buildtest show`` `#1530 <https://github.com/buildtesters/buildtest/pull/1530>`_
 - Remove option ``buildtest build --disable-executor-check`` `#1541 <https://github.com/buildtesters/buildtest/pull/1541>`_
+- Add command ``buildtest --help-all`` to show all commands and options for buildtest and change behavior of ``buildtest --help`` to only show a subset of commands. `#1568 <https://github.com/buildtesters/buildtest/pull/1568>`_
+- Add ``buildtest report --detailed`` which will show detailed information about test record. `#1567 <https://github.com/buildtesters/buildtest/pull/1567>`_
+- Add alias ``buildtest config val`` for ``buildtest config validate`` command `#1559 <https://github.com/buildtesters/buildtest/pull/1559/>`_
 
 **Misc Updates**
 
@@ -25,6 +28,7 @@ v1.5 (TBD)
 - Fix bug with ``buildtest report --pass`` and ``buildtest report --fail`` where test records were not filtered properly `#1524 <https://github.com/buildtesters/buildtest/pull/1524>`_
 - Fix error in buildtest configuration file used for tutorials `#1513 <https://github.com/buildtesters/buildtest/pull/1513>`_
 - Hardcode version dependency for jsonschema package to 4.18 since RefResolver is deprecated `#1520 <https://github.com/buildtesters/buildtest/pull/1520>`_. This will be addressed in https://github.com/buildtesters/buildtest/issues/1521
+- Remove short option ``-t`` for long option ``--theme`` `#1576 <https://github.com/buildtesters/buildtest/pull/1576>`_
 
 **CI checks**
 
