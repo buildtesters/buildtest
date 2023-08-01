@@ -64,9 +64,10 @@ Shown below is an example output.
 You will get the following error if you specify both options as shown below
 
 .. dropdown:: ``buildtest report --detailed --format name``
+   :color: warning
 
     .. command-output:: buildtest report --detailed --format name
-       :returncode: 1
+       :returncode: 2
 
 Format Reports (``buildtest report --format``)
 -----------------------------------------------
