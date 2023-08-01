@@ -726,3 +726,4 @@ is an object and attributes ``tags``, ``maintainers``, ``type`` correspond to th
 
 We have added additional checks in the JSON schema for valid values for each type, for instance if you specify an invalid value for ``type`` field
 which is used to filter buildspecs by the ``type`` field, then you will get an invalid configuration file.
+
