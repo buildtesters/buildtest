@@ -1,4 +1,4 @@
-$ buildtest inspect query -b  --testpath custom_run_by_compilers/ 
+$ buildtest inspect query -b  -t custom_run_by_compilers/
 ────────────────────────────────────────────────────────────────────────────────── custom_run_by_compilers/569258a7-97a4-4beb-b4bc-1859d643bf14 ───────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Customize binary launch based on compiler

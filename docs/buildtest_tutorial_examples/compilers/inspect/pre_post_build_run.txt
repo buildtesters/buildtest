@@ -1,4 +1,4 @@
-$ buildtest inspect query --testpath pre_post_build_run 
+$ buildtest inspect query -t pre_post_build_run
 ───────────────────────────────────────────────────────────────────────────────────── pre_post_build_run/52b3e3cd-9764-400b-922d-a4b087cca93b ─────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: example using pre_build, post_build, pre_run, post_run example

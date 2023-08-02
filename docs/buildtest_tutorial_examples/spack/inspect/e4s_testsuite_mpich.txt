@@ -1,4 +1,4 @@
-$ buildtest inspect query -o -e --testpath mpich_e4s_testsuite 
+$ buildtest inspect query -o -e -t mpich_e4s_testsuite
 ──────────────────────────────────────────────────────────────────────────────────── mpich_e4s_testsuite/0c47b479-3a67-45c4-aef5-4dfdfe61232d ─────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Run E4S Testsuite mpich test

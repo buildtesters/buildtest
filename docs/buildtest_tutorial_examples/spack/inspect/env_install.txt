@@ -1,4 +1,4 @@
-$ buildtest inspect query --testpath install_in_spack_env 
+$ buildtest inspect query -t install_in_spack_env
 ──────────────────────────────────────────────────────────────────────────────────── install_in_spack_env/0f16f091-372b-44e4-8726-b1c1e39a68c3 ────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Install m4 and zlib in a spack environment named m4_zlib

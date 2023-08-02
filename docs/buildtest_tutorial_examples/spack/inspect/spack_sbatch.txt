@@ -1,4 +1,4 @@
-$ buildtest inspect query --testpath spack_sbatch_example 
+$ buildtest inspect query -t spack_sbatch_example
 ──────────────────────────────────────────────────────────────────────────────────── spack_sbatch_example/f86aa2f5-b3fa-40e9-94d1-d7b1faf58c25 ────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: sbatch directives can be defined in spack schema

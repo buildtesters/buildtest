@@ -1,4 +1,4 @@
-$ buildtest inspect query --testpath hello_c/ 
+$ buildtest inspect query -t hello_c/
 ────────────────────────────────────────────────────────────────────────────────────────── hello_c/a40def68-aca7-4fde-8ac7-1559bc1f81e6 ───────────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Hello World C Compilation

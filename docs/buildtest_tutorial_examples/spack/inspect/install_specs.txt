@@ -1,4 +1,4 @@
-$ buildtest inspect query -o --testpath install_specs_example clone_spack_and_install_zlib 
+$ buildtest inspect query -o -t install_specs_example clone_spack_and_install_zlib
 ─────────────────────────────────────────────────────────────────────────────────── install_specs_example/40031985-7bf5-41c1-a58e-dbf8edfbda49 ────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Install zlib from an existing spack instance

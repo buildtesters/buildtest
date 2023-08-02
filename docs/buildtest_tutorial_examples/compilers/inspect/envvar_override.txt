@@ -1,4 +1,4 @@
-$ buildtest inspect query --testpath override_environmentvars/ 
+$ buildtest inspect query -t override_environmentvars/
 ────────────────────────────────────────────────────────────────────────────────── override_environmentvars/8a3cd42a-89cf-4dd4-ac71-769482ead72c ──────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: override default environment variables
