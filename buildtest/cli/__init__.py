@@ -312,7 +312,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         )
         parent_parser["theme"] = argparse.ArgumentParser(add_help=False)
         parent_parser["theme"].add_argument(
-            "-t",
             "--theme",
             metavar="Color Themes",
             help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themese",
