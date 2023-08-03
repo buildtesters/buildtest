@@ -160,7 +160,7 @@ def view_configuration(configuration, theme=None, pager=None):
 
 
 def list_profiles(configuration, theme=None, print_yaml=None):
-    """Display the list of profile for buildtest configuration file.This implements command ``buildtest config profiles list``
+    """Display the list of profile for buildtest configuration file. This implements command ``buildtest config profiles list``
 
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
