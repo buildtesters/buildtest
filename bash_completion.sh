@@ -239,7 +239,7 @@ _buildtest ()
     config|cg)
 
 
-      local cmds="-h --help co compilers e edit ex executors p path profile systems validate v view"
+      local cmds="-h --help co compilers e edit ex executors p path profiles systems validate v view"
 
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
@@ -272,7 +272,7 @@ _buildtest ()
             return
           esac
         ;;
-        profile)
+        profiles)
           local opts="--help -h list"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           if [[ "${prev}" == "list" ]]; then

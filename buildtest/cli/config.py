@@ -24,8 +24,8 @@ def config_cmd(args, configuration, editor, system):
     if args.config in ["view", "v"]:
         view_configuration(configuration, theme=args.theme, pager=args.pager)
 
-    elif args.config in ["profile"]:
-        if args.profile == "list":
+    elif args.config in ["profiles"]:
+        if args.profiles == "list":
             list_profiles(configuration, theme=args.theme, print_yaml=args.yaml)
 
     elif args.config in ["executors", "ex"]:

@@ -990,11 +990,11 @@ def config_menu(subparsers, parent_parser):
     )
     # buildtest config profile
     profile = subparsers_config.add_parser(
-        "profile", help="Query profile from buildtest configuration"
+        "profiles", help="Query profile from buildtest configuration"
     )
     subparsers_profile = profile.add_subparsers(
         description="Query information about buildtest profiles",
-        dest="profile",
+        dest="profiles",
         metavar="",
     )
 
