@@ -280,7 +280,7 @@ _buildtest ()
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           fi
 
-          case "${prev}" in --theme|-t)
+          case "${prev}" in --theme)
               COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
               return
           esac
