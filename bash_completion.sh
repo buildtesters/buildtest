@@ -276,7 +276,7 @@ _buildtest ()
           local opts="--help -h list"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           if [[ "${prev}" == "list" ]]; then
-            local opts="--help  --theme --yaml -h -t -y"
+            local opts="--help  --theme --yaml -h -y"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           fi
 
