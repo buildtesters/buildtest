@@ -22,6 +22,7 @@ from buildtest.cli.buildspec import (
 from buildtest.cli.cd import change_directory
 from buildtest.cli.cdash import upload_test_cdash, view_cdash_project
 from buildtest.cli.clean import clean
+from buildtest.cli.commands import list_buildtest_commands
 from buildtest.cli.compilers import compiler_cmd
 from buildtest.cli.config import config_cmd
 from buildtest.cli.debugreport import print_debug_report
@@ -371,6 +372,9 @@ def main():
             no_pyflakes=args.no_pyflakes,
             apply_stylechecks=args.apply,
         )
+
+    elif args.subcommands in ["commands", "cmd"]:
+        list_buildtest_commands()
 
 
 if __name__ == "__main__":

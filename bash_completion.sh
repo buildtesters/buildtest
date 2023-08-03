@@ -133,7 +133,7 @@ _buildtest ()
 
   COMPREPLY=()   # Array variable storing the possible completions.
 
-  declare -a buildtest_opts=("--color" "--config" "--debug" "--editor" "--help" "--helpcolor" "--logpath" "--loglevel" "--print-log" "--no-color" "--report" "--version" "--view-log" "-c" "-d" "-h" "-l" "-p" "-r" "-V")
+  declare -a buildtest_opts=("--color" "--config" "--debug" "--editor" "--help" "--helpcolor" "--help-all" "--logpath" "--loglevel" "--print-log" "--no-color" "--report" "--version" "--view-log" "-c" "-d" "-h" "-l" "-p" "-r" "-H" "-V")
 
   commands_with_input=( "--color" "--config" "-c" "--report" "-r" "--loglevel" "-l" "--editor" )   # Array variable storing commands which require an input argument from the user.
 
@@ -200,7 +200,7 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
       ;;
     path)
-      local opts="-b -be -e -h -o -s -t --buildscript --buildenv --errfile --help --outfile --stagedir --testpath"
+      local opts="-b -be -e -h -o -s -t --buildscript --buildenv --errfile --help  --outfile --stagedir --testpath"
       COMPREPLY=( $( compgen -W "$(_builder_names)" -- $cur ) )
       if [[ $cur == -* ]] ; then
         COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
@@ -219,7 +219,7 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse  -e -f -h -n -p -s -t c clear l list p path sm summary"
+      local opts="--detailed --end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse -d -e -f -h -n -p -s -t c clear l list p path sm summary"
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       case "${prev}" in --filter)
         COMPREPLY=( $( compgen -W "$(_avail_report_filterfields)" -- $cur ) )
@@ -264,10 +264,10 @@ _buildtest ()
           local opts="-h --help"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         view|v)
-          local opts="--help --pager --theme -h -t"
+          local opts="--help --pager --theme -h"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
-          case "${prev}" in --theme|-t)
+          case "${prev}" in --theme)
             COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
             return
           esac
@@ -378,7 +378,7 @@ _buildtest ()
           COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
         fi
 
-        case "${prev}" in --theme|-t)
+        case "${prev}" in --theme)
           COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
           return
         esac
@@ -389,7 +389,7 @@ _buildtest ()
         if [[ $cur == -* ]] ; then
           COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
         fi
-        case "${prev}" in --theme|-t)
+        case "${prev}" in --theme)
           COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
           return
         esac
@@ -471,9 +471,10 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       ;;
     *)
-      local cmds="build buildspec cd cdash clean config debugreport docs help info inspect history path report schema schemadocs stats stylecheck tutorial-examples unittests"
-      local alias_cmds="bd bc cg debug it h hy rt style test"
-      local opts="--color --config --debug --editor --help --helpcolor --logpath --loglevel --print-log --no-color --report --version --view-log -c -d -h -l -p -r -V"
+      local cmds="build buildspec cd cdash clean commands config debugreport docs history info inspect path report schema schemadocs show stats stylecheck tutorial-examples unittests"
+      local alias_cmds="bd bc cg cmd debug hy it rt s style test"
+      local opts="--color --config --debug --editor --help --helpcolor --help-all --loglevel --logpath --no-color --print-log --report --version --view-log -c -d -h -l -p -r -H -V"
+
 
       case "${cur}" in
       # print main options to buildtest

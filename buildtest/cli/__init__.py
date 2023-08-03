@@ -4,6 +4,7 @@ interact with a global configuration for buildtest.
 """
 import argparse
 import datetime
+import sys
 
 from pygments.styles import STYLE_MAP
 from rich.color import Color, ColorParseError
@@ -11,6 +12,9 @@ from rich.color import Color, ColorParseError
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import console
 from buildtest.schemas.defaults import schema_table
+
+# Variables needed to show all sub commands and their help mesaage
+show_all_help = "-H" in sys.argv or "--help-all" in sys.argv
 
 
 def build_filters_format(val):
@@ -260,6 +264,9 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         help="Print available color options in a table format.",
     )
     parser.add_argument("-r", "--report", help="Specify path to test report file")
+    parser.add_argument(
+        "-H", "--help-all", help="List all commands and options", action="help"
+    )
 
     subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
 
@@ -305,7 +312,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         )
         parent_parser["theme"] = argparse.ArgumentParser(add_help=False)
         parent_parser["theme"].add_argument(
-            "-t",
             "--theme",
             metavar="Color Themes",
             help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themese",
@@ -328,6 +334,10 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
     misc_menu(subparsers)
     tutorial_examples_menu(subparsers)
 
+    # Displays all hidden comands
+    if show_all_help:
+        help_all(subparsers)
+
     return parser
 
 
@@ -337,6 +347,10 @@ def misc_menu(subparsers):
     Args:
         subparsers (argparse._SubParsersAction): Subparser object to add subparser
     """
+
+    # Subcommands that do not need to be shown in ``--help``
+    subparsers.add_parser("docs")
+    subparsers.add_parser("schemadocs")
 
     cd_parser = subparsers.add_parser(
         "cd", help="change directory to root of test given a test name"
@@ -353,8 +367,6 @@ def misc_menu(subparsers):
         "-y", "--yes", action="store_true", help="Confirm yes for all prompts"
     )
 
-    subparsers.add_parser("docs", help="Open buildtest docs in browser")
-    subparsers.add_parser("schemadocs", help="Open buildtest schema docs in browser")
     subparsers.add_parser(
         "debugreport",
         help="Display system information and additional information for debugging purposes.",
@@ -397,6 +409,10 @@ def misc_menu(subparsers):
         help="Show help message for command",
     )
 
+    subparsers.add_parser(
+        "commands", help="Display buildtest commands", aliases=["cmd"]
+    )
+
 
 def stylecheck_menu(subparsers):
     """This method will create command options for ``buildtest stylecheck``
@@ -405,9 +421,8 @@ def stylecheck_menu(subparsers):
         subparsers (argparse._SubParsersAction): Subparser object to add subparser
     """
 
-    stylecheck_parser = subparsers.add_parser(
-        "stylecheck", aliases=["style"], help="Run buildtest style checks"
-    )
+    # Subcommands that do not need to be shown in ``--help``
+    stylecheck_parser = subparsers.add_parser("stylecheck", aliases=["style"])
 
     stylecheck_parser.add_argument(
         "--no-black", action="store_true", help="Don't run black style check"
@@ -430,9 +445,9 @@ def unittest_menu(subparsers):
         subparsers (argparse._SubParsersAction): Subparser object to add subparser
     """
 
-    unittests_parser = subparsers.add_parser(
-        "unittests", help="Run buildtest unit tests", aliases=["test"]
-    )
+    # Subcommands that do not need to be shown in --help
+    unittests_parser = subparsers.add_parser("unittests", aliases=["test"])
+
     unittests_parser.add_argument(
         "-c",
         "--coverage",
@@ -458,10 +473,7 @@ def tutorial_examples_menu(subparsers):
         subparsers (argparse._SubParsersAction): Subparser object to add subparser
     """
 
-    subparsers.add_parser(
-        "tutorial-examples",
-        help="Generate documentation examples for Buildtest Tutorial",
-    )
+    subparsers.add_parser("tutorial-examples")
 
 
 def path_menu(subparsers):
@@ -604,6 +616,7 @@ def build_menu(subparsers):
         action="store_true",
         help="Rerun last successful buildtest build command.",
     )
+
     filter_group.add_argument(
         "-f",
         "--filter",
@@ -1118,7 +1131,7 @@ def report_menu(subparsers, parent_parser):
         help="Summarize test report",
         parents=[parent_parser["pager"]],
     )
-    filter_group = parser_report.add_argument_group("filter", "Filter and Format table")
+    filter_group = parser_report.add_argument_group("filter", "Filter options")
 
     # buildtest report
     filter_group.add_argument(
@@ -1128,27 +1141,42 @@ def report_menu(subparsers, parent_parser):
     )
 
     filter_group.add_argument(
-        "--format",
-        help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
-    )
-    filter_group.add_argument(
         "--helpfilter",
         action="store_true",
         help="List available filter fields to be used with --filter option",
     )
-    filter_group.add_argument(
-        "--helpformat", action="store_true", help="List of available format fields"
-    )
+
     filter_group.add_argument(
         "--filterfields",
         action="store_true",
         help="Print raw filter fields for --filter option to filter the report",
     )
-    filter_group.add_argument(
+
+    format_group = parser_report.add_argument_group("format", "Format options")
+
+    format_group.add_argument(
+        "--helpformat", action="store_true", help="List of available format fields"
+    )
+
+    format_group.add_argument(
         "--formatfields",
         action="store_true",
         help="Print raw format fields for --format option to format the report",
     )
+
+    format_detailed_group = parser_report.add_mutually_exclusive_group()
+    format_detailed_group.add_argument(
+        "--format",
+        help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
+    )
+
+    format_detailed_group.add_argument(
+        "-d",
+        "--detailed",
+        help="Print a detailed summary of the test results",
+        action="store_true",
+    )
+
     pass_fail = parser_report.add_mutually_exclusive_group()
 
     pass_fail.add_argument(
@@ -1313,3 +1341,26 @@ def cdash_menu(subparsers):
     upload.add_argument(
         "-o", "--open", action="store_true", help="Open CDASH report in browser"
     )
+
+
+def help_all(subparsers):
+    """This method will add parser for hidden command that can be shown when using ``--help-all/-H``
+
+    Args:
+        subparsers (argparse._SubParsersAction): Subparser object
+    """
+    hidden_parser = {
+        "tutorial-examples": "Generate documentation examples for Buildtest Tutorial",
+        "docs": "Open buildtest docs in browser",
+        "schemadocs": "Open buildtest schema docs in browser",
+        "unittests": {"help": "Run buildtest unit tests", "aliases": ["test"]},
+        "stylecheck": {"help": "Run buildtest style checks", "aliases": ["style"]},
+    }
+
+    for command, val in hidden_parser.items():
+        if type(val) is dict:
+            subparsers.add_parser(
+                command, help=val.get("help"), aliases=val.get("aliases")
+            )
+        else:
+            subparsers.add_parser(command, help=val)
