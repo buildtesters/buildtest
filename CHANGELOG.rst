@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-v1.5 (TBD)
-----------
+v1.5 (Aug 4th, 2023)
+----------------------
 
 **Command Line Changes**
 
@@ -10,7 +10,7 @@ v1.5 (TBD)
 - Change behavior of ``buildtest report --count`` to allow a negative value which will show all test records. `#1468 <https://github.com/buildtesters/buildtest/pull/1468>`_
 - Change behavior of ``buildtest build --filter`` with multiple filters from comma (`,`) to semi-colon (`;`)  `#1471 <https://github.com/buildtesters/buildtest/pull/1471>`_
 - Remove option ``buildtest buildspec maintainers --list`` `#1474 <https://github.com/buildtesters/buildtest/pull/1474>`_
-- Add support for `profiles <https://buildtest.readthedocs.io/en/devel/gettingstarted/buildingtest.html#using-profiles>`_ which allows one to run a set of `buildtest build` options given a profile name via command ``buildtest build --profile=<NAME>``. Add support for saving profile via ``buildtest build --save-profile`` which will record command and save into buildtest configuration file. `#1489 <https://github.com/buildtesters/buildtest/pull/1489>`_
+- Add support for `profiles <https://buildtest.readthedocs.io/en/devel/gettingstarted/buildingtest.html#using-profiles>`_ which allows one to run a set of ``buildtest build`` options given a profile name via command ``buildtest build --profile=<NAME>``. Add support for saving profile via ``buildtest build --save-profile`` which will record command and save into buildtest configuration file. `#1489 <https://github.com/buildtesters/buildtest/pull/1489>`_
 - Rename ``buildtest help`` to ``buildtest show`` `#1530 <https://github.com/buildtesters/buildtest/pull/1530>`_
 - Remove option ``buildtest build --disable-executor-check`` `#1541 <https://github.com/buildtesters/buildtest/pull/1541>`_
 - Add command ``buildtest --help-all`` to show all commands and options for buildtest and change behavior of ``buildtest --help`` to only show a subset of commands. `#1568 <https://github.com/buildtesters/buildtest/pull/1568>`_
