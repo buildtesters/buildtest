@@ -19,7 +19,7 @@ v1.5 (Aug 4th, 2023)
 
 **Misc Updates**
 
-- buildtest now uses `pyproject.toml` to specify project dependencies, coverage, black and isort configuration. The installation script will no longer install from requirements.txt, instead it will use content from `pyproject.toml`. `#1545 <https://github.com/buildtesters/buildtest/pull/1545>`_, `#1547 <https://github.com/buildtesters/buildtest/pull/1547>`_
+- buildtest now uses `pyproject.toml <https://github.com/buildtesters/buildtest/blob/devel/pyproject.toml>`_ to specify project dependencies, coverage, black and isort configuration. The installation script will no longer install from requirements.txt, instead it will use content from `pyproject.toml`. `#1545 <https://github.com/buildtesters/buildtest/pull/1545>`_, `#1547 <https://github.com/buildtesters/buildtest/pull/1547>`_
 - Deprecate support for Python 3.7  `#1514 <https://github.com/buildtesters/buildtest/pull/1514>`_
 - Add a `security page <https://github.com/buildtesters/buildtest/blob/devel/SECURITY.md>`_ to report vulnerability  `#1473 <https://github.com/buildtesters/buildtest/pull/1473>`_
 - Reorganize example buildspecs for **script.schema.json**, **compilers.schema.json** and **spack.schema.json** into separate buildspecs used for regression tests. This was addressed in `#1496 <https://github.com/buildtesters/buildtest/pull/1496>`_, `#1498 <https://github.com/buildtesters/buildtest/pull/1498>`_, `#1499 <https://github.com/buildtesters/buildtest/pull/1499>`_
