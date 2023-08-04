@@ -199,13 +199,17 @@
         "regex": {
           "$ref": "#/definitions/regex"
         },
+        "vars": {
+          "$ref": "#/definitions/vars"
+        },
         "file_regex": {
           "$ref": "#/definitions/file_regex_in_metrics"
         }
       },
         "oneOf": [
           { "required": ["regex" ] },
-          { "required": [ "file_regex"] }
+          { "required": [ "file_regex"] },
+          { "required": [ "vars"] }
         ]
     },
     "metrics": {
@@ -216,6 +220,24 @@
       },
       "additionalProperties": {
         "$ref": "#/definitions/metrics_field"
+      }
+    },
+    "vars": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Specify the type of the variable",
+          "enum": [
+            "str",
+            "int",
+            "float"
+          ]
+        }
       }
     },
     "state": {
