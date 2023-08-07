@@ -988,6 +988,24 @@ def config_menu(subparsers, parent_parser):
     compilers = subparsers_config.add_parser(
         "compilers", aliases=["co"], help="Search compilers"
     )
+    # buildtest config profile
+    profile = subparsers_config.add_parser(
+        "profiles", help="Query profile from buildtest configuration"
+    )
+    subparsers_profile = profile.add_subparsers(
+        description="Query information about buildtest profiles",
+        dest="profiles",
+        metavar="",
+    )
+
+    subparsers_profile_list = subparsers_profile.add_parser(
+        "list", help="List all profiles", parents=[parent_parser["theme"]]
+    )
+
+    # buildtest config profile list options
+    subparsers_profile_list.add_argument(
+        "-y", "--yaml", action="store_true", help="List Profile details in YAML Format"
+    )
 
     subparsers_config.add_parser(
         "edit", aliases=["e"], help="Open configuration file in editor"

@@ -237,7 +237,10 @@ _buildtest ()
     ;;
 
     config|cg)
-      local cmds="-h --help co compilers e edit ex executors p path systems val validate v view"
+
+
+      local cmds="-h --help co compilers e edit ex executors p path profiles systems validate v view"
+
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
@@ -269,6 +272,19 @@ _buildtest ()
             return
           esac
         ;;
+        profiles)
+          local opts="--help -h list"
+          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          if [[ "${prev}" == "list" ]]; then
+            local opts="--help  --theme --yaml -h -y"
+            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          fi
+
+          case "${prev}" in --theme)
+              COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
+              return
+          esac
+          ;;
       esac
       ;;
     inspect|it)
@@ -389,7 +405,6 @@ _buildtest ()
         ;;
       validate|val)
         local opts="--buildspec --exclude --executor --tag -b -e -t -x "
-
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
         # auto completion for 'buildtest buildspec validate' options
         if [[ "${prev}" == "-b" ]] || [[ "${prev}" == "--buildspec" ]] || [[ "${prev}" == "-x" ]] || [[ "${prev}" == "--exclude" ]]; then

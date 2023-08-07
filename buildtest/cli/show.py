@@ -316,6 +316,9 @@ def print_config_show():
         "buildtest config compilers test",
         "Test each compiler instance by performing module load test",
     )
+    table.add_row(
+        "buildtest config profiles list", "Listing all profiles from configuration file"
+    )
     console.print(table)
 
 

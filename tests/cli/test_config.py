@@ -3,6 +3,7 @@ import os
 import pytest
 
 from buildtest.cli.config import (
+    list_profiles,
     validate_config,
     view_configuration,
     view_executors,
@@ -64,6 +65,18 @@ def test_config_validate():
 @pytest.mark.cli
 def test_config_path():
     view_path(configuration)
+
+
+@pytest.mark.cli
+def test_config_profile():
+    # buildtest config profiles
+    list_profiles(configuration)
+
+    # buildtest config profiles --theme emacs --yaml
+    list_profiles(configuration, theme="emacs", print_yaml=True)
+
+    # buildtest config profiles --yaml
+    list_profiles(configuration, print_yaml=True)
 
 
 @pytest.mark.cli
