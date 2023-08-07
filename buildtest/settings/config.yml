@@ -89,8 +89,3 @@ system:
       project: buildtest
       site: generic
       buildname: tutorials
-    profiles:
-      pass:
-        tags:
-        - pass
-        testdir: /Users/kingxley/buildtest/var/tests
