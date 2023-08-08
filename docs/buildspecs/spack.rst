@@ -378,8 +378,6 @@ Let's say if we were to test ``m4``, we can load the package prior to testing it
 that can be passed to ``spack load`` command with a list of specs defined by ``specs`` property. The below command would translate to
 ``spack load --only package m4``
 
-
-
 .. literalinclude:: ../../examples/spack/spack_load.yml
   :language: yaml
   :emphasize-lines: 9-11
