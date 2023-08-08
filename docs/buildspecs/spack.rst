@@ -369,3 +369,27 @@ for buildtest to install spack in the environment.
 .. dropdown:: ``buildtest inspect query --testpath clone_spack_automatically clone_spack_and_specify_root``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/clone_spack.txt
+
+Loading Specs
+---------------
+
+We can load specs using ``spack load`` which can be used for running tests or simply loading the package once it is installed,
+Let's say if we were to test ``m4``, we can load the package prior to testing it. The ``load`` refers to ``spack load`` and ``options`` refers to options
+that can be passed to ``spack load`` command with a list of specs defined by ``specs`` property. The below command would translate to
+``spack load --only package m4``
+
+
+
+.. literalinclude:: ../../examples/spack/spack_load.yml
+  :language: yaml
+  :emphasize-lines: 9-11
+
+Let's build this by running the following
+
+.. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/spack/spack_load.yml ``
+
+    .. program-output:: cat buildtest_tutorial_examples/spack/build/spack_load.txt
+
+.. dropdown:: ``buildtest inspect query -o --testpath spack_load_example``
+
+    .. program-output:: cat buildtest_tutorial_examples/spack/inspect/spack_load.txt
