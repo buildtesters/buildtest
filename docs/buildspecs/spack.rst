@@ -384,7 +384,7 @@ that can be passed to ``spack load`` command with a list of specs defined by ``s
 
 Let's build this by running the following
 
-.. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/spack/spack_load.yml ``
+.. dropdown:: ``buildtest build -b /home/spack/buildtest/examples/spack/spack_load.yml``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/build/spack_load.txt
 
