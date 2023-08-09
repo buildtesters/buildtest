@@ -130,10 +130,6 @@
             "options": {
               "type": "string",
               "description": "Pass options to ``spack env deactivate`` command"
-            },
-            "dir": {
-              "type": "string",
-              "description": "Deactivate spack environment from directory."
             }
           }
         },
@@ -149,6 +145,10 @@
             "options": {
               "type": "string",
               "description": "Pass options to ``spack env activate`` command"
+            },
+            "dir": {
+              "type": "string",
+              "description": "Activate spack environment from directory."
             }
           }
         },
