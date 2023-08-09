@@ -169,8 +169,8 @@ def list_profiles(configuration, theme=None, print_yaml=None):
     """
 
     if not configuration.target_config.get("profiles"):
-        sys.exit("No profiles found in configuration file")
-
+        console.print(f"Unable to list any profiles because no profiles found in configuration file: {configuration.file}. Please create a profile using `buildtest build --save-profile`")
+        return
     if print_yaml:
         profile_configuration = yaml.dump(
             configuration.target_config["profiles"], indent=2
