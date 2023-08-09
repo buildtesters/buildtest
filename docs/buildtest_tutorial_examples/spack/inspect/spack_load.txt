@@ -1,4 +1,4 @@
-$ buildtest inspect query -o --testpath spack_load_example 
+$ buildtest inspect query -t spack_load_example
 ───────────────────────────────────────────────────────── spack_load_example/60d45649-5ee2-4efd-978b-58b7bafbc10d ──────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Run spack load for m4 package and run tests
@@ -13,27 +13,6 @@ Build Script: /home/spack/runs/generic.local.bash/spack_load/spack_load_example/
 Output File: /home/spack/runs/generic.local.bash/spack_load/spack_load_example/60d45649/spack_load_example.out
 Error File: /home/spack/runs/generic.local.bash/spack_load/spack_load_example/60d45649/spack_load_example.err
 Log File: /home/spack/buildtest/var/logs/buildtest_hhrqf19o.log
-────────────────────────────── Output File: /home/spack/runs/generic.local.bash/spack_load/spack_load_example/60d45649/spack_load_example.out ──────────────────────────────
-==> Spack test 47fcdc7a-1994-4013-98c2-eba6d48e7103                                                                                                                         
-==> Testing package m4-1.4.18-mkc3u4x                                                                                                                                       
-==> Results for test suite '47fcdc7a-1994-4013-98c2-eba6d48e7103':                                                                                                          
-==>   m4-1.4.18-mkc3u4x PASSED                                                                                                                                              
-==> Testing package m4-1.4.18-mkc3u4x                                                                                                                                       
-==> [2023-08-08-18:10:45.271339] test: ensuring m4 version is 1.4.18                                                                                                        
-==> [2023-08-08-18:10:45.272816] '/home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/m4-1.4.18-mkc3u4x2p2wie6jfhuku7g5rkovcrxps/bin/m4' '--version'    
-m4 (GNU M4) 1.4.18                                                                                                                                                          
-Copyright (C) 2016 Free Software Foundation, Inc.                                                                                                                           
-License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.                                                                                              
-This is free software: you are free to change and redistribute it.                                                                                                          
-There is NO WARRANTY, to the extent permitted by law.                                                                                                                       
-Written by Rene' Seindal.                                                                                                                                                   
-PASSED                                                                                                                                                                      
-==> [2023-08-08-18:10:45.282548] test: ensuring m4 example succeeds                                                                                                         
-==> [2023-08-08-18:10:45.282862] '/home/spack/spack-workspace/software/linux-ubuntu18.04-x86_64/gcc-7.5.0/m4-1.4.18-mkc3u4x2p2wie6jfhuku7g5rkovcrxps/bin/m4' '/home/spack/.s
-// macro is defined                                                                                                                                                         
-Hello, World!                                                                                                                                                               
-PASSED                                                                                                                                                                      
-                                                                                                                                                                            
 ─────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_load/spack_load_example/60d45649/spack_load_example.sh ────────────────────────────────
 #!/bin/bash                                                                                                                                                                 
 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                           
