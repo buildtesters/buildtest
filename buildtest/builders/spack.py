@@ -249,18 +249,6 @@ class SpackBuilder(BuilderBase):
                 if spack_env["deactivate"].get("name"):
                     cmd.append(spack_env["deactivate"]["name"])
 
-                # deactivate spack environment via directory 'spack env deactivate -d <dir>'
-                elif spack_env["deactivate"].get("dir"):
-                    env_dir = resolve_path(spack_env["deactivate"]["dir"], exist=False)
-                    if not env_dir:
-                        raise BuildTestError(
-                            f"Unable to resolve directory: {spack_env['deactivate']['dir']} for deactivating spack environment via directory. Please specify a valid directory"
-                        )
-                    cmd += ["-d", env_dir]
-
-                spack_env_deactivate_line = " ".join(cmd)
-                lines.append(spack_env_deactivate_line)
-
         # activate environment ('spack env activate')
         if spack_env.get("activate"):
             opts = spack_env["activate"].get("options") or ""
