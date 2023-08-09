@@ -373,10 +373,13 @@ for buildtest to install spack in the environment.
 Loading Specs
 ---------------
 
-We can load specs using ``spack load`` which can be used for running tests or simply loading the package once it is installed,
-Let's say if we were to test ``m4``, we can load the package prior to testing it. The ``load`` refers to ``spack load`` and ``options`` refers to options
-that can be passed to ``spack load`` command with a list of specs defined by ``specs`` property. The below command would translate to
-``spack load --only package m4``
+We can load specs into our user environment via ``spack load`` which can be used for running tests or
+simply loading the package once it is installed. In this next example, we will test ``m4`` package,
+where we load the package first prior to testing it. The ``load`` refers to ``spack load`` and ``options``
+refers to command options passed to ``spack load`` command with a list of specs to load defined
+by ``specs`` property.
+
+In this test, the command would translate to ``spack load --only package m4``
 
 .. literalinclude:: ../../examples/spack/spack_load.yml
   :language: yaml
@@ -388,6 +391,7 @@ Let's build this by running the following
 
     .. program-output:: cat buildtest_tutorial_examples/spack/build/spack_load.txt
 
-.. dropdown:: ``buildtest inspect query -o --testpath spack_load_example``
+Let's take a look at the generated test, take note of the `spack load` command
+.. dropdown:: ``buildtest inspect query -t spack_load_example``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/spack_load.txt
