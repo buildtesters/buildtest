@@ -205,7 +205,7 @@ class SpackBuilder(BuilderBase):
 
     def _spack_environment(self, spack_env):
         """This method is responsible for  creating a spack environment, activate an existing
-        spack environment, create a spack environment from a directory and a manifest file (spack.yaml, spack.lock)
+        spack environment, deactivating an existing spack environment, create a spack environment from a directory and a manifest file (spack.yaml, spack.lock)
 
         Args:
             spack_env (dict): Contains property ``env`` from buildspec dictionary
@@ -240,6 +240,26 @@ class SpackBuilder(BuilderBase):
 
             spack_env_create_line = " ".join(cmd)
             lines += [spack_env_create_line]
+
+            # deactivate environment ('spack env deactivate')
+            if spack_env.get("deactivate"):
+                opts = spack_env["deactivate"].get("options") or ""
+                cmd = ["spack env deactivate", opts]
+                # deactivate spack environment via name 'spack env deactivate <name>'
+                if spack_env["deactivate"].get("name"):
+                    cmd.append(spack_env["deactivate"]["name"])
+
+                # deactivate spack environment via directory 'spack env activate -d <dir>'
+                elif spack_env["deactivate"].get("dir"):
+                    env_dir = resolve_path(spack_env["deactivate"]["dir"], exist=False)
+                    if not env_dir:
+                        raise BuildTestError(
+                            f"Unable to resolve directory: {spack_env['deactivate']['dir']} for deactivating spack environment via directory. Please specify a valid directory"
+                        )
+                    cmd += ["-d", env_dir]
+
+                spack_env_deactivate_line = " ".join(cmd)
+                lines.append(spack_env_deactivate_line)
 
         # activate environment ('spack env activate')
         if spack_env.get("activate"):
