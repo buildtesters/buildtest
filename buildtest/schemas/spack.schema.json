@@ -120,7 +120,7 @@
         },
         "deactivate": {
           "additionalProperties": false,
-          "type": "boolean",
+          "type": "object",
           "description": "Deactivate a spack environment prior to activating it via ``spack env deactivate``",
         },
         "activate": {
