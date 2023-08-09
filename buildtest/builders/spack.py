@@ -249,7 +249,7 @@ class SpackBuilder(BuilderBase):
                 if spack_env["deactivate"].get("name"):
                     cmd.append(spack_env["deactivate"]["name"])
 
-                # deactivate spack environment via directory 'spack env activate -d <dir>'
+                # deactivate spack environment via directory 'spack env deactivate -d <dir>'
                 elif spack_env["deactivate"].get("dir"):
                     env_dir = resolve_path(spack_env["deactivate"]["dir"], exist=False)
                     if not env_dir:
