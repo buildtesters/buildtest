@@ -122,6 +122,15 @@ class SpackBuilder(BuilderBase):
             else:
                 lines.append(f"spack install {opts}")
 
+        if spack_configuration.get("load"):
+            opts = spack_configuration["load"].get("option") or ""
+
+            if spack_configuration["load"].get("specs"):
+                for spec in spack_configuration["load"]["specs"]:
+                    lines.append(f"spack load {opts} {spec}")
+            else:
+                lines.append(f"spack load{opts}")
+
         if spack_configuration.get("test"):
             lines += self._spack_test(spack_configuration)
 
