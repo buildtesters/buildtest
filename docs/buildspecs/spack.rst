@@ -161,7 +161,7 @@ any active environment and run ``spack env activate``
 
 .. literalinclude:: ../../examples/spack/spack_env_deactivate.yml
   :language: yaml
-  :emphasize-lines: 11-14
+  :emphasize-lines: 10-14
 
 Let's build this by running the following
 
