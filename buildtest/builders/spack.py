@@ -244,9 +244,6 @@ class SpackBuilder(BuilderBase):
             # deactivate environment ('spack env deactivate')
             if spack_env.get("deactivate"):
                 cmd = ["spack env deactivate"]
-                # deactivate spack environment via name 'spack env deactivate <name>'
-                if spack_env["deactivate"].get("name"):
-                    cmd.append(spack_env["deactivate"]["name"])
 
         # activate environment ('spack env activate')
         if spack_env.get("activate"):
