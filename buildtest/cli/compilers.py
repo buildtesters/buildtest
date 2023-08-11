@@ -32,11 +32,13 @@ def compiler_cmd(args, configuration):
         compiler_test(configuration, args.compiler_names)
 
     if args.compilers == "list":
-        list_compilers(configuration=configuration, print_yaml=args.yaml, print_json=args.json)
+        list_compilers(
+            configuration=configuration, print_yaml=args.yaml, print_json=args.json
+        )
 
 
 def list_compilers(configuration, print_yaml=None, print_json=None):
-    """ This method will print available compilers found in configuration file which
+    """This method will print available compilers found in configuration file which
         can be retrieved by running ``buildtest config compilers list``
 
     Args:
@@ -55,6 +57,8 @@ def list_compilers(configuration, print_yaml=None, print_json=None):
         return
 
     bc.print_compilers()
+
+
 def compiler_test(configuration, compiler_names=None):
     """This method implements ``buildtest config compilers test`` which tests
     the compilers with the corresponding modules if set. This command iterates
