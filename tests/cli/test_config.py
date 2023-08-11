@@ -78,6 +78,10 @@ def test_config_profile():
     # buildtest config profiles --yaml
     list_profiles(configuration, print_yaml=True)
 
+@pytest.mark.cli
+def test_profiles_remove():
+    # buildtest config profiles remove
+    def remove_profiles(configuration, names)
 
 @pytest.mark.cli
 def test_config_executors():
