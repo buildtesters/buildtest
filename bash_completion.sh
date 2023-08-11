@@ -239,7 +239,7 @@ _buildtest ()
     config|cg)
 
 
-      local cmds="-h --help co compilers e edit ex executors p path profiles remove systems validate v view"
+      local cmds="-h --help co compilers e edit ex executors p path profiles systems validate v view"
 
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
@@ -278,7 +278,7 @@ _buildtest ()
           esac
         ;;
         profiles)
-          local opts="--help -h remove rm list"
+          local opts="--help -h list remove rm"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           if [[ "${prev}" == "list" ]]; then
             local opts="--help  --theme --yaml -h -y"
