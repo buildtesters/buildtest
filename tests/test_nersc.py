@@ -16,12 +16,6 @@ class TestNersc:
     hostname = socket.getfqdn()
     here = os.path.dirname(os.path.abspath(__file__))
 
-    if not hostname.startswith("login"):
-        pytest.skip(
-            "This test runs on Perlmutter Login nodes ('login*')",
-            allow_module_level=True,
-        )
-
     settings_file = os.path.join(here, "settings", "nersc.yml")
 
     system = BuildTestSystem()
@@ -32,6 +26,12 @@ class TestNersc:
     BuildspecCache(rebuild=True, configuration=bc)
 
     def test_slurm_hostname(self):
+        if not self.hostname.startswith("login"):
+            pytest.skip(
+                "This test runs on Perlmutter Login nodes ('login*')",
+                allow_module_level=True,
+            )
+
         cmd = BuildTest(
             configuration=self.bc,
             buildspecs=[
@@ -47,6 +47,11 @@ class TestNersc:
         cmd.build()
 
     def test_slurm_max_pend(self):
+        if not self.hostname.startswith("login"):
+            pytest.skip(
+                "This test runs on Perlmutter Login nodes ('login*')",
+                allow_module_level=True,
+            )
         cmd = BuildTest(
             configuration=self.bc,
             buildspecs=[
@@ -66,6 +71,11 @@ class TestNersc:
             cmd.build()
 
     def test_compiler_find(self):
+        if not self.hostname.startswith("login"):
+            pytest.skip(
+                "This test runs on Perlmutter Login nodes ('login*')",
+                allow_module_level=True,
+            )
         # testing buildtest config compilers find
         compilers = BuildtestCompilers(configuration=self.bc)
         compilers.find_compilers()
@@ -74,10 +84,20 @@ class TestNersc:
         compiler_find(configuration=self.bc, detailed=True)
 
     def test_compiler_test(self):
+        if not self.hostname.startswith("login"):
+            pytest.skip(
+                "This test runs on Perlmutter Login nodes ('login*')",
+                allow_module_level=True,
+            )
         # testing buildtest config compilers test
         compiler_test(configuration=self.bc)
 
     def test_compiler_find_alternative_filepath(self):
+        if not self.hostname.startswith("login"):
+            pytest.skip(
+                "This test runs on Perlmutter Login nodes ('login*')",
+                allow_module_level=True,
+            )
         # testing buildtest config compilers find
         compilers = BuildtestCompilers(configuration=self.bc)
         compilers.find_compilers()
