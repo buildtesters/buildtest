@@ -1050,18 +1050,21 @@ def config_menu(subparsers, parent_parser):
         "-i", "--invalid", action="store_true", help="Show invalid executors"
     )
 
-    # buildtest config compilers
-    compilers.add_argument(
-        "-j", "--json", action="store_true", help="List compiler details in JSON format"
-    )
-    compilers.add_argument(
-        "-y", "--yaml", action="store_true", help="List compiler details in YAML format"
-    )
 
     subparsers_compiler = compilers.add_subparsers(
         description="Find new compilers and add them to detected compiler section",
         dest="compilers",
         metavar="",
+    )
+    compiler_list = subparsers_compiler.add_parser("list", help="List compilers")
+    # buildtest config compilers
+    compiler_list.add_argument(
+        "-j", "--json", action="store_true",
+        help="List compiler details in JSON format"
+    )
+    compiler_list.add_argument(
+        "-y", "--yaml", action="store_true",
+        help="List compiler details in YAML format"
     )
 
     compiler_find = subparsers_compiler.add_parser(
