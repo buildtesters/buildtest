@@ -15,8 +15,7 @@ class TestNersc:
     here = os.path.dirname(os.path.abspath(__file__))
     if not os.getenv("NERSC_HOST") == "perlmutter":
         pytest.skip(
-            "This test can only run on Perlmutter Login nodes",
-            allow_module_level=True,
+            "This test can only run on Perlmutter Login nodes", allow_module_level=True
         )
     settings_file = os.path.join(here, "settings", "nersc.yml")
 
