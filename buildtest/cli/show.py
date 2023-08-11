@@ -319,6 +319,10 @@ def print_config_show():
     table.add_row(
         "buildtest config profiles list", "Listing all profiles from configuration file"
     )
+    table.add_row(
+        "buildtest config profiles remove",
+        "Remove an existing profile from configuration file",
+    )
     console.print(table)
 
 

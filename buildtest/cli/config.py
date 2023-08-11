@@ -28,6 +28,9 @@ def config_cmd(args, configuration, editor, system):
         if args.profiles == "list":
             list_profiles(configuration, theme=args.theme, print_yaml=args.yaml)
 
+    elif args.config in ["remove", "rm"]:
+        remove_profiles(configuration, ...)
+
     elif args.config in ["executors", "ex"]:
         buildexecutor = BuildExecutor(configuration)
         view_executors(
