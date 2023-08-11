@@ -301,7 +301,7 @@ def print_config_show():
         "Validate configuration file /tmp/config.yml",
     )
     table.add_row(
-        "buildtest config compilers",
+        "buildtest config compilers list",
         "List all compilers from configuration file in flat listing",
     )
     table.add_row(
