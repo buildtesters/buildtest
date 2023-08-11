@@ -32,27 +32,27 @@ which includes the name of the compiler in this example we call ``builtin_gcc`` 
 system compiler that defines C, C++ and Fortran compilers using ``cc``, ``cxx`` and
 ``fc``.
 
-One can retrieve all compilers using ``buildtest config compilers``, there are few
+One can retrieve all compilers using ``buildtest config compilers list``, there are few
 options for this command.
 
-.. dropdown:: ``buildtest config compilers --help``
+.. dropdown:: ``buildtest config compilers list --help``
 
-    .. command-output:: buildtest config compilers --help
+    .. command-output:: buildtest config compilers list --help
 
 buildtest can represent compiler output in JSON, YAML using the ``--json`` and ``--yaml``.
 Shown below is an example output with these options
 
-.. dropdown:: ``buildtest config compilers --json``
+.. dropdown:: ``buildtest config compilers list --json``
 
-    .. command-output:: buildtest config compilers --json
+    .. command-output:: buildtest config compilers list --json
 
-.. dropdown:: ``buildtest config compilers --yaml``
+.. dropdown:: ``buildtest config compilers list --yaml``
 
-    .. command-output:: buildtest config compilers --yaml
+    .. command-output:: buildtest config compilers list --yaml
 
-If you want to see a flat listing of the compilers as names you can simply run ``buildtest config compilers`` as shown below
+If you want to see a flat listing of the compilers as names you can simply run ``buildtest config compilers list`` as shown below
 
-.. command-output:: buildtest config compilers
+.. command-output:: buildtest config compilers list
 
 .. _detect_compilers:
 
@@ -117,7 +117,7 @@ the module configuration to be used to access the compiler, the ``load`` propert
 The ``purge`` property is a boolean that determines whether to run **module purge** prior to loading modules when using the compiler.
 If ``purge: true`` is set then we will do **module purge**.
 
-.. dropdown:: ``buildtest config compilers``
+.. dropdown:: ``buildtest config compilers find``
 
     .. code-block:: console
        :emphasize-lines: 9-24
@@ -154,7 +154,7 @@ by searching the modules in MODULEPATH and testing each one with a regular expre
 We can see in the output buildtest is applying a regular expression with each modulefile and if there is a match, we
 add the compiler instance into the appropriate compiler group.
 
-.. dropdown:: ``buildtest config compilers --detailed``
+.. dropdown:: ``buildtest config compilers find --detailed``
 
     .. code-block:: console
        :linenos:
@@ -279,7 +279,7 @@ Now take a look at generated compilers upon running ``buildtest config compiler 
    :linenos:
    :emphasize-lines: 16,24
 
-       (buildtest)  ~/Documents/github/ buildtest config compilers find
+         buildtest config compilers find
        MODULEPATH: /Users/siddiq90/projects/spack/share/spack/lmod/darwin-catalina-x86_64/Core:/usr/local/Cellar/lmod/8.6.14/modulefiles/Darwin:/usr/local/Cellar/lmod/8.6.14/modulefiles/Core
        ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Detect Compilers ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
        gcc:
@@ -328,7 +328,7 @@ instead of the compiler wrappers when defining a compiler instance that uses a P
 
     .. code-block:: console
 
-        (buildtest)  ~/gitrepos/buildtest/tests/settings/ [prgenv_support] buildtest config compilers find --detailed
+         buildtest config compilers find --detailed
         MODULEPATH: /opt/cray/pe/perftools/21.12.0/modulefiles:/opt/cray/pe/craype-targets/default/modulefiles:/opt/cray/ari/modulefiles:/opt/cray/pe/modulefiles:/opt/cray/modulefiles:/opt/modulefiles:/global/common/software/nersc/cle7up03/modulefiles:/global/common/software/nersc/cle7up03/extra_modulefiles:/global/common/cori_cle7up03/ftg/modulefiles
         Searching modules by parsing content of command: module av -t
           Discovered Modules

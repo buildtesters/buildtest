@@ -247,8 +247,13 @@ _buildtest ()
 
       case "${COMP_WORDS[2+offset]}" in
         compilers|co)
-          local opts="--help --json --yaml -h -j -y find test"
+          local opts="--help -h list find test"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+
+          if [[ "${prev}" == "list" ]]; then
+            local opts="--json --yaml -j -y"
+            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          fi
           if [[ "${prev}" == "find" ]]; then
             local opts="--detailed --file --help --modulepath --update -d -h -m -u"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )

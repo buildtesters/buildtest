@@ -27,19 +27,32 @@ def compiler_cmd(args, configuration):
             update=args.update,
             filepath=args.file,
         )
-        return
 
     if args.compilers == "test":
         compiler_test(configuration, args.compiler_names)
-        return
 
+    if args.compilers == "list":
+        list_compilers(
+            configuration=configuration, print_yaml=args.yaml, print_json=args.json
+        )
+
+
+def list_compilers(configuration, print_yaml=None, print_json=None):
+    """This method will print available compilers found in configuration file which
+        can be retrieved by running ``buildtest config compilers list``
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        print_yaml (bool, optional): Print output in YAML format
+        print_json (bool, optional): Print output in JSON format
+    """
     bc = BuildtestCompilers(configuration)
 
-    if args.json:
+    if print_json:
         bc.print_json()
         return
 
-    if args.yaml:
+    if print_yaml:
         bc.print_yaml()
         return
 
