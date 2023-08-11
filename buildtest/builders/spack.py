@@ -242,8 +242,8 @@ class SpackBuilder(BuilderBase):
             lines += [spack_env_create_line]
 
             # deactivate environment ('spack env deactivate')
-            if spack_env.get("deactivate"):
-                lines += ['spack env deactivate']
+        if spack_env.get("deactivate"):
+            lines += [spack_env_create_line]
 
         # activate environment ('spack env activate')
         if spack_env.get("activate"):
