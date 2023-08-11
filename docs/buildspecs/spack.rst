@@ -154,10 +154,11 @@ will create an environment **manifest_example** using the manifest file that we 
 Deactivate Spack Environment
 ----------------------------
 
-We added a new feature to deactivate environments using the key word ``deactivate`` which is boolean. If ``deactivate: true`` is set, we can deactivate spack environment prior to activating it via ``spack env deactivate``
+We added a new feature to deactivate environment using the key word ``deactivate`` which is a boolean type.
+If ``deactivate: true`` is set, then we will deactivate the spack environment by running ``spack env deactivate``
 
 In this test, the order of command would translate to the following, we should see environment created first then we deactivate
-any active environment and run ``spack env activate``
+any active environment.
 
 .. literalinclude:: ../../examples/spack/spack_env_deactivate.yml
   :language: yaml
