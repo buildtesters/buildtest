@@ -188,6 +188,25 @@ def list_profiles(configuration, theme=None, print_yaml=None):
     for profile_name in configuration.target_config["profiles"].keys():
         print(profile_name)
 
+def remove_profiles(configuration,):
+    profile_to_remove = args.profile
+
+    print(f"Removing profile: {profile_to_remove}")
+
+    parser = argparse.ArgumentParser(description="Remove an existing profile from the configuration file")
+    subparsers = parser.add_subparsers()
+
+    # Create 'remove' sub-command
+    parser_remove = subparsers.add_parser('remove', aliases=['rm'], help='Remove an existing profile')
+    parser_remove.add_argument('profile', type=str, help='Name of the profile to remove')
+    parser_remove.add_argument('-y', '--yes', action='store_true', help='Automatically confirm removal')
+    parser_remove.set_defaults(func=remove_profiles)
+
+    args = parser.parse_args()
+    if hasattr(args, 'func'):
+        args.func(args)
+    else:
+        parser.print_help()
 
 def view_executors(
     configuration,

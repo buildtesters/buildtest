@@ -1020,6 +1020,7 @@ def config_menu(subparsers, parent_parser):
     )
 
     subparsers_config.add_parser("systems", help="List all available systems")
+
     #buildtest config profile remove
     subparsers_profile_list.add_argument(
         "-y", "--yaml", action="store_true", help="List Profile details in YAML Format"
