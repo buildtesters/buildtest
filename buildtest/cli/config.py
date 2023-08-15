@@ -189,6 +189,7 @@ def list_profiles(configuration, theme=None, print_yaml=None):
         print(profile_name)
 
 def remove_profiles(configuration,):
+
     profile_to_remove = args.profile
 
     print(f"Removing profile: {profile_to_remove}")
