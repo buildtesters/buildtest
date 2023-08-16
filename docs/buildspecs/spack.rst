@@ -152,13 +152,18 @@ will create an environment **manifest_example** using the manifest file that we 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/env_create_manifest.txt
 
 Deactivate Spack Environment
-----------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We added a new feature to deactivate environment using the key word ``deactivate`` which is a boolean type.
-If ``deactivate: true`` is set, then we will deactivate the spack environment by running ``spack env deactivate``
+When you are switching between spack environments, it can be important to deactivate
+your current spack environment which can be used when writing test. This can be achieved
+using the keyword ``deactivate`` which is a boolean type.
 
-In this test, the order of command would translate to the following, we should see environment created first then we deactivate
-any active environment.
+If ``deactivate: true`` is set, then we will deactivate the spack environment by
+running ``spack env deactivate``
+
+Shown below is an example buildspec where we create a spack environment, deactivate first and then
+activate the environment. Buildtest will deactivate a spack environment prior to activating an environment
+which is specified via ``activate`` keyword.
 
 .. literalinclude:: ../../examples/spack/spack_env_deactivate.yml
   :language: yaml
@@ -170,7 +175,9 @@ Let's build this by running the following
 
     .. program-output:: cat buildtest_tutorial_examples/spack/build/spack_env_deactivate.txt
 
-Let's take a look at the generated test, take note of the ``spack env deactivate`` command
+Let's take a look at the generated test, take note of the ``spack env deactivate`` command and order of commands.
+We run ``spack env create``, followed by ``spack env deactivate`` and finally we activate the environment
+using ``spack env activate``.
 
 .. dropdown:: ``buildtest inspect query --testpath spack_env_deactivate_first``
 
