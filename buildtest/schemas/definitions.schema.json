@@ -200,7 +200,7 @@
           "$ref": "#/definitions/regex"
         },
         "vars": {
-          "$ref": "#/definitions/vars"
+          "$ref": "#/definitions/env"
         },
         "file_regex": {
           "$ref": "#/definitions/file_regex_in_metrics"
@@ -221,25 +221,7 @@
       "additionalProperties": {
         "$ref": "#/definitions/metrics_field"
       }
-    },
-    "vars": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "value"
-      ],
-      "properties": {
-        "type": {
-          "type": "string",
-          "description": "Specify the type of the variable",
-          "enum": [
-            "str",
-            "int",
-            "float"
-          ]
-        }
-      }
-    },
+    }
     "state": {
       "type": "string",
       "description": "explicitly mark state of test regardless of status calculation",
