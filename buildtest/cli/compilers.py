@@ -35,6 +35,65 @@ def compiler_cmd(args, configuration):
         list_compilers(
             configuration=configuration, print_yaml=args.yaml, print_json=args.json
         )
+    if args.compilers == "remove":
+        remove_compilers(configuration=configuration, names=args.compiler_names)
+
+
+def delete_key_if_more_than_one(dictionary, key_to_delete):
+    if len(dictionary) > 1:
+        if key_to_delete in dictionary:
+            del dictionary[key_to_delete]
+            return f"Key '{key_to_delete}' deleted."
+        else:
+            return f"Key '{key_to_delete}' not found in the dictionary."
+    else:
+        return "Cannot delete key. Dictionary has only one key."
+
+
+def remove_compilers(configuration, names):
+    """
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        names (list): A list of compiler names to remove from configuration file
+
+    Returns:
+
+    """
+    compilers = configuration.target_config["compilers"]["compiler"]
+    updated_compilers = compilers.copy()
+
+
+    for key, value in compilers.items():
+
+        for name in names:
+            if name in value:
+                console.rule(f"Removing compiler name: {name}")
+                console.print(yaml.safe_dump(value[name]))
+                del value[name]
+        updated_compilers[key]=value
+
+        if len(updated_compilers[key].keys()) == 0:
+            del updated_compilers[key]
+
+
+    configuration.target_config["compilers"]["compiler"] = updated_compilers
+
+    if len(configuration.target_config["compilers"]["compiler"]) == 0:
+        del configuration.target_config["compilers"]["compiler"]
+
+    custom_validator(
+        configuration.config, schema_table["settings.schema.json"]["recipe"]
+    )
+
+    print(yaml.safe_dump(configuration.config,default_flow_style=False, sort_keys=False))
+    console.print(f"Updating configuration file: {configuration.file}")
+
+    with open(configuration.file, "w") as fd:
+        yaml.safe_dump(
+            configuration.config, fd, default_flow_style=False, sort_keys=False
+        )
+
 
 
 def list_compilers(configuration, print_yaml=None, print_json=None):
