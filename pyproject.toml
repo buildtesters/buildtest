@@ -75,6 +75,16 @@ use_parentheses = true
 ensure_newline_before_comments = true
 split_on_trailing_comma = true
 
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-vra -x --durations=20 -vv"
+testpaths = ["tests"]
+markers = [
+    "schema: run schema tests",
+    "utility: run test for utility methods used throughout codebase",
+    "cli: run test for targetting buildtest command line features"
+]
+
 [tool.coverage.run]
 parallel = true
 concurrency = ["multiprocessing"]
