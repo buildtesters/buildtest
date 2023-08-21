@@ -255,8 +255,6 @@ _buildtest ()
             COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
           fi
 
-
-
           if [[ "${prev}" == "list" ]]; then
             local opts="--json --yaml -j -y"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
@@ -268,7 +266,7 @@ _buildtest ()
           if [[ "${prev}" == "test" ]]; then
             COMPREPLY=( $( compgen -W "$(_avail_compilers)" -- $cur ) )
           fi
-          if [[ "${prev}" == "remove" ]]; then
+          if [[ "${prev}" == "remove" ]] || [[ "${prev}" == "rm" ]]; then
             COMPREPLY=( $( compgen -W "$(_avail_compilers)" -- $cur ) )
           fi
           ;;
