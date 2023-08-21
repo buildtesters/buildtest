@@ -38,43 +38,29 @@ def compiler_cmd(args, configuration):
     if args.compilers == "remove":
         remove_compilers(configuration=configuration, names=args.compiler_names)
 
-
-def delete_key_if_more_than_one(dictionary, key_to_delete):
-    if len(dictionary) > 1:
-        if key_to_delete in dictionary:
-            del dictionary[key_to_delete]
-            return f"Key '{key_to_delete}' deleted."
-        else:
-            return f"Key '{key_to_delete}' not found in the dictionary."
-    else:
-        return "Cannot delete key. Dictionary has only one key."
-
-
 def remove_compilers(configuration, names):
-    """
+    """This method will remove compilers from buildtest configuration file and update the configuration file. A list
+    of compiler names are specified, if compiler is found it will be removed.
 
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
         names (list): A list of compiler names to remove from configuration file
 
-    Returns:
-
     """
     compilers = configuration.target_config["compilers"]["compiler"]
     updated_compilers = compilers.copy()
 
-
-    for key, value in compilers.items():
-
+    # iterate over the compiler configuration with list of input compiler names to remove. If compiler is found, then delete the key.
+    for compiler_type, compiler_section in compilers.items():
         for name in names:
-            if name in value:
+            if name in compiler_section:
                 console.rule(f"Removing compiler name: {name}")
-                console.print(yaml.safe_dump(value[name]))
-                del value[name]
-        updated_compilers[key]=value
-
-        if len(updated_compilers[key].keys()) == 0:
-            del updated_compilers[key]
+                console.print(yaml.safe_dump(compiler_section[name]))
+                del compiler_section[name]
+        updated_compilers[compiler_type]=compiler_section
+        # if no compilers are present for a key
+        if len(updated_compilers[compiler_type].keys()) == 0:
+            del updated_compilers[compiler_type]
 
 
     configuration.target_config["compilers"]["compiler"] = updated_compilers
@@ -86,7 +72,6 @@ def remove_compilers(configuration, names):
         configuration.config, schema_table["settings.schema.json"]["recipe"]
     )
 
-    print(yaml.safe_dump(configuration.config,default_flow_style=False, sort_keys=False))
     console.print(f"Updating configuration file: {configuration.file}")
 
     with open(configuration.file, "w") as fd:
@@ -315,8 +300,7 @@ class BuildtestCompilers:
         self.modulepath = self.modulepath or os.getenv("MODULEPATH")
 
         if not deep_get(self.configuration.target_config, "compilers", "compiler"):
-            raise BuildTestError("compiler section not defined")
-
+            raise BuildTestError("Unable to find any compilers in configuration file. Please define a compiler or detect compilers by running 'buildtest config compilers find'")
         self.compilers = self.configuration.target_config["compilers"]["compiler"]
 
         self._names = []
