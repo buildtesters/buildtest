@@ -12,6 +12,7 @@ class BaseExecutor:
     """The BaseExecutor is an abstract base class for all executors."""
 
     type = "base"
+    default_maxpendtime=86400
 
     def __init__(self, name, settings, site_configs, timeout=None):
         """Initiate a base executor, meaning we provide a name (also held
@@ -23,6 +24,7 @@ class BaseExecutor:
             setting (dict): setting for a given executor defined in configuration file
             site_configs (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
             timeout (str, optional): Test timeout in number of seconds
+            maxpendtime (int, optional): Maximum Pending Time until job is cancelled. The default is 1 day (86400s)
         """
 
         self._bashopts = "--norc --noprofile -eo pipefail"
@@ -36,7 +38,6 @@ class BaseExecutor:
         self._settings = settings
         self._buildtestsettings = site_configs
         self.timeout = timeout
-        self.load()
         self.builders = []
 
         # the shell type for executors will be bash by default
@@ -78,6 +79,7 @@ class BaseExecutor:
                 "defaults",
                 "maxpendtime",
             )
+            or self.default_maxpendtime
         )
 
     def run(self):
