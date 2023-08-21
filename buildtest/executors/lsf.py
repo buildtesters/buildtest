@@ -31,7 +31,7 @@ class LSFExecutor(BaseExecutor):
     ):
         self.account = account
         self.maxpendtime = maxpendtime
-        super().__init__(name, settings, site_configs, timeout=None)
+        super().__init__(name, settings, site_configs, timeout=timeout)
 
         self.queue = self._settings.get("queue")
 
