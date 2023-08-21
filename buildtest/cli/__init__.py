@@ -1056,6 +1056,12 @@ def config_menu(subparsers, parent_parser):
         metavar="",
     )
     compiler_list = subparsers_compiler.add_parser("list", help="List compilers")
+    compiler_remove = subparsers_compiler.add_parser(
+        "remove", aliases=["rm"], help="Remove compilers"
+    )
+    compiler_remove.add_argument(
+        "compiler_names", nargs="*", help="Specify compiler name to remove"
+    )
     # buildtest config compilers
     compiler_list.add_argument(
         "-j", "--json", action="store_true", help="List compiler details in JSON format"

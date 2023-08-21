@@ -35,6 +35,49 @@ def compiler_cmd(args, configuration):
         list_compilers(
             configuration=configuration, print_yaml=args.yaml, print_json=args.json
         )
+    if args.compilers in ["remove", "rm"]:
+        remove_compilers(configuration=configuration, names=args.compiler_names)
+
+
+def remove_compilers(configuration, names):
+    """This method will remove compilers from buildtest configuration file and update the configuration file. A list
+    of compiler names are specified, if compiler is found it will be removed.
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        names (list): A list of compiler names to remove from configuration file
+
+    """
+    compilers = configuration.target_config["compilers"]["compiler"]
+    updated_compilers = compilers.copy()
+
+    # iterate over the compiler configuration with list of input compiler names to remove. If compiler is found, then delete the key.
+    for compiler_type, compiler_section in compilers.items():
+        for name in names:
+            if name in compiler_section:
+                console.rule(f"Removing compiler name: {name}")
+                console.print(yaml.safe_dump(compiler_section[name]))
+                del compiler_section[name]
+        updated_compilers[compiler_type] = compiler_section
+        # if no compilers are present for a key
+        if len(updated_compilers[compiler_type].keys()) == 0:
+            del updated_compilers[compiler_type]
+
+    configuration.target_config["compilers"]["compiler"] = updated_compilers
+
+    if len(configuration.target_config["compilers"]["compiler"]) == 0:
+        del configuration.target_config["compilers"]["compiler"]
+
+    custom_validator(
+        configuration.config, schema_table["settings.schema.json"]["recipe"]
+    )
+
+    console.print(f"Updating configuration file: {configuration.file}")
+
+    with open(configuration.file, "w") as fd:
+        yaml.safe_dump(
+            configuration.config, fd, default_flow_style=False, sort_keys=False
+        )
 
 
 def list_compilers(configuration, print_yaml=None, print_json=None):
@@ -256,8 +299,9 @@ class BuildtestCompilers:
         self.modulepath = self.modulepath or os.getenv("MODULEPATH")
 
         if not deep_get(self.configuration.target_config, "compilers", "compiler"):
-            raise BuildTestError("compiler section not defined")
-
+            raise BuildTestError(
+                "Unable to find any compilers in configuration file. Please define a compiler or detect compilers by running 'buildtest config compilers find'"
+            )
         self.compilers = self.configuration.target_config["compilers"]["compiler"]
 
         self._names = []

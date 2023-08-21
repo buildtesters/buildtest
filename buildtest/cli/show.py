@@ -317,6 +317,10 @@ def print_config_show():
         "Test each compiler instance by performing module load test",
     )
     table.add_row(
+        "buildtest config compilers remove gcc/7.5.0",
+        "Remove compiler instance gcc/7.5.0",
+    )
+    table.add_row(
         "buildtest config profiles list", "Listing all profiles from configuration file"
     )
     console.print(table)

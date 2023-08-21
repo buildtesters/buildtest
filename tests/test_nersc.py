@@ -5,7 +5,12 @@ import pytest
 
 from buildtest.cli.build import BuildTest
 from buildtest.cli.buildspec import BuildspecCache
-from buildtest.cli.compilers import BuildtestCompilers, compiler_find, compiler_test
+from buildtest.cli.compilers import (
+    BuildtestCompilers,
+    compiler_find,
+    compiler_test,
+    remove_compilers,
+)
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.system import BuildTestSystem
@@ -107,3 +112,7 @@ class TestNersc:
         temp_path = tempfile.NamedTemporaryFile(dir=os.path.expanduser("~"))
         compiler_find(configuration=self.bc, filepath=temp_path.name)
         temp_path.close()
+
+    def test_compiler_remove(self):
+        compilers = BuildtestCompilers(configuration=self.bc)
+        remove_compilers(configuration=self.bc, names=compilers.names())
