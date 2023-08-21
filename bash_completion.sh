@@ -247,8 +247,15 @@ _buildtest ()
 
       case "${COMP_WORDS[2+offset]}" in
         compilers|co)
-          local opts="--help -h list find remove test"
-          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          local opts="--help -h"
+          local cmds="list find remove test"
+          local aliases="rm"
+          COMPREPLY=( $( compgen -W "${cmds} ${aliases}" -- $cur ) )
+          if [[ $cur == -* ]] ; then
+            COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+          fi
+
+
 
           if [[ "${prev}" == "list" ]]; then
             local opts="--json --yaml -j -y"
