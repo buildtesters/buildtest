@@ -35,7 +35,7 @@ def compiler_cmd(args, configuration):
         list_compilers(
             configuration=configuration, print_yaml=args.yaml, print_json=args.json
         )
-    if args.compilers in ["remove","rm"]:
+    if args.compilers in ["remove", "rm"]:
         remove_compilers(configuration=configuration, names=args.compiler_names)
 
 

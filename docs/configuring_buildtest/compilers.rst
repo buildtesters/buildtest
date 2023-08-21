@@ -707,7 +707,7 @@ one failed compiler name ``nvhpc-mixed/23.7``.
 Note we have tab completion for available compilers that can be removed which can help determine what compilers you want
 to select
 
-.. code-console::
+.. code-block::
 
     $ buildtest config compilers remove
     builtin_gcc        cce/15.0.1         gcc/11.2.0         gcc/12.2.0         nvhpc/21.9         nvhpc/23.1         nvhpc-mixed/21.9   nvhpc-mixed/23.1
