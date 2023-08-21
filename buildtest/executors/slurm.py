@@ -33,8 +33,6 @@ class SlurmExecutor(BaseExecutor):
         self.account = account
         super().__init__(name, settings, site_configs, timeout=timeout)
 
-        self.load()
-
         self.cluster = self._settings.get("cluster")
         self.partition = self._settings.get("partition")
         self.qos = self._settings.get("qos")

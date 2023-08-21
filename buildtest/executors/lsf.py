@@ -33,7 +33,6 @@ class LSFExecutor(BaseExecutor):
         self.maxpendtime = maxpendtime
         super().__init__(name, settings, site_configs, timeout=timeout)
 
-        self.load()
         self.queue = self._settings.get("queue")
 
     def launcher_command(self, numprocs=None, numnodes=None):

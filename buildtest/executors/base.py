@@ -40,6 +40,7 @@ class BaseExecutor:
         self.timeout = timeout
         self.builders = []
 
+        self.load()
         # the shell type for executors will be bash by default
         # self.shell = "bash"
 
