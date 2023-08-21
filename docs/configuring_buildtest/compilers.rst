@@ -70,7 +70,7 @@ Detect Compilers (Experimental Feature)
 .. Note::
 
     ``buildtest config compilers find`` will not update the buildtest configuration with new compilers, you will need to use ``--update`` option
-    to override the configuration file.
+    to write changes back to configuration file.
 
 
 buildtest can detect compilers based on modulefiles and generate compiler section
@@ -86,6 +86,7 @@ In example, below we define a pattern for gcc modules as ``^(gcc)`` which will
 find all modules that start with name `gcc`.
 
 .. code-block:: yaml
+   :emphasize-lines: 2-3
 
     compilers:
       find:
@@ -98,8 +99,8 @@ find all modules that start with name `gcc`.
             fc: /usr/bin/gfortran
 
 
-In this system, we have two gcc modules installed via `spack <https://spack.readthedocs.io/en/latest/>`_
-package manager, we will attempt to add both modules as compiler instance in buildtest.
+In this system, we have two gcc modules and we will add both modules as compiler
+declaration in buildtest.
 
 .. code-block:: console
 
@@ -108,7 +109,7 @@ package manager, we will attempt to add both modules as compiler instance in bui
     gcc/9.3.0-n7p74fd
     gcc/10.2.0-37fmsw7
 
-Next we run ``buildtest config compilers find`` which will search all modules based on
+We will run ``buildtest config compilers find`` which will search all modules based on
 regular expression and add compilers in their respective group. In this example, buildtest
 automatically add ``gcc/9.2.0-n7p74fd`` and ``gcc/10.2.0-37fmsw7`` modules as compiler
 instance. Depending on the compiler group, buildtest will update the properties
@@ -660,3 +661,98 @@ compiler ``gcc/9.1.01``
         ┡━━━━━╇━━━━━━━━━━━━━━━╇━━━━━━━━┩
         │ 1   │ gcc/9.1.0     │     ✅ │
         └─────┴───────────────┴────────┘
+
+Removing Compilers
+-------------------
+
+The ``buildtest config compilers remove`` command allows you to remove a compiler from the configuration file.
+This command takes a positional argument that includes the name of compiler you want to remove. buildtest will
+search for compiler name in configuration file and attempt to remove it if it's found.
+
+This command can be used when you find compilers are out of date, for instance you can run ``buildtest config compilers test``
+to test all compilers and this can show which compilers have failed during test. For example, in output below we have
+one failed compiler name ``nvhpc-mixed/23.7``.
+
+.. code-block:: console
+
+    $ buildtest config compilers test
+    Compiler 'builtin_gcc' has no 'modules' defined therefore skipping test
+            Compilers Test Pass
+    ┏━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+    ┃ No. ┃ Compiler Name     ┃ Status ┃
+    ┡━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+    │ 1   │ builtin_gcc       │     ✅ │
+    │ 2   │ gcc/11.2.0        │     ✅ │
+    │ 3   │ gcc/10.3.0        │     ✅ │
+    │ 4   │ gcc/12.2.0        │     ✅ │
+    │ 5   │ gcc/12.1.0        │     ✅ │
+    │ 6   │ cce/15.0.1        │     ✅ │
+    │ 7   │ cce/15.0.0        │     ✅ │
+    │ 8   │ nvhpc/21.11       │     ✅ │
+    │ 9   │ nvhpc/21.9        │     ✅ │
+    │ 10  │ nvhpc/22.7        │     ✅ │
+    │ 11  │ nvhpc-mixed/21.11 │     ✅ │
+    │ 12  │ nvhpc-mixed/21.9  │     ✅ │
+    │ 13  │ nvhpc-mixed/22.7  │     ✅ │
+    │ 14  │ nvhpc/23.1        │     ✅ │
+    │ 15  │ nvhpc-mixed/23.1  │     ✅ │
+    └─────┴───────────────────┴────────┘
+            Compilers Test Fail
+    ┏━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+    ┃ No. ┃ Compiler Name    ┃ Status ┃
+    ┡━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+    │ 1   │ nvhpc-mixed/23.7 │     ❌ │
+    └─────┴──────────────────┴────────┘
+
+Note we have tab completion for available compilers that can be removed which can help determine what compilers you want
+to select
+
+.. code-console::
+
+    $ buildtest config compilers remove
+    builtin_gcc        cce/15.0.1         gcc/11.2.0         gcc/12.2.0         nvhpc/21.9         nvhpc/23.1         nvhpc-mixed/21.9   nvhpc-mixed/23.1
+    cce/15.0.0         gcc/10.3.0         gcc/12.1.0         nvhpc/21.11        nvhpc/22.7         nvhpc-mixed/21.11  nvhpc-mixed/22.7   nvhpc-mixed/23.7
+
+Let's go ahead and remove the compiler by running the following, take note that the configuration file has been updated
+
+.. code-block::
+
+    $ buildtest config compilers remove nvhpc-mixed/23.7
+    ──────────────────────────────────────────────────────────────────────────────── Removing compiler name: nvhpc-mixed/23.7 ────────────────────────────────────────────────────────────────────────────────
+    cc: cc
+    cxx: CC
+    fc: ftn
+    module:
+      load:
+      - PrgEnv-nvidia
+      - nvhpc-mixed/23.7
+      purge: false
+
+    Updating configuration file: /global/u1/s/siddiq90/gitrepos/buildtest-nersc/config.yml
+
+Now if we rerun the compiler tests, we see all compilers have passed checks
+
+.. code-block:: console
+
+    $ buildtest config compilers test
+    Compiler 'builtin_gcc' has no 'modules' defined therefore skipping test
+            Compilers Test Pass
+    ┏━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+    ┃ No. ┃ Compiler Name     ┃ Status ┃
+    ┡━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+    │ 1   │ builtin_gcc       │     ✅ │
+    │ 2   │ gcc/11.2.0        │     ✅ │
+    │ 3   │ gcc/10.3.0        │     ✅ │
+    │ 4   │ gcc/12.2.0        │     ✅ │
+    │ 5   │ gcc/12.1.0        │     ✅ │
+    │ 6   │ cce/15.0.1        │     ✅ │
+    │ 7   │ cce/15.0.0        │     ✅ │
+    │ 8   │ nvhpc/21.11       │     ✅ │
+    │ 9   │ nvhpc/21.9        │     ✅ │
+    │ 10  │ nvhpc/22.7        │     ✅ │
+    │ 11  │ nvhpc-mixed/21.11 │     ✅ │
+    │ 12  │ nvhpc-mixed/21.9  │     ✅ │
+    │ 13  │ nvhpc-mixed/22.7  │     ✅ │
+    │ 14  │ nvhpc/23.1        │     ✅ │
+    │ 15  │ nvhpc-mixed/23.1  │     ✅ │
+    └─────┴───────────────────┴────────┘
