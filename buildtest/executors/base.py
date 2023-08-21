@@ -12,7 +12,7 @@ class BaseExecutor:
     """The BaseExecutor is an abstract base class for all executors."""
 
     type = "base"
-    default_maxpendtime=86400
+    default_maxpendtime = 86400
 
     def __init__(self, name, settings, site_configs, timeout=None):
         """Initiate a base executor, meaning we provide a name (also held
