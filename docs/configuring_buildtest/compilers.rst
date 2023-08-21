@@ -319,7 +319,7 @@ is the programming environment modulefile that will load the GNU compiler on Cra
 
 .. literalinclude:: ../tests/settings/nersc.yml
     :language: yaml
-    :emphasize-lines: 6-10
+    :emphasize-lines: 18-22
 
 Now let's run **buildtest config compilers find --detailed** and take note of the generated compilers, you will see that ``PrgEnv-*`` modules will be found in each
 compiler instance under the ``module``, ``load`` section. Furthermore, you will see the cray wrappers **cc**, **CC**, and **ftn** are used
@@ -670,7 +670,7 @@ This command takes a positional argument that includes the name of compiler you 
 search for compiler name in configuration file and attempt to remove it if it's found.
 
 This command can be used when you find compilers are out of date, for instance you can run ``buildtest config compilers test``
-to test all compilers and this can show which compilers have failed during test. For example, in output below we have
+to test all compilers and show which compilers failed during test. In output below we have
 one failed compiler name ``nvhpc-mixed/23.7``.
 
 .. code-block:: console
@@ -704,8 +704,8 @@ one failed compiler name ``nvhpc-mixed/23.7``.
     │ 1   │ nvhpc-mixed/23.7 │     ❌ │
     └─────┴──────────────────┴────────┘
 
-Note we have tab completion for available compilers that can be removed which can help determine what compilers you want
-to select
+Note we have tab completion for compilers names that can be removed which can help select the compiler you want
+to remove.
 
 .. code-block::
 
@@ -713,7 +713,7 @@ to select
     builtin_gcc        cce/15.0.1         gcc/11.2.0         gcc/12.2.0         nvhpc/21.9         nvhpc/23.1         nvhpc-mixed/21.9   nvhpc-mixed/23.1
     cce/15.0.0         gcc/10.3.0         gcc/12.1.0         nvhpc/21.11        nvhpc/22.7         nvhpc-mixed/21.11  nvhpc-mixed/22.7   nvhpc-mixed/23.7
 
-Let's go ahead and remove the compiler by running the following, take note that the configuration file has been updated
+Let's remove the compiler `nvhpc-mixed/23.7` by running the following, take note buildtest will update the configuration file
 
 .. code-block::
 
