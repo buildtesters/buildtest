@@ -35,8 +35,9 @@ def compiler_cmd(args, configuration):
         list_compilers(
             configuration=configuration, print_yaml=args.yaml, print_json=args.json
         )
-    if args.compilers == "remove":
+    if args.compilers in ["remove","rm"]:
         remove_compilers(configuration=configuration, names=args.compiler_names)
+
 
 def remove_compilers(configuration, names):
     """This method will remove compilers from buildtest configuration file and update the configuration file. A list
@@ -57,11 +58,10 @@ def remove_compilers(configuration, names):
                 console.rule(f"Removing compiler name: {name}")
                 console.print(yaml.safe_dump(compiler_section[name]))
                 del compiler_section[name]
-        updated_compilers[compiler_type]=compiler_section
+        updated_compilers[compiler_type] = compiler_section
         # if no compilers are present for a key
         if len(updated_compilers[compiler_type].keys()) == 0:
             del updated_compilers[compiler_type]
-
 
     configuration.target_config["compilers"]["compiler"] = updated_compilers
 
@@ -78,7 +78,6 @@ def remove_compilers(configuration, names):
         yaml.safe_dump(
             configuration.config, fd, default_flow_style=False, sort_keys=False
         )
-
 
 
 def list_compilers(configuration, print_yaml=None, print_json=None):
@@ -300,7 +299,9 @@ class BuildtestCompilers:
         self.modulepath = self.modulepath or os.getenv("MODULEPATH")
 
         if not deep_get(self.configuration.target_config, "compilers", "compiler"):
-            raise BuildTestError("Unable to find any compilers in configuration file. Please define a compiler or detect compilers by running 'buildtest config compilers find'")
+            raise BuildTestError(
+                "Unable to find any compilers in configuration file. Please define a compiler or detect compilers by running 'buildtest config compilers find'"
+            )
         self.compilers = self.configuration.target_config["compilers"]["compiler"]
 
         self._names = []
