@@ -4,6 +4,7 @@ import pytest
 
 from buildtest.cli.config import (
     list_profiles,
+    remove_profiles,
     validate_config,
     view_configuration,
     view_executors,
@@ -69,19 +70,23 @@ def test_config_path():
 
 @pytest.mark.cli
 def test_config_profile():
-    # buildtest config profiles
+    # buildtest config profiles list
     list_profiles(configuration)
 
-    # buildtest config profiles --theme emacs --yaml
+    # buildtest config profiles list --theme emacs --yaml
     list_profiles(configuration, theme="emacs", print_yaml=True)
 
-    # buildtest config profiles --yaml
+    # buildtest config profiles list --yaml
     list_profiles(configuration, print_yaml=True)
+
 
 @pytest.mark.cli
 def test_profiles_remove():
+    profiles = list(configuration.target_config["profiles"].keys())
+
     # buildtest config profiles remove
-    def remove_profiles(configuration, names)
+    remove_profiles(configuration, profiles)
+
 
 @pytest.mark.cli
 def test_config_executors():

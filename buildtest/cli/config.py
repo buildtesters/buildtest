@@ -12,6 +12,7 @@ from buildtest.exceptions import ConfigurationError
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.defaults import custom_validator, schema_table
 
+
 def config_cmd(args, configuration, editor, system):
     """Entry point for ``buildtest config`` command. This method will invoke other methods depending on input argument.
 
@@ -161,6 +162,7 @@ def view_configuration(configuration, theme=None, pager=None):
     console.rule(configuration.file)
     console.print(syntax)
 
+
 def remove_profiles(configuration, profile_name):
     """This method will remove profile names from configuration file given a list of profile names. This method
     will be invoked when user runs ``buildtest config profiles remove`` command.
@@ -197,6 +199,8 @@ def remove_profiles(configuration, profile_name):
         yaml.safe_dump(
             configuration.config, fd, default_flow_style=False, sort_keys=False
         )
+
+
 def list_profiles(configuration, theme=None, print_yaml=None):
     """Display the list of profile for buildtest configuration file. This implements command ``buildtest config profiles list``
 

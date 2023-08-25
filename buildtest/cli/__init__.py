@@ -1003,7 +1003,7 @@ def config_menu(subparsers, parent_parser):
     )
     # buildtest config profiles remove
     subparsers_profile_remove = subparsers_profile.add_parser(
-        "remove", aliases=['rm'], help="Remove a profile from configuration",
+        "remove", aliases=["rm"], help="Remove a profile from configuration"
     )
     subparsers_profile_remove.add_argument(
         "profile_name", nargs="*", help="Specify profile name to remove"
