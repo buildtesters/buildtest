@@ -726,3 +726,21 @@ is an object and attributes ``tags``, ``maintainers``, ``type`` correspond to th
 
 We have added additional checks in the JSON schema for valid values for each type, for instance if you specify an invalid value for ``type`` field
 which is used to filter buildspecs by the ``type`` field, then you will get an invalid configuration file.
+
+
+Listing Profiles
+----------------
+
+This section in the profile permits you to enumerate the profiles available for encapsulating buildtest build options.
+
+Lets create a profile by running the following buildtest command.
+
+.. command-output:: buildtest build -t python --save-profile=python
+
+The `--save-profile` is used to specify name of profile that will be written in configuration file.
+
+In order to see all profiles you can run ``buildtest config profiles list`` as shown below
+
+.. command-output:: buildtest config profiles list
+
+.. command-output:: buildtest config profiles list --yaml

@@ -55,7 +55,7 @@ _avail_executors ()
 # list of available compilers
 _avail_compilers ()
 {
-  buildtest config compilers
+  buildtest config compilers list
 }
 
 # list of test ids from report
@@ -219,7 +219,7 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse  -e -f -h -n -p -s -t c clear l list p path sm summary"
+      local opts="--detailed --end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse -d -e -f -h -n -p -s -t c clear l list p path sm summary"
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       case "${prev}" in --filter)
         COMPREPLY=( $( compgen -W "$(_avail_report_filterfields)" -- $cur ) )
@@ -237,20 +237,36 @@ _buildtest ()
     ;;
 
     config|cg)
-      local cmds="-h --help co compilers e edit ex executors p path systems val validate v view"
+
+
+      local cmds="-h --help co compilers e edit ex executors p path profiles systems validate v view"
+
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
 
       case "${COMP_WORDS[2+offset]}" in
         compilers|co)
-          local opts="--help --json --yaml -h -j -y find test"
-          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          local opts="--help -h"
+          local cmds="list find remove test"
+          local aliases="rm"
+          COMPREPLY=( $( compgen -W "${cmds} ${aliases}" -- $cur ) )
+          if [[ $cur == -* ]] ; then
+            COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+          fi
+
+          if [[ "${prev}" == "list" ]]; then
+            local opts="--json --yaml -j -y"
+            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          fi
           if [[ "${prev}" == "find" ]]; then
             local opts="--detailed --file --help --modulepath --update -d -h -m -u"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           fi
           if [[ "${prev}" == "test" ]]; then
+            COMPREPLY=( $( compgen -W "$(_avail_compilers)" -- $cur ) )
+          fi
+          if [[ "${prev}" == "remove" ]] || [[ "${prev}" == "rm" ]]; then
             COMPREPLY=( $( compgen -W "$(_avail_compilers)" -- $cur ) )
           fi
           ;;
@@ -261,14 +277,27 @@ _buildtest ()
           local opts="-h --help"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
         view|v)
-          local opts="--help --pager --theme -h -t"
+          local opts="--help --pager --theme -h"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
 
-          case "${prev}" in --theme|-t)
+          case "${prev}" in --theme)
             COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
             return
           esac
         ;;
+        profiles)
+          local opts="--help -h list"
+          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          if [[ "${prev}" == "list" ]]; then
+            local opts="--help  --theme --yaml -h -y"
+            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          fi
+
+          case "${prev}" in --theme)
+              COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
+              return
+          esac
+          ;;
       esac
       ;;
     inspect|it)
@@ -362,7 +391,7 @@ _buildtest ()
           COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
         fi
 
-        case "${prev}" in --theme|-t)
+        case "${prev}" in --theme)
           COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
           return
         esac
@@ -373,7 +402,7 @@ _buildtest ()
         if [[ $cur == -* ]] ; then
           COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
         fi
-        case "${prev}" in --theme|-t)
+        case "${prev}" in --theme)
           COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
           return
         esac
@@ -389,7 +418,6 @@ _buildtest ()
         ;;
       validate|val)
         local opts="--buildspec --exclude --executor --tag -b -e -t -x "
-
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
         # auto completion for 'buildtest buildspec validate' options
         if [[ "${prev}" == "-b" ]] || [[ "${prev}" == "--buildspec" ]] || [[ "${prev}" == "-x" ]] || [[ "${prev}" == "--exclude" ]]; then
@@ -456,9 +484,10 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       ;;
     *)
-      local cmds="build buildspec cd cdash clean config debugreport docs help info inspect history path report schema schemadocs stats stylecheck tutorial-examples unittests"
-      local alias_cmds="bd bc cg debug it h hy rt style test"
-      local opts="--color --config --debug --editor --help --helpcolor --help-all --logpath --loglevel --print-log --no-color --report --version --view-log -c -d -h -l -p -r -H -V"
+      local cmds="build buildspec cd cdash clean commands config debugreport docs history info inspect path report schema schemadocs show stats stylecheck tutorial-examples unittests"
+      local alias_cmds="bd bc cg cmd debug hy it rt s style test"
+      local opts="--color --config --debug --editor --help --helpcolor --help-all --loglevel --logpath --no-color --print-log --report --version --view-log -c -d -h -l -p -r -H -V"
+
 
       case "${cur}" in
       # print main options to buildtest

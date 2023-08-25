@@ -301,7 +301,7 @@ def print_config_show():
         "Validate configuration file /tmp/config.yml",
     )
     table.add_row(
-        "buildtest config compilers",
+        "buildtest config compilers list",
         "List all compilers from configuration file in flat listing",
     )
     table.add_row(
@@ -315,6 +315,13 @@ def print_config_show():
     table.add_row(
         "buildtest config compilers test",
         "Test each compiler instance by performing module load test",
+    )
+    table.add_row(
+        "buildtest config compilers remove gcc/7.5.0",
+        "Remove compiler instance gcc/7.5.0",
+    )
+    table.add_row(
+        "buildtest config profiles list", "Listing all profiles from configuration file"
     )
     console.print(table)
 

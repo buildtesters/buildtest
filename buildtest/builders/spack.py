@@ -122,6 +122,15 @@ class SpackBuilder(BuilderBase):
             else:
                 lines.append(f"spack install {opts}")
 
+        if spack_configuration.get("load"):
+            opts = spack_configuration["load"].get("option") or ""
+
+            if spack_configuration["load"].get("specs"):
+                for spec in spack_configuration["load"]["specs"]:
+                    lines.append(f"spack load {opts} {spec}")
+            else:
+                lines.append(f"spack load{opts}")
+
         if spack_configuration.get("test"):
             lines += self._spack_test(spack_configuration)
 
@@ -196,7 +205,7 @@ class SpackBuilder(BuilderBase):
 
     def _spack_environment(self, spack_env):
         """This method is responsible for  creating a spack environment, activate an existing
-        spack environment, create a spack environment from a directory and a manifest file (spack.yaml, spack.lock)
+        spack environment, deactivating an existing spack environment, create a spack environment from a directory and a manifest file (spack.yaml, spack.lock)
 
         Args:
             spack_env (dict): Contains property ``env`` from buildspec dictionary
@@ -231,6 +240,10 @@ class SpackBuilder(BuilderBase):
 
             spack_env_create_line = " ".join(cmd)
             lines += [spack_env_create_line]
+
+            # deactivate environment ('spack env deactivate')
+        if spack_env.get("deactivate"):
+            lines += ["spack env deactivate"]
 
         # activate environment ('spack env activate')
         if spack_env.get("activate"):

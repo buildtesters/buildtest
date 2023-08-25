@@ -20,8 +20,13 @@ def config_cmd(args, configuration, editor, system):
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
         system (buildtest.system.BuildTestSystem): An instance of BuildTestSystem class
     """
+
     if args.config in ["view", "v"]:
         view_configuration(configuration, theme=args.theme, pager=args.pager)
+
+    elif args.config in ["profiles"]:
+        if args.profiles == "list":
+            list_profiles(configuration, theme=args.theme, print_yaml=args.yaml)
 
     elif args.config in ["executors", "ex"]:
         buildexecutor = BuildExecutor(configuration)
@@ -152,6 +157,33 @@ def view_configuration(configuration, theme=None, pager=None):
 
     console.rule(configuration.file)
     console.print(syntax)
+
+
+def list_profiles(configuration, theme=None, print_yaml=None):
+    """Display the list of profile for buildtest configuration file. This implements command ``buildtest config profiles list``
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        theme (str, optional): Color theme to choose. This is the Pygments style (https://pygments.org/docs/styles/#getting-a-list-of-available-styles) which is specified by ``--theme`` option
+        print_yaml (bool, optional): Display profiles in yaml format. This is specified by ``--yaml`` option
+    """
+
+    if not configuration.target_config.get("profiles"):
+        console.print(
+            f"Unable to list any profiles because no profiles found in configuration file: {configuration.file}. Please create a profile using `buildtest build --save-profile`"
+        )
+        return
+    if print_yaml:
+        profile_configuration = yaml.dump(
+            configuration.target_config["profiles"], indent=2
+        )
+        syntax = Syntax(profile_configuration, "yaml", theme=theme or "monokai")
+        console.print(syntax)
+        return
+
+    # print profiles as raw text
+    for profile_name in configuration.target_config["profiles"].keys():
+        print(profile_name)
 
 
 def view_executors(

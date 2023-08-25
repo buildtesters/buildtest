@@ -45,6 +45,30 @@ You may find it useful to fetch all failed records and determine pass/fail crite
 
 .. _report_format_fields:
 
+Detailed Reports (``buildtest report --detailed``)
+---------------------------------------------------
+
+The **buildtest report --detailed** option can be used to show a detailed test report that may be of interest when
+examining a test. This option is synonymous to running ``buildtest report --format name,id,user,state,returncode,
+runtime,outfile,errfile,buildspec``.
+Shown below is an example output.
+
+.. dropdown:: ``buildtest report --detailed``
+
+    .. command-output:: buildtest report --detailed
+
+.. note::
+        The ``--detailed`` and ``--format`` options are mutually exclusive options because both options
+        will alter the format fields when displaying test results.
+
+You will get the following error if you specify both options as shown below
+
+.. dropdown:: ``buildtest report --detailed --format name``
+   :color: warning
+
+    .. command-output:: buildtest report --detailed --format name
+       :returncode: 2
+
 Format Reports (``buildtest report --format``)
 -----------------------------------------------
 
