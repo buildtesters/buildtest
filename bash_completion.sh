@@ -55,7 +55,7 @@ _avail_executors ()
 # list of available compilers
 _avail_compilers ()
 {
-  buildtest config compilers
+  buildtest config compilers list
 }
 
 # list of test ids from report
@@ -247,8 +247,13 @@ _buildtest ()
 
       case "${COMP_WORDS[2+offset]}" in
         compilers|co)
-          local opts="--help -h list find test"
-          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          local opts="--help -h"
+          local cmds="list find remove test"
+          local aliases="rm"
+          COMPREPLY=( $( compgen -W "${cmds} ${aliases}" -- $cur ) )
+          if [[ $cur == -* ]] ; then
+            COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+          fi
 
           if [[ "${prev}" == "list" ]]; then
             local opts="--json --yaml -j -y"
@@ -259,6 +264,9 @@ _buildtest ()
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
           fi
           if [[ "${prev}" == "test" ]]; then
+            COMPREPLY=( $( compgen -W "$(_avail_compilers)" -- $cur ) )
+          fi
+          if [[ "${prev}" == "remove" ]] || [[ "${prev}" == "rm" ]]; then
             COMPREPLY=( $( compgen -W "$(_avail_compilers)" -- $cur ) )
           fi
           ;;
