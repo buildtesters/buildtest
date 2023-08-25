@@ -286,8 +286,14 @@ _buildtest ()
           esac
         ;;
         profiles)
-          local opts="--help -h remove rm list"
-          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          local opts="--help -h"
+          local cmds="list remove"
+          local aliases="rm"
+          COMPREPLY=( $( compgen -W "${cmds} ${aliases}" -- $cur ) )
+          if [[ $cur == -* ]] ; then
+            COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+          fi
+
           if [[ "${prev}" == "list" ]]; then
             local opts="--help  --theme --yaml -h -y"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
