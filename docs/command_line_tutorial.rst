@@ -137,9 +137,9 @@ error file and support multiple test queries including regular expression!!
 
 Let's try running the following
 
-.. dropdown:: ``buildtest it query -o -e --testpath hello_world``
+.. dropdown:: ``buildtest it query -o -e -t hello_world``
 
-    .. command-output:: buildtest it query -o -e --testpath hello_world
+    .. command-output:: buildtest it query -o -e -t hello_world
 
 You can retrieve paths to given test via ``buildtest path`` that can be useful if you want to navigate to directory or list
 contents. By default ``buildtest path`` will retrieve root directory of test. You can retrieve output and error via

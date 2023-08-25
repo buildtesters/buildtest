@@ -1293,7 +1293,7 @@ def inspect_menu(subparsers, parent_parser):
         "-o", "--output", action="store_true", help="Print output file"
     )
     query_list.add_argument(
-        "--testpath", action="store_true", help="Print content of testpath"
+        "-t", "--testpath", action="store_true", help="Print content of testpath"
     )
 
     query_list.add_argument(

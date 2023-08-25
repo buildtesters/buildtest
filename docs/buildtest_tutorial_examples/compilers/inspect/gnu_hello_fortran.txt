@@ -1,4 +1,4 @@
-$ buildtest inspect query --testpath hello_f 
+$ buildtest inspect query -t hello_f
 ────────────────────────────────────────────────────────────────────────────────────────── hello_f/600c36b4-feda-4b60-9c77-ff409d864136 ───────────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Hello World Fortran Compilation
