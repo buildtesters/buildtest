@@ -10,7 +10,7 @@ from rich.table import Column, Table
 from buildtest.defaults import console
 from buildtest.exceptions import ConfigurationError
 from buildtest.executors.setup import BuildExecutor
-
+from buildtest.schemas.defaults import custom_validator, schema_table
 
 def config_cmd(args, configuration, editor, system):
     """Entry point for ``buildtest config`` command. This method will invoke other methods depending on input argument.
@@ -28,8 +28,8 @@ def config_cmd(args, configuration, editor, system):
         if args.profiles == "list":
             list_profiles(configuration, theme=args.theme, print_yaml=args.yaml)
 
-    elif args.config in ["remove", "rm"]:
-        remove_profiles(configuration, ...)
+        if args.profiles in ["remove", "rm"]:
+            remove_profiles(configuration, profile_name=args.profile_name)
 
     elif args.config in ["executors", "ex"]:
         buildexecutor = BuildExecutor(configuration)
@@ -161,7 +161,42 @@ def view_configuration(configuration, theme=None, pager=None):
     console.rule(configuration.file)
     console.print(syntax)
 
+def remove_profiles(configuration, profile_name):
+    """This method will remove profile names from configuration file given a list of profile names. This method
+    will be invoked when user runs ``buildtest config profiles remove`` command.
 
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        profile_name (list): List of name of profile to remove
+    """
+
+    if not configuration.target_config.get("profiles"):
+        console.print(
+            f"Unable to remove any profiles because no profiles found in configuration file: {configuration.file}. Please create a profile using [red]buildtest build --save-profile[/red]"
+        )
+        return
+
+    for name in profile_name:
+        if name not in configuration.target_config["profiles"]:
+            console.print(f"Unable to remove profile: {name} because it does not exist")
+            continue
+
+        del configuration.target_config["profiles"][name]
+        console.print(f"Removed profile: {name}")
+
+    custom_validator(
+        configuration.config, schema_table["settings.schema.json"]["recipe"]
+    )
+
+    # if no profiles exist then delete top-level key 'profiles'
+    if len(configuration.target_config["profiles"].keys()) == 0:
+        del configuration.target_config["profiles"]
+    console.print(f"Updating configuration file: {configuration.file}")
+
+    with open(configuration.file, "w") as fd:
+        yaml.safe_dump(
+            configuration.config, fd, default_flow_style=False, sort_keys=False
+        )
 def list_profiles(configuration, theme=None, print_yaml=None):
     """Display the list of profile for buildtest configuration file. This implements command ``buildtest config profiles list``
 
