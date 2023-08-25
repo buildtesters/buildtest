@@ -124,6 +124,12 @@ _avail_report_formatfields()
 {
   buildtest report --formatfields
 }
+
+_avail_profiles()
+{
+  buildtest config profiles list
+}
+
 #  entry point to buildtest bash completion function
 _buildtest ()
 {
@@ -294,6 +300,9 @@ _buildtest ()
             COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
           fi
 
+          if [[ "${prev}" == "remove" ]] || [[ "${prev}" == "rm" ]];  then
+            COMPREPLY=( $( compgen -W "$(_avail_profiles)" -- $cur ) )
+          fi
           if [[ "${prev}" == "list" ]]; then
             local opts="--help  --theme --yaml -h -y"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
