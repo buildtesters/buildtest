@@ -1001,7 +1001,13 @@ def config_menu(subparsers, parent_parser):
     subparsers_profile_list = subparsers_profile.add_parser(
         "list", help="List all profiles", parents=[parent_parser["theme"]]
     )
-
+    # buildtest config profiles remove
+    subparsers_profile_remove = subparsers_profile.add_parser(
+        "remove", aliases=['rm'], help="Remove a profile from configuration",
+    )
+    subparsers_profile_remove.add_argument(
+        "profile_name", nargs="*", help="Specify profile name to remove"
+    )
     # buildtest config profile list options
     subparsers_profile_list.add_argument(
         "-y", "--yaml", action="store_true", help="List Profile details in YAML Format"
@@ -1020,10 +1026,7 @@ def config_menu(subparsers, parent_parser):
     )
 
     subparsers_config.add_parser("systems", help="List all available systems")
-    #buildtest config profile remove
-    subparsers_profile_list.add_argument(
-        "-y", "--yaml", action="store_true", help="List Profile details in YAML Format"
-    )
+
     # buildtest config validate
     subparsers_config.add_parser(
         "validate",
