@@ -16,6 +16,7 @@ from buildtest.defaults import (
     BUILDTEST_ROOT,
     BUILDTEST_UNITTEST_ROOT,
     BUILDTEST_USER_HOME,
+    DEFAULT_SETTINGS_FILE,
     VAR_DIR,
     console,
 )
@@ -39,6 +40,8 @@ def run_unit_tests(pytestopts=None, sourcefiles=None, enable_coverage=False):
         )
 
     os.environ["BUILDTEST_CI_DIR"] = tempfile.mkdtemp()
+    settings_file = os.path.join(os.environ["BUILDTEST_CI_DIR"], "config.yml")
+    shutil.copyfile(DEFAULT_SETTINGS_FILE, settings_file)
 
     console.rule("Running buildtest unit tests")
     console.print("BUILDTEST_CI_DIR", os.getenv("BUILDTEST_CI_DIR"))

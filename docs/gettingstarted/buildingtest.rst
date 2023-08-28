@@ -517,8 +517,8 @@ with a profile called **python-tests**
 
 .. dropdown:: buildtest configuration with profile
 
-    .. command-output:: cat $BUILDTEST_ROOT/buildtest/settings/config.yml
-        :shell:
+    .. command-output:: buildtest config view
+
 
 Next, let's build the tests via newly created profile and take note that it will run all tests with tag `python`
 

@@ -22,7 +22,7 @@ sys.path.insert(0, here)
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.config import SiteConfiguration
-from buildtest.defaults import BUILDTEST_ROOT, VAR_DIR
+from buildtest.defaults import BUILDTEST_ROOT, DEFAULT_SETTINGS_FILE, VAR_DIR
 from buildtest.utils.file import is_dir
 
 # set BUILDTEST_ROOT environment that is generally set by 'source setup.sh'
@@ -32,6 +32,10 @@ os.environ["PATH"] += "%s%s" % (os.pathsep, os.path.join(here, "bin"))
 
 os.environ["BUILDTEST_CI_DIR"] = tempfile.mkdtemp()
 print(f"BUILDTEST_CI_DIR: {os.environ['BUILDTEST_CI_DIR']}")
+
+settings_file = os.path.join(os.environ["BUILDTEST_CI_DIR"], "config.yml")
+shutil.copyfile(DEFAULT_SETTINGS_FILE, settings_file)
+
 # remove $BUILDTEST_ROOT/var which writes variable data
 if is_dir(VAR_DIR):
     shutil.rmtree(VAR_DIR)
