@@ -744,3 +744,31 @@ In order to see all profiles you can run ``buildtest config profiles list`` as s
 .. command-output:: buildtest config profiles list
 
 .. command-output:: buildtest config profiles list --yaml
+
+Removing Profiles
+------------------
+
+You can remove a profile by running ``buildtest config profiles remove <profile>``, where <profile> is the name of profile.
+
+This command will update your configuration file and remove the profile name from the configuration file. You can
+remove multiple profiles at once, buildtest will check if profile name exist and attempt to remove it. If its not
+found, it will simply skip it.
+
+First, lets create two profile using ``buildtest build --save-profile``
+
+.. dropdown:: Creating profiles
+
+    .. command-output:: buildtest build -t python --save-profile=python
+
+    .. command-output:: buildtest build -b tutorials/shell_examples.yml  --save-profile=shell
+
+Now we will list the profiles to confirm they are created and remove them. Next we will rerun ``buildtest config profiles list`` to confirm
+profiles are removed
+
+.. dropdown:: Example on how to create, list and remove profiles
+
+    .. command-output:: buildtest config profiles list
+
+    .. command-output:: buildtest config profiles remove python shell
+
+    .. command-output:: buildtest config profiles list
