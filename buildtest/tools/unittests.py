@@ -7,9 +7,10 @@ here = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 if here not in sys.path:
     sys.path.insert(0, here)
 
+import tempfile
+
 import coverage
 import pytest
-import tempfile
 
 from buildtest.defaults import (
     BUILDTEST_ROOT,

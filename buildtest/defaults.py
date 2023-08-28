@@ -6,6 +6,7 @@ or derived here.
 import os
 import pwd
 import shutil
+
 from rich.console import Console
 
 console = Console(soft_wrap=True)
@@ -36,7 +37,7 @@ if ci_dir:
     VAR_DIR = os.path.join(ci_dir, "var")
     settings_file = os.path.join(ci_dir, "config.yml")
     shutil.copyfile(DEFAULT_SETTINGS_FILE, settings_file)
-    DEFAULT_SETTINGS_FILE=settings_file
+    DEFAULT_SETTINGS_FILE = settings_file
 
 
 BUILDTEST_LOGFILE = os.path.join(VAR_DIR, "buildtest.log")
