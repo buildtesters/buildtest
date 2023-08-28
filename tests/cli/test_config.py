@@ -1,8 +1,10 @@
 import os
+import shutil
+import tempfile
 
 import pytest
-import tempfile
-import shutil
+
+from buildtest.cli.build import BuildTest
 from buildtest.cli.config import (
     list_profiles,
     remove_profiles,
@@ -13,7 +15,6 @@ from buildtest.cli.config import (
     view_system,
 )
 from buildtest.config import SiteConfiguration
-from buildtest.cli.build import BuildTest
 from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, SCHEMA_ROOT
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.defaults import custom_validator
@@ -71,8 +72,7 @@ def test_config_path():
 
 
 @pytest.mark.cli
-class TestProfiles():
-
+class TestProfiles:
     tf = tempfile.NamedTemporaryFile(suffix=".yml")
     shutil.copy2(configuration.file, tf.name)
 
@@ -80,10 +80,15 @@ class TestProfiles():
     buildtest_config.detect_system()
     buildtest_config.validate(moduletool=system.system["moduletool"])
 
-    cmd = BuildTest(configuration=buildtest_config, buildtest_system=system, tags=['python'], save_profile='python')
+    cmd = BuildTest(
+        configuration=buildtest_config,
+        buildtest_system=system,
+        tags=["python"],
+        save_profile="python",
+    )
     cmd.build()
-    def test_list_profiles(self):
 
+    def test_list_profiles(self):
         # buildtest config profiles list
         list_profiles(self.buildtest_config)
 
@@ -92,7 +97,6 @@ class TestProfiles():
 
         # buildtest config profiles list --yaml
         list_profiles(self.buildtest_config, print_yaml=True)
-
 
     @pytest.mark.cli
     def test_profiles_remove(self):
@@ -104,6 +108,7 @@ class TestProfiles():
 
         # testing removing profiles when no profiles exist
         remove_profiles(self.buildtest_config, profiles[0])
+
 
 @pytest.mark.cli
 def test_config_executors():
