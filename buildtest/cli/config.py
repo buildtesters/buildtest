@@ -178,27 +178,35 @@ def remove_profiles(configuration, profile_name):
         )
         return
 
+    # variable to determine if file needs to be written back to disk
+    write_back = False
+
     for name in profile_name:
         if name not in configuration.target_config["profiles"]:
             console.print(f"Unable to remove profile: {name} because it does not exist")
             continue
 
         del configuration.target_config["profiles"][name]
-        console.print(f"Removed profile: {name}")
+        console.print(f"Removing profile: {name}")
+        write_back = True
+
+    # if no profiles exist then delete top-level key 'profiles'
+    if len(configuration.target_config["profiles"].keys()) == 0:
+        del configuration.target_config["profiles"]
 
     custom_validator(
         configuration.config, schema_table["settings.schema.json"]["recipe"]
     )
 
-    # if no profiles exist then delete top-level key 'profiles'
-    if len(configuration.target_config["profiles"].keys()) == 0:
-        del configuration.target_config["profiles"]
-    console.print(f"Updating configuration file: {configuration.file}")
+    # only update the configuration file if we removed a profile
+    if write_back:
 
-    with open(configuration.file, "w") as fd:
-        yaml.safe_dump(
-            configuration.config, fd, default_flow_style=False, sort_keys=False
-        )
+        console.print(f"Updating configuration file: {configuration.file}")
+
+        with open(configuration.file, "w") as fd:
+            yaml.safe_dump(
+                configuration.config, fd, default_flow_style=False, sort_keys=False
+            )
 
 
 def list_profiles(configuration, theme=None, print_yaml=None):

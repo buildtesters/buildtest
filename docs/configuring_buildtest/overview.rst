@@ -729,7 +729,7 @@ which is used to filter buildspecs by the ``type`` field, then you will get an i
 
 
 Listing Profiles
-----------------
+~~~~~~~~~~~~~~~~~
 
 This section in the profile permits you to enumerate the profiles available for encapsulating buildtest build options.
 
@@ -746,11 +746,11 @@ In order to see all profiles you can run ``buildtest config profiles list`` as s
 .. command-output:: buildtest config profiles list --yaml
 
 Removing Profiles
-------------------
+~~~~~~~~~~~~~~~~~~
 
 You can remove a profile by running ``buildtest config profiles remove <profile>``, where <profile> is the name of profile.
 
-This command will update your configuration file and remove the profile name from the configuration file. You can
+This command will update your configuration file and remove the profile name from configuration. You can
 remove multiple profiles at once, buildtest will check if profile name exist and attempt to remove it. If its not
 found, it will simply skip it.
 
@@ -758,17 +758,32 @@ First, lets create two profile using ``buildtest build --save-profile``
 
 .. dropdown:: Creating profiles
 
-    .. command-output:: buildtest build -t python --save-profile=python
+    .. command-output:: buildtest build -t python --save-profile=prof1
 
-    .. command-output:: buildtest build -b tutorials/shell_examples.yml  --save-profile=shell
+    .. command-output:: buildtest build -b tutorials/shell_examples.yml  --save-profile=prof2
 
 Now we will list the profiles to confirm they are created and remove them. Next we will rerun ``buildtest config profiles list`` to confirm
 profiles are removed
 
 .. dropdown:: Example on how to create, list and remove profiles
 
-    .. command-output:: buildtest config profiles list
+    .. code-block:: console
 
-    .. command-output:: buildtest config profiles remove python shell
+        $ buildtest config profiles list
+        python-tests
+        python
+        prof1
+        prof2
 
-    .. command-output:: buildtest config profiles list
+    .. code-block:: console
+
+        $ buildtest config profiles remove prof1 prof2
+        Removing profile: prof1
+        Removing profile: prof2
+        Updating configuration file: /Users/siddiq90/Documents/github/buildtest/buildtest/settings/config.yml
+
+    .. code-block:: console
+
+        $ buildtest config profiles list
+        python-tests
+        python
