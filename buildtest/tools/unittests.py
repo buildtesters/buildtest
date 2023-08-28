@@ -9,6 +9,7 @@ if here not in sys.path:
 
 import coverage
 import pytest
+import tempfile
 
 from buildtest.defaults import (
     BUILDTEST_ROOT,
@@ -35,6 +36,11 @@ def run_unit_tests(pytestopts=None, sourcefiles=None, enable_coverage=False):
         sys.exit(
             "Please check your buildtest installation by running 'source setup.sh'"
         )
+
+    os.environ["BUILDTEST_CI_DIR"] = tempfile.mkdtemp()
+
+    console.rule("Running buildtest unit tests")
+    console.print("BUILDTEST_CI_DIR", os.getenv("BUILDTEST_CI_DIR"))
 
     pytestopts = pytestopts.split() if pytestopts else []
     sources = []
