@@ -200,7 +200,6 @@ def remove_profiles(configuration, profile_name):
 
     # only update the configuration file if we removed a profile
     if write_back:
-
         console.print(f"Updating configuration file: {configuration.file}")
 
         with open(configuration.file, "w") as fd:
