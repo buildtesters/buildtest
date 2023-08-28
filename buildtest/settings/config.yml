@@ -1,45 +1,23 @@
 system:
   generic:
-    # specify list of hostnames where buildtest can run for given system record
-    hostnames: [".*"]
-
-    # system description
+    hostnames:
+    - .*
     description: Generic System
-    # specify module system used at your site (environment-modules, lmod)
     moduletool: N/A
-
-    # specify test timeout duration in number of seconds
-    # timeout: 60
-
-    # pool size for parallel processing using multiprocessing.Pool. Pool Size must be 1 or higher. The pool size is calculated as follows: poolsize = min(poolsize, os.cpu_count())
     poolsize: 1
-
-    # determine whether to enable pagination
-    pager: False
-
+    pager: false
     buildspecs:
-      # whether to rebuild cache file automatically when running `buildtest buildspec find`
-      rebuild: False
-      # limit number of records to display when running `buildtest buildspec find`
+      rebuild: false
       count: 15
-      # format fields to display when running `buildtest buildspec find`, By default we will show name,description
-      format: "name,description"
-      # enable terse mode
-      terse: False
-      # specify list of directories to search for buildspecs when building cache
-      #root: [ $BUILDTEST_ROOT/examples, /tmp/buildspecs ]
+      format: name,description
+      terse: false
     report:
       count: 25
-      #enable terse mode for report
-      terse: False
-      format: "name,id,state,runtime,returncode"
-      # show the latest for every test
-      latest: True
-      # show the oldest for every test
-      oldest: False
-
+      terse: false
+      format: name,id,state,runtime,returncode
+      latest: true
+      oldest: false
     executors:
-      # define local executors for running jobs locally
       local:
         bash:
           description: submit jobs on local machine using bash shell
@@ -53,37 +31,13 @@ system:
         zsh:
           description: submit jobs on local machine using zsh shell
           shell: zsh
-    # compiler block
     compilers:
-      # a list of directories to search for modules
-      # modulepath: ['/tmp', '/var/']
-
-      # regular expression to search for compilers based on module pattern. Used with 'buildtest config compilers find' to generate compiler instance
-      # find:
-      #  gcc: "^(gcc)"
-      #  intel: "^(intel)"
-      #  cray: "^(craype)"
-      #  pgi: "^(pgi)"
-      #  cuda: ^(cuda)"
-      #  clang: "^(clang)"
-
-      # declare compiler instance which can be site-specific. You can let 'buildtest config compilers find' generate compiler section
       compiler:
         gcc:
           builtin_gcc:
             cc: gcc
             fc: gfortran
             cxx: g++
-
-    # location of log directory
-    # logdir: /tmp/
-
-    # specify location where buildtest will write tests
-    # testdir: /tmp
-
-    # specify one or more directory where buildtest should load buildspecs
-    # buildspec_roots: []
-
     cdash:
       url: https://my.cdash.org/
       project: buildtest

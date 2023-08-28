@@ -124,6 +124,12 @@ _avail_report_formatfields()
 {
   buildtest report --formatfields
 }
+
+_avail_profiles()
+{
+  buildtest config profiles list
+}
+
 #  entry point to buildtest bash completion function
 _buildtest ()
 {
@@ -239,7 +245,7 @@ _buildtest ()
     config|cg)
 
 
-      local cmds="-h --help co compilers e edit ex executors p path profiles systems validate v view"
+      local cmds="-h --help co compilers e edit ex executors p path profiles remove systems validate v view"
 
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
@@ -286,8 +292,17 @@ _buildtest ()
           esac
         ;;
         profiles)
-          local opts="--help -h list"
-          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+          local opts="--help -h"
+          local cmds="list remove"
+          local aliases="rm"
+          COMPREPLY=( $( compgen -W "${cmds} ${aliases}" -- $cur ) )
+          if [[ $cur == -* ]] ; then
+            COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+          fi
+
+          if [[ "${prev}" == "remove" ]] || [[ "${prev}" == "rm" ]];  then
+            COMPREPLY=( $( compgen -W "$(_avail_profiles)" -- $cur ) )
+          fi
           if [[ "${prev}" == "list" ]]; then
             local opts="--help  --theme --yaml -h -y"
             COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )

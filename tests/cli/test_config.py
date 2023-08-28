@@ -1,9 +1,13 @@
 import os
+import shutil
+import tempfile
 
 import pytest
 
+from buildtest.cli.build import BuildTest
 from buildtest.cli.config import (
     list_profiles,
+    remove_profiles,
     validate_config,
     view_configuration,
     view_executors,
@@ -68,15 +72,42 @@ def test_config_path():
 
 
 @pytest.mark.cli
-def test_config_profile():
-    # buildtest config profiles
-    list_profiles(configuration)
+class TestProfiles:
+    tf = tempfile.NamedTemporaryFile(suffix=".yml")
+    shutil.copy2(configuration.file, tf.name)
 
-    # buildtest config profiles --theme emacs --yaml
-    list_profiles(configuration, theme="emacs", print_yaml=True)
+    buildtest_config = SiteConfiguration(settings_file=tf.name)
+    buildtest_config.detect_system()
+    buildtest_config.validate(moduletool=system.system["moduletool"])
 
-    # buildtest config profiles --yaml
-    list_profiles(configuration, print_yaml=True)
+    cmd = BuildTest(
+        configuration=buildtest_config,
+        buildtest_system=system,
+        tags=["python"],
+        save_profile="python",
+    )
+    cmd.build()
+
+    def test_list_profiles(self):
+        # buildtest config profiles list
+        list_profiles(self.buildtest_config)
+
+        # buildtest config profiles list --theme emacs --yaml
+        list_profiles(self.buildtest_config, theme="emacs", print_yaml=True)
+
+        # buildtest config profiles list --yaml
+        list_profiles(self.buildtest_config, print_yaml=True)
+
+    @pytest.mark.cli
+    def test_profiles_remove(self):
+        # get all profile names from configuration file
+        profiles = list(self.buildtest_config.target_config["profiles"].keys())
+
+        # This will remove all profiles since 'profiles' is list of all profile names
+        remove_profiles(self.buildtest_config, profiles)
+
+        # testing removing profiles when no profiles exist
+        remove_profiles(self.buildtest_config, profiles[0])
 
 
 @pytest.mark.cli
