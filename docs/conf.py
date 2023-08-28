@@ -15,6 +15,7 @@
 import os
 import shutil
 import sys
+import tempfile
 
 here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, here)
@@ -29,6 +30,8 @@ os.environ["BUILDTEST_ROOT"] = here
 # add $BUILDTEST_ROOT/bin to $PATH to reference 'buildtest' command in docs
 os.environ["PATH"] += "%s%s" % (os.pathsep, os.path.join(here, "bin"))
 
+os.environ["BUILDTEST_CI_DIR"] = tempfile.mkdtemp()
+print(f"BUILDTEST_CI_DIR: {os.environ['BUILDTEST_CI_DIR']}")
 # remove $BUILDTEST_ROOT/var which writes variable data
 if is_dir(VAR_DIR):
     shutil.rmtree(VAR_DIR)
