@@ -144,7 +144,6 @@ def main():
 
     # buildtest build command
     if args.subcommands in ["build", "bd"]:
-
         stdout_file = tempfile.NamedTemporaryFile(delete=True, suffix=".txt")
         with Tee(stdout_file.name):
             cmd = BuildTest(
