@@ -122,10 +122,9 @@ the script via python
        :shell:
 
 
-The `pytest.ini <https://github.com/buildtesters/buildtest/blob/devel/pytest.ini>`_
-found in top-level folder defines pytest configuration for running the unit tests. Some of the unit tests are
-assigned a `marker <https://docs.pytest.org/en/6.2.x/example/markers.html>`_ which allows one to run a group of test together. You
-can find all markers by running ``pytest --markers``.
+The pytest configuration is defined in `pyproject.toml <https://github.com/buildtesters/buildtest/blob/devel/pyproject.toml>`_
+found in top-level folder. Some of the unit tests are assigned a `marker <https://docs.pytest.org/en/6.2.x/example/markers.html>`_
+which allows one to run a group of test together. You can find all markers by running ``pytest --markers``.
 
 If you want to run all tests with ``schema`` marker you can do the following::
 

@@ -5,7 +5,6 @@ or derived here.
 
 import os
 import pwd
-import shutil
 
 from rich.console import Console
 
@@ -36,7 +35,6 @@ ci_dir = os.getenv("BUILDTEST_CI_DIR")
 if ci_dir:
     VAR_DIR = os.path.join(ci_dir, "var")
     settings_file = os.path.join(ci_dir, "config.yml")
-    shutil.copyfile(DEFAULT_SETTINGS_FILE, settings_file)
     DEFAULT_SETTINGS_FILE = settings_file
 
 
