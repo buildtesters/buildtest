@@ -2,6 +2,7 @@
 
 import os
 import shutil
+import tempfile
 import webbrowser
 
 from rich.traceback import install
@@ -47,7 +48,6 @@ from buildtest.defaults import (
     BUILDTEST_EXECUTOR_DIR,
     BUILDTEST_LOGFILE,
     BUILDTEST_USER_HOME,
-    VAR_DIR,
     console,
 )
 from buildtest.exceptions import BuildTestError
@@ -144,9 +144,8 @@ def main():
 
     # buildtest build command
     if args.subcommands in ["build", "bd"]:
-        fname = os.path.join(VAR_DIR, "output.txt")
-
-        with Tee(fname):
+        stdout_file = tempfile.NamedTemporaryFile(delete=True, suffix=".txt")
+        with Tee(stdout_file.name):
             cmd = BuildTest(
                 configuration=configuration,
                 buildspecs=args.buildspec,
@@ -183,7 +182,11 @@ def main():
         if cmd.build_success():
             build_history_dir = cmd.get_build_history_dir()
 
-            shutil.move(fname, os.path.join(build_history_dir, "output.txt"))
+            shutil.copyfile(
+                stdout_file.name, os.path.join(build_history_dir, "output.txt")
+            )
+
+        stdout_file.close()
 
     # buildtest build history
     if args.subcommands in ["history", "hy"]:
