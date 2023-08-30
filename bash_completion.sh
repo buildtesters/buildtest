@@ -165,7 +165,6 @@ _buildtest ()
   local next=${COMP_WORDS[1+offset]}
   
   case "$next" in
-  #case "${prev}" in
     build|bd)
       local shortoption="-b -e -et -f -m -s -t -u -x -xt"
       local longoption="--buildspec --executor --executor-type --exclude --exclude-tags --filter --helpfilter --limit --maxpendtime --modules --module-purge --nodes --pollinterval --procs --profile --rerun --remove-stagedir --retry --save-profile --stage --tags --timeout --unload-modules"
@@ -173,30 +172,23 @@ _buildtest ()
 
       COMPREPLY=( $( compgen -W "$allopts" -- $cur ) )
 
-      # fill auto-completion for 'buildtest build --executor'
-      if [[ "${prev}" == "-e" ]] || [[ "${prev}" == "--executor"  ]]; then
-        COMPREPLY=( $( compgen -W "$(_avail_executors)" -- $cur ) )
-      fi
-
-      # fill auto-completion for 'buildtest build --stage'
-      if [[ "${prev}" == "-s" ]] || [[ "${prev}" == "--stage"  ]]; then
-        COMPREPLY=( $( compgen -W "stage parse" -- $cur ) )
-      fi
-
-      # fill auto-completion for 'buildtest build --executor-type'
-      if [[ "${prev}" == "-et" ]] || [[ "${prev}" == "--executor-type"  ]]; then
-        COMPREPLY=( $( compgen -W "local batch" -- $cur ) )
-      fi
-
-      # fill auto-completion for 'buildtest build --tag' and 'buildtest build --exclude-tags'
-      if [[ "${prev}" == "-t" ]] || [[ "${prev}" == "--tag"  ]] || [[ "${prev}" == "-xt" ]] || [[ "${prev}" == "--exclude-tags"  ]]; then
-        COMPREPLY=( $( compgen -W "$(_avail_tags)" -- $cur ) )
-      fi
-
-      # fill auto-completion for 'buildtest build --buildspec'
-      if [[ "${prev}" == "-b" ]] || [[ "${prev}" == "--buildspec"  ]] || [[ "${prev}" == "-x" ]] || [[ "${prev}" == "--exclude" ]] ; then
-        COMPREPLY=( $( compgen -W "$(_avail_buildspecs)" -- $cur ) )
-      fi
+      case "${prev}" in
+        -e|--executor)
+            COMPREPLY=( $( compgen -W "$(_avail_executors)" -- "$cur" ) )
+            ;;
+        -s|--stage)
+            COMPREPLY=( $( compgen -W "stage parse" -- "$cur" ) )
+            ;;
+        -et|--executor-type)
+            COMPREPLY=( $( compgen -W "local batch" -- "$cur" ) )
+            ;;
+        -t|--tag|-xt|--exclude-tags)
+            COMPREPLY=( $( compgen -W "$(_avail_tags)" -- "$cur" ) )
+            ;;
+        -b|--buildspec|-x|--exclude)
+            COMPREPLY=( $( compgen -W "$(_avail_buildspecs)" -- "$cur" ) )
+            ;;
+      esac
       ;;
 
     cd)
@@ -225,34 +217,44 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--detailed --end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse -d -e -f -h -n -p -s -t c clear l list p path sm summary"
-      COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-      case "${prev}" in --filter)
-        COMPREPLY=( $( compgen -W "$(_avail_report_filterfields)" -- $cur ) )
-        return
-      esac
-      case "${prev}" in --format)
-        COMPREPLY=( $( compgen -W "$(_avail_report_formatfields)" -- $cur ) )
-        return
-      esac
-      case "$prev" in summary|sm)
-        local opts="-d -h --detailed --help"
-        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-        return
+      local opts="--detailed --end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse -d -e -f -h -n -p -s -t"
+      local cmds="clear list path summary"
+      local aliases="c l p sm"
+      COMPREPLY=( $( compgen -W "${cmds} ${aliases}" -- $cur ) )
+
+      if [[ $cur == -* ]] ; then
+        COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+      fi
+
+      case "${prev}" in
+        --filter)
+            COMPREPLY=( $( compgen -W "$(_avail_report_filterfields)" -- "$cur" ) )
+            ;;
+        --format)
+            COMPREPLY=( $( compgen -W "$(_avail_report_formatfields)" -- "$cur" ) )
+            ;;
+        summary|sm)
+            local opts="-d -h --detailed --help"
+            COMPREPLY=( $( compgen -W "${opts}" -- "$cur" ) )
+            ;;
       esac
     ;;
 
     config|cg)
 
+      local cmds="co compilers e edit ex executors p path profiles remove systems validate v view"
+      local aliases="co e ex p v val"
+      local opts="-h --help"
 
-      local cmds="-h --help co compilers e edit ex executors p path profiles remove systems validate v view"
-
-
-      COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
+      COMPREPLY=( $( compgen -W "${cmds} ${aliases}" -- $cur ) )
+      if [[ $cur == -* ]] ; then
+        COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+      fi
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
 
       case "${COMP_WORDS[2+offset]}" in
         compilers|co)
+
           local opts="--help -h"
           local cmds="list find remove test"
           local aliases="rm"
@@ -261,20 +263,22 @@ _buildtest ()
             COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
           fi
 
-          if [[ "${prev}" == "list" ]]; then
-            local opts="--json --yaml -j -y"
-            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-          fi
-          if [[ "${prev}" == "find" ]]; then
-            local opts="--detailed --file --help --modulepath --update -d -h -m -u"
-            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-          fi
-          if [[ "${prev}" == "test" ]]; then
-            COMPREPLY=( $( compgen -W "$(_avail_compilers)" -- $cur ) )
-          fi
-          if [[ "${prev}" == "remove" ]] || [[ "${prev}" == "rm" ]]; then
-            COMPREPLY=( $( compgen -W "$(_avail_compilers)" -- $cur ) )
-          fi
+          case "${prev}" in
+            list)
+              local opts="--json --yaml -j -y"
+              COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+              ;;
+            find)
+              local opts="--detailed --file --help --modulepath --update -d -h -m -u"
+              COMPREPLY=( $( compgen -W "${opts}" -- "$cur" ) )
+              ;;
+            remove|rm)
+              COMPREPLY=( $( compgen -W "$(_avail_compilers)" -- $cur ) )
+              ;;
+            test)
+              COMPREPLY=( $( compgen -W "$(_avail_compilers)" -- $cur ) )
+              ;;
+          esac
           ;;
         executors|ex)
           local opts="--help --disabled --invalid --json --yaml -d -h -i -j -y"
@@ -298,7 +302,7 @@ _buildtest ()
 
           case "${prev}" in --theme)
             COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
-            return
+            ;;
           esac
         ;;
         profiles)
@@ -310,24 +314,23 @@ _buildtest ()
             COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
           fi
 
-          if [[ "${prev}" == "remove" ]] || [[ "${prev}" == "rm" ]];  then
-            COMPREPLY=( $( compgen -W "$(_avail_profiles)" -- $cur ) )
-          fi
-          if [[ "${prev}" == "list" ]]; then
-            local opts="--help  --theme --yaml -h -y"
-            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-          fi
-
-          case "${prev}" in --theme)
+          case "${prev}" in
+            remove|rm)
+              COMPREPLY=( $( compgen -W "$(_avail_profiles)" -- $cur ) )
+              ;;
+            list)
+              local opts="--json --theme --yaml -j -y"
+              COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+              ;;
+            --theme)
               COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
-              return
+              ;;
           esac
           ;;
-      esac
+        esac
       ;;
     inspect|it)
       local cmds="--help -h b buildspec l list n name q query"
-
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # case statement to handle completion for buildtest inspect [name|id|list] command
@@ -364,10 +367,15 @@ _buildtest ()
           ;;
       esac
       ;;
-
     buildspec|bc)
-      local cmds="-h --help ef edit-file et edit-test f find m maintainers s show sf show-fail sm summary val validate"
-      COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
+      local cmds="edit-file edit-test find maintainers show show-fail summary validate"
+      local aliases="ef et f m s sf sm val"
+      local opts="-h --help"
+      COMPREPLY=( $( compgen -W "${cmds} ${aliases}" -- $cur ) )
+
+      if [[ $cur == -* ]] ; then
+        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+      fi
 
       # switch based on 2nd word 'buildtest buildspec <subcommand>'
       case ${COMP_WORDS[2+offset]} in
@@ -381,16 +389,17 @@ _buildtest ()
          *)
            local longopts="--buildspec --count --executors --filter --filterfields --format --formatfields --group-by-executor --group-by-tags --help --helpfilter --helpformat --no-header --pager --paths --quiet --rebuild --row-count --tags --root --terse"
            local shortopts="-b -e -h -n -p -q -r -t"
-           local subcmds="invalid"
-           local allopts="${longopts} ${shortopts} ${subcmds}"
-           COMPREPLY=( $( compgen -W "${allopts}" -- $cur ) )
-           case "${prev}" in --filter)
+           local cmds="invalid"
+
+           COMPREPLY=( $( compgen -W "${cmds} ${longopts} ${shortopts}" -- $cur ) )
+
+           case "${prev}" in
+           --filter)
              COMPREPLY=( $( compgen -W "$(_avail_buildspec_filterfields)" -- $cur ) )
-             return
-           esac
-           case "${prev}" in --format)
+             ;;
+           --format)
              COMPREPLY=( $( compgen -W "$(_avail_buildspec_formatfields)" -- $cur ) )
-             return
+             ;;
            esac
            ;;
          esac
@@ -444,25 +453,32 @@ _buildtest ()
       validate|val)
         local opts="--buildspec --exclude --executor --tag -b -e -t -x "
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-        # auto completion for 'buildtest buildspec validate' options
-        if [[ "${prev}" == "-b" ]] || [[ "${prev}" == "--buildspec" ]] || [[ "${prev}" == "-x" ]] || [[ "${prev}" == "--exclude" ]]; then
-          COMPREPLY=( $( compgen -W "$(_avail_buildspecs)" -- $cur ) )
-        elif [[ "${prev}" == "-t" ]] || [[ "${prev}" == "--tags" ]]; then
-          COMPREPLY=( $( compgen -W "$(_avail_tags)" -- $cur ) )
-        elif [[ "${prev}" == "-e" ]] || [[ "${prev}" == "--executor" ]]; then
-          COMPREPLY=( $( compgen -W "$(_avail_executors)" -- $cur ) )
-        fi
-        ;;
+
+        case "${prev}" in
+          -b|--buildspec|-x|--exclude)
+              COMPREPLY=( $( compgen -W "$(_avail_buildspecs)" -- "$cur" ) )
+              ;;
+          -t|--tags)
+              COMPREPLY=( $( compgen -W "$(_avail_tags)" -- "$cur" ) )
+              ;;
+          -e|--executor)
+              COMPREPLY=( $( compgen -W "$(_avail_executors)" -- "$cur" ) )
+              ;;
+        esac
+      ;;
       esac
       ;;
-
     history|hy)
-      local cmds="--help --pager -h list query"
+      local opts="--help -h"
+      local cmds="list query"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
+      if [[ $cur == -* ]] ; then
+        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+      fi
 
       case ${COMP_WORDS[2+offset]} in
       list)
-        local opts="--help --no-header --row-count --terse -h -n -t"
+        local opts="--help --no-header --pager --row-count --terse -h -n -t"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
         ;;
       query)
@@ -475,31 +491,36 @@ _buildtest ()
       esac
       ;;
     cdash)
-      local cmds="--help -h upload view"
+      local cmds="upload view"
+      local opts="--help -h"
 
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
-      if [[ "${prev}" == "view" ]]; then
-        local opts="-h --help"
-        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-      elif [[ "${prev}" == "upload" ]]; then
-        local opts="--help --open --site -h -o"
+      if [[ $cur == -* ]] ; then
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       fi
+
+      case "${prev}" in
+        view)
+            local opts="-h --help"
+            COMPREPLY=( $( compgen -W "${opts}" -- "$cur" ) )
+            ;;
+        upload)
+            local opts="--help --open --site -h -o"
+            COMPREPLY=( $( compgen -W "${opts}" -- "$cur" ) )
+            ;;
+      esac
       ;;
     stylecheck|style)
       local opts="--help --no-black --no-isort --no-pyflakes --apply -a -h"
-
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
     unittests)
       local opts="--coverage --help --pytestopts --sourcefiles -c -h -p -s"
-
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
     tutorial-examples)
       local opts="-h --help"
-
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
     show|s)
@@ -511,26 +532,28 @@ _buildtest ()
     *)
       local cmds="build buildspec cd cdash clean commands config debugreport docs history info inspect path report schema schemadocs show stats stylecheck tutorial-examples unittests"
       local alias_cmds="bd bc cg cmd debug hy it rt s style test"
-      local opts="--color --config --debug --editor --help --helpcolor --help-all --loglevel --logpath --no-color --print-log --report --version --view-log -c -d -h -l -p -r -H -V"
-
+      local longopts="--color --config --debug --editor --help --helpcolor --help-all --loglevel --logpath --no-color --print-log --report --version --view-log"
+      local shortopts="-c -d -h -l -p -r -H -V"
 
       case "${cur}" in
       # print main options to buildtest
         -*)
-          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
+          COMPREPLY=( $( compgen -W "${longopts} ${shortopts}" -- $cur ) );;
 
       # print main sub-commands to buildtest
         *)
           COMPREPLY=( $( compgen -W "${cmds} ${alias_cmds}" -- $cur ) )
-          if [[ "${prev}" == "--color" ]]; then
-            COMPREPLY=( $( compgen -W "$(_supported_colors)" -- $cur ) )
-          fi
-          if [[ "${prev}" == "--loglevel" ]] || [[ "${prev}" == "-l" ]]; then
-            COMPREPLY=( $( compgen -W "DEBUG INFO WARNING ERROR CRITICAL" -- $cur ) )
-          fi
-          if [[ "${prev}" == "--editor" ]]; then
-            COMPREPLY=( $( compgen -W "vi vim emacs nano" -- $cur ) )
-          fi
+          case "${prev}" in
+            --color)
+                COMPREPLY=( $( compgen -W "$(_supported_colors)" -- "$cur" ) )
+                ;;
+            --loglevel|-l)
+                COMPREPLY=( $( compgen -W "DEBUG INFO WARNING ERROR CRITICAL" -- "$cur" ) )
+                ;;
+            --editor)
+                COMPREPLY=( $( compgen -W "vi vim emacs nano" -- "$cur" ) )
+                ;;
+          esac
           ;;
       esac
   esac
