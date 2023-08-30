@@ -242,11 +242,14 @@ _buildtest ()
 
     config|cg)
 
+      local cmds="co compilers e edit ex executors p path profiles remove systems validate v view"
+      local aliases="co e ex p v val"
+      local opts="-h --help"
 
-      local cmds="-h --help co compilers e edit ex executors p path profiles remove systems validate v view"
-
-
-      COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
+      COMPREPLY=( $( compgen -W "${cmds} ${aliases}" -- $cur ) )
+      if [[ $cur == -* ]] ; then
+        COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+      fi
       # handle completion logic for 'buildtest config <subcommand>' based on subcommands
 
       case "${COMP_WORDS[2+offset]}" in
@@ -328,7 +331,6 @@ _buildtest ()
       ;;
     inspect|it)
       local cmds="--help -h b buildspec l list n name q query"
-
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
 
       # case statement to handle completion for buildtest inspect [name|id|list] command
@@ -365,7 +367,6 @@ _buildtest ()
           ;;
       esac
       ;;
-
     buildspec|bc)
       local cmds="edit-file edit-test find maintainers show show-fail summary validate"
       local aliases="ef et f m s sf sm val"
@@ -467,14 +468,17 @@ _buildtest ()
       ;;
       esac
       ;;
-
     history|hy)
-      local cmds="--help --pager -h list query"
+      local opts="--help -h"
+      local cmds="list query"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
+      if [[ $cur == -* ]] ; then
+        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+      fi
 
       case ${COMP_WORDS[2+offset]} in
       list)
-        local opts="--help --no-header --row-count --terse -h -n -t"
+        local opts="--help --no-header --pager --row-count --terse -h -n -t"
         COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
         ;;
       query)
@@ -487,8 +491,14 @@ _buildtest ()
       esac
       ;;
     cdash)
-      local cmds="--help -h upload view"
+      local cmds="upload view"
+      local opts="--help -h"
+
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
+
+      if [[ $cur == -* ]] ; then
+        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+      fi
 
       case "${prev}" in
         view)
@@ -501,21 +511,16 @@ _buildtest ()
             ;;
       esac
       ;;
-
-
     stylecheck|style)
       local opts="--help --no-black --no-isort --no-pyflakes --apply -a -h"
-
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
     unittests)
       local opts="--coverage --help --pytestopts --sourcefiles -c -h -p -s"
-
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
     tutorial-examples)
       local opts="-h --help"
-
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
     show|s)
@@ -529,7 +534,6 @@ _buildtest ()
       local alias_cmds="bd bc cg cmd debug hy it rt s style test"
       local longopts="--color --config --debug --editor --help --helpcolor --help-all --loglevel --logpath --no-color --print-log --report --version --view-log"
       local shortopts="-c -d -h -l -p -r -H -V"
-
 
       case "${cur}" in
       # print main options to buildtest
