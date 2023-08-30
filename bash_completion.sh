@@ -49,7 +49,7 @@ _avail_schemas ()
 # list of available executors
 _avail_executors ()
 {
-  buildtest config executors
+  buildtest config executors list
 }
 
 # list of available compilers
@@ -278,7 +278,17 @@ _buildtest ()
           ;;
         executors|ex)
           local opts="--help --disabled --invalid --json --yaml -d -h -i -j -y"
-          COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
+          local cmds="list"
+
+          case "$prev" in
+              list)
+                  COMPREPLY=( $( compgen -W "$opts" -- "$cur" ) )
+                  ;;
+              *)
+                  COMPREPLY=( $( compgen -W "${cmds}" -- "$cur" ) )
+                  ;;
+          esac
+          ;;
         validate|systems)
           local opts="-h --help"
           COMPREPLY=( $( compgen -W "${opts}" -- $cur ) );;
