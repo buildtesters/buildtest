@@ -290,7 +290,9 @@ def print_config_show():
     table.add_row(
         "buildtest config executors list --disabled", "List all disabled executors"
     )
-    table.add_row("buildtest config executors list --json", "List all invalid executors")
+    table.add_row(
+        "buildtest config executors list --json", "List all invalid executors"
+    )
     table.add_row("buildtest config path", "Show path to configuration file")
     table.add_row(
         "buildtest config systems",
