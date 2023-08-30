@@ -114,7 +114,7 @@ class TestProfiles:
 def test_config_executors():
     buildexecutor = BuildExecutor(configuration)
 
-    # buildtest config executors --json
+    # buildtest config executors list --json
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
@@ -124,7 +124,7 @@ def test_config_executors():
         invalid=False,
     )
 
-    # buildtest config executors --yaml
+    # buildtest config executors list --yaml
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
@@ -134,7 +134,7 @@ def test_config_executors():
         invalid=False,
     )
 
-    # buildtest config executors -d
+    # buildtest config executors list --disabled
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
@@ -144,7 +144,7 @@ def test_config_executors():
         invalid=False,
     )
 
-    # buildtest config executors -i
+    # buildtest config executors list --invalid
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
@@ -154,7 +154,7 @@ def test_config_executors():
         invalid=True,
     )
 
-    # buildtest config executors
+    # buildtest config executors list
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
