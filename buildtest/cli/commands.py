@@ -1,28 +1,11 @@
+from buildtest.cli import BuildTestParser
+
+
 def list_buildtest_commands():
     """This method implements command ``buildtest commands`` which shows a list of buildtest commands"""
 
-    cmds_list = [
-        "build",
-        "buildspec",
-        "cd",
-        "cdash",
-        "clean",
-        "config",
-        "debugreport",
-        "docs",
-        "history",
-        "info",
-        "inspect",
-        "path",
-        "report",
-        "schema",
-        "schemadocs",
-        "show",
-        "stats",
-        "stylecheck",
-        "tutorial-examples",
-        "unittests",
-    ]
-
-    for field in cmds_list:
+    cmds = BuildTestParser()
+    subparser = cmds.get_subparsers()
+    buildtest_cmds = sorted(list(subparser.choices.keys()))
+    for field in buildtest_cmds:
         print(field)
