@@ -225,20 +225,26 @@ _buildtest ()
       ;;
 
     report|rt)
-      local opts="--detailed --end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse -d -e -f -h -n -p -s -t c clear l list p path sm summary"
-      COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-      case "${prev}" in --filter)
-        COMPREPLY=( $( compgen -W "$(_avail_report_filterfields)" -- $cur ) )
-        return
-      esac
-      case "${prev}" in --format)
-        COMPREPLY=( $( compgen -W "$(_avail_report_formatfields)" -- $cur ) )
-        return
-      esac
-      case "$prev" in summary|sm)
-        local opts="-d -h --detailed --help"
-        COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-        return
+      local opts="--detailed --end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse -d -e -f -h -n -p -s -t"
+      local cmds="clear list path summary"
+      local aliases="c l p sm"
+      COMPREPLY=( $( compgen -W "${cmds} ${aliases}" -- $cur ) )
+
+      if [[ $cur == -* ]] ; then
+        COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
+      fi
+
+      case "${prev}" in
+        --filter)
+            COMPREPLY=( $( compgen -W "$(_avail_report_filterfields)" -- "$cur" ) )
+            ;;
+        --format)
+            COMPREPLY=( $( compgen -W "$(_avail_report_formatfields)" -- "$cur" ) )
+            ;;
+        summary|sm)
+            local opts="-d -h --detailed --help"
+            COMPREPLY=( $( compgen -W "${opts}" -- "$cur" ) )
+            ;;
       esac
     ;;
 
