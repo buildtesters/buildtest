@@ -28,6 +28,10 @@ _avail_color_themes ()
   python -c "from pygments.styles import STYLE_MAP; print(' '.join(list(STYLE_MAP.keys())))"
 }
 
+_buildtest_commands()
+{
+  buildtest commands
+}
 # get list of available tags
 _avail_tags ()
 {
@@ -530,8 +534,8 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
       ;;
     *)
-      local cmds="build buildspec cd cdash clean commands config debugreport docs history info inspect path report schema schemadocs show stats stylecheck tutorial-examples unittests"
-      local alias_cmds="bd bc cg cmd debug hy it rt s style test"
+      #local cmds="build buildspec cd cdash clean commands config debugreport docs history info inspect path report schema schemadocs show stats stylecheck tutorial-examples unittests"
+      #local alias_cmds="bd bc cg cmd debug hy it rt s style test"
       local longopts="--color --config --debug --editor --help --helpcolor --help-all --loglevel --logpath --no-color --print-log --report --version --view-log"
       local shortopts="-c -d -h -l -p -r -H -V"
 
@@ -542,7 +546,7 @@ _buildtest ()
 
       # print main sub-commands to buildtest
         *)
-          COMPREPLY=( $( compgen -W "${cmds} ${alias_cmds}" -- $cur ) )
+          COMPREPLY=( $( compgen -W "$(_buildtest_commands)" -- $cur ) )
           case "${prev}" in
             --color)
                 COMPREPLY=( $( compgen -W "$(_supported_colors)" -- "$cur" ) )
