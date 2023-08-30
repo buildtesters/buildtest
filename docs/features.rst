@@ -397,20 +397,32 @@ use the environment **EDITOR** to get the preffered editor; however, one can ove
 
 .. _view_executors:
 
-View Executors (``buildtest config executors``)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+View Executors (``buildtest config executors list``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can use the command ``buildtest config executors`` to view executors from buildtest
+You can use the command ``buildtest config executors list`` to view executors from buildtest
 configuration file.  Shown below is the command usage
 
-.. dropdown:: ``buildtest config executors --help``
+.. dropdown:: ``buildtest config executors list --help``
 
-    .. command-output:: buildtest config executors --help
+    .. command-output:: buildtest config executors list --help
 
-You can run ``buildtest config executors`` without any options and it will report a list of named executors that
-you would reference in buildspec using the ``executor`` property. If you prefer json or yaml format you can use ``--json`` or ``--yaml`` option.
+You can run ``buildtest config executors list`` without any options and it will report a list of named executors that
+you would reference in buildspec using the ``executor`` property.
 
-.. command-output:: buildtest config executors
+.. command-output:: buildtest config executors list
+
+If you want to see the executor details, you may want to use ``--json`` or ``--yaml`` option which will show the executor settings in YAML or JSON format.
+Shown below is an example output
+
+.. dropdown:: ``buildtest config executors list --yaml``
+
+    .. command-output:: buildtest config executors list --yaml
+
+.. dropdown:: ``buildtest config executors list --json``
+
+    .. command-output:: buildtest config executors list --json
+
 
 View Registered Systems (``buildtest config systems``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

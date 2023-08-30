@@ -276,21 +276,23 @@ def print_config_show():
         "buildtest config edit", "Edit configuration file in your preferred editor"
     )
     table.add_row(
-        "buildtest config executors",
+        "buildtest config executors list",
         "List all executors in flat listing from configuration file",
     )
     table.add_row(
-        "buildtest config executors --yaml",
+        "buildtest config executors list --yaml",
         "Show executor configuration in YAML format",
     )
     table.add_row(
-        "buildtest config executors --json",
+        "buildtest config executors list --json",
         "Show executor configuration in JSON format",
     )
     table.add_row(
-        "buildtest config executors --disabled", "List all disabled executors"
+        "buildtest config executors list --disabled", "List all disabled executors"
     )
-    table.add_row("buildtest config executors --json", "List all invalid executors")
+    table.add_row(
+        "buildtest config executors list --json", "List all invalid executors"
+    )
     table.add_row("buildtest config path", "Show path to configuration file")
     table.add_row(
         "buildtest config systems",

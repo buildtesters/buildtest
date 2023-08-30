@@ -154,4 +154,4 @@ When building tests, you can specify configuration file to use via::
 
 To see a list of available :ref:`executors <configuring_executors>` defined in your configuration file you can run::
 
-  buildtest config executors
+  buildtest config executors list

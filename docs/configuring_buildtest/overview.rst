@@ -191,7 +191,7 @@ For instance if you want all bash scripts to run in login shell you can specify 
 Then you can reference this executor as ``executor: generic.local.login_bash`` and your
 tests will be submitted via ``bash --login /path/to/test.sh``.
 
-Once you define your executors, you can :ref:`query the executors <view_executors>` via ``buildtest config executors``
+Once you define your executors, you can :ref:`query the executors <view_executors>` via ``buildtest config executors list``
 command.
 
 Disable an executor
