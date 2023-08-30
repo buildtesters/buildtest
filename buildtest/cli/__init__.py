@@ -1020,6 +1020,11 @@ def config_menu(subparsers, parent_parser):
     executors = subparsers_config.add_parser(
         "executors", aliases=["ex"], help="Query executors from buildtest configuration"
     )
+    subparsers_executors = executors.add_subparsers(
+        description="Query executors from buildtest configuration",
+        dest="executors",
+        metavar="",
+    )
 
     subparsers_config.add_parser(
         "path", aliases=["p"], help="Show path to configuration file"
@@ -1041,7 +1046,8 @@ def config_menu(subparsers, parent_parser):
         parents=[parent_parser["pager"], parent_parser["theme"]],
     )
 
-    executor_group = executors.add_mutually_exclusive_group()
+    executors_list = subparsers_executors.add_parser("list", help="List all executors")
+    executor_group = executors_list.add_mutually_exclusive_group()
 
     # buildtest config executors
     executor_group.add_argument(

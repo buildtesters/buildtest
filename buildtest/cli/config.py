@@ -34,14 +34,15 @@ def config_cmd(args, configuration, editor, system):
 
     elif args.config in ["executors", "ex"]:
         buildexecutor = BuildExecutor(configuration)
-        view_executors(
-            configuration,
-            buildexecutor,
-            args.json,
-            args.yaml,
-            args.disabled,
-            args.invalid,
-        )
+        if args.executors == "list":
+            view_executors(
+                configuration,
+                buildexecutor,
+                args.json,
+                args.yaml,
+                args.disabled,
+                args.invalid,
+            )
 
     elif args.config in ["validate", "val"]:
         validate_config(configuration, system.system["moduletool"])
