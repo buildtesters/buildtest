@@ -259,6 +259,7 @@ _buildtest ()
 
       case "${COMP_WORDS[2+offset]}" in
         compilers|co)
+
           local opts="--help -h"
           local cmds="list find remove test"
           local aliases="rm"
@@ -267,20 +268,22 @@ _buildtest ()
             COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
           fi
 
-          if [[ "${prev}" == "list" ]]; then
-            local opts="--json --yaml -j -y"
-            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-          fi
-          if [[ "${prev}" == "find" ]]; then
-            local opts="--detailed --file --help --modulepath --update -d -h -m -u"
-            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-          fi
-          if [[ "${prev}" == "test" ]]; then
-            COMPREPLY=( $( compgen -W "$(_avail_compilers)" -- $cur ) )
-          fi
-          if [[ "${prev}" == "remove" ]] || [[ "${prev}" == "rm" ]]; then
-            COMPREPLY=( $( compgen -W "$(_avail_compilers)" -- $cur ) )
-          fi
+          case "${prev}" in
+            list)
+              local opts="--json --yaml -j -y"
+              COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+              ;;
+            find)
+              local opts="--detailed --file --help --modulepath --update -d -h -m -u"
+              COMPREPLY=( $( compgen -W "${opts}" -- "$cur" ) )
+              ;;
+            remove|rm)
+              COMPREPLY=( $( compgen -W "$(_avail_compilers)" -- $cur ) )
+              ;;
+            test)
+              COMPREPLY=( $( compgen -W "$(_avail_compilers)" -- $cur ) )
+              ;;
+          esac
           ;;
         executors|ex)
           local opts="--help --disabled --invalid --json --yaml -d -h -i -j -y"
