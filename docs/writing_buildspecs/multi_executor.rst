@@ -7,7 +7,7 @@ The `executor` property can support regular expression to search for compatible
 executors, this can be used if you want to run a test across multiple executors. In buildtest,
 we use `re.fullmatch <https://docs.python.org/3/library/re.html#re.fullmatch>`_ with the input
 pattern defined by **executor** property against a list of available executors defined in configuration file.
-You can retrieve a list of executors by running ``buildtest config executors``.
+You can retrieve a list of executors by running ``buildtest config executors list``.
 
 In example below we will run this test on `generic.local.bash` and `generic.local.sh` executor based
 on the regular expression.
