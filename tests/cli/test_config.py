@@ -175,7 +175,7 @@ def test_disabled_invalid_executors():
 
     print("reading config file:", configfile)
     be = BuildExecutor(configuration)
-    # buildtest config executors -d
+    # buildtest config executors list --disabled
     view_executors(
         configuration=configuration,
         buildexecutor=be,
@@ -185,7 +185,7 @@ def test_disabled_invalid_executors():
         invalid=False,
     )
 
-    # buildtest config executors -i
+    # buildtest config executors list --invalid
     view_executors(
         configuration=configuration,
         buildexecutor=be,
