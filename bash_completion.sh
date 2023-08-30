@@ -319,20 +319,20 @@ _buildtest ()
             COMPREPLY=( $( compgen -W "$opts" -- $cur ) )
           fi
 
-          if [[ "${prev}" == "remove" ]] || [[ "${prev}" == "rm" ]];  then
-            COMPREPLY=( $( compgen -W "$(_avail_profiles)" -- $cur ) )
-          fi
-          if [[ "${prev}" == "list" ]]; then
-            local opts="--help  --theme --yaml -h -y"
-            COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-          fi
-
-          case "${prev}" in --theme)
+          case "${prev}" in
+            remove|rm)
+              COMPREPLY=( $( compgen -W "$(_avail_profiles)" -- $cur ) )
+              ;;
+            list)
+              local opts="--json --theme --yaml -j -y"
+              COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+              ;;
+            --theme)
               COMPREPLY=( $( compgen -W "$(_avail_color_themes)" -- $cur ) )
-              return
+              ;;
           esac
           ;;
-      esac
+        esac
       ;;
     inspect|it)
       local cmds="--help -h b buildspec l list n name q query"
