@@ -208,9 +208,49 @@ class BuildTestParser:
     _description = (
         "buildtest is a HPC testing framework for building and running tests."
     )
+    epilog_str = f"""
+    References
+
+    GitHub:                  {_github}
+    Documentation:           {_docs}
+    Schema Documentation:    {_schemadocs}
+    Slack:                   {_slack}
+
+    Please report issues at {_issues}
+
+    {BUILDTEST_COPYRIGHT}
+    """
 
     def __init__(self):
-        self.parser = self.get_parser()
+        self.subcommands = {
+            "build": {"help": "Build and Run test", "aliases": ["bd"]},
+            "buildspec": {"help": "Buildspec Interface", "aliases": ["bc"]},
+            "config": {"help": "Query buildtest configuration", "aliases": ["cg"]},
+            "report": {"help": "Query test report", "aliases": ["rt"]},
+            "inspect": {"help": "Inspect a test", "aliases": ["it"]},
+            "path": {"help": "Show path attributes for a given test", "aliases": ["p"]},
+            "history": {"help": "Query build history", "aliases": ["hy"]},
+            "schema": {"help": "List schema contents and examples"},
+            "cdash": {"help": "Upload test to CDASH server"},
+            "cd": {"help": "Change directory to root of test given a test name"},
+            "clean": {
+                "help": "Remove all generate files from buildtest including test directory, log files, report file, buildspec cache, history files"
+            },
+            "debugreport": {
+                "help": "Display system information and additional information for debugging purposes.",
+                "aliases": ["debug"],
+            },
+            "stats": {"help": "Show test statistics for given test"},
+            "info": {"help": " Show details regarding current buildtest setup"},
+            "show": {"help": "buildtest command guide"},
+            "commands": {"help": "List all buildtest commands", "aliases": ["cmds"]},
+            "tutorial-examples": {"help": ""},
+            "schemadocs": {"help": ""},
+            "unittests": {"help": "", "aliases": ["test"]},
+            "stylecheck": {"help": "", "aliases": ["style"]},
+        }
+
+        self.build_parser()
 
     def parse(self, args=None):
         """This method parses arguments passed to buildtest command line interface
@@ -227,87 +267,18 @@ class BuildTestParser:
     def get_subparsers(self):
         return self.subparsers
 
-    def get_parser(self):
-        epilog_str = f"""
-    References
-    
-    GitHub:                  {self._github}
-    Documentation:           {self._docs}
-    Schema Documentation:    {self._schemadocs}
-    Slack:                   {self._slack}
-    
-    Please report issues at {self._issues}
-    
-    {BUILDTEST_COPYRIGHT}
-    """
-
-        parser = argparse.ArgumentParser(
+    def build_parser(self):
+        self.parser = argparse.ArgumentParser(
             prog=self._progname,
             formatter_class=argparse.RawDescriptionHelpFormatter,
             description=self._description,
             usage="%(prog)s [options] [COMMANDS]",
-            epilog=epilog_str,
+            epilog=self.epilog_str,
         )
 
-        parser.add_argument(
-            "-V",
-            "--version",
-            action="version",
-            version=f"%(prog)s version {BUILDTEST_VERSION}",
-        )
+        self.main_options()
 
-        parser.add_argument(
-            "-c",
-            "--config",
-            dest="configfile",
-            help="Specify Path to Configuration File",
-        )
-        parser.add_argument(
-            "-d", "--debug", action="store_true", help="Stream log messages to stdout"
-        )
-        parser.add_argument(
-            "-l",
-            "--loglevel",
-            help="Filter log messages based on logging level",
-            choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
-            default="DEBUG",
-        )
-        parser.add_argument(
-            "--editor",
-            help="Select your preferred editor when opening files.",
-            choices=["vi", "vim", "emacs", "nano"],
-        )
-        parser.add_argument(
-            "--view-log", action="store_true", help="Show content of last log"
-        )
-        parser.add_argument(
-            "--logpath", action="store_true", help="Print full path to last log file"
-        )
-        parser.add_argument(
-            "--print-log",
-            action="store_true",
-            help="Print content of last log without pagination",
-        )
-        parser.add_argument(
-            "--color",
-            type=supported_color,
-            metavar="COLOR",
-            help="Print output of table with the selected color.",
-        )
-        parser.add_argument(
-            "--no-color", help="Disable colored output", action="store_true"
-        )
-        parser.add_argument(
-            "--helpcolor",
-            action="store_true",
-            help="Print available color options in a table format.",
-        )
-        parser.add_argument("-r", "--report", help="Specify path to test report file")
-        parser.add_argument(
-            "-H", "--help-all", help="List all commands and options", action="help"
-        )
-
-        self.subparsers = parser.add_subparsers(
+        self.subparsers = self.parser.add_subparsers(
             title="COMMANDS", dest="subcommands", metavar=""
         )
 
@@ -361,6 +332,8 @@ class BuildTestParser:
             return parent_parser
 
         parent_parser = get_parent_parser()
+        self._build_subparsers()
+
         self.build_menu()
         self.buildspec_menu(parent_parser)
         self.config_menu(parent_parser)
@@ -373,24 +346,87 @@ class BuildTestParser:
         self.unittest_menu()
         self.stylecheck_menu()
         self.misc_menu()
-        self.tutorial_examples_menu()
 
         # Displays all hidden commands
         if show_all_help:
             self.help_all()
 
-        return parser
+    def _build_subparsers(self):
+        """This method builds subparsers for buildtest command line interface."""
+        for name, subcommand in self.subcommands.items():
+            self.subparsers.add_parser(
+                name, help=subcommand["help"], aliases=subcommand.get("aliases", [])
+            )
+
+    def main_options(self):
+        self.parser.add_argument(
+            "-V",
+            "--version",
+            action="version",
+            version=f"%(prog)s version {BUILDTEST_VERSION}",
+        )
+
+        self.parser.add_argument(
+            "-c",
+            "--config",
+            dest="configfile",
+            help="Specify Path to Configuration File",
+        )
+        self.parser.add_argument(
+            "-d", "--debug", action="store_true", help="Stream log messages to stdout"
+        )
+        self.parser.add_argument(
+            "-l",
+            "--loglevel",
+            help="Filter log messages based on logging level",
+            choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+            default="DEBUG",
+        )
+        self.parser.add_argument(
+            "--editor",
+            help="Select your preferred editor when opening files.",
+            choices=["vi", "vim", "emacs", "nano"],
+        )
+        self.parser.add_argument(
+            "--view-log", action="store_true", help="Show content of last log"
+        )
+        self.parser.add_argument(
+            "--logpath", action="store_true", help="Print full path to last log file"
+        )
+        self.parser.add_argument(
+            "--print-log",
+            action="store_true",
+            help="Print content of last log without pagination",
+        )
+        self.parser.add_argument(
+            "--color",
+            type=supported_color,
+            metavar="COLOR",
+            help="Print output of table with the selected color.",
+        )
+        self.parser.add_argument(
+            "--no-color", help="Disable colored output", action="store_true"
+        )
+        self.parser.add_argument(
+            "--helpcolor",
+            action="store_true",
+            help="Print available color options in a table format.",
+        )
+        self.parser.add_argument(
+            "-r", "--report", help="Specify path to test report file"
+        )
+        self.parser.add_argument(
+            "-H", "--help-all", help="List all commands and options", action="help"
+        )
 
     def misc_menu(self):
         """Build the command line menu for some miscellaneous commands"""
 
         # Subcommands that do not need to be shown in ``--help``
-        self.subparsers.add_parser("docs")
-        self.subparsers.add_parser("schemadocs")
+        # self.subparsers.add_parser("docs")
+        # self.subparsers.add_parser("schemadocs")
 
-        cd_parser = self.subparsers.add_parser(
-            "cd", help="change directory to root of test given a test name"
-        )
+        cd_parser = self.subparsers.choices["cd"]
         cd_parser.add_argument(
             "test", help="Change directory to root of test for last run of test."
         )
@@ -403,24 +439,10 @@ class BuildTestParser:
             "-y", "--yes", action="store_true", help="Confirm yes for all prompts"
         )
 
-        self.subparsers.add_parser(
-            "debugreport",
-            help="Display system information and additional information for debugging purposes.",
-            aliases=["debug"],
-        )
-
-        parser_stats = self.subparsers.add_parser(
-            "stats", help="Show test statistics for given test"
-        )
+        parser_stats = self.subparsers.choices["stats"]
         parser_stats.add_argument("name", help="Name of test")
 
-        self.subparsers.add_parser(
-            "info", help="Show details regarding current buildtest setup"
-        )
-
-        show_subparser = self.subparsers.add_parser(
-            "show", aliases=["s"], help="buildtest command guide"
-        )
+        show_subparser = self.subparsers.choices["show"]
         show_subparser.add_argument(
             "command",
             choices=[
@@ -447,15 +469,13 @@ class BuildTestParser:
             help="Show help message for command",
         )
 
-        self.subparsers.add_parser(
-            "commands", help="Display buildtest commands", aliases=["cmd"]
-        )
-
     def stylecheck_menu(self):
         """This method will create command options for ``buildtest stylecheck``"""
 
         # Subcommands that do not need to be shown in ``--help``
-        stylecheck_parser = self.subparsers.add_parser("stylecheck", aliases=["style"])
+        stylecheck_parser = self.subparsers.choices["stylecheck"]
+
+        # stylecheck_parser = self.subparsers.add_parser("stylecheck", aliases=["style"])
 
         stylecheck_parser.add_argument(
             "--no-black", action="store_true", help="Don't run black style check"
@@ -472,9 +492,7 @@ class BuildTestParser:
 
     def unittest_menu(self):
         """This method builds the command line menu for ``buildtest unittests`` command"""
-
-        # Subcommands that do not need to be shown in --help
-        unittests_parser = self.subparsers.add_parser("unittests", aliases=["test"])
+        unittests_parser = self.subparsers.choices["unittests"]
 
         unittests_parser.add_argument(
             "-c",
@@ -493,17 +511,10 @@ class BuildTestParser:
             action="append",
         )
 
-    def tutorial_examples_menu(self):
-        """This method builds the command line menu for ``buildtest tutorial-examples`` command"""
-
-        self.subparsers.add_parser("tutorial-examples")
-
     def path_menu(self):
         """This method builds the command line menu for ``buildtest path`` command"""
 
-        path = self.subparsers.add_parser(
-            "path", help="Show path attributes for a given test"
-        )
+        path = self.subparsers.choices["path"]
         path_group = path.add_mutually_exclusive_group()
         path_group.add_argument(
             "-be",
@@ -536,9 +547,7 @@ class BuildTestParser:
             parent_parser (argparse.ArgumentParser): Parent parser object
         """
 
-        history_subcmd = self.subparsers.add_parser(
-            "history", aliases=["hy"], help="Query build history"
-        )
+        history_subcmd = self.subparsers.choices["history"]
 
         history_subparser = history_subcmd.add_subparsers(
             metavar="", description="Query build history file", dest="history"
@@ -577,9 +586,7 @@ class BuildTestParser:
     def build_menu(self):
         """This method implements command line menu for ``buildtest build`` command."""
 
-        parser_build = self.subparsers.add_parser(
-            "build", aliases=["bd"], help="Build and Run test"
-        )
+        parser_build = self.subparsers.choices["build"]
 
         discover_group = parser_build.add_argument_group(
             "select", "Select buildspec file to run based on file, tag, executor"
@@ -751,9 +758,7 @@ class BuildTestParser:
             parent_parser (argparse.ArgumentParser): Parent parser object
         """
 
-        parser_buildspec = self.subparsers.add_parser(
-            "buildspec", aliases=["bc"], help="Buildspec Interface"
-        )
+        parser_buildspec = self.subparsers.choices["buildspec"]
 
         subparsers_buildspec = parser_buildspec.add_subparsers(
             description="Buildspec Interface subcommands",
@@ -1001,9 +1006,7 @@ class BuildTestParser:
             parent_parser (argparse.ArgumentParser): Parent parser object
         """
 
-        parser_config = self.subparsers.add_parser(
-            "config", aliases=["cg"], help="Query buildtest configuration"
-        )
+        parser_config = self.subparsers.choices["config"]
 
         subparsers_config = parser_config.add_subparsers(
             description="Query information from buildtest configuration file",
@@ -1276,9 +1279,7 @@ class BuildTestParser:
             parent_parser (argparse.ArgumentParser): Parent parser object
         """
 
-        parser_inspect = self.subparsers.add_parser(
-            "inspect", aliases=["it"], help="Inspect a test based on NAME or ID "
-        )
+        parser_inspect = self.subparsers.choices["inspect"]
 
         subparser = parser_inspect.add_subparsers(
             description="Inspect Test result based on Test ID or Test Name",
@@ -1357,9 +1358,7 @@ class BuildTestParser:
     def schema_menu(self):
         """This method builds menu for ``buildtest schema``"""
 
-        parser_schema = self.subparsers.add_parser(
-            "schema", help="List schema contents and examples"
-        )
+        parser_schema = self.subparsers.choices["schema"]
         parser_schema.add_argument(
             "-e", "--example", action="store_true", help="Show schema examples"
         )
@@ -1377,9 +1376,7 @@ class BuildTestParser:
     def cdash_menu(self):
         """This method builds arguments for ``buildtest cdash`` command."""
 
-        parser_cdash = self.subparsers.add_parser(
-            "cdash", help="Upload test to CDASH server"
-        )
+        parser_cdash = self.subparsers.choices["cdash"]
 
         subparser = parser_cdash.add_subparsers(
             description="buildtest CDASH integeration", dest="cdash", metavar=""
