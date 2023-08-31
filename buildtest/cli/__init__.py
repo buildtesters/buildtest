@@ -359,65 +359,81 @@ class BuildTestParser:
             )
 
     def main_options(self):
-        self.parser.add_argument(
-            "-V",
-            "--version",
-            action="version",
-            version=f"%(prog)s version {BUILDTEST_VERSION}",
-        )
+        """This method builds the main options for buildtest command line interface."""
 
-        self.parser.add_argument(
-            "-c",
-            "--config",
-            dest="configfile",
-            help="Specify Path to Configuration File",
-        )
-        self.parser.add_argument(
-            "-d", "--debug", action="store_true", help="Stream log messages to stdout"
-        )
-        self.parser.add_argument(
-            "-l",
-            "--loglevel",
-            help="Filter log messages based on logging level",
-            choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
-            default="DEBUG",
-        )
-        self.parser.add_argument(
-            "--editor",
-            help="Select your preferred editor when opening files.",
-            choices=["vi", "vim", "emacs", "nano"],
-        )
-        self.parser.add_argument(
-            "--view-log", action="store_true", help="Show content of last log"
-        )
-        self.parser.add_argument(
-            "--logpath", action="store_true", help="Print full path to last log file"
-        )
-        self.parser.add_argument(
-            "--print-log",
-            action="store_true",
-            help="Print content of last log without pagination",
-        )
-        self.parser.add_argument(
-            "--color",
-            type=supported_color,
-            metavar="COLOR",
-            help="Print output of table with the selected color.",
-        )
-        self.parser.add_argument(
-            "--no-color", help="Disable colored output", action="store_true"
-        )
-        self.parser.add_argument(
-            "--helpcolor",
-            action="store_true",
-            help="Print available color options in a table format.",
-        )
-        self.parser.add_argument(
-            "-r", "--report", help="Specify path to test report file"
-        )
-        self.parser.add_argument(
-            "-H", "--help-all", help="List all commands and options", action="help"
-        )
+        arguments = [
+            (
+                ["-V", "--version"],
+                {
+                    "action": "version",
+                    "version": f"%(prog)s version {BUILDTEST_VERSION}",
+                },
+            ),
+            (["-c", "--configfile"], {"help": "Specify Path to Configuration File"}),
+            (
+                ["-d", "--debug"],
+                {"action": "store_true", "help": "Stream log messages to stdout"},
+            ),
+            (
+                ["-l", "--loglevel"],
+                {
+                    "help": "Filter log messages based on logging level",
+                    "choices": ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+                    "default": "DEBUG",
+                },
+            ),
+            (
+                ["--editor"],
+                {
+                    "help": "Select your preferred editor when opening files.",
+                    "choices": ["vi", "vim", "emacs", "nano"],
+                },
+            ),
+            (
+                ["--view-log"],
+                {"action": "store_true", "help": "Show content of last log"},
+            ),
+            (
+                ["--logpath"],
+                {"action": "store_true", "help": "Print full path to last log file"},
+            ),
+            (
+                ["--print-log"],
+                {
+                    "action": "store_true",
+                    "help": "Print content of last log without pagination",
+                },
+            ),
+            (
+                ["--color"],
+                {
+                    "type": supported_color,
+                    "metavar": "COLOR",
+                    "help": "Print output of table with the selected color.",
+                },
+            ),
+            (
+                ["--no-color"],
+                {"help": "Disable colored output", "action": "store_true"},
+            ),
+            (
+                ["--helpcolor"],
+                {
+                    "action": "store_true",
+                    "help": "Print available color options in a table format.",
+                },
+            ),
+            (["-r", "--report"], {"help": "Specify path to test report file"}),
+            (
+                ["-H", "--help-all"],
+                {"help": "List all commands and options", "action": "help"},
+            ),
+        ]
+
+        for args, kwargs in arguments:
+            self.parser.add_argument(*args, **kwargs)
+        return
+
 
     def misc_menu(self):
         """Build the command line menu for some miscellaneous commands"""
