@@ -434,13 +434,8 @@ class BuildTestParser:
             self.parser.add_argument(*args, **kwargs)
         return
 
-
     def misc_menu(self):
         """Build the command line menu for some miscellaneous commands"""
-
-        # Subcommands that do not need to be shown in ``--help``
-        # self.subparsers.add_parser("docs")
-        # self.subparsers.add_parser("schemadocs")
 
         cd_parser = self.subparsers.choices["cd"]
         cd_parser.add_argument(
@@ -493,66 +488,89 @@ class BuildTestParser:
 
         # stylecheck_parser = self.subparsers.add_parser("stylecheck", aliases=["style"])
 
-        stylecheck_parser.add_argument(
-            "--no-black", action="store_true", help="Don't run black style check"
-        )
-        stylecheck_parser.add_argument(
-            "--no-isort", action="store_true", help="Don't run isort style check"
-        )
-        stylecheck_parser.add_argument(
-            "--no-pyflakes", action="store_true", help="Dont' run pyflakes check"
-        )
-        stylecheck_parser.add_argument(
-            "-a", "--apply", action="store_true", help="Apply style checks to codebase."
-        )
+        stylecheck_args = [
+            (
+                ["--no-black"],
+                {"action": "store_true", "help": "Don't run black style check"},
+            ),
+            (
+                ["--no-isort"],
+                {"action": "store_true", "help": "Don't run isort style check"},
+            ),
+            (
+                ["--no-pyflakes"],
+                {"action": "store_true", "help": "Don't run pyflakes check"},
+            ),
+            (
+                ["-a", "--apply"],
+                {"action": "store_true", "help": "Apply style checks to codebase."},
+            ),
+        ]
+
+        for args, kwargs in stylecheck_args:
+            stylecheck_parser.add_argument(*args, **kwargs)
 
     def unittest_menu(self):
         """This method builds the command line menu for ``buildtest unittests`` command"""
         unittests_parser = self.subparsers.choices["unittests"]
 
-        unittests_parser.add_argument(
-            "-c",
-            "--coverage",
-            action="store_true",
-            help="Enable coverage when running regression test",
-        )
-        unittests_parser.add_argument(
-            "-p", "--pytestopts", type=str, help="Specify option to pytest"
-        )
-        unittests_parser.add_argument(
-            "-s",
-            "--sourcefiles",
-            type=str,
-            help="Specify path to file or directory when running regression test",
-            action="append",
-        )
+        unittests_args = [
+            (
+                ["-c", "--coverage"],
+                {
+                    "action": "store_true",
+                    "help": "Enable coverage when running regression test",
+                },
+            ),
+            (["-p", "--pytestopts"], {"type": str, "help": "Specify option to pytest"}),
+            (
+                ["-s", "--sourcefiles"],
+                {
+                    "type": str,
+                    "help": "Specify path to file or directory when running regression test",
+                    "action": "append",
+                },
+            ),
+        ]
+
+        for args, kwargs in unittests_args:
+            unittests_parser.add_argument(*args, **kwargs)
 
     def path_menu(self):
         """This method builds the command line menu for ``buildtest path`` command"""
 
         path = self.subparsers.choices["path"]
+
+        path_options = [
+            (
+                ["-be", "--buildenv"],
+                {"action": "store_true", "help": "Show path to build environment"},
+            ),
+            (
+                ["-t", "--testpath"],
+                {"action": "store_true", "help": "Show path to test script"},
+            ),
+            (
+                ["-o", "--outfile"],
+                {"action": "store_true", "help": "Show path to output file"},
+            ),
+            (
+                ["-e", "--errfile"],
+                {"action": "store_true", "help": "Show path to error file"},
+            ),
+            (
+                ["-b", "--buildscript"],
+                {"action": "store_true", "help": "Show path to build script"},
+            ),
+            (
+                ["-s", "--stagedir"],
+                {"action": "store_true", "help": "Show path to stage directory"},
+            ),
+        ]
+
         path_group = path.add_mutually_exclusive_group()
-        path_group.add_argument(
-            "-be",
-            "--buildenv",
-            action="store_true",
-            help="Show path to build environment",
-        )
-        path_group.add_argument(
-            "-t", "--testpath", action="store_true", help="Show path to test script"
-        )
-        path_group.add_argument(
-            "-o", "--outfile", action="store_true", help="Show path to output file"
-        )
-        path_group.add_argument(
-            "-e", "--errfile", action="store_true", help="Show path to error file"
-        )
-        path_group.add_argument(
-            "-b", "--buildscript", action="store_true", help="Show path to build script"
-        )
-        path_group.add_argument(
-            "-s", "--stagedir", action="store_true", help="Show path to stage directory"
-        )
+        for args, kwargs in path_options:
+            path_group.add_argument(*args, **kwargs)
 
         path.add_argument("name", help="Name of test")
 
@@ -569,35 +587,50 @@ class BuildTestParser:
             metavar="", description="Query build history file", dest="history"
         )
 
-        history_subparser.add_parser(
-            "list",
-            help="List a summary of all builds",
-            parents=[
-                parent_parser["pager"],
-                parent_parser["row-count"],
-                parent_parser["terse"],
-                parent_parser["no-header"],
-            ],
-        )
+        subparser_info = [
+            {
+                "name": "list",
+                "help": "List a summary of all builds",
+                "parents": [
+                    parent_parser["pager"],
+                    parent_parser["row-count"],
+                    parent_parser["terse"],
+                    parent_parser["no-header"],
+                ],
+                "args": [],
+            },
+            {
+                "name": "query",
+                "help": "Query information for a particular build",
+                "parents": [parent_parser["pager"]],
+                "args": [
+                    (["id"], {"type": int, "help": "Select a build ID"}),
+                    (
+                        ["-l", "--log"],
+                        {
+                            "action": "store_true",
+                            "help": "Display logfile for corresponding build id",
+                        },
+                    ),
+                    (
+                        ["-o", "--output"],
+                        {
+                            "action": "store_true",
+                            "help": "View raw output from buildtest build command",
+                        },
+                    ),
+                ],
+            },
+        ]
 
-        query = history_subparser.add_parser(
-            "query",
-            help="Query information for a particular build",
-            parents=[parent_parser["pager"]],
-        )
-        query.add_argument("id", type=int, help="Select a build ID")
-        query.add_argument(
-            "-l",
-            "--log",
-            action="store_true",
-            help="Display logfile for corresponding build id",
-        )
-        query.add_argument(
-            "-o",
-            "--output",
-            action="store_true",
-            help="view raw output from buildtest build command",
-        )
+        for subparser_info in subparser_info:
+            subparser = history_subparser.add_parser(
+                subparser_info["name"],
+                help=subparser_info["help"],
+                parents=subparser_info["parents"],
+            )
+            for arg_args, arg_kwargs in subparser_info["args"]:
+                subparser.add_argument(*arg_args, **arg_kwargs)
 
     def build_menu(self):
         """This method implements command line menu for ``buildtest build`` command."""
