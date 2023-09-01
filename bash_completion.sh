@@ -65,7 +65,7 @@ _avail_compilers ()
 # list of test ids from report
 _test_ids ()
 {
-  buildtest inspect list -t -n | cut -d '|' -f 1
+  buildtest inspect list --terse -n | cut -d '|' -f 1
 }
 
 # list of test names from report
@@ -76,19 +76,19 @@ _test_name ()
 
 _builder_names()
 {
-  buildtest inspect list -b
+  buildtest inspect list --builder
 }
 
 # list of buildspecs from report
 _test_buildspec ()
 {
-  buildtest inspect list -t -n | cut -d '|' -f 3 | uniq | sort
+  buildtest inspect list --terse -n | cut -d '|' -f 3 | uniq | sort
 }
 
 # list of history id
 _history_id ()
 {
-  buildtest history list -t -n | cut -d '|' -f 1 | sort -g
+  buildtest history list --terse -n | cut -d '|' -f 1 | sort -g
 }
 
 _buildspec_cache_test_names()
