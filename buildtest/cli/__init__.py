@@ -1546,23 +1546,60 @@ class BuildTestParser:
         """This method builds menu for ``buildtest schema``"""
 
         parser_schema = self.subparsers.choices["schema"]
-        parser_schema.add_argument(
-            "-e", "--example", action="store_true", help="Show schema examples"
-        )
-        parser_schema.add_argument(
-            "-j", "--json", action="store_true", help="Display json schema file"
-        )
-        parser_schema.add_argument(
-            "-n",
-            "--name",
-            help="show schema by name (e.g., script)",
-            metavar="Schema Name",
-            choices=schema_table["names"],
-        )
+
+        schema_args = [
+            (
+                ["-e", "--example"],
+                {"action": "store_true", "help": "Show schema examples"},
+            ),
+            (
+                ["-j", "--json"],
+                {"action": "store_true", "help": "Display json schema file"},
+            ),
+            (
+                ["-n", "--name"],
+                {
+                    "help": "show schema by name (e.g., script)",
+                    "metavar": "Schema Name",
+                    "choices": schema_table["names"],
+                },
+            ),
+        ]
+
+        for arg_info in schema_args:
+            parser_schema.add_argument(*arg_info[0], **arg_info[1])
 
     def cdash_menu(self):
         """This method builds arguments for ``buildtest cdash`` command."""
 
+        cdash_commands = {
+            "view": {"help": "Open CDASH project in web browser"},
+            "upload": {"help": "Upload test results to CDASH server"},
+        }
+
+        cdash_arguments = {
+            "view": [],
+            "upload": [
+                (["--site"], {"help": "Specify site name reported in CDASH"}),
+                (["buildname"], {"help": "Specify Build Name reported in CDASH"}),
+                (
+                    ["-o", "--open"],
+                    {"action": "store_true", "help": "Open CDASH report in browser"},
+                ),
+            ],
+        }
+
+        parser_cdash = self.subparsers.choices["cdash"]
+        subparser = parser_cdash.add_subparsers(
+            description="buildtest CDASH integration", dest="cdash", metavar=""
+        )
+
+        for command, command_info in cdash_commands.items():
+            cdash_parser = subparser.add_parser(command, **command_info)
+            for args, args_info in cdash_arguments[command]:
+                cdash_parser.add_argument(*args, **args_info)
+
+        return
         parser_cdash = self.subparsers.choices["cdash"]
 
         subparser = parser_cdash.add_subparsers(
