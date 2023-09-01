@@ -303,7 +303,7 @@ class BuildTestParser:
             )
             parent_parser["terse"] = argparse.ArgumentParser(add_help=False)
             parent_parser["terse"].add_argument(
-                "-t",
+                # "-t",
                 "--terse",
                 action="store_true",
                 help="Print output in machine readable format",
@@ -331,16 +331,16 @@ class BuildTestParser:
             )
             return parent_parser
 
-        parent_parser = get_parent_parser()
+        self.parent_parser = get_parent_parser()
         self._build_subparsers()
 
         self.build_menu()
-        self.buildspec_menu(parent_parser)
-        self.config_menu(parent_parser)
-        self.report_menu(parent_parser)
-        self.inspect_menu(parent_parser)
+        self.buildspec_menu()
+        self.config_menu()
+        self.report_menu()
+        self.inspect_menu()
         self.path_menu()
-        self.history_menu(parent_parser)
+        self.history_menu()
         self.schema_menu()
         self.cdash_menu()
         self.unittest_menu()
@@ -574,12 +574,8 @@ class BuildTestParser:
 
         path.add_argument("name", help="Name of test")
 
-    def history_menu(self, parent_parser):
-        """This method builds the command line menu for ``buildtest history`` command
-
-        Args:
-            parent_parser (argparse.ArgumentParser): Parent parser object
-        """
+    def history_menu(self):
+        """This method builds the command line menu for ``buildtest history`` command"""
 
         history_subcmd = self.subparsers.choices["history"]
 
@@ -592,17 +588,17 @@ class BuildTestParser:
                 "name": "list",
                 "help": "List a summary of all builds",
                 "parents": [
-                    parent_parser["pager"],
-                    parent_parser["row-count"],
-                    parent_parser["terse"],
-                    parent_parser["no-header"],
+                    self.parent_parser["pager"],
+                    self.parent_parser["row-count"],
+                    self.parent_parser["terse"],
+                    self.parent_parser["no-header"],
                 ],
                 "args": [],
             },
             {
                 "name": "query",
                 "help": "Query information for a particular build",
-                "parents": [parent_parser["pager"]],
+                "parents": [self.parent_parser["pager"]],
                 "args": [
                     (["id"], {"type": int, "help": "Select a build ID"}),
                     (
@@ -637,175 +633,234 @@ class BuildTestParser:
 
         parser_build = self.subparsers.choices["build"]
 
-        discover_group = parser_build.add_argument_group(
-            "select", "Select buildspec file to run based on file, tag, executor"
-        )
-        filter_group = parser_build.add_argument_group(
-            "filter", "Filter tests after selection"
-        )
-        module_group = parser_build.add_argument_group(
-            "module", "Module Selection option"
-        )
-        batch_group = parser_build.add_argument_group(
-            "batch", "Batch Submission Options "
-        )
-        extra_group = parser_build.add_argument_group("extra", "All extra options")
+        groups = [
+            (
+                "discover",
+                "discover",
+                "Select buildspec file to run based on file, tag, executor",
+            ),
+            ("filter", "filter", "Filter tests after selection"),
+            ("module", "module", "Module Selection option"),
+            ("batch", "batch", "Batch Submission options"),
+            ("extra", "extra", "All extra options"),
+        ]
+        arguments = {
+            "discover": [
+                (
+                    ["-b", "--buildspec"],
+                    {
+                        "help": "Specify a buildspec (file or directory) to build. A buildspec must end in '.yml' extension.",
+                        "action": "append",
+                    },
+                ),
+                (
+                    ["-x", "--exclude"],
+                    {
+                        "action": "append",
+                        "help": "Exclude one or more buildspecs (file or directory) from processing. A buildspec must end in '.yml' extension.",
+                    },
+                ),
+                (
+                    ["-e", "--executor"],
+                    {
+                        "action": "append",
+                        "type": str,
+                        "help": "Discover buildspecs by executor name found in buildspec cache",
+                    },
+                ),
+                (
+                    ["-xt", "--exclude-tags"],
+                    {
+                        "action": "append",
+                        "type": str,
+                        "help": "Exclude tests by one or more tagnames found in buildspec cache",
+                    },
+                ),
+                (
+                    ["-t", "--tags"],
+                    {
+                        "action": "append",
+                        "type": str,
+                        "help": "Discover buildspecs by tags found in buildspec cache",
+                    },
+                ),
+                (
+                    ["--rerun"],
+                    {
+                        "action": "store_true",
+                        "help": "Rerun last successful buildtest build command.",
+                    },
+                ),
+            ],
+            "filter": [
+                (
+                    ["-f", "--filter"],
+                    {
+                        "type": build_filters_format,
+                        "help": "Filter buildspec based on tags, type, or maintainers. Usage:  --filter key1=val1,val2;key2=val3;key3=val4,val5",
+                    },
+                ),
+                (
+                    ["--helpfilter"],
+                    {
+                        "action": "store_true",
+                        "help": "Show available filter fields used with --filter option",
+                    },
+                ),
+                (
+                    ["-et", "--executor-type"],
+                    {
+                        "choices": ["local", "batch"],
+                        "help": "Filter tests by executor type (local, batch)",
+                    },
+                ),
+            ],
+            "module": [
+                (
+                    ["--module-purge"],
+                    {
+                        "action": "store_true",
+                        "help": "Run 'module purge' before running any test",
+                    },
+                ),
+                (
+                    ["-m", "--modules"],
+                    {
+                        "type": str,
+                        "help": "Specify a list of modules to load during test execution, to specify multiple modules each one must be comma separated for instance if you want to load 'gcc' and 'python' module you can do '-m gcc,python'",
+                    },
+                ),
+                (
+                    ["-u", "--unload-modules"],
+                    {
+                        "type": str,
+                        "help": "Specify a list of modules to unload during test execution",
+                    },
+                ),
+            ],
+            "batch": [
+                (
+                    ["--account"],
+                    {
+                        "type": str,
+                        "help": "Specify project account used to charge batch jobs (applicable for batch jobs only)",
+                    },
+                ),
+                (
+                    ["--maxpendtime"],
+                    {
+                        "type": positive_number,
+                        "help": "Specify Maximum Pending Time (sec) for job before cancelling job. This only applies for batch job submission.",
+                    },
+                ),
+                (
+                    ["--pollinterval"],
+                    {
+                        "type": positive_number,
+                        "help": "Specify Poll Interval (sec) for polling batch jobs",
+                    },
+                ),
+                (
+                    ["--procs"],
+                    {
+                        "nargs": "+",
+                        "type": positive_number,
+                        "help": "Specify number of processes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
+                    },
+                ),
+                (
+                    ["--nodes"],
+                    {
+                        "nargs": "+",
+                        "type": positive_number,
+                        "help": "Specify number of nodes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
+                    },
+                ),
+            ],
+            "extra": [
+                (
+                    ["--limit"],
+                    {
+                        "type": positive_number,
+                        "help": "Limit number of tests that can be run.",
+                    },
+                ),
+                (
+                    ["--remove-stagedir"],
+                    {
+                        "action": "store_true",
+                        "help": "Remove stage directory after job completion.",
+                    },
+                ),
+                (
+                    ["--rebuild"],
+                    {
+                        "type": positive_number,
+                        "help": "Rebuild test X number of times. Must be a positive number between [1-50]",
+                    },
+                ),
+                (
+                    ["--retry"],
+                    {
+                        "type": positive_number,
+                        "default": 1,
+                        "help": "Retry failed jobs",
+                    },
+                ),
+                (
+                    ["-s", "--stage"],
+                    {
+                        "choices": ["parse", "build"],
+                        "help": "Control behavior of buildtest build to stop execution after 'parse' or 'build' stage",
+                    },
+                ),
+                (
+                    ["--testdir"],
+                    {
+                        "help": "Specify a custom test directory where to write tests. This overrides configuration file and default location."
+                    },
+                ),
+                (
+                    ["--timeout"],
+                    {
+                        "type": positive_number,
+                        "help": "Specify test timeout in number of seconds",
+                    },
+                ),
+                (
+                    ["--save-profile"],
+                    {
+                        "help": "Save buildtest command options into a profile and update configuration file"
+                    },
+                ),
+                (
+                    ["--profile"],
+                    {"help": "Specify a profile to load from configuration file"},
+                ),
+            ],
+        }
 
-        discover_group.add_argument(
-            "-b",
-            "--buildspec",
-            help="Specify a buildspec (file or directory) to build. A buildspec must end in '.yml' extension.",
-            action="append",
-        )
+        for group_name, dest_name, desc in groups:
+            group = parser_build.add_argument_group(group_name, description=desc)
 
-        discover_group.add_argument(
-            "-x",
-            "--exclude",
-            action="append",
-            help="Exclude one or more buildspecs (file or directory) from processing. A buildspec must end in '.yml' extension.",
-        )
+            self.argument_group(arguments=arguments, group=group, dest_name=dest_name)
 
-        discover_group.add_argument(
-            "-e",
-            "--executor",
-            action="append",
-            type=str,
-            help="Discover buildspecs by executor name found in buildspec cache",
-        )
-        discover_group.add_argument(
-            "-xt",
-            "--exclude-tags",
-            action="append",
-            type=str,
-            help="Exclude tests by one or more tagnames found in buildspec cache",
-        )
-        discover_group.add_argument(
-            "-t",
-            "--tags",
-            action="append",
-            type=str,
-            help="Discover buildspecs by tags found in buildspec cache",
-        )
-
-        discover_group.add_argument(
-            "--rerun",
-            action="store_true",
-            help="Rerun last successful buildtest build command.",
-        )
-
-        filter_group.add_argument(
-            "-f",
-            "--filter",
-            type=build_filters_format,
-            help="Filter buildspec based on tags, type, or maintainers. Usage:  --filter key1=val1,val2;key2=val3;key3=val4,val5",
-        )
-        filter_group.add_argument(
-            "--helpfilter",
-            action="store_true",
-            help="Show available filter fields used with --filter option",
-        )
-        filter_group.add_argument(
-            "-et",
-            "--executor-type",
-            choices=["local", "batch"],
-            help="Filter tests by executor type (local, batch) ",
-        )
-        module_group.add_argument(
-            "--module-purge",
-            action="store_true",
-            help="Run 'module purge' before running any test ",
-        )
-        module_group.add_argument(
-            "-m",
-            "--modules",
-            type=str,
-            help="Specify a list of modules to load during test execution, to specify multiple modules each one must be comma "
-            "separated for instance if you want to load 'gcc' and 'python' module you can do '-m gcc,python' ",
-        )
-        module_group.add_argument(
-            "-u",
-            "--unload-modules",
-            type=str,
-            help="Specify a list of modules to unload during test execution",
-        )
-
-        batch_group.add_argument(
-            "--account",
-            type=str,
-            help="Specify project account used to charge batch jobs (applicable for batch jobs only)",
-        )
-        batch_group.add_argument(
-            "--maxpendtime",
-            type=positive_number,
-            help="Specify Maximum Pending Time (sec) for job before cancelling job. This only applies for batch job submission.",
-        )
-        batch_group.add_argument(
-            "--pollinterval",
-            type=positive_number,
-            help="Specify Poll Interval (sec) for polling batch jobs",
-        )
-        batch_group.add_argument(
-            "--procs",
-            help="Specify number of processes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
-            nargs="+",
-            type=positive_number,
-        )
-        batch_group.add_argument(
-            "--nodes",
-            help="Specify number of nodes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
-            nargs="+",
-            type=positive_number,
-        )
-        extra_group.add_argument(
-            "--limit",
-            type=positive_number,
-            help="Limit number of tests that can be run.",
-        )
-        extra_group.add_argument(
-            "--remove-stagedir",
-            action="store_true",
-            help="Remove stage directory after job completion.",
-        )
-        extra_group.add_argument(
-            "--rebuild",
-            type=positive_number,
-            help="Rebuild test X number of times. Must be a positive number between [1-50]",
-        )
-
-        extra_group.add_argument(
-            "--retry", help="Retry failed jobs", type=positive_number, default=1
-        )
-        extra_group.add_argument(
-            "-s",
-            "--stage",
-            help="Control behavior of buildtest build to stop execution after 'parse' or 'build' stage",
-            choices=["parse", "build"],
-        )
-
-        extra_group.add_argument(
-            "--testdir",
-            help="Specify a custom test directory where to write tests. This overrides configuration file and default location.",
-        )
-
-        extra_group.add_argument(
-            "--timeout",
-            help="Specify test timeout in number of seconds",
-            type=positive_number,
-        )
-        extra_group.add_argument(
-            "--save-profile",
-            help="Save buildtest command options into a profile and update configuration file",
-        )
-        extra_group.add_argument(
-            "--profile", help="Specify a profile to load from configuration file"
-        )
-
-    def buildspec_menu(self, parent_parser):
-        """This method implements ``buildtest buildspec`` command
+    def argument_group(self, arguments, group, dest_name):
+        """This method adds arguments to a given group and destination name
 
         Args:
-            parent_parser (argparse.ArgumentParser): Parent parser object
+            group:
+            dest_name:
+
+        Returns:
+
         """
+
+        for arg_args, arg_kwargs in arguments[dest_name]:
+            group.add_argument(*arg_args, **arg_kwargs)
+
+    def buildspec_menu(self):
+        """This method implements ``buildtest buildspec`` command"""
 
         parser_buildspec = self.subparsers.choices["buildspec"]
 
@@ -815,245 +870,309 @@ class BuildTestParser:
             metavar="",
         )
 
-        # buildtest buildspec edit-file
-        edit_via_filename = subparsers_buildspec.add_parser(
-            "edit-file", aliases=["ef"], help="Edit buildspec file based on filename"
-        )
-        edit_via_filename.add_argument(
-            "file", help="Edit buildspec file in editor", nargs="*"
-        )
+        buildspec_subcommands = [
+            {
+                "name": "edit-file",
+                "help": "Edit buildspec file based on filename",
+                "parents": [],
+                "aliases": ["ef"],
+                "args": [
+                    (["file"], {"help": "Edit buildspec file in editor", "nargs": "*"})
+                ],
+            },
+            {
+                "name": "edit-test",
+                "help": "Edit buildspec file based on test name",
+                "parents": [],
+                "aliases": ["et"],
+                "args": [
+                    (
+                        ["name"],
+                        {
+                            "help": "Show content of buildspec based on test name",
+                            "nargs": "*",
+                        },
+                    )
+                ],
+            },
+            {
+                "name": "find",
+                "help": "Query information from buildspecs cache",
+                "aliases": ["f"],
+                "parents": [
+                    self.parent_parser["pager"],
+                    self.parent_parser["row-count"],
+                    self.parent_parser["terse"],
+                    self.parent_parser["no-header"],
+                    self.parent_parser["count"],
+                ],
+                " args": [],
+            },
+            {
+                "name": "maintainers",
+                "help": "Query maintainers from buildspecs cache",
+                "aliases": ["m"],
+                "parents": [
+                    self.parent_parser["row-count"],
+                    self.parent_parser["terse"],
+                    self.parent_parser["no-header"],
+                ],
+                "args": [
+                    (
+                        ["-b", "--breakdown"],
+                        {
+                            "action": "store_true",
+                            "help": "Breakdown of buildspecs by maintainers",
+                        },
+                    )
+                ],
+            },
+            {
+                "name": "show",
+                "help": "Show content of buildspec file",
+                "parents": [self.parent_parser["theme"]],
+                "aliases": ["s"],
+                "args": [
+                    (
+                        ["name"],
+                        {
+                            "help": "Show content of buildspec based on test name",
+                            "nargs": "*",
+                        },
+                    )
+                ],
+            },
+            {
+                "name": "show-fail",
+                "help": "Show content of buildspec file for all failed tests",
+                "parents": [self.parent_parser["theme"]],
+                "aliases": ["sf"],
+                "args": [
+                    (
+                        ["name"],
+                        {
+                            "help": "Show content of buildspec based on failed test name",
+                            "nargs": "*",
+                        },
+                    )
+                ],
+            },
+            {
+                "name": "summary",
+                "help": "Print summary of buildspec cache",
+                "parents": [self.parent_parser["theme"], self.parent_parser["pager"]],
+                "args": [],
+                "aliases": ["sm"],
+            },
+            {
+                "name": "validate",
+                "help": "Validate buildspecs with JSON Schema",
+                "parents": [],
+                "aliases": ["val"],
+                "args": [
+                    (
+                        ["-b", "--buildspec"],
+                        {
+                            "type": str,
+                            "action": "append",
+                            "help": "Specify path to buildspec (file, or directory) to validate",
+                        },
+                    ),
+                    (
+                        ["-x", "--exclude"],
+                        {
+                            "type": str,
+                            "action": "append",
+                            "help": "Specify path to buildspec to exclude (file or directory) during validation",
+                        },
+                    ),
+                    (
+                        ["-e", "--executor"],
+                        {
+                            "type": str,
+                            "action": "append",
+                            "help": "Specify buildspecs by executor name to validate",
+                        },
+                    ),
+                    (
+                        ["-t", "--tag"],
+                        {
+                            "type": str,
+                            "action": "append",
+                            "help": "Specify buildspecs by tag name to validate",
+                        },
+                    ),
+                ],
+            },
+        ]
 
-        # buildtest buildspec edit-test
-        edit_via_testname = subparsers_buildspec.add_parser(
-            "edit-test", aliases=["et"], help="Edit buildspec file based on test name"
-        )
-        edit_via_testname.add_argument(
-            "name", help="Show content of buildspec based on test name", nargs="*"
-        )
+        subcommand = {}
+        # Loop through the list of dictionaries and create subcommands with their parent parsers and arguments
+        for cmd_info in buildspec_subcommands:
+            name = cmd_info["name"]
+            subcommand[name] = subparsers_buildspec.add_parser(
+                cmd_info["name"],
+                help=cmd_info["help"],
+                parents=cmd_info["parents"],
+                aliases=cmd_info.get("aliases", []),
+            )
+            for arg_info in cmd_info.get("args", []):
+                subcommand[name].add_argument(*arg_info[0], **arg_info[1])
 
-        # buildtest buildspec find
-
-        buildspec_find = subparsers_buildspec.add_parser(
-            "find",
-            aliases=["f"],
-            help="Query information from buildspecs cache",
-            parents=[
-                parent_parser["pager"],
-                parent_parser["row-count"],
-                parent_parser["no-header"],
-                parent_parser["count"],
-            ],
-        )
-        # buildtest buildspec maintainers
-        buildspec_maintainers = subparsers_buildspec.add_parser(
-            "maintainers",
-            aliases=["m"],
-            help="Query maintainers from buildspecs cache",
-            parents=[
-                parent_parser["row-count"],
-                parent_parser["terse"],
-                parent_parser["no-header"],
-            ],
-        )
-
-        subparsers_maintainers = buildspec_maintainers.add_subparsers()
+        subparsers_maintainers = subcommand["maintainers"].add_subparsers()
         maintainers_find = subparsers_maintainers.add_parser(
             "find", help="Find buildspecs based on maintainer name"
         )
-
         maintainers_find.add_argument(
             "name", help="Find buildspec based on maintainer name"
         )
+        self.buildspec_find_menu(subcommand["find"])
 
-        buildspec_maintainers.add_argument(
-            "-b",
-            "--breakdown",
-            action="store_true",
-            help="Breakdown of buildspecs by maintainers",
-        )
+    def buildspec_find_menu(self, buildspec_find_parser):
+        groups = [
+            ("query", "query", "query options to retrieve from buildspec cach"),
+            ("filter", "filter", "filter and format options"),
+            ("extra", "extra", "All extra options"),
+        ]
+        arguments = {
+            "query": [
+                (
+                    ["-b", "--buildspec"],
+                    {
+                        "help": "Get all buildspec files from cache",
+                        "action": "store_true",
+                    },
+                ),
+                (
+                    ["-e", "--executors"],
+                    {
+                        "help": "Get all unique executors from buildspecs",
+                        "action": "store_true",
+                    },
+                ),
+                (
+                    ["--group-by-tags"],
+                    {"action": "store_true", "help": "Group tests by tag name"},
+                ),
+                (
+                    ["--group-by-executor"],
+                    {"action": "store_true", "help": "Group tests by executor name"},
+                ),
+                (
+                    ["-p", "--paths"],
+                    {"action": "store_true", "help": "Print all root buildspec paths"},
+                ),
+                (
+                    ["-t", "--tags"],
+                    {"action": "store_true", "help": "List all available tags"},
+                ),
+            ],
+            "filter": [
+                (
+                    ["--filter"],
+                    {
+                        "type": handle_kv_string,
+                        "help": "Filter buildspec cache with filter fields in format --filter key1=val1,key2=val2",
+                    },
+                ),
+                (
+                    ["--format"],
+                    {
+                        "help": "Format buildspec cache with format fields in format --format field1,field2,..."
+                    },
+                ),
+                (
+                    ["--helpfilter"],
+                    {
+                        "action": "store_true",
+                        "help": "Show Filter fields for --filter option for filtering buildspec cache output",
+                    },
+                ),
+                (
+                    ["--helpformat"],
+                    {
+                        "action": "store_true",
+                        "help": "Show Format fields for --format option for formatting buildspec cache output",
+                    },
+                ),
+                (
+                    ["--filterfields"],
+                    {
+                        "action": "store_true",
+                        "help": "Print raw Filter fields for --filter option for filtering buildspec cache output",
+                    },
+                ),
+                (
+                    ["--formatfields"],
+                    {
+                        "action": "store_true",
+                        "help": "Print raw Format fields for --format option for formatting buildspec cache output",
+                    },
+                ),
+            ],
+            "extra": [
+                (
+                    ["-r", "--rebuild"],
+                    {
+                        "action": "store_true",
+                        "help": "Rebuild buildspec cache and find all buildspecs again",
+                    },
+                ),
+                (
+                    ["--root"],
+                    {
+                        "type": str,
+                        "action": "append",
+                        "help": "Specify root buildspecs (directory) path to load buildspecs into buildspec cache.",
+                    },
+                ),
+                (
+                    ["-q", "--quiet"],
+                    {
+                        "action": "store_true",
+                        "help": "Don't print output of buildspec cache when rebuilding cache",
+                    },
+                ),
+            ],
+        }
 
-        filter_group = buildspec_find.add_argument_group(
-            "filter and format", "filter and format options"
-        )
-        terse_group = buildspec_find.add_argument_group("terse", "terse options")
-        query_group = buildspec_find.add_argument_group(
-            "query", "query options to retrieve from buildspec cache"
-        )
+        for group_name, dest_name, desc in groups:
+            group = buildspec_find_parser.add_argument_group(
+                group_name, description=desc
+            )
 
-        # buildtest buildspec find invalid
-        subparsers_invalid = buildspec_find.add_subparsers(
+            self.argument_group(arguments=arguments, group=group, dest_name=dest_name)
+
+        buildtest_find_commands = [
+            {
+                "name": "invalid",
+                "help": "Show invalid buildspecs",
+                "parents": [self.parent_parser["row-count"]],
+                "args": [
+                    (
+                        ["-e", "--error"],
+                        {"action": "store_true", "help": "Show error messages"},
+                    )
+                ],
+            }
+        ]
+        subcommand = {}
+        subparsers_invalid = buildspec_find_parser.add_subparsers(
             metavar="", dest="buildspec_find_subcommand"
         )
-        invalid_buildspecs = subparsers_invalid.add_parser(
-            "invalid",
-            help="Show invalid buildspecs",
-            parents=[parent_parser["row-count"]],
-        )
+        for cmd_info in buildtest_find_commands:
+            name = cmd_info["name"]
+            subcommand[name] = subparsers_invalid.add_parser(
+                cmd_info["name"],
+                help=cmd_info["help"],
+                parents=cmd_info["parents"],
+                aliases=cmd_info.get("aliases", []),
+            )
+            for arg_info in cmd_info.get("args", []):
+                subcommand[name].add_argument(*arg_info[0], **arg_info[1])
 
-        # buildtest buildspec find invalid options
-        invalid_buildspecs.add_argument(
-            "-e", "--error", action="store_true", help="Show error messages"
-        )
-
-        # buildtest buildspec find options
-
-        query_group.add_argument(
-            "-b",
-            "--buildspec",
-            help="Get all buildspec files from cache",
-            action="store_true",
-        )
-        query_group.add_argument(
-            "-e",
-            "--executors",
-            help="get all unique executors from buildspecs",
-            action="store_true",
-        )
-
-        query_group.add_argument(
-            "--group-by-tags", action="store_true", help="Group tests by tag name"
-        )
-        query_group.add_argument(
-            "--group-by-executor",
-            action="store_true",
-            help="Group tests by executor name",
-        )
-        query_group.add_argument(
-            "-p", "--paths", help="print all root buildspec paths", action="store_true"
-        )
-
-        query_group.add_argument(
-            "-t", "--tags", help="List all available tags", action="store_true"
-        )
-
-        filter_group.add_argument(
-            "--filter",
-            type=handle_kv_string,
-            help="Filter buildspec cache with filter fields in format --filter key1=val1,key2=val2",
-        )
-        filter_group.add_argument(
-            "--format",
-            help="Format buildspec cache with format fields in format --format field1,field2,...",
-        )
-        filter_group.add_argument(
-            "--helpfilter",
-            action="store_true",
-            help="Show Filter fields for --filter option for filtering buildspec cache output",
-        )
-        filter_group.add_argument(
-            "--helpformat",
-            action="store_true",
-            help="Show Format fields for --format option for formatting buildspec cache output",
-        )
-        filter_group.add_argument(
-            "--filterfields",
-            action="store_true",
-            help="Print raw Filter fields for --filter option for filtering builspec cache output",
-        )
-        filter_group.add_argument(
-            "--formatfields",
-            action="store_true",
-            help="Print raw Format fields for --format option for formatting builspec cache output",
-        )
-
-        terse_group.add_argument(
-            "--terse",
-            help="Print output in machine readable format",
-            action="store_true",
-        )
-
-        buildspec_find.add_argument(
-            "-r",
-            "--rebuild",
-            help="Rebuild buildspec cache and find all buildspecs again",
-            action="store_true",
-        )
-        buildspec_find.add_argument(
-            "--root",
-            help="Specify root buildspecs (directory) path to load buildspecs into buildspec cache.",
-            type=str,
-            action="append",
-        )
-        buildspec_find.add_argument(
-            "-q",
-            "--quiet",
-            help="Don't print output of buildspec cache when rebuilding cache",
-            action="store_true",
-        )
-
-        # buildtest buildspec show
-        show_buildspecs = subparsers_buildspec.add_parser(
-            "show",
-            aliases=["s"],
-            help="Show content of buildspec file",
-            parents=[parent_parser["theme"]],
-        )
-        show_buildspecs.add_argument(
-            "name", help="Show content of buildspec based on test name", nargs="*"
-        )
-
-        # buildtest buildspec show-fail
-        show_fail_buildspecs = subparsers_buildspec.add_parser(
-            "show-fail",
-            aliases=["sf"],
-            help="Show content of buildspec file for all failed tests",
-            parents=[parent_parser["theme"]],
-        )
-        show_fail_buildspecs.add_argument(
-            "name",
-            help="Show content of buildspec based on failed test name",
-            nargs="*",
-        )
-
-        # buildtest buildspec summary
-        subparsers_buildspec.add_parser(
-            "summary",
-            aliases=["sm"],
-            help="Print summary of buildspec cache",
-            parents=[parent_parser["pager"]],
-        )
-        # buildtest buildspec validate
-        buildspec_validate = subparsers_buildspec.add_parser(
-            "validate", aliases=["val"], help="Validate buildspecs with JSON Schema"
-        )
-        # buildtest buildspec validate options
-        buildspec_validate.add_argument(
-            "-b",
-            "--buildspec",
-            type=str,
-            help="Specify path to buildspec (file, or directory) to validate",
-            action="append",
-        )
-
-        buildspec_validate.add_argument(
-            "-x",
-            "--exclude",
-            type=str,
-            help="Specify path to buildspec to exclude (file or directory) during validation",
-            action="append",
-        )
-
-        buildspec_validate.add_argument(
-            "-e",
-            "--executor",
-            type=str,
-            action="append",
-            help="Specify buildspecs by executor name to validate",
-        )
-        buildspec_validate.add_argument(
-            "-t",
-            "--tag",
-            type=str,
-            action="append",
-            help="Specify buildspecs by tag name to validate",
-        )
-
-    def config_menu(self, parent_parser):
-        """This method adds argparse argument for ``buildtest config``
-
-        Args:
-            parent_parser (argparse.ArgumentParser): Parent parser object
-        """
+    def config_menu(self):
+        """This method adds argparse argument for ``buildtest config``"""
 
         parser_config = self.subparsers.choices["config"]
 
@@ -1077,7 +1196,7 @@ class BuildTestParser:
         )
 
         subparsers_profile_list = subparsers_profile.add_parser(
-            "list", help="List all profiles", parents=[parent_parser["theme"]]
+            "list", help="List all profiles", parents=[self.parent_parser["theme"]]
         )
         # buildtest config profiles remove
         subparsers_profile_remove = subparsers_profile.add_parser(
@@ -1126,7 +1245,7 @@ class BuildTestParser:
             "view",
             aliases=["v"],
             help="View configuration file",
-            parents=[parent_parser["pager"], parent_parser["theme"]],
+            parents=[self.parent_parser["pager"], self.parent_parser["theme"]],
         )
 
         executors_list = subparsers_executors.add_parser(
@@ -1175,7 +1294,7 @@ class BuildTestParser:
         )
 
         compiler_find = subparsers_compiler.add_parser(
-            "find", help="Find compilers", parents=[parent_parser["file"]]
+            "find", help="Find compilers", parents=[self.parent_parser["file"]]
         )
         compiler_find.add_argument(
             "-d",
@@ -1204,23 +1323,19 @@ class BuildTestParser:
             "compiler_names", nargs="*", help="Specify compiler name to test"
         )
 
-    def report_menu(self, parent_parser):
-        """This method implements the ``buildtest report`` command options
-
-        Args:
-            parent_parser (argparse.ArgumentParser): Parent parser object
-        """
+    def report_menu(self):
+        """This method implements the ``buildtest report`` command options"""
 
         parser_report = self.subparsers.add_parser(
             "report",
             aliases=["rt"],
             help="Query test report",
             parents=[
-                parent_parser["pager"],
-                parent_parser["row-count"],
-                parent_parser["terse"],
-                parent_parser["no-header"],
-                parent_parser["count"],
+                self.parent_parser["pager"],
+                self.parent_parser["row-count"],
+                self.parent_parser["terse"],
+                self.parent_parser["no-header"],
+                self.parent_parser["count"],
             ],
         )
         subparsers = parser_report.add_subparsers(
@@ -1237,7 +1352,7 @@ class BuildTestParser:
             "summary",
             aliases=["sm"],
             help="Summarize test report",
-            parents=[parent_parser["pager"]],
+            parents=[self.parent_parser["pager"]],
         )
         filter_group = parser_report.add_argument_group("filter", "Filter options")
 
@@ -1321,12 +1436,8 @@ class BuildTestParser:
             help="Enable a more detailed report",
         )
 
-    def inspect_menu(self, parent_parser):
-        """This method builds argument for ``buildtest inspect`` command
-
-        Args:
-            parent_parser (argparse.ArgumentParser): Parent parser object
-        """
+    def inspect_menu(self):
+        """This method builds argument for ``buildtest inspect`` command"""
 
         parser_inspect = self.subparsers.choices["inspect"]
 
@@ -1339,19 +1450,19 @@ class BuildTestParser:
             "buildspec",
             aliases=["b"],
             help="Inspect a test based on buildspec",
-            parents=[parent_parser["pager"]],
+            parents=[self.parent_parser["pager"]],
         )
         name = subparser.add_parser(
             "name",
             aliases=["n"],
             help="Specify name of test",
-            parents=[parent_parser["pager"]],
+            parents=[self.parent_parser["pager"]],
         )
         query_list = subparser.add_parser(
             "query",
             aliases=["q"],
             help="Query fields from record",
-            parents=[parent_parser["pager"], parent_parser["theme"]],
+            parents=[self.parent_parser["pager"], self.parent_parser["theme"]],
         )
         # buildtest inspect buildspec
         inspect_buildspec.add_argument(
@@ -1372,10 +1483,10 @@ class BuildTestParser:
             aliases=["l"],
             help="List all test names, ids, and corresponding buildspecs",
             parents=[
-                parent_parser["pager"],
-                parent_parser["row-count"],
-                parent_parser["terse"],
-                parent_parser["no-header"],
+                self.parent_parser["pager"],
+                self.parent_parser["row-count"],
+                self.parent_parser["terse"],
+                self.parent_parser["no-header"],
             ],
         )
 
