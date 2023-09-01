@@ -71,7 +71,7 @@ _test_ids ()
 # list of test names from report
 _test_name ()
 {
-  buildtest inspect list -t -n | cut -d '|' -f 2 | uniq | sort
+  buildtest inspect list --terse -n | cut -d '|' -f 2 | uniq | sort
 }
 
 _builder_names()
