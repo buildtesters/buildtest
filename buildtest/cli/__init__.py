@@ -849,8 +849,9 @@ class BuildTestParser:
         """This method adds arguments to a given group and destination name
 
         Args:
-            group:
-            dest_name:
+            arguments (dict): A dictionary of arguments to add to group
+            group (argparse._ArgumentGroup): Argument group to add arguments
+            dest_name (str): Destination name to add arguments to group
 
         Returns:
 
@@ -1019,6 +1020,8 @@ class BuildTestParser:
             for arg_info in cmd_info.get("args", []):
                 subcommand[name].add_argument(*arg_info[0], **arg_info[1])
 
+        # build menu for 'buildtest buildspec maintainers' command
+
         subparsers_maintainers = subcommand["maintainers"].add_subparsers()
         maintainers_find = subparsers_maintainers.add_parser(
             "find", help="Find buildspecs based on maintainer name"
@@ -1026,11 +1029,13 @@ class BuildTestParser:
         maintainers_find.add_argument(
             "name", help="Find buildspec based on maintainer name"
         )
+
+        # build menu for 'buildtest buildspec find' command
         self.buildspec_find_menu(subcommand["find"])
 
     def buildspec_find_menu(self, buildspec_find_parser):
         groups = [
-            ("query", "query", "query options to retrieve from buildspec cach"),
+            ("query", "query", "query options to retrieve from buildspec cache"),
             ("filter", "filter", "filter and format options"),
             ("extra", "extra", "All extra options"),
         ]
@@ -1446,74 +1451,96 @@ class BuildTestParser:
             dest="inspect",
             metavar="",
         )
-        inspect_buildspec = subparser.add_parser(
-            "buildspec",
-            aliases=["b"],
-            help="Inspect a test based on buildspec",
-            parents=[self.parent_parser["pager"]],
-        )
-        name = subparser.add_parser(
-            "name",
-            aliases=["n"],
-            help="Specify name of test",
-            parents=[self.parent_parser["pager"]],
-        )
-        query_list = subparser.add_parser(
-            "query",
-            aliases=["q"],
-            help="Query fields from record",
-            parents=[self.parent_parser["pager"], self.parent_parser["theme"]],
-        )
-        # buildtest inspect buildspec
-        inspect_buildspec.add_argument(
-            "buildspec", nargs="*", help="List of buildspecs to query"
-        )
-        inspect_buildspec.add_argument(
-            "-a",
-            "--all",
-            action="store_true",
-            help="Fetch all records for a given test",
-        )
 
-        name.add_argument("name", nargs="*", help="Name of test")
+        menu = {
+            "buildspec": {
+                "aliases": ["b"],
+                "help": "Inspect a test based on buildspec",
+                "parents": [self.parent_parser["pager"]],
+                "args": [
+                    (
+                        ["buildspec"],
+                        {"nargs": "*", "help": "List of buildspecs to query"},
+                    ),
+                    (
+                        ["-a", "--all"],
+                        {
+                            "action": "store_true",
+                            "help": "Fetch all records for a given test",
+                        },
+                    ),
+                ],
+            },
+            "name": {
+                "aliases": ["n"],
+                "help": "Specify name of test",
+                "parents": [self.parent_parser["pager"]],
+                "args": [(["name"], {"nargs": "*", "help": "Name of test"})],
+            },
+            "query": {
+                "aliases": ["q"],
+                "help": "Query fields from record",
+                "parents": [self.parent_parser["pager"], self.parent_parser["theme"]],
+                "args": [
+                    (
+                        ["-b", "--buildscript"],
+                        {"action": "store_true", "help": "Print build script"},
+                    ),
+                    (
+                        ["-be", "--buildenv"],
+                        {"action": "store_true", "help": "Print content of build env"},
+                    ),
+                    (
+                        ["-e", "--error"],
+                        {"action": "store_true", "help": "Print error file"},
+                    ),
+                    (
+                        ["-o", "--output"],
+                        {"action": "store_true", "help": "Print output file"},
+                    ),
+                    (
+                        ["-t", "--testpath"],
+                        {"action": "store_true", "help": "Print content of testpath"},
+                    ),
+                    (
+                        ["name"],
+                        {
+                            "nargs": "*",
+                            "help": "Name of builder to query in report file",
+                        },
+                    ),
+                ],
+            },
+            "list": {
+                "aliases": ["l"],
+                "help": "List all test names, ids, and corresponding buildspecs",
+                "parents": [
+                    self.parent_parser["pager"],
+                    self.parent_parser["row-count"],
+                    self.parent_parser["terse"],
+                    self.parent_parser["no-header"],
+                ],
+                "args": [
+                    (
+                        ["-b", "--builder"],
+                        {"action": "store_true", "help": "List test in builder format"},
+                    )
+                ],
+            },
+        }
 
-        # buildtest inspect list
-        inspect_list = subparser.add_parser(
-            "list",
-            aliases=["l"],
-            help="List all test names, ids, and corresponding buildspecs",
-            parents=[
-                self.parent_parser["pager"],
-                self.parent_parser["row-count"],
-                self.parent_parser["terse"],
-                self.parent_parser["no-header"],
-            ],
-        )
+        # Create parsers and arguments using the menu dictionary
+        for command, options in menu.items():
+            parser = subparser.add_parser(
+                command,
+                aliases=options["aliases"],
+                help=options["help"],
+                parents=options["parents"],
+            )
+            for arg_info in options["args"]:
+                parser.add_argument(*arg_info[0], **arg_info[1])
 
-        inspect_list.add_argument(
-            "-b", "--builder", action="store_true", help="List test in builder format"
-        )
-
-        # buildtest inspect query
-        query_list.add_argument(
-            "-b", "--buildscript", action="store_true", help="Print build script"
-        )
-        query_list.add_argument(
-            "-be", "--buildenv", action="store_true", help="Print content of build env"
-        )
-        query_list.add_argument(
-            "-e", "--error", action="store_true", help="Print error file"
-        )
-        query_list.add_argument(
-            "-o", "--output", action="store_true", help="Print output file"
-        )
-        query_list.add_argument(
-            "-t", "--testpath", action="store_true", help="Print content of testpath"
-        )
-
-        query_list.add_argument(
-            "name", nargs="*", help="Name of builder to query in report file"
-        )
+        return
 
     def schema_menu(self):
         """This method builds menu for ``buildtest schema``"""
