@@ -1331,6 +1331,75 @@ class BuildTestParser:
     def report_menu(self):
         """This method implements the ``buildtest report`` command options"""
 
+        report_arguments = [
+            (
+                ["--latest"],
+                {
+                    "help": "Retrieve latest record of a particular test",
+                    "action": "store_true",
+                },
+            ),
+            (
+                ["--oldest"],
+                {
+                    "help": "Retrieve oldest record of a particular test",
+                    "action": "store_true",
+                },
+            ),
+            (
+                ["-s", "--start"],
+                {"type": valid_time, "help": "Filter test by starttime"},
+            ),
+            (["-e", "--end"], {"type": valid_time, "help": "Filter test by endtime"}),
+        ]
+
+        filter_arguments = [
+            (
+                ["--filter"],
+                {
+                    "type": handle_kv_string,
+                    "help": "Filter report by filter fields. The filter fields must be in key=value format and multiple fields can be comma separated (e.g., --filter key1=val1,key2=val2). For a list of filter fields, run --helpfilter.",
+                },
+            ),
+            (
+                ["--helpfilter"],
+                {
+                    "action": "store_true",
+                    "help": "List available filter fields to be used with --filter option",
+                },
+            ),
+            (
+                ["--filterfields"],
+                {
+                    "action": "store_true",
+                    "help": "Print raw filter fields for --filter option to filter the report",
+                },
+            ),
+        ]
+
+        format_arguments = [
+            (
+                ["--helpformat"],
+                {
+                    "action": "store_true",
+                    "help": "List available format fields to be used with --format option",
+                },
+            ),
+            (
+                ["--formatfields"],
+                {
+                    "action": "store_true",
+                    "help": "Print raw format fields for --format option to format the report",
+                },
+            ),
+        ]
+
+        groups = {
+            "filter": filter_arguments,
+            "format": format_arguments,
+            "extra": report_arguments,
+        }
+
         parser_report = self.subparsers.add_parser(
             "report",
             aliases=["rt"],
@@ -1343,74 +1412,48 @@ class BuildTestParser:
                 self.parent_parser["count"],
             ],
         )
+
         subparsers = parser_report.add_subparsers(
-            description="Fetch test results from report file and print them in table format",
+            description="Fetch test results from the report file and print them in table format",
             metavar="",
             dest="report_subcommand",
         )
-        subparsers.add_parser("clear", aliases=["c"], help="Remove all report file")
-        subparsers.add_parser("list", aliases=["l"], help="List all report files")
-        subparsers.add_parser(
-            "path", aliases=["p"], help="Print full path to the report file being used"
-        )
-        parser_report_summary = subparsers.add_parser(
-            "summary",
-            aliases=["sm"],
-            help="Summarize test report",
-            parents=[self.parent_parser["pager"]],
-        )
-        filter_group = parser_report.add_argument_group("filter", "Filter options")
 
-        # buildtest report
-        filter_group.add_argument(
-            "--filter",
-            type=handle_kv_string,
-            help="Filter report by filter fields. The filter fields must be a key=value pair and multiple fields can be comma separated in the following format: --filter key1=val1,key2=val2 . For list of filter fields run: --helpfilter.",
-        )
+        subcommands = [
+            ("clear", ["c"], "Remove all report files"),
+            ("list", ["l"], "List all report files"),
+            ("path", ["p"], "Print full path to the report file being used"),
+            ("summary", ["sm"], "Summarize test report"),
+        ]
 
-        filter_group.add_argument(
-            "--helpfilter",
-            action="store_true",
-            help="List available filter fields to be used with --filter option",
-        )
+        report_subparsers = {}
 
-        filter_group.add_argument(
-            "--filterfields",
-            action="store_true",
-            help="Print raw filter fields for --filter option to filter the report",
-        )
+        for cmd, aliases, help_text in subcommands:
+            if cmd == "summary":
+                report_subparsers[cmd] = subparsers.add_parser(
+                    cmd,
+                    aliases=aliases,
+                    help=help_text,
+                    parents=[self.parent_parser["pager"]],
+                )
+                continue
 
-        format_group = parser_report.add_argument_group("format", "Format options")
+            report_subparsers[cmd] = subparsers.add_parser(
+                cmd, aliases=aliases, help=help_text
+            )
 
-        format_group.add_argument(
-            "--helpformat", action="store_true", help="List of available format fields"
-        )
+        for group_name, group_arguments in groups.items():
+            group = parser_report.add_argument_group(group_name)
 
-        format_group.add_argument(
-            "--formatfields",
-            action="store_true",
-            help="Print raw format fields for --format option to format the report",
-        )
+            for args, args_info in group_arguments:
+                group.add_argument(*args, **args_info)
 
-        format_detailed_group = parser_report.add_mutually_exclusive_group()
-        format_detailed_group.add_argument(
-            "--format",
-            help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
-        )
-
-        format_detailed_group.add_argument(
-            "-d",
-            "--detailed",
-            help="Print a detailed summary of the test results",
-            action="store_true",
-        )
-
-        pass_fail = parser_report.add_mutually_exclusive_group()
-
-        pass_fail.add_argument(
+        # Define mutually exclusive groups
+        pass_fail_group = parser_report.add_mutually_exclusive_group()
+        pass_fail_group.add_argument(
             "-f", "--fail", help="Retrieve all FAIL tests", action="store_true"
         )
-        pass_fail.add_argument(
+        pass_fail_group.add_argument(
             "-p",
             "--pass",
             dest="passed",
@@ -1418,23 +1461,19 @@ class BuildTestParser:
             action="store_true",
         )
 
-        parser_report.add_argument(
-            "-s", "--start", type=valid_time, help="Retrieve tests by starttime"
+        format_group = parser_report.add_mutually_exclusive_group()
+        format_group.add_argument(
+            "--format",
+            help="Format field for printing purposes. Fields must be separated by commas (e.g., --format field1,field2,...).",
         )
-        parser_report.add_argument(
-            "-e", "--end", type=valid_time, help="Retrieve tests by endtime"
-        )
-        parser_report.add_argument(
-            "--latest",
-            help="Retrieve latest record of particular test",
+        format_group.add_argument(
+            "-d",
+            "--detailed",
             action="store_true",
+            help="Print a detailed summary of the test results",
         )
-        parser_report.add_argument(
-            "--oldest",
-            help="Retrieve oldest record of particular test",
-            action="store_true",
-        )
-        parser_report_summary.add_argument(
+
+        report_subparsers["summary"].add_argument(
             "--detailed",
             "-d",
             action="store_true",
@@ -1598,22 +1637,6 @@ class BuildTestParser:
             cdash_parser = subparser.add_parser(command, **command_info)
             for args, args_info in cdash_arguments[command]:
                 cdash_parser.add_argument(*args, **args_info)
-
-        return
-        parser_cdash = self.subparsers.choices["cdash"]
-
-        subparser = parser_cdash.add_subparsers(
-            description="buildtest CDASH integeration", dest="cdash", metavar=""
-        )
-        subparser.add_parser("view", help="Open CDASH project in webbrowser")
-
-        upload = subparser.add_parser("upload", help="Upload Test to CDASH server")
-
-        upload.add_argument("--site", help="Specify site name reported in CDASH")
-        upload.add_argument("buildname", help="Specify Build Name reported in CDASH")
-        upload.add_argument(
-            "-o", "--open", action="store_true", help="Open CDASH report in browser"
-        )
 
     def help_all(self):
         """This method will add parser for hidden command that can be shown when using ``--help-all/-H``"""
