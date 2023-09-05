@@ -1187,89 +1187,237 @@ class BuildTestParser:
             metavar="",
         )
 
+        # Define the top-level commands and their subcommands in a list
+        command_menu = [
+            {
+                "name": "edit",
+                "aliases": ["e"],
+                "help": "Open configuration file in editor",
+            },
+            {
+                "name": "path",
+                "aliases": ["p"],
+                "help": "Show path to configuration file",
+            },
+            {"name": "systems", "help": "List all available systems"},
+            {
+                "name": "validate",
+                "aliases": ["val"],
+                "help": "Validate buildtest settings file with schema.",
+            },
+            {
+                "name": "view",
+                "aliases": ["v"],
+                "help": "View configuration file",
+                "parents": [self.parent_parser["pager"], self.parent_parser["theme"]],
+            },
+            {
+                "name": "profiles",
+                "help": "Query profile from buildtest configuration",
+                "subcommands": [
+                    {
+                        "name": "list",
+                        "help": "List all profiles",
+                        "parents": [self.parent_parser["theme"]],
+                        "arguments": [
+                            (
+                                ("-y", "--yaml"),
+                                {
+                                    "action": "store_true",
+                                    "help": "List Profile details in YAML Format",
+                                },
+                            )
+                        ],
+                    },
+                    {
+                        "name": "remove",
+                        "aliases": ["rm"],
+                        "help": "Remove a profile from configuration",
+                        "arguments": [
+                            (
+                                ("profile_name",),
+                                {
+                                    "nargs": "*",
+                                    "help": "Specify profile name to remove",
+                                },
+                            )
+                        ],
+                    },
+                ],
+            },
+            {
+                "name": "executors",
+                "aliases": ["ex"],
+                "help": "Query executors from buildtest configuration",
+                "subcommands": [
+                    {
+                        "name": "list",
+                        "help": "List all executors",
+                        "mutually_exclusive_group": True,
+                        "arguments": [
+                            (
+                                ("-j", "--json"),
+                                {
+                                    "action": "store_true",
+                                    "help": "View executor in JSON format",
+                                },
+                            ),
+                            (
+                                ("-y", "--yaml"),
+                                {
+                                    "action": "store_true",
+                                    "help": "View executors in YAML format",
+                                },
+                            ),
+                            (
+                                ("-d", "--disabled"),
+                                {
+                                    "action": "store_true",
+                                    "help": "Show disabled executors",
+                                },
+                            ),
+                            (
+                                ("-i", "--invalid"),
+                                {
+                                    "action": "store_true",
+                                    "help": "Show invalid executors",
+                                },
+                            ),
+                        ],
+                    }
+                ],
+            },
+            {
+                "name": "compilers",
+                "aliases": ["co"],
+                "help": "Search compilers",
+                "subcommands": [
+                    {
+                        "name": "list",
+                        "help": "List compilers",
+                        "arguments": [
+                            (
+                                ("-j", "--json"),
+                                {
+                                    "action": "store_true",
+                                    "help": "List compiler details in JSON format",
+                                },
+                            ),
+                            (
+                                ("-y", "--yaml"),
+                                {
+                                    "action": "store_true",
+                                    "help": "List compiler details in YAML format",
+                                },
+                            ),
+                        ],
+                    },
+                    {
+                        "name": "test",
+                        "help": "Test each compiler instance by performing module load test",
+                        "arguments": [
+                            (
+                                ("compiler_names",),
+                                {"nargs": "*", "help": "Specify compiler name to test"},
+                            )
+                        ],
+                    },
+                    {
+                        "name": "find",
+                        "help": "Find compilers",
+                        "parents": [self.parent_parser["file"]],
+                        "arguments": [
+                            (
+                                ("-d", "--detailed"),
+                                {
+                                    "help": "Display detailed output when finding compilers",
+                                    "action": "store_true",
+                                },
+                            ),
+                            (
+                                ("-u", "--update"),
+                                {
+                                    "action": "store_true",
+                                    "help": "Update configuration file with new compilers",
+                                },
+                            ),
+                            (
+                                ("-m", "--modulepath"),
+                                {
+                                    "type": str,
+                                    "nargs": "+",
+                                    "help": "Specify a list of directories to search for modules via MODULEPATH to detect compilers",
+                                },
+                            ),
+                        ],
+                    },
+                    {
+                        "name": "remove",
+                        "aliases": ["rm"],
+                        "help": "Remove compilers",
+                        "arguments": [
+                            (
+                                ("compiler_names",),
+                                {
+                                    "nargs": "*",
+                                    "help": "Specify compiler name to remove",
+                                },
+                            )
+                        ],
+                    },
+                ],
+            },
+        ]
+
+        # Iterate through the command menu and create subparsers and arguments
+        for command_data in command_menu:
+            # if command_data["name"] == "compilers":
+            #    continue
+
+            subparser_command = subparsers_config.add_parser(
+                command_data["name"],
+                aliases=command_data.get("aliases", []),
+                help=command_data["help"],
+                parents=command_data.get("parents", []),
+            )
+
+            subcommands = command_data.get("subcommands", [])
+            subparsers_subcommand = subparser_command.add_subparsers(
+                description=f"Query information about {command_data['name']}",
+                dest=command_data["name"],
+                metavar="",
+            )
+
+            for subcommand_data in subcommands:
+                subparser_subcommand = subparsers_subcommand.add_parser(
+                    subcommand_data["name"],
+                    aliases=subcommand_data.get("aliases", []),
+                    help=subcommand_data["help"],
+                    parents=subcommand_data.get("parents", []),
+                )
+
+                arguments = subcommand_data.get("arguments", [])
+                mutually_exclusive_group = None
+                if (
+                    "mutually_exclusive_group" in subcommand_data
+                    and subcommand_data["mutually_exclusive_group"]
+                ):
+                    # Add the options to a mutually exclusive group
+                    mutually_exclusive_group = (
+                        subparser_subcommand.add_mutually_exclusive_group()
+                    )
+
+                for args, kwargs in arguments:
+                    if not mutually_exclusive_group:
+                        subparser_subcommand.add_argument(*args, **kwargs)
+                        continue
+
+                    mutually_exclusive_group.add_argument(*args, **kwargs)
+
+        return
+        """
         compilers = subparsers_config.add_parser(
             "compilers", aliases=["co"], help="Search compilers"
-        )
-        # buildtest config profile
-        profile = subparsers_config.add_parser(
-            "profiles", help="Query profile from buildtest configuration"
-        )
-        subparsers_profile = profile.add_subparsers(
-            description="Query information about buildtest profiles",
-            dest="profiles",
-            metavar="",
-        )
-
-        subparsers_profile_list = subparsers_profile.add_parser(
-            "list", help="List all profiles", parents=[self.parent_parser["theme"]]
-        )
-        # buildtest config profiles remove
-        subparsers_profile_remove = subparsers_profile.add_parser(
-            "remove", aliases=["rm"], help="Remove a profile from configuration"
-        )
-        subparsers_profile_remove.add_argument(
-            "profile_name", nargs="*", help="Specify profile name to remove"
-        )
-        # buildtest config profile list options
-        subparsers_profile_list.add_argument(
-            "-y",
-            "--yaml",
-            action="store_true",
-            help="List Profile details in YAML Format",
-        )
-
-        subparsers_config.add_parser(
-            "edit", aliases=["e"], help="Open configuration file in editor"
-        )
-
-        executors = subparsers_config.add_parser(
-            "executors",
-            aliases=["ex"],
-            help="Query executors from buildtest configuration",
-        )
-        subparsers_executors = executors.add_subparsers(
-            description="Query executors from buildtest configuration",
-            dest="executors",
-            metavar="",
-        )
-
-        subparsers_config.add_parser(
-            "path", aliases=["p"], help="Show path to configuration file"
-        )
-
-        subparsers_config.add_parser("systems", help="List all available systems")
-
-        # buildtest config validate
-        subparsers_config.add_parser(
-            "validate",
-            aliases=["val"],
-            help="Validate buildtest settings file with schema.",
-        )
-        # buildtest config view
-        subparsers_config.add_parser(
-            "view",
-            aliases=["v"],
-            help="View configuration file",
-            parents=[self.parent_parser["pager"], self.parent_parser["theme"]],
-        )
-
-        executors_list = subparsers_executors.add_parser(
-            "list", help="List all executors"
-        )
-        executor_group = executors_list.add_mutually_exclusive_group()
-
-        # buildtest config executors
-        executor_group.add_argument(
-            "-j", "--json", action="store_true", help="View executor in JSON format"
-        )
-        executor_group.add_argument(
-            "-y", "--yaml", action="store_true", help="View executors in YAML format"
-        )
-        executor_group.add_argument(
-            "-d", "--disabled", action="store_true", help="Show disabled executors"
-        )
-        executor_group.add_argument(
-            "-i", "--invalid", action="store_true", help="Show invalid executors"
         )
 
         subparsers_compiler = compilers.add_subparsers(
@@ -1327,6 +1475,7 @@ class BuildTestParser:
         compiler_test.add_argument(
             "compiler_names", nargs="*", help="Specify compiler name to test"
         )
+        """
 
     def report_menu(self):
         """This method implements the ``buildtest report`` command options"""
