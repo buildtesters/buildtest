@@ -429,48 +429,76 @@ class BuildTestParser:
     def misc_menu(self):
         """Build the command line menu for some miscellaneous commands"""
 
-        cd_parser = self.subparsers.choices["cd"]
-        cd_parser.add_argument(
-            "test", help="Change directory to root of test for last run of test."
-        )
-        clean = self.subparsers.add_parser(
-            "clean",
-            help="Remove all generate files from buildtest including test directory, log files, report file, buildspec cache, history files.",
-        )
+        subcommands = [
+            {
+                "name": "cd",
+                "help": "Change directory to root of test for last run of test.",
+                "args": [
+                    (
+                        ["test"],
+                        {
+                            "help": "Change directory to root of test for last run of test."
+                        },
+                    )
+                ],
+            },
+            {
+                "name": "clean",
+                "help": "Remove all generate files from buildtest including test directory, log files, report file, buildspec cache, history files.",
+                "args": [
+                    (
+                        ["-y", "--yes"],
+                        {"action": "store_true", "help": "Confirm yes for all prompts"},
+                    )
+                ],
+            },
+            {
+                "name": "stats",
+                "help": "Display statistics for a specific test.",
+                "args": [(["name"], {"help": "Name of test"})],
+            },
+            {
+                "name": "show",
+                "help": "Show help message for a specific command.",
+                "args": [
+                    (
+                        ["command"],
+                        {
+                            "help": "Show help message for command.",
+                            "choices": [
+                                "bd",
+                                "build",
+                                "bc",
+                                "buildspec",
+                                "cdash",
+                                "cg",
+                                "config",
+                                "hy",
+                                "history",
+                                "it",
+                                "inspect",
+                                "path",
+                                "rt",
+                                "report",
+                                "schema",
+                                "style",
+                                "stylecheck",
+                                "test",
+                                "unittests",
+                            ],
+                        },
+                    )
+                ],
+            },
+        ]
 
-        clean.add_argument(
-            "-y", "--yes", action="store_true", help="Confirm yes for all prompts"
-        )
-
-        parser_stats = self.subparsers.choices["stats"]
-        parser_stats.add_argument("name", help="Name of test")
-
-        show_subparser = self.subparsers.choices["show"]
-        show_subparser.add_argument(
-            "command",
-            choices=[
-                "bd",
-                "build",
-                "bc",
-                "buildspec",
-                "cdash",
-                "cg",
-                "config",
-                "hy",
-                "history",
-                "it",
-                "inspect",
-                "path",
-                "rt",
-                "report",
-                "schema",
-                "style",
-                "stylecheck",
-                "test",
-                "unittests",
-            ],
-            help="Show help message for command",
-        )
+        # Create argument parsers for each subcommand
+        parsers = {}
+        for subcommand in subcommands:
+            parser = self.subparsers.choices[subcommand["name"]]
+            for args, kwargs in subcommand.get("args", []):
+                parser.add_argument(*args, **kwargs)
+            parsers[subcommand["name"]] = parser
 
     def stylecheck_menu(self):
         """This method will create command options for ``buildtest stylecheck``"""
