@@ -503,10 +503,7 @@ class BuildTestParser:
     def stylecheck_menu(self):
         """This method will create command options for ``buildtest stylecheck``"""
 
-        # Subcommands that do not need to be shown in ``--help``
         stylecheck_parser = self.subparsers.choices["stylecheck"]
-
-        # stylecheck_parser = self.subparsers.add_parser("stylecheck", aliases=["style"])
 
         stylecheck_args = [
             (
@@ -645,8 +642,8 @@ class BuildTestParser:
                 help=subparser_info["help"],
                 parents=subparser_info["parents"],
             )
-            for arg_args, arg_kwargs in subparser_info["args"]:
-                subparser.add_argument(*arg_args, **arg_kwargs)
+            for args, kwargs in subparser_info["args"]:
+                subparser.add_argument(*args, **kwargs)
 
     def build_menu(self):
         """This method implements command line menu for ``buildtest build`` command."""
@@ -863,22 +860,10 @@ class BuildTestParser:
         for group_name, dest_name, desc in groups:
             group = parser_build.add_argument_group(group_name, description=desc)
 
-            self.argument_group(arguments=arguments, group=group, dest_name=dest_name)
+            #self.argument_group(arguments=arguments, group=group, dest_name=dest_name)
 
-    def argument_group(self, arguments, group, dest_name):
-        """This method adds arguments to a given group and destination name
-
-        Args:
-            arguments (dict): A dictionary of arguments to add to group
-            group (argparse._ArgumentGroup): Argument group to add arguments
-            dest_name (str): Destination name to add arguments to group
-
-        Returns:
-
-        """
-
-        for arg_args, arg_kwargs in arguments[dest_name]:
-            group.add_argument(*arg_args, **arg_kwargs)
+            for args, kwargs in arguments[dest_name]:
+                group.add_argument(*args, **kwargs)
 
     def buildspec_menu(self):
         """This method implements ``buildtest buildspec`` command"""
@@ -1166,7 +1151,9 @@ class BuildTestParser:
                 group_name, description=desc
             )
 
-            self.argument_group(arguments=arguments, group=group, dest_name=dest_name)
+            for args, kwargs in arguments[dest_name]:
+                group.add_argument(*args, **kwargs)
+
 
         buildtest_find_commands = [
             {
@@ -1315,6 +1302,7 @@ class BuildTestParser:
                     {
                         "name": "list",
                         "help": "List compilers",
+                        "mutually_exclusive_group": True,
                         "arguments": [
                             (
                                 ("-j", "--json"),
@@ -1434,68 +1422,6 @@ class BuildTestParser:
 
                     mutually_exclusive_group.add_argument(*args, **kwargs)
 
-        return
-        """
-        compilers = subparsers_config.add_parser(
-            "compilers", aliases=["co"], help="Search compilers"
-        )
-
-        subparsers_compiler = compilers.add_subparsers(
-            description="Find new compilers and add them to detected compiler section",
-            dest="compilers",
-            metavar="",
-        )
-        compiler_list = subparsers_compiler.add_parser("list", help="List compilers")
-        compiler_remove = subparsers_compiler.add_parser(
-            "remove", aliases=["rm"], help="Remove compilers"
-        )
-        compiler_remove.add_argument(
-            "compiler_names", nargs="*", help="Specify compiler name to remove"
-        )
-        # buildtest config compilers
-        compiler_list.add_argument(
-            "-j",
-            "--json",
-            action="store_true",
-            help="List compiler details in JSON format",
-        )
-        compiler_list.add_argument(
-            "-y",
-            "--yaml",
-            action="store_true",
-            help="List compiler details in YAML format",
-        )
-
-        compiler_find = subparsers_compiler.add_parser(
-            "find", help="Find compilers", parents=[self.parent_parser["file"]]
-        )
-        compiler_find.add_argument(
-            "-d",
-            "--detailed",
-            help="Display detailed output when finding compilers",
-            action="store_true",
-        )
-        compiler_find.add_argument(
-            "-u",
-            "--update",
-            action="store_true",
-            help="Update configuration file with new compilers",
-        )
-        compiler_find.add_argument(
-            "-m",
-            "--modulepath",
-            type=str,
-            nargs="+",
-            help="Specify a list of directories to search for modules via MODULEPATH to detect compilers",
-        )
-
-        compiler_test = subparsers_compiler.add_parser(
-            "test", help="Test each compiler instance by performing module load test"
-        )
-        compiler_test.add_argument(
-            "compiler_names", nargs="*", help="Specify compiler name to test"
-        )
-        """
 
     def report_menu(self):
         """This method implements the ``buildtest report`` command options"""
@@ -1810,17 +1736,14 @@ class BuildTestParser:
     def help_all(self):
         """This method will add parser for hidden command that can be shown when using ``--help-all/-H``"""
         hidden_parser = {
-            "tutorial-examples": "Generate documentation examples for Buildtest Tutorial",
-            "docs": "Open buildtest docs in browser",
-            "schemadocs": "Open buildtest schema docs in browser",
+            "tutorial-examples": {"help": "Generate documentation examples for Buildtest Tutorial"},
+            "docs": {"help": "Open buildtest docs in browser"},
+            "schemadocs": {"help": "Open buildtest schema docs in browser"},
             "unittests": {"help": "Run buildtest unit tests", "aliases": ["test"]},
             "stylecheck": {"help": "Run buildtest style checks", "aliases": ["style"]},
         }
 
-        for command, val in hidden_parser.items():
-            if type(val) is dict:
-                self.subparsers.add_parser(
-                    command, help=val.get("help"), aliases=val.get("aliases")
-                )
-            else:
-                self.subparsers.add_parser(command, help=val)
+        for name, subcommand in hidden_parser.items():
+            self.subparsers.add_parser(
+                name, help=subcommand["help"], aliases=subcommand.get("aliases", [])
+            )
