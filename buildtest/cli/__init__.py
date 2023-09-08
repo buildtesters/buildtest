@@ -13,9 +13,6 @@ from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import console
 from buildtest.schemas.defaults import schema_table
 
-# Variables needed to show all sub commands and their help mesaage
-show_all_help = "-H" in sys.argv or "--help-all" in sys.argv
-
 
 def build_filters_format(val):
     """This method is used as validate argument type for ``buildtest build --filter``.
@@ -222,11 +219,23 @@ class BuildTestParser:
     """
 
     def __init__(self):
+        self.parent_parser = self.get_parent_parser()
+
         self.subcommands = {
             "build": {"help": "Build and Run test", "aliases": ["bd"]},
             "buildspec": {"help": "Buildspec Interface", "aliases": ["bc"]},
             "config": {"help": "Query buildtest configuration", "aliases": ["cg"]},
-            "report": {"help": "Query test report", "aliases": ["rt"]},
+            "report": {
+                "help": "Query test report",
+                "aliases": ["rt"],
+                "parents": [
+                    self.parent_parser["pager"],
+                    self.parent_parser["row-count"],
+                    self.parent_parser["terse"],
+                    self.parent_parser["no-header"],
+                    self.parent_parser["count"],
+                ],
+            },
             "inspect": {"help": "Inspect a test", "aliases": ["it"]},
             "path": {"help": "Show path attributes for a given test", "aliases": ["p"]},
             "history": {"help": "Query build history", "aliases": ["hy"]},
@@ -244,22 +253,16 @@ class BuildTestParser:
             "info": {"help": " Show details regarding current buildtest setup"},
             "show": {"help": "buildtest command guide"},
             "commands": {"help": "List all buildtest commands", "aliases": ["cmds"]},
-            "tutorial-examples": {"help": ""},
-            "schemadocs": {"help": ""},
-            "unittests": {"help": "", "aliases": ["test"]},
-            "stylecheck": {"help": "", "aliases": ["style"]},
         }
 
-        self.build_parser()
+        self.hidden_subcommands = {
+            "docs": {},
+            "tutorial-examples": {},
+            "schemadocs": {},
+            "unittests": {"aliases": ["test"]},
+            "stylecheck": {"aliases": ["style"]},
+        }
 
-    def parse(self):
-        """This method parses arguments passed to buildtest command line interface."""
-        return self.parser.parse_args()
-
-    def get_subparsers(self):
-        return self.subparsers
-
-    def build_parser(self):
         self.parser = argparse.ArgumentParser(
             prog=self._progname,
             formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -268,63 +271,17 @@ class BuildTestParser:
             epilog=self.epilog_str,
         )
 
-        self.main_options()
-
         self.subparsers = self.parser.add_subparsers(
             title="COMMANDS", dest="subcommands", metavar=""
         )
 
-        def get_parent_parser():
-            parent_parser = {}
-
-            parent_parser["pager"] = argparse.ArgumentParser(add_help=False)
-            parent_parser["pager"].add_argument(
-                "--pager", action="store_true", help="Enable PAGING when viewing result"
-            )
-
-            parent_parser["file"] = argparse.ArgumentParser(add_help=False)
-            parent_parser["file"].add_argument(
-                "--file", help="Write configuration file to a new file"
-            )
-
-            parent_parser["row-count"] = argparse.ArgumentParser(add_help=False)
-            parent_parser["row-count"].add_argument(
-                "--row-count",
-                action="store_true",
-                help="Display number of rows from query shown in table",
-            )
-            parent_parser["terse"] = argparse.ArgumentParser(add_help=False)
-            parent_parser["terse"].add_argument(
-                # "-t",
-                "--terse",
-                action="store_true",
-                help="Print output in machine readable format",
-            )
-            parent_parser["no-header"] = argparse.ArgumentParser(add_help=False)
-            parent_parser["no-header"].add_argument(
-                "-n",
-                "--no-header",
-                action="store_true",
-                help="Do not print header columns in terse output (--terse)",
-            )
-            parent_parser["count"] = argparse.ArgumentParser(add_help=False)
-            parent_parser["count"].add_argument(
-                "-c",
-                "--count",
-                type=int,
-                help="Retrieve limited number of rows that get printed",
-            )
-            parent_parser["theme"] = argparse.ArgumentParser(add_help=False)
-            parent_parser["theme"].add_argument(
-                "--theme",
-                metavar="Color Themes",
-                help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themese",
-                choices=list(STYLE_MAP.keys()),
-            )
-            return parent_parser
-
-        self.parent_parser = get_parent_parser()
+        self.main_options()
         self._build_subparsers()
+
+        # Variables needed to show all sub commands and their help message
+        show_all_help = any(arg in ["-H", "--help-all"] for arg in sys.argv)
+        if show_all_help:
+            self.help_all()
 
         self.build_menu()
         self.buildspec_menu()
@@ -339,16 +296,21 @@ class BuildTestParser:
         self.stylecheck_menu()
         self.misc_menu()
 
-        # Displays all hidden commands
-        if show_all_help:
-            self.help_all()
+    def parse(self):
+        """This method parses arguments passed to buildtest command line interface."""
+        return self.parser.parse_args()
+
+    def get_subparsers(self):
+        return self.subparsers
 
     def _build_subparsers(self):
         """This method builds subparsers for buildtest command line interface."""
-        for name, subcommand in self.subcommands.items():
-            self.subparsers.add_parser(
-                name, help=subcommand["help"], aliases=subcommand.get("aliases", [])
-            )
+
+        for name, kwargs in self.subcommands.items():
+            self.subparsers.add_parser(name, **kwargs)
+
+        for name, kwargs in self.hidden_subcommands.items():
+            self.subparsers.add_parser(name, **kwargs)
 
     def main_options(self):
         """This method builds the main options for buildtest command line interface."""
@@ -425,6 +387,73 @@ class BuildTestParser:
         for args, kwargs in arguments:
             self.parser.add_argument(*args, **kwargs)
         return
+
+    def help_all(self):
+        """This method will add parser for hidden command that can be shown when using ``--help-all/-H``"""
+
+        hidden_parser = {
+            "tutorial-examples": {
+                "help": "Generate documentation examples for Buildtest Tutorial"
+            },
+            "docs": {"help": "Open buildtest docs in browser"},
+            "schemadocs": {"help": "Open buildtest schema docs in browser"},
+            "unittests": {"help": "Run buildtest unit tests", "aliases": ["test"]},
+            "stylecheck": {"help": "Run buildtest style checks", "aliases": ["style"]},
+        }
+
+        for name, subcommand in hidden_parser.items():
+            self.subparsers.add_parser(
+                name, help=subcommand["help"], aliases=subcommand.get("aliases", [])
+            )
+
+    def get_parent_parser(self):
+        parent_parser = {}
+
+        parent_parser["pager"] = argparse.ArgumentParser(add_help=False)
+        parent_parser["pager"].add_argument(
+            "--pager", action="store_true", help="Enable PAGING when viewing result"
+        )
+
+        parent_parser["file"] = argparse.ArgumentParser(add_help=False)
+        parent_parser["file"].add_argument(
+            "--file", help="Write configuration file to a new file"
+        )
+
+        parent_parser["row-count"] = argparse.ArgumentParser(add_help=False)
+        parent_parser["row-count"].add_argument(
+            "--row-count",
+            action="store_true",
+            help="Display number of rows from query shown in table",
+        )
+        parent_parser["terse"] = argparse.ArgumentParser(add_help=False)
+        parent_parser["terse"].add_argument(
+            # "-t",
+            "--terse",
+            action="store_true",
+            help="Print output in machine readable format",
+        )
+        parent_parser["no-header"] = argparse.ArgumentParser(add_help=False)
+        parent_parser["no-header"].add_argument(
+            "-n",
+            "--no-header",
+            action="store_true",
+            help="Do not print header columns in terse output (--terse)",
+        )
+        parent_parser["count"] = argparse.ArgumentParser(add_help=False)
+        parent_parser["count"].add_argument(
+            "-c",
+            "--count",
+            type=int,
+            help="Retrieve limited number of rows that get printed",
+        )
+        parent_parser["theme"] = argparse.ArgumentParser(add_help=False)
+        parent_parser["theme"].add_argument(
+            "--theme",
+            metavar="Color Themes",
+            help="Specify a color theme, Pygments style to use when displaying output. See https://pygments.org/docs/styles/#getting-a-list-of-available-styles for available themese",
+            choices=list(STYLE_MAP.keys()),
+        )
+        return parent_parser
 
     def misc_menu(self):
         """Build the command line menu for some miscellaneous commands"""
@@ -503,7 +532,7 @@ class BuildTestParser:
     def stylecheck_menu(self):
         """This method will create command options for ``buildtest stylecheck``"""
 
-        stylecheck_parser = self.subparsers.choices["stylecheck"]
+        parser = self.subparsers.choices["stylecheck"]
 
         stylecheck_args = [
             (
@@ -525,11 +554,11 @@ class BuildTestParser:
         ]
 
         for args, kwargs in stylecheck_args:
-            stylecheck_parser.add_argument(*args, **kwargs)
+            parser.add_argument(*args, **kwargs)
 
     def unittest_menu(self):
         """This method builds the command line menu for ``buildtest unittests`` command"""
-        unittests_parser = self.subparsers.choices["unittests"]
+        parser = self.subparsers.choices["unittests"]
 
         unittests_args = [
             (
@@ -551,7 +580,7 @@ class BuildTestParser:
         ]
 
         for args, kwargs in unittests_args:
-            unittests_parser.add_argument(*args, **kwargs)
+            parser.add_argument(*args, **kwargs)
 
     def path_menu(self):
         """This method builds the command line menu for ``buildtest path`` command"""
@@ -860,7 +889,7 @@ class BuildTestParser:
         for group_name, dest_name, desc in groups:
             group = parser_build.add_argument_group(group_name, description=desc)
 
-            #self.argument_group(arguments=arguments, group=group, dest_name=dest_name)
+            # self.argument_group(arguments=arguments, group=group, dest_name=dest_name)
 
             for args, kwargs in arguments[dest_name]:
                 group.add_argument(*args, **kwargs)
@@ -1154,7 +1183,6 @@ class BuildTestParser:
             for args, kwargs in arguments[dest_name]:
                 group.add_argument(*args, **kwargs)
 
-
         buildtest_find_commands = [
             {
                 "name": "invalid",
@@ -1422,7 +1450,6 @@ class BuildTestParser:
 
                     mutually_exclusive_group.add_argument(*args, **kwargs)
 
-
     def report_menu(self):
         """This method implements the ``buildtest report`` command options"""
 
@@ -1495,18 +1522,7 @@ class BuildTestParser:
             "extra": report_arguments,
         }
 
-        parser_report = self.subparsers.add_parser(
-            "report",
-            aliases=["rt"],
-            help="Query test report",
-            parents=[
-                self.parent_parser["pager"],
-                self.parent_parser["row-count"],
-                self.parent_parser["terse"],
-                self.parent_parser["no-header"],
-                self.parent_parser["count"],
-            ],
-        )
+        parser_report = self.subparsers.choices["report"]
 
         subparsers = parser_report.add_subparsers(
             description="Fetch test results from the report file and print them in table format",
@@ -1732,18 +1748,3 @@ class BuildTestParser:
             cdash_parser = subparser.add_parser(command, **command_info)
             for args, args_info in cdash_arguments[command]:
                 cdash_parser.add_argument(*args, **args_info)
-
-    def help_all(self):
-        """This method will add parser for hidden command that can be shown when using ``--help-all/-H``"""
-        hidden_parser = {
-            "tutorial-examples": {"help": "Generate documentation examples for Buildtest Tutorial"},
-            "docs": {"help": "Open buildtest docs in browser"},
-            "schemadocs": {"help": "Open buildtest schema docs in browser"},
-            "unittests": {"help": "Run buildtest unit tests", "aliases": ["test"]},
-            "stylecheck": {"help": "Run buildtest style checks", "aliases": ["style"]},
-        }
-
-        for name, subcommand in hidden_parser.items():
-            self.subparsers.add_parser(
-                name, help=subcommand["help"], aliases=subcommand.get("aliases", [])
-            )
