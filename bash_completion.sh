@@ -30,7 +30,7 @@ _avail_color_themes ()
 
 _buildtest_commands()
 {
-  buildtest commands
+  buildtest commands --with-aliases
 }
 # get list of available tags
 _avail_tags ()
@@ -519,12 +519,8 @@ _buildtest ()
       local opts="--help --no-black --no-isort --no-pyflakes --apply -a -h"
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
-    unittests)
+    unittests|test)
       local opts="--coverage --help --pytestopts --sourcefiles -c -h -p -s"
-      COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
-      ;;
-    tutorial-examples)
-      local opts="-h --help"
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
     show|s)
@@ -532,6 +528,15 @@ _buildtest ()
       local alias_cmds="bd bc cg hy it rt style test"
       local cmds="$subcommands $alias_cmds"
       COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
+      ;;
+    commands|cmds)
+      local opts="--help --with-aliases -h"
+      COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
+      ;;
+    # options with only --help
+    debugreport|info|docs|schemadocs|tutorial-examples)
+      local opts="-h --help"
+      COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
     *)
       #local cmds="build buildspec cd cdash clean commands config debugreport docs history info inspect path report schema schemadocs show stats stylecheck tutorial-examples unittests"
