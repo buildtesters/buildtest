@@ -218,6 +218,28 @@ class BuildTestParser:
     {BUILDTEST_COPYRIGHT}
     """
 
+    _buildtest_show_commands = [
+        "bd",
+        "build",
+        "bc",
+        "buildspec",
+        "cdash",
+        "cg",
+        "config",
+        "hy",
+        "history",
+        "it",
+        "inspect",
+        "path",
+        "rt",
+        "report",
+        "schema",
+        "style",
+        "stylecheck",
+        "test",
+        "unittests",
+    ]
+
     def __init__(self):
         self.parent_parser = self.get_parent_parser()
 
@@ -279,8 +301,11 @@ class BuildTestParser:
             title="COMMANDS", dest="subcommands", metavar=""
         )
 
-        self.main_options()
+        self._build_options()
         self._build_subparsers()
+
+        # list used to store all main options for buildtest
+        self.main_options = self.get_buildtest_options()
 
         # Variables needed to show all sub commands and their help message
         show_all_help = any(arg in ["-H", "--help-all"] for arg in sys.argv)
@@ -316,10 +341,10 @@ class BuildTestParser:
         for name, kwargs in self.hidden_subcommands.items():
             self.subparsers.add_parser(name, **kwargs)
 
-    def main_options(self):
+    def _build_options(self):
         """This method builds the main options for buildtest command line interface."""
 
-        arguments = [
+        self.buildtest_options = [
             (
                 ["-V", "--version"],
                 {
@@ -388,9 +413,19 @@ class BuildTestParser:
             ),
         ]
 
-        for args, kwargs in arguments:
+        for args, kwargs in self.buildtest_options:
             self.parser.add_argument(*args, **kwargs)
-        return
+
+    def get_buildtest_options(self):
+        main_options = set()
+        for args, kwargs in self.buildtest_options:
+            for name in args:
+                main_options.add(name)
+
+        # adding -h and --help options
+        main_options.add("-h")
+        main_options.add("--help")
+        return list(sorted(main_options))
 
     def help_all(self):
         """This method will add parser for hidden command that can be shown when using ``--help-all/-H``"""
@@ -431,7 +466,6 @@ class BuildTestParser:
         )
         parent_parser["terse"] = argparse.ArgumentParser(add_help=False)
         parent_parser["terse"].add_argument(
-            # "-t",
             "--terse",
             action="store_true",
             help="Print output in machine readable format",
@@ -466,7 +500,7 @@ class BuildTestParser:
             {
                 "name": "cd",
                 "help": "Change directory to root of test for last run of test.",
-                "args": [
+                "arguments": [
                     (
                         ["test"],
                         {
@@ -478,7 +512,7 @@ class BuildTestParser:
             {
                 "name": "clean",
                 "help": "Remove all generate files from buildtest including test directory, log files, report file, buildspec cache, history files.",
-                "args": [
+                "arguments": [
                     (
                         ["-y", "--yes"],
                         {"action": "store_true", "help": "Confirm yes for all prompts"},
@@ -488,42 +522,30 @@ class BuildTestParser:
             {
                 "name": "stats",
                 "help": "Display statistics for a specific test.",
-                "args": [(["name"], {"help": "Name of test"})],
+                "arguments": [(["name"], {"help": "Name of test"})],
             },
             {
                 "name": "commands",
                 "help": "List all buildtest commands",
-                "args": [(['-a', '--with-aliases'], {'action': 'store_true', 'help': 'Return all buildtest commands including command aliases'})],
+                "arguments": [
+                    (
+                        ["-a", "--with-aliases"],
+                        {
+                            "action": "store_true",
+                            "help": "Return all buildtest commands including command aliases",
+                        },
+                    )
+                ],
             },
             {
                 "name": "show",
                 "help": "Show help message for a specific command.",
-                "args": [
+                "arguments": [
                     (
                         ["command"],
                         {
                             "help": "Show help message for command.",
-                            "choices": [
-                                "bd",
-                                "build",
-                                "bc",
-                                "buildspec",
-                                "cdash",
-                                "cg",
-                                "config",
-                                "hy",
-                                "history",
-                                "it",
-                                "inspect",
-                                "path",
-                                "rt",
-                                "report",
-                                "schema",
-                                "style",
-                                "stylecheck",
-                                "test",
-                                "unittests",
-                            ],
+                            "choices": self._buildtest_show_commands,
                         },
                     )
                 ],
@@ -534,7 +556,7 @@ class BuildTestParser:
         parsers = {}
         for subcommand in subcommands:
             parser = self.subparsers.choices[subcommand["name"]]
-            for args, kwargs in subcommand.get("args", []):
+            for args, kwargs in subcommand.get("arguments", []):
                 parser.add_argument(*args, **kwargs)
             parsers[subcommand["name"]] = parser
 
