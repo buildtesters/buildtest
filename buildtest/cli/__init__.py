@@ -252,17 +252,9 @@ class BuildTestParser:
 
         self.build_parser()
 
-    def parse(self, args=None):
-        """This method parses arguments passed to buildtest command line interface
-
-        Args:
-            args (list, optional): List of arguments passed to buildtest command line interface. Defaults to None.
-
-        Returns:
-            argparse.Namespace: Return parsed arguments
-        """
-
-        return self.parser.parse_args(args)
+    def parse(self):
+        """This method parses arguments passed to buildtest command line interface."""
+        return self.parser.parse_args()
 
     def get_subparsers(self):
         return self.subparsers

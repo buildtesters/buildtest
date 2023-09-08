@@ -72,8 +72,6 @@ def main():
 
     parser = BuildTestParser()
     args = parser.parse()
-    # args = parser.parse_args()
-
     install(show_locals=True)
     no_color = False
 
