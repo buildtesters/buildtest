@@ -1,7 +1,7 @@
 from buildtest.cli import BuildTestParser
 
 
-def list_buildtest_commands(with_aliases):
+def list_buildtest_commands(with_aliases=None):
     """ This method implements command ``buildtest commands`` which shows a list of buildtest commands
 
     Args:

@@ -493,7 +493,7 @@ class BuildTestParser:
             {
                 "name": "commands",
                 "help": "List all buildtest commands",
-                "args": [(['--with-aliases'], {'action': 'store_true', 'help': 'Return all buildtest commands including command aliases'})],
+                "args": [(['-a', '--with-aliases'], {'action': 'store_true', 'help': 'Return all buildtest commands including command aliases'})],
             },
             {
                 "name": "show",
