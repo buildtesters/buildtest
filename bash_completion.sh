@@ -134,6 +134,15 @@ _avail_profiles()
   buildtest config profiles list
 }
 
+_buildtest_show_commands()
+{
+  python -c "from buildtest.cli import BuildTestParser; print(' '.join(BuildTestParser()._buildtest_show_commands))"
+}
+
+_buildtest_options()
+{
+  python -c "from buildtest.cli import BuildTestParser; print(' '.join(BuildTestParser().get_buildtest_options()))"
+}
 #  entry point to buildtest bash completion function
 _buildtest ()
 {
@@ -524,13 +533,10 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
     show|s)
-      local subcommands="build buildspec cdash config history inspect path report schema stylecheck unittests"
-      local alias_cmds="bd bc cg hy it rt style test"
-      local cmds="$subcommands $alias_cmds"
-      COMPREPLY=( $( compgen -W "${cmds}" -- $cur ) )
+      COMPREPLY=( $( compgen -W "$(_buildtest_show_commands)" -- $cur ) )
       ;;
     commands|cmds)
-      local opts="--help --with-aliases -h"
+      local opts="--help --with-aliases -a -h"
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
     # options with only --help
@@ -539,15 +545,10 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${opts}" -- $cur ) )
       ;;
     *)
-      #local cmds="build buildspec cd cdash clean commands config debugreport docs history info inspect path report schema schemadocs show stats stylecheck tutorial-examples unittests"
-      #local alias_cmds="bd bc cg cmd debug hy it rt s style test"
-      local longopts="--color --config --debug --editor --help --helpcolor --help-all --loglevel --logpath --no-color --print-log --report --version --view-log"
-      local shortopts="-c -d -h -l -p -r -H -V"
-
       case "${cur}" in
       # print main options to buildtest
         -*)
-          COMPREPLY=( $( compgen -W "${longopts} ${shortopts}" -- $cur ) );;
+          COMPREPLY=( $( compgen -W "$(_buildtest_options)" -- $cur ) );;
 
       # print main sub-commands to buildtest
         *)
