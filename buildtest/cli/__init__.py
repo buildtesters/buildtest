@@ -263,6 +263,10 @@ class BuildTestParser:
             "stylecheck": {"aliases": ["style"]},
         }
 
+        self.buildtest_subcommands = list(self.subcommands.keys()) + list(
+            self.hidden_subcommands.keys()
+        )
+
         self.parser = argparse.ArgumentParser(
             prog=self._progname,
             formatter_class=argparse.RawDescriptionHelpFormatter,

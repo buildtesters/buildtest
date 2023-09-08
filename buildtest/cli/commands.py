@@ -5,7 +5,7 @@ def list_buildtest_commands():
     """This method implements command ``buildtest commands`` which shows a list of buildtest commands"""
 
     cmds = BuildTestParser()
-    subparser = cmds.get_subparsers()
-    buildtest_cmds = sorted(list(subparser.choices.keys()))
-    for field in buildtest_cmds:
+    #subparser = cmds.buildtest_subcommands
+    #buildtest_cmds = sorted(cmds.buildtest_subcommands)
+    for field in sorted(cmds.buildtest_subcommands):
         print(field)
