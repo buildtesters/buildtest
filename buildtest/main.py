@@ -7,7 +7,7 @@ import webbrowser
 
 from rich.traceback import install
 
-from buildtest.cli import get_parser
+from buildtest.cli import BuildTestParser
 from buildtest.cli.build import BuildTest, Tee
 from buildtest.cli.buildspec import (
     BuildspecCache,
@@ -70,9 +70,8 @@ from buildtest.utils.tools import deep_get
 def main():
     """Entry point to buildtest."""
 
-    parser = get_parser()
-    args = parser.parse_args()
-
+    parser = BuildTestParser()
+    args = parser.parse()
     install(show_locals=True)
     no_color = False
 
@@ -376,8 +375,8 @@ def main():
             apply_stylechecks=args.apply,
         )
 
-    elif args.subcommands in ["commands", "cmd"]:
-        list_buildtest_commands()
+    elif args.subcommands in ["commands", "cmds"]:
+        list_buildtest_commands(with_aliases=args.with_aliases)
 
 
 if __name__ == "__main__":

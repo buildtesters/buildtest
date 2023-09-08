@@ -13,9 +13,6 @@ from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.defaults import console
 from buildtest.schemas.defaults import schema_table
 
-# Variables needed to show all sub commands and their help mesaage
-show_all_help = "-H" in sys.argv or "--help-all" in sys.argv
-
 
 def build_filters_format(val):
     """This method is used as validate argument type for ``buildtest build --filter``.
@@ -191,86 +188,267 @@ def valid_time(value):
     return dt_object
 
 
-def get_parser():
+class BuildTestParser:
+    """This class implements the buildtest command line interface. This class
+    implements the following methods:
+
+    - :func:`get_parser`: This method builds the command line interface for buildtest
+    - :func:`parse`: This method parses arguments passed to buildtest command line interface
+    """
+
+    _github = "https://github.com/buildtesters/buildtest"
+    _docs = "https://buildtest.readthedocs.io/en/latest/index.html"
+    _schemadocs = "https://buildtesters.github.io/buildtest/"
+    _slack = "http://hpcbuildtest.slack.com/"
+    _issues = "https://github.com/buildtesters/buildtest/issues"
+    _progname = "buildtest"
+    _description = (
+        "buildtest is a HPC testing framework for building and running tests."
+    )
     epilog_str = f"""
-References
+    References
 
-GitHub:                  https://github.com/buildtesters/buildtest
-Documentation:           https://buildtest.readthedocs.io/en/latest/index.html
-Schema Documentation:    https://buildtesters.github.io/buildtest/
-Slack:                   http://hpcbuildtest.slack.com/
+    GitHub:                  {_github}
+    Documentation:           {_docs}
+    Schema Documentation:    {_schemadocs}
+    Slack:                   {_slack}
 
-Please report issues at https://github.com/buildtesters/buildtest/issues
+    Please report issues at {_issues}
 
-{BUILDTEST_COPYRIGHT}
-"""
+    {BUILDTEST_COPYRIGHT}
+    """
 
-    parser = argparse.ArgumentParser(
-        prog="buildtest",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        description="buildtest is a HPC testing framework for building and running tests.",
-        usage="%(prog)s [options] [COMMANDS]",
-        epilog=epilog_str,
-    )
+    _buildtest_show_commands = [
+        "bd",
+        "build",
+        "bc",
+        "buildspec",
+        "cdash",
+        "cg",
+        "config",
+        "hy",
+        "history",
+        "it",
+        "inspect",
+        "path",
+        "rt",
+        "report",
+        "schema",
+        "style",
+        "stylecheck",
+        "test",
+        "unittests",
+    ]
 
-    parser.add_argument(
-        "-V",
-        "--version",
-        action="version",
-        version=f"%(prog)s version {BUILDTEST_VERSION}",
-    )
+    def __init__(self):
+        self.parent_parser = self.get_parent_parser()
 
-    parser.add_argument(
-        "-c", "--config", dest="configfile", help="Specify Path to Configuration File"
-    )
-    parser.add_argument(
-        "-d", "--debug", action="store_true", help="Stream log messages to stdout"
-    )
-    parser.add_argument(
-        "-l",
-        "--loglevel",
-        help="Filter log messages based on logging level",
-        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
-        default="DEBUG",
-    )
-    parser.add_argument(
-        "--editor",
-        help="Select your preferred editor when opening files.",
-        choices=["vi", "vim", "emacs", "nano"],
-    )
-    parser.add_argument(
-        "--view-log", action="store_true", help="Show content of last log"
-    )
-    parser.add_argument(
-        "--logpath", action="store_true", help="Print full path to last log file"
-    )
-    parser.add_argument(
-        "--print-log",
-        action="store_true",
-        help="Print content of last log without pagination",
-    )
-    parser.add_argument(
-        "--color",
-        type=supported_color,
-        metavar="COLOR",
-        help="Print output of table with the selected color.",
-    )
-    parser.add_argument(
-        "--no-color", help="Disable colored output", action="store_true"
-    )
-    parser.add_argument(
-        "--helpcolor",
-        action="store_true",
-        help="Print available color options in a table format.",
-    )
-    parser.add_argument("-r", "--report", help="Specify path to test report file")
-    parser.add_argument(
-        "-H", "--help-all", help="List all commands and options", action="help"
-    )
+        self.subcommands = {
+            "build": {"help": "Build and Run test", "aliases": ["bd"]},
+            "buildspec": {"help": "Buildspec Interface", "aliases": ["bc"]},
+            "config": {"help": "Query buildtest configuration", "aliases": ["cg"]},
+            "report": {
+                "help": "Query test report",
+                "aliases": ["rt"],
+                "parents": [
+                    self.parent_parser["pager"],
+                    self.parent_parser["row-count"],
+                    self.parent_parser["terse"],
+                    self.parent_parser["no-header"],
+                    self.parent_parser["count"],
+                ],
+            },
+            "inspect": {"help": "Inspect a test", "aliases": ["it"]},
+            "path": {"help": "Show path attributes for a given test", "aliases": ["p"]},
+            "history": {"help": "Query build history", "aliases": ["hy"]},
+            "schema": {"help": "List schema contents and examples"},
+            "cdash": {"help": "Upload test to CDASH server"},
+            "cd": {"help": "Change directory to root of test given a test name"},
+            "clean": {
+                "help": "Remove all generate files from buildtest including test directory, log files, report file, buildspec cache, history files"
+            },
+            "debugreport": {
+                "help": "Display system information and additional information for debugging purposes.",
+                "aliases": ["debug"],
+            },
+            "stats": {"help": "Show test statistics for given test"},
+            "info": {"help": " Show details regarding current buildtest setup"},
+            "show": {"help": "buildtest command guide"},
+            "commands": {"help": "List all buildtest commands", "aliases": ["cmds"]},
+        }
 
-    subparsers = parser.add_subparsers(title="COMMANDS", dest="subcommands", metavar="")
+        self.hidden_subcommands = {
+            "docs": {},
+            "tutorial-examples": {},
+            "schemadocs": {},
+            "unittests": {"aliases": ["test"]},
+            "stylecheck": {"aliases": ["style"]},
+        }
 
-    def get_parent_parser():
+        self.buildtest_subcommands = list(self.subcommands.keys()) + list(
+            self.hidden_subcommands.keys()
+        )
+
+        self.parser = argparse.ArgumentParser(
+            prog=self._progname,
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+            description=self._description,
+            usage="%(prog)s [options] [COMMANDS]",
+            epilog=self.epilog_str,
+        )
+
+        self.subparsers = self.parser.add_subparsers(
+            title="COMMANDS", dest="subcommands", metavar=""
+        )
+
+        self._build_options()
+        self._build_subparsers()
+
+        # list used to store all main options for buildtest
+        self.main_options = self.get_buildtest_options()
+
+        # Variables needed to show all sub commands and their help message
+        show_all_help = any(arg in ["-H", "--help-all"] for arg in sys.argv)
+        if show_all_help:
+            self.help_all()
+
+        self.build_menu()
+        self.buildspec_menu()
+        self.config_menu()
+        self.report_menu()
+        self.inspect_menu()
+        self.path_menu()
+        self.history_menu()
+        self.schema_menu()
+        self.cdash_menu()
+        self.unittest_menu()
+        self.stylecheck_menu()
+        self.misc_menu()
+
+    def parse(self):
+        """This method parses arguments passed to buildtest command line interface."""
+        return self.parser.parse_args()
+
+    def get_subparsers(self):
+        return self.subparsers
+
+    def _build_subparsers(self):
+        """This method builds subparsers for buildtest command line interface."""
+
+        for name, kwargs in self.subcommands.items():
+            self.subparsers.add_parser(name, **kwargs)
+
+        for name, kwargs in self.hidden_subcommands.items():
+            self.subparsers.add_parser(name, **kwargs)
+
+    def _build_options(self):
+        """This method builds the main options for buildtest command line interface."""
+
+        self.buildtest_options = [
+            (
+                ["-V", "--version"],
+                {
+                    "action": "version",
+                    "version": f"%(prog)s version {BUILDTEST_VERSION}",
+                },
+            ),
+            (["-c", "--configfile"], {"help": "Specify Path to Configuration File"}),
+            (
+                ["-d", "--debug"],
+                {"action": "store_true", "help": "Stream log messages to stdout"},
+            ),
+            (
+                ["-l", "--loglevel"],
+                {
+                    "help": "Filter log messages based on logging level",
+                    "choices": ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+                    "default": "DEBUG",
+                },
+            ),
+            (
+                ["--editor"],
+                {
+                    "help": "Select your preferred editor when opening files.",
+                    "choices": ["vi", "vim", "emacs", "nano"],
+                },
+            ),
+            (
+                ["--view-log"],
+                {"action": "store_true", "help": "Show content of last log"},
+            ),
+            (
+                ["--logpath"],
+                {"action": "store_true", "help": "Print full path to last log file"},
+            ),
+            (
+                ["--print-log"],
+                {
+                    "action": "store_true",
+                    "help": "Print content of last log without pagination",
+                },
+            ),
+            (
+                ["--color"],
+                {
+                    "type": supported_color,
+                    "metavar": "COLOR",
+                    "help": "Print output of table with the selected color.",
+                },
+            ),
+            (
+                ["--no-color"],
+                {"help": "Disable colored output", "action": "store_true"},
+            ),
+            (
+                ["--helpcolor"],
+                {
+                    "action": "store_true",
+                    "help": "Print available color options in a table format.",
+                },
+            ),
+            (["-r", "--report"], {"help": "Specify path to test report file"}),
+            (
+                ["-H", "--help-all"],
+                {"help": "List all commands and options", "action": "help"},
+            ),
+        ]
+
+        for args, kwargs in self.buildtest_options:
+            self.parser.add_argument(*args, **kwargs)
+
+    def get_buildtest_options(self):
+        """This method is used to return all main options for buildtest command line interface. This is useful for bash completion script
+        where we need to return all options for buildtest command line interface for tab completion.
+        """
+        main_options = set()
+        for args, kwargs in self.buildtest_options:
+            for name in args:
+                main_options.add(name)
+
+        # adding -h and --help options
+        main_options.add("-h")
+        main_options.add("--help")
+        return list(sorted(main_options))
+
+    def help_all(self):
+        """This method will add parser for hidden command that can be shown when using ``--help-all/-H``"""
+
+        hidden_parser = {
+            "tutorial-examples": {
+                "help": "Generate documentation examples for Buildtest Tutorial"
+            },
+            "docs": {"help": "Open buildtest docs in browser"},
+            "schemadocs": {"help": "Open buildtest schema docs in browser"},
+            "unittests": {"help": "Run buildtest unit tests", "aliases": ["test"]},
+            "stylecheck": {"help": "Run buildtest style checks", "aliases": ["style"]},
+        }
+
+        for name, subcommand in hidden_parser.items():
+            self.subparsers.add_parser(
+                name, help=subcommand["help"], aliases=subcommand.get("aliases", [])
+            )
+
+    def get_parent_parser(self):
         parent_parser = {}
 
         parent_parser["pager"] = argparse.ArgumentParser(add_help=False)
@@ -291,7 +469,6 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         )
         parent_parser["terse"] = argparse.ArgumentParser(add_help=False)
         parent_parser["terse"].add_argument(
-            "-t",
             "--terse",
             action="store_true",
             help="Print output in machine readable format",
@@ -319,1067 +496,1289 @@ Please report issues at https://github.com/buildtesters/buildtest/issues
         )
         return parent_parser
 
-    parent_parser = get_parent_parser()
-    build_menu(subparsers)
-    buildspec_menu(subparsers, parent_parser)
-    config_menu(subparsers, parent_parser)
-    report_menu(subparsers, parent_parser)
-    inspect_menu(subparsers, parent_parser)
-    path_menu(subparsers)
-    history_menu(subparsers, parent_parser)
-    schema_menu(subparsers)
-    cdash_menu(subparsers)
-    unittest_menu(subparsers)
-    stylecheck_menu(subparsers)
-    misc_menu(subparsers)
-    tutorial_examples_menu(subparsers)
-
-    # Displays all hidden comands
-    if show_all_help:
-        help_all(subparsers)
-
-    return parser
-
-
-def misc_menu(subparsers):
-    """Build the command line menu for some miscellaneous commands
-
-    Args:
-        subparsers (argparse._SubParsersAction): Subparser object to add subparser
-    """
-
-    # Subcommands that do not need to be shown in ``--help``
-    subparsers.add_parser("docs")
-    subparsers.add_parser("schemadocs")
-
-    cd_parser = subparsers.add_parser(
-        "cd", help="change directory to root of test given a test name"
-    )
-    cd_parser.add_argument(
-        "test", help="Change directory to root of test for last run of test."
-    )
-    clean = subparsers.add_parser(
-        "clean",
-        help="Remove all generate files from buildtest including test directory, log files, report file, buildspec cache, history files.",
-    )
-
-    clean.add_argument(
-        "-y", "--yes", action="store_true", help="Confirm yes for all prompts"
-    )
-
-    subparsers.add_parser(
-        "debugreport",
-        help="Display system information and additional information for debugging purposes.",
-        aliases=["debug"],
-    )
-
-    parser_stats = subparsers.add_parser(
-        "stats", help="Show test statistics for given test"
-    )
-    parser_stats.add_argument("name", help="Name of test")
-
-    subparsers.add_parser("info", help="Show details regarding current buildtest setup")
-
-    show_subparser = subparsers.add_parser(
-        "show", aliases=["s"], help="buildtest command guide"
-    )
-    show_subparser.add_argument(
-        "command",
-        choices=[
-            "bd",
-            "build",
-            "bc",
-            "buildspec",
-            "cdash",
-            "cg",
-            "config",
-            "hy",
-            "history",
-            "it",
-            "inspect",
-            "path",
-            "rt",
-            "report",
-            "schema",
-            "style",
-            "stylecheck",
-            "test",
-            "unittests",
-        ],
-        help="Show help message for command",
-    )
-
-    subparsers.add_parser(
-        "commands", help="Display buildtest commands", aliases=["cmd"]
-    )
-
-
-def stylecheck_menu(subparsers):
-    """This method will create command options for ``buildtest stylecheck``
-
-    Args:
-        subparsers (argparse._SubParsersAction): Subparser object to add subparser
-    """
-
-    # Subcommands that do not need to be shown in ``--help``
-    stylecheck_parser = subparsers.add_parser("stylecheck", aliases=["style"])
-
-    stylecheck_parser.add_argument(
-        "--no-black", action="store_true", help="Don't run black style check"
-    )
-    stylecheck_parser.add_argument(
-        "--no-isort", action="store_true", help="Don't run isort style check"
-    )
-    stylecheck_parser.add_argument(
-        "--no-pyflakes", action="store_true", help="Dont' run pyflakes check"
-    )
-    stylecheck_parser.add_argument(
-        "-a", "--apply", action="store_true", help="Apply style checks to codebase."
-    )
-
-
-def unittest_menu(subparsers):
-    """This method builds the command line menu for ``buildtest unittests`` command
-
-    Args:
-        subparsers (argparse._SubParsersAction): Subparser object to add subparser
-    """
-
-    # Subcommands that do not need to be shown in --help
-    unittests_parser = subparsers.add_parser("unittests", aliases=["test"])
-
-    unittests_parser.add_argument(
-        "-c",
-        "--coverage",
-        action="store_true",
-        help="Enable coverage when running regression test",
-    )
-    unittests_parser.add_argument(
-        "-p", "--pytestopts", type=str, help="Specify option to pytest"
-    )
-    unittests_parser.add_argument(
-        "-s",
-        "--sourcefiles",
-        type=str,
-        help="Specify path to file or directory when running regression test",
-        action="append",
-    )
-
-
-def tutorial_examples_menu(subparsers):
-    """This method builds the command line menu for ``buildtest tutorial-examples`` command
-
-    Args:
-        subparsers (argparse._SubParsersAction): Subparser object to add subparser
-    """
-
-    subparsers.add_parser("tutorial-examples")
-
-
-def path_menu(subparsers):
-    """This method builds the command line menu for ``buildtest path`` command
-
-    Args:
-        subparsers (argparse._SubParsersAction): Subparser object to add subparser
-    """
-
-    path = subparsers.add_parser("path", help="Show path attributes for a given test")
-    path_group = path.add_mutually_exclusive_group()
-    path_group.add_argument(
-        "-be", "--buildenv", action="store_true", help="Show path to build environment"
-    )
-    path_group.add_argument(
-        "-t", "--testpath", action="store_true", help="Show path to test script"
-    )
-    path_group.add_argument(
-        "-o", "--outfile", action="store_true", help="Show path to output file"
-    )
-    path_group.add_argument(
-        "-e", "--errfile", action="store_true", help="Show path to error file"
-    )
-    path_group.add_argument(
-        "-b", "--buildscript", action="store_true", help="Show path to build script"
-    )
-    path_group.add_argument(
-        "-s", "--stagedir", action="store_true", help="Show path to stage directory"
-    )
-
-    path.add_argument("name", help="Name of test")
-
-
-def history_menu(subparsers, parent_parser):
-    """This method builds the command line menu for ``buildtest history`` command
-
-    Args:
-        subparsers (argparse._SubParsersAction): Subparser object to add subparser
-        parent_parser (argparse.ArgumentParser): Parent parser object
-    """
-
-    history_subcmd = subparsers.add_parser(
-        "history", aliases=["hy"], help="Query build history"
-    )
-
-    history_subparser = history_subcmd.add_subparsers(
-        metavar="", description="Query build history file", dest="history"
-    )
-
-    history_subparser.add_parser(
-        "list",
-        help="List a summary of all builds",
-        parents=[
-            parent_parser["pager"],
-            parent_parser["row-count"],
-            parent_parser["terse"],
-            parent_parser["no-header"],
-        ],
-    )
-
-    query = history_subparser.add_parser(
-        "query",
-        help="Query information for a particular build",
-        parents=[parent_parser["pager"]],
-    )
-    query.add_argument("id", type=int, help="Select a build ID")
-    query.add_argument(
-        "-l",
-        "--log",
-        action="store_true",
-        help="Display logfile for corresponding build id",
-    )
-    query.add_argument(
-        "-o",
-        "--output",
-        action="store_true",
-        help="view raw output from buildtest build command",
-    )
-
-
-def build_menu(subparsers):
-    """This method implements command line menu for ``buildtest build`` command.
-
-    Args:
-        subparsers (argparse._SubParsersAction): Subparser object to add subparser
-    """
-
-    parser_build = subparsers.add_parser(
-        "build", aliases=["bd"], help="Build and Run test"
-    )
-
-    discover_group = parser_build.add_argument_group(
-        "select", "Select buildspec file to run based on file, tag, executor"
-    )
-    filter_group = parser_build.add_argument_group(
-        "filter", "Filter tests after selection"
-    )
-    module_group = parser_build.add_argument_group("module", "Module Selection option")
-    batch_group = parser_build.add_argument_group("batch", "Batch Submission Options ")
-    extra_group = parser_build.add_argument_group("extra", "All extra options")
-
-    discover_group.add_argument(
-        "-b",
-        "--buildspec",
-        help="Specify a buildspec (file or directory) to build. A buildspec must end in '.yml' extension.",
-        action="append",
-    )
-
-    discover_group.add_argument(
-        "-x",
-        "--exclude",
-        action="append",
-        help="Exclude one or more buildspecs (file or directory) from processing. A buildspec must end in '.yml' extension.",
-    )
-
-    discover_group.add_argument(
-        "-e",
-        "--executor",
-        action="append",
-        type=str,
-        help="Discover buildspecs by executor name found in buildspec cache",
-    )
-    discover_group.add_argument(
-        "-xt",
-        "--exclude-tags",
-        action="append",
-        type=str,
-        help="Exclude tests by one or more tagnames found in buildspec cache",
-    )
-    discover_group.add_argument(
-        "-t",
-        "--tags",
-        action="append",
-        type=str,
-        help="Discover buildspecs by tags found in buildspec cache",
-    )
-
-    discover_group.add_argument(
-        "--rerun",
-        action="store_true",
-        help="Rerun last successful buildtest build command.",
-    )
-
-    filter_group.add_argument(
-        "-f",
-        "--filter",
-        type=build_filters_format,
-        help="Filter buildspec based on tags, type, or maintainers. Usage:  --filter key1=val1,val2;key2=val3;key3=val4,val5",
-    )
-    filter_group.add_argument(
-        "--helpfilter",
-        action="store_true",
-        help="Show available filter fields used with --filter option",
-    )
-    filter_group.add_argument(
-        "-et",
-        "--executor-type",
-        choices=["local", "batch"],
-        help="Filter tests by executor type (local, batch) ",
-    )
-    module_group.add_argument(
-        "--module-purge",
-        action="store_true",
-        help="Run 'module purge' before running any test ",
-    )
-    module_group.add_argument(
-        "-m",
-        "--modules",
-        type=str,
-        help="Specify a list of modules to load during test execution, to specify multiple modules each one must be comma "
-        "separated for instance if you want to load 'gcc' and 'python' module you can do '-m gcc,python' ",
-    )
-    module_group.add_argument(
-        "-u",
-        "--unload-modules",
-        type=str,
-        help="Specify a list of modules to unload during test execution",
-    )
-
-    batch_group.add_argument(
-        "--account",
-        type=str,
-        help="Specify project account used to charge batch jobs (applicable for batch jobs only)",
-    )
-    batch_group.add_argument(
-        "--maxpendtime",
-        type=positive_number,
-        help="Specify Maximum Pending Time (sec) for job before cancelling job. This only applies for batch job submission.",
-    )
-    batch_group.add_argument(
-        "--pollinterval",
-        type=positive_number,
-        help="Specify Poll Interval (sec) for polling batch jobs",
-    )
-    batch_group.add_argument(
-        "--procs",
-        help="Specify number of processes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
-        nargs="+",
-        type=positive_number,
-    )
-    batch_group.add_argument(
-        "--nodes",
-        help="Specify number of nodes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
-        nargs="+",
-        type=positive_number,
-    )
-    extra_group.add_argument(
-        "--limit", type=positive_number, help="Limit number of tests that can be run."
-    )
-    extra_group.add_argument(
-        "--remove-stagedir",
-        action="store_true",
-        help="Remove stage directory after job completion.",
-    )
-    extra_group.add_argument(
-        "--rebuild",
-        type=positive_number,
-        help="Rebuild test X number of times. Must be a positive number between [1-50]",
-    )
-
-    extra_group.add_argument(
-        "--retry", help="Retry failed jobs", type=positive_number, default=1
-    )
-    extra_group.add_argument(
-        "-s",
-        "--stage",
-        help="Control behavior of buildtest build to stop execution after 'parse' or 'build' stage",
-        choices=["parse", "build"],
-    )
-
-    extra_group.add_argument(
-        "--testdir",
-        help="Specify a custom test directory where to write tests. This overrides configuration file and default location.",
-    )
-
-    extra_group.add_argument(
-        "--timeout",
-        help="Specify test timeout in number of seconds",
-        type=positive_number,
-    )
-    extra_group.add_argument(
-        "--save-profile",
-        help="Save buildtest command options into a profile and update configuration file",
-    )
-    extra_group.add_argument(
-        "--profile", help="Specify a profile to load from configuration file"
-    )
-
-
-def buildspec_menu(subparsers, parent_parser):
-    """This method implements ``buildtest buildspec`` command
-
-    Args:
-        subparsers (argparse._SubParsersAction): Subparser object
-        parent_parser (argparse.ArgumentParser): Parent parser object
-    """
-
-    parser_buildspec = subparsers.add_parser(
-        "buildspec", aliases=["bc"], help="Buildspec Interface"
-    )
-
-    subparsers_buildspec = parser_buildspec.add_subparsers(
-        description="Buildspec Interface subcommands",
-        dest="buildspecs_subcommand",
-        metavar="",
-    )
-
-    # buildtest buildspec edit-file
-    edit_via_filename = subparsers_buildspec.add_parser(
-        "edit-file", aliases=["ef"], help="Edit buildspec file based on filename"
-    )
-    edit_via_filename.add_argument(
-        "file", help="Edit buildspec file in editor", nargs="*"
-    )
-
-    # buildtest buildspec edit-test
-    edit_via_testname = subparsers_buildspec.add_parser(
-        "edit-test", aliases=["et"], help="Edit buildspec file based on test name"
-    )
-    edit_via_testname.add_argument(
-        "name", help="Show content of buildspec based on test name", nargs="*"
-    )
-
-    # buildtest buildspec find
-
-    buildspec_find = subparsers_buildspec.add_parser(
-        "find",
-        aliases=["f"],
-        help="Query information from buildspecs cache",
-        parents=[
-            parent_parser["pager"],
-            parent_parser["row-count"],
-            parent_parser["no-header"],
-            parent_parser["count"],
-        ],
-    )
-    # buildtest buildspec maintainers
-    buildspec_maintainers = subparsers_buildspec.add_parser(
-        "maintainers",
-        aliases=["m"],
-        help="Query maintainers from buildspecs cache",
-        parents=[
-            parent_parser["row-count"],
-            parent_parser["terse"],
-            parent_parser["no-header"],
-        ],
-    )
-
-    subparsers_maintainers = buildspec_maintainers.add_subparsers()
-    maintainers_find = subparsers_maintainers.add_parser(
-        "find", help="Find buildspecs based on maintainer name"
-    )
-
-    maintainers_find.add_argument(
-        "name", help="Find buildspec based on maintainer name"
-    )
-
-    buildspec_maintainers.add_argument(
-        "-b",
-        "--breakdown",
-        action="store_true",
-        help="Breakdown of buildspecs by maintainers",
-    )
-
-    filter_group = buildspec_find.add_argument_group(
-        "filter and format", "filter and format options"
-    )
-    terse_group = buildspec_find.add_argument_group("terse", "terse options")
-    query_group = buildspec_find.add_argument_group(
-        "query", "query options to retrieve from buildspec cache"
-    )
-
-    # buildtest buildspec find invalid
-    subparsers_invalid = buildspec_find.add_subparsers(
-        metavar="", dest="buildspec_find_subcommand"
-    )
-    invalid_buildspecs = subparsers_invalid.add_parser(
-        "invalid", help="Show invalid buildspecs", parents=[parent_parser["row-count"]]
-    )
-
-    # buildtest buildspec find invalid options
-    invalid_buildspecs.add_argument(
-        "-e", "--error", action="store_true", help="Show error messages"
-    )
-
-    # buildtest buildspec find options
-
-    query_group.add_argument(
-        "-b",
-        "--buildspec",
-        help="Get all buildspec files from cache",
-        action="store_true",
-    )
-    query_group.add_argument(
-        "-e",
-        "--executors",
-        help="get all unique executors from buildspecs",
-        action="store_true",
-    )
-
-    query_group.add_argument(
-        "--group-by-tags", action="store_true", help="Group tests by tag name"
-    )
-    query_group.add_argument(
-        "--group-by-executor", action="store_true", help="Group tests by executor name"
-    )
-    query_group.add_argument(
-        "-p", "--paths", help="print all root buildspec paths", action="store_true"
-    )
-
-    query_group.add_argument(
-        "-t", "--tags", help="List all available tags", action="store_true"
-    )
-
-    filter_group.add_argument(
-        "--filter",
-        type=handle_kv_string,
-        help="Filter buildspec cache with filter fields in format --filter key1=val1,key2=val2",
-    )
-    filter_group.add_argument(
-        "--format",
-        help="Format buildspec cache with format fields in format --format field1,field2,...",
-    )
-    filter_group.add_argument(
-        "--helpfilter",
-        action="store_true",
-        help="Show Filter fields for --filter option for filtering buildspec cache output",
-    )
-    filter_group.add_argument(
-        "--helpformat",
-        action="store_true",
-        help="Show Format fields for --format option for formatting buildspec cache output",
-    )
-    filter_group.add_argument(
-        "--filterfields",
-        action="store_true",
-        help="Print raw Filter fields for --filter option for filtering builspec cache output",
-    )
-    filter_group.add_argument(
-        "--formatfields",
-        action="store_true",
-        help="Print raw Format fields for --format option for formatting builspec cache output",
-    )
-
-    terse_group.add_argument(
-        "--terse", help="Print output in machine readable format", action="store_true"
-    )
-
-    buildspec_find.add_argument(
-        "-r",
-        "--rebuild",
-        help="Rebuild buildspec cache and find all buildspecs again",
-        action="store_true",
-    )
-    buildspec_find.add_argument(
-        "--root",
-        help="Specify root buildspecs (directory) path to load buildspecs into buildspec cache.",
-        type=str,
-        action="append",
-    )
-    buildspec_find.add_argument(
-        "-q",
-        "--quiet",
-        help="Don't print output of buildspec cache when rebuilding cache",
-        action="store_true",
-    )
-
-    # buildtest buildspec show
-    show_buildspecs = subparsers_buildspec.add_parser(
-        "show",
-        aliases=["s"],
-        help="Show content of buildspec file",
-        parents=[parent_parser["theme"]],
-    )
-    show_buildspecs.add_argument(
-        "name", help="Show content of buildspec based on test name", nargs="*"
-    )
-
-    # buildtest buildspec show-fail
-    show_fail_buildspecs = subparsers_buildspec.add_parser(
-        "show-fail",
-        aliases=["sf"],
-        help="Show content of buildspec file for all failed tests",
-        parents=[parent_parser["theme"]],
-    )
-    show_fail_buildspecs.add_argument(
-        "name", help="Show content of buildspec based on failed test name", nargs="*"
-    )
-
-    # buildtest buildspec summary
-    subparsers_buildspec.add_parser(
-        "summary",
-        aliases=["sm"],
-        help="Print summary of buildspec cache",
-        parents=[parent_parser["pager"]],
-    )
-    # buildtest buildspec validate
-    buildspec_validate = subparsers_buildspec.add_parser(
-        "validate", aliases=["val"], help="Validate buildspecs with JSON Schema"
-    )
-    # buildtest buildspec validate options
-    buildspec_validate.add_argument(
-        "-b",
-        "--buildspec",
-        type=str,
-        help="Specify path to buildspec (file, or directory) to validate",
-        action="append",
-    )
-
-    buildspec_validate.add_argument(
-        "-x",
-        "--exclude",
-        type=str,
-        help="Specify path to buildspec to exclude (file or directory) during validation",
-        action="append",
-    )
-
-    buildspec_validate.add_argument(
-        "-e",
-        "--executor",
-        type=str,
-        action="append",
-        help="Specify buildspecs by executor name to validate",
-    )
-    buildspec_validate.add_argument(
-        "-t",
-        "--tag",
-        type=str,
-        action="append",
-        help="Specify buildspecs by tag name to validate",
-    )
-
-
-def config_menu(subparsers, parent_parser):
-    """This method adds argparse argument for ``buildtest config``
-
-    Args:
-        subparsers (argparse._SubParsersAction): Subparser object
-        parent_parser (argparse.ArgumentParser): Parent parser object
-    """
-
-    parser_config = subparsers.add_parser(
-        "config", aliases=["cg"], help="Query buildtest configuration"
-    )
-
-    subparsers_config = parser_config.add_subparsers(
-        description="Query information from buildtest configuration file",
-        dest="config",
-        metavar="",
-    )
-
-    compilers = subparsers_config.add_parser(
-        "compilers", aliases=["co"], help="Search compilers"
-    )
-    # buildtest config profile
-    profile = subparsers_config.add_parser(
-        "profiles", help="Query profile from buildtest configuration"
-    )
-    subparsers_profile = profile.add_subparsers(
-        description="Query information about buildtest profiles",
-        dest="profiles",
-        metavar="",
-    )
-
-    subparsers_profile_list = subparsers_profile.add_parser(
-        "list", help="List all profiles", parents=[parent_parser["theme"]]
-    )
-    # buildtest config profiles remove
-    subparsers_profile_remove = subparsers_profile.add_parser(
-        "remove", aliases=["rm"], help="Remove a profile from configuration"
-    )
-    subparsers_profile_remove.add_argument(
-        "profile_name", nargs="*", help="Specify profile name to remove"
-    )
-    # buildtest config profile list options
-    subparsers_profile_list.add_argument(
-        "-y", "--yaml", action="store_true", help="List Profile details in YAML Format"
-    )
-
-    subparsers_config.add_parser(
-        "edit", aliases=["e"], help="Open configuration file in editor"
-    )
-
-    executors = subparsers_config.add_parser(
-        "executors", aliases=["ex"], help="Query executors from buildtest configuration"
-    )
-    subparsers_executors = executors.add_subparsers(
-        description="Query executors from buildtest configuration",
-        dest="executors",
-        metavar="",
-    )
-
-    subparsers_config.add_parser(
-        "path", aliases=["p"], help="Show path to configuration file"
-    )
-
-    subparsers_config.add_parser("systems", help="List all available systems")
-
-    # buildtest config validate
-    subparsers_config.add_parser(
-        "validate",
-        aliases=["val"],
-        help="Validate buildtest settings file with schema.",
-    )
-    # buildtest config view
-    subparsers_config.add_parser(
-        "view",
-        aliases=["v"],
-        help="View configuration file",
-        parents=[parent_parser["pager"], parent_parser["theme"]],
-    )
-
-    executors_list = subparsers_executors.add_parser("list", help="List all executors")
-    executor_group = executors_list.add_mutually_exclusive_group()
-
-    # buildtest config executors
-    executor_group.add_argument(
-        "-j", "--json", action="store_true", help="View executor in JSON format"
-    )
-    executor_group.add_argument(
-        "-y", "--yaml", action="store_true", help="View executors in YAML format"
-    )
-    executor_group.add_argument(
-        "-d", "--disabled", action="store_true", help="Show disabled executors"
-    )
-    executor_group.add_argument(
-        "-i", "--invalid", action="store_true", help="Show invalid executors"
-    )
-
-    subparsers_compiler = compilers.add_subparsers(
-        description="Find new compilers and add them to detected compiler section",
-        dest="compilers",
-        metavar="",
-    )
-    compiler_list = subparsers_compiler.add_parser("list", help="List compilers")
-    compiler_remove = subparsers_compiler.add_parser(
-        "remove", aliases=["rm"], help="Remove compilers"
-    )
-    compiler_remove.add_argument(
-        "compiler_names", nargs="*", help="Specify compiler name to remove"
-    )
-    # buildtest config compilers
-    compiler_list.add_argument(
-        "-j", "--json", action="store_true", help="List compiler details in JSON format"
-    )
-    compiler_list.add_argument(
-        "-y", "--yaml", action="store_true", help="List compiler details in YAML format"
-    )
-
-    compiler_find = subparsers_compiler.add_parser(
-        "find", help="Find compilers", parents=[parent_parser["file"]]
-    )
-    compiler_find.add_argument(
-        "-d",
-        "--detailed",
-        help="Display detailed output when finding compilers",
-        action="store_true",
-    )
-    compiler_find.add_argument(
-        "-u",
-        "--update",
-        action="store_true",
-        help="Update configuration file with new compilers",
-    )
-    compiler_find.add_argument(
-        "-m",
-        "--modulepath",
-        type=str,
-        nargs="+",
-        help="Specify a list of directories to search for modules via MODULEPATH to detect compilers",
-    )
-
-    compiler_test = subparsers_compiler.add_parser(
-        "test", help="Test each compiler instance by performing module load test"
-    )
-    compiler_test.add_argument(
-        "compiler_names", nargs="*", help="Specify compiler name to test"
-    )
-
-
-def report_menu(subparsers, parent_parser):
-    """This method implements the ``buildtest report`` command options
-
-    Args:
-        subparsers (argparse._SubParsersAction): Subparser object
-        parent_parser (argparse.ArgumentParser): Parent parser object
-    """
-
-    parser_report = subparsers.add_parser(
-        "report",
-        aliases=["rt"],
-        help="Query test report",
-        parents=[
-            parent_parser["pager"],
-            parent_parser["row-count"],
-            parent_parser["terse"],
-            parent_parser["no-header"],
-            parent_parser["count"],
-        ],
-    )
-    subparsers = parser_report.add_subparsers(
-        description="Fetch test results from report file and print them in table format",
-        metavar="",
-        dest="report_subcommand",
-    )
-    subparsers.add_parser("clear", aliases=["c"], help="Remove all report file")
-    subparsers.add_parser("list", aliases=["l"], help="List all report files")
-    subparsers.add_parser(
-        "path", aliases=["p"], help="Print full path to the report file being used"
-    )
-    parser_report_summary = subparsers.add_parser(
-        "summary",
-        aliases=["sm"],
-        help="Summarize test report",
-        parents=[parent_parser["pager"]],
-    )
-    filter_group = parser_report.add_argument_group("filter", "Filter options")
-
-    # buildtest report
-    filter_group.add_argument(
-        "--filter",
-        type=handle_kv_string,
-        help="Filter report by filter fields. The filter fields must be a key=value pair and multiple fields can be comma separated in the following format: --filter key1=val1,key2=val2 . For list of filter fields run: --helpfilter.",
-    )
-
-    filter_group.add_argument(
-        "--helpfilter",
-        action="store_true",
-        help="List available filter fields to be used with --filter option",
-    )
-
-    filter_group.add_argument(
-        "--filterfields",
-        action="store_true",
-        help="Print raw filter fields for --filter option to filter the report",
-    )
-
-    format_group = parser_report.add_argument_group("format", "Format options")
-
-    format_group.add_argument(
-        "--helpformat", action="store_true", help="List of available format fields"
-    )
-
-    format_group.add_argument(
-        "--formatfields",
-        action="store_true",
-        help="Print raw format fields for --format option to format the report",
-    )
-
-    format_detailed_group = parser_report.add_mutually_exclusive_group()
-    format_detailed_group.add_argument(
-        "--format",
-        help="format field for printing purposes. For more details see --helpformat for list of available fields. Fields must be separated by comma (usage: --format <field1>,<field2>,...)",
-    )
-
-    format_detailed_group.add_argument(
-        "-d",
-        "--detailed",
-        help="Print a detailed summary of the test results",
-        action="store_true",
-    )
-
-    pass_fail = parser_report.add_mutually_exclusive_group()
-
-    pass_fail.add_argument(
-        "-f", "--fail", help="Retrieve all FAIL tests", action="store_true"
-    )
-    pass_fail.add_argument(
-        "-p",
-        "--pass",
-        dest="passed",
-        help="Retrieve all PASS tests",
-        action="store_true",
-    )
-
-    parser_report.add_argument(
-        "-s", "--start", type=valid_time, help="Retrieve tests by starttime"
-    )
-    parser_report.add_argument(
-        "-e", "--end", type=valid_time, help="Retrieve tests by endtime"
-    )
-    parser_report.add_argument(
-        "--latest",
-        help="Retrieve latest record of particular test",
-        action="store_true",
-    )
-    parser_report.add_argument(
-        "--oldest",
-        help="Retrieve oldest record of particular test",
-        action="store_true",
-    )
-    parser_report_summary.add_argument(
-        "--detailed", "-d", action="store_true", help="Enable a more detailed report"
-    )
-
-
-def inspect_menu(subparsers, parent_parser):
-    """This method builds argument for ``buildtest inspect`` command
-
-    Args:
-        subparsers (argparse._SubParsersAction): Subparser object
-        parent_parser (argparse.ArgumentParser): Parent parser object
-    """
-
-    parser_inspect = subparsers.add_parser(
-        "inspect", aliases=["it"], help="Inspect a test based on NAME or ID "
-    )
-
-    subparser = parser_inspect.add_subparsers(
-        description="Inspect Test result based on Test ID or Test Name",
-        dest="inspect",
-        metavar="",
-    )
-    inspect_buildspec = subparser.add_parser(
-        "buildspec",
-        aliases=["b"],
-        help="Inspect a test based on buildspec",
-        parents=[parent_parser["pager"]],
-    )
-    name = subparser.add_parser(
-        "name",
-        aliases=["n"],
-        help="Specify name of test",
-        parents=[parent_parser["pager"]],
-    )
-    query_list = subparser.add_parser(
-        "query",
-        aliases=["q"],
-        help="Query fields from record",
-        parents=[parent_parser["pager"], parent_parser["theme"]],
-    )
-    # buildtest inspect buildspec
-    inspect_buildspec.add_argument(
-        "buildspec", nargs="*", help="List of buildspecs to query"
-    )
-    inspect_buildspec.add_argument(
-        "-a", "--all", action="store_true", help="Fetch all records for a given test"
-    )
-
-    name.add_argument("name", nargs="*", help="Name of test")
-
-    # buildtest inspect list
-    inspect_list = subparser.add_parser(
-        "list",
-        aliases=["l"],
-        help="List all test names, ids, and corresponding buildspecs",
-        parents=[
-            parent_parser["pager"],
-            parent_parser["row-count"],
-            parent_parser["terse"],
-            parent_parser["no-header"],
-        ],
-    )
-
-    inspect_list.add_argument(
-        "-b", "--builder", action="store_true", help="List test in builder format"
-    )
-
-    # buildtest inspect query
-    query_list.add_argument(
-        "-b", "--buildscript", action="store_true", help="Print build script"
-    )
-    query_list.add_argument(
-        "-be", "--buildenv", action="store_true", help="Print content of build env"
-    )
-    query_list.add_argument(
-        "-e", "--error", action="store_true", help="Print error file"
-    )
-    query_list.add_argument(
-        "-o", "--output", action="store_true", help="Print output file"
-    )
-    query_list.add_argument(
-        "-t", "--testpath", action="store_true", help="Print content of testpath"
-    )
-
-    query_list.add_argument(
-        "name", nargs="*", help="Name of builder to query in report file"
-    )
-
-
-def schema_menu(subparsers):
-    """This method builds menu for ``buildtest schema``
-
-    Args:
-        subparsers (argparse._SubParsersAction): Subparser object
-    """
-
-    parser_schema = subparsers.add_parser(
-        "schema", help="List schema contents and examples"
-    )
-    parser_schema.add_argument(
-        "-e", "--example", action="store_true", help="Show schema examples"
-    )
-    parser_schema.add_argument(
-        "-j", "--json", action="store_true", help="Display json schema file"
-    )
-    parser_schema.add_argument(
-        "-n",
-        "--name",
-        help="show schema by name (e.g., script)",
-        metavar="Schema Name",
-        choices=schema_table["names"],
-    )
-
-
-def cdash_menu(subparsers):
-    """This method builds arguments for ``buildtest cdash`` command.
-
-    Args:
-        subparsers (argparse._SubParsersAction): Subparser object
-    """
-
-    parser_cdash = subparsers.add_parser("cdash", help="Upload test to CDASH server")
-
-    subparser = parser_cdash.add_subparsers(
-        description="buildtest CDASH integeration", dest="cdash", metavar=""
-    )
-    subparser.add_parser("view", help="Open CDASH project in webbrowser")
-
-    upload = subparser.add_parser("upload", help="Upload Test to CDASH server")
-
-    upload.add_argument("--site", help="Specify site name reported in CDASH")
-    upload.add_argument("buildname", help="Specify Build Name reported in CDASH")
-    upload.add_argument(
-        "-o", "--open", action="store_true", help="Open CDASH report in browser"
-    )
-
-
-def help_all(subparsers):
-    """This method will add parser for hidden command that can be shown when using ``--help-all/-H``
-
-    Args:
-        subparsers (argparse._SubParsersAction): Subparser object
-    """
-    hidden_parser = {
-        "tutorial-examples": "Generate documentation examples for Buildtest Tutorial",
-        "docs": "Open buildtest docs in browser",
-        "schemadocs": "Open buildtest schema docs in browser",
-        "unittests": {"help": "Run buildtest unit tests", "aliases": ["test"]},
-        "stylecheck": {"help": "Run buildtest style checks", "aliases": ["style"]},
-    }
-
-    for command, val in hidden_parser.items():
-        if type(val) is dict:
-            subparsers.add_parser(
-                command, help=val.get("help"), aliases=val.get("aliases")
+    def misc_menu(self):
+        """Build the command line menu for some miscellaneous commands"""
+
+        subcommands = [
+            {
+                "name": "cd",
+                "help": "Change directory to root of test for last run of test.",
+                "arguments": [
+                    (
+                        ["test"],
+                        {
+                            "help": "Change directory to root of test for last run of test."
+                        },
+                    )
+                ],
+            },
+            {
+                "name": "clean",
+                "help": "Remove all generate files from buildtest including test directory, log files, report file, buildspec cache, history files.",
+                "arguments": [
+                    (
+                        ["-y", "--yes"],
+                        {"action": "store_true", "help": "Confirm yes for all prompts"},
+                    )
+                ],
+            },
+            {
+                "name": "stats",
+                "help": "Display statistics for a specific test.",
+                "arguments": [(["name"], {"help": "Name of test"})],
+            },
+            {
+                "name": "commands",
+                "help": "List all buildtest commands",
+                "arguments": [
+                    (
+                        ["-a", "--with-aliases"],
+                        {
+                            "action": "store_true",
+                            "help": "Return all buildtest commands including command aliases",
+                        },
+                    )
+                ],
+            },
+            {
+                "name": "show",
+                "help": "Show help message for a specific command.",
+                "arguments": [
+                    (
+                        ["command"],
+                        {
+                            "help": "Show help message for command.",
+                            "choices": self._buildtest_show_commands,
+                        },
+                    )
+                ],
+            },
+        ]
+
+        # Create argument parsers for each subcommand
+        parsers = {}
+        for subcommand in subcommands:
+            parser = self.subparsers.choices[subcommand["name"]]
+            for args, kwargs in subcommand.get("arguments", []):
+                parser.add_argument(*args, **kwargs)
+            parsers[subcommand["name"]] = parser
+
+    def stylecheck_menu(self):
+        """This method will create command options for ``buildtest stylecheck``"""
+
+        parser = self.subparsers.choices["stylecheck"]
+
+        stylecheck_args = [
+            (
+                ["--no-black"],
+                {"action": "store_true", "help": "Don't run black style check"},
+            ),
+            (
+                ["--no-isort"],
+                {"action": "store_true", "help": "Don't run isort style check"},
+            ),
+            (
+                ["--no-pyflakes"],
+                {"action": "store_true", "help": "Don't run pyflakes check"},
+            ),
+            (
+                ["-a", "--apply"],
+                {"action": "store_true", "help": "Apply style checks to codebase."},
+            ),
+        ]
+
+        for args, kwargs in stylecheck_args:
+            parser.add_argument(*args, **kwargs)
+
+    def unittest_menu(self):
+        """This method builds the command line menu for ``buildtest unittests`` command"""
+        parser = self.subparsers.choices["unittests"]
+
+        unittests_args = [
+            (
+                ["-c", "--coverage"],
+                {
+                    "action": "store_true",
+                    "help": "Enable coverage when running regression test",
+                },
+            ),
+            (["-p", "--pytestopts"], {"type": str, "help": "Specify option to pytest"}),
+            (
+                ["-s", "--sourcefiles"],
+                {
+                    "type": str,
+                    "help": "Specify path to file or directory when running regression test",
+                    "action": "append",
+                },
+            ),
+        ]
+
+        for args, kwargs in unittests_args:
+            parser.add_argument(*args, **kwargs)
+
+    def path_menu(self):
+        """This method builds the command line menu for ``buildtest path`` command"""
+
+        path = self.subparsers.choices["path"]
+
+        path_options = [
+            (
+                ["-be", "--buildenv"],
+                {"action": "store_true", "help": "Show path to build environment"},
+            ),
+            (
+                ["-t", "--testpath"],
+                {"action": "store_true", "help": "Show path to test script"},
+            ),
+            (
+                ["-o", "--outfile"],
+                {"action": "store_true", "help": "Show path to output file"},
+            ),
+            (
+                ["-e", "--errfile"],
+                {"action": "store_true", "help": "Show path to error file"},
+            ),
+            (
+                ["-b", "--buildscript"],
+                {"action": "store_true", "help": "Show path to build script"},
+            ),
+            (
+                ["-s", "--stagedir"],
+                {"action": "store_true", "help": "Show path to stage directory"},
+            ),
+        ]
+
+        path_group = path.add_mutually_exclusive_group()
+        for args, kwargs in path_options:
+            path_group.add_argument(*args, **kwargs)
+
+        path.add_argument("name", help="Name of test")
+
+    def history_menu(self):
+        """This method builds the command line menu for ``buildtest history`` command"""
+
+        history_subcmd = self.subparsers.choices["history"]
+
+        history_subparser = history_subcmd.add_subparsers(
+            metavar="", description="Query build history file", dest="history"
+        )
+
+        subparser_info = [
+            {
+                "name": "list",
+                "help": "List a summary of all builds",
+                "parents": [
+                    self.parent_parser["pager"],
+                    self.parent_parser["row-count"],
+                    self.parent_parser["terse"],
+                    self.parent_parser["no-header"],
+                ],
+                "arguments": [],
+            },
+            {
+                "name": "query",
+                "help": "Query information for a particular build",
+                "parents": [self.parent_parser["pager"]],
+                "arguments": [
+                    (["id"], {"type": int, "help": "Select a build ID"}),
+                    (
+                        ["-l", "--log"],
+                        {
+                            "action": "store_true",
+                            "help": "Display logfile for corresponding build id",
+                        },
+                    ),
+                    (
+                        ["-o", "--output"],
+                        {
+                            "action": "store_true",
+                            "help": "View raw output from buildtest build command",
+                        },
+                    ),
+                ],
+            },
+        ]
+
+        for subparser_info in subparser_info:
+            subparser = history_subparser.add_parser(
+                subparser_info["name"],
+                help=subparser_info["help"],
+                parents=subparser_info["parents"],
             )
-        else:
-            subparsers.add_parser(command, help=val)
+            for args, kwargs in subparser_info["arguments"]:
+                subparser.add_argument(*args, **kwargs)
+
+    def build_menu(self):
+        """This method implements command line menu for ``buildtest build`` command."""
+
+        parser_build = self.subparsers.choices["build"]
+
+        groups = [
+            (
+                "discover",
+                "discover",
+                "Select buildspec file to run based on file, tag, executor",
+            ),
+            ("filter", "filter", "Filter tests after selection"),
+            ("module", "module", "Module Selection option"),
+            ("batch", "batch", "Batch Submission options"),
+            ("extra", "extra", "All extra options"),
+        ]
+        arguments = {
+            "discover": [
+                (
+                    ["-b", "--buildspec"],
+                    {
+                        "help": "Specify a buildspec (file or directory) to build. A buildspec must end in '.yml' extension.",
+                        "action": "append",
+                    },
+                ),
+                (
+                    ["-x", "--exclude"],
+                    {
+                        "action": "append",
+                        "help": "Exclude one or more buildspecs (file or directory) from processing. A buildspec must end in '.yml' extension.",
+                    },
+                ),
+                (
+                    ["-e", "--executor"],
+                    {
+                        "action": "append",
+                        "type": str,
+                        "help": "Discover buildspecs by executor name found in buildspec cache",
+                    },
+                ),
+                (
+                    ["-xt", "--exclude-tags"],
+                    {
+                        "action": "append",
+                        "type": str,
+                        "help": "Exclude tests by one or more tagnames found in buildspec cache",
+                    },
+                ),
+                (
+                    ["-t", "--tags"],
+                    {
+                        "action": "append",
+                        "type": str,
+                        "help": "Discover buildspecs by tags found in buildspec cache",
+                    },
+                ),
+                (
+                    ["--rerun"],
+                    {
+                        "action": "store_true",
+                        "help": "Rerun last successful buildtest build command.",
+                    },
+                ),
+            ],
+            "filter": [
+                (
+                    ["-f", "--filter"],
+                    {
+                        "type": build_filters_format,
+                        "help": "Filter buildspec based on tags, type, or maintainers. Usage:  --filter key1=val1,val2;key2=val3;key3=val4,val5",
+                    },
+                ),
+                (
+                    ["--helpfilter"],
+                    {
+                        "action": "store_true",
+                        "help": "Show available filter fields used with --filter option",
+                    },
+                ),
+                (
+                    ["-et", "--executor-type"],
+                    {
+                        "choices": ["local", "batch"],
+                        "help": "Filter tests by executor type (local, batch)",
+                    },
+                ),
+            ],
+            "module": [
+                (
+                    ["--module-purge"],
+                    {
+                        "action": "store_true",
+                        "help": "Run 'module purge' before running any test",
+                    },
+                ),
+                (
+                    ["-m", "--modules"],
+                    {
+                        "type": str,
+                        "help": "Specify a list of modules to load during test execution, to specify multiple modules each one must be comma separated for instance if you want to load 'gcc' and 'python' module you can do '-m gcc,python'",
+                    },
+                ),
+                (
+                    ["-u", "--unload-modules"],
+                    {
+                        "type": str,
+                        "help": "Specify a list of modules to unload during test execution",
+                    },
+                ),
+            ],
+            "batch": [
+                (
+                    ["--account"],
+                    {
+                        "type": str,
+                        "help": "Specify project account used to charge batch jobs (applicable for batch jobs only)",
+                    },
+                ),
+                (
+                    ["--maxpendtime"],
+                    {
+                        "type": positive_number,
+                        "help": "Specify Maximum Pending Time (sec) for job before cancelling job. This only applies for batch job submission.",
+                    },
+                ),
+                (
+                    ["--pollinterval"],
+                    {
+                        "type": positive_number,
+                        "help": "Specify Poll Interval (sec) for polling batch jobs",
+                    },
+                ),
+                (
+                    ["--procs"],
+                    {
+                        "nargs": "+",
+                        "type": positive_number,
+                        "help": "Specify number of processes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
+                    },
+                ),
+                (
+                    ["--nodes"],
+                    {
+                        "nargs": "+",
+                        "type": positive_number,
+                        "help": "Specify number of nodes to run tests (only applicable with batch jobs). Multiple values can be specified comma separated.",
+                    },
+                ),
+            ],
+            "extra": [
+                (
+                    ["--limit"],
+                    {
+                        "type": positive_number,
+                        "help": "Limit number of tests that can be run.",
+                    },
+                ),
+                (
+                    ["--remove-stagedir"],
+                    {
+                        "action": "store_true",
+                        "help": "Remove stage directory after job completion.",
+                    },
+                ),
+                (
+                    ["--rebuild"],
+                    {
+                        "type": positive_number,
+                        "help": "Rebuild test X number of times. Must be a positive number between [1-50]",
+                    },
+                ),
+                (
+                    ["--retry"],
+                    {
+                        "type": positive_number,
+                        "default": 1,
+                        "help": "Retry failed jobs",
+                    },
+                ),
+                (
+                    ["-s", "--stage"],
+                    {
+                        "choices": ["parse", "build"],
+                        "help": "Control behavior of buildtest build to stop execution after 'parse' or 'build' stage",
+                    },
+                ),
+                (
+                    ["--testdir"],
+                    {
+                        "help": "Specify a custom test directory where to write tests. This overrides configuration file and default location."
+                    },
+                ),
+                (
+                    ["--timeout"],
+                    {
+                        "type": positive_number,
+                        "help": "Specify test timeout in number of seconds",
+                    },
+                ),
+                (
+                    ["--save-profile"],
+                    {
+                        "help": "Save buildtest command options into a profile and update configuration file"
+                    },
+                ),
+                (
+                    ["--profile"],
+                    {"help": "Specify a profile to load from configuration file"},
+                ),
+            ],
+        }
+
+        for group_name, dest_name, desc in groups:
+            group = parser_build.add_argument_group(group_name, description=desc)
+
+            # self.argument_group(arguments=arguments, group=group, dest_name=dest_name)
+
+            for args, kwargs in arguments[dest_name]:
+                group.add_argument(*args, **kwargs)
+
+    def buildspec_menu(self):
+        """This method implements ``buildtest buildspec`` command"""
+
+        parser_buildspec = self.subparsers.choices["buildspec"]
+
+        subparsers_buildspec = parser_buildspec.add_subparsers(
+            description="Buildspec Interface subcommands",
+            dest="buildspecs_subcommand",
+            metavar="",
+        )
+
+        buildspec_subcommands = [
+            {
+                "name": "edit-file",
+                "help": "Edit buildspec file based on filename",
+                "parents": [],
+                "aliases": ["ef"],
+                "args": [
+                    (["file"], {"help": "Edit buildspec file in editor", "nargs": "*"})
+                ],
+            },
+            {
+                "name": "edit-test",
+                "help": "Edit buildspec file based on test name",
+                "parents": [],
+                "aliases": ["et"],
+                "args": [
+                    (
+                        ["name"],
+                        {
+                            "help": "Show content of buildspec based on test name",
+                            "nargs": "*",
+                        },
+                    )
+                ],
+            },
+            {
+                "name": "find",
+                "help": "Query information from buildspecs cache",
+                "aliases": ["f"],
+                "parents": [
+                    self.parent_parser["pager"],
+                    self.parent_parser["row-count"],
+                    self.parent_parser["terse"],
+                    self.parent_parser["no-header"],
+                    self.parent_parser["count"],
+                ],
+                " args": [],
+            },
+            {
+                "name": "maintainers",
+                "help": "Query maintainers from buildspecs cache",
+                "aliases": ["m"],
+                "parents": [
+                    self.parent_parser["row-count"],
+                    self.parent_parser["terse"],
+                    self.parent_parser["no-header"],
+                ],
+                "arguments": [
+                    (
+                        ["-b", "--breakdown"],
+                        {
+                            "action": "store_true",
+                            "help": "Breakdown of buildspecs by maintainers",
+                        },
+                    )
+                ],
+            },
+            {
+                "name": "show",
+                "help": "Show content of buildspec file",
+                "parents": [self.parent_parser["theme"]],
+                "aliases": ["s"],
+                "arguments": [
+                    (
+                        ["name"],
+                        {
+                            "help": "Show content of buildspec based on test name",
+                            "nargs": "*",
+                        },
+                    )
+                ],
+            },
+            {
+                "name": "show-fail",
+                "help": "Show content of buildspec file for all failed tests",
+                "parents": [self.parent_parser["theme"]],
+                "aliases": ["sf"],
+                "arguments": [
+                    (
+                        ["name"],
+                        {
+                            "help": "Show content of buildspec based on failed test name",
+                            "nargs": "*",
+                        },
+                    )
+                ],
+            },
+            {
+                "name": "summary",
+                "help": "Print summary of buildspec cache",
+                "parents": [self.parent_parser["theme"], self.parent_parser["pager"]],
+                "arguments": [],
+                "aliases": ["sm"],
+            },
+            {
+                "name": "validate",
+                "help": "Validate buildspecs with JSON Schema",
+                "parents": [],
+                "aliases": ["val"],
+                "arguments": [
+                    (
+                        ["-b", "--buildspec"],
+                        {
+                            "type": str,
+                            "action": "append",
+                            "help": "Specify path to buildspec (file, or directory) to validate",
+                        },
+                    ),
+                    (
+                        ["-x", "--exclude"],
+                        {
+                            "type": str,
+                            "action": "append",
+                            "help": "Specify path to buildspec to exclude (file or directory) during validation",
+                        },
+                    ),
+                    (
+                        ["-e", "--executor"],
+                        {
+                            "type": str,
+                            "action": "append",
+                            "help": "Specify buildspecs by executor name to validate",
+                        },
+                    ),
+                    (
+                        ["-t", "--tag"],
+                        {
+                            "type": str,
+                            "action": "append",
+                            "help": "Specify buildspecs by tag name to validate",
+                        },
+                    ),
+                ],
+            },
+        ]
+
+        subcommand = {}
+        # Loop through the list of dictionaries and create subcommands with their parent parsers and arguments
+        for cmd_info in buildspec_subcommands:
+            name = cmd_info["name"]
+            subcommand[name] = subparsers_buildspec.add_parser(
+                cmd_info["name"],
+                help=cmd_info["help"],
+                parents=cmd_info["parents"],
+                aliases=cmd_info.get("aliases", []),
+            )
+            for arg_info in cmd_info.get("arguments", []):
+                subcommand[name].add_argument(*arg_info[0], **arg_info[1])
+
+        # build menu for 'buildtest buildspec maintainers' command
+
+        subparsers_maintainers = subcommand["maintainers"].add_subparsers()
+        maintainers_find = subparsers_maintainers.add_parser(
+            "find", help="Find buildspecs based on maintainer name"
+        )
+        maintainers_find.add_argument(
+            "name", help="Find buildspec based on maintainer name"
+        )
+
+        # build menu for 'buildtest buildspec find' command
+        self.buildspec_find_menu(subcommand["find"])
+
+    def buildspec_find_menu(self, buildspec_find_parser):
+        groups = [
+            ("query", "query", "query options to retrieve from buildspec cache"),
+            ("filter", "filter", "filter and format options"),
+            ("extra", "extra", "All extra options"),
+        ]
+        arguments = {
+            "query": [
+                (
+                    ["-b", "--buildspec"],
+                    {
+                        "help": "Get all buildspec files from cache",
+                        "action": "store_true",
+                    },
+                ),
+                (
+                    ["-e", "--executors"],
+                    {
+                        "help": "Get all unique executors from buildspecs",
+                        "action": "store_true",
+                    },
+                ),
+                (
+                    ["--group-by-tags"],
+                    {"action": "store_true", "help": "Group tests by tag name"},
+                ),
+                (
+                    ["--group-by-executor"],
+                    {"action": "store_true", "help": "Group tests by executor name"},
+                ),
+                (
+                    ["-p", "--paths"],
+                    {"action": "store_true", "help": "Print all root buildspec paths"},
+                ),
+                (
+                    ["-t", "--tags"],
+                    {"action": "store_true", "help": "List all available tags"},
+                ),
+            ],
+            "filter": [
+                (
+                    ["--filter"],
+                    {
+                        "type": handle_kv_string,
+                        "help": "Filter buildspec cache with filter fields in format --filter key1=val1,key2=val2",
+                    },
+                ),
+                (
+                    ["--format"],
+                    {
+                        "help": "Format buildspec cache with format fields in format --format field1,field2,..."
+                    },
+                ),
+                (
+                    ["--helpfilter"],
+                    {
+                        "action": "store_true",
+                        "help": "Show Filter fields for --filter option for filtering buildspec cache output",
+                    },
+                ),
+                (
+                    ["--helpformat"],
+                    {
+                        "action": "store_true",
+                        "help": "Show Format fields for --format option for formatting buildspec cache output",
+                    },
+                ),
+                (
+                    ["--filterfields"],
+                    {
+                        "action": "store_true",
+                        "help": "Print raw Filter fields for --filter option for filtering buildspec cache output",
+                    },
+                ),
+                (
+                    ["--formatfields"],
+                    {
+                        "action": "store_true",
+                        "help": "Print raw Format fields for --format option for formatting buildspec cache output",
+                    },
+                ),
+            ],
+            "extra": [
+                (
+                    ["-r", "--rebuild"],
+                    {
+                        "action": "store_true",
+                        "help": "Rebuild buildspec cache and find all buildspecs again",
+                    },
+                ),
+                (
+                    ["--root"],
+                    {
+                        "type": str,
+                        "action": "append",
+                        "help": "Specify root buildspecs (directory) path to load buildspecs into buildspec cache.",
+                    },
+                ),
+                (
+                    ["-q", "--quiet"],
+                    {
+                        "action": "store_true",
+                        "help": "Don't print output of buildspec cache when rebuilding cache",
+                    },
+                ),
+            ],
+        }
+
+        for group_name, dest_name, desc in groups:
+            group = buildspec_find_parser.add_argument_group(
+                group_name, description=desc
+            )
+
+            for args, kwargs in arguments[dest_name]:
+                group.add_argument(*args, **kwargs)
+
+        buildtest_find_commands = [
+            {
+                "name": "invalid",
+                "help": "Show invalid buildspecs",
+                "parents": [self.parent_parser["row-count"]],
+                "arguments": [
+                    (
+                        ["-e", "--error"],
+                        {"action": "store_true", "help": "Show error messages"},
+                    )
+                ],
+            }
+        ]
+        subcommand = {}
+        subparsers_invalid = buildspec_find_parser.add_subparsers(
+            metavar="", dest="buildspec_find_subcommand"
+        )
+        for cmd_info in buildtest_find_commands:
+            name = cmd_info["name"]
+            subcommand[name] = subparsers_invalid.add_parser(
+                cmd_info["name"],
+                help=cmd_info["help"],
+                parents=cmd_info["parents"],
+                aliases=cmd_info.get("aliases", []),
+            )
+            for arg_info in cmd_info.get("arguments", []):
+                subcommand[name].add_argument(*arg_info[0], **arg_info[1])
+
+    def config_menu(self):
+        """This method adds argparse argument for ``buildtest config``"""
+
+        parser_config = self.subparsers.choices["config"]
+
+        subparsers_config = parser_config.add_subparsers(
+            description="Query information from buildtest configuration file",
+            dest="config",
+            metavar="",
+        )
+
+        # Define the top-level commands and their subcommands in a list
+        command_menu = [
+            {
+                "name": "edit",
+                "aliases": ["e"],
+                "help": "Open configuration file in editor",
+            },
+            {
+                "name": "path",
+                "aliases": ["p"],
+                "help": "Show path to configuration file",
+            },
+            {"name": "systems", "help": "List all available systems"},
+            {
+                "name": "validate",
+                "aliases": ["val"],
+                "help": "Validate buildtest settings file with schema.",
+            },
+            {
+                "name": "view",
+                "aliases": ["v"],
+                "help": "View configuration file",
+                "parents": [self.parent_parser["pager"], self.parent_parser["theme"]],
+            },
+            {
+                "name": "profiles",
+                "help": "Query profile from buildtest configuration",
+                "subcommands": [
+                    {
+                        "name": "list",
+                        "help": "List all profiles",
+                        "parents": [self.parent_parser["theme"]],
+                        "arguments": [
+                            (
+                                ("-y", "--yaml"),
+                                {
+                                    "action": "store_true",
+                                    "help": "List Profile details in YAML Format",
+                                },
+                            )
+                        ],
+                    },
+                    {
+                        "name": "remove",
+                        "aliases": ["rm"],
+                        "help": "Remove a profile from configuration",
+                        "arguments": [
+                            (
+                                ("profile_name",),
+                                {
+                                    "nargs": "*",
+                                    "help": "Specify profile name to remove",
+                                },
+                            )
+                        ],
+                    },
+                ],
+            },
+            {
+                "name": "executors",
+                "aliases": ["ex"],
+                "help": "Query executors from buildtest configuration",
+                "subcommands": [
+                    {
+                        "name": "list",
+                        "help": "List all executors",
+                        "mutually_exclusive_group": True,
+                        "arguments": [
+                            (
+                                ("-j", "--json"),
+                                {
+                                    "action": "store_true",
+                                    "help": "View executor in JSON format",
+                                },
+                            ),
+                            (
+                                ("-y", "--yaml"),
+                                {
+                                    "action": "store_true",
+                                    "help": "View executors in YAML format",
+                                },
+                            ),
+                            (
+                                ("-d", "--disabled"),
+                                {
+                                    "action": "store_true",
+                                    "help": "Show disabled executors",
+                                },
+                            ),
+                            (
+                                ("-i", "--invalid"),
+                                {
+                                    "action": "store_true",
+                                    "help": "Show invalid executors",
+                                },
+                            ),
+                        ],
+                    }
+                ],
+            },
+            {
+                "name": "compilers",
+                "aliases": ["co"],
+                "help": "Search compilers",
+                "subcommands": [
+                    {
+                        "name": "list",
+                        "help": "List compilers",
+                        "mutually_exclusive_group": True,
+                        "arguments": [
+                            (
+                                ("-j", "--json"),
+                                {
+                                    "action": "store_true",
+                                    "help": "List compiler details in JSON format",
+                                },
+                            ),
+                            (
+                                ("-y", "--yaml"),
+                                {
+                                    "action": "store_true",
+                                    "help": "List compiler details in YAML format",
+                                },
+                            ),
+                        ],
+                    },
+                    {
+                        "name": "test",
+                        "help": "Test each compiler instance by performing module load test",
+                        "arguments": [
+                            (
+                                ("compiler_names",),
+                                {"nargs": "*", "help": "Specify compiler name to test"},
+                            )
+                        ],
+                    },
+                    {
+                        "name": "find",
+                        "help": "Find compilers",
+                        "parents": [self.parent_parser["file"]],
+                        "arguments": [
+                            (
+                                ("-d", "--detailed"),
+                                {
+                                    "help": "Display detailed output when finding compilers",
+                                    "action": "store_true",
+                                },
+                            ),
+                            (
+                                ("-u", "--update"),
+                                {
+                                    "action": "store_true",
+                                    "help": "Update configuration file with new compilers",
+                                },
+                            ),
+                            (
+                                ("-m", "--modulepath"),
+                                {
+                                    "type": str,
+                                    "nargs": "+",
+                                    "help": "Specify a list of directories to search for modules via MODULEPATH to detect compilers",
+                                },
+                            ),
+                        ],
+                    },
+                    {
+                        "name": "remove",
+                        "aliases": ["rm"],
+                        "help": "Remove compilers",
+                        "arguments": [
+                            (
+                                ("compiler_names",),
+                                {
+                                    "nargs": "*",
+                                    "help": "Specify compiler name to remove",
+                                },
+                            )
+                        ],
+                    },
+                ],
+            },
+        ]
+
+        # Iterate through the command menu and create subparsers and arguments
+        for command_data in command_menu:
+            # if command_data["name"] == "compilers":
+            #    continue
+
+            subparser_command = subparsers_config.add_parser(
+                command_data["name"],
+                aliases=command_data.get("aliases", []),
+                help=command_data["help"],
+                parents=command_data.get("parents", []),
+            )
+
+            subcommands = command_data.get("subcommands", [])
+            subparsers_subcommand = subparser_command.add_subparsers(
+                description=f"Query information about {command_data['name']}",
+                dest=command_data["name"],
+                metavar="",
+            )
+
+            for subcommand_data in subcommands:
+                subparser_subcommand = subparsers_subcommand.add_parser(
+                    subcommand_data["name"],
+                    aliases=subcommand_data.get("aliases", []),
+                    help=subcommand_data["help"],
+                    parents=subcommand_data.get("parents", []),
+                )
+
+                arguments = subcommand_data.get("arguments", [])
+                mutually_exclusive_group = None
+                if (
+                    "mutually_exclusive_group" in subcommand_data
+                    and subcommand_data["mutually_exclusive_group"]
+                ):
+                    # Add the options to a mutually exclusive group
+                    mutually_exclusive_group = (
+                        subparser_subcommand.add_mutually_exclusive_group()
+                    )
+
+                for args, kwargs in arguments:
+                    if not mutually_exclusive_group:
+                        subparser_subcommand.add_argument(*args, **kwargs)
+                        continue
+
+                    mutually_exclusive_group.add_argument(*args, **kwargs)
+
+    def report_menu(self):
+        """This method implements the ``buildtest report`` command options"""
+
+        report_arguments = [
+            (
+                ["--latest"],
+                {
+                    "help": "Retrieve latest record of a particular test",
+                    "action": "store_true",
+                },
+            ),
+            (
+                ["--oldest"],
+                {
+                    "help": "Retrieve oldest record of a particular test",
+                    "action": "store_true",
+                },
+            ),
+            (
+                ["-s", "--start"],
+                {"type": valid_time, "help": "Filter test by starttime"},
+            ),
+            (["-e", "--end"], {"type": valid_time, "help": "Filter test by endtime"}),
+        ]
+
+        filter_arguments = [
+            (
+                ["--filter"],
+                {
+                    "type": handle_kv_string,
+                    "help": "Filter report by filter fields. The filter fields must be in key=value format and multiple fields can be comma separated (e.g., --filter key1=val1,key2=val2). For a list of filter fields, run --helpfilter.",
+                },
+            ),
+            (
+                ["--helpfilter"],
+                {
+                    "action": "store_true",
+                    "help": "List available filter fields to be used with --filter option",
+                },
+            ),
+            (
+                ["--filterfields"],
+                {
+                    "action": "store_true",
+                    "help": "Print raw filter fields for --filter option to filter the report",
+                },
+            ),
+        ]
+
+        format_arguments = [
+            (
+                ["--helpformat"],
+                {
+                    "action": "store_true",
+                    "help": "List available format fields to be used with --format option",
+                },
+            ),
+            (
+                ["--formatfields"],
+                {
+                    "action": "store_true",
+                    "help": "Print raw format fields for --format option to format the report",
+                },
+            ),
+        ]
+
+        groups = {
+            "filter": filter_arguments,
+            "format": format_arguments,
+            "extra": report_arguments,
+        }
+
+        parser_report = self.subparsers.choices["report"]
+
+        subparsers = parser_report.add_subparsers(
+            description="Fetch test results from the report file and print them in table format",
+            metavar="",
+            dest="report_subcommand",
+        )
+
+        subcommands = [
+            ("clear", ["c"], "Remove all report files"),
+            ("list", ["l"], "List all report files"),
+            ("path", ["p"], "Print full path to the report file being used"),
+            ("summary", ["sm"], "Summarize test report"),
+        ]
+
+        report_subparsers = {}
+
+        for cmd, aliases, help_text in subcommands:
+            if cmd == "summary":
+                report_subparsers[cmd] = subparsers.add_parser(
+                    cmd,
+                    aliases=aliases,
+                    help=help_text,
+                    parents=[self.parent_parser["pager"]],
+                )
+                continue
+
+            report_subparsers[cmd] = subparsers.add_parser(
+                cmd, aliases=aliases, help=help_text
+            )
+
+        for group_name, group_arguments in groups.items():
+            group = parser_report.add_argument_group(group_name)
+
+            for args, args_info in group_arguments:
+                group.add_argument(*args, **args_info)
+
+        # Define mutually exclusive groups
+        pass_fail_group = parser_report.add_mutually_exclusive_group()
+        pass_fail_group.add_argument(
+            "-f", "--fail", help="Retrieve all FAIL tests", action="store_true"
+        )
+        pass_fail_group.add_argument(
+            "-p",
+            "--pass",
+            dest="passed",
+            help="Retrieve all PASS tests",
+            action="store_true",
+        )
+
+        format_group = parser_report.add_mutually_exclusive_group()
+        format_group.add_argument(
+            "--format",
+            help="Format field for printing purposes. Fields must be separated by commas (e.g., --format field1,field2,...).",
+        )
+        format_group.add_argument(
+            "-d",
+            "--detailed",
+            action="store_true",
+            help="Print a detailed summary of the test results",
+        )
+
+        report_subparsers["summary"].add_argument(
+            "--detailed",
+            "-d",
+            action="store_true",
+            help="Enable a more detailed report",
+        )
+
+    def inspect_menu(self):
+        """This method builds argument for ``buildtest inspect`` command"""
+
+        parser_inspect = self.subparsers.choices["inspect"]
+
+        subparser = parser_inspect.add_subparsers(
+            description="Inspect Test result based on Test ID or Test Name",
+            dest="inspect",
+            metavar="",
+        )
+
+        menu = {
+            "buildspec": {
+                "aliases": ["b"],
+                "help": "Inspect a test based on buildspec",
+                "parents": [self.parent_parser["pager"]],
+                "arguments": [
+                    (
+                        ["buildspec"],
+                        {"nargs": "*", "help": "List of buildspecs to query"},
+                    ),
+                    (
+                        ["-a", "--all"],
+                        {
+                            "action": "store_true",
+                            "help": "Fetch all records for a given test",
+                        },
+                    ),
+                ],
+            },
+            "name": {
+                "aliases": ["n"],
+                "help": "Specify name of test",
+                "parents": [self.parent_parser["pager"]],
+                "arguments": [(["name"], {"nargs": "*", "help": "Name of test"})],
+            },
+            "query": {
+                "aliases": ["q"],
+                "help": "Query fields from record",
+                "parents": [self.parent_parser["pager"], self.parent_parser["theme"]],
+                "arguments": [
+                    (
+                        ["-b", "--buildscript"],
+                        {"action": "store_true", "help": "Print build script"},
+                    ),
+                    (
+                        ["-be", "--buildenv"],
+                        {"action": "store_true", "help": "Print content of build env"},
+                    ),
+                    (
+                        ["-e", "--error"],
+                        {"action": "store_true", "help": "Print error file"},
+                    ),
+                    (
+                        ["-o", "--output"],
+                        {"action": "store_true", "help": "Print output file"},
+                    ),
+                    (
+                        ["-t", "--testpath"],
+                        {"action": "store_true", "help": "Print content of testpath"},
+                    ),
+                    (
+                        ["name"],
+                        {
+                            "nargs": "*",
+                            "help": "Name of builder to query in report file",
+                        },
+                    ),
+                ],
+            },
+            "list": {
+                "aliases": ["l"],
+                "help": "List all test names, ids, and corresponding buildspecs",
+                "parents": [
+                    self.parent_parser["pager"],
+                    self.parent_parser["row-count"],
+                    self.parent_parser["terse"],
+                    self.parent_parser["no-header"],
+                ],
+                "arguments": [
+                    (
+                        ["-b", "--builder"],
+                        {"action": "store_true", "help": "List test in builder format"},
+                    )
+                ],
+            },
+        }
+
+        # Create parsers and arguments using the menu dictionary
+        for command, options in menu.items():
+            parser = subparser.add_parser(
+                command,
+                aliases=options["aliases"],
+                help=options["help"],
+                parents=options["parents"],
+            )
+            for arg_info in options["arguments"]:
+                parser.add_argument(*arg_info[0], **arg_info[1])
+
+        return
+
+    def schema_menu(self):
+        """This method builds menu for ``buildtest schema``"""
+
+        parser_schema = self.subparsers.choices["schema"]
+
+        schema_args = [
+            (
+                ["-e", "--example"],
+                {"action": "store_true", "help": "Show schema examples"},
+            ),
+            (
+                ["-j", "--json"],
+                {"action": "store_true", "help": "Display json schema file"},
+            ),
+            (
+                ["-n", "--name"],
+                {
+                    "help": "show schema by name (e.g., script)",
+                    "metavar": "Schema Name",
+                    "choices": schema_table["names"],
+                },
+            ),
+        ]
+
+        for arg_info in schema_args:
+            parser_schema.add_argument(*arg_info[0], **arg_info[1])
+
+    def cdash_menu(self):
+        """This method builds arguments for ``buildtest cdash`` command."""
+
+        cdash_commands = {
+            "view": {"help": "Open CDASH project in web browser"},
+            "upload": {"help": "Upload test results to CDASH server"},
+        }
+
+        cdash_arguments = {
+            "view": [],
+            "upload": [
+                (["--site"], {"help": "Specify site name reported in CDASH"}),
+                (["buildname"], {"help": "Specify Build Name reported in CDASH"}),
+                (
+                    ["-o", "--open"],
+                    {"action": "store_true", "help": "Open CDASH report in browser"},
+                ),
+            ],
+        }
+
+        parser_cdash = self.subparsers.choices["cdash"]
+        subparser = parser_cdash.add_subparsers(
+            description="buildtest CDASH integration", dest="cdash", metavar=""
+        )
+
+        for command, command_info in cdash_commands.items():
+            cdash_parser = subparser.add_parser(command, **command_info)
+            for args, args_info in cdash_arguments[command]:
+                cdash_parser.add_argument(*args, **args_info)

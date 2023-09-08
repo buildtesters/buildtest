@@ -426,7 +426,7 @@ def upload_test_cdash(
             match = buildid_regexp.search(resp_value)
             if match:
                 buildid = match.group(1)
-                url_view = f"{cdash_url}/viewTest.php?buildid={buildid}"
+                url_view = urljoin(cdash_url, f"viewTest.php?buildid={buildid}")
                 console.print(f"You can view the results at: {url_view}")
                 if open_browser:
                     webbrowser.open(url_view)
