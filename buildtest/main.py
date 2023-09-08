@@ -375,8 +375,8 @@ def main():
             apply_stylechecks=args.apply,
         )
 
-    elif args.subcommands in ["commands", "cmd"]:
-        list_buildtest_commands()
+    elif args.subcommands in ["commands", "cmds"]:
+        list_buildtest_commands(with_aliases=args.with_aliases)
 
 
 if __name__ == "__main__":
