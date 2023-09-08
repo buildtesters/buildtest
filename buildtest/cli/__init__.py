@@ -417,6 +417,8 @@ class BuildTestParser:
             self.parser.add_argument(*args, **kwargs)
 
     def get_buildtest_options(self):
+        """This method is used to return all main options for buildtest command line interface. This is useful for bash completion script
+        where we need to return all options for buildtest command line interface for tab completion."""
         main_options = set()
         for args, kwargs in self.buildtest_options:
             for name in args:
@@ -670,13 +672,13 @@ class BuildTestParser:
                     self.parent_parser["terse"],
                     self.parent_parser["no-header"],
                 ],
-                "args": [],
+                "arguments": [],
             },
             {
                 "name": "query",
                 "help": "Query information for a particular build",
                 "parents": [self.parent_parser["pager"]],
-                "args": [
+                "arguments": [
                     (["id"], {"type": int, "help": "Select a build ID"}),
                     (
                         ["-l", "--log"],
@@ -702,7 +704,7 @@ class BuildTestParser:
                 help=subparser_info["help"],
                 parents=subparser_info["parents"],
             )
-            for args, kwargs in subparser_info["args"]:
+            for args, kwargs in subparser_info["arguments"]:
                 subparser.add_argument(*args, **kwargs)
 
     def build_menu(self):
@@ -983,7 +985,7 @@ class BuildTestParser:
                     self.parent_parser["terse"],
                     self.parent_parser["no-header"],
                 ],
-                "args": [
+                "arguments": [
                     (
                         ["-b", "--breakdown"],
                         {
@@ -998,7 +1000,7 @@ class BuildTestParser:
                 "help": "Show content of buildspec file",
                 "parents": [self.parent_parser["theme"]],
                 "aliases": ["s"],
-                "args": [
+                "arguments": [
                     (
                         ["name"],
                         {
@@ -1013,7 +1015,7 @@ class BuildTestParser:
                 "help": "Show content of buildspec file for all failed tests",
                 "parents": [self.parent_parser["theme"]],
                 "aliases": ["sf"],
-                "args": [
+                "arguments": [
                     (
                         ["name"],
                         {
@@ -1027,7 +1029,7 @@ class BuildTestParser:
                 "name": "summary",
                 "help": "Print summary of buildspec cache",
                 "parents": [self.parent_parser["theme"], self.parent_parser["pager"]],
-                "args": [],
+                "arguments": [],
                 "aliases": ["sm"],
             },
             {
@@ -1035,7 +1037,7 @@ class BuildTestParser:
                 "help": "Validate buildspecs with JSON Schema",
                 "parents": [],
                 "aliases": ["val"],
-                "args": [
+                "arguments": [
                     (
                         ["-b", "--buildspec"],
                         {
@@ -1082,7 +1084,7 @@ class BuildTestParser:
                 parents=cmd_info["parents"],
                 aliases=cmd_info.get("aliases", []),
             )
-            for arg_info in cmd_info.get("args", []):
+            for arg_info in cmd_info.get("arguments", []):
                 subcommand[name].add_argument(*arg_info[0], **arg_info[1])
 
         # build menu for 'buildtest buildspec maintainers' command
@@ -1219,7 +1221,7 @@ class BuildTestParser:
                 "name": "invalid",
                 "help": "Show invalid buildspecs",
                 "parents": [self.parent_parser["row-count"]],
-                "args": [
+                "arguments": [
                     (
                         ["-e", "--error"],
                         {"action": "store_true", "help": "Show error messages"},
@@ -1239,7 +1241,7 @@ class BuildTestParser:
                 parents=cmd_info["parents"],
                 aliases=cmd_info.get("aliases", []),
             )
-            for arg_info in cmd_info.get("args", []):
+            for arg_info in cmd_info.get("arguments", []):
                 subcommand[name].add_argument(*arg_info[0], **arg_info[1])
 
     def config_menu(self):
@@ -1638,7 +1640,7 @@ class BuildTestParser:
                 "aliases": ["b"],
                 "help": "Inspect a test based on buildspec",
                 "parents": [self.parent_parser["pager"]],
-                "args": [
+                "arguments": [
                     (
                         ["buildspec"],
                         {"nargs": "*", "help": "List of buildspecs to query"},
@@ -1656,13 +1658,13 @@ class BuildTestParser:
                 "aliases": ["n"],
                 "help": "Specify name of test",
                 "parents": [self.parent_parser["pager"]],
-                "args": [(["name"], {"nargs": "*", "help": "Name of test"})],
+                "arguments": [(["name"], {"nargs": "*", "help": "Name of test"})],
             },
             "query": {
                 "aliases": ["q"],
                 "help": "Query fields from record",
                 "parents": [self.parent_parser["pager"], self.parent_parser["theme"]],
-                "args": [
+                "arguments": [
                     (
                         ["-b", "--buildscript"],
                         {"action": "store_true", "help": "Print build script"},
@@ -1701,7 +1703,7 @@ class BuildTestParser:
                     self.parent_parser["terse"],
                     self.parent_parser["no-header"],
                 ],
-                "args": [
+                "arguments": [
                     (
                         ["-b", "--builder"],
                         {"action": "store_true", "help": "List test in builder format"},
@@ -1718,7 +1720,7 @@ class BuildTestParser:
                 help=options["help"],
                 parents=options["parents"],
             )
-            for arg_info in options["args"]:
+            for arg_info in options["arguments"]:
                 parser.add_argument(*arg_info[0], **arg_info[1])
 
         return
