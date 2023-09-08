@@ -418,7 +418,8 @@ class BuildTestParser:
 
     def get_buildtest_options(self):
         """This method is used to return all main options for buildtest command line interface. This is useful for bash completion script
-        where we need to return all options for buildtest command line interface for tab completion."""
+        where we need to return all options for buildtest command line interface for tab completion.
+        """
         main_options = set()
         for args, kwargs in self.buildtest_options:
             for name in args:
