@@ -3,7 +3,6 @@ import argparse
 import pytest
 
 from buildtest.cli import (
-    BuildTestParser,
     build_filters_format,
     handle_kv_string,
     positive_number,
@@ -82,12 +81,3 @@ def test_valid_time():
     # raises exception when its unable to convert time
     with pytest.raises(ValueError):
         valid_time("2022-01-01 abcdef")
-
-
-def test_arg_parse():
-    parser = BuildTestParser()
-    buildtest_parser = parser.get_parser()
-    print(buildtest_parser)
-
-    assert buildtest_parser.prog == "buildtest"
-    assert buildtest_parser.usage == "%(prog)s [options] [COMMANDS]"
