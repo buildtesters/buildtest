@@ -116,6 +116,7 @@ def resolve_testdirectory(configuration: SiteConfiguration, testdir: str = None)
 def discover_buildspecs(
     buildspecs: Optional[List[str]] = None,
     exclude_buildspecs: Optional[List[str]] = None,
+    name: Optional[List[str]] = None,
     executors: Optional[List[str]] = None,
     tags: Optional[List[str]] = None,
 ) -> Dict[str, List[str]]:
@@ -125,6 +126,7 @@ def discover_buildspecs(
     Args:
         buildspecs (list, optional): List of input buildspecs passed by argument ``buildtest build --buildspec``
         exclude_buildspecs (list, optional): List of excluded buildspecs by argument ``buildtest build --exclude``
+        name (list, optional): List of test names to discover buildspecs that are specified by ``buildtest build --name``
         tags (list, optional): List of input tags for discovering buildspecs by argument ``buildtest build --tags``
         executors (list, optional): List of input executors for discovering buildspecs by argument ``buildtest build --executor``
 
@@ -138,6 +140,7 @@ def discover_buildspecs(
     buildspec_dict["excluded"] = []
     buildspec_dict["detected"] = []
     buildspec_dict["tags"] = {}
+    buildspec_dict["name"] = {}
     buildspec_dict["executors"] = {}
 
     logger.debug(
@@ -165,6 +168,15 @@ def discover_buildspecs(
 
         buildspec_dict["included"] += found_buildspecs
         logger.debug(f"Discovered buildspecs based on executors: {executors}")
+        logger.debug(found_buildspecs)
+
+    if name:
+        found_buildspecs, buildspec_dict['name'] = discover_buildspecs_by_name(
+            buildspec_cache=cache, names=name
+        )
+
+        buildspec_dict["included"] += found_buildspecs
+        logger.debug(f"Discovered buildspecs based on names: {name}")
         logger.debug(found_buildspecs)
 
     # discover buildspecs based on --buildspec
@@ -283,6 +295,19 @@ def print_discovered_buildspecs(buildspec_dict):
                 table.add_row(f"{row}")
             console.print(table)
 
+    # print breakdown of buildspecs by executors
+    if buildspec_dict.get("name"):
+        for name in buildspec_dict["name"].keys():
+            table = Table(
+                title=f"Buildspecs by Name={name}",
+                box=box.DOUBLE_EDGE,
+                header_style="blue",
+            )
+            table.add_column("buildspecs", style="yellow2")
+            for row in buildspec_dict["name"][name]:
+                table.add_row(f"{row}")
+            console.print(table)
+
     print("\n")
     console.print(
         "[green bold]Total Discovered Buildspecs: ", len(buildspec_dict["included"])
@@ -347,6 +372,31 @@ def discover_buildspecs_by_tags(buildspec_cache, tagnames):
 
     return buildspecs, buildspecs_by_tags
 
+def discover_buildspecs_by_name(buildspec_cache, names):
+    """This method will discover buildspecs given a list of test names.
+
+     Args:
+        buildspec_cache (dict): Loaded buildspec cache as a dictionary
+        names (list): List of test names to search for buildspecs from cache
+
+
+    Returns:
+         list, dict: first argument is a list of buildspecs discovered for all test names. The second argument is
+         dictionary breakdown of buildspecs by each name
+    """
+
+    buildspec_by_names = {}
+    found_buildspecs = []
+    for name in names:
+        for buildspecfile in buildspec_cache["buildspecs"].keys():
+            # if there is a match, add buildspecs and proceed to next test name
+            if name in buildspec_cache["buildspecs"][buildspecfile].keys():
+                buildspec_by_names[name] = [buildspecfile]
+                found_buildspecs.append(buildspecfile)
+                break
+
+    found_buildspecs = list(set(found_buildspecs))
+    return found_buildspecs, buildspec_by_names
 
 def discover_buildspecs_by_executor(buildspec_cache, executors):
     """This method discovers buildspecs by executor name, using ``buildtest build --executor``
@@ -486,6 +536,7 @@ class BuildTest:
         buildspecs=None,
         exclude_buildspecs=None,
         tags=None,
+        name=None,
         exclude_tags=None,
         executors=None,
         testdir=None,
@@ -521,6 +572,7 @@ class BuildTest:
             buildspecs (list, optional): list of buildspecs from command line ``buildtest build --buildspec``
             exclude_buildspecs (list, optional): list of excluded buildspecs from command line ``buildtest build --exclude``
             tags (list, optional): list if tags to discover tests specified via command line ``buildtest build --tags``
+            name (list, optional): list of test names to run specified via command line ``buildtest build --name``
             exclude_tags (list, optional): list if tags to exclude specified via command line ``buildtest build --exclude-tags``
             executors (list, optional): list of executors passed from command line ``buildtest build --executors``
             testdir (str): Path to test directory where tests are written. This argument can be passed from command line ``buildtest build --testdir``
@@ -549,7 +601,7 @@ class BuildTest:
         """
 
         # check for input arguments that are expected to be a list
-        for arg_name in [buildspecs, exclude_buildspecs, tags, exclude_tags, executors]:
+        for arg_name in [buildspecs, exclude_buildspecs, tags, exclude_tags, executors, name]:
             if arg_name and not isinstance(arg_name, list):
                 raise BuildTestError(f"{arg_name} is not of type list")
 
@@ -580,6 +632,7 @@ class BuildTest:
         self.buildspecs = buildspecs
         self.exclude_buildspecs = exclude_buildspecs
         self.tags = tags
+        self.name = name
         self.exclude_tags = exclude_tags
         self.executors = executors
         self.maxpendtime = maxpendtime
@@ -728,6 +781,7 @@ class BuildTest:
         self.buildspecs = content["buildspecs"]
         self.tags = content["tags"]
         self.exclude_tags = content["exclude_tags"]
+        self.name = content["name"]
         self.filter = content["filter"]
         self.exclude_buildspecs = content["exclude_buildspecs"]
         self.executors = content["executors"]
@@ -756,6 +810,7 @@ class BuildTest:
             "buildspecs": self.buildspecs,
             "tags": self.tags,
             "exclude_tags": self.exclude_tags,
+            "name": self.name,
             "filter": self.filter_buildspecs,
             "exclude_buildspecs": self.exclude_buildspecs,
             "executors": self.executors,
@@ -797,6 +852,7 @@ class BuildTest:
             "exclude-buildspecs": self.exclude_buildspecs,
             "tags": self.tags,
             "exclude-tags": self.exclude_tags,
+            "name": self.name,
             "executors": self.executors,
             "module": self.modules,
             "unload-modules": self.unload_modules,
@@ -863,6 +919,7 @@ class BuildTest:
         self.exclude_buildspecs = profile_configuration.get("exclude-buildspecs")
         self.tags = profile_configuration.get("tags")
         self.exclude_tags = profile_configuration.get("exclude-tags")
+        self.name = profile_configuration.get("name")
         self.executors = profile_configuration.get("executors")
         self.limit = profile_configuration.get("limit")
         self.account = profile_configuration.get("account")
@@ -919,6 +976,7 @@ class BuildTest:
         self.discovered_bp = discover_buildspecs(
             buildspecs=self.buildspecs,
             exclude_buildspecs=self.exclude_buildspecs,
+            name=self.name,
             tags=self.tags,
             executors=self.executors,
         )
