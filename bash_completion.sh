@@ -67,6 +67,11 @@ _test_ids ()
 {
   buildtest inspect list --terse -n | cut -d '|' -f 1
 }
+# list of available test names from buildspec cache
+_buildspec_test_names()
+{
+  buildtest buildspec find --format name --terse --no-header | sort
+}
 
 # list of test names from report
 _test_name ()
@@ -179,8 +184,8 @@ _buildtest ()
   
   case "$next" in
     build|bd)
-      local shortoption="-b -e -et -f -m -s -t -u -x -xt"
-      local longoption="--buildspec --executor --executor-type --exclude --exclude-tags --filter --helpfilter --limit --maxpendtime --modules --module-purge --nodes --pollinterval --procs --profile --rerun --remove-stagedir --retry --save-profile --stage --tags --timeout --unload-modules"
+      local shortoption="-b -e -et -f -m -n -s -t -u -x -xt"
+      local longoption="--buildspec --executor --executor-type --exclude --exclude-tags --filter --helpfilter --limit --maxpendtime --modules --module-purge --name --nodes --pollinterval --procs --profile --rerun --remove-stagedir --retry --save-profile --stage --tags --timeout --unload-modules"
       local allopts="${longoption} ${shortoption}"
 
       COMPREPLY=( $( compgen -W "$allopts" -- "${cur}" ) )
@@ -200,6 +205,9 @@ _buildtest ()
             ;;
         -b|--buildspec|-x|--exclude)
             COMPREPLY=( $( compgen -W "$(_avail_buildspecs)" -- "${cur}" ) )
+            ;;
+        -n|--name)
+            COMPREPLY=( $( compgen -W "$(_buildspec_test_names)" -- "${cur}" ) )
             ;;
       esac
       ;;
