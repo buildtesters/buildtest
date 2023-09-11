@@ -741,6 +741,14 @@ class BuildTestParser:
                     },
                 ),
                 (
+                    ["-n", "--name"],
+                    {
+                        "action": "append",
+                        "help": "Specify a name of test to run",
+                        "type": str,
+                    }
+                ),
+                (
                     ["-e", "--executor"],
                     {
                         "action": "append",
