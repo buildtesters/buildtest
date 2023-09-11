@@ -192,6 +192,48 @@ where no test are eligible to run after exclusion has been applied.
     .. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml -xt pass,fail
         :returncode: 1
 
+Building by Test Names
+-----------------------
+
+You can discover buildspecs by test names using the ``--name`` option or short option ``-n``. This feature can be used if
+you want to run a particular test and not worrying about the buildspec file that is belongs to. Note we have tab
+completion builtin to this feature to show list of tests that are found in the buildspec cache. Shown below
+is an example output of the tab completion listing all available tests
+
+.. code-block:: console
+
+      buildtest build --name _bin_bash_shell
+    _bin_bash_shell                   current_user_queue                lsf_version                       runtime_test_pass                 status_regex_stderr_pass
+    _bin_sh_shell                     dead_nodes                        metric_file_regex                 sh_shell                          status_regex_stdout_fail
+    add_numbers                       display_hosts_format              metric_file_regex_invalid_file    shell_options                     status_regex_stdout_pass
+    always_fail                       display_lsf_hosts                 metric_regex_example              show_accounts                     status_returncode_by_executors
+    always_pass                       executors_sbatch_declaration      multiple_executors                show_all_jobs                     stream_test
+    assert_contains_fail              executors_vars_env_declaration    node_down_fail_list_reason        show_host_groups                  string_tag
+    assert_eq_example                 exit1_fail                        nodes_state_allocated             show_jobs                         summary_example
+    assert_eq_invalid_metric          exit1_pass                        nodes_state_completing            show_lsf_configuration            symlink_test
+    assert_eq_mismatch                fail_test                         nodes_state_down                  show_lsf_models                   systemd_default_target
+    assert_gt_example                 file_and_dir_checks               nodes_state_idle                  show_lsf_queues                   tcsh_env_declaration
+    assert_le_example                 file_count_by_expression          nodes_state_reboot                show_lsf_queues_current_user      test1
+    assert_lt_example                 file_count_by_extension           pass_and_fail_test                show_lsf_queues_formatted         test2
+
+
+Let's try building an example test by name ``hello_world``. Take note in output, buildtest will show a breakdown of buildspecs
+discovered by the test name.
+
+.. dropdown:: ``buildtest build --name hello_world``
+
+    .. command-output:: buildtest build --name hello_world
+
+You can specify multiple test names just specify the option multiple times. In example below we will demonstrate this example
+
+.. dropdown:: ``buildtest build --name add_numbers --name summary_example
+
+    .. command-output:: buildtest build --name add_numbers --name summary_example
+
+Please note, buildtest will discover buildspecs given the test name (``--name``) option and then run all tests defined in the buildspec file.
+A buildspec file may include several tests and by default all of them are run. This option is
+**not meant to filter buildspecs by the selected test**, but only a means for discovering buildspecs by test name.
+
 .. _build_by_executor:
 
 Building by Executors
