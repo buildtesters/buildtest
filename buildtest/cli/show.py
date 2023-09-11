@@ -39,6 +39,10 @@ def print_build_show():
         "Build buildspecs by file and exclude tests with tagname 'pass' and 'fail'. Tag names can be specified as comma separated list",
     )
     table.add_row(
+        "buildtest build --name hello_world --name add_numbers",
+        "Discover buildspecs by test name 'hello_world' and 'add_numbers'",
+    )
+    table.add_row(
         "buildtest build -e <executor1> -e <executor2>",
         "Building buildspecs by executor",
     )
