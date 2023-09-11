@@ -70,7 +70,7 @@ _test_ids ()
 # list of available test names from buildspec cache
 _buildspec_test_names()
 {
-  buildtest buildspec find --format name --terse --no-header | sort
+  buildtest buildspec find --count=-1  --format name --terse --no-header | sort
 }
 
 # list of test names from report
