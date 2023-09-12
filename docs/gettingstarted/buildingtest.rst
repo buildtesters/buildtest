@@ -226,7 +226,7 @@ discovered by the test name.
 
 You can specify multiple test names just specify the option multiple times. In example below we will demonstrate this example
 
-.. dropdown:: ``buildtest build --name add_numbers --name summary_example
+.. dropdown:: ``buildtest build --name add_numbers --name summary_example``
 
     .. command-output:: buildtest build --name add_numbers --name summary_example
 
