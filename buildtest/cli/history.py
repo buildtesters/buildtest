@@ -145,15 +145,18 @@ def list_build_history(
     history_table = Table(
         header_style="blue", show_lines=True, row_styles=[consoleColor]
     )
-    history_table.add_column("id")
-    history_table.add_column("hostname")
-    history_table.add_column("user")
-    history_table.add_column("system")
-    history_table.add_column("date")
-    history_table.add_column("pass tests")
-    history_table.add_column("fail tests")
-    history_table.add_column("total tests")
-    history_table.add_column("command", overflow="fold")
+    for field in [
+        "id",
+        "hostname",
+        "user",
+        "system",
+        "date",
+        "pass tests",
+        "fail tests",
+        "total tests",
+        "command",
+    ]:
+        history_table.add_column(field, overflow="fold")
 
     for (
         build_id,

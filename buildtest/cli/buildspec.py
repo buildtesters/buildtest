@@ -968,8 +968,8 @@ class BuildspecCache:
         # if --error is not specified print list of invalid buildspecs in rich table
         if not error:
             table = Table(
-                "Buildspec",
-                "Exception",
+                Column("Buildspec", overflow="fold"),
+                Column("Exception", overflow="fold"),
                 title="Invalid Buildspecs",
                 header_style="blue",
                 style="cyan",

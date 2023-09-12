@@ -82,9 +82,9 @@ def view_system(configuration):
 
     # table = {"system": [], "description": [], "hostnames": [], "moduletool": []}
     table = Table(
-        "system",
-        "description",
-        "moduletool",
+        Column("system", overflow="fold"),
+        Column("description", overflow="fold"),
+        Column("moduletool", overflow="fold"),
         Column("hostnames", overflow="fold"),
         title=f"System Summary (Configuration={configuration.file})",
         header_style="blue",

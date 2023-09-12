@@ -7,8 +7,8 @@ def print_build_show():
     """This method will print help message for command ``buildtest show build``"""
 
     table = Table(title="Building buildspecs", show_lines=False)
-    table.add_column("Command", justify="left", style="cyan")
-    table.add_column("Description", justify="left", style="magenta")
+    table.add_column("Command", justify="left", style="cyan", overflow="fold")
+    table.add_column("Description", justify="left", style="magenta", overflow="fold")
 
     table.add_row("buildtest build -b <file>", "Build a single buildspec file")
     table.add_row(
