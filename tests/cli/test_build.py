@@ -288,6 +288,24 @@ class TestBuildTest:
             cmd.build()
 
     @pytest.mark.cli
+    def test_buildspecs_by_name(self):
+        # testing buildtest build --name
+        cmd = BuildTest(
+            configuration=configuration,
+            name=["hello_world", "add_numbers"],
+            buildtest_system=self.system,
+        )
+        cmd.build()
+
+        # should raise exception if `name` is not a list
+        with pytest.raises(BuildTestError):
+            BuildTest(
+                configuration=configuration,
+                name="pass_test",
+                buildtest_system=self.system,
+            )
+
+    @pytest.mark.cli
     def test_build_csh_executor(self):
         if not shutil.which("csh"):
             pytest.skip("Unable to run this test since it requires 'csh'")

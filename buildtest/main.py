@@ -151,6 +151,7 @@ def main():
                 exclude_buildspecs=args.exclude,
                 executors=args.executor,
                 tags=args.tags,
+                name=args.name,
                 exclude_tags=args.exclude_tags,
                 filter_buildspecs=args.filter,
                 rebuild=args.rebuild,
