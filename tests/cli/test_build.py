@@ -286,6 +286,7 @@ class TestBuildTest:
         # no test will be run
         with pytest.raises(SystemExit):
             cmd.build()
+
     @pytest.mark.cli
     def test_buildspecs_by_name(self):
         # testing buildtest build --name
@@ -303,6 +304,7 @@ class TestBuildTest:
                 name="pass_test",
                 buildtest_system=self.system,
             )
+
     @pytest.mark.cli
     def test_build_csh_executor(self):
         if not shutil.which("csh"):

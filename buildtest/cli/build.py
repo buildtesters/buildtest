@@ -171,7 +171,7 @@ def discover_buildspecs(
         logger.debug(found_buildspecs)
 
     if name:
-        found_buildspecs, buildspec_dict['name'] = discover_buildspecs_by_name(
+        found_buildspecs, buildspec_dict["name"] = discover_buildspecs_by_name(
             buildspec_cache=cache, names=name
         )
 
@@ -372,6 +372,7 @@ def discover_buildspecs_by_tags(buildspec_cache, tagnames):
 
     return buildspecs, buildspecs_by_tags
 
+
 def discover_buildspecs_by_name(buildspec_cache, names):
     """This method will discover buildspecs given a list of test names.
 
@@ -397,6 +398,7 @@ def discover_buildspecs_by_name(buildspec_cache, names):
 
     found_buildspecs = list(set(found_buildspecs))
     return found_buildspecs, buildspec_by_names
+
 
 def discover_buildspecs_by_executor(buildspec_cache, executors):
     """This method discovers buildspecs by executor name, using ``buildtest build --executor``
@@ -601,7 +603,14 @@ class BuildTest:
         """
 
         # check for input arguments that are expected to be a list
-        for arg_name in [buildspecs, exclude_buildspecs, tags, exclude_tags, executors, name]:
+        for arg_name in [
+            buildspecs,
+            exclude_buildspecs,
+            tags,
+            exclude_tags,
+            executors,
+            name,
+        ]:
             if arg_name and not isinstance(arg_name, list):
                 raise BuildTestError(f"{arg_name} is not of type list")
 

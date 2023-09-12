@@ -746,7 +746,7 @@ class BuildTestParser:
                         "action": "append",
                         "help": "Specify a name of test to run",
                         "type": str,
-                    }
+                    },
                 ),
                 (
                     ["-e", "--executor"],
