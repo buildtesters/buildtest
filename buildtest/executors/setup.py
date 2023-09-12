@@ -444,9 +444,9 @@ class BuildExecutor:
         completed_jobs_table = Table(title="Completed Jobs", header_style="blue")
 
         for column in table_columns:
-            pending_jobs_table.add_column(column)
-            running_jobs_table.add_column(column)
-            completed_jobs_table.add_column(column)
+            pending_jobs_table.add_column(column, overflow="fold")
+            running_jobs_table.add_column(column, overflow="fold")
+            completed_jobs_table.add_column(column, overflow="fold")
 
         for builder in active_jobs:
             if builder.job.is_pending() or builder.job.is_suspended():

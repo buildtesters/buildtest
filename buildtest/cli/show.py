@@ -118,8 +118,8 @@ def print_buildspec_show():
     """This method will print help message for command ``buildtest show buildspec``"""
 
     table = Table(title="Finding Buildspecs", show_lines=False)
-    table.add_column("Command", justify="left", style="cyan")
-    table.add_column("Description", justify="left", style="magenta")
+    table.add_column("Command", justify="left", style="cyan", overflow="fold")
+    table.add_column("Description", justify="left", style="magenta", overflow="fold")
 
     table.add_row(
         "buildtest buildspec find",
@@ -186,8 +186,8 @@ def print_buildspec_show():
     console.print(table)
 
     table = Table(title="Validating Buildspecs", show_lines=False)
-    table.add_column("Command", justify="left", style="cyan")
-    table.add_column("Description", justify="left", style="magenta")
+    table.add_column("Command", justify="left", style="cyan", overflow="fold")
+    table.add_column("Description", justify="left", style="magenta", overflow="fold")
 
     table.add_row(
         "buildtest buildspec validate -b <file>",
@@ -209,8 +209,8 @@ def print_buildspec_show():
     console.print(table)
 
     table = Table(title="Additional Features of Buildspecs", show_lines=False)
-    table.add_column("Command", justify="left", style="cyan")
-    table.add_column("Description", justify="left", style="magenta")
+    table.add_column("Command", justify="left", style="cyan", overflow="fold")
+    table.add_column("Description", justify="left", style="magenta", overflow="fold")
 
     table.add_row("buildtest buildspec summary", "Show summary of buildspec cache file")
     table.add_row(
@@ -266,8 +266,8 @@ def print_config_show():
     """This method will print help message for command ``buildtest show config``"""
 
     table = Table(title="Configuring Buildtest", show_lines=False)
-    table.add_column("Command", justify="left", style="cyan")
-    table.add_column("Description", justify="left", style="magenta")
+    table.add_column("Command", justify="left", style="cyan", overflow="fold")
+    table.add_column("Description", justify="left", style="magenta", overflow="fold")
 
     table.add_row("buildtest config view", "View content of configuration file")
     table.add_row(
@@ -340,8 +340,8 @@ def print_inspect_show():
     """This method will print help message for command ``buildtest show inspect``"""
 
     table = Table(title="Inspecting a test", show_lines=False)
-    table.add_column("Command", justify="left", style="cyan")
-    table.add_column("Description", justify="left", style="magenta")
+    table.add_column("Command", justify="left", style="cyan", overflow="fold")
+    table.add_column("Description", justify="left", style="magenta", overflow="fold")
 
     table.add_row(
         "buildtest inspect list",
@@ -386,8 +386,8 @@ def print_report_show():
     """This method will print help message for command ``buildtest show report``"""
 
     table = Table(title="Viewing Test Report", show_lines=False)
-    table.add_column("Command", justify="left", style="cyan")
-    table.add_column("Description", justify="left", style="magenta")
+    table.add_column("Command", justify="left", style="cyan", overflow="fold")
+    table.add_column("Description", justify="left", style="magenta", overflow="fold")
 
     table.add_row("buildtest report", "Display all test results")
     table.add_row("buildtest report --pager", "Paginate output of test results")
@@ -443,8 +443,8 @@ def print_history_show():
     """This method will print help message for command ``buildtest show history``"""
 
     table = Table(title="Editing buildspec", show_lines=False)
-    table.add_column("Command", justify="left", style="cyan")
-    table.add_column("Description", justify="left", style="magenta")
+    table.add_column("Command", justify="left", style="cyan", overflow="fold")
+    table.add_column("Description", justify="left", style="magenta", overflow="fold")
 
     table.add_row("buildtest history list", "List all build history files")
     table.add_row("buildtest history list --terse", "Print output in terse format")
@@ -473,8 +473,8 @@ def print_cdash_show():
     """This method will print help message for command ``buildtest show cdash``"""
 
     table = Table(title="Editing buildspec", show_lines=False)
-    table.add_column("Command", justify="left", style="cyan")
-    table.add_column("Description", justify="left", style="magenta")
+    table.add_column("Command", justify="left", style="cyan", overflow="fold")
+    table.add_column("Description", justify="left", style="magenta", overflow="fold")
 
     table.add_row(
         "buildtest cdash upload DEMO",
@@ -502,8 +502,8 @@ def print_schema_show():
     """This method will print help message for command ``buildtest show schema``"""
 
     table = Table(title="Buildtest Schemas", show_lines=False)
-    table.add_column("Command", justify="left", style="cyan")
-    table.add_column("Description", justify="left", style="magenta")
+    table.add_column("Command", justify="left", style="cyan", overflow="fold")
+    table.add_column("Description", justify="left", style="magenta", overflow="fold")
 
     table.add_row("buildtest schema", "Report all buildtest schema files")
     table.add_row(
@@ -521,8 +521,8 @@ def print_stylecheck_show():
     """This method will print help message for command ``buildtest show stylecheck``"""
 
     table = Table(title="Buildtest stylecheck", show_lines=False)
-    table.add_column("Command", justify="left", style="cyan")
-    table.add_column("Description", justify="left", style="magenta")
+    table.add_column("Command", justify="left", style="cyan", overflow="fold")
+    table.add_column("Description", justify="left", style="magenta", overflow="fold")
 
     table.add_row(
         "buildtest stylecheck",
@@ -542,8 +542,8 @@ def print_unittests_show():
     """This method will print help message for command ``buildtest show unittests``"""
 
     table = Table(title="Buildtest unittests", show_lines=False)
-    table.add_column("Command", justify="left", style="cyan")
-    table.add_column("Description", justify="left", style="magenta")
+    table.add_column("Command", justify="left", style="cyan", overflow="fold")
+    table.add_column("Description", justify="left", style="magenta", overflow="fold")
 
     table.add_row(
         "buildtest unittests", "Run all unittests, tests are executed via pytest"
@@ -569,11 +569,11 @@ def print_unittests_show():
 
 
 def print_path_show():
-    """This method will print help message for command ``buildtest show schema``"""
+    """This method will print help message for command ``buildtest show path``"""
 
     table = Table(title="Get Path to Test", show_lines=False)
-    table.add_column("Command", justify="left", style="cyan")
-    table.add_column("Description", justify="left", style="magenta")
+    table.add_column("Command", justify="left", style="cyan", overflow="fold")
+    table.add_column("Description", justify="left", style="magenta", overflow="fold")
 
     table.add_row(
         "buildtest path circle_area", "Get test root for test name 'circle_area'"

@@ -520,8 +520,8 @@ def print_filters():
     """
 
     table = Table(title="Buildtest Filters", header_style="blue")
-    table.add_column("Field", style="green")
-    table.add_column("Description", style="red")
+    table.add_column("Field", style="green", overflow="fold")
+    table.add_column("Description", style="red", overflow="fold")
 
     table.add_row("tags", "Filter tests by [italic]'tag'[/italic] field")
     table.add_row("type", "Filter test by [italic]'type'[/italic] field")
