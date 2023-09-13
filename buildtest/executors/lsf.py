@@ -6,6 +6,7 @@ when initializing the executors.
 import logging
 import os
 import re
+import time
 
 from buildtest.defaults import console
 from buildtest.executors.base import BaseExecutor
@@ -105,6 +106,7 @@ class LSFExecutor(BaseExecutor):
             return builder
 
         builder.job = LSFJob(job_id)
+        builder.job.submittime = time.time()
 
         builder.metadata["jobid"] = job_id
 
@@ -137,11 +139,13 @@ class LSFExecutor(BaseExecutor):
 
             # if timer time is more than requested pend time then cancel job
             #if int(builder.timer.duration()) > self.maxpendtime:
-            if builder.job.pendtime > self.maxpendtime:
+            elapsed_pendtime = time.time() - builder.job.submittime
+
+            if elapsed_pendtime > self.maxpendtime:
                 builder.job.cancel()
                 builder.failed()
                 console.print(
-                    f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.timer.duration()} sec[/red] "
+                    f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {elased_pendtime:.2f} sec[/red] "
                 )
                 return
 

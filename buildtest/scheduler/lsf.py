@@ -1,6 +1,5 @@
 import json
 import logging
-
 from buildtest.scheduler.job import Job
 from buildtest.utils.command import BuildTestCommand
 
@@ -10,8 +9,6 @@ logger = logging.getLogger(__name__)
 class LSFJob(Job):
     def __init__(self, jobID):
         super().__init__(jobID)
-
-        self.pendtime = 0
     def is_pending(self):
         """Check if Job is pending which is reported by LSF as ``PEND``. Return ``True`` if there is a match otherwise returns ``False``"""
 

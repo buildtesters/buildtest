@@ -6,6 +6,7 @@ when initializing the executors.
 import logging
 import os
 import re
+import time
 
 from buildtest.defaults import console
 from buildtest.executors.base import BaseExecutor
@@ -98,7 +99,7 @@ class SlurmExecutor(BaseExecutor):
             builder.metadata["jobid"] = int(parse_jobid)
 
         builder.job = SlurmJob(builder.metadata["jobid"], self.cluster)
-
+        builder.job.submittime = time.time()
         msg = f"[blue]{builder}[/blue]: JobID {builder.metadata['jobid']} dispatched to scheduler"
         console.print(msg)
         self.logger.debug(msg)
@@ -137,12 +138,13 @@ class SlurmExecutor(BaseExecutor):
             self.logger.debug(f"Time Duration: {builder.duration}")
             self.logger.debug(f"Max Pend Time: {self.maxpendtime}")
 
+            elapsed_time = time.time() - builder.job.submittime()
             # if timer exceeds 'maxpendtime' then cancel job
-            if int(builder.timer.duration()) > self.maxpendtime:
+            if elapsed_time > self.maxpendtime:
                 builder.job.cancel()
                 builder.failed()
                 console.print(
-                    f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.timer.duration()} sec[/red] "
+                    f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {elapsed_time:.2f} sec[/red] "
                 )
                 return
 
