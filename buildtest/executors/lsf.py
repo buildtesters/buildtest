@@ -133,21 +133,17 @@ class LSFExecutor(BaseExecutor):
             return
 
         builder.stop()
-        if builder.job.is_suspended() or builder.job.is_pending():
-            self.logger.debug(f"Time Duration: {builder.duration}")
-            self.logger.debug(f"Max Pend Time: {self.maxpendtime}")
-
-            # if timer time is more than requested pend time then cancel job
-            #if int(builder.timer.duration()) > self.maxpendtime:
-            elapsed_pendtime = time.time() - builder.job.submittime
-
-            if elapsed_pendtime > self.maxpendtime:
-                builder.job.cancel()
-                builder.failed()
-                console.print(
-                    f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {elased_pendtime:.2f} sec[/red] "
-                )
+        
+        if builder.job.is_running():
+            builder.job.elapsedtime = time.time() - builder.job.starttime
+            builder.job.elapsedtime = round(builder.job.elapsedtime,2)
+            if self._cancel_job_if_elapsedtime_exceeds_timeout(builder):
                 return
+
+        if builder.job.is_suspended() or builder.job.is_pending():
+            if self._cancel_job_if_pendtime_exceeds_maxpendtime(builder):
+                return
+
 
         builder.start()
 

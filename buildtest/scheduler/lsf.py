@@ -1,5 +1,6 @@
 import json
 import logging
+import time
 from buildtest.scheduler.job import Job
 from buildtest.utils.command import BuildTestCommand
 
@@ -59,12 +60,6 @@ class LSFJob(Job):
         - Exit Code: ``bjobs -noheader -o 'EXIT_CODE' <JOBID>'``
         """
 
-        # get pending time
-        query = f"bjobs -noheader -o 'pend_time' {self.jobid}"
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        self.pendtime = int("".join(cmd.get_output()).rstrip())
-
         # get job state
         query = f"bjobs -noheader -o 'stat' {self.jobid}"
         logger.debug(query)
@@ -92,6 +87,10 @@ class LSFJob(Job):
             self._exitcode = 0
 
         logger.debug(f"Exit Code: {self._exitcode}")
+        
+        # if job is running and the start time is not recorded then we record the start time
+        if self.is_running() and not self.starttime:
+            self.starttime = time.time()
 
     def gather(self):
         """This method will retrieve the output and error file for a given jobID using the following commands.

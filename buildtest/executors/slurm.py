@@ -123,29 +123,15 @@ class SlurmExecutor(BaseExecutor):
             return
 
         builder.stop()
-        if self.timeout:
-            # cancel job when elapsed time exceeds the timeout value.
-            if builder.job.elapsedtime > self.timeout:
-                builder.job.cancel()
-                builder.failed()
-                console.print(
-                    f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds timeout of {self.timeout} sec with current elapsed time of {builder.job.elapsedtime} sec[/red] "
-                )
+
+        if builder.job.is_running():
+            builder.job.elapsedtime = time.time() - builder.job.starttime
+            builder.job.elapsedtime = round(builder.job.elapsedtime,2)
+            if self._cancel_job_if_elapsedtime_exceeds_timeout(builder):
                 return
 
-        # if job state in PENDING check if we need to cancel job by checking internal timer
-        if builder.job.is_pending() or builder.job.is_suspended():
-            self.logger.debug(f"Time Duration: {builder.duration}")
-            self.logger.debug(f"Max Pend Time: {self.maxpendtime}")
-
-            elapsed_time = time.time() - builder.job.submittime()
-            # if timer exceeds 'maxpendtime' then cancel job
-            if elapsed_time > self.maxpendtime:
-                builder.job.cancel()
-                builder.failed()
-                console.print(
-                    f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {elapsed_time:.2f} sec[/red] "
-                )
+        if builder.job.is_suspended() or builder.job.is_pending():
+            if self._cancel_job_if_pendtime_exceeds_maxpendtime(builder):
                 return
 
         builder.start()

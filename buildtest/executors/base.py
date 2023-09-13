@@ -3,8 +3,9 @@ BuildExecutor: manager for test executors
 """
 
 import logging
-
+import time
 from buildtest.builders.base import BuilderBase
+from buildtest.defaults import console
 from buildtest.utils.tools import deep_get
 
 
@@ -95,3 +96,26 @@ class BaseExecutor:
 
     def __repr__(self):
         return self.__str__()
+
+    def _cancel_job_if_elapsedtime_exceeds_timeout(self, builder):
+        if not self.timeout:
+            return
+        
+        # cancel job when elapsed time exceeds the timeout value.
+        if builder.job.elapsedtime > self.timeout:
+            builder.job.cancel()
+            builder.failed()
+            console.print(
+                        f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds timeout of {self.timeout} sec with current elapsed time of {builder.job.elapsedtime} sec[/red] "
+                    )
+    def _cancel_job_if_pendtime_exceeds_maxpendtime(self, builder):
+            builder.job.pendtime = time.time() - builder.job.submittime
+            builder.job.pendtime = round(builder.job.pendtime, 2)
+
+            if builder.job.pendtime > self.maxpendtime:
+                builder.job.cancel()
+                builder.failed()
+                console.print(
+                    f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.job.pendtime} sec[/red] "
+                )
+                return

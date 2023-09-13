@@ -436,7 +436,7 @@ class BuildExecutor:
             active_jobs (list): List of builders whose jobs are pending, suspended or running
             completed_jobs (list): List of builders whose jobs are completed
         """
-        table_columns = ["builder", "executor", "jobid", "jobstate", "runtime", "elapsed"]
+        table_columns = ["builder", "executor", "jobid", "jobstate", "runtime", "elapsedtime", "pendtime"]
         pending_jobs_table = Table(
             title="Pending and Suspended Jobs", header_style="blue"
         )
@@ -457,6 +457,7 @@ class BuildExecutor:
                     f"[cyan]{builder.job.state()}",
                     f"[magenta]{str(builder.timer.duration())}",
                     f"[yellow]{str(builder.job.elapsedtime)}",
+                    f"[yellow]{str(builder.job.pendtime)}",
                 )
 
             if builder.job.is_running():
@@ -467,6 +468,7 @@ class BuildExecutor:
                     f"[cyan]{builder.job.state()}",
                     f"[magenta]{str(builder.timer.duration())}",
                     f"[yellow]{str(builder.job.elapsedtime)}",
+                    f"[yellow]{str(builder.job.pendtime)}",
                 )
 
             if builder.job.is_complete():
@@ -477,6 +479,7 @@ class BuildExecutor:
                     f"[cyan]{builder.job.state()}",
                     f"[magenta]{str(builder.metadata['result']['runtime'])}",
                     f"[yellow]{str(builder.job.elapsedtime)}",
+                    f"[yellow]{str(builder.job.pendtime)}",
                 )
 
         # only print table if there are rows in table

@@ -7,8 +7,15 @@ class Job:
         self._state = None
         # used to store the job elapsed time
         self.elapsedtime = 0
+
+        # used for job pending time
         self.pendtime = 0
+
+        # time when job was submitted
         self.submittime = None
+
+        # time when job was started
+        self.starttime = None
     def state(self):
         """Return job state"""
         return self._state

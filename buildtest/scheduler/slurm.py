@@ -1,5 +1,5 @@
 import logging
-
+import time
 from buildtest.scheduler.job import Job
 from buildtest.utils.command import BuildTestCommand
 
@@ -122,7 +122,7 @@ class SlurmJob(Job):
             PENDING
         """
 
-        query = f"sacct -j {self.jobid} -o State,ElapsedRaw -n -X -P"
+        query = f"sacct -j {self.jobid} -o State -n -X -P"
         if self.cluster:
             query += f" --clusters={self.cluster}"
 
@@ -131,11 +131,12 @@ class SlurmJob(Job):
 
         logger.debug(f"Querying JobID: '{self.jobid}' by running: '{query}'")
         output = cmd.get_output()        
-        output = output[0].strip().split('|')
-        self._state = output[0]
-        self.elapsedtime = int(output[1])
+        self._state = output[0].strip()
         logger.debug(f"JobID: '{self.jobid}' Job State: {self._state}")
-        logger.debug(f"JobID: '{self.jobid}' ElapsedTime: {self.elapsedtime}")
+
+        if self._is_running() and not self.starttime:
+            self.starttime = time.time()
+
 
     def gather(self):
         """Gather job record which is called after job completion. We use `sacct` to gather
