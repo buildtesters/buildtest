@@ -5,6 +5,8 @@ class Job:
     def __init__(self, jobID):
         self.jobid = jobID
         self._state = None
+        # used to store the job elapsed time
+        self.elapsedtime = 0
 
     def state(self):
         """Return job state"""

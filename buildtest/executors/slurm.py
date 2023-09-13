@@ -79,8 +79,8 @@ class SlurmExecutor(BaseExecutor):
 
         cmd = f"bash {self._bashopts} {os.path.basename(builder.build_script)}"
 
-        timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
-        command = builder.run(cmd, timeout)
+        self.timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
+        command = builder.run(cmd, self.timeout)
 
         if command.returncode() != 0:
             builder.failed()
@@ -122,6 +122,16 @@ class SlurmExecutor(BaseExecutor):
             return
 
         builder.stop()
+
+        if self.timeout:
+            # cancel job when elapsed time exceeds the timeout value.
+            if builder.job.elapsedtime > self.timeout:
+                builder.job.cancel()
+                builder.failed()
+                console.print(
+                    f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds timeout of {self.timeout} sec with current elapsed time of {builder.job.elapsedtime} sec[/red] "
+                )
+                return
 
         # if job state in PENDING check if we need to cancel job by checking internal timer
         if builder.job.is_pending() or builder.job.is_suspended():

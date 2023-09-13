@@ -122,7 +122,7 @@ class SlurmJob(Job):
             PENDING
         """
 
-        query = f"sacct -j {self.jobid} -o State -n -X -P"
+        query = f"sacct -j {self.jobid} -o State,ElapsedRaw -n -X -P"
         if self.cluster:
             query += f" --clusters={self.cluster}"
 
@@ -131,8 +131,9 @@ class SlurmJob(Job):
 
         logger.debug(f"Querying JobID: '{self.jobid}'  Job State by running: '{query}'")
         job_state = cmd.get_output()
-        self._state = "".join(job_state).rstrip()
+        self._state, self.elapsedtime = "".join(job_state).rstrip().split("|")
         logger.debug(f"JobID: '{self.jobid}' job state:{self._state}")
+        logger.debug(f"JobID: '{self.jobid}' job elapsed time:{self.elapsedtime}")
 
     def gather(self):
         """Gather job record which is called after job completion. We use `sacct` to gather
