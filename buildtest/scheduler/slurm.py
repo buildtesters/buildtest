@@ -129,11 +129,13 @@ class SlurmJob(Job):
         cmd = BuildTestCommand(query)
         cmd.execute()
 
-        logger.debug(f"Querying JobID: '{self.jobid}'  Job State by running: '{query}'")
-        job_state = cmd.get_output()
-        self._state, self.elapsedtime = "".join(job_state).rstrip().split("|")
-        logger.debug(f"JobID: '{self.jobid}' job state:{self._state}")
-        logger.debug(f"JobID: '{self.jobid}' job elapsed time:{self.elapsedtime}")
+        logger.debug(f"Querying JobID: '{self.jobid}' by running: '{query}'")
+        output = cmd.get_output()        
+        output = output[0].strip().split('|')
+        self._state = output[0]
+        self.elapsedtime = int(output[1])
+        logger.debug(f"JobID: '{self.jobid}' Job State: {self._state}")
+        logger.debug(f"JobID: '{self.jobid}' ElapsedTime: {self.elapsedtime}")
 
     def gather(self):
         """Gather job record which is called after job completion. We use `sacct` to gather
@@ -147,6 +149,7 @@ class SlurmJob(Job):
             - "ConsumedEnergyRaw"
             - "CPUTimeRaw"
             - "Elapsed"
+            - "ElapsedRaw"
             - "End"
             - "ExitCode"
             - "JobID"
@@ -187,6 +190,7 @@ class SlurmJob(Job):
             "ConsumedEnergyRaw",
             "CPUTimeRaw",
             "Elapsed",
+            "ElapsedRaw",
             "End",
             "ExitCode",
             "JobID",

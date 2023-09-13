@@ -122,7 +122,6 @@ class SlurmExecutor(BaseExecutor):
             return
 
         builder.stop()
-
         if self.timeout:
             # cancel job when elapsed time exceeds the timeout value.
             if builder.job.elapsedtime > self.timeout:
