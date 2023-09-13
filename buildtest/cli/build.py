@@ -252,7 +252,7 @@ def print_discovered_buildspecs(buildspec_dict):
     table = Table(
         title="Discovered buildspecs", box=box.DOUBLE_EDGE, header_style="blue"
     )
-    table.add_column("buildspec", style="green")
+    table.add_column("buildspec", style="green", overflow="fold")
 
     for i in buildspec_dict["included"]:
         table.add_row(i)
@@ -263,7 +263,7 @@ def print_discovered_buildspecs(buildspec_dict):
         table = Table(
             title="Excluded buildspecs", box=box.DOUBLE_EDGE, header_style="blue"
         )
-        table.add_column("buildspec", style="red")
+        table.add_column("buildspec", style="red", overflow="fold")
 
         for i in buildspec_dict["excluded"]:
             table.add_row(i)
@@ -277,7 +277,7 @@ def print_discovered_buildspecs(buildspec_dict):
                 box=box.DOUBLE_EDGE,
                 header_style="blue",
             )
-            table.add_column("buildspec", style="turquoise2")
+            table.add_column("buildspec", style="turquoise2", overflow="fold")
             for row in buildspec_dict["tags"][tagname]:
                 table.add_row(row)
             console.print(table)
@@ -290,7 +290,7 @@ def print_discovered_buildspecs(buildspec_dict):
                 box=box.DOUBLE_EDGE,
                 header_style="blue",
             )
-            table.add_column("buildspecs", style="magenta1")
+            table.add_column("buildspecs", style="magenta1", overflow="fold")
             for row in buildspec_dict["executors"][executorname]:
                 table.add_row(f"{row}")
             console.print(table)
@@ -303,7 +303,7 @@ def print_discovered_buildspecs(buildspec_dict):
                 box=box.DOUBLE_EDGE,
                 header_style="blue",
             )
-            table.add_column("buildspecs", style="yellow2")
+            table.add_column("buildspecs", style="yellow2", overflow="fold")
             for row in buildspec_dict["name"][name]:
                 table.add_row(f"{row}")
             console.print(table)
@@ -520,8 +520,8 @@ def print_filters():
     """
 
     table = Table(title="Buildtest Filters", header_style="blue")
-    table.add_column("Field", style="green")
-    table.add_column("Description", style="red")
+    table.add_column("Field", style="green", overflow="fold")
+    table.add_column("Description", style="red", overflow="fold")
 
     table.add_row("tags", "Filter tests by [italic]'tag'[/italic] field")
     table.add_row("type", "Filter test by [italic]'type'[/italic] field")
@@ -1237,11 +1237,11 @@ class BuildTest:
 
         table = Table(title="Test Summary", show_lines=True, header_style="blue")
         table.add_column("builder", overflow="fold")
-        table.add_column("executor")
-        table.add_column("status")
+        table.add_column("executor", overflow="fold")
+        table.add_column("status", overflow="fold")
         table.add_column("checks (ReturnCode, Regex, Runtime)", overflow="fold")
-        table.add_column("returncode")
-        table.add_column("runtime")
+        table.add_column("returncode", overflow="fold")
+        table.add_column("runtime", overflow="fold")
 
         passed_tests = 0
         failed_tests = 0
@@ -1397,14 +1397,14 @@ class BuildTest:
             builder_type (str): The builder type corresponding to the list of ``builders``. This type corresponds to the ``type`` field in the test
         """
         table = Table(
-            Column(header="builder", style="blue"),
-            Column(header="type", style="cyan1"),
-            Column(header="executor", style="green"),
-            Column(header="compiler", style="red"),
-            Column(header="nodes", style="orange3"),
-            Column(header="procs", style="orange3"),
-            Column(header="description", style="magenta"),
-            Column(header="buildspecs", style="yellow"),
+            Column(header="builder", style="blue", overflow="fold"),
+            Column(header="type", style="cyan1", overflow="fold"),
+            Column(header="executor", style="green", overflow="fold"),
+            Column(header="compiler", style="red", overflow="fold"),
+            Column(header="nodes", style="orange3", overflow="fold"),
+            Column(header="procs", style="orange3", overflow="fold"),
+            Column(header="description", style="magenta", overflow="fold"),
+            Column(header="buildspecs", style="yellow", overflow="fold"),
             title=f"Builders by type={builder_type}",
             show_lines=True,
             header_style="blue",

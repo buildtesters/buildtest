@@ -154,13 +154,13 @@ def compiler_test(configuration, compiler_names=None):
     compiler_pass = Table(title="Compilers Test Pass")
     compiler_fail = Table(title="Compilers Test Fail")
 
-    compiler_pass.add_column("No.", style="cyan", no_wrap=True)
-    compiler_pass.add_column("Compiler Name", style="green")
-    compiler_pass.add_column("Status", justify="right")
+    compiler_pass.add_column("No.", style="cyan", no_wrap=True, overflow="fold")
+    compiler_pass.add_column("Compiler Name", style="green", overflow="fold")
+    compiler_pass.add_column("Status", justify="right", overflow="fold")
 
-    compiler_fail.add_column("No.", style="cyan", no_wrap=True)
-    compiler_fail.add_column("Compiler Name", style="red")
-    compiler_fail.add_column("Status", justify="right")
+    compiler_fail.add_column("No.", style="cyan", no_wrap=True, overflow="fold")
+    compiler_fail.add_column("Compiler Name", style="red", overflow="fold")
+    compiler_fail.add_column("Status", justify="right", overflow="fold")
 
     for idx, pass_compiler in enumerate(pass_compilers):
         compiler_pass.add_row(str(idx + 1), pass_compiler, "✅")
@@ -411,7 +411,7 @@ class BuildtestCompilers:
             table = Table(
                 title="Discovered Modules", show_lines=True, header_style="blue"
             )
-            table.add_column("Name")
+            table.add_column("Name", overflow="fold")
             for modules in module_dict.values():
                 for name in modules:
                     table.add_row(name)

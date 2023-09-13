@@ -4,7 +4,7 @@ import os
 import random
 import sys
 
-from rich.table import Table
+from rich.table import Column, Table
 
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
@@ -497,7 +497,11 @@ class Report:
 
     def print_format_fields(self):
         """Displays list of format field which implements command ``buildtest report --helpformat``"""
-        table = Table("[blue]Field", "[blue]Description", title="Format Fields")
+        table = Table(
+            Column("Field", overflow="fold", header_style="blue"),
+            Column("Description", overflow="fold", header_style="blue"),
+            title="Format Fields",
+        )
         for field, description in self.format_field_description.items():
             table.add_row(f"[red]{field}", f"[green]{description}")
 
@@ -507,9 +511,9 @@ class Report:
         """Displays list of help filters which implements command ``buildtest report --helpfilter``"""
 
         table = Table(
-            "[blue]Field",
-            "[blue]Description",
-            "[blue]Expected Value",
+            Column("Field", overflow="fold", header_style="blue"),
+            Column("Description", overflow="fold", header_style="blue"),
+            Column("Expected Value", overflow="fold", header_style="blue"),
             title="Filter Fields",
         )
 
@@ -915,10 +919,10 @@ def report_summary(report, configuration, detailed=None, color=None):
     test_breakdown = report.breakdown_by_test_names()
 
     table = Table(title="Breakdown by test", header_style=consoleColor)
-    table.add_column("Name", style=consoleColor)
-    table.add_column("Total Pass", style=consoleColor)
-    table.add_column("Total Fail", style=consoleColor)
-    table.add_column("Total Runs", style=consoleColor)
+    table.add_column("Name", overflow="fold", style=consoleColor)
+    table.add_column("Total Pass", overflow="fold", style=consoleColor)
+    table.add_column("Total Fail", overflow="fold", style=consoleColor)
+    table.add_column("Total Runs", overflow="fold", style=consoleColor)
 
     for k in test_breakdown.keys():
         table.add_row(
