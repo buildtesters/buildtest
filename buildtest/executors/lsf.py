@@ -75,8 +75,8 @@ class LSFExecutor(BaseExecutor):
 
         cmd = f"bash {self._bashopts} {os.path.basename(builder.build_script)}"
 
-        timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
-        command = builder.run(cmd, timeout)
+        self.timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
+        command = builder.run(cmd, self.timeout)
 
         if command.returncode() != 0:
             builder.failed()
@@ -136,7 +136,8 @@ class LSFExecutor(BaseExecutor):
             self.logger.debug(f"Max Pend Time: {self.maxpendtime}")
 
             # if timer time is more than requested pend time then cancel job
-            if int(builder.timer.duration()) > self.maxpendtime:
+            #if int(builder.timer.duration()) > self.maxpendtime:
+            if builder.job.pendtime > self.maxpendtime:
                 builder.job.cancel()
                 builder.failed()
                 console.print(

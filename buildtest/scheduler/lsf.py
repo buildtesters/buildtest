@@ -11,6 +11,7 @@ class LSFJob(Job):
     def __init__(self, jobID):
         super().__init__(jobID)
 
+        self.pendtime = 0
     def is_pending(self):
         """Check if Job is pending which is reported by LSF as ``PEND``. Return ``True`` if there is a match otherwise returns ``False``"""
 
@@ -60,6 +61,12 @@ class LSFJob(Job):
         - Job State: ``bjobs -noheader -o 'stat' <JOBID>``
         - Exit Code: ``bjobs -noheader -o 'EXIT_CODE' <JOBID>'``
         """
+
+        # get pending time
+        query = f"bjobs -noheader -o 'pend_time' {self.jobid}"
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        self.pendtime = int("".join(cmd.get_output()).rstrip())
 
         # get job state
         query = f"bjobs -noheader -o 'stat' {self.jobid}"
