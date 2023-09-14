@@ -3,7 +3,9 @@ BuildExecutor: manager for test executors
 """
 
 import logging
+import os
 import time
+
 from buildtest.builders.base import BuilderBase
 from buildtest.defaults import console
 from buildtest.utils.tools import deep_get
@@ -15,7 +17,9 @@ class BaseExecutor:
     type = "base"
     default_maxpendtime = 86400
 
-    def __init__(self, name, settings, site_configs, timeout=None):
+    def __init__(
+        self, name, settings, site_configs, timeout=None, account=None, maxpendtime=None
+    ):
         """Initiate a base executor, meaning we provide a name (also held
         by the BuildExecutor base that holds it) and the loaded dictionary
         of config opts to parse.
@@ -25,6 +29,8 @@ class BaseExecutor:
             setting (dict): setting for a given executor defined in configuration file
             site_configs (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
             timeout (str, optional): Test timeout in number of seconds
+            maxpendtime (int, optional): Maximum Pending Time until job is cancelled. The default is 1 day (86400s)
+            account (str, optional): Account to use for job submission
             maxpendtime (int, optional): Maximum Pending Time until job is cancelled. The default is 1 day (86400s)
         """
 
@@ -40,6 +46,8 @@ class BaseExecutor:
         self._buildtestsettings = site_configs
         self.timeout = timeout
         self.builders = []
+        self.account = account
+        self.maxpendtime = maxpendtime
 
         self.load()
         # the shell type for executors will be bash by default
@@ -89,6 +97,78 @@ class BaseExecutor:
         so we are sure that the builder is defined. This is also where
         we set the result to return.
         """
+        raise NotImplementedError
+    def poll(self, builder):
+        builder.job.poll()
+
+        # if job is complete gather job data
+        if builder.job.is_complete():
+            self.gather(builder)
+            return
+
+        builder.stop()
+
+        if builder.job.is_running():
+            builder.job.elapsedtime = time.time() - builder.job.starttime
+            builder.job.elapsedtime = round(builder.job.elapsedtime, 2)
+            if self._cancel_job_if_elapsedtime_exceeds_timeout(builder):
+                return
+
+        if builder.job.is_suspended() or builder.job.is_pending():
+            if self._cancel_job_if_pendtime_exceeds_maxpendtime(builder):
+                return
+
+        builder.start()
+
+    def gather(self, builder):
+        """Gather Job detail after completion of job by invoking the builder method ``builder.job.gather()``.
+        We retrieve exit code, output file, error file and update builder metadata.
+
+        Args:
+            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
+        """
+
+        builder.record_endtime()
+
+        builder.metadata["job"] = builder.job.gather()
+        builder.metadata["result"]["returncode"] = builder.job.exitcode()
+
+        self.logger.debug(
+            f"[{builder.name}] returncode: {builder.metadata['result']['returncode']}"
+        )
+
+        builder.metadata["outfile"] = os.path.join(
+            builder.stage_dir, builder.job.output_file()
+        )
+        builder.metadata["errfile"] = os.path.join(
+            builder.stage_dir, builder.job.error_file()
+        )
+        console.print(f"[blue]{builder}[/]: Job {builder.job.get()} is complete! ")
+        builder.post_run_steps()
+
+    def _cancel_job_if_elapsedtime_exceeds_timeout(self, builder):
+        if not self.timeout:
+            return
+
+        # cancel job when elapsed time exceeds the timeout value.
+        if builder.job.elapsedtime > self.timeout:
+            builder.job.cancel()
+            builder.failed()
+            console.print(
+                f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds timeout of {self.timeout} sec with current elapsed time of {builder.job.elapsedtime} sec[/red] "
+            )
+
+    def _cancel_job_if_pendtime_exceeds_maxpendtime(self, builder):
+        builder.job.pendtime = time.time() - builder.job.submittime
+        builder.job.pendtime = round(builder.job.pendtime, 2)
+
+        if builder.job.pendtime > self.maxpendtime:
+            builder.job.cancel()
+            builder.failed()
+            console.print(
+                f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.job.pendtime} sec[/red] "
+            )
+            return
 
     def __str__(self):
         return self.name
@@ -96,26 +176,3 @@ class BaseExecutor:
 
     def __repr__(self):
         return self.__str__()
-
-    def _cancel_job_if_elapsedtime_exceeds_timeout(self, builder):
-        if not self.timeout:
-            return
-        
-        # cancel job when elapsed time exceeds the timeout value.
-        if builder.job.elapsedtime > self.timeout:
-            builder.job.cancel()
-            builder.failed()
-            console.print(
-                        f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds timeout of {self.timeout} sec with current elapsed time of {builder.job.elapsedtime} sec[/red] "
-                    )
-    def _cancel_job_if_pendtime_exceeds_maxpendtime(self, builder):
-            builder.job.pendtime = time.time() - builder.job.submittime
-            builder.job.pendtime = round(builder.job.pendtime, 2)
-
-            if builder.job.pendtime > self.maxpendtime:
-                builder.job.cancel()
-                builder.failed()
-                console.print(
-                    f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.job.pendtime} sec[/red] "
-                )
-                return

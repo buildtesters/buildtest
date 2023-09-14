@@ -6,7 +6,6 @@ when initializing the executors.
 import logging
 import os
 import re
-import time
 
 from buildtest.defaults import console
 from buildtest.executors.base import BaseExecutor
@@ -30,9 +29,14 @@ class SlurmExecutor(BaseExecutor):
     def __init__(
         self, name, settings, site_configs, account=None, maxpendtime=None, timeout=None
     ):
-        self.maxpendtime = maxpendtime
-        self.account = account
-        super().__init__(name, settings, site_configs, timeout=timeout)
+        super().__init__(
+            name,
+            settings,
+            site_configs,
+            timeout=timeout,
+            account=account,
+            maxpendtime=maxpendtime,
+        )
 
         self.cluster = self._settings.get("cluster")
         self.partition = self._settings.get("partition")
@@ -73,14 +77,14 @@ class SlurmExecutor(BaseExecutor):
             builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
-        self.result = {}
-
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to directory {builder.stage_dir}")
 
         cmd = f"bash {self._bashopts} {os.path.basename(builder.build_script)}"
 
-        self.timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
+        self.timeout = self.timeout or self._buildtestsettings.target_config.get(
+            "timeout"
+        )
         command = builder.run(cmd, self.timeout)
 
         if command.returncode() != 0:
@@ -99,42 +103,12 @@ class SlurmExecutor(BaseExecutor):
             builder.metadata["jobid"] = int(parse_jobid)
 
         builder.job = SlurmJob(builder.metadata["jobid"], self.cluster)
-        builder.job.submittime = time.time()
+
         msg = f"[blue]{builder}[/blue]: JobID {builder.metadata['jobid']} dispatched to scheduler"
         console.print(msg)
         self.logger.debug(msg)
 
         return builder
-
-    def poll(self, builder):
-        """This method is called during poll stage where we invoke ``builder.job.poll()`` to get updated
-        job state. If job is pending or suspended we stop timer and check if job needs to be cancelled if
-        time exceeds ``maxpendtime`` value.
-
-        Args:
-            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
-        """
-
-        builder.job.poll()
-
-        # if job is complete gather job data
-        if builder.job.complete():
-            self.gather(builder)
-            return
-
-        builder.stop()
-
-        if builder.job.is_running():
-            builder.job.elapsedtime = time.time() - builder.job.starttime
-            builder.job.elapsedtime = round(builder.job.elapsedtime,2)
-            if self._cancel_job_if_elapsedtime_exceeds_timeout(builder):
-                return
-
-        if builder.job.is_suspended() or builder.job.is_pending():
-            if self._cancel_job_if_pendtime_exceeds_maxpendtime(builder):
-                return
-
-        builder.start()
 
     def gather(self, builder):
         """Gather Slurm job data after job completion. In this step we call ``builder.job.gather()``,

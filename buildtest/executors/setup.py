@@ -436,7 +436,15 @@ class BuildExecutor:
             active_jobs (list): List of builders whose jobs are pending, suspended or running
             completed_jobs (list): List of builders whose jobs are completed
         """
-        table_columns = ["builder", "executor", "jobid", "jobstate", "runtime", "elapsedtime", "pendtime"]
+        table_columns = [
+            "builder",
+            "executor",
+            "jobid",
+            "jobstate",
+            "runtime",
+            "elapsedtime",
+            "pendtime",
+        ]
         pending_jobs_table = Table(
             title="Pending and Suspended Jobs", header_style="blue"
         )

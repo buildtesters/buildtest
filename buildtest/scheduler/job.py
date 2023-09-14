@@ -1,3 +1,6 @@
+import time
+
+
 class Job:
     """This is a base class for holding job level data and common methods for used
     for batch job submission."""
@@ -12,10 +15,11 @@ class Job:
         self.pendtime = 0
 
         # time when job was submitted
-        self.submittime = None
+        self.submittime = time.time()
 
         # time when job was started
         self.starttime = None
+
     def state(self):
         """Return job state"""
         return self._state
