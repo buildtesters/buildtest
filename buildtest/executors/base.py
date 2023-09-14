@@ -98,6 +98,7 @@ class BaseExecutor:
         we set the result to return.
         """
         raise NotImplementedError
+
     def poll(self, builder):
         builder.job.poll()
 
