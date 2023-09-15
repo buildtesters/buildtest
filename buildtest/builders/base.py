@@ -435,6 +435,11 @@ class BuilderBase(ABC):
 
         runtime = self._endtime - self._starttime
         self._runtime = runtime.total_seconds()
+
+        # for batch jobs we use the elapsed time for job to calculate the runtime
+        if self.is_batch_job():
+            self._runtime = self.job.elapsedtime
+
         self.metadata["result"]["runtime"] = self._runtime
 
     def get_runtime(self):

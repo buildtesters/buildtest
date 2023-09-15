@@ -1,22 +1,45 @@
 system:
   generic:
-    hostnames:
-    - .*
+    # specify a list of hostnames that is a regular expression where buildtest can run.
+    hostnames: ['.*']
+    # system description
     description: Generic System
+    # specify module system to use. Supported module systems are lmod, environment-modules or set to N/A if not available
     moduletool: N/A
+
+    # specify size of job pool for buildtest run command. This will configure the number of concurrent jobs that can run in parallel
     poolsize: 1
+
+    # test timeout in number of seconds
+    # timeout: 3600
+
+    # enable pagination for buildtest
     pager: false
+
+    # options for buildtest buildspec find command
     buildspecs:
+      # determine whether to rebuild buildspec cache
       rebuild: false
+      # determine number of records to display
       count: 15
+      # specify format fields
       format: name,description
+      # display output in terse mode
       terse: false
+
+    # options for buildtest report command
     report:
+      # number of records to display
       count: 25
+      # display output in terse mode
       terse: false
+      # specify format fields
       format: name,id,state,runtime,returncode
+      # show latest test run
       latest: true
+      # show oldest test run
       oldest: false
+
     executors:
       local:
         bash:
@@ -38,8 +61,13 @@ system:
             cc: gcc
             fc: gfortran
             cxx: g++
+    # specify CDASH configuration when using 'buildtest cdash upload'
     cdash:
+      # CDASH server
       url: https://my.cdash.org/
+      # name of CDASH project where to push test reports
       project: buildtest
+      # specify the site name which should generally by name of your HPC system. This is used by CDASH to group test results by site
       site: generic
+      # specify the build name which is used to group test results by build name
       buildname: tutorials

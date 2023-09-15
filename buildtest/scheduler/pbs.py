@@ -1,5 +1,6 @@
 import json
 import logging
+import time
 
 from buildtest.scheduler.job import Job
 from buildtest.utils.command import BuildTestCommand
@@ -129,6 +130,10 @@ class PBSJob(Job):
 
         # The Exit_status property will be available when job is finished
         self._exitcode = job_data["Jobs"][self.jobid].get("Exit_status")
+
+        # if job is running and the start time is not recorded then we record the start time
+        if self.is_running() and not self.starttime:
+            self.starttime = time.time()
 
     def gather(self):
         """This method is called once job is complete. We will gather record of job by running
