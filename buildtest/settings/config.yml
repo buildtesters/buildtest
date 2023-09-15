@@ -36,7 +36,7 @@ system:
       # specify format fields
       format: name,id,state,runtime,returncode
       # show latest test run
-      latest: true
+      latest: false
       # show oldest test run
       oldest: false
 
