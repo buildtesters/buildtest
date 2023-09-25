@@ -36,7 +36,7 @@ class BaseExecutor:
 
         self._bashopts = "--norc --noprofile -eo pipefail"
         self._shopts = "--norc --noprofile -eo pipefail"
-        self._cshopts = "-e"
+        self._cshopts = "-ef"
         self._zshopts = "-f"
         self.cmd = None
         self.shell = "bash"

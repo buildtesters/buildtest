@@ -228,6 +228,9 @@ class CompilerBuilder(BuilderBase):
             lines.append("### END OF DATAWARP DIRECTIVES ###")
 
         lines.append("\n")
+
+        lines.append(self._emit_set_command())
+
         lines.append("# name of executable")
         lines += [self.exec_variable]
 

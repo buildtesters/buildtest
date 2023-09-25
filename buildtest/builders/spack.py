@@ -64,6 +64,8 @@ class SpackBuilder(BuilderBase):
             if data_warp_lines:
                 lines += data_warp_lines
 
+        lines.append(self._emit_set_command())
+
         var_lines = self._get_variables(self.recipe.get("vars"))
         env_lines = self._get_environment(self.recipe.get("env"))
 
