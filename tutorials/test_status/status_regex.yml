@@ -26,18 +26,18 @@ buildspecs:
     type: script
     tags: [system]
     description: Pass test based on regular expression
-    run: echo "PASS"
+    run: echo "PASS" 1>&2
     status:
       regex:
         stream: stderr
-        exp: "^(PASS)$"
+        exp: '^(PASS)$'
 
   status_regex_stderr_fail:
     executor: generic.local.bash
     type: script
     tags: [system]
     description: Pass test based on regular expression
-    run: echo "FAIL"
+    run: echo "FAIL" 1>&2
     status:
       regex:
         stream: stderr
