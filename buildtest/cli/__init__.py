@@ -880,6 +880,13 @@ class BuildTestParser:
                     },
                 ),
                 (
+                    ["--max-jobs"],
+                    {
+                        "type": positive_number,
+                        "help": "Maximum number of jobs that can be run concurrently.",
+                    },
+                ),
+                (
                     ["--remove-stagedir"],
                     {
                         "action": "store_true",
