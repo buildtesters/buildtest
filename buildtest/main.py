@@ -176,6 +176,7 @@ def main():
                 limit=args.limit,
                 save_profile=args.save_profile,
                 profile=args.profile,
+                max_jobs=args.max_jobs,
             )
             cmd.build()
 
