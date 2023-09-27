@@ -10,7 +10,7 @@ import multiprocessing as mp
 import os
 import time
 
-from rich.table import Table
+from rich.table import Column, Table
 
 from buildtest.builders.base import BuilderBase
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
@@ -83,65 +83,48 @@ class BuildExecutor:
         self.executors = {}
         logger.debug("Getting Executors from buildtest settings")
 
-        if site_config.valid_executors["local"]:
-            for name in self.configuration.valid_executors["local"].keys():
-                self.executors[name] = LocalExecutor(
-                    name=name,
-                    settings=self.configuration.valid_executors["local"][name][
-                        "setting"
-                    ],
-                    site_configs=self.configuration,
-                    timeout=timeout,
-                )
+        executor_types = {
+            "local": LocalExecutor,
+            "slurm": SlurmExecutor,
+            "lsf": LSFExecutor,
+            "pbs": PBSExecutor,
+            "cobalt": CobaltExecutor,
+        }
 
-        if site_config.valid_executors["slurm"]:
-            for name in self.configuration.valid_executors["slurm"]:
-                self.executors[name] = SlurmExecutor(
+        for executor_type, executor_cls in executor_types.items():
+            valid_executors = self.configuration.valid_executors.get(executor_type, {})
+            for name, executor_settings in valid_executors.items():
+                self.executors[name] = self.create_executor(
+                    executor_cls,
                     name=name,
                     account=account,
-                    settings=self.configuration.valid_executors["slurm"][name][
-                        "setting"
-                    ],
+                    settings=executor_settings.get("setting"),
                     site_configs=self.configuration,
                     maxpendtime=maxpendtime,
                     timeout=timeout,
                 )
 
-        if self.configuration.valid_executors["lsf"]:
-            for name in self.configuration.valid_executors["lsf"]:
-                self.executors[name] = LSFExecutor(
-                    name=name,
-                    account=account,
-                    settings=self.configuration.valid_executors["lsf"][name]["setting"],
-                    site_configs=self.configuration,
-                    maxpendtime=maxpendtime,
-                    timeout=timeout,
-                )
-
-        if self.configuration.valid_executors["pbs"]:
-            for name in self.configuration.valid_executors["pbs"]:
-                self.executors[name] = PBSExecutor(
-                    name=name,
-                    account=account,
-                    settings=self.configuration.valid_executors["pbs"][name]["setting"],
-                    site_configs=self.configuration,
-                    maxpendtime=maxpendtime,
-                    timeout=timeout,
-                )
-
-        if self.configuration.valid_executors["cobalt"]:
-            for name in self.configuration.valid_executors["cobalt"]:
-                self.executors[name] = CobaltExecutor(
-                    name=name,
-                    account=account,
-                    settings=self.configuration.valid_executors["cobalt"][name][
-                        "setting"
-                    ],
-                    site_configs=self.configuration,
-                    maxpendtime=maxpendtime,
-                    timeout=timeout,
-                )
         self.setup()
+
+    def create_executor(
+        self,
+        executor_cls,
+        name,
+        account=None,
+        settings=None,
+        site_configs=None,
+        maxpendtime=None,
+        timeout=None,
+    ):
+        """Create an executor object by passing the executor class and arguments to the executor class"""
+        return executor_cls(
+            name=name,
+            account=account,
+            settings=settings,
+            site_configs=site_configs,
+            maxpendtime=maxpendtime,
+            timeout=timeout,
+        )
 
     def __str__(self):
         return "[buildtest-executor]"
@@ -193,20 +176,23 @@ class BuildExecutor:
 
         for executor_name in self.names():
             create_dir(os.path.join(BUILDTEST_EXECUTOR_DIR, executor_name))
-            executor_settings = self.executors[executor_name]._settings
 
             # if before_script field defined in executor section write content to var/executors/<executor>/before_script.sh
             file = os.path.join(
                 BUILDTEST_EXECUTOR_DIR, executor_name, "before_script.sh"
             )
-            module_cmds = get_module_commands(executor_settings.get("module"))
-
-            content = "#!/bin/bash" + "\n"
+            module_cmds = get_module_commands(
+                self.executors[executor_name]._settings.get("module")
+            )
+            content = ["#!/bin/bash"]
 
             if module_cmds:
-                content += "\n".join(module_cmds) + "\n"
+                content += module_cmds
 
-            content += executor_settings.get("before_script") or ""
+            content.append(
+                self.executors[executor_name]._settings.get("before_script") or ""
+            )
+            content = "\n".join(content)
             write_file(file, content)
 
     def select_builders_to_run(self, builders):
@@ -336,6 +322,8 @@ class BuildExecutor:
         # in case user specifies more process than available CPU count use the min of the two numbers
         num_workers = min(num_workers, os.cpu_count())
 
+        max_jobs = self.configuration.target_config.get("max_jobs")
+
         pool = mp.Pool(num_workers)
         console.print(f"Spawning {num_workers} processes for processing builders")
         count = 0
@@ -350,12 +338,22 @@ class BuildExecutor:
 
             run_builders = self.select_builders_to_run(active_builders)
 
+            # if max_jobs property is set then reduce the number of jobs to run to max_jobs
+            if max_jobs:
+                run_builders = run_builders[:max_jobs]
+
             if not run_builders:
                 raise BuildTestError("Unable to run tests ")
 
-            print(
-                f"In this iteration we are going to run the following tests: {run_builders}"
+            run_table = Table(
+                Column("Builder", overflow="fold", style="red"),
+                title="Builders Eligible to Run",
+                header_style="blue",
             )
+            for builder in run_builders:
+                run_table.add_row(f"{str(builder)}")
+            console.print(run_table)
+
             results = []
 
             for builder in run_builders:
