@@ -188,6 +188,12 @@ def valid_time(value):
     return dt_object
 
 
+def get_parser():
+    """This method is used to simply return the parser for sphinx-argparse."""
+    bp = BuildTestParser()
+    return bp.parser
+
+
 class BuildTestParser:
     """This class implements the buildtest command line interface. This class
     implements the following methods:
