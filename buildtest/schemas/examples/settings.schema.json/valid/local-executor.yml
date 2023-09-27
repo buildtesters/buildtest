@@ -5,6 +5,8 @@ system:
     #testdir: $BUILDTEST_ROOT/tests
     moduletool: N/A
     poolsize: 1
+    max_jobs: 1
+    pager: False
     cdash:
       url: https://my.cdash.org
       project: buildtest

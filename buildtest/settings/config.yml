@@ -7,8 +7,12 @@ system:
     # specify module system to use. Supported module systems are lmod, environment-modules or set to N/A if not available
     moduletool: N/A
 
-    # specify size of job pool for buildtest run command. This will configure the number of concurrent jobs that can run in parallel
+    # specify size of job pool (https://docs.python.org/3/library/multiprocessing.html#multiprocessing.pool.Pool). This will configure the number of processes that can run in parallel.
+    # If not specified then buildtest will use all available cores on the system.
     poolsize: 1
+
+    # maximum number of jobs that can run in parallel. If not specified, buildtest will run all jobs in parallel.
+    #max_jobs: 1
 
     # test timeout in number of seconds
     # timeout: 3600
