@@ -94,8 +94,7 @@ class BuildExecutor:
         for executor_type, executor_cls in executor_types.items():
             valid_executors = self.configuration.valid_executors.get(executor_type, {})
             for name, executor_settings in valid_executors.items():
-                self.executors[name] = self.create_executor(
-                    executor_cls,
+                self.executors[name] = executor_cls(
                     name=name,
                     account=account,
                     settings=executor_settings.get("setting"),
@@ -105,26 +104,6 @@ class BuildExecutor:
                 )
 
         self.setup()
-
-    def create_executor(
-        self,
-        executor_cls,
-        name,
-        account=None,
-        settings=None,
-        site_configs=None,
-        maxpendtime=None,
-        timeout=None,
-    ):
-        """Create an executor object by passing the executor class and arguments to the executor class"""
-        return executor_cls(
-            name=name,
-            account=account,
-            settings=settings,
-            site_configs=site_configs,
-            maxpendtime=maxpendtime,
-            timeout=timeout,
-        )
 
     def __str__(self):
         return "[buildtest-executor]"
