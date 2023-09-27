@@ -881,6 +881,8 @@ class BuildTest:
             "timeout": self.timeout,
             "filter": self.filter_buildspecs,
             "executor-type": self.executor_type,
+            "max_jobs": self.max_jobs,
+            "remove-stagedir": self.remove_stagedir,
         }
         # we need to set module-purge to None if it is False. We delete all keys  that are 'None' before writing to configuration file
         profile_configuration["module-purge"] = (
@@ -948,6 +950,8 @@ class BuildTest:
         self.rebuild = profile_configuration.get("rebuild")
         self.filter_buildspecs = profile_configuration.get("filter")
         self.executor_type = profile_configuration.get("executor-type")
+        self.max_jobs = profile_configuration.get("max_jobs")
+        self.remove_stagedir = profile_configuration.get("remove-stagedir")
 
     def _validate_filters(self):
         """Check filter fields provided by ``buildtest build --filter`` are valid types and supported. Currently
