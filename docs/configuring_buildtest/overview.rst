@@ -656,6 +656,21 @@ Shown below we set ``poolsize`` to 1.
 
         poolsize: 1
 
+.. _configuring_max_jobs:
+
+Configuring Max Jobs
+---------------------
+
+The ``max_jobs`` property is used to limit number of jobs that can run concurrently. This is useful if you want to limit,
+the workload on your system. Buildtest will run all jobs in parallel by default, if ``max_jobs`` is not specified.
+If you want to run all tests in serial, you can set ``max_jobs: 1`` as shown below.
+
+.. code-block:: yaml
+
+    max_jobs: 1
+
+This value can be overridden via ``buildtest build --max-jobs`` option. For more details see :ref:`limit_max_jobs`
+
 Managing Profiles
 ------------------
 
