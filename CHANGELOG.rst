@@ -9,15 +9,17 @@ v1.6 (Sep 28th, 2023)
 - The ``buildtest config profiles remove`` command will remove a given profile from configuration file `#1585 <https://github.com/buildtesters/buildtest/pull/1585>`_
 - The compiler listing is now done via ``buildtest config compilers list`` command, previously it was via ``buildtest config compilers``. `#1588 <https://github.com/buildtesters/buildtest/pull/1588>`_
 - Add short option ``-t`` for ``buildtest inspect query --testpath``. `#1599 <https://github.com/buildtesters/buildtest/pull/1599>`_
-- Add command ``buildtest config executors list`` for listing executors. This was previously implemented with command ``buildtest config executors``. `#1610 <https://github.com/buildtesters/buildtest/pull/1610>`_
+- Change behavior of listing executors from command ``buildtest config executors`` to command name ``buildtest config executors list``. `#1610 <https://github.com/buildtesters/buildtest/pull/1610>`_
 - Add support for building tests by names via ``buildtest build --name``. `#1616 <https://github.com/buildtesters/buildtest/pull/1616>`_
 - Add support for limiting number of jobs that can run concurrently via ``max_jobs`` property in configuration file and option ``buildtest build --max-jobs`` to override configuration on command line. `#1629 <https://github.com/buildtesters/buildtest/pull/1629>`_, `#1630 <https://github.com/buildtesters/buildtest/pull/1630>`_
 
 **Buildspec/Test Changes**
+
 - Add support for deactivating spack environments via ``deactivate`` property. `#1587 <https://github.com/buildtesters/buildtest/pull/1587>`_
 - Add ``set -eo pipefail`` command in generated test script to ensure test are run in strict mode and errors are captured properly. `#1628 <https://github.com/buildtesters/buildtest/pull/1628>`_
 
 **Project Improvements**
+
 - Rewrite logic for building the command line arguments for buildtest. `#1612 <https://github.com/buildtesters/buildtest/pull/1612>`_
 - Update version of **sphinx-autoapi** to fix documentation build error with generating API. `#1632 <https://github.com/buildtesters/buildtest/pull/1632>`_
 - Ensure every buildtest CI run is executed in a unique directory. The environment variable **BUILDTEST_CI_DIR** will be root to where tests will be written in a unique directory. This can be set in shell environment prior to running tests. `#1601 <https://github.com/buildtesters/buildtest/pull/1601/>`_
@@ -29,8 +31,8 @@ v1.6 (Sep 28th, 2023)
 **Bug Fixes**
 
 - Fix time calculation for batch jobs to ensure runtime is calculated correctly from when job runs to when job ends. Previously the test runtime took into account pending time. `#1618 <https://github.com/buildtesters/buildtest/pull/1618>`_
-- Fix issue where ``buildtest report`` was only showing latest test records. `#1620 <https://github.com/buildtesters/buildtest/pull/1620>`_
-- Fix issue with CDASH upload with uniccode characters in test output. `#1627 <https://github.com/buildtesters/buildtest/pull/1627>`_
+- Fix issue with ``buildtest report``  only showing latest test records. `#1620 <https://github.com/buildtesters/buildtest/pull/1620>`_
+- Fix issue with CDASH upload (``buildtest cdash upload``) with uniccode characters in test output. `#1627 <https://github.com/buildtesters/buildtest/pull/1627>`_
 
 v1.5 (Aug 4th, 2023)
 ----------------------
