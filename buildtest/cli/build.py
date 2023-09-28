@@ -564,6 +564,7 @@ class BuildTest:
         limit=None,
         save_profile=None,
         profile=None,
+        max_jobs=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -600,6 +601,7 @@ class BuildTest:
             limit (int, optional): Limit number of tests that can be run. This option is specified by ``buildtest build --limit``
             save_profile (str, optional): Save profile to buildtest configuration specified by ``buildtest build --save-profile``
             profile (str, optional): Profile to load from buildtest configuration specified by ``buildtest build --profile``
+            max_jobs (int, optional): Maximum number of jobs to run concurrently. This option is specified by ``buildtest build --max-jobs``
         """
 
         # check for input arguments that are expected to be a list
@@ -629,7 +631,7 @@ class BuildTest:
                     f"--rebuild {rebuild} exceeds maximum rebuild limit of 50"
                 )
 
-        for field in [timeout, limit, retry]:
+        for field in [timeout, limit, retry, max_jobs]:
             if field is not None:
                 if not isinstance(field, int):
                     raise BuildTestError(f"{field} is not of type int")
@@ -663,6 +665,7 @@ class BuildTest:
         self.limit = limit
         self.save_profile = save_profile
         self.profile = profile
+        self.max_jobs = max_jobs
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
@@ -740,6 +743,7 @@ class BuildTest:
             account=self.account,
             pollinterval=self.pollinterval,
             timeout=self.timeout,
+            max_jobs=self.max_jobs,
         )
 
         self.system = buildtest_system
@@ -811,6 +815,7 @@ class BuildTest:
         self.executor_type = content["executor_type"]
         self.timeout = content["timeout"]
         self.limit = content["limit"]
+        self.max_jobs = content["max_jobs"]
 
     def save_rerun_file(self):
         """Record buildtest command options and save them into rerun file which is read when invoking ``buildtest build --rerun``."""
@@ -840,6 +845,7 @@ class BuildTest:
             "executor_type": self.executor_type,
             "timeout": self.timeout,
             "limit": self.limit,
+            "max_jobs": self.max_jobs,
         }
 
         with open(BUILDTEST_RERUN_FILE, "w") as fd:
@@ -875,6 +881,8 @@ class BuildTest:
             "timeout": self.timeout,
             "filter": self.filter_buildspecs,
             "executor-type": self.executor_type,
+            "max_jobs": self.max_jobs,
+            "remove-stagedir": self.remove_stagedir,
         }
         # we need to set module-purge to None if it is False. We delete all keys  that are 'None' before writing to configuration file
         profile_configuration["module-purge"] = (
@@ -942,6 +950,8 @@ class BuildTest:
         self.rebuild = profile_configuration.get("rebuild")
         self.filter_buildspecs = profile_configuration.get("filter")
         self.executor_type = profile_configuration.get("executor-type")
+        self.max_jobs = profile_configuration.get("max_jobs")
+        self.remove_stagedir = profile_configuration.get("remove-stagedir")
 
     def _validate_filters(self):
         """Check filter fields provided by ``buildtest build --filter`` are valid types and supported. Currently

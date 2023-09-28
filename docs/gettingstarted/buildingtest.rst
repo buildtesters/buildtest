@@ -567,3 +567,19 @@ Next, let's build the tests via newly created profile and take note that it will
 .. dropdown:: ``buildtest build --profile=python-tests``
 
     .. command-output:: buildtest build --profile=python-tests
+
+.. _limit_max_jobs:
+
+Limit Maximum Jobs that can run concurrently
+---------------------------------------------
+
+Buildtest can cap a limit on number of tests that can run concurrently. This can be set in configuration file via :ref:`max_jobs <configuring_max_jobs>`
+field or overridden on command line option via ``--max-jobs``. By default, buildtest will run all jobs concurrently, however with
+``--max-jobs``, buildtest will limit number of concurrent jobs specified by ``--max-jobs``.
+
+Let's limit the number of concurrent jobs to 2 tests, take note that buildtest will run 2 tests per iteration, and wait until test is completed and
+then proceed to next test.
+
+.. dropdown:: ``buildtest build -b tutorials/hello_world.yml --rebuild=5 --max-jobs=2``
+
+    .. command-output:: buildtest build -b tutorials/hello_world.yml --rebuild=5 --max-jobs=2

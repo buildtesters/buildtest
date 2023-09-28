@@ -680,20 +680,22 @@
         "module": {"type": "string"},
         "unload-modules": {"type": "string"},
         "module-purge": {"type": "boolean"},
-        "rebuild": {"type": "integer", "minimum": 1, "maximum": 50},
-        "limit": {"type": "integer", "minimum": 1},
+        "rebuild": {"type": "integer", "minimum": 1, "maximum": 50, "description": "Specify number of tests to rebuild"},
+        "limit": {"type": "integer", "minimum": 1, "description": "Limit number of tests to build"},
         "account": {"type": "string"},
-        "maxpendtime": {"type": "integer", "minimum": 1},
-        "pollinterval": {"type": "integer", "minimum": 1},
+        "maxpendtime": {"type": "integer", "minimum": 1, "description": "Specify maximum pending time in seconds"},
+        "pollinterval": {"type": "integer", "minimum": 1, "description": "Specify poll interval in seconds"},
         "procs": {"$ref": "definitions.schema.json#/definitions/list_of_positive_integers"},
         "nodes": {"$ref": "definitions.schema.json#/definitions/list_of_positive_integers"},
-        "testdir": {"type": "string"},
+        "testdir": {"type": "string", "description": "Specify test directory where buildtest will write tests."},
         "timeout": {"type": "integer", "minimum": 1},
         "executor-type": {
           "type": "string",
           "description": "Specify the `executor-type` field used by ``--executor-type`` option which determines if test will run by local or batch executor",
           "enum": ["local", "batch"]
-        }
+        },
+        "remove-stagedir": {"type": "boolean", "description": "Remove stage directory after test completes"},
+        "max-jobs": {"type": "integer", "minimum": 1, "description": "Maximum number of jobs that can be run at a given time for a particular executor"}
       }
     }
   }

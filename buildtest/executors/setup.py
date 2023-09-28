@@ -45,6 +45,7 @@ class BuildExecutor:
         maxpendtime=None,
         pollinterval=None,
         timeout=None,
+        max_jobs=None,
     ):
         """Initialize executors, meaning that we provide the buildtest
         configuration that are validated, and can instantiate
@@ -55,6 +56,7 @@ class BuildExecutor:
             account (str, optional): pass account name to charge batch jobs.
             maxpendtime (int, optional): maximum pend time in second until job is cancelled.
             pollinterval (int, optional): Number of seconds to wait until polling batch jobs
+            max_jobs (int, optional): Maximum number of jobs to run at a time.
         """
 
         # stores a list of builders objects
@@ -102,7 +104,7 @@ class BuildExecutor:
                     maxpendtime=maxpendtime,
                     timeout=timeout,
                 )
-
+        self.max_jobs = max_jobs or self.configuration.target_config.get("max_jobs")
         self.setup()
 
     def __str__(self):
@@ -301,8 +303,6 @@ class BuildExecutor:
         # in case user specifies more process than available CPU count use the min of the two numbers
         num_workers = min(num_workers, os.cpu_count())
 
-        max_jobs = self.configuration.target_config.get("max_jobs")
-
         pool = mp.Pool(num_workers)
         console.print(f"Spawning {num_workers} processes for processing builders")
         count = 0
@@ -318,8 +318,8 @@ class BuildExecutor:
             run_builders = self.select_builders_to_run(active_builders)
 
             # if max_jobs property is set then reduce the number of jobs to run to max_jobs
-            if max_jobs:
-                run_builders = run_builders[:max_jobs]
+            if self.max_jobs:
+                run_builders = run_builders[: self.max_jobs]
 
             if not run_builders:
                 raise BuildTestError("Unable to run tests ")
