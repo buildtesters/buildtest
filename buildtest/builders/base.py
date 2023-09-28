@@ -435,6 +435,11 @@ class BuilderBase(ABC):
 
         runtime = self._endtime - self._starttime
         self._runtime = runtime.total_seconds()
+
+        # for batch jobs we use the elapsed time for job to calculate the runtime
+        if self.is_batch_job():
+            self._runtime = self.job.elapsedtime
+
         self.metadata["result"]["runtime"] = self._runtime
 
     def get_runtime(self):
@@ -657,13 +662,26 @@ class BuilderBase(ABC):
             Test can be run with shell name, shell options and path to script: ``bash -x /path/to/script.sh``
         """
 
-        if not self.recipe.get("shell") or self.recipe.get("shell") == "python":
+        # if not self.recipe.get("shell") or self.recipe.get("shell") == "python":
+        if self.recipe.get("shell") == "python":
             return [self.testpath]
+
+        if not self.recipe.get("shell"):
+            return [self.shell.name, self.shell.default_opts, self.testpath]
 
         if not self.shell.opts:
             return [self.shell.name, self.testpath]
 
         return [self.shell.name, self.shell.opts, self.testpath]
+
+    def _emit_set_command(self):
+        """This method will emit the set command for strict mode that will exit immediately. In bash, zsh the command is ``set -eo pipefail``. For csh, tcsh and sh there is
+        no such command so we return empty string."""
+
+        if self.shell.name == "bash" or self.shell.name == "zsh":
+            return "set -eo pipefail"
+
+        return ""
 
     def _default_test_variables(self):
         """Return a list of lines inserted in build script that define buildtest specific variables

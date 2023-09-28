@@ -2,11 +2,12 @@
 
 import os
 import shutil
+import tempfile
 import webbrowser
 
 from rich.traceback import install
 
-from buildtest.cli import get_parser
+from buildtest.cli import BuildTestParser
 from buildtest.cli.build import BuildTest, Tee
 from buildtest.cli.buildspec import (
     BuildspecCache,
@@ -47,7 +48,6 @@ from buildtest.defaults import (
     BUILDTEST_EXECUTOR_DIR,
     BUILDTEST_LOGFILE,
     BUILDTEST_USER_HOME,
-    VAR_DIR,
     console,
 )
 from buildtest.exceptions import BuildTestError
@@ -70,9 +70,8 @@ from buildtest.utils.tools import deep_get
 def main():
     """Entry point to buildtest."""
 
-    parser = get_parser()
-    args = parser.parse_args()
-
+    parser = BuildTestParser()
+    args = parser.parse()
     install(show_locals=True)
     no_color = False
 
@@ -144,15 +143,15 @@ def main():
 
     # buildtest build command
     if args.subcommands in ["build", "bd"]:
-        fname = os.path.join(VAR_DIR, "output.txt")
-
-        with Tee(fname):
+        stdout_file = tempfile.NamedTemporaryFile(delete=True, suffix=".txt")
+        with Tee(stdout_file.name):
             cmd = BuildTest(
                 configuration=configuration,
                 buildspecs=args.buildspec,
                 exclude_buildspecs=args.exclude,
                 executors=args.executor,
                 tags=args.tags,
+                name=args.name,
                 exclude_tags=args.exclude_tags,
                 filter_buildspecs=args.filter,
                 rebuild=args.rebuild,
@@ -177,13 +176,18 @@ def main():
                 limit=args.limit,
                 save_profile=args.save_profile,
                 profile=args.profile,
+                max_jobs=args.max_jobs,
             )
             cmd.build()
 
         if cmd.build_success():
             build_history_dir = cmd.get_build_history_dir()
 
-            shutil.move(fname, os.path.join(build_history_dir, "output.txt"))
+            shutil.copyfile(
+                stdout_file.name, os.path.join(build_history_dir, "output.txt")
+            )
+
+        stdout_file.close()
 
     # buildtest build history
     if args.subcommands in ["history", "hy"]:
@@ -373,8 +377,8 @@ def main():
             apply_stylechecks=args.apply,
         )
 
-    elif args.subcommands in ["commands", "cmd"]:
-        list_buildtest_commands()
+    elif args.subcommands in ["commands", "cmds"]:
+        list_buildtest_commands(with_aliases=args.with_aliases)
 
 
 if __name__ == "__main__":

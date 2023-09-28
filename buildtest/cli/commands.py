@@ -1,28 +1,20 @@
-def list_buildtest_commands():
-    """This method implements command ``buildtest commands`` which shows a list of buildtest commands"""
+from buildtest.cli import BuildTestParser
 
-    cmds_list = [
-        "build",
-        "buildspec",
-        "cd",
-        "cdash",
-        "clean",
-        "config",
-        "debugreport",
-        "docs",
-        "history",
-        "info",
-        "inspect",
-        "path",
-        "report",
-        "schema",
-        "schemadocs",
-        "show",
-        "stats",
-        "stylecheck",
-        "tutorial-examples",
-        "unittests",
-    ]
 
-    for field in cmds_list:
+def list_buildtest_commands(with_aliases=None):
+    """This method implements command ``buildtest commands`` which shows a list of buildtest commands
+
+    Args:
+        with_aliases (bool): Return a list of buildtest commands with aliases
+    """
+
+    cmds = BuildTestParser()
+    subcmds = sorted(cmds.buildtest_subcommands)
+
+    # if --with-aliases we will show all available choices for subcommands including aliases
+    if with_aliases:
+        subparser = cmds.get_subparsers()
+        subcmds = sorted(list(subparser.choices.keys()))
+
+    for field in sorted(subcmds):
         print(field)

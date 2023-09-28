@@ -116,6 +116,7 @@ def resolve_testdirectory(configuration: SiteConfiguration, testdir: str = None)
 def discover_buildspecs(
     buildspecs: Optional[List[str]] = None,
     exclude_buildspecs: Optional[List[str]] = None,
+    name: Optional[List[str]] = None,
     executors: Optional[List[str]] = None,
     tags: Optional[List[str]] = None,
 ) -> Dict[str, List[str]]:
@@ -125,6 +126,7 @@ def discover_buildspecs(
     Args:
         buildspecs (list, optional): List of input buildspecs passed by argument ``buildtest build --buildspec``
         exclude_buildspecs (list, optional): List of excluded buildspecs by argument ``buildtest build --exclude``
+        name (list, optional): List of test names to discover buildspecs that are specified by ``buildtest build --name``
         tags (list, optional): List of input tags for discovering buildspecs by argument ``buildtest build --tags``
         executors (list, optional): List of input executors for discovering buildspecs by argument ``buildtest build --executor``
 
@@ -138,6 +140,7 @@ def discover_buildspecs(
     buildspec_dict["excluded"] = []
     buildspec_dict["detected"] = []
     buildspec_dict["tags"] = {}
+    buildspec_dict["name"] = {}
     buildspec_dict["executors"] = {}
 
     logger.debug(
@@ -165,6 +168,15 @@ def discover_buildspecs(
 
         buildspec_dict["included"] += found_buildspecs
         logger.debug(f"Discovered buildspecs based on executors: {executors}")
+        logger.debug(found_buildspecs)
+
+    if name:
+        found_buildspecs, buildspec_dict["name"] = discover_buildspecs_by_name(
+            buildspec_cache=cache, names=name
+        )
+
+        buildspec_dict["included"] += found_buildspecs
+        logger.debug(f"Discovered buildspecs based on names: {name}")
         logger.debug(found_buildspecs)
 
     # discover buildspecs based on --buildspec
@@ -240,7 +252,7 @@ def print_discovered_buildspecs(buildspec_dict):
     table = Table(
         title="Discovered buildspecs", box=box.DOUBLE_EDGE, header_style="blue"
     )
-    table.add_column("buildspec", style="green")
+    table.add_column("buildspec", style="green", overflow="fold")
 
     for i in buildspec_dict["included"]:
         table.add_row(i)
@@ -251,7 +263,7 @@ def print_discovered_buildspecs(buildspec_dict):
         table = Table(
             title="Excluded buildspecs", box=box.DOUBLE_EDGE, header_style="blue"
         )
-        table.add_column("buildspec", style="red")
+        table.add_column("buildspec", style="red", overflow="fold")
 
         for i in buildspec_dict["excluded"]:
             table.add_row(i)
@@ -265,7 +277,7 @@ def print_discovered_buildspecs(buildspec_dict):
                 box=box.DOUBLE_EDGE,
                 header_style="blue",
             )
-            table.add_column("buildspec", style="turquoise2")
+            table.add_column("buildspec", style="turquoise2", overflow="fold")
             for row in buildspec_dict["tags"][tagname]:
                 table.add_row(row)
             console.print(table)
@@ -278,8 +290,21 @@ def print_discovered_buildspecs(buildspec_dict):
                 box=box.DOUBLE_EDGE,
                 header_style="blue",
             )
-            table.add_column("buildspecs", style="magenta1")
+            table.add_column("buildspecs", style="magenta1", overflow="fold")
             for row in buildspec_dict["executors"][executorname]:
+                table.add_row(f"{row}")
+            console.print(table)
+
+    # print breakdown of buildspecs by executors
+    if buildspec_dict.get("name"):
+        for name in buildspec_dict["name"].keys():
+            table = Table(
+                title=f"Buildspecs by Name={name}",
+                box=box.DOUBLE_EDGE,
+                header_style="blue",
+            )
+            table.add_column("buildspecs", style="yellow2", overflow="fold")
+            for row in buildspec_dict["name"][name]:
                 table.add_row(f"{row}")
             console.print(table)
 
@@ -346,6 +371,33 @@ def discover_buildspecs_by_tags(buildspec_cache, tagnames):
     buildspecs = list(set(buildspecs))
 
     return buildspecs, buildspecs_by_tags
+
+
+def discover_buildspecs_by_name(buildspec_cache, names):
+    """This method will discover buildspecs given a list of test names.
+
+     Args:
+        buildspec_cache (dict): Loaded buildspec cache as a dictionary
+        names (list): List of test names to search for buildspecs from cache
+
+
+    Returns:
+         list, dict: first argument is a list of buildspecs discovered for all test names. The second argument is
+         dictionary breakdown of buildspecs by each name
+    """
+
+    buildspec_by_names = {}
+    found_buildspecs = []
+    for name in names:
+        for buildspecfile in buildspec_cache["buildspecs"].keys():
+            # if there is a match, add buildspecs and proceed to next test name
+            if name in buildspec_cache["buildspecs"][buildspecfile].keys():
+                buildspec_by_names[name] = [buildspecfile]
+                found_buildspecs.append(buildspecfile)
+                break
+
+    found_buildspecs = list(set(found_buildspecs))
+    return found_buildspecs, buildspec_by_names
 
 
 def discover_buildspecs_by_executor(buildspec_cache, executors):
@@ -468,8 +520,8 @@ def print_filters():
     """
 
     table = Table(title="Buildtest Filters", header_style="blue")
-    table.add_column("Field", style="green")
-    table.add_column("Description", style="red")
+    table.add_column("Field", style="green", overflow="fold")
+    table.add_column("Description", style="red", overflow="fold")
 
     table.add_row("tags", "Filter tests by [italic]'tag'[/italic] field")
     table.add_row("type", "Filter test by [italic]'type'[/italic] field")
@@ -486,6 +538,7 @@ class BuildTest:
         buildspecs=None,
         exclude_buildspecs=None,
         tags=None,
+        name=None,
         exclude_tags=None,
         executors=None,
         testdir=None,
@@ -511,6 +564,7 @@ class BuildTest:
         limit=None,
         save_profile=None,
         profile=None,
+        max_jobs=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -521,6 +575,7 @@ class BuildTest:
             buildspecs (list, optional): list of buildspecs from command line ``buildtest build --buildspec``
             exclude_buildspecs (list, optional): list of excluded buildspecs from command line ``buildtest build --exclude``
             tags (list, optional): list if tags to discover tests specified via command line ``buildtest build --tags``
+            name (list, optional): list of test names to run specified via command line ``buildtest build --name``
             exclude_tags (list, optional): list if tags to exclude specified via command line ``buildtest build --exclude-tags``
             executors (list, optional): list of executors passed from command line ``buildtest build --executors``
             testdir (str): Path to test directory where tests are written. This argument can be passed from command line ``buildtest build --testdir``
@@ -546,10 +601,18 @@ class BuildTest:
             limit (int, optional): Limit number of tests that can be run. This option is specified by ``buildtest build --limit``
             save_profile (str, optional): Save profile to buildtest configuration specified by ``buildtest build --save-profile``
             profile (str, optional): Profile to load from buildtest configuration specified by ``buildtest build --profile``
+            max_jobs (int, optional): Maximum number of jobs to run concurrently. This option is specified by ``buildtest build --max-jobs``
         """
 
         # check for input arguments that are expected to be a list
-        for arg_name in [buildspecs, exclude_buildspecs, tags, exclude_tags, executors]:
+        for arg_name in [
+            buildspecs,
+            exclude_buildspecs,
+            tags,
+            exclude_tags,
+            executors,
+            name,
+        ]:
             if arg_name and not isinstance(arg_name, list):
                 raise BuildTestError(f"{arg_name} is not of type list")
 
@@ -568,7 +631,7 @@ class BuildTest:
                     f"--rebuild {rebuild} exceeds maximum rebuild limit of 50"
                 )
 
-        for field in [timeout, limit, retry]:
+        for field in [timeout, limit, retry, max_jobs]:
             if field is not None:
                 if not isinstance(field, int):
                     raise BuildTestError(f"{field} is not of type int")
@@ -580,6 +643,7 @@ class BuildTest:
         self.buildspecs = buildspecs
         self.exclude_buildspecs = exclude_buildspecs
         self.tags = tags
+        self.name = name
         self.exclude_tags = exclude_tags
         self.executors = executors
         self.maxpendtime = maxpendtime
@@ -601,6 +665,7 @@ class BuildTest:
         self.limit = limit
         self.save_profile = save_profile
         self.profile = profile
+        self.max_jobs = max_jobs
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
@@ -678,6 +743,7 @@ class BuildTest:
             account=self.account,
             pollinterval=self.pollinterval,
             timeout=self.timeout,
+            max_jobs=self.max_jobs,
         )
 
         self.system = buildtest_system
@@ -728,6 +794,7 @@ class BuildTest:
         self.buildspecs = content["buildspecs"]
         self.tags = content["tags"]
         self.exclude_tags = content["exclude_tags"]
+        self.name = content["name"]
         self.filter = content["filter"]
         self.exclude_buildspecs = content["exclude_buildspecs"]
         self.executors = content["executors"]
@@ -748,6 +815,7 @@ class BuildTest:
         self.executor_type = content["executor_type"]
         self.timeout = content["timeout"]
         self.limit = content["limit"]
+        self.max_jobs = content["max_jobs"]
 
     def save_rerun_file(self):
         """Record buildtest command options and save them into rerun file which is read when invoking ``buildtest build --rerun``."""
@@ -756,6 +824,7 @@ class BuildTest:
             "buildspecs": self.buildspecs,
             "tags": self.tags,
             "exclude_tags": self.exclude_tags,
+            "name": self.name,
             "filter": self.filter_buildspecs,
             "exclude_buildspecs": self.exclude_buildspecs,
             "executors": self.executors,
@@ -776,6 +845,7 @@ class BuildTest:
             "executor_type": self.executor_type,
             "timeout": self.timeout,
             "limit": self.limit,
+            "max_jobs": self.max_jobs,
         }
 
         with open(BUILDTEST_RERUN_FILE, "w") as fd:
@@ -797,6 +867,7 @@ class BuildTest:
             "exclude-buildspecs": self.exclude_buildspecs,
             "tags": self.tags,
             "exclude-tags": self.exclude_tags,
+            "name": self.name,
             "executors": self.executors,
             "module": self.modules,
             "unload-modules": self.unload_modules,
@@ -810,6 +881,8 @@ class BuildTest:
             "timeout": self.timeout,
             "filter": self.filter_buildspecs,
             "executor-type": self.executor_type,
+            "max_jobs": self.max_jobs,
+            "remove-stagedir": self.remove_stagedir,
         }
         # we need to set module-purge to None if it is False. We delete all keys  that are 'None' before writing to configuration file
         profile_configuration["module-purge"] = (
@@ -863,6 +936,7 @@ class BuildTest:
         self.exclude_buildspecs = profile_configuration.get("exclude-buildspecs")
         self.tags = profile_configuration.get("tags")
         self.exclude_tags = profile_configuration.get("exclude-tags")
+        self.name = profile_configuration.get("name")
         self.executors = profile_configuration.get("executors")
         self.limit = profile_configuration.get("limit")
         self.account = profile_configuration.get("account")
@@ -876,6 +950,8 @@ class BuildTest:
         self.rebuild = profile_configuration.get("rebuild")
         self.filter_buildspecs = profile_configuration.get("filter")
         self.executor_type = profile_configuration.get("executor-type")
+        self.max_jobs = profile_configuration.get("max_jobs")
+        self.remove_stagedir = profile_configuration.get("remove-stagedir")
 
     def _validate_filters(self):
         """Check filter fields provided by ``buildtest build --filter`` are valid types and supported. Currently
@@ -919,6 +995,7 @@ class BuildTest:
         self.discovered_bp = discover_buildspecs(
             buildspecs=self.buildspecs,
             exclude_buildspecs=self.exclude_buildspecs,
+            name=self.name,
             tags=self.tags,
             executors=self.executors,
         )
@@ -1170,11 +1247,11 @@ class BuildTest:
 
         table = Table(title="Test Summary", show_lines=True, header_style="blue")
         table.add_column("builder", overflow="fold")
-        table.add_column("executor")
-        table.add_column("status")
+        table.add_column("executor", overflow="fold")
+        table.add_column("status", overflow="fold")
         table.add_column("checks (ReturnCode, Regex, Runtime)", overflow="fold")
-        table.add_column("returncode")
-        table.add_column("runtime")
+        table.add_column("returncode", overflow="fold")
+        table.add_column("runtime", overflow="fold")
 
         passed_tests = 0
         failed_tests = 0
@@ -1330,14 +1407,14 @@ class BuildTest:
             builder_type (str): The builder type corresponding to the list of ``builders``. This type corresponds to the ``type`` field in the test
         """
         table = Table(
-            Column(header="builder", style="blue"),
-            Column(header="type", style="cyan1"),
-            Column(header="executor", style="green"),
-            Column(header="compiler", style="red"),
-            Column(header="nodes", style="orange3"),
-            Column(header="procs", style="orange3"),
-            Column(header="description", style="magenta"),
-            Column(header="buildspecs", style="yellow"),
+            Column(header="builder", style="blue", overflow="fold"),
+            Column(header="type", style="cyan1", overflow="fold"),
+            Column(header="executor", style="green", overflow="fold"),
+            Column(header="compiler", style="red", overflow="fold"),
+            Column(header="nodes", style="orange3", overflow="fold"),
+            Column(header="procs", style="orange3", overflow="fold"),
+            Column(header="description", style="magenta", overflow="fold"),
+            Column(header="buildspecs", style="yellow", overflow="fold"),
             title=f"Builders by type={builder_type}",
             show_lines=True,
             header_style="blue",

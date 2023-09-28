@@ -11,7 +11,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js
       uses: actions/setup-node@v3
       with:
@@ -45,9 +45,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        # If you're using actions/checkout@v3 you must set persist-credentials
+        # If you're using actions/checkout@v4 you must set persist-credentials
         # to false in most cases for the deployment to work correctly.
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
 
@@ -74,7 +74,7 @@ jobs:
           ls -R downloads
 
       - name: Deploy to GitHub Pages 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        uses: JamesIves/github-pages-deploy-action@v4.4.3
         with:
           # ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           branch: gh-pages

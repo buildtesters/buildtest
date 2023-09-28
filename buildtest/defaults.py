@@ -24,8 +24,19 @@ BUILDTEST_USER_HOME = os.path.join(userhome, ".buildtest")
 # dictionary used for storing status of builds
 USER_SETTINGS_FILE = os.path.join(BUILDTEST_USER_HOME, "config.yml")
 
+# default configuration file
+DEFAULT_SETTINGS_FILE = os.path.join(
+    BUILDTEST_ROOT, "buildtest", "settings", "config.yml"
+)
 
 VAR_DIR = os.path.join(BUILDTEST_ROOT, "var")
+ci_dir = os.getenv("BUILDTEST_CI_DIR")
+
+if ci_dir:
+    VAR_DIR = os.path.join(ci_dir, "var")
+    settings_file = os.path.join(ci_dir, "config.yml")
+    DEFAULT_SETTINGS_FILE = settings_file
+
 
 BUILDTEST_LOGFILE = os.path.join(VAR_DIR, "buildtest.log")
 DEFAULT_LOGDIR = os.path.join(VAR_DIR, "logs")
@@ -51,9 +62,6 @@ BUILDSPEC_DEFAULT_PATH = [
     os.path.join(BUILDTEST_ROOT, "general_tests"),
 ]
 
-DEFAULT_SETTINGS_FILE = os.path.join(
-    BUILDTEST_ROOT, "buildtest", "settings", "config.yml"
-)
 TUTORIALS_SETTINGS_FILE = os.path.join(
     BUILDTEST_ROOT, "buildtest", "settings", "spack_container.yaml"
 )

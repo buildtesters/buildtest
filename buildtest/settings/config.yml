@@ -1,45 +1,50 @@
 system:
   generic:
-    # specify list of hostnames where buildtest can run for given system record
-    hostnames: [".*"]
-
+    # specify a list of hostnames that is a regular expression where buildtest can run.
+    hostnames: ['.*']
     # system description
     description: Generic System
-    # specify module system used at your site (environment-modules, lmod)
+    # specify module system to use. Supported module systems are lmod, environment-modules or set to N/A if not available
     moduletool: N/A
 
-    # specify test timeout duration in number of seconds
-    # timeout: 60
-
-    # pool size for parallel processing using multiprocessing.Pool. Pool Size must be 1 or higher. The pool size is calculated as follows: poolsize = min(poolsize, os.cpu_count())
+    # specify size of job pool (https://docs.python.org/3/library/multiprocessing.html#multiprocessing.pool.Pool). This will configure the number of processes that can run in parallel.
+    # If not specified then buildtest will use all available cores on the system.
     poolsize: 1
 
-    # determine whether to enable pagination
-    pager: False
+    # maximum number of jobs that can run in parallel. If not specified, buildtest will run all jobs in parallel.
+    #max_jobs: 1
 
+    # test timeout in number of seconds
+    # timeout: 3600
+
+    # enable pagination for buildtest
+    pager: false
+
+    # options for buildtest buildspec find command
     buildspecs:
-      # whether to rebuild cache file automatically when running `buildtest buildspec find`
-      rebuild: False
-      # limit number of records to display when running `buildtest buildspec find`
+      # determine whether to rebuild buildspec cache
+      rebuild: false
+      # determine number of records to display
       count: 15
-      # format fields to display when running `buildtest buildspec find`, By default we will show name,description
-      format: "name,description"
-      # enable terse mode
-      terse: False
-      # specify list of directories to search for buildspecs when building cache
-      #root: [ $BUILDTEST_ROOT/examples, /tmp/buildspecs ]
+      # specify format fields
+      format: name,description
+      # display output in terse mode
+      terse: false
+
+    # options for buildtest report command
     report:
+      # number of records to display
       count: 25
-      #enable terse mode for report
-      terse: False
-      format: "name,id,state,runtime,returncode"
-      # show the latest for every test
-      latest: True
-      # show the oldest for every test
-      oldest: False
+      # display output in terse mode
+      terse: false
+      # specify format fields
+      format: name,id,state,runtime,returncode
+      # show latest test run
+      latest: false
+      # show oldest test run
+      oldest: false
 
     executors:
-      # define local executors for running jobs locally
       local:
         bash:
           description: submit jobs on local machine using bash shell
@@ -53,39 +58,20 @@ system:
         zsh:
           description: submit jobs on local machine using zsh shell
           shell: zsh
-    # compiler block
     compilers:
-      # a list of directories to search for modules
-      # modulepath: ['/tmp', '/var/']
-
-      # regular expression to search for compilers based on module pattern. Used with 'buildtest config compilers find' to generate compiler instance
-      # find:
-      #  gcc: "^(gcc)"
-      #  intel: "^(intel)"
-      #  cray: "^(craype)"
-      #  pgi: "^(pgi)"
-      #  cuda: ^(cuda)"
-      #  clang: "^(clang)"
-
-      # declare compiler instance which can be site-specific. You can let 'buildtest config compilers find' generate compiler section
       compiler:
         gcc:
           builtin_gcc:
             cc: gcc
             fc: gfortran
             cxx: g++
-
-    # location of log directory
-    # logdir: /tmp/
-
-    # specify location where buildtest will write tests
-    # testdir: /tmp
-
-    # specify one or more directory where buildtest should load buildspecs
-    # buildspec_roots: []
-
+    # specify CDASH configuration when using 'buildtest cdash upload'
     cdash:
+      # CDASH server
       url: https://my.cdash.org/
+      # name of CDASH project where to push test reports
       project: buildtest
+      # specify the site name which should generally by name of your HPC system. This is used by CDASH to group test results by site
       site: generic
+      # specify the build name which is used to group test results by build name
       buildname: tutorials

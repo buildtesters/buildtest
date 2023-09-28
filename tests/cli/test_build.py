@@ -288,6 +288,24 @@ class TestBuildTest:
             cmd.build()
 
     @pytest.mark.cli
+    def test_buildspecs_by_name(self):
+        # testing buildtest build --name
+        cmd = BuildTest(
+            configuration=configuration,
+            name=["hello_world", "add_numbers"],
+            buildtest_system=self.system,
+        )
+        cmd.build()
+
+        # should raise exception if `name` is not a list
+        with pytest.raises(BuildTestError):
+            BuildTest(
+                configuration=configuration,
+                name="pass_test",
+                buildtest_system=self.system,
+            )
+
+    @pytest.mark.cli
     def test_build_csh_executor(self):
         if not shutil.which("csh"):
             pytest.skip("Unable to run this test since it requires 'csh'")
@@ -394,6 +412,16 @@ class TestBuildTest:
                 limit=1.5,
             )
 
+    def test_max_jobs(self):
+        # testing buildtest build -b tutorials/hello_world.yml --max-jobs=2 --rebuild=4
+        cmd = BuildTest(
+            configuration=configuration,
+            buildspecs=["tutorials/hello_world.yml"],
+            rebuild=4,
+            max_jobs=2,
+        )
+        cmd.build()
+
     @pytest.mark.cli
     def test_invalid_buildspes(self):
         buildspec_file = [
@@ -488,6 +516,8 @@ class TestBuildTest:
             rebuild=2,
             timeout=60,
             executor_type="local",
+            remove_stagedir=True,
+            max_jobs=2,
             buildtest_system=self.system,
             save_profile="demo",
         )
@@ -614,6 +644,14 @@ class TestBuildTest_TypeCheck:
         # timeout must be a positive integer
         with pytest.raises(BuildTestError):
             BuildTest(configuration=configuration, tags=["pass"], timeout=-1)
+
+    def test_invalid_max_jobs(self):
+        with pytest.raises(BuildTestError):
+            BuildTest(configuration=configuration, tags=["pass"], max_jobs=0)
+
+        # must be an integer
+        with pytest.raises(BuildTestError):
+            BuildTest(configuration=configuration, tags=["pass"], max_jobs=0.1)
 
     def test_invalid_exclude_tags_type(self):
         # exclude_tags must be a list

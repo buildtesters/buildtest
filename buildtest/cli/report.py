@@ -4,7 +4,7 @@ import os
 import random
 import sys
 
-from rich.table import Table
+from rich.table import Column, Table
 
 from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
@@ -27,6 +27,7 @@ def is_int(val):
 
 
 class Report:
+    default_row_count = 50
     # list of format fields
     format_field_description = {
         "buildspec": "Buildspec File",
@@ -130,6 +131,7 @@ class Report:
         )
         self.pager = pager
         self.color = color
+        self.count = count
         self.input_report = report_file
 
         # if detailed option is specified
@@ -497,7 +499,11 @@ class Report:
 
     def print_format_fields(self):
         """Displays list of format field which implements command ``buildtest report --helpformat``"""
-        table = Table("[blue]Field", "[blue]Description", title="Format Fields")
+        table = Table(
+            Column("Field", overflow="fold", header_style="blue"),
+            Column("Description", overflow="fold", header_style="blue"),
+            title="Format Fields",
+        )
         for field, description in self.format_field_description.items():
             table.add_row(f"[red]{field}", f"[green]{description}")
 
@@ -507,9 +513,9 @@ class Report:
         """Displays list of help filters which implements command ``buildtest report --helpfilter``"""
 
         table = Table(
-            "[blue]Field",
-            "[blue]Description",
-            "[blue]Expected Value",
+            Column("Field", overflow="fold", header_style="blue"),
+            Column("Description", overflow="fold", header_style="blue"),
+            Column("Expected Value", overflow="fold", header_style="blue"),
             title="Filter Fields",
         )
 
@@ -587,12 +593,16 @@ class Report:
             root_disk_usage|PASS|0
             root_disk_usage|PASS|0
         """
+        if not self.count:
+            self.count = (
+                self.configuration.target_config["report"].get("count")
+                or self.default_row_count
+            )
 
-        count = (
-            self.configuration.target_config["report"].get("count")
-            if count is None
-            else count
-        )
+        # print_report method can specify count argument instead of calling the Report class which is useful for regression test. Therefore if its specified
+        # in method then use the value
+        self.count = count or self.count
+
         terse = (
             self.configuration.target_config["report"].get("terse")
             if terse is None
@@ -608,11 +618,13 @@ class Report:
 
             transpose_list = [list(i) for i in zip(*row_entry)]
 
-            if count == 0:
+            if self.count == 0:
                 return
 
             # limited number of rows to be printed in terse mode. If count is negative we print all rows
-            transpose_list = transpose_list[:count] if count > 0 else transpose_list
+            transpose_list = (
+                transpose_list[: self.count] if self.count > 0 else transpose_list
+            )
 
             for row in transpose_list:
                 line = "|".join(row)
@@ -627,11 +639,13 @@ class Report:
 
             transpose_list = [list(i) for i in zip(*row_entry)]
 
-            if count == 0:
+            if self.count == 0:
                 console.print(table)
                 return
 
-            transpose_list = transpose_list[:count] if count > 0 else transpose_list
+            transpose_list = (
+                transpose_list[: self.count] if self.count > 0 else transpose_list
+            )
             for row in transpose_list:
                 table.add_row(*row)
 
@@ -889,17 +903,13 @@ def report_cmd(args, configuration, report_file=None):
     if pager:
         with console.pager():
             results.print_report(
-                terse=args.terse,
-                noheader=args.no_header,
-                count=args.count,
-                color=consoleColor,
+                terse=args.terse, noheader=args.no_header, color=consoleColor
             )
         return
     results.print_report(
         terse=args.terse,
         row_count=args.row_count,
         noheader=args.no_header,
-        count=args.count,
         color=consoleColor,
     )
 
@@ -915,10 +925,10 @@ def report_summary(report, configuration, detailed=None, color=None):
     test_breakdown = report.breakdown_by_test_names()
 
     table = Table(title="Breakdown by test", header_style=consoleColor)
-    table.add_column("Name", style=consoleColor)
-    table.add_column("Total Pass", style=consoleColor)
-    table.add_column("Total Fail", style=consoleColor)
-    table.add_column("Total Runs", style=consoleColor)
+    table.add_column("Name", overflow="fold", style=consoleColor)
+    table.add_column("Total Pass", overflow="fold", style=consoleColor)
+    table.add_column("Total Fail", overflow="fold", style=consoleColor)
+    table.add_column("Total Runs", overflow="fold", style=consoleColor)
 
     for k in test_breakdown.keys():
         table.add_row(

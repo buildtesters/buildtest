@@ -132,6 +132,8 @@ class ScriptBuilder(BuilderBase):
             if data_warp_lines:
                 lines += data_warp_lines
 
+        lines.append(self._emit_set_command())
+
         # for python scripts we generate python script and return lines
         if self.shell.name == "python":
             self.logger.debug(f"[{self.name}]: Detected python shell")

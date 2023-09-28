@@ -10,6 +10,7 @@ from rich.table import Column, Table
 from buildtest.defaults import console
 from buildtest.exceptions import ConfigurationError
 from buildtest.executors.setup import BuildExecutor
+from buildtest.schemas.defaults import custom_validator, schema_table
 
 
 def config_cmd(args, configuration, editor, system):
@@ -20,19 +21,28 @@ def config_cmd(args, configuration, editor, system):
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
         system (buildtest.system.BuildTestSystem): An instance of BuildTestSystem class
     """
+
     if args.config in ["view", "v"]:
         view_configuration(configuration, theme=args.theme, pager=args.pager)
 
+    elif args.config in ["profiles"]:
+        if args.profiles == "list":
+            list_profiles(configuration, theme=args.theme, print_yaml=args.yaml)
+
+        if args.profiles in ["remove", "rm"]:
+            remove_profiles(configuration, profile_name=args.profile_name)
+
     elif args.config in ["executors", "ex"]:
         buildexecutor = BuildExecutor(configuration)
-        view_executors(
-            configuration,
-            buildexecutor,
-            args.json,
-            args.yaml,
-            args.disabled,
-            args.invalid,
-        )
+        if args.executors == "list":
+            view_executors(
+                configuration,
+                buildexecutor,
+                args.json,
+                args.yaml,
+                args.disabled,
+                args.invalid,
+            )
 
     elif args.config in ["validate", "val"]:
         validate_config(configuration, system.system["moduletool"])
@@ -72,9 +82,9 @@ def view_system(configuration):
 
     # table = {"system": [], "description": [], "hostnames": [], "moduletool": []}
     table = Table(
-        "system",
-        "description",
-        "moduletool",
+        Column("system", overflow="fold"),
+        Column("description", overflow="fold"),
+        Column("moduletool", overflow="fold"),
         Column("hostnames", overflow="fold"),
         title=f"System Summary (Configuration={configuration.file})",
         header_style="blue",
@@ -152,6 +162,78 @@ def view_configuration(configuration, theme=None, pager=None):
 
     console.rule(configuration.file)
     console.print(syntax)
+
+
+def remove_profiles(configuration, profile_name):
+    """This method will remove profile names from configuration file given a list of profile names. This method
+    will be invoked when user runs ``buildtest config profiles remove`` command.
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        profile_name (list): List of name of profile to remove
+    """
+
+    if not configuration.target_config.get("profiles"):
+        console.print(
+            f"Unable to remove any profiles because no profiles found in configuration file: {configuration.file}. Please create a profile using [red]buildtest build --save-profile[/red]"
+        )
+        return
+
+    # variable to determine if file needs to be written back to disk
+    write_back = False
+
+    for name in profile_name:
+        if name not in configuration.target_config["profiles"]:
+            console.print(f"Unable to remove profile: {name} because it does not exist")
+            continue
+
+        del configuration.target_config["profiles"][name]
+        console.print(f"Removing profile: {name}")
+        write_back = True
+
+    # if no profiles exist then delete top-level key 'profiles'
+    if len(configuration.target_config["profiles"].keys()) == 0:
+        del configuration.target_config["profiles"]
+
+    custom_validator(
+        configuration.config, schema_table["settings.schema.json"]["recipe"]
+    )
+
+    # only update the configuration file if we removed a profile
+    if write_back:
+        console.print(f"Updating configuration file: {configuration.file}")
+
+        with open(configuration.file, "w") as fd:
+            yaml.safe_dump(
+                configuration.config, fd, default_flow_style=False, sort_keys=False
+            )
+
+
+def list_profiles(configuration, theme=None, print_yaml=None):
+    """Display the list of profile for buildtest configuration file. This implements command ``buildtest config profiles list``
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        theme (str, optional): Color theme to choose. This is the Pygments style (https://pygments.org/docs/styles/#getting-a-list-of-available-styles) which is specified by ``--theme`` option
+        print_yaml (bool, optional): Display profiles in yaml format. This is specified by ``--yaml`` option
+    """
+
+    if not configuration.target_config.get("profiles"):
+        console.print(
+            f"Unable to list any profiles because no profiles found in configuration file: {configuration.file}. Please create a profile using `buildtest build --save-profile`"
+        )
+        return
+    if print_yaml:
+        profile_configuration = yaml.dump(
+            configuration.target_config["profiles"], indent=2
+        )
+        syntax = Syntax(profile_configuration, "yaml", theme=theme or "monokai")
+        console.print(syntax)
+        return
+
+    # print profiles as raw text
+    for profile_name in configuration.target_config["profiles"].keys():
+        print(profile_name)
 
 
 def view_executors(

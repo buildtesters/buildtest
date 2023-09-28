@@ -29,9 +29,14 @@ class LSFExecutor(BaseExecutor):
     def __init__(
         self, name, settings, site_configs, account=None, maxpendtime=None, timeout=None
     ):
-        self.account = account
-        self.maxpendtime = maxpendtime
-        super().__init__(name, settings, site_configs, timeout=None)
+        super().__init__(
+            name,
+            settings,
+            site_configs,
+            timeout=timeout,
+            account=account,
+            maxpendtime=maxpendtime,
+        )
 
         self.queue = self._settings.get("queue")
 
@@ -75,8 +80,10 @@ class LSFExecutor(BaseExecutor):
 
         cmd = f"bash {self._bashopts} {os.path.basename(builder.build_script)}"
 
-        timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
-        command = builder.run(cmd, timeout)
+        self.timeout = self.timeout or self._buildtestsettings.target_config.get(
+            "timeout"
+        )
+        command = builder.run(cmd, self.timeout)
 
         if command.returncode() != 0:
             builder.failed()
@@ -113,61 +120,3 @@ class LSFExecutor(BaseExecutor):
         console.print(msg)
 
         return builder
-
-    def poll(self, builder):
-        """Given a builder object we poll the job by invoking builder method ``builder.job.poll()`` return state of job. If
-        job is suspended or pending we stop timer and check if timer exceeds maxpendtime value which could be defined in configuration
-        file or passed via command line ``--max-pend-time``
-
-        Args:
-            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
-        """
-
-        builder.job.poll()
-
-        # if job is complete gather job data
-        if builder.job.is_complete():
-            self.gather(builder)
-            return
-
-        builder.stop()
-        if builder.job.is_suspended() or builder.job.is_pending():
-            self.logger.debug(f"Time Duration: {builder.duration}")
-            self.logger.debug(f"Max Pend Time: {self.maxpendtime}")
-
-            # if timer time is more than requested pend time then cancel job
-            if int(builder.timer.duration()) > self.maxpendtime:
-                builder.job.cancel()
-                builder.failed()
-                console.print(
-                    f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.timer.duration()} sec[/red] "
-                )
-                return
-
-        builder.start()
-
-    def gather(self, builder):
-        """Gather Job detail after completion of job by invoking the builder method ``builder.job.gather()``.
-        We retrieve exit code, output file, error file and update builder metadata.
-
-        Args:
-            builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
-        """
-
-        builder.record_endtime()
-
-        builder.metadata["job"] = builder.job.gather()
-        builder.metadata["result"]["returncode"] = builder.job.exitcode()
-
-        self.logger.debug(
-            f"[{builder.name}] returncode: {builder.metadata['result']['returncode']}"
-        )
-
-        builder.metadata["outfile"] = os.path.join(
-            builder.stage_dir, builder.job.output_file()
-        )
-        builder.metadata["errfile"] = os.path.join(
-            builder.stage_dir, builder.job.error_file()
-        )
-        console.print(f"[blue]{builder}[/]: Job {builder.job.get()} is complete! ")
-        builder.post_run_steps()

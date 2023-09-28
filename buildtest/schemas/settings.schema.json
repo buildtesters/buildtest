@@ -61,6 +61,11 @@
           "minimum": 1,
           "description": "Specify size of Process Pool for parallel processing using ``multiprocessing.Pool``"
         },
+        "max_jobs": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Maximum number of jobs that can be run at a given time for a particular executor"
+        },
         "testdir": {
           "type": "string",
           "description": "Specify full path to test directory where buildtest will write tests."
@@ -294,8 +299,7 @@
                   },
                   "account": {
                     "$ref": "#/definitions/account"
-                  },
-                  "max_jobs": {"$ref":  "#/definitions/max_jobs"}
+                  }
                 }
               },
               "local": {
@@ -393,11 +397,6 @@
       "type": "string",
       "description": "Specify path to Fortran compiler wrapper. You may specify a compiler wrapper such as ``gfortran`` assuming its in $PATH or you can use ``modules`` property to resolve path to compiler wrapper."
     },
-    "max_jobs": {
-      "description": "Maximum number of jobs that can be run at a given time for a particular executor",
-      "type": "integer",
-      "minimum": 1
-    },
     "compiler_section": {
       "description": "A compiler section is composed of ``cc``, ``cxx`` and ``fc`` wrapper these are required when you need to specify compiler wrapper.",
       "type": "object",
@@ -474,7 +473,6 @@
           "description": "Specify the shell launcher you want to use when running tests locally"
         },
         "before_script": { "#ref": "#/definitions/script" },
-        "max_jobs": {"$ref":  "#/definitions/max_jobs"},
         "disable": {"$ref":  "#/definitions/disable"},
         "module": { "$ref": "#/definitions/module" }
       }
@@ -522,7 +520,6 @@
           "description": "overrides default ``account`` value",
           "$ref": "#/definitions/account"
         },
-        "max_jobs": {"$ref":  "#/definitions/max_jobs"},
         "disable": {"$ref":  "#/definitions/disable"},
         "module": { "$ref": "#/definitions/module" }
       }
@@ -563,7 +560,6 @@
           "description": "overrides default ``account`` value",
           "$ref": "#/definitions/account"
         },
-        "max_jobs": {"$ref":  "#/definitions/max_jobs"},
         "disable": {"$ref":  "#/definitions/disable"},
         "module": { "$ref": "#/definitions/module" }
       }
@@ -604,7 +600,6 @@
           "description": "overrides default ``account`` value",
           "$ref": "#/definitions/account"
         },
-        "max_jobs": {"$ref":  "#/definitions/max_jobs"},
         "disable": {"$ref":  "#/definitions/disable"},
         "module": { "$ref": "#/definitions/module" }
       }
@@ -645,7 +640,6 @@
           "description": "overrides default ``account`` value",
           "$ref": "#/definitions/account"
         },
-        "max_jobs": {"$ref":  "#/definitions/max_jobs"},
         "disable": {"$ref":  "#/definitions/disable"},
         "module": { "$ref": "#/definitions/module" }
       }
@@ -686,20 +680,22 @@
         "module": {"type": "string"},
         "unload-modules": {"type": "string"},
         "module-purge": {"type": "boolean"},
-        "rebuild": {"type": "integer", "minimum": 1, "maximum": 50},
-        "limit": {"type": "integer", "minimum": 1},
+        "rebuild": {"type": "integer", "minimum": 1, "maximum": 50, "description": "Specify number of tests to rebuild"},
+        "limit": {"type": "integer", "minimum": 1, "description": "Limit number of tests to build"},
         "account": {"type": "string"},
-        "maxpendtime": {"type": "integer", "minimum": 1},
-        "pollinterval": {"type": "integer", "minimum": 1},
+        "maxpendtime": {"type": "integer", "minimum": 1, "description": "Specify maximum pending time in seconds"},
+        "pollinterval": {"type": "integer", "minimum": 1, "description": "Specify poll interval in seconds"},
         "procs": {"$ref": "definitions.schema.json#/definitions/list_of_positive_integers"},
         "nodes": {"$ref": "definitions.schema.json#/definitions/list_of_positive_integers"},
-        "testdir": {"type": "string"},
+        "testdir": {"type": "string", "description": "Specify test directory where buildtest will write tests."},
         "timeout": {"type": "integer", "minimum": 1},
         "executor-type": {
           "type": "string",
           "description": "Specify the `executor-type` field used by ``--executor-type`` option which determines if test will run by local or batch executor",
           "enum": ["local", "batch"]
-        }
+        },
+        "remove-stagedir": {"type": "boolean", "description": "Remove stage directory after test completes"},
+        "max-jobs": {"type": "integer", "minimum": 1, "description": "Maximum number of jobs that can be run at a given time for a particular executor"}
       }
     }
   }

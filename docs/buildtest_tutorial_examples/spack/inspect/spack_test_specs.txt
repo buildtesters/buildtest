@@ -1,4 +1,4 @@
-$ buildtest inspect query -o --testpath spack_test_results_specs_format 
+$ buildtest inspect query -o -t spack_test_results_specs_format
 ────────────────────────────────────────────────────────────────────────────── spack_test_results_specs_format/14270fab-4e5f-4e84-ad46-64ac869eeb80 ───────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Run spack test results with spec format

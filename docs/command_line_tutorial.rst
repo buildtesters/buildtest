@@ -137,9 +137,9 @@ error file and support multiple test queries including regular expression!!
 
 Let's try running the following
 
-.. dropdown:: ``buildtest it query -o -e --testpath hello_world``
+.. dropdown:: ``buildtest it query -o -e -t hello_world``
 
-    .. command-output:: buildtest it query -o -e --testpath hello_world
+    .. command-output:: buildtest it query -o -e -t hello_world
 
 You can retrieve paths to given test via ``buildtest path`` that can be useful if you want to navigate to directory or list
 contents. By default ``buildtest path`` will retrieve root directory of test. You can retrieve output and error via
@@ -262,18 +262,18 @@ We also support color themes (``buildtest cg view --theme <theme>``) when showin
 Buildtest configuration file defines one or more :ref:`executors <configuring_executors>` that are used when
 writing test. Every test must be run by an executor. To retrieve all executors in a flat-listing you can run the following
 
-.. dropdown:: ``buildtest cg executors``
+.. dropdown:: ``buildtest cg executors list``
 
-    .. command-output:: buildtest cg executors
+    .. command-output:: buildtest cg executors list
 
 
 Buildtest can show executor details in JSON and YAML format, you can fetch the details by running the following
 
-.. dropdown:: ``buildtest cg executors --json``
+.. dropdown:: ``buildtest cg executors list --json``
 
-    .. command-output:: buildtest cg executors --json
+    .. command-output:: buildtest cg executors list --json
 
 
-.. dropdown:: ``buildtest cg executors --yaml``
+.. dropdown:: ``buildtest cg executors list --yaml``
 
-    .. command-output:: buildtest cg executors --yaml
+    .. command-output:: buildtest cg executors list --yaml

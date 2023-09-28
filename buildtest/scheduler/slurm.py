@@ -1,4 +1,5 @@
 import logging
+import time
 
 from buildtest.scheduler.job import Job
 from buildtest.utils.command import BuildTestCommand
@@ -126,13 +127,26 @@ class SlurmJob(Job):
         if self.cluster:
             query += f" --clusters={self.cluster}"
 
-        cmd = BuildTestCommand(query)
-        cmd.execute()
+        # there is a delay when test is run until slurm can query job via 'sacct'. This is relevant when using
+        # 1 sec pollinterval. The sacct query will not return the job state so we sleep and try until we get value
+        while True:
+            cmd = BuildTestCommand(query)
+            cmd.execute()
 
-        logger.debug(f"Querying JobID: '{self.jobid}'  Job State by running: '{query}'")
-        job_state = cmd.get_output()
-        self._state = "".join(job_state).rstrip()
-        logger.debug(f"JobID: '{self.jobid}' job state:{self._state}")
+            logger.debug(f"Querying JobID: '{self.jobid}' by running: '{query}'")
+            output = cmd.get_output()
+            self._state = "".join(output).rstrip()
+
+            if self._state:
+                logger.debug(f"JobID: '{self.jobid}' Job State: {self._state}")
+                break
+            logger.debug(
+                f"Unable to get job state for JobID: '{self.jobid}' so trying again"
+            )
+            time.sleep(0.1)
+
+        if self.is_running() and not self.starttime:
+            self.starttime = time.time()
 
     def gather(self):
         """Gather job record which is called after job completion. We use `sacct` to gather
@@ -146,6 +160,7 @@ class SlurmJob(Job):
             - "ConsumedEnergyRaw"
             - "CPUTimeRaw"
             - "Elapsed"
+            - "ElapsedRaw"
             - "End"
             - "ExitCode"
             - "JobID"
@@ -186,6 +201,7 @@ class SlurmJob(Job):
             "ConsumedEnergyRaw",
             "CPUTimeRaw",
             "Elapsed",
+            "ElapsedRaw",
             "End",
             "ExitCode",
             "JobID",

@@ -4,6 +4,8 @@ system:
     - login1.ascent.olcf.ornl.gov
     moduletool: lmod
     poolsize: 8
+    max_jobs: 10
+    pager: False
     buildspecs:
       rebuild: False
       count: 15
@@ -13,7 +15,7 @@ system:
       count: 25
       terse: False
       format: "name,id,state,runtime,returncode"
-      latest: True
+      latest: False
       oldest: False
     executors:
       defaults:

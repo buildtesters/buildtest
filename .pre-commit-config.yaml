@@ -10,10 +10,8 @@ repos:
       - id: isort
         args: ["--profile", "black", "--filter-files", "buildtest", "tests", "docs"]
 
-  - repo: https://github.com/psf/black
-    rev: 'refs/tags/22.3.0'
+  - repo: https://github.com/psf/black-pre-commit-mirror
+    rev: '23.9.1'
     hooks:
       - id: black
         language_version: python3
-
-

@@ -7,7 +7,7 @@ The `executor` property can support regular expression to search for compatible
 executors, this can be used if you want to run a test across multiple executors. In buildtest,
 we use `re.fullmatch <https://docs.python.org/3/library/re.html#re.fullmatch>`_ with the input
 pattern defined by **executor** property against a list of available executors defined in configuration file.
-You can retrieve a list of executors by running ``buildtest config executors``.
+You can retrieve a list of executors by running ``buildtest config executors list``.
 
 In example below we will run this test on `generic.local.bash` and `generic.local.sh` executor based
 on the regular expression.
@@ -48,9 +48,9 @@ Now let's look at the generated content of the test as follows. We will see that
 set **X=1**, **Y=3** and **SHELL=bash** for ``generic.local.bash`` and **X=2**, **Y=4** and **SHELL=sh** for
 ``generic.local.sh``
 
-.. dropdown:: ``buildtest inspect query --testpath executors_vars_env_declaration/``
+.. dropdown:: ``buildtest inspect query -t executors_vars_env_declaration/``
 
-   .. command-output:: buildtest inspect query --testpath executors_vars_env_declaration/
+   .. command-output:: buildtest inspect query -t executors_vars_env_declaration/
 
 Scheduler Directives
 ----------------------
@@ -71,9 +71,9 @@ will override the ``sbatch`` property defined in the top-level file otherwise it
 If we inspect this test, we will see each each test have different ``#SBATCH`` directives for each test
 based on the ``sbatch`` property defined in the ``executors`` field.
 
-.. dropdown:: ``buildtest inspect query --testpath executors_sbatch_declaration/``
+.. dropdown:: ``buildtest inspect query -t executors_sbatch_declaration/``
 
-   .. command-output:: buildtest inspect query --testpath executors_sbatch_declaration/
+   .. command-output:: buildtest inspect query -t executors_sbatch_declaration/
 
 Cray Burst Buffer and Data Warp
 ---------------------------------

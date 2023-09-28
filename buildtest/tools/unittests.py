@@ -7,6 +7,8 @@ here = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 if here not in sys.path:
     sys.path.insert(0, here)
 
+import tempfile
+
 import coverage
 import pytest
 
@@ -14,6 +16,7 @@ from buildtest.defaults import (
     BUILDTEST_ROOT,
     BUILDTEST_UNITTEST_ROOT,
     BUILDTEST_USER_HOME,
+    DEFAULT_SETTINGS_FILE,
     VAR_DIR,
     console,
 )
@@ -35,6 +38,13 @@ def run_unit_tests(pytestopts=None, sourcefiles=None, enable_coverage=False):
         sys.exit(
             "Please check your buildtest installation by running 'source setup.sh'"
         )
+
+    os.environ["BUILDTEST_CI_DIR"] = tempfile.mkdtemp()
+    settings_file = os.path.join(os.environ["BUILDTEST_CI_DIR"], "config.yml")
+    shutil.copyfile(DEFAULT_SETTINGS_FILE, settings_file)
+
+    console.rule("Running buildtest unit tests")
+    console.print("BUILDTEST_CI_DIR", os.getenv("BUILDTEST_CI_DIR"))
 
     pytestopts = pytestopts.split() if pytestopts else []
     sources = []

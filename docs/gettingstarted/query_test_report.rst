@@ -381,9 +381,9 @@ is delimited by PIPE symbol (``|``). The ``--terse`` option works with ``--forma
 next example, we report all FAIL tests in terse output. The first line is the header of tables followed by
 output, if you want to disable output of header you can use ``--no-header`` option.
 
-.. dropdown:: ``buildtest report --filter state=FAIL --format=name,id,state -t``
+.. dropdown:: ``buildtest report --filter state=FAIL --format=name,id,state --terse``
 
-    .. command-output:: buildtest report --filter state=FAIL --format=name,id,state -t
+    .. command-output:: buildtest report --filter state=FAIL --format=name,id,state --terse
 
 Report Summary (``buildtest report summary``)
 ----------------------------------------------
@@ -443,9 +443,9 @@ querying test records via :ref:`buildtest inspect name <inspect_by_name>` or :re
 If you are interested in parsing output of ``buildtest inspect list``, you can may find the ``--terse`` option useful. The output will show
 headers followed by entries, the headers can be omitted by specifying ``--no-header`` option.
 
-.. dropdown:: ``buildtest inspect list -t``
+.. dropdown:: ``buildtest inspect list --terse``
 
-    .. command-output:: buildtest inspect list -t
+    .. command-output:: buildtest inspect list --terse
        :ellipsis: 5
 
 .. _inspect_by_name:
@@ -539,12 +539,12 @@ print content of output file
     .. command-output:: buildtest inspect query -o circle_area
 
 If you want to see content of error file use the ``-e`` or ``--error`` flag. It would be useful to inspect
-content of build script and generated test, which can be retrieved using ``--testpath`` and ``--buildscript``. Let's
+content of build script and generated test, which can be retrieved using ``-t`` and ``--buildscript``. Let's
 query test ``circle_area`` and report all of the content fields
 
-.. dropdown:: ``buildtest inspect query -o -e --testpath -b circle_area``
+.. dropdown:: ``buildtest inspect query -o -e -t -b circle_area``
 
-    .. command-output:: buildtest inspect query -o -e --testpath -b circle_area
+    .. command-output:: buildtest inspect query -o -e -t -b circle_area
 
 We can query multiple tests using ``buildtest inspect query`` since each test is a positional argument. Any
 options specified to `buildtest inspect query` will be applied to all test. For instance, let's fetch the output the

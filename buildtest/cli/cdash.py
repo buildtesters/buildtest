@@ -250,6 +250,10 @@ def upload_test_cdash(
                     ansi_escape.sub("", test["output"])
                     ansi_escape.sub("", test["error"])
 
+                    # need to encode in ASCII characters for example any uniccoded characters will cause CDASH upload to fail
+                    test["output"] = test["output"].encode("ascii", "ignore").decode()
+                    test["error"] = test["error"].encode("ascii", "ignore").decode()
+
     console.print(f"Uploading {len(tests)} tests")
 
     build_stamp = build_starttime.strftime(output_datetime_format)
@@ -426,7 +430,7 @@ def upload_test_cdash(
             match = buildid_regexp.search(resp_value)
             if match:
                 buildid = match.group(1)
-                url_view = f"{cdash_url}/viewTest.php?buildid={buildid}"
+                url_view = urljoin(cdash_url, f"viewTest.php?buildid={buildid}")
                 console.print(f"You can view the results at: {url_view}")
                 if open_browser:
                     webbrowser.open(url_view)

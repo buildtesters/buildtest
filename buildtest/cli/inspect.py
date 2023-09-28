@@ -5,7 +5,7 @@ import sys
 
 from rich.pretty import pprint
 from rich.syntax import Syntax
-from rich.table import Table
+from rich.table import Column, Table
 
 from buildtest.defaults import console
 from buildtest.utils.file import read_file, resolve_path
@@ -150,7 +150,7 @@ def inspect_list(
         row_styles=[consoleColor],
     )
     for column in table.keys():
-        inspect_table.add_column(column)
+        inspect_table.add_column(column, overflow="fold")
 
     for identifier, name, buildspec in zip(
         table["id"], table["name"], table["buildspec"]
@@ -221,7 +221,11 @@ def print_by_query(
                 console.print(f"[red]Log File: {test['logpath']}")
 
                 if test["metrics"]:
-                    table = Table("[blue]Name", "[blue]Value", title="Metrics")
+                    table = Table(
+                        Column("Name", overflow="fold", header_style="blue"),
+                        Column("Value", overflow="fold", header_style="blue"),
+                        title="Metrics",
+                    )
                     for name, values in test["metrics"].items():
                         table.add_row(name, values)
 
