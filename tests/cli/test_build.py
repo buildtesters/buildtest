@@ -646,7 +646,6 @@ class TestBuildTest_TypeCheck:
             BuildTest(configuration=configuration, tags=["pass"], timeout=-1)
 
     def test_invalid_max_jobs(self):
-
         with pytest.raises(BuildTestError):
             BuildTest(configuration=configuration, tags=["pass"], max_jobs=0)
 
