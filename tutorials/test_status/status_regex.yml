@@ -30,7 +30,7 @@ buildspecs:
     status:
       regex:
         stream: stderr
-        exp: '^(PASS)$'
+        exp: "^(PASS)$"
 
   status_regex_stderr_fail:
     executor: generic.local.bash
