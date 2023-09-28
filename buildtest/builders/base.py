@@ -675,8 +675,8 @@ class BuilderBase(ABC):
         return [self.shell.name, self.shell.opts, self.testpath]
 
     def _emit_set_command(self):
-        """This method will emit the set command for strict mode that will exit immediately. In bash, zsh the command is ``set -eo pipefail``. For csh, tcsh and sh there is
-        no such command so we return empty string."""
+        """This method will emit the set command for strict mode that will exit immediately. In bash, zsh the command is ``set -eo pipefail``.
+        For csh, tcsh and sh there is no such command so we return empty string."""
 
         if self.shell.name == "bash" or self.shell.name == "zsh":
             return "set -eo pipefail"
