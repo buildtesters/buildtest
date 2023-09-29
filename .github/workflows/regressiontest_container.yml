@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/buildtesters/buildtest_spack
-      options: "-it"
+      options: "-it --user spack"
     steps:
       - uses: actions/checkout@v3
       - name: regression test in container
