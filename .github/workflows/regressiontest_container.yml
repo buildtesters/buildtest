@@ -12,6 +12,7 @@ jobs:
       options: "-it --user spack"
     steps:
       - name: regression test in container
+        shell: bash
         run: | 
           env
           whoami
@@ -26,11 +27,10 @@ jobs:
           module avail
           spack --version
           module load python
-          python -m venv "$HOME/pyenv/buildtest"
-          . "$HOME/pyenv/buildtest/bin/activate"
+          python -m venv /home/spack/pyenv/buildtest
+          . /home/spack/pyenv/buildtest/bin/activate"
           . setup.sh
           export BUILDTEST_CONFIGFILE=$BUILDTEST_ROOT/buildtest/settings/spack_container.yml
-          
           python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
           returncode=$?
           if [ $returncode != 0 ]; then exit $returncode; fi
