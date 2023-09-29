@@ -16,12 +16,14 @@ jobs:
         run: | 
           env
           whoami
+          echo $SHELL
           id     
           ls -la $HOME
           echo $HOME
           cd $GITHUB_WORKSPACE
           ls -la $GITHUB_WORKSPACE
-          source /etc/profile
+          set +e
+          . /etc/profile
           module --version
           module avail
           . buildtest/scripts/spack_container/setup.sh
