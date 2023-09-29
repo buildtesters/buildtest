@@ -9,8 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/buildtesters/buildtest_spack
-      options: "-it"
+      options: "-it --user spack"
     steps:
+      - uses: actions/checkout@v2
       - name: debug in container
         run: | 
           env
@@ -20,8 +21,8 @@ jobs:
           git --version        
           ls -la $HOME
           echo $HOME
-          shopt -q login_shell && echo 'Login shell' || echo 'Not login shell'
-      - uses: actions/checkout@v2
+          module --version
+          module avail
       - name: regression test in container
         run: |
           which git
