@@ -3,9 +3,9 @@ name: Regression Test in Container
 on:
   pull_request:
     branches: [ devel ]
-
+    
+jobs:
   buildtest_tutorial_container:
-    needs: build_container
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/buildtesters/buildtest_spack
