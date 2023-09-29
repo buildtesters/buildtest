@@ -21,12 +21,17 @@ jobs:
           echo $HOME
           cd $GITHUB_WORKSPACE
           ls -la $GITHUB_WORKSPACE
-          set +e
+          set +xe
           . /etc/profile
           module --version
           module avail
           spack --version
-          . scripts/spack_container/setup.sh
+          module load python
+          python -m venv "$HOME/pyenv/buildtest"
+          . "$HOME/pyenv/buildtest/bin/activate"
+          . setup.sh
+          export BUILDTEST_CONFIGFILE=$BUILDTEST_ROOT/buildtest/settings/spack_container.yml
+          
           python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
           returncode=$?
           if [ $returncode != 0 ]; then exit $returncode; fi
