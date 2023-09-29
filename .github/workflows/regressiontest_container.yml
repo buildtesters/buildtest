@@ -1,0 +1,38 @@
+name: Regression Test in Container
+
+on:
+  pull_request:
+    branches: [ devel ]
+
+  buildtest_tutorial_container:
+    needs: build_container
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/buildtesters/buildtest_spack
+      options: "-it"
+    steps:
+      - name: debug in container
+        run: | 
+          env
+          whoami
+          id
+          which git
+          git --version        
+          ls -la $HOME
+          echo $HOME
+          shopt -q login_shell && echo 'Login shell' || echo 'Not login shell'
+      - uses: actions/checkout@v2
+      - name: regression test in container
+        run: |
+          which git
+          git --version
+          env
+          cd $GITHUB_WORKSPACE
+          ls -la $GITHUB_WORKSPACE
+          ls -la $HOME
+          . buildtest/scripts/spack_container/setup.sh
+          module avail
+          git log HEAD
+          python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
+          returncode=$?
+          if [ $returncode != 0 ]; then exit $returncode; fi
