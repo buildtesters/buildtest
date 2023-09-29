@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/buildtesters/buildtest_spack
-      options: "-it --user spack"
+      options: "-it --user root"
     steps:
       - uses: actions/checkout@v2
       - name: debug in container
