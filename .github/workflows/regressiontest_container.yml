@@ -12,28 +12,19 @@ jobs:
       options: "-it --user root"
     steps:
       - uses: actions/checkout@v2
-      - name: debug in container
+      - name: regression test in container
         run: | 
           env
           whoami
-          id
-          which git
-          git --version        
+          id     
           ls -la $HOME
           echo $HOME
-          module --version
-          module avail
-      - name: regression test in container
-        run: |
-          which git
-          git --version
-          env
           cd $GITHUB_WORKSPACE
           ls -la $GITHUB_WORKSPACE
-          ls -la $HOME
-          . buildtest/scripts/spack_container/setup.sh
+          source /etc/profile
+          module --version
           module avail
-          git log HEAD
+          . buildtest/scripts/spack_container/setup.sh
           python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
           returncode=$?
           if [ $returncode != 0 ]; then exit $returncode; fi
