@@ -45,7 +45,7 @@ def config_cmd(args, configuration, editor, system):
                 all_executors=args.all,
             )
         if args.executors in ["remove", "rm"]:
-            remove_executors(configuration, buildexecutor, args.executor_names)
+            remove_executors(configuration, args.executor_names)
 
     elif args.config in ["validate", "val"]:
         validate_config(configuration, system.system["moduletool"])
@@ -300,33 +300,33 @@ def view_executors(
         print(name)
 
 
-def remove_executors(configuration, buildexecutor, executor_names):
+def remove_executors(configuration, executor_names):
     """Remove executors from buildtest configuration. This implements ``buildtest config executors remove`` command.
 
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
-        buildexecutor (buildtest.executors.setup.BuildExecutor): An instance of BuildExecutor class
         executor_names (list): List of executor names to remove
     """
 
-    if not configuration.target_config.get("executors"):
-        console.print(
-            f"Unable to remove any executors because no executors found in configuration file: {configuration.file}"
-        )
-        return
-
     # variable to determine if file needs to be written back to disk
     write_back = False
-    console.print(configuration.target_config["executors"])
 
     for name in executor_names:
         exec_type = name.split(".")[1]
         exec_name = name.split(".")[2]
 
-        if exec_name not in configuration.target_config["executors"][exec_type]:
+        if not configuration.target_config["executors"].get(exec_type):
             console.print(
                 f"Unable to remove executor: {name} because it does not exist"
             )
+            continue
+
+        if exec_name not in configuration.target_config["executors"][exec_type].keys():
+            console.print(
+                f"Unable to remove executor: {name} because it does not exist"
+            )
+            console.print(configuration.target_config["executors"].get(exec_type))
+            console.print(exec_name)
             continue
 
         del configuration.target_config["executors"][exec_type][exec_name]
