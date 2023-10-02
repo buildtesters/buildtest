@@ -40,6 +40,7 @@ class SiteConfiguration:
 
         self.disabled_executors = []
         self.invalid_executors = []
+        self.all_executors = []
         self.valid_executors = {
             "local": {},
             "slurm": {},
@@ -154,6 +155,17 @@ class SiteConfiguration:
         self._validate_lsf_executors()
         self._validate_cobalt_executors()
         self._validate_pbs_executors()
+
+        for executor_type in self.target_config["executors"]:
+            if executor_type == "defaults":
+                continue
+
+            for name in self.target_config["executors"][executor_type]:
+                self.all_executors.append(f"{self.name()}.{executor_type}.{name}")
+
+    def get_all_executors(self):
+        """Return list of all executors"""
+        return self.all_executors
 
     def is_executor_disabled(self, executor):
         if executor.get("disable"):
