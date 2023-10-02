@@ -303,11 +303,14 @@ _buildtest ()
           ;;
         executors|ex)
           local opts="--help --disabled --invalid --json --yaml -d -h -i -j -y"
-          local cmds="list"
+          local cmds="list rm remove"
 
-          case "$prev" in
+          case ${COMP_WORDS[3+offset]} in
               list)
                   COMPREPLY=( $( compgen -W "$opts" -- "${cur}" ) )
+                  ;;
+              rm|remove)
+                  COMPREPLY=( $( compgen -W "$(_avail_executors)" -- "${cur}" ) )
                   ;;
               *)
                   COMPREPLY=( $( compgen -W "${cmds}" -- "${cur}" ) )
