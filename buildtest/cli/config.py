@@ -317,7 +317,7 @@ def remove_executors(configuration, executor_names):
 
         if not configuration.target_config["executors"].get(exec_type):
             console.print(
-                f"Unable to remove executor: {name} because it does not exist"
+                f"Unable to remove executor: {name} because there are no executors of type: {exec_type}"
             )
             continue
 
@@ -325,8 +325,6 @@ def remove_executors(configuration, executor_names):
             console.print(
                 f"Unable to remove executor: {name} because it does not exist"
             )
-            console.print(configuration.target_config["executors"].get(exec_type))
-            console.print(exec_name)
             continue
 
         del configuration.target_config["executors"][exec_type][exec_name]

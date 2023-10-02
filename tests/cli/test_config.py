@@ -55,8 +55,11 @@ def test_remove_executors():
 
     remove_executors(config, executor_names=["generic.local.bash", "generic.local.sh"])
 
-    # remove an invalid executor
+    # remove an invalid executor type
     remove_executors(config, executor_names=["generic.XYZ.bash"])
+
+    # remove an invalid executor name
+    remove_executors(config, executor_names=["generic.local.bash1234"])
 
 
 @pytest.mark.cli
