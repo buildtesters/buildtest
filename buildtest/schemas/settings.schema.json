@@ -310,7 +310,8 @@
                 },
                 "additionalProperties": {
                   "$ref": "#/definitions/local"
-                }
+                },
+                "minProperties": 1
               },
               "lsf": {
                 "type": "object",
