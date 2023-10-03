@@ -98,18 +98,14 @@ Now let's run this test as we see the following.
 If we look at the generated test for **bash_login_shebang** we see the shebang line
 is passed into the script:
 
-.. code-block:: shell
-    :emphasize-lines: 1
-
-    #!/bin/bash -l
-    # Content of run section
-    shopt -q login_shell && echo 'Login Shell' || echo 'Not Login Shell'
+.. command-output:: cat $(buildtest path -t bash_login_shebang)
+    :shell:
 
 Python Shell
 --------------
 
 You can use **script** schema to write python scripts using the ``run`` property. In order to write python code you
-must set ``shell`` property to python interpreter such as ```shell: python`` or full path to python wrapper such
+must set ``shell`` property to python interpreter such as ``shell: python`` or full path to python wrapper such
 as ``shell: /usr/bin/python``.
 
 Here is a python example calculating area of circle
@@ -125,3 +121,20 @@ Here is a python example calculating area of circle
     and inject in your test script. To ensure proper formatting for a more complex python
     script you may be better off writing a python script in separate file and invoke the
     python script in the ``run`` section.
+
+Let's try building this example and analyze the generated test script.
+
+.. dropdown:: ``buildtest build -b tutorials/python-shell.yml``
+
+    .. command-output:: buildtest build -b tutorials/python-shell.yml
+
+    Take note in the generated test script, we simply call a python script that will contain the python code defined in the ``run`` section
+
+    .. command-output:: cat $(buildtest path -t circle_area)
+        :shell:
+
+    The python script is located in the stage directory, we can retrieve the path to this file using the following
+    expression ``$(buildtest path -s circle_area)/circle_area.py`` and ``cat`` the content.
+
+    .. command-output:: cat $(buildtest path -s circle_area)/circle_area.py
+        :shell:
