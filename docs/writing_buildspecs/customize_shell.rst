@@ -128,13 +128,17 @@ Let's try building this example and analyze the generated test script.
 
     .. command-output:: buildtest build -b tutorials/python-shell.yml
 
-    Take note in the generated test script, we simply call a python script that will contain the python code defined in the ``run`` section
+    Take note in the generated test script, we simply call a python script
 
     .. command-output:: cat $(buildtest path -t circle_area)
         :shell:
 
-    The python script is located in the stage directory, we can retrieve the path to this file using the following
-    expression ``$(buildtest path -s circle_area)/circle_area.py`` and ``cat`` the content.
+    The python script will contain content specified in the ``run`` section. This script
+    is located in the stage directory, we can retrieve the path to this file using the following
+    expression ``$(buildtest path -s circle_area)/circle_area.py`` and then view the content via ``cat``.
+
+    .. command-output:: ls -l $(buildtest path -s circle_area)/circle_area.py
+        :shell:
 
     .. command-output:: cat $(buildtest path -s circle_area)/circle_area.py
         :shell:
