@@ -500,3 +500,28 @@ or short option (``-e``), which will validate each example with schema file
 
 If you want to retrieve full json schema file for buildtest configuration you can
 run ``buildtest schema -n settings.schema.json --json`` or short option ``-j``.
+
+
+Accessing Log File
+--------------------
+
+Buildtest has several options to retrieve content of logfile, the ``--print-log`` or ``--view-log`` can be used to
+display output of the logfile. The ``--print-log`` will display output whereas ``--view-log`` will display in paginated mode.
+
+The ``--logpath`` can be used to retrieve the path to logfile.
+
+.. command-output:: buildtest --logpath
+
+Shown below is an example output of log content using the ``--print-log`` option
+
+.. command-output:: buildtest --print-log | head -n 10
+    :shell:
+
+Show All Options and Commands
+------------------------------
+
+The ``buildtest --help-all`` will display all commands and options available for buildtest. Some options are
+hidden by default when using ``buildtest --help``. Please refer to the following output for list of available
+commands and options supported by buildtest.
+
+.. command-output:: buildtest --help-all
