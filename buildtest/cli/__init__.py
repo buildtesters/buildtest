@@ -1373,8 +1373,26 @@ class BuildTestParser:
                                     "help": "Show invalid executors",
                                 },
                             ),
+                            (
+                                ("-a", "--all"),
+                                {"action": "store_true", "help": "Show all executors"},
+                            ),
                         ],
-                    }
+                    },
+                    {
+                        "name": "remove",
+                        "aliases": ["rm"],
+                        "help": "Remove executor from configuration",
+                        "arguments": [
+                            (
+                                ("executor_names",),
+                                {
+                                    "nargs": "*",
+                                    "help": "Specify an executor name to remove",
+                                },
+                            )
+                        ],
+                    },
                 ],
             },
             {

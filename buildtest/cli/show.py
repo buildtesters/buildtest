@@ -297,6 +297,13 @@ def print_config_show():
     table.add_row(
         "buildtest config executors list --json", "List all invalid executors"
     )
+    table.add_row(
+        "buildtest config executors list --all", "List all available executors"
+    )
+    table.add_row(
+        "buildtest config executors remove generic.local.bash generic.local.sh",
+        "Remove executor names 'generic.local.bash' and 'generic.local.sh' from configuration file",
+    )
     table.add_row("buildtest config path", "Show path to configuration file")
     table.add_row(
         "buildtest config systems",

@@ -7,6 +7,7 @@ import pytest
 from buildtest.cli.build import BuildTest
 from buildtest.cli.config import (
     list_profiles,
+    remove_executors,
     remove_profiles,
     validate_config,
     view_configuration,
@@ -41,6 +42,24 @@ def test_config_systems():
         fname = os.path.join(schema_files, config_examples)
         configuration = SiteConfiguration(fname)
         view_system(configuration)
+
+
+def test_remove_executors():
+    temp_config_file = tempfile.NamedTemporaryFile(suffix=".yml")
+    shutil.copy(configuration.file, temp_config_file.name)
+
+    print(temp_config_file.name)
+    config = SiteConfiguration(settings_file=temp_config_file.name)
+    config.detect_system()
+    configuration.validate(moduletool=system.system["moduletool"])
+
+    remove_executors(config, executor_names=["generic.local.bash", "generic.local.sh"])
+
+    # remove an invalid executor type
+    remove_executors(config, executor_names=["generic.XYZ.bash"])
+
+    # remove an invalid executor name
+    remove_executors(config, executor_names=["generic.local.bash1234"])
 
 
 @pytest.mark.cli
@@ -122,6 +141,7 @@ def test_config_executors():
         yaml_format=False,
         disabled=False,
         invalid=False,
+        all_executors=False,
     )
 
     # buildtest config executors list --yaml
@@ -132,6 +152,18 @@ def test_config_executors():
         yaml_format=True,
         disabled=False,
         invalid=False,
+        all_executors=False,
+    )
+
+    # buildtest config executors list --all
+    view_executors(
+        configuration=configuration,
+        buildexecutor=buildexecutor,
+        json_format=False,
+        yaml_format=False,
+        disabled=False,
+        invalid=False,
+        all_executors=True,
     )
 
     # buildtest config executors list --disabled

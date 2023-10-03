@@ -36,13 +36,16 @@ def config_cmd(args, configuration, editor, system):
         buildexecutor = BuildExecutor(configuration)
         if args.executors == "list":
             view_executors(
-                configuration,
-                buildexecutor,
-                args.json,
-                args.yaml,
-                args.disabled,
-                args.invalid,
+                configuration=configuration,
+                buildexecutor=buildexecutor,
+                json_format=args.json,
+                yaml_format=args.yaml,
+                disabled=args.disabled,
+                invalid=args.invalid,
+                all_executors=args.all,
             )
+        if args.executors in ["remove", "rm"]:
+            remove_executors(configuration, args.executor_names)
 
     elif args.config in ["validate", "val"]:
         validate_config(configuration, system.system["moduletool"])
@@ -243,6 +246,7 @@ def view_executors(
     yaml_format=False,
     disabled=False,
     invalid=False,
+    all_executors=False,
 ):
     """Display executors from buildtest configuration. This implements ``buildtest config executors`` command.
 
@@ -253,6 +257,7 @@ def view_executors(
         yaml_format (bool): Display output in yaml format which is specified via ``buildtest config executors --yaml``
         disabled (bool): Display list of disabled executors which is specified via ``buildtest config executors --disabled``
         invalid (bool): Display list of invalid executors which is specified via ``buildtest config executors --invalid``
+        all_executors (bool): Display all executors which is specified via ``buildtest config executors --all``
     """
 
     executor_settings = {"executors": configuration.target_config["executors"]}
@@ -285,6 +290,59 @@ def view_executors(
             console.print(executor)
         return
 
+    if all_executors:
+        names = configuration.get_all_executors()
+        for name in names:
+            print(name)
+        return
     names = buildexecutor.names()
     for name in names:
         print(name)
+
+
+def remove_executors(configuration, executor_names):
+    """Remove executors from buildtest configuration. This implements ``buildtest config executors remove`` command.
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        executor_names (list): List of executor names to remove
+    """
+
+    # variable to determine if file needs to be written back to disk
+    write_back = False
+
+    for name in executor_names:
+        exec_type = name.split(".")[1]
+        exec_name = name.split(".")[2]
+
+        if not configuration.target_config["executors"].get(exec_type):
+            console.print(
+                f"Unable to remove executor: {name} because there are no executors of type: {exec_type}"
+            )
+            continue
+
+        if exec_name not in configuration.target_config["executors"][exec_type].keys():
+            console.print(
+                f"Unable to remove executor: {name} because it does not exist"
+            )
+            continue
+
+        del configuration.target_config["executors"][exec_type][exec_name]
+
+        if len(configuration.target_config["executors"][exec_type].keys()) == 0:
+            del configuration.target_config["executors"][exec_type]
+        console.print(f"Removing executor: {name}")
+        write_back = True
+
+    custom_validator(
+        configuration.config, schema_table["settings.schema.json"]["recipe"]
+    )
+
+    # only update the configuration file if we removed an executor
+    if write_back:
+        console.print(f"Updating configuration file: {configuration.file}")
+
+        with open(configuration.file, "w") as fd:
+            yaml.safe_dump(
+                configuration.config, fd, default_flow_style=False, sort_keys=False
+            )

@@ -56,6 +56,11 @@ _avail_executors ()
   buildtest config executors list
 }
 
+_all_executors()
+{
+  buildtest config executors list --all
+}
+
 # list of available compilers
 _avail_compilers ()
 {
@@ -302,12 +307,15 @@ _buildtest ()
           esac
           ;;
         executors|ex)
-          local opts="--help --disabled --invalid --json --yaml -d -h -i -j -y"
-          local cmds="list"
+          local cmds="list rm remove"
 
-          case "$prev" in
+          case ${COMP_WORDS[3+offset]} in
               list)
+                  local opts="--help --all --disabled --invalid --json --yaml -a -d -h -i -j -y"
                   COMPREPLY=( $( compgen -W "$opts" -- "${cur}" ) )
+                  ;;
+              rm|remove)
+                  COMPREPLY=( $( compgen -W "$(_all_executors)" -- "${cur}" ) )
                   ;;
               *)
                   COMPREPLY=( $( compgen -W "${cmds}" -- "${cur}" ) )
