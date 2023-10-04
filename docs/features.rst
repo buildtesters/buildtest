@@ -462,17 +462,15 @@ the configuration file is updated and the executor is no longer present.
 
     .. command-output::  buildtest --config $BUILDTEST_CI_DIR/config.yml config executors remove generic.local.zsh
 
-    .. command-output:: buildtest --config $BUILDTEST_CI_DIR/config.yml config executors list --all
-
 
 Upon deletion, buildtest will validate the configuration before writing the changes back to disk, to ensure the
 configuration is valid. Shown below we demonstrate an example where we attempt to remove all executors from the configuration file.
 Buildtest expects there is atleast 1 executor definition for **local** executor.
 
-.. dropdown:: ``buildtest --config $BUILDTEST_ROOT/buildtest/settings/spack_container.yml config executors remove generic.local.bash generic.local.sh``
+.. dropdown:: ``buildtest config executors remove generic.local.bash generic.local.sh generic.local.csh generic.local.zsh``
     :color: warning
 
-    .. command-output:: buildtest --config $BUILDTEST_ROOT/buildtest/settings/spack_container.yml config executors remove generic.local.bash generic.local.sh
+    .. command-output:: buildtest config executors remove generic.local.bash generic.local.sh generic.local.csh generic.local.zsh
         :returncode: 1
 
 View Registered Systems (``buildtest config systems``)
