@@ -70,7 +70,7 @@ _avail_compilers ()
 # list of test ids from report
 _test_ids ()
 {
-  buildtest inspect list --terse -n | cut -d '|' -f 1
+  buildtest inspect list --terse --no-header | cut -d '|' -f 1
 }
 # list of available test names from buildspec cache
 _buildspec_test_names()
@@ -81,7 +81,7 @@ _buildspec_test_names()
 # list of test names from report
 _test_name ()
 {
-  buildtest inspect list --terse -n | cut -d '|' -f 2 | uniq | sort
+  buildtest inspect list --terse --no-header | cut -d '|' -f 2 | uniq | sort
 }
 
 _builder_names()
@@ -92,23 +92,23 @@ _builder_names()
 # list of buildspecs from report
 _test_buildspec ()
 {
-  buildtest inspect list --terse -n | cut -d '|' -f 3 | uniq | sort
+  buildtest inspect list --terse --no-header | cut -d '|' -f 3 | uniq | sort
 }
 
 # list of history id
 _history_id ()
 {
-  buildtest history list --terse -n | cut -d '|' -f 1 | sort -g
+  buildtest history list --terse --no-header | cut -d '|' -f 1 | sort -g
 }
 
 _buildspec_cache_test_names()
 {
-  buildtest buildspec find --format name --terse -n | sort
+  buildtest buildspec find --format name --terse --no-header --count=-1 | sort
 }
 
 _failed_tests()
 {
-  buildtest rt --fail --format name --terse --no-header | uniq
+  buildtest report --fail --format name --terse --no-header --count=-1 | uniq
 }
 
 # list of available maintainers for tab completion for 'buildtest buildspec maintainers find'
