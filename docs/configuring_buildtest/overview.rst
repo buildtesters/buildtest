@@ -562,6 +562,8 @@ each buildspec with appropriate schema.
 By default buildtest will add the ``$BUILDTEST_ROOT/tutorials`` and ``$BUILDTEST_ROOT/general_tests``
 to search path when searching for buildspecs with ``buildtest buildspec find`` command.
 
+.. _configuring_buildtest_report:
+
 Configuring behavior for buildtest report
 ------------------------------------------
 
