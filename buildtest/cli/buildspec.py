@@ -604,11 +604,15 @@ class BuildspecCache:
 
         self.terse = terse or self.terse
         self.header = header or self.header
+        display_buildspecs = list(self.cache["buildspecs"].keys())[: self.count]
+        if self.count < 0:
+            display_buildspecs = list(self.cache["buildspecs"].keys())
+
         if self.terse:
             if not self.header:
                 console.print("buildspec", style=self.color)
 
-            for buildspec in self.cache["buildspecs"].keys():
+            for buildspec in display_buildspecs:
                 console.print(f"[{self.color}]{buildspec}")
 
             return
@@ -619,7 +623,7 @@ class BuildspecCache:
             header_style="blue",
             row_styles=[self.color],
         )
-        for buildspec in self.cache["buildspecs"].keys():
+        for buildspec in display_buildspecs:
             table.add_row(buildspec)
 
         if self.pager:
@@ -640,13 +644,18 @@ class BuildspecCache:
         Args:
             row_count (bool, optional): Print total number of records from the table
         """
+        # slice list to only display number of tags specified by --count option
+        display_tags = self.cache["unique_tags"][: self.count]
+        # if --count is negative we show the entire list
+        if self.count < 0:
+            display_tags = self.cache["unique_tags"]
 
         # if --terse option specified print list of all tags in machine readable format
         if self.terse:
             if not self.header:
                 console.print("tag", style=self.color)
 
-            for tag in self.cache["unique_tags"]:
+            for tag in display_tags:
                 console.print(f"[{self.color}]{tag}")
 
             return
@@ -657,7 +666,7 @@ class BuildspecCache:
             header_style="blue",
             row_styles=[self.color],
         )
-        for tagname in self.cache["unique_tags"]:
+        for tagname in display_tags:
             table.add_row(tagname)
 
         if self.pager:
@@ -677,12 +686,15 @@ class BuildspecCache:
         Args:
             row_count (bool, optional): Print total number of records from the table
         """
+        display_executors = self.cache["unique_executors"][: self.count]
+        if self.count < 0:
+            display_executors = self.cache["unique_executors"]
 
         if self.terse:
             if not self.header:
                 console.print("executor", style=self.color)
 
-            for executor in self.cache["unique_executors"]:
+            for executor in display_executors:
                 console.print(f"[{self.color}]{executor}")
 
             return
@@ -693,7 +705,7 @@ class BuildspecCache:
             header_style="blue",
             row_styles=[self.color],
         )
-        for executor in self.cache["unique_executors"]:
+        for executor in display_executors:
             table.add_row(executor)
 
         if self.pager:
@@ -714,13 +726,19 @@ class BuildspecCache:
             if not self.header:
                 console.print("executor|name|description", style=self.color)
 
+            print_count = 0
             for executor_name in self.cache["executor"].keys():
                 for test_name, description in self.cache["executor"][
                     executor_name
                 ].items():
+                    # limit number of rows printed by --count. If --count is negative we print all rows and this condition will never be true.
+                    if print_count == self.count:
+                        break
+
                     console.print(
                         f"[{self.color}]{executor_name}|{test_name}|{description}"
                     )
+                    print_count += 1
             return
 
         table = Table(title="Tests by Executors", header_style="blue", show_lines=True)
@@ -728,9 +746,15 @@ class BuildspecCache:
         table.add_column("Name", style=self.color, overflow="fold")
         table.add_column("Description", style=self.color, overflow="fold")
 
+        print_count = 0
+
         for executor_name in self.cache["executor"].keys():
             for test_name, description in self.cache["executor"][executor_name].items():
+                if print_count == self.count:
+                    break
+
                 table.add_row(executor_name, test_name, description)
+                print_count += 1
 
         if self.pager:
             with console.pager():
@@ -745,10 +769,13 @@ class BuildspecCache:
         if self.terse:
             if not self.header:
                 console.print("tags|name|description", style=self.color)
-
+            print_count = 0
             for tagname in self.cache["tags"].keys():
                 for test_name, description in self.cache["tags"][tagname].items():
+                    if print_count == self.count:
+                        break
                     console.print(f"[{self.color}]{tagname}|{test_name}|{description}")
+                    print_count += 1
             return
 
         table = Table(title="Tests by Tags", header_style="blue", show_lines=True)
@@ -756,9 +783,13 @@ class BuildspecCache:
         table.add_column("Name", style=self.color, overflow="fold")
         table.add_column("Description", style=self.color, overflow="fold")
 
+        print_count = 0
         for tagname in self.cache["tags"].keys():
             for test_name, description in self.cache["tags"][tagname].items():
+                if print_count == self.count:
+                    break
                 table.add_row(tagname, test_name, description)
+                print_count += 1
 
         if self.pager:
             with console.pager():
