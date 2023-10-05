@@ -249,6 +249,12 @@ class TestBuildSpecFind:
             )
             cache.print_buildspecs()
 
+        # testing with invalid schema type should return no entries
+        cache = BuildspecCache(
+            filterfields={"type": "bad_schema"}, configuration=configuration
+        )
+        cache.print_buildspecs()
+
     @pytest.mark.cli
     def test_buildspec_find_format(self):
         # buildtest buildspec find --format name,type,tags,executor,description,buildspec
@@ -387,6 +393,9 @@ def test_buildspec_show():
 @pytest.mark.cli
 def test_buildspec_show_fail():
     # Query some random test name that doesn't exist
+
+    # show all failed buildspecs
+    show_failed_buildspecs(configuration=configuration)
 
     random_testname = "".join(random.choices(string.ascii_letters, k=10))
     show_failed_buildspecs(configuration=configuration, test_names=[random_testname])
