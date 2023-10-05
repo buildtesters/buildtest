@@ -26,8 +26,10 @@ system:
       rebuild: false
       # determine number of records to display
       count: 15
+
       # specify format fields
-      format: name,description
+      #format: name,description
+
       # display output in terse mode
       terse: false
 

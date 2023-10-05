@@ -55,6 +55,7 @@ class BuildspecCache:
         pager=None,
         color=None,
         count=None,
+        row_count=None,
     ):
         """The initializer method for BuildspecCache class is responsible for loading and finding buildspecs into buildspec cache. First we
         resolve paths to directory where buildspecs will be searched. This can be specified via ``--roots`` option on command line or one can
@@ -74,6 +75,7 @@ class BuildspecCache:
             terse (bool, optional): Enable terse mode when printing output. In this mode we don't print output in table format instead output is printed in parseable format. This option can be specified via ``buildtest buildspec find --terse``
             color (str, optional): An instance of a string class that selects the color to use when printing table output
             count (int, optional): Number of entries to display in output. This argument contains value of ``buildtest buildspec find --count``
+            row_count (bool, optional): Print total number of records from the table
         """
 
         if not is_dir(BUILDTEST_BUILDSPEC_DIR):
@@ -93,6 +95,8 @@ class BuildspecCache:
             if count is None
             else count
         )
+        self.row_count = row_count
+
         # if --root is not specified we set to empty list instead of None
         self.roots = roots or []
 
@@ -593,22 +597,30 @@ class BuildspecCache:
 
         return buildspec_summary
 
-    def print_buildspecfiles(self, terse=None, header=None, row_count=None):
+    def print_buildspecfiles(self, terse=None, header=None, row_count=None, count=None):
         """This method implements ``buildtest buildspec find --buildspec`` which reports all buildspec files in cache.
 
         Args:
             terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
             header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
             row_count (bool, optional): Print total number of records from the table
+            count (int, optional): Number of entries to display in output. This argument contains value of ``buildtest buildspec find --count``
         """
 
-        self.terse = terse or self.terse
-        self.header = header or self.header
+        self.terse = terse if terse is not None else self.terse
+        self.header = header if header is not None else self.header
+        self.row_count = row_count if row_count is not None else self.row_count
+        self.count = count if count is not None else self.count
+
+        display_buildspecs = list(self.cache["buildspecs"].keys())[self.count]
+        if self.count < 0:
+            display_buildspecs = list(self.cache["buildspecs"].keys())
+
         if self.terse:
             if not self.header:
                 console.print("buildspec", style=self.color)
 
-            for buildspec in self.cache["buildspecs"].keys():
+            for buildspec in display_buildspecs:
                 console.print(f"[{self.color}]{buildspec}")
 
             return
@@ -619,7 +631,7 @@ class BuildspecCache:
             header_style="blue",
             row_styles=[self.color],
         )
-        for buildspec in self.cache["buildspecs"].keys():
+        for buildspec in display_buildspecs:
             table.add_row(buildspec)
 
         if self.pager:
@@ -627,26 +639,39 @@ class BuildspecCache:
                 console.print(table)
             return
 
-        if row_count:
+        if self.row_count:
             print(table.row_count)
             return
 
         console.print(table)
 
-    def print_tags(self, row_count=None):
+    def print_tags(self, row_count=None, count=None, terse=None, header=None):
         """This method implements ``buildtest buildspec find --tags`` which
         reports a list of unique tags from all buildspecs in cache file.
 
         Args:
             row_count (bool, optional): Print total number of records from the table
+            count (int, optional): Number of entries to display in output. This argument contains value of ``buildtest buildspec find --count``
+            terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
+            header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
         """
+        self.terse = terse if terse is not None else self.terse
+        self.header = header if header is not None else self.header
+        self.row_count = row_count if row_count is not None else self.row_count
+        self.count = count if count is not None else self.count
+
+        # slice list to only display number of tags specified by --count option
+        display_tags = self.cache["unique_tags"][self.count]
+        # if --count is negative we show the entire list
+        if self.count < 0:
+            display_tags = self.cache["unique_tags"]
 
         # if --terse option specified print list of all tags in machine readable format
         if self.terse:
             if not self.header:
                 console.print("tag", style=self.color)
 
-            for tag in self.cache["unique_tags"]:
+            for tag in display_tags:
                 console.print(f"[{self.color}]{tag}")
 
             return
@@ -657,7 +682,7 @@ class BuildspecCache:
             header_style="blue",
             row_styles=[self.color],
         )
-        for tagname in self.cache["unique_tags"]:
+        for tagname in display_tags:
             table.add_row(tagname)
 
         if self.pager:
@@ -665,24 +690,35 @@ class BuildspecCache:
                 console.print(table)
             return
 
-        if row_count:
+        if self.row_count:
             print(table.row_count)
             return
 
         console.print(table)
 
-    def print_executors(self, row_count=None):
+    def print_executors(self, row_count=None, count=None, terse=None, header=None):
         """This method implements ``buildtest buildspec find --executors`` which reports all executors from cache.
 
         Args:
             row_count (bool, optional): Print total number of records from the table
+            count (int, optional): Number of entries to display in output. This argument contains value of ``buildtest buildspec find --count``
+            terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
+            header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option\
         """
+        self.terse = terse if terse is not None else self.terse
+        self.header = header if header is not None else self.header
+        self.row_count = row_count if row_count is not None else self.row_count
+        self.count = count if count is not None else self.count
+
+        display_executors = self.cache["unique_executors"][: self.count]
+        if self.count < 0:
+            display_executors = self.cache["unique_executors"]
 
         if self.terse:
             if not self.header:
                 console.print("executor", style=self.color)
 
-            for executor in self.cache["unique_executors"]:
+            for executor in display_executors:
                 console.print(f"[{self.color}]{executor}")
 
             return
@@ -693,7 +729,7 @@ class BuildspecCache:
             header_style="blue",
             row_styles=[self.color],
         )
-        for executor in self.cache["unique_executors"]:
+        for executor in display_executors:
             table.add_row(executor)
 
         if self.pager:
@@ -701,26 +737,43 @@ class BuildspecCache:
                 console.print(table)
             return
 
-        if row_count:
+        if self.row_count:
             print(table.row_count)
             return
 
         console.print(table)
 
-    def print_by_executors(self):
-        """This method prints executors by tests and implements ``buildtest buildspec find --group-by-executor`` command"""
+    def print_by_executors(self, row_count=None, count=None, terse=None, header=None):
+        """This method prints executors by tests and implements ``buildtest buildspec find --group-by-executor`` command
+
+        Args:
+            row_count (bool, optional): Print total number of records from the table
+            count (int, optional): Number of entries to display in output. This argument contains value of ``buildtest buildspec find --count``
+            terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
+            header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
+        """
+        self.terse = terse if terse is not None else self.terse
+        self.header = header if header is not None else self.header
+        self.row_count = row_count if row_count is not None else self.row_count
+        self.count = count if count is not None else self.count
 
         if self.terse:
             if not self.header:
                 console.print("executor|name|description", style=self.color)
 
+            print_count = 0
             for executor_name in self.cache["executor"].keys():
                 for test_name, description in self.cache["executor"][
                     executor_name
                 ].items():
+                    # limit number of rows printed by --count. If --count is negative we print all rows and this condition will never be true.
+                    if print_count == self.count:
+                        break
+
                     console.print(
                         f"[{self.color}]{executor_name}|{test_name}|{description}"
                     )
+                    print_count += 1
             return
 
         table = Table(title="Tests by Executors", header_style="blue", show_lines=True)
@@ -728,27 +781,50 @@ class BuildspecCache:
         table.add_column("Name", style=self.color, overflow="fold")
         table.add_column("Description", style=self.color, overflow="fold")
 
+        print_count = 0
+
         for executor_name in self.cache["executor"].keys():
             for test_name, description in self.cache["executor"][executor_name].items():
+                if print_count == self.count:
+                    break
+
                 table.add_row(executor_name, test_name, description)
+                print_count += 1
 
         if self.pager:
             with console.pager():
                 console.print(table)
             return
 
+        if self.row_count:
+            print(table.row_count)
+            return
+
         console.print(table)
 
-    def print_by_tags(self):
-        """This method prints tags by tests and implements ``buildtest buildspec find --group-by-tags`` command"""
+    def print_by_tags(self, count=None, row_count=None, terse=None, header=None):
+        """This method prints tags by tests and implements ``buildtest buildspec find --group-by-tags`` command
+        Args:
+            count (int, optional): Number of entries to display in output. This argument contains value of ``buildtest buildspec find --count``
+            row_count (bool, optional): Print total number of records from the table
+            terse (bool, optional): This argument will print output in terse format if ``--terse`` option is specified otherwise will print output in table format
+            header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
+        """
+        self.terse = terse if terse is not None else self.terse
+        self.header = header if header is not None else self.header
+        self.row_count = row_count if row_count is not None else self.row_count
+        self.count = count if count is not None else self.count
 
         if self.terse:
             if not self.header:
                 console.print("tags|name|description", style=self.color)
-
+            print_count = 0
             for tagname in self.cache["tags"].keys():
                 for test_name, description in self.cache["tags"][tagname].items():
+                    if print_count == self.count:
+                        break
                     console.print(f"[{self.color}]{tagname}|{test_name}|{description}")
+                    print_count += 1
             return
 
         table = Table(title="Tests by Tags", header_style="blue", show_lines=True)
@@ -756,13 +832,21 @@ class BuildspecCache:
         table.add_column("Name", style=self.color, overflow="fold")
         table.add_column("Description", style=self.color, overflow="fold")
 
+        print_count = 0
         for tagname in self.cache["tags"].keys():
             for test_name, description in self.cache["tags"][tagname].items():
+                if print_count == self.count:
+                    break
                 table.add_row(tagname, test_name, description)
+                print_count += 1
 
         if self.pager:
             with console.pager():
                 console.print(table)
+            return
+
+        if self.row_count:
+            print(table.row_count)
             return
 
         console.print(table)
@@ -792,7 +876,9 @@ class BuildspecCache:
             join_string = "|".join(row)
             console.print(f"[{self.color}]{join_string}")
 
-    def print_buildspecs(self, terse=None, header=None, quiet=None, row_count=None):
+    def print_buildspecs(
+        self, terse=None, header=None, quiet=None, row_count=None, count=None
+    ):
         """Print buildspec table. This method is typically called when running ``buildtest buildspec find`` or options
         with ``--filter`` and ``--format``.
 
@@ -801,14 +887,17 @@ class BuildspecCache:
             header (bool, optional): This argument controls whether header will be printed in terse format. If ``--terse`` option is not specified this argument has no effect. This argument holds the value of ``--no-header`` option
             quiet (bool, optional): If this option is set we return immediately and don't anything. This is specified via ``buildtest buildspec find --quiet`` which can be useful when rebuilding cache without displaying output
             row_count (bool, optional): Print total number of records from the table
+            count (int, optional): Number of entries to display in output. This argument contains value of ``buildtest buildspec find --count``
         """
 
         # Don't print anything if --quiet is set
         if quiet and self.rebuild:
             return
 
-        self.terse = terse or self.terse
-        self.header = header or self.header
+        self.terse = terse if terse is not None else self.terse
+        self.header = header if header is not None else self.header
+        self.row_count = row_count if row_count is not None else self.row_count
+        self.count = count if count is not None else self.count
 
         table = Table(
             title=f"Buildspec Cache: {BUILDSPEC_CACHE_FILE}",
@@ -840,7 +929,7 @@ class BuildspecCache:
         for i in tdata:
             table.add_row(*i)
 
-        if row_count:
+        if self.row_count:
             console.print(table.row_count)
             return
 
@@ -1389,6 +1478,7 @@ def buildspec_find(args, configuration):
         pager=args.pager,
         color=args.color,
         count=args.count,
+        row_count=args.row_count,
     )
 
     if args.buildspec_find_subcommand == "invalid":
@@ -1397,12 +1487,17 @@ def buildspec_find(args, configuration):
 
     # buildtest buildspec find --tags
     if args.tags:
-        cache.print_tags(row_count=args.row_count)
+        cache.print_tags(row_count=args.row_count, count=args.count)
         return
 
     # buildtest buildspec find --buildspec
     if args.buildspec:
-        cache.print_buildspecfiles(row_count=args.row_count)
+        cache.print_buildspecfiles(
+            row_count=args.row_count,
+            count=args.count,
+            terse=args.terse,
+            header=args.no_header,
+        )
         return
 
     # buildtest buildspec find --paths
@@ -1412,12 +1507,12 @@ def buildspec_find(args, configuration):
 
     # buildtest buildspec find --executors
     if args.executors:
-        cache.print_executors(row_count=args.row_count)
+        cache.print_executors(row_count=args.row_count, count=args.count)
         return
 
     # buildtest buildspec find --group-by-executors
     if args.group_by_executor:
-        cache.print_by_executors()
+        cache.print_by_executors(row_count=args.row_count, count=args.count)
         return
 
     # buildtest buildspec find --group-by-tags
