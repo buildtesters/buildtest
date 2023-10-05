@@ -35,7 +35,7 @@ platform, date, etc...
 If you want to see all available build IDs, you can use the following command. The ``-t`` is terse format and ``--no-header`` will
 omit the headers for each column and pipe the output to **cut** to extract the first column which corresponds to build IDs.
 
-.. command-output:: buildtest hy list -t --no-header | cut -f 1 -d '|'
+.. command-output:: buildtest hy list --terse --no-header | cut -f 1 -d '|'
    :shell:
 
 buildtest has tab complete on ``buildtest history query`` which reports a list of build IDs which is another way to
@@ -87,7 +87,10 @@ To access `schema docs <https://buildtesters.github.io/buildtest>`_ you can run:
 Enabling colored output for table entries
 -------------------------------------------------------------
 
-The ``buildtest --color <COLOR> <COMMAND>`` command can be used to select a color while printing output in a tabular format for several buildtest commands.
+The ``buildtest --color <COLOR> <COMMAND>`` command can be used to select a color while printing output in a
+tabular format for several buildtest commands. The list of available colors can be found by running ``buildtest --helpcolor``.
+Buildtest has tab-completion setup for ``--color`` option which will list all available colors.
+
 
 Listing available color options (``buildtest --helpcolor``)
 -------------------------------------------------------------
@@ -381,6 +384,9 @@ If you want to view buildtest configuration you can run ``buildtest config view`
 
     .. command-output:: buildtest config view
 
+The ``--theme`` option can be used to change the color theme of the output. The default theme is ``monokai`` and list of
+available themes can be retrieved with tab completion for option ``buildtest config view --theme``.
+
 Check path to buildtest configuration file (``buildtest config path``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -424,6 +430,49 @@ Shown below is an example output
     .. command-output:: buildtest config executors list --json
 
 
+.. note::
+
+    The command options for ``buildtest config executors list`` are mutually exclusive, so if you
+    specify multiple options you will get the following error.
+
+    .. command-output:: buildtest config executors list --json --yaml
+        :returncode: 2
+
+Remove Executors (``buildtest config executors remove``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``buildtest config executors remove`` command will remove an executor from buildtest configuration file.
+The positional arguments are the name of the executor you want to remove. Tab completion is available to retrieve
+all available executors (``buildtest config executors list --all``).
+
+Shown below we see tab completion on available executors that can be removed.
+
+
+.. code-block:: console
+
+      buildtest config executors remove
+    generic.local.bash  generic.local.csh   generic.local.sh    generic.local.zsh
+
+Let's try listing all executors and remove ``generic.local.zsh`` executor, you will notice after deletion,
+the configuration file is updated and the executor is no longer present.
+
+.. dropdown:: Removing executor 'generic.local.zsh'
+
+    .. command-output:: buildtest --config $BUILDTEST_CI_DIR/config.yml config executors list --all
+
+    .. command-output::  buildtest --config $BUILDTEST_CI_DIR/config.yml config executors remove generic.local.zsh
+
+
+Upon deletion, buildtest will validate the configuration before writing the changes back to disk, to ensure the
+configuration is valid. Shown below we demonstrate an example where we attempt to remove all executors from the configuration file.
+Buildtest expects there is atleast 1 executor definition for **local** executor.
+
+.. dropdown:: ``buildtest config executors remove generic.local.bash generic.local.sh generic.local.csh generic.local.zsh``
+    :color: warning
+
+    .. command-output:: buildtest config executors remove generic.local.bash generic.local.sh generic.local.csh generic.local.zsh
+        :returncode: 1
+
 View Registered Systems (``buildtest config systems``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -449,3 +498,28 @@ or short option (``-e``), which will validate each example with schema file
 
 If you want to retrieve full json schema file for buildtest configuration you can
 run ``buildtest schema -n settings.schema.json --json`` or short option ``-j``.
+
+
+Accessing Log File
+--------------------
+
+Buildtest has several options to retrieve content of logfile, the ``--print-log`` or ``--view-log`` can be used to
+display output of the logfile. The ``--print-log`` will display output whereas ``--view-log`` will display in paginated mode.
+
+The ``--logpath`` can be used to retrieve the path to logfile.
+
+.. command-output:: buildtest --logpath
+
+Shown below is an example output of log content using the ``--print-log`` option
+
+.. command-output:: buildtest --print-log | head -n 10
+    :shell:
+
+Show All Options and Commands
+------------------------------
+
+The ``buildtest --help-all`` will display all commands and options available for buildtest. Some options are
+hidden by default when using ``buildtest --help``. Please refer to the following output for list of available
+commands and options supported by buildtest.
+
+.. command-output:: buildtest --help-all
