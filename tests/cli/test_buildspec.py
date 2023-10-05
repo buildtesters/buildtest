@@ -52,138 +52,145 @@ def test_buildspec_validate():
         buildspec_validate(buildspecs=buildspec, configuration=configuration)
 
 
-@pytest.mark.cli
-def test_func_buildspec_find():
+class TestBuildSpecFind:
     cache = BuildspecCache(configuration=configuration, rebuild=True)
-    # buildtest buildspec find --rebuild --quiet
-    cache.print_buildspecs(quiet=True)
 
-    # buildtest buildspec find --rebuild --terse --no-header
-    cache = BuildspecCache(
-        rebuild=True, configuration=configuration, terse=True, header=False
-    )
+    def test_rebuild_cache(self):
+        # buildtest buildspec find --rebuild --quiet
+        self.cache.print_buildspecs(quiet=True)
 
-    bp_dict = cache.get_cache()
-    # check top-level keys in buildspec cache are present
-    for key in [
-        "unique_tags",
-        "unique_executors",
-        "buildspecs",
-        "maintainers",
-        "tags",
-        "executor",
-    ]:
-        assert bp_dict[key]
+        # buildtest buildspec find --rebuild --terse --no-header
+        self.cache = BuildspecCache(
+            rebuild=True, configuration=configuration, terse=True, header=False
+        )
 
-    # buildtest buildspec find --rebuild
-    cache = BuildspecCache(rebuild=True, configuration=configuration)
-    cache.print_buildspecs()
-    cache.print_buildspecs(row_count=0)
-    cache.print_buildspecs(row_count=5)
-    cache.print_buildspecs(row_count=-1)
+        # buildtest buildspec find --rebuild
+        self.cache = BuildspecCache(rebuild=True, configuration=configuration)
 
-    # buildtest buildspec find
-    cache = BuildspecCache(configuration=configuration)
+    def test_print_buildspecs(self):
+        self.cache.print_buildspecs()
 
-    # buildtest buildspec find --tags
-    cache.print_tags()
+        # buildtest buildspec find --quiet
+        self.cache.print_buildspecs(quiet=True)
 
-    # buildtest buildspec find --buildspec
-    cache.print_buildspecfiles()
+        # buildtest buildspec find --row-count
+        self.cache.print_buildspecs(row_count=True)
 
-    # buildtest buildspec find --paths
-    cache.print_paths()
+        for count in [0, 10, -1]:
+            self.cache.print_buildspecs(count=count, terse=True, header=False)
+            self.cache.print_buildspecs(count=count, terse=True, header=True)
+            self.cache.print_buildspecs(count=count, terse=False)
 
-    # buildtest buildspec find --executors
-    cache.print_executors()
+    def test_print_tags(self):
+        # buildtest buildspec find --tags
+        self.cache.print_tags()
 
-    # buildtest buildspec find --group-by-executors
-    cache.print_by_executors()
+        # buildtest buildspec find --tags --row-count
+        self.cache.print_tags(row_count=True)
 
-    # buildtest buildspec find --group-by-tags
-    cache.print_by_tags()
+        # test with --count option with different values with and without --terse and --header option
+        for count in [0, 10, -1]:
+            self.cache.print_tags(count=count, terse=True, header=False)
+            self.cache.print_tags(count=count, terse=True, header=True)
+            self.cache.print_tags(count=count, terse=False)
 
-    # buildtest buildspec find --helpfilter
-    cache.print_filter_fields()
+    def test_print_buildspecfiles(self):
+        # buildtest buildspec find --buildspec
+        self.cache.print_buildspecfiles()
+        # buildtest buildspec find --buildspec --row-count
+        self.cache.print_buildspecfiles(row_count=True)
 
-    # buildtest buildspec find --helpformat
-    cache.print_format_fields()
+        for count in [0, 10, -1]:
+            self.cache.print_buildspecfiles(count=count, terse=True, header=False)
+            self.cache.print_buildspecfiles(count=count, terse=True, header=True)
+            self.cache.print_buildspecfiles(count=count, terse=False)
 
-    # buildtest buildspec find --filterfields
-    cache.print_raw_filter_fields()
+    def test_print_executors(self):
+        # buildtest buildspec find --executors
+        self.cache.print_executors()
+        # buildtest buildspec find --executors --row-count
+        self.cache.print_executors(row_count=True)
 
-    # buildtest buildspec find --formatfields
-    cache.print_raw_format_fields()
+        for count in [0, 10, -1]:
+            self.cache.print_executors(count=count, terse=True, header=False)
+            self.cache.print_executors(count=count, terse=True, header=True)
+            self.cache.print_executors(count=count, terse=False)
 
-    # buildtest buildspec find --pager
-    cache = BuildspecCache(configuration=configuration, pager=True)
-    cache.print_tags()
-    cache.print_buildspecfiles()
-    cache.print_executors()
-    cache.print_by_executors()
-    cache.print_by_tags()
-    cache.print_maintainer()
-    cache.print_maintainers_by_buildspecs()
-    cache.print_buildspecs()
+    def test_print_by_executors(self):
+        # buildtest buildspec find --group-by-executors
+        self.cache.print_by_executors()
+        # buildtest buildspec find --group-by-executors --row-count
+        self.cache.print_by_executors(row_count=True)
 
-    # buildtest buildspec find --quiet
-    cache.print_buildspecs(quiet=True)
+        for count in [0, 10, -1]:
+            self.cache.print_by_executors(count=count, terse=True, header=False)
+            self.cache.print_by_executors(count=count, terse=True, header=True)
+            self.cache.print_by_executors(count=count, terse=False)
 
-    # buildtest buildspec find --row-count
-    cache = BuildspecCache(configuration=configuration)
-    cache.print_buildspecs(row_count=True)
+    def test_print_by_tags(self):
+        # buildtest buildspec find --group-by-tags
+        self.cache.print_by_tags()
+        # buildtest buildspec find --group-by-tags --row-count
+        self.cache.print_by_tags(row_count=True)
 
-    # buildtest buildspec find --row-count --buildspec
-    cache.print_buildspecfiles(row_count=True)
+        for count in [0, 10, -1]:
+            self.cache.print_by_tags(count=count, terse=True, header=False)
+            self.cache.print_by_tags(count=count, terse=True, header=True)
+            self.cache.print_by_tags(count=count, terse=False)
 
-    # buildtest buildspec find --row-count --tags
-    cache.print_tags(row_count=True)
+    def test_print_paths(self):
+        # buildtest buildspec find --paths
+        self.cache.print_paths()
 
-    # buildtest buildspec find --row-count --executors
-    cache.print_executors(row_count=True)
+    def test_print_filter_and_format_fields(self):
+        # buildtest buildspec find --helpfilter
+        self.cache.print_filter_fields()
 
-    # test all commands with color 'blue'
-    # buildtest --color blue buildspec find --rebuild
-    cache = BuildspecCache(rebuild=True, configuration=configuration, color="blue")
-    # buildtest --color blue buildspec find
-    cache.print_buildspecs()
-    # buildtest --color blue buildspec find -b
-    cache.print_buildspecfiles()
-    # buildtest --color blue buildspec find -e
-    cache.print_executors()
-    # buildtest --color blue buildspec find -t
-    cache.print_tags()
-    # buildtest --color blue buildspec find --group-by-executor
-    cache.print_by_executors()
-    # buildtest --color blue buildspec find --group-by-tags
-    cache.print_by_tags()
-    # buildtest --color blue buildspec find --helpfilter
-    cache.print_filter_fields()
-    # buildtest --color blue buildspec find --helpformat
-    cache.print_format_fields()
-    # buildtest --color blue buildspec find --filterfields
-    cache.print_raw_filter_fields()
-    # buildtest --color blue buildspec find --formatfields
-    cache.print_raw_format_fields()
+        # buildtest buildspec find --helpformat
+        self.cache.print_format_fields()
 
+        # buildtest buildspec find --filterfields
+        self.cache.print_raw_filter_fields()
 
-@pytest.mark.cli
-def test_buildspec_find_terse():
-    cache = BuildspecCache(
-        configuration=configuration,
-        terse=True,
-        header=False,
-        color=Color.default().name,
-    )
-    cache.print_buildspecs()
-    cache.print_buildspecs(row_count=0)
-    cache.print_tags()
-    cache.print_executors()
-    cache.print_buildspecfiles()
-    cache.print_by_executors()
-    cache.print_by_tags()
-    cache.print_maintainer()
-    cache.print_maintainers_by_buildspecs()
+        # buildtest buildspec find --formatfields
+        self.cache.print_raw_format_fields()
+
+    def test_pager(self):
+        # buildtest buildspec find --pager
+        cache = BuildspecCache(configuration=configuration, pager=True)
+        cache.print_tags()
+        cache.print_buildspecfiles()
+        cache.print_executors()
+        cache.print_by_executors()
+        cache.print_by_tags()
+        cache.print_maintainer()
+        cache.print_maintainers_by_buildspecs()
+        cache.print_buildspecs()
+
+    def test_color(self):
+        # test all commands with color 'blue'
+        # buildtest --color blue buildspec find --rebuild
+        cache = BuildspecCache(rebuild=True, configuration=configuration, color="blue")
+        # buildtest --color blue buildspec find
+        cache.print_buildspecs()
+        # buildtest --color blue buildspec find -b
+        cache.print_buildspecfiles()
+        # buildtest --color blue buildspec find -e
+        cache.print_executors()
+        # buildtest --color blue buildspec find -t
+        cache.print_tags()
+        # buildtest --color blue buildspec find --group-by-executor
+        cache.print_by_executors()
+        # buildtest --color blue buildspec find --group-by-tags
+        cache.print_by_tags()
+        # buildtest --color blue buildspec find --helpfilter
+        cache.print_filter_fields()
+        # buildtest --color blue buildspec find --helpformat
+        cache.print_format_fields()
+        # buildtest --color blue buildspec find --filterfields
+        cache.print_raw_filter_fields()
+        # buildtest --color blue buildspec find --formatfields
+        cache.print_raw_format_fields()
 
 
 @pytest.mark.cli
