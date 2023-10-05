@@ -28,28 +28,24 @@ configuration.validate()
 
 @pytest.mark.cli
 def test_buildspec_validate():
-    buildspecs = [
-        os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml"),
-        os.path.join(BUILDTEST_ROOT, "tutorials", "compilers"),
-    ]
-    exclude_buildspecs = [
-        os.path.join(BUILDTEST_ROOT, "tutorials", "compilers", "gnu_hello_c.yml")
-    ]
-    tags = ["pass", "python"]
-    executors = ["generic.local.sh"]
-
     buildspec_validate(
-        buildspecs=buildspecs,
-        excluded_buildspecs=exclude_buildspecs,
-        tags=tags,
-        executors=executors,
+        buildspecs=[
+            os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml"),
+            os.path.join(BUILDTEST_ROOT, "tutorials", "compilers"),
+        ],
+        excluded_buildspecs=[
+            os.path.join(BUILDTEST_ROOT, "tutorials", "compilers", "gnu_hello_c.yml")
+        ],
+        tags=["pass", "python"],
+        executors=["generic.local.sh"],
         configuration=configuration,
     )
 
-    buildspec = [os.path.join(BUILDTEST_ROOT, "tutorials", "invalid_tag.yml")]
-
     with pytest.raises(SystemExit):
-        buildspec_validate(buildspecs=buildspec, configuration=configuration)
+        buildspec_validate(
+            buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "invalid_tags.yml")],
+            configuration=configuration,
+        )
 
 
 class TestBuildSpecFind:
@@ -192,22 +188,106 @@ class TestBuildSpecFind:
         # buildtest --color blue buildspec find --formatfields
         cache.print_raw_format_fields()
 
+    @pytest.mark.cli
+    def test_buildspec_find_filter(self):
+        # buildtest buildspec find --filter tags=fail
+        cache = BuildspecCache(
+            filterfields={"tags": "fail"}, configuration=configuration
+        )
+        cache.print_buildspecs()
+
+        # buildtest buildspec find --filter buildspec=$BUILDTEST_ROOT/tutorials/hello_world.yml
+        cache = BuildspecCache(
+            filterfields={
+                "buildspec": os.path.join(
+                    BUILDTEST_ROOT, "tutorials", "hello_world.yml"
+                )
+            },
+            configuration=configuration,
+        )
+        cache.print_buildspecs()
+
+        # buildtest buildspec find --filter type=script,executor=generic.local.sh,tags=fail
+        cache = BuildspecCache(
+            filterfields={
+                "type": "script",
+                "executor": "generic.local.bash",
+                "tags": "fail",
+            },
+            configuration=configuration,
+        )
+        cache.print_buildspecs()
+
+        with pytest.raises(BuildTestError):
+            tf = tempfile.NamedTemporaryFile()
+            # testing for valid filepath for buildspec file but file doesn't exist in cache
+            BuildspecCache(
+                filterfields={"buildspec": tf.name}, configuration=configuration
+            )
+
+        with pytest.raises(BuildTestError):
+            # create temporary file and close file which will delete the file to create invalid filepath
+            tf = tempfile.NamedTemporaryFile(delete=True)
+            tf.close()
+            # testing on invalid file path for buildspec. This should raise an exception
+            BuildspecCache(
+                filterfields={"buildspec": tf.name}, configuration=configuration
+            )
+
+        with pytest.raises(BuildTestError):
+            tf = tempfile.TemporaryDirectory()
+            # if we specify a directory path for buildspec filter this will raise an exception.
+            BuildspecCache(
+                filterfields={"buildspec": tf.name}, configuration=configuration
+            )
+
+        # buildtest buildspec find --filter key1=val1,key2=val2
+        with pytest.raises(BuildTestError):
+            cache = BuildspecCache(
+                filterfields={"key1": "val1", "key2": "val2"},
+                configuration=configuration,
+            )
+            cache.print_buildspecs()
+
+    @pytest.mark.cli
+    def test_buildspec_find_format(self):
+        # buildtest buildspec find --format name,type,tags,executor,description,buildspec
+        cache = BuildspecCache(
+            formatfields="name,type,tags,executor,description,buildspec",
+            configuration=configuration,
+        )
+        cache.print_buildspecs()
+
+        # Any invalid format fields will raise an exception of type BuildTestError
+        with pytest.raises(BuildTestError):
+            # buildtest buildspec find --format field1
+            cache = BuildspecCache(formatfields="field1", configuration=configuration)
+            cache.print_buildspecs()
+
 
 @pytest.mark.cli
 def test_buildspec_maintainers():
     buildspec_maintainers(configuration=configuration)
+
     # buildtest buildspec maintainers --terse --no-header
-    buildspec_maintainers(
-        configuration=configuration, terse=True, header=True, color=Color.default().name
-    )
+    buildspec_maintainers(configuration=configuration, terse=True, header=True)
+
+    # buildtest buildspec maintainers --terse
+    buildspec_maintainers(configuration=configuration, terse=True, header=False)
+
+    # buildtest buildspec maintainers --breakdown
+    buildspec_maintainers(configuration=configuration, breakdown=True)
+
     # buildtest buildspec maintainers --terse --no-header --breakdown
     buildspec_maintainers(
-        configuration=configuration,
-        breakdown=True,
-        terse=True,
-        header=True,
-        color=Color.default().name,
+        configuration=configuration, breakdown=True, terse=True, header=True
     )
+
+    # buildtest buildspec maintainers --terse --breakdown
+    buildspec_maintainers(
+        configuration=configuration, breakdown=True, terse=True, header=False
+    )
+
     # buildtest buildspec maintainers --row-count
     buildspec_maintainers(configuration=configuration, row_count=True)
     # buildtest buildspec maintainers find @shahzebsiddiqui
@@ -256,73 +336,6 @@ def test_edit_file():
         configuration=configuration,
         editor=None,
     )
-
-
-@pytest.mark.cli
-def test_buildspec_find_filter():
-    # buildtest buildspec find --filter tags=fail
-    cache = BuildspecCache(filterfields={"tags": "fail"}, configuration=configuration)
-    cache.print_buildspecs()
-
-    # buildtest buildspec find --filter buildspec=$BUILDTEST_ROOT/tutorials/hello_world.yml
-    cache = BuildspecCache(
-        filterfields={
-            "buildspec": os.path.join(BUILDTEST_ROOT, "tutorials", "hello_world.yml")
-        },
-        configuration=configuration,
-    )
-    cache.print_buildspecs()
-
-    # buildtest buildspec find --filter type=script,executor=generic.local.sh,tags=fail
-    cache = BuildspecCache(
-        filterfields={
-            "type": "script",
-            "executor": "generic.local.bash",
-            "tags": "fail",
-        },
-        configuration=configuration,
-    )
-    cache.print_buildspecs()
-
-    with pytest.raises(BuildTestError):
-        tf = tempfile.NamedTemporaryFile()
-        # testing for valid filepath for buildspec file but file doesn't exist in cache
-        BuildspecCache(filterfields={"buildspec": tf.name}, configuration=configuration)
-
-    with pytest.raises(BuildTestError):
-        # create temporary file and close file which will delete the file to create invalid filepath
-        tf = tempfile.NamedTemporaryFile(delete=True)
-        tf.close()
-        # testing on invalid file path for buildspec. This should raise an exception
-        BuildspecCache(filterfields={"buildspec": tf.name}, configuration=configuration)
-
-    with pytest.raises(BuildTestError):
-        tf = tempfile.TemporaryDirectory()
-        # if we specify a directory path for buildspec filter this will raise an exception.
-        BuildspecCache(filterfields={"buildspec": tf.name}, configuration=configuration)
-
-    # buildtest buildspec find --filter key1=val1,key2=val2
-    with pytest.raises(BuildTestError):
-        cache = BuildspecCache(
-            filterfields={"key1": "val1", "key2": "val2"}, configuration=configuration
-        )
-        cache.print_buildspecs()
-
-
-@pytest.mark.cli
-def test_buildspec_find_format():
-    # buildtest buildspec find --format name,type,tags,executor,description,buildspec
-    cache = BuildspecCache(
-        formatfields="name,type,tags,executor,description,buildspec",
-        configuration=configuration,
-    )
-    cache.print_buildspecs()
-
-    # Any invalid format fields will raise an exception of type BuildTestError
-    with pytest.raises(BuildTestError):
-        # buildtest buildspec find --format field1
-        cache = BuildspecCache(formatfields="field1", configuration=configuration)
-        cache.print_buildspecs()
 
 
 @pytest.mark.cli
