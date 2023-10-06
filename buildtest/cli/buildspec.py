@@ -662,7 +662,7 @@ class BuildspecCache:
         self.count = count if count is not None else self.count
 
         # slice list to only display number of tags specified by --count option
-        display_tags = self.cache["unique_tags"][self.count]
+        display_tags = self.cache["unique_tags"][: self.count]
         # if --count is negative we show the entire list
         if self.count < 0:
             display_tags = self.cache["unique_tags"]

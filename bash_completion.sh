@@ -35,13 +35,13 @@ _buildtest_commands()
 # get list of available tags
 _avail_tags ()
 {
-  buildtest buildspec find --tags --terse --no-header 2>/dev/null
+  buildtest buildspec find --tags --terse --count=-1 --no-header 2>/dev/null
 }
 
 # get list of buildspecs in cache
 _avail_buildspecs ()
 {
-  buildtest buildspec find --buildspec --terse --no-header 2>/dev/null
+  buildtest buildspec find --buildspec --terse --count=-1 --no-header 2>/dev/null
 }
 
 # get list of schemas
