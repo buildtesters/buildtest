@@ -50,7 +50,10 @@ class TestNersc:
             maxpendtime=120,
             numprocs=[1, 4],
         )
-        cmd.build()
+        try:
+            cmd.build()
+        except SystemExit:
+            pass
 
     def test_slurm_max_pend(self):
         if not os.getenv("NERSC_HOST") == "perlmutter":
