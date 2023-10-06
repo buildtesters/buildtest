@@ -19,7 +19,7 @@ from buildtest.system import BuildTestSystem
 
 class TestNersc:
     here = os.path.dirname(os.path.abspath(__file__))
-    if not os.getenv("NERSC_HOST") == "perlmutter":
+    if not os.getenv("NERSC_HOST") in ["perlmutter", "muller"]:
         pytest.skip(
             "This test can only run on Perlmutter Login nodes", allow_module_level=True
         )
@@ -33,7 +33,7 @@ class TestNersc:
     BuildspecCache(rebuild=True, configuration=bc)
 
     def test_slurm_hostname(self):
-        if not os.getenv("NERSC_HOST") == "perlmutter":
+        if not os.getenv("NERSC_HOST") in ["perlmutter", "muller"]:
             pytest.skip(
                 "This test can only run on Perlmutter Login nodes",
                 allow_module_level=True,
@@ -57,7 +57,7 @@ class TestNersc:
             pass
 
     def test_slurm_max_pend(self):
-        if not os.getenv("NERSC_HOST") == "perlmutter":
+        if not os.getenv("NERSC_HOST") in ["perlmutter", "muller"]:
             pytest.skip(
                 "This test can only run on Perlmutter Login nodes",
                 allow_module_level=True,
@@ -81,7 +81,7 @@ class TestNersc:
             cmd.build()
 
     def test_compiler_find(self):
-        if not os.getenv("NERSC_HOST") == "perlmutter":
+        if not os.getenv("NERSC_HOST") in ["perlmutter", "muller"]:
             pytest.skip(
                 "This test can only run on Perlmutter Login nodes",
                 allow_module_level=True,
@@ -94,7 +94,7 @@ class TestNersc:
         compiler_find(configuration=self.bc, detailed=True)
 
     def test_compiler_test(self):
-        if not os.getenv("NERSC_HOST") == "perlmutter":
+        if not os.getenv("NERSC_HOST") in ["perlmutter", "muller"]:
             pytest.skip(
                 "This test can only run on Perlmutter Login nodes",
                 allow_module_level=True,
@@ -103,7 +103,7 @@ class TestNersc:
         compiler_test(configuration=self.bc)
 
     def test_compiler_find_alternative_filepath(self):
-        if not os.getenv("NERSC_HOST") == "perlmutter":
+        if not os.getenv("NERSC_HOST") in ["perlmutter", "muller"]:
             pytest.skip(
                 "This test can only run on Perlmutter Login nodes",
                 allow_module_level=True,
