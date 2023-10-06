@@ -4,6 +4,7 @@ import json
 import os.path
 import re
 import sys
+import tempfile
 import webbrowser
 import xml.etree.ElementTree as ET
 import zlib
@@ -259,7 +260,8 @@ def upload_test_cdash(
     build_stamp = build_starttime.strftime(output_datetime_format)
     build_stamp += "-Experimental"
 
-    filename = "Test.xml"
+    tf = tempfile.NamedTemporaryFile(suffix=".xml")
+
     site_element = ET.Element(
         "Site", Name=site_name, BuildName=build_name, BuildStamp=build_stamp
     )
@@ -401,14 +403,14 @@ def upload_test_cdash(
             ET.SubElement(labels_element, "Label").text = tag
 
     xml_tree = ET.ElementTree(site_element)
-    xml_tree.write(filename)
+    xml_tree.write(tf.name)
 
     # Compute md5 checksum for the contents of this file.
-    with open(filename) as xml_file:
-        md5sum = hashlib.md5(xml_file.read().encode("utf-8")).hexdigest()
+    with open(tf.name) as fd:
+        md5sum = hashlib.md5(fd.read().encode("utf-8")).hexdigest()
 
     buildid_regexp = re.compile("<buildId>([0-9]+)</buildId>")
-    with open(filename, "rb") as fd:
+    with open(tf.name, "rb") as fd:
         params_dict = {
             "build": build_name,
             "site": site_name,
@@ -420,7 +422,7 @@ def upload_test_cdash(
         console.print("[blue]MD5SUM:", md5sum)
         encoded_params = urlencode(params_dict)
         url = "{0}&{1}".format(upload_url, encoded_params)
-        hdrs = {"Content-Type": "text/xml", "Content-Length": os.path.getsize(filename)}
+        hdrs = {"Content-Type": "text/xml", "Content-Length": os.path.getsize(tf.name)}
         request = Request(url, data=fd, method="PUT", headers=hdrs)
 
         with urlopen(request) as response:
@@ -434,5 +436,5 @@ def upload_test_cdash(
                 console.print(f"You can view the results at: {url_view}")
                 if open_browser:
                     webbrowser.open(url_view)
-
-        os.remove(filename)
+        tf.close()
+        # os.remove(filename)
