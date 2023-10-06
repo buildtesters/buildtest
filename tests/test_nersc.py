@@ -1,4 +1,5 @@
 import os
+import shutil
 import tempfile
 
 import pytest
@@ -117,5 +118,14 @@ class TestNersc:
         temp_path.close()
 
     def test_compiler_remove(self):
-        compilers = BuildtestCompilers(configuration=self.bc)
-        remove_compilers(configuration=self.bc, names=compilers.names())
+        # will create a copy of configuration file and remove one compiler from configuration. We dont want to modify the original configuration file
+        tf = tempfile.NamedTemporaryFile(suffix=".yml")
+        shutil.copy(self.settings_file, tf.name)
+
+        config = SiteConfiguration(tf.name)
+        config.detect_system()
+        config.validate(moduletool="lmod")
+
+        compilers = BuildtestCompilers(configuration=config)
+        # remove one compiler from configuration
+        remove_compilers(configuration=self.bc, names=[compilers.names()[0]])
