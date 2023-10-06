@@ -3,8 +3,7 @@
 stages:
   - regression
 
-perlmutter_regression_test:
-  tags: [perlmutter-bdtest]
+.regression_test:
   stage: regression
   rules:
     - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" && $CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
@@ -30,3 +29,11 @@ perlmutter_regression_test:
     - codecov -t $CODECOV_TOKEN
     - source deactivate
     - conda env remove -p $CI_PROJECT_DIR/.conda -y
+
+perlmutter_test:
+  extends: .regression_test
+  tags: [perlmutter-bdtest]
+
+muller_test:
+  extends: .regression_test
+  tags: [muller-bdtest]
