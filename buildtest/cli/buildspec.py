@@ -612,7 +612,8 @@ class BuildspecCache:
         self.row_count = row_count if row_count is not None else self.row_count
         self.count = count if count is not None else self.count
 
-        display_buildspecs = list(self.cache["buildspecs"].keys())[self.count]
+        display_buildspecs = list(self.cache["buildspecs"].keys())[: self.count]
+
         if self.count < 0:
             display_buildspecs = list(self.cache["buildspecs"].keys())
 
@@ -661,7 +662,7 @@ class BuildspecCache:
         self.count = count if count is not None else self.count
 
         # slice list to only display number of tags specified by --count option
-        display_tags = self.cache["unique_tags"][self.count]
+        display_tags = self.cache["unique_tags"][: self.count]
         # if --count is negative we show the entire list
         if self.count < 0:
             display_tags = self.cache["unique_tags"]

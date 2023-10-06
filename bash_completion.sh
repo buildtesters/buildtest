@@ -35,13 +35,13 @@ _buildtest_commands()
 # get list of available tags
 _avail_tags ()
 {
-  buildtest buildspec find --tags --terse --no-header 2>/dev/null
+  buildtest buildspec find --tags --terse --count=-1 --no-header 2>/dev/null
 }
 
 # get list of buildspecs in cache
 _avail_buildspecs ()
 {
-  buildtest buildspec find --buildspec --terse --no-header 2>/dev/null
+  buildtest buildspec find --buildspec --terse --count=-1 --no-header 2>/dev/null
 }
 
 # get list of schemas
@@ -365,13 +365,13 @@ _buildtest ()
       # case statement to handle completion for buildtest inspect [name|id|list] command
       case "${COMP_WORDS[2+offset]}" in
         list|l)
-          local opts="--builder --help --no-header --pager --row-count --terse -b -h -n -t"
+          local opts="--builder --help --no-header --pager --row-count --terse -b -h -n"
           COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) );;
         name|n)
           COMPREPLY=( $( compgen -W "$(_test_name)" -- "${cur}" ) )
 
           if [[ $cur == -* ]] ; then
-            local opts="--all --help --pager -a -h"
+            local opts="--help --pager -h"
             COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
           fi
           ;;
