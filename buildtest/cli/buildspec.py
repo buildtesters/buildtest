@@ -612,7 +612,8 @@ class BuildspecCache:
         self.row_count = row_count if row_count is not None else self.row_count
         self.count = count if count is not None else self.count
 
-        display_buildspecs = list(self.cache["buildspecs"].keys())[self.count]
+        display_buildspecs = list(self.cache["buildspecs"].keys())[: self.count]
+
         if self.count < 0:
             display_buildspecs = list(self.cache["buildspecs"].keys())
 
