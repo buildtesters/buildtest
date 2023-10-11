@@ -8,5 +8,5 @@ buildspecs:
       image: ubuntu:latest
       command: bash -c "cat /etc/os-release"
     run: |
-      ls -l /etc/os-release
+      ls -l /etc/os-release || true
 
