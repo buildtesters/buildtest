@@ -138,8 +138,7 @@
       "type": "object",
       "required": [
           "image",
-          "platform",
-          "command"
+          "platform"
         ],
       "properties": {
         "platform": {
