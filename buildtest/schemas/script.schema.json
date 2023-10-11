@@ -133,6 +133,37 @@
           }
         }
       }
+    },
+    "container": {
+      "type": "object",
+      "required": [
+          "image",
+          "platform",
+          "command"
+        ],
+      "properties": {
+        "platform": {
+          "type": "string",
+          "description": "Specify a container platform to use when running test. This is used for running commands inside container.",
+          "enum": [
+            "docker",
+            "podman",
+            "singularity"
+          ]
+        },
+        "image": {
+          "type": "string",
+          "description": "Specify a container image to use when running test. This is used for running commands inside container."
+        },
+        "mounts": {
+          "type": "string",
+          "description": "Specify a list of directory paths to bind mount into the container"
+        },
+        "command": {
+          "type": "string",
+          "description": "Specify a list of commands to run inside container. This is used for running commands inside container."
+        }
+      }
     }
   },
   "definitions": {
