@@ -213,9 +213,13 @@ class ScriptBuilder(BuilderBase):
                     [f"{container_platform}", "exec", f"-B {self.stage_dir}:/buildtest"]
                 )
 
-            container_command.extend(
-                [self.recipe["container"]["image"], container["command"]]
-            )
+                if container.get("mounts"):
+                    container_command.extend(["-B", container["mounts"]])
+
+            container_command.append(container["image"])
+
+            if container.get("command"):
+                container_command.append(container["command"])
 
             lines.append(" ".join(container_command))
 

@@ -414,3 +414,98 @@ Let's try running this script
         # Content of run section
         docker run -v /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/bind_mounts/bind_mount_in_container/51c5e402/stage:/buildtest -v /tmp:/tmp ubuntu:latest bash -c "echo 'hello world' > /tmp/hello.txt"
         cat /tmp/hello.txt
+
+
+Standalone container without any run arguments
+----------------------------------------------
+
+Sometimes you will have containers that are meant to run without any argument. An example of this is the ``hello-world`` container which will
+print this message
+
+.. code-block:: console
+
+      docker run hello-world
+
+    Hello from Docker!
+    This message shows that your installation appears to be working correctly.
+
+    To generate this message, Docker took the following steps:
+     1. The Docker client contacted the Docker daemon.
+     2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+        (amd64)
+     3. The Docker daemon created a new container from that image which runs the
+        executable that produces the output you are currently reading.
+     4. The Docker daemon streamed that output to the Docker client, which sent it
+        to your terminal.
+
+    To try something more ambitious, you can run an Ubuntu container with:
+     $ docker run -it ubuntu bash
+
+    Share images, automate workflows, and more with a free Docker ID:
+     https://hub.docker.com/
+
+    For more examples and ideas, visit:
+     https://docs.docker.com/get-started/
+
+However, if you try running arbitrary commands inside the container, you will typically get an error
+
+    .. code-block:: console
+
+     docker run -it hello-world /bin/bash
+    docker: Error response from daemon: OCI runtime create failed: container_linux.go:367: starting container process caused: exec: "/bin/bash": stat /bin/bash: no such file or directory: unknown.
+    ERRO[0000] error waiting for container: context canceled
+
+
+That being said, the ``commands`` keyword is an optional property and inorder to run the hello-world container we have the following buildspec that can
+achieve this task.
+
+.. literalinclude:: ../tutorials/containers/hello_world.yml
+   :language: yaml
+   :emphasize-lines: 6-8
+
+
+You can run this test by running ``buildtest build -b $BUILDTEST_ROOT/tutorials/containers/hello_world.yml``. Upon completion of test, you can query
+the test result and you will notice the container was executed successfully.
+
+.. code-block:: console
+
+      buildtest it query -o -t  hello_world_container_no_commands
+    ──────────────────────────────────────────────────────────────────────────────── hello_world_container_no_commands/37a26900-2a01-4abc-a060-9645357558f8 ────────────────────────────────────────────────────────────────────────────────
+    Executor: generic.local.bash
+    Description: run container with no commands
+    State: PASS
+    Returncode: 0
+    Runtime: 0.612196 sec
+    Starttime: 2023/10/11 14:20:34
+    Endtime: 2023/10/11 14:20:35
+    Command: bash --norc --noprofile -eo pipefail hello_world_container_no_commands_build.sh
+    Test Script: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/no_commands/hello_world_container_no_commands/37a26900/hello_world_container_no_commands.sh
+    Build Script: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/no_commands/hello_world_container_no_commands/37a26900/hello_world_container_no_commands_build.sh
+    Output File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/no_commands/hello_world_container_no_commands/37a26900/hello_world_container_no_commands.out
+    Error File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/no_commands/hello_world_container_no_commands/37a26900/hello_world_container_no_commands.err
+    Log File: /Users/siddiq90/Documents/github/buildtest/var/logs/buildtest_jrpeoqxg.log
+    ────────────────────────── Output File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/no_commands/hello_world_container_no_commands/37a26900/hello_world_container_no_commands.out ───────────────────────────
+    Hello from Docker!
+    This message shows that your installation appears to be working correctly.
+    To generate this message, Docker took the following steps:
+     1. The Docker client contacted the Docker daemon.
+     2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+        (amd64)
+     3. The Docker daemon created a new container from that image which runs the
+        executable that produces the output you are currently reading.
+     4. The Docker daemon streamed that output to the Docker client, which sent it
+        to your terminal.
+    To try something more ambitious, you can run an Ubuntu container with:
+     $ docker run -it ubuntu bash
+    Share images, automate workflows, and more with a free Docker ID:
+     https://hub.docker.com/
+    For more examples and ideas, visit:
+     https://docs.docker.com/get-started/
+    Test Complete!
+
+    ──────────────────────────── Test File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/no_commands/hello_world_container_no_commands/37a26900/hello_world_container_no_commands.sh ────────────────────────────
+    #!/bin/bash
+    set -eo pipefail
+    # Content of run section
+    docker run -v /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/no_commands/hello_world_container_no_commands/37a26900/stage:/buildtest hello-world
+    echo 'Test Complete!'
