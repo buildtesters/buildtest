@@ -128,7 +128,7 @@ Unable to query all test results
 ---------------------------------
 
 If you run into situation where you are unable to query all test results,
-you should check the buildtest configuration file see :ref:`configuring_buildtest_report`_. In this section, check if
+you should check the buildtest configuration file see :ref:`configuring_buildtest_report`. In this section, check if
 ``count`` property is set in configuration file. For instance if you have ``count: 25``, everytime you run ``buildtest report`` it
 will query 25 records
 
