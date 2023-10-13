@@ -373,14 +373,15 @@ class BuilderBase(ABC):
 
         self.logger.debug(f"Running Test via command: {cmd}")
         ret = command.returncode()
-        err_msg = " ".join(command.get_error())
+        err_msg = command.get_error()
 
         if not self._retry or ret == 0:
             return command
 
         err = f"{self} failed to submit job with returncode: {ret} \n"
         console.print(f"[red]{err}")
-        console.print(f"[red]{err_msg}")
+        console.rule(f"[red]Error Message for {self}")
+        console.print(f"[red]{' '.join(err_msg)}")
 
         ########## Retry for failed tests  ##########
 
