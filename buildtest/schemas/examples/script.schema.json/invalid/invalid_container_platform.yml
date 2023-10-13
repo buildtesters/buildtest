@@ -1,0 +1,9 @@
+buildspecs:
+  invalid_container_platform:
+    type: script
+    executor: generic.local.bash
+    description: invalid container platform
+    container:
+      platform: "containerd"
+      image: hello-world
+    run: echo 'Test Complete!'
