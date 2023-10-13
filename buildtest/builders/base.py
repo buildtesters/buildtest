@@ -374,12 +374,14 @@ class BuilderBase(ABC):
         self.logger.debug(f"Running Test via command: {cmd}")
         ret = command.returncode()
         err_msg = command.get_error()
+        # limit error messages to 60 lines
+        if len(err_msg) >= 60:
+            err_msg = err_msg[-60:]
 
         if not self._retry or ret == 0:
             return command
 
-        err = f"{self} failed to submit job with returncode: {ret} \n"
-        console.print(f"[red]{err}")
+        console.print(f"[red]{self} failed to submit job with returncode: {ret}")
         console.rule(f"[red]Error Message for {self}")
         console.print(f"[red]{' '.join(err_msg)}")
 
@@ -402,8 +404,7 @@ class BuilderBase(ABC):
             # if we recieve a returncode of 0 return immediately with the instance of command
             if ret == 0:
                 return command
-            err = f"{self}: failed to submit job with returncode: {ret} "
-            console.print(f"[red]{err}")
+            console.print(f"[red]{self}: failed to submit job with returncode: {ret}")
 
         return command
 
