@@ -18,92 +18,111 @@ inside the container.
 
 .. literalinclude:: ../tutorials/containers/run_commands.yml
    :language: yaml
-   :emphasize-lines: 6-9
+   :emphasize-lines: 6-9,20
 
 We will be running ``cat /etc/os-release`` inside the ubuntu container which will show the operating system information. Next, we will ``ls`` on the same
 file which we expect to fail, hence we will make this test pass by using ``|| true`` to ensure we have a zero returncode.
 
-In our current system, we are running MacOS so we expect ``/etc/os-release`` will **not** be found. Let's run the test and inspect the test results
+In our current system, we are running MacOS so we expect ``/etc/os-release`` will **not** be found. In the second test, we show how one can pass options to
+``docker run`` using the ``options`` keyword. In this test, we will specify a custom hostname using ``--hostname`` option and run the **hostname** command in
+the container.
+
+Let's run the test and inspect the test results
 
 .. dropdown:: buildtest build -b $BUILDTEST_ROOT/tutorials/containers/run_commands.yml
 
     .. code-block:: console
 
-          buildtest build -b $BUILDTEST_ROOT/tutorials/containers/run_commands.yml
-        ╭────────────────────────────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────────────────────────────╮
-        │                                                                                                                                                                        │
-        │ User:               siddiq90                                                                                                                                           │
-        │ Hostname:           DOE-7086392                                                                                                                                        │
-        │ Platform:           Darwin                                                                                                                                             │
-        │ Current Time:       2023/10/11 12:59:34                                                                                                                                │
-        │ buildtest path:     /Users/siddiq90/Documents/github/buildtest/bin/buildtest                                                                                           │
-        │ buildtest version:  1.6                                                                                                                                                │
-        │ python path:        /Users/siddiq90/.local/share/virtualenvs/buildtest-Ir4AdrfC/bin/python3                                                                            │
-        │ python version:     3.10.12                                                                                                                                            │
-        │ Configuration File: /Users/siddiq90/Documents/github/buildtest/buildtest/settings/config.yml                                                                           │
-        │ Test Directory:     /Users/siddiq90/Documents/github/buildtest/var/tests                                                                                               │
-        │ Report File:        /Users/siddiq90/Documents/github/buildtest/var/report.json                                                                                         │
-        │ Command:            /Users/siddiq90/Documents/github/buildtest/bin/buildtest build -b /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml │
-        │                                                                                                                                                                        │
-        ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-        ───────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────
-                                       Discovered buildspecs
-        ╔══════════════════════════════════════════════════════════════════════════════════╗
-        ║ buildspec                                                                        ║
-        ╟──────────────────────────────────────────────────────────────────────────────────╢
-        ║ /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml ║
-        ╚══════════════════════════════════════════════════════════════════════════════════╝
+    ╭────────────────────────────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────────────────────────────╮
+    │                                                                                                                                                                        │
+    │ User:               siddiq90                                                                                                                                           │
+    │ Hostname:           DOE-7086392                                                                                                                                        │
+    │ Platform:           Darwin                                                                                                                                             │
+    │ Current Time:       2023/10/13 11:04:09                                                                                                                                │
+    │ buildtest path:     /Users/siddiq90/Documents/github/buildtest/bin/buildtest                                                                                           │
+    │ buildtest version:  1.6                                                                                                                                                │
+    │ python path:        /Users/siddiq90/.local/share/virtualenvs/buildtest-Ir4AdrfC/bin/python3                                                                            │
+    │ python version:     3.10.12                                                                                                                                            │
+    │ Configuration File: /Users/siddiq90/Documents/github/buildtest/buildtest/settings/config.yml                                                                           │
+    │ Test Directory:     /Users/siddiq90/Documents/github/buildtest/var/tests                                                                                               │
+    │ Report File:        /Users/siddiq90/Documents/github/buildtest/var/report.json                                                                                         │
+    │ Command:            /Users/siddiq90/Documents/github/buildtest/bin/buildtest build -b /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml │
+    │                                                                                                                                                                        │
+    ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+    ───────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────
+                                   Discovered buildspecs
+    ╔══════════════════════════════════════════════════════════════════════════════════╗
+    ║ buildspec                                                                        ║
+    ╟──────────────────────────────────────────────────────────────────────────────────╢
+    ║ /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml ║
+    ╚══════════════════════════════════════════════════════════════════════════════════╝
 
 
-        Total Discovered Buildspecs:  1
-        Total Excluded Buildspecs:  0
-        Detected Buildspecs after exclusion:  1
-        ────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────────────────────────────────────────────────────────────
-        Valid Buildspecs: 1
-        Invalid Buildspecs: 0
-        /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml: VALID
-        Total builder objects created: 1
-                                                                                                               Builders by type=script
-        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-        ┃ builder                            ┃ type   ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                                      ┃ buildspecs                                                                       ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-        │ container_commands_ubuntu/4697774f │ script │ generic.local.bash │ None     │ None  │ None  │ run arbitrary linux commands in ubuntu container │ /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml │
-        └────────────────────────────────────┴────────┴────────────────────┴──────────┴───────┴───────┴──────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
-        ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-        container_commands_ubuntu/4697774f: Creating test directory: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/4697774f
-        container_commands_ubuntu/4697774f: Creating the stage directory: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/4697774f/stage
-        container_commands_ubuntu/4697774f: Writing build script: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/4697774f/container_commands_ubuntu_build.sh
-        ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-        Spawning 1 processes for processing builders
-        ───────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
-        container_commands_ubuntu/4697774f does not have any dependencies adding test to queue
-               Builders Eligible to Run
-        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-        ┃ Builder                            ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-        │ container_commands_ubuntu/4697774f │
-        └────────────────────────────────────┘
-        container_commands_ubuntu/4697774f: Current Working Directory : /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/4697774f/stage
-        container_commands_ubuntu/4697774f: Running Test via command: bash --norc --noprofile -eo pipefail container_commands_ubuntu_build.sh
-        container_commands_ubuntu/4697774f: Test completed in 0.650449 seconds
-        container_commands_ubuntu/4697774f: Test completed with returncode: 0
-        container_commands_ubuntu/4697774f: Writing output file -  /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/4697774f/container_commands_ubuntu.out
-        container_commands_ubuntu/4697774f: Writing error file - /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/4697774f/container_commands_ubuntu.err
-                                                                   Test Summary
-        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-        ┃ builder                            ┃ executor           ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime  ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-        │ container_commands_ubuntu/4697774f │ generic.local.bash │ PASS   │ None None None                      │ 0          │ 0.650449 │
-        └────────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
+    Total Discovered Buildspecs:  1
+    Total Excluded Buildspecs:  0
+    Detected Buildspecs after exclusion:  1
+    ────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+    Valid Buildspecs: 1
+    Invalid Buildspecs: 0
+    /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml: VALID
+    Total builder objects created: 2
+                                                                                                           Builders by type=script
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ builder                            ┃ type   ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                                      ┃ buildspecs                                                                       ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ container_commands_ubuntu/80e076bc │ script │ generic.local.bash │ None     │ None  │ None  │ run arbitrary linux commands in ubuntu container │ /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml │
+    ├────────────────────────────────────┼────────┼────────────────────┼──────────┼───────┼───────┼──────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────┤
+    │ container_options/03ab5773         │ script │ generic.local.bash │ None     │ None  │ None  │ run arbitrary linux commands in ubuntu container │ /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml │
+    └────────────────────────────────────┴────────┴────────────────────┴──────────┴───────┴───────┴──────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
+    ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    container_commands_ubuntu/80e076bc: Creating test directory: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc
+    container_commands_ubuntu/80e076bc: Creating the stage directory: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/stage
+    container_commands_ubuntu/80e076bc: Writing build script: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/container_commands_ubuntu_build.sh
+    container_options/03ab5773: Creating test directory: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773
+    container_options/03ab5773: Creating the stage directory: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/stage
+    container_options/03ab5773: Writing build script: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/container_options_build.sh
+    ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    Spawning 1 processes for processing builders
+    ───────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    container_options/03ab5773 does not have any dependencies adding test to queue
+    container_commands_ubuntu/80e076bc does not have any dependencies adding test to queue
+           Builders Eligible to Run
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder                            ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ container_options/03ab5773         │
+    │ container_commands_ubuntu/80e076bc │
+    └────────────────────────────────────┘
+    container_options/03ab5773: Current Working Directory : /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/stage
+    container_options/03ab5773: Running Test via command: bash --norc --noprofile -eo pipefail container_options_build.sh
+    container_options/03ab5773: Test completed in 0.661047 seconds
+    container_options/03ab5773: Test completed with returncode: 0
+    container_options/03ab5773: Writing output file -  /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/container_options.out
+    container_options/03ab5773: Writing error file - /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/container_options.err
+    container_commands_ubuntu/80e076bc: Current Working Directory : /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/stage
+    container_commands_ubuntu/80e076bc: Running Test via command: bash --norc --noprofile -eo pipefail container_commands_ubuntu_build.sh
+    container_commands_ubuntu/80e076bc: Test completed in 0.683467 seconds
+    container_commands_ubuntu/80e076bc: Test completed with returncode: 0
+    container_commands_ubuntu/80e076bc: Writing output file -  /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/container_commands_ubuntu.out
+    container_commands_ubuntu/80e076bc: Writing error file - /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/container_commands_ubuntu.err
+                                                               Test Summary
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+    ┃ builder                            ┃ executor           ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime  ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+    │ container_commands_ubuntu/80e076bc │ generic.local.bash │ PASS   │ None None None                      │ 0          │ 0.683467 │
+    ├────────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+    │ container_options/03ab5773         │ generic.local.bash │ PASS   │ None None None                      │ 0          │ 0.661047 │
+    └────────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
 
 
-        Passed Tests: 1/1 Percentage: 100.000%
-        Failed Tests: 0/1 Percentage: 0.000%
+    Passed Tests: 2/2 Percentage: 100.000%
+    Failed Tests: 0/2 Percentage: 0.000%
 
 
-        Adding 1 test results to /Users/siddiq90/Documents/github/buildtest/var/report.json
-        Writing Logfile to: /Users/siddiq90/Documents/github/buildtest/var/logs/buildtest_resccwts.log
+    Adding 2 test results to /Users/siddiq90/Documents/github/buildtest/var/report.json
+    Writing Logfile to: /Users/siddiq90/Documents/github/buildtest/var/logs/buildtest_hw24zz0m.log
+
 
     Let's inspect the test results, take note of the, output, error and generated test. First you will notice in the generated test the
     ``docker run`` used to run the container. In the output file, you will see the content of `/etc/os-release` from the container and the error file will show that there is no such file on host named `/etc/os-release`.
@@ -111,22 +130,48 @@ In our current system, we are running MacOS so we expect ``/etc/os-release`` wil
 
     .. code-block:: console
 
-         buildtest inspect query -o -e -t  container_commands_ubuntu/4697774f
-        ──────────────────────────────────────────────────────────────────────────────────── container_commands_ubuntu/4697774f-760f-4111-98c4-c8a73be12730 ────────────────────────────────────────────────────────────────────────────────────
+         buildtest inspect query -o -e -t  container_commands_ubuntu container_options
+        ──────────────────────────────────────────────────────────────────────────────────────── container_options/03ab5773-cff3-48ef-bbf0-a8902646db65 ────────────────────────────────────────────────────────────────────────────────────────
         Executor: generic.local.bash
         Description: run arbitrary linux commands in ubuntu container
         State: PASS
         Returncode: 0
-        Runtime: 0.650449 sec
-        Starttime: 2023/10/11 12:59:34
-        Endtime: 2023/10/11 12:59:35
+        Runtime: 0.661047 sec
+        Starttime: 2023/10/13 11:04:10
+        Endtime: 2023/10/13 11:04:10
+        Command: bash --norc --noprofile -eo pipefail container_options_build.sh
+        Test Script: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/container_options.sh
+        Build Script: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/container_options_build.sh
+        Output File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/container_options.out
+        Error File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/container_options.err
+        Log File: /Users/siddiq90/Documents/github/buildtest/var/logs/buildtest_hw24zz0m.log
+        ────────────────────────────────────────── Output File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/container_options.out ──────────────────────────────────────────
+        myhostname
+        DOE-7086392
+
+        ────────────────────────────────────────── Error File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/container_options.err ───────────────────────────────────────────
+
+        ─────────────────────────────────────────── Test File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/container_options.sh ────────────────────────────────────────────
+        #!/bin/bash
+        set -eo pipefail
+        # Content of run section
+        docker run -v /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/stage:/buildtest --hostname myhostname ubuntu:latest hostname
+        hostname
+        ──────────────────────────────────────────────────────────────────────────────────── container_commands_ubuntu/80e076bc-df06-48a9-8f63-2f40074d4f15 ────────────────────────────────────────────────────────────────────────────────────
+        Executor: generic.local.bash
+        Description: run arbitrary linux commands in ubuntu container
+        State: PASS
+        Returncode: 0
+        Runtime: 0.683467 sec
+        Starttime: 2023/10/13 11:04:10
+        Endtime: 2023/10/13 11:04:11
         Command: bash --norc --noprofile -eo pipefail container_commands_ubuntu_build.sh
-        Test Script: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/4697774f/container_commands_ubuntu.sh
-        Build Script: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/4697774f/container_commands_ubuntu_build.sh
-        Output File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/4697774f/container_commands_ubuntu.out
-        Error File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/4697774f/container_commands_ubuntu.err
-        Log File: /Users/siddiq90/Documents/github/buildtest/var/logs/buildtest_resccwts.log
-        ────────────────────────────────── Output File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/4697774f/container_commands_ubuntu.out ──────────────────────────────────
+        Test Script: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/container_commands_ubuntu.sh
+        Build Script: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/container_commands_ubuntu_build.sh
+        Output File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/container_commands_ubuntu.out
+        Error File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/container_commands_ubuntu.err
+        Log File: /Users/siddiq90/Documents/github/buildtest/var/logs/buildtest_hw24zz0m.log
+        ────────────────────────────────── Output File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/container_commands_ubuntu.out ──────────────────────────────────
         PRETTY_NAME="Ubuntu 22.04.3 LTS"
         NAME="Ubuntu"
         VERSION_ID="22.04"
@@ -140,15 +185,14 @@ In our current system, we are running MacOS so we expect ``/etc/os-release`` wil
         PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
         UBUNTU_CODENAME=jammy
 
-        ────────────────────────────────── Error File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/4697774f/container_commands_ubuntu.err ───────────────────────────────────
+        ────────────────────────────────── Error File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/container_commands_ubuntu.err ───────────────────────────────────
         ls: /etc/os-release: No such file or directory
 
-        ─────────────────────────────────── Test File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/4697774f/container_commands_ubuntu.sh ────────────────────────────────────
+        ─────────────────────────────────── Test File: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/container_commands_ubuntu.sh ────────────────────────────────────
         #!/bin/bash
         set -eo pipefail
         # Content of run section
-        docker run -v /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/4697774f/stage:/buildtest ubuntu:latest bash -c "cat /etc/os-release"
-        ls -l /etc/os-release || true
+        docker run -v /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/stage:/buildtest ubuntu:latest bash -c "cat /etc/os-release"
 
 Please note that ``command`` keyword must be properly formulated to run commands in container which can vary depending on how the container is setup.
 
@@ -416,8 +460,8 @@ Let's try running this script
         cat /tmp/hello.txt
 
 
-Standalone container without any run arguments
-----------------------------------------------
+Container Runs without arguments
+---------------------------------
 
 Sometimes you will have containers that are meant to run without any argument. An example of this is the ``hello-world`` container which will
 print this message
@@ -451,12 +495,12 @@ However, if you try running arbitrary commands inside the container, you will ty
 
     .. code-block:: console
 
-     docker run -it hello-world /bin/bash
-    docker: Error response from daemon: OCI runtime create failed: container_linux.go:367: starting container process caused: exec: "/bin/bash": stat /bin/bash: no such file or directory: unknown.
-    ERRO[0000] error waiting for container: context canceled
+         docker run -it hello-world /bin/bash
+        docker: Error response from daemon: OCI runtime create failed: container_linux.go:367: starting container process caused: exec: "/bin/bash": stat /bin/bash: no such file or directory: unknown.
+        ERRO[0000] error waiting for container: context canceled
 
 
-That being said, the ``commands`` keyword is an optional property and inorder to run the hello-world container we have the following buildspec that can
+That being said, the ``command`` keyword is an optional property and inorder to run the hello-world container we have the following buildspec that can
 achieve this task.
 
 .. literalinclude:: ../tutorials/containers/hello_world.yml

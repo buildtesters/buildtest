@@ -158,6 +158,10 @@
           "type": "string",
           "description": "Specify a list of directory paths to bind mount into the container"
         },
+        "options": {
+          "type": "string",
+          "description": "Specify a list of options to pass to container runtime. "
+        },
         "command": {
           "type": "string",
           "description": "Specify a list of commands to run inside container. This is used for running commands inside container."

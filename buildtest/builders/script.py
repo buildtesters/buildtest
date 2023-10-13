@@ -205,16 +205,19 @@ class ScriptBuilder(BuilderBase):
                     [container_platform, "run", "-v", f"{self.stage_dir}:/buildtest"]
                 )
 
-                if container.get("mounts"):
-                    container_command.extend(["-v", container["mounts"]])
-
             elif container_platform in ["singularity"]:
                 container_command.extend(
                     [f"{container_platform}", "exec", f"-B {self.stage_dir}:/buildtest"]
                 )
 
-                if container.get("mounts"):
+            if container.get("mounts"):
+                if container_platform in ["singularity"]:
                     container_command.extend(["-B", container["mounts"]])
+                else:
+                    container_command.extend(["-v", container["mounts"]])
+
+            if container.get("options"):
+                container_command.append(container["options"])
 
             container_command.append(container["image"])
 
