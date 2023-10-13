@@ -33,95 +33,95 @@ Let's run the test and inspect the test results
 
     .. code-block:: console
 
-    ╭────────────────────────────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────────────────────────────╮
-    │                                                                                                                                                                        │
-    │ User:               siddiq90                                                                                                                                           │
-    │ Hostname:           DOE-7086392                                                                                                                                        │
-    │ Platform:           Darwin                                                                                                                                             │
-    │ Current Time:       2023/10/13 11:04:09                                                                                                                                │
-    │ buildtest path:     /Users/siddiq90/Documents/github/buildtest/bin/buildtest                                                                                           │
-    │ buildtest version:  1.6                                                                                                                                                │
-    │ python path:        /Users/siddiq90/.local/share/virtualenvs/buildtest-Ir4AdrfC/bin/python3                                                                            │
-    │ python version:     3.10.12                                                                                                                                            │
-    │ Configuration File: /Users/siddiq90/Documents/github/buildtest/buildtest/settings/config.yml                                                                           │
-    │ Test Directory:     /Users/siddiq90/Documents/github/buildtest/var/tests                                                                                               │
-    │ Report File:        /Users/siddiq90/Documents/github/buildtest/var/report.json                                                                                         │
-    │ Command:            /Users/siddiq90/Documents/github/buildtest/bin/buildtest build -b /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml │
-    │                                                                                                                                                                        │
-    ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-    ───────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────
-                                   Discovered buildspecs
-    ╔══════════════════════════════════════════════════════════════════════════════════╗
-    ║ buildspec                                                                        ║
-    ╟──────────────────────────────────────────────────────────────────────────────────╢
-    ║ /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml ║
-    ╚══════════════════════════════════════════════════════════════════════════════════╝
+        ╭────────────────────────────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────────────────────────────╮
+        │                                                                                                                                                                        │
+        │ User:               siddiq90                                                                                                                                           │
+        │ Hostname:           DOE-7086392                                                                                                                                        │
+        │ Platform:           Darwin                                                                                                                                             │
+        │ Current Time:       2023/10/13 11:04:09                                                                                                                                │
+        │ buildtest path:     /Users/siddiq90/Documents/github/buildtest/bin/buildtest                                                                                           │
+        │ buildtest version:  1.6                                                                                                                                                │
+        │ python path:        /Users/siddiq90/.local/share/virtualenvs/buildtest-Ir4AdrfC/bin/python3                                                                            │
+        │ python version:     3.10.12                                                                                                                                            │
+        │ Configuration File: /Users/siddiq90/Documents/github/buildtest/buildtest/settings/config.yml                                                                           │
+        │ Test Directory:     /Users/siddiq90/Documents/github/buildtest/var/tests                                                                                               │
+        │ Report File:        /Users/siddiq90/Documents/github/buildtest/var/report.json                                                                                         │
+        │ Command:            /Users/siddiq90/Documents/github/buildtest/bin/buildtest build -b /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml │
+        │                                                                                                                                                                        │
+        ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+        ───────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────
+                                       Discovered buildspecs
+        ╔══════════════════════════════════════════════════════════════════════════════════╗
+        ║ buildspec                                                                        ║
+        ╟──────────────────────────────────────────────────────────────────────────────────╢
+        ║ /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml ║
+        ╚══════════════════════════════════════════════════════════════════════════════════╝
 
 
-    Total Discovered Buildspecs:  1
-    Total Excluded Buildspecs:  0
-    Detected Buildspecs after exclusion:  1
-    ────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────────────────────────────────────────────────────────────
-    Valid Buildspecs: 1
-    Invalid Buildspecs: 0
-    /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml: VALID
-    Total builder objects created: 2
-                                                                                                           Builders by type=script
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-    ┃ builder                            ┃ type   ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                                      ┃ buildspecs                                                                       ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-    │ container_commands_ubuntu/80e076bc │ script │ generic.local.bash │ None     │ None  │ None  │ run arbitrary linux commands in ubuntu container │ /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml │
-    ├────────────────────────────────────┼────────┼────────────────────┼──────────┼───────┼───────┼──────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────┤
-    │ container_options/03ab5773         │ script │ generic.local.bash │ None     │ None  │ None  │ run arbitrary linux commands in ubuntu container │ /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml │
-    └────────────────────────────────────┴────────┴────────────────────┴──────────┴───────┴───────┴──────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
-    ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-    container_commands_ubuntu/80e076bc: Creating test directory: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc
-    container_commands_ubuntu/80e076bc: Creating the stage directory: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/stage
-    container_commands_ubuntu/80e076bc: Writing build script: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/container_commands_ubuntu_build.sh
-    container_options/03ab5773: Creating test directory: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773
-    container_options/03ab5773: Creating the stage directory: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/stage
-    container_options/03ab5773: Writing build script: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/container_options_build.sh
-    ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-    Spawning 1 processes for processing builders
-    ───────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
-    container_options/03ab5773 does not have any dependencies adding test to queue
-    container_commands_ubuntu/80e076bc does not have any dependencies adding test to queue
-           Builders Eligible to Run
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-    ┃ Builder                            ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-    │ container_options/03ab5773         │
-    │ container_commands_ubuntu/80e076bc │
-    └────────────────────────────────────┘
-    container_options/03ab5773: Current Working Directory : /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/stage
-    container_options/03ab5773: Running Test via command: bash --norc --noprofile -eo pipefail container_options_build.sh
-    container_options/03ab5773: Test completed in 0.661047 seconds
-    container_options/03ab5773: Test completed with returncode: 0
-    container_options/03ab5773: Writing output file -  /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/container_options.out
-    container_options/03ab5773: Writing error file - /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/container_options.err
-    container_commands_ubuntu/80e076bc: Current Working Directory : /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/stage
-    container_commands_ubuntu/80e076bc: Running Test via command: bash --norc --noprofile -eo pipefail container_commands_ubuntu_build.sh
-    container_commands_ubuntu/80e076bc: Test completed in 0.683467 seconds
-    container_commands_ubuntu/80e076bc: Test completed with returncode: 0
-    container_commands_ubuntu/80e076bc: Writing output file -  /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/container_commands_ubuntu.out
-    container_commands_ubuntu/80e076bc: Writing error file - /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/container_commands_ubuntu.err
-                                                               Test Summary
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-    ┃ builder                            ┃ executor           ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime  ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-    │ container_commands_ubuntu/80e076bc │ generic.local.bash │ PASS   │ None None None                      │ 0          │ 0.683467 │
-    ├────────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
-    │ container_options/03ab5773         │ generic.local.bash │ PASS   │ None None None                      │ 0          │ 0.661047 │
-    └────────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
+        Total Discovered Buildspecs:  1
+        Total Excluded Buildspecs:  0
+        Detected Buildspecs after exclusion:  1
+        ────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+        Valid Buildspecs: 1
+        Invalid Buildspecs: 0
+        /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml: VALID
+        Total builder objects created: 2
+                                                                                                               Builders by type=script
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ builder                            ┃ type   ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                                      ┃ buildspecs                                                                       ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ container_commands_ubuntu/80e076bc │ script │ generic.local.bash │ None     │ None  │ None  │ run arbitrary linux commands in ubuntu container │ /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml │
+        ├────────────────────────────────────┼────────┼────────────────────┼──────────┼───────┼───────┼──────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────┤
+        │ container_options/03ab5773         │ script │ generic.local.bash │ None     │ None  │ None  │ run arbitrary linux commands in ubuntu container │ /Users/siddiq90/Documents/github/buildtest/tutorials/containers/run_commands.yml │
+        └────────────────────────────────────┴────────┴────────────────────┴──────────┴───────┴───────┴──────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────┘
+        ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+        container_commands_ubuntu/80e076bc: Creating test directory: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc
+        container_commands_ubuntu/80e076bc: Creating the stage directory: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/stage
+        container_commands_ubuntu/80e076bc: Writing build script: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/container_commands_ubuntu_build.sh
+        container_options/03ab5773: Creating test directory: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773
+        container_options/03ab5773: Creating the stage directory: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/stage
+        container_options/03ab5773: Writing build script: /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/container_options_build.sh
+        ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+        Spawning 1 processes for processing builders
+        ───────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+        container_options/03ab5773 does not have any dependencies adding test to queue
+        container_commands_ubuntu/80e076bc does not have any dependencies adding test to queue
+               Builders Eligible to Run
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ Builder                            ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ container_options/03ab5773         │
+        │ container_commands_ubuntu/80e076bc │
+        └────────────────────────────────────┘
+        container_options/03ab5773: Current Working Directory : /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/stage
+        container_options/03ab5773: Running Test via command: bash --norc --noprofile -eo pipefail container_options_build.sh
+        container_options/03ab5773: Test completed in 0.661047 seconds
+        container_options/03ab5773: Test completed with returncode: 0
+        container_options/03ab5773: Writing output file -  /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/container_options.out
+        container_options/03ab5773: Writing error file - /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_options/03ab5773/container_options.err
+        container_commands_ubuntu/80e076bc: Current Working Directory : /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/stage
+        container_commands_ubuntu/80e076bc: Running Test via command: bash --norc --noprofile -eo pipefail container_commands_ubuntu_build.sh
+        container_commands_ubuntu/80e076bc: Test completed in 0.683467 seconds
+        container_commands_ubuntu/80e076bc: Test completed with returncode: 0
+        container_commands_ubuntu/80e076bc: Writing output file -  /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/container_commands_ubuntu.out
+        container_commands_ubuntu/80e076bc: Writing error file - /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/run_commands/container_commands_ubuntu/80e076bc/container_commands_ubuntu.err
+                                                                   Test Summary
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder                            ┃ executor           ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime  ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ container_commands_ubuntu/80e076bc │ generic.local.bash │ PASS   │ None None None                      │ 0          │ 0.683467 │
+        ├────────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
+        │ container_options/03ab5773         │ generic.local.bash │ PASS   │ None None None                      │ 0          │ 0.661047 │
+        └────────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
 
 
 
-    Passed Tests: 2/2 Percentage: 100.000%
-    Failed Tests: 0/2 Percentage: 0.000%
+        Passed Tests: 2/2 Percentage: 100.000%
+        Failed Tests: 0/2 Percentage: 0.000%
 
 
-    Adding 2 test results to /Users/siddiq90/Documents/github/buildtest/var/report.json
-    Writing Logfile to: /Users/siddiq90/Documents/github/buildtest/var/logs/buildtest_hw24zz0m.log
+        Adding 2 test results to /Users/siddiq90/Documents/github/buildtest/var/report.json
+        Writing Logfile to: /Users/siddiq90/Documents/github/buildtest/var/logs/buildtest_hw24zz0m.log
 
 
     Let's inspect the test results, take note of the, output, error and generated test. First you will notice in the generated test the
