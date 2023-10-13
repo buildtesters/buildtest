@@ -195,7 +195,37 @@ class ScriptBuilder(BuilderBase):
             lines += self.compiler_settings["modules"]
 
         lines.append("# Content of run section")
+
+        if "container" in self.recipe:
+            container = self.recipe["container"]
+            container_platform = container["platform"]
+            container_command = []
+            if container_platform in ["docker", "podman"]:
+                container_command.extend(
+                    [container_platform, "run", "-v", f"{self.stage_dir}:/buildtest"]
+                )
+
+            elif container_platform in ["singularity"]:
+                container_command.extend(
+                    [f"{container_platform}", "exec", f"-B {self.stage_dir}:/buildtest"]
+                )
+
+            if container.get("mounts"):
+                if container_platform in ["singularity"]:
+                    container_command.extend(["-B", container["mounts"]])
+                else:
+                    container_command.extend(["-v", container["mounts"]])
+
+            if container.get("options"):
+                container_command.append(container["options"])
+
+            container_command.append(container["image"])
+
+            if container.get("command"):
+                container_command.append(container["command"])
+
+            lines.append(" ".join(container_command))
+
         # Add run section
         lines += [self.recipe["run"]]
-
         return lines

@@ -13,3 +13,4 @@ Writing Buildspecs
    writing_buildspecs/test_dependency
    writing_buildspecs/multi_executor
    writing_buildspecs/customize_shell
+   writing_buildspecs/containers

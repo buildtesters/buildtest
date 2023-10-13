@@ -1,0 +1,22 @@
+buildspecs:
+  container_commands_ubuntu:
+    type: script
+    executor: generic.local.bash
+    description: run arbitrary linux commands in ubuntu container
+    container:
+      platform: "docker"
+      image: ubuntu:latest
+      command: bash -c "cat /etc/os-release"
+    run: |
+      ls -l /etc/os-release || true
+
+  container_options:
+    type: script
+    executor: generic.local.bash
+    description: run arbitrary linux commands in ubuntu container
+    container:
+      platform: "docker"
+      image: ubuntu:latest
+      options: --hostname myhostname
+      command: hostname
+    run: hostname

@@ -102,12 +102,12 @@ Shown below is a sample output where we query 5 records from the buildspec cache
 
 .. command-output:: buildtest buildspec find --format name --terse --no-header --count=5
 
-To get all tests in buildspec cache, consider setting to any negative value `--count=-1` or a really high number.
+To get all tests in buildspec cache, consider setting to any negative value ``--count=-1`` or a really high number.
 
 Unable to query test details
 ------------------------------
 
-Let's say you are trying to query a test name `hello_world`, and you get an error message such as following
+Let's say you are trying to query a test name ``hello_world``, and you get an error message such as following
 
 .. code-block:: console
 
@@ -128,7 +128,7 @@ Unable to query all test results
 ---------------------------------
 
 If you run into situation where you are unable to query all test results,
-you should check the buildtest configuration file see :ref:`configuring_buildtest_report`_. In this section, check if
+you should check the buildtest configuration file see :ref:`configuring_buildtest_report`. In this section, check if
 ``count`` property is set in configuration file. For instance if you have ``count: 25``, everytime you run ``buildtest report`` it
 will query 25 records
 
@@ -147,6 +147,8 @@ You will have a situation where buildtest will only show 25 records as shown bel
 You can work around this issue by passing ``--count`` on command line and it will override the configuration.
 To retrieve all content you can specify a negative value and buildtest will fetch all records or alternatively you
 can specify a really high number
+
+.. code-block:: console
 
       buildtest report --terse --no-header --count=-1 | wc -l
     30
