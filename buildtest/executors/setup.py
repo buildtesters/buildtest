@@ -307,13 +307,11 @@ class BuildExecutor:
         console.print(f"Spawning {num_workers} processes for processing builders")
         count = 0
         while True:
-            active_builders = []
             count += 1
             console.rule(f"Iteration {count}")
-
-            for builder in self.builders:
-                if builder.is_pending():
-                    active_builders.append(builder)
+            active_builders = [
+                builder for builder in self.builders if builder.is_pending()
+            ]
 
             run_builders = self.select_builders_to_run(active_builders)
 
@@ -322,7 +320,7 @@ class BuildExecutor:
                 run_builders = run_builders[: self.max_jobs]
 
             if not run_builders:
-                raise BuildTestError("Unable to run tests ")
+                raise BuildTestError("Unable to run tests")
 
             run_table = Table(
                 Column("Builder", overflow="fold", style="red"),
@@ -345,11 +343,11 @@ class BuildExecutor:
                 if isinstance(task, BuilderBase):
                     self.builders.add(task)
 
-            pending_jobs = set()
-            for builder in self.builders:
-                # returns True if attribute builder.job is an instance of class Job. Only add jobs that are active running for pending
-                if builder.is_batch_job() and builder.is_running():
-                    pending_jobs.add(builder)
+            pending_jobs = {
+                builder
+                for builder in self.builders
+                if builder.is_batch_job() and builder.is_running()
+            }
 
             self.poll(pending_jobs)
 
@@ -358,13 +356,12 @@ class BuildExecutor:
             #    if builder.is_failed():
             #        self.builders.remove(builder)
 
-            terminate = True
+            # set Terminate to True if no builders are pending or running
 
-            # condition below checks if all tests are complete, if any are pending or running we need to stay in loop until jobs are finished
-            # until finished
-            for builder in self.builders:
-                if builder.is_pending() or builder.is_running():
-                    terminate = False
+            terminate = not any(
+                builder.is_pending() or builder.is_running()
+                for builder in self.builders
+            )
 
             if terminate:
                 break
