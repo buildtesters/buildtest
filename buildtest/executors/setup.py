@@ -10,6 +10,7 @@ import multiprocessing as mp
 import os
 import time
 
+from rich.progress import track
 from rich.table import Column, Table
 
 from buildtest.builders.base import BuilderBase
@@ -381,7 +382,10 @@ class BuildExecutor:
         # poll until all pending jobs are complete
         while pending_jobs:
             print(f"Polling Jobs in {self.pollinterval} seconds")
-            time.sleep(self.pollinterval)
+            for i in track(range(self.pollinterval), description="Poll Interval"):
+                time.sleep(1)
+
+            # time.sleep(self.pollinterval)
             jobs = pending_jobs.copy()
 
             # for every pending job poll job and mark if job is finished or cancelled
