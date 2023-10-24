@@ -368,19 +368,24 @@ class BuildExecutor:
                 if terminate:
                     break
         except KeyboardInterrupt:
-            console.print("Caught KeyboardInterrupt, terminating workers")
+            console.print("[red]Caught KeyboardInterrupt, terminating workers")
 
             for builder in self.builders:
                 console.print(
-                    f"{builder}: Removing test directory: {builder.test_root}"
+                    f"[blue]{builder}[/blue]: [red]Removing test directory: {builder.test_root}"
                 )
                 try:
                     shutil.rmtree(builder.test_root)
-                except OSError:
+                except OSError as err:
+                    console.print(
+                        f"[blue]{builder}[/blue]: [red]Unable to delete test directory {builder.test_root} with error: {err.strerror}"
+                    )
                     continue
 
                 if builder.is_batch_job():
-                    console.print(f"{builder}: Cancelling Job {builder.job.get()}")
+                    console.print(
+                        f"[blue]{builder}[/blue]: [red]Cancelling Job {builder.job.get()}"
+                    )
                     builder.job.cancel()
 
             # close the worker pool by preventing any more tasks from being submitted
