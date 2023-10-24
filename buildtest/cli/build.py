@@ -195,8 +195,7 @@ def discover_buildspecs(
 
     # if no files discovered let's stop now
     if not buildspec_dict["included"]:
-        msg = "There are no config files to process."
-        sys.exit(msg)
+        sys.exit("There are no config files to process.")
 
     logger.debug(
         f"buildtest discovered the following Buildspecs: {buildspec_dict['included']}"
@@ -1223,7 +1222,10 @@ class BuildTest:
         """
 
         console.rule("[bold red]Running Tests")
-        self.buildexecutor.run(self.builders)
+        try:
+            self.buildexecutor.run(self.builders)
+        except KeyboardInterrupt:
+            raise KeyboardInterrupt
 
         builders = self.buildexecutor.get_validbuilders()
         ########## TEST SUMMARY ####################

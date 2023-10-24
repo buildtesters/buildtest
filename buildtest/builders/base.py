@@ -566,6 +566,19 @@ class BuilderBase(ABC):
 
         lines = ["#!/bin/bash"]
 
+        trap_msg = """
+# Function to handle all signals and perform cleanup
+function cleanup() {
+    echo "Signal trapped. Performing cleanup before exiting."
+    exitcode=$?
+    echo "buildtest: command \`$BASH_COMMAND' failed (exit code: $exitcode)"
+    exit $exitcode
+}
+
+# Trap all signals and call the cleanup function
+trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTERM SIGTSTP SIGTTIN SIGTTOU
+"""
+        lines.append(trap_msg)
         lines += self._default_test_variables()
         lines.append("# source executor startup script")
 
