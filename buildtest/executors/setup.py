@@ -8,6 +8,7 @@ on executor name.
 import logging
 import multiprocessing as mp
 import os
+import shutil
 import time
 
 from rich.table import Column, Table
@@ -306,66 +307,89 @@ class BuildExecutor:
         pool = mp.Pool(num_workers)
         console.print(f"Spawning {num_workers} processes for processing builders")
         count = 0
-        while True:
-            count += 1
-            console.rule(f"Iteration {count}")
-            active_builders = [
-                builder for builder in self.builders if builder.is_pending()
-            ]
+        try:
+            while True:
+                count += 1
+                console.rule(f"Iteration {count}")
+                active_builders = [
+                    builder for builder in self.builders if builder.is_pending()
+                ]
 
-            run_builders = self.select_builders_to_run(active_builders)
+                run_builders = self.select_builders_to_run(active_builders)
 
-            # if max_jobs property is set then reduce the number of jobs to run to max_jobs
-            if self.max_jobs:
-                run_builders = run_builders[: self.max_jobs]
+                # if max_jobs property is set then reduce the number of jobs to run to max_jobs
+                if self.max_jobs:
+                    run_builders = run_builders[: self.max_jobs]
 
-            if not run_builders:
-                raise BuildTestError("Unable to run tests")
+                if not run_builders:
+                    raise BuildTestError("Unable to run tests")
 
-            run_table = Table(
-                Column("Builder", overflow="fold", style="red"),
-                title="Builders Eligible to Run",
-                header_style="blue",
-            )
-            for builder in run_builders:
-                run_table.add_row(f"{str(builder)}")
-            console.print(run_table)
+                run_table = Table(
+                    Column("Builder", overflow="fold", style="red"),
+                    title="Builders Eligible to Run",
+                    header_style="blue",
+                )
+                for builder in run_builders:
+                    run_table.add_row(f"{str(builder)}")
+                console.print(run_table)
 
-            results = []
+                results = []
 
-            for builder in run_builders:
-                executor = self._choose_executor(builder)
-                results.append(pool.apply_async(executor.run, args=(builder,)))
-                self.builders.remove(builder)
+                for builder in run_builders:
+                    executor = self._choose_executor(builder)
+                    results.append(pool.apply_async(executor.run, args=(builder,)))
+                    self.builders.remove(builder)
 
-            for result in results:
-                task = result.get()
-                if isinstance(task, BuilderBase):
-                    self.builders.add(task)
+                for result in results:
+                    task = result.get()
+                    if isinstance(task, BuilderBase):
+                        self.builders.add(task)
 
-            pending_jobs = {
-                builder
-                for builder in self.builders
-                if builder.is_batch_job() and builder.is_running()
-            }
+                pending_jobs = {
+                    builder
+                    for builder in self.builders
+                    if builder.is_batch_job() and builder.is_running()
+                }
 
-            self.poll(pending_jobs)
+                self.poll(pending_jobs)
 
-            # remove any failed jobs from list
-            # for builder in self.builders:
-            #    if builder.is_failed():
-            #        self.builders.remove(builder)
+                # remove any failed jobs from list
+                # for builder in self.builders:
+                #    if builder.is_failed():
+                #        self.builders.remove(builder)
 
-            # set Terminate to True if no builders are pending or running
+                # set Terminate to True if no builders are pending or running
 
-            terminate = not any(
-                builder.is_pending() or builder.is_running()
-                for builder in self.builders
-            )
+                terminate = not any(
+                    builder.is_pending() or builder.is_running()
+                    for builder in self.builders
+                )
 
-            if terminate:
-                break
+                if terminate:
+                    break
+        except KeyboardInterrupt:
+            console.print("Caught KeyboardInterrupt, terminating workers")
 
+            for builder in self.builders:
+                console.print(
+                    f"{builder}: Removing test directory: {builder.test_root}"
+                )
+                try:
+                    shutil.rmtree(builder.test_root)
+                except OSError:
+                    continue
+
+                if builder.is_batch_job():
+                    console.print(f"{builder}: Cancelling Job {builder.job.get()}")
+                    builder.job.cancel()
+
+            # close the worker pool by preventing any more tasks from being submitted
+            pool.close()
+
+            # terminate all worker processes
+            pool.join()
+
+            raise KeyboardInterrupt
         # close the worker pool by preventing any more tasks from being submitted
         pool.close()
 
@@ -377,7 +401,6 @@ class BuildExecutor:
         job state. If job is complete or failed we remove job from pending queue. In each interval we sleep
         and poll jobs until there is no pending jobs."""
         # only add builders that are batch jobs
-
 
         # poll until all pending jobs are complete
         while pending_jobs:
