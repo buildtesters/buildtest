@@ -220,7 +220,7 @@ a mismatch in value captured by metric ``x`` which is **1** however the referenc
 
 .. literalinclude:: ../tutorials/perf_checks/assert_eq_exceptions.yml
     :language: yaml
-    :emphasize-lines: 21-22,27-28,33,41-42
+    :emphasize-lines: 22-23,28-29,33,42-43
     :linenos:
 
 Let's build this test and see the output.
