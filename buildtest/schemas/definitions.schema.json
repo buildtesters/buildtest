@@ -315,32 +315,40 @@
           "description": "Perform assertion of not equal (!=) with reference value",
           "$ref": "#/definitions/status_check_eq_ne"
         },
-        "assert_range":
-        {
+        "assert_range": {
+          "type": "object",
           "description": "Perform assertion based on lower and upper bound",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "lower",
-              "upper"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "lower": {
-                "description": "Specify reference value for lower bound",
-                "type": "number"
-              },
-              "upper": {
-                "description": "Specify reference value for upper bound",
-                "type": "number"
+          "additionalProperties": false,
+          "required": ["comparisons"],
+          "properties": {
+            "mode": {
+              "$ref": "#/definitions/mode"
+            },
+            "comparisons": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "name",
+                  "lower",
+                  "upper"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of metric to use for comparison"
+                  },
+                  "lower": {
+                    "description": "Specify reference value for lower bound",
+                    "type": "number"
+                  },
+                  "upper": {
+                    "description": "Specify reference value for upper bound",
+                    "type": "number"
+                  }
+                }
               }
-
             }
           }
         },

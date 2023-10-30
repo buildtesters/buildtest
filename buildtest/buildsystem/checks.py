@@ -899,7 +899,7 @@ def assert_range_check(builder):
     metric_names = list(builder.metadata["metrics"].keys())
 
     # iterate over each metric in buildspec and determine reference check for each metric
-    for metric in builder.status["assert_range"]:
+    for metric in builder.status["assert_range"]["comparisons"]:
         name = metric["name"]
         lower_bound = metric["lower"]
         upper_bound = metric["upper"]
@@ -948,8 +948,12 @@ def assert_range_check(builder):
         console.print(
             f"[blue]{builder}[/]: testing metric: {name} if {lower_bound} <= {conv_value} <= {upper_bound} - Check: {bool_check}"
         )
-    # perform a logical AND on the list and return the boolean result
-    range_check = all(assert_check)
+
+    # perform logical OR if mode is set to 'or' or 'OR' otherwise do logical AND
+    if builder.status["assert_range"].get("mode") in ["or", "OR"]:
+        range_check = any(assert_check)
+    else:
+        range_check = all(assert_check)
 
     console.print(f"[blue]{builder}[/]: Range Check: {range_check}")
     return range_check
