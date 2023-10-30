@@ -39,6 +39,7 @@ buildspecs:
           item: 1
     status:
       assert_eq:
+        comparisons:
         - name: x
           ref: 1
         - name: y
