@@ -359,7 +359,7 @@ def assert_ge_check(builder):
     metric_names = list(builder.metadata["metrics"].keys())
 
     # iterate over each metric in buildspec and determine reference check for each metric
-    for metric in builder.status["assert_ge"]:
+    for metric in builder.status["assert_ge"]["comparisons"]:
         name = metric["name"]
         ref_value = metric["ref"]
 
@@ -403,8 +403,11 @@ def assert_ge_check(builder):
         )
         assert_check.append(bool_check)
 
-    # perform a logical AND on the list and return the boolean result
-    bool_check = all(assert_check)
+    # perform logical OR if mode is set to 'or' or 'OR' otherwise do logical AND
+    if builder.status["assert_ge"].get("mode") in ["or", "OR"]:
+        bool_check = any(assert_check)
+    else:
+        bool_check = all(assert_check)
 
     console.print(f"[blue]{builder}[/]: Greater Equal Check: {bool_check}")
     return bool_check
@@ -428,7 +431,7 @@ def assert_le_check(builder):
     metric_names = list(builder.metadata["metrics"].keys())
 
     # iterate over each metric in buildspec and determine reference check for each metric
-    for metric in builder.status["assert_le"]:
+    for metric in builder.status["assert_le"]["comparisons"]:
         name = metric["name"]
         ref_value = metric["ref"]
 
@@ -472,8 +475,11 @@ def assert_le_check(builder):
         )
         assert_check.append(bool_check)
 
-    # perform a logical AND on the list and return the boolean result
-    bool_check = all(assert_check)
+    # perform logical OR if mode is set to 'or' or 'OR' otherwise do logical AND
+    if builder.status["assert_le"].get("mode") in ["or", "OR"]:
+        bool_check = any(assert_check)
+    else:
+        bool_check = all(assert_check)
 
     console.print(f"[blue]{builder}[/]: Less Than Equal Check: {bool_check}")
     return bool_check
@@ -497,7 +503,7 @@ def assert_gt_check(builder):
     metric_names = list(builder.metadata["metrics"].keys())
 
     # iterate over each metric in buildspec and determine reference check for each metric
-    for metric in builder.status["assert_gt"]:
+    for metric in builder.status["assert_gt"]["comparisons"]:
         name = metric["name"]
         ref_value = metric["ref"]
 
@@ -541,8 +547,11 @@ def assert_gt_check(builder):
         )
         assert_check.append(bool_check)
 
-    # perform a logical AND on the list and return the boolean result
-    bool_check = all(assert_check)
+    # perform logical OR if mode is set to 'or' or 'OR' otherwise do logical AND
+    if builder.status["assert_gt"].get("mode") in ["or", "OR"]:
+        bool_check = any(assert_check)
+    else:
+        bool_check = all(assert_check)
 
     console.print(f"[blue]{builder}[/]: Greater Check: {bool_check}")
     return bool_check
@@ -566,7 +575,7 @@ def assert_lt_check(builder):
     metric_names = list(builder.metadata["metrics"].keys())
 
     # iterate over each metric in buildspec and determine reference check for each metric
-    for metric in builder.status["assert_lt"]:
+    for metric in builder.status["assert_lt"]["comparisons"]:
         name = metric["name"]
         ref_value = metric["ref"]
 
@@ -610,8 +619,11 @@ def assert_lt_check(builder):
         )
         assert_check.append(bool_check)
 
-    # perform a logical AND on the list and return the boolean result
-    bool_check = all(assert_check)
+    # perform logical OR if mode is set to 'or' or 'OR' otherwise do logical AND
+    if builder.status["assert_lt"].get("mode") in ["or", "OR"]:
+        bool_check = any(assert_check)
+    else:
+        bool_check = all(assert_check)
 
     console.print(f"[blue]{builder}[/]: Less Than Check: {bool_check}")
     return bool_check
@@ -635,7 +647,7 @@ def assert_eq_check(builder):
     metric_names = list(builder.metadata["metrics"].keys())
 
     # iterate over each metric in buildspec and determine reference check for each metric
-    for metric in builder.status["assert_eq"]:
+    for metric in builder.status["assert_eq"]["comparisons"]:
         name = metric["name"]
         ref_value = metric["ref"]
 
@@ -670,9 +682,11 @@ def assert_eq_check(builder):
             f"[blue]{builder}[/]: testing metric: {name} if {conv_value} == {ref_value} - Check: {bool_check}"
         )
         assert_check.append(bool_check)
-
-    # perform a logical AND on the list and return the boolean result
-    bool_check = all(assert_check)
+    # perform logical OR if mode is set to 'or' or 'OR' otherwise do logical AND
+    if builder.status["assert_eq"].get("mode") in ["or", "OR"]:
+        bool_check = any(assert_check)
+    else:
+        bool_check = all(assert_check)
 
     console.print(f"[blue]{builder}[/]: Equality Check: {bool_check}")
     return bool_check
@@ -696,7 +710,7 @@ def assert_ne_check(builder):
     metric_names = list(builder.metadata["metrics"].keys())
 
     # iterate over each metric in buildspec and determine reference check for each metric
-    for metric in builder.status["assert_ne"]:
+    for metric in builder.status["assert_ne"]["comparisons"]:
         name = metric["name"]
         ref_value = metric["ref"]
 
@@ -732,8 +746,11 @@ def assert_ne_check(builder):
         )
         assert_check.append(bool_check)
 
-    # perform a logical AND on the list and return the boolean result
-    bool_check = all(assert_check)
+    # perform logical OR if mode is set to 'or' or 'OR' otherwise do logical AND
+    if builder.status["assert_ne"].get("mode") in ["or", "OR"]:
+        bool_check = any(assert_check)
+    else:
+        bool_check = all(assert_check)
 
     console.print(f"[blue]{builder}[/]: Not Equal Check: {bool_check}")
     return bool_check
