@@ -353,48 +353,12 @@
           }
         },
         "contains": {
-          "description": "Check if metric value is in a list of reference values ",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "type": "array",
-                "minItems": 1,
-                "description": "Specify a list of reference value"
-              }
-            }
-          }
+          "description": "Check if metric value is in a list of reference values",
+          "$ref": "#/definitions/status_check_contains_not_contains"
         },
         "not_contains": {
           "description": "Check if metric value not in a list of reference values ",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "type": "array",
-                "minItems": 1,
-                "description": "Specify a list of reference value"
-              }
-            }
-          }
+          "$ref": "#/definitions/status_check_contains_not_contains"
         },
         "is_symlink": {
           "description": "Check for list of files or directory paths that are symbolic links",
@@ -543,6 +507,38 @@
             }
           }
         }
+    },
+    "status_check_contains_not_contains": {
+      "type": "object",
+      "required": ["comparisons"],
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "$ref": "#/definitions/mode"
+        },
+        "comparisons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "ref": {
+                "type": "array",
+                "minItems": 1,
+                "description": "Specify a list of reference value"
+              }
+            }
+          }
+        }
+      }
     },
     "mode": {
       "description": "Determine how the status check is resolved, for instance it can be logical AND or OR",

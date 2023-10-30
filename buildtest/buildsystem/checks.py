@@ -774,7 +774,7 @@ def contains_check(builder):
     metric_names = list(builder.metadata["metrics"].keys())
 
     # iterate over each metric in buildspec and determine reference check for each metric
-    for metric in builder.status["contains"]:
+    for metric in builder.status["contains"]["comparisons"]:
         name = metric["name"]
         ref_value = metric["ref"]
 
@@ -810,9 +810,11 @@ def contains_check(builder):
         console.print(
             f"[blue]{builder}[/]: testing metric: [red]{name}[/red] if [yellow]{conv_value}[/yellow] in [yellow]{ref_value}[/yellow] - Check: {bool_check}"
         )
-
-    # perform a logical AND on the list and return the boolean result
-    bool_check = all(assert_check)
+    # perform logical OR if mode is set to 'or' or 'OR' otherwise do logical AND
+    if builder.status["contains"].get("mode") in ["or", "OR"]:
+        bool_check = any(assert_check)
+    else:
+        bool_check = all(assert_check)
 
     console.print(f"[blue]{builder}[/]: Contains Check: {bool_check}")
     return bool_check
@@ -836,7 +838,7 @@ def notcontains_check(builder):
     metric_names = list(builder.metadata["metrics"].keys())
 
     # iterate over each metric in buildspec and determine reference check for each metric
-    for metric in builder.status["not_contains"]:
+    for metric in builder.status["not_contains"]["comparisons"]:
         name = metric["name"]
         ref_value = metric["ref"]
 
@@ -873,8 +875,10 @@ def notcontains_check(builder):
             f"[blue]{builder}[/]: testing metric: [red]{name}[/red] if [yellow]{conv_value}[/yellow] not in [yellow]{ref_value}[/yellow] - Check: {bool_check}"
         )
 
-    # perform a logical AND on the list and return the boolean result
-    bool_check = all(assert_check)
+    if builder.status["not_contains"].get("mode") in ["or", "OR"]:
+        bool_check = any(assert_check)
+    else:
+        bool_check = all(assert_check)
 
     console.print(f"[blue]{builder}[/]: Not Contains Check: {bool_check}")
     return bool_check
