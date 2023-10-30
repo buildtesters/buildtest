@@ -18,13 +18,8 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 from buildtest.buildsystem.checks import (
-    assert_eq_check,
-    assert_ge_check,
-    assert_gt_check,
-    assert_le_check,
-    assert_lt_check,
-    assert_ne_check,
     assert_range_check,
+    comparison_check,
     contains_check,
     exists_check,
     file_count_check,
@@ -32,7 +27,6 @@ from buildtest.buildsystem.checks import (
     is_dir_check,
     is_file_check,
     is_symlink_check,
-    notcontains_check,
     regex_check,
     returncode_check,
     runtime_check,
@@ -1069,31 +1063,47 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
                 )
 
             if self.status.get("assert_ge"):
-                self.metadata["check"]["assert_ge"] = assert_ge_check(self)
+                self.metadata["check"]["assert_ge"] = comparison_check(
+                    builder=self, comparison_type="ge"
+                )
 
             if self.status.get("assert_le"):
-                self.metadata["check"]["assert_le"] = assert_le_check(self)
+                self.metadata["check"]["assert_le"] = comparison_check(
+                    builder=self, comparison_type="le"
+                )
 
             if self.status.get("assert_gt"):
-                self.metadata["check"]["assert_gt"] = assert_gt_check(self)
+                self.metadata["check"]["assert_gt"] = comparison_check(
+                    builder=self, comparison_type="gt"
+                )
 
             if self.status.get("assert_lt"):
-                self.metadata["check"]["assert_lt"] = assert_lt_check(self)
+                self.metadata["check"]["assert_lt"] = comparison_check(
+                    builder=self, comparison_type="lt"
+                )
 
             if self.status.get("assert_eq"):
-                self.metadata["check"]["assert_eq"] = assert_eq_check(self)
+                self.metadata["check"]["assert_eq"] = comparison_check(
+                    builder=self, comparison_type="eq"
+                )
 
             if self.status.get("assert_ne"):
-                self.metadata["check"]["assert_ne"] = assert_ne_check(self)
+                self.metadata["check"]["assert_ne"] = comparison_check(
+                    builder=self, comparison_type="ne"
+                )
 
             if self.status.get("assert_range"):
                 self.metadata["check"]["assert_range"] = assert_range_check(self)
 
             if self.status.get("contains"):
-                self.metadata["check"]["contains"] = contains_check(self)
+                self.metadata["check"]["contains"] = contains_check(
+                    builder=self, comparison_type="contains"
+                )
 
             if self.status.get("not_contains"):
-                self.metadata["check"]["not_contains"] = notcontains_check(self)
+                self.metadata["check"]["not_contains"] = contains_check(
+                    builder=self, comparison_type="not_contains"
+                )
 
             if self.status.get("is_symlink"):
                 self.metadata["check"]["is_symlink"] = is_symlink_check(builder=self)
