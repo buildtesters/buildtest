@@ -36,6 +36,7 @@ buildspecs:
           item: 1
     status:
       assert_range:
+        comparisons:
         - name: copy
           lower: 5000
           upper: 20000
