@@ -121,7 +121,7 @@ buildtest can determine status check based on performance check. In this next ex
 `STREAM <https://www.cs.virginia.edu/stream/>`_ memory benchmark and capture :ref:`metrics <metrics>` named ``copy``, ``scale``
 ``add`` and ``triad`` from the output and perform an Assertion Greater Equal (``assert_ge``) with a reference value.
 
-The ``assert_ge`` contains a list of assertions where each metric name is
+The ``assert_ge`` contains a list of assertions in the ``comparisons`` property where each metric name is
 referenced via ``name`` that is compared with the reference value defined by ``ref`` property. The comparison
 is ``metric_value >= ref``, where **metric_value** is the value assigned to the metric name captured by the regular
 expression. The ``type`` field in the metric section is used for the type conversion which can be **float**, **int**, or **string**.
@@ -130,12 +130,14 @@ from the regular expression search. The item must be non-negative number.
 
 .. literalinclude:: ../tutorials/perf_checks/assert_ge.yml
     :language: yaml
-    :emphasize-lines: 12-46
+    :emphasize-lines: 12-48
     :linenos:
 
 
 buildtest will evaluate each assertion in the list and use a logical AND to determine the final
-status of ``assert_ge``.
+status of ``assert_ge``. The keyword ``mode`` is used to determine whether to perform a logical
+**OR** / **AND** operation when evaluating the final expression. The ``mode`` can be any of the
+values: [``AND``, ``OR``, ``and``, ``or``]. If ``mode`` is ommitted the default is logical **AND**.
 
 Let's build this test, take a close look at the output of ``buildtest build`` and take note of the assertion
 statement.
@@ -160,7 +162,7 @@ In this example, we perform a **>** operation, this can be done via ``assert_gt`
 
 .. literalinclude:: ../tutorials/perf_checks/assert_gt.yml
     :language: yaml
-    :emphasize-lines: 37-46
+    :emphasize-lines: 37-47
     :linenos:
 
 .. _assert_le:
@@ -172,7 +174,7 @@ In this example, we perform a **<=** operation, this can be done via ``assert_le
 
 .. literalinclude:: ../tutorials/perf_checks/assert_le.yml
     :language: yaml
-    :emphasize-lines: 37-46
+    :emphasize-lines: 37-47
     :linenos:
 
 .. _assert_lt:
@@ -184,7 +186,7 @@ In this example, we perform a **<** operation, this can be done via ``assert_lt`
 
 .. literalinclude:: ../tutorials/perf_checks/assert_lt.yml
     :language: yaml
-    :emphasize-lines: 37-46
+    :emphasize-lines: 37-47
     :linenos:
 
 .. _assert_eq:
@@ -199,7 +201,7 @@ type (``int``, ``float``, ``str``).
 
 .. literalinclude:: ../tutorials/perf_checks/assert_eq.yml
     :language: yaml
-    :emphasize-lines: 40-49
+    :emphasize-lines: 40-50
     :linenos:
 
 This test is expected to pass where all assertions are **True**. Let's build the test and see the output
@@ -218,7 +220,7 @@ a mismatch in value captured by metric ``x`` which is **1** however the referenc
 
 .. literalinclude:: ../tutorials/perf_checks/assert_eq_exceptions.yml
     :language: yaml
-    :emphasize-lines: 21-22,27-28,33,40,41
+    :emphasize-lines: 21-22,27-28,33,41-42
     :linenos:
 
 Let's build this test and see the output.
@@ -261,7 +263,7 @@ is an example using the ``assert_range`` property with stream benchmark.
 
 .. literalinclude:: ../tutorials/perf_checks/assert_range.yml
     :language: yaml
-    :emphasize-lines: 37-50
+    :emphasize-lines: 37-51
     :linenos:
 
 Let's build this test and see the output
@@ -287,7 +289,7 @@ string equivalent **'1'**.
 
 .. literalinclude:: ../tutorials/perf_checks/contains.yml
     :language: yaml
-    :emphasize-lines: 17-23,39-42
+    :emphasize-lines: 17-25,41-45
     :linenos:
 
 You can run this test, by running the following command
