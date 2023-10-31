@@ -2,6 +2,7 @@ import logging
 import re
 
 from buildtest.defaults import console
+from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import (
     is_dir,
     is_file,
@@ -349,19 +350,28 @@ def comparison_check(builder, comparison_type):
 
     Args:
         builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
-
+        comparison_type (str): A string value which can be 'ge', 'gt', 'le', 'lt', 'eq', 'ne' that is used to determine which comparison type to perform
     Returns:
-        bool: True or False for performance check ``assert_ge``
+        bool: True or False for performance check
     """
+
+    COMPARISON_OPERATIONS = {
+        "ge": (lambda x, y: x >= y, ">=", "Greater Equal Check"),
+        "gt": (lambda x, y: x > y, ">", "Greater Check"),
+        "le": (lambda x, y: x <= y, "<=", "Less Than Equal Check"),
+        "lt": (lambda x, y: x < y, "<", "Less Than Check"),
+        "eq": (lambda x, y: x == y, "==", "Equality Check"),
+        "ne": (lambda x, y: x != y, "!=", "Not Equal Check"),
+    }
 
     # a list containing booleans to evaluate reference check for each metric
     assert_check = []
 
     metric_names = list(builder.metadata["metrics"].keys())
 
-    if comparison_type not in ["ge", "gt", "le", "lt", "eq", "ne"]:
+    if comparison_type not in COMPARISON_OPERATIONS:
         raise BuildTestError(
-            f"comparison_type: {comparison_type} is not a valid comparison type. Valid comparison types are: 'ge', 'gt', 'le', 'lt', 'eq', 'ne'"
+            f"comparison_type: {comparison_type} is not a valid comparison type. Valid comparison types are: {list(COMPARISON_OPERATIONS.keys())}"
         )
 
     comparison_dict = builder.status[f"assert_{comparison_type}"]
@@ -409,28 +419,10 @@ def comparison_check(builder, comparison_type):
             assert_check.append(False)
             continue
 
-        sign = ""
-        if comparison_type == "ge":
-            bool_check = conv_value >= ref_value
-            sign = ">="
-        elif comparison_type == "gt":
-            bool_check = conv_value > ref_value
-            sign = ">"
-        elif comparison_type == "lt":
-            bool_check = conv_value < ref_value
-            sign = "<"
-        elif comparison_type == "le":
-            bool_check = conv_value <= ref_value
-            sign = "<="
-        elif comparison_type == "eq":
-            bool_check = conv_value == ref_value
-            sign = "=="
-        elif comparison_type == "ne":
-            bool_check = conv_value != ref_value
-            sign = "!="
-
+        comparison_op, symbol, log_message = COMPARISON_OPERATIONS[comparison_type]
+        bool_check = comparison_op(conv_value, ref_value)
         console.print(
-            f"[blue]{builder}[/]: testing metric: {name} if {conv_value} {sign} {ref_value} - Check: {bool_check}"
+            f"[blue]{builder}[/]: testing metric: {name} if {conv_value} {symbol} {ref_value} - Check: {bool_check}"
         )
         assert_check.append(bool_check)
 
@@ -440,18 +432,7 @@ def comparison_check(builder, comparison_type):
     else:
         bool_check = all(assert_check)
 
-    if comparison_type == "ge":
-        console.print(f"[blue]{builder}[/]: Greater Equal Check: {bool_check}")
-    elif comparison_type == "gt":
-        console.print(f"[blue]{builder}[/]: Greater Check: {bool_check}")
-    elif comparison_type == "lt":
-        console.print(f"[blue]{builder}[/]: Less Than Check: {bool_check}")
-    elif comparison_type == "le":
-        console.print(f"[blue]{builder}[/]: Less Than Equal Check: {bool_check}")
-    elif comparison_type == "eq":
-        console.print(f"[blue]{builder}[/]: Equality Check: {bool_check}")
-    elif comparison_type == "ne":
-        console.print(f"[blue]{builder}[/]: Not Equal Check: {bool_check}")
+    console.print(f"[blue]{builder}[/]: {log_message}: {bool_check}")
 
     return bool_check
 
@@ -470,15 +451,24 @@ def contains_check(builder, comparison_type):
     """
     # a list containing booleans to evaluate reference check for each metric
     assert_check = []
-
     metric_names = list(builder.metadata["metrics"].keys())
 
-    # iterate over each metric in buildspec and determine reference check for each metric
-    for metric in builder.status[comparison_type]["comparisons"]:
+    CONTAINS_OPERATIONS = {
+        "contains": (lambda x, y: x in y, "in", "Contains Check"),
+        "not_contains": (lambda x, y: x not in y, "not in", "Not Contains Check"),
+    }
+
+    if comparison_type not in CONTAINS_OPERATIONS:
+        raise BuildTestError(
+            f"comparison_type: {comparison_type} is not a valid comparison type. Valid comparison types are: {list(CONTAINS_OPERATIONS.keys())}"
+        )
+
+    comparison_dict = builder.status[comparison_type]
+
+    for metric in comparison_dict["comparisons"]:
         name = metric["name"]
         ref_value = metric["ref"]
 
-        # if metric is not valid, then mark as False
         if not builder.is_valid_metric(name):
             msg = f"[blue]{builder}[/]: Unable to find metric: [red]{name}[/red]. List of valid metrics are the following: {metric_names}"
             console.print(msg)
@@ -496,7 +486,6 @@ def contains_check(builder, comparison_type):
             metric_value=metric_value, dtype=builder.metrics[name]["type"]
         )
 
-        # if either converted value and reference value is None stop here before proceeding to the not equal check
         if (conv_value is None) or (ref_value is None):
             console.print(
                 f"[blue]{builder}[/]: Skipping metrics check {name} since value is undefined"
@@ -504,93 +493,22 @@ def contains_check(builder, comparison_type):
             assert_check.append(False)
             continue
 
-        sign = ""
-        if comparison_type == "contains":
-            bool_check = conv_value in ref_value
-            sign = "in"
-        elif comparison_type == "not_contains":
-            bool_check = conv_value not in ref_value
-            sign = "not in"
+        contains_op, sign, log_message = CONTAINS_OPERATIONS[comparison_type]
+        bool_check = contains_op(conv_value, ref_value)
 
         assert_check.append(bool_check)
 
         console.print(
             f"[blue]{builder}[/]: testing metric: [red]{name}[/red] if [yellow]{conv_value}[/yellow] {sign} [yellow]{ref_value}[/yellow] - Check: {bool_check}"
         )
-    # perform logical OR if mode is set to 'or' or 'OR' otherwise do logical AND
-    if builder.status[comparison_type].get("mode") in ["or", "OR"]:
+
+    if comparison_dict.get("mode") in ["or", "OR"]:
         bool_check = any(assert_check)
     else:
         bool_check = all(assert_check)
 
-    if comparison_type == "contains":
-        console.print(f"[blue]{builder}[/]: Contains Check: {bool_check}")
-    elif comparison_type == "not_contains":
-        console.print(f"[blue]{builder}[/]: Not Contains Check: {bool_check}")
-    return bool_check
+    console.print(f"[blue]{builder}[/]: {log_message}: {bool_check}")
 
-
-def notcontains_check(builder):
-    """This method perform Not Contains check when ``not_contains`` property is specified
-    in status check. This method will each metric value is in list of reference values.
-    The list of assertion is logically AND which will return a True or False
-    for the status check.
-
-    Args:
-        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
-
-    Returns:
-        bool: True or False for performance check ``not_contains``
-    """
-    # a list containing booleans to evaluate reference check for each metric
-    assert_check = []
-
-    metric_names = list(builder.metadata["metrics"].keys())
-
-    # iterate over each metric in buildspec and determine reference check for each metric
-    for metric in builder.status["not_contains"]["comparisons"]:
-        name = metric["name"]
-        ref_value = metric["ref"]
-
-        # if metric is not valid, then mark as False
-        if not builder.is_valid_metric(name):
-            msg = f"[blue]{builder}[/]: Unable to find metric: [red]{name}[/red]. List of valid metrics are the following: {metric_names}"
-            console.print(msg)
-            logger.warning(msg)
-            assert_check.append(False)
-            continue
-
-        metric_value = builder.metadata["metrics"][name]
-
-        if not is_metrics_defined(builder, name):
-            assert_check.append(False)
-            continue
-
-        conv_value = convert_metrics(
-            metric_value=metric_value, dtype=builder.metrics[name]["type"]
-        )
-
-        # if either converted value and reference value is None stop here before proceeding to the not equal check
-        if (conv_value is None) or (ref_value is None):
-            console.print(
-                f"[blue]{builder}[/]: Skipping metrics check {name} since value is undefined"
-            )
-            assert_check.append(False)
-            continue
-
-        bool_check = conv_value not in ref_value
-        assert_check.append(bool_check)
-
-        console.print(
-            f"[blue]{builder}[/]: testing metric: [red]{name}[/red] if [yellow]{conv_value}[/yellow] not in [yellow]{ref_value}[/yellow] - Check: {bool_check}"
-        )
-
-    if builder.status["not_contains"].get("mode") in ["or", "OR"]:
-        bool_check = any(assert_check)
-    else:
-        bool_check = all(assert_check)
-
-    console.print(f"[blue]{builder}[/]: Not Contains Check: {bool_check}")
     return bool_check
 
 
