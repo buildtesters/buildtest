@@ -529,9 +529,9 @@ def assert_range_check(builder):
     assert_check = []
 
     metric_names = list(builder.metadata["metrics"].keys())
-
+    range_comparisons = builder.status["assert_range"]
     # iterate over each metric in buildspec and determine reference check for each metric
-    for metric in builder.status["assert_range"]["comparisons"]:
+    for metric in range_comparisons["comparisons"]:
         name = metric["name"]
         lower_bound = metric["lower"]
         upper_bound = metric["upper"]
@@ -550,25 +550,18 @@ def assert_range_check(builder):
             assert_check.append(False)
             continue
 
+        metric_type = builder.metrics[name]["type"]
+
         if builder.metrics[name]["type"] == "str":
-            msg = f"[blue]{builder}[/]: Unable to convert metric: [red]'{name}'[/red] for comparison. The type must be 'int' or 'float' but recieved [red]{builder.metrics[name]['type']}[/red]. "
+            msg = f"[blue]{builder}[/]: Unable to convert metric: [red]'{name}'[/red] for comparison. The type must be 'int' or 'float' but recieved [red]{metric_type}[/red]. "
             console.print(msg)
             logger.warning(msg)
             assert_check.append(False)
             continue
 
-        conv_value = convert_metrics(
-            metric_value=metric_value, dtype=builder.metrics[name]["type"]
-        )
-        lower_bound = convert_metrics(
-            metric_value=lower_bound, dtype=builder.metrics[name]["type"]
-        )
-        lower_bound = convert_metrics(
-            metric_value=lower_bound, dtype=builder.metrics[name]["type"]
-        )
-        upper_bound = convert_metrics(
-            metric_value=upper_bound, dtype=builder.metrics[name]["type"]
-        )
+        conv_value = convert_metrics(metric_value, dtype=metric_type)
+        lower_bound = convert_metrics(lower_bound, dtype=metric_type)
+        upper_bound = convert_metrics(upper_bound, dtype=metric_type)
 
         # if any item is None we stop before we run comparison
         if any(item is None for item in [conv_value, lower_bound, upper_bound]):
@@ -581,11 +574,9 @@ def assert_range_check(builder):
             f"[blue]{builder}[/]: testing metric: {name} if {lower_bound} <= {conv_value} <= {upper_bound} - Check: {bool_check}"
         )
 
+    mode = range_comparisons.get("mode")
     # perform logical OR if mode is set to 'or' or 'OR' otherwise do logical AND
-    if builder.status["assert_range"].get("mode") in ["or", "OR"]:
-        range_check = any(assert_check)
-    else:
-        range_check = all(assert_check)
+    range_check = any(assert_check) if mode in ["or", "OR"] else all(assert_check)
 
     console.print(f"[blue]{builder}[/]: Range Check: {range_check}")
     return range_check
