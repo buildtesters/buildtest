@@ -16,6 +16,7 @@ buildspecs:
           item: 1
     status:
       assert_eq:
+        comparisons:
         - name: x
           ref: 1
         - name: invalid_metric
@@ -37,5 +38,6 @@ buildspecs:
           item: 1
     status:
       assert_eq:
-      - name: x
-        ref: 2
+        comparisons:
+        - name: x
+          ref: 2
