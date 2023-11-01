@@ -181,13 +181,7 @@ def main():
                     max_jobs=args.max_jobs,
                 )
                 cmd.build()
-            except KeyboardInterrupt as err:
-                console.print(
-                    "[red]Unable to complete buildtest build command, signal: KeyboardInterrupt detected"
-                )
-                console.print(err)
-                sys.exit(1)
-            except SystemExit as err:
+            except (KeyboardInterrupt, SystemExit) as err:
                 console.print("[red]buildtest build command failed")
                 console.print(err)
                 sys.exit(1)

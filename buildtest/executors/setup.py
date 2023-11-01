@@ -9,6 +9,7 @@ import logging
 import multiprocessing as mp
 import os
 import shutil
+import sys
 import time
 
 from rich.table import Column, Table
@@ -124,12 +125,7 @@ class BuildExecutor:
 
     def get_validbuilders(self):
         """Return a list of valid builders that were run"""
-        complete_builders = []
-        for builder in self.builders:
-            if builder.is_complete():
-                complete_builders.append(builder)
-
-        return complete_builders
+        return [builder for builder in self.builders if builder.is_complete()]
 
     def _choose_executor(self, builder):
         """Choose executor is called at the onset of a run and poll stage. Given a builder
@@ -367,26 +363,9 @@ class BuildExecutor:
 
                 if terminate:
                     break
-        except KeyboardInterrupt:
-            console.print("[red]Caught KeyboardInterrupt, terminating workers")
-
-            for builder in self.builders:
-                console.print(
-                    f"[blue]{builder}[/blue]: [red]Removing test directory: {builder.test_root}"
-                )
-                try:
-                    shutil.rmtree(builder.test_root)
-                except OSError as err:
-                    console.print(
-                        f"[blue]{builder}[/blue]: [red]Unable to delete test directory {builder.test_root} with error: {err.strerror}"
-                    )
-                    continue
-
-                if builder.is_batch_job():
-                    console.print(
-                        f"[blue]{builder}[/blue]: [red]Cancelling Job {builder.job.get()}"
-                    )
-                    builder.job.cancel()
+        except:
+            console.print("[red]Terminating workers due to exception")
+            self._cleanup_when_exception()
 
             # close the worker pool by preventing any more tasks from being submitted
             pool.close()
@@ -394,7 +373,8 @@ class BuildExecutor:
             # terminate all worker processes
             pool.join()
 
-            raise KeyboardInterrupt
+            sys.exit()
+
         # close the worker pool by preventing any more tasks from being submitted
         pool.close()
 
@@ -432,9 +412,9 @@ class BuildExecutor:
                     # need to remove builder from self._validbuilders when job is cancelled because these builders are ones
                     # self._validbuilders.remove(job)
 
-            self.print_job_details(jobs)
+            self._print_job_details(jobs)
 
-    def print_job_details(self, active_jobs):
+    def _print_job_details(self, active_jobs):
         """Print pending jobs in table format during each poll step
 
         args:
@@ -504,3 +484,23 @@ class BuildExecutor:
 
         if completed_jobs_table.row_count:
             console.print(completed_jobs_table)
+
+    def _cleanup_when_exception(self):
+        """This method is invoked by cleaning up any builders that are when exception is raised"""
+        for builder in self.builders:
+            console.print(
+                f"[blue]{builder}[/blue]: [red]Removing test directory: {builder.test_root}"
+            )
+            try:
+                shutil.rmtree(builder.test_root)
+            except OSError as err:
+                console.print(
+                    f"[blue]{builder}[/blue]: [red]Unable to delete test directory {builder.test_root} with error: {err.strerror}"
+                )
+                continue
+
+            if builder.is_batch_job():
+                console.print(
+                    f"[blue]{builder}[/blue]: [red]Cancelling Job {builder.job.get()}"
+                )
+                builder.job.cancel()

@@ -1224,8 +1224,8 @@ class BuildTest:
         console.rule("[bold red]Running Tests")
         try:
             self.buildexecutor.run(self.builders)
-        except KeyboardInterrupt:
-            raise KeyboardInterrupt
+        except:
+            sys.exit()
 
         builders = self.buildexecutor.get_validbuilders()
         ########## TEST SUMMARY ####################
