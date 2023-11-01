@@ -363,8 +363,8 @@ class BuildExecutor:
 
                 if terminate:
                     break
-        except Exception:
-            console.print("[red]Caught KeyboardInterrupt, terminating workers")
+        except:
+            console.print("[red]Terminating workers due to exception")
             self._cleanup_when_exception()
 
             # close the worker pool by preventing any more tasks from being submitted
