@@ -45,7 +45,7 @@ class SlurmJob(Job):
         """If job is complete return ``True`` otherwise return ``False``. Slurm will report ``COMPLETED``
         for job state."""
 
-        return self._state == "COMPLETED"
+        return self._state in ["COMPLETED", "FAILED"]
 
     def is_failed(self):
         """If job failed return ``True`` otherwise return ``False``. Slurm will report ``FAILED``
