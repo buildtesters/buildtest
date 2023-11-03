@@ -401,7 +401,11 @@ class BuildExecutor:
 
             self._print_job_details(jobs)
 
-            jobs = [ builder for builder in jobs if builder.job.is_running() or builder.job.is_pending() ]
+            jobs = [
+                builder
+                for builder in jobs
+                if builder.job.is_running() or builder.job.is_pending()
+            ]
 
     def _print_job_details(self, active_jobs):
         """Print pending jobs in table format during each poll step
@@ -419,15 +423,29 @@ class BuildExecutor:
             "elapsedtime",
             "pendtime",
         ]
-        pend_count = len([ builder for builder in active_jobs if builder.job.is_pending() or builder.job.is_suspended() ])
-        run_count = len([ builder for builder in active_jobs if builder.job.is_running() ])
-        complete_count = len( [builder for builder in active_jobs if builder.job.is_complete() ]
+        pend_count = len(
+            [
+                builder
+                for builder in active_jobs
+                if builder.job.is_pending() or builder.job.is_suspended()
+            ]
+        )
+        run_count = len(
+            [builder for builder in active_jobs if builder.job.is_running()]
+        )
+        complete_count = len(
+            [builder for builder in active_jobs if builder.job.is_complete()]
+        )
 
         pending_jobs_table = Table(
             title=f"Pending and Suspended Jobs ({pend_count})", header_style="blue"
         )
-        running_jobs_table = Table(title=f"Running Jobs ({run_count})", header_style="blue")
-        completed_jobs_table = Table(title=f"Completed Jobs ({complete_count})", header_style="blue")
+        running_jobs_table = Table(
+            title=f"Running Jobs ({run_count})", header_style="blue"
+        )
+        completed_jobs_table = Table(
+            title=f"Completed Jobs ({complete_count})", header_style="blue"
+        )
 
         for column in table_columns:
             pending_jobs_table.add_column(column, overflow="fold")
