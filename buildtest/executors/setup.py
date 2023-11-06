@@ -341,12 +341,11 @@ class BuildExecutor:
                     if isinstance(task, BuilderBase):
                         self.builders.add(task)
 
-                pending_jobs = {
+                pending_jobs = [
                     builder
                     for builder in self.builders
                     if builder.is_batch_job() and builder.is_running()
-                }
-
+                ]
                 self.poll(pending_jobs)
 
                 # remove any failed jobs from list
@@ -363,7 +362,7 @@ class BuildExecutor:
 
                 if terminate:
                     break
-        except:
+        except KeyboardInterrupt:
             console.print("[red]Terminating workers due to exception")
             self._cleanup_when_exception()
 
@@ -385,34 +384,28 @@ class BuildExecutor:
         """Poll all until all jobs are complete. At each poll interval, we poll each builder
         job state. If job is complete or failed we remove job from pending queue. In each interval we sleep
         and poll jobs until there is no pending jobs."""
-        # only add builders that are batch jobs
+
+        jobs = pending_jobs
 
         # poll until all pending jobs are complete
-        while pending_jobs:
+        while jobs:
             print(f"Polling Jobs in {self.pollinterval} seconds")
             time.sleep(self.pollinterval)
-
-            # time.sleep(self.pollinterval)
-            jobs = pending_jobs.copy()
 
             # for every pending job poll job and mark if job is finished or cancelled
             for job in jobs:
                 # get executor instance for corresponding builder. This would be one of the following: SlurmExecutor, PBSExecutor, LSFExecutor, CobaltExecutor
                 executor = self.get(job.executor)
-                # if builder is local executor we shouldn't be polling so we set job to
-                # complete and return
 
                 executor.poll(job)
 
-                if job.is_complete():
-                    pending_jobs.remove(job)
-
-                elif job.is_failed():
-                    pending_jobs.remove(job)
-                    # need to remove builder from self._validbuilders when job is cancelled because these builders are ones
-                    # self._validbuilders.remove(job)
-
             self._print_job_details(jobs)
+
+            jobs = [
+                builder
+                for builder in jobs
+                if builder.job.is_running() or builder.job.is_pending()
+            ]
 
     def _print_job_details(self, active_jobs):
         """Print pending jobs in table format during each poll step
@@ -430,11 +423,29 @@ class BuildExecutor:
             "elapsedtime",
             "pendtime",
         ]
-        pending_jobs_table = Table(
-            title="Pending and Suspended Jobs", header_style="blue"
+        pend_count = len(
+            [
+                builder
+                for builder in active_jobs
+                if builder.job.is_pending() or builder.job.is_suspended()
+            ]
         )
-        running_jobs_table = Table(title="Running Jobs", header_style="blue")
-        completed_jobs_table = Table(title="Completed Jobs", header_style="blue")
+        run_count = len(
+            [builder for builder in active_jobs if builder.job.is_running()]
+        )
+        complete_count = len(
+            [builder for builder in active_jobs if builder.job.is_complete()]
+        )
+
+        pending_jobs_table = Table(
+            title=f"Pending and Suspended Jobs ({pend_count})", header_style="blue"
+        )
+        running_jobs_table = Table(
+            title=f"Running Jobs ({run_count})", header_style="blue"
+        )
+        completed_jobs_table = Table(
+            title=f"Completed Jobs ({complete_count})", header_style="blue"
+        )
 
         for column in table_columns:
             pending_jobs_table.add_column(column, overflow="fold")
