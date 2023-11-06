@@ -53,7 +53,7 @@ Configuring Hostnames
 
 The ``hostnames`` field is a list of nodes that belong to the cluster where buildtest should be run. Generally,
 these hosts should be your login nodes in your cluster. buildtest will process **hostnames** field across
-all system entry using `re.match <https://docs.python.org/3/library/re.html#re.match>`_ until a hostname is found, if
+all system entry using `re.fullmatch <https://docs.python.org/3/library/re.html#re.fullmatch>`_ until a hostname is found, if
 none is found we report an error.
 
 
