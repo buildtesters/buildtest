@@ -1,5 +1,6 @@
 import json
 import logging
+import platform
 import re
 
 from buildtest.defaults import (
@@ -93,22 +94,28 @@ class SiteConfiguration:
         """
 
         self.systems = list(self.config["system"].keys())
-
+        logger.debug(
+            f"List of available systems: {self.systems} found in configuration file"
+        )
         host_lookup = {}
 
         # get hostname fqdn
-        cmd = BuildTestCommand("hostname -f")
-        cmd.execute()
-        hostname = " ".join(cmd.get_output())
+        hostname = platform.node()
 
         # for every system record we lookup 'hostnames' entry and apply re.match against current hostname. If found we break from loop
         for name in self.systems:
             host_lookup[name] = self.config["system"][name]["hostnames"]
 
+            logger.debug(
+                f"Checking hostname: {hostname} in system: '{name}' with hostnames: {host_lookup[name]}"
+            )
             for host_entry in self.config["system"][name]["hostnames"]:
-                if re.match(host_entry, hostname):
+                if re.fullmatch(host_entry, hostname):
                     self.target_config = self.config["system"][name]
                     self._name = name
+                    logger.info(
+                        f"Found matching system: {name} based on hostname: {hostname}"
+                    )
                     break
 
         if not self.target_config:
@@ -117,8 +124,6 @@ class SiteConfiguration:
                 self.file,
                 f"Based on current system hostname: {hostname} we cannot find a matching system  {list(self.systems)} based on current hostnames: {host_lookup} ",
             )
-
-        # self.localexecutors = list(self.target_config["executors"]["local"].keys())
 
     def validate(self, moduletool=None):
         """This method validates the site configuration with schema.
