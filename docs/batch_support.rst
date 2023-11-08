@@ -30,17 +30,18 @@ insert **#SBATCH** directive in front of each value.
 Shown below is an example buildspec
 
 .. code-block:: yaml
-    :emphasize-lines: 5,7-9
+    :emphasize-lines: 5,7-10
 
     buildspecs:
       slurm_metadata:
         description: Get metadata from compute node when submitting job
         type: script
-        executor: cori.slurm.knl_debug
+        executor: perlmutter.slurm.debug
         tags: [jobs]
         sbatch:
           - "-t 00:05"
           - "-N 1"
+          - "-C cpu"
         run: |
           export SLURM_JOB_NAME="firstjob"
           echo "jobname:" $SLURM_JOB_NAME
@@ -58,14 +59,17 @@ which is determined by the name of the test.
 
 
 .. code-block:: shell
-    :emphasize-lines: 2-6
+    :emphasize-lines: 2-7
 
-    #!/bin/bash
+    #!/usr/bin/bash
     #SBATCH -t 00:05
     #SBATCH -N 1
+    #SBATCH -C cpu
     #SBATCH --job-name=slurm_metadata
     #SBATCH --output=slurm_metadata.out
     #SBATCH --error=slurm_metadata.err
+    set -eo pipefail
+    # Content of run section
     export SLURM_JOB_NAME="firstjob"
     echo "jobname:" $SLURM_JOB_NAME
     echo "slurmdb host:" $SLURMD_NODENAME
@@ -75,24 +79,20 @@ which is determined by the name of the test.
     echo "partition:" $SLURM_JOB_PARTITION
 
 
-The ``cori.slurm.knl_debug`` executor in our configuration file is defined as follows
+The ``perlmutter.slurm.debug`` executor in our configuration file is defined as follows
 
 .. code-block:: yaml
     :emphasize-lines: 5-10
 
     system:
-      cori:
+      perlmutter:
         executors:
           slurm:
-            knl_debug:
+            debug:
               qos: debug
-              cluster: cori
-              options:
-              - -C knl,quad,cache
-              description: debug queue on KNL partition
 
-With this setting, any buildspec test that use ``cori.slurm.knl_debug`` executor will result
-in the following launch option: ``sbatch --qos debug --clusters=cori -C knl,quad,cache </path/to/script.sh>``.
+With this setting, any buildspec test that use ``perlmutter.slurm.debug`` executor will result
+in the following launch option: ``sbatch --qos regular </path/to/script.sh>``.
 
 Unlike the LocalExecutor, the **Run Stage**, will dispatch the slurm job and poll
 until job is completed. Once job is complete, it will gather the results and terminate.
@@ -112,95 +112,99 @@ Shown below is an example build for this test
 
     .. code-block:: console
 
-           buildtest build -b metadata.yml
-        ╭───────────────────────────────────────── buildtest summary ─────────────────────────────────────────╮
-        │                                                                                                     │
-        │ User:               siddiq90                                                                        │
-        │ Hostname:           cori05                                                                          │
-        │ Platform:           Linux                                                                           │
-        │ Current Time:       2022/10/11 13:00:37                                                             │
-        │ buildtest path:     /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest                       │
-        │ buildtest version:  0.15.0                                                                          │
-        │ python path:        /global/u1/s/siddiq90/.local/share/virtualenvs/buildtest-WqshQcL1/bin/python3   │
-        │ python version:     3.9.7                                                                           │
-        │ Configuration File: /global/u1/s/siddiq90/gitrepos/buildtest-nersc/config.yml                       │
-        │ Test Directory:     /global/u1/s/siddiq90/gitrepos/buildtest/var/tests                              │
-        │ Report File:        /global/u1/s/siddiq90/gitrepos/buildtest/var/report.json                        │
-        │ Command:            /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest build -b metadata.yml │
-        │                                                                                                     │
-        ╰─────────────────────────────────────────────────────────────────────────────────────────────────────╯
-        ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-                                     Discovered buildspecs
-        ╔═════════════════════════════════════════════════════════════════════════════╗
-        ║ buildspec                                                                   ║
-        ╟─────────────────────────────────────────────────────────────────────────────╢
-        ║ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/metadata.yml ║
-        ╚═════════════════════════════════════════════════════════════════════════════╝
+    (buildtest) siddiq90@login10> buildtest build -b metadata.yml
+    ╭───────────────────────────────────────── buildtest summary ─────────────────────────────────────────╮
+    │                                                                                                     │
+    │ User:               siddiq90                                                                        │
+    │ Hostname:           login10                                                                         │
+    │ Platform:           Linux                                                                           │
+    │ Current Time:       2023/11/07 16:39:31                                                             │
+    │ buildtest path:     /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest                       │
+    │ buildtest version:  1.6                                                                             │
+    │ python path:        /global/u1/s/siddiq90/.local/share/virtualenvs/buildtest-WqshQcL1/bin/python3   │
+    │ python version:     3.9.7                                                                           │
+    │ Configuration File: /global/u1/s/siddiq90/gitrepos/buildtest-nersc/config.yml                       │
+    │ Test Directory:     /global/u1/s/siddiq90/gitrepos/buildtest/var/tests                              │
+    │ Report File:        /global/u1/s/siddiq90/gitrepos/buildtest/var/report.json                        │
+    │ Command:            /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest build -b metadata.yml │
+    │                                                                                                     │
+    ╰─────────────────────────────────────────────────────────────────────────────────────────────────────╯
+    ──────────────────────────────────────────────────────────  Discovering Buildspecs ───────────────────────────────────────────────────────────
+                                 Discovered buildspecs
+    ╔═════════════════════════════════════════════════════════════════════════════╗
+    ║ buildspec                                                                   ║
+    ╟─────────────────────────────────────────────────────────────────────────────╢
+    ║ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/metadata.yml ║
+    ╚═════════════════════════════════════════════════════════════════════════════╝
 
 
-        Total Discovered Buildspecs:  1
-        Total Excluded Buildspecs:  0
-        Detected Buildspecs after exclusion:  1
-        ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-        Buildtest will parse 1 buildspecs
-        Valid Buildspecs: 1
-        Invalid Buildspecs: 0
-        /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/metadata.yml: VALID
-        Total builder objects created: 1
-        Total compiler builder: 0
-        Total script builder: 1
-        Total spack builder: 0
-                                                                                                     Script Builder Details
-        ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-        ┃ builder                 ┃ executor             ┃ compiler ┃ nodes ┃ procs ┃ description                                        ┃ buildspecs                                                                  ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-        │ slurm_metadata/9329516f │ cori.slurm.knl_debug │ None     │ None  │ None  │ Get metadata from compute node when submitting job │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/metadata.yml │
-        └─────────────────────────┴──────────────────────┴──────────┴───────┴───────┴────────────────────────────────────────────────────┴─────────────────────────────────────────────────────────────────────────────┘
-                                                               Batch Job Builders
-        ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-        ┃ builder                 ┃ executor             ┃ buildspecs                                                                  ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-        │ slurm_metadata/9329516f │ cori.slurm.knl_debug │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/metadata.yml │
-        └─────────────────────────┴──────────────────────┴─────────────────────────────────────────────────────────────────────────────┘
-        ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-        slurm_metadata/9329516f: Creating test directory: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/9329516f
-        slurm_metadata/9329516f: Creating the stage directory: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/9329516f/stage
-        slurm_metadata/9329516f: Writing build script: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/9329516f/slurm_metadata_build.sh
-        ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-        Spawning 64 processes for processing builders
-        ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-        slurm_metadata/9329516f does not have any dependencies adding test to queue
-        In this iteration we are going to run the following tests: [slurm_metadata/9329516f]
-        slurm_metadata/9329516f: Running Test via command: bash --norc --noprofile -eo pipefail slurm_metadata_build.sh
-        slurm_metadata/9329516f: JobID 63477998 dispatched to scheduler
-        Polling Jobs in 30 seconds
-        slurm_metadata/9329516f: Job 63477998 is complete!
-        slurm_metadata/9329516f: Test completed in 31.963472 seconds
-        slurm_metadata/9329516f: Test completed with returncode: 0
-        slurm_metadata/9329516f: Writing output file -  /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/9329516f/slurm_metadata.out
-        slurm_metadata/9329516f: Writing error file - /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/cori.slurm.knl_debug/metadata/slurm_metadata/9329516f/slurm_metadata.err
-                                           Completed Jobs
-        ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┓
-        ┃ builder                 ┃ executor             ┃ jobid    ┃ jobstate  ┃ runtime   ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━┩
-        │ slurm_metadata/9329516f │ cori.slurm.knl_debug │ 63477998 │ COMPLETED │ 31.963472 │
-        └─────────────────────────┴──────────────────────┴──────────┴───────────┴───────────┘
-                                                               Test Summary
-        ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┓
-        ┃ builder                 ┃ executor             ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returnCode ┃ runtime   ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━┩
-        │ slurm_metadata/9329516f │ cori.slurm.knl_debug │ PASS   │ N/A N/A N/A                         │ 0          │ 31.963472 │
-        └─────────────────────────┴──────────────────────┴────────┴─────────────────────────────────────┴────────────┴───────────┘
+    Total Discovered Buildspecs:  1
+    Total Excluded Buildspecs:  0
+    Detected Buildspecs after exclusion:  1
+    ───────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────
+    Valid Buildspecs: 1
+    Invalid Buildspecs: 0
+    /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/metadata.yml: VALID
+    Total builder objects created: 1
+                                                               Builders by type=script
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ builder                 ┃ type   ┃ executor               ┃ compiler ┃ nodes ┃ procs ┃ description              ┃ buildspecs               ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ slurm_metadata/07da5a5e │ script │ perlmutter.slurm.debug │ None     │ None  │ None  │ Get metadata from        │ /global/u1/s/siddiq90/gi │
+    │                         │        │                        │          │       │       │ compute node when        │ trepos/buildtest-nersc/b │
+    │                         │        │                        │          │       │       │ submitting job           │ uildspecs/jobs/metadata. │
+    │                         │        │                        │          │       │       │                          │ yml                      │
+    └─────────────────────────┴────────┴────────────────────────┴──────────┴───────┴───────┴──────────────────────────┴──────────────────────────┘
+                                                            Batch Job Builders
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ builder                 ┃ executor               ┃ buildspecs                                                                  ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ slurm_metadata/07da5a5e │ perlmutter.slurm.debug │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/metadata.yml │
+    └─────────────────────────┴────────────────────────┴─────────────────────────────────────────────────────────────────────────────┘
+    ─────────────────────────────────────────────────────────────── Building Test ────────────────────────────────────────────────────────────────
+    slurm_metadata/07da5a5e: Creating test directory: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e
+    slurm_metadata/07da5a5e: Creating the stage directory: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e/stage
+    slurm_metadata/07da5a5e: Writing build script: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e/slurm_metadata_build.sh
+    ─────────────────────────────────────────────────────────────── Running Tests ────────────────────────────────────────────────────────────────
+    Spawning 8 processes for processing builders
+    ──────────────────────────────────────────────────────────────── Iteration 1 ─────────────────────────────────────────────────────────────────
+    slurm_metadata/07da5a5e does not have any dependencies adding test to queue
+     Builders Eligible to Run
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder                 ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ slurm_metadata/07da5a5e │
+    └─────────────────────────┘
+    slurm_metadata/07da5a5e: Current Working Directory : /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e/stage
+    slurm_metadata/07da5a5e: Running Test via command: bash --norc --noprofile -eo pipefail slurm_metadata_build.sh
+    slurm_metadata/07da5a5e: JobID 18004649 dispatched to scheduler
+    Polling Jobs in 30 seconds
+    slurm_metadata/07da5a5e: Job 18004649 is complete!
+    slurm_metadata/07da5a5e: Test completed in 0 seconds
+    slurm_metadata/07da5a5e: Test completed with returncode: 0
+    slurm_metadata/07da5a5e: Writing output file -  /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e/slurm_metadata.out
+    slurm_metadata/07da5a5e: Writing error file - /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e/slurm_metadata.err
+                                                  Completed Jobs (1)
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+    ┃ builder                 ┃ executor               ┃ jobid    ┃ jobstate  ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+    │ slurm_metadata/07da5a5e │ perlmutter.slurm.debug │ 18004649 │ COMPLETED │ 0       │ 0           │ 0        │
+    └─────────────────────────┴────────────────────────┴──────────┴───────────┴─────────┴─────────────┴──────────┘
+                                                           Test Summary
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
+    ┃ builder                 ┃ executor               ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
+    │ slurm_metadata/07da5a5e │ perlmutter.slurm.debug │ PASS   │ None None None                      │ 0          │ 0       │
+    └─────────────────────────┴────────────────────────┴────────┴─────────────────────────────────────┴────────────┴─────────┘
 
 
 
-        Passed Tests: 1/1 Percentage: 100.000%
-        Failed Tests: 0/1 Percentage: 0.000%
+    Passed Tests: 1/1 Percentage: 100.000%
+    Failed Tests: 0/1 Percentage: 0.000%
 
 
-        Adding 1 test results to /global/u1/s/siddiq90/gitrepos/buildtest/var/report.json
-        Writing Logfile to: /global/u1/s/siddiq90/gitrepos/buildtest/var/logs/buildtest_o3rpx3zs.log
-
+    Adding 1 test results to /global/u1/s/siddiq90/gitrepos/buildtest/var/report.json
+    Writing Logfile to: /global/u1/s/siddiq90/gitrepos/buildtest/var/logs/buildtest_hmh8u3tr.log
 
 
 The **SlurmExecutor** class is responsible for processing slurm job that may include:
@@ -210,125 +214,121 @@ via `sacct <https://slurm.schedmd.com/sacct.html>`_.
 buildtest can check status based on Slurm Job State, this is defined by ``State`` field
 in sacct. In next example, we introduce field ``slurm_job_state`` which
 is part of ``status`` field. This field expects one of the following values: ``[COMPLETED, FAILED, OUT_OF_MEMORY, TIMEOUT ]``
-This is an example of simulating fail job by expecting a return code of 1 with job
-state of ``FAILED``.
+This is an example of simulating fail job by running an invalid command
 
 .. code-block:: yaml
     :linenos:
-    :emphasize-lines: 7-8
+    :emphasize-lines: 8-10
 
     buildspecs:
-      wall_timeout:
+      fail_job_state:
         type: script
-        executor: cori.slurm.knl_debug
-        sbatch: [ "-t '00:00:10'", "-n 1"]
-        description: "This job simulates job timeout by sleeping for 180sec while requesting 10sec"
+        executor: '(perlmutter|muller).slurm.debug'
+        sbatch: [ "-t '00:00:10'", "-n 1", "-C cpu"]
+        description: "This job run an invalid command and match job with FAILED job state"
         tags: ["jobs", "fail"]
-        run: sleep 180
+        run: xyz
         status:
-          slurm_job_state: "TIMEOUT"
+          slurm_job_state: "FAILED"
 
+Let's try building this test, take note of the job state and notice that this test will pass because the job
+state matches the expected value defined by ``slurm_job_state`` field.
 
-If we run this test, buildtest will mark this test as ``PASS`` because the slurm job
-state matches with expected result defined by field ``slurm_job_state``. This job will
-be TIMEOUT because we requested 2 mins while this job will sleep 300sec (5min).
-
-.. dropdown:: ``buildtest build -b buildspecs/jobs/fail/timeout.yml``
+.. dropdown:: ``buildtest build -b failed_job_state.yml --pollinterval=10``
 
     .. code-block:: console
 
-        (buildtest) siddiq90@cori01> buildtest build -b buildspecs/jobs/fail/timeout.yml
-        ╭────────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────╮
-        │                                                                                                                       │
-        │ User:               siddiq90                                                                                          │
-        │ Hostname:           cori01                                                                                            │
-        │ Platform:           Linux                                                                                             │
-        │ Current Time:       2021/10/13 09:38:26                                                                               │
-        │ buildtest path:     /global/homes/s/siddiq90/github/buildtest/bin/buildtest                                           │
-        │ buildtest version:  0.11.0                                                                                            │
-        │ python path:        /global/homes/s/siddiq90/.conda/envs/buildtest/bin/python                                         │
-        │ python version:     3.8.8                                                                                             │
-        │ Configuration File: /global/u1/s/siddiq90/github/buildtest-cori/config.yml                                            │
-        │ Test Directory:     /global/u1/s/siddiq90/github/buildtest/var/tests                                                  │
-        │ Command:            /global/homes/s/siddiq90/github/buildtest/bin/buildtest build -b buildspecs/jobs/fail/timeout.yml │
-        │                                                                                                                       │
-        ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-        ──────────────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────────────
-        Discovered Buildspecs:  1
-        Excluded Buildspecs:  0
+        (buildtest) siddiq90@login10> buildtest build -b failed_job_state.yml --pollinterval=10
+        ╭────────────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────────╮
+        │                                                                                                                               │
+        │ User:               siddiq90                                                                                                  │
+        │ Hostname:           login10                                                                                                   │
+        │ Platform:           Linux                                                                                                     │
+        │ Current Time:       2023/11/07 16:54:40                                                                                       │
+        │ buildtest path:     /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest                                                 │
+        │ buildtest version:  1.6                                                                                                       │
+        │ python path:        /global/u1/s/siddiq90/.local/share/virtualenvs/buildtest-WqshQcL1/bin/python3                             │
+        │ python version:     3.9.7                                                                                                     │
+        │ Configuration File: /global/u1/s/siddiq90/gitrepos/buildtest-nersc/config.yml                                                 │
+        │ Test Directory:     /global/u1/s/siddiq90/gitrepos/buildtest/var/tests                                                        │
+        │ Report File:        /global/u1/s/siddiq90/gitrepos/buildtest/var/report.json                                                  │
+        │ Command:            /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest build -b failed_job_state.yml --pollinterval=10 │
+        │                                                                                                                               │
+        ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+        ──────────────────────────────────────────────────────────  Discovering Buildspecs ───────────────────────────────────────────────────────────
+                                         Discovered buildspecs
+        ╔═════════════════════════════════════════════════════════════════════════════════════╗
+        ║ buildspec                                                                           ║
+        ╟─────────────────────────────────────────────────────────────────────────────────────╢
+        ║ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/failed_job_state.yml ║
+        ╚═════════════════════════════════════════════════════════════════════════════════════╝
+
+
+        Total Discovered Buildspecs:  1
+        Total Excluded Buildspecs:  0
         Detected Buildspecs after exclusion:  1
-                                     Discovered buildspecs
-        ╔══════════════════════════════════════════════════════════════════════════════╗
-        ║ Buildspecs                                                                   ║
-        ╟──────────────────────────────────────────────────────────────────────────────╢
-        ║ /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/fail/timeout.yml ║
-        ╚══════════════════════════════════════════════════════════════════════════════╝
-        ──────────────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────────────
+        ───────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────
         Valid Buildspecs: 1
         Invalid Buildspecs: 0
-        /global/u1/s/siddiq90/github/buildtest-cori/buildspecs/jobs/fail/timeout.yml: VALID
-
-
+        /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/failed_job_state.yml: VALID
         Total builder objects created: 1
-
-
-                                                                               Builder Details
-        ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-        ┃ Builder               ┃ Executor             ┃ description                                          ┃ buildspecs                                          ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-        │ wall_timeout/13d288ff │ cori.slurm.knl_debug │ This job simulates job timeout by sleeping for       │ /global/u1/s/siddiq90/github/buildtest-cori/buildsp │
-        │                       │                      │ 180sec while requesting 10sec                        │ ecs/jobs/fail/timeout.yml                           │
-        └───────────────────────┴──────────────────────┴──────────────────────────────────────────────────────┴─────────────────────────────────────────────────────┘
-        ─────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────
-        [09:38:26] wall_timeout/13d288ff: Creating test directory -                                                                                       base.py:440
-                   /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/timeout/wall_timeout/13d288ff
-                   wall_timeout/13d288ff: Creating stage directory -                                                                                      base.py:450
-                   /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/timeout/wall_timeout/13d288ff/stage
-                   wall_timeout/13d288ff: Writing build script:                                                                                           base.py:567
-                   /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/timeout/wall_timeout/13d288ff/wall_timeout_build.sh
-        ─────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────
-        ______________________________
-        Launching test: wall_timeout/13d288ff
-        wall_timeout/13d288ff: Running Test script
-        /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/timeout/wall_timeout/13d288ff/wall_timeout_build.sh
-        wall_timeout/13d288ff: JobID 48410498 dispatched to scheduler
-        Polling Jobs in 30 seconds
-                                          Pending Jobs
-        ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
-        ┃ Builder               ┃ executor             ┃ JobID    ┃ JobState ┃ runtime ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
-        │ wall_timeout/13d288ff │ cori.slurm.knl_debug │ 48410498 │ RUNNING  │ 30.423  │
-        └───────────────────────┴──────────────────────┴──────────┴──────────┴─────────┘
-        Polling Jobs in 30 seconds
-                                          Pending Jobs
-        ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
-        ┃ Builder               ┃ executor             ┃ JobID    ┃ JobState ┃ runtime ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
-        │ wall_timeout/13d288ff │ cori.slurm.knl_debug │ 48410498 │ RUNNING  │ 60.564  │
-        └───────────────────────┴──────────────────────┴──────────┴──────────┴─────────┘
-        Polling Jobs in 30 seconds
-        wall_timeout/13d288ff: Job 48410498 is complete!
-        wall_timeout/13d288ff: Writing output file -
-        /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/timeout/wall_timeout/13d288ff/wall_timeout.out
-        wall_timeout/13d288ff: Writing error file -
-        /global/u1/s/siddiq90/github/buildtest/var/tests/cori.slurm.knl_debug/timeout/wall_timeout/13d288ff/wall_timeout.err
-                           Pending Jobs
-        ┏━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┓
-        ┃ Builder ┃ executor ┃ JobID ┃ JobState ┃ runtime ┃
-        ┡━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━┩
-        └─────────┴──────────┴───────┴──────────┴─────────┘
-                                          Completed Jobs
-        ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┓
-        ┃ Builder               ┃ executor             ┃ JobID    ┃ JobState ┃ runtime   ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━┩
-        │ wall_timeout/13d288ff │ cori.slurm.knl_debug │ 48410498 │ TIMEOUT  │ 90.675675 │
-        └───────────────────────┴──────────────────────┴──────────┴──────────┴───────────┘
-                                                              Test Summary
-        ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┓
-        ┃ Builder               ┃ executor             ┃ status ┃ Checks (ReturnCode, Regex, Runtime) ┃ ReturnCode ┃ Runtime   ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━┩
-        │ wall_timeout/13d288ff │ cori.slurm.knl_debug │ PASS   │ False False False                   │ 0          │ 90.675675 │
-        └───────────────────────┴──────────────────────┴────────┴─────────────────────────────────────┴────────────┴───────────┘
+                                                                   Builders by type=script
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ builder                 ┃ type   ┃ executor               ┃ compiler ┃ nodes ┃ procs ┃ description              ┃ buildspecs               ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ fail_job_state/6ddbaab1 │ script │ perlmutter.slurm.debug │ None     │ None  │ None  │ This job run an invalid  │ /global/u1/s/siddiq90/gi │
+        │                         │        │                        │          │       │       │ command and match job    │ trepos/buildtest-nersc/b │
+        │                         │        │                        │          │       │       │ with FAILED job state    │ uildspecs/jobs/failed_jo │
+        │                         │        │                        │          │       │       │                          │ b_state.yml              │
+        └─────────────────────────┴────────┴────────────────────────┴──────────┴───────┴───────┴──────────────────────────┴──────────────────────────┘
+                                                                    Batch Job Builders
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ builder                 ┃ executor               ┃ buildspecs                                                                          ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ fail_job_state/6ddbaab1 │ perlmutter.slurm.debug │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/failed_job_state.yml │
+        └─────────────────────────┴────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────┘
+        ─────────────────────────────────────────────────────────────── Building Test ────────────────────────────────────────────────────────────────
+        fail_job_state/6ddbaab1: Creating test directory: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/failed_job_state/fail_job_state/6ddbaab1
+        fail_job_state/6ddbaab1: Creating the stage directory: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/failed_job_state/fail_job_state/6ddbaab1/stage
+        fail_job_state/6ddbaab1: Writing build script: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/failed_job_state/fail_job_state/6ddbaab1/fail_job_state_build.sh
+        ─────────────────────────────────────────────────────────────── Running Tests ────────────────────────────────────────────────────────────────
+        Spawning 8 processes for processing builders
+        ──────────────────────────────────────────────────────────────── Iteration 1 ─────────────────────────────────────────────────────────────────
+        fail_job_state/6ddbaab1 does not have any dependencies adding test to queue
+         Builders Eligible to Run
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ Builder                 ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ fail_job_state/6ddbaab1 │
+        └─────────────────────────┘
+        fail_job_state/6ddbaab1: Current Working Directory : /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/failed_job_state/fail_job_state/6ddbaab1/stage
+        fail_job_state/6ddbaab1: Running Test via command: bash --norc --noprofile -eo pipefail fail_job_state_build.sh
+        fail_job_state/6ddbaab1: JobID 18005239 dispatched to scheduler
+        Polling Jobs in 10 seconds
+                                                      Running Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder                 ┃ executor               ┃ jobid    ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ fail_job_state/6ddbaab1 │ perlmutter.slurm.debug │ 18005239 │ RUNNING  │ 17.72   │ 0.0         │ 0        │
+        └─────────────────────────┴────────────────────────┴──────────┴──────────┴─────────┴─────────────┴──────────┘
+        Polling Jobs in 10 seconds
+        fail_job_state/6ddbaab1: Job 18005239 is complete!
+        fail_job_state/6ddbaab1: Test completed in 0.0 seconds
+        fail_job_state/6ddbaab1: Test completed with returncode: 127
+        fail_job_state/6ddbaab1: Writing output file -  /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/failed_job_state/fail_job_state/6ddbaab1/fail_job_state.out
+        fail_job_state/6ddbaab1: Writing error file - /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/failed_job_state/fail_job_state/6ddbaab1/fail_job_state.err
+                                                     Completed Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder                 ┃ executor               ┃ jobid    ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ fail_job_state/6ddbaab1 │ perlmutter.slurm.debug │ 18005239 │ FAILED   │ 0.0     │ 0.0         │ 0        │
+        └─────────────────────────┴────────────────────────┴──────────┴──────────┴─────────┴─────────────┴──────────┘
+                                                               Test Summary
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
+        ┃ builder                 ┃ executor               ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
+        │ fail_job_state/6ddbaab1 │ perlmutter.slurm.debug │ PASS   │ None None None                      │ 127        │ 0.0     │
+        └─────────────────────────┴────────────────────────┴────────┴─────────────────────────────────────┴────────────┴─────────┘
 
 
 
@@ -336,12 +336,8 @@ be TIMEOUT because we requested 2 mins while this job will sleep 300sec (5min).
         Failed Tests: 0/1 Percentage: 0.000%
 
 
-        Writing Logfile to: /tmp/buildtest_4lvnkxge.log
-        A copy of logfile can be found at $BUILDTEST_ROOT/buildtest.log -  /global/homes/s/siddiq90/github/buildtest/buildtest.log
-
-
-buildtest marked this test ``PASS`` because the jobstate **TIMEOUT** match the value provided by ``slurm_job_state`` in the buildspec.
-
+        Adding 1 test results to /global/u1/s/siddiq90/gitrepos/buildtest/var/report.json
+        Writing Logfile to: /global/u1/s/siddiq90/gitrepos/buildtest/var/logs/buildtest_7xc4urxe.log
 
 LSF
 ----
@@ -402,18 +398,18 @@ Shown below is an example build of the buildspec using PBS scheduler and polling
         │ User:               pbsuser                                                                                      │
         │ Hostname:           pbs                                                                                          │
         │ Platform:           Linux                                                                                        │
-        │ Current Time:       2023/10/03 18:14:44                                                                          │
+        │ Current Time:       2023/11/08 01:02:24                                                                          │
         │ buildtest path:     /home/pbsuser/buildtest/bin/buildtest                                                        │
         │ buildtest version:  1.6                                                                                          │
         │ python path:        /home/pbsuser/miniconda/bin/python3                                                          │
-        │ python version:     3.11.4                                                                                       │
+        │ python version:     3.11.5                                                                                       │
         │ Configuration File: /home/pbsuser/buildtest/tests/settings/pbs.yml                                               │
         │ Test Directory:     /home/pbsuser/buildtest/var/tests                                                            │
         │ Report File:        /home/pbsuser/buildtest/var/report.json                                                      │
         │ Command:            /home/pbsuser/buildtest/bin/buildtest build -b tests/examples/pbs/sleep.yml --pollinterval=2 │
         │                                                                                                                  │
         ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-        ───────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────
+        ─────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────────────────────
                          Discovered buildspecs
         ╔══════════════════════════════════════════════════════╗
         ║ buildspec                                            ║
@@ -425,7 +421,7 @@ Shown below is an example build of the buildspec using PBS scheduler and polling
         Total Discovered Buildspecs:  1
         Total Excluded Buildspecs:  0
         Detected Buildspecs after exclusion:  1
-        ────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+        ──────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────
         Valid Buildspecs: 1
         Invalid Buildspecs: 0
         /home/pbsuser/buildtest/tests/examples/pbs/sleep.yml: VALID
@@ -434,62 +430,62 @@ Shown below is an example build of the buildspec using PBS scheduler and polling
         ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
         ┃ builder            ┃ type   ┃ executor          ┃ compiler ┃ nodes ┃ procs ┃ description ┃ buildspecs                                           ┃
         ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-        │ pbs_sleep/55acd305 │ script │ generic.pbs.workq │ None     │ None  │ None  │             │ /home/pbsuser/buildtest/tests/examples/pbs/sleep.yml │
+        │ pbs_sleep/8c334820 │ script │ generic.pbs.workq │ None     │ None  │ None  │             │ /home/pbsuser/buildtest/tests/examples/pbs/sleep.yml │
         └────────────────────┴────────┴───────────────────┴──────────┴───────┴───────┴─────────────┴──────────────────────────────────────────────────────┘
                                                Batch Job Builders
         ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
         ┃ builder            ┃ executor          ┃ buildspecs                                           ┃
         ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-        │ pbs_sleep/55acd305 │ generic.pbs.workq │ /home/pbsuser/buildtest/tests/examples/pbs/sleep.yml │
+        │ pbs_sleep/8c334820 │ generic.pbs.workq │ /home/pbsuser/buildtest/tests/examples/pbs/sleep.yml │
         └────────────────────┴───────────────────┴──────────────────────────────────────────────────────┘
-        ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-        pbs_sleep/55acd305: Creating test directory: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/55acd305
-        pbs_sleep/55acd305: Creating the stage directory: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/55acd305/stage
-        pbs_sleep/55acd305: Writing build script: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/55acd305/pbs_sleep_build.sh
-        ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+        ────────────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────────────
+        pbs_sleep/8c334820: Creating test directory: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/8c334820
+        pbs_sleep/8c334820: Creating the stage directory: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/8c334820/stage
+        pbs_sleep/8c334820: Writing build script: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/8c334820/pbs_sleep_build.sh
+        ────────────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────────────
         Spawning 1 processes for processing builders
-        ───────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
-        pbs_sleep/55acd305 does not have any dependencies adding test to queue
+        ─────────────────────────────────────────────────────────────────────────────── Iteration 1 ────────────────────────────────────────────────────────────────────────────────
+        pbs_sleep/8c334820 does not have any dependencies adding test to queue
         Builders Eligible to Run
         ┏━━━━━━━━━━━━━━━━━━━━┓
         ┃ Builder            ┃
         ┡━━━━━━━━━━━━━━━━━━━━┩
-        │ pbs_sleep/55acd305 │
+        │ pbs_sleep/8c334820 │
         └────────────────────┘
-        pbs_sleep/55acd305: Current Working Directory : /home/pbsuser/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/55acd305/stage
-        pbs_sleep/55acd305: Running Test via command: bash --norc --noprofile -eo pipefail pbs_sleep_build.sh
-        pbs_sleep/55acd305: JobID: 28.pbs dispatched to scheduler
+        pbs_sleep/8c334820: Current Working Directory : /home/pbsuser/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/8c334820/stage
+        pbs_sleep/8c334820: Running Test via command: bash --norc --noprofile -eo pipefail pbs_sleep_build.sh
+        pbs_sleep/8c334820: JobID: 0.pbs dispatched to scheduler
         Polling Jobs in 2 seconds
-                                                  Running Jobs
-        ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
-        ┃ builder            ┃ executor          ┃ jobid  ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
-        ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
-        │ pbs_sleep/55acd305 │ generic.pbs.workq │ 28.pbs │ R        │ 2.037   │ 0.0         │ 0        │
-        └────────────────────┴───────────────────┴────────┴──────────┴─────────┴─────────────┴──────────┘
+                                                Running Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder            ┃ executor          ┃ jobid ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ pbs_sleep/8c334820 │ generic.pbs.workq │ 0.pbs │ R        │ 2.057   │ 0.0         │ 0        │
+        └────────────────────┴───────────────────┴───────┴──────────┴─────────┴─────────────┴──────────┘
         Polling Jobs in 2 seconds
-                                                  Running Jobs
-        ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
-        ┃ builder            ┃ executor          ┃ jobid  ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
-        ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
-        │ pbs_sleep/55acd305 │ generic.pbs.workq │ 28.pbs │ R        │ 4.055   │ 2.02        │ 0        │
-        └────────────────────┴───────────────────┴────────┴──────────┴─────────┴─────────────┴──────────┘
+                                                Running Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder            ┃ executor          ┃ jobid ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ pbs_sleep/8c334820 │ generic.pbs.workq │ 0.pbs │ R        │ 4.081   │ 2.02        │ 0        │
+        └────────────────────┴───────────────────┴───────┴──────────┴─────────┴─────────────┴──────────┘
         Polling Jobs in 2 seconds
-        pbs_sleep/55acd305: Job 28.pbs is complete!
-        pbs_sleep/55acd305: Test completed in 2.02 seconds
-        pbs_sleep/55acd305: Test completed with returncode: 0
-        pbs_sleep/55acd305: Writing output file -  /home/pbsuser/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/55acd305/pbs_sleep.o28
-        pbs_sleep/55acd305: Writing error file - /home/pbsuser/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/55acd305/pbs_sleep.e28
-                                                 Completed Jobs
-        ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
-        ┃ builder            ┃ executor          ┃ jobid  ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
-        ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
-        │ pbs_sleep/55acd305 │ generic.pbs.workq │ 28.pbs │ F        │ 2.02    │ 2.02        │ 0        │
-        └────────────────────┴───────────────────┴────────┴──────────┴─────────┴─────────────┴──────────┘
+        pbs_sleep/8c334820: Job 0.pbs is complete!
+        pbs_sleep/8c334820: Test completed in 2.02 seconds
+        pbs_sleep/8c334820: Test completed with returncode: 0
+        pbs_sleep/8c334820: Writing output file -  /home/pbsuser/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/8c334820/pbs_sleep.o0
+        pbs_sleep/8c334820: Writing error file - /home/pbsuser/buildtest/var/tests/generic.pbs.workq/sleep/pbs_sleep/8c334820/pbs_sleep.e0
+                                               Completed Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder            ┃ executor          ┃ jobid ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ pbs_sleep/8c334820 │ generic.pbs.workq │ 0.pbs │ F        │ 2.02    │ 2.02        │ 0        │
+        └────────────────────┴───────────────────┴───────┴──────────┴─────────┴─────────────┴──────────┘
                                                           Test Summary
         ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
         ┃ builder            ┃ executor          ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime ┃
         ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
-        │ pbs_sleep/55acd305 │ generic.pbs.workq │ PASS   │ None None None                      │ 0          │ 2.02    │
+        │ pbs_sleep/8c334820 │ generic.pbs.workq │ PASS   │ None None None                      │ 0          │ 2.02    │
         └────────────────────┴───────────────────┴────────┴─────────────────────────────────────┴────────────┴─────────┘
 
 
@@ -499,7 +495,9 @@ Shown below is an example build of the buildspec using PBS scheduler and polling
 
 
         Adding 1 test results to /home/pbsuser/buildtest/var/report.json
-        Writing Logfile to: /home/pbsuser/buildtest/var/logs/buildtest_eafhrjlu.log
+        Writing Logfile to: /home/pbsuser/buildtest/var/logs/buildtest_25m8ryje.log
+
+
 
 buildtest can determine status of test based on PBS Job State. This can be configured via ``pbs_job_state`` property
 that is an attribute of **status** field. The ``pbs_job_state`` can be one of three values **H**, **S**, **F**. ``H`` refers to Job Held, ``S`` refers
@@ -523,18 +521,18 @@ Let's run this example and notice that this job ran to completion but it was rep
         │ User:               pbsuser                                                                                           │
         │ Hostname:           pbs                                                                                               │
         │ Platform:           Linux                                                                                             │
-        │ Current Time:       2023/10/03 18:18:08                                                                               │
+        │ Current Time:       2023/11/08 01:04:07                                                                               │
         │ buildtest path:     /home/pbsuser/buildtest/bin/buildtest                                                             │
         │ buildtest version:  1.6                                                                                               │
         │ python path:        /home/pbsuser/miniconda/bin/python3                                                               │
-        │ python version:     3.11.4                                                                                            │
+        │ python version:     3.11.5                                                                                            │
         │ Configuration File: /home/pbsuser/buildtest/tests/settings/pbs.yml                                                    │
         │ Test Directory:     /home/pbsuser/buildtest/var/tests                                                                 │
         │ Report File:        /home/pbsuser/buildtest/var/report.json                                                           │
         │ Command:            /home/pbsuser/buildtest/bin/buildtest bd -b tests/examples/pbs/pbs_job_state.yml --pollinterval=2 │
         │                                                                                                                       │
         ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-        ───────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────
+        ─────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ──────────────────────────────────────────────────────────────────────────
                              Discovered buildspecs
         ╔══════════════════════════════════════════════════════════════╗
         ║ buildspec                                                    ║
@@ -546,71 +544,72 @@ Let's run this example and notice that this job ran to completion but it was rep
         Total Discovered Buildspecs:  1
         Total Excluded Buildspecs:  0
         Detected Buildspecs after exclusion:  1
-        ────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+        ──────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────
         Valid Buildspecs: 1
         Invalid Buildspecs: 0
         /home/pbsuser/buildtest/tests/examples/pbs/pbs_job_state.yml: VALID
         Total builder objects created: 1
-                                                                                     Builders by type=script
-        ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-        ┃ builder            ┃ type   ┃ executor          ┃ compiler ┃ nodes ┃ procs ┃ description                       ┃ buildspecs                                                   ┃
-        ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-        │ pbs_sleep/d6381a95 │ script │ generic.pbs.workq │ None     │ None  │ None  │ pass test based on PBS job state. │ /home/pbsuser/buildtest/tests/examples/pbs/pbs_job_state.yml │
-        └────────────────────┴────────┴───────────────────┴──────────┴───────┴───────┴───────────────────────────────────┴──────────────────────────────────────────────────────────────┘
+                                                                                  Builders by type=script
+        ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ builder            ┃ type   ┃ executor          ┃ compiler ┃ nodes ┃ procs ┃ description                       ┃ buildspecs                                              ┃
+        ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ pbs_sleep/3c5e92d7 │ script │ generic.pbs.workq │ None     │ None  │ None  │ pass test based on PBS job state. │ /home/pbsuser/buildtest/tests/examples/pbs/pbs_job_stat │
+        │                    │        │                   │          │       │       │                                   │ e.yml                                                   │
+        └────────────────────┴────────┴───────────────────┴──────────┴───────┴───────┴───────────────────────────────────┴─────────────────────────────────────────────────────────┘
                                                    Batch Job Builders
         ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
         ┃ builder            ┃ executor          ┃ buildspecs                                                   ┃
         ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-        │ pbs_sleep/d6381a95 │ generic.pbs.workq │ /home/pbsuser/buildtest/tests/examples/pbs/pbs_job_state.yml │
+        │ pbs_sleep/3c5e92d7 │ generic.pbs.workq │ /home/pbsuser/buildtest/tests/examples/pbs/pbs_job_state.yml │
         └────────────────────┴───────────────────┴──────────────────────────────────────────────────────────────┘
-        ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-        pbs_sleep/d6381a95: Creating test directory: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/pbs_job_state/pbs_sleep/d6381a95
-        pbs_sleep/d6381a95: Creating the stage directory: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/pbs_job_state/pbs_sleep/d6381a95/stage
-        pbs_sleep/d6381a95: Writing build script: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/pbs_job_state/pbs_sleep/d6381a95/pbs_sleep_build.sh
-        ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+        ────────────────────────────────────────────────────────────────────────────── Building Test ───────────────────────────────────────────────────────────────────────────────
+        pbs_sleep/3c5e92d7: Creating test directory: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/pbs_job_state/pbs_sleep/3c5e92d7
+        pbs_sleep/3c5e92d7: Creating the stage directory: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/pbs_job_state/pbs_sleep/3c5e92d7/stage
+        pbs_sleep/3c5e92d7: Writing build script: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/pbs_job_state/pbs_sleep/3c5e92d7/pbs_sleep_build.sh
+        ────────────────────────────────────────────────────────────────────────────── Running Tests ───────────────────────────────────────────────────────────────────────────────
         Spawning 1 processes for processing builders
-        ───────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
-        pbs_sleep/d6381a95 does not have any dependencies adding test to queue
+        ─────────────────────────────────────────────────────────────────────────────── Iteration 1 ────────────────────────────────────────────────────────────────────────────────
+        pbs_sleep/3c5e92d7 does not have any dependencies adding test to queue
         Builders Eligible to Run
         ┏━━━━━━━━━━━━━━━━━━━━┓
         ┃ Builder            ┃
         ┡━━━━━━━━━━━━━━━━━━━━┩
-        │ pbs_sleep/d6381a95 │
+        │ pbs_sleep/3c5e92d7 │
         └────────────────────┘
-        pbs_sleep/d6381a95: Current Working Directory : /home/pbsuser/buildtest/var/tests/generic.pbs.workq/pbs_job_state/pbs_sleep/d6381a95/stage
-        pbs_sleep/d6381a95: Running Test via command: bash --norc --noprofile -eo pipefail pbs_sleep_build.sh
-        pbs_sleep/d6381a95: JobID: 32.pbs dispatched to scheduler
+        pbs_sleep/3c5e92d7: Current Working Directory : /home/pbsuser/buildtest/var/tests/generic.pbs.workq/pbs_job_state/pbs_sleep/3c5e92d7/stage
+        pbs_sleep/3c5e92d7: Running Test via command: bash --norc --noprofile -eo pipefail pbs_sleep_build.sh
+        pbs_sleep/3c5e92d7: JobID: 1.pbs dispatched to scheduler
         Polling Jobs in 2 seconds
-                                                  Running Jobs
-        ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
-        ┃ builder            ┃ executor          ┃ jobid  ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
-        ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
-        │ pbs_sleep/d6381a95 │ generic.pbs.workq │ 32.pbs │ R        │ 2.07    │ 0.0         │ 0        │
-        └────────────────────┴───────────────────┴────────┴──────────┴─────────┴─────────────┴──────────┘
+                                                Running Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder            ┃ executor          ┃ jobid ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ pbs_sleep/3c5e92d7 │ generic.pbs.workq │ 1.pbs │ R        │ 2.043   │ 0.0         │ 0        │
+        └────────────────────┴───────────────────┴───────┴──────────┴─────────┴─────────────┴──────────┘
         Polling Jobs in 2 seconds
-                                                  Running Jobs
-        ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
-        ┃ builder            ┃ executor          ┃ jobid  ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
-        ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
-        │ pbs_sleep/d6381a95 │ generic.pbs.workq │ 32.pbs │ R        │ 4.095   │ 2.03        │ 0        │
-        └────────────────────┴───────────────────┴────────┴──────────┴─────────┴─────────────┴──────────┘
+                                                Running Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder            ┃ executor          ┃ jobid ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ pbs_sleep/3c5e92d7 │ generic.pbs.workq │ 1.pbs │ R        │ 4.067   │ 2.02        │ 0        │
+        └────────────────────┴───────────────────┴───────┴──────────┴─────────┴─────────────┴──────────┘
         Polling Jobs in 2 seconds
-        pbs_sleep/d6381a95: Job 32.pbs is complete!
-        pbs_sleep/d6381a95: Test completed in 2.03 seconds
-        pbs_sleep/d6381a95: Test completed with returncode: 0
-        pbs_sleep/d6381a95: Writing output file -  /home/pbsuser/buildtest/var/tests/generic.pbs.workq/pbs_job_state/pbs_sleep/d6381a95/pbs_sleep.o32
-        pbs_sleep/d6381a95: Writing error file - /home/pbsuser/buildtest/var/tests/generic.pbs.workq/pbs_job_state/pbs_sleep/d6381a95/pbs_sleep.e32
-                                                 Completed Jobs
-        ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
-        ┃ builder            ┃ executor          ┃ jobid  ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
-        ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
-        │ pbs_sleep/d6381a95 │ generic.pbs.workq │ 32.pbs │ F        │ 2.03    │ 2.03        │ 0        │
-        └────────────────────┴───────────────────┴────────┴──────────┴─────────┴─────────────┴──────────┘
+        pbs_sleep/3c5e92d7: Job 1.pbs is complete!
+        pbs_sleep/3c5e92d7: Test completed in 2.02 seconds
+        pbs_sleep/3c5e92d7: Test completed with returncode: 0
+        pbs_sleep/3c5e92d7: Writing output file -  /home/pbsuser/buildtest/var/tests/generic.pbs.workq/pbs_job_state/pbs_sleep/3c5e92d7/pbs_sleep.o1
+        pbs_sleep/3c5e92d7: Writing error file - /home/pbsuser/buildtest/var/tests/generic.pbs.workq/pbs_job_state/pbs_sleep/3c5e92d7/pbs_sleep.e1
+                                               Completed Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder            ┃ executor          ┃ jobid ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ pbs_sleep/3c5e92d7 │ generic.pbs.workq │ 1.pbs │ F        │ 2.02    │ 2.02        │ 0        │
+        └────────────────────┴───────────────────┴───────┴──────────┴─────────┴─────────────┴──────────┘
                                                           Test Summary
         ┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
         ┃ builder            ┃ executor          ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime ┃
         ┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
-        │ pbs_sleep/d6381a95 │ generic.pbs.workq │ FAIL   │ None None None                      │ 0          │ 2.03    │
+        │ pbs_sleep/3c5e92d7 │ generic.pbs.workq │ FAIL   │ None None None                      │ 0          │ 2.02    │
         └────────────────────┴───────────────────┴────────┴─────────────────────────────────────┴────────────┴─────────┘
 
 
@@ -620,7 +619,7 @@ Let's run this example and notice that this job ran to completion but it was rep
 
 
         Adding 1 test results to /home/pbsuser/buildtest/var/report.json
-        Writing Logfile to: /home/pbsuser/buildtest/var/logs/buildtest_8jpykfg9.log
+        Writing Logfile to: /home/pbsuser/buildtest/var/logs/buildtest_vnk2erx5.log
 
 
 Cobalt
@@ -695,95 +694,88 @@ job exceed timelimit. buildtest will start a timer for each job right after job
 submission and keep track of time duration, and if job is in **pending** state and it exceeds `max_pend_time`,
 then job will be cancelled.
 
-We can also override `max_pend_time` configuration via command line ``--maxpendtime``.
+We can also override ``maxpendtime`` configuration via command line ``--maxpendtime``.
 To demonstrate, here is an example where job  was cancelled after job was pending and exceeds `max_pend_time`.
 Note that cancelled job is not reported in final output nor updated in report hence
 it won't be present in the report (``buildtest report``). In this example, we only
 had one test so upon job cancellation we found there was no tests to report hence,
 buildtest will terminate after run stage.
 
-.. dropdown:: ``buildtest build -b tests/examples/pbs/hold.yml --pollinterval=3 --maxpendtime=5``
+.. dropdown:: ``buildtest build -b tau.yml --pollinterval=3 --maxpendtime=7``
 
     .. code-block:: console
 
-        (buildtest) -bash-4.2$ buildtest build -b tests/examples/pbs/hold.yml --pollinterval=3 --maxpendtime=5
+       (buildtest) siddiq90@login10> buildtest build -b tau.yml --pollinterval=3 --maxpendtime=7
         ╭─────────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────────╮
         │                                                                                                                                 │
-        │ User:               pbsuser                                                                                                     │
-        │ Hostname:           pbs                                                                                                         │
+        │ User:               siddiq90                                                                                                    │
+        │ Hostname:           login10                                                                                                     │
         │ Platform:           Linux                                                                                                       │
-        │ Current Time:       2023/10/03 18:19:48                                                                                         │
-        │ buildtest path:     /home/pbsuser/buildtest/bin/buildtest                                                                       │
+        │ Current Time:       2023/11/07 17:12:41                                                                                         │
+        │ buildtest path:     /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest                                                   │
         │ buildtest version:  1.6                                                                                                         │
-        │ python path:        /home/pbsuser/miniconda/bin/python3                                                                         │
-        │ python version:     3.11.4                                                                                                      │
-        │ Configuration File: /home/pbsuser/buildtest/tests/settings/pbs.yml                                                              │
-        │ Test Directory:     /home/pbsuser/buildtest/var/tests                                                                           │
-        │ Report File:        /home/pbsuser/buildtest/var/report.json                                                                     │
-        │ Command:            /home/pbsuser/buildtest/bin/buildtest build -b tests/examples/pbs/hold.yml --pollinterval=3 --maxpendtime=5 │
+        │ python path:        /global/u1/s/siddiq90/.local/share/virtualenvs/buildtest-WqshQcL1/bin/python3                               │
+        │ python version:     3.9.7                                                                                                       │
+        │ Configuration File: /global/u1/s/siddiq90/gitrepos/buildtest-nersc/config.yml                                                   │
+        │ Test Directory:     /global/u1/s/siddiq90/gitrepos/buildtest/var/tests                                                          │
+        │ Report File:        /global/u1/s/siddiq90/gitrepos/buildtest/var/report.json                                                    │
+        │ Command:            /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest build -b tau.yml --pollinterval=3 --maxpendtime=7 │
         │                                                                                                                                 │
         ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-        ───────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────
-                         Discovered buildspecs
-        ╔═════════════════════════════════════════════════════╗
-        ║ buildspec                                           ║
-        ╟─────────────────────────────────────────────────────╢
-        ║ /home/pbsuser/buildtest/tests/examples/pbs/hold.yml ║
-        ╚═════════════════════════════════════════════════════╝
+        ──────────────────────────────────────────────────────────  Discovering Buildspecs ───────────────────────────────────────────────────────────
+                                                Discovered buildspecs
+        ╔═══════════════════════════════════════════════════════════════════════════════════════════════════╗
+        ║ buildspec                                                                                         ║
+        ╟───────────────────────────────────────────────────────────────────────────────────────────────────╢
+        ║ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/e4s/spack_test/perlmutter/23.05/tau.yml ║
+        ╚═══════════════════════════════════════════════════════════════════════════════════════════════════╝
 
 
         Total Discovered Buildspecs:  1
         Total Excluded Buildspecs:  0
         Detected Buildspecs after exclusion:  1
-        ────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+        ───────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────
         Valid Buildspecs: 1
         Invalid Buildspecs: 0
-        /home/pbsuser/buildtest/tests/examples/pbs/hold.yml: VALID
+        /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/e4s/spack_test/perlmutter/23.05/tau.yml: VALID
         Total builder objects created: 1
-                                                                       Builders by type=script
-        ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-        ┃ builder               ┃ type   ┃ executor          ┃ compiler ┃ nodes ┃ procs ┃ description  ┃ buildspecs                                          ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-        │ pbs_hold_job/447c7fd9 │ script │ generic.pbs.workq │ None     │ None  │ None  │ PBS Hold Job │ /home/pbsuser/buildtest/tests/examples/pbs/hold.yml │
-        └───────────────────────┴────────┴───────────────────┴──────────┴───────┴───────┴──────────────┴─────────────────────────────────────────────────────┘
-                                                Batch Job Builders
-        ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-        ┃ builder               ┃ executor          ┃ buildspecs                                          ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-        │ pbs_hold_job/447c7fd9 │ generic.pbs.workq │ /home/pbsuser/buildtest/tests/examples/pbs/hold.yml │
-        └───────────────────────┴───────────────────┴─────────────────────────────────────────────────────┘
-        ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-        pbs_hold_job/447c7fd9: Creating test directory: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/hold/pbs_hold_job/447c7fd9
-        pbs_hold_job/447c7fd9: Creating the stage directory: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/hold/pbs_hold_job/447c7fd9/stage
-        pbs_hold_job/447c7fd9: Writing build script: /home/pbsuser/buildtest/var/tests/generic.pbs.workq/hold/pbs_hold_job/447c7fd9/pbs_hold_job_build.sh
-        ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-        Spawning 1 processes for processing builders
-        ───────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
-        pbs_hold_job/447c7fd9 does not have any dependencies adding test to queue
-        Builders Eligible to Run
-        ┏━━━━━━━━━━━━━━━━━━━━━━━┓
-        ┃ Builder               ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━┩
-        │ pbs_hold_job/447c7fd9 │
-        └───────────────────────┘
-        pbs_hold_job/447c7fd9: Current Working Directory : /home/pbsuser/buildtest/var/tests/generic.pbs.workq/hold/pbs_hold_job/447c7fd9/stage
-        pbs_hold_job/447c7fd9: Running Test via command: bash --norc --noprofile -eo pipefail pbs_hold_job_build.sh
-        pbs_hold_job/447c7fd9: JobID: 33.pbs dispatched to scheduler
+                                                                    Builders by type=spack
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ builder                  ┃ type  ┃ executor                ┃ compiler ┃ nodes ┃ procs ┃ description              ┃ buildspecs              ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ tau_spack-test_23.05/126 │ spack │ perlmutter.slurm.regula │ None     │ None  │ None  │ Run spack test for tau   │ /global/u1/s/siddiq90/g │
+        │ e2cb5                    │       │ r                       │          │       │       │ from e4s/23.05 gcc stack │ itrepos/buildtest-nersc │
+        │                          │       │                         │          │       │       │                          │ /buildspecs/e4s/spack_t │
+        │                          │       │                         │          │       │       │                          │ est/perlmutter/23.05/ta │
+        │                          │       │                         │          │       │       │                          │ u.yml                   │
+        └──────────────────────────┴───────┴─────────────────────────┴──────────┴───────┴───────┴──────────────────────────┴─────────────────────────┘
+                                                                      Batch Job Builders
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ builder                       ┃ executor                 ┃ buildspecs                                                                      ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ tau_spack-test_23.05/126e2cb5 │ perlmutter.slurm.regular │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/e4s/spack_test/perlmu │
+        │                               │                          │ tter/23.05/tau.yml                                                              │
+        └───────────────────────────────┴──────────────────────────┴─────────────────────────────────────────────────────────────────────────────────┘
+        ─────────────────────────────────────────────────────────────── Building Test ────────────────────────────────────────────────────────────────
+        tau_spack-test_23.05/126e2cb5: Creating test directory: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.regular/tau/tau_spack-test_23.05/126e2cb5
+        tau_spack-test_23.05/126e2cb5: Creating the stage directory: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.regular/tau/tau_spack-test_23.05/126e2cb5/stage
+        tau_spack-test_23.05/126e2cb5: Writing build script: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.regular/tau/tau_spack-test_23.05/126e2cb5/tau_spack-test_23.05_build.sh
+        ─────────────────────────────────────────────────────────────── Running Tests ────────────────────────────────────────────────────────────────
+        Spawning 8 processes for processing builders
+        ──────────────────────────────────────────────────────────────── Iteration 1 ─────────────────────────────────────────────────────────────────
+        tau_spack-test_23.05/126e2cb5 does not have any dependencies adding test to queue
+            Builders Eligible to Run
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ Builder                       ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ tau_spack-test_23.05/126e2cb5 │
+        └───────────────────────────────┘
+        tau_spack-test_23.05/126e2cb5: Current Working Directory : /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.regular/tau/tau_spack-test_23.05/126e2cb5/stage
+        tau_spack-test_23.05/126e2cb5: Running Test via command: bash --norc --noprofile -eo pipefail tau_spack-test_23.05_build.sh
+        tau_spack-test_23.05/126e2cb5: JobID 18005951 dispatched to scheduler
         Polling Jobs in 3 seconds
-                                             Pending and Suspended Jobs
-        ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
-        ┃ builder               ┃ executor          ┃ jobid  ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
-        │ pbs_hold_job/447c7fd9 │ generic.pbs.workq │ 33.pbs │ H        │ 3.059   │ 0           │ 2.99     │
-        └───────────────────────┴───────────────────┴────────┴──────────┴─────────┴─────────────┴──────────┘
-        Polling Jobs in 3 seconds
-        pbs_hold_job/447c7fd9: Cancelling Job 33.pbs because job exceeds max pend time of 5 sec with current pend time of 6.02 sec
-                                             Pending and Suspended Jobs
-        ┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
-        ┃ builder               ┃ executor          ┃ jobid  ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
-        ┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
-        │ pbs_hold_job/447c7fd9 │ generic.pbs.workq │ 33.pbs │ H        │ 6.088   │ 0           │ 6.02     │
-        └───────────────────────┴───────────────────┴────────┴──────────┴─────────┴─────────────┴──────────┘
+        tau_spack-test_23.05/126e2cb5: Cancelling Job 18005951 because job exceeds max pend time of 7 sec with current pend time of 8.6 sec
+        buildtest build command failed
         Unable to run any tests
 
 
