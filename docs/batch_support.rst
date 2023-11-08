@@ -53,9 +53,11 @@ Shown below is an example buildspec
 
 
 buildtest will add the ``#SBATCH`` directives at top of script followed by
-content in the ``run`` section. Shown below is the example test content. Every slurm
-will insert ``#SBATCH --job-name``, ``#SBATCH --output`` and ``#SBATCH --error`` line
-which is determined by the name of the test.
+content in the ``run`` section.  Take note, buildtest will
+will the following lines that is determined by the name of test
+- ``#SBATCH --job-name``
+- ``#SBATCH --output``
+- ``#SBATCH --error``
 
 
 .. code-block:: shell
@@ -90,99 +92,99 @@ Shown below is an example build for this test
 
     .. code-block:: console
 
-    (buildtest) siddiq90@login10> buildtest build -b metadata.yml
-    ╭───────────────────────────────────────── buildtest summary ─────────────────────────────────────────╮
-    │                                                                                                     │
-    │ User:               siddiq90                                                                        │
-    │ Hostname:           login10                                                                         │
-    │ Platform:           Linux                                                                           │
-    │ Current Time:       2023/11/07 16:39:31                                                             │
-    │ buildtest path:     /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest                       │
-    │ buildtest version:  1.6                                                                             │
-    │ python path:        /global/u1/s/siddiq90/.local/share/virtualenvs/buildtest-WqshQcL1/bin/python3   │
-    │ python version:     3.9.7                                                                           │
-    │ Configuration File: /global/u1/s/siddiq90/gitrepos/buildtest-nersc/config.yml                       │
-    │ Test Directory:     /global/u1/s/siddiq90/gitrepos/buildtest/var/tests                              │
-    │ Report File:        /global/u1/s/siddiq90/gitrepos/buildtest/var/report.json                        │
-    │ Command:            /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest build -b metadata.yml │
-    │                                                                                                     │
-    ╰─────────────────────────────────────────────────────────────────────────────────────────────────────╯
-    ──────────────────────────────────────────────────────────  Discovering Buildspecs ───────────────────────────────────────────────────────────
-                                 Discovered buildspecs
-    ╔═════════════════════════════════════════════════════════════════════════════╗
-    ║ buildspec                                                                   ║
-    ╟─────────────────────────────────────────────────────────────────────────────╢
-    ║ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/metadata.yml ║
-    ╚═════════════════════════════════════════════════════════════════════════════╝
+        (buildtest) siddiq90@login10> buildtest build -b metadata.yml
+        ╭───────────────────────────────────────── buildtest summary ─────────────────────────────────────────╮
+        │                                                                                                     │
+        │ User:               siddiq90                                                                        │
+        │ Hostname:           login10                                                                         │
+        │ Platform:           Linux                                                                           │
+        │ Current Time:       2023/11/07 16:39:31                                                             │
+        │ buildtest path:     /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest                       │
+        │ buildtest version:  1.6                                                                             │
+        │ python path:        /global/u1/s/siddiq90/.local/share/virtualenvs/buildtest-WqshQcL1/bin/python3   │
+        │ python version:     3.9.7                                                                           │
+        │ Configuration File: /global/u1/s/siddiq90/gitrepos/buildtest-nersc/config.yml                       │
+        │ Test Directory:     /global/u1/s/siddiq90/gitrepos/buildtest/var/tests                              │
+        │ Report File:        /global/u1/s/siddiq90/gitrepos/buildtest/var/report.json                        │
+        │ Command:            /global/homes/s/siddiq90/gitrepos/buildtest/bin/buildtest build -b metadata.yml │
+        │                                                                                                     │
+        ╰─────────────────────────────────────────────────────────────────────────────────────────────────────╯
+        ──────────────────────────────────────────────────────────  Discovering Buildspecs ───────────────────────────────────────────────────────────
+                                     Discovered buildspecs
+        ╔═════════════════════════════════════════════════════════════════════════════╗
+        ║ buildspec                                                                   ║
+        ╟─────────────────────────────────────────────────────────────────────────────╢
+        ║ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/metadata.yml ║
+        ╚═════════════════════════════════════════════════════════════════════════════╝
 
 
-    Total Discovered Buildspecs:  1
-    Total Excluded Buildspecs:  0
-    Detected Buildspecs after exclusion:  1
-    ───────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────
-    Valid Buildspecs: 1
-    Invalid Buildspecs: 0
-    /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/metadata.yml: VALID
-    Total builder objects created: 1
-                                                               Builders by type=script
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-    ┃ builder                 ┃ type   ┃ executor               ┃ compiler ┃ nodes ┃ procs ┃ description              ┃ buildspecs               ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-    │ slurm_metadata/07da5a5e │ script │ perlmutter.slurm.debug │ None     │ None  │ None  │ Get metadata from        │ /global/u1/s/siddiq90/gi │
-    │                         │        │                        │          │       │       │ compute node when        │ trepos/buildtest-nersc/b │
-    │                         │        │                        │          │       │       │ submitting job           │ uildspecs/jobs/metadata. │
-    │                         │        │                        │          │       │       │                          │ yml                      │
-    └─────────────────────────┴────────┴────────────────────────┴──────────┴───────┴───────┴──────────────────────────┴──────────────────────────┘
-                                                            Batch Job Builders
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-    ┃ builder                 ┃ executor               ┃ buildspecs                                                                  ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-    │ slurm_metadata/07da5a5e │ perlmutter.slurm.debug │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/metadata.yml │
-    └─────────────────────────┴────────────────────────┴─────────────────────────────────────────────────────────────────────────────┘
-    ─────────────────────────────────────────────────────────────── Building Test ────────────────────────────────────────────────────────────────
-    slurm_metadata/07da5a5e: Creating test directory: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e
-    slurm_metadata/07da5a5e: Creating the stage directory: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e/stage
-    slurm_metadata/07da5a5e: Writing build script: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e/slurm_metadata_build.sh
-    ─────────────────────────────────────────────────────────────── Running Tests ────────────────────────────────────────────────────────────────
-    Spawning 8 processes for processing builders
-    ──────────────────────────────────────────────────────────────── Iteration 1 ─────────────────────────────────────────────────────────────────
-    slurm_metadata/07da5a5e does not have any dependencies adding test to queue
-     Builders Eligible to Run
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━┓
-    ┃ Builder                 ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━┩
-    │ slurm_metadata/07da5a5e │
-    └─────────────────────────┘
-    slurm_metadata/07da5a5e: Current Working Directory : /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e/stage
-    slurm_metadata/07da5a5e: Running Test via command: bash --norc --noprofile -eo pipefail slurm_metadata_build.sh
-    slurm_metadata/07da5a5e: JobID 18004649 dispatched to scheduler
-    Polling Jobs in 30 seconds
-    slurm_metadata/07da5a5e: Job 18004649 is complete!
-    slurm_metadata/07da5a5e: Test completed in 0 seconds
-    slurm_metadata/07da5a5e: Test completed with returncode: 0
-    slurm_metadata/07da5a5e: Writing output file -  /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e/slurm_metadata.out
-    slurm_metadata/07da5a5e: Writing error file - /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e/slurm_metadata.err
-                                                  Completed Jobs (1)
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
-    ┃ builder                 ┃ executor               ┃ jobid    ┃ jobstate  ┃ runtime ┃ elapsedtime ┃ pendtime ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
-    │ slurm_metadata/07da5a5e │ perlmutter.slurm.debug │ 18004649 │ COMPLETED │ 0       │ 0           │ 0        │
-    └─────────────────────────┴────────────────────────┴──────────┴───────────┴─────────┴─────────────┴──────────┘
-                                                           Test Summary
-    ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
-    ┃ builder                 ┃ executor               ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime ┃
-    ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
-    │ slurm_metadata/07da5a5e │ perlmutter.slurm.debug │ PASS   │ None None None                      │ 0          │ 0       │
-    └─────────────────────────┴────────────────────────┴────────┴─────────────────────────────────────┴────────────┴─────────┘
+        Total Discovered Buildspecs:  1
+        Total Excluded Buildspecs:  0
+        Detected Buildspecs after exclusion:  1
+        ───────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────
+        Valid Buildspecs: 1
+        Invalid Buildspecs: 0
+        /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/metadata.yml: VALID
+        Total builder objects created: 1
+                                                                   Builders by type=script
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ builder                 ┃ type   ┃ executor               ┃ compiler ┃ nodes ┃ procs ┃ description              ┃ buildspecs               ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ slurm_metadata/07da5a5e │ script │ perlmutter.slurm.debug │ None     │ None  │ None  │ Get metadata from        │ /global/u1/s/siddiq90/gi │
+        │                         │        │                        │          │       │       │ compute node when        │ trepos/buildtest-nersc/b │
+        │                         │        │                        │          │       │       │ submitting job           │ uildspecs/jobs/metadata. │
+        │                         │        │                        │          │       │       │                          │ yml                      │
+        └─────────────────────────┴────────┴────────────────────────┴──────────┴───────┴───────┴──────────────────────────┴──────────────────────────┘
+                                                                Batch Job Builders
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ builder                 ┃ executor               ┃ buildspecs                                                                  ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ slurm_metadata/07da5a5e │ perlmutter.slurm.debug │ /global/u1/s/siddiq90/gitrepos/buildtest-nersc/buildspecs/jobs/metadata.yml │
+        └─────────────────────────┴────────────────────────┴─────────────────────────────────────────────────────────────────────────────┘
+        ─────────────────────────────────────────────────────────────── Building Test ────────────────────────────────────────────────────────────────
+        slurm_metadata/07da5a5e: Creating test directory: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e
+        slurm_metadata/07da5a5e: Creating the stage directory: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e/stage
+        slurm_metadata/07da5a5e: Writing build script: /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e/slurm_metadata_build.sh
+        ─────────────────────────────────────────────────────────────── Running Tests ────────────────────────────────────────────────────────────────
+        Spawning 8 processes for processing builders
+        ──────────────────────────────────────────────────────────────── Iteration 1 ─────────────────────────────────────────────────────────────────
+        slurm_metadata/07da5a5e does not have any dependencies adding test to queue
+         Builders Eligible to Run
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ Builder                 ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ slurm_metadata/07da5a5e │
+        └─────────────────────────┘
+        slurm_metadata/07da5a5e: Current Working Directory : /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e/stage
+        slurm_metadata/07da5a5e: Running Test via command: bash --norc --noprofile -eo pipefail slurm_metadata_build.sh
+        slurm_metadata/07da5a5e: JobID 18004649 dispatched to scheduler
+        Polling Jobs in 30 seconds
+        slurm_metadata/07da5a5e: Job 18004649 is complete!
+        slurm_metadata/07da5a5e: Test completed in 0 seconds
+        slurm_metadata/07da5a5e: Test completed with returncode: 0
+        slurm_metadata/07da5a5e: Writing output file -  /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e/slurm_metadata.out
+        slurm_metadata/07da5a5e: Writing error file - /global/u1/s/siddiq90/gitrepos/buildtest/var/tests/perlmutter.slurm.debug/metadata/slurm_metadata/07da5a5e/slurm_metadata.err
+                                                      Completed Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder                 ┃ executor               ┃ jobid    ┃ jobstate  ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ slurm_metadata/07da5a5e │ perlmutter.slurm.debug │ 18004649 │ COMPLETED │ 0       │ 0           │ 0        │
+        └─────────────────────────┴────────────────────────┴──────────┴───────────┴─────────┴─────────────┴──────────┘
+                                                               Test Summary
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
+        ┃ builder                 ┃ executor               ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
+        │ slurm_metadata/07da5a5e │ perlmutter.slurm.debug │ PASS   │ None None None                      │ 0          │ 0       │
+        └─────────────────────────┴────────────────────────┴────────┴─────────────────────────────────────┴────────────┴─────────┘
 
 
 
-    Passed Tests: 1/1 Percentage: 100.000%
-    Failed Tests: 0/1 Percentage: 0.000%
+        Passed Tests: 1/1 Percentage: 100.000%
+        Failed Tests: 0/1 Percentage: 0.000%
 
 
-    Adding 1 test results to /global/u1/s/siddiq90/gitrepos/buildtest/var/report.json
-    Writing Logfile to: /global/u1/s/siddiq90/gitrepos/buildtest/var/logs/buildtest_hmh8u3tr.log
+        Adding 1 test results to /global/u1/s/siddiq90/gitrepos/buildtest/var/report.json
+        Writing Logfile to: /global/u1/s/siddiq90/gitrepos/buildtest/var/logs/buildtest_hmh8u3tr.log
 
 
 The **SlurmExecutor** class is responsible for processing slurm job that may include:
