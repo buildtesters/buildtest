@@ -20,11 +20,19 @@ Next, you should :ref:`Install buildtest <installing_buildtest>` by cloning the 
 
     git clone https://github.com/buildtesters/buildtest.git $HOME/buildtest
 
-**Please make sure you create a python virtual environment before you proceed with the tutorial.**
+.. note::
 
-Once you have buildtest setup, please clone the following repository into your home directory as follows::
+    Please make sure you create a python virtual environment before you proceed with this tutorial.
+
+Once you have buildtest setup, please clone the following repository into your home directory::
 
     git clone https://github.com/buildtesters/buildtest-nersc $HOME/buildtest-nersc
+
+You will need to set the environment variable `BUILDTEST_CONFIGFILE` which will
+point to the configuration file required to use buildtest on Perlmutter.
+
+.. code-block:: console
+
     export BUILDTEST_CONFIGFILE=$HOME/buildtest-nersc/config.yml
 
 Once you are done, please navigate back to the root of buildtest by running::
