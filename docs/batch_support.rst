@@ -22,7 +22,7 @@ keep polling at a set interval defined by ``pollinterval`` setting in buildtest.
 Once job is not in **PENDING** or **RUNNING** stage, buildtest will gather job results
 and wait until all jobs have finished.
 
-In this example we have a slurm executor ``cori.slurm.knl_debug``,
+In this example we have a slurm executor ``perlmutter.slurm.debug``,
 in addition we can specify **#SBATCH** directives using ``sbatch`` field.
 The sbatch field is a list of string types, buildtest will
 insert **#SBATCH** directive in front of each value.
@@ -79,32 +79,10 @@ which is determined by the name of the test.
     echo "partition:" $SLURM_JOB_PARTITION
 
 
-The ``perlmutter.slurm.debug`` executor in our configuration file is defined as follows
-
-.. code-block:: yaml
-    :emphasize-lines: 5-10
-
-    system:
-      perlmutter:
-        executors:
-          slurm:
-            debug:
-              qos: debug
-
-With this setting, any buildspec test that use ``perlmutter.slurm.debug`` executor will result
-in the following launch option: ``sbatch --qos regular </path/to/script.sh>``.
-
-Unlike the LocalExecutor, the **Run Stage**, will dispatch the slurm job and poll
-until job is completed. Once job is complete, it will gather the results and terminate.
-In Run Stage, buildtest will mark test status as ``N/A`` because job is submitted
-to scheduler and pending in queue. In order to get job result, we need to wait
-until job is complete then we gather results and determine test state. buildtest
-keeps track of all buildspecs, testscripts to be run and their results. A test
-using LocalExecutor will run test in **Run Stage** and returncode will be retrieved
-and status can be calculated immediately. For Slurm Jobs, buildtest dispatches
-the job and process next job. buildtest will show output of all tests after
-**Polling Stage** with test results of all tests. A slurm job with exit code 0 will
-be marked with status ``PASS``.
+buildtest will dispatch the job to batch scheduler and poll
+job until completion. During poll interval, buildtest will query the job state to determine if job is complete.
+Buildtest will report the job state for all tests at each poll interval. Upon completion, buildtest will
+gather the results and terminate.
 
 Shown below is an example build for this test
 
@@ -217,7 +195,6 @@ is part of ``status`` field. This field expects one of the following values: ``[
 This is an example of simulating fail job by running an invalid command
 
 .. code-block:: yaml
-    :linenos:
     :emphasize-lines: 8-10
 
     buildspecs:
@@ -349,7 +326,6 @@ The ``bsub`` property can be used to  specify **#BSUB** directive into job scrip
 will use the executor ``ascent.lsf.batch`` executor that was defined in buildtest configuration.
 
 .. code-block:: yaml
-    :linenos:
     :emphasize-lines: 6
 
     buildspecs:
