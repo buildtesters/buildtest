@@ -29,6 +29,8 @@ system:
         bash:
           description: submit jobs on local machine using bash shell
           shell: bash
+          before_script: |
+            source /etc/profile
         sh:
           description: submit jobs on local machine using sh shell
           shell: sh
