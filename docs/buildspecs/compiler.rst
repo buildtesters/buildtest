@@ -84,7 +84,7 @@ and path to ``cc``, ``fc``, ``cxx`` wrapper. In addition one can specify ``modul
 to modulefile. If `module` property is defined you can specify list of modules to load via ``load`` property and buildtest will
 automatically load these modules when using the compiler.
 
-.. dropdown:: ``buildtest config compilers -y``
+.. dropdown:: ``buildtest config compilers list -y``
 
     .. program-output:: cat buildtest_tutorial_examples/compilers/compilers_list.txt
 

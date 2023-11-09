@@ -1,4 +1,4 @@
-$ buildtest config compilers -y 
+$ buildtest config compilers list -y 
 gcc:
   clang_6.0.0:
     cc: /usr/bin/clang
