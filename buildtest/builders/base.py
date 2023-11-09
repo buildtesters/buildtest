@@ -1034,7 +1034,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
                 self.metadata["result"]["state"] = self.status["state"]
                 return
 
-            if self.status.get("returncode"):
+            if "returncode" in self.status:
                 self.metadata["check"]["returncode"] = returncode_check(self)
 
             # check regex against output or error stream based on regular expression defined in status property. Return value is a boolean
