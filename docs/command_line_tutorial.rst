@@ -1,5 +1,5 @@
-Buildtest Command Line Tutorial
-=================================
+Command Line Tutorial
+======================
 
 For this session, we assume you have :ref:`installed buildtest <installing_buildtest>` on your system.
 You can check if ``buildtest`` command is available by running::

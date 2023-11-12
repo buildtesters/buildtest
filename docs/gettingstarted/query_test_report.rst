@@ -372,8 +372,8 @@ value for ``--count`` then all records will be displayed.
     .. command-output:: buildtest report --count=-5 --no-header --terse | wc -l
        :shell:
 
-Terse Output
--------------
+Terse Output (``buildtest report --terse``)
+--------------------------------------------
 
 If you would like to parse the result of ``buildtest report``, you can use the ``--terse`` or ``-t`` option which
 will print the report in machine readable format that shows the name of each column followed by each entry. Each entry
