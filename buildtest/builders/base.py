@@ -1127,7 +1127,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
             state = (
                 all(status_checks)
-                if self.status.get("mode") == "all"
+                if self.status.get("mode") in ["AND", "and"]
                 else any(status_checks)
             )
             self.metadata["result"]["state"] = "PASS" if state else "FAIL"
