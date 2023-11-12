@@ -57,7 +57,6 @@ def returncode_check(builder):
     console.print(
         f"[blue]{builder}[/]: Checking returncode - {builder.metadata['result']['returncode']} is matched in list {buildspec_returncode}"
     )
-
     return returncode_match
 
 

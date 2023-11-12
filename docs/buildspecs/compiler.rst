@@ -31,10 +31,9 @@ relative path to buildspec file or an absolute path.
 In this example the source file ``src/hello.f90`` is relative path to where buildspec file is located.
 The ``compilers`` section declares compiler configuration, the ``name``
 property is required that is used to search compiler names from our buildtest configuration via regular
-expression. In this example we use the **builtin_gcc** compiler as regular expression which is the system
-gcc compiler provided by buildtest. The ``default`` section specifies default compiler
-configuration applicable to a specific compiler group like `gcc`. Within each compiler group we can specify
-options like ``cflags``, ``fflags``, ``cxxflags``, ``ldflags`` to customize compilation line.
+expression. In this example we use the **gcc_7.5.0** compiler specified in the regular expression. The
+``default`` section specifies default compiler configuration applicable to a specific compiler group like `gcc`.
+Within each compiler group we can specify options like ``cflags``, ``fflags``, ``cxxflags``, ``ldflags`` to customize compilation line.
 
 .. literalinclude:: ../../examples/compilers/gnu_hello_fortran.yml
    :language: yaml
@@ -84,7 +83,7 @@ and path to ``cc``, ``fc``, ``cxx`` wrapper. In addition one can specify ``modul
 to modulefile. If `module` property is defined you can specify list of modules to load via ``load`` property and buildtest will
 automatically load these modules when using the compiler.
 
-.. dropdown:: ``buildtest config compilers -y``
+.. dropdown:: ``buildtest config compilers list -y``
 
     .. program-output:: cat buildtest_tutorial_examples/compilers/compilers_list.txt
 
@@ -97,6 +96,7 @@ this code requires we specify ``-lm`` flag to link with math library.
 
 .. literalinclude:: ../../examples/compilers/vecadd.yml
    :language: yaml
+   :emphasize-lines: 9-13
 
 We expect buildtest to generate one test per gcc compiler as you can see below.
 
@@ -115,7 +115,7 @@ options for each compiler name.
 
 .. literalinclude:: ../../examples/compilers/gnu_hello_c.yml
     :language: yaml
-    :emphasize-lines: 14-17
+    :emphasize-lines: 10-17
 
 Let's build this test, we will see there is one builder instance for each compiler.
 
@@ -339,12 +339,13 @@ each test to map to each compiler.
 
     .. program-output:: cat buildtest_tutorial_examples/compilers/inspect/stream_example.txt
 
-In the next example, we will run STREAM benchmark and extract metrics from test results and assign them to metrics name
+In the next example, we will run STREAM benchmark and :ref:`define metrics <metrics>` from test results and assign them to metrics name
 ``copy``, ``add``, ``scale``, ``triad``. Each metrics will be searched using regular expression against stdout stream
 
 
 .. literalinclude:: ../../examples/compilers/stream_example_metrics.yml
     :language: yaml
+    :emphasize-lines: 18-42
 
 buildtest will record the metrics in the test report and ``buildtest inspect query`` will display metrics
 if found in test. Shown below we see the output of the metrics and its corresponding values.

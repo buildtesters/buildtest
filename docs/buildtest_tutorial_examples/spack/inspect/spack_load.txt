@@ -1,21 +1,22 @@
-$ buildtest inspect query -t spack_load_example
-───────────────────────────────────────────────────────── spack_load_example/60d45649-5ee2-4efd-978b-58b7bafbc10d ──────────────────────────────────────────────────────────
+$ buildtest inspect query -t spack_load_example 
+─────────────────────────────────────────────────────────────────────────────────────── spack_load_example/82782d29-7a4c-4f9c-a0aa-93fa65cab95e ────────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Run spack load for m4 package and run tests
 State: PASS
 Returncode: 0
-Runtime: 2.911326 sec
-Starttime: 2023/08/08 18:10:42
-Endtime: 2023/08/08 18:10:45
+Runtime: 5.506678 sec
+Starttime: 2023/11/09 19:32:36
+Endtime: 2023/11/09 19:32:41
 Command: bash --norc --noprofile -eo pipefail spack_load_example_build.sh
-Test Script: /home/spack/runs/generic.local.bash/spack_load/spack_load_example/60d45649/spack_load_example.sh
-Build Script: /home/spack/runs/generic.local.bash/spack_load/spack_load_example/60d45649/spack_load_example_build.sh
-Output File: /home/spack/runs/generic.local.bash/spack_load/spack_load_example/60d45649/spack_load_example.out
-Error File: /home/spack/runs/generic.local.bash/spack_load/spack_load_example/60d45649/spack_load_example.err
-Log File: /home/spack/buildtest/var/logs/buildtest_hhrqf19o.log
-─────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_load/spack_load_example/60d45649/spack_load_example.sh ────────────────────────────────
-#!/bin/bash                                                                                                                                                                 
-source /home/spack/spack/share/spack/setup-env.sh                                                                                                                           
-spack load  m4                                                                                                                                                              
-spack test run --alias 47fcdc7a-1994-4013-98c2-eba6d48e7103 m4                                                                                                              
-spack test results -l 47fcdc7a-1994-4013-98c2-eba6d48e7103                                                                                                                  
+Test Script: /home/spack/runs/generic.local.bash/spack_load/spack_load_example/82782d29/spack_load_example.sh
+Build Script: /home/spack/runs/generic.local.bash/spack_load/spack_load_example/82782d29/spack_load_example_build.sh
+Output File: /home/spack/runs/generic.local.bash/spack_load/spack_load_example/82782d29/spack_load_example.out
+Error File: /home/spack/runs/generic.local.bash/spack_load/spack_load_example/82782d29/spack_load_example.err
+Log File: /home/spack/buildtest/var/logs/buildtest_8vi7jmd9.log
+───────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_load/spack_load_example/82782d29/spack_load_example.sh ──────────────────────────────────────────────────────────────
+#!/bin/bash                                                                                                                                                                                                                             
+set -eo pipefail                                                                                                                                                                                                                        
+source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                                                                       
+spack load  m4                                                                                                                                                                                                                          
+spack test run --alias b85ac334-f2b4-41fa-a822-4f12cace7d58 m4                                                                                                                                                                          
+spack test results -l b85ac334-f2b4-41fa-a822-4f12cace7d58                                                                                                                                                                              

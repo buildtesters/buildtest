@@ -119,7 +119,7 @@ def build_compiler_examples(autogen_dir):
     commands_to_run = {
         f"{build_dir}/gnu_hello_fortran.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/gnu_hello_fortran.yml",
         f"{inspect_dir}/gnu_hello_fortran.txt": "buildtest inspect query -t hello_f",
-        f"{compiler_dir}/compilers_list.txt": "buildtest config compilers -y",
+        f"{compiler_dir}/compilers_list.txt": "buildtest config compilers list -y",
         f"{build_dir}/vecadd.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/vecadd.yml",
         f"{build_dir}/gnu_hello_c.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/gnu_hello_c.yml",
         f"{inspect_dir}/gnu_hello_c.txt": "buildtest inspect query -t hello_c/",
@@ -131,7 +131,7 @@ def build_compiler_examples(autogen_dir):
         f"{build_dir}/compiler_status_regex.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/compiler_status_regex.yml",
         f"{inspect_dir}/compiler_status_regex.txt": "buildtest inspect query -o override_status_regex/",
         f"{build_dir}/custom_run.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/custom_run.yml",
-        f"{inspect_dir}/custom_run.txt": "buildtest inspect query -b  -t custom_run_by_compilers/",
+        f"{inspect_dir}/custom_run.txt": "buildtest inspect query -t custom_run_by_compilers/",
         f"{build_dir}/pre_post_build_run.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/pre_post_build_run.yml",
         f"{inspect_dir}/pre_post_build_run.txt": "buildtest inspect query -t pre_post_build_run",
         f"{build_dir}/stream_example.txt": f"buildtest build -b {COMPILER_EXAMPLE_DIR}/stream_example.yml",
