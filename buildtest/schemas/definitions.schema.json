@@ -433,9 +433,7 @@
           "description": "explicitly mark state of test regardless of status calculation"
         },
         "mode": {
-          "type": "string",
-          "description": "Determine how the status check is resolved, for instance it can be logical AND or OR",
-          "enum": ["any", "all"]
+          "$ref": "#/definitions/mode"
         }
       }
     },
