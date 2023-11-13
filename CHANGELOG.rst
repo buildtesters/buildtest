@@ -6,10 +6,26 @@ v1.7 (TBD)
 
 **Buildspec Changes**
 
-- Add support for containers via ``container`` property. Initial support includes specifying container runtime, container options, and run command to invoke container. Current support includes `docker`, `podman`, `singularity`. `#1642 <https://github.com/buildtesters/buildtest/pull/1642>`_
-- Update schema for Performance Checks (`assert_ge`, `assert_ne`, `assert_gt`, `assert_ge`, `assert_le`, `assert_lt`, `assert_range`, `contains`, `not_contains`) to support for logical AND/OR. The `mode` key can be defined in each performance check, and list of assertions are defined under `comparisons`. `#1648 <https://github.com/buildtesters/buildtest/pull/1648>`_
+- Add support for containers via ``container`` property. Initial support includes specifying container runtime, container options, and run command to invoke container. Current platform support includes ``docker``, ``podman``, ``singularity``. `#1642 <https://github.com/buildtesters/buildtest/pull/1642>`_.
 
-```yaml
+.. code-block:: yaml
+
+    buildspecs:
+      container_commands_ubuntu:
+        type: script
+        executor: generic.local.bash
+        description: run arbitrary linux commands in ubuntu container
+        container:
+          platform: "docker"
+          image: ubuntu:latest
+          command: bash -c "cat /etc/os-release"
+        run: |
+          ls -l /etc/os-release || true
+
+- Update schema for Performance Checks (``assert_ge``, ``assert_ne``, ``assert_gt``, ``assert_ge``, ``assert_le``, ``assert_lt``, ``assert_range``, ``contains``, ``not_contains``) to support for logical AND/OR. The ``mode`` key can be defined in each performance check, and list of assertions are defined under ``comparisons``. `#1648 <https://github.com/buildtesters/buildtest/pull/1648>`_
+
+.. code-block:: yaml
+
     status:
       assert_ge:
         mode: and
@@ -22,8 +38,9 @@ v1.7 (TBD)
           ref: 6000
         - name: triad
           ref: 6500
-```
-- Change `mode` property under status check (`status`) to use values `(AND|and|OR|or)`, this is to be consistent with use of `mode` under each performance check such as `assert_ge`. `#1656 <https://github.com/buildtesters/buildtest/pull/1656>`_
+
+
+- Change `mode` property under status check (``status``) to use values ``(AND|and|OR|or)``, this is to be consistent with use of ``mode`` under each performance check such as ``assert_ge``. `#1656 <https://github.com/buildtesters/buildtest/pull/1656>`_
 
 **Command Line Changes**
 
@@ -35,10 +52,10 @@ v1.7 (TBD)
 - Buildtest will gracefully terminate running jobs when user hits ``CTRL-C``. For batch jobs, the jobIDs will be cancelled. Add ``trap`` command in generated script to allow users to run script and catch signal interrupt. `#1644 <https://github.com/buildtesters/buildtest/pull/1644>`_
 - Improvement to polling implementation for batch jobs by showing number of jobs by type (PENDING, RUNNING, COMPLETED) in the table. Fix issue where FAILED slurm jobs were not reported. `#1650 <https://github.com/buildtesters/buildtest/pull/1650>`_
 - Add error message of tests in console output of ``buildtest build``. `#1643 <https://github.com/buildtesters/buildtest/pull/1643>`_
-- Change `re.match` -> `re.fullmatch` when hostname with ones specified in configuration file. `#1651 <https://github.com/buildtesters/buildtest/pull/1651>`_
+- Change ``re.match`` -> ``re.fullmatch`` when hostname with ones specified in configuration file. `#1651 <https://github.com/buildtesters/buildtest/pull/1651>`_
 - Rewrite NERSC CI regression tests, update buildtest configuration and example buildspecs to be run. `#1639 <https://github.com/buildtesters/buildtest/pull/1639/>`_
-- Slurm jobs `TIMEOUT` and `OUT_OF_MEMORY` will be reported as completed jobs. `#1653 <https://github.com/buildtesters/buildtest/pull/1653>`_
-- Rewrite documentation for Batch Scheduler, Troubleshooting, Buildtest Features, and improving bash completion script `#1637 <https://github.com/buildtesters/buildtest/pull/1637>`_
+- Slurm jobs ``TIMEOUT`` and ``OUT_OF_MEMORY`` will be reported as completed jobs. `#1653 <https://github.com/buildtesters/buildtest/pull/1653>`_
+- Rewrite documentation for Batch Scheduler, Troubleshooting, Buildtest Features, and improving bash completion script. `#1637 <https://github.com/buildtesters/buildtest/pull/1637>`_
 
 v1.6 (Sep 28th, 2023)
 ----------------------
