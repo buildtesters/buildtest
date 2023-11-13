@@ -5,8 +5,8 @@ set -veo
 buildtest --help
 
 # Building Test
-buildtest build -b $BUILDTEST_ROOT/tutorials/hello_world.yml
-buildtest build -b $BUILDTEST_ROOT/tutorials/hello_world.yml -b $BUILDTEST_ROOT/general_tests/configuration
+buildtest build -b "$BUILDTEST_ROOT/tutorials/hello_world.yml"
+buildtest build -b "$BUILDTEST_ROOT/tutorials/hello_world.yml -b $BUILDTEST_ROOT/general_tests/configuration"
 buildtest build -b general_tests/configuration -x general_tests/configuration/ulimits.yml
 
 # this command will fail
