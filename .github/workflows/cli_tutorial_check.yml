@@ -23,4 +23,4 @@ jobs:
           sudo apt-get install -y csh tcsh zsh
           source setup.sh
           # tutorial check
-          bash cli.sh
+          bash .github/workflows/cli.sh
