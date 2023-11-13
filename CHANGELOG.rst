@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-v1.7 (TBD)
-----------
+v1.7 (Nov 12th, 2023)
+----------------------
 
 **Buildspec Changes**
 
