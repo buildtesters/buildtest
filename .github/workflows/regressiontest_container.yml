@@ -27,6 +27,7 @@ jobs:
           module avail
           spack --version
           module load python
+          mkdir -p ~/pyenv/buildtest
           python -m venv ~/pyenv/buildtest
           . ~/pyenv/buildtest/bin/activate"
           . setup.sh
@@ -34,3 +35,8 @@ jobs:
           python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
           returncode=$?
           if [ $returncode != 0 ]; then exit $returncode; fi
+
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
+        timeout-minutes: 30
