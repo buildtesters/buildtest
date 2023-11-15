@@ -27,10 +27,11 @@ jobs:
           module avail
           spack --version
           module load python
-          #mkdir -p /tmp/pyenv
-          #python -m venv /tmp/pyenv/buildtest
-          #. /tmp/pyenv/buildtest/bin/activate"
+          which python3
+          python3 --version3
           cd $GITHUB_WORKSPACE
+          pwd
+          ls -la
           . setup.sh
           export BUILDTEST_CONFIGFILE=$BUILDTEST_ROOT/buildtest/settings/spack_container.yml
           python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
