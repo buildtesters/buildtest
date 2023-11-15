@@ -27,8 +27,8 @@ jobs:
           module avail
           spack --version
           module load python
-          python -m venv /home/spack/pyenv/buildtest
-          . /home/spack/pyenv/buildtest/bin/activate"
+          python -m venv ~/pyenv/buildtest
+          . ~/pyenv/buildtest/bin/activate"
           . setup.sh
           export BUILDTEST_CONFIGFILE=$BUILDTEST_ROOT/buildtest/settings/spack_container.yml
           python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
