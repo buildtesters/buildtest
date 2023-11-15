@@ -7,8 +7,6 @@ when initializing the executors.
 import os
 import shlex
 
-from buildtest.defaults import console
-from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
 from buildtest.utils.file import write_file
 from buildtest.utils.shell import is_bash_shell, is_csh_shell, is_sh_shell, is_zsh_shell
@@ -23,24 +21,26 @@ class LocalExecutor(BaseExecutor):
     type = "local"
 
     def load(self):
-
-        # shell_settings = shlex.split(self._settings["shell"])
-
         self.shell = shlex.split(self._settings["shell"])[0]
-        self.shell_opts = shlex.split(self._settings["shell"])[1:]
+        shell_options = shlex.split(self._settings["shell"])[1:]
+
+        self.cmd = [self.shell]
 
         # default options for shell if no shell option specified
-        if is_bash_shell(self.shell) and not self.shell_opts:
-            self.shell_opts = ["--norc", "--noprofile", "-eo pipefail"]
+        if is_bash_shell(self.shell) and not shell_options:
+            self.cmd.append(self._bashopts)
 
-        elif is_sh_shell(self.shell) and not self.shell_opts:
-            self.shell_opts = ["--norc", "--noprofile", "-eo pipefail"]
+        elif is_sh_shell(self.shell) and not shell_options:
+            self.cmd.append(self._shopts)
 
-        elif is_csh_shell(self.shell) and not self.shell_opts:
-            self.shell_opts = ["-e"]
+        elif is_csh_shell(self.shell) and not shell_options:
+            self.cmd.append(self._cshopts)
 
-        elif is_zsh_shell(self.shell) and not self.shell_opts:
-            self.shell_opts = ["-f"]
+        elif is_zsh_shell(self.shell) and not shell_options:
+            self.cmd.append(self._zshopts)
+
+        if shell_options:
+            self.cmd.append(" ".join(shell_options))
 
     def run(self, builder):
         """This method is responsible for running test for LocalExecutor which
@@ -56,21 +56,17 @@ class LocalExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to directory {builder.stage_dir}")
 
-        run_cmd = (
-            [self.shell] + self.shell_opts + [os.path.basename(builder.build_script)]
-        )
+        run_cmd = self.cmd + [os.path.basename(builder.build_script)]
         run_cmd = " ".join(run_cmd)
 
         # ---------- Start of Run ---------- #
-        try:
-            command = builder.run(run_cmd)
-        except RuntimeFailure as err:
-            builder.failure()
-            self.logger.error(err)
-            return
-
+        timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
+        command = builder.run(run_cmd, timeout=timeout)
         builder.stop()
-        builder.endtime()
+        builder.record_endtime()
+
+        if command.returncode() != 0:
+            builder.failed()
 
         out = command.get_output()
         err = command.get_error()
@@ -81,12 +77,7 @@ class LocalExecutor(BaseExecutor):
             f"Return code: {command.returncode()} for test: {builder.metadata['testpath']}"
         )
         builder.metadata["result"]["returncode"] = command.returncode()
-        console.print(
-            f"[blue]{builder}[/]: Test completed with returncode: {command.returncode()}"
-        )
-        console.print(
-            f"[blue]{builder}[/]: Test completed in {builder.metadata['result']['runtime']} seconds"
-        )
+
         out = "".join(out)
         err = "".join(err)
 

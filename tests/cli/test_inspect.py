@@ -2,218 +2,121 @@ import os
 import random
 import string
 import tempfile
-import uuid
 
 import pytest
-from buildtest.cli.inspect import inspect_cmd
+
+from buildtest.cli.inspect import (
+    inspect_buildspec,
+    inspect_by_name,
+    inspect_list,
+    inspect_query,
+)
 from buildtest.cli.report import Report
+from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT
+
+configuration = SiteConfiguration()
+configuration.detect_system()
+configuration.validate()
 
 
 def test_buildtest_inspect_list():
+    buildtest_report = Report(configuration=configuration)
+    # buildtest inspect list
+    inspect_list(report=buildtest_report)
 
-    # running buildtest inspect list
-    class args:
-        subcommands = "config"
-        inspect = "list"
-        report = False
-        terse = False
-        no_header = False
-        builder = False
+    # buildtest inspect list --pager
+    inspect_list(report=buildtest_report, pager=True)
 
-    inspect_cmd(args)
+    # buildtest inspect list --row-count
+    inspect_list(report=buildtest_report, row_count=True)
 
-    # running buildtest inspect list --terse --no-header
-    class args:
-        subcommands = "config"
-        inspect = "list"
-        report = False
-        terse = True
-        no_header = True
-        builder = False
+    # buildtest inspect list --terse --no-header
+    inspect_list(report=buildtest_report, terse=True, no_header=True)
 
-    inspect_cmd(args)
+    # buildtest inspect list --terse --pager
+    inspect_list(report=buildtest_report, terse=True, pager=True)
 
-    # running buildtest inspect list --terse
-    class args:
-        subcommands = "config"
-        inspect = "list"
-        report = False
-        terse = True
-        no_header = False
-        builder = False
+    # buildtest inspect list --builder
+    inspect_list(report=buildtest_report, builder=True)
 
-    inspect_cmd(args)
-
-    # running buildtest inspect list --builder
-    class args:
-        subcommands = "config"
-        inspect = "list"
-        report = False
-        terse = False
-        no_header = False
-        builder = True
-
-    inspect_cmd(args)
+    # buildtest inspect list --builder --pager
+    inspect_list(report=buildtest_report, builder=True, pager=True)
 
 
 def test_buildtest_inspect_name():
+    buildtest_report = Report(configuration=configuration)
+    # select a random test name
+    test_names = buildtest_report.get_random_tests(num_items=2)
 
-    r = Report()
+    print(f"Querying test names: {test_names}")
+    # buildtest inspect name <name1> <name2> --pager
+    inspect_by_name(report=buildtest_report, names=test_names, pager=True)
 
-    # get first two names of list
-    test_names = r.get_names()[0]
-    # print(test_ids)
-
-    class args:
-        subcommands = "config"
-        inspect = "name"
-        name = [test_names]
-        report = None
-
-    print(f"Querying test names: {args.name}")
-    inspect_cmd(args)
-
-    class args:
-        subcommands = "config"
-        inspect = "name"
-        name = [test_names]
-        report = None
-
-    print(f"Querying test names: {args.name}")
-    inspect_cmd(args)
-
-    random_test = [
-        "".join(random.choice(string.ascii_letters) for i in range(10)),
-        "".join(random.choice(string.ascii_letters) for i in range(10))
-        + "/"
-        + str(uuid.uuid4()),
+    random_testnames = [
+        "".join(random.choices(string.ascii_letters, k=10)),
+        "".join(random.choices(string.ascii_letters, k=10)),
     ]
-
-    class args:
-        subcommands = "config"
-        inspect = "name"
-        name = random_test
-        report = None
-
-    print(f"Querying test names: {args.name}")
+    print(f"Querying test names: {random_testnames}")
     with pytest.raises(SystemExit):
-        inspect_cmd(args)
+        inspect_by_name(report=buildtest_report, names=random_testnames)
 
-    class args:
-        subcommands = "config"
-        inspect = "name"
-        name = [r.builder_names()[0]]
-        report = None
-
-    inspect_cmd(args)
+    inspect_by_name(
+        report=buildtest_report, names=[buildtest_report.builder_names()[0]]
+    )
 
 
 def test_buildspec_inspect_buildspec():
-
+    buildtest_report = Report(configuration=configuration)
     tf = tempfile.NamedTemporaryFile(delete=True)
-
-    class args:
-        subcommands = "config"
-        inspect = "buildspec"
-        buildspec = [tf.name]
-        report = None
-        all = None
 
     # if buildspec not in cache we raise error
     with pytest.raises(SystemExit):
-        inspect_cmd(args)
+        inspect_buildspec(report=buildtest_report, input_buildspecs=[tf.name])
 
     # delete file
     tf.close()
     # invalid filepath will raise an error
     with pytest.raises(SystemExit):
-        inspect_cmd(args)
+        inspect_buildspec(report=buildtest_report, input_buildspecs=[tf.name])
 
     search_buildspec = [
         os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml"),
-        os.path.join(BUILDTEST_ROOT, "tutorials", "pass_returncode.yml"),
+        os.path.join(BUILDTEST_ROOT, "tutorials", "test_status", "pass_returncode.yml"),
     ]
 
-    class args:
-        subcommands = "config"
-        inspect = "buildspec"
-        buildspec = search_buildspec
-        report = None
-        all = False
-
-    # run buildtest inspect buildspec $BUILDTEST_ROOT/tutorials/vars.yml $BUILDTEST_ROOT/tutorials/pass_returncode.yml
-    inspect_cmd(args)
-
-    class args:
-        subcommands = "config"
-        inspect = "buildspec"
-        buildspec = search_buildspec
-        report = None
-        all = True
-
-    # run buildtest inspect buildspec --all $BUILDTEST_ROOT/tutorials/vars.yml $BUILDTEST_ROOT/tutorials/pass_returncode.yml
-    inspect_cmd(args)
+    # buildtest inspect buildspec $BUILDTEST_ROOT/tutorials/vars.yml $BUILDTEST_ROOT/tutorials/pass_returncode.yml --pager --all
+    inspect_buildspec(
+        report=buildtest_report,
+        input_buildspecs=search_buildspec,
+        pager=True,
+        all_records=True,
+    )
 
 
 def test_buildtest_query():
+    buildtest_report = Report(configuration=configuration)
+    names = buildtest_report.get_names()
 
-    report = Report()
-    names = report.get_names()
+    # buildtest inspect query --output --error --testpath --buildscript --buildenv --pager --theme=emacs <name1> <name2> ...
+    inspect_query(
+        report=buildtest_report,
+        name=names,
+        output=True,
+        error=True,
+        testpath=True,
+        buildscript=True,
+        buildenv=True,
+        theme="emacs",
+        pager=True,
+    )
 
-    class args:
-        subcommands = "config"
-        inspect = "query"
-        name = names
-        report = None
-        output = True
-        error = True
-        testpath = True
-        buildscript = True
-        display = "last"
+    # buildtest inspect query stream_test. This test will add coverage where metrics are printed in output
+    inspect_query(report=buildtest_report, name=["stream_test"])
 
-    # check buildtest inspect query --output --error --testpath --buildscript -d last <name1> <name2> ...
-    inspect_cmd(args)
-
-    class args:
-        subcommands = "config"
-        inspect = "query"
-        name = [names[0]]
-        report = None
-        output = True
-        error = False
-        testpath = False
-        buildscript = False
-        display = "all"
-
-    # check buildtest inspect query --output -d all <name>
-    inspect_cmd(args)
-
-    class args:
-        subcommands = "config"
-        inspect = "query"
-        name = [names[0]]
-        report = None
-        output = True
-        error = False
-        testpath = False
-        buildscript = False
-        display = "first"
-
-    # check buildtest inspect query --output -d first <name>
-    inspect_cmd(args)
-
-    class args:
-        subcommands = "config"
-        inspect = "query"
-        name = ["".join(random.choice(string.ascii_letters) for i in range(10))]
-        report = None
-        output = True
-        error = False
-        testpath = False
-        buildscript = False
-        display = "first"
-
-    # check invalid test name when querying result which will result in exception SystemExit
+    # specifying an invalid test name will raise an exception
     with pytest.raises(SystemExit):
-        inspect_cmd(args)
+        inspect_query(
+            report=buildtest_report,
+            name=["".join(random.choices(string.ascii_letters, k=10))],
+        )

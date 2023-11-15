@@ -1,4 +1,3 @@
-version: "1.0"
 buildspecs:
   default_status_returncode:
     type: compiler

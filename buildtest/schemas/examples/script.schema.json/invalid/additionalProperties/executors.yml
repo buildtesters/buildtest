@@ -1,0 +1,16 @@
+buildspecs:
+  executors_additionalProperties:
+    type: script
+    executor: "generic.local.(bash|sh|zsh)"
+    description: Testing for additional properties in 'executors'
+    tags: [tutorials]
+    run: hostname
+    sbatch: ["-N 4"]
+    executors:
+      generic.local.bash:
+        sbatch: ["-n 4", "-N 1", "-t 30"]
+        FOO: BAR
+      generic.local.sh:
+        sbatch: ["-n 8", "-N 1", "-t 60"]
+      generic.local.zsh:
+        sbatch: ["-n 16", "-N 2", "-t 120"]

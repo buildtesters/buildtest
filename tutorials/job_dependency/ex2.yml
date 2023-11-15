@@ -1,0 +1,32 @@
+buildspecs:
+  test1:
+    type: script
+    executor: generic.local.bash
+    description: This test will pass with exit 1
+    run: exit 1
+    status:
+      state: PASS
+
+  test2:
+    type: script
+    executor: generic.local.bash
+    description: This test will run if test1 has returncode 1
+    run: exit 2
+    status:
+      state: PASS
+    needs:
+      - test1:
+          returncode: 1
+
+  test3:
+    type: script
+    executor: generic.local.bash
+    description: This test will run if test1 has returncode 1 and test2 has returncode 2
+    run: exit 1
+    status:
+      state: PASS
+    needs:
+      - test1:
+          returncode: 1
+      - test2:
+          returncode: 2

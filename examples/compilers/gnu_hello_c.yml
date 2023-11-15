@@ -1,4 +1,3 @@
-version: "1.0"
 buildspecs:
   hello_c:
     type: compiler
@@ -7,7 +6,7 @@ buildspecs:
     tags: [tutorials, compile]
     source: "src/hello.c"
     compilers:
-      name: ["^(builtin_gcc|gcc)"]
+      name: ["^(gcc)"]
       default:
         gcc:
           cflags: -O1

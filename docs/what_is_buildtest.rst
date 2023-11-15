@@ -56,27 +56,27 @@ run all the tests which led to `buildtest`.
 Preview of buildtest
 ----------------------
 
-You can run ``buildtest help`` followed by name of command and it will provide an overview of the buildtest.
+You can run ``buildtest show`` followed by name of command and it will provide an overview of the buildtest.
 
-Building Test
-~~~~~~~~~~~~~~
+.. dropdown:: ``buildtest show build``
 
-.. command-output:: buildtest help build
+    .. command-output:: buildtest show build
 
-Buildspec Interface
-~~~~~~~~~~~~~~~~~~~
+.. dropdown:: ``buildtest show buildspec``
 
-.. command-output:: buildtest help buildspec
+    .. command-output:: buildtest show buildspec
 
-Query Report
-~~~~~~~~~~~~~
+.. dropdown:: ``buildtest show report``
 
-.. command-output:: buildtest help report
+    .. command-output:: buildtest show report
 
-Inspect Tests
-~~~~~~~~~~~~~~
+.. dropdown:: ``buildtest show inspect``
 
-.. command-output:: buildtest help inspect
+    .. command-output:: buildtest show inspect
+
+.. dropdown:: ``buildtest show config``
+
+    .. command-output:: buildtest show config
 
 Target Audience & Use Case
 ---------------------------
@@ -99,30 +99,7 @@ Typical use-case:
   - Run tests for newly installed software package typically requested by user.
 
 If you are interested trying out buildtest check out :ref:`getting_started` and
-`Join Slack Channel <https://hpcbuildtest.herokuapp.com/>`_.
-
-Timeline
----------
-
-.. csv-table::
-    :header: "Date", "Version", "Description"
-    :widths: 20, 20, 80
-
-    **Sep 9th 2021**, "`v0.11.0 <https://github.com/buildtesters/buildtest/releases/tag/v0.11.0>`_", "Reimplement core implementation of running and polling jobs using asynchronous job submission. In addition we added several new commands including: **buildtest cd**, **buildtest path** and **buildtest path** and we enable alias for sub-commands."
-    **Aug 16th 2021**, "`v0.10.2 <https://github.com/buildtesters/buildtest/releases/tag/v0.10.2>`_", "Add support for multi executor support in buildspec via ``executors`` property. Add new commands ``buildtest report summary`` for summary of report file. The ``buildtest buildspec show`` command shows content of buildspec file given a test name. The ``buildtest edit`` command can be used to edit buildspec and validate with JSON schema upon closing file. In this release, we added ``buildtest inspect buildspec`` command to view records based on buildspec file."
-    **Jul 30th 2021**, "`v0.10.1 <https://github.com/buildtesters/buildtest/releases/tag/v0.10.1>`_", "Add new commands ``buildtest buildspec summary``, ``buildtest buildspec invalid`` to show summary of buildspec cache and invalid buildspecs. Add ``buildtest build --filter`` to filter buildspecs during build. Add ``--terse`` option for several commands including **buildtest history list**, **buildtest report**, **buildtest buildspec find**. Add new command ``buildtest inspect query`` for querying test records. Added support for ``metrics`` property for defining arbitrary metrics in buildspec based on environment variable, variables or regular expression on stdout/stderr"
-    **Jul 13th 2021**, "`v0.10.0 <https://github.com/buildtesters/buildtest/releases/tag/v0.10.0>`_", "In this release we added `spack <https://spack.readthedocs.io/>`__ support in buildtest by creating a new schema to write buildspecs that will generate spack commands. For more details see :ref:`spack schema <spack_schema>`. We added bash completion for buildtest commands which is enabled when installing buildtest. We added a new command ``buildtest buildspec validate``  that can be used for validating buildspecs  with JSON Schema."
-    **Jun 11th 2021**, "`v0.9.6 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.6>`_", "Added buildtest CDASH integration using ``buildtest cdash`` to upload test results. In this release we added ``buildtest history`` command to retrieve build history and query logfiles. Add global option ``-c`` in buildtest to specify alternate configuration file."
-    **Mar 31th 2021**, "`v0.9.5 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.5>`_", "Add support for PBS scheduler and reimplement ``buildtest inspect`` command"
-    **Mar 14th 2021**, "`v0.9.4 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.4>`_", "Introduced major change in buildtest configuration file (``settings.schema.json``) to define multiple HPC systems in configuration file. This lead to change in how ``executors`` are referenced in buildspec file."
-    **Feb 22nd 2021**, "`v0.9.3 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.3>`_", "Change Copyright details for project to include `LBNL <https://www.lbl.gov/>`_. We added `dependabot <https://dependabot.com/>`_ for managing dependencies, added OLCF facility pipelines for running regression test."
-    **Jan 12th 2021**, "`v0.9.2 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.2>`_", "Contains major refactor to ``compiler-v1.0-schema.json`` for writing compiler test using regular expression to search for compilers that are defined in configuration file."
-    **Nov 24st 2020**, "`v0.9.1 <https://github.com/buildtesters/buildtest/releases/tag/v0.9.1>`_", "Added support for `Cobalt Scheduler <https://trac.mcs.anl.gov/projects/cobalt>`_."
-    **Sep 3rd 2020**, "`v0.8.0 <https://github.com/buildtesters/buildtest/releases/tag/v0.8.0>`_", "Introduced `JSON Schema <https://json-schema.org/>`_ for validating buildspec. Add support for Slurm and LSF scheduler for job submission. Add support for building buildspecs by file, directory and tagname and command line interface to schema."
-    **Sep 11th 2018**, "`v0.4.0 <https://github.com/buildtesters/buildtest/releases/tag/v0.4.0>`_", "buildtest was ported from Python 2 to 3."
-    **Aug 20th 2017**, "`v0.1.5 <https://github.com/buildtesters/buildtest/releases/tag/v0.1.5>`_", "buildtest was converted from bash to Python and project was moved into github https://github.com/HPC-buildtest/buildtest."
-    **Feb 18th 2017**, "N/A", "Start of project"
-
+`Join Slack Channel <https://communityinviter.com/apps/hpcbuildtest/buildtest-slack-invitation>`_.
 
 Related Projects and community efforts
 ---------------------------------------
@@ -138,7 +115,7 @@ Related Projects and community efforts
 +--------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------+
 | `hpcswtest <https://github.com/idaholab/hpcswtest>`_                                 | is a HPC Software Stack Testing Framework developed by `Idaho National Lab <http://www.inl.gov>`_. The framework is built using C++11 and JSON file to define test configuration.                                                                                                                                   | Obsolete |
 +--------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------+
-| `PVCS <https://github.com/cea-hpc/PCVS>`_                                            | is a validation engine to run large tests for HPC systems, the framework is written in Perl and recipe known as **Test Expression (TE)** are written in YAML. This project is developed by `CEA <http://www-hpc.cea.fr/index-en.htm>`_.                                                                             | Obsolete |
+| `PVCS <https://github.com/cea-hpc/PCVS>`_                                            | is a validation engine to run large tests for HPC systems, the framework is written in Perl and recipe known as **Test Expression (TE)** are written in YAML. This project is developed by `CEA <http://www-hpc.cea.fr/index-en.html>`_.                                                                            | Obsolete |
 +--------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------+
 
 The `System Test Working Group <https://github.com/olcf/hpc-system-test-wg>`_ hosted

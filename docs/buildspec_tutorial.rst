@@ -1,4 +1,4 @@
-.. _writing_buildspecs:
+.. _buildspec_tutorial:
 
 Buildspec Tutorial
 ====================
@@ -7,32 +7,86 @@ Buildspec Tutorial
    :maxdepth: 1
 
    buildspecs/buildspec_overview
-   buildspecs/global
    buildspecs/compiler
    buildspecs/spack
-   buildspecs/advanced
+   buildspecs/e4s_testsuite
 
+
+Please proceed to :ref:`buildspec_overview` to get an overview of how to write buildspecs. This section can be done on your workstation.
 
 .. _tutorial_setup:
 
 Tutorials Setup
 ----------------
 
-To get started for this tutorial we will start an interactive shell in spack container for this exercise. We need
-to bind mount $BUILDTEST_ROOT into the container in order to use buildtest inside the container.
+.. note::
 
-.. code-block:: console
-
-    docker run -it -v $BUILDTEST_ROOT:/home/spack/buildtest ghcr.io/buildtesters/buildtest_spack:latest
+    The tutorial setup is required if you want to run buildspecs using the the :ref:`compiler <compiler_schema>` and :ref:`spack <buildtest_spack_integration>` schema.
 
 
-Next, lets source the setup script required for using buildtest inside the container
+To get started for this tutorial, you will need `docker <https://docs.docker.com/get-docker/>`_ on your machine to pull the container. At NERSC,
+you can use `podman <https://docs.podman.io/en/latest/>`_ or `shifter <https://github.com/NERSC/shifter>`_ to access the container, you will need to start an interactive shell.
 
-.. code-block:: console
+.. tab-set::
 
-    source $HOME/buildtest/scripts/spack_container/setup.sh
+    .. tab-item:: docker
 
-If everything is done correctly you will see ``buildtest``, ``spack`` and ``module`` command in your path
+        .. code-block:: console
+
+            docker pull ghcr.io/buildtesters/buildtest_spack:latest
+            docker run -it ghcr.io/buildtesters/buildtest_spack:latest /bin/bash --login
+
+
+    .. tab-item:: podman
+
+        If you are using podman on Perlmutter, please do the following
+
+        .. code-block:: console
+
+            mkdir -p $HOME/.config/containers
+            touch $HOME/.config/containers/storage.conf
+        
+        Next add the following content in `storage.conf`::
+        
+        
+            [storage]
+              driver = "overlay"
+              graphroot = "/tmp/<USER>/storage"
+              [storage.options]
+                size = ""
+                remap-uids = ""
+                remap-gids = ""
+                ignore_chown_errors = "true"
+                remap-user = ""
+                remap-group = ""
+                mount_program = "/usr/bin/fuse-overlayfs"
+                mountopt = ""
+
+        **Please update the path /tmp/<USER>/storage to your username.**
+
+        Next, you can pull the container and run an interactive shell as follows
+
+        .. code-block:: console
+
+            podman pull ghcr.io/buildtesters/buildtest_spack:latest
+            podman run -it ghcr.io/buildtesters/buildtest_spack:latest /bin/bash --login
+
+    .. tab-item:: shifter
+
+        .. code-block:: console
+
+            shifter -E --image=registry.services.nersc.gov/siddiq90/buildtest_spack:latest -- /bin/bash --login
+
+We need to install buildtest and setup environment for this tutorial. We recommend you clone buildtest in your HOME directory.
+This can be done as follows::
+
+    cd ~
+    git clone https://github.com/buildtesters/buildtest.git
+    cd buildtest
+    source scripts/spack_container/setup.sh
+
+This container provides a software stack built with `spack <https://spack.readthedocs.io/en/latest/>`_, you should see
+``buildtest``, ``spack`` and ``module`` command in your path. The configuration file used for this container is set via `BUILDTEST_CONFIGFILE`.
 
 .. code-block::
 
@@ -46,3 +100,6 @@ If everything is done correctly you will see ``buildtest``, ``spack`` and ``modu
 
     Modules based on Lua: Version 8.3  2020-01-27 10:32 -06:00
         by Robert McLay mclay@tacc.utexas.edu
+
+    (buildtest) spack@87354844bbf3:~/buildtest$ echo $BUILDTEST_CONFIGFILE
+    /home/spack/buildtest/buildtest/settings/spack_container.yml

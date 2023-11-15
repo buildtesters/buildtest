@@ -1,0 +1,14 @@
+buildspecs:
+  status_returncode_by_executors:
+    type: script
+    executor: "generic.local.(bash|sh)"
+    description: define status per executor type.
+    tags: [tutorials]
+    run: exit 0
+    executors:
+      generic.local.bash:
+        status:
+          returncode: [0, 2]
+      generic.local.sh:
+        status:
+          returncode: 1

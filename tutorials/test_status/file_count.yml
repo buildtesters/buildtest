@@ -1,0 +1,29 @@
+buildspecs:
+  file_count_on_directory:
+    type: script
+    executor: generic.local.bash
+    description: file count check in directory
+    run: |
+      mkdir -p foo
+      touch foo/{1..5}
+    status:
+      file_count:
+        - dir: foo
+          count: 5
+  file_count_by_extension:
+    type: script
+    executor: generic.local.bash
+    description: file count by extension
+    run: |
+      mkdir -p foo/bar
+      touch foo/{1..5}.sh
+      touch foo/bar/{1..3}.py foo/bar/{1..3}.txt
+    status:
+      file_count:
+        - dir: foo
+          ext: '.sh'
+          depth: 1
+          count: 5
+        - dir: foo/bar
+          ext: ['.py', '.txt']
+          count: 6

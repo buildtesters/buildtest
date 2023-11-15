@@ -1,0 +1,13 @@
+buildspecs:
+  symlink_test:
+    type: script
+    executor: generic.local.bash
+    description: status check based on symbolic link
+    run: |
+      ln -s /tmp scratch
+      ln -s $HOME/.bashrc $HOME/.bashrc_link
+    status:
+      is_symlink:
+        - scratch
+        - $HOME/.bashrc_link
+        - ~/.bashrc_link

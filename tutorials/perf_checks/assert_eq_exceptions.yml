@@ -1,0 +1,41 @@
+buildspecs:
+  assert_eq_invalid_metric:
+    type: script
+    executor: generic.local.bash
+    description: An invalid metric name will cause failure
+    vars:
+      X: 1
+    run: |
+      echo "X: $X"
+    metrics:
+      x:
+        type: int
+        regex:
+          stream: stdout
+          exp: 'X:\s+(\S+)\s+.*'
+          item: 1
+    status:
+      assert_eq:
+        - name: x
+          ref: 1
+        - name: invalid_metric
+          ref: 'hello'
+  assert_eq_mismatch:
+    type: script
+    executor: generic.local.bash
+    description: This test will fail because there is a mismatch in metric x assert equality
+    vars:
+      X: 1
+    run: |
+      echo "X: $X"
+    metrics:
+      x:
+        type: int
+        regex:
+          stream: stdout
+          exp: 'X:\s+(\S+)\s+.*'
+          item: 1
+    status:
+      assert_eq:
+      - name: x
+        ref: 2

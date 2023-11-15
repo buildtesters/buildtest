@@ -11,6 +11,7 @@ import shutil
 import sys
 
 import distro
+
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.command import BuildTestCommand
@@ -40,13 +41,6 @@ class BuildTestSystem:
         """
 
         self.logger.debug("Starting System Compatibility Check")
-        """
-        microarch = archspec.cpu.detect.host()
-        self.system["model"] = archspec.cpu.detect.raw_info_dictionary()["model name"]
-        self.system["arch"] = microarch.name
-        self.system["vendor"] = microarch.vendor
-        self.system["features"] = " ".join(list(microarch.features))
-        """
 
         self.system["platform"] = platform.system()
         if self.system["platform"] not in self.supported_platforms:
@@ -58,28 +52,28 @@ class BuildTestSystem:
         self.system["os"] = distro.id()
         self.system["cpus"] = os.cpu_count()
         self.system["user"] = getpass.getuser()
-        self.system["python"] = shutil.which("python")
+        self.system["python"] = os.getenv("BUILDTEST_PYTHON")
         self.system["pyver"] = platform.python_version()
         self.system["processor"] = platform.processor()
         self.system["host"] = platform.node()
         self.system["machine"] = platform.machine()
 
-        self.logger.debug(f"Machine: {self.system['machine']}")
-        self.logger.debug(f"Host: {self.system['host']}")
-        self.logger.debug(f"User: {self.system['user']}")
-        self.logger.debug(f"Operating System: {self.system['os']}")
-        self.logger.debug(
+        self.logger.info(f"Machine: {self.system['machine']}")
+        self.logger.info(f"Host: {self.system['host']}")
+        self.logger.info(f"User: {self.system['user']}")
+        self.logger.info(f"Operating System: {self.system['os']}")
+        self.logger.info(
             f"System Kernel: {platform.uname().system} and Kernel Release: {platform.uname().release}"
         )
-        self.logger.debug(f"Python Path: {self.system['python']}")
-        self.logger.debug(f"Python Version: {self.system['pyver']}")
-        self.logger.debug(f"BUILDTEST_ROOT: {BUILDTEST_ROOT}")
-        self.logger.debug(f"Path to Buildtest: {shutil.which('buildtest')}")
+        self.logger.info(f"Python Path: {self.system['python']}")
+        self.logger.info(f"Python Version: {self.system['pyver']}")
+        self.logger.info(f"BUILDTEST_ROOT: {BUILDTEST_ROOT}")
+        self.logger.info(f"Path to Buildtest: {shutil.which('buildtest')}")
 
         self.detect_module_tool()
         self.check_scheduler()
 
-        self.logger.debug("Finished System Compatibility Check")
+        self.logger.info("Finished System Compatibility Check")
 
     def check_scheduler(self):
         """Check existence of batch scheduler and if so determine which scheduler
@@ -93,8 +87,6 @@ class BuildTestSystem:
         cobalt = Cobalt()
         pbs = PBS()
 
-        # the "scheduler" property is used with run_only section in buildspecs for
-        # running test based on scheduler.
         self.system["scheduler"] = []
 
         if slurm.state:
@@ -129,11 +121,13 @@ class BuildTestSystem:
 
         if lmod_version:
             self.system["moduletool"] = "lmod"
-            self.logger.debug(f"Detected Lmod with version: {lmod_version}")
+            self.logger.info("Detected module system: lmod")
+            self.logger.info(f"Detected Lmod with version: {lmod_version}")
 
         if environmodules_version:
             self.system["moduletool"] = "environment-modules"
-            self.logger.debug(
+            self.logger.info("Detected module system: environment-modules")
+            self.logger.info(
                 f"Detected environment-modules with version: {environmodules_version}"
             )
 
@@ -176,7 +170,6 @@ class Slurm(Scheduler):
     binaries = ["sbatch", "sacct", "sacctmgr", "sinfo", "scancel"]
 
     def __init__(self):
-
         self.logger = logging.getLogger(__name__)
 
         self.state = self.check_binaries(self.binaries)
@@ -189,7 +182,8 @@ class Slurm(Scheduler):
 
     def active(self):
         """Slurm scheduler is active if we are able to retrieve partitions or qos from scheduler. This method
-        will return a boolean type where ``True`` indicates that slurm executors can be validated."""
+        will return a boolean type where ``True`` indicates that slurm executors can be validated.
+        """
 
         return hasattr(self, "partitions") or hasattr(self, "qos")
 
@@ -271,7 +265,6 @@ class LSF(Scheduler):
     binaries = ["bsub", "bqueues", "bkill", "bjobs"]
 
     def __init__(self):
-
         self.logger = logging.getLogger(__name__)
 
         self.state = self.check_binaries(self.binaries)
@@ -372,7 +365,6 @@ class PBS(Scheduler):
             self.queues = self._get_queues()
 
     def check(self, binaries):
-
         binary_validation = super().check_binaries(binaries)
 
         if not binary_validation:

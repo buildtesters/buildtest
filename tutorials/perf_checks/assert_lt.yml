@@ -1,0 +1,46 @@
+buildspecs:
+  assert_lt_example:
+    type: script
+    executor: generic.local.bash
+    description: Run stream test with metrics example using assert less than
+    env:
+      OMP_NUM_THREADS: 4
+    run: |
+      wget https://raw.githubusercontent.com/jeffhammond/STREAM/master/stream.c
+      gcc -openmp -o stream stream.c
+      ./stream
+    metrics:
+      copy:
+        type: float
+        regex:
+          exp: 'Copy:\s+(\S+)\s+.*'
+          stream: stdout
+          item: 1
+      scale:
+        type: float
+        regex:
+          exp: 'Scale:\s+(\S+)\s+.*'
+          stream: stdout
+          item: 1
+      add:
+        type: float
+        regex:
+          exp: 'Add:\s+(\S+)\s+.*'
+          stream: stdout
+          item: 1
+      triad:
+        type: float
+        regex:
+          exp: 'Triad:\s+(\S+)\s+.*'
+          stream: stdout
+          item: 1
+    status:
+      assert_lt:
+        - name: copy
+          ref: 5000
+        - name: scale
+          ref: 5500
+        - name: add
+          ref: 6000
+        - name: triad
+          ref: 6500

@@ -1,4 +1,4 @@
-name: Buildtest Command Line Feature Request
+name: Feature Request
 description: Feature request for buildtest program
 title: "[FEATURE]: "
 labels: [feature, triage]
@@ -8,10 +8,38 @@ body:
   - type: textarea
     id: feature_description
     attributes:
-      label: Please describe your feature request
-      description: Please provide a detailed summary of the feature request including name of buildtest command (buildtest build) and options including intended behavior
+      label: Please describe your feature
+      description: Please provide a detailed summary of the feature including its intended behavior. Please attach any related issues or pull requests
+        and relevant example of Buildspec or Buildtest configuration if necessary.
+      placeholder: |
+        Describe your feature here
+
+        Include Buildspec or Buildtest configuration here if necessary
+        ```yaml
+            buildspecs:
+              hello_world:
+                type: script
+                executor: generic.local.sh
+                run: echo "hello world"
+        ```
     validations:
       required: true
+
+  - type: textarea
+    id: potential_solution
+    attributes:
+      label: Suggest potential solution
+      description: Please describe a solution or action items you would like to propose
+    validations:
+      required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Information
+      description: Please provide any additional information that may include screenshots or attachments that can help describe your feature request.
+    validations:
+      required: false
 
   - type: checkboxes
     id: slackterms

@@ -1,0 +1,8 @@
+buildspecs:
+  missing_run_key:
+    type: script
+    executor: generic.local.bash
+    description: invalid key name roon, missing run key
+    cmd: |
+        systemctl is-active slurmd
+        systemctl is-enabled slurmd | grep enabled

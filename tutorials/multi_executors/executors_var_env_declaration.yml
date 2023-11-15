@@ -1,0 +1,23 @@
+buildspecs:
+  executors_vars_env_declaration:
+    type: script
+    executor: 'generic.local.(bash|sh)'
+    description: Declaring env and vars by executors section
+    tags: [tutorials]
+    run: |
+      echo "X:" $X
+      echo "Y:" $Y
+      echo $SHELL
+    executors:
+      generic.local.bash:
+        vars:
+          X: 1
+          Y: 3
+        env:
+          SHELL: bash
+      generic.local.sh:
+        vars:
+          X: 2
+          Y: 4
+        env:
+          SHELL: sh

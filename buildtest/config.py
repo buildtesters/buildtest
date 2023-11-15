@@ -10,7 +10,7 @@ from buildtest.defaults import (
 from buildtest.exceptions import BuildTestError, ConfigurationError
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_recipe, load_schema
-from buildtest.system import LSF, PBS, BuildTestSystem, Cobalt, Slurm
+from buildtest.system import LSF, PBS, Cobalt, Slurm
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import resolve_path
 from buildtest.utils.shell import Shell
@@ -116,14 +116,14 @@ class SiteConfiguration:
                 self.file,
                 f"Based on current system hostname: {hostname} we cannot find a matching system  {list(self.systems)} based on current hostnames: {host_lookup} ",
             )
-        if self.target_config["executors"].get("local"):
-            self.localexecutors = list(self.target_config["executors"]["local"].keys())
 
-    def validate(self, validate_executors=True):
-        """This method validates the site configuration with schema and checks executor setting.
+        # self.localexecutors = list(self.target_config["executors"]["local"].keys())
+
+    def validate(self, moduletool=None):
+        """This method validates the site configuration with schema.
 
         Args:
-             validate_executors (bool): Check executor settings. This is the default behavior but can be disabled
+             moduletool (bool, optional): Check whether module system (Lmod, environment-modules) match what is specified in configuration file. Valid options are ``Lmod``, ``environment-modules``
         """
 
         logger.debug(f"Loading default settings schema: {DEFAULT_SETTINGS_SCHEMA}")
@@ -135,19 +135,16 @@ class SiteConfiguration:
         custom_validator(recipe=self.config, schema=config_schema)
         logger.debug("Validation was successful")
 
-        if validate_executors:
-            self._executor_check()
-
-        system = BuildTestSystem()
+        self._executor_check()
 
         if (
             self.target_config.get("moduletool") != "N/A"
-            and self.target_config.get("moduletool") != system.system["moduletool"]
+            and self.target_config.get("moduletool") != moduletool
         ):
             raise ConfigurationError(
                 self.config,
                 self.file,
-                f"There is a module tool mismatch, we have detected '{system.system['moduletool']}' but configuration property 'moduletool' specifies  '{self.target_config['moduletool']}'",
+                f"There is a module tool mismatch, we have detected '{moduletool}' but configuration property 'moduletool' specifies  '{self.target_config['moduletool']}'",
             )
 
     def _executor_check(self):
@@ -159,7 +156,6 @@ class SiteConfiguration:
         self._validate_pbs_executors()
 
     def is_executor_disabled(self, executor):
-
         if executor.get("disable"):
             return True
 
@@ -218,9 +214,8 @@ class SiteConfiguration:
 
         # check all executors have defined valid queues and check queue state.
         for executor in lsf_executors:
-
             executor_name = f"{self.name()}.{executor_type}.{executor}"
-            if lsf_executors[executor].get("disable"):
+            if self.is_executor_disabled(lsf_executors[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
 
@@ -236,7 +231,6 @@ class SiteConfiguration:
 
                 # check queue record for Status
                 for name in record:
-
                     # skip record until we find matching queue
                     if name["QUEUE_NAME"] != queue:
                         continue
@@ -272,16 +266,14 @@ class SiteConfiguration:
             return
 
         for executor in slurm_executor:
-
             executor_name = f"{self.name()}.{executor_type}.{executor}"
 
-            if slurm_executor[executor].get("disable"):
+            if self.is_executor_disabled(slurm_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
 
             # if 'partition' key defined check if its valid partition
             if slurm_executor[executor].get("partition"):
-
                 if slurm_executor[executor]["partition"] not in slurm.partitions:
                     self.invalid_executors(executor_name)
                     logger.error(
@@ -351,7 +343,7 @@ class SiteConfiguration:
         for executor in cobalt_executor:
             executor_name = f"{self.name()}.{executor_type}.{executor}"
 
-            if cobalt_executor[executor].get("disable"):
+            if self.is_executor_disabled(cobalt_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
 
@@ -410,10 +402,9 @@ class SiteConfiguration:
             return
 
         for executor in pbs_executor:
-
             executor_name = f"{self.name()}.{executor_type}.{executor}"
 
-            if pbs_executor[executor].get("disable"):
+            if self.is_executor_disabled(pbs_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
 
@@ -429,7 +420,6 @@ class SiteConfiguration:
                 pbs.queue_summary["Queue"][queue]["enabled"] != "True"
                 or pbs.queue_summary["Queue"][queue]["started"] != "True"
             ):
-
                 self.invalid_executors.append(executor_name)
                 logger.info("Queue configuration")
                 logger.info(json.dumps(pbs.queue_summary, indent=2))
@@ -441,3 +431,25 @@ class SiteConfiguration:
             self.valid_executors[executor_type][executor_name] = {
                 "setting": pbs_executor[executor]
             }
+
+    def get_profile(self, profile_name):
+        """Return configuration for a given profile name
+
+        Args:
+            profile_name (str): name of profile to retrieve
+
+        Returns:
+            dict: dictionary containing a profile configuration
+        """
+
+        if not self.target_config.get("profiles"):
+            raise BuildTestError(
+                "There are no profiles defined in configuration file, please consider creating a profile using the --save-profile option"
+            )
+
+        if not self.target_config["profiles"].get(profile_name):
+            raise BuildTestError(
+                f"Unable to find profile: {profile_name} in configuration file. List of available profiles are: {list(self.target_config['profiles'].keys())}"
+            )
+
+        return self.target_config["profiles"][profile_name]

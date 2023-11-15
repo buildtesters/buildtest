@@ -1,0 +1,90 @@
+$ buildtest inspect query -t stream_openmp_c/
+────────────────────────────────────────────────────────────────────────────────────── stream_openmp_c/91a2d4f4-63a0-4a5f-8b09-e092b904972c ───────────────────────────────────────────────────────────────────────────────────────
+Executor: generic.local.bash
+Description: STREAM Microbenchmark C Test with OpenMP
+State: PASS
+Returncode: 0
+Runtime: 3.733477 sec
+Starttime: 2023/07/14 18:48:05
+Endtime: 2023/07/14 18:48:08
+Command: bash --norc --noprofile -eo pipefail stream_openmp_c_build.sh
+Test Script: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/91a2d4f4/stream_openmp_c.sh
+Build Script: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/91a2d4f4/stream_openmp_c_build.sh
+Output File: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/91a2d4f4/stream_openmp_c.out
+Error File: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/91a2d4f4/stream_openmp_c.err
+Log File: /home/spack/buildtest/var/logs/buildtest_p9dylkh7.log
+──────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/91a2d4f4/stream_openmp_c.sh ────────────────────────────────────────────────────────────
+#!/bin/bash                                                                                                                                                                                                                        
+BUILDTEST_CC="gcc"                                                                                                                                                                                                                 
+BUILDTEST_CXX="g++"                                                                                                                                                                                                                
+BUILDTEST_FC="gfortran"                                                                                                                                                                                                            
+BUILDTEST_CFLAGS="-fopenmp -O2"                                                                                                                                                                                                    
+BUILDTEST_CXXFLAGS=                                                                                                                                                                                                                
+BUILDTEST_FFLAGS=                                                                                                                                                                                                                  
+BUILDTEST_CPPFLAGS=                                                                                                                                                                                                                
+BUILDTEST_LDFLAGS=                                                                                                                                                                                                                 
+export OMP_NUM_THREADS="8"                                                                                                                                                                                                         
+module load gcc/8.3.0-gcc-7.5.0                                                                                                                                                                                                    
+# Content of run section                                                                                                                                                                                                           
+wget https://www.cs.virginia.edu/stream/FTP/Code/stream.c                                                                                                                                                                          
+$BUILDTEST_CC $BUILDTEST_CFLAGS stream.c -o stream                                                                                                                                                                                 
+./stream                                                                                                                                                                                                                           
+────────────────────────────────────────────────────────────────────────────────────── stream_openmp_c/e34e58ec-5b30-431e-99a8-81aa295d7a77 ───────────────────────────────────────────────────────────────────────────────────────
+Executor: generic.local.bash
+Description: STREAM Microbenchmark C Test with OpenMP
+State: PASS
+Returncode: 0
+Runtime: 3.73544 sec
+Starttime: 2023/07/14 18:48:05
+Endtime: 2023/07/14 18:48:08
+Command: bash --norc --noprofile -eo pipefail stream_openmp_c_build.sh
+Test Script: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/e34e58ec/stream_openmp_c.sh
+Build Script: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/e34e58ec/stream_openmp_c_build.sh
+Output File: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/e34e58ec/stream_openmp_c.out
+Error File: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/e34e58ec/stream_openmp_c.err
+Log File: /home/spack/buildtest/var/logs/buildtest_p9dylkh7.log
+──────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/e34e58ec/stream_openmp_c.sh ────────────────────────────────────────────────────────────
+#!/bin/bash                                                                                                                                                                                                                        
+BUILDTEST_CC="gcc"                                                                                                                                                                                                                 
+BUILDTEST_CXX="g++"                                                                                                                                                                                                                
+BUILDTEST_FC="gfortran"                                                                                                                                                                                                            
+BUILDTEST_CFLAGS="-fopenmp -O2"                                                                                                                                                                                                    
+BUILDTEST_CXXFLAGS=                                                                                                                                                                                                                
+BUILDTEST_FFLAGS=                                                                                                                                                                                                                  
+BUILDTEST_CPPFLAGS=                                                                                                                                                                                                                
+BUILDTEST_LDFLAGS=                                                                                                                                                                                                                 
+export OMP_NUM_THREADS="8"                                                                                                                                                                                                         
+module load gcc/6.5.0-gcc-7.5.0                                                                                                                                                                                                    
+# Content of run section                                                                                                                                                                                                           
+wget https://www.cs.virginia.edu/stream/FTP/Code/stream.c                                                                                                                                                                          
+$BUILDTEST_CC $BUILDTEST_CFLAGS stream.c -o stream                                                                                                                                                                                 
+./stream                                                                                                                                                                                                                           
+────────────────────────────────────────────────────────────────────────────────────── stream_openmp_c/a6109a55-4c61-4e6b-8480-84c6bc3395b7 ───────────────────────────────────────────────────────────────────────────────────────
+Executor: generic.local.bash
+Description: STREAM Microbenchmark C Test with OpenMP
+State: PASS
+Returncode: 0
+Runtime: 3.7425 sec
+Starttime: 2023/07/14 18:48:05
+Endtime: 2023/07/14 18:48:08
+Command: bash --norc --noprofile -eo pipefail stream_openmp_c_build.sh
+Test Script: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/a6109a55/stream_openmp_c.sh
+Build Script: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/a6109a55/stream_openmp_c_build.sh
+Output File: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/a6109a55/stream_openmp_c.out
+Error File: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/a6109a55/stream_openmp_c.err
+Log File: /home/spack/buildtest/var/logs/buildtest_p9dylkh7.log
+──────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/stream_example/stream_openmp_c/a6109a55/stream_openmp_c.sh ────────────────────────────────────────────────────────────
+#!/bin/bash                                                                                                                                                                                                                        
+BUILDTEST_CC="/usr/bin/gcc"                                                                                                                                                                                                        
+BUILDTEST_CXX="/usr/bin/g++"                                                                                                                                                                                                       
+BUILDTEST_FC="/usr/bin/gfortran"                                                                                                                                                                                                   
+BUILDTEST_CFLAGS="-fopenmp -O2"                                                                                                                                                                                                    
+BUILDTEST_CXXFLAGS=                                                                                                                                                                                                                
+BUILDTEST_FFLAGS=                                                                                                                                                                                                                  
+BUILDTEST_CPPFLAGS=                                                                                                                                                                                                                
+BUILDTEST_LDFLAGS=                                                                                                                                                                                                                 
+export OMP_NUM_THREADS="8"                                                                                                                                                                                                         
+# Content of run section                                                                                                                                                                                                           
+wget https://www.cs.virginia.edu/stream/FTP/Code/stream.c                                                                                                                                                                          
+$BUILDTEST_CC $BUILDTEST_CFLAGS stream.c -o stream                                                                                                                                                                                 
+./stream                                                                                                                                                                                                                           

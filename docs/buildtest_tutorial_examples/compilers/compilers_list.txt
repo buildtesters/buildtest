@@ -1,9 +1,9 @@
 $ buildtest config compilers -y 
 gcc:
-  builtin_gcc:
-    cc: /usr/bin/gcc
-    cxx: /usr/bin/g++
-    fc: /usr/bin/gfortran
+  clang_6.0.0:
+    cc: /usr/bin/clang
+    cxx: /usr/bin/clang++
+    fc: None
   gcc_6.5.0:
     cc: gcc
     cxx: g++
@@ -11,6 +11,10 @@ gcc:
     module:
       load:
       - gcc/6.5.0-gcc-7.5.0
+  gcc_7.5.0:
+    cc: /usr/bin/gcc
+    cxx: /usr/bin/g++
+    fc: /usr/bin/gfortran
   gcc_8.3.0:
     cc: gcc
     cxx: g++

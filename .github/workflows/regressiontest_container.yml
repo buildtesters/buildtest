@@ -1,0 +1,36 @@
+name: Regression Test in Container
+
+on:
+  pull_request:
+    branches: [ devel ]
+    
+jobs:
+  buildtest_tutorial_container:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/buildtesters/buildtest_spack
+      options: "-it --user spack"
+    steps:
+      - name: regression test in container
+        shell: bash
+        run: | 
+          env
+          whoami
+          id     
+          ls -la $HOME
+          echo $HOME
+          cd $GITHUB_WORKSPACE
+          ls -la $GITHUB_WORKSPACE
+          set +xe
+          . /etc/profile
+          module --version
+          module avail
+          spack --version
+          module load python
+          python -m venv /home/spack/pyenv/buildtest
+          . /home/spack/pyenv/buildtest/bin/activate"
+          . setup.sh
+          export BUILDTEST_CONFIGFILE=$BUILDTEST_ROOT/buildtest/settings/spack_container.yml
+          python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
+          returncode=$?
+          if [ $returncode != 0 ]; then exit $returncode; fi

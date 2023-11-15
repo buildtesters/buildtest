@@ -1,0 +1,8 @@
+buildspecs:
+  invalid_returncode_type:
+    type: script
+    executor: generic.local.bash
+    description: This test fails because of invalid return code type
+    run: hostname
+    status:
+      returncode: ["1"]

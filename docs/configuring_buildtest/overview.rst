@@ -18,10 +18,10 @@ Which configuration file does buildtest read?
 
 buildtest will read configuration files in the following order:
 
-- Command line ``buildtest -c <config>.yml build``
-- Environment variable - **BUILDTEST_CONFIGFILE**
-- User Configuration - ``$HOME/.buildtest/config.yml``
-- Default Configuration - ``$BUILDTEST_ROOT/buildtest/settings/config.yml``
+1. Command line ``buildtest -c <config>.yml build``
+2. Environment variable - **BUILDTEST_CONFIGFILE**
+3. User Configuration - ``$HOME/.buildtest/config.yml``
+4. Default Configuration - ``$BUILDTEST_ROOT/buildtest/settings/config.yml``
 
 .. _default_configuration:
 
@@ -44,10 +44,12 @@ As you can see the layout of configuration starts with keyword ``system`` which 
 used to define one or more systems. Your HPC site may contain more than one cluster,
 so you should define your clusters with meaningful names as this will impact when you
 reference :ref:`executors <configuring_executors>` in buildspecs. In this example, we define one
-cluster called ``generic`` which is a dummy cluster used for running tutorial examples. The
-**required** fields in the system scope are the following::
+cluster called ``generic`` which is a dummy cluster used for running tutorial examples.
 
-    "required": ["executors", "moduletool", "hostnames", "compilers"]
+.. _config_hostnames:
+
+Configuring Hostnames
+----------------------
 
 The ``hostnames`` field is a list of nodes that belong to the cluster where buildtest should be run. Generally,
 these hosts should be your login nodes in your cluster. buildtest will process **hostnames** field across
@@ -112,31 +114,6 @@ configure buildtest to use the module tool. This can be defined via ``moduletool
 
 
 The `moduletool` property is used for :ref:`detecting compilers <detect_compilers>` when you run ``buildtest config compilers find``.
-
-.. _buildspec_roots:
-
-buildspec roots
------------------
-
-buildtest can discover buildspec using ``buildspec_roots`` keyword. This field is a list
-of directory paths to search for buildspecs. For example we clone the repo
-https://github.com/buildtesters/buildtest-cori at **$HOME/buildtest-cori** and assign
-this to **buildspec_roots** as follows:
-
-.. code-block:: yaml
-
-    buildspec_roots:
-      - $HOME/buildtest-cori
-
-This field is used with the ``buildtest buildspec find`` command. If you rebuild
-your buildspec cache via ``--rebuild`` option, buildtest will search for all buildspecs in
-directories specified by **buildspec_roots** property. buildtest will recursively
-find all **.yml** extension and validate each buildspec with appropriate schema.
-
-By default buildtest will add the ``$BUILDTEST_ROOT/tutorials`` and ``$BUILDTEST_ROOT/general_tests``
-to search path when searching for buildspecs with ``buildtest buildspec find`` command. This
-is only true if there is no root buildspec directory specified which can be done via `buildspec_roots`
-or `--root` option.
 
 .. _configuring_executors:
 
@@ -214,7 +191,7 @@ For instance if you want all bash scripts to run in login shell you can specify 
 Then you can reference this executor as ``executor: generic.local.login_bash`` and your
 tests will be submitted via ``bash --login /path/to/test.sh``.
 
-Once you define your executors, you can :ref:`query the executors <view_executors>` via ``buildtest config executors``
+Once you define your executors, you can :ref:`query the executors <view_executors>` via ``buildtest config executors list``
 command.
 
 Disable an executor
@@ -241,56 +218,53 @@ Default commands run per executors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can configure an executor to run a set of commands when using an executor. We
-can do this via ``before_script`` field that is a string type that expects bash commands.
+can do this via ``before_script`` field that is a string type that can be used to specify
+shell commands.
 
-This can be demonstrated with an executor name **local.e4s** responsible for
-building `E4S Testsuite <https://github.com/E4S-Project/testsuite>`_
+In this example below we have a bash executor will define some shell code that will be run when
+using this executor. The content of the `before_script` will be inserted in a shell script that is sourced
+by all tests.
 
 .. code-block:: yaml
 
-    local:
-      e4s:
-        description: "E4S testsuite locally"
-        shell: bash
-        before_script: |
-          cd $SCRATCH
-          git clone https://github.com/E4S-Project/testsuite.git
-          cd testsuite
-          source /global/common/software/spackecp/luke-wyatt-testing/spack/share/spack/setup-env.sh
-          source setup.sh
+      local:
+        bash:
+          description: submit jobs on local machine using bash shell
+          shell: bash
+          before_script: |
+            today=$(date "+%D")
+            echo "Today is $today, running test with user: $(whoami)"
 
-The `e4s` executor attempts to clone E4S Testsuite in $SCRATCH and activate
-a spack environment and run the initialize script ``source setup.sh``. buildtest
-will write a ``before_script.sh`` for every executor.
-This can be found in ``var/executors`` directory as shown below
+buildtest will write a ``before_script.sh`` for every executor.
+This can be found in ``$BUILDTEST_ROOT/var/executors`` directory as shown below
 
 .. code-block:: console
 
-    $ tree var/executors/
-    var/executors/
-    |-- local.bash
-    |   |-- before_script.sh
-    |-- local.e4s
-    |   |-- before_script.sh
-    |-- local.python
-    |   |-- before_script.sh
-    |-- local.sh
-    |   |-- before_script.sh
+    $ find $BUILDTEST_ROOT/var/executor -type f
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/executor/generic.local.bash/before_script.sh
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/executor/generic.local.csh/before_script.sh
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/executor/generic.local.zsh/before_script.sh
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/executor/generic.local.sh/before_script.sh
 
 
-    4 directories, 4 files
+If you run a test using this executor you will see the code is inserted from `before_script.sh` which is sourced
+for all given test.
 
-The ``before_script`` field is available for all executors and
-if its not specified the file will be empty. Every test will source these scripts for
-the appropriate executor.
+.. code-block:: console
+
+    $ cat  $BUILDTEST_ROOT/var/executor/generic.local.bash/before_script.sh
+    #!/bin/bash
+    today=$(date "+%D")
+    echo "Today is $today, running test with user: $(whoami)"
+
 
 Specifying Modules
 ~~~~~~~~~~~~~~~~~~~~
 
 You can configure executors to load modules, purge or restore from collection which will be run for all tests that use the executor.
-This can be achieved via `module` property that can be defined in the executor definition. In this next example, we create a bash executor
-that will purge modules and load gcc. The `purge` property is a boolean, if set to `True` we will run `module purge` before
-loading commands. The `load` property is a list of modules to `module load`.
+This can be achieved via ``module`` property that can be defined in the executor definition. In this next example, we create a bash executor
+that will purge modules and load gcc. The ``purge`` property is a boolean, if set to **True** we will run **module purge** before
+loading commands. The ``load`` property is a list of modules to **module load**.
 
 .. code-block:: yaml
 
@@ -313,6 +287,7 @@ example we defined a slurm executor named **haswell_debug** which will submit jo
 qos on the haswell partition as follows:
 
 .. code-block:: yaml
+   :emphasize-lines: 4
 
     executors:
       slurm:
@@ -342,6 +317,7 @@ can be done via ``partition`` property. In this next example we define an execut
 to slurm partition **regular_hsw**.
 
 .. code-block:: yaml
+   :emphasize-lines: 4
 
     executors:
       slurm:
@@ -382,7 +358,7 @@ jobs to ``qa_test``.
     executors:
       defaults:
         pollinterval: 10
-        max_pend_time: 90
+        maxpendtime: 90
         account: development
       pbs:
        testing:
@@ -395,24 +371,24 @@ Alternately, you can override configuration setting via ``buildtest build --acco
 for all batch jobs.
 
 Poll Interval
-----------------
+~~~~~~~~~~~~~~
 
 The ``pollinterval`` field is used  to poll jobs at set interval in seconds
 when job is active in queue. The poll interval can be configured on command line
-using ``buildtest build --poll-interval`` which overrides the configuration value.
+using ``buildtest build --pollinterval`` which overrides the configuration value.
 
 .. Note::
 
-    ``pollinterval``  and ``max_pend_time`` have no effect on local executors.
+    ``pollinterval``  and ``maxpendtime`` have no effect on local executors.
 
 
 Max Pend Time
----------------
+~~~~~~~~~~~~~~
 
-The ``max_pend_time`` is **maximum** time job can be pending
+The ``maxpendtime`` is **maximum** time job can be pending
 within an executor, if it exceeds the limit buildtest will cancel the job.
 
-The **max_pend_time** option can be overridden per executor level for example the
+The **maxpendtime** option can be overridden per executor level for example the
 section below overrides the default to 300 seconds:
 
 .. code-block:: yaml
@@ -422,28 +398,28 @@ section below overrides the default to 300 seconds:
           description: bigmem jobs
           cluster: escori
           qos: bigmem
-          max_pend_time: 300
+          maxpendtime: 300
 
-The ``max_pend_time`` is used to cancel job only if job is pending in queue, it has
+The ``maxpendtime`` is used to cancel job only if job is pending in queue, it has
 no impact if job is running. buildtest starts a timer at job submission and every poll interval
-(``pollinterval`` field) checks if job has exceeded **max_pend_time** only if job is pending.
-If job pendtime exceeds `max_pend_time` limit, buildtest will
+(``pollinterval`` field) checks if job has exceeded **maxpendtime** only if job is pending.
+If job pendtime exceeds `maxpendtime` limit, buildtest will
 cancel job the job using the appropriate scheduler command like (``scancel``, ``bkill``, ``qdel``).
 Buildtestwill remove cancelled jobs from poll queue, in addition cancelled jobs won't be
 reported in test report.
 
-For more details on `max_pend_time` click :ref:`here <max_pend_time>`.
+For more details on `maxpendtime` click :ref:`here <max_pend_time>`.
 
 .. _pbs_executors:
 
 PBS Executors
---------------
+~~~~~~~~~~~~~~
 
 .. Note:: buildtest PBS support relies on job history set because buildtest needs to query job after completion using ``qstat -x``. This
-          can be configured using ``qmgr`` by setting ``set server job_history_enable=True``. For more details see section **13.15.5.1 Enabling Job History** in `PBS 2020.1 Admin Guide <https://www.altair.com/pdfs/pbsworks/PBSAdminGuide2020.1.pdf>`_
+          can be configured using ``qmgr`` by setting ``set server job_history_enable=True``. For more details see section **14.15.5.1 Enabling Job History** in `PBS 2021.1.3 Admin Guide <https://help.altair.com/2021.1.3/PBS%20Professional/PBSAdminGuide2021.1.3.pdf>`_
 
 
-buildtest supports `PBS <https://www.altair.com/pbs-works-documentation/>`_ scheduler
+buildtest supports `PBS <https://community.altair.com/community?id=altair_product_documentation>`_ scheduler
 which can be defined in the ``executors`` section. Shown below is an example configuration using
 one ``pbs`` executor named ``workq``.  The property ``queue: workq`` defines
 the name of PBS queue that is available in your system.
@@ -505,9 +481,6 @@ Shown below is an example with one queue **workq** that is ``enabled`` and ``sta
         }
     }
 
-.. _cdash_configuration:
-
-
 Configuring test directory
 ---------------------------
 
@@ -542,10 +515,82 @@ based on platform (Linux, Mac).
 The buildtest logs will start with **buildtest_** followed by random identifier with
 a **.log** extension.
 
+Configuring Buildspec Cache
+----------------------------
+
+The :ref:`buildtest buildspec find <find_buildspecs>` command can be configured using the configuration file to provide sensible
+defaults. This can be shown in the configuration file below:
+
+.. code-block:: yaml
+
+        buildspecs:
+          # whether to rebuild cache file automatically when running `buildtest buildspec find`
+          rebuild: False
+          # limit number of records to display when running `buildtest buildspec find`
+          count: 15
+          # format fields to display when running `buildtest buildspec find`, By default we will show name,description
+          format: "name,description"
+          # enable terse mode
+          terse: False
+          # specify list of directories to search for buildspecs when building cache
+          #root: [ $BUILDTEST_ROOT/examples, /tmp/buildspecs ]
+
+
+The ``rebuild: False`` means buildtest won't rebuild the buildcache every time you run `buildtest buildspec find`. If the
+cache file is not present, it will automatically rebuild the cache, otherwise it will build the cache if one specifies
+``--rebuild`` option or ``rebuild: True`` is set in the configuration file.
+
+The buildspec cache is built by reading the contents of the buildspec file on the filesystem; therefore if you make changes
+to the buildspecs, you will need to rebuild the buildspec cache by running `buildtest buildspec find --rebuild`.
+
+The configuration options such as ``count``, ``format``, ``terse`` can  be tweaked to your preference. These configuration values
+can be overridden by command line option.
+
+.. _buildspec_roots:
+
+Root directory for searching buildspecs when building the buildspec cache
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In-order to build the buildspec cache, buildtest needs a list of directories to search for buildspecs on the filesystem. This
+can be done by using the ``root`` property where you can specify a list of directories to search. By default, this field is commented out.
+You can specify the paths via ``buildtest buildspec find --root <dir>`` or specify them in the configuration file.
+
+If you rebuild your buildspec cache via ``--rebuild`` option, buildtest will search for all buildspecs in
+directories specified by **root** property. buildtest will recursively find all **.yml** extension and validate
+each buildspec with appropriate schema.
+
+By default buildtest will add the ``$BUILDTEST_ROOT/tutorials`` and ``$BUILDTEST_ROOT/general_tests``
+to search path when searching for buildspecs with ``buildtest buildspec find`` command.
+
+Configuring behavior for buildtest report
+------------------------------------------
+
+The ``report`` section in configuration file allows you to configure behavior of ``buildtest report`` command. The
+``report`` section is shown below:
+
+.. code-block:: yaml
+
+    report:
+      count: 25
+      #enable terse mode for report
+      terse: False
+      format: "name,id,state,runtime,returncode"
+      # show the latest for every test
+      latest: True
+      # show the oldest for every test
+      oldest: False
+
+The ``count`` property limits the number of records to display when running ``buildtest report`` command. The ``format`` property
+controls the fields to display when running ``buildtest report``. The ``terse`` property enables terse mode for ``buildtest report``.
+By default we will show the latest run for each test when running ``buildtest report``. The ``latest`` property can be set to ``False``
+if you want to change this behavior.
+
+.. _cdash_configuration:
+
 CDASH Configuration
 --------------------
 
-buildtest can be configured to push test to `CDASH <https://www.kitware.com/cdash/project/about.html>`_. The default configuration
+buildtest can be configured to push test to `CDASH <https://www.cdash.org/>`_. The default configuration
 file provides a CDASH configuration for buildtest project is the following.
 
 .. code-block:: yaml
@@ -568,3 +613,192 @@ The cdash section can be summarized as follows:
 
 The cdash settings can be used with ``buildtest cdash`` command. For more details
 see :ref:`cdash_integration`.
+
+Configuring Test Timeout
+-------------------------
+
+The ``timeout`` property is number of seconds a test can run before it is called. **The timeout property must be a positive integer**.
+For instance if you want all test to timeout within 60 sec you can do the following
+
+.. code-block:: yaml
+
+    timeout: 60
+
+The ``timeout`` field is not set by default, it can be configured in the configuration file but can be overridden via command line
+option ``buildtest build --timeout``. For more details see :ref:`test_timeout`
+
+Configuring Pool Size
+----------------------
+
+buildtest makes use of `multiprocessing.Pool <https://docs.python.org/3/library/multiprocessing.html#multiprocessing.pool.Pool>`_ which is used
+to control pool size for worker processes used for processing builders during run phase. We can use the ``poolsize`` property
+to control the size of pool. The pool size must be 1 or higher, if value exceeds maximum CPU count (i.e. `os.cpu_count() <https://docs.python.org/3/library/os.html#os.cpu_count>`_)
+then value is set to maximum CPU count.
+
+Shown below we set ``poolsize`` to 1.
+
+
+.. code-block:: yaml
+    :emphasize-lines: 14
+
+    system:
+      generic:
+        # specify list of hostnames where buildtest can run for given system record
+        hostnames: [".*"]
+
+        # system description
+        description: Generic System
+        # specify module system used at your site (environment-modules, lmod)
+        moduletool: N/A
+
+        # specify test timeout duration in number of seconds
+        # timeout: 60
+
+        poolsize: 1
+
+.. _configuring_max_jobs:
+
+Configuring Max Jobs
+---------------------
+
+The ``max_jobs`` property is used to limit number of jobs that can run concurrently. This is useful if you want to limit,
+the workload on your system. Buildtest will run all jobs in parallel by default, if ``max_jobs`` is not specified.
+If you want to run all tests in serial, you can set ``max_jobs: 1`` as shown below.
+
+.. code-block:: yaml
+
+    max_jobs: 1
+
+This value can be overridden via ``buildtest build --max-jobs`` option. For more details see :ref:`limit_max_jobs`
+
+Managing Profiles
+------------------
+
+The ``profile`` section allows you to define build profiles that can be used to encapsulate ``buildtest build`` options.
+This section is auto-generated when using ``buildtest build --save-profile`` option, see :ref:`using_profiles` for more details.
+
+Shown below is an example profile, the ``python-tests`` is the name of the profile. The ``tags`` property is a list of tags to use
+which are used by ``buildtest build --tags`` option. The ``testdir`` option is the path where tests are written that is used by ``buildtest build --testdir``.
+
+.. code-block:: yaml
+    :emphasize-lines: 2-5
+
+    profiles:
+      python-tests:
+        tags:
+        - python
+        testdir: /Users/siddiq90/Documents/github/buildtest/var/tests
+
+
+The profile can be configured with many other options supported by ``buildtest build``, shown below are additional examples.
+Configuration properties like ``rebuild``, ``limit``, ``timeout`` are integer and must be positive numbers.
+
+.. code-block:: yaml
+
+   profiles:
+      profile-2:
+        buildspecs:
+        - /Users/siddiq90/Documents/github/buildtest/tutorials/job_dependency
+        exclude-buildspecs:
+        - tutorials/job_dependency/ex1.yml
+        tags:
+        - python
+        exclude-tags:
+        - network
+        executors:
+        - generic.local.csh
+        rebuild: 2
+        limit: 10
+        account: dev
+        procs:
+        - 2
+        - 4
+        nodes:
+        - 1
+        - 2
+        testdir: /Users/siddiq90/Documents/github/buildtest/var/tests
+        timeout: 10
+        executor-type: local
+
+Shown below is a generated profile using
+``buildtest build -b tutorials --filter "tags=pass;maintainers=@shahzebsiddiqui;type=script" --save-profile=filter_profile``. The ``filter``
+is an object and attributes ``tags``, ``maintainers``, ``type`` correspond to the filter fields.
+
+.. code-block:: yaml
+
+    profiles:
+      filter_profile:
+        buildspecs:
+        - /Users/siddiq90/Documents/github/buildtest/tutorials
+        testdir: /Users/siddiq90/Documents/github/buildtest/var/tests
+        filter:
+          tags:
+          - pass
+          maintainers:
+          - '@shahzebsiddiqui'
+          type:
+          - script
+
+We have added additional checks in the JSON schema for valid values for each type, for instance if you specify an invalid value for ``type`` field
+which is used to filter buildspecs by the ``type`` field, then you will get an invalid configuration file.
+
+
+Listing Profiles
+~~~~~~~~~~~~~~~~~
+
+This section in the profile permits you to enumerate the profiles available for encapsulating buildtest build options.
+
+Lets create a profile by running the following buildtest command.
+
+.. command-output:: buildtest build -t python --save-profile=python
+
+The `--save-profile` is used to specify name of profile that will be written in configuration file.
+
+In order to see all profiles you can run ``buildtest config profiles list`` as shown below
+
+.. command-output:: buildtest config profiles list
+
+.. command-output:: buildtest config profiles list --yaml
+
+Removing Profiles
+~~~~~~~~~~~~~~~~~~
+
+You can remove a profile by running ``buildtest config profiles remove <profile>``, where <profile> is the name of profile.
+
+This command will update your configuration file and remove the profile name from configuration. You can
+remove multiple profiles at once, buildtest will check if profile name exist and attempt to remove it. If its not
+found, it will simply skip it.
+
+First, lets create two profile using ``buildtest build --save-profile``
+
+.. dropdown:: Creating profiles
+
+    .. command-output:: buildtest build -t python --save-profile=prof1
+
+    .. command-output:: buildtest build -b tutorials/shell_examples.yml  --save-profile=prof2
+
+Now we will list the profiles to confirm they are created and remove them. Next we will rerun ``buildtest config profiles list`` to confirm
+profiles are removed
+
+.. dropdown:: Example on how to create, list and remove profiles
+
+    .. code-block:: console
+
+        $ buildtest config profiles list
+        python-tests
+        python
+        prof1
+        prof2
+
+    .. code-block:: console
+
+        $ buildtest config profiles remove prof1 prof2
+        Removing profile: prof1
+        Removing profile: prof2
+        Updating configuration file: /Users/siddiq90/Documents/github/buildtest/buildtest/settings/config.yml
+
+    .. code-block:: console
+
+        $ buildtest config profiles list
+        python-tests
+        python

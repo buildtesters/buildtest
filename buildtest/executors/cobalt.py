@@ -8,12 +8,9 @@ import shutil
 import time
 
 from buildtest.defaults import console
-from buildtest.exceptions import RuntimeFailure
 from buildtest.executors.base import BaseExecutor
-from buildtest.executors.job import Job
-from buildtest.utils.command import BuildTestCommand
+from buildtest.scheduler.cobalt import CobaltJob
 from buildtest.utils.file import is_file, read_file
-from buildtest.utils.tools import deep_get
 
 logger = logging.getLogger(__name__)
 
@@ -29,49 +26,18 @@ class CobaltExecutor(BaseExecutor):
     """
 
     type = "cobalt"
-    launcher = "qsub"
 
-    def __init__(self, name, settings, site_configs, account=None, max_pend_time=None):
-
+    def __init__(
+        self, name, settings, site_configs, account=None, maxpendtime=None, timeout=None
+    ):
         self.account = account
-        self.maxpendtime = max_pend_time
-        super().__init__(name, settings, site_configs)
-
-    def load(self):
-        """Load the a Cobalt executor configuration from buildtest settings."""
-
-        """
-        self.launcher = self._settings.get("launcher") or deep_get(
-            self._buildtestsettings.target_config, "executors", "defaults", "launcher"
-        )
-        """
-        self.launcher_opts = self._settings.get("options")
+        self.maxpendtime = maxpendtime
+        super().__init__(name, settings, site_configs, timeout=timeout)
 
         self.queue = self._settings.get("queue")
-        self.account = (
-            self.account
-            or self._settings.get("account")
-            or deep_get(
-                self._buildtestsettings.target_config,
-                "executors",
-                "defaults",
-                "account",
-            )
-        )
-        self.max_pend_time = (
-            self.maxpendtime
-            or self._settings.get("max_pend_time")
-            or deep_get(
-                self._buildtestsettings.target_config,
-                "executors",
-                "defaults",
-                "max_pend_time",
-            )
-        )
 
-    def launcher_command(self):
-
-        batch_cmd = [self.launcher]
+    def launcher_command(self, numprocs, numnodes):
+        batch_cmd = ["qsub"]
 
         if self.queue:
             batch_cmd += [f"-q {self.queue}"]
@@ -79,12 +45,18 @@ class CobaltExecutor(BaseExecutor):
         if self.account:
             batch_cmd += [f"--project {self.account}"]
 
+        if numprocs:
+            batch_cmd += [f"--proccount={self.numprocs}"]
+
+        if numnodes:
+            batch_cmd += [f"--nodecount={self.numnodes}"]
+
         if self.launcher_opts:
             batch_cmd += [" ".join(self.launcher_opts)]
 
         return batch_cmd
 
-    def dispatch(self, builder):
+    def run(self, builder):
         """This method is responsible for dispatching job to Cobalt Scheduler by invoking ``builder.run()``
         which runs the build script. If job is submitted to scheduler, we get the JobID and pass this to
         ``CobaltJob`` class. At job submission, cobalt will report the output and error file which can be retrieved
@@ -96,14 +68,15 @@ class CobaltExecutor(BaseExecutor):
 
         os.chdir(builder.stage_dir)
 
-        cmd = self.bash_launch_command() + [os.path.basename(builder.build_script)]
-        cmd = " ".join(cmd)
+        cmd = f"bash {self._bashopts} {os.path.basename(builder.build_script)}"
 
-        try:
-            command = builder.run(cmd)
-        except RuntimeFailure as err:
-            self.logger.error(err)
-            return
+        timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
+
+        command = builder.run(cmd, timeout)
+
+        if command.returncode() != 0:
+            builder.failed()
+            return builder
 
         out = command.get_output()
         out = " ".join(out)
@@ -141,7 +114,7 @@ class CobaltExecutor(BaseExecutor):
         """This method is responsible for polling Cobalt job by invoking the builder method
         ``builder.job.poll()``.  We check the job state and existence of output file. If file
         exists or job is complete, we gather the results and return from function. If job
-        is pending we check if job time exceeds ``max_pend_time`` time limit and cancel job.
+        is pending we check if job time exceeds ``maxpendtime`` time limit and cancel job.
 
         Args:
             builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
@@ -155,18 +128,19 @@ class CobaltExecutor(BaseExecutor):
             return
 
         builder.stop()
-        # if job is pending or suspended check if builder timer duration exceeds max_pend_time if so cancel job
+        # if job is pending or suspended check if builder timer duration exceeds maxpendtime if so cancel job
         if builder.job.is_pending() or builder.job.is_suspended():
             logger.debug(f"Time Duration: {builder.duration}")
-            logger.debug(f"Max Pend Time: {self.max_pend_time}")
+            logger.debug(f"Max Pend Time: {self.maxpendtime}")
 
             # if timer time is more than requested pend time then cancel job
-            if int(builder.timer.duration()) > self.max_pend_time:
+            if int(builder.timer.duration()) > self.maxpendtime:
                 builder.job.cancel()
-                builder.failure()
+                builder.failed()
                 console.print(
-                    f"[blue]{builder}[/]: Cancelling Job: {builder.job.get()} because job exceeds max pend time: {self.max_pend_time} sec with current pend time of {builder.timer.duration()} "
+                    f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.timer.duration()} sec[/red] "
                 )
+            return
 
         builder.start()
 
@@ -180,7 +154,7 @@ class CobaltExecutor(BaseExecutor):
             builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
 
-        builder.endtime()
+        builder.record_endtime()
         # The cobalt job will write output and error file after job completes, there is a few second delay before file comes. Hence
         # stay in while loop and sleep for every 5 second until we find both files in filesystem
         while True:
@@ -227,135 +201,3 @@ class CobaltExecutor(BaseExecutor):
         console.print(f"[blue]{builder}[/]: Job {builder.job.get()} is complete! ")
 
         builder.post_run_steps()
-
-
-class CobaltJob(Job):
-    """The ``CobaltJob`` class performs operation on cobalt job upon job submission such
-    as polling job, gather job record, cancel job. We also retrieve job state and determine if job
-    is pending, running, complete, suspended.
-    """
-
-    def __init__(self, jobID):
-        super().__init__(jobID)
-        self._outfile = str(jobID) + ".output"
-        self._errfile = str(jobID) + ".error"
-        self._cobaltlog = str(jobID) + ".cobaltlog"
-
-    def is_pending(self):
-        """Return ``True`` if job is pending otherwise returns ``False``. When cobalt recieves job it is
-        in ``starting`` followed by ``queued`` state. We check if job is in either state.
-        """
-
-        return self._state in ["queued", "starting"]
-
-    def is_running(self):
-        """Return ``True`` if job is running otherwise returns ``False``. Cobalt job state for running job is
-        is marked as ``running``"""
-
-        return self._state == "running"
-
-    def is_complete(self):
-        """Return ``True`` if job is complete otherwise returns ``False``. Cobalt job state for completed job
-        job is marked as ``exiting``"""
-
-        return self._state == "exiting"
-
-    def is_suspended(self):
-        """Return ``True`` if job is suspended otherwise returns ``False``. Cobalt job state for suspended is
-        marked as ``user_hold``"""
-
-        return self._state == "user_hold"
-
-    def is_cancelled(self):
-        """Return ``True`` if job is cancelled otherwise returns ``False``. Job state is ``cancelled`` which
-        is set by class ``cancel`` method
-        """
-
-        return self._state == "cancelled"
-
-    def cobalt_log(self):
-        """Return job cobalt.log file"""
-
-        return self._cobaltlog
-
-    def output_file(self):
-        """Return job output file"""
-
-        return self._outfile
-
-    def error_file(self):
-        """Return job error file"""
-
-        return self._errfile
-
-    def exitcode(self):
-        """Return job exit code"""
-
-        return self._exitcode
-
-    def poll(self):
-        """Poll job by running ``qstat -l --header State <jobid>`` which retrieves job state."""
-
-        # get Job State by running 'qstat -l --header <jobid>'
-        query = f"qstat -l --header State {self.jobid}"
-        logger.debug(f"Getting Job State for '{self.jobid}' by running: '{query}'")
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        output = cmd.get_output()
-
-        output = " ".join(output).strip()
-
-        # Output in format State: <state> so we need to get value of state
-        job_state = output.partition(":")[2].strip()
-
-        if job_state:
-            self._state = job_state
-
-        logger.debug(f"Job ID: '{self.job}' Job State: {self._state}")
-
-    def gather(self):
-        """Gather Job state by running **qstat -lf <jobid>** which retrieves all fields.
-        The output is in text format which is parsed into key/value pair and stored in a dictionary. This method will
-        return a dict containing the job record
-
-        .. code-block:: console
-
-             $ qstat -lf 347106
-                JobID: 347106
-                    JobName           : hold_job
-                    User              : shahzebsiddiqui
-                    WallTime          : 00:10:00
-                    QueuedTime        : 00:13:14
-                    RunTime           : N/A
-                    TimeRemaining     : N/A
-
-        """
-
-        # 'qstat -lf <jobid>' will get all fields of Job.
-        qstat_cmd = f"qstat -lf {self.jobid}"
-        logger.debug(f"Executing command: {qstat_cmd}")
-        cmd = BuildTestCommand(qstat_cmd)
-        cmd.execute()
-        output = cmd.get_output()
-
-        job_record = {}
-        # The output if in format KEY: VALUE so we store all records in a dictionary
-        for line in output:
-            key, sep, value = line.partition(":")
-            key = key.strip()
-            value = value.strip()
-            job_record[key] = value
-
-        return job_record
-
-    def cancel(self):
-        """Cancel job by running ``qdel <jobid>``. This method is called if job timer exceeds
-        ``max_pend_time`` if job is pending.
-        """
-
-        query = f"qdel {self.jobid}"
-        logger.debug(f"Cancelling job {self.jobid} by running: {query}")
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-
-        self._state = "cancelled"

@@ -1,10 +1,10 @@
-# import locale
 import os
 import shlex
 import shutil
 import subprocess
 import tempfile
 
+from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import read_file
 
 
@@ -69,33 +69,28 @@ class BuildTestCommand:
     https://github.com/vsoch/scif
     """
 
-    def __init__(self, cmd=None):
+    def __init__(self, cmd):
         """The initializer method will initialize class variables and check input argument `cmd` and make sure
         command is in a list format.
 
         Args:
-            cmd (str, optional): Input shell command
+            cmd (str): Input shell command
         """
-        cmd = cmd or []
+        if not isinstance(cmd, str):
+            raise BuildTestError("Input command must be a string")
+
+        self.cmd = shlex.split(cmd)
+
         self._returncode = None
         self.out = []
         self.err = []
 
-        # If a list isn't provided, split it
-        if cmd:
-            self.set_command(cmd)
+    def execute(self, timeout=None):
+        """Execute a system command and return output and error.
 
-    def set_command(self, cmd):
-        """parse is called when a new command is provided to ensure we have
-        a list. We don't check that the executable is on the path,
-        as the initialization might not occur in the runtime environment.
+        Args:
+            timeout (int, optional): The timeout value in number of seconds for a process. This argument is passed to `Popen.communicate <https://docs.python.org/3/library/subprocess.html#subprocess.Popen.communicate>`_
         """
-        if not isinstance(cmd, list):
-            cmd = shlex.split(cmd)
-        self.cmd = cmd
-
-    def execute(self):
-        """Execute a system command and return output and error."""
         # Reset the output and error records
         self.out = []
         self.err = []
@@ -121,11 +116,19 @@ class BuildTestCommand:
                 stderr=capture.stderr,
                 universal_newlines=True,
             )
-            returncode = process.poll()
+            try:
+                process.communicate(timeout=timeout)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                # os.kill(process.pid, signal.SIGTERM)
+
+            self._returncode = process.wait()
+
+            # returncode = process.poll()
 
             # Iterate through the output
-            while returncode is None:
-                returncode = process.poll()
+            # while returncode is None:
+            #    returncode = process.poll()
 
         # Get the remainder of lines, add return code. The self.decode avoids UTF-8 decode error
         self.out += ["%s\n" % x for x in self.decode(capture.out).split("\n") if x]
@@ -135,7 +138,6 @@ class BuildTestCommand:
         # self.err += ["%s\n" % x for x in capture.err.split("\n") if x]
         # Cleanup capture files and save final return code
         capture.cleanup()
-        self._returncode = returncode
 
         return (self.out, self.err)
 

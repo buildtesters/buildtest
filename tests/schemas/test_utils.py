@@ -2,6 +2,7 @@ import os
 import tempfile
 
 import pytest
+
 from buildtest.schemas.utils import load_recipe, load_schema
 
 root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -12,7 +13,6 @@ root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
     reason="Invalid File Extension for loading schema", raises=SystemExit
 )
 def test_load_schema_invalid_ext():
-
     # invalid file extension should fail
     load_schema(os.path.join(root, "README.rst"))
 
@@ -32,7 +32,6 @@ def test_load_schema_invalid_path():
 @pytest.mark.utility
 @pytest.mark.xfail(reason="Invalid File Path when loading recipe", raises=SystemExit)
 def test_load_recipe_invalid_path():
-
     fp = tempfile.NamedTemporaryFile()
     assert os.path.exists(fp.name)
     fp.close()

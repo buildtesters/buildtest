@@ -1,4 +1,4 @@
-version: "1.0"
+
 buildspecs:
   ulimit_filelock_unlimited:
     executor: generic.local.bash

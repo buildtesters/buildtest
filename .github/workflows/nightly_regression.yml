@@ -1,0 +1,50 @@
+name: Nightly Regression Test
+
+on:
+ 
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+
+  buildtest_nightly_regression_test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+
+      matrix:
+        os: [macos-latest, macos-13, ubuntu-latest]
+        python-version: ['3.8', '3.9', '3.10', '3.11']
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4.7.0
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Run buildtest unittests for os - ${{ matrix.os }}, python version - ${{ matrix.python-version }}
+      env:
+        OS: ${{ matrix.os }}
+      shell: bash
+      run: |
+        if [ $OS = "ubuntu-latest"  ] ; then sudo apt-get install -y csh tcsh zsh && sudo add-apt-repository ppa:kelleyk/emacs && sudo apt-get install -y emacs28; else brew install tcsh zsh emacs ;  fi
+        cat /etc/shells
+        source setup.sh
+        pip install pytest
+        pip install coverage
+        python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
+        returncode=$?
+        if [ $returncode != 0 ]; then exit $returncode; fi
+        buildtest cdash upload --site=github nightly-$(date)
+
+    - name: Setup tmate session
+      if: ${{ failure() }}
+      uses: mxschmitt/action-tmate@v3
+      timeout-minutes: 30
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        verbose: true

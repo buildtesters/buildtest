@@ -1,4 +1,3 @@
-version: "1.0"
 buildspecs:
   bash_login_shebang:
     type: script

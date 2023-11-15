@@ -1,0 +1,16 @@
+buildspecs:
+  vars_example:
+    type: compiler
+    description: Setting shell variables
+    executor: generic.local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: ["^(gcc)"]
+      default:
+        all:
+          vars:
+            OUTFILE: /tmp/file1.txt
+          run: $_EXEC > $OUTFILE
+      config:
+        gcc@10.2.0:
+          cxxflags: "-fopenmp"

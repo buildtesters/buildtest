@@ -1,0 +1,35 @@
+buildspecs:
+
+  exit1_fail:
+    executor: generic.local.bash
+    type: script
+    description: exit 1 by default is FAIL
+    tags: [tutorials, fail]
+    run: exit 1
+
+  exit1_pass:
+    executor: generic.local.bash
+    type: script
+    description: report exit 1 as PASS
+    run: exit 1
+    tags: [tutorials, pass]
+    status:
+      returncode: [1]
+
+  returncode_list_mismatch:
+    executor: generic.local.bash
+    type: script
+    description: exit 2 failed since it failed to match returncode 1
+    run: exit 2
+    tags: [tutorials, fail]
+    status:
+      returncode: [1, 3]
+
+  returncode_int_match:
+    executor: generic.local.bash
+    type: script
+    description: exit 128 matches returncode 128
+    run: exit 128
+    tags: [tutorials, pass]
+    status:
+      returncode: 128

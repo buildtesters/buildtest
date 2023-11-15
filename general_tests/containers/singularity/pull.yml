@@ -1,4 +1,4 @@
-version: "1.0"
+
 buildspecs:
   pullImage_dockerhub:
     type: script

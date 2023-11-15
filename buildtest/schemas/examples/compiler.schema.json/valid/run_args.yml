@@ -1,0 +1,14 @@
+buildspecs:
+  pass_args_run:
+    type: compiler
+    description: Passing arguments to executable in run section
+    executor: local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: [intel]
+      default:
+        all:
+          run: $_EXEC 1 2 4
+      config:
+        intel@2019:
+          cxxflags: "-O1"

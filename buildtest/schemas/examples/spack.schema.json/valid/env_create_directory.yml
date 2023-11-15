@@ -1,0 +1,15 @@
+buildspecs:
+  env_create_directory:
+    type: spack
+    executor: generic.local.sh
+    description: Create spack environment by directory
+    spack:
+      root: $HOME/spack/
+      env:
+        create:
+          dir: $HOME/spack-env/myproject
+        specs:
+          - 'm4'
+          - 'zlib@1.2.11'
+      install:
+        options: '--cache-only'

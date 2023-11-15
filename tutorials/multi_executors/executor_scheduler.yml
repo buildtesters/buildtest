@@ -1,0 +1,13 @@
+buildspecs:
+  executors_sbatch_declaration:
+    type: script
+    executor: 'generic.local.(bash|sh)'
+    description: Declaring env and vars by executors section
+    tags: [tutorials]
+    run: hostname
+    sbatch: ["-N 4"]
+    executors:
+      generic.local.bash:
+        sbatch: ["-n 4", "-N 1", "-t 30"]
+      generic.local.sh:
+        sbatch: ["-n 8", "-N 1", "-t 60"]

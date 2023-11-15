@@ -1,11 +1,15 @@
+import datetime
 import logging
 import os
+import random
 import sys
 
-from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORT_SUMMARY, console
+from rich.table import Column, Table
+
+from buildtest.defaults import BUILD_REPORT, BUILDTEST_REPORTS, console
 from buildtest.exceptions import BuildTestError
-from buildtest.utils.file import is_file, load_json, read_file, resolve_path
-from rich.table import Table
+from buildtest.utils.file import is_file, load_json, resolve_path
+from buildtest.utils.tools import checkColor
 
 logger = logging.getLogger(__name__)
 
@@ -23,9 +27,11 @@ def is_int(val):
 
 
 class Report:
+    default_row_count = 50
     # list of format fields
     format_field_description = {
         "buildspec": "Buildspec File",
+        "buildenv": "Show build environment file for test",
         "command": "Command executed",
         "compiler": "Retrieve compiler used for test (applicable for compiler schema)",
         "endtime": "End Time for test",
@@ -55,7 +61,6 @@ class Report:
         "state": {"description": "Filter by test state", "type": "PASS/FAIL"},
         "tags": {"description": "Filter tests by tag name", "type": "STRING"},
     }
-
     format_fields = format_field_description.keys()
     # list of filter fields
     filter_fields = filter_field_description.keys()
@@ -73,37 +78,83 @@ class Report:
         "buildspec": [],
     }
 
+    format_fields_detailed = (
+        "name,id,user,state,returncode,runtime,outfile,errfile,buildspec"
+    )
+
     def __init__(
         self,
+        configuration,
         report_file=None,
         filter_args=None,
         format_args=None,
+        start=None,
+        end=None,
+        failure=None,
+        passed=None,
         latest=None,
         oldest=None,
+        count=None,
+        pager=None,
+        format_detailed=None,
+        detailed=None,
+        color=None,
     ):
         """
         Args:
+            configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class that is loaded buildtest configuration.
             report_file (str, optional): Full path to report file to read
             filter_args (str, optional): A comma separated list of Key=Value pair for filter arguments via ``buildtest report --filter``
             format (str, optional): A comma separated list of format fields for altering report table. This is specified via ``buildtest report --format``
+            start (datetime, optional): Fetch run for all tests discovered filered by starttime. This is specified via ``buildtest report --start``
+            end (datetime, optional): Fetch run for all tests discovered filered by endtime. This is specified via ``buildtest report --end``
+            failure (bool, optional): Fetch failure run for all tests discovered. This is specified via ``buildtest report --fail``
+            passed (bool, optional): Fetch passed run for all tests discovered. This is specified via ``buildtest report --pass``
             latest (bool, optional): Fetch latest run for all tests discovered. This is specified via ``buildtest report --latest``
             oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
+            count (int, optional): Fetch limited number of rows get printed for all tests discovered. This is specified via ``buildtest report --count``
+            pager (bool, optional): Enabling PAGING output for ``buildtest report``. This can be specified via ``buildtest report --pager``
+            format_detailed(bool, optional): Print a detailed summary of the test results. This can be specified via ``buildtest report --detailed``
+            color (str, optional): An instance of a string class that tells print_report what color the output should be printed in.
+
         """
-        self.latest = latest
-        self.oldest = oldest
+        self.configuration = configuration
+        self.start = start
+        self.end = end
+        self.failure = failure
+        self.passed = passed
+        self.latest = latest or self.configuration.target_config["report"].get("latest")
+        self.oldest = oldest or self.configuration.target_config["report"].get("oldest")
         self.filter = filter_args
-        self.format = format_args
+        self.format = format_args or self.configuration.target_config["report"].get(
+            "format"
+        )
+        self.pager = pager
+        self.color = color
+        self.count = count
         self.input_report = report_file
 
-        # if no report set we read the default report file
-        if report_file:
-            self._reportfile = resolve_path(report_file)
-        else:
+        # if detailed option is specified
+        if format_detailed:
+            self.format = self.format_fields_detailed
+
+        # if both format and detailed options are specified
+        if format_detailed and format_args:
+            raise BuildTestError(
+                "Argument -d/--detailed is not allowed with argument --format"
+            )
+
+        # if no report specified use default report
+        if not self.input_report:
             self._reportfile = BUILD_REPORT
+        # otherwise honor report file specified on argument
+        else:
+            self._reportfile = resolve_path(report_file)
 
         self.report = self.load()
         self._check_filter_fields()
         self._check_format_fields()
+        self._check_start_and_end_fields()
         self.filter_buildspecs_from_report()
 
         self.process_report()
@@ -126,7 +177,6 @@ class Report:
 
         # check if filter arguments (--filter) are valid fields
         if self.filter:
-
             logger.debug(f"Checking filter fields: {self.filter}")
 
             # check if filter keys are accepted filter fields, if not we raise error
@@ -158,7 +208,6 @@ class Report:
         # if buildtest report --format specified split field by "," and validate each
         # format field and reassign display_table
         if self.format:
-
             logger.debug(f"Checking format fields: {self.format}")
 
             self.display_format_fields = self.format.split(",")
@@ -174,6 +223,30 @@ class Report:
             for field in self.display_format_fields:
                 self.display_table[field] = []
 
+    def _check_start_and_end_fields(self):
+        """Check start argument (--start) and end argument (--end) are valid. The start argument is specified
+        in format (--start yyyy-mm-dd), end argument in format (--end yyyy-mm-dd), or both (--start yyyy-mm-dd --end yyyy-mm-dd).
+
+        Raises:
+            BuildTestError: If --start is greater than --end or --end is greater than current time - datetime.datetime.now()
+        """
+
+        if self.end:
+            current_time = datetime.datetime.now()
+            logger.debug(f"checking end field: {self.end}")
+
+            if self.end > current_time:
+                raise BuildTestError(
+                    f"Invalid --end {self.end} is greater than current time {current_time}"
+                )
+
+            logger.debug(f"checking start field: {self.start}")
+
+            if self.start and self.start > self.end:
+                raise BuildTestError(
+                    f"Invalid --start {self.start} is greater than --end {self.end}"
+                )
+
     def load(self):
         """This method is responsible for loading report file. If file not found
         or report is empty dictionary we raise an error. The report file
@@ -185,11 +258,17 @@ class Report:
         """
 
         if not self._reportfile:
-            sys.exit(f"Unable to resolve path to report file: {self.input_report}")
+            sys.exit(
+                console.print(
+                    f"[red]Unable to resolve path to report file: {self.input_report}"
+                )
+            )
 
         if not is_file(self._reportfile):
             sys.exit(
-                f"Unable to find report please check if {self._reportfile} is a file"
+                console.print(
+                    f"Unable to find report please check if {self._reportfile} is a file or run a test via 'buildtest build' to generate report file"
+                )
             )
 
         report = load_json(self._reportfile)
@@ -244,6 +323,31 @@ class Report:
                 raise BuildTestError(
                     f"filter argument 'state' must be 'PASS' or 'FAIL' got value {self.filter['state']}"
                 )
+
+    def filter_by_start_end(self, test):
+        """This method will return a boolean (True/False) to check if test should be included from report. Given an input test, we
+        check if a test record has 'starttime' and 'endtime' fields in range specified by ``--start`` and ``--end`` by the user. If
+        there is a match we return ``True``. A ``False`` indicates the test will not be incldued in report.
+
+        Args:
+            test (dict): Test record loaded as dictionary
+        """
+
+        test_fmt = "%Y/%m/%d %H:%M:%S"
+        test_start = datetime.datetime.strptime(test.get("starttime"), test_fmt)
+        test_end = datetime.datetime.strptime(test.get("endtime"), test_fmt)
+
+        if self.start and self.end:
+            end_include = self.end + datetime.timedelta(days=1)
+            return (
+                True if test_start >= self.start and test_end <= end_include else False
+            )
+
+        if self.start:
+            return True if test_start >= self.start else False
+
+        if self.end:
+            return True if test_end >= self.end else False
 
     def _filter_by_names(self, name):
         """Filter test by name of test. This method will return True if record should be processed,
@@ -320,10 +424,8 @@ class Report:
     def process_report(self):
         # process all filtered buildspecs and add rows to display_table.
         for buildspec in self.filtered_buildspecs:
-
             # process each test in buildspec file
             for name in self.report[buildspec].keys():
-
                 if self.filter:
                     if self._filter_by_names(name):
                         continue
@@ -342,11 +444,19 @@ class Report:
                 # retrieve first record of every test if --oldest is specified
                 elif self.oldest:
                     tests = [self.report[buildspec][name][0]]
+                # retrieve all records of failure tests if --fail is specified
+                if self.failure:
+                    tests = [test for test in tests if test["state"] == "FAIL"]
+                # retrieve all records of passed tests if --pass is specified
+                if self.passed:
+                    tests = [test for test in tests if test["state"] == "PASS"]
+                # retrieve all records of tests filtered by start or end if --start and end are specified
+                elif self.start or self.end:
+                    tests = [test for test in tests if self.filter_by_start_end(test)]
 
                 # process all tests for an associated script. There can be multiple
                 # test runs for a single test depending on how many tests were run
                 for test in tests:
-
                     if self.filter:
                         # filter by tags, if filter tag not found in test tag list we skip test
                         if self._filter_by_tags(test):
@@ -389,7 +499,11 @@ class Report:
 
     def print_format_fields(self):
         """Displays list of format field which implements command ``buildtest report --helpformat``"""
-        table = Table("[blue]Field", "[blue]Description", title="Format Fields")
+        table = Table(
+            Column("Field", overflow="fold", header_style="blue"),
+            Column("Description", overflow="fold", header_style="blue"),
+            title="Format Fields",
+        )
         for field, description in self.format_field_description.items():
             table.add_row(f"[red]{field}", f"[green]{description}")
 
@@ -399,9 +513,9 @@ class Report:
         """Displays list of help filters which implements command ``buildtest report --helpfilter``"""
 
         table = Table(
-            "[blue]Field",
-            "[blue]Description",
-            "[blue]Expected Value",
+            Column("Field", overflow="fold", header_style="blue"),
+            Column("Description", overflow="fold", header_style="blue"),
+            Column("Expected Value", overflow="fold", header_style="blue"),
             title="Filter Fields",
         )
 
@@ -413,14 +527,35 @@ class Report:
             )
         console.print(table)
 
-    def print_report(self, terse=None, noheader=None, title=None):
+    def print_raw_filter_fields(self):
+        """Print list of filter fields which implements command ``buildtest report --filterfields``"""
+        for field in self.filter_fields:
+            console.print(field)
+
+    def print_raw_format_fields(self):
+        """Print list of format fields which implements command ``buildtest report --formatfields``"""
+        for field in self.format_fields:
+            console.print(field)
+
+    def print_report(
+        self,
+        terse=None,
+        row_count=None,
+        noheader=None,
+        title=None,
+        count=None,
+        color=None,
+    ):
         """This method will print report table after processing report file. By default we print output in
         table format but this can be changed to terse format which will print output in parseable format.
 
         Args:
             terse (bool, optional): Print output int terse format
+            row_count (bool, optional): Print total number of records from the table
             noheader (bool, optional): Determine whether to print header in terse format
-
+            title (str, optional): Table title to print out
+            count (int, optional): Number of rows to be printed in terse format
+            color (str, optional): An instance of a string class that tells print_report what color the output should be printed in.
 
         In this example, we display output in tabular format which works with ``--filter`` and ``--format`` option.
 
@@ -458,36 +593,67 @@ class Report:
             root_disk_usage|PASS|0
             root_disk_usage|PASS|0
         """
+        if not self.count:
+            self.count = (
+                self.configuration.target_config["report"].get("count")
+                or self.default_row_count
+            )
 
+        # print_report method can specify count argument instead of calling the Report class which is useful for regression test. Therefore if its specified
+        # in method then use the value
+        self.count = count or self.count
+
+        terse = (
+            self.configuration.target_config["report"].get("terse")
+            if terse is None
+            else terse
+        )
+
+        consoleColor = checkColor(color)
         if terse:
-            join_list = []
-
-            for key in self.display_table.keys():
-                join_list.append(self.display_table[key])
-
-            t = [list(i) for i in zip(*join_list)]
+            row_entry = [self.display_table[key] for key in self.display_table.keys()]
 
             if not noheader:
-                print("|".join(self.display_table.keys()))
+                console.print("|".join(self.display_table.keys()), style=consoleColor)
 
-            for i in t:
-                print("|".join(i))
+            transpose_list = [list(i) for i in zip(*row_entry)]
 
-            return
+            if self.count == 0:
+                return
 
-        join_list = []
-        title = title or f"Report File: {self.reportfile()}"
-        table = Table(title=title, show_lines=True, expand=True)
-        for field in self.display_table.keys():
-            table.add_column(f"[blue]{field}", overflow="fold")
-            join_list.append(self.display_table[field])
+            # limited number of rows to be printed in terse mode. If count is negative we print all rows
+            transpose_list = (
+                transpose_list[: self.count] if self.count > 0 else transpose_list
+            )
 
-        transpose_list = [list(i) for i in zip(*join_list)]
-        for row in transpose_list:
-            table.add_row(*row)
+            for row in transpose_list:
+                line = "|".join(row)
+                console.print(f"[{consoleColor}]{line}")
+        else:
+            row_entry = []
+            title = title or f"Report File: {self.reportfile()}"
+            table = Table(title=title, show_lines=True, expand=True)
+            for field, value in self.display_table.items():
+                table.add_column(field, overflow="fold", style=consoleColor)
+                row_entry.append(self.display_table[field])
 
-        console.print(table)
-        return
+            transpose_list = [list(i) for i in zip(*row_entry)]
+
+            if self.count == 0:
+                console.print(table)
+                return
+
+            transpose_list = (
+                transpose_list[: self.count] if self.count > 0 else transpose_list
+            )
+            for row in transpose_list:
+                table.add_row(*row)
+
+            if row_count:
+                console.print(table.row_count)
+                return
+
+            console.print(table)
 
     def latest_testid_by_name(self, name):
         """Given a test name return test id of latest run
@@ -512,9 +678,32 @@ class Report:
 
         return test_names
 
+    def get_random_tests(self, num_items=1):
+        """Returns a list of random test names from the list of available test. The test are picked
+        using `random.sample <https://docs.python.org/3/library/random.html#random.sample>`_
+
+        Args:
+            num_items (int, optional): Number of test items to retrieve
+        """
+        return random.sample(self.get_names(), num_items)
+
     def get_buildspecs(self):
         """Return a list of buildspecs in report file"""
         return self.filtered_buildspecs
+
+    def get_test_by_state(self, state):
+        """Return a list of test names by state from report file"""
+        valid_test_states = ["PASS", "FAIL"]
+        if state not in valid_test_states:
+            raise BuildTestError(f"{state} is not in {valid_test_states}")
+        test_names = set()
+        for buildspec in self.filtered_buildspecs:
+            for name in self.report[buildspec].keys():
+                for trial in self.report[buildspec][name]:
+                    if trial["state"] == state:
+                        test_names.add(name)
+                        break
+        return list(test_names)
 
     def get_testids(self):
         """Return a list of test ids from the report file"""
@@ -566,6 +755,14 @@ class Report:
             builders.append(lookup[uid]["name"] + "/" + uid)
         return builders
 
+    def get_random_builder_names(self, num_items=1):
+        """Return a list of random builder names from report file.
+
+        Args:
+            num_items (int, optional): Number of items to retrieve
+        """
+        return random.sample(self.builder_names(), num_items)
+
     def breakdown_by_test_names(self):
         """Returns a dictionary with number of test runs, pass test and fail test by testname"""
         tests = {}
@@ -604,36 +801,87 @@ class Report:
         return records
 
 
-def report_cmd(args):
-    """Entry point for ``buildtest report`` command"""
-
-    if args.report_subcommand == "clear":
-        if not is_file(args.report):
-            sys.exit(f"There is no report file: {args.report} to delete")
-        print(f"Removing report file: {args.report}")
-        os.remove(BUILD_REPORT)
-        return
-
-    if args.report_subcommand == "list":
-        if not is_file(BUILDTEST_REPORT_SUMMARY):
-            print(
+def list_report():
+    """This method will list all report files. This method will implement ``buildtest report list`` command."""
+    if not is_file(BUILDTEST_REPORTS):
+        sys.exit(
+            console.print(
                 "There are no report files, please run 'buildtest build' to generate a report file."
             )
-            return
+        )
 
-        content = read_file(BUILDTEST_REPORT_SUMMARY)
-        print(content)
+    content = load_json(BUILDTEST_REPORTS)
+    for fname in content:
+        console.print(fname)
+
+
+def clear_report():
+    """This method will clear all report files. We read file BUILDTEST_REPORTS and remove all report files and also remove content of BUILDTEST_REPORTS.
+    This method will implement ``buildtest report clear`` command."""
+    if not is_file(BUILDTEST_REPORTS):
+        sys.exit("There is no report file to delete")
+
+    reports = load_json(BUILDTEST_REPORTS)
+    for report in reports:
+        console.print(f"Removing report file: {report}")
+        try:
+            os.remove(report)
+        except OSError:
+            continue
+
+    os.remove(BUILDTEST_REPORTS)
+
+
+def report_cmd(args, configuration, report_file=None):
+    """Entry point for ``buildtest report`` command"""
+
+    consoleColor = checkColor(args.color)
+    pager = args.pager or configuration.target_config.get("pager")
+
+    if args.report_subcommand in ["clear", "c"]:
+        clear_report()
+        return
+
+    if args.report_subcommand in ["list", "l"]:
+        list_report()
         return
 
     results = Report(
+        configuration=configuration,
         filter_args=args.filter,
         format_args=args.format,
+        start=args.start,
+        end=args.end,
+        failure=args.fail,
+        passed=args.passed,
         latest=args.latest,
         oldest=args.oldest,
-        report_file=args.report,
+        report_file=report_file,
+        count=args.count,
+        format_detailed=args.detailed,
     )
-    if args.report_subcommand == "summary":
-        report_summary(results)
+
+    if args.report_subcommand in ["path", "p"]:
+        console.print(results.reportfile())
+        return
+
+    if args.report_subcommand in ["summary", "sm"]:
+        if pager:
+            with console.pager():
+                report_summary(
+                    results,
+                    detailed=args.detailed,
+                    color=consoleColor,
+                    configuration=configuration,
+                )
+            return
+
+        report_summary(
+            results,
+            detailed=args.detailed,
+            color=consoleColor,
+            configuration=configuration,
+        )
         return
 
     if args.helpfilter:
@@ -644,40 +892,92 @@ def report_cmd(args):
         results.print_format_fields()
         return
 
-    results.print_report(terse=args.terse, noheader=args.no_header)
+    if args.filterfields:
+        results.print_raw_filter_fields()
+        return
+
+    if args.formatfields:
+        results.print_raw_format_fields()
+        return
+
+    if pager:
+        with console.pager():
+            results.print_report(
+                terse=args.terse, noheader=args.no_header, color=consoleColor
+            )
+        return
+    results.print_report(
+        terse=args.terse,
+        row_count=args.row_count,
+        noheader=args.no_header,
+        color=consoleColor,
+    )
 
 
-def report_summary(report):
-    """This method will print summary for report file which can be retrieved via ``buildtest report summary`` command"""
-
-    print("Report File: ", report.reportfile())
-    print("Total Tests:", len(report.get_testids()))
-    print("Total Tests by Names: ", len(report.get_names()))
-    print("Number of buildspecs in report: ", len(report.get_buildspecs()))
-
+def report_summary(report, configuration, detailed=None, color=None):
+    """This method will print summary for report file which can be retrieved via ``buildtest report summary`` command
+    Args:
+        report (buildtest.cli.report.Report): An instance of Report class
+        detailed (bool): An instance of bool, flag for printing a detailed report.
+        color (str): An instance of str, color that the report should be printed in
+    """
+    consoleColor = checkColor(color)
     test_breakdown = report.breakdown_by_test_names()
 
-    table = Table(
-        "[blue]Name",
-        "[blue]Total Runs",
-        "[blue]Total Pass",
-        "[blue]Total Fail",
-        title="Breakdown by test",
-    )
+    table = Table(title="Breakdown by test", header_style=consoleColor)
+    table.add_column("Name", overflow="fold", style=consoleColor)
+    table.add_column("Total Pass", overflow="fold", style=consoleColor)
+    table.add_column("Total Fail", overflow="fold", style=consoleColor)
+    table.add_column("Total Runs", overflow="fold", style=consoleColor)
+
     for k in test_breakdown.keys():
         table.add_row(
             k,
-            str(test_breakdown[k]["runs"]),
             str(test_breakdown[k]["pass"]),
             str(test_breakdown[k]["fail"]),
+            str(test_breakdown[k]["runs"]),
         )
-    console.print(table)
+    pass_results = Report(
+        filter_args={"state": "PASS"},
+        format_args="name,id,executor,state,returncode,runtime",
+        report_file=report.reportfile(),
+        configuration=configuration,
+    )
 
-    print("\n")
-
-    results = Report(
+    fail_results = Report(
         filter_args={"state": "FAIL"},
         format_args="name,id,executor,state,returncode,runtime",
         report_file=report.reportfile(),
+        configuration=configuration,
     )
-    results.print_report(title="FAIL Tests")
+
+    print_report_summary_output(
+        report, table, pass_results, fail_results, color=color, detailed=detailed
+    )
+
+
+def print_report_summary_output(
+    report, table, pass_results, fail_results, color=None, detailed=None
+):
+    """Print output of ``buildtest report summary``.
+
+    Args:
+        report (buildtest.cli.report.Report): An instance of Report class
+        table (rich.table.Table): An instance of Rich Table class
+        pass_results (buildtest.cli.report.Report): An instance of Report class with filtered output by ``state=PASS``
+        fail_results (buildtest.cli.report.Report): An instance of Report class with filtered output by ``state=FAIL``
+        color (str): An instance of a string class that tells print_report_summary what color the output should be printed in.
+        detailed (bool, optional): Print detailed output of the report summary if ``buildtest report summary --detailed`` is specified
+    """
+
+    console.print("Report File: ", report.reportfile())
+    console.print("Total Tests:", len(report.get_testids()))
+    console.print("Total Tests by Names: ", len(report.get_names()))
+    console.print("Number of buildspecs in report: ", len(report.get_buildspecs()))
+
+    if not detailed:
+        return
+
+    console.print(table)
+    pass_results.print_report(title="PASS Tests", color=color)
+    fail_results.print_report(title="FAIL Tests", color=color)

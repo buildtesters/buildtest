@@ -2,7 +2,7 @@ name: installation
 
 on:
   pull_request:
-    branches: [ devel ]
+    branches: [devel]
 
 
 jobs:
@@ -13,30 +13,48 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, ubuntu-latest ]
-        python-version: [3.7, 3.8, 3.9]
-        exclude:
-        - os: macos-latest
-          python-version: 3.8
+        os: [macos-latest, macos-13, ubuntu-latest]
+        python-version: ['3.8', '3.9', '3.10', '3.11']
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Setup Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4.7.0
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Buildtest Installation for os - ${{ matrix.os }}, python version - ${{ matrix.python-version }}
-      env:
-        OS: ${{ matrix.os }}
+    - name: "Install Zsh and Tcsh"
       run: |
-        if [ $OS = "ubuntu-latest" || $OS = "ubuntu-18.04" ] ; then sudo apt-get install -y tcsh zsh; else brew install tcsh zsh ;  fi
-        echo $SHELL
-        $SHELL --version
-        git --version
-        pip install -U pip
-        python --version
-        source setup.sh
+        if [[ ${{ matrix.os }} == 'ubuntu-latest' ]]; then
+          sudo apt-get install -y tcsh zsh
+        else
+          brew install tcsh zsh
+        fi
+    - name: Buildtest Installation for os - ${{ matrix.os }}, python version - ${{ matrix.python-version }}, shell - bash
+      env:
+        OS: '${{ matrix.os }}'
+      shell: bash
+      run: |        
+        echo "$SHELL"        
+        pip install -U pip                
+        source setup.sh        
         which buildtest
-        buildtest --version
+        buildtest --help
+
+    - name: Buildtest Installation for os - ${{ matrix.os }}, python version - ${{ matrix.python-version }}, shell - zsh
+      env:
+        OS: '${{ matrix.os }}'
+      shell: zsh {0}
+      run: |        
+        echo "$SHELL"        
+        pip install -U pip                
+        source setup.sh        
+        which buildtest
+        buildtest --help
+
+    - uses: actions/checkout@v4
+    - name: Setup tmate session
+      if: ${{ failure() }}
+      uses: mxschmitt/action-tmate@v3
+      timeout-minutes: 30

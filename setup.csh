@@ -1,7 +1,7 @@
 #!/bin/csh
 # MIT License
 
-# Copyright (c) 2021, The Regents of the University of California,
+# Copyright (c) 2021-2023, The Regents of the University of California,
 # through Lawrence Berkeley National Laboratory (subject to receipt of
 # any required approvals from the U.S. Dept. of Energy), Shahzeb Siddiqui,
 # and Vanessa Sochat. All rights reserved.
@@ -23,6 +23,12 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
+# if shell is not csh or tcsh exit
+if (`basename "$SHELL"` != "csh" && `basename "$SHELL"` != "tcsh") then
+  echo "Unsupported shell, please use 'csh' or 'tcsh' when sourcing this script"
+  exit 1
+endif
 
 # if BUILDTEST_ROOT not defined in current shell set, figure out directory path for 
 # sourced script (setup.csh) and set BUILDTEST_ROOT
@@ -57,28 +63,26 @@ if (! $?BUILDTEST_ROOT) then
 endif
 
 
-# error printing tables from tabulate when utf8 encoding not set. See https://github.com/buildtesters/buildtest/issues/665
-# setenv LANG en_US.utf8
-
-set pip=pip
+set pip=pip3
 
 if ( ! -x `command -v $pip` ) then 
-  echo "cannot find program $pip, please install $pip"
+  echo "cannot find program $pip. Please see the pip documentation: https://pip.pypa.io/en/stable/installation/ on how to install pip"
   exit 1
 endif
 
-echo "Installing buildtest dependencies"
-pip install --target $BUILDTEST_ROOT/.packages -r ${BUILDTEST_ROOT}/requirements.txt > /dev/null
-set bin=${BUILDTEST_ROOT}/bin
-set path=($path $bin)
+python3 -c "import buildtest.main" >& /dev/null
+
+# if we unable to import buildtest.main module then install buildtest dependencies
+if ( $status != 0 ) then
+  #$pip install -r ${BUILDTEST_ROOT}/requirements.txt >& /dev/null
+  $pip install "${BUILDTEST_ROOT}/." >& /dev/null
+endif
+
+set path=($path ${BUILDTEST_ROOT}/bin)
 
 # add PYTHONPATH for buildtest to persist in shell environment
 if (! $?PYTHONPATH ) then
-	setenv PYTHONPATH $BUILDTEST_ROOT:$BUILDTEST_ROOT/.packages
+	setenv PYTHONPATH $BUILDTEST_ROOT
 else
-        setenv PYTHONPATH ${PYTHONPATH}:$BUILDTEST_ROOT:$BUILDTEST_ROOT/.packages
+        setenv PYTHONPATH ${PYTHONPATH}:$BUILDTEST_ROOT
 endif
-
-echo "BUILDTEST_ROOT: $BUILDTEST_ROOT"
-set buildtest_path=`which buildtest`
-echo "buildtest command: ${buildtest_path}"

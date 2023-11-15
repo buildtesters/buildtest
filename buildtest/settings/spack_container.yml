@@ -4,8 +4,26 @@ system:
     - .*
     description: Generic System
     moduletool: lmod
-    testdir: "/home/spack/runs"
-    buildspec_roots: [$BUILDTEST_ROOT/examples]
+    testdir: "~/runs"
+    pager: False
+
+    buildspecs:
+      rebuild: False
+      count: 15
+      format: "name,description"
+      terse: False
+      root: [$BUILDTEST_ROOT/examples]
+
+    report:
+      count: 25
+      #enable terse mode for report
+      terse: False
+      format: "name,id,state,runtime,returncode"
+      # show the latest for every test
+      latest: True
+      # show the oldest for every test
+      oldest: False
+
     executors:
       local:
         bash:
@@ -19,10 +37,14 @@ system:
         gcc: ^(gcc)
       compiler:
         gcc:
-          builtin_gcc:
+          gcc_7.5.0:
             cc: /usr/bin/gcc
             fc: /usr/bin/gfortran
             cxx: /usr/bin/g++
+          clang_6.0.0:
+            cc: /usr/bin/clang
+            fc: None
+            cxx: /usr/bin/clang++
           gcc_6.5.0:
             cc: gcc
             fc: gfortran

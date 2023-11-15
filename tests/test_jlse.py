@@ -2,6 +2,7 @@ import os
 import socket
 
 import pytest
+
 from buildtest.cli.build import BuildTest
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
@@ -12,7 +13,6 @@ hostname = socket.getfqdn()
 
 
 def test_jlse():
-
     if not hostname.endswith("alcf.anl.gov"):
         pytest.skip("Test runs only on JLSE Login Nodes with domain name alcf.anl.gov")
 

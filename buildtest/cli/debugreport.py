@@ -1,9 +1,10 @@
 import os
 
+from rich.syntax import Syntax
+
 from buildtest.cli import BUILDTEST_VERSION
 from buildtest.cli.config import view_configuration
 from buildtest.defaults import console
-from rich.syntax import Syntax
 
 
 def print_debug_report(system, configuration):
@@ -23,7 +24,7 @@ def print_debug_report(system, configuration):
 
     view_configuration(configuration)
 
-    last_log = os.path.join(os.getenv("BUILDTEST_ROOT"), "buildtest.log")
+    last_log = os.path.join(os.getenv("BUILDTEST_ROOT"), "var", "buildtest.log")
     if os.path.exists(last_log):
         console.rule(last_log)
         with open(last_log, "r") as bc:

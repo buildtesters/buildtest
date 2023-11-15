@@ -15,21 +15,26 @@
 import os
 import shutil
 import sys
-
-import sphinx_rtd_theme
+import tempfile
 
 here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, here)
 from buildtest import BUILDTEST_COPYRIGHT, BUILDTEST_VERSION
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.config import SiteConfiguration
-from buildtest.defaults import BUILDTEST_ROOT, VAR_DIR
+from buildtest.defaults import BUILDTEST_ROOT, DEFAULT_SETTINGS_FILE, VAR_DIR
 from buildtest.utils.file import is_dir
 
 # set BUILDTEST_ROOT environment that is generally set by 'source setup.sh'
 os.environ["BUILDTEST_ROOT"] = here
 # add $BUILDTEST_ROOT/bin to $PATH to reference 'buildtest' command in docs
 os.environ["PATH"] += "%s%s" % (os.pathsep, os.path.join(here, "bin"))
+
+os.environ["BUILDTEST_CI_DIR"] = tempfile.mkdtemp()
+print(f"BUILDTEST_CI_DIR: {os.environ['BUILDTEST_CI_DIR']}")
+
+settings_file = os.path.join(os.environ["BUILDTEST_CI_DIR"], "config.yml")
+shutil.copyfile(DEFAULT_SETTINGS_FILE, settings_file)
 
 # remove $BUILDTEST_ROOT/var which writes variable data
 if is_dir(VAR_DIR):
@@ -41,10 +46,7 @@ configuration.detect_system()
 configuration.validate()
 # need to create buildspec cache
 
-cache = BuildspecCache(
-    rebuild=True,
-    configuration=configuration,
-)
+cache = BuildspecCache(rebuild=True, configuration=configuration)
 
 # -- Project information -----------------------------------------------------
 project = "buildtest"
@@ -67,39 +69,49 @@ release = BUILDTEST_VERSION
 # Sphinx extensions
 extensions = [
     "autoapi.extension",
+    "sphinx_design",
     "sphinxarg.ext",
     "sphinxcontrib.programoutput",
     "sphinxext.remoteliteralinclude",
     "sphinx_rtd_theme",
-    "sphinx_tabs.tabs",
     # "sphinx.ext.autosectionlabel",
     "sphinx.ext.coverage",
     "sphinx.ext.imgmath",
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
+    "sphinx.ext.todo",
     "sphinx.ext.viewcode",
+    "sphinx_copybutton",
+    "sphinx_search.extension",
 ]
 
-# Document Python Code
+todo_include_todos = True
+
+# Sphinx AutoApi configuration see https://sphinx-autoapi.readthedocs.io/en/latest/
 autoapi_type = "python"
 autoapi_dirs = [os.path.join(BUILDTEST_ROOT, "buildtest")]
 autoapi_add_toctree_entry = True
 autoapi_member_order = "bysource"
 autoapi_root = "api"
-autoapi_keep_files = True
 autoapi_python_class_content = "both"
 autoapi_template_dir = "_templates/autoapi"
 
+# sphinx napoleon setting see https://sphinxcontrib-napoleon.readthedocs.io/en/latest/sphinxcontrib.napoleon.html#module-sphinxcontrib.napoleon
 napoleon_include_init_with_doc = False
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
+    "rich": ("https://rich.readthedocs.io/en/stable/", None),
 }
 
 suppress_warnings = ["autoapi"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
+
+# configuration for sphinx-copybutton see https://sphinx-copybutton.readthedocs.io/en/latest/
+copybutton_prompt_text = r">>> |\.\.\. |\$ "
+copybutton_prompt_is_regexp = True
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -115,7 +127,7 @@ master_doc = "index"
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -131,9 +143,9 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-# html_theme = 'alabaster'
 html_theme = "sphinx_rtd_theme"
 
+html_logo = f"{BUILDTEST_ROOT}/logos/BuildTest_Primary_Center_4x3.png"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -143,6 +155,7 @@ html_theme_options = {
     "prev_next_buttons_location": "both",
     "sticky_navigation": True,
     "style_external_links": True,
+    "logo_only": True,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -154,7 +167,7 @@ html_context = {
     # "github_user": "shahzebmsiddiqui",  # Username
     # "github_repo": "buildtest",  # Repo name
     # "github_version": "master",  # Version
-    "css_files": ["_static/theme_overrides.css"]  # override wide tables in RTD theme
+    # "css_files": ["_static/theme_overrides.css"]  # override wide tables in RTD theme
 }
 
 # Custom sidebar templates, must be a dictionary that maps document names

@@ -1,12 +1,14 @@
 import os
 import shutil
 
+from rich.prompt import Prompt
+
 from buildtest.cli.build import resolve_testdirectory
 from buildtest.defaults import (
     BUILD_HISTORY_DIR,
     BUILD_REPORT,
     BUILDSPEC_CACHE_FILE,
-    BUILDTEST_REPORT_SUMMARY,
+    BUILDTEST_REPORTS,
 )
 from buildtest.utils.file import is_dir, is_file
 
@@ -28,21 +30,31 @@ def clean(configuration, yes):
 
     # request user prompt when 'buildtest clean' is specified without '-y' option. Default selection is 'y' for confirmation
     if not yes:
+        remove_testdir = Prompt.ask(
+            f"Remove Test Directory {resolved_testdir}",
+            default="y",
+            choices=["y", "n"],
+            show_choices=True,
+        )
 
-        remove_testdir = (
-            input(f"Remove Test Directory {resolved_testdir} (y/n) [default: y] ")
-            or "y"
+        remove_report = Prompt.ask(
+            f"Remove Report File {BUILD_REPORT}",
+            default="y",
+            choices=["y", "n"],
+            show_choices=True,
         )
-        remove_report = (
-            input(f"Remove Report File {BUILD_REPORT} (y/n) [default: y] ") or "y"
+
+        remove_history = Prompt.ask(
+            f"Remove History Directory {BUILD_HISTORY_DIR}",
+            default="y",
+            choices=["y", "n"],
+            show_choices=True,
         )
-        remove_history = (
-            input(f"Remove History Directory {BUILD_HISTORY_DIR} (y/n) [default: y] ")
-            or "y"
-        )
-        remove_buildspec_cache = (
-            input(f"Remove Buildspec Cache {BUILDSPEC_CACHE_FILE} (y/n) [default: y] ")
-            or "y"
+        remove_buildspec_cache = Prompt.ask(
+            f"Remove Buildspec Cache {BUILDSPEC_CACHE_FILE}",
+            default="y",
+            choices=["y", "n"],
+            show_choices=True,
         )
 
     if remove_testdir == "y":
@@ -54,8 +66,8 @@ def clean(configuration, yes):
         print("======> Removing Report File")
         if is_file(BUILD_REPORT):
             os.remove(BUILD_REPORT)
-        if is_file(BUILDTEST_REPORT_SUMMARY):
-            os.remove(BUILDTEST_REPORT_SUMMARY)
+        if is_file(BUILDTEST_REPORTS):
+            os.remove(BUILDTEST_REPORTS)
 
     if remove_history == "y":
         print("======> Removing History Directory")

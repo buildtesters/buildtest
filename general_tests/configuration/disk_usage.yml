@@ -1,4 +1,4 @@
-version: "1.0"
+
 buildspecs:
   root_disk_usage:
     executor: generic.local.bash

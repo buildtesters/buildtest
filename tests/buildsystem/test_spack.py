@@ -2,6 +2,7 @@ import getpass
 import os
 
 import pytest
+
 from buildtest.cli.build import BuildTest
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.config import SiteConfiguration
@@ -10,7 +11,6 @@ from buildtest.system import BuildTestSystem
 
 
 def test_spack_examples():
-
     # spack builds must run in container  ghcr.io/buildtesters/buildtest_spack:latest which comes with username 'spack' and home directory '/home/spack'
     if not (getpass.getuser() == "spack" and os.path.expanduser("~") == "/home/spack"):
         pytest.skip(

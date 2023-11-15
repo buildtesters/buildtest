@@ -1,0 +1,16 @@
+buildspecs:
+  file_traverse_limit:
+    type: script
+    executor: generic.local.bash
+    description: Use of file_traverse_limit to limit number of files searched in a directory
+    run: |
+      mkdir foo
+      touch foo/{1..99}.txt
+    status:
+      file_count:
+        - dir: foo
+          count: 50
+          file_traverse_limit: 50
+        - dir: foo
+          count: 10
+          file_traverse_limit: 20

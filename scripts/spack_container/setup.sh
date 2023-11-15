@@ -6,13 +6,10 @@
 module load python
 
 # setup python environment
-python -m venv $HOME/pyenv/buildtest
-source $HOME/pyenv/buildtest/bin/activate
+python -m venv "$HOME/pyenv/buildtest"
+source "$HOME/pyenv/buildtest/bin/activate"
 
-# buildtest deps are stored in this directory, inside container we need to reinstall buildtest to ensure everything runs correctly.
-rm -rf $HOME/buildtest/.packages
-
-cd $HOME/buildtest
+cd ~/buildtest || { echo "Unable to cd to 'buildtest' directory"; exit 1;}
 # installing buildtest
 source setup.sh
 

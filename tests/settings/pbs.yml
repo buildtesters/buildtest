@@ -1,12 +1,25 @@
 system:
   generic:
     hostnames: ['.*']
-
     moduletool: N/A
+    poolsize: 1
+    max_jobs: 1
+    pager: False
+    buildspecs:
+      rebuild: False
+      count: 15
+      format: "name,description"
+      terse: False
+    report:
+      count: 25
+      terse: False
+      format: "name,id,state,runtime,returncode"
+      latest: False
+      oldest: False
     executors:
       defaults:
-         pollinterval: 10
-         max_pend_time: 30
+        pollinterval: 5
+        maxpendtime: 30
       local:
         bash:
           description: submit jobs on local machine using bash shell

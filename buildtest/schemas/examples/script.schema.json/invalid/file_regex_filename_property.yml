@@ -1,0 +1,10 @@
+buildspecs:
+  invalid_property_filename:
+    type: script
+    executor: generic.local.bash
+    description: Invalid property name filename under file_regex
+    run: echo "Hello" > hello.txt
+    status:
+      file_regex:
+        - filename: hello.txt
+          exp: '^(Hello)$'

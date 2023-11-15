@@ -1,0 +1,9 @@
+buildspecs:
+  required_property_in_metrics:
+    type: script
+    executor: generic.local.bash
+    description: metrics must have a file_regex or regex property to define how to capture metric
+    run: echo "hello"
+    metrics:
+      foo:
+        type: str

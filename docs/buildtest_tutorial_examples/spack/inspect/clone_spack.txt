@@ -1,0 +1,73 @@
+$ buildtest inspect query -o -t clone_spack_automatically clone_spack_and_specify_root
+──────────────────────────────────────────────────────────────────────────────────── clone_spack_automatically/32829f81-0acc-4d11-bb99-e77bb01e37c7 ────────────────────────────────────────────────────────────────────────────────────
+Executor: generic.local.bash
+Description: Clone spack automatically
+State: PASS
+Returncode: 0
+Runtime: 32.998718 sec
+Starttime: 2023/07/21 13:32:57
+Endtime: 2023/07/21 13:33:30
+Command: bash --norc --noprofile -eo pipefail clone_spack_automatically_build.sh
+Test Script: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/32829f81/clone_spack_automatically.sh
+Build Script: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/32829f81/clone_spack_automatically_build.sh
+Output File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/32829f81/clone_spack_automatically.out
+Error File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/32829f81/clone_spack_automatically.err
+Log File: /home/spack/buildtest/var/logs/buildtest_vfshvbrm.log
+──────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/32829f81/clone_spack_automatically.out ─────────────────────────────────────────────────────
+==> Created environment 'spack-develop' in /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/32829f81/stage/spack/var/spack/environments/spack-develop                                                          
+==> You can activate this environment with:                                                                                                                                                                                             
+==>   spack env activate spack-develop                                                                                                                                                                                                  
+    spack-develop                                                                                                                                                                                                                       
+/home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/32829f81/stage/spack/bin/spack                                                                                                                                
+                                                                                                                                                                                                                                        
+────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/32829f81/clone_spack_automatically.sh ──────────────────────────────────────────────────────
+#!/bin/bash                                                                                                                                                                                                                             
+git clone https://github.com/spack/spack                                                                                                                                                                                                
+source ./spack/share/spack/setup-env.sh                                                                                                                                                                                                 
+spack env create  spack-develop                                                                                                                                                                                                         
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                        
+######## START OF POST COMMANDS ########                                                                                                                                                                                                
+spack env list                                                                                                                                                                                                                          
+which spack                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                        
+######## END OF POST COMMANDS   ########                                                                                                                                                                                                
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                        
+────────────────────────────────────────────────────────────────────────────────── clone_spack_and_specify_root/7c8764bd-ec84-4e24-87c0-8732e1b34193 ───────────────────────────────────────────────────────────────────────────────────
+Executor: generic.local.bash
+Description: Clone spack explicitly and specify root
+State: PASS
+Returncode: 0
+Runtime: 3.636492 sec
+Starttime: 2023/07/21 13:32:57
+Endtime: 2023/07/21 13:33:01
+Command: bash --norc --noprofile -eo pipefail clone_spack_and_specify_root_build.sh
+Test Script: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/7c8764bd/clone_spack_and_specify_root.sh
+Build Script: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/7c8764bd/clone_spack_and_specify_root_build.sh
+Output File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/7c8764bd/clone_spack_and_specify_root.out
+Error File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/7c8764bd/clone_spack_and_specify_root.err
+Log File: /home/spack/buildtest/var/logs/buildtest_vfshvbrm.log
+───────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/7c8764bd/clone_spack_and_specify_root.out ──────────────────────────────────────────────────
+    e4s                                                                                                                                                                                                                                 
+/tmp/spack-demo/bin/spack                                                                                                                                                                                                               
+                                                                                                                                                                                                                                        
+─────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/7c8764bd/clone_spack_and_specify_root.sh ───────────────────────────────────────────────────
+#!/bin/bash                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                        
+######## START OF PRE COMMANDS ########                                                                                                                                                                                                 
+git clone -b e4s-23.05 https://github.com/spack/spack.git /tmp/spack-demo                                                                                                                                                               
+######## END OF PRE COMMANDS   ########                                                                                                                                                                                                 
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                        
+source /tmp/spack-demo/share/spack/setup-env.sh                                                                                                                                                                                         
+spack env create  e4s                                                                                                                                                                                                                   
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                        
+######## START OF POST COMMANDS ########                                                                                                                                                                                                
+spack env list                                                                                                                                                                                                                          
+which spack                                                                                                                                                                                                                             
+######## END OF POST COMMANDS   ########                                                                                                                                                                                                
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                        

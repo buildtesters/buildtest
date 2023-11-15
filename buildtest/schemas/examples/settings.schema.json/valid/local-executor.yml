@@ -4,6 +4,9 @@ system:
     #logdir: $BUILDTEST_ROOT/logs
     #testdir: $BUILDTEST_ROOT/tests
     moduletool: N/A
+    poolsize: 1
+    max_jobs: 1
+    pager: False
     cdash:
       url: https://my.cdash.org
       project: buildtest
@@ -14,6 +17,25 @@ system:
       threads_per_core: 2
       sockets: 1
       model: "Intel(R) Core(TM) i7-8569U CPU @ 2.80GHz"
+    buildspecs:
+      # whether to rebuild cache file automatically when running `buildtest buildspec find`
+      rebuild: False
+      # limit number of records to display when running `buildtest buildspec find`
+      count: 15
+      # format fields to display when running `buildtest buildspec find`, By default we will show name,description
+      format: "name,description"
+      # enable terse mode
+      terse: False
+
+    report:
+      count: 25
+      #enable terse mode for report
+      terse: False
+      format: "name,id,state,runtime,returncode"
+      # show the latest for every test
+      latest: True
+      # show the oldest for every test
+      oldest: False
     executors:
       local:
         bash:
@@ -32,11 +54,9 @@ system:
         csh:
           description: submit jobs on local machine using csh shell
           shell: csh -x
-
         tcsh:
           description: submit jobs on local machine using tcsh shell
           shell: /bin/tcsh
-
         zsh:
           description: submit jobs on local machine using zsh shell
           shell: /bin/zsh

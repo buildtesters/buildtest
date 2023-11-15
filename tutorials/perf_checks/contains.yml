@@ -1,0 +1,42 @@
+buildspecs:
+  contains_and_not_contains:
+    type: script
+    executor: generic.local.bash
+    description: Status check based on contains and not contains where test pass
+    vars:
+      X: 1
+    run: |
+      echo "X: $X"
+    metrics:
+      x:
+        type: int
+        regex:
+          stream: stdout
+          exp: 'X:\s+(\S+)\s+.*'
+          item: 1
+    status:
+      contains:
+        - name: x
+          ref: [1, 2, 4, 8]
+      not_contains:
+        - name: x
+          ref: [2, 4]
+  assert_contains_fail:
+    type: script
+    executor: generic.local.bash
+    description: Status check based on contains where test fails
+    vars:
+      X: 1
+    run: |
+      echo "X: $X"
+    metrics:
+      x:
+        type: int
+        regex:
+          stream: stdout
+          exp: 'X:\s+(\S+)\s+.*'
+          item: 1
+    status:
+      contains:
+        - name: x
+          ref: ['1', 2, 4, 8]

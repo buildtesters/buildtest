@@ -30,6 +30,15 @@
         "type": "integer"
       }
     },
+    "list_of_positive_integers": {
+      "type": "array",
+      "uniqueItems": true,
+      "minItems": 1,
+      "items": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
     "int_or_list": {
       "oneOf": [
         {
@@ -40,14 +49,61 @@
         }
       ]
     },
-    "regex": {
+    "file_regex": {
+      "type": "array",
+      "description": "Specify a list of regular expressions to match files in the current working directory. The regular expression is matched using ``re.search`` python module. ",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "file",
+          "exp"
+        ],
+        "properties": {
+          "file": {
+              "type": "string",
+              "description": "Specify a file name to match with regular expression"
+          },
+          "exp": {
+              "type": "string",
+              "description": "Specify a regular expression to run on the selected file name"
+          }
+        }
+      }
+    },
+    "file_regex_in_metrics": {
       "type": "object",
-      "description": "Perform regular expression search using ``re.search`` python module on stdout/stderr stream for reporting if test ``PASS``. ",
+      "additionalProperties": false,
+      "description": "Specify a regular expressions on a filepath used for assigning value to metrics. The regular expression is matched using ``re.search`` python module. ",
       "required": [
-        "stream",
+        "file",
         "exp"
       ],
+      "properties": {
+        "additionalProperties": false,
+        "file": {
+            "type": "string",
+            "description": "Specify a file name to match with regular expression"
+        },
+        "exp": {
+            "type": "string",
+            "description": "Specify a regular expression to run on the selected file name"
+        },
+        "item": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Specify the item number used to index element in `match.group() <https://docs.python.org/3/library/re.html#match-objects>`_"
+        }
+      }
+    },
+    "regex": {
+      "type": "object",
       "additionalProperties": false,
+      "description": "Perform regular expression search using ``re.search`` python module on stdout/stderr stream for reporting if test ``PASS``. ",
+      "required": [
+        "exp",
+        "stream"
+      ],
       "properties": {
         "stream": {
           "type": "string",
@@ -60,6 +116,11 @@
         "exp": {
           "type": "string",
           "description": "Specify a regular expression to run with input stream specified by ``stream`` field. buildtest uses re.search when performing regex"
+        },
+        "item": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Specify the item number used to index element in `match.group() <https://docs.python.org/3/library/re.html#match-objects>`_"
         }
       }
     },
@@ -80,6 +141,10 @@
       "description": "The ``description`` field is used to document what the test is doing",
       "maxLength": 80
     },
+    "summary": {
+      "type": "string",
+      "description": "The ``summary`` field is used to document what the test is doing and can be a multi-line string"
+    },
     "tags": {
       "description": "Classify tests using a tag name, this can be used for categorizing test and building tests using ``--tags`` option",
       "$ref": "#/definitions/string_or_list"
@@ -92,82 +157,78 @@
       "type": "string",
       "description": "Select one of the executor name defined in your configuration file (``config.yml``). Every buildspec must have an executor which is responsible for running job. "
     },
+    "needs": {
+      "description": "A list of test names that are dependency before runnning job",
+      "type": "array",
+      "items": [
+        {
+          "oneOf": [
+            { "type": "string" },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^.*$": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "state": {"$ref": "#/definitions/state"},
+                    "returncode": {"$ref": "#/definitions/returncode"}
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
     "metrics_field": {
       "type": "object",
       "additionalProperties": false,
+      "required": [
+        "type"
+      ],
       "properties": {
+        "type": {
+          "type": "string",
+          "description": "Specify python data-type (str, int, float) to convert metric. ",
+          "enum": [
+            "str",
+            "int",
+            "float"
+          ]
+        },
         "regex": {
           "$ref": "#/definitions/regex"
         },
-        "vars": {
-          "type": "string",
-          "description": "Assign value to metric based on variable name"
-        },
-        "env": {
-          "type": "string",
-          "description": "Assign value to metric based on environment variable"
+        "file_regex": {
+          "$ref": "#/definitions/file_regex_in_metrics"
         }
-      }
+      },
+        "oneOf": [
+          { "required": ["regex" ] },
+          { "required": [ "file_regex"] }
+        ]
     },
     "metrics": {
       "type": "object",
       "description": "This field is used for defining one or more metrics that is recorded for each test. A metric must have a unique name which is recorded in the test metadata.",
-      "patternProperties": {
-        "^.*$": {
-          "$ref": "#/definitions/metrics_field",
-          "description": "Name of metric"
-        }
+      "propertyNames": {
+        "pattern": "^[A-Za-z0-9_.-]+$"
+      },
+      "additionalProperties": {
+        "$ref": "#/definitions/metrics_field"
       }
     },
-    "run_only": {
-      "type": "object",
-      "description": "A set of conditions to specify when running tests. All conditions must pass in order to process test.",
-      "additionalProperties": false,
-      "properties": {
-        "scheduler": {
-          "type": "string",
-          "description": "Test will run only if scheduler is available. We assume binaries are available in $PATH",
-          "enum": [
-            "lsf",
-            "slurm",
-            "cobalt",
-            "pbs"
-          ]
-        },
-        "user": {
-          "type": "string",
-          "description": "Test will run only if current user matches this field, otherwise test will be skipped"
-        },
-        "platform": {
-          "type": "string",
-          "description": "This test will run if target system is Linux or Darwin. We check target system using ``platform.system()`` and match with input field",
-          "enum": [
-            "Linux",
-            "Darwin"
-          ]
-        },
-        "linux_distro": {
-          "type": "array",
-          "description": "Specify a list of Linux Distros to check when processing test. If target system matches one of input field, test will be processed.",
-          "uniqueItems": true,
-          "minItems": 1,
-          "items": {
-            "type": "string",
-            "enum": [
-              "darwin",
-              "ubuntu",
-              "debian",
-              "rhel",
-              "centos",
-              "fedora",
-              "sles",
-              "opensuse",
-              "amazon",
-              "arch"
-            ]
-          }
-        }
-      }
+    "state": {
+      "type": "string",
+      "description": "explicitly mark state of test regardless of status calculation",
+      "enum": [
+        "PASS",
+        "FAIL"
+      ]
+    },
+    "returncode": {
+      "description": "Specify a list of returncodes to match with script's exit code. buildtest will PASS test if script's exit code is found in list of returncodes. You must specify unique numbers as list and a minimum of 1 item in array",
+      "$ref": "#/definitions/int_or_list"
     },
     "status": {
       "type": "object",
@@ -182,16 +243,36 @@
             "OUT_OF_MEMORY",
             "TIMEOUT"
           ],
-          "description": "This field can be used for checking Slurm Job State, if there is a match buildtest will report as ``PASS`` "
+          "description": "This field can be used to pass test based on Slurm Job State, if there is a match buildtest will report as ``PASS`` "
         },
-        "returncode": {
-          "description": "Specify a list of returncodes to match with script's exit code. buildtest will PASS test if script's exit code is found in list of returncodes. You must specify unique numbers as list and a minimum of 1 item in array",
-          "$ref": "#/definitions/int_or_list"
+        "pbs_job_state":
+        {
+          "type": "string",
+          "description": "This field can be used to pass test based on PBS Job State, if there is a match buildtest will report as ``PASS`` ",
+          "enum": [
+            "H",
+            "S",
+            "F"
+          ]
         },
+        "lsf_job_state": {
+          "type": "string",
+          "description": "This field can be used to pass test based on LSF Job State, if there is a match buildtest will report as ``PASS`` ",
+          "enum": [
+            "DONE",
+            "EXIT"
+          ]
+        },
+        "returncode": { "$ref": "#/definitions/returncode" },
         "regex": {
           "$ref": "#/definitions/regex",
           "description": "Determine state (PASS/FAIL) of test based on regular expression on output or error stream"
         },
+        "file_regex": {
+          "$ref": "#/definitions/file_regex",
+          "description": "Perform a regular expression search on a list of arbitrary files, if expression matches for any file buildtest will report as ``PASS``. This field is useful for checking output of a test that is not captured in stdout or stderr. "
+        },
+
         "runtime": {
           "type": "object",
           "description": "The runtime section will pass test based on min and max values and compare with actual runtime. ",
@@ -208,14 +289,309 @@
             }
           }
         },
-        "state": {"type": "string",
-          "description": "explicitly mark state of test regardless of status calculation",
-          "enum": ["PASS", "FAIL"]}
+        "assert_ge": {
+          "type": "array",
+          "description": "Perform assertion of greater and equal (>=) with reference value",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "ref": {
+                "type": "number",
+                "description": "Specify reference value (int,float) for comparison"
+              }
+            }
+          }
+        },
+        "assert_le": {
+          "type": "array",
+          "description": "Perform assertion of less than and equal (<=) with reference value",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "ref": {
+                "type": "number",
+                "description": "Specify reference value (int,float) for comparison"
+              }
+            }
+          }
+        },
+        "assert_gt": {
+          "type": "array",
+          "description": "Perform assertion of greater than (>) with reference value",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "ref": {
+                "type": "number",
+                "description": "Specify reference value (int,float) for comparison"
+              }
+            }
+          }
+        },
+        "assert_lt": {
+          "type": "array",
+          "description": "Perform assertion of less than (<) with reference value",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "ref": {
+                "type": "number",
+                "description": "Specify reference value (int,float) for comparison"
+              }
+            }
+          }
+        },
+        "assert_eq":
+        {
+          "description": "Perform assertion of equality (=) with reference value",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "ref": {
+                "description": "Specify reference value (str, int,float) for comparison",
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "assert_ne":
+        {
+          "description": "Perform assertion of not equal with reference value",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "ref": {
+                "description": "Specify reference value (str, int, float) for comparison",
+                "oneOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "assert_range":
+        {
+          "description": "Perform assertion based on lower and upper bound",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "lower",
+              "upper"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "lower": {
+                "description": "Specify reference value for lower bound",
+                "type": "number"
+              },
+              "upper": {
+                "description": "Specify reference value for upper bound",
+                "type": "number"
+              }
+
+            }
+          }
+        },
+        "contains": {
+          "description": "Check if metric value is in a list of reference values ",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "ref": {
+                "type": "array",
+                "minItems": 1,
+                "description": "Specify a list of reference value"
+              }
+            }
+          }
+        },
+        "not_contains": {
+          "description": "Check if metric value not in a list of reference values ",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "ref": {
+                "type": "array",
+                "minItems": 1,
+                "description": "Specify a list of reference value"
+              }
+            }
+          }
+        },
+        "is_symlink": {
+          "description": "Check for list of files or directory paths that are symbolic links",
+          "$ref": "#/definitions/list_of_strings"
+        },
+        "exists": {
+          "description": "Check for list of file or directory path for existences using os.path.exists",
+          "$ref": "#/definitions/list_of_strings"
+        },
+        "is_dir": {
+          "description": "Check for list of filepaths are directories",
+          "$ref": "#/definitions/list_of_strings"
+        },
+        "is_file": {
+          "description": "Check for list of filepaths are files",
+          "$ref": "#/definitions/list_of_strings"
+        },
+        "file_count": {
+          "description": "Perform assertion check by comparing file count in a directory",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "dir",
+              "count"
+            ],
+            "properties": {
+              "dir": {
+                "type": "string",
+                "description": "Directory path to check for file count"
+              },
+              "count": {
+                "type": "integer",
+                "description": "Number of files expected in directory",
+                "minimum": 0
+              },
+              "depth": {
+                "type": "integer",
+                "description": "Depth of directory to search for files",
+                "minimum": 0
+              },
+              "ext": {
+                "$ref": "#/definitions/string_or_list",
+                "description": "File extension to filter files in directory"
+              },
+              "filepattern": {
+                "type": "string",
+                "description": "Specify a regular expression when searching for files in directory"
+              },
+              "filetype": {
+                "type": "string",
+                "description": "Specify file type when searching for files in directory. It can be 'file', 'dir' or 'symlink'",
+                "enum": [
+                  "file",
+                  "dir",
+                  "symlink"
+                ]
+              },
+              "file_traverse_limit": {
+                "type": "integer",
+                "description": "Limit the number of files to traverse when searching for files in directory",
+                "minimum": 1,
+                "default": 10000,
+                "maximum": 999999
+              }
+            }
+          }
+        },
+        "state": {
+          "$ref": "#/definitions/state",
+          "description": "explicitly mark state of test regardless of status calculation"
+        },
+        "mode": {
+          "type": "string",
+          "description": "Determine how the status check is resolved, for instance it can be logical AND or OR",
+          "enum": ["any", "all"]
+        }
       }
     },
     "BB": {
       "$ref": "#/definitions/list_of_strings",
-       "description": "Create burst buffer space, this specifies #BB options in your test."
+      "description": "Create burst buffer space, this specifies #BB options in your test."
     },
     "DW": {
       "$ref": "#/definitions/list_of_strings",
@@ -245,19 +621,103 @@
         "^.*$": {
           "additionalProperties": false,
           "properties": {
-            "env": { "$ref": "#/definitions/env" },
-            "vars": { "$ref": "#/definitions/env" },
-            "sbatch": { "$ref": "#/definitions/list_of_strings" },
-            "bsub": { "$ref": "#/definitions/list_of_strings" },
-            "pbs": { "$ref": "#/definitions/list_of_strings" },
-            "cobalt": { "$ref": "#/definitions/list_of_strings" },
-            "BB":  { "$ref": "#/definitions/BB" },
-            "DW": { "$ref": "#/definitions/DW" },
-            "status": { "$ref": "#/definitions/status" },
-            "metrics": { "$ref": "#/definitions/metrics" }
+            "env": {
+              "$ref": "#/definitions/env"
+            },
+            "vars": {
+              "$ref": "#/definitions/env"
+            },
+            "sbatch": {
+              "$ref": "#/definitions/list_of_strings"
+            },
+            "bsub": {
+              "$ref": "#/definitions/list_of_strings"
+            },
+            "pbs": {
+              "$ref": "#/definitions/list_of_strings"
+            },
+            "cobalt": {
+              "$ref": "#/definitions/list_of_strings"
+            },
+            "BB": {
+              "$ref": "#/definitions/BB"
+            },
+            "DW": {
+              "$ref": "#/definitions/DW"
+            },
+            "status": {
+              "$ref": "#/definitions/status"
+            },
+            "metrics": {
+              "$ref": "#/definitions/metrics"
+            }
           }
         }
       }
+    },
+    "cc": {
+      "type": "string",
+      "description": "Set C compiler wrapper"
+    },
+    "fc": {
+      "type": "string",
+      "description": "Set Fortran compiler wrapper"
+    },
+    "cxx": {
+      "type": "string",
+      "description": "Set C++ compiler wrapper"
+    },
+    "cflags": {
+      "type": "string",
+      "description": "Set C compiler flags."
+    },
+    "fflags": {
+      "type": "string",
+      "description": "Set Fortran compiler flags."
+    },
+    "cxxflags": {
+      "type": "string",
+      "description": "Set C++ compiler flags."
+    },
+    "ldflags": {
+      "type": "string",
+      "description": "Set linker flags"
+    },
+    "cppflags": {
+      "type": "string",
+      "description": "Set C or C++ preprocessor flags"
+    },
+    "run": {
+      "type": "string",
+      "description": "Specify a series of commands to run."
+    },
+    "module": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+         "purge": {
+           "type": "boolean",
+            "description": "Run ``module purge`` if purge is set"
+         },
+         "load": {
+           "$ref": "definitions.schema.json#/definitions/list_of_strings",
+           "description": "Load one or more modules via ``module load``"
+         },
+         "restore": {
+           "description": "Load a collection name via ``module restore``",
+           "type": "string"
+         },
+         "swap": {
+           "description": "Swap modules using ``module swap``. The swap property expects 2 unique modules.",
+           "type": "array",
+           "uniqueItems": true,
+           "minItems": 2,
+           "maxItems": 2,
+           "items": {
+             "type": "string"
+           }
+         }
+       }
     }
   }
 }

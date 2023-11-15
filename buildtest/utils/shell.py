@@ -71,15 +71,9 @@ def get_python_shells():
 
 def shell_lookup():
     """Return a dictionary of shell types and list of all shell interpreter. If shell is not present the entry will be an empty list."""
-    shells = {
-        "bash": ["bash"],
-        "sh": ["sh"],
-        "csh": ["csh"],
-        "zsh": ["zsh"],
-    }
+    shells = {"bash": ["bash"], "sh": ["sh"], "csh": ["csh"], "zsh": ["zsh"]}
 
     for name in shells.keys():
-
         cmd = BuildTestCommand(f"which -a {name}")
         cmd.execute()
         out = cmd.get_output()
@@ -157,6 +151,16 @@ class Shell:
 
         self._opts = " ".join(shell.split()[1:])
         self.path = self.name
+        self.default_opts = None
+
+        if self.name == "bash":
+            self.default_opts = "--norc --noprofile -eo pipefail"
+        elif self.name == "csh":
+            self.default_opts = "-ef"
+        elif self.name == "zsh":
+            self.default_opts = "-f"
+        else:
+            self.default_opts = ""
 
     @property
     def opts(self):

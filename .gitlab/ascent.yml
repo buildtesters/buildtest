@@ -1,0 +1,35 @@
+# This pipeline is run at OLCF at: https://code.ornl.gov/ecpcitest/buildtest/
+
+variables:
+  CUSTOM_CI_BUILDS_DIR: /gpfs/wolf/proj-shared/gen014/ecp-ci/buildtest
+
+stages:
+  - regression
+
+ascent_pr_regression_test:
+  tags: ["nobatch"]
+  stage: regression
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "external_pull_request_event" && $CI_EXTERNAL_PULL_REQUEST_TARGET_BRANCH_NAME == $CI_DEFAULT_BRANCH'
+      changes:
+        - buildtest/**/*
+        - tests/**/*
+
+  script:
+    - set -e
+    - ml python/3.7.0-anaconda3-5.3.0
+    - whoami
+    - git branch
+    - cd $CI_PROJECT_DIR
+    - conda create -p $CI_PROJECT_DIR/.conda python=3.8 -y
+    - source activate $CI_PROJECT_DIR/.conda
+    - source setup.sh
+    - pip install -r docs/requirements.txt
+    - python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
+    - echo $?
+    - curl -Os https://uploader.codecov.io/latest/linux/codecov
+    - chmod +x codecov
+    # CODECOV_TOKEN environment must be set, this value is stored in CI/CD variable at https://code.ornl.gov/ecpcitest/buildtest/-/settings/ci_cd
+    - ./codecov -t $CODECOV_TOKEN
+    - source deactivate
+    - rm -rf $CI_PROJECT_DIR/.conda

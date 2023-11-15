@@ -4,7 +4,14 @@ from buildtest.cli.report import Report
 
 
 def path_cmd(
-    name, testpath=None, outfile=None, errfile=None, buildscript=None, stagedir=None
+    name,
+    configuration,
+    testpath=None,
+    outfile=None,
+    errfile=None,
+    buildscript=None,
+    stagedir=None,
+    buildenv=None,
 ):
     """This is the entry point for ``buildtest path`` command which will display path
     variables for a given test name. If no options are specified we retrieve the root
@@ -33,20 +40,21 @@ def path_cmd(
 
     Args:
         name (str): Name of test to search in report file
+        configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
         testpath (bool): Retrieve path to testpath for a given test
         outfile (bool): Retrieve path output file for a given test
         errfile (bool): Retrieve path to error file for a given test
         buildscript (bool): Retrieve path to build script for a given test
         stagedir (bool): Retrieve path to stage directory for a given test
+        buildenv (bool): Retrieve path to buildenv for a given test
     """
-    report = Report()
+    report = Report(configuration=configuration)
 
     tid = None
     builders = report.builder_names()
 
     # if input name contains a '/' followed by TEST ID we will match id
     if name.find("/") != -1:
-
         for builder in builders:
             if builder.startswith(name):
                 tid = builder.split("/")[1]
@@ -79,5 +87,8 @@ def path_cmd(
 
     if stagedir:
         path = record[tid]["stagedir"]
+
+    if buildenv:
+        path = record[tid]["buildenv"]
 
     print(path)

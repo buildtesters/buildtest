@@ -1,10 +1,17 @@
 import os
+import shutil
+import tempfile
 
 import pytest
+
+from buildtest.cli.build import BuildTest
 from buildtest.cli.config import (
+    list_profiles,
+    remove_profiles,
     validate_config,
     view_configuration,
     view_executors,
+    view_path,
     view_system,
 )
 from buildtest.config import SiteConfiguration
@@ -12,18 +19,20 @@ from buildtest.defaults import DEFAULT_SETTINGS_SCHEMA, SCHEMA_ROOT
 from buildtest.executors.setup import BuildExecutor
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_recipe, load_schema
+from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
 
 pytest_root = os.path.dirname(os.path.dirname(__file__))
 
+system = BuildTestSystem()
+
 configuration = SiteConfiguration()
 configuration.detect_system()
-configuration.validate()
+configuration.validate(moduletool=system.system["moduletool"])
 
 
 @pytest.mark.cli
 def test_config_systems():
-
     schema_files = os.path.join(
         SCHEMA_ROOT, "examples", "settings.schema.json", "valid"
     )
@@ -37,10 +46,14 @@ def test_config_systems():
 @pytest.mark.cli
 def test_view_configuration():
     view_configuration(configuration)
+    # buildtest config view --theme emacs
+    view_configuration(configuration, theme="emacs")
+
+    # buildtest config view --pager
+    view_configuration(configuration, pager=True)
 
 
 def test_valid_config_schemas():
-
     valid_schema_dir = os.path.join(pytest_root, "examples", "config_schemas", "valid")
     schema_config = load_schema(DEFAULT_SETTINGS_SCHEMA)
     for schema in walk_tree(valid_schema_dir, ".yml"):
@@ -50,14 +63,58 @@ def test_valid_config_schemas():
 
 @pytest.mark.cli
 def test_config_validate():
-    validate_config(configuration)
+    validate_config(configuration=configuration, moduletool=system.system["moduletool"])
+
+
+@pytest.mark.cli
+def test_config_path():
+    view_path(configuration)
+
+
+@pytest.mark.cli
+class TestProfiles:
+    tf = tempfile.NamedTemporaryFile(suffix=".yml")
+    shutil.copy2(configuration.file, tf.name)
+
+    buildtest_config = SiteConfiguration(settings_file=tf.name)
+    buildtest_config.detect_system()
+    buildtest_config.validate(moduletool=system.system["moduletool"])
+
+    cmd = BuildTest(
+        configuration=buildtest_config,
+        buildtest_system=system,
+        tags=["python"],
+        save_profile="python",
+    )
+    cmd.build()
+
+    def test_list_profiles(self):
+        # buildtest config profiles list
+        list_profiles(self.buildtest_config)
+
+        # buildtest config profiles list --theme emacs --yaml
+        list_profiles(self.buildtest_config, theme="emacs", print_yaml=True)
+
+        # buildtest config profiles list --yaml
+        list_profiles(self.buildtest_config, print_yaml=True)
+
+    @pytest.mark.cli
+    def test_profiles_remove(self):
+        # get all profile names from configuration file
+        profiles = list(self.buildtest_config.target_config["profiles"].keys())
+
+        # This will remove all profiles since 'profiles' is list of all profile names
+        remove_profiles(self.buildtest_config, profiles)
+
+        # testing removing profiles when no profiles exist
+        remove_profiles(self.buildtest_config, profiles[0])
 
 
 @pytest.mark.cli
 def test_config_executors():
     buildexecutor = BuildExecutor(configuration)
 
-    # run buildtest config executors --json
+    # buildtest config executors list --json
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
@@ -67,7 +124,7 @@ def test_config_executors():
         invalid=False,
     )
 
-    # run buildtest config executors --yaml
+    # buildtest config executors list --yaml
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
@@ -77,7 +134,7 @@ def test_config_executors():
         invalid=False,
     )
 
-    # run buildtest config executors -d
+    # buildtest config executors list --disabled
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
@@ -87,7 +144,7 @@ def test_config_executors():
         invalid=False,
     )
 
-    # run buildtest config executors -i
+    # buildtest config executors list --invalid
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
@@ -97,7 +154,7 @@ def test_config_executors():
         invalid=True,
     )
 
-    # run buildtest config executors
+    # buildtest config executors list
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
@@ -118,7 +175,7 @@ def test_disabled_invalid_executors():
 
     print("reading config file:", configfile)
     be = BuildExecutor(configuration)
-    # run buildtest config executors
+    # buildtest config executors list --disabled
     view_executors(
         configuration=configuration,
         buildexecutor=be,
@@ -128,7 +185,7 @@ def test_disabled_invalid_executors():
         invalid=False,
     )
 
-    # run buildtest config executors
+    # buildtest config executors list --invalid
     view_executors(
         configuration=configuration,
         buildexecutor=be,

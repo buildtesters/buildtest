@@ -1,6 +1,7 @@
 import os
 
 import pytest
+
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
 from buildtest.exceptions import ConfigurationError
@@ -13,11 +14,6 @@ class TestBuildtestCompilers:
     configuration.detect_system()
     configuration.validate()
     bc = BuildtestCompilers(configuration)
-
-    def test_init(self):
-
-        assert hasattr(self.bc, "compilers")
-        assert isinstance(self.bc.names, list)
 
     def test_print(self):
         self.bc.print_yaml()

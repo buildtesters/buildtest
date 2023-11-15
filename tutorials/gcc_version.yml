@@ -1,0 +1,6 @@
+buildspecs:
+  gcc_version:
+    type: script
+    description: Print gcc version
+    executor: generic.local.bash
+    run: gcc --version

@@ -24,7 +24,7 @@ Configuring buildtest for your site
 ------------------------------------
 
 Once you have picked a version of buildtest, you need to configure buildtest for your site, this
-requires you see :ref:`configuring_buildtest`. We recommend you see `buildtest-cori configuration <https://github.com/buildtesters/buildtest-cori/blob/devel/config.yml>`_
+requires you see :ref:`configuring_buildtest`. We recommend you see `buildtest-nersc configuration <https://github.com/buildtesters/buildtest-nersc/blob/devel/config.yml>`_
 that provides how buildtest is configured at NERSC. Once you have defined your configuration file you should make sure your configuration is valid by running::
 
     buildtest config validate
@@ -32,7 +32,7 @@ that provides how buildtest is configured at NERSC. Once you have defined your c
 Writing Test
 -------------
 
-If you are going to write test, we assume you have read :ref:`writing_buildspecs` section which covers
+If you are going to write test, we assume you have read :ref:`buildspec_tutorial` section which covers
 how to write buildspecs. You should consider reviewing the Schema Documentation: https://buildtesters.github.io/buildtest/
 which goes in detail about each schema and buildspec attributes.
 

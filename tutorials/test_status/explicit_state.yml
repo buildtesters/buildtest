@@ -1,0 +1,34 @@
+buildspecs:
+  always_pass:
+    type: script
+    executor: 'generic.local.sh'
+    description: This test will always 'PASS'
+    run: exit 1
+    status:
+      state: PASS
+
+  always_fail:
+    type: script
+    executor: 'generic.local.sh'
+    description: This test will always 'FAIL'
+    run: exit 0
+    status:
+      state: FAIL
+
+  test_fail_returncode_match:
+    type: script
+    executor: 'generic.local.sh'
+    description: This test will 'FAIL' even if we have returncode match
+    run: exit 1
+    status:
+      state: FAIL
+      returncode: 1
+
+  test_pass_returncode_mismatch:
+    type: script
+    executor: 'generic.local.sh'
+    description: This test will 'PASS' even if we have returncode mismatch
+    run: exit 1
+    status:
+      state: PASS
+      returncode: 2

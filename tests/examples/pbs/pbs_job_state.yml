@@ -1,0 +1,9 @@
+buildspecs:
+  pbs_sleep:
+    type: script
+    description: pass test based on PBS job state.
+    executor: generic.pbs.workq
+    pbs: ["-l nodes=1", "-l walltime=00:02:00"]
+    run: sleep 1
+    status:
+      pbs_job_state: "H"

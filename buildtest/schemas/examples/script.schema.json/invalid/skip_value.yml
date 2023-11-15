@@ -1,0 +1,7 @@
+buildspecs:
+  invalid_skip_value:
+    type: script
+    executor: generic.local.bash
+    description: invalid value for skip, must be boolean
+    skip: 1
+    run: hostname

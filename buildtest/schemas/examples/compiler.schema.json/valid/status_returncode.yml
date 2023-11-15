@@ -1,0 +1,18 @@
+buildspecs:
+  status_returncode_example:
+    type: compiler
+    description: Status returncode match example
+    executor: local.bash
+    source: "src/hello.cpp"
+    compilers:
+      name: [gnu]
+      default:
+        all:
+          vars:
+            OUTFILE: /tmp/file1.txt
+          run: $_EXEC > $OUTFILE
+          status:
+            returncode: 1
+      config:
+        gcc@10.2.0:
+          cxxflags: "-fopenmp"

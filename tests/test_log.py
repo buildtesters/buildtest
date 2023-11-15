@@ -5,7 +5,6 @@ from buildtest.utils.file import read_file
 
 
 def test_BuildTestLogger():
-
     tf = tempfile.NamedTemporaryFile()
 
     logger = init_logfile(tf.name)

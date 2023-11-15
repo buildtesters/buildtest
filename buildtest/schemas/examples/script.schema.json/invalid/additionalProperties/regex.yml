@@ -1,0 +1,11 @@
+buildspecs:
+  regex_additionalProperties_test:
+    type: script
+    executor: generic.local.bash
+    description: Testing for additional properties in regex field
+    run: hostname
+    status:
+      regex:
+        stream: stdout
+        exp: "world$"
+        X: 1

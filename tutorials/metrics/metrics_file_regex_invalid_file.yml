@@ -1,0 +1,13 @@
+buildspecs:
+  metric_file_regex_invalid_file:
+    executor: generic.local.bash
+    type: script
+    description: capture result metric from file path when we have invalid file path
+    run: echo "HPCG result is VALID with a GFLOP/s rating of=63.6515" > hpcg.txt
+    tags: tutorials
+    metrics:
+      hpcg_rating:
+        type: float
+        file_regex:
+          exp: '(\d+\.\d+)$'
+          file: bad_file.txt

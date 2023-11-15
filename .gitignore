@@ -44,3 +44,9 @@ env.bak/
 
 # ignore .packages directory
 .packages/
+Pipfile
+Pipfile.lock
+coverage.json
+
+# ignore .idea
+.idea/

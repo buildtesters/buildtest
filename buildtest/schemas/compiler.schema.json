@@ -1,0 +1,238 @@
+{
+  "$id": "compiler.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "compiler schema",
+  "description": "The compiler schema is of ``type: compiler`` in sub-schema which is used for compiling and running programs",
+  "type": "object",
+  "required": [
+    "type",
+    "source",
+    "compilers",
+    "executor"
+  ],
+  "definitions": {
+    "cc": {
+      "type": "string",
+      "description": "Set C compiler wrapper"
+    },
+    "fc": {
+      "type": "string",
+      "description": "Set Fortran compiler wrapper"
+    },
+    "cxx": {
+      "type": "string",
+      "description": "Set C++ compiler wrapper"
+    },
+    "cflags": {
+      "type": "string",
+      "description": "Set C compiler flags."
+    },
+    "fflags": {
+      "type": "string",
+      "description": "Set Fortran compiler flags."
+    },
+    "cxxflags": {
+      "type": "string",
+      "description": "Set C++ compiler flags."
+    },
+    "ldflags": {
+      "type": "string",
+      "description": "Set linker flags"
+    },
+    "cppflags": {
+      "type": "string",
+      "description": "Set C or C++ preprocessor flags"
+    },
+    "pre_build": {
+      "type": "string",
+      "description": "Run commands before building program"
+    },
+    "post_build": {
+      "type": "string",
+      "description": "Run commands after building program"
+    },
+    "pre_run": {
+      "type": "string",
+      "description": "Run commands before running program"
+    },
+    "post_run": {
+      "type": "string",
+      "description": "Run commands after running program"
+    },
+    "run": {
+      "type": "string",
+      "description": "Run command for launching compiled binary"
+    },
+    "default_compiler_all": {
+      "type": "object",
+      "description": "Specify compiler configuration for all compiler groups. Use the ``all`` property if configuration is shared across compiler groups. This property can be overridden in compiler group or named compiler in ``config`` section.",
+      "additionalProperties": false,
+      "properties": {
+        "sbatch": { "$ref": "definitions.schema.json#/definitions/sbatch" },
+        "bsub": { "$ref": "definitions.schema.json#/definitions/bsub" },
+        "cobalt": { "$ref": "definitions.schema.json#/definitions/cobalt" },
+        "pbs": { "$ref":  "definitions.schema.json#/definitions/pbs" },
+        "BB": { "$ref": "definitions.schema.json#/definitions/BB" },
+        "DW": { "$ref": "definitions.schema.json#/definitions/DW" },
+        "env": { "$ref": "definitions.schema.json#/definitions/env" },
+        "vars": { "$ref": "definitions.schema.json#/definitions/env" },
+        "status": { "$ref": "definitions.schema.json#/definitions/status" },
+        "pre_build": { "$ref": "#definitions/pre_build" },
+        "post_build": { "$ref": "#definitions/post_build" },
+        "pre_run": { "$ref": "#definitions/pre_run" },
+        "post_run": { "$ref": "#definitions/post_run" },
+        "run": { "$ref": "#definitions/run" }
+      }
+    },
+    "default_compiler_config": {
+      "type": "object",
+      "description": "Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides ``all`` property. ",
+      "properties": {
+        "cc": { "$ref": "#definitions/cc" },
+        "fc": { "$ref": "#definitions/fc" },
+        "cxx": { "$ref": "#definitions/cxx" },
+        "cflags": { "$ref": "#definitions/cflags" },
+        "fflags": { "$ref": "#definitions/fflags" },
+        "cxxflags": { "$ref": "#definitions/cxxflags" },
+        "ldflags": { "$ref": "#definitions/ldflags" },
+        "cppflags": { "$ref": "#definitions/cppflags" },
+        "sbatch": { "$ref": "definitions.schema.json#/definitions/sbatch"},
+        "bsub": { "$ref": "definitions.schema.json#/definitions/bsub"},
+        "cobalt": { "$ref": "definitions.schema.json#/definitions/cobalt"},
+        "pbs": { "$ref":  "definitions.schema.json#/definitions/pbs"},
+        "BB": { "$ref": "definitions.schema.json#/definitions/BB"},
+        "DW": { "$ref": "definitions.schema.json#/definitions/DW"},
+        "env": { "$ref": "definitions.schema.json#/definitions/env" },
+        "vars": { "$ref": "definitions.schema.json#/definitions/env" },
+        "status": { "$ref": "definitions.schema.json#/definitions/status" },
+        "pre_build": { "$ref": "#definitions/pre_build" },
+        "post_build": { "$ref": "#definitions/post_build" },
+        "pre_run": { "$ref": "#definitions/pre_run" },
+        "post_run": { "$ref": "#definitions/post_run" },
+        "run": { "$ref": "#definitions/run" }
+      }
+    },
+    "compiler_declaration": {
+      "type": "object",
+      "description": "Specify compiler configuration at compiler level. The ``config`` section has highest precedence when searching compiler configuration. This overrides fields found in compiler group and ``all`` property",
+      "additionalProperties": false,
+      "properties": {
+        "cc": { "$ref": "#definitions/cc" },
+        "fc": { "$ref": "#definitions/fc" },
+        "cxx": { "$ref": "#definitions/cxx" },
+        "cflags": { "$ref": "#definitions/cflags" },
+        "fflags": { "$ref": "#definitions/fflags" },
+        "cxxflags": { "$ref": "#definitions/cxxflags" },
+        "ldflags": { "$ref": "#definitions/ldflags" },
+        "cppflags": { "$ref": "#definitions/cppflags" },
+        "sbatch": { "$ref": "definitions.schema.json#/definitions/sbatch"},
+        "bsub": { "$ref": "definitions.schema.json#/definitions/bsub"},
+        "cobalt": { "$ref": "definitions.schema.json#/definitions/cobalt"},
+        "pbs": { "$ref":  "definitions.schema.json#/definitions/pbs"},
+        "BB": { "$ref": "definitions.schema.json#/definitions/BB"},
+        "DW": { "$ref": "definitions.schema.json#/definitions/DW"},
+        "env": { "$ref": "definitions.schema.json#/definitions/env" },
+        "vars": { "$ref": "definitions.schema.json#/definitions/env" },
+        "status": { "$ref": "definitions.schema.json#/definitions/status" },
+        "pre_build": { "$ref": "#definitions/pre_build" },
+        "post_build": { "$ref": "#definitions/post_build" },
+        "pre_run": { "$ref": "#definitions/pre_run" },
+        "post_run": { "$ref": "#definitions/post_run" },
+        "run": { "$ref": "#definitions/run" },
+        "module": { "$ref": "definitions.schema.json#/definitions/module" }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "pattern": "^compiler$",
+      "description": "Select schema type to use when validating buildspec. This must be of set to ``compiler``."
+    },
+    "description": {
+      "$ref": "definitions.schema.json#/definitions/description"
+    },
+    "summary": {
+      "$ref": "definitions.schema.json#/definitions/summary"
+    },
+    "needs": {
+      "$ref": "definitions.schema.json#/definitions/needs"
+    },
+    "compilers": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "Specify a list of regular expression to search compiler instance from buildtest settings.",
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
+        },
+        "exclude": {
+          "description": "Specify a list of named compilers to exclude when building test based on regular expression specified in ``name`` property. The ``exclude`` property has no effect if named compiler not found based on regular expression.",
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
+        },
+        "default": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "all": {
+              "$ref": "#definitions/default_compiler_all"
+            },
+            "gcc": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "intel": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "pgi": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "cray": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "clang": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "cuda": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "upcxx": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "nvhpc": {
+              "$ref": "#definitions/default_compiler_config"
+            }
+          }
+        },
+        "config": {
+          "type": "object",
+          "description": "Specify compiler configuration based on named compilers.",
+          "patternProperties": {
+            "^.*$": {
+              "$ref": "#definitions/compiler_declaration"
+            }
+          }
+        }
+      }
+    },
+    "source": {
+      "type": "string",
+      "description": "Specify a source file for compilation, the file can be relative path to buildspec or an absolute path"
+    },
+    "executor": {
+      "$ref": "definitions.schema.json#/definitions/executor"
+    },
+    "skip": {
+      "$ref": "definitions.schema.json#/definitions/skip"
+    },
+    "tags": {
+      "$ref": "definitions.schema.json#/definitions/tags"
+    },
+    "metrics": {
+      "$ref": "definitions.schema.json#/definitions/metrics"
+    }
+  }
+}

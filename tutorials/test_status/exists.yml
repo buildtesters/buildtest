@@ -1,0 +1,23 @@
+buildspecs:
+  status_exists:
+    type: script
+    executor: generic.local.bash
+    description: status check based for file and directory
+    run: |
+      mkdir -p $HOME/dirA
+      mkdir -p /tmp/ABC
+      touch file1
+    status:
+      exists:
+        - $HOME/dirA
+        - ~/.bashrc
+        - /tmp/ABC
+        - file1
+  status_exists_failure:
+    type: script
+    executor: generic.local.bash
+    description: status check failure for existence
+    run: touch foo
+    status:
+      exists:
+        - bar

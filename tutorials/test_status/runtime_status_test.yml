@@ -1,0 +1,51 @@
+buildspecs:
+  timelimit_min_max:
+    type: script
+    executor: generic.local.sh
+    description: "Run a sleep job for 2 seconds and test pass if its within 1.0-3.0sec"
+    tags: ["tutorials"]
+    run: sleep 2
+    status:
+      runtime:
+        min: 1.0
+        max: 3.0
+
+  timelimit_min:
+    type: script
+    executor: generic.local.sh
+    description: "Run a sleep job for 2 seconds and test pass if its exceeds min time of 1.0 sec"
+    tags: ["tutorials"]
+    run: sleep 2
+    status:
+      runtime:
+        min: 1.0
+
+  timelimit_max:
+    type: script
+    executor: generic.local.sh
+    description: "Run a sleep job for 2 seconds and test pass if it's within max time: 5.0 sec"
+    tags: ["tutorials"]
+    run: sleep 2
+    status:
+      runtime:
+        max: 5.0
+
+  timelimit_min_fail:
+    type: script
+    executor: generic.local.sh
+    description: "This test fails because it runs less than mintime of 10 second"
+    tags: ["tutorials"]
+    run: sleep 2
+    status:
+      runtime:
+        min: 10.0
+
+  timelimit_max_fail:
+    type: script
+    executor: generic.local.sh
+    description: "This test fails because it exceeds maxtime of 1.0 second"
+    tags: ["tutorials"]
+    run: sleep 3
+    status:
+      runtime:
+        max: 1.0

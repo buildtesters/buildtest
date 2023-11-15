@@ -1,49 +1,63 @@
 import json
-import os
 import subprocess
 import sys
 
 import yaml
-from buildtest.defaults import console
-from buildtest.exceptions import ConfigurationError
-from buildtest.executors.setup import BuildExecutor
 from jsonschema import ValidationError
 from rich.syntax import Syntax
 from rich.table import Column, Table
 
+from buildtest.defaults import console
+from buildtest.exceptions import ConfigurationError
+from buildtest.executors.setup import BuildExecutor
+from buildtest.schemas.defaults import custom_validator, schema_table
 
-def config_cmd(args, configuration):
+
+def config_cmd(args, configuration, editor, system):
     """Entry point for ``buildtest config`` command. This method will invoke other methods depending on input argument.
 
     Args:
         args (dict): Parsed arguments from `ArgumentParser.parse_args <https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.parse_args>`_
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        system (buildtest.system.BuildTestSystem): An instance of BuildTestSystem class
     """
-    if args.config == "view":
-        view_configuration(configuration)
 
-    elif args.config == "executors":
+    if args.config in ["view", "v"]:
+        view_configuration(configuration, theme=args.theme, pager=args.pager)
+
+    elif args.config in ["profiles"]:
+        if args.profiles == "list":
+            list_profiles(configuration, theme=args.theme, print_yaml=args.yaml)
+
+        if args.profiles in ["remove", "rm"]:
+            remove_profiles(configuration, profile_name=args.profile_name)
+
+    elif args.config in ["executors", "ex"]:
         buildexecutor = BuildExecutor(configuration)
-        view_executors(
-            configuration,
-            buildexecutor,
-            args.json,
-            args.yaml,
-            args.disabled,
-            args.invalid,
-        )
+        if args.executors == "list":
+            view_executors(
+                configuration,
+                buildexecutor,
+                args.json,
+                args.yaml,
+                args.disabled,
+                args.invalid,
+            )
 
-    elif args.config == "validate":
-        validate_config(configuration)
+    elif args.config in ["validate", "val"]:
+        validate_config(configuration, system.system["moduletool"])
 
     elif args.config == "systems":
         view_system(configuration)
 
-    elif args.config == "edit":
-        edit_configuration(configuration)
+    elif args.config in ["edit", "e"]:
+        edit_configuration(configuration, editor)
+
+    elif args.config in ["path", "p"]:
+        view_path(configuration)
 
 
-def edit_configuration(configuration):
+def edit_configuration(configuration, editor):
     """This method will open configuration file in editor. The preferred editor will be determined based on environment
     variable ``EDITOR`` if found otherwise will resort to ``vim``.
 
@@ -51,9 +65,9 @@ def edit_configuration(configuration):
         configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class used for storing buildtest configuration
     """
 
-    EDITOR = os.environ.get("EDITOR", "vim")
-
-    subprocess.call([EDITOR, configuration.file])
+    # subprocess.call([editor, configuration.file])
+    cmd = subprocess.Popen([editor, configuration.file])
+    cmd.communicate()
 
     print(f"Writing configuration file: {configuration.file}")
 
@@ -68,11 +82,12 @@ def view_system(configuration):
 
     # table = {"system": [], "description": [], "hostnames": [], "moduletool": []}
     table = Table(
-        "[blue]system",
-        "[blue]description",
-        "[blue]moduletool",
-        Column("[blue]hostnames", overflow="fold"),
+        Column("system", overflow="fold"),
+        Column("description", overflow="fold"),
+        Column("moduletool", overflow="fold"),
+        Column("hostnames", overflow="fold"),
         title=f"System Summary (Configuration={configuration.file})",
+        header_style="blue",
         min_width=120,
     )
 
@@ -85,7 +100,7 @@ def view_system(configuration):
     console.print(table)
 
 
-def validate_config(configuration):
+def validate_config(configuration, moduletool):
     """This method implements ``buildtest config validate`` which attempts to
     validate buildtest schema file `settings.schema.json <https://github.com/buildtesters/buildtest/blob/devel/buildtest/schemas/settings.schema.json>`_.
     If it's not validate an exception is raised which could be
@@ -104,27 +119,121 @@ def validate_config(configuration):
 
     Args:
         configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        moduletool (str): Name of moduletool for validating module system
 
     Raises:
         SystemExit: If exception is raised during validating configuration file.
     """
 
     try:
-        configuration.validate()
+        configuration.validate(moduletool=moduletool)
     except (ValidationError, ConfigurationError) as err:
         print(err)
         raise sys.exit(f"{configuration.file} is not valid")
 
-    print(f"{configuration.file} is valid")
+    console.print(f"{configuration.file} is valid")
 
 
-def view_configuration(configuration):
-    """Display content of buildtest configuration file. This implements command ``buildtest config view``"""
+def view_path(configuration):
+    """Display the path to configuration file regardless if file is valid
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+    """
+    console.print(configuration.file)
+
+
+def view_configuration(configuration, theme=None, pager=None):
+    """Display content of buildtest configuration file. This implements command ``buildtest config view``
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        theme (str, optional): Color theme to choose. This is the Pygments style (https://pygments.org/docs/styles/#getting-a-list-of-available-styles) which is specified by ``--theme`` option
+    """
+
+    theme = theme or "monokai"
+    with open(configuration.file, "r") as bc:
+        syntax = Syntax(bc.read(), "yaml", line_numbers=True, theme=theme)
+    if pager:
+        with console.pager():
+            console.rule(configuration.file)
+            console.print(syntax)
+        return
 
     console.rule(configuration.file)
-    with open(configuration.file, "r") as bc:
-        syntax = Syntax(bc.read(), "yaml", line_numbers=True, theme="emacs")
     console.print(syntax)
+
+
+def remove_profiles(configuration, profile_name):
+    """This method will remove profile names from configuration file given a list of profile names. This method
+    will be invoked when user runs ``buildtest config profiles remove`` command.
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        profile_name (list): List of name of profile to remove
+    """
+
+    if not configuration.target_config.get("profiles"):
+        console.print(
+            f"Unable to remove any profiles because no profiles found in configuration file: {configuration.file}. Please create a profile using [red]buildtest build --save-profile[/red]"
+        )
+        return
+
+    # variable to determine if file needs to be written back to disk
+    write_back = False
+
+    for name in profile_name:
+        if name not in configuration.target_config["profiles"]:
+            console.print(f"Unable to remove profile: {name} because it does not exist")
+            continue
+
+        del configuration.target_config["profiles"][name]
+        console.print(f"Removing profile: {name}")
+        write_back = True
+
+    # if no profiles exist then delete top-level key 'profiles'
+    if len(configuration.target_config["profiles"].keys()) == 0:
+        del configuration.target_config["profiles"]
+
+    custom_validator(
+        configuration.config, schema_table["settings.schema.json"]["recipe"]
+    )
+
+    # only update the configuration file if we removed a profile
+    if write_back:
+        console.print(f"Updating configuration file: {configuration.file}")
+
+        with open(configuration.file, "w") as fd:
+            yaml.safe_dump(
+                configuration.config, fd, default_flow_style=False, sort_keys=False
+            )
+
+
+def list_profiles(configuration, theme=None, print_yaml=None):
+    """Display the list of profile for buildtest configuration file. This implements command ``buildtest config profiles list``
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        theme (str, optional): Color theme to choose. This is the Pygments style (https://pygments.org/docs/styles/#getting-a-list-of-available-styles) which is specified by ``--theme`` option
+        print_yaml (bool, optional): Display profiles in yaml format. This is specified by ``--yaml`` option
+    """
+
+    if not configuration.target_config.get("profiles"):
+        console.print(
+            f"Unable to list any profiles because no profiles found in configuration file: {configuration.file}. Please create a profile using `buildtest build --save-profile`"
+        )
+        return
+    if print_yaml:
+        profile_configuration = yaml.dump(
+            configuration.target_config["profiles"], indent=2
+        )
+        syntax = Syntax(profile_configuration, "yaml", theme=theme or "monokai")
+        console.print(syntax)
+        return
+
+    # print profiles as raw text
+    for profile_name in configuration.target_config["profiles"].keys():
+        print(profile_name)
 
 
 def view_executors(
@@ -146,38 +255,36 @@ def view_executors(
         invalid (bool): Display list of invalid executors which is specified via ``buildtest config executors --invalid``
     """
 
-    d = {"executors": configuration.target_config["executors"]}
+    executor_settings = {"executors": configuration.target_config["executors"]}
 
     # display output in JSON format
     if json_format:
-        console.print(json.dumps(d, indent=2))
+        console.print(json.dumps(executor_settings, indent=2))
         return
 
     # display output in YAML format
     if yaml_format:
-        console.print(yaml.dump(d, default_flow_style=False))
+        console.print(yaml.dump(executor_settings, default_flow_style=False))
         return
 
     if disabled:
-        executors = configuration.disabled_executors
-        if not executors:
-            print("There are no disabled executors")
+        if not configuration.disabled_executors:
+            console.print("There are no disabled executors")
             return
 
-        for executor in executors:
-            print(executor)
+        for executor in configuration.disabled_executors:
+            console.print(executor)
         return
 
     if invalid:
-        executors = configuration.invalid_executors
-        if not executors:
-            print("There are no invalid executors")
+        if not configuration.invalid_executors:
+            console.print("There are no invalid executors")
             return
 
-        for executor in executors:
-            print(executor)
+        for executor in configuration.invalid_executors:
+            console.print(executor)
         return
 
-    names = buildexecutor.list_executors()
+    names = buildexecutor.names()
     for name in names:
         print(name)

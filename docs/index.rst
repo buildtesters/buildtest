@@ -1,31 +1,25 @@
-| |license| |docs| |codecov| |slack| |regressiontest|
+| |license| |docs| |codecov| |regressiontest|
 
 
 buildtest
 ==========
 
-This documentation was last rebuild on |today| and is intended for version |version|.
+This documentation was rebuilt on |today| and is intended for version |version|.
 
-If you are working off a latest release please see  https://buildtest.readthedocs.io/en/latest/ for documentation.
-If you are working off `devel <https://github.com/buildtesters/buildtest/tree/devel>`_ branch then please refer to
+If you are working off the latest release please see  https://buildtest.readthedocs.io/en/latest/ for documentation.
+If you are working off the `devel <https://github.com/buildtesters/buildtest/tree/devel>`_ branch then please refer to
 https://buildtest.readthedocs.io/en/devel/
 which references the `devel` branch.
 
-.. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=latest
+.. |docs| image:: https://readthedocs.org/projects/buildtest/badge/?version=devel
     :alt: Documentation Status
-    :target: https://buildtest.readthedocs.io/en/latest/?badge=latest
+    :target: https://readthedocs.org/projects/buildtest/builds/
 
 .. |license| image:: https://img.shields.io/github/license/buildtesters/buildtest.svg
-
-.. |slack| image:: http://hpcbuildtest.herokuapp.com/badge.svg
-    :target: http://hpcbuildtest.slack.com
+    :target: https://github.com/buildtesters/buildtest/blob/devel/LICENSE
 
 .. |codecov| image:: https://codecov.io/gh/buildtesters/buildtest/branch/devel/graph/badge.svg
     :target: https://codecov.io/gh/buildtesters/buildtest
-
-.. |codefactor| image:: https://www.codefactor.io/repository/github/buildtesters/buildtest/badge
-    :target: https://www.codefactor.io/repository/github/buildtesters/buildtest
-    :alt: CodeFactor
 
 .. |regressiontest| image:: https://github.com/buildtesters/buildtest/workflows/regressiontest/badge.svg
     :target: https://github.com/buildtesters/buildtest/actions
@@ -34,26 +28,26 @@ which references the `devel` branch.
 Useful Links
 -------------
 
-1. Source Code: https://github.com/buildtesters/buildtest
-2. Documentation: http://buildtest.rtfd.io/
-3. Schema Docs: https://buildtesters.github.io/buildtest/
-4. ReadTheDocs: https://readthedocs.org/projects/buildtest/
-5. CodeCov: https://codecov.io/gh/buildtesters/buildtest
-6. Slack Channel: http://hpcbuildtest.slack.com
-7. Slack Invite: https://hpcbuildtest.herokuapp.com
-8. CodeFactor: https://www.codefactor.io/repository/github/buildtesters/buildtest
-9. Snyk: https://app.snyk.io/org/buildtesters/
-10. Cori Test Repository: https://github.com/buildtesters/buildtest-cori
+- Source Code: https://github.com/buildtesters/buildtest
+- Documentation: http://buildtest.rtfd.io/
+- Schema Docs: https://buildtesters.github.io/buildtest/
+- ReadTheDocs: https://readthedocs.org/projects/buildtest/
+- CodeCov: https://codecov.io/gh/buildtesters/buildtest
+- Slack Channel: http://hpcbuildtest.slack.com
+- Slack Invite: https://communityinviter.com/apps/hpcbuildtest/buildtest-slack-invitation
+- CodeFactor: https://www.codefactor.io/repository/github/buildtesters/buildtest
+- Snyk: https://app.snyk.io/org/buildtesters/
+- NERSC Test Repository: https://github.com/buildtesters/buildtest-nersc
 
 Description
 ------------
 
 `buildtest <https://github.com/buildtesters/buildtest>`_  is
 a testing framework to help HPC sites write test for their system as part of their
-routine acceptance & regression test. buildtest provides a YAML interface to write tests
-which buildtest can validate and generate shell scripts that can run on your HPC system.
-The test template (YAML) is called **buildspec** which can define one or more test instance
-that is validated by a `json schema <https://json-schema.org/>`_. buildtest supports the following batch schedulers:
+routine acceptance and regression testing. Buildtest provides a YAML interface to write tests
+which buildtest can validate and then use to generate shell scripts that run on your HPC system.
+The test template (YAML) is called a **buildspec** which can define one or more test instances
+and is validated by a `json schema <https://json-schema.org/>`_. Buildtest supports the following batch schedulers:
 `IBM Spectrum LSF <https://www.ibm.com/support/knowledgecenter/SSWRJV_10.1.0/lsf_welcome/lsf_welcome.html>`_,
 `Slurm <https://slurm.schedmd.com/>`_, `PBS <https://www.openpbs.org/>`_ and
 `Cobalt <https://trac.mcs.anl.gov/projects/cobalt>`_. We publish the schema documentation, json schemas,
@@ -61,7 +55,7 @@ and schema examples at https://buildtesters.github.io/buildtest/ which is useful
 :ref:`writing buildspecs <writing_buildspecs>`.
 
 To get started with buildtest, please see :ref:`Installing buildtest <installing_buildtest>` and
-:ref:`getting started guide <getting_started>`.
+:ref:`Getting Started Guide <getting_started>`.
 
 A spin-off project called `lmodule <https://lmodule.readthedocs.io/en/latest/>`_
 is a Python API for `Lmod <https://lmod.readthedocs.io/en/latest/>`_. The buildtest
@@ -76,31 +70,59 @@ automate module load testing. For more details on lmodule see https://github.com
 
 .. toctree::
    :maxdepth: 2
-   :caption: Tutorial
+   :caption: Getting Started
 
    installing_buildtest
-   getting_started
+   quick_start
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Tutorial
+
+   command_line_tutorial
    buildspec_tutorial
+   buildtest_perlmutter
+
+.. toctree::
+   :maxdepth: 2
+   :caption: How-to-guides
+
+   configuring_buildtest
+   batch_support
+   troubleshooting
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Explanation
+
+   builder
+   buildtest_site
 
 .. toctree::
    :maxdepth: 2
    :caption: Reference
 
-   configuring_buildtest
-   batch_support
-   builder
+   getting_started
+   writing_buildspecs
    features
    schema_examples
-   buildtest_site
-   references
+   facility_examples
+   api
+   command
+   conferences
 
 .. toctree::
    :maxdepth: 2
    :caption: Development Guide
 
    contributing
-   api
-   command
+
+.. toctree::
+    :caption: Useful Links
+
+    Buildtest Github repo <https://github.com/buildtesters/buildtest>
+    Buildtest Slack <https://hpcbuildtest.slack.com>
+    buildtest at NERSC <https://github.com/buildtesters/buildtest-nersc>
 
 License
 --------

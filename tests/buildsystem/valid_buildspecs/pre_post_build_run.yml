@@ -1,4 +1,3 @@
-version: "1.0"
 buildspecs:
   pre_post_build_run:
     type: compiler

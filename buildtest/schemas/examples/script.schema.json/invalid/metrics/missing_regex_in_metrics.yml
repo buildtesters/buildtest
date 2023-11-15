@@ -1,0 +1,9 @@
+buildspecs:
+  missing_regex_in_metrics:
+    type: script
+    executor: generic.local.bash
+    description: Test for missing regex in metrics property, which should result in error
+    run: echo "hello"
+    metrics:
+      foo:
+        type: str

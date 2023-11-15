@@ -1,0 +1,5 @@
+buildspecs:
+  test_lmod_version:
+    type: FIXME
+    executors: 'perlmutter.local.bash'
+    run: echo $LMOD_VERSION

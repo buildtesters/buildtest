@@ -1,4 +1,3 @@
-version: "1.0"
 buildspecs:
   openmp_hello_c_example:
     type: compiler
@@ -7,7 +6,7 @@ buildspecs:
     tags: [tutorials, compile]
     source: "src/hello_omp.c"
     compilers:
-      name: ["^(builtin_gcc)"]
+      name: ["^(gcc_7.5.0)"]
       default:
         gcc:
           cflags: -fopenmp

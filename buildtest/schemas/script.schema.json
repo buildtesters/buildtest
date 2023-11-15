@@ -1,0 +1,267 @@
+{
+  "$id": "script.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "script schema version",
+  "description": "The script schema is of ``type: script`` in sub-schema which is used for running shell scripts",
+  "type": "object",
+  "required": [
+    "type",
+    "run",
+    "executor"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "type": {
+      "type": "string",
+      "pattern": "^script$",
+      "description": "Select schema type to use when validating buildspec. This must be of set to 'script'"
+    },
+    "description": {
+      "$ref": "definitions.schema.json#/definitions/description"
+    },
+    "summary": {
+      "$ref": "definitions.schema.json#/definitions/summary"
+    },
+    "sbatch": {
+      "$ref": "definitions.schema.json#/definitions/sbatch"
+    },
+    "bsub": {
+      "$ref": "definitions.schema.json#/definitions/bsub"
+    },
+    "cobalt": {
+      "$ref": "definitions.schema.json#/definitions/cobalt"
+    },
+    "pbs": {
+      "$ref": "definitions.schema.json#/definitions/pbs"
+    },
+    "BB": {
+      "$ref": "definitions.schema.json#/definitions/BB"
+    },
+    "DW": {
+      "$ref": "definitions.schema.json#/definitions/DW"
+    },
+    "env": {
+      "$ref": "definitions.schema.json#/definitions/env"
+    },
+    "vars": {
+      "$ref": "definitions.schema.json#/definitions/env"
+    },
+    "executor": {
+      "$ref": "definitions.schema.json#/definitions/executor"
+    },
+    "needs": {
+      "$ref": "definitions.schema.json#/definitions/needs"
+    },
+    "shell": {
+      "type": "string",
+      "description": "Specify a shell launcher to use when running jobs. This sets the shebang line in your test script. The ``shell`` key can be used with ``run`` section to describe content of script and how its executed"
+    },
+    "shebang": {
+      "type": "string",
+      "description": "Specify a custom shebang line. If not specified buildtest will automatically add it in the test script."
+    },
+    "run": {
+      "$ref": "definitions.schema.json#/definitions/run"
+    },
+    "status": {
+      "$ref": "definitions.schema.json#/definitions/status"
+    },
+    "skip": {
+      "$ref": "definitions.schema.json#/definitions/skip"
+    },
+    "tags": {
+      "$ref": "definitions.schema.json#/definitions/tags"
+    },
+    "metrics": {
+      "$ref": "definitions.schema.json#/definitions/metrics"
+    },
+    "executors": {
+      "$ref": "definitions.schema.json#/definitions/executors"
+    },
+    "compilers": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "description": "Specify a list of regular expression to search compiler instance from buildtest settings.",
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
+        },
+        "exclude": {
+          "description": "Specify a list of named compilers to exclude when building test based on regular expression specified in ``name`` property. The ``exclude`` property has no effect if named compiler not found based on regular expression.",
+          "$ref": "definitions.schema.json#/definitions/list_of_strings"
+        },
+        "default": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "gcc": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "intel": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "pgi": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "cray": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "clang": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "cuda": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "upcxx": {
+              "$ref": "#definitions/default_compiler_config"
+            },
+            "nvhpc": {
+              "$ref": "#definitions/default_compiler_config"
+            }
+          }
+        },
+        "config": {
+          "type": "object",
+          "description": "Specify compiler configuration based on named compilers.",
+          "patternProperties": {
+            "^.*$": {
+              "$ref": "#definitions/compiler_declaration"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "compiler_declaration": {
+      "type": "object",
+      "description": "Specify compiler configuration at compiler level. The ``config`` section has highest precedence when searching compiler configuration. This overrides fields found in compiler group and ``all`` property",
+      "additionalProperties": false,
+      "properties": {
+        "cc": {
+          "$ref": "definitions.schema.json#/definitions/cc"
+        },
+        "fc": {
+          "$ref": "definitions.schema.json#/definitions/fc"
+        },
+        "cxx": {
+          "$ref": "definitions.schema.json#/definitions/cxx"
+        },
+        "cflags": {
+          "$ref": "definitions.schema.json#/definitions/cflags"
+        },
+        "fflags": {
+          "$ref": "definitions.schema.json#/definitions/fflags"
+        },
+        "cxxflags": {
+          "$ref": "definitions.schema.json#/definitions/cxxflags"
+        },
+        "ldflags": {
+          "$ref": "definitions.schema.json#/definitions/ldflags"
+        },
+        "cppflags": {
+          "$ref": "definitions.schema.json#/definitions/cppflags"
+        },
+        "env": {
+          "$ref": "definitions.schema.json#/definitions/env"
+        },
+        "vars": {
+          "$ref": "definitions.schema.json#/definitions/env"
+        },
+        "status": {
+          "$ref": "definitions.schema.json#/definitions/status"
+        },
+        "run": {
+          "$ref": "definitions.schema.json#/definitions/run"
+        },
+        "module": {
+          "$ref": "definitions.schema.json#/definitions/module"
+        }
+      },
+      "default_compiler_config": {
+        "type": "object",
+        "description": "Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides ``all`` property. ",
+        "properties": {
+          "cc": {
+            "$ref": "definitions.schema.json#/definitions/cc"
+          },
+          "fc": {
+            "$ref": "definitions.schema.json#/definitions/fc"
+          },
+          "cxx": {
+            "$ref": "definitions.schema.json#/definitions/cxx"
+          },
+          "cflags": {
+            "$ref": "definitions.schema.json#/definitions/cflags"
+          },
+          "fflags": {
+            "$ref": "definitions.schema.json#/definitions/fflags"
+          },
+          "cxxflags": {
+            "$ref": "definitions.schema.json#/definitions/cxxflags"
+          },
+          "ldflags": {
+            "$ref": "definitions.schema.json#/definitions/ldflags"
+          },
+          "cppflags": {
+            "$ref": "definitions.schema.json#/definitions/cppflags"
+          },
+          "env": {
+            "$ref": "definitions.schema.json#/definitions/env"
+          },
+          "vars": {
+            "$ref": "definitions.schema.json#/definitions/env"
+          },
+          "run": {
+            "$ref": "definitions.schema.json#/definitions/run"
+          }
+        }
+      }
+    },
+    "default_compiler_config": {
+      "type": "object",
+      "description": "Specify compiler configuration for group of compilers. Use this property if you want to define common configuration for all compilers of same group. This property overrides ``all`` property. ",
+      "properties": {
+        "cc": {
+          "$ref": "definitions.schema.json#/definitions/cc"
+        },
+        "fc": {
+          "$ref": "definitions.schema.json#/definitions/fc"
+        },
+        "cxx": {
+          "$ref": "definitions.schema.json#/definitions/cxx"
+        },
+        "cflags": {
+          "$ref": "definitions.schema.json#/definitions/cflags"
+        },
+        "fflags": {
+          "$ref": "definitions.schema.json#/definitions/fflags"
+        },
+        "cxxflags": {
+          "$ref": "definitions.schema.json#/definitions/cxxflags"
+        },
+        "ldflags": {
+          "$ref": "definitions.schema.json#/definitions/ldflags"
+        },
+        "cppflags": {
+          "$ref": "definitions.schema.json#/definitions/cppflags"
+        },
+        "env": {
+          "$ref": "definitions.schema.json#/definitions/env"
+        },
+        "vars": {
+          "$ref": "definitions.schema.json#/definitions/env"
+        },
+        "status": {
+          "$ref": "definitions.schema.json#/definitions/status"
+        },
+        "run": {
+          "$ref": "definitions.schema.json#/definitions/run"
+        }
+      }
+    }
+  }
+}

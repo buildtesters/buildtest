@@ -1,0 +1,22 @@
+buildspecs:
+  file_and_dir_checks:
+    type: script
+    executor: generic.local.bash
+    description: status check for files and directories
+    run: hostname
+    status:
+      is_dir:
+        - $HOME
+        - $HOME/.bashrc
+        - /tmp
+  combined_file_and_dir_checks:
+    type: script
+    executor: generic.local.bash
+    description: status check for files and directories
+    run: hostname
+    status:
+      is_dir:
+        - $HOME
+        - /tmp
+      is_file:
+        - $HOME/.bashrc

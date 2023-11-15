@@ -3,10 +3,24 @@ system:
     hostnames:
     - jlselogin*
     moduletool: environment-modules
+    poolsize: 8
+    max_jobs: 10
+    pager: False
+    buildspecs:
+      rebuild: False
+      count: 15
+      format: "name,description"
+      terse: False
+    report:
+      count: 25
+      terse: False
+      format: "name,id,state,runtime,returncode"
+      latest: False
+      oldest: False
     executors:
       defaults:
         pollinterval: 30
-        max_pend_time: 300
+        maxpendtime: 300
       local:
         bash:
           description: submit jobs on local machine using bash shell
@@ -21,14 +35,8 @@ system:
           description: submit jobs on local machine using python shell
           shell: python
       cobalt:
-        yarrow:
-          queue: yarrow
-        yarrow_debug:
-          queue: yarrow_debug
-        iris:
-          queue: iris
-        iris_debug:
-          queue: iris_debug
+        testing:
+          queue: testing
     compilers:
       find:
         gcc: "^(gcc)"

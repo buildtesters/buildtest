@@ -1,0 +1,11 @@
+buildspecs:
+  specs_must_be_list_of_strings:
+    type: spack
+    executor: generic.local.sh
+    description: 'specs must be a list of strings'
+    spack:
+      root: $HOME/spack
+      env:
+        create:
+          name: myproject
+        specs: [1, zlib]

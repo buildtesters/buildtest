@@ -1,0 +1,37 @@
+buildspecs:
+  file_count_by_expression:
+    type: script
+    executor: generic.local.bash
+    description: file count by expression
+    run: |
+      mkdir -p /tmp
+      touch /tmp/foo{1..5}.txt
+      ls -l /tmp/foo*.txt
+      filenames=$(find $BUILDTEST_ROOT/buildtest -type f  \( -name "defaults.py" -o -name "main.py" \) -maxdepth 1)
+      totalfiles=$(find $BUILDTEST_ROOT/buildtest -type f  \( -name "defaults.py" -o -name "main.py" \) -maxdepth 1 | wc -l)
+      echo "Filenames: $filenames"
+      echo "Total files: $totalfiles"
+    status:
+      file_count:
+        - dir: /tmp
+          filepattern: 'foo[1-5].txt$'
+          count: 5
+        - dir: '$BUILDTEST_ROOT/buildtest'
+          filepattern: '(defaults|main).py$'
+          count: 2
+          depth: 1
+
+  file_extension_and_filepattern:
+    type: script
+    executor: generic.local.bash
+    description: file count by file extension and file pattern
+    run: |
+      touch foo{1..5}.txt
+      touch {conf,main}.py
+      ls -l
+    status:
+      file_count:
+        - dir: .
+          ext: '.txt'
+          filepattern: '(conf|main).py$'
+          count: 7

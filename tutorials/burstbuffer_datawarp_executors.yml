@@ -1,6 +1,5 @@
-version: "1.0"
 buildspecs:
-  create_burst_buffer_multiple_executors:
+  create_burst_buffer_executors:
     type: script
     executor: "generic.local.(sh|bash)"
     sbatch: ["-N 1", "-t 10", "-C knl"]

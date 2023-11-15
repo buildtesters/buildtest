@@ -1,0 +1,11 @@
+buildspecs:
+  skip_test_in_spack:
+    skip: True
+    type: spack
+    executor: generic.local.sh
+    description: This test will be skipped
+    spack:
+      root: $HOME/spack
+      install:
+        specs: ['m4']
+        options: "-v"
