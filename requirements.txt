@@ -1,7 +1,7 @@
 distro
 isort
 # https://github.com/python-jsonschema/jsonschema/releases/tag/v4.18.0 deprecates jsonschema.RefResolver
-jsonschema<4.18
+jsonschema<4.21
 lmodule
 PyYAML>=5.2
 requests
