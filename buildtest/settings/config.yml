@@ -50,13 +50,13 @@ system:
       local:
         bash:
           description: submit jobs on local machine using bash shell
-          shell: bash
+          shell: bash --noprofile --norc
         sh:
           description: submit jobs on local machine using sh shell
           shell: sh
         csh:
           description: submit jobs on local machine using csh shell
-          shell: csh
+          shell: csh -xv
         zsh:
           description: submit jobs on local machine using zsh shell
           shell: zsh

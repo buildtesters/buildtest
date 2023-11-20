@@ -70,7 +70,7 @@ class PBSExecutor(BaseExecutor):
 
         os.chdir(builder.stage_dir)
 
-        cmd = f"bash {self._bashopts} {os.path.basename(builder.build_script)}"
+        cmd = f"{self.shell} {os.path.basename(builder.build_script)}"
 
         self.timeout = self.timeout or self._buildtestsettings.target_config.get(
             "timeout"
