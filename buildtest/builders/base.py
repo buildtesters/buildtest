@@ -595,9 +595,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         lines.append("# Run generated script")
         # local executor
         if self.is_local_executor():
-            cmd = self._emit_command()
-
-            lines += [" ".join(cmd)]
+            lines += [" ".join(self._emit_command())]
         # batch executor
         else:
             launcher = self.buildexecutor.executors[self.executor].launcher_command(
@@ -666,7 +664,6 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             Test can be run with shell name followed by path to script: ``bash /path/to/script.sh``
             Test can be run with shell name, shell options and path to script: ``bash -x /path/to/script.sh``
         """
-        console.print(f"{self}: {self.recipe.get('shell')} {self.shell.opts}")
         # if not self.recipe.get("shell") or self.recipe.get("shell") == "python":
         if self.recipe.get("shell") == "python":
             return [self.testpath]
