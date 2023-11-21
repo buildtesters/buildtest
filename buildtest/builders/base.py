@@ -169,6 +169,7 @@ class BuilderBase(ABC):
         self.shell = Shell(
             self.recipe.get("shell")
             or self.buildexecutor.executors[self.executor]._settings.get("shell")
+            or 'bash'
         )
 
         # set shebang to value defined in Buildspec, if not defined then get one from Shell class
