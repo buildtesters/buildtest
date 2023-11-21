@@ -165,11 +165,10 @@ class BuilderBase(ABC):
 
     def shell_detection(self):
         """Detect shell and shebang used for test script"""
-
         # if 'shell' property not defined in buildspec use this shell otherwise use the 'shell' property from the executor definition
         self.shell = Shell(
             self.recipe.get("shell")
-            or self.buildexecutor.executors[self.executor].shell
+            or self.buildexecutor.executors[self.executor]._settings.get("shell")
         )
 
         # set shebang to value defined in Buildspec, if not defined then get one from Shell class
@@ -596,9 +595,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         lines.append("# Run generated script")
         # local executor
         if self.is_local_executor():
-            cmd = self._emit_command()
-
-            lines += [" ".join(cmd)]
+            lines += [" ".join(self._emit_command())]
         # batch executor
         else:
             launcher = self.buildexecutor.executors[self.executor].launcher_command(
@@ -608,11 +605,8 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         lines.append("# Get return code")
 
-        # for csh returncode is determined by $status environment, for bash,sh,zsh its $?
-        if is_csh_shell(self.shell.name):
-            lines.append("set returncode = $status")
-        else:
-            lines.append("returncode=$?")
+        # get returncode of executed script which is retrieved by '$?'
+        lines.append("returncode=$?")
 
         lines.append("# Exit with return code")
         lines.append("exit $returncode")
@@ -670,16 +664,15 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             Test can be run with shell name followed by path to script: ``bash /path/to/script.sh``
             Test can be run with shell name, shell options and path to script: ``bash -x /path/to/script.sh``
         """
-
         # if not self.recipe.get("shell") or self.recipe.get("shell") == "python":
         if self.recipe.get("shell") == "python":
             return [self.testpath]
 
-        if not self.recipe.get("shell"):
-            return [self.shell.name, self.shell.default_opts, self.testpath]
+        # if not self.recipe.get("shell"):
+        #    return [self.shell.name, self.shell.default_opts, self.testpath]
 
-        if not self.shell.opts:
-            return [self.shell.name, self.testpath]
+        # if not self.shell.opts:
+        #    return [self.shell.name, self.testpath]
 
         return [self.shell.name, self.shell.opts, self.testpath]
 
@@ -696,20 +689,6 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         """Return a list of lines inserted in build script that define buildtest specific variables
         that can be referenced when writing tests. The buildtest variables all start with BUILDTEST_*
         """
-
-        if is_csh_shell(self.shell.name):
-            lines = [
-                f"setenv BUILDTEST_TEST_NAME {self.name}",
-                f"setenv BUILDTEST_TEST_ROOT {self.test_root}",
-                f"setenv BUILDTEST_BUILDSPEC_DIR {os.path.dirname(self.buildspec)}",
-                f"setenv BUILDTEST_STAGE_DIR {self.stage_dir}",
-            ]
-            if self.numnodes:
-                lines.append(f"setenv BUILDTEST_NUMNODES {self.numnodes}")
-            if self.numprocs:
-                lines.append(f"setenv BUILDTEST_NUMPROCS {self.numprocs}")
-
-            return lines
 
         lines = [
             f"export BUILDTEST_TEST_NAME={self.name}",
