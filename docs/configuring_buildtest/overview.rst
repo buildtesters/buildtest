@@ -577,15 +577,10 @@ The ``report`` section in configuration file allows you to configure behavior of
       #enable terse mode for report
       terse: False
       format: "name,id,state,runtime,returncode"
-      # show the latest for every test
-      latest: True
-      # show the oldest for every test
-      oldest: False
+
 
 The ``count`` property limits the number of records to display when running ``buildtest report`` command. The ``format`` property
 controls the fields to display when running ``buildtest report``. The ``terse`` property enables terse mode for ``buildtest report``.
-By default we will show the latest run for each test when running ``buildtest report``. The ``latest`` property can be set to ``False``
-if you want to change this behavior.
 
 .. _cdash_configuration:
 
