@@ -123,7 +123,7 @@
           "properties": {
             "terse": { "$ref": "#/definitions/terse" },
             "format": { "$ref": "#/definitions/format" },
-            "count": { "$ref": "#/definitions/count" },
+            "count": { "$ref": "#/definitions/count" }
           }
         },
         "processor": {
