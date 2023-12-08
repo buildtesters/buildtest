@@ -18,10 +18,6 @@ system:
       #enable terse mode for report
       terse: False
       format: "name,id,state,runtime,returncode"
-      # show the latest for every test
-      latest: True
-      # show the oldest for every test
-      oldest: False
     executors:
       local:
         bash:

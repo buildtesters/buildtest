@@ -15,8 +15,6 @@ system:
       count: 25
       terse: False
       format: "name,id,state,runtime,returncode"
-      latest: False
-      oldest: False
     executors:
       defaults:
         pollinterval: 30
