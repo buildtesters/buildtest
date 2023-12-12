@@ -123,8 +123,8 @@ class Report:
         self.end = end
         self.failure = failure
         self.passed = passed
-        self.latest = latest or self.configuration.target_config["report"].get("latest")
-        self.oldest = oldest or self.configuration.target_config["report"].get("oldest")
+        self.latest = latest
+        self.oldest = oldest
         self.filter = filter_args
         self.format = format_args or self.configuration.target_config["report"].get(
             "format"

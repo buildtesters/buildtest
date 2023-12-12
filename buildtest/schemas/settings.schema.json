@@ -123,9 +123,7 @@
           "properties": {
             "terse": { "$ref": "#/definitions/terse" },
             "format": { "$ref": "#/definitions/format" },
-            "count": { "$ref": "#/definitions/count" },
-            "latest": {"type": "boolean", "description": "A boolean to determine whether to show latest test run"},
-            "oldest": {"type": "boolean", "description": "A boolean to determine whether to show oldest test run"}
+            "count": { "$ref": "#/definitions/count" }
           }
         },
         "processor": {
