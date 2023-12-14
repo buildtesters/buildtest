@@ -1222,9 +1222,9 @@ class BuildTest:
         """
 
         console.rule("[bold red]Running Tests")
-        #try:
+        # try:
         self.buildexecutor.run(self.builders)
-        #except KeyBoardInterruptException as err:
+        # except KeyBoardInterruptException as err:
         #    print("Exception raised, terminating buildtest")
         #    print(err)
         #    sys.exit()

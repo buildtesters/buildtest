@@ -369,7 +369,7 @@ def comparison_check(builder, comparison_type):
     metric_names = list(builder.metadata["metrics"].keys())
 
     if comparison_type not in COMPARISON_OPERATIONS:
-        #raise BuildTestError(
+        # raise BuildTestError(
         console.print(
             f"comparison_type: {comparison_type} is not a valid comparison type. Valid comparison types are: {list(COMPARISON_OPERATIONS.keys())}"
         )
@@ -420,7 +420,7 @@ def comparison_check(builder, comparison_type):
             assert_check.append(False)
             continue
 
-        comparison_op, symbol  = COMPARISON_OPERATIONS[comparison_type]
+        comparison_op, symbol = COMPARISON_OPERATIONS[comparison_type]
         bool_check = comparison_op(conv_value, ref_value)
         console.print(
             f"[blue]{builder}[/]: testing metric: {name} if {conv_value} {symbol} {ref_value} - Check: {bool_check}"
