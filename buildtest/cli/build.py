@@ -1040,7 +1040,7 @@ class BuildTest:
         if self.finished_builders:
             update_report(self.finished_builders, self.report_file)
 
-        print(f"Writing Logfile to: {self.logfile.name}")
+        print(f"Writing Logfile to {self.logfile.name}")
 
         self._update_build_history(self.finished_builders)
 
