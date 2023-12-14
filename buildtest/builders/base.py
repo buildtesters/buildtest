@@ -375,14 +375,14 @@ class BuilderBase(ABC):
         if not self._retry or ret == 0:
             return command
 
-        console.print(f"[red]{self} failed to submit job with returncode: {ret}")
+        console.print(f"[red]{self}: failed to submit job with returncode: {ret}")
         console.rule(f"[red]Error Message for {self}")
         console.print(f"[red]{' '.join(err_msg)}")
 
         ########## Retry for failed tests  ##########
 
-        print(
-            f"{self}: Detected failure in running test, will attempt to retry test: {self._retry} times"
+        console.print(
+            f"[red]{self}: Detected failure in running test, will attempt to retry test: {self._retry} times"
         )
         for run in range(1, self._retry + 1):
             print(f"{self}: Run - {run}/{self._retry}")
@@ -515,7 +515,6 @@ class BuilderBase(ABC):
 
         msg = f"Creating test directory: {self.test_root}"
         self.logger.debug(msg)
-        console.print(f"[blue]{self}:[/] {msg}")
 
         self.metadata["testroot"] = self.test_root
 
@@ -525,8 +524,6 @@ class BuilderBase(ABC):
         create_dir(self.stage_dir)
         msg = f"Creating the stage directory: {self.stage_dir}"
         self.logger.debug(msg)
-
-        console.print(f"[blue]{self}:[/] {msg}")
 
         self.metadata["stagedir"] = self.stage_dir
 
@@ -551,6 +548,8 @@ class BuilderBase(ABC):
                 )
             elif fname.is_file():
                 shutil.copy2(fname, self.stage_dir)
+
+        console.print(f"[blue]{self}[/]: Creating Test Directory: {self.test_root}")
 
     def _write_build_script(self, modules=None, modulepurge=None, unload_modules=None):
         """This method will write the content of build script that is run for when invoking
@@ -626,7 +625,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         self.build_script = dest
         self.metadata["build_script"] = self.build_script
 
-        console.print(f"[blue]{self}:[/] Writing build script: {self.build_script}")
+        # console.print(f"[blue]{self}:[/] Writing build script: {self.build_script}")
 
     def _write_test(self):
         """This method is responsible for invoking ``generate_script`` that
@@ -976,10 +975,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         # need these lines after self.copy_stage_files()
         console.print(
-            f"[blue]{self}[/]: Test completed in {self.metadata['result']['runtime']} seconds"
-        )
-        console.print(
-            f"[blue]{self}[/]: Test completed with returncode: {self.metadata['result']['returncode']}"
+            f"[blue]{self}[/]: Test completed in {self.metadata['result']['runtime']} seconds with returncode: {self.metadata['result']['returncode']}"
         )
         console.print(
             f"[blue]{self}[/]: Writing output file -  [green1]{self.metadata['outfile']}"

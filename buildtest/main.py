@@ -2,7 +2,6 @@
 
 import os
 import shutil
-import sys
 import tempfile
 import webbrowser
 
@@ -146,45 +145,40 @@ def main():
     if args.subcommands in ["build", "bd"]:
         stdout_file = tempfile.NamedTemporaryFile(delete=True, suffix=".txt")
         with Tee(stdout_file.name):
-            try:
-                cmd = BuildTest(
-                    configuration=configuration,
-                    buildspecs=args.buildspec,
-                    exclude_buildspecs=args.exclude,
-                    executors=args.executor,
-                    tags=args.tags,
-                    name=args.name,
-                    exclude_tags=args.exclude_tags,
-                    filter_buildspecs=args.filter,
-                    rebuild=args.rebuild,
-                    stage=args.stage,
-                    testdir=args.testdir,
-                    buildtest_system=system,
-                    report_file=report_file,
-                    maxpendtime=args.maxpendtime,
-                    poll_interval=args.pollinterval,
-                    remove_stagedir=args.remove_stagedir,
-                    retry=args.retry,
-                    account=args.account,
-                    helpfilter=args.helpfilter,
-                    numprocs=args.procs,
-                    numnodes=args.nodes,
-                    modules=args.modules,
-                    modulepurge=args.module_purge,
-                    unload_modules=args.unload_modules,
-                    rerun=args.rerun,
-                    executor_type=args.executor_type,
-                    timeout=args.timeout,
-                    limit=args.limit,
-                    save_profile=args.save_profile,
-                    profile=args.profile,
-                    max_jobs=args.max_jobs,
-                )
-                cmd.build()
-            except (KeyboardInterrupt, SystemExit) as err:
-                console.print("[red]buildtest build command failed")
-                console.print(err)
-                sys.exit(1)
+            cmd = BuildTest(
+                configuration=configuration,
+                buildspecs=args.buildspec,
+                exclude_buildspecs=args.exclude,
+                executors=args.executor,
+                tags=args.tags,
+                name=args.name,
+                exclude_tags=args.exclude_tags,
+                filter_buildspecs=args.filter,
+                rebuild=args.rebuild,
+                stage=args.stage,
+                testdir=args.testdir,
+                buildtest_system=system,
+                report_file=report_file,
+                maxpendtime=args.maxpendtime,
+                poll_interval=args.pollinterval,
+                remove_stagedir=args.remove_stagedir,
+                retry=args.retry,
+                account=args.account,
+                helpfilter=args.helpfilter,
+                numprocs=args.procs,
+                numnodes=args.nodes,
+                modules=args.modules,
+                modulepurge=args.module_purge,
+                unload_modules=args.unload_modules,
+                rerun=args.rerun,
+                executor_type=args.executor_type,
+                timeout=args.timeout,
+                limit=args.limit,
+                save_profile=args.save_profile,
+                profile=args.profile,
+                max_jobs=args.max_jobs,
+            )
+            cmd.build()
 
         if cmd.build_success():
             build_history_dir = cmd.get_build_history_dir()
