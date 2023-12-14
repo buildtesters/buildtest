@@ -355,12 +355,12 @@ def comparison_check(builder, comparison_type):
     """
 
     COMPARISON_OPERATIONS = {
-        "ge": (lambda x, y: x >= y, ">=", "Greater Equal Check"),
-        "gt": (lambda x, y: x > y, ">", "Greater Check"),
-        "le": (lambda x, y: x <= y, "<=", "Less Than Equal Check"),
-        "lt": (lambda x, y: x < y, "<", "Less Than Check"),
-        "eq": (lambda x, y: x == y, "==", "Equality Check"),
-        "ne": (lambda x, y: x != y, "!=", "Not Equal Check"),
+        "ge": (lambda x, y: x >= y, ">="),
+        "gt": (lambda x, y: x > y, ">"),
+        "le": (lambda x, y: x <= y, "<="),
+        "lt": (lambda x, y: x < y, "<"),
+        "eq": (lambda x, y: x == y, "=="),
+        "ne": (lambda x, y: x != y, "!="),
     }
 
     # a list containing booleans to evaluate reference check for each metric
@@ -369,9 +369,11 @@ def comparison_check(builder, comparison_type):
     metric_names = list(builder.metadata["metrics"].keys())
 
     if comparison_type not in COMPARISON_OPERATIONS:
-        raise BuildTestError(
+        #raise BuildTestError(
+        console.print(
             f"comparison_type: {comparison_type} is not a valid comparison type. Valid comparison types are: {list(COMPARISON_OPERATIONS.keys())}"
         )
+        return False
 
     comparison_dict = builder.status[f"assert_{comparison_type}"]
     # iterate over each metric in buildspec and determine reference check for each metric
@@ -418,7 +420,7 @@ def comparison_check(builder, comparison_type):
             assert_check.append(False)
             continue
 
-        comparison_op, symbol, log_message = COMPARISON_OPERATIONS[comparison_type]
+        comparison_op, symbol  = COMPARISON_OPERATIONS[comparison_type]
         bool_check = comparison_op(conv_value, ref_value)
         console.print(
             f"[blue]{builder}[/]: testing metric: {name} if {conv_value} {symbol} {ref_value} - Check: {bool_check}"
@@ -431,7 +433,7 @@ def comparison_check(builder, comparison_type):
     else:
         bool_check = all(assert_check)
 
-    console.print(f"[blue]{builder}[/]: {log_message}: {bool_check}")
+    console.print(f"[blue]{builder}[/]: {comparison_type} check: {bool_check}")
 
     return bool_check
 
