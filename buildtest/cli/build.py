@@ -1249,7 +1249,6 @@ class BuildTest:
         table.add_column("builder", overflow="fold")
         table.add_column("executor", overflow="fold")
         table.add_column("status", overflow="fold")
-        table.add_column("checks (ReturnCode, Regex, Runtime)", overflow="fold")
         table.add_column("returncode", overflow="fold")
         table.add_column("runtime", overflow="fold")
 
@@ -1268,9 +1267,8 @@ class BuildTest:
                 f"[{color_row}]{builder}",
                 f"[{color_row}]{builder.executor}",
                 f"[{color_row}]{builder.metadata['result']['state']}",
-                f"[{color_row}]{builder.metadata['check']['returncode']} [{color_row}]{builder.metadata['check']['regex']} [{color_row}]{builder.metadata['check']['runtime']}",
                 f"[{color_row}]{builder.metadata['result']['returncode']}",
-                f"[{color_row}]{builder.metadata['result']['runtime']}",
+                f"[{color_row}]{format(builder.metadata['result']['runtime'],'.3f')}",
             )
 
             total_tests += 1
