@@ -80,9 +80,6 @@ To access `buildtest docs <https://buildtest.readthedocs.io/>`_ you can run::
 
   buildtest docs
 
-To access `schema docs <https://buildtesters.github.io/buildtest>`_ you can run::
-
-  buildtest schemadocs
 
 Enabling colored output for table entries
 -------------------------------------------------------------

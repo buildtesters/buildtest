@@ -86,18 +86,6 @@ This is the script schema used for writing scripts (bash, csh, sh, zsh, tcsh, py
     .. literalinclude:: ../buildtest/schemas/script.schema.json
        :language: json
 
-
-Compiler Schema
-~~~~~~~~~~~~~~~~
-
-This is the compiler schema used for validating buildspecs that define test using ``type: compiler``.
-This schema is used for compiling a single source code. For more details see :ref:`compiler_schema`
-
-.. dropdown:: compiler.schema.json
-
-    .. literalinclude:: ../buildtest/schemas/compiler.schema.json
-       :language: json
-
 Spack Schema
 ~~~~~~~~~~~~~~
 

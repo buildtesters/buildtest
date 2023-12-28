@@ -556,7 +556,7 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
       ;;
     # options with only --help
-    debugreport|info|docs|schemadocs|tutorial-examples)
+    debugreport|info|docs|tutorial-examples)
       local opts="-h --help"
       COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
       ;;

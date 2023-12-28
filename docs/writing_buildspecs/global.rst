@@ -3,9 +3,10 @@
 Global Schema
 ==============
 
-The global schema is validated with for all buildspecs and this schema defines the top-level structure of the buildspec file.
-Please refer to `global schema documentation <https://buildtesters.github.io/buildtest/pages/schemadocs/global.html>`_ that
-provides a summary .
+The global schema file (`global.schema.json <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/global.schema.json>`_)
+is validated with for all buildspecs and this schema defines the top-level structure of the buildspec file. In particular this will validate
+the ``buildspecs`` keyword which is a JSON object that defines one or more tests (buildspecs). Each test must be unique name.
+
 
 Schema Definition
 ------------------
