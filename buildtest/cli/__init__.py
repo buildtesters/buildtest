@@ -342,7 +342,6 @@ class BuildTestParser:
         for name, kwargs in self.subcommands.items():
             self.subparsers.add_parser(name, **kwargs)
 
-
         for name, kwargs in self.hidden_subcommands.items():
             self.subparsers.add_parser(name, **kwargs)
 
