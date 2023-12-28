@@ -6,7 +6,6 @@ parsed validation via :class:`buildtest.buildsystem.parser.BuildspecParser`.
 import logging
 import re
 
-
 from buildtest.builders.script import ScriptBuilder
 from buildtest.builders.spack import SpackBuilder
 from buildtest.defaults import console
@@ -120,7 +119,7 @@ class Builder:
                     continue
                 # Add the builder for the script or spack schema
 
-                if recipe["type"] in ["script", "compiler", "spack"]:
+                if recipe["type"] in ["script", "spack"]:
                     builders = self.build(name, recipe)
                     if builders:
                         self.builders += builders
@@ -206,7 +205,6 @@ class Builder:
                 builders.append(builder)
 
         return builders
-
 
     def create_spack_builders(self, name, recipe, executor, nodes=None, procs=None):
         """Create builder objects by calling :class:`buildtest.builders.spack.SpackBuilder` class.

@@ -33,7 +33,7 @@ class Report:
         "buildspec": "Buildspec File",
         "buildenv": "Show build environment file for test",
         "command": "Command executed",
-        "compiler": "Retrieve compiler used for test (applicable for compiler schema)",
+        "compiler": "Retrieve compiler used for test",
         "endtime": "End Time for test",
         "errfile": "Error File",
         "executor": "Name of executor used for running test",

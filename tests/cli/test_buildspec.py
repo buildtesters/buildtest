@@ -31,10 +31,10 @@ def test_buildspec_validate():
     buildspec_validate(
         buildspecs=[
             os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml"),
-            os.path.join(BUILDTEST_ROOT, "tutorials", "compilers"),
+            os.path.join(BUILDTEST_ROOT, "tutorials", "test_status"),
         ],
         excluded_buildspecs=[
-            os.path.join(BUILDTEST_ROOT, "tutorials", "compilers", "gnu_hello_c.yml")
+            os.path.join(BUILDTEST_ROOT, "tutorials", "test_status", "status_regex.yml")
         ],
         tags=["pass", "python"],
         executors=["generic.local.sh"],

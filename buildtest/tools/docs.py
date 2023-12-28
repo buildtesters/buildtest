@@ -99,5 +99,3 @@ def build_spack_examples(autogen_dir):
 
     for fname, command in commands_to_run.items():
         write_example(fname, command)
-
-
