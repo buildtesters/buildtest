@@ -6,7 +6,7 @@ import sys
 from buildtest.cli.clean import clean
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT, TUTORIALS_SETTINGS_FILE
-from buildtest.tools.docs import build_compiler_examples, build_spack_examples
+from buildtest.tools.docs import build_spack_examples
 from buildtest.utils.file import create_dir, is_dir, is_file
 
 
@@ -38,7 +38,6 @@ def generate_tutorial_examples():
 
     clean(config, yes=True)
     build_spack_examples(autogen_examples_dir)
-    build_compiler_examples(autogen_examples_dir)
 
 
 if __name__ == "__main__":
