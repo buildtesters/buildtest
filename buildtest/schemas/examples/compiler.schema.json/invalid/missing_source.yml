@@ -1,7 +1,0 @@
-buildspecs:
-  missing_required_source:
-    executor: generic.local.bash
-    type: compiler
-    description: "missing required field 'source' "
-    compilers:
-      name: [gcc]
