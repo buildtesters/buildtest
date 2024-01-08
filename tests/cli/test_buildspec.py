@@ -34,7 +34,7 @@ def test_buildspec_validate():
             os.path.join(BUILDTEST_ROOT, "tutorials", "test_status"),
         ],
         excluded_buildspecs=[
-            os.path.join(BUILDTEST_ROOT, "tutorials", "test_status", "status_regex.yml")
+            os.path.join(BUILDTEST_ROOT, "tutorials", "test_status", "file_exists_exception.yml")
         ],
         tags=["pass", "python"],
         executors=["generic.local.sh"],
