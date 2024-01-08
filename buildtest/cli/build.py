@@ -20,7 +20,6 @@ from rich.panel import Panel
 from rich.table import Column, Table
 
 from buildtest import BUILDTEST_VERSION
-from buildtest.builders.compiler import CompilerBuilder
 from buildtest.builders.script import ScriptBuilder
 from buildtest.builders.spack import SpackBuilder
 from buildtest.buildsystem.builders import Builder
@@ -1148,9 +1147,6 @@ class BuildTest:
         for builder in self.builders:
             if isinstance(builder, ScriptBuilder):
                 script_builders.append(builder)
-
-            if isinstance(builder, CompilerBuilder):
-                compiler_builder.append(builder)
 
             if isinstance(builder, SpackBuilder):
                 spack_builder.append(builder)

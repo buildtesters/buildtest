@@ -10,7 +10,6 @@ def test_schema_cmd():
         "definitions.schema.json",
         "global.schema.json",
         "settings.schema.json",
-        "compiler.schema.json",
         "script.schema.json",
     ]
     # for all schemas run --json, --examples, --validate option

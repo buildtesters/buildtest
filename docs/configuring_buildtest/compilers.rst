@@ -5,10 +5,8 @@ Defining Compilers
 
 buildtest provides a mechanism to declare compilers in your configuration file, this
 is defined in ``compilers`` top-level section. The compilers should reflect compilers
-installed at your site. The compilers are used if you are writing a buildspec
-with :ref:`compiler schema <compiler_schema>` that needs to reference a particular compiler.
-The compilers are declared within scope of a system since we assume compilers will vary across
-different HPC clusters.
+installed at your site. The compilers are declared within scope of a system since we assume
+compilers will vary across different HPC clusters.
 
 Compiler Declaration
 ---------------------

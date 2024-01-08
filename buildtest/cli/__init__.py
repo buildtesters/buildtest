@@ -204,7 +204,6 @@ class BuildTestParser:
 
     _github = "https://github.com/buildtesters/buildtest"
     _docs = "https://buildtest.readthedocs.io/en/latest/index.html"
-    _schemadocs = "https://buildtesters.github.io/buildtest/"
     _slack = "http://hpcbuildtest.slack.com/"
     _issues = "https://github.com/buildtesters/buildtest/issues"
     _progname = "buildtest"
@@ -216,7 +215,6 @@ class BuildTestParser:
 
     GitHub:                  {_github}
     Documentation:           {_docs}
-    Schema Documentation:    {_schemadocs}
     Slack:                   {_slack}
 
     Please report issues at {_issues}
