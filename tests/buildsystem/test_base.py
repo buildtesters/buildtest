@@ -102,7 +102,6 @@ def test_BuildspecParser(tmp_path):
     # even though they are valid buildspecs.\
     bc = BuildtestCompilers(configuration=config)
 
-
     # Examples folder
     valid_buildspecs_directory = os.path.join(here, "valid_buildspecs")
 
