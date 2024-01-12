@@ -12,4 +12,4 @@ isort
 black==23.12.1
 pyflakes
 # https://urllib3.readthedocs.io/en/latest/v2-migration-guide.html
-urllib3==2.1.*
+urllib3>=2.1.0
