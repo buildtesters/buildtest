@@ -23,7 +23,7 @@ dependencies=[
    'pytest',
    'black==23.12.1',
    'pyflakes',
-   'urllib3 >=1.26',
+   'urllib3>=2.1.0',
 ]
 
 
