@@ -27,9 +27,9 @@ compiler wrapper for the selected compiler.
 
 Let's try to run the code and inspect the test output and test file.
 
-.. dropdown:: ``buildtest build -b tutorials/compilation/hello_world_buildspec.yml``
+.. dropdown:: ``buildtest build -b tutorials/compilation/hello_world_compilation.yml``
 
-    .. command-output:: buildtest build -b tutorials/compilation/hello_world_buildspec.yml
+    .. command-output:: buildtest build -b tutorials/compilation/hello_world_compilation.yml
 
     .. command-output:: buildtest inspect query -o -t hello_world_c_cpp
 

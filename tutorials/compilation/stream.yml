@@ -12,6 +12,6 @@ buildspecs:
           env:
            OMP_NUM_THREADS: 8
     run: |
-      curl https://www.cs.virginia.edu/stream/FTP/Code/stream.c -O stream.c 
+      curl https://www.cs.virginia.edu/stream/FTP/Code/stream.c -o stream.c 
       $BUILDTEST_CC $BUILDTEST_CFLAGS stream.c -o stream
       ./stream
