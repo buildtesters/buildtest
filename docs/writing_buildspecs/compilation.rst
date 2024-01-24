@@ -7,13 +7,11 @@ Hello World Example
 In this section, we will show to compile source code with compiler and compiler flags. To get started,
 let's start with a simple hello world example we have available in C and C++ as shown below
 
-.. literalinclude:: ../../tutorials/compilation/hello_world.c
+.. literalinclude:: ../tutorials/compilation/hello_world.c
    :language: c
-   :linenos:
 
-.. literalinclude:: ../../tutorials/compilation/hello_world.cpp
+.. literalinclude:: ../tutorials/compilation/hello_world.cpp
    :language: c++
-   :linenos:
 
 Shown below is an example buildspec file that will compile the above source code with the gcc compiler.
 The ``compilers`` section is used to specify the compiler to use that is selected via the ``name`` property which applies
@@ -22,7 +20,6 @@ for more details.
 
 .. literalinclude:: ../../tutorials/compilation/hello_world_buildspec.yml
    :language: yaml
-   :linenos:
    :emphasize-lines: 6-7, 9-10
 
 Buildtest will define environment variables like ``BUILDTEST_CC`` and ``BUILDTEST_CXX`` that point to compiler wrapper
@@ -30,9 +27,9 @@ for the selected compiler.
 
 Let's try to run the code and inspect the test output and test file.
 
-.. dropdown:: ``buildtest build -b tutorials/compilation_examples/hello_world_buildspec.yml``
+.. dropdown:: ``buildtest build -b tutorials/compilation/hello_world_buildspec.yml``
 
-    .. command-output:: buildtest build -b tutorials/compilation_examples/hello_world_buildspec.yml
+    .. command-output:: buildtest build -b tutorials/compilation/hello_world_buildspec.yml
 
     .. command-output:: buildtest inspect query -o -t hello_world_c_cpp
 
@@ -46,12 +43,11 @@ The `cflags` option is responsible for setting C compiler flags which is set to 
 the ``run`` section. The ``env`` section is used to set environment variables that are used in the ``run`` section.
 
 .. literalinclude:: ../../tutorials/compilation/stream.yml
-   :language: c
-   :linenos:
+   :language: yaml
    :emphasize-lines: 9-13,16
 
-.. dropdown:: ``buildtest build -b tutorials/compilation_examples/stream.yml``
+.. dropdown:: ``buildtest build -b tutorials/compilation/stream.yml``
 
-    .. command-output:: buildtest build -b tutorials/compilation_examples/stream.yml
+    .. command-output:: buildtest build -b tutorials/compilation/stream.yml
 
     .. command-output:: buildtest inspect query -t stream_openmp_c
