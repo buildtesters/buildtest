@@ -34,7 +34,7 @@ Let's try to run the code and inspect the test output and test file.
     .. command-output:: buildtest inspect query -o -t hello_world_c_cpp
 
 Please note that the compiler definition for ``builtin_gcc`` is a canonical name to reference to system GNU
-compiler that is set to `/usr/bin/gcc`, `/usr/bin/g++`. The compiler details can be extracted from the configuration
+compiler that is set to **/usr/bin/gcc**, **/usr/bin/g++**. The compiler details can be extracted from the configuration
 file via ``buildtest config compilers list`` command. Shown below is the YAML output of the compiler details.
 
 .. command-output:: buildtest config compilers list --yaml
@@ -56,4 +56,4 @@ the ``run`` section. The ``env`` section is used to set environment variables th
 
     .. command-output:: buildtest build -b tutorials/compilation/stream.yml
 
-    .. command-output:: buildtest inspect query -t stream_openmp_c
+    .. command-output:: buildtest inspect query -o -t stream_openmp_c
