@@ -1,6 +1,7 @@
 """
 Methods related to buildtest logging
 """
+
 import logging
 import os
 
