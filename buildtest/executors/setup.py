@@ -19,6 +19,7 @@ from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
 from buildtest.exceptions import BuildTestError, ExecutorError
 from buildtest.executors.base import BaseExecutor
 from buildtest.executors.cobalt import CobaltExecutor
+from buildtest.executors.container import ContainerExecutor
 from buildtest.executors.local import LocalExecutor
 from buildtest.executors.lsf import LSFExecutor
 from buildtest.executors.pbs import PBSExecutor
@@ -93,6 +94,7 @@ class BuildExecutor:
             "lsf": LSFExecutor,
             "pbs": PBSExecutor,
             "cobalt": CobaltExecutor,
+            "container": ContainerExecutor,
         }
 
         for executor_type, executor_cls in executor_types.items():
