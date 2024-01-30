@@ -514,6 +514,9 @@ You can specify the full URI to the container image which is useful if you are u
 You can specify container runtime options via ``options`` and bind mount via ``mounts`` property. Both properties are
 are string type, for instance let's say you want to bind mount ``/tmp`` directory to ``/tmp``
 
+.. code-block:: yaml
+    :emphasize-lines: 6-7
+
     executors:
       container:
         ubuntu:

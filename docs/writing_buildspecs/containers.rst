@@ -651,10 +651,10 @@ see the results of the test.
     Writing Logfile to /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/logs/buildtest_umreirt3.log
 
 
-Let's try inspecting the test result and you will see that ``docker run`` command is specifed in the build script (``_build.sh``). The actual
-test script incorporated the content of the ``run`` section which is invoked in the container. buildtest will bind mount the test stage directory
-into ``/buildtest`` and set this as the working directory. You will see that output of ``pwd`` in test will be ``/buildtest``. The output of `df` will
-show that ``/buildtest`` is mounted from host system, which allows output files from container to be accessible on host upon completion of test.
+Let's try inspecting the test result and you will see that ``docker run`` command is specifed in the build script (``_build.sh``). The test script
+will include content of the ``run`` section which is invoked in the container. Buildtest will bind mount the stage directory
+into ``/buildtest`` and set the working directory to ``/buildtest``. You will see that output of ``pwd`` in test will be ``/buildtest``. The output of ``df``
+will show ``/buildtest`` is mounted from host system, which allows output files from container to be accessible on host upon completion of test.
 
 .. dropdown:: ``buildtest inspect query -o -t -b ubuntu_container_example``
 
