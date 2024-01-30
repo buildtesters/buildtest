@@ -282,9 +282,11 @@ class BuilderBase(ABC):
         """
 
         # import issue when putting this at top of file
-        from buildtest.executors.local import LocalExecutor
+        # from buildtest.executors.local import LocalExecutor
 
-        return isinstance(self.buildexecutor.executors[self.executor], LocalExecutor)
+        # return isinstance(self.buildexecutor.executors[self.executor], LocalExecutor)
+
+        return self.buildexecutor.executors[self.executor].type == "local"
 
     def is_container_executor(self):
         # from buildtest.executors.container import ContainerExecutor
