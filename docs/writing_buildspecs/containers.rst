@@ -553,3 +553,197 @@ the test result and you will notice the container was executed successfully.
     # Content of run section
     docker run -v /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/no_commands/hello_world_container_no_commands/37a26900/stage:/buildtest hello-world
     echo 'Test Complete!'
+
+Running Test in Container Executor
+-----------------------------------
+
+If you are interested in running a set of test in a particular container, you can define a :ref:`container executor <container_executor>` in your
+configuration file and then specify the executor via the ``executor`` property in your buildspec. In this example below, we will run test in an
+executor named ``generic.container.ubuntu``
+
+.. literalinclude:: ../tutorials/containers/container_executor/ubuntu.yml
+   :language: yaml
+   :emphasize-lines: 4
+
+buildtest will invoke test in container and bind mount the test stage directory into the container. Let's try running the test and
+see the results of the test.
+
+.. code-block:: console
+
+    (buildtest) ☁  buildtest [container_executor_support] ⚡  buildtest -c buildtest/settings/container_executor.yml build -b tutorials/containers/container_executor/ubuntu.yml
+    ╭───────────────────────────────────────────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────────────────────────────────────────╮
+    │                                                                                                                                                                                              │
+    │ User:               siddiq90                                                                                                                                                                 │
+    │ Hostname:           DOE-7086392                                                                                                                                                              │
+    │ Platform:           Darwin                                                                                                                                                                   │
+    │ Current Time:       2024/01/30 16:28:51                                                                                                                                                      │
+    │ buildtest path:     /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest                                                                                                          │
+    │ buildtest version:  1.7                                                                                                                                                                      │
+    │ python path:        /Users/siddiq90/.local/share/virtualenvs/buildtest-KLOcDrW0/bin/python3                                                                                                  │
+    │ python version:     3.11.4                                                                                                                                                                   │
+    │ Configuration File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/buildtest/settings/container_executor.yml                                                                              │
+    │ Test Directory:     /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests                                                                                                              │
+    │ Report File:        /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/report.json                                                                                                        │
+    │ Command:            /Users/siddiq90/Documents/GitHubDesktop/buildtest/bin/buildtest -c buildtest/settings/container_executor.yml build -b tutorials/containers/container_executor/ubuntu.yml │
+    │                                                                                                                                                                                              │
+    ╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+    ───────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────
+                                             Discovered buildspecs
+    ╔══════════════════════════════════════════════════════════════════════════════════════════════════════╗
+    ║ buildspec                                                                                            ║
+    ╟──────────────────────────────────────────────────────────────────────────────────────────────────────╢
+    ║ /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/containers/container_executor/ubuntu.yml ║
+    ╚══════════════════════════════════════════════════════════════════════════════════════════════════════╝
+
+
+    Total Discovered Buildspecs:  1
+    Total Excluded Buildspecs:  0
+    Detected Buildspecs after exclusion:  1
+    ────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+    Valid Buildspecs: 1
+    Invalid Buildspecs: 0
+    /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/containers/container_executor/ubuntu.yml: VALID
+    Total builder objects created: 1
+                                                                                                            Builders by type=script
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ builder                           ┃ type   ┃ executor                 ┃ compiler ┃ nodes ┃ procs ┃ description                      ┃ buildspecs                                                                                     ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ ubuntu_container_example/74e7c722 │ script │ generic.container.ubuntu │ None     │ None  │ None  │ run test in a container executor │ /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/containers/container_executor/ubun │
+    │                                   │        │                          │          │       │       │                                  │ tu.yml                                                                                         │
+    └───────────────────────────────────┴────────┴──────────────────────────┴──────────┴───────┴───────┴──────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                                              Batch Job Builders
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ builder                           ┃ executor                 ┃ buildspecs                                                                                           ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ ubuntu_container_example/74e7c722 │ generic.container.ubuntu │ /Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/containers/container_executor/ubuntu.yml │
+    └───────────────────────────────────┴──────────────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ubuntu_container_example/74e7c722: Creating Test Directory: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/74e7c722
+    ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    Spawning 1 processes for processing builders
+    ───────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+    ubuntu_container_example/74e7c722 does not have any dependencies adding test to queue
+          Builders Eligible to Run
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+    ┃ Builder                           ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+    │ ubuntu_container_example/74e7c722 │
+    └───────────────────────────────────┘
+    ubuntu_container_example/74e7c722: Current Working Directory : /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/74e7c722/stage
+    ubuntu_container_example/74e7c722: Running Test via command: bash ubuntu_container_example_build.sh
+    ubuntu_container_example/74e7c722: Test completed in 8.646974 seconds with returncode: 0
+    ubuntu_container_example/74e7c722: Writing output file -  /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/74e7c722/ubuntu_container_example.out
+    ubuntu_container_example/74e7c722: Writing error file - /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/74e7c722/ubuntu_container_example.err
+                                              Test Summary
+    ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
+    ┃ builder                           ┃ executor                 ┃ status ┃ returncode ┃ runtime ┃
+    ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
+    │ ubuntu_container_example/74e7c722 │ generic.container.ubuntu │ PASS   │ 0          │ 8.647   │
+    └───────────────────────────────────┴──────────────────────────┴────────┴────────────┴─────────┘
+
+
+
+    Passed Tests: 1/1 Percentage: 100.000%
+    Failed Tests: 0/1 Percentage: 0.000%
+
+
+    Adding 1 test results to /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/report.json
+    Writing Logfile to /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/logs/buildtest_umreirt3.log
+
+
+Let's try inspecting the test result and you will see that ``docker run`` command is specifed in the build script (``_build.sh``). The actual
+test script incorporated the content of the ``run`` section which is invoked in the container. buildtest will bind mount the test stage directory
+into ``/buildtest`` and set this as the working directory. You will see that output of ``pwd`` in test will be ``/buildtest``. The output of `df` will
+show that ``/buildtest`` is mounted from host system, which allows output files from container to be accessible on host upon completion of test.
+
+.. dropdown:: ``buildtest inspect query -o -t -b ubuntu_container_example``
+
+    .. code-block:: console
+
+        (buildtest) ☁  buildtest [container_executor_support] ⚡  buildtest inspect query -o -t -b ubuntu_container_example
+        ──────────────────────────────────────────────────────────────────────────────────── ubuntu_container_example/74e7c722-a163-4985-a99e-51788e13419d ─────────────────────────────────────────────────────────────────────────────────────
+        Executor: generic.container.ubuntu
+        Description: run test in a container executor
+        State: PASS
+        Returncode: 0
+        Runtime: 8.646974 sec
+        Starttime: 2024/01/30 16:28:51
+        Endtime: 2024/01/30 16:29:00
+        Command: bash ubuntu_container_example_build.sh
+        Test Script: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/74e7c722/ubuntu_container_example.sh
+        Build Script: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/74e7c722/ubuntu_container_example_build.sh
+        Output File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/74e7c722/ubuntu_container_example.out
+        Error File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/74e7c722/ubuntu_container_example.err
+        Log File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/logs/buildtest_umreirt3.log
+        ─────────────────────────────── Output File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/74e7c722/ubuntu_container_example.out ────────────────────────────────
+        USER:  root
+        HOMEDIR:  /root
+        WORKDIR:  /buildtest
+        Filesystem        Size  Used Avail Use% Mounted on
+        overlay            59G   48G  8.1G  86% /
+        tmpfs              64M     0   64M   0% /dev
+        shm                64M     0   64M   0% /dev/shm
+        /host_mark/Users  1.9T  174G  1.7T  10% /buildtest
+        /dev/vda1          59G   48G  8.1G  86% /etc/hosts
+        tmpfs             3.9G     0  3.9G   0% /proc/acpi
+        tmpfs             3.9G     0  3.9G   0% /sys/firmware
+        ************************
+        total 16
+        -rw-r--r-- 1 root root  208 Jan 29 22:40 python_container.yml
+        -rw-r--r-- 1 root root  379 Jan 29 22:12 ubuntu.yml
+        -rwxr-xr-x 1 root root  229 Jan 30 21:28 ubuntu_container_example.sh
+        -rwxr-xr-x 1 root root 1386 Jan 30 21:28 ubuntu_container_example_build.sh
+        ************************
+        NAME="Ubuntu"
+        VERSION="20.04.6 LTS (Focal Fossa)"
+        ID=ubuntu
+        ID_LIKE=debian
+        PRETTY_NAME="Ubuntu 20.04.6 LTS"
+        VERSION_ID="20.04"
+        HOME_URL="https://www.ubuntu.com/"
+        SUPPORT_URL="https://help.ubuntu.com/"
+        BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+        PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+        VERSION_CODENAME=focal
+        UBUNTU_CODENAME=focal
+
+        ───────────────────────────────── Test File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/74e7c722/ubuntu_container_example.sh ─────────────────────────────────
+        #!/bin/bash
+        set -eo pipefail
+        # Content of run section
+
+        echo "USER: " $(whoami)
+        echo "HOMEDIR: " $HOME
+        echo "WORKDIR: " $(pwd)
+        df -h
+        echo "************************"
+        ls -l
+        echo "************************"
+        cat /etc/os-release
+
+        ────────────────────────────── Test File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/74e7c722/ubuntu_container_example_build.sh ──────────────────────────────
+        #!/bin/bash
+
+        # Function to handle all signals and perform cleanup
+        function cleanup() {
+            echo "Signal trapped. Performing cleanup before exiting."
+            exitcode=$?
+            echo "buildtest: command \`$BASH_COMMAND' failed (exit code: $exitcode)"
+            exit $exitcode
+        }
+
+        # Trap all signals and call the cleanup function
+        trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTERM SIGTSTP SIGTTIN SIGTTOU
+
+        export BUILDTEST_TEST_NAME=ubuntu_container_example
+        export BUILDTEST_TEST_ROOT=/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/74e7c722
+        export BUILDTEST_BUILDSPEC_DIR=/Users/siddiq90/Documents/GitHubDesktop/buildtest/tutorials/containers/container_executor
+        export BUILDTEST_STAGE_DIR=/Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/74e7c722/stage
+        # source executor startup script
+        source /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/executor/generic.container.ubuntu/before_script.sh
+        # Run generated script
+        docker run -it --rm -v /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.container.ubuntu/ubuntu/ubuntu_container_example/74e7c722/stage:/buildtest -w /buildtest ubuntu:20.04 bash -c /buildtest/ubuntu_container_exa
+        # Get return code
+        returncode=$?
+        # Exit with return code
+        exit $returncode

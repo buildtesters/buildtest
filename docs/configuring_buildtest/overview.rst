@@ -481,6 +481,49 @@ Shown below is an example with one queue **workq** that is ``enabled`` and ``sta
         }
     }
 
+.. _container_executor:
+
+Container Executor
+~~~~~~~~~~~~~~~~~~~
+
+Buildtest supports executor declaration for container based jobs. The container executor will run all associated test for the executor
+on the specified container image. Currently, we support `docker`, `podman` and `singularity` as the container platforms. We assume container
+runtime is installed on your system and is accessible in your $PATH.
+
+Let's take a look at the following container executor declaration. The top level keyword ``container`` is used to define the container
+executor which can follow any arbitrary name. We have defined two container executors named **ubuntu** and **python** that specify the
+container image and platform via ``image`` and ``platform`` property. The ``description`` is used for information purposes and does not
+impact buildtest in any way.
+
+You can specify the full URI to the container image which is useful if you are using a custom registry
+
+.. code-block:: yaml
+    :emphasize-lines: 2-10
+
+    executors:
+      container:
+        ubuntu:
+          image: ubuntu:20.04
+          platform: docker
+          description: submit jobs on ubuntu container
+        python:
+          image: python:3.11.0
+          platform: docker
+          description: submit jobs on python container
+
+You can specify container runtime options via ``options`` and bind mount via ``mounts`` property. Both properties are
+are string type, for instance let's say you want to bind mount ``/tmp`` directory to ``/tmp``
+
+    executors:
+      container:
+        ubuntu:
+          image: ubuntu:20.04
+          platform: docker
+          mount: "/tmp:/tmp"
+          options: "--user root"
+          description: submit jobs on ubuntu container
+
+
 Configuring test directory
 ---------------------------
 
