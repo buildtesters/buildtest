@@ -13,7 +13,6 @@ from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import DEFAULT_SETTINGS_FILE
 from buildtest.exceptions import (
-    BuildTestError,
     ExecutorError,
     InvalidBuildspec,
     InvalidBuildspecExecutor,
