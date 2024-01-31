@@ -121,7 +121,9 @@ Test directory
 The default location where tests are written is **$BUILDTEST_ROOT/var/tests** where
 $BUILDTEST_ROOT is the root of buildtest repo. You may specify ``testdir`` in your
 configuration to instruct where tests can be written. For instance, if
-you want to write tests in **/tmp** you can set the following::
+you want to write tests in **/tmp** you can set the following:
+
+.. code-block:: yaml
 
     testdir: /tmp
 
@@ -175,8 +177,8 @@ cache file is not present, it will automatically rebuild the cache, otherwise it
 ``--rebuild`` option or ``rebuild: True`` is set in the configuration file.
 
 The buildspec cache is built by reading the contents of the buildspec file on the filesystem; therefore if you make changes
-to the buildspecs, you will need to rebuild the buildspec cache by running `buildtest buildspec find --rebuild`. If you want
-buildtest to always rebuild cache you can set the following in your configuration file
+to the buildspecs then you will need to rebuild the buildspec cache by running ``buildtest buildspec find --rebuild``.
+If you want buildtest to always rebuild cache you can set the following in your configuration file
 
 .. code-block:: yaml
 
@@ -338,6 +340,7 @@ The profile can be configured with many other options supported by ``buildtest b
 Configuration properties like ``rebuild``, ``limit``, ``timeout`` are integer and must be positive numbers.
 
 .. code-block:: yaml
+    :emphasize-lines: 13-15
 
    profiles:
       profile-2:
@@ -353,6 +356,7 @@ Configuration properties like ``rebuild``, ``limit``, ``timeout`` are integer an
         - generic.local.csh
         rebuild: 2
         limit: 10
+        timeout: 10
         account: dev
         procs:
         - 2
@@ -361,7 +365,6 @@ Configuration properties like ``rebuild``, ``limit``, ``timeout`` are integer an
         - 1
         - 2
         testdir: /Users/siddiq90/Documents/github/buildtest/var/tests
-        timeout: 10
         executor-type: local
 
 Shown below is a generated profile using
@@ -369,6 +372,7 @@ Shown below is a generated profile using
 is an object and attributes ``tags``, ``maintainers``, ``type`` correspond to the filter fields.
 
 .. code-block:: yaml
+   :emphasize-lines: 6-12
 
     profiles:
       filter_profile:
@@ -424,7 +428,7 @@ First, lets create two profile using ``buildtest build --save-profile``
 Now we will list the profiles to confirm they are created and remove them. Next we will rerun ``buildtest config profiles list`` to confirm
 profiles are removed
 
-.. dropdown:: Example on how to create, list and remove profiles
+.. dropdown:: Example on how to remove profiles
 
     .. code-block:: console
 
