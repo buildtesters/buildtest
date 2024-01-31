@@ -48,6 +48,7 @@ class SiteConfiguration:
             "lsf": {},
             "pbs": {},
             "cobalt": {},
+            "container": {},
         }
 
         self.resolve()
@@ -160,6 +161,7 @@ class SiteConfiguration:
         self._validate_lsf_executors()
         self._validate_cobalt_executors()
         self._validate_pbs_executors()
+        self._validate_container_executors()
 
         for executor_type in self.target_config["executors"]:
             if executor_type == "defaults":
@@ -177,6 +179,20 @@ class SiteConfiguration:
             return True
 
         return False
+
+    def _validate_container_executors(self):
+        executor_names = deep_get(self.target_config, "executors", "container")
+        if not executor_names:
+            return
+        for executor in executor_names:
+            executor_name = f"{self.name()}.container.{executor}"
+            if self.is_executor_disabled(executor_names[executor]):
+                self.disabled_executors.append(executor_name)
+                continue
+
+            self.valid_executors["container"][executor_name] = {
+                "setting": executor_names[executor]
+            }
 
     def _validate_local_executors(self):
         """Check local executor by verifying the 'shell' types are valid"""

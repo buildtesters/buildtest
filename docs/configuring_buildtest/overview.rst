@@ -1,5 +1,5 @@
-Overview
-=========
+Configuring Buildtest
+-----------------------
 
 We assume you are familiar with general concepts presented in :ref:`getting started <getting_started>` and your next
 step is to configure buildtest to run at your site. This guide will present you the necessary steps to get
@@ -8,8 +8,7 @@ you started.
 When you clone buildtest, we provide a :ref:`default configuration <default_configuration>`
 that can be used to run on your laptop or workstation that supports Linux or Mac. The
 buildtest configuration uses a JSON schemafile `settings.schema.json <https://raw.githubusercontent.com/buildtesters/buildtest/devel/buildtest/schemas/settings.schema.json>`_.
-for validating your configuration. We have published the schema guide for settings schema which
-you can find `here <https://buildtesters.github.io/buildtest/pages/schemadocs/settings.html>`_.
+for validating your configuration.
 
 .. _which_configuration_file_buildtest_reads:
 
@@ -60,6 +59,7 @@ none is found we report an error.
 In this example we defined two systems `machine`, `machine2` with the following hostnames.
 
 .. code-block:: yaml
+    :emphasize-lines: 1-5
 
     system:
       machine1:
@@ -123,8 +123,8 @@ Configuring Executors
 An executor is responsible for running the test and capture output/error file and
 return code. An executor can be local executor which runs tests on local machine or
 batch executor that can be modelled as partition/queue. A batch executor is
-responsible for **dispatching** job, then **poll** job until its finish, and
-**gather** job metrics from scheduler.
+responsible for dispatching job, then poll job until its finish and
+gather job results.
 
 Executor Declaration
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -149,14 +149,14 @@ local executors ``bash``, ``sh`` and one slurm executor called ``regular``:
           regular:
             queue: regular
 
-The **LocalExecutors** are defined in section `local` where each executor must be
+The local executors are defined in section ``local`` where each executor must be
 unique name and they are referenced in buildspec using ``executor`` field in the following format:
 
 .. code-block:: yaml
 
     executor: <system>.<type>.<name>
 
-For instance, if a buildspec wants to reference the LocalExecutor `bash` from the `generic`
+For instance, if a buildspec wants to reference the local executor `bash` from the `generic`
 cluster, you would specify the following in the buildspec:
 
 .. code-block:: yaml
@@ -166,6 +166,7 @@ cluster, you would specify the following in the buildspec:
 In our example configuration, we defined a ``bash`` executor as follows:
 
 .. code-block:: yaml
+    :emphasize-lines: 3-6
 
     executors:
       # define local executors for running jobs locally
@@ -175,13 +176,14 @@ In our example configuration, we defined a ``bash`` executor as follows:
           shell: bash
 
 The local executors require the ``shell`` key which is one of supported shells in your system. On Linux/Mac system
-you can find all supported shells in file `/etc/shells`. Any buildspec that references this executor will submit
+you can find all supported shells in file **/etc/shells**. Any buildspec that references this executor will submit
 job using ``bash`` shell.
 
 You can pass options to shell which will get passed into each job submission.
 For instance if you want all bash scripts to run in login shell you can specify ``bash --login``:
 
 .. code-block:: yaml
+    :emphasize-lines: 4
 
     executors:
       local:
@@ -218,14 +220,15 @@ Default commands run per executors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can configure an executor to run a set of commands when using an executor. We
-can do this via ``before_script`` field that is a string type that can be used to specify
+can do this via ``before_script`` property that is a string type that can be used to specify
 shell commands.
 
 In this example below we have a bash executor will define some shell code that will be run when
-using this executor. The content of the `before_script` will be inserted in a shell script that is sourced
+using this executor. The content of the ``before_script`` will be inserted in a shell script that is sourced
 by all tests.
 
 .. code-block:: yaml
+    :emphasize-lines: 5-7
 
       local:
         bash:
@@ -267,6 +270,7 @@ that will purge modules and load gcc. The ``purge`` property is a boolean, if se
 loading commands. The ``load`` property is a list of modules to **module load**.
 
 .. code-block:: yaml
+   :emphasize-lines: 5-7
 
     executors:
       local:
@@ -287,7 +291,7 @@ example we defined a slurm executor named **haswell_debug** which will submit jo
 qos on the haswell partition as follows:
 
 .. code-block:: yaml
-   :emphasize-lines: 4
+   :emphasize-lines: 3-6
 
     executors:
       slurm:
@@ -425,7 +429,6 @@ one ``pbs`` executor named ``workq``.  The property ``queue: workq`` defines
 the name of PBS queue that is available in your system.
 
 .. code-block:: yaml
-    :linenos:
     :emphasize-lines: 10-12
 
     system:
@@ -480,6 +483,52 @@ Shown below is an example with one queue **workq** that is ``enabled`` and ``sta
             }
         }
     }
+
+.. _container_executor:
+
+Container Executor
+~~~~~~~~~~~~~~~~~~~
+
+Buildtest supports executor declaration for container based jobs. The container executor will run all associated test for the executor
+on the specified container image. Currently, we support `docker`, `podman` and `singularity` as the container platforms. We assume container
+runtime is installed on your system and is accessible in your $PATH.
+
+Let's take a look at the following container executor declaration. The top level keyword ``container`` is used to define the container
+executor which can follow any arbitrary name. We have defined two container executors named **ubuntu** and **python** that specify the
+container image and platform via ``image`` and ``platform`` property. The ``description`` is used for information purposes and does not
+impact buildtest in any way.
+
+You can specify the full URI to the container image which is useful if you are using a custom registry
+
+.. code-block:: yaml
+    :emphasize-lines: 2-10
+
+    executors:
+      container:
+        ubuntu:
+          image: ubuntu:20.04
+          platform: docker
+          description: submit jobs on ubuntu container
+        python:
+          image: python:3.11.0
+          platform: docker
+          description: submit jobs on python container
+
+You can specify container runtime options via ``options`` and bind mount via ``mount`` property. Both properties are
+are string type, for instance let's say you want to bind mount ``/tmp`` directory to ``/tmp``
+
+.. code-block:: yaml
+    :emphasize-lines: 6-7
+
+    executors:
+      container:
+        ubuntu:
+          image: ubuntu:20.04
+          platform: docker
+          mount: "/tmp:/tmp"
+          options: "--user root"
+          description: submit jobs on ubuntu container
+
 
 Configuring test directory
 ---------------------------

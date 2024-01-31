@@ -282,9 +282,15 @@ class BuilderBase(ABC):
         """
 
         # import issue when putting this at top of file
-        from buildtest.executors.local import LocalExecutor
+        # from buildtest.executors.local import LocalExecutor
 
-        return isinstance(self.buildexecutor.executors[self.executor], LocalExecutor)
+        # return isinstance(self.buildexecutor.executors[self.executor], LocalExecutor)
+
+        return self.buildexecutor.executors[self.executor].type == "local"
+
+    def is_container_executor(self):
+        # from buildtest.executors.container import ContainerExecutor
+        return self.buildexecutor.executors[self.executor].type == "container"
 
     def is_slurm_executor(self):
         """Return True if current builder executor type is LocalExecutor otherwise returns False.
@@ -596,6 +602,10 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         # local executor
         if self.is_local_executor():
             lines += [" ".join(self._emit_command())]
+        elif self.is_container_executor():
+            lines += self.get_container_invocation()
+            # lines += ["docker run -it --rm -v $PWD:$PWD -w $PWD " + f"-v {self.stage_dir}:/buildtest" + f" ubuntu bash -c {self.testpath}"]
+
         # batch executor
         else:
             launcher = self.buildexecutor.executors[self.executor].launcher_command(
@@ -652,6 +662,35 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         shutil.copy2(
             self.testpath, os.path.join(self.test_root, os.path.basename(self.testpath))
         )
+
+    def get_container_invocation(self):
+        """This method returns a list of lines containing the container invocation"""
+        lines = []
+        platform = self.buildexecutor.executors[self.executor]._settings.get("platform")
+        image = self.buildexecutor.executors[self.executor]._settings.get("image")
+        options = self.buildexecutor.executors[self.executor]._settings.get("options")
+        mounts = self.buildexecutor.executors[self.executor]._settings.get("mounts")
+        if platform in ["docker", "podman"]:
+            lines += [
+                f"{platform} run -it --rm -v {self.stage_dir}:/buildtest -w /buildtest"
+            ]
+
+            if mounts:
+                lines += [f"-v {mounts}"]
+            if options:
+                lines += [f"{options}"]
+
+            lines += [
+                f"{image} bash -c {os.path.join('/buildtest', os.path.basename(self.testpath))}"
+            ]
+        elif platform == "singularity":
+            lines += [f"{platform} exec -B {self.stage_dir}/buildtest"]
+            if mounts:
+                lines += [f"-B {mounts}"]
+            if options:
+                lines += [f"{options}"]
+            lines += [f"{image} {self.testpath}"]
+        return [" ".join(lines)]
 
     def _emit_command(self):
         """This method will return a shell command used to invoke the script that is used for tests that
