@@ -41,8 +41,8 @@ system:
         ubuntu:
           image: ubuntu:20.04
           platform: docker
-          mount: "/tmp:/tmp"
-          options: ["--rm"]
+          mounts: "/tmp:/tmp"
+          options: "--rm"
           description: submit jobs on ubuntu container
     compilers:
       compiler:
