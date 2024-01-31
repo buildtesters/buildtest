@@ -37,6 +37,13 @@ system:
           launcher: qsub
           queue: normal
           options: ["-n 1", "-t 10"]
+      container:
+        ubuntu:
+          image: ubuntu:20.04
+          platform: docker
+          mount: "/tmp:/tmp"
+          options: ["--rm"]
+          description: submit jobs on ubuntu container
     compilers:
       compiler:
         gcc:
