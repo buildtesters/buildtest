@@ -110,8 +110,6 @@ which executor to use when running the test. The executors are defined in
 The **run** section is required for script schema which defines the content of
 the test script.
 
-For more details on script schema see schema docs at https://buildtesters.github.io/buildtest/
-
 .. _environment_variables:
 
 Declaring Environment Variables
