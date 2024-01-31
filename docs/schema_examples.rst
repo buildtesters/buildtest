@@ -131,14 +131,6 @@ Script Schema Examples
     .. command-output:: buildtest schema -n script.schema.json --example
 
 
-Compiler Schema Examples
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. dropdown:: ``buildtest schema -n compiler.schema.json --example``
-
-    .. command-output:: buildtest schema -n compiler.schema.json --example
-
-
 Spack Schema Examples
 ~~~~~~~~~~~~~~~~~~~~~~
 
