@@ -18,13 +18,8 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 from buildtest.buildsystem.checks import (
-    assert_eq_check,
-    assert_ge_check,
-    assert_gt_check,
-    assert_le_check,
-    assert_lt_check,
-    assert_ne_check,
     assert_range_check,
+    comparison_check,
     contains_check,
     exists_check,
     file_count_check,
@@ -32,7 +27,6 @@ from buildtest.buildsystem.checks import (
     is_dir_check,
     is_file_check,
     is_symlink_check,
-    notcontains_check,
     regex_check,
     returncode_check,
     runtime_check,
@@ -171,11 +165,11 @@ class BuilderBase(ABC):
 
     def shell_detection(self):
         """Detect shell and shebang used for test script"""
-
         # if 'shell' property not defined in buildspec use this shell otherwise use the 'shell' property from the executor definition
         self.shell = Shell(
             self.recipe.get("shell")
-            or self.buildexecutor.executors[self.executor].shell
+            or self.buildexecutor.executors[self.executor]._settings.get("shell")
+            or "bash"
         )
 
         # set shebang to value defined in Buildspec, if not defined then get one from Shell class
@@ -288,9 +282,15 @@ class BuilderBase(ABC):
         """
 
         # import issue when putting this at top of file
-        from buildtest.executors.local import LocalExecutor
+        # from buildtest.executors.local import LocalExecutor
 
-        return isinstance(self.buildexecutor.executors[self.executor], LocalExecutor)
+        # return isinstance(self.buildexecutor.executors[self.executor], LocalExecutor)
+
+        return self.buildexecutor.executors[self.executor].type == "local"
+
+    def is_container_executor(self):
+        # from buildtest.executors.container import ContainerExecutor
+        return self.buildexecutor.executors[self.executor].type == "container"
 
     def is_slurm_executor(self):
         """Return True if current builder executor type is LocalExecutor otherwise returns False.
@@ -373,19 +373,22 @@ class BuilderBase(ABC):
 
         self.logger.debug(f"Running Test via command: {cmd}")
         ret = command.returncode()
-        err_msg = " ".join(command.get_error())
+        err_msg = command.get_error()
+        # limit error messages to 60 lines
+        if len(err_msg) >= 60:
+            err_msg = err_msg[-60:]
 
         if not self._retry or ret == 0:
             return command
 
-        err = f"{self} failed to submit job with returncode: {ret} \n"
-        console.print(f"[red]{err}")
-        console.print(f"[red]{err_msg}")
+        console.print(f"[red]{self}: failed to submit job with returncode: {ret}")
+        console.rule(f"[red]Error Message for {self}")
+        console.print(f"[red]{' '.join(err_msg)}")
 
         ########## Retry for failed tests  ##########
 
-        print(
-            f"{self}: Detected failure in running test, will attempt to retry test: {self._retry} times"
+        console.print(
+            f"[red]{self}: Detected failure in running test, will attempt to retry test: {self._retry} times"
         )
         for run in range(1, self._retry + 1):
             print(f"{self}: Run - {run}/{self._retry}")
@@ -401,8 +404,7 @@ class BuilderBase(ABC):
             # if we recieve a returncode of 0 return immediately with the instance of command
             if ret == 0:
                 return command
-            err = f"{self}: failed to submit job with returncode: {ret} "
-            console.print(f"[red]{err}")
+            console.print(f"[red]{self}: failed to submit job with returncode: {ret}")
 
         return command
 
@@ -519,7 +521,6 @@ class BuilderBase(ABC):
 
         msg = f"Creating test directory: {self.test_root}"
         self.logger.debug(msg)
-        console.print(f"[blue]{self}:[/] {msg}")
 
         self.metadata["testroot"] = self.test_root
 
@@ -529,8 +530,6 @@ class BuilderBase(ABC):
         create_dir(self.stage_dir)
         msg = f"Creating the stage directory: {self.stage_dir}"
         self.logger.debug(msg)
-
-        console.print(f"[blue]{self}:[/] {msg}")
 
         self.metadata["stagedir"] = self.stage_dir
 
@@ -556,6 +555,8 @@ class BuilderBase(ABC):
             elif fname.is_file():
                 shutil.copy2(fname, self.stage_dir)
 
+        console.print(f"[blue]{self}[/]: Creating Test Directory: {self.test_root}")
+
     def _write_build_script(self, modules=None, modulepurge=None, unload_modules=None):
         """This method will write the content of build script that is run for when invoking
         the builder run method. Upon creating file we set permission of builder script to 755
@@ -564,6 +565,19 @@ class BuilderBase(ABC):
 
         lines = ["#!/bin/bash"]
 
+        trap_msg = """
+# Function to handle all signals and perform cleanup
+function cleanup() {
+    echo "Signal trapped. Performing cleanup before exiting."
+    exitcode=$?
+    echo "buildtest: command \`$BASH_COMMAND' failed (exit code: $exitcode)"
+    exit $exitcode
+}
+
+# Trap all signals and call the cleanup function
+trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTERM SIGTSTP SIGTTIN SIGTTOU
+"""
+        lines.append(trap_msg)
         lines += self._default_test_variables()
         lines.append("# source executor startup script")
 
@@ -587,9 +601,11 @@ class BuilderBase(ABC):
         lines.append("# Run generated script")
         # local executor
         if self.is_local_executor():
-            cmd = self._emit_command()
+            lines += [" ".join(self._emit_command())]
+        elif self.is_container_executor():
+            lines += self.get_container_invocation()
+            # lines += ["docker run -it --rm -v $PWD:$PWD -w $PWD " + f"-v {self.stage_dir}:/buildtest" + f" ubuntu bash -c {self.testpath}"]
 
-            lines += [" ".join(cmd)]
         # batch executor
         else:
             launcher = self.buildexecutor.executors[self.executor].launcher_command(
@@ -599,11 +615,8 @@ class BuilderBase(ABC):
 
         lines.append("# Get return code")
 
-        # for csh returncode is determined by $status environment, for bash,sh,zsh its $?
-        if is_csh_shell(self.shell.name):
-            lines.append("set returncode = $status")
-        else:
-            lines.append("returncode=$?")
+        # get returncode of executed script which is retrieved by '$?'
+        lines.append("returncode=$?")
 
         lines.append("# Exit with return code")
         lines.append("exit $returncode")
@@ -622,7 +635,7 @@ class BuilderBase(ABC):
         self.build_script = dest
         self.metadata["build_script"] = self.build_script
 
-        console.print(f"[blue]{self}:[/] Writing build script: {self.build_script}")
+        # console.print(f"[blue]{self}:[/] Writing build script: {self.build_script}")
 
     def _write_test(self):
         """This method is responsible for invoking ``generate_script`` that
@@ -650,6 +663,35 @@ class BuilderBase(ABC):
             self.testpath, os.path.join(self.test_root, os.path.basename(self.testpath))
         )
 
+    def get_container_invocation(self):
+        """This method returns a list of lines containing the container invocation"""
+        lines = []
+        platform = self.buildexecutor.executors[self.executor]._settings.get("platform")
+        image = self.buildexecutor.executors[self.executor]._settings.get("image")
+        options = self.buildexecutor.executors[self.executor]._settings.get("options")
+        mounts = self.buildexecutor.executors[self.executor]._settings.get("mounts")
+        if platform in ["docker", "podman"]:
+            lines += [
+                f"{platform} run -it --rm -v {self.stage_dir}:/buildtest -w /buildtest"
+            ]
+
+            if mounts:
+                lines += [f"-v {mounts}"]
+            if options:
+                lines += [f"{options}"]
+
+            lines += [
+                f"{image} bash -c {os.path.join('/buildtest', os.path.basename(self.testpath))}"
+            ]
+        elif platform == "singularity":
+            lines += [f"{platform} exec -B {self.stage_dir}/buildtest"]
+            if mounts:
+                lines += [f"-B {mounts}"]
+            if options:
+                lines += [f"{options}"]
+            lines += [f"{image} {self.testpath}"]
+        return [" ".join(lines)]
+
     def _emit_command(self):
         """This method will return a shell command used to invoke the script that is used for tests that
         use local executors
@@ -661,16 +703,15 @@ class BuilderBase(ABC):
             Test can be run with shell name followed by path to script: ``bash /path/to/script.sh``
             Test can be run with shell name, shell options and path to script: ``bash -x /path/to/script.sh``
         """
-
         # if not self.recipe.get("shell") or self.recipe.get("shell") == "python":
         if self.recipe.get("shell") == "python":
             return [self.testpath]
 
-        if not self.recipe.get("shell"):
-            return [self.shell.name, self.shell.default_opts, self.testpath]
+        # if not self.recipe.get("shell"):
+        #    return [self.shell.name, self.shell.default_opts, self.testpath]
 
-        if not self.shell.opts:
-            return [self.shell.name, self.testpath]
+        # if not self.shell.opts:
+        #    return [self.shell.name, self.testpath]
 
         return [self.shell.name, self.shell.opts, self.testpath]
 
@@ -687,20 +728,6 @@ class BuilderBase(ABC):
         """Return a list of lines inserted in build script that define buildtest specific variables
         that can be referenced when writing tests. The buildtest variables all start with BUILDTEST_*
         """
-
-        if is_csh_shell(self.shell.name):
-            lines = [
-                f"setenv BUILDTEST_TEST_NAME {self.name}",
-                f"setenv BUILDTEST_TEST_ROOT {self.test_root}",
-                f"setenv BUILDTEST_BUILDSPEC_DIR {os.path.dirname(self.buildspec)}",
-                f"setenv BUILDTEST_STAGE_DIR {self.stage_dir}",
-            ]
-            if self.numnodes:
-                lines.append(f"setenv BUILDTEST_NUMNODES {self.numnodes}")
-            if self.numprocs:
-                lines.append(f"setenv BUILDTEST_NUMPROCS {self.numprocs}")
-
-            return lines
 
         lines = [
             f"export BUILDTEST_TEST_NAME={self.name}",
@@ -987,10 +1014,7 @@ class BuilderBase(ABC):
 
         # need these lines after self.copy_stage_files()
         console.print(
-            f"[blue]{self}[/]: Test completed in {self.metadata['result']['runtime']} seconds"
-        )
-        console.print(
-            f"[blue]{self}[/]: Test completed with returncode: {self.metadata['result']['returncode']}"
+            f"[blue]{self}[/]: Test completed in {self.metadata['result']['runtime']} seconds with returncode: {self.metadata['result']['returncode']}"
         )
         console.print(
             f"[blue]{self}[/]: Writing output file -  [green1]{self.metadata['outfile']}"
@@ -1025,7 +1049,7 @@ class BuilderBase(ABC):
                 self.metadata["result"]["state"] = self.status["state"]
                 return
 
-            if self.status.get("returncode"):
+            if "returncode" in self.status:
                 self.metadata["check"]["returncode"] = returncode_check(self)
 
             # check regex against output or error stream based on regular expression defined in status property. Return value is a boolean
@@ -1054,31 +1078,47 @@ class BuilderBase(ABC):
                 )
 
             if self.status.get("assert_ge"):
-                self.metadata["check"]["assert_ge"] = assert_ge_check(self)
+                self.metadata["check"]["assert_ge"] = comparison_check(
+                    builder=self, comparison_type="ge"
+                )
 
             if self.status.get("assert_le"):
-                self.metadata["check"]["assert_le"] = assert_le_check(self)
+                self.metadata["check"]["assert_le"] = comparison_check(
+                    builder=self, comparison_type="le"
+                )
 
             if self.status.get("assert_gt"):
-                self.metadata["check"]["assert_gt"] = assert_gt_check(self)
+                self.metadata["check"]["assert_gt"] = comparison_check(
+                    builder=self, comparison_type="gt"
+                )
 
             if self.status.get("assert_lt"):
-                self.metadata["check"]["assert_lt"] = assert_lt_check(self)
+                self.metadata["check"]["assert_lt"] = comparison_check(
+                    builder=self, comparison_type="lt"
+                )
 
             if self.status.get("assert_eq"):
-                self.metadata["check"]["assert_eq"] = assert_eq_check(self)
+                self.metadata["check"]["assert_eq"] = comparison_check(
+                    builder=self, comparison_type="eq"
+                )
 
             if self.status.get("assert_ne"):
-                self.metadata["check"]["assert_ne"] = assert_ne_check(self)
+                self.metadata["check"]["assert_ne"] = comparison_check(
+                    builder=self, comparison_type="ne"
+                )
 
             if self.status.get("assert_range"):
                 self.metadata["check"]["assert_range"] = assert_range_check(self)
 
             if self.status.get("contains"):
-                self.metadata["check"]["contains"] = contains_check(self)
+                self.metadata["check"]["contains"] = contains_check(
+                    builder=self, comparison_type="contains"
+                )
 
             if self.status.get("not_contains"):
-                self.metadata["check"]["not_contains"] = notcontains_check(self)
+                self.metadata["check"]["not_contains"] = contains_check(
+                    builder=self, comparison_type="not_contains"
+                )
 
             if self.status.get("is_symlink"):
                 self.metadata["check"]["is_symlink"] = is_symlink_check(builder=self)
@@ -1102,7 +1142,7 @@ class BuilderBase(ABC):
 
             state = (
                 all(status_checks)
-                if self.status.get("mode") == "all"
+                if self.status.get("mode") in ["AND", "and"]
                 else any(status_checks)
             )
             self.metadata["result"]["state"] = "PASS" if state else "FAIL"

@@ -2,6 +2,7 @@
 buildtest cli: include functions to build, get test configurations, and
 interact with a global configuration for buildtest.
 """
+
 import argparse
 import datetime
 import sys
@@ -204,7 +205,6 @@ class BuildTestParser:
 
     _github = "https://github.com/buildtesters/buildtest"
     _docs = "https://buildtest.readthedocs.io/en/latest/index.html"
-    _schemadocs = "https://buildtesters.github.io/buildtest/"
     _slack = "http://hpcbuildtest.slack.com/"
     _issues = "https://github.com/buildtesters/buildtest/issues"
     _progname = "buildtest"
@@ -216,7 +216,6 @@ class BuildTestParser:
 
     GitHub:                  {_github}
     Documentation:           {_docs}
-    Schema Documentation:    {_schemadocs}
     Slack:                   {_slack}
 
     Please report issues at {_issues}
@@ -1373,8 +1372,26 @@ class BuildTestParser:
                                     "help": "Show invalid executors",
                                 },
                             ),
+                            (
+                                ("-a", "--all"),
+                                {"action": "store_true", "help": "Show all executors"},
+                            ),
                         ],
-                    }
+                    },
+                    {
+                        "name": "remove",
+                        "aliases": ["rm"],
+                        "help": "Remove executor from configuration",
+                        "arguments": [
+                            (
+                                ("executor_names",),
+                                {
+                                    "nargs": "*",
+                                    "help": "Specify an executor name to remove",
+                                },
+                            )
+                        ],
+                    },
                 ],
             },
             {

@@ -19,19 +19,19 @@ system:
       #enable terse mode for report
       terse: False
       format: "name,id,state,runtime,returncode"
-      # show the latest for every test
-      latest: True
-      # show the oldest for every test
-      oldest: False
 
     executors:
       local:
         bash:
           description: submit jobs on local machine using bash shell
           shell: bash
+          before_script: |
+            source /etc/profile
         sh:
           description: submit jobs on local machine using sh shell
           shell: sh
+          before_script: |
+              source /etc/profile
     compilers:
       find:
         gcc: ^(gcc)

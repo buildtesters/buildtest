@@ -1,5 +1,6 @@
 """This method implements CobaltExecutor class which is defines how cobalt executor
 submit job to Cobalt scheduler."""
+
 import json
 import logging
 import os
@@ -68,7 +69,7 @@ class CobaltExecutor(BaseExecutor):
 
         os.chdir(builder.stage_dir)
 
-        cmd = f"bash {self._bashopts} {os.path.basename(builder.build_script)}"
+        cmd = f"{self.shell} {os.path.basename(builder.build_script)}"
 
         timeout = self.timeout or self._buildtestsettings.target_config.get("timeout")
 

@@ -35,13 +35,13 @@ _buildtest_commands()
 # get list of available tags
 _avail_tags ()
 {
-  buildtest buildspec find --tags --terse --no-header 2>/dev/null
+  buildtest buildspec find --tags --terse --count=-1 --no-header 2>/dev/null
 }
 
 # get list of buildspecs in cache
 _avail_buildspecs ()
 {
-  buildtest buildspec find --buildspec --terse --no-header 2>/dev/null
+  buildtest buildspec find --buildspec --terse --count=-1 --no-header 2>/dev/null
 }
 
 # get list of schemas
@@ -56,6 +56,11 @@ _avail_executors ()
   buildtest config executors list
 }
 
+_all_executors()
+{
+  buildtest config executors list --all
+}
+
 # list of available compilers
 _avail_compilers ()
 {
@@ -65,7 +70,7 @@ _avail_compilers ()
 # list of test ids from report
 _test_ids ()
 {
-  buildtest inspect list --terse -n | cut -d '|' -f 1
+  buildtest inspect list --terse --no-header | cut -d '|' -f 1
 }
 # list of available test names from buildspec cache
 _buildspec_test_names()
@@ -76,7 +81,7 @@ _buildspec_test_names()
 # list of test names from report
 _test_name ()
 {
-  buildtest inspect list --terse -n | cut -d '|' -f 2 | uniq | sort
+  buildtest inspect list --terse --no-header | cut -d '|' -f 2 | uniq | sort
 }
 
 _builder_names()
@@ -87,23 +92,23 @@ _builder_names()
 # list of buildspecs from report
 _test_buildspec ()
 {
-  buildtest inspect list --terse -n | cut -d '|' -f 3 | uniq | sort
+  buildtest inspect list --terse --no-header | cut -d '|' -f 3 | uniq | sort
 }
 
 # list of history id
 _history_id ()
 {
-  buildtest history list --terse -n | cut -d '|' -f 1 | sort -g
+  buildtest history list --terse --no-header | cut -d '|' -f 1 | sort -g
 }
 
 _buildspec_cache_test_names()
 {
-  buildtest buildspec find --format name --terse -n | sort
+  buildtest buildspec find --format name --terse --no-header --count=-1 | sort
 }
 
 _failed_tests()
 {
-  buildtest rt --fail --format name --terse --no-header | uniq
+  buildtest report --fail --format name --terse --no-header --count=-1 | uniq
 }
 
 # list of available maintainers for tab completion for 'buildtest buildspec maintainers find'
@@ -302,12 +307,15 @@ _buildtest ()
           esac
           ;;
         executors|ex)
-          local opts="--help --disabled --invalid --json --yaml -d -h -i -j -y"
-          local cmds="list"
+          local cmds="list rm remove"
 
-          case "$prev" in
+          case ${COMP_WORDS[3+offset]} in
               list)
+                  local opts="--help --all --disabled --invalid --json --yaml -a -d -h -i -j -y"
                   COMPREPLY=( $( compgen -W "$opts" -- "${cur}" ) )
+                  ;;
+              rm|remove)
+                  COMPREPLY=( $( compgen -W "$(_all_executors)" -- "${cur}" ) )
                   ;;
               *)
                   COMPREPLY=( $( compgen -W "${cmds}" -- "${cur}" ) )
@@ -357,13 +365,13 @@ _buildtest ()
       # case statement to handle completion for buildtest inspect [name|id|list] command
       case "${COMP_WORDS[2+offset]}" in
         list|l)
-          local opts="--builder --help --no-header --pager --row-count --terse -b -h -n -t"
+          local opts="--builder --help --no-header --pager --row-count --terse -b -h -n"
           COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) );;
         name|n)
           COMPREPLY=( $( compgen -W "$(_test_name)" -- "${cur}" ) )
 
           if [[ $cur == -* ]] ; then
-            local opts="--all --help --pager -a -h"
+            local opts="--help --pager -h"
             COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
           fi
           ;;
@@ -548,7 +556,7 @@ _buildtest ()
       COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
       ;;
     # options with only --help
-    debugreport|info|docs|schemadocs|tutorial-examples)
+    debugreport|info|docs|tutorial-examples)
       local opts="-h --help"
       COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
       ;;

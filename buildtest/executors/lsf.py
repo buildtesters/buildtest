@@ -3,6 +3,7 @@ This module implements the LSFExecutor class responsible for submitting
 jobs to LSF Scheduler. This class is called in class BuildExecutor
 when initializing the executors.
 """
+
 import logging
 import os
 import re
@@ -78,7 +79,7 @@ class LSFExecutor(BaseExecutor):
         os.chdir(builder.stage_dir)
         self.logger.debug(f"Changing to stage directory {builder.stage_dir}")
 
-        cmd = f"bash {self._bashopts} {os.path.basename(builder.build_script)}"
+        cmd = f"{self.shell} {os.path.basename(builder.build_script)}"
 
         self.timeout = self.timeout or self._buildtestsettings.target_config.get(
             "timeout"

@@ -1,0 +1,16 @@
+buildspecs:
+  ubuntu_container_example:
+    type: script
+    executor: generic.container.ubuntu
+    description: run test in a container executor
+    run: |     
+  
+     echo "USER: " $(whoami)
+     echo "HOMEDIR: " $HOME
+     echo "WORKDIR: " $(pwd)
+     df -h   
+     echo "************************" 
+     ls -l
+     echo "************************" 
+     cat /etc/os-release 
+

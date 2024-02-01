@@ -123,9 +123,7 @@
           "properties": {
             "terse": { "$ref": "#/definitions/terse" },
             "format": { "$ref": "#/definitions/format" },
-            "count": { "$ref": "#/definitions/count" },
-            "latest": {"type": "boolean", "description": "A boolean to determine whether to show latest test run"},
-            "oldest": {"type": "boolean", "description": "A boolean to determine whether to show oldest test run"}
+            "count": { "$ref": "#/definitions/count" }
           }
         },
         "processor": {
@@ -310,7 +308,8 @@
                 },
                 "additionalProperties": {
                   "$ref": "#/definitions/local"
-                }
+                },
+                "minProperties": 1
               },
               "lsf": {
                 "type": "object",
@@ -350,6 +349,16 @@
                 },
                 "additionalProperties": {
                   "$ref": "#/definitions/pbs"
+                }
+              },
+              "container": {
+                "type": "object",
+                "description": "The ``container`` section is used for declaring container executors for running jobs using container technology",
+                "propertyNames": {
+                  "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "additionalProperties": {
+                  "$ref": "#/definitions/container"
                 }
               }
             }
@@ -642,6 +651,42 @@
         },
         "disable": {"$ref":  "#/definitions/disable"},
         "module": { "$ref": "#/definitions/module" }
+      }
+    },
+    "container": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "description field for documenting your executor"
+        },
+        "before_script": {
+          "description": "The ``before_script`` section can be used to specify commands before start of test. The script will be sourced in active shell.",
+          "#ref": "#/definitions/script"
+        },
+        "platform": {
+          "type": "string",
+          "description": "Specify container platform to use for container. ",
+          "enum": [
+            "docker",
+            "singularity",
+            "podman"
+          ]
+        },
+        "image": {
+          "type": "string",
+          "description": "Specify container image to use for container. "
+        },
+        "mounts": {
+          "type": "string",
+          "description": "Specify a list of directory paths to bind mount into the container"
+        },
+        "options": {
+          "type": "string",
+          "description": "Specify a list of options to pass to container runtime. "
+        },
+        "disable": {"$ref":  "#/definitions/disable"}
       }
     },
     "profiles":

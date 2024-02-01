@@ -1,0 +1,9 @@
+buildspecs:
+  hello_world_container_no_commands:
+    type: script
+    executor: generic.local.bash
+    description: run container with no commands
+    container:
+      platform: "docker"
+      image: hello-world
+    run: echo 'Test Complete!'

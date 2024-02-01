@@ -1,52 +1,54 @@
 $ buildtest inspect query -o override_status_regex/ 
-─────────────────────────────────────────────────────────────────────────────────── override_status_regex/1729a47c-6190-4049-a820-491610ae7679 ────────────────────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────────────── override_status_regex/a2b67d4f-3144-4ee4-8229-55da8fe0c7c3 ──────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: override 'status' property in compiler gcc_8.3.0 instance
 State: FAIL
 Returncode: 0
-Runtime: 0.093167 sec
-Starttime: 2023/07/14 18:47:59
-Endtime: 2023/07/14 18:47:59
+Runtime: 7.457885 sec
+Starttime: 2023/11/09 20:33:34
+Endtime: 2023/11/09 20:33:42
 Command: bash --norc --noprofile -eo pipefail override_status_regex_build.sh
-Test Script: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/1729a47c/override_status_regex.sh
-Build Script: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/1729a47c/override_status_regex_build.sh
-Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/1729a47c/override_status_regex.out
-Error File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/1729a47c/override_status_regex.err
-Log File: /home/spack/buildtest/var/logs/buildtest_wj396b91.log
-───────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/1729a47c/override_status_regex.out ─────────────────────────────────────────────────
-final result: 1.000000                                                                                                                                                                                                             
-                                                                                                                                                                                                                                   
-─────────────────────────────────────────────────────────────────────────────────── override_status_regex/bf116c56-9731-4a12-b47a-0156d0d1ba7a ────────────────────────────────────────────────────────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/a2b67d4f/override_status_regex.sh
+Build Script: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/a2b67d4f/override_status_regex_build.sh
+Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/a2b67d4f/override_status_regex.out
+Error File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/a2b67d4f/override_status_regex.err
+Log File: /home/spack/buildtest/var/logs/buildtest_gr_129l1.log
+─────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/a2b67d4f/override_status_regex.out ────────────────────────────────────────────────────
+==> Regenerating tcl module files
+final result: 1.000000
+
+────────────────────────────────────────────────────────────────────────────────────── override_status_regex/c3687c2b-99d5-4ea6-9d3c-87e1b166c8c0 ──────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: override 'status' property in compiler gcc_8.3.0 instance
 State: FAIL
 Returncode: 0
-Runtime: 0.102039 sec
-Starttime: 2023/07/14 18:47:59
-Endtime: 2023/07/14 18:47:59
+Runtime: 7.669674 sec
+Starttime: 2023/11/09 20:33:26
+Endtime: 2023/11/09 20:33:34
 Command: bash --norc --noprofile -eo pipefail override_status_regex_build.sh
-Test Script: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/bf116c56/override_status_regex.sh
-Build Script: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/bf116c56/override_status_regex_build.sh
-Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/bf116c56/override_status_regex.out
-Error File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/bf116c56/override_status_regex.err
-Log File: /home/spack/buildtest/var/logs/buildtest_wj396b91.log
-───────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/bf116c56/override_status_regex.out ─────────────────────────────────────────────────
-final result: 1.000000                                                                                                                                                                                                             
-                                                                                                                                                                                                                                   
-─────────────────────────────────────────────────────────────────────────────────── override_status_regex/0f00848c-6288-4669-9ee7-4a9d6d909a3c ────────────────────────────────────────────────────────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/c3687c2b/override_status_regex.sh
+Build Script: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/c3687c2b/override_status_regex_build.sh
+Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/c3687c2b/override_status_regex.out
+Error File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/c3687c2b/override_status_regex.err
+Log File: /home/spack/buildtest/var/logs/buildtest_gr_129l1.log
+─────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/c3687c2b/override_status_regex.out ────────────────────────────────────────────────────
+==> Regenerating tcl module files
+final result: 1.000000
+
+────────────────────────────────────────────────────────────────────────────────────── override_status_regex/dfdd02f3-5d08-4f2c-a3a6-52d459809603 ──────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: override 'status' property in compiler gcc_8.3.0 instance
 State: FAIL
 Returncode: 0
-Runtime: 0.090674 sec
-Starttime: 2023/07/14 18:47:59
-Endtime: 2023/07/14 18:47:59
+Runtime: 7.473231 sec
+Starttime: 2023/11/09 20:33:34
+Endtime: 2023/11/09 20:33:41
 Command: bash --norc --noprofile -eo pipefail override_status_regex_build.sh
-Test Script: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/0f00848c/override_status_regex.sh
-Build Script: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/0f00848c/override_status_regex_build.sh
-Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/0f00848c/override_status_regex.out
-Error File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/0f00848c/override_status_regex.err
-Log File: /home/spack/buildtest/var/logs/buildtest_wj396b91.log
-───────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/0f00848c/override_status_regex.out ─────────────────────────────────────────────────
-final result: 1.000000                                                                                                                                                                                                             
-                                                                                                                                                                                                                                   
+Test Script: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/dfdd02f3/override_status_regex.sh
+Build Script: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/dfdd02f3/override_status_regex_build.sh
+Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/dfdd02f3/override_status_regex.out
+Error File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/dfdd02f3/override_status_regex.err
+Log File: /home/spack/buildtest/var/logs/buildtest_gr_129l1.log
+─────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/compiler_status_regex/override_status_regex/dfdd02f3/override_status_regex.out ────────────────────────────────────────────────────
+==> Regenerating tcl module files
+final result: 1.000000

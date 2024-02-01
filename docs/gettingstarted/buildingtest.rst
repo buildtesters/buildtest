@@ -23,8 +23,8 @@ Build Usage
     .. command-output:: buildtest build --help
        :shell:
 
-Building a Test
-----------------
+Building a Test (``buildtest build --buildspec``)
+---------------------------------------------------
 
 To build a test, we use the ``--buildspec`` or short option ``-b`` to specify the
 path to buildspec file. Let's see some examples, first we specify a full path to buildspec file.
@@ -66,8 +66,8 @@ a buildspec file and all buildspecs in a directory path.
 
 .. _exclude_buildspecs:
 
-Excluding Buildspecs
----------------------
+Excluding Buildspecs (``buildtest build --exclude``)
+------------------------------------------------------
 
 So far we learned how to build buildspecs by file and directory path using the ``-b``
 option. Next, we will discuss how one may exclude buildspecs which behaves similar to
@@ -103,8 +103,8 @@ The ``-x`` can be a file or a directory and behaves similar to ``-b`` option.
 
 .. _build_by_tags:
 
-Building By Tags
------------------
+Building By Tags (``buildtest build --tags``)
+-----------------------------------------------
 
 buildtest can perform builds by tags by using ``--tags`` or short option (``-t``).
 In order to use this feature, buildtest must load buildspecs in :ref:`cache <find_buildspecs>` which can be run
@@ -157,8 +157,8 @@ As you may see, there are several ways to build buildspecs with buildtest. Tags 
 great way to build a whole collection of tests if you don't know path to all the files. You can
 specify multiple tags per buildspecs to classify how test can be run.
 
-Exclude by tags
-----------------
+Exclude by tags (``buildtest build --exclude-tags``)
+------------------------------------------------------
 
 You can exclude tests by tagname using ``--exclude-tags`` option or
 short option (``-xt``). Any tests that contains the ``tags`` field
@@ -192,8 +192,8 @@ where no test are eligible to run after exclusion has been applied.
     .. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml -xt pass,fail
         :returncode: 1
 
-Building by Test Names
------------------------
+Building by Test Names (``buildtest build --name``)
+-----------------------------------------------------
 
 You can discover buildspecs by test names using the ``--name`` option or short option ``-n``. This feature can be used if
 you want to run a particular test and not worrying about the buildspec file that is belongs to. Note we have tab
@@ -236,8 +236,8 @@ A buildspec file may include several tests and by default all of them are run. T
 
 .. _build_by_executor:
 
-Building by Executors
----------------------
+Building by Executors (``buildtest build --executor``)
+-------------------------------------------------------
 
 Every buildspec is associated to an executor which is responsible for running the test.
 You can instruct buildtest to run all tests by given executor via ``--executor`` option or short option ``-e``.
@@ -263,8 +263,8 @@ In this example we run all tests that are associated to ``generic.local.csh`` ex
 
 .. _filter_buildspecs_with_buildtest_build:
 
-Filtering Buildspecs
----------------------
+Filtering Buildspecs (``buildtest build --filter``)
+-----------------------------------------------------
 
 buildtest has support for filtering buildspecs based on certain attributes defined in buildspec file. Upon :ref:`discover_buildspecs`, buildtest
 will filter out tests or entire buildspec files. The ``buildtest build --filter`` option can be used to filter tests where the format is ``key1=val1;key2=val2,val3``.
@@ -384,8 +384,8 @@ where test failed to run since we provided invalid executor.
     .. command-output:: buildtest build -b tutorials/invalid_executor.yml
         :returncode: 1
 
-Rebuild Tests
---------------
+Rebuild Tests (``buildtest build --rebuild``)
+----------------------------------------------
 
 buildtest can rebuild tests using the ``--rebuild`` option which can be useful if
 you want to test a particular test multiple times. The rebuild option works across
@@ -417,8 +417,8 @@ If you try to exceed this bound you will get an error such as
     .. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml --rebuild 51
         :returncode: 1
 
-Limit Number of Tests
-----------------------
+Limit Number of Tests (``buildtest build --limit``)
+-----------------------------------------------------
 
 The `buildtest build` command can limit the number of tests that can run via ``--limit`` option. This
 can be useful when running large number of tests and you have no idea
@@ -449,8 +449,8 @@ If you specify 0 or negative number you will get an error as follows
     .. command-output:: buildtest build -b tutorials/test_status/pass_returncode.yml --limit=0
         :returncode: 2
 
-Rerun Last command
--------------------
+Rerun Last Command (``buildtest build --rerun``)
+-------------------------------------------------
 
 The ``buildtest build --rerun`` command can be used to rerun **last successful** ``buildtest build`` command, this can be useful if you want to repeat a certain
 build without having to remember the command or going through your command history to find the command you ran. When using this option all other options passed
@@ -509,8 +509,8 @@ Removing Stage Directory
 buildtest will write the tests in `stage` directory where test will be executed, typically buildtest will keep the
 stage directory but if you want to remove the directory you can use ``buildtest build --remove-stagedir``.
 
-Specify Project Account for batch jobs
-----------------------------------------
+Specify Project Account for batch jobs (``buildtest build --account``)
+------------------------------------------------------------------------
 
 For batch jobs you typically require one to specify a project account in order to charge jobs depending on your
 scheduler you can use ``buildtest build --account`` option and specify an account name. The command line
@@ -518,8 +518,8 @@ argument ``--account`` will override configuration setting. For more details see
 
 .. _test_timeout:
 
-Test Timeout
---------------
+Test Timeout (``buildtest build --timeout``)
+--------------------------------------------
 
 Buildtest can terminate test based on timeout value specified via ``--timeout`` option which can be used to terminate
 long running test. The timeout is in seconds and value must be a positive integer which is applied to all
@@ -541,8 +541,8 @@ run until completion.
 
 .. _using_profiles:
 
-Using Profiles
----------------
+Using Profiles (``buildtest build --profile``)
+-----------------------------------------------
 
 Buildtest has a concept of profiles, which allows one to run a set of ``buildtest build`` options without having to remember
 all the options. This can be useful if you are running a set of tests repeatedly. In-order to use profiles you must first,
@@ -570,8 +570,8 @@ Next, let's build the tests via newly created profile and take note that it will
 
 .. _limit_max_jobs:
 
-Limit Maximum Jobs that can run concurrently
----------------------------------------------
+Limit Maximum Jobs that can run concurrently (``buildtest build --max-jobs``)
+-----------------------------------------------------------------------------
 
 Buildtest can cap a limit on number of tests that can run concurrently. This can be set in configuration file via :ref:`max_jobs <configuring_max_jobs>`
 field or overridden on command line option via ``--max-jobs``. By default, buildtest will run all jobs concurrently, however with

@@ -2,6 +2,7 @@
 This module contains all the methods related to "buildtest build" which is used
 for building test scripts from a Buildspec
 """
+
 import json
 import logging
 import os
@@ -20,7 +21,6 @@ from rich.panel import Panel
 from rich.table import Column, Table
 
 from buildtest import BUILDTEST_VERSION
-from buildtest.builders.compiler import CompilerBuilder
 from buildtest.builders.script import ScriptBuilder
 from buildtest.builders.spack import SpackBuilder
 from buildtest.buildsystem.builders import Builder
@@ -195,8 +195,7 @@ def discover_buildspecs(
 
     # if no files discovered let's stop now
     if not buildspec_dict["included"]:
-        msg = "There are no config files to process."
-        sys.exit(msg)
+        sys.exit("There are no config files to process.")
 
     logger.debug(
         f"buildtest discovered the following Buildspecs: {buildspec_dict['included']}"
@@ -1041,7 +1040,7 @@ class BuildTest:
         if self.finished_builders:
             update_report(self.finished_builders, self.report_file)
 
-        print(f"Writing Logfile to: {self.logfile.name}")
+        print(f"Writing Logfile to {self.logfile.name}")
 
         self._update_build_history(self.finished_builders)
 
@@ -1150,9 +1149,6 @@ class BuildTest:
             if isinstance(builder, ScriptBuilder):
                 script_builders.append(builder)
 
-            if isinstance(builder, CompilerBuilder):
-                compiler_builder.append(builder)
-
             if isinstance(builder, SpackBuilder):
                 spack_builder.append(builder)
 
@@ -1223,6 +1219,7 @@ class BuildTest:
         """
 
         console.rule("[bold red]Running Tests")
+
         self.buildexecutor.run(self.builders)
 
         builders = self.buildexecutor.get_validbuilders()
@@ -1249,7 +1246,6 @@ class BuildTest:
         table.add_column("builder", overflow="fold")
         table.add_column("executor", overflow="fold")
         table.add_column("status", overflow="fold")
-        table.add_column("checks (ReturnCode, Regex, Runtime)", overflow="fold")
         table.add_column("returncode", overflow="fold")
         table.add_column("runtime", overflow="fold")
 
@@ -1268,9 +1264,8 @@ class BuildTest:
                 f"[{color_row}]{builder}",
                 f"[{color_row}]{builder.executor}",
                 f"[{color_row}]{builder.metadata['result']['state']}",
-                f"[{color_row}]{builder.metadata['check']['returncode']} [{color_row}]{builder.metadata['check']['regex']} [{color_row}]{builder.metadata['check']['runtime']}",
                 f"[{color_row}]{builder.metadata['result']['returncode']}",
-                f"[{color_row}]{builder.metadata['result']['runtime']}",
+                f"[{color_row}]{format(builder.metadata['result']['runtime'],'.3f')}",
             )
 
             total_tests += 1

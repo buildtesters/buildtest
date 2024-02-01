@@ -416,7 +416,7 @@ class TestBuildTest:
         # testing buildtest build -b tutorials/hello_world.yml --max-jobs=2 --rebuild=4
         cmd = BuildTest(
             configuration=configuration,
-            buildspecs=["tutorials/hello_world.yml"],
+            buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "hello_world.yml")],
             rebuild=4,
             max_jobs=2,
         )

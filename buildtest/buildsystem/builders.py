@@ -6,7 +6,6 @@ parsed validation via :class:`buildtest.buildsystem.parser.BuildspecParser`.
 import logging
 import re
 
-from buildtest.builders.compiler import CompilerBuilder
 from buildtest.builders.script import ScriptBuilder
 from buildtest.builders.spack import SpackBuilder
 from buildtest.defaults import console
@@ -18,7 +17,7 @@ class Builder:
 
     The builder class is created based on the 'type' field in the test. If test contains
     ``type: script`` we will create builder by calling :class:`buildtest.builders.script.ScriptBuilder`.
-    Likewise for ``type: compiler`` and ``type: spack`` we will call :class:`buildtest.builders.compiler.CompilerBuilder` and
+    Likewise for ``type: spack`` we will call
     :class:`buildtest.builders.spack.SpackBuilder`.
     """
 
@@ -120,7 +119,7 @@ class Builder:
                     continue
                 # Add the builder for the script or spack schema
 
-                if recipe["type"] in ["script", "compiler", "spack"]:
+                if recipe["type"] in ["script", "spack"]:
                     builders = self.build(name, recipe)
                     if builders:
                         self.builders += builders
@@ -193,64 +192,6 @@ class Builder:
         if procs:
             for proc in procs:
                 builder = ScriptBuilder(
-                    name=name,
-                    recipe=recipe,
-                    executor=executor,
-                    buildspec=self.bp.buildspec,
-                    buildexecutor=self.buildexecutor,
-                    configuration=self.configuration,
-                    testdir=self.testdir,
-                    numprocs=proc,
-                    compiler=compiler_name,
-                )
-                builders.append(builder)
-
-        return builders
-
-    def create_compiler_builders(
-        self, name, recipe, executor, nodes=None, procs=None, compiler_name=None
-    ):
-        """Create builder objects by calling :class:`buildtest.builders.compiler.CompilerBuilder` class.
-
-        args:
-            name (str): Name of test
-            recipe (dict): Loaded test recipe from buildtest
-            executor (str): Name of executor
-            nodes (list, optional): A list of node configuration
-            procs (list, optional): A list of process configuration
-            compiler_name (str, optional): Name of resolved compiler instance
-        """
-        builders = []
-
-        builder = CompilerBuilder(
-            name=name,
-            recipe=recipe,
-            executor=executor,
-            buildspec=self.bp.buildspec,
-            buildexecutor=self.buildexecutor,
-            configuration=self.configuration,
-            testdir=self.testdir,
-            compiler=compiler_name,
-        )
-        builders.append(builder)
-
-        if nodes:
-            for node in nodes:
-                builder = CompilerBuilder(
-                    name=name,
-                    recipe=recipe,
-                    executor=executor,
-                    buildspec=self.bp.buildspec,
-                    buildexecutor=self.buildexecutor,
-                    configuration=self.configuration,
-                    testdir=self.testdir,
-                    numnodes=node,
-                    compiler=compiler_name,
-                )
-                builders.append(builder)
-        if procs:
-            for proc in procs:
-                builder = CompilerBuilder(
                     name=name,
                     recipe=recipe,
                     executor=executor,
@@ -340,22 +281,6 @@ class Builder:
                     f"Found a match in buildspec with available executors via re.fullmatch({recipe['executor']},{executor})"
                 )
                 builders += self.create_script_builders(
-                    name=name,
-                    executor=executor,
-                    recipe=recipe,
-                    nodes=self.numnodes,
-                    procs=self.numprocs,
-                    compiler_name=compiler_name,
-                )
-
-            elif (
-                re.fullmatch(recipe["executor"], executor)
-                and recipe["type"] == "compiler"
-            ):
-                self.logger.debug(
-                    f"Found a match in buildspec with available executors via re.fullmatch({recipe['executor']},{executor})"
-                )
-                builders += self.create_compiler_builders(
                     name=name,
                     executor=executor,
                     recipe=recipe,

@@ -34,11 +34,6 @@ class BaseExecutor:
             maxpendtime (int, optional): Maximum Pending Time until job is cancelled. The default is 1 day (86400s)
         """
 
-        self._bashopts = "--norc --noprofile -eo pipefail"
-        self._shopts = "--norc --noprofile -eo pipefail"
-        self._cshopts = "-ef"
-        self._zshopts = "-f"
-        self.cmd = None
         self.shell = "bash"
         self.logger = logging.getLogger(__name__)
         self.name = name

@@ -310,6 +310,7 @@ def main():
             stagedir=args.stagedir,
             buildenv=args.buildenv,
             configuration=configuration,
+            report_file=report_file,
         )
     # running bnuildtest schema
     elif args.subcommands == "schema":

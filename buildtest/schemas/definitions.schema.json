@@ -290,225 +290,75 @@
           }
         },
         "assert_ge": {
-          "type": "array",
           "description": "Perform assertion of greater and equal (>=) with reference value",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "type": "number",
-                "description": "Specify reference value (int,float) for comparison"
-              }
-            }
-          }
+          "$ref": "#/definitions/status_check_ge_gt_le_lt"
         },
         "assert_le": {
-          "type": "array",
-          "description": "Perform assertion of less than and equal (<=) with reference value",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "type": "number",
-                "description": "Specify reference value (int,float) for comparison"
-              }
-            }
-          }
+          "description": "Perform assertion of greater and equal (>=) with reference value",
+          "$ref": "#/definitions/status_check_ge_gt_le_lt"
         },
         "assert_gt": {
-          "type": "array",
           "description": "Perform assertion of greater than (>) with reference value",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "type": "number",
-                "description": "Specify reference value (int,float) for comparison"
-              }
-            }
-          }
+          "$ref": "#/definitions/status_check_ge_gt_le_lt"
         },
         "assert_lt": {
-          "type": "array",
           "description": "Perform assertion of less than (<) with reference value",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "type": "number",
-                "description": "Specify reference value (int,float) for comparison"
-              }
-            }
-          }
+          "$ref": "#/definitions/status_check_ge_gt_le_lt"
         },
         "assert_eq":
         {
           "description": "Perform assertion of equality (=) with reference value",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "description": "Specify reference value (str, int,float) for comparison",
-                "oneOf": [
-                  {
-                    "type": "number"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ]
-              }
-            }
-          }
+          "$ref": "#/definitions/status_check_eq_ne"
         },
         "assert_ne":
         {
-          "description": "Perform assertion of not equal with reference value",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "description": "Specify reference value (str, int, float) for comparison",
-                "oneOf": [
-                  {
+          "description": "Perform assertion of not equal (!=) with reference value",
+          "$ref": "#/definitions/status_check_eq_ne"
+        },
+        "assert_range": {
+          "type": "object",
+          "description": "Perform assertion based on lower and upper bound",
+          "additionalProperties": false,
+          "required": ["comparisons"],
+          "properties": {
+            "mode": {
+              "$ref": "#/definitions/mode"
+            },
+            "comparisons": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "name",
+                  "lower",
+                  "upper"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of metric to use for comparison"
+                  },
+                  "lower": {
+                    "description": "Specify reference value for lower bound",
                     "type": "number"
                   },
-                  {
-                    "type": "string"
+                  "upper": {
+                    "description": "Specify reference value for upper bound",
+                    "type": "number"
                   }
-                ]
+                }
               }
-            }
-          }
-        },
-        "assert_range":
-        {
-          "description": "Perform assertion based on lower and upper bound",
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "lower",
-              "upper"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "lower": {
-                "description": "Specify reference value for lower bound",
-                "type": "number"
-              },
-              "upper": {
-                "description": "Specify reference value for upper bound",
-                "type": "number"
-              }
-
             }
           }
         },
         "contains": {
-          "description": "Check if metric value is in a list of reference values ",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "type": "array",
-                "minItems": 1,
-                "description": "Specify a list of reference value"
-              }
-            }
-          }
+          "description": "Check if metric value is in a list of reference values",
+          "$ref": "#/definitions/status_check_contains_not_contains"
         },
         "not_contains": {
           "description": "Check if metric value not in a list of reference values ",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name",
-              "ref"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "description": "Name of metric to use for comparison"
-              },
-              "ref": {
-                "type": "array",
-                "minItems": 1,
-                "description": "Specify a list of reference value"
-              }
-            }
-          }
+          "$ref": "#/definitions/status_check_contains_not_contains"
         },
         "is_symlink": {
           "description": "Check for list of files or directory paths that are symbolic links",
@@ -583,11 +433,115 @@
           "description": "explicitly mark state of test regardless of status calculation"
         },
         "mode": {
-          "type": "string",
-          "description": "Determine how the status check is resolved, for instance it can be logical AND or OR",
-          "enum": ["any", "all"]
+          "$ref": "#/definitions/mode"
         }
       }
+    },
+    "status_check_ge_gt_le_lt": {
+       "type": "object",
+        "additionalProperties": false,
+        "required": ["comparisons"],
+        "properties": {
+          "mode": {
+            "$ref": "#/definitions/mode"
+          },
+          "comparisons": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "ref"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of metric to use for comparison"
+                },
+                "ref": {
+                  "type": "number",
+                  "description": "Specify reference value (int,float) for comparison"
+                }
+              }
+            }
+          }
+        }
+    },
+    "status_check_eq_ne": {
+       "type": "object",
+        "additionalProperties": false,
+        "required": ["comparisons"],
+        "properties": {
+          "mode": {
+            "$ref": "#/definitions/mode"
+          },
+          "comparisons": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "name",
+                "ref"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of metric to use for comparison"
+                },
+                "ref": {
+                  "description": "Specify reference value (str, int, float) for comparison",
+                  "oneOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+    },
+    "status_check_contains_not_contains": {
+      "type": "object",
+      "required": ["comparisons"],
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "$ref": "#/definitions/mode"
+        },
+        "comparisons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name",
+              "ref"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of metric to use for comparison"
+              },
+              "ref": {
+                "type": "array",
+                "minItems": 1,
+                "description": "Specify a list of reference value"
+              }
+            }
+          }
+        }
+      }
+    },
+    "mode": {
+      "description": "Determine how the status check is resolved, for instance it can be logical AND or OR",
+      "type": "string",
+      "enum": ["or", "and", "OR", "AND"]
     },
     "BB": {
       "$ref": "#/definitions/list_of_strings",

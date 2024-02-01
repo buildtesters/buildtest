@@ -68,11 +68,6 @@ def test_script_examples():
 
 
 @pytest.mark.schema
-def test_compiler_examples():
-    validate_examples(schema_file="compiler.schema.json")
-
-
-@pytest.mark.schema
 def test_spack_examples():
     validate_examples(schema_file="spack.schema.json")
 

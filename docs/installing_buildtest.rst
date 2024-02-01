@@ -108,8 +108,6 @@ Usage (``buildtest --help``)
 Once you are setup, you can run ``buildtest --help`` for more details on how to
 use buildtest. Shown below is the output
 
-.. dropdown:: ``buildtest --help``
-
-    .. command-output:: buildtest --help
+.. command-output:: buildtest --help
 
 If you have got this far, you can check out the :ref:`quick_start` or :ref:`getting_started`

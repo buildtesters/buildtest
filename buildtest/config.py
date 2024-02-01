@@ -1,5 +1,6 @@
 import json
 import logging
+import platform
 import re
 
 from buildtest.defaults import (
@@ -40,12 +41,14 @@ class SiteConfiguration:
 
         self.disabled_executors = []
         self.invalid_executors = []
+        self.all_executors = []
         self.valid_executors = {
             "local": {},
             "slurm": {},
             "lsf": {},
             "pbs": {},
             "cobalt": {},
+            "container": {},
         }
 
         self.resolve()
@@ -92,22 +95,28 @@ class SiteConfiguration:
         """
 
         self.systems = list(self.config["system"].keys())
-
+        logger.debug(
+            f"List of available systems: {self.systems} found in configuration file"
+        )
         host_lookup = {}
 
         # get hostname fqdn
-        cmd = BuildTestCommand("hostname -f")
-        cmd.execute()
-        hostname = " ".join(cmd.get_output())
+        hostname = platform.node()
 
         # for every system record we lookup 'hostnames' entry and apply re.match against current hostname. If found we break from loop
         for name in self.systems:
             host_lookup[name] = self.config["system"][name]["hostnames"]
 
+            logger.debug(
+                f"Checking hostname: {hostname} in system: '{name}' with hostnames: {host_lookup[name]}"
+            )
             for host_entry in self.config["system"][name]["hostnames"]:
-                if re.match(host_entry, hostname):
+                if re.fullmatch(host_entry, hostname):
                     self.target_config = self.config["system"][name]
                     self._name = name
+                    logger.info(
+                        f"Found matching system: {name} based on hostname: {hostname}"
+                    )
                     break
 
         if not self.target_config:
@@ -116,8 +125,6 @@ class SiteConfiguration:
                 self.file,
                 f"Based on current system hostname: {hostname} we cannot find a matching system  {list(self.systems)} based on current hostnames: {host_lookup} ",
             )
-
-        # self.localexecutors = list(self.target_config["executors"]["local"].keys())
 
     def validate(self, moduletool=None):
         """This method validates the site configuration with schema.
@@ -154,12 +161,38 @@ class SiteConfiguration:
         self._validate_lsf_executors()
         self._validate_cobalt_executors()
         self._validate_pbs_executors()
+        self._validate_container_executors()
+
+        for executor_type in self.target_config["executors"]:
+            if executor_type == "defaults":
+                continue
+
+            for name in self.target_config["executors"][executor_type]:
+                self.all_executors.append(f"{self.name()}.{executor_type}.{name}")
+
+    def get_all_executors(self):
+        """Return list of all executors"""
+        return self.all_executors
 
     def is_executor_disabled(self, executor):
         if executor.get("disable"):
             return True
 
         return False
+
+    def _validate_container_executors(self):
+        executor_names = deep_get(self.target_config, "executors", "container")
+        if not executor_names:
+            return
+        for executor in executor_names:
+            executor_name = f"{self.name()}.container.{executor}"
+            if self.is_executor_disabled(executor_names[executor]):
+                self.disabled_executors.append(executor_name)
+                continue
+
+            self.valid_executors["container"][executor_name] = {
+                "setting": executor_names[executor]
+            }
 
     def _validate_local_executors(self):
         """Check local executor by verifying the 'shell' types are valid"""
