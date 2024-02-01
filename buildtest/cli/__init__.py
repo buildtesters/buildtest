@@ -2,6 +2,7 @@
 buildtest cli: include functions to build, get test configurations, and
 interact with a global configuration for buildtest.
 """
+
 import argparse
 import datetime
 import sys
