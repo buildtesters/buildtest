@@ -4,7 +4,7 @@ system:
     hostnames: ['.*']
     # system description
     description: Generic System
-    # specify module system to use. Supported module systems are lmod, environment-modules or set to N/A if not available
+    # specify module system to use. Supported module systems are [lmod, environment-modules, N/A]
     moduletool: N/A
 
     # specify size of job pool (https://docs.python.org/3/library/multiprocessing.html#multiprocessing.pool.Pool). This will configure the number of processes that can run in parallel.
@@ -33,6 +33,9 @@ system:
       # display output in terse mode
       terse: false
 
+      # list of paths to search for buildspecs
+      #root: ["$BUILDTEST_ROOT/tutorials", "$BUILDTEST_ROOT/examples"]
+
     # options for buildtest report command
     report:
       # number of records to display
@@ -42,7 +45,9 @@ system:
       # specify format fields
       format: name,id,state,runtime,returncode
 
+    # start of executor configuration
     executors:
+      # local executor is used to submit jobs on local machine. In this example we have 4 executors: bash, sh, csh, zsh that will submit jobs using bash, sh, csh, zsh shell respectively.
       local:
         bash:
           description: submit jobs on local machine using bash shell
@@ -56,9 +61,12 @@ system:
         zsh:
           description: submit jobs on local machine using zsh shell
           shell: zsh
+    # specify compiler declaration
     compilers:
       compiler:
+        # declaration of all gcc compilers
         gcc:
+          # name of compiler
           builtin_gcc:
             cc: gcc
             fc: gfortran

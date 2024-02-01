@@ -654,8 +654,8 @@
       }
     },
     "container": {
-       "type": "object",
-       "additionalProperties": false,
+      "type": "object",
+      "additionalProperties": false,
       "properties": {
         "description": {
           "type": "string",

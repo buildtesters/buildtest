@@ -4,8 +4,7 @@ Buildtest Schemas
 ==========================
 
 buildtest uses JSON Schema for validating buildspecs and :ref:`buildtest configuration file <configuring_buildtest>`.
-The json schemas are published at https://buildtesters.github.io/buildtest/ and we
-provide a command line interface to view schema files and examples.
+In this section, we will show how you can query the json schema and its example files using the command line tool ``buildtest schema``.
 
 Schema Naming Convention
 ------------------------
@@ -129,14 +128,6 @@ Script Schema Examples
 .. dropdown:: ``buildtest schema -n script.schema.json --example``
 
     .. command-output:: buildtest schema -n script.schema.json --example
-
-
-Compiler Schema Examples
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. dropdown:: ``buildtest schema -n compiler.schema.json --example``
-
-    .. command-output:: buildtest schema -n compiler.schema.json --example
 
 
 Spack Schema Examples

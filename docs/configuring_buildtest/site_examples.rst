@@ -5,21 +5,17 @@ NERSC
 -----
 
 `NERSC <http://nersc.gov/>`_ provides High Performance Computing system to support research in the Office of Science program
-offices. Currently, NERSC provides two HPC systems including `Perlmutter <https://docs.nersc.gov/systems/perlmutter/architecture/>`_ and
-`Cori <https://docs.nersc.gov/systems/cori/>`_. In example below we see the configuration for Cori and Perlmutter. Note that we can define a
-single configuration for both systems. Perlmutter is using `Lmod` while Cori is running `environment-modules`. We define Local executors and
-Slurm executors for each system which are mapped to qos provided by our Slurm cluster.
+offices. NERSC has one production HPC systems `Perlmutter <https://docs.nersc.gov/systems/perlmutter/architecture/>`_ and
+ `muller` which is Test system for Perlmutter.
 
-In-order to use ``bigmem``, ``xfer``,
-or ``gpu`` qos at Cori, we need to specify **escori** cluster (i.e ``sbatch --clusters=escori``).
+Shown below is the buildtest configuration at NERSC. We have defined multiple slurm executors, along with settings for
+configuring compilers that is available on Perlmutter.
 
-.. dropdown:: NERSC buildtest configuration
+.. rli:: https://raw.githubusercontent.com/buildtesters/buildtest-nersc/devel/config.yml
+   :language: yaml
 
-    .. rli:: https://raw.githubusercontent.com/buildtesters/buildtest-nersc/devel/config.yml
-       :language: yaml
-
-Ascent @ OLCF
----------------
+Oak Ridge National Laboratory
+-----------------------------
 
 `Ascent <https://docs.olcf.ornl.gov/systems/ascent_user_guide.html>`_ is a training
 system for Summit at OLCF, which is using a IBM Load Sharing
@@ -33,13 +29,11 @@ The default launcher is `bsub` which can be defined under ``defaults``. The
 schema. In order to avoid polling scheduler excessively pick a number that is best
 suitable for your site
 
-.. dropdown:: Ascent buildtest configuration
+.. literalinclude:: ../../tests/settings/ascent.yml
+   :language: yaml
 
-    .. literalinclude:: ../../tests/settings/ascent.yml
-       :language: yaml
-
-JLSE @ ANL
------------
+Argonne National Laboratory
+---------------------------
 
 `Joint Laboratory for System Evaluation (JLSE) <https://www.jlse.anl.gov/>`_ provides
 a testbed of emerging HPC systems, the default scheduler is Cobalt, this is
@@ -50,7 +44,5 @@ for all batch executors. In each cobalt executor the ``queue`` property will spe
 the queue name to submit job, for instance the executor ``yarrow`` with ``queue: yarrow``
 will submit job using ``qsub -q yarrow`` when using this executor.
 
-.. dropdown:: JLSE buildtest configuration
-
-    .. literalinclude:: ../../tests/settings/jlse.yml
-       :language: yaml
+.. literalinclude:: ../../tests/settings/jlse.yml
+   :language: yaml
