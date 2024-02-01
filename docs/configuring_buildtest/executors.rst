@@ -37,7 +37,7 @@ unique name and they are referenced in buildspec using ``executor`` field in the
 
     executor: <system>.<type>.<name>
 
-For instance, if a buildspec wants to reference the local executor `bash` from the `generic`
+For instance, if a buildspec wants to reference the local executor **bash** from the **generic**
 cluster, you would specify the following in the buildspec:
 
 .. code-block:: yaml
@@ -107,11 +107,11 @@ haswell nodes. Any additional **#SBATCH** options are defined in buildspec for m
 buildtest will detect slurm configuration and check qos, partition, cluster
 match with buildtest configuration. In addition, buildtest supports multi-cluster
 job submission and monitoring from remote cluster. This means if you specify
-``cluster`` field buildtest will poll jobs using `sacct` with the
+``cluster`` field buildtest will poll jobs using **sacct** with the
 cluster name as follows: ``sacct -M <cluster>``.
 
 You can configure your slurm executors to use slurm partitions instead of qos.  This
-can be done via ``partition`` property. In this next example we define an executor name `regular_hsw` which will
+can be done via ``partition`` property. In this next example we define an executor name ``regular_hsw`` which will
 submit jobs to partition **regular_hsw**. The ``description`` field may be used for information purposes.
 
 .. code-block:: yaml

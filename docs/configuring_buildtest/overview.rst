@@ -172,7 +172,7 @@ defaults. This can be shown in the configuration file below:
           #root: [ $BUILDTEST_ROOT/examples, /tmp/buildspecs ]
 
 
-The ``rebuild: False`` means buildtest won't rebuild the buildcache every time you run `buildtest buildspec find`. If the
+The ``rebuild: False`` means buildtest won't rebuild the buildcache every time you run ``buildtest buildspec find``. If the
 cache file is not present, it will automatically rebuild the cache, otherwise it will build the cache if one specifies
 ``--rebuild`` option or ``rebuild: True`` is set in the configuration file.
 
@@ -197,9 +197,9 @@ Buildtest will search for buildspecs by recursively searching for files with **.
 is a list of string types which is used to search for buildspecs. The ``root`` property is not required in configuration file, but it can be a good
 idea to set this value if you have a predetermined location where buildspecs are stored.
 
-You can specify the root path via command line``buildtest buildspec find --root <dir1> --root <dir2>`` which will override the configuration value. In a
+You can specify the root path via command line ``buildtest buildspec find --root <dir1> --root <dir2>`` which will override the configuration value. In a
 practical situation, you will want to write your buildspecs in a separate repository which you can clone in your filesystem. Let's say they are cloned in
-your $HOME directory named ``$HOME/buildtest-examples``. You have one of two options, one you can specify the root path in configuration file as shown below:
+your $HOME directory named **$HOME/buildtest-examples**. You have one of two options, one you can specify the root path in configuration file as shown below:
 
 .. code-block:: yaml
 
@@ -208,8 +208,8 @@ your $HOME directory named ``$HOME/buildtest-examples``. You have one of two opt
 
 This above configuration will instruct buildtest to search for buildspecs in ``$HOME/buildtest-examples`` directory, and you won't
 have to specify the ``--root`` option when running ``buildtest buildspec find``. The second option would be to specify the ``--root`` everytime
-you need to build the cache. If neither is specified, buildtest will load the default buildspecs which are ``$BUILDTEST_ROOT/tutorials`` and
-``$BUILDTEST_ROOT/general_tests``.
+you need to build the cache. If neither is specified, buildtest will load the default buildspecs which are **$BUILDTEST_ROOT/tutorials** and
+**$BUILDTEST_ROOT/general_tests**.
 
 .. _configuring_buildtest_report:
 
