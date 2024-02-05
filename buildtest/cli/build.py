@@ -1141,7 +1141,6 @@ class BuildTest:
         console.print("Total builder objects created:", len(self.builders))
 
         script_builders = []
-        compiler_builder = []
         spack_builder = []
         batch_builders = []
 
@@ -1155,9 +1154,7 @@ class BuildTest:
             if not builder.is_local_executor():
                 batch_builders.append(builder)
 
-        self.print_builders(
-            compiler_builder, spack_builder, script_builders, batch_builders
-        )
+        self.print_builders(spack_builder, script_builders, batch_builders)
 
     def build_phase(self):
         """This method will build all tests by invoking class method ``build`` for
@@ -1525,14 +1522,11 @@ class BuildTest:
 
             console.print(batch_builders_numnodes_table)
 
-    def print_builders(
-        self, compiler_builder, spack_builder, script_builder, batch_builder
-    ):
+    def print_builders(self, spack_builder, script_builder, batch_builder):
         """Print detected builders during build phase"""
 
         self.print_builders_by_type(script_builder, builder_type="script")
         self.print_builders_by_type(spack_builder, builder_type="spack")
-        self.print_builders_by_type(compiler_builder, builder_type="compiler")
         self.print_batch_builders(batch_builder)
 
 

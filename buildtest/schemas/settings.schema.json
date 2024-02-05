@@ -80,7 +80,7 @@
           "enum": [
             "environment-modules",
             "lmod",
-            "N/A"
+            "none"
           ]
         },
         "timeout": {
@@ -120,6 +120,8 @@
         "report":
         {
           "type": "object",
+          "additionalProperties": false,
+          "description": "Specify configuration for ``buildtest report`` command",
           "properties": {
             "terse": { "$ref": "#/definitions/terse" },
             "format": { "$ref": "#/definitions/format" },
@@ -425,7 +427,7 @@
         "type": "string"
       }
     },
-    "disable": {"type": "boolean", "description": "Disable executor"},
+    "disable": {"type": "boolean", "description": "Disable an executor"},
     "module": {
       "type": "object",
       "additionalProperties": false,
@@ -473,10 +475,7 @@
       "additionalProperties": false,
       "required": [ "shell" ],
       "properties": {
-        "description": {
-          "type": "string",
-          "description": "description field for documenting your executor"
-        },
+        "description": { "$ref": "#/definitions/description" },
         "shell": {
           "type": "string",
           "description": "Specify the shell launcher you want to use when running tests locally"
@@ -491,10 +490,7 @@
       "additionalProperties": false,
       "description": "An instance object of slurm executor",
       "properties": {
-        "description": {
-          "type": "string",
-          "description": "description field for documenting your executor"
-        },
+        "description": { "$ref": "#/definitions/description" },
         "launcher": {
           "type": "string",
           "enum": [ "sbatch" ],
@@ -579,10 +575,7 @@
       "additionalProperties": false,
       "required": [ "queue" ],
       "properties": {
-        "description": {
-          "type": "string",
-          "description": "description field for documenting your executor"
-        },
+        "description": { "$ref": "#/definitions/description" },
         "launcher": {
           "type": "string",
           "enum": [ "qsub" ],
@@ -619,10 +612,7 @@
       "additionalProperties": false,
       "required": [ "queue" ],
       "properties": {
-        "description": {
-          "type": "string",
-          "description": "description field for documenting your executor"
-        },
+        "description": { "$ref": "#/definitions/description" },
         "launcher": {
           "type": "string",
           "enum": [ "qsub" ],
@@ -657,10 +647,7 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "description": {
-          "type": "string",
-          "description": "description field for documenting your executor"
-        },
+        "description": { "$ref": "#/definitions/description" },
         "before_script": {
           "description": "The ``before_script`` section can be used to specify commands before start of test. The script will be sourced in active shell.",
           "#ref": "#/definitions/script"
@@ -709,7 +696,7 @@
               "minItems": 1,
               "items": {
                 "type": "string",
-                 "enum": ["script", "compiler", "spack"]
+                 "enum": ["script", "spack"]
               }
             },
             "tags": {
@@ -727,8 +714,8 @@
         "module-purge": {"type": "boolean"},
         "rebuild": {"type": "integer", "minimum": 1, "maximum": 50, "description": "Specify number of tests to rebuild"},
         "limit": {"type": "integer", "minimum": 1, "description": "Limit number of tests to build"},
-        "account": {"type": "string"},
-        "maxpendtime": {"type": "integer", "minimum": 1, "description": "Specify maximum pending time in seconds"},
+        "account": {"$ref": "#/definitions/account"},
+        "maxpendtime": { "$ref": "#/definitions/maxpendtime" },
         "pollinterval": {"type": "integer", "minimum": 1, "description": "Specify poll interval in seconds"},
         "procs": {"$ref": "definitions.schema.json#/definitions/list_of_positive_integers"},
         "nodes": {"$ref": "definitions.schema.json#/definitions/list_of_positive_integers"},
@@ -742,6 +729,10 @@
         "remove-stagedir": {"type": "boolean", "description": "Remove stage directory after test completes"},
         "max-jobs": {"type": "integer", "minimum": 1, "description": "Maximum number of jobs that can be run at a given time for a particular executor"}
       }
+    },
+    "description": {
+      "type": "string",
+      "description": "description field for documenting your executor"
     }
   }
 }
