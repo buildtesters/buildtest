@@ -59,7 +59,7 @@ Useful Links
 
 - Source Code: https://github.com/buildtesters/buildtest
 - Documentation: http://buildtest.rtfd.io/
-- Buildtest Home Page: https://buildtesters.github.io/buildtest/
+- Buildtest Home Page: https://buildtesters.github.io/buildtest.io/
 - ReadTheDocs: https://readthedocs.org/projects/buildtest/
 - CodeCov: https://codecov.io/gh/buildtesters/buildtest
 - Slack Channel: http://hpcbuildtest.slack.com
