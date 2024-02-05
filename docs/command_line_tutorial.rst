@@ -1,3 +1,5 @@
+.. _command_line_tutorial:
+
 Command Line Tutorial
 ======================
 

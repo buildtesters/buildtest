@@ -342,7 +342,7 @@ Configuration properties like ``rebuild``, ``limit``, ``timeout`` are integer an
 .. code-block:: yaml
     :emphasize-lines: 13-15
 
-   profiles:
+    profiles:
       profile-2:
         buildspecs:
         - /Users/siddiq90/Documents/github/buildtest/tutorials/job_dependency

@@ -5,8 +5,7 @@ This documentation was rebuilt on |today| and is intended for version |version|.
 
 If you are working off the latest release please see  https://buildtest.readthedocs.io/en/latest/ for documentation.
 If you are working off the `devel <https://github.com/buildtesters/buildtest/tree/devel>`_ branch then please refer to
-https://buildtest.readthedocs.io/en/devel/
-which references the `devel` branch.
+https://buildtest.readthedocs.io/en/devel/ for documentation.
 
 buildtest
 ==========
@@ -21,12 +20,12 @@ and is validated by a `json schema <https://json-schema.org/>`_. Buildtest suppo
 `Slurm <https://slurm.schedmd.com/>`_, `PBS <https://www.openpbs.org/>`_ and
 `Cobalt <https://trac.mcs.anl.gov/projects/cobalt>`_.
 
-To learn more about buildtest, see the `What is buildtest? <what_is_buildtest>`_ section.
+To learn more about buildtest, see the `What is buildtest? <what_is_buildtest>`_
 
 A spin-off project called `lmodule <https://lmodule.readthedocs.io/en/latest/>`_
 is a Python API for `Lmod <https://lmod.readthedocs.io/en/latest/>`_. The buildtest
 module features were deprecated and moved to lmodule with the main objective is to
-automate module load testing. For more details on lmodule see https://github.com/buildtesters/lmodule
+automate module load testing. For more details on lmodule see https://github.com/buildtesters/lmodule.
 
 Getting Started
 ----------------
@@ -34,7 +33,7 @@ Getting Started
 If you are interested in trying out buildtest, first :ref:`install buildtest <installing_buildtest>` and
 check out the :ref:`quick start guide <quick_start>`. Next, go through the :ref:`Getting Started Guide <getting_started>`
 which will walk you through the basic features of buildtest. Once you are ready to write tests, check out the
-to get :ref:`writing buildspecs guide <writing_buildspecs>` which will discuss in more detail how to write tests.
+:ref:`writing buildspecs guide <writing_buildspecs>` which will discuss how to write buildspecs.
 
 If you are first time user of buildtest, we recommend you to go through the :ref:`command line tutorial <command_line_tutorial>`
 and :ref:`buildspec tutorial <buildspec_tutorial>`.
