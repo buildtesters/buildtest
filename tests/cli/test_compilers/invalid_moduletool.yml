@@ -1,7 +1,7 @@
 system:
   generic:
     hostnames: [".*"]
-    moduletool: N/A
+    moduletool: none
     buildspecs:
       rebuild: False
       count: 15
