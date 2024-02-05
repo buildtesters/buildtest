@@ -1,7 +1,7 @@
 system:
   generic:
     hostnames: ['.*']
-    moduletool: N/A
+    moduletool: none
     poolsize: 1
     buildspecs:
       # whether to rebuild cache file automatically when running `buildtest buildspec find`

@@ -3,7 +3,7 @@ system:
     hostnames:
     - .*
     description: Generic System
-    moduletool: N/A
+    moduletool: none
     cdash:
       url: https://my.cdash.org
       project: buildtest
@@ -21,8 +21,6 @@ system:
       count: 25
       terse: False
       format: "name,id,state,runtime,returncode"
-      latest: True
-      oldest: False
     executors:
       local:
         bash:

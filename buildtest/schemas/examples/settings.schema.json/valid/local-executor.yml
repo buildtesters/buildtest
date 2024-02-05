@@ -1,9 +1,9 @@
 system:
   generic:
     hostnames: ['.*']
-    #logdir: $BUILDTEST_ROOT/logs
-    #testdir: $BUILDTEST_ROOT/tests
-    moduletool: N/A
+    logdir: $BUILDTEST_ROOT/logs
+    testdir: $BUILDTEST_ROOT/tests
+    moduletool: none
     poolsize: 1
     max_jobs: 1
     pager: False

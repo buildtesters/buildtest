@@ -1,0 +1,11 @@
+buildspecs:
+  compiler_exclude_example:
+    type: script
+    executor: generic.local.bash
+    description: Example excluding a particular compiler
+    compilers:
+      name: ['gcc']
+      exclude: ['gcc_6.5.0']
+    run: |
+      $BUILDTEST_CC hello.c -o hello_c      
+      ./hello_c      
