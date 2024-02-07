@@ -1,38 +1,53 @@
 compilers:
 - compiler:
-    spec: clang@6.0.0
+    spec: clang@=14.0.0
     paths:
       cc: /usr/bin/clang
       cxx: /usr/bin/clang++
-      f77:
-      fc:
+      f77: null
+      fc: null
     flags: {}
-    operating_system: ubuntu18.04
+    operating_system: ubuntu22.04
     target: x86_64
     modules: []
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: gcc@6.5.0
+    spec: gcc@=10.5.0
     paths:
-      cc: /usr/bin/gcc-6
-      cxx: /usr/bin/g++-6
-      f77: /usr/bin/gfortran-6
-      fc: /usr/bin/gfortran-6
+      cc: /usr/bin/gcc-10
+      cxx: /usr/bin/g++-10
+      f77: /usr/bin/gfortran-10
+      fc: /usr/bin/gfortran-10
     flags: {}
-    operating_system: ubuntu18.04
+    operating_system: ubuntu22.04
     target: x86_64
     modules: []
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: gcc@7.5.0
+    spec: gcc@=11.4.0
     paths:
       cc: /usr/bin/gcc
       cxx: /usr/bin/g++
       f77: /usr/bin/gfortran
       fc: /usr/bin/gfortran
     flags: {}
-    operating_system: ubuntu18.04
+    operating_system: ubuntu22.04
     target: x86_64
     modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@=12.3.0
+    paths:
+      cc: /home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/gcc-12.3.0-chmemdiqoycjlxz2myvdxqzt5don54uw/bin/gcc
+      cxx: /home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/gcc-12.3.0-chmemdiqoycjlxz2myvdxqzt5don54uw/bin/g++
+      f77: /home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/gcc-12.3.0-chmemdiqoycjlxz2myvdxqzt5don54uw/bin/gfortran
+      fc: /home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/gcc-12.3.0-chmemdiqoycjlxz2myvdxqzt5don54uw/bin/gfortran
+    flags: {}
+    operating_system: ubuntu22.04
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []

@@ -29,6 +29,8 @@ if __name__ == "__main__":
     if is_dir(autogen_examples_dir):
         shutil.rmtree(autogen_examples_dir)
 
+    # clean all spack environments to ensure we start from clean slate
+    shutil.rmtree(os.path.join(os.getenv("SPACK_ROOT"), "var", "spack", "environments"))
     create_dir(autogen_examples_dir)
 
     clean(config, yes=True)
