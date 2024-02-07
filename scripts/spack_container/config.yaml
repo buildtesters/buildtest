@@ -1,2 +1,0 @@
-config:
-  build_stage: $HOME/spack-workspace/build_stage

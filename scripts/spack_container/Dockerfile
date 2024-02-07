@@ -13,7 +13,6 @@ RUN apt update && \
 USER spack
 RUN git clone --depth=100 --branch=releases/v0.21 https://github.com/spack/spack.git ~/spack
 
-COPY /config.yaml /home/spack/spack/etc/spack/config.yaml
 COPY /spack_setup.sh /etc/profile.d/spack_setup.sh
 COPY /modules.yaml   /home/spack/spack/etc/spack/modules.yaml
 COPY /compilers.yaml /home/spack/spack/etc/spack/compilers.yaml
