@@ -217,7 +217,7 @@ class SpackBuilder(BuilderBase):
         lines = []
 
         if spack_env.get("rm"):
-            lines.append(f"spack env rm -y {spack_env['rm']['name']}")
+            lines.append(f"spack env rm -y {spack_env['rm']['name']} || true")
 
         if spack_env.get("create"):
             opts = spack_env["create"].get("options") or ""
@@ -227,7 +227,9 @@ class SpackBuilder(BuilderBase):
             if spack_env["create"].get("name"):
                 # if remove_environment is defined we remove the environment before creating it
                 if spack_env["create"].get("remove_environment"):
-                    lines.append(f"spack env rm -y {spack_env['create']['name']}")
+                    lines.append(
+                        f"spack env rm -y {spack_env['create']['name']} || true"
+                    )
 
                 cmd.append(spack_env["create"]["name"])
 
@@ -245,7 +247,7 @@ class SpackBuilder(BuilderBase):
 
             # deactivate environment ('spack env deactivate')
         if spack_env.get("deactivate"):
-            lines += ["spack env deactivate"]
+            lines += ["spack env deactivate || true"]
 
         # activate environment ('spack env activate')
         if spack_env.get("activate"):
