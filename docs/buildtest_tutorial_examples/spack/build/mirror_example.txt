@@ -2,13 +2,13 @@ $ buildtest build -b /home/spack/buildtest/examples/spack/mirror_example.yml
 ╭─────────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────────╮                                                                                                            
 │                                                                                                                          │                                                                                                            
 │ User:               spack                                                                                                │                                                                                                            
-│ Hostname:           651e70126b2d                                                                                         │                                                                                                            
+│ Hostname:           6a0291274cdd                                                                                         │                                                                                                            
 │ Platform:           Linux                                                                                                │                                                                                                            
-│ Current Time:       2023/11/09 19:32:29                                                                                  │                                                                                                            
+│ Current Time:       2024/02/07 18:25:19                                                                                  │                                                                                                            
 │ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                  │                                                                                                            
-│ buildtest version:  1.6                                                                                                  │                                                                                                            
-│ python path:        /home/spack/pyenv/buildtest/bin/python3                                                              │                                                                                                            
-│ python version:     3.8.6                                                                                                │                                                                                                            
+│ buildtest version:  1.7                                                                                                  │                                                                                                            
+│ python path:        /home/spack/.pyenv/buildtest/bin/python3                                                             │                                                                                                            
+│ python version:     3.11.6                                                                                               │                                                                                                            
 │ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                         │                                                                                                            
 │ Test Directory:     /home/spack/runs                                                                                     │                                                                                                            
 │ Report File:        /home/spack/buildtest/var/report.json                                                                │                                                                                                            
@@ -36,55 +36,65 @@ Total builder objects created: 2
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ builder                          ┃ type  ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                               ┃ buildspecs                                              ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ add_mirror/35e4a593              │ spack │ generic.local.bash │ None     │ None  │ None  │ Declare spack mirror                      │ /home/spack/buildtest/examples/spack/mirror_example.yml │
+│ add_mirror/27b75149              │ spack │ generic.local.bash │ None     │ None  │ None  │ Declare spack mirror                      │ /home/spack/buildtest/examples/spack/mirror_example.yml │
 ├──────────────────────────────────┼───────┼────────────────────┼──────────┼───────┼───────┼───────────────────────────────────────────┼─────────────────────────────────────────────────────────┤
-│ add_mirror_in_spack_env/e64f0f53 │ spack │ generic.local.bash │ None     │ None  │ None  │ Declare spack mirror in spack environment │ /home/spack/buildtest/examples/spack/mirror_example.yml │
+│ add_mirror_in_spack_env/3e70ca6e │ spack │ generic.local.bash │ None     │ None  │ None  │ Declare spack mirror in spack environment │ /home/spack/buildtest/examples/spack/mirror_example.yml │
 └──────────────────────────────────┴───────┴────────────────────┴──────────┴───────┴───────┴───────────────────────────────────────────┴─────────────────────────────────────────────────────────┘
 ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-add_mirror/35e4a593: Creating test directory: /home/spack/runs/generic.local.bash/mirror_example/add_mirror/35e4a593
-add_mirror/35e4a593: Creating the stage directory: /home/spack/runs/generic.local.bash/mirror_example/add_mirror/35e4a593/stage
-add_mirror/35e4a593: Writing build script: /home/spack/runs/generic.local.bash/mirror_example/add_mirror/35e4a593/add_mirror_build.sh
-add_mirror_in_spack_env/e64f0f53: Creating test directory: /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/e64f0f53
-add_mirror_in_spack_env/e64f0f53: Creating the stage directory: /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/e64f0f53/stage
-add_mirror_in_spack_env/e64f0f53: Writing build script: /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/e64f0f53/add_mirror_in_spack_env_build.sh
+add_mirror/27b75149: Creating Test Directory: /home/spack/runs/generic.local.bash/mirror_example/add_mirror/27b75149
+add_mirror_in_spack_env/3e70ca6e: Creating Test Directory: /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/3e70ca6e
 ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-Spawning 4 processes for processing builders
+Spawning 8 processes for processing builders
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
-add_mirror/35e4a593 does not have any dependencies adding test to queue
-add_mirror_in_spack_env/e64f0f53 does not have any dependencies adding test to queue
+add_mirror/27b75149 does not have any dependencies adding test to queue
+add_mirror_in_spack_env/3e70ca6e does not have any dependencies adding test to queue
       Builders Eligible to Run      
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Builder                          ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ add_mirror/35e4a593              │
-│ add_mirror_in_spack_env/e64f0f53 │
+│ add_mirror/27b75149              │
+│ add_mirror_in_spack_env/3e70ca6e │
 └──────────────────────────────────┘
-add_mirror/35e4a593: Current Working Directory : /home/spack/runs/generic.local.bash/mirror_example/add_mirror/35e4a593/stage
-add_mirror_in_spack_env/e64f0f53: Current Working Directory : /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/e64f0f53/stage
-add_mirror/35e4a593: Running Test via command: bash --norc --noprofile -eo pipefail add_mirror_build.sh
-add_mirror_in_spack_env/e64f0f53: Running Test via command: bash --norc --noprofile -eo pipefail add_mirror_in_spack_env_build.sh
-add_mirror/35e4a593: Test completed in 4.584834 seconds
-add_mirror/35e4a593: Test completed with returncode: 0
-add_mirror/35e4a593: Writing output file -  /home/spack/runs/generic.local.bash/mirror_example/add_mirror/35e4a593/add_mirror.out
-add_mirror/35e4a593: Writing error file - /home/spack/runs/generic.local.bash/mirror_example/add_mirror/35e4a593/add_mirror.err
-add_mirror_in_spack_env/e64f0f53: Test completed in 5.478039 seconds
-add_mirror_in_spack_env/e64f0f53: Test completed with returncode: 0
-add_mirror_in_spack_env/e64f0f53: Writing output file -  /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/e64f0f53/add_mirror_in_spack_env.out
-add_mirror_in_spack_env/e64f0f53: Writing error file - /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/e64f0f53/add_mirror_in_spack_env.err
-                                                          Test Summary                                                          
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-┃ builder                          ┃ executor           ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime  ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ add_mirror_in_spack_env/e64f0f53 │ generic.local.bash │ PASS   │ None None None                      │ 0          │ 5.478039 │
-├──────────────────────────────────┼────────────────────┼────────┼─────────────────────────────────────┼────────────┼──────────┤
-│ add_mirror/35e4a593              │ generic.local.bash │ PASS   │ None None None                      │ 0          │ 4.584834 │
-└──────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
+add_mirror/27b75149: Current Working Directory : /home/spack/runs/generic.local.bash/mirror_example/add_mirror/27b75149/stage
+add_mirror_in_spack_env/3e70ca6e: Current Working Directory : /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/3e70ca6e/stage
+add_mirror/27b75149: Running Test via command: bash add_mirror_build.sh
+add_mirror_in_spack_env/3e70ca6e: Running Test via command: bash add_mirror_in_spack_env_build.sh
+add_mirror_in_spack_env/3e70ca6e: failed to submit job with returncode: 1
+────────────────────────────────────────────────────────────────────────────────────────── Error Message for add_mirror_in_spack_env/3e70ca6e ──────────────────────────────────────────────────────────────────────────────────────────
+==> Error: 'spack_mirror': environment already exists at /home/spack/spack/var/spack/environments/spack_mirror
+
+add_mirror_in_spack_env/3e70ca6e: Detected failure in running test, will attempt to retry test: 1 times
+add_mirror_in_spack_env/3e70ca6e: Run - 1/1
+add_mirror_in_spack_env/3e70ca6e: Running Test via command: bash add_mirror_in_spack_env_build.sh
+add_mirror/27b75149: failed to submit job with returncode: 1
+──────────────────────────────────────────────────────────────────────────────────────────────── Error Message for add_mirror/27b75149 ─────────────────────────────────────────────────────────────────────────────────────────────────
+==> Error: Mirror with name spack_tutorial_mirror already exists.
+
+add_mirror/27b75149: Detected failure in running test, will attempt to retry test: 1 times
+add_mirror/27b75149: Run - 1/1
+add_mirror/27b75149: Running Test via command: bash add_mirror_build.sh
+add_mirror_in_spack_env/3e70ca6e: failed to submit job with returncode: 1
+add_mirror_in_spack_env/3e70ca6e: Test completed in 11.659582 seconds with returncode: 1
+add_mirror_in_spack_env/3e70ca6e: Writing output file -  /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/3e70ca6e/add_mirror_in_spack_env.out
+add_mirror_in_spack_env/3e70ca6e: Writing error file - /home/spack/runs/generic.local.bash/mirror_example/add_mirror_in_spack_env/3e70ca6e/add_mirror_in_spack_env.err
+add_mirror/27b75149: failed to submit job with returncode: 1
+add_mirror/27b75149: Test completed in 13.541891 seconds with returncode: 1
+add_mirror/27b75149: Writing output file -  /home/spack/runs/generic.local.bash/mirror_example/add_mirror/27b75149/add_mirror.out
+add_mirror/27b75149: Writing error file - /home/spack/runs/generic.local.bash/mirror_example/add_mirror/27b75149/add_mirror.err
+                                      Test Summary                                       
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
+┃ builder                          ┃ executor           ┃ status ┃ returncode ┃ runtime ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
+│ add_mirror_in_spack_env/3e70ca6e │ generic.local.bash │ FAIL   │ 1          │ 11.660  │
+├──────────────────────────────────┼────────────────────┼────────┼────────────┼─────────┤
+│ add_mirror/27b75149              │ generic.local.bash │ FAIL   │ 1          │ 13.542  │
+└──────────────────────────────────┴────────────────────┴────────┴────────────┴─────────┘
 
 
 
-Passed Tests: 2/2 Percentage: 100.000%
-Failed Tests: 0/2 Percentage: 0.000%
+Passed Tests: 0/2 Percentage: 0.000%
+Failed Tests: 2/2 Percentage: 100.000%
 
 
 Adding 2 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_qhv0czno.log
+Writing Logfile to /home/spack/buildtest/var/logs/buildtest_1wtruey2.log

@@ -2,13 +2,13 @@ $ buildtest build -b /home/spack/buildtest/examples/spack/e4s_testsuite_mpich.ym
 ╭────────────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────────╮                                                                                                       
 │                                                                                                                               │                                                                                                       
 │ User:               spack                                                                                                     │                                                                                                       
-│ Hostname:           651e70126b2d                                                                                              │                                                                                                       
+│ Hostname:           6a0291274cdd                                                                                              │                                                                                                       
 │ Platform:           Linux                                                                                                     │                                                                                                       
-│ Current Time:       2023/11/09 19:33:05                                                                                       │                                                                                                       
+│ Current Time:       2024/02/07 18:26:55                                                                                       │                                                                                                       
 │ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                       │                                                                                                       
-│ buildtest version:  1.6                                                                                                       │                                                                                                       
-│ python path:        /home/spack/pyenv/buildtest/bin/python3                                                                   │                                                                                                       
-│ python version:     3.8.6                                                                                                     │                                                                                                       
+│ buildtest version:  1.7                                                                                                       │                                                                                                       
+│ python path:        /home/spack/.pyenv/buildtest/bin/python3                                                                  │                                                                                                       
+│ python version:     3.11.6                                                                                                    │                                                                                                       
 │ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                              │                                                                                                       
 │ Test Directory:     /home/spack/runs                                                                                          │                                                                                                       
 │ Report File:        /home/spack/buildtest/var/report.json                                                                     │                                                                                                       
@@ -36,40 +36,56 @@ Total builder objects created: 1
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ builder                      ┃ type   ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                  ┃ buildspecs                                                   ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ mpich_e4s_testsuite/9fe06ac9 │ script │ generic.local.bash │ None     │ None  │ None  │ Run E4S Testsuite mpich test │ /home/spack/buildtest/examples/spack/e4s_testsuite_mpich.yml │
+│ mpich_e4s_testsuite/b74351e8 │ script │ generic.local.bash │ None     │ None  │ None  │ Run E4S Testsuite mpich test │ /home/spack/buildtest/examples/spack/e4s_testsuite_mpich.yml │
 └──────────────────────────────┴────────┴────────────────────┴──────────┴───────┴───────┴──────────────────────────────┴──────────────────────────────────────────────────────────────┘
 ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-mpich_e4s_testsuite/9fe06ac9: Creating test directory: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/9fe06ac9
-mpich_e4s_testsuite/9fe06ac9: Creating the stage directory: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/9fe06ac9/stage
-mpich_e4s_testsuite/9fe06ac9: Writing build script: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/9fe06ac9/mpich_e4s_testsuite_build.sh
+mpich_e4s_testsuite/b74351e8: Creating Test Directory: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/b74351e8
 ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-Spawning 4 processes for processing builders
+Spawning 8 processes for processing builders
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
-mpich_e4s_testsuite/9fe06ac9 does not have any dependencies adding test to queue
+mpich_e4s_testsuite/b74351e8 does not have any dependencies adding test to queue
     Builders Eligible to Run    
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Builder                      ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ mpich_e4s_testsuite/9fe06ac9 │
+│ mpich_e4s_testsuite/b74351e8 │
 └──────────────────────────────┘
-mpich_e4s_testsuite/9fe06ac9: Current Working Directory : /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/9fe06ac9/stage
-mpich_e4s_testsuite/9fe06ac9: Running Test via command: bash --norc --noprofile -eo pipefail mpich_e4s_testsuite_build.sh
-mpich_e4s_testsuite/9fe06ac9: Test completed in 36.236454 seconds
-mpich_e4s_testsuite/9fe06ac9: Test completed with returncode: 0
-mpich_e4s_testsuite/9fe06ac9: Writing output file -  /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/9fe06ac9/mpich_e4s_testsuite.out
-mpich_e4s_testsuite/9fe06ac9: Writing error file - /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/9fe06ac9/mpich_e4s_testsuite.err
-                                                        Test Summary                                                         
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━┓
-┃ builder                      ┃ executor           ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime   ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━┩
-│ mpich_e4s_testsuite/9fe06ac9 │ generic.local.bash │ PASS   │ None None None                      │ 0          │ 36.236454 │
-└──────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴───────────┘
+mpich_e4s_testsuite/b74351e8: Current Working Directory : /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/b74351e8/stage
+mpich_e4s_testsuite/b74351e8: Running Test via command: bash mpich_e4s_testsuite_build.sh
+mpich_e4s_testsuite/b74351e8: failed to submit job with returncode: 1
+──────────────────────────────────────────────────────────────────────────────────────────── Error Message for mpich_e4s_testsuite/b74351e8 ────────────────────────────────────────────────────────────────────────────────────────────
+Cloning into 'testsuite'...
+ mpich : cxezwh7
+ Cleaning /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/b74351e8/stage/testsuite/validation_tests/mpich
+ ---CLEANUP LOG---
+ rm -f *.o initfinalize sendrecv broadcast onesided
+ Compiling /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/b74351e8/stage/testsuite/validation_tests/mpich
+ ---COMPILE LOG---
+ Skipping load: Environment already setup
+ mpicc  -Wall -g -c initfinalize.c
+ /home/spack/spack-workspace/software/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/mpich-4.1.2-cxezwh7hyktdonzthd2nlfse7ekeqzwb/bin/mpicc: line 335: /usr/bin/gcc-12: No such file or directory
+ make: *** [Makefile:21: initfinalize.o] Error 127
+ Compile failed
+
+mpich_e4s_testsuite/b74351e8: Detected failure in running test, will attempt to retry test: 1 times
+mpich_e4s_testsuite/b74351e8: Run - 1/1
+mpich_e4s_testsuite/b74351e8: Running Test via command: bash mpich_e4s_testsuite_build.sh
+mpich_e4s_testsuite/b74351e8: failed to submit job with returncode: 128
+mpich_e4s_testsuite/b74351e8: Test completed in 67.487135 seconds with returncode: 128
+mpich_e4s_testsuite/b74351e8: Writing output file -  /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/b74351e8/mpich_e4s_testsuite.out
+mpich_e4s_testsuite/b74351e8: Writing error file - /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/b74351e8/mpich_e4s_testsuite.err
+                                    Test Summary                                     
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
+┃ builder                      ┃ executor           ┃ status ┃ returncode ┃ runtime ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
+│ mpich_e4s_testsuite/b74351e8 │ generic.local.bash │ FAIL   │ 128        │ 67.487  │
+└──────────────────────────────┴────────────────────┴────────┴────────────┴─────────┘
 
 
 
-Passed Tests: 1/1 Percentage: 100.000%
-Failed Tests: 0/1 Percentage: 0.000%
+Passed Tests: 0/1 Percentage: 0.000%
+Failed Tests: 1/1 Percentage: 100.000%
 
 
 Adding 1 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest__vugizls.log
+Writing Logfile to /home/spack/buildtest/var/logs/buildtest_c1qib9td.log

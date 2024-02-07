@@ -2,13 +2,13 @@ $ buildtest build -b /home/spack/buildtest/examples/spack/env_create_manifest.ym
 ╭────────────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────────╮                                                                                                       
 │                                                                                                                               │                                                                                                       
 │ User:               spack                                                                                                     │                                                                                                       
-│ Hostname:           651e70126b2d                                                                                              │                                                                                                       
+│ Hostname:           6a0291274cdd                                                                                              │                                                                                                       
 │ Platform:           Linux                                                                                                     │                                                                                                       
-│ Current Time:       2023/11/09 19:32:02                                                                                       │                                                                                                       
+│ Current Time:       2024/02/07 18:24:18                                                                                       │                                                                                                       
 │ buildtest path:     /home/spack/buildtest/bin/buildtest                                                                       │                                                                                                       
-│ buildtest version:  1.6                                                                                                       │                                                                                                       
-│ python path:        /home/spack/pyenv/buildtest/bin/python3                                                                   │                                                                                                       
-│ python version:     3.8.6                                                                                                     │                                                                                                       
+│ buildtest version:  1.7                                                                                                       │                                                                                                       
+│ python path:        /home/spack/.pyenv/buildtest/bin/python3                                                                  │                                                                                                       
+│ python version:     3.11.6                                                                                                    │                                                                                                       
 │ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                              │                                                                                                       
 │ Test Directory:     /home/spack/runs                                                                                          │                                                                                                       
 │ Report File:        /home/spack/buildtest/var/report.json                                                                     │                                                                                                       
@@ -36,34 +36,31 @@ Total builder objects created: 1
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ builder                                 ┃ type  ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                              ┃ buildspecs                                                   ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ spack_env_create_from_manifest/81a4e170 │ spack │ generic.local.bash │ None     │ None  │ None  │ Create spack environment from spack.yaml │ /home/spack/buildtest/examples/spack/env_create_manifest.yml │
+│ spack_env_create_from_manifest/18370bff │ spack │ generic.local.bash │ None     │ None  │ None  │ Create spack environment from spack.yaml │ /home/spack/buildtest/examples/spack/env_create_manifest.yml │
 └─────────────────────────────────────────┴───────┴────────────────────┴──────────┴───────┴───────┴──────────────────────────────────────────┴──────────────────────────────────────────────────────────────┘
 ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-spack_env_create_from_manifest/81a4e170: Creating test directory: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/81a4e170
-spack_env_create_from_manifest/81a4e170: Creating the stage directory: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/81a4e170/stage
-spack_env_create_from_manifest/81a4e170: Writing build script: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/81a4e170/spack_env_create_from_manifest_build.sh
+spack_env_create_from_manifest/18370bff: Creating Test Directory: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/18370bff
 ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-Spawning 4 processes for processing builders
+Spawning 8 processes for processing builders
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
-spack_env_create_from_manifest/81a4e170 does not have any dependencies adding test to queue
+spack_env_create_from_manifest/18370bff does not have any dependencies adding test to queue
          Builders Eligible to Run          
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Builder                                 ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ spack_env_create_from_manifest/81a4e170 │
+│ spack_env_create_from_manifest/18370bff │
 └─────────────────────────────────────────┘
-spack_env_create_from_manifest/81a4e170: Current Working Directory : /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/81a4e170/stage
-spack_env_create_from_manifest/81a4e170: Running Test via command: bash --norc --noprofile -eo pipefail spack_env_create_from_manifest_build.sh
-spack_env_create_from_manifest/81a4e170: Test completed in 5.436442 seconds
-spack_env_create_from_manifest/81a4e170: Test completed with returncode: 0
-spack_env_create_from_manifest/81a4e170: Writing output file -  /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/81a4e170/spack_env_create_from_manifest.out
-spack_env_create_from_manifest/81a4e170: Writing error file - /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/81a4e170/spack_env_create_from_manifest.err
-                                                             Test Summary                                                              
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━┓
-┃ builder                                 ┃ executor           ┃ status ┃ checks (ReturnCode, Regex, Runtime) ┃ returncode ┃ runtime  ┃
-┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━┩
-│ spack_env_create_from_manifest/81a4e170 │ generic.local.bash │ PASS   │ None None None                      │ 0          │ 5.436442 │
-└─────────────────────────────────────────┴────────────────────┴────────┴─────────────────────────────────────┴────────────┴──────────┘
+spack_env_create_from_manifest/18370bff: Current Working Directory : /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/18370bff/stage
+spack_env_create_from_manifest/18370bff: Running Test via command: bash spack_env_create_from_manifest_build.sh
+spack_env_create_from_manifest/18370bff: Test completed in 14.341888 seconds with returncode: 0
+spack_env_create_from_manifest/18370bff: Writing output file -  /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/18370bff/spack_env_create_from_manifest.out
+spack_env_create_from_manifest/18370bff: Writing error file - /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/18370bff/spack_env_create_from_manifest.err
+                                          Test Summary                                          
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
+┃ builder                                 ┃ executor           ┃ status ┃ returncode ┃ runtime ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
+│ spack_env_create_from_manifest/18370bff │ generic.local.bash │ PASS   │ 0          │ 14.342  │
+└─────────────────────────────────────────┴────────────────────┴────────┴────────────┴─────────┘
 
 
 
@@ -72,4 +69,4 @@ Failed Tests: 0/1 Percentage: 0.000%
 
 
 Adding 1 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to: /home/spack/buildtest/var/logs/buildtest_irbsnaf6.log
+Writing Logfile to /home/spack/buildtest/var/logs/buildtest_ro4_fu51.log
