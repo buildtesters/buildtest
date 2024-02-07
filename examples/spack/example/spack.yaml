@@ -1,9 +1,5 @@
 spack:
   view: false
-  concretization: separately
-  config:
-    install_tree:
-      root: $spack
   specs:
     - m4
     - zlib

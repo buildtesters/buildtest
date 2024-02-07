@@ -12,5 +12,5 @@ buildspecs:
       install:
         specs: ['zlib']
     post_cmds: |
-      spack location -i gcc@6.5.0
+      spack location -i gcc@12.3.0
       spack --version

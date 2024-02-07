@@ -8,11 +8,13 @@ buildspecs:
       root: $HOME/spack
       env:
         create:
+          remove_environment: true
           name: spack_test_example
         activate:
           name: spack_test_example
       install:
         specs: ['libxml2', 'libsigsegv']
+        option: "--add"
       test:
         remove_tests: true
         run:
@@ -20,3 +22,6 @@ buildspecs:
         results:
           option: '-l'
           specs: ['libxml2', 'libsigsegv']
+    post_cmds: |
+      spack env deactivate
+      spack env remove -y spack_test_example
