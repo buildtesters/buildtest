@@ -340,7 +340,7 @@ The profile can be configured with many other options supported by ``buildtest b
 Configuration properties like ``rebuild``, ``limit``, ``timeout`` are integer and must be positive numbers.
 
 .. code-block:: yaml
-    :emphasize-lines: 13-15
+   :emphasize-lines: 13-15
 
    profiles:
       profile-2:
