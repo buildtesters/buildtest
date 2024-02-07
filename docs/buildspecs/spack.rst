@@ -179,7 +179,7 @@ Let's take a look at the generated test, take note of the ``spack env deactivate
 We run ``spack env create``, followed by ``spack env deactivate`` and finally we activate the environment
 using ``spack env activate``.
 
-.. dropdown:: ``buildtest inspect query --testpath spack_env_deactivate_first``
+.. dropdown:: ``buildtest inspect query -t spack_env_deactivate_first``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/spack_env_deactivate.txt
 
@@ -424,6 +424,7 @@ Let's build this by running the following
     .. program-output:: cat buildtest_tutorial_examples/spack/build/spack_load.txt
 
 Let's take a look at the generated test, take note of the `spack load` command
-.. dropdown:: ``buildtest inspect query -t spack_load_example``
+
+.. dropdown:: ``buildtest inspect query -o -t spack_load_example``
 
     .. program-output:: cat buildtest_tutorial_examples/spack/inspect/spack_load.txt
