@@ -4,61 +4,50 @@ system:
     - .*
     description: Generic System
     moduletool: lmod
-    testdir: "~/runs"
-    pager: False
-
+    testdir: ~/runs
+    pager: false
     buildspecs:
-      rebuild: False
+      rebuild: false
       count: 15
-      format: "name,description"
-      terse: False
-      root: [$BUILDTEST_ROOT/examples]
-
+      format: name,description
+      terse: false
+      root:
+      - $BUILDTEST_ROOT/examples
     report:
       count: 25
-      #enable terse mode for report
-      terse: False
-      format: "name,id,state,runtime,returncode"
-
+      terse: false
+      format: name,id,state,runtime,returncode
     executors:
       local:
         bash:
           description: submit jobs on local machine using bash shell
           shell: bash
-          before_script: |
-            source /etc/profile
+          before_script: source /etc/profile
         sh:
           description: submit jobs on local machine using sh shell
           shell: sh
-          before_script: |
-              source /etc/profile
+          before_script: source /etc/profile
     compilers:
       find:
         gcc: ^(gcc)
       compiler:
         gcc:
-          gcc_7.5.0:
+          gcc_11.4.0:
             cc: /usr/bin/gcc
             fc: /usr/bin/gfortran
             cxx: /usr/bin/g++
-          clang_6.0.0:
+          clang_14.0.0:
             cc: /usr/bin/clang
             fc: None
             cxx: /usr/bin/clang++
-          gcc_6.5.0:
+          gcc/12.3.0-gcc-11.4.0:
             cc: gcc
-            fc: gfortran
             cxx: g++
+            fc: gfortran
             module:
               load:
-              - gcc/6.5.0-gcc-7.5.0
-          gcc_8.3.0:
-            cc: gcc
-            fc: gfortran
-            cxx: g++
-            module:
-              load:
-              - gcc/8.3.0-gcc-7.5.0
+              - gcc/12.3.0-gcc-11.4.0
+              purge: false
     cdash:
       url: https://my.cdash.org/
       project: buildtest
