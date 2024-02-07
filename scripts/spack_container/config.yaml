@@ -1,4 +1,2 @@
 config:
   build_stage: $HOME/spack-workspace/build_stage
-  install_tree:
-    root: /home/spack/spack-workspace/software
