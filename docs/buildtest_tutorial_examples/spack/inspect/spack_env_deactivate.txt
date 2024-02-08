@@ -1,19 +1,19 @@
 $ buildtest inspect query -t spack_env_deactivate_first 
-─────────────────────────────────────────────────────────────────────────────────── spack_env_deactivate_first/f0a81ff3-19aa-486f-be73-febad8048770 ────────────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────── spack_env_deactivate_first/8be22b89-4db1-438d-aac2-7138796bdbb3 ────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: deactivate a spack environment first prior to activating it
 State: PASS
 Returncode: 0
-Runtime: 13.820895 sec
-Starttime: 2024/02/07 18:24:52
-Endtime: 2024/02/07 18:25:06
+Runtime: 16.525284 sec
+Starttime: 2024/02/08 19:01:41
+Endtime: 2024/02/08 19:01:58
 Command: bash spack_env_deactivate_first_build.sh
-Test Script: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/f0a81ff3/spack_env_deactivate_first.sh
-Build Script: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/f0a81ff3/spack_env_deactivate_first_build.sh
-Output File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/f0a81ff3/spack_env_deactivate_first.out
-Error File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/f0a81ff3/spack_env_deactivate_first.err
-Log File: /home/spack/buildtest/var/logs/buildtest_68pdpnrd.log
-──────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/f0a81ff3/spack_env_deactivate_first.sh ─────────────────────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/spack_env_deactivate_first.sh
+Build Script: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/spack_env_deactivate_first_build.sh
+Output File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/spack_env_deactivate_first.out
+Error File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/spack_env_deactivate_first.err
+Log File: /home/spack/buildtest/var/logs/buildtest_sjwfw_5j.log
+──────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/spack_env_deactivate_first.sh ─────────────────────────────────────────────────
 #!/bin/bash                                                                                                                                                                                                                             
 set -eo pipefail                                                                                                                                                                                                                        
                                                                                                                                                                                                                                         

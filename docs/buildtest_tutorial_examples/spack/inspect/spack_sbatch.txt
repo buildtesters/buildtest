@@ -1,27 +1,27 @@
 $ buildtest inspect query -t spack_sbatch_example 
-────────────────────────────────────────────────────────────────────────────────────── spack_sbatch_example/389903b1-fb88-4c52-a63f-dfc2c3a62746 ───────────────────────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────────────── spack_sbatch_example/55266bd0-1e0d-4668-a3e5-c2f4548c3594 ───────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: sbatch directives can be defined in spack schema
 State: PASS
 Returncode: 0
-Runtime: 15.0174 sec
-Starttime: 2024/02/07 19:04:35
-Endtime: 2024/02/07 19:04:50
+Runtime: 20.449731 sec
+Starttime: 2024/02/08 19:03:18
+Endtime: 2024/02/08 19:03:38
 Command: bash spack_sbatch_example_build.sh
-Test Script: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/389903b1/spack_sbatch_example.sh
-Build Script: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/389903b1/spack_sbatch_example_build.sh
-Output File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/389903b1/spack_sbatch_example.out
-Error File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/389903b1/spack_sbatch_example.err
-Log File: /home/spack/buildtest/var/logs/buildtest_qzj_fx96.log
-────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/389903b1/spack_sbatch_example.sh ───────────────────────────────────────────────────────────
-#!/bin/bash
-#SBATCH -N 1
-#SBATCH -n 8
-#SBATCH -t 30
-#SBATCH --job-name=spack_sbatch_example
-#SBATCH --output=spack_sbatch_example.out
-#SBATCH --error=spack_sbatch_example.err
-set -eo pipefail
-source /home/spack/spack/share/spack/setup-env.sh
-spack install  zlib%clang
-spack install  zlib%gcc
+Test Script: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/55266bd0/spack_sbatch_example.sh
+Build Script: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/55266bd0/spack_sbatch_example_build.sh
+Output File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/55266bd0/spack_sbatch_example.out
+Error File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/55266bd0/spack_sbatch_example.err
+Log File: /home/spack/buildtest/var/logs/buildtest_ndy35mwi.log
+────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/55266bd0/spack_sbatch_example.sh ───────────────────────────────────────────────────────────
+#!/bin/bash                                                                                                                                                                                                                             
+#SBATCH -N 1                                                                                                                                                                                                                            
+#SBATCH -n 8                                                                                                                                                                                                                            
+#SBATCH -t 30                                                                                                                                                                                                                           
+#SBATCH --job-name=spack_sbatch_example                                                                                                                                                                                                 
+#SBATCH --output=spack_sbatch_example.out                                                                                                                                                                                               
+#SBATCH --error=spack_sbatch_example.err                                                                                                                                                                                                
+set -eo pipefail                                                                                                                                                                                                                        
+source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                                                                       
+spack install  zlib%clang                                                                                                                                                                                                               
+spack install  zlib%gcc                                                                                                                                                                                                                 

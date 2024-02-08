@@ -1,23 +1,33 @@
 $ buildtest inspect query -o -t install_specs_example 
-────────────────────────────────────────────────────────────────────────────────────── install_specs_example/e9df58e3-a86d-453c-9e48-342c0ac88062 ──────────────────────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────────────── install_specs_example/ff766e10-9de7-4dfb-a05b-a5ed70a58bce ──────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Install zlib from an existing spack instance
 State: PASS
 Returncode: 0
-Runtime: 11.198604 sec
-Starttime: 2024/02/07 18:23:27
-Endtime: 2024/02/07 18:23:38
+Runtime: 14.217752 sec
+Starttime: 2024/02/08 19:00:15
+Endtime: 2024/02/08 19:00:29
 Command: bash install_specs_example_build.sh
-Test Script: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/e9df58e3/install_specs_example.sh
-Build Script: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/e9df58e3/install_specs_example_build.sh
-Output File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/e9df58e3/install_specs_example.out
-Error File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/e9df58e3/install_specs_example.err
-Log File: /home/spack/buildtest/var/logs/buildtest_tqyrlb4m.log
-─────────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/e9df58e3/install_specs_example.out ────────────────────────────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/ff766e10/install_specs_example.sh
+Build Script: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/ff766e10/install_specs_example_build.sh
+Output File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/ff766e10/install_specs_example.out
+Error File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/ff766e10/install_specs_example.err
+Log File: /home/spack/buildtest/var/logs/buildtest_wl0yqxeh.log
+─────────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/ff766e10/install_specs_example.out ────────────────────────────────────────────────────────
 ==> Regenerating tcl module files                                                                                                                                                                                                       
-[+] /home/spack/spack-workspace/software/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/zlib-1.3-p6c6zbrub6hv5imwnruz4uty2u7y2nfq                                                                                                               
+[+] /home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/gmake-4.4.1-6qiak7nnzdxg4dik4mcwrwvy24bsovui                                                                                                                     
+==> Installing zlib-1.3-p6c6zbrub6hv5imwnruz4uty2u7y2nfq [2/2]                                                                                                                                                                          
+==> No binary for zlib-1.3-p6c6zbrub6hv5imwnruz4uty2u7y2nfq found: installing from source                                                                                                                                               
+==> Fetching https://mirror.spack.io/_source-cache/archive/ff/ff0ba4c292013dbc27530b3a81e1f9a813cd39de01ca5e0f8bf355702efa593e.tar.gz                                                                                                   
+==> No patches needed for zlib                                                                                                                                                                                                          
+==> zlib: Executing phase: 'edit'                                                                                                                                                                                                       
+==> zlib: Executing phase: 'build'                                                                                                                                                                                                      
+==> zlib: Executing phase: 'install'                                                                                                                                                                                                    
+==> zlib: Successfully installed zlib-1.3-p6c6zbrub6hv5imwnruz4uty2u7y2nfq                                                                                                                                                              
+  Stage: 0.45s.  Edit: 0.47s.  Build: 1.95s.  Install: 0.50s.  Post-install: 0.03s.  Total: 3.44s                                                                                                                                       
+[+] /home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/zlib-1.3-p6c6zbrub6hv5imwnruz4uty2u7y2nfq                                                                                                                        
                                                                                                                                                                                                                                         
-───────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/e9df58e3/install_specs_example.sh ─────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/install_specs/install_specs_example/ff766e10/install_specs_example.sh ─────────────────────────────────────────────────────────
 #!/bin/bash                                                                                                                                                                                                                             
 set -eo pipefail                                                                                                                                                                                                                        
 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                                                                       

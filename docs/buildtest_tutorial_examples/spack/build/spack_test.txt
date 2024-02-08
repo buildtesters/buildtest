@@ -2,12 +2,12 @@ $ buildtest build -b /home/spack/buildtest/examples/spack/spack_test.yml
 ╭───────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────╮                                                                                                                
 │                                                                                                                      │                                                                                                                
 │ User:               spack                                                                                            │                                                                                                                
-│ Hostname:           6a0291274cdd                                                                                     │                                                                                                                
+│ Hostname:           3220cd0ac8f6                                                                                     │                                                                                                                
 │ Platform:           Linux                                                                                            │                                                                                                                
-│ Current Time:       2024/02/07 18:25:50                                                                              │                                                                                                                
+│ Current Time:       2024/02/08 19:02:33                                                                              │                                                                                                                
 │ buildtest path:     /home/spack/buildtest/bin/buildtest                                                              │                                                                                                                
 │ buildtest version:  1.7                                                                                              │                                                                                                                
-│ python path:        /home/spack/.pyenv/buildtest/bin/python3                                                         │                                                                                                                
+│ python path:        /home/spack/pyenv/buildtest/bin/python3                                                          │                                                                                                                
 │ python version:     3.11.6                                                                                           │                                                                                                                
 │ Configuration File: /home/spack/buildtest/buildtest/settings/spack_container.yml                                     │                                                                                                                
 │ Test Directory:     /home/spack/runs                                                                                 │                                                                                                                
@@ -36,30 +36,30 @@ Total builder objects created: 1
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ builder                ┃ type  ┃ executor           ┃ compiler ┃ nodes ┃ procs ┃ description                                      ┃ buildspecs                                          ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ spack_test_m4/e0b9235a │ spack │ generic.local.bash │ None     │ None  │ None  │ Run spack test for m4 package and report results │ /home/spack/buildtest/examples/spack/spack_test.yml │
+│ spack_test_m4/1849512d │ spack │ generic.local.bash │ None     │ None  │ None  │ Run spack test for m4 package and report results │ /home/spack/buildtest/examples/spack/spack_test.yml │
 └────────────────────────┴───────┴────────────────────┴──────────┴───────┴───────┴──────────────────────────────────────────────────┴─────────────────────────────────────────────────────┘
 ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
-spack_test_m4/e0b9235a: Creating Test Directory: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/e0b9235a
+spack_test_m4/1849512d: Creating Test Directory: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/1849512d
 ──────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
 Spawning 8 processes for processing builders
 ───────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
-spack_test_m4/e0b9235a does not have any dependencies adding test to queue
+spack_test_m4/1849512d does not have any dependencies adding test to queue
  Builders Eligible to Run 
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Builder                ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━┩
-│ spack_test_m4/e0b9235a │
+│ spack_test_m4/1849512d │
 └────────────────────────┘
-spack_test_m4/e0b9235a: Current Working Directory : /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/e0b9235a/stage
-spack_test_m4/e0b9235a: Running Test via command: bash spack_test_m4_build.sh
-spack_test_m4/e0b9235a: Test completed in 8.418169 seconds with returncode: 0
-spack_test_m4/e0b9235a: Writing output file -  /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/e0b9235a/spack_test_m4.out
-spack_test_m4/e0b9235a: Writing error file - /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/e0b9235a/spack_test_m4.err
+spack_test_m4/1849512d: Current Working Directory : /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/1849512d/stage
+spack_test_m4/1849512d: Running Test via command: bash spack_test_m4_build.sh
+spack_test_m4/1849512d: Test completed in 7.837149 seconds with returncode: 0
+spack_test_m4/1849512d: Writing output file -  /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/1849512d/spack_test_m4.out
+spack_test_m4/1849512d: Writing error file - /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/1849512d/spack_test_m4.err
                                  Test Summary                                  
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
 ┃ builder                ┃ executor           ┃ status ┃ returncode ┃ runtime ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
-│ spack_test_m4/e0b9235a │ generic.local.bash │ PASS   │ 0          │ 8.418   │
+│ spack_test_m4/1849512d │ generic.local.bash │ PASS   │ 0          │ 7.837   │
 └────────────────────────┴────────────────────┴────────┴────────────┴─────────┘
 
 
@@ -69,4 +69,4 @@ Failed Tests: 0/1 Percentage: 0.000%
 
 
 Adding 1 test results to /home/spack/buildtest/var/report.json
-Writing Logfile to /home/spack/buildtest/var/logs/buildtest_3xrelhi_.log
+Writing Logfile to /home/spack/buildtest/var/logs/buildtest_gstxuuko.log

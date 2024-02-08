@@ -1,19 +1,19 @@
 $ buildtest inspect query -o -t spack_env_directory 
-─────────────────────────────────────────────────────────────────────────────────────── spack_env_directory/34edbd13-e8f5-4fc0-9b42-cffde94c4b12 ───────────────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────────── spack_env_directory/07168ffb-776f-440f-bf86-c1778408fc5d ───────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: create spack environment in directory
 State: PASS
 Returncode: 0
-Runtime: 17.645297 sec
-Starttime: 2024/02/07 18:23:59
-Endtime: 2024/02/07 18:24:16
+Runtime: 15.086919 sec
+Starttime: 2024/02/08 19:00:49
+Endtime: 2024/02/08 19:01:05
 Command: bash spack_env_directory_build.sh
-Test Script: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/34edbd13/spack_env_directory.sh
-Build Script: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/34edbd13/spack_env_directory_build.sh
-Output File: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/34edbd13/spack_env_directory.out
-Error File: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/34edbd13/spack_env_directory.err
-Log File: /home/spack/buildtest/var/logs/buildtest_1_1xb7qr.log
-────────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/34edbd13/spack_env_directory.out ──────────────────────────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/07168ffb/spack_env_directory.sh
+Build Script: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/07168ffb/spack_env_directory_build.sh
+Output File: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/07168ffb/spack_env_directory.out
+Error File: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/07168ffb/spack_env_directory.err
+Log File: /home/spack/buildtest/var/logs/buildtest_ph65mwi6.log
+────────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/07168ffb/spack_env_directory.out ──────────────────────────────────────────────────────
 ==> Regenerating tcl module files                                                                                                                                                                                                       
 ==> Created environment in /home/spack/spack-envs/m4                                                                                                                                                                                    
 ==> You can activate this environment with:                                                                                                                                                                                             
@@ -38,7 +38,7 @@ libiconv@1.17
 libsigsegv@2.14                                                                                                                                                                                                                         
 m4@1.4.19                                                                                                                                                                                                                               
                                                                                                                                                                                                                                         
-─────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/34edbd13/spack_env_directory.sh ────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/env_create_directory/spack_env_directory/07168ffb/spack_env_directory.sh ────────────────────────────────────────────────────────
 #!/bin/bash                                                                                                                                                                                                                             
 set -eo pipefail                                                                                                                                                                                                                        
 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                                                                       

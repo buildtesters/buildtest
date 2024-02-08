@@ -1,27 +1,27 @@
 $ buildtest inspect query -o -t clone_spack_automatically clone_spack_and_specify_root 
-──────────────────────────────────────────────────────────────────────────────────── clone_spack_automatically/d9ad095c-5893-4581-8cae-8703bd424b52 ────────────────────────────────────────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────────────────────── clone_spack_automatically/5f062c7c-fb7a-4376-b386-f9fe474d3b13 ────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Clone spack automatically
 State: PASS
 Returncode: 0
-Runtime: 42.001035 sec
-Starttime: 2024/02/07 18:28:05
-Endtime: 2024/02/07 18:28:47
+Runtime: 63.326133 sec
+Starttime: 2024/02/08 19:05:16
+Endtime: 2024/02/08 19:06:19
 Command: bash clone_spack_automatically_build.sh
-Test Script: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/d9ad095c/clone_spack_automatically.sh
-Build Script: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/d9ad095c/clone_spack_automatically_build.sh
-Output File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/d9ad095c/clone_spack_automatically.out
-Error File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/d9ad095c/clone_spack_automatically.err
-Log File: /home/spack/buildtest/var/logs/buildtest_i25v4lz2.log
-──────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/d9ad095c/clone_spack_automatically.out ─────────────────────────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/5f062c7c/clone_spack_automatically.sh
+Build Script: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/5f062c7c/clone_spack_automatically_build.sh
+Output File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/5f062c7c/clone_spack_automatically.out
+Error File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/5f062c7c/clone_spack_automatically.err
+Log File: /home/spack/buildtest/var/logs/buildtest_idqnwz4r.log
+──────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/5f062c7c/clone_spack_automatically.out ─────────────────────────────────────────────────────
 ==> Regenerating tcl module files                                                                                                                                                                                                       
-==> Created environment 'spack-develop' in /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/d9ad095c/stage/spack/var/spack/environments/spack-develop                                                          
+==> Created environment 'spack-develop' in /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/5f062c7c/stage/spack/var/spack/environments/spack-develop                                                          
 ==> You can activate this environment with:                                                                                                                                                                                             
 ==>   spack env activate spack-develop                                                                                                                                                                                                  
     spack-develop                                                                                                                                                                                                                       
-/home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/d9ad095c/stage/spack/bin/spack                                                                                                                                
+/home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/5f062c7c/stage/spack/bin/spack                                                                                                                                
                                                                                                                                                                                                                                         
-────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/d9ad095c/clone_spack_automatically.sh ──────────────────────────────────────────────────────
+────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_automatically/5f062c7c/clone_spack_automatically.sh ──────────────────────────────────────────────────────
 #!/bin/bash                                                                                                                                                                                                                             
 set -eo pipefail                                                                                                                                                                                                                        
 git clone https://github.com/spack/spack                                                                                                                                                                                                
@@ -36,24 +36,29 @@ which spack
 ######## END OF POST COMMANDS   ########                                                                                                                                                                                                
                                                                                                                                                                                                                                         
                                                                                                                                                                                                                                         
-────────────────────────────────────────────────────────────────────────────────── clone_spack_and_specify_root/419f8a2a-d9c0-4865-8285-30bb41ac3c90 ───────────────────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────────── clone_spack_and_specify_root/cbc530a3-df8c-4c29-97d8-01af9c238ddd ───────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Clone spack explicitly and specify root
-State: FAIL
-Returncode: 128
-Runtime: 13.832544 sec
-Starttime: 2024/02/07 18:28:05
-Endtime: 2024/02/07 18:28:19
+State: PASS
+Returncode: 0
+Runtime: 62.922582 sec
+Starttime: 2024/02/08 19:05:16
+Endtime: 2024/02/08 19:06:19
 Command: bash clone_spack_and_specify_root_build.sh
-Test Script: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/419f8a2a/clone_spack_and_specify_root.sh
-Build Script: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/419f8a2a/clone_spack_and_specify_root_build.sh
-Output File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/419f8a2a/clone_spack_and_specify_root.out
-Error File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/419f8a2a/clone_spack_and_specify_root.err
-Log File: /home/spack/buildtest/var/logs/buildtest_i25v4lz2.log
-───────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/419f8a2a/clone_spack_and_specify_root.out ──────────────────────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/cbc530a3/clone_spack_and_specify_root.sh
+Build Script: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/cbc530a3/clone_spack_and_specify_root_build.sh
+Output File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/cbc530a3/clone_spack_and_specify_root.out
+Error File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/cbc530a3/clone_spack_and_specify_root.err
+Log File: /home/spack/buildtest/var/logs/buildtest_idqnwz4r.log
+───────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/cbc530a3/clone_spack_and_specify_root.out ──────────────────────────────────────────────────
 ==> Regenerating tcl module files                                                                                                                                                                                                       
+==> Created environment 'e4s' in /tmp/spack-demo/var/spack/environments/e4s                                                                                                                                                             
+==> You can activate this environment with:                                                                                                                                                                                             
+==>   spack env activate e4s                                                                                                                                                                                                            
+    e4s                                                                                                                                                                                                                                 
+/tmp/spack-demo/bin/spack                                                                                                                                                                                                               
                                                                                                                                                                                                                                         
-─────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/419f8a2a/clone_spack_and_specify_root.sh ───────────────────────────────────────────────────
+─────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/clone_spack/clone_spack_and_specify_root/cbc530a3/clone_spack_and_specify_root.sh ───────────────────────────────────────────────────
 #!/bin/bash                                                                                                                                                                                                                             
 set -eo pipefail                                                                                                                                                                                                                        
                                                                                                                                                                                                                                         

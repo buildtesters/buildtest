@@ -1,35 +1,35 @@
 $ buildtest inspect query -o -t spack_test_m4 
-────────────────────────────────────────────────────────────────────────────────────────── spack_test_m4/e0b9235a-33bc-4de1-bc96-7ad9d3170d3d ──────────────────────────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────────────────── spack_test_m4/1849512d-59b0-4e60-bc3a-cd0815f55d7d ──────────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Run spack test for m4 package and report results
 State: PASS
 Returncode: 0
-Runtime: 8.418169 sec
-Starttime: 2024/02/07 18:25:50
-Endtime: 2024/02/07 18:25:58
+Runtime: 7.837149 sec
+Starttime: 2024/02/08 19:02:33
+Endtime: 2024/02/08 19:02:41
 Command: bash spack_test_m4_build.sh
-Test Script: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/e0b9235a/spack_test_m4.sh
-Build Script: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/e0b9235a/spack_test_m4_build.sh
-Output File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/e0b9235a/spack_test_m4.out
-Error File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/e0b9235a/spack_test_m4.err
-Log File: /home/spack/buildtest/var/logs/buildtest_3xrelhi_.log
-───────────────────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/e0b9235a/spack_test_m4.out ─────────────────────────────────────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/1849512d/spack_test_m4.sh
+Build Script: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/1849512d/spack_test_m4_build.sh
+Output File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/1849512d/spack_test_m4.out
+Error File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/1849512d/spack_test_m4.err
+Log File: /home/spack/buildtest/var/logs/buildtest_gstxuuko.log
+───────────────────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/1849512d/spack_test_m4.out ─────────────────────────────────────────────────────────────────
 ==> Regenerating tcl module files                                                                                                                                                                                                       
-==> Spack test d5cca518-cae4-42a7-b469-49ff50db60a5                                                                                                                                                                                     
+==> Spack test 2210f73d-1863-43d9-bd71-8dd5688b44b2                                                                                                                                                                                     
 ==> Testing package m4-1.4.19-jnv5nut                                                                                                                                                                                                   
 ==> Testing package m4-1.4.19-oebiztm                                                                                                                                                                                                   
 ============================= 2 passed of 2 specs ==============================                                                                                                                                                        
-==> Results for test suite 'd5cca518-cae4-42a7-b469-49ff50db60a5':                                                                                                                                                                      
+==> Results for test suite '2210f73d-1863-43d9-bd71-8dd5688b44b2':                                                                                                                                                                      
 ==> test specs:                                                                                                                                                                                                                         
 ==>   m4-1.4.19-jnv5nut PASSED                                                                                                                                                                                                          
 ==> Testing package m4-1.4.19-jnv5nut                                                                                                                                                                                                   
-==> [2024-02-07-18:25:57.469424] test: test_hello: ensure m4 hello example runs                                                                                                                                                         
-==> [2024-02-07-18:25:57.470075] '/home/spack/spack-workspace/software/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/m4-1.4.19-jnv5nut43juhm7esjn3tvxas6m67zbx4/bin/m4' '/home/spack/.spack/test/xybstjqlr32jnm2odd4jz4pj2mqbghtm/m4-1.4.19-jnv
+==> [2024-02-08-19:02:40.434974] test: test_hello: ensure m4 hello example runs                                                                                                                                                         
+==> [2024-02-08-19:02:40.435704] '/home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/m4-1.4.19-jnv5nut43juhm7esjn3tvxas6m67zbx4/bin/m4' '/home/spack/.spack/test/yo6e3tqenpu3iofea6nvc4l2i2sxbqw2/m4-1.4.19-jnv5nut/data
 // macro is defined                                                                                                                                                                                                                     
 Hello, World!                                                                                                                                                                                                                           
 PASSED: M4::test_hello                                                                                                                                                                                                                  
-==> [2024-02-07-18:25:57.472453] test: test_version: ensure m4 version matches installed spec                                                                                                                                           
-==> [2024-02-07-18:25:57.472738] '/home/spack/spack-workspace/software/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/m4-1.4.19-jnv5nut43juhm7esjn3tvxas6m67zbx4/bin/m4' '--version'                                                            
+==> [2024-02-08-19:02:40.439031] test: test_version: ensure m4 version matches installed spec                                                                                                                                           
+==> [2024-02-08-19:02:40.439449] '/home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-11.4.0/m4-1.4.19-jnv5nut43juhm7esjn3tvxas6m67zbx4/bin/m4' '--version'                                                                     
 m4 (GNU M4) 1.4.19                                                                                                                                                                                                                      
 Copyright (C) 2021 Free Software Foundation, Inc.                                                                                                                                                                                       
 License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.                                                                                                                                                         
@@ -37,21 +37,21 @@ This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.                                                                                                                                                                                   
 Written by Rene' Seindal.                                                                                                                                                                                                               
 PASSED: M4::test_version                                                                                                                                                                                                                
-==> [2024-02-07-18:25:57.474211] Completed testing                                                                                                                                                                                      
-==> [2024-02-07-18:25:57.474314]                                                                                                                                                                                                        
+==> [2024-02-08-19:02:40.441023] Completed testing                                                                                                                                                                                      
+==> [2024-02-08-19:02:40.441121]                                                                                                                                                                                                        
 ========================== SUMMARY: m4-1.4.19-jnv5nut ==========================                                                                                                                                                        
 M4::test_hello .. PASSED                                                                                                                                                                                                                
 M4::test_version .. PASSED                                                                                                                                                                                                              
 ============================= 2 passed of 2 parts ==============================                                                                                                                                                        
 ==>   m4-1.4.19-oebiztm PASSED                                                                                                                                                                                                          
 ==> Testing package m4-1.4.19-oebiztm                                                                                                                                                                                                   
-==> [2024-02-07-18:25:57.716881] test: test_hello: ensure m4 hello example runs                                                                                                                                                         
-==> [2024-02-07-18:25:57.717518] '/home/spack/spack-workspace/software/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/m4-1.4.19-oebiztml2dkrtmp4ghswfv7yvnskbzjz/bin/m4' '/home/spack/.spack/test/xybstjqlr32jnm2odd4jz4pj2mqbghtm/m4-1.4.19-oeb
+==> [2024-02-08-19:02:40.679533] test: test_hello: ensure m4 hello example runs                                                                                                                                                         
+==> [2024-02-08-19:02:40.680284] '/home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/m4-1.4.19-oebiztml2dkrtmp4ghswfv7yvnskbzjz/bin/m4' '/home/spack/.spack/test/yo6e3tqenpu3iofea6nvc4l2i2sxbqw2/m4-1.4.19-oebiztm/data
 // macro is defined                                                                                                                                                                                                                     
 Hello, World!                                                                                                                                                                                                                           
 PASSED: M4::test_hello                                                                                                                                                                                                                  
-==> [2024-02-07-18:25:57.719794] test: test_version: ensure m4 version matches installed spec                                                                                                                                           
-==> [2024-02-07-18:25:57.720112] '/home/spack/spack-workspace/software/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/m4-1.4.19-oebiztml2dkrtmp4ghswfv7yvnskbzjz/bin/m4' '--version'                                                            
+==> [2024-02-08-19:02:40.682415] test: test_version: ensure m4 version matches installed spec                                                                                                                                           
+==> [2024-02-08-19:02:40.682788] '/home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/m4-1.4.19-oebiztml2dkrtmp4ghswfv7yvnskbzjz/bin/m4' '--version'                                                                     
 m4 (GNU M4) 1.4.19                                                                                                                                                                                                                      
 Copyright (C) 2021 Free Software Foundation, Inc.                                                                                                                                                                                       
 License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.                                                                                                                                                         
@@ -59,17 +59,17 @@ This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.                                                                                                                                                                                   
 Written by Rene' Seindal.                                                                                                                                                                                                               
 PASSED: M4::test_version                                                                                                                                                                                                                
-==> [2024-02-07-18:25:57.721565] Completed testing                                                                                                                                                                                      
-==> [2024-02-07-18:25:57.721662]                                                                                                                                                                                                        
+==> [2024-02-08-19:02:40.685394] Completed testing                                                                                                                                                                                      
+==> [2024-02-08-19:02:40.685510]                                                                                                                                                                                                        
 ========================== SUMMARY: m4-1.4.19-oebiztm ==========================                                                                                                                                                        
 M4::test_hello .. PASSED                                                                                                                                                                                                                
 M4::test_version .. PASSED                                                                                                                                                                                                              
 ============================= 2 passed of 2 parts ==============================                                                                                                                                                        
 ============================= 2 passed of 2 specs ==============================                                                                                                                                                        
                                                                                                                                                                                                                                         
-────────────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/e0b9235a/spack_test_m4.sh ───────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_test/spack_test_m4/1849512d/spack_test_m4.sh ───────────────────────────────────────────────────────────────────
 #!/bin/bash                                                                                                                                                                                                                             
 set -eo pipefail                                                                                                                                                                                                                        
 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                                                                       
-spack test run --alias d5cca518-cae4-42a7-b469-49ff50db60a5 m4                                                                                                                                                                          
-spack test results -l d5cca518-cae4-42a7-b469-49ff50db60a5                                                                                                                                                                              
+spack test run --alias 2210f73d-1863-43d9-bd71-8dd5688b44b2 m4                                                                                                                                                                          
+spack test results -l 2210f73d-1863-43d9-bd71-8dd5688b44b2                                                                                                                                                                              

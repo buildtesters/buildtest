@@ -1,23 +1,29 @@
 $ buildtest inspect query -o -t spack_env_create_from_manifest 
-───────────────────────────────────────────────────────────────────────────────── spack_env_create_from_manifest/18370bff-8257-4c74-b6fd-72603a281e58 ──────────────────────────────────────────────────────────────────────────────────
+───────────────────────────────────────────────────────────────────────────────── spack_env_create_from_manifest/86840c2d-e556-46bc-a584-8efb9a7e0eb7 ──────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Create spack environment from spack.yaml
 State: PASS
 Returncode: 0
-Runtime: 14.341888 sec
-Starttime: 2024/02/07 18:24:18
-Endtime: 2024/02/07 18:24:32
+Runtime: 16.129629 sec
+Starttime: 2024/02/08 19:01:05
+Endtime: 2024/02/08 19:01:21
 Command: bash spack_env_create_from_manifest_build.sh
-Test Script: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/18370bff/spack_env_create_from_manifest.sh
-Build Script: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/18370bff/spack_env_create_from_manifest_build.sh
-Output File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/18370bff/spack_env_create_from_manifest.out
-Error File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/18370bff/spack_env_create_from_manifest.err
-Log File: /home/spack/buildtest/var/logs/buildtest_ro4_fu51.log
-─────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/18370bff/spack_env_create_from_manifest.out ────────────────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/86840c2d/spack_env_create_from_manifest.sh
+Build Script: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/86840c2d/spack_env_create_from_manifest_build.sh
+Output File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/86840c2d/spack_env_create_from_manifest.out
+Error File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/86840c2d/spack_env_create_from_manifest.err
+Log File: /home/spack/buildtest/var/logs/buildtest_wwt5j7y0.log
+─────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/86840c2d/spack_env_create_from_manifest.out ────────────────────────────────────────────
 ==> Regenerating tcl module files                                                                                                                                                                                                       
 ==> Created environment 'manifest_example' in /home/spack/spack/var/spack/environments/manifest_example                                                                                                                                 
 ==> You can activate this environment with:                                                                                                                                                                                             
 ==>   spack env activate manifest_example                                                                                                                                                                                               
+==> Concretized m4                                                                                                                                                                                                                      
+[+]  oebiztm  m4@1.4.19%gcc@12.3.0+sigsegv build_system=autotools patches=9dc5fbd,bfdffa7 arch=linux-ubuntu22.04-x86_64_v3                                                                                                              
+[+]  sbfcnap      ^diffutils@3.9%gcc@12.3.0 build_system=autotools arch=linux-ubuntu22.04-x86_64_v3                                                                                                                                     
+[+]  a34xpad          ^libiconv@1.17%gcc@12.3.0 build_system=autotools libs=shared,static arch=linux-ubuntu22.04-x86_64_v3                                                                                                              
+[+]  6qiak7n      ^gmake@4.4.1%gcc@12.3.0~guile build_system=generic arch=linux-ubuntu22.04-x86_64_v3                                                                                                                                   
+[+]  46vv5f3      ^libsigsegv@2.14%gcc@12.3.0 build_system=autotools arch=linux-ubuntu22.04-x86_64_v3                                                                                                                                   
 ==> Concretized zlib                                                                                                                                                                                                                    
 [+]  p6c6zbr  zlib@1.3%gcc@12.3.0+optimize+pic+shared build_system=makefile arch=linux-ubuntu22.04-x86_64_v3                                                                                                                            
 [+]  6qiak7n      ^gmake@4.4.1%gcc@12.3.0~guile build_system=generic arch=linux-ubuntu22.04-x86_64_v3                                                                                                                                   
@@ -51,15 +57,9 @@ Log File: /home/spack/buildtest/var/logs/buildtest_ro4_fu51.log
 [+]  oagevhm      ^util-linux-uuid@2.38.1%gcc@12.3.0 build_system=autotools arch=linux-ubuntu22.04-x86_64_v3                                                                                                                            
 [+]  taa3gkk      ^xz@5.4.1%gcc@12.3.0~pic build_system=autotools libs=shared,static arch=linux-ubuntu22.04-x86_64_v3                                                                                                                   
 [+]  p6c6zbr      ^zlib@1.3%gcc@12.3.0+optimize+pic+shared build_system=makefile arch=linux-ubuntu22.04-x86_64_v3                                                                                                                       
-==> Concretized m4                                                                                                                                                                                                                      
-[+]  oebiztm  m4@1.4.19%gcc@12.3.0+sigsegv build_system=autotools patches=9dc5fbd,bfdffa7 arch=linux-ubuntu22.04-x86_64_v3                                                                                                              
-[+]  sbfcnap      ^diffutils@3.9%gcc@12.3.0 build_system=autotools arch=linux-ubuntu22.04-x86_64_v3                                                                                                                                     
-[+]  a34xpad          ^libiconv@1.17%gcc@12.3.0 build_system=autotools libs=shared,static arch=linux-ubuntu22.04-x86_64_v3                                                                                                              
-[+]  6qiak7n      ^gmake@4.4.1%gcc@12.3.0~guile build_system=generic arch=linux-ubuntu22.04-x86_64_v3                                                                                                                                   
-[+]  46vv5f3      ^libsigsegv@2.14%gcc@12.3.0 build_system=autotools arch=linux-ubuntu22.04-x86_64_v3                                                                                                                                   
 ==> Successfully removed environment 'manifest_example'                                                                                                                                                                                 
                                                                                                                                                                                                                                         
-───────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/18370bff/spack_env_create_from_manifest.sh ─────────────────────────────────────────────
+───────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/env_create_manifest/spack_env_create_from_manifest/86840c2d/spack_env_create_from_manifest.sh ─────────────────────────────────────────────
 #!/bin/bash                                                                                                                                                                                                                             
 set -eo pipefail                                                                                                                                                                                                                        
 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                                                                       

@@ -1,35 +1,35 @@
 $ buildtest inspect query -o -e -t mpich_e4s_testsuite 
-─────────────────────────────────────────────────────────────────────────────────────── mpich_e4s_testsuite/b74351e8-62a8-4cab-8adb-e98c6e92f85f ───────────────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────────── mpich_e4s_testsuite/65404308-6a16-46f9-8303-7e5c342b7267 ───────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: Run E4S Testsuite mpich test
 State: FAIL
 Returncode: 128
-Runtime: 67.487135 sec
-Starttime: 2024/02/07 18:26:55
-Endtime: 2024/02/07 18:28:03
+Runtime: 95.156152 sec
+Starttime: 2024/02/08 19:03:40
+Endtime: 2024/02/08 19:05:15
 Command: bash mpich_e4s_testsuite_build.sh
-Test Script: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/b74351e8/mpich_e4s_testsuite.sh
-Build Script: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/b74351e8/mpich_e4s_testsuite_build.sh
-Output File: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/b74351e8/mpich_e4s_testsuite.out
-Error File: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/b74351e8/mpich_e4s_testsuite.err
-Log File: /home/spack/buildtest/var/logs/buildtest_c1qib9td.log
-────────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/b74351e8/mpich_e4s_testsuite.out ───────────────────────────────────────────────────────
+Test Script: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/65404308/mpich_e4s_testsuite.sh
+Build Script: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/65404308/mpich_e4s_testsuite_build.sh
+Output File: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/65404308/mpich_e4s_testsuite.out
+Error File: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/65404308/mpich_e4s_testsuite.err
+Log File: /home/spack/buildtest/var/logs/buildtest_ajfmzvnn.log
+────────────────────────────────────────────────────── Output File: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/65404308/mpich_e4s_testsuite.out ───────────────────────────────────────────────────────
 ==> Regenerating tcl module files                                                                                                                                                                                                       
-[+] /home/spack/spack-workspace/software/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/libpciaccess-0.17-el7pkf4hkksdm7uhvtpedjweizkqoxuf                                                                                                      
-[+] /home/spack/spack-workspace/software/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/libiconv-1.17-a34xpadbggu2vigcpojbsse76dtcghep                                                                                                          
-[+] /home/spack/spack-workspace/software/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/xz-5.4.1-taa3gkkomd2eitsh3cesvd5b4tznpekd                                                                                                               
-[+] /home/spack/spack-workspace/software/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/zlib-ng-2.1.4-draqwfyptyn4fteh6kh635ivtjp3r6ly                                                                                                          
-[+] /home/spack/spack-workspace/software/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/ncurses-6.4-glwymeeuk3yorf4dlwyll2w3nf5po27c                                                                                                            
-[+] /home/spack/spack-workspace/software/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/libfabric-1.19.0-46fsov7dodejcb3wdqhnugv4argyefrk                                                                                                       
-[+] /home/spack/spack-workspace/software/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/yaksa-0.3-hmywdkqlbecfoillw7d3ezj3ffrrsmdi                                                                                                              
-[+] /home/spack/spack-workspace/software/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/libxml2-2.10.3-damyeoscgt5gdqacxr2xv2ewplkequwl                                                                                                         
-[+] /home/spack/spack-workspace/software/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/hwloc-2.9.1-rvotk5aul6iynvdt2vcgx2dw7zz5mc6t                                                                                                            
-[+] /home/spack/spack-workspace/software/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/mpich-4.1.2-cxezwh7hyktdonzthd2nlfse7ekeqzwb                                                                                                            
+[+] /home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/libpciaccess-0.17-el7pkf4hkksdm7uhvtpedjweizkqoxuf                                                                                                               
+[+] /home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/libiconv-1.17-a34xpadbggu2vigcpojbsse76dtcghep                                                                                                                   
+[+] /home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/xz-5.4.1-taa3gkkomd2eitsh3cesvd5b4tznpekd                                                                                                                        
+[+] /home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/zlib-ng-2.1.4-draqwfyptyn4fteh6kh635ivtjp3r6ly                                                                                                                   
+[+] /home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/ncurses-6.4-glwymeeuk3yorf4dlwyll2w3nf5po27c                                                                                                                     
+[+] /home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/libfabric-1.19.0-46fsov7dodejcb3wdqhnugv4argyefrk                                                                                                                
+[+] /home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/yaksa-0.3-hmywdkqlbecfoillw7d3ezj3ffrrsmdi                                                                                                                       
+[+] /home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/libxml2-2.10.3-damyeoscgt5gdqacxr2xv2ewplkequwl                                                                                                                  
+[+] /home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/hwloc-2.9.1-rvotk5aul6iynvdt2vcgx2dw7zz5mc6t                                                                                                                     
+[+] /home/spack/spack/opt/spack/linux-ubuntu22.04-x86_64_v3/gcc-12.3.0/mpich-4.1.2-cxezwh7hyktdonzthd2nlfse7ekeqzwb                                                                                                                     
                                                                                                                                                                                                                                         
-─────────────────────────────────────────────────────── Error File: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/b74351e8/mpich_e4s_testsuite.err ───────────────────────────────────────────────────────
+─────────────────────────────────────────────────────── Error File: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/65404308/mpich_e4s_testsuite.err ───────────────────────────────────────────────────────
 fatal: destination path 'testsuite' already exists and is not an empty directory.                                                                                                                                                       
                                                                                                                                                                                                                                         
-──────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/b74351e8/mpich_e4s_testsuite.sh ────────────────────────────────────────────────────────
+──────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/e4s_testsuite_mpich/mpich_e4s_testsuite/65404308/mpich_e4s_testsuite.sh ────────────────────────────────────────────────────────
 #!/usr/bin/bash                                                                                                                                                                                                                         
 set -eo pipefail                                                                                                                                                                                                                        
 # Content of run section                                                                                                                                                                                                                
