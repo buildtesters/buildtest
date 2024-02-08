@@ -31,6 +31,6 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          tags: ghcr.io/buildtesters/buildtest_spack:latest
+          tags: ghcr.io/buildtesters/buildtest_spack:spack-sc23
           context: scripts/spack_container
           push: true

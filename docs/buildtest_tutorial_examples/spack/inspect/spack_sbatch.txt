@@ -1,19 +1,19 @@
 $ buildtest inspect query -t spack_sbatch_example 
-────────────────────────────────────────────────────────────────────────────────────── spack_sbatch_example/aafe1ef8-127b-4819-b3ce-8b59ea42d0bf ───────────────────────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────────────── spack_sbatch_example/55266bd0-1e0d-4668-a3e5-c2f4548c3594 ───────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: sbatch directives can be defined in spack schema
 State: PASS
 Returncode: 0
-Runtime: 6.875001 sec
-Starttime: 2023/11/09 19:32:58
-Endtime: 2023/11/09 19:33:05
-Command: bash --norc --noprofile -eo pipefail spack_sbatch_example_build.sh
-Test Script: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/aafe1ef8/spack_sbatch_example.sh
-Build Script: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/aafe1ef8/spack_sbatch_example_build.sh
-Output File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/aafe1ef8/spack_sbatch_example.out
-Error File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/aafe1ef8/spack_sbatch_example.err
-Log File: /home/spack/buildtest/var/logs/buildtest_a4_i7rif.log
-────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/aafe1ef8/spack_sbatch_example.sh ───────────────────────────────────────────────────────────
+Runtime: 20.449731 sec
+Starttime: 2024/02/08 19:03:18
+Endtime: 2024/02/08 19:03:38
+Command: bash spack_sbatch_example_build.sh
+Test Script: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/55266bd0/spack_sbatch_example.sh
+Build Script: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/55266bd0/spack_sbatch_example_build.sh
+Output File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/55266bd0/spack_sbatch_example.out
+Error File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/55266bd0/spack_sbatch_example.err
+Log File: /home/spack/buildtest/var/logs/buildtest_ndy35mwi.log
+────────────────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_sbatch/spack_sbatch_example/55266bd0/spack_sbatch_example.sh ───────────────────────────────────────────────────────────
 #!/bin/bash                                                                                                                                                                                                                             
 #SBATCH -N 1                                                                                                                                                                                                                            
 #SBATCH -n 8                                                                                                                                                                                                                            
@@ -23,5 +23,5 @@ Log File: /home/spack/buildtest/var/logs/buildtest_a4_i7rif.log
 #SBATCH --error=spack_sbatch_example.err                                                                                                                                                                                                
 set -eo pipefail                                                                                                                                                                                                                        
 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                                                                       
-spack install  zlib@1.2.11%clang                                                                                                                                                                                                        
-spack install  zlib@1.2.8%clang                                                                                                                                                                                                         
+spack install  zlib%clang                                                                                                                                                                                                               
+spack install  zlib%gcc                                                                                                                                                                                                                 

@@ -1,24 +1,32 @@
 $ buildtest inspect query -t spack_env_deactivate_first 
-─────────────────────────────────────────────────────────────────────────────────── spack_env_deactivate_first/7bd8837f-526f-4a9d-8265-63f487f63cb9 ────────────────────────────────────────────────────────────────────────────────────
+─────────────────────────────────────────────────────────────────────────────────── spack_env_deactivate_first/8be22b89-4db1-438d-aac2-7138796bdbb3 ────────────────────────────────────────────────────────────────────────────────────
 Executor: generic.local.bash
 Description: deactivate a spack environment first prior to activating it
 State: PASS
 Returncode: 0
-Runtime: 5.784292 sec
-Starttime: 2023/11/09 19:32:17
-Endtime: 2023/11/09 19:32:23
-Command: bash --norc --noprofile -eo pipefail spack_env_deactivate_first_build.sh
-Test Script: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/7bd8837f/spack_env_deactivate_first.sh
-Build Script: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/7bd8837f/spack_env_deactivate_first_build.sh
-Output File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/7bd8837f/spack_env_deactivate_first.out
-Error File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/7bd8837f/spack_env_deactivate_first.err
-Log File: /home/spack/buildtest/var/logs/buildtest_h8i_5bbr.log
-──────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/7bd8837f/spack_env_deactivate_first.sh ─────────────────────────────────────────────────
+Runtime: 16.525284 sec
+Starttime: 2024/02/08 19:01:41
+Endtime: 2024/02/08 19:01:58
+Command: bash spack_env_deactivate_first_build.sh
+Test Script: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/spack_env_deactivate_first.sh
+Build Script: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/spack_env_deactivate_first_build.sh
+Output File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/spack_env_deactivate_first.out
+Error File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/spack_env_deactivate_first.err
+Log File: /home/spack/buildtest/var/logs/buildtest_sjwfw_5j.log
+──────────────────────────────────────────────── Test File: /home/spack/runs/generic.local.bash/spack_env_deactivate/spack_env_deactivate_first/8be22b89/spack_env_deactivate_first.sh ─────────────────────────────────────────────────
 #!/bin/bash                                                                                                                                                                                                                             
 set -eo pipefail                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                        
+######## START OF PRE COMMANDS ########                                                                                                                                                                                                 
+rm -rf $HOME/spack-envs/m4                                                                                                                                                                                                              
+                                                                                                                                                                                                                                        
+######## END OF PRE COMMANDS   ########                                                                                                                                                                                                 
+                                                                                                                                                                                                                                        
+                                                                                                                                                                                                                                        
 source /home/spack/spack/share/spack/setup-env.sh                                                                                                                                                                                       
 spack env create  -d /home/spack/spack-envs/m4                                                                                                                                                                                          
-spack env deactivate                                                                                                                                                                                                                    
+spack env deactivate || true                                                                                                                                                                                                            
 spack env activate  -d /home/spack/spack-envs/m4                                                                                                                                                                                        
 spack add m4                                                                                                                                                                                                                            
 spack install                                                                                                                                                                                                                           
