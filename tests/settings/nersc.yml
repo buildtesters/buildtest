@@ -69,8 +69,6 @@ system:
       count: 25
       terse: False
       format: "name,id,state,runtime,returncode"
-      latest: False
-      oldest: False
     compilers:
       enable_prgenv: true
       prgenv_modules:
