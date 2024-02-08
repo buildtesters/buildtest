@@ -1,7 +1,7 @@
 system:
   jlse:
-    hostnames:
-    - jlse*
+    # hostnames on JLSE where jobs are run are jlsebatch[1-2]
+    hostnames: ['^jlsebatch/d{1}$']
     moduletool: environment-modules
     poolsize: 8
     max_jobs: 10
