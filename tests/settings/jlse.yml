@@ -1,7 +1,7 @@
 system:
   jlse:
     hostnames:
-    - jlselogin*
+    - jlse*
     moduletool: environment-modules
     poolsize: 8
     max_jobs: 10
