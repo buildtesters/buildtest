@@ -145,7 +145,7 @@ class SiteConfiguration:
         self._executor_check()
 
         if (
-            self.target_config.get("moduletool") != "none"
+            moduletool is not None
             and self.target_config.get("moduletool") != moduletool
         ):
             raise ConfigurationError(
