@@ -88,7 +88,7 @@ class CobaltJob(Job):
         if job_state:
             self._state = job_state
 
-        logger.debug(f"Job ID: '{self.job}' Job State: {self._state}")
+        logger.debug(f"Job ID: '{self.jobid}' Job State: {self._state}")
 
     def gather(self):
         """Gather Job state by running **qstat -lf <jobid>** which retrieves all fields.
