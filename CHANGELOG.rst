@@ -1,6 +1,24 @@
 CHANGELOG
 =========
 
+v1.8
+----
+
+**Major Changes**
+
+- Add support for container executors in buildtest configuration to allow one to run tests in a container. `#1695 <https://github.com/buildtesters/buildtest/pull/1695>`_
+- Build new spack container for spack tutorial `#1700 <https://github.com/buildtesters/buildtest/pull/1700>`_
+- Remove support for compiler schema from buildtest and all references from documentation and example tests `#1686 <https://github.com/buildtesters/buildtest/pull/1686>`_
+
+**General Improvements**
+
+- Remove `latest` and `oldest` keywords from buildtest configuration `#1673 <https://github.com/buildtesters/buildtest/pull/1673>`_
+- Add GitHub workflow for command line tutorial `#1663 <https://github.com/buildtesters/buildtest/pull/1663>`_
+- Trigger regression test when `pyproject.toml` or `requirements.txt` file is changed `#1687 <https://github.com/buildtesters/buildtest/pull/1687>`_
+- Rewrite documentation for Configuring Buildtest `#1696 <https://github.com/buildtesters/buildtest/pull/1696>`_
+- Remove jsonschema documentation workflow used for publishing schemas to github pages posted on branch `gh-pages` `#1682 <https://github.com/buildtesters/buildtest/pull/1682>`_. This change meant we removed all content from `gh-pages` branch in `#1683 <https://github.com/buildtesters/buildtest/pull/1683>`_.
+- Add compilation examples using script schema `#1692 <https://github.com/buildtesters/buildtest/pull/1692>`_
+
 v1.7 (Nov 12th, 2023)
 ----------------------
 
