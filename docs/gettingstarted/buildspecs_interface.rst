@@ -92,9 +92,23 @@ or pass them via command line.
 buildtest will search buildspecs in :ref:`buildspecs root <buildspec_roots>` defined in your configuration,
 which is a list of directory paths to search for buildspecs.
 If you want to load buildspecs from a directory path, you can specify a directory
-via ``--root`` option in the format: ``buildtest buildspec find --root <path> --rebuild``.
-buildtest will load all valid buildspecs into cache and ignore
-the rest. It's important to add ``--rebuild`` if you want to regenerate buildspec cache.
+via ``--root`` option in the format: ``buildtest buildspec find --root <path>``.
+buildtest will rebuild cache when `--root` option is specified. Note that to rebuild cache you typically
+need to pass `--rebuild` option but that is not required when using `--root` option because we want
+buildtest to load buildspecs into cache.
+
+The `--root` option must be path to a directory, if you specify a file path, buildtest will report an error message
+
+.. dropdown:: ``buildtest buildspec find --root $BUILDTEST_ROOT/README.rst``
+   :color: warning
+
+    .. command-output:: buildtest buildspec find --root $BUILDTEST_ROOT/README.rst
+       :returncode: 1
+
+Let's rebuild the cache again by running ``buildtest buildspec find`` which will load the default buildspecs into the cache and suppress
+the output
+
+.. command-output:: buildtest buildspec find --rebuild --quiet
 
 Filtering buildspec
 ~~~~~~~~~~~~~~~~~~~~
