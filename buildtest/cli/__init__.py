@@ -1302,10 +1302,12 @@ class BuildTestParser:
             },
             {
                 "name": "profiles",
+                "aliases": ["prof"],
                 "help": "Query profile from buildtest configuration",
                 "subcommands": [
                     {
                         "name": "list",
+                        "aliases": ["ls"],
                         "help": "List all profiles",
                         "parents": [self.parent_parser["theme"]],
                         "arguments": [
@@ -1341,6 +1343,7 @@ class BuildTestParser:
                 "subcommands": [
                     {
                         "name": "list",
+                        "aliases": ["ls"],
                         "help": "List all executors",
                         "mutually_exclusive_group": True,
                         "arguments": [
@@ -1604,7 +1607,7 @@ class BuildTestParser:
 
         subcommands = [
             ("clear", ["c"], "Remove all report files"),
-            ("list", ["l"], "List all report files"),
+            ("list", ["ls"], "List all report files"),
             ("path", ["p"], "Print full path to the report file being used"),
             ("summary", ["sm"], "Summarize test report"),
         ]
@@ -1734,7 +1737,7 @@ class BuildTestParser:
                 ],
             },
             "list": {
-                "aliases": ["l"],
+                "aliases": ["ls"],
                 "help": "List all test names, ids, and corresponding buildspecs",
                 "parents": [
                     self.parent_parser["pager"],

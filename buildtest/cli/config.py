@@ -25,8 +25,8 @@ def config_cmd(args, configuration, editor, system):
     if args.config in ["view", "v"]:
         view_configuration(configuration, theme=args.theme, pager=args.pager)
 
-    elif args.config in ["profiles"]:
-        if args.profiles == "list":
+    elif args.config in ["profiles", "prof"]:
+        if args.profiles in ["list", "ls"]:
             list_profiles(configuration, theme=args.theme, print_yaml=args.yaml)
 
         if args.profiles in ["remove", "rm"]:
@@ -34,7 +34,7 @@ def config_cmd(args, configuration, editor, system):
 
     elif args.config in ["executors", "ex"]:
         buildexecutor = BuildExecutor(configuration)
-        if args.executors == "list":
+        if args.executors in ["list", "ls"]:
             view_executors(
                 configuration=configuration,
                 buildexecutor=buildexecutor,
