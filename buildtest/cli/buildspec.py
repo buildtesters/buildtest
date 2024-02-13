@@ -114,6 +114,10 @@ class BuildspecCache:
         self.rebuild = rebuild or self.configuration.target_config["buildspecs"].get(
             "rebuild"
         )
+        # if --roots is specified we set rebuild to True
+        if self.roots:
+            self.rebuild = True
+
         self.cache = {}
 
         self.load_paths()
