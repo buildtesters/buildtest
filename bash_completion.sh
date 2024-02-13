@@ -245,7 +245,7 @@ _buildtest ()
     report|rt)
       local opts="--detailed --end --fail --filter --filterfields --format --formatfields --help --helpfilter --helpformat --latest --no-header --oldest --pager --pass --row-count --start --terse -d -e -f -h -n -p -s -t"
       local cmds="clear list path summary"
-      local aliases="c l p sm"
+      local aliases="c ls p sm"
       COMPREPLY=( $( compgen -W "${cmds} ${aliases}" -- "${cur}" ) )
 
       if [[ $cur == -* ]] ; then
@@ -307,10 +307,10 @@ _buildtest ()
           esac
           ;;
         executors|ex)
-          local cmds="list rm remove"
+          local cmds="list ls rm remove"
 
           case ${COMP_WORDS[3+offset]} in
-              list)
+              list|ls)
                   local opts="--help --all --disabled --invalid --json --yaml -a -d -h -i -j -y"
                   COMPREPLY=( $( compgen -W "$opts" -- "${cur}" ) )
                   ;;
@@ -334,10 +334,10 @@ _buildtest ()
             ;;
           esac
         ;;
-        profiles)
+        profiles|prof)
           local opts="--help -h"
           local cmds="list remove"
-          local aliases="rm"
+          local aliases="ls rm"
           COMPREPLY=( $( compgen -W "${cmds} ${aliases}" -- "${cur}" ) )
           if [[ $cur == -* ]] ; then
             COMPREPLY=( $( compgen -W "$opts" -- "${cur}" ) )
@@ -347,7 +347,7 @@ _buildtest ()
             remove|rm)
               COMPREPLY=( $( compgen -W "$(_avail_profiles)" -- "${cur}" ) )
               ;;
-            list)
+            list|ls)
               local opts="--json --theme --yaml -j -y"
               COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
               ;;
@@ -359,12 +359,12 @@ _buildtest ()
         esac
       ;;
     inspect|it)
-      local cmds="--help -h b buildspec l list n name q query"
+      local cmds="--help -h b buildspec ls list n name q query"
       COMPREPLY=( $( compgen -W "${cmds}" -- "${cur}" ) )
 
       # case statement to handle completion for buildtest inspect [name|id|list] command
       case "${COMP_WORDS[2+offset]}" in
-        list|l)
+        list|ls)
           local opts="--builder --help --no-header --pager --row-count --terse -b -h -n"
           COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) );;
         name|n)

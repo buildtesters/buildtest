@@ -250,7 +250,7 @@ def main():
     # running buildtest inspect
     elif args.subcommands in ["inspect", "it"]:
         report = Report(configuration=configuration, report_file=report_file)
-        if args.inspect in ["list", "l"]:
+        if args.inspect in ["list", "ls"]:
             inspect_list(
                 report,
                 terse=args.terse,

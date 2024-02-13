@@ -842,7 +842,7 @@ def report_cmd(args, configuration, report_file=None):
         clear_report()
         return
 
-    if args.report_subcommand in ["list", "l"]:
+    if args.report_subcommand in ["list", "ls"]:
         list_report()
         return
 
