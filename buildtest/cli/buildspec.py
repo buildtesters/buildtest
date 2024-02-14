@@ -98,7 +98,9 @@ class BuildspecCache:
         self.row_count = row_count
 
         # if --root is not specified we set to empty list instead of None
-        self.roots = roots or []
+        self.roots = (
+            roots or self.configuration.target_config["buildspecs"].get("root") or []
+        )
 
         # list of buildspec directories to search for .yml files
         self.paths = []
@@ -114,6 +116,10 @@ class BuildspecCache:
         self.rebuild = rebuild or self.configuration.target_config["buildspecs"].get(
             "rebuild"
         )
+        # if --root is specified we set rebuild to True
+        if self.roots:
+            self.rebuild = True
+
         self.cache = {}
 
         self.load_paths()
@@ -136,13 +142,6 @@ class BuildspecCache:
         `tutorials <https://github.com/buildtesters/buildtest/tree/devel/tutorials>`_
         and `general_tests <https://github.com/buildtesters/buildtest/tree/devel/general_tests>`_ directory.
         """
-
-        buildspec_paths = (
-            self.configuration.target_config["buildspecs"].get("root") or []
-        )
-
-        if buildspec_paths:
-            self.roots += buildspec_paths
 
         # if no roots specified we load the default buildspec roots.
         if not self.roots:

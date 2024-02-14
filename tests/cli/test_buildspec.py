@@ -353,16 +353,17 @@ def test_buildspec_find_roots():
         os.path.join(BUILDTEST_ROOT, "tutorials"),
     ]
     # buildtest buildspec find --root $BUILDTEST_ROOT/tests/buildsystem --root $BUILDTEST_ROOT/tutorials
-    BuildspecCache(roots=root_buildspecs, configuration=configuration)
+    BuildspecCache(roots=root_buildspecs, configuration=configuration, rebuild=False)
 
-    # buildtest buildspec find --root $BUILDTEST_ROOT/README.rst --root $BUILDTEST_ROOT/environment.yml
-    BuildspecCache(
-        roots=[
-            os.path.join(BUILDTEST_ROOT, "README.rst"),
-            os.path.join(BUILDTEST_ROOT, "tutorials", "environment.yml"),
-        ],
-        configuration=configuration,
-    )
+    with pytest.raises(BuildTestError):
+        # buildtest buildspec find --root $BUILDTEST_ROOT/README.rst --root $BUILDTEST_ROOT/environment.yml
+        BuildspecCache(
+            roots=[
+                os.path.join(BUILDTEST_ROOT, "README.rst"),
+                os.path.join(BUILDTEST_ROOT, "tutorials", "environment.yml"),
+            ],
+            configuration=configuration,
+        )
 
 
 @pytest.mark.cli
