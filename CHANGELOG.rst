@@ -1,6 +1,26 @@
 CHANGELOG
 =========
 
+v1.8 (Feb 14th, 2024)
+----------------------
+
+**Major Changes**
+
+- Add support for container executors in buildtest configuration to allow one to run tests in a container. `#1695 <https://github.com/buildtesters/buildtest/pull/1695>`_
+- Build new spack container for spack tutorial `#1700 <https://github.com/buildtesters/buildtest/pull/1700>`_
+- Remove support for compiler schema from buildtest and all references from documentation and example tests `#1686 <https://github.com/buildtesters/buildtest/pull/1686>`_
+
+**General Improvements**
+
+- Add command aliases for commands **buildtest config executors list**, **buildtest config profiles list**, **buildtest config profiles**, **buildtest inspect list**, **buildtest report list**. The command aliases are: **buildtest config executors ls**, **buildtest config profiles ls**, **buildtest inspect ls**, **buildtest report ls**, **buildtest config prof**. `#1705 <https://github.com/buildtesters/buildtest/pull/1705/>`_
+- The command ``buildtest buildspec find --root`` will rebuild buildspec cache, when ``--root`` option is specified. Previously ``--rebuild`` option was required to rebuild cache which didn't make sense when ``--root`` option was specified. When ``root`` option is specified in configuration file and ``--root`` option is used, buildtest will use the command line option. Previously, buildtest would append both values into list. `#1706 <https://github.com/buildtesters/buildtest/pull/1706>`_
+- Remove `latest` and `oldest` keywords from buildtest configuration `#1673 <https://github.com/buildtesters/buildtest/pull/1673>`_
+- Add GitHub workflow for command line tutorial `#1663 <https://github.com/buildtesters/buildtest/pull/1663>`_
+- Trigger regression test when `pyproject.toml` or `requirements.txt` file is changed `#1687 <https://github.com/buildtesters/buildtest/pull/1687>`_
+- Rewrite documentation for Configuring Buildtest `#1696 <https://github.com/buildtesters/buildtest/pull/1696>`_
+- Remove jsonschema documentation workflow used for publishing schemas to github pages posted on branch `gh-pages` `#1682 <https://github.com/buildtesters/buildtest/pull/1682>`_. This change meant we removed all content from `gh-pages` branch in `#1683 <https://github.com/buildtesters/buildtest/pull/1683>`_.
+- Add compilation examples using script schema `#1692 <https://github.com/buildtesters/buildtest/pull/1692>`_
+
 v1.7 (Nov 12th, 2023)
 ----------------------
 
