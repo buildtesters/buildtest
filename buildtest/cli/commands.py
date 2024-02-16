@@ -9,7 +9,7 @@ def list_buildtest_commands(with_aliases=None):
     """
 
     cmds = BuildTestParser()
-    subcmds = sorted(cmds.buildtest_subcommands)
+    subcmds = sorted(cmds.get_subcommands())
 
     # if --with-aliases we will show all available choices for subcommands including aliases
     if with_aliases:

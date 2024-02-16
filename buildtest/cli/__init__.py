@@ -282,18 +282,6 @@ class BuildTestParser:
             "commands": {"help": "List all buildtest commands", "aliases": ["cmds"]},
         }
 
-        self.hidden_subcommands = {
-            "docs": {},
-            "tutorial-examples": {},
-            "schemadocs": {},
-            "unittests": {"aliases": ["test"]},
-            "stylecheck": {"aliases": ["style"]},
-        }
-
-        self.buildtest_subcommands = list(self.subcommands.keys()) + list(
-            self.hidden_subcommands.keys()
-        )
-
         self.parser = argparse.ArgumentParser(
             prog=self._progname,
             formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -307,15 +295,37 @@ class BuildTestParser:
         )
 
         self._build_options()
-        self._build_subparsers()
 
         # list used to store all main options for buildtest
         self.main_options = self.get_buildtest_options()
 
+        self.hidden_subcommands = {
+            "docs": {},
+            "tutorial-examples": {},
+            "unittests": {"aliases": ["test"]},
+            "stylecheck": {"aliases": ["style"]},
+        }
+
         # Variables needed to show all sub commands and their help message
         show_all_help = any(arg in ["-H", "--help-all"] for arg in sys.argv)
         if show_all_help:
-            self.help_all()
+            self.hidden_subcommands = {
+                "tutorial-examples": {
+                    "help": "Generate documentation examples for Buildtest Tutorial"
+                },
+                "docs": {"help": "Open buildtest docs in browser"},
+                "unittests": {"help": "Run buildtest unit tests", "aliases": ["test"]},
+                "stylecheck": {
+                    "help": "Run buildtest style checks",
+                    "aliases": ["style"],
+                },
+            }
+
+        self.buildtest_subcommands = list(self.subcommands.keys()) + list(
+            self.hidden_subcommands.keys()
+        )
+
+        self._build_subparsers()
 
         self.build_menu()
         self.buildspec_menu()
@@ -435,23 +445,9 @@ class BuildTestParser:
         main_options.add("--help")
         return list(sorted(main_options))
 
-    def help_all(self):
-        """This method will add parser for hidden command that can be shown when using ``--help-all/-H``"""
-
-        hidden_parser = {
-            "tutorial-examples": {
-                "help": "Generate documentation examples for Buildtest Tutorial"
-            },
-            "docs": {"help": "Open buildtest docs in browser"},
-            "schemadocs": {"help": "Open buildtest schema docs in browser"},
-            "unittests": {"help": "Run buildtest unit tests", "aliases": ["test"]},
-            "stylecheck": {"help": "Run buildtest style checks", "aliases": ["style"]},
-        }
-
-        for name, subcommand in hidden_parser.items():
-            self.subparsers.add_parser(
-                name, help=subcommand["help"], aliases=subcommand.get("aliases", [])
-            )
+    def get_subcommands(self):
+        """Return a list of buildtest commands. This is useful for ``buildtest commands`` command to show a list of buildtest commands"""
+        return list(self.subcommands.keys()) + list(self.hidden_subcommands.keys())
 
     def get_parent_parser(self):
         parent_parser = {}
