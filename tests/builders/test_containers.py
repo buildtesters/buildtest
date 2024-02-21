@@ -1,0 +1,37 @@
+import os
+import pytest
+import shutil
+
+from buildtest.cli.build import BuildTest
+from buildtest.config import SiteConfiguration
+from buildtest.defaults import DEFAULT_SETTINGS_FILE, BUILDTEST_ROOT
+from buildtest.system import BuildTestSystem
+
+here = os.path.dirname(os.path.abspath(__file__))
+
+config = SiteConfiguration(DEFAULT_SETTINGS_FILE)
+config.detect_system()
+config.validate()
+system = BuildTestSystem()
+
+def test_docker_example():
+    if not shutil.which("docker"):
+        pytest.skip("docker is not available to run this test")
+
+    cmd = BuildTest(
+        buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "containers", "hello_world.yml")],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()
+
+def test_singularity_example():
+    if not shutil.which("singularity"):
+        pytest.skip("singularity is not available to run this test")
+
+    cmd = BuildTest(
+        buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "containers", "hello_world_singularity.yml")],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()

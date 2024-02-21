@@ -1,18 +1,9 @@
 buildspecs:
-  hello_world_container_no_commands:
+  hello_world_docker:
     type: script
     executor: generic.local.bash
     description: run hello-world container with docker
     container:
       platform: "docker"
       image: hello-world
-    run: echo 'Test Complete!'
-
-  hello_world_singularity:
-    type: script
-    executor: generic.local.bash
-    description: run hello-world container using singularity
-    container:
-      platform: "singularity"
-      image: 'docker://hello-world'
     run: echo 'Test Complete!'
