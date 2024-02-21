@@ -5,7 +5,7 @@ system:
     # system description
     description: Generic System
     # specify module system to use. Supported module systems are lmod, environment-modules or set to N/A if not available
-    moduletool: N/A
+    moduletool: none
 
     # specify size of job pool (https://docs.python.org/3/library/multiprocessing.html#multiprocessing.pool.Pool). This will configure the number of processes that can run in parallel.
     # If not specified then buildtest will use all available cores on the system.
