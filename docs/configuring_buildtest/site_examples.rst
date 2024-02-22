@@ -6,7 +6,7 @@ NERSC
 
 `NERSC <http://nersc.gov/>`_ provides High Performance Computing system to support research in the Office of Science program
 offices. NERSC has one production HPC systems `Perlmutter <https://docs.nersc.gov/systems/perlmutter/architecture/>`_ and
- `muller` which is Test system for Perlmutter.
+`muller` which is Test system for Perlmutter.
 
 Shown below is the buildtest configuration at NERSC. We have defined multiple slurm executors, along with settings for
 configuring compilers that is available on Perlmutter.

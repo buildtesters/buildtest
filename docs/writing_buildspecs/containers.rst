@@ -42,21 +42,22 @@ this container on your host system via docker you may get the following output.
 Let's try developing this test in a buildspec so we can run via buildtest. In the test below, you will see we introduce the
 keyword ``container`` is used to specify the container settings. The ``platform`` will be used to determine the container runtime which
 could be ``docker``, ``podman`` or ``singularity``. The ``image`` is the name of the container image to use which expects a string value. This can
-be a URI or a local image. Since docker will automatically pull the image from DockerHub, we don't need to specify the URI, however if you were
-using a different registry like GHCR (GitHub Container Registry) you would specify the URI.
+be a URI or a local image. Since docker will automatically pull the image from `DockerHub <https://hub.docker.com/>`_, we don't need to specify the URI, however if you were
+using a different registry like `GitHub Container Registry (GHCR) <https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry>`_
+you would specify the URI.
 
 .. literalinclude:: ../tutorials/containers/hello_world.yml
    :language: yaml
    :emphasize-lines: 6-8
 
 
-Let's build this test by running ``buildtest build -b $BUILDTEST_ROOT/tutorials/containers/hello_world.yml``.
+Let's build this test by running ``buildtest build -b $BUILDTEST_ROOT/tutorials/containers/hello_world.yml`` and inspect the test results.
 
-.. drop-down:: ``buildtest build -b $BUILDTEST_ROOT/tutorials/containers/hello_world.yml``
+.. dropdown:: ``buildtest build -b $BUILDTEST_ROOT/tutorials/containers/hello_world.yml``
 
     .. code-block:: console
 
-        (buildtest) ☁  buildtest [fix_issues] ⚡  buildtest build -b $BUILDTEST_ROOT/tutorials/containers/hello_world.yml
+         ⚡  buildtest build -b $BUILDTEST_ROOT/tutorials/containers/hello_world.yml
         ╭───────────────────────────────────────────────────────────────────────────────── buildtest summary ─────────────────────────────────────────────────────────────────────────────────╮
         │                                                                                                                                                                                     │
         │ User:               siddiq90                                                                                                                                                        │
@@ -130,51 +131,51 @@ Let's build this test by running ``buildtest build -b $BUILDTEST_ROOT/tutorials/
         Writing Logfile to /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/logs/buildtest_6w0ga9fc.log
 
 
-Upon completion of test, you can query
-the test result and you will notice the container was executed successfully.
+    Upon completion of test, you can query
+    the test result and you will notice the container was executed successfully.
 
-.. code-block:: console
+    .. code-block:: console
 
-      buildtest it query -o -t  hello_world_docker
-    ─────────────────────────────────────────────────────────────────────────────────────── hello_world_docker/24064ff3-6ecd-4496-a273-2ea9551c7f53 ────────────────────────────────────────────────────────────────────────────────────────
-    Executor: generic.local.bash
-    Description: run hello-world container with docker
-    State: PASS
-    Returncode: 0
-    Runtime: 2.595958 sec
-    Starttime: 2024/02/22 12:41:16
-    Endtime: 2024/02/22 12:41:19
-    Command: bash hello_world_docker_build.sh
-    Test Script: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world_docker/24064ff3/hello_world_docker.sh
-    Build Script: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world_docker/24064ff3/hello_world_docker_build.sh
-    Output File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world_docker/24064ff3/hello_world_docker.out
-    Error File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world_docker/24064ff3/hello_world_docker.err
-    Log File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/logs/buildtest_6w0ga9fc.log
-    ────────────────────────────────────── Output File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world_docker/24064ff3/hello_world_docker.out ──────────────────────────────────────
-    Hello from Docker!
-    This message shows that your installation appears to be working correctly.
-    To generate this message, Docker took the following steps:
-     1. The Docker client contacted the Docker daemon.
-     2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
-        (amd64)
-     3. The Docker daemon created a new container from that image which runs the
-        executable that produces the output you are currently reading.
-     4. The Docker daemon streamed that output to the Docker client, which sent it
-        to your terminal.
-    To try something more ambitious, you can run an Ubuntu container with:
-     $ docker run -it ubuntu bash
-    Share images, automate workflows, and more with a free Docker ID:
-     https://hub.docker.com/
-    For more examples and ideas, visit:
-     https://docs.docker.com/get-started/
-    Test Complete!
+          buildtest it query -o -t  hello_world_docker
+        ─────────────────────────────────────────────────────────────────────────────────────── hello_world_docker/24064ff3-6ecd-4496-a273-2ea9551c7f53 ────────────────────────────────────────────────────────────────────────────────────────
+        Executor: generic.local.bash
+        Description: run hello-world container with docker
+        State: PASS
+        Returncode: 0
+        Runtime: 2.595958 sec
+        Starttime: 2024/02/22 12:41:16
+        Endtime: 2024/02/22 12:41:19
+        Command: bash hello_world_docker_build.sh
+        Test Script: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world_docker/24064ff3/hello_world_docker.sh
+        Build Script: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world_docker/24064ff3/hello_world_docker_build.sh
+        Output File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world_docker/24064ff3/hello_world_docker.out
+        Error File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world_docker/24064ff3/hello_world_docker.err
+        Log File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/logs/buildtest_6w0ga9fc.log
+        ────────────────────────────────────── Output File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world_docker/24064ff3/hello_world_docker.out ──────────────────────────────────────
+        Hello from Docker!
+        This message shows that your installation appears to be working correctly.
+        To generate this message, Docker took the following steps:
+         1. The Docker client contacted the Docker daemon.
+         2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+            (amd64)
+         3. The Docker daemon created a new container from that image which runs the
+            executable that produces the output you are currently reading.
+         4. The Docker daemon streamed that output to the Docker client, which sent it
+            to your terminal.
+        To try something more ambitious, you can run an Ubuntu container with:
+         $ docker run -it ubuntu bash
+        Share images, automate workflows, and more with a free Docker ID:
+         https://hub.docker.com/
+        For more examples and ideas, visit:
+         https://docs.docker.com/get-started/
+        Test Complete!
 
-    ─────────────────────────────────────── Test File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world_docker/24064ff3/hello_world_docker.sh ────────────────────────────────────────
-    #!/bin/bash
-    set -eo pipefail
-    # Content of run section
-    docker run -v /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world_docker/24064ff3/stage:/buildtest hello-world
-    echo 'Test Complete!'
+        ─────────────────────────────────────── Test File: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world_docker/24064ff3/hello_world_docker.sh ────────────────────────────────────────
+        #!/bin/bash
+        set -eo pipefail
+        # Content of run section
+        docker run -v /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests/generic.local.bash/hello_world/hello_world_docker/24064ff3/stage:/buildtest hello-world
+        echo 'Test Complete!'
 
 Running a Singularity container
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -189,8 +190,9 @@ indicate the image is from DockerHub. since singularity can pull images from mul
 
 You can run this test if you have `singularity` available on your system by running ``buildtest build -b tutorials/containers/hello_world_singularity.yml``.
 
-.. drop-down:: ``buildtest build -b tutorials/containers/hello_world_singularity.yml``
-    .. code-block:: ``buildtest build -b tutorials/containers/hello_world_singularity.yml
+.. dropdown:: ``buildtest build -b tutorials/containers/hello_world_singularity.yml``
+
+    .. code-block:: console
 
         (buildtest) ubuntu@ip-172-31-9-200:~/buildtest$ buildtest build -b tutorials/containers/hello_world_singularity.yml
         ╭──────────────────────────────────────────────── buildtest summary ─────────────────────────────────────────────────╮
@@ -265,7 +267,7 @@ You can run this test if you have `singularity` available on your system by runn
         Adding 1 test results to /home/ubuntu/buildtest/var/report.json
         Writing Logfile to /home/ubuntu/buildtest/var/logs/buildtest_8sqyyo72.log
 
-Upon completion of test, you can query this test, take note that the container was executed successfully using `singularity run`
+Upon completion of test, you can query this test, take note that the container was executed successfully using **singularity run**
 
 .. dropdown:: buildtest it query -o -t hello_world_singularity
 
@@ -778,7 +780,7 @@ see the results of the test.
 
 .. code-block:: console
 
-    (buildtest) ☁  buildtest [container_executor_support] ⚡  buildtest -c buildtest/settings/container_executor.yml build -b tutorials/containers/container_executor/ubuntu.yml
+    ⚡  buildtest -c buildtest/settings/container_executor.yml build -b tutorials/containers/container_executor/ubuntu.yml
     ╭───────────────────────────────────────────────────────────────────────────────────── buildtest summary ──────────────────────────────────────────────────────────────────────────────────────╮
     │                                                                                                                                                                                              │
     │ User:               siddiq90                                                                                                                                                                 │
@@ -868,7 +870,7 @@ will show ``/buildtest`` is mounted from host system, which allows output files 
 
     .. code-block:: console
 
-        (buildtest) ☁  buildtest [container_executor_support] ⚡  buildtest inspect query -o -t -b ubuntu_container_example
+        ⚡  buildtest inspect query -o -t -b ubuntu_container_example
         ──────────────────────────────────────────────────────────────────────────────────── ubuntu_container_example/74e7c722-a163-4985-a99e-51788e13419d ─────────────────────────────────────────────────────────────────────────────────────
         Executor: generic.container.ubuntu
         Description: run test in a container executor
