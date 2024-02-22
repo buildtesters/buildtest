@@ -178,7 +178,7 @@ Let's build this test by running ``buildtest build -b $BUILDTEST_ROOT/tutorials/
         echo 'Test Complete!'
 
 Running a Singularity container
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------------
 
 In the next example, we will run a Singularity container using the previous example. We will use the
 ``singularity`` platform to specify the container runtime. The ``image`` is the name of the container image, however we specify ``docker://`` to
@@ -314,7 +314,7 @@ Upon completion of test, you can query this test, take note that the container w
         singularity run -B /home/ubuntu/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/beb75f64/stage:/buildtest docker://hello-world
         echo 'Test Complete!'
 
-Running Commands in Container
+Run Commands in Container
 -----------------------------
 
 In this section, we will demonstrate how to run arbitrary Linux command inside a container. We will introduce the keyword ``command``
@@ -632,8 +632,8 @@ Let's run the test and inspect the test results
             docker run -v /Users/siddiq90/Documents/github/buildtest/var/tests/generic.local.bash/container_commands/run_script_in_container/b987e2b9/stage:/buildtest python:latest bash -c "python /buildtest/script.py"
             python script.py
 
-Specify Addition Volume Mounts
-------------------------------
+Specify Volume Mounts
+----------------------
 
 In this section, we will discuss how to specify additional volume mounts in the container. This is useful if you need to access additional files in the container from the host
 system that are typically not present in the container.
