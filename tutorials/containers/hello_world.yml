@@ -1,8 +1,8 @@
 buildspecs:
-  hello_world_container_no_commands:
+  hello_world_docker:
     type: script
     executor: generic.local.bash
-    description: run container with no commands
+    description: run hello-world container with docker
     container:
       platform: "docker"
       image: hello-world

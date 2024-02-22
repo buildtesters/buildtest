@@ -207,7 +207,7 @@ class ScriptBuilder(BuilderBase):
 
             elif container_platform in ["singularity"]:
                 container_command.extend(
-                    [f"{container_platform}", "exec", f"-B {self.stage_dir}:/buildtest"]
+                    [f"{container_platform}", "run", f"-B {self.stage_dir}:/buildtest"]
                 )
 
             if container.get("mounts"):
