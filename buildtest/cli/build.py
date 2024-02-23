@@ -358,7 +358,12 @@ def print_discovered_buildspecs(buildspec_dict):
                 header_style="blue",
                 show_footer=True,
             )
-            table.add_column("buildspecs", style="yellow2", overflow="fold", footer=f"[bold]Total: {len(buildspec_dict['name'][name])}")
+            table.add_column(
+                "buildspecs",
+                style="yellow2",
+                overflow="fold",
+                footer=f"[bold]Total: {len(buildspec_dict['name'][name])}",
+            )
             for row in buildspec_dict["name"][name]:
                 table.add_row(f"{row}")
             console.print(table)

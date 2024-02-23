@@ -427,7 +427,11 @@ class TestBuildTest:
         cmd = BuildTest(
             configuration=configuration,
             buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "perf_checks")],
-            exclude_buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "perf_checks", "assert_ge.yml")],
+            exclude_buildspecs=[
+                os.path.join(
+                    BUILDTEST_ROOT, "tutorials", "perf_checks", "assert_ge.yml"
+                )
+            ],
             name=["hello_world"],
             tags=["pass"],
             executors=["generic.local.csh"],
@@ -553,7 +557,9 @@ class TestBuildTest:
         with pytest.raises(BuildTestError):
             buildtest_configuration.get_profile(profile_name="invalid_profile")
 
-        cmd = BuildTest(profile="demo", configuration=buildtest_configuration, verbose=True)
+        cmd = BuildTest(
+            profile="demo", configuration=buildtest_configuration, verbose=True
+        )
         cmd.build()
 
     @pytest.mark.cli
@@ -604,6 +610,7 @@ def test_discover():
     tf.close()
     with pytest.raises(SystemExit):
         discover_buildspecs(buildspecs=[tf.name])
+
 
 class TestBuildTest_TypeCheck:
     def test_buildspec(self):
