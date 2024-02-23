@@ -151,7 +151,7 @@ _buildtest_show_commands()
 
 _buildtest_options()
 {
-  python -c "from buildtest.cli import BuildTestParser; print(' '.join(BuildTestParser().get_buildtest_options()))"
+  buildtest --listopts
 }
 #  entry point to buildtest bash completion function
 _buildtest ()
@@ -162,13 +162,13 @@ _buildtest ()
 
   COMPREPLY=()   # Array variable storing the possible completions.
 
-  declare -a buildtest_opts=("--color" "--config" "--debug" "--editor" "--help" "--helpcolor" "--help-all" "--logpath" "--loglevel" "--print-log" "--no-color" "--report" "--verbose" "--version" "--view-log" "-c" "-d" "-h" "-l" "-p" "-r" "-H" "-V")
+  main_opts=($(_buildtest_options))
 
   commands_with_input=( "--color" "--config" "-c" "--report" "-r" "--loglevel" "-l" "--editor" )   # Array variable storing commands which require an input argument from the user.
 
   for command in "${COMP_WORDS[@]}"
   do
-    for element in "${buildtest_opts[@]}"
+    for element in "${main_opts[@]}"
     do
 
         if [[ "$command" == "$element" ]]; then
