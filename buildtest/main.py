@@ -81,6 +81,9 @@ def main():
 
     console.no_color = no_color
 
+    if args.verbose:
+        console.print("Coloring mode: ", "off" if no_color else "on")
+
     report_file = args.report
 
     # print content of BUILDTEST_LOGFILE if buildtest --view-log or buildtest --print-log is specified which should contain output of last log
@@ -123,12 +126,21 @@ def main():
     # Create a build test system, and check requirements
     system = BuildTestSystem()
 
+    if args.verbose:
+        console.print("Finish system initialization", style="bold blue")
+
     config_file = (
         resolve_path(args.configfile) or os.getenv("BUILDTEST_CONFIGFILE") or None
     )
-    configuration = SiteConfiguration(config_file)
+    configuration = SiteConfiguration(config_file, verbose=args.verbose)
     configuration.detect_system()
     configuration.validate(moduletool=system.system["moduletool"])
+
+    if args.verbose:
+        console.print("Finish configuration initialization", style="bold blue")
+        console.print(
+            f"Using configuration file: {configuration.file}", style="bold blue"
+        )
 
     buildtest_editor = set_editor(args.editor)
     logger.info(f"[red]Processing buildtest configuration file: {configuration.file}")
@@ -177,6 +189,7 @@ def main():
                 save_profile=args.save_profile,
                 profile=args.profile,
                 max_jobs=args.max_jobs,
+                verbose=args.verbose,
             )
             cmd.build()
 
@@ -351,9 +364,6 @@ def main():
 
     elif args.subcommands == "docs":
         webbrowser.open("https://buildtest.readthedocs.io/")
-
-    elif args.subcommands == "schemadocs":
-        webbrowser.open("https://buildtesters.github.io/buildtest/")
 
     elif args.subcommands == "info":
         buildtest_info(configuration, system)

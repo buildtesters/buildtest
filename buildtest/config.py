@@ -7,6 +7,7 @@ from buildtest.defaults import (
     DEFAULT_SETTINGS_FILE,
     DEFAULT_SETTINGS_SCHEMA,
     USER_SETTINGS_FILE,
+    console,
 )
 from buildtest.exceptions import BuildTestError, ConfigurationError
 from buildtest.schemas.defaults import custom_validator
@@ -23,7 +24,7 @@ logger = logging.getLogger(__name__)
 class SiteConfiguration:
     """This class is an interface to buildtest configuration"""
 
-    def __init__(self, settings_file=None):
+    def __init__(self, settings_file=None, verbose=None):
         """The initializer will declare class variables in its initial state and resolve path to
         configuration file. Once file is resolved we will load the configuration using :func:`load`.
 
@@ -31,7 +32,7 @@ class SiteConfiguration:
             settings_file (str, optional): path to buildtest configuration file
 
         """
-
+        self.verbose = verbose
         self._file = settings_file
         self.config = None
         self._name = None
@@ -57,6 +58,8 @@ class SiteConfiguration:
     def load(self):
         """Loads configuration file"""
         self.config = load_recipe(self._file)
+        if self.verbose:
+            console.print("Loading configuration file ... COMPLETE", style="bold blue")
 
     @property
     def file(self):
@@ -103,6 +106,9 @@ class SiteConfiguration:
         # get hostname fqdn
         hostname = platform.node()
 
+        if self.verbose:
+            console.print(f"Detected hostname: {hostname}", style="bold blue")
+
         # for every system record we lookup 'hostnames' entry and apply re.match against current hostname. If found we break from loop
         for name in self.systems:
             host_lookup[name] = self.config["system"][name]["hostnames"]
@@ -140,6 +146,10 @@ class SiteConfiguration:
             f"Validating configuration file with schema: {DEFAULT_SETTINGS_SCHEMA}"
         )
         custom_validator(recipe=self.config, schema=config_schema)
+        if self.verbose:
+            console.print(
+                "Validating configuration file ... COMPLETE", style="bold blue"
+            )
         logger.debug("Validation was successful")
 
         self._executor_check()
@@ -156,6 +166,10 @@ class SiteConfiguration:
 
     def _executor_check(self):
         """Validate executors"""
+
+        if self.verbose:
+            console.print("Initiating executor check ...", style="bold blue")
+
         self._validate_local_executors()
         self._validate_slurm_executors()
         self._validate_lsf_executors()
@@ -169,6 +183,12 @@ class SiteConfiguration:
 
             for name in self.target_config["executors"][executor_type]:
                 self.all_executors.append(f"{self.name()}.{executor_type}.{name}")
+
+        if self.verbose:
+            console.print(
+                f"We have found the following executors: {self.all_executors}",
+                style="bold blue",
+            )
 
     def get_all_executors(self):
         """Return list of all executors"""
@@ -230,6 +250,11 @@ class SiteConfiguration:
 
         lsf_executors = deep_get(self.target_config, "executors", "lsf")
         if not lsf_executors:
+
+            if self.verbose:
+                console.print(
+                    "No LSF executors found in configuration file", style="bold blue"
+                )
             return
 
         executor_type = "lsf"
@@ -290,6 +315,12 @@ class SiteConfiguration:
 
         slurm_executor = deep_get(self.target_config, "executors", "slurm")
         if not slurm_executor:
+
+            if self.verbose:
+                console.print(
+                    "No SLURM executors found in configuration file", style="bold blue"
+                )
+
             return
 
         executor_type = "slurm"
@@ -365,6 +396,12 @@ class SiteConfiguration:
 
         cobalt_executor = deep_get(self.target_config, "executors", "cobalt")
         if not cobalt_executor:
+
+            if self.verbose:
+                console.print(
+                    "No Cobalt executors found in configuration file", style="bold blue"
+                )
+
             return
 
         executor_type = "cobalt"
@@ -426,6 +463,12 @@ class SiteConfiguration:
 
         pbs_executor = deep_get(self.target_config, "executors", "pbs")
         if not pbs_executor:
+
+            if self.verbose:
+                console.print(
+                    "No PBS executors found in configuration file", style="bold blue"
+                )
+
             return
 
         executor_type = "pbs"
