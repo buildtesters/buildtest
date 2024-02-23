@@ -27,7 +27,7 @@ pytest_root = os.path.dirname(os.path.dirname(__file__))
 
 system = BuildTestSystem()
 
-configuration = SiteConfiguration()
+configuration = SiteConfiguration(verbose=True)
 configuration.detect_system()
 configuration.validate(moduletool=system.system["moduletool"])
 
@@ -42,6 +42,15 @@ def test_config_systems():
         fname = os.path.join(schema_files, config_examples)
         configuration = SiteConfiguration(fname)
         view_system(configuration)
+
+
+def test_container_executor():
+    settings_file = os.path.join(
+        pytest_root, "configuration", "container_executors.yml"
+    )
+    config = SiteConfiguration(settings_file=settings_file)
+    config.detect_system()
+    config.validate(moduletool=system.system["moduletool"])
 
 
 def test_remove_executors():

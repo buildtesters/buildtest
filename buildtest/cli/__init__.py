@@ -426,6 +426,7 @@ class BuildTestParser:
                 ["-H", "--help-all"],
                 {"help": "List all commands and options", "action": "help"},
             ),
+            (["--verbose"], {"action": "store_true", "help": "Enable verbose output"}),
         ]
 
         for args, kwargs in self.buildtest_options:
