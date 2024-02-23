@@ -358,7 +358,7 @@ def print_discovered_buildspecs(buildspec_dict):
                 header_style="blue",
                 show_footer=True,
             )
-            table.add_column("buildspecs", style="yellow2", overflow="fold")
+            table.add_column("buildspecs", style="yellow2", overflow="fold", footer=f"[bold]Total: {len(buildspec_dict['name'][name])}")
             for row in buildspec_dict["name"][name]:
                 table.add_row(f"{row}")
             console.print(table)
@@ -1052,10 +1052,6 @@ class BuildTest:
                     raise BuildTestError(
                         f"Invalid value for filter 'type': '{self.filter_buildspecs[key]}', valid schema types are : {schema_table['types']}"
                     )
-
-    def discovered_buildspecs(self):
-        """Return all discovered buildspecs which includes included buildspecs, excluded buildspecs and detected buildspecs."""
-        return self.discovered_bp
 
     def build(self):
         """This method is responsible for discovering buildspecs based on input argument. Then we parse

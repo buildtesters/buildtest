@@ -27,7 +27,7 @@ pytest_root = os.path.dirname(os.path.dirname(__file__))
 
 system = BuildTestSystem()
 
-configuration = SiteConfiguration()
+configuration = SiteConfiguration(verbose=True)
 configuration.detect_system()
 configuration.validate(moduletool=system.system["moduletool"])
 
@@ -43,6 +43,11 @@ def test_config_systems():
         configuration = SiteConfiguration(fname)
         view_system(configuration)
 
+def test_container_executor():
+    settings_file = os.path.join(pytest_root, "configuration", "container_executor.yml")
+    config = SiteConfiguration(settings_file=settings_file)
+    config.detect_system()
+    config.validate(moduletool=system.system["moduletool"])
 
 def test_remove_executors():
     temp_config_file = tempfile.NamedTemporaryFile(suffix=".yml")

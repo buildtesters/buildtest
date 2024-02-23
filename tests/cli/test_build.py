@@ -422,6 +422,20 @@ class TestBuildTest:
         )
         cmd.build()
 
+    def test_verbose_mode(self):
+        # buildtest --verbose build -b tutorials/perf_checks -n hello_world -t pass -e generic.local.csh -x tutorials/perf_checks/assert_ge.yml --limit=10
+        cmd = BuildTest(
+            configuration=configuration,
+            buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "perf_checks")],
+            exclude_buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "perf_checks", "assert_ge.yml")],
+            name=["hello_world"],
+            tags=["pass"],
+            executors=["generic.local.csh"],
+            limit=10,
+            verbose=True,
+        )
+        cmd.build()
+
     @pytest.mark.cli
     def test_invalid_buildspes(self):
         buildspec_file = [
@@ -520,6 +534,7 @@ class TestBuildTest:
             max_jobs=2,
             buildtest_system=self.system,
             save_profile="demo",
+            verbose=True,
         )
         profile_configuration = buildtest_configuration.get_profile(profile_name="demo")
         pprint(profile_configuration)
@@ -538,7 +553,7 @@ class TestBuildTest:
         with pytest.raises(BuildTestError):
             buildtest_configuration.get_profile(profile_name="invalid_profile")
 
-        cmd = BuildTest(profile="demo", configuration=buildtest_configuration)
+        cmd = BuildTest(profile="demo", configuration=buildtest_configuration, verbose=True)
         cmd.build()
 
     @pytest.mark.cli
@@ -584,6 +599,11 @@ def test_discover():
     with pytest.raises(SystemExit):
         discover_buildspecs(buildspecs=[])
 
+    # create a temporary file and closing it which will essentially delete the file. We are testing an invalid file path
+    tf = tempfile.NamedTemporaryFile()
+    tf.close()
+    with pytest.raises(SystemExit):
+        discover_buildspecs(buildspecs=[tf.name])
 
 class TestBuildTest_TypeCheck:
     def test_buildspec(self):
