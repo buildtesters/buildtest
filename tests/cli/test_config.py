@@ -45,7 +45,7 @@ def test_config_systems():
 
 
 def test_container_executor():
-    settings_file = os.path.join(pytest_root, "configuration", "container_executor.yml")
+    settings_file = os.path.join(pytest_root, "configuration", "container_executors.yml")
     config = SiteConfiguration(settings_file=settings_file)
     config.detect_system()
     config.validate(moduletool=system.system["moduletool"])
