@@ -296,9 +296,6 @@ class BuildTestParser:
 
         self._build_options()
 
-        # list used to store all main options for buildtest
-        self.main_options = self.get_buildtest_options()
-
         self.hidden_subcommands = {
             "docs": {},
             "tutorial-examples": {},
@@ -346,6 +343,18 @@ class BuildTestParser:
 
     def get_subparsers(self):
         return self.subparsers
+
+    def retrieve_main_options(self):
+        """This method retrieves all options for buildtest command line interface. This is invoked by ``buildtest --listopts`` command and useful when user
+        wants to see all options."""
+        options_list = []
+
+        # Iterate over the actions of the parser to extract short and long options
+        for action in self.parser._actions:
+            option_strings = action.option_strings
+            options_list.extend(option_strings)
+
+        return sorted(options_list)
 
     def _build_subparsers(self):
         """This method builds subparsers for buildtest command line interface."""
@@ -426,25 +435,15 @@ class BuildTestParser:
                 ["-H", "--help-all"],
                 {"help": "List all commands and options", "action": "help"},
             ),
+            (
+                ["--listopts"],
+                {"action": "store_true", "help": "List all options for buildtest"},
+            ),
             (["--verbose"], {"action": "store_true", "help": "Enable verbose output"}),
         ]
 
         for args, kwargs in self.buildtest_options:
             self.parser.add_argument(*args, **kwargs)
-
-    def get_buildtest_options(self):
-        """This method is used to return all main options for buildtest command line interface. This is useful for bash completion script
-        where we need to return all options for buildtest command line interface for tab completion.
-        """
-        main_options = set()
-        for args, kwargs in self.buildtest_options:
-            for name in args:
-                main_options.add(name)
-
-        # adding -h and --help options
-        main_options.add("-h")
-        main_options.add("--help")
-        return list(sorted(main_options))
 
     def get_subcommands(self):
         """Return a list of buildtest commands. This is useful for ``buildtest commands`` command to show a list of buildtest commands"""
