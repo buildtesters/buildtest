@@ -23,7 +23,7 @@ def test_spack_examples():
     system = BuildTestSystem()
 
     configuration = SiteConfiguration(
-        settings_file=os.path.join(here, "buildtest", "settings", "spack_container.yml")
+        settings_file=os.path.join(here, "spack_container.yml")
     )
     configuration.detect_system()
     configuration.validate()
