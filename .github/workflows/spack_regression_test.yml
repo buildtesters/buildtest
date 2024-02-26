@@ -25,6 +25,9 @@ jobs:
         run: |
           spack --version
           whoami
+          spack find
+          type module
+          which -a gcc
           source setup.sh
           pip install pytest
           pip install coverage
