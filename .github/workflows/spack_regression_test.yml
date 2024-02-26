@@ -25,6 +25,7 @@ jobs:
         run: |
           spack --version
           whoami
+          source setup.sh
           pip install pytest
           pip install coverage
           python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
