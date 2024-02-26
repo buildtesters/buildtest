@@ -7,7 +7,6 @@ import pytest
 from buildtest.cli.build import BuildTest
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.config import SiteConfiguration
-from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.system import BuildTestSystem
 
 here = os.path.dirname(os.path.abspath(__file__))
