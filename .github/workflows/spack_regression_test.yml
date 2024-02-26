@@ -1,0 +1,32 @@
+name: Regression Test with Spack Support
+
+on:
+  pull_request:
+    branches: [devel]
+    paths:
+      - 'buildtest/**'
+      - 'tests/**'
+      - '.github/workflows/regression.yml'
+      - 'requirements.txt'
+      - 'pyproject.toml'
+
+jobs:
+
+  buildtest_regtest_with_spack:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5.0.0
+      - name: Set up Spack
+        uses: spack/setup-spack@v2
+      - name: Spack Regression Test
+        shell: spack-bash
+        run: |
+          spack --version
+          whoami
+          pip install pytest
+          pip install coverage
+          python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
+          returncode=$?
+          if [ $returncode != 0 ]; then exit $returncode; fi
