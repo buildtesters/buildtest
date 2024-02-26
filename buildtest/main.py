@@ -104,6 +104,9 @@ def main():
 
         return
 
+    if args.listopts:
+        print("\n".join(parser.retrieve_main_options()))
+        return
     # print the available color options in a table format if buildtest --helpcolor is specified
     if args.helpcolor:
         print_available_colors()
