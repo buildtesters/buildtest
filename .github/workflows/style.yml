@@ -40,7 +40,6 @@ jobs:
         with:
           options: "--check --verbose"
           src: "buildtest tests scripts"
-          version: "~= 23.3.0"
 
       - name: Run yamllint
         run: |
