@@ -21,7 +21,7 @@ jobs:
       - name: Set up Spack
         uses: spack/setup-spack@v2
       - name: Spack Regression Test
-        shell: spack-bash
+        shell: spack-bash {0}
         run: |
           spack --version
           whoami
