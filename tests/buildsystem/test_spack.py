@@ -11,6 +11,7 @@ from buildtest.system import BuildTestSystem
 
 here = os.path.dirname(os.path.abspath(__file__))
 
+
 def test_spack_examples():
     # spack builds must run in container  ghcr.io/buildtesters/buildtest_spack:latest which comes with username 'spack' and home directory '/home/spack'
     # if not (getpass.getuser() == "spack" and os.path.expanduser("~") == "/home/spack"):
@@ -22,9 +23,7 @@ def test_spack_examples():
     system = BuildTestSystem()
 
     configuration = SiteConfiguration(
-        settings_file=os.path.join(
-            here, "buildtest", "settings", "spack_container.yml"
-        )
+        settings_file=os.path.join(here, "buildtest", "settings", "spack_container.yml")
     )
     configuration.detect_system()
     configuration.validate()
