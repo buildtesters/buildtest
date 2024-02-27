@@ -1,0 +1,6 @@
+buildspecs:
+  run_tensorflow_model:
+    executor: generic.local.bash
+    description: Run TensorFlow Model
+    run: |      
+      python tensorflow_model.py
