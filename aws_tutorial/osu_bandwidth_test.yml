@@ -21,4 +21,4 @@ buildspecs:
       assert_ge:
         comparisons:
           - name: osu_bw
-            value: 10000
+            ref: 10000
