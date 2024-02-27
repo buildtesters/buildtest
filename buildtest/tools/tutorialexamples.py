@@ -51,12 +51,8 @@ def generate_aws_examples():
     config = SiteConfiguration(
         settings_file=os.path.join(BUILDTEST_ROOT, "buildtest", "settings", "aws.yml")
     )
-    config.detect_system()
+    config.detect_system(moduletool="environment-modules")
     config.validate()
 
     build_aws_examples(autogen_examples_dir)
 
-
-if __name__ == "__main__":
-    generate_tutorial_examples()
-    generate_aws_examples()
