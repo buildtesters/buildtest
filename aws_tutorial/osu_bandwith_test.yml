@@ -5,7 +5,7 @@ buildspecs:
     description: Run OSU Bandwidth Test
     run:  mpirun -np 2 ./osu_bw
 
-  osu_bandwith_perf:
+  osu_bandwidth_perf:
     type: script
     executor: generic.local.bash
     description: Run OSU Bandwidth Performance Test
