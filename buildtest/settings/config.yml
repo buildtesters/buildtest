@@ -1,20 +1,53 @@
 system:
   generic:
-    hostnames:
-    - .*
+    # specify a list of hostnames that is a regular expression where buildtest can run.
+    hostnames: ['.*']
+    # system description
     description: Generic System
+    # specify module system to use. Supported module systems are [lmod, environment-modules, none]
     moduletool: none
+
+    # specify size of job pool (https://docs.python.org/3/library/multiprocessing.html#multiprocessing.pool.Pool). This will configure the number of processes that can run in parallel.
+    # If not specified then buildtest will use all available cores on the system.
     poolsize: 1
+
+    # maximum number of jobs that can run in parallel. If not specified, buildtest will run all jobs in parallel.
+    #max_jobs: 1
+
+    # test timeout in number of seconds
+    # timeout: 3600
+
+    # enable pagination for buildtest
     pager: false
+
+    # options for buildtest buildspec find command
     buildspecs:
+      # determine whether to rebuild buildspec cache
       rebuild: false
+      # determine number of records to display
       count: 15
+
+      # specify format fields
+      #format: name,description
+
+      # display output in terse mode
       terse: false
+
+      # list of paths to search for buildspecs
+      #root: ["$BUILDTEST_ROOT/tutorials", "$BUILDTEST_ROOT/examples"]
+
+    # options for buildtest report command
     report:
+      # number of records to display
       count: 25
+      # display output in terse mode
       terse: false
+      # specify format fields
       format: name,id,state,runtime,returncode
+
+    # start of executor configuration
     executors:
+      # local executor is used to submit jobs on local machine. In this example we have 4 executors: bash, sh, csh, zsh that will submit jobs using bash, sh, csh, zsh shell respectively.
       local:
         bash:
           description: submit jobs on local machine using bash shell
@@ -28,15 +61,23 @@ system:
         zsh:
           description: submit jobs on local machine using zsh shell
           shell: zsh
+    # specify compiler declaration
     compilers:
       compiler:
+        # declaration of all gcc compilers
         gcc:
+          # name of compiler
           builtin_gcc:
             cc: gcc
             fc: gfortran
             cxx: g++
+    # specify CDASH configuration when using 'buildtest cdash upload'
     cdash:
+      # CDASH server
       url: https://my.cdash.org/
+      # name of CDASH project where to push test reports
       project: buildtest
+      # specify the site name which should generally by name of your HPC system. This is used by CDASH to group test results by site
       site: generic
+      # specify the build name which is used to group test results by build name
       buildname: tutorials
