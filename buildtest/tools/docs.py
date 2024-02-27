@@ -59,7 +59,7 @@ def build_aws_examples(autogen_dir):
         autogen_dir (str): Directory where auto generated documentation examples will be written.
     """
 
-    build_dir = os.path.join(autogen_dir, "aws", "build")
+    build_dir = os.path.join(autogen_dir)
 
     create_dir(build_dir)
 
@@ -75,7 +75,7 @@ def build_aws_examples(autogen_dir):
         f"{build_dir}/mpiproc_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/mpiproc.yml",
         f"{build_dir}/mpiproc_inspect.txt": "buildtest inspect query -o mpiprocname",
         f"{build_dir}/osu_bandwidth_test_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/osu_bandwidth_test.yml",
-        f"{build_dir}/mpiproc_inspect.txt": "buildtest inspect query -o osu_bandwidth osu_bandwidth_perf",
+        f"{build_dir}/osu_bandwidth_test_inspect.txt": "buildtest inspect query -o osu_bandwidth osu_bandwidth_perf",
     }
 
     for fname, command in commands_to_run.items():
