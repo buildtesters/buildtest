@@ -40,9 +40,3 @@ system:
       project: buildtest
       site: generic
       buildname: tutorials
-    profiles:
-      xyz:
-        tags:
-        - pass
-        testdir: /Users/siddiq90/Documents/GitHubDesktop/buildtest/var/tests
-        remove-stagedir: false
