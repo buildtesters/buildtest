@@ -67,10 +67,10 @@ def build_aws_examples(autogen_dir):
 
     commands_to_run = {
         f"{build_dir}/hello_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/hello_world/hello.yml",
-        f"{build_dir}/hello_inspect.txt": "buildtest inspect query -o -t hello_build",
-        f"{build_dir}/multi_compiler_hello_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/hello/multi_compiler_hello.yml",
+        f"{build_dir}/hello_inspect.txt": "buildtest inspect query -o -t hello_world_example",
+        f"{build_dir}/multi_compiler_hello_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/hello_world/multi_compiler_hello.yml",
         f"{build_dir}/multi_compiler_hello_inspect.txt": "buildtest inspect query -o -t hello_world_multi_compiler/",
-        f"{build_dir}/tensorflow_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/tensorflow/tensorflow.yml",
+        f"{build_dir}/tensorflow_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/tensorflow.yml",
         f"{build_dir}/tensorflow_inspect.txt": "buildtest inspect query -o run_tensorflow_model",
         f"{build_dir}/mpiproc_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/mpiproc.yml",
         f"{build_dir}/mpiproc_inspect.txt": "buildtest inspect query -o mpiprocname",

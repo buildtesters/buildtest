@@ -11,10 +11,10 @@ buildspecs:
     description: Run OSU Bandwidth Performance Test
     run:  mpirun -np 2 ./osu_bw
     metrics:
-      - name: osu_bw
+      osu_bw:
         type: float
         regex:
-          exp: "^16384\s+([\d.]+)$"
+          exp: '^16384\s+([\d.]+)$'
           stream: stdout
           item: 1
     status:
