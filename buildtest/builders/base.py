@@ -968,7 +968,11 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
                         continue
 
                     content = read_file(resolved_fname)
-                    match = re.search(file_regex["exp"], content, re.MULTILINE) if content else None
+                    match = (
+                        re.search(file_regex["exp"], content, re.MULTILINE)
+                        if content
+                        else None
+                    )
 
                     if match:
                         try:

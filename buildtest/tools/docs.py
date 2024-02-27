@@ -52,6 +52,36 @@ def write_example(fname, command):
     console.print(firstNlines)
 
 
+def build_aws_examples(autogen_dir):
+    """This method will build AWS examples for the tutorial
+
+    Args:
+        autogen_dir (str): Directory where auto generated documentation examples will be written.
+    """
+
+    build_dir = os.path.join(autogen_dir, "aws", "build")
+
+    create_dir(build_dir)
+
+    AWS_EXAMPLE_DIR = os.path.join(BUILDTEST_ROOT, "aws_tutorial")
+
+    commands_to_run = {
+        f"{build_dir}/hello_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/hello_world/hello.yml",
+        f"{build_dir}/hello_inspect.txt": "buildtest inspect query -o -t hello_build",
+        f"{build_dir}/multi_compiler_hello_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/hello/multi_compiler_hello.yml",
+        f"{build_dir}/multi_compiler_hello_inspect.txt": "buildtest inspect query -o -t hello_world_multi_compiler/",
+        f"{build_dir}/tensorflow_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/tensorflow/tensorflow.yml",
+        f"{build_dir}/tensorflow_inspect.txt": "buildtest inspect query -o run_tensorflow_model",
+        f"{build_dir}/mpiproc_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/mpiproc.yml",
+        f"{build_dir}/mpiproc_inspect.txt": "buildtest inspect query -o mpiprocname",
+        f"{build_dir}/osu_bandwidth_test_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/osu_bandwidth_test.yml",
+        f"{build_dir}/mpiproc_inspect.txt": "buildtest inspect query -o osu_bandwidth osu_bandwith_perf",
+    }
+
+    for fname, command in commands_to_run.items():
+        write_example(fname, command)
+
+
 def build_spack_examples(autogen_dir):
     """This method will build spack examples for the tutorial
 
