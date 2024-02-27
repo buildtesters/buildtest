@@ -55,4 +55,3 @@ def generate_aws_examples():
     config.validate()
 
     build_aws_examples(autogen_examples_dir)
-
