@@ -3,13 +3,13 @@ buildspecs:
     type: script
     executor: generic.local.bash
     description: Run OSU Bandwidth Test
-    run:  mpirun -np 2 ./osu_bw
+    run:  mpirun -np 2 osu_bw
 
   osu_bandwidth_perf:
     type: script
     executor: generic.local.bash
     description: Run OSU Bandwidth Performance Test
-    run:  mpirun -np 2 ./osu_bw
+    run:  mpirun -np 2 osu_bw
     metrics:
       osu_bw:
         type: float
