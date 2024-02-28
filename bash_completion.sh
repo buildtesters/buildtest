@@ -555,8 +555,16 @@ _buildtest ()
       local opts="--help --with-aliases -a -h"
       COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
       ;;
+    tutorial-examples)
+      local cmds="aws spack"
+      local opts="--help -h"
+      COMPREPLY=( $( compgen -W "${cmds}" -- "${cur}" ) )
+      if [[ $cur == -* ]] ; then
+        COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
+      fi
+      ;;
     # options with only --help
-    debugreport|info|docs|tutorial-examples)
+    debugreport|info|docs)
       local opts="-h --help"
       COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
       ;;
