@@ -81,8 +81,8 @@ def build_aws_examples(autogen_dir):
         f"{build_dir}/docker_helloworld_inspect.txt": "buildtest inspect query -o -t hello_world_docker",
         f"{build_dir}/singularity_helloworld_build.txt": f"buildtest build -b {BUILDTEST_ROOT}/tutorials/containers/hello_world_singularity.yml",
         f"{build_dir}/singularity_helloworld_inspect.txt": "buildtest inspect query -o -t hello_world_singularity",
-        f"{build_dir}/container_executor_list.txt": f"buildtest -c $BUILDTEST_ROOT/buildtest/settings/container_executor.yml config executors list --yaml",
-        f"{build_dir}/container_executor_build.txt": f"buildtest -c $BUILDTEST_ROOT/buildtest/settings/container_executor.yml build -b $BUILDTEST_ROOT/tutorials/containers/container_executor/ubuntu.yml",
+        f"{build_dir}/container_executor_list.txt": "buildtest -c $BUILDTEST_ROOT/buildtest/settings/container_executor.yml config executors list --yaml",
+        f"{build_dir}/container_executor_build.txt": "buildtest -c $BUILDTEST_ROOT/buildtest/settings/container_executor.yml build -b $BUILDTEST_ROOT/tutorials/containers/container_executor/ubuntu.yml",
         f"{build_dir}/container_executor_inspect.txt": "buildtest inspect query -o -t -b ubuntu_container_example",
     }
 
