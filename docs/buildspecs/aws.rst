@@ -71,6 +71,36 @@ Shown below is the compiler declaration
 
 .. program-output:: cat aws_examples/compiler_list_yaml.txt
 
+OpenMP Test with custom compiler configuration
+----------------------------------------------
+
+In this next example, we will compile a OpenMP code using GNU compiler and specify custom compiler flags and environment variable. We will
+work with a Hello World OpenMP code that uses OpenMP pragma to parallelize the code. The source code is the following
+
+.. literalinclude:: ../../aws_tutorial/openmp_hello.c
+    :language: c
+
+In order to build OpenMP code, we need to use ``-fopenmp`` flag to enable OpenMP support. We will set ``OMP_NUM_THREADS`` environment variable
+to specify number of OpenMP theads which will differ for each compiler test. We introduce a keyword ``config`` that allows us to specify
+customize compiler flags and environment variables. The ``env`` property is used to set environment variable for each compiler test and ``cflags`` is
+used to set compiler flags inorder to compile the test. This value is stored in environment **BUILDTEST_CFLAGS** that will be used in ``run`` section
+for compiling the source code.
+
+.. literalinclude:: ../../aws_tutorial/openmp_example_custom_compiler.yml
+    :language: yaml
+    :emphasize-lines: 6-19
+
+
+Let's try building this example and inspect the test results to see what happens.
+
+.. dropdown:: ``buildtest build -b $BUILDTEST_ROOT/aws_tutorial/openmp_example_custom_compiler.yml``
+
+    .. program-output:: cat aws_examples/openmp_example_build.txt
+
+    We will see in the generated test the values ``OMP_NUM_THREADS`` and ``BUILDTEST_CFLAGS`` are set for each compiler test. The ``OMP_NUM_THREADS``
+    will impact the number of threads used to run code therefore we will see different output for each compiler test.
+
+    .. program-output:: cat aws_examples/openmp_example_inspect.txt
 
 Testing a MPI Code
 --------------------
