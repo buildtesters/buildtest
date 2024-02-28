@@ -26,14 +26,114 @@ Hello World Compilation
 Let's start off with a simple hello world compilation in C using the GNU compiler. We have the following buildspec
 that will compile a code source code ``hello.c`` using the ``gcc`` compiler wrapper.
 
-.. literalinclude:: ../../aws_tutorials/hello_world/hello_world.yml
+.. literalinclude:: ../../aws_tutorial/hello_world/hello.yml
     :language: yaml
+    :emphasize-lines: 7-8
 
 The source code is the following
 
-.. literalinclude:: ../../aws_tutorials/hello_world/hello.c
+.. literalinclude:: ../../aws_tutorial/hello_world/hello.c
     :language: c
 
 Let's try building this example and inspect the test results to see what happens.
 
+.. dropdown:: ``buildtest build -b $BUILDTEST_ROOT/aws_tutorial/hello_world/hello.yml``
 
+    .. program-output:: cat aws_examples/hello_build.txt
+
+    .. program-output:: cat aws_examples/hello_inspect.txt
+
+Multi Compiler Test
+-------------------
+
+Buildtest supports multiple test creation based on compiler selection using ``compilers`` property. This can be useful to test
+a single test with multiple compilers. In this next example, we will attempt to compile the Hello World test in previous example using
+2 versions of GNU compiler. The ``name`` property is used to search for compilers in the configuration file. The :ref:`compilers` section
+covers in detail how to define compilers in buildtest configuration.
+
+.. literalinclude:: ../../aws_tutorial/hello_world/multi_compiler_hello.yml
+    :language: yaml
+    :emphasize-lines: 6-7
+
+Let's try building this example, you will see there are now 2 tests created, one for each compiler.
+
+.. dropdown:: ``buildtest build -b $BUILDTEST_ROOT/aws_tutorial/hello_world/multi_compiler_hello.yml``
+
+    .. program-output:: cat aws_examples/multi_compiler_hello_build.txt
+
+    Take note in the generated test output, the variables **BUILDTEST_CC**, **BUILDTEST_CXX** and **BUILDTEST_FC** are using the compiler wrappers
+    for each compiler.
+
+    .. program-output:: cat aws_examples/multi_compiler_hello_inspect.txt
+
+We can see the compiler configuration using the command ``buildtest config compilers list --yaml`` which will print the output in YAML format.
+Shown below is the compiler declaration
+
+.. program-output:: cat aws_examples/compiler_list_yaml.txt
+
+
+Testing a MPI Code
+--------------------
+
+This image comes with several MPI flavors such as OpenMPI, mvapich2. In the next example we will run a MPI Proc Name test
+on login node that will run with 8 processes. The source code is available in the ``$HOME/examples`` directory as part of the image.
+
+.. literalinclude:: ../../aws_tutorial/mpiproc.yml
+    :language: yaml
+    :emphasize-lines: 8-9
+
+We can run this test using the following command
+
+.. dropdown:: ``buildtest build -b $BUILDTEST_ROOT/aws_tutorial/mpiproc.yml``
+
+    .. program-output:: cat aws_examples/mpiproc_build.txt
+
+    We can see this test prints Hello World message from each process.
+
+    .. program-output:: cat aws_examples/mpiproc_inspect.txt
+
+OSU Microbenchmark
+-------------------
+
+The `OSU Microbenchmark <https://mvapich.cse.ohio-state.edu/benchmarks/>`_ is a collection of MPI-based benchmarks developed at Ohio State University.
+This benchmark is used to measure performance of MPI libraries and is a popular benchmark suite for MPI. We will run the ``osu_bw`` test
+which measures bandwidth. The test requires we specify 2 processes.
+
+In this next example, we will run 2 tests, the first is simply invoking the ``osu_bw`` test with 2 processes, and the second test will
+run the same test and use :ref:`performance metrics <perf_checks>` to compare the bandwidth result. The ``metrics`` property is used to
+capture performance metrics that can be used for comparison. We will use the :ref:`assert_ge <assert_ge>` status check that
+will do a greater than or equal comparison with reference value. The metrics will capture performance results for message length **16384** and
+perform a comparison with reference value of 10000. If the test result is greater than or equal to 10000, the test will pass otherwise it will fail.
+
+.. literalinclude:: ../../aws_tutorial/osu_bandwidth_test.yml
+    :language: yaml
+    :emphasize-lines: 6, 13-24
+
+Let's run the test and see the results.
+
+.. dropdown:: ``buildtest build -b $BUILDTEST_ROOT/aws_tutorial/osu_bandwidth_test.yml``
+
+    .. program-output:: cat aws_examples/osu_bandwidth_test_build.txt
+
+    Take note in the output of the second test, we will see a list of performance metrics captured in table output. If metrics is not captured,
+    the value will be undefined.
+
+    .. program-output:: cat aws_examples/osu_bandwidth_test_inspect.txt
+
+Tensorflow Test
+---------------
+
+In this next exercise, we provide a tensorflow test in python that train a model and generate a predicition model. We have the following source code
+
+.. literalinclude:: ../../aws_tutorial/tensorflow_model.py
+    :language: python
+
+The buildspec for this test is the following, where we run the test using ``python3`` interpreter.
+
+.. literalinclude:: ../../aws_tutorial/tensorflow.yml
+    :language: yaml
+
+Please run the test yourself and inspect the output. You will want to run the following commands::
+
+    buildtest build -b $BUILDTEST_ROOT/aws_tutorial/tensorflow.yml
+    buildtest inspect query -o run_tensorflow_model
