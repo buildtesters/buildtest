@@ -7,9 +7,9 @@ Buildspec Tutorial
    :maxdepth: 1
 
    buildspecs/buildspec_overview
+   buildspecs/aws
    buildspecs/spack
    buildspecs/e4s_testsuite
-   buildspecs/aws
 
 
 Please proceed to :ref:`buildspec_overview` to get an overview of how to write buildspecs. This section can be done on your workstation.

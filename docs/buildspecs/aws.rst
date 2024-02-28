@@ -167,3 +167,65 @@ Please run the test yourself and inspect the output. You will want to run the fo
 
     buildtest build -b $BUILDTEST_ROOT/aws_tutorial/tensorflow.yml
     buildtest inspect query -o run_tensorflow_model
+
+Running Tests in Containers
+----------------------------
+
+Buildtest has support for :ref:`running tests in containers <running_tests_containers>` such as ``docker`` and ``singularity``. In this
+next examples, we will show how to run a hello world test in ``docker`` and ``singularity`` container. Let's start off with ``docker``, we
+introduce a new property ``container`` that allows us to specify the container settings. The ``platform`` and ``image`` are required properties
+that specifies the container platform (e.g., docker, singularity, podman) and the image name.
+
+.. literalinclude:: ../tutorials/containers/hello_world.yml
+   :language: yaml
+   :emphasize-lines: 6-8
+
+Let's run the test and inspect the output, you will notice the test output will print a message from the container. This test will run in a docker container,
+if you look at the generated test content you will see a ``docker run`` invocation.
+
+.. dropdown:: ``buildtest build -b $BUILDTEST_ROOT/tutorials/containers/hello_world.yml``
+
+    .. program-output:: cat aws_examples/docker_helloworld_build.txt
+
+    .. program-output:: cat aws_examples/docker_helloworld_inspect.txt
+
+In the next example, we will run the same test in a ``singularity`` container. To do this we will simply change the
+``platform`` to ``singularity`` and specify the ``image`` name. Since singularity can pull images from different registries we will specify
+``docker:://`` prefix to pull the image from docker hub.
+
+.. literalinclude:: ../tutorials/containers/hello_world_singularity.yml
+   :language: yaml
+   :emphasize-lines: 6-8
+
+Buildtest will invoke ``singularity run`` and bind mount the stage directory into the container and execute test from the container. Take note that
+that singularity will volume mount test into ``/buildtest`` in the container and then run test from that directory.
+
+.. dropdown:: ``buildtest build -b $BUILDTEST_ROOT/tutorials/containers/hello_world_singularity.yml``
+
+    .. program-output:: cat aws_examples/singularity_helloworld_build.txt
+
+    .. program-output:: cat aws_examples/singularity_helloworld_inspect.txt
+
+In this last example, we will run a test using a :ref:`container executor <container_executor>` by defining a custom executor based on a container
+image. In all of our previous examples, we were running tests using executor ``generic.local.bash`` which is a generic executor
+that runs tests on the local system using ``bash`` shell.
+
+Let's take a look at the executor configuration by running the following command. The ``container`` keyword under ``executors`` section is used
+to define container executors. We can specify arbitrary name for the executor and specify the container image and platform.
+
+.. program-output:: cat aws_examples/container_executor_list.txt
+
+We have the following buildspec that will run test using a custom executor ``generic.container.ubuntu``.
+
+.. literalinclude:: ../tutorials/containers/container_executor/ubuntu.yml
+   :language: yaml
+   :emphasize-lines: 4
+
+Let's run the test and inspect the output. You will notice the test is run in a ubuntu 20.04 container. In the output of ``df -h`` you will
+see the filesystem is from the container image with an entry ``/buildtest`` that is bind mounted from the host system.
+
+.. dropdown:: ``buildtest build -b $BUILDTEST_ROOT/tutorials/containers/container_executor/ubuntu.yml``
+
+    .. program-output:: cat aws_examples/container_executor_build.txt
+
+    .. program-output:: cat aws_examples/container_executor_inspect.txt
