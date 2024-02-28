@@ -70,6 +70,7 @@ def build_aws_examples(autogen_dir):
         f"{build_dir}/hello_inspect.txt": "buildtest inspect query -o -t hello_world_example",
         f"{build_dir}/multi_compiler_hello_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/hello_world/multi_compiler_hello.yml",
         f"{build_dir}/multi_compiler_hello_inspect.txt": "buildtest inspect query -o -t hello_world_multi_compiler/",
+        f"{build_dir}/compiler_list_yaml.txt": "buildtest config compilers list --yaml",
         f"{build_dir}/tensorflow_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/tensorflow.yml",
         f"{build_dir}/tensorflow_inspect.txt": "buildtest inspect query -o run_tensorflow_model",
         f"{build_dir}/mpiproc_build.txt": f"buildtest build -b {AWS_EXAMPLE_DIR}/mpiproc.yml",
