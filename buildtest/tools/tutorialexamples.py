@@ -10,7 +10,7 @@ from buildtest.tools.docs import build_aws_examples, build_spack_examples
 from buildtest.utils.file import create_dir, is_dir, is_file
 
 
-def generate_tutorial_examples():
+def generate_tutorial_examples(dryrun=None):
     """This method is the entry point for "buildtest tutorial-examples" command which generates
     documentation examples for Buildtest Tutorial.
     """
@@ -37,10 +37,11 @@ def generate_tutorial_examples():
     create_dir(autogen_examples_dir)
 
     clean(config, yes=True)
-    build_spack_examples(autogen_examples_dir)
+    build_spack_examples(autogen_examples_dir, dryrun=dryrun)
 
 
-def generate_aws_examples():
+def generate_aws_examples(dryrun=None):
+
     if getpass.getuser() != "ubuntu" or os.getenv("HOME") != "/home/ubuntu":
         sys.exit(
             "This script can only be run in AWS instance using E4SPro image. Please check the AWS Market Place: https://aws.amazon.com/marketplace for the image "
@@ -54,4 +55,5 @@ def generate_aws_examples():
     config.detect_system()
     config.validate(moduletool="environment-modules")
 
-    build_aws_examples(autogen_examples_dir)
+    clean(config, yes=True)
+    build_aws_examples(autogen_examples_dir, dryrun=dryrun)

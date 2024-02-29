@@ -595,17 +595,24 @@ class BuildTestParser:
     def tutorial_menu(self):
         parser = self.subparsers.choices["tutorial-examples"]
 
-        unittests_args = [
+        tutorial = [
             (
                 ["examples"],
                 {
                     "help": "Select which tutorial examples to build",
                     "choices": ["aws", "spack"],
                 },
-            )
+            ),
+            (
+                ["-d", "--dryrun"],
+                {
+                    "action": "store_true",
+                    "help": "Just print commands that will be generated without running them",
+                },
+            ),
         ]
 
-        for args, kwargs in unittests_args:
+        for args, kwargs in tutorial:
             parser.add_argument(*args, **kwargs)
 
     def unittest_menu(self):

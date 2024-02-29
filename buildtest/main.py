@@ -385,9 +385,9 @@ def main():
 
     elif args.subcommands == "tutorial-examples":
         if args.examples == "spack":
-            generate_tutorial_examples()
+            generate_tutorial_examples(dryrun=args.dryrun)
         elif args.examples == "aws":
-            generate_aws_examples()
+            generate_aws_examples(dryrun=args.dryrun)
 
     elif args.subcommands in ["stylecheck", "style"]:
         run_style_checks(

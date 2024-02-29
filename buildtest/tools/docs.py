@@ -52,7 +52,7 @@ def write_example(fname, command):
     console.print(firstNlines)
 
 
-def build_aws_examples(autogen_dir):
+def build_aws_examples(autogen_dir, dryrun=None):
     """This method will build AWS examples for the tutorial
 
     Args:
@@ -86,15 +86,21 @@ def build_aws_examples(autogen_dir):
         f"{build_dir}/container_executor_inspect.txt": "buildtest inspect query -o -t -b ubuntu_container_example",
     }
 
+    if dryrun:
+        for command in commands_to_run.values():
+            console.print(command)
+        return
+
     for fname, command in commands_to_run.items():
         write_example(fname, command)
 
 
-def build_spack_examples(autogen_dir):
+def build_spack_examples(autogen_dir, dryrun=None):
     """This method will build spack examples for the tutorial
 
     Args:
         autogen_dir (str): Directory where auto generated documentation examples will be written.
+        dryrun (bool, optional): If True we print commands to run and return. If False we execute commands. Defaults to None.
     """
 
     build_dir = os.path.join(autogen_dir, "spack", "build")
@@ -134,6 +140,11 @@ def build_spack_examples(autogen_dir):
         f"{inspect_dir}/clone_spack.txt": "buildtest inspect query -o -t clone_spack_automatically clone_spack_and_specify_root",
         f"{inspect_dir}/e4s_testsuite_mpich.txt": "buildtest inspect query -o -e -t mpich_e4s_testsuite",
     }
+
+    if dryrun:
+        for command in commands_to_run.values():
+            console.print(command)
+        return
 
     for fname, command in commands_to_run.items():
         write_example(fname, command)
