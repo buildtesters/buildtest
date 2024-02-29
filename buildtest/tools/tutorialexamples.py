@@ -116,17 +116,13 @@ def write_example(fname, command):
     console.print(firstNlines)
 
 
-def build_aws_examples(autogen_dir, dryrun=None):
+def build_aws_examples(build_dir, dryrun=None):
     """This method will build AWS examples for the tutorial
 
     Args:
-        autogen_dir (str): Directory where auto generated documentation examples will be written.
+        build_dir (str): Directory where auto generated documentation examples will be written.
         dryrun (bool, optional): If True we print commands to run and return. If False we execute commands. Defaults to None.
     """
-
-    build_dir = os.path.join(autogen_dir)
-
-    create_dir(build_dir)
 
     AWS_EXAMPLE_DIR = os.path.join(BUILDTEST_ROOT, "aws_tutorial")
 
