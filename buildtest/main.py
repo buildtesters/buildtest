@@ -381,7 +381,12 @@ def main():
         )
 
     elif args.subcommands == "tutorial-examples":
-        generate_tutorial_examples(examples=args.examples, dryrun=args.dryrun, write=args.write)
+        generate_tutorial_examples(
+            examples=args.examples,
+            dryrun=args.dryrun,
+            write=args.write,
+            failfast=args.failfast,
+        )
 
     elif args.subcommands in ["stylecheck", "style"]:
         run_style_checks(

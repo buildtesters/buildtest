@@ -616,7 +616,8 @@ class BuildTestParser:
                     "action": "store_true",
                     "help": "Write the content of each command to file",
                 },
-            )
+            ),
+            (["--failfast"], {"action": "store_true", "help": "Stop on first failure"}),
         ]
 
         for args, kwargs in tutorial:
