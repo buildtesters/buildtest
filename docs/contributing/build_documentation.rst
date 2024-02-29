@@ -91,6 +91,12 @@ on google style see: https://google.github.io/styleguide/pyguide.html
 Generating Documentation Examples for Buildtest Tutorial
 ----------------------------------------------------------
 
+The ``buildtest tutorial-examples`` command is used for auto-generating examples for the buildtest tutorial. This command will serve the purpose of semi-automating
+the test creation where examples can't be run on readthedocs platform. Shown below is the command usage for ``buildtest tutorial-examples``.
+
+.. command-output:: buildtest tutorial-examples --help
+   :shell:
+
 The documentation examples for the :ref:`buildtest_spack_integration` are run inside the container image
 `ghcr.io/buildtesters/buildtest_spack:latest <https://ghcr.io/buildtesters/buildtest_spack:latest>`_ which means that some of the
 example output needs to be generated manually.
@@ -121,8 +127,13 @@ Once your setup is complete, you can run the spack generated examples in dryrun 
 
         buildtest tutorial-examples spack --dryrun
 
-This will print a list of buildtest commands that will be run without actually executing them. If you want to generate the examples, simply remove the
-``--dryrun`` flag.
+This will print a list of buildtest commands that will be run without actually executing them. If you want to test the examples, you can
+run the following command::
+
+    buildtest tutorial-examples spack
+
+If you want buildtest to write the changes to the documentation, you will need to use the ``--write`` flag which will run the example tests and write
+the output to file.
 
 If you want to generate the examples for :ref:`buildtest_aws`, you will need to access the E4S Pro container image and clone buildtest, checkout to your
 branch and then run the command::
