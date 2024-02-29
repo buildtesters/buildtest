@@ -7,7 +7,6 @@ import sys
 from buildtest.cli.clean import clean
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_ROOT, TUTORIALS_SETTINGS_FILE, console
-from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import create_dir, is_dir, is_file, write_file
 
 
