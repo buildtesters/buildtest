@@ -1,0 +1,40 @@
+$ buildtest inspect query -o -t hello_world_singularity 
+────────────────────────────────────────────────────────────────────────────────────────────────────── hello_world_singularity/8c4c7c79-b297-40ad-a5ff-bf810957f0c7 ───────────────────────────────────────────────────────────────────────────────────────────────────────
+Executor: generic.local.bash
+Description: run hello-world container using singularity
+State: PASS
+Returncode: 0
+Runtime: 0.443567 sec
+Starttime: 2024/02/28 21:58:10
+Endtime: 2024/02/28 21:58:10
+Command: bash hello_world_singularity_build.sh
+Test Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/8c4c7c79/hello_world_singularity.sh
+Build Script: /home/ubuntu/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/8c4c7c79/hello_world_singularity_build.sh
+Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/8c4c7c79/hello_world_singularity.out
+Error File: /home/ubuntu/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/8c4c7c79/hello_world_singularity.err
+Log File: /home/ubuntu/buildtest/var/logs/buildtest_s78629tb.log
+────────────────────────────────────────────────────────── Output File: /home/ubuntu/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/8c4c7c79/hello_world_singularity.out ──────────────────────────────────────────────────────────
+Hello from Docker!                                                                                                                                                                                                                                                         
+This message shows that your installation appears to be working correctly.                                                                                                                                                                                                 
+To generate this message, Docker took the following steps:                                                                                                                                                                                                                 
+ 1. The Docker client contacted the Docker daemon.                                                                                                                                                                                                                         
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.                                                                                                                                                                                                  
+    (amd64)                                                                                                                                                                                                                                                                
+ 3. The Docker daemon created a new container from that image which runs the                                                                                                                                                                                               
+    executable that produces the output you are currently reading.                                                                                                                                                                                                         
+ 4. The Docker daemon streamed that output to the Docker client, which sent it                                                                                                                                                                                             
+    to your terminal.                                                                                                                                                                                                                                                      
+To try something more ambitious, you can run an Ubuntu container with:                                                                                                                                                                                                     
+ $ docker run -it ubuntu bash                                                                                                                                                                                                                                              
+Share images, automate workflows, and more with a free Docker ID:                                                                                                                                                                                                          
+ https://hub.docker.com/                                                                                                                                                                                                                                                   
+For more examples and ideas, visit:                                                                                                                                                                                                                                        
+ https://docs.docker.com/get-started/                                                                                                                                                                                                                                      
+Test Complete!                                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                                           
+─────────────────────────────────────────────────────────── Test File: /home/ubuntu/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/8c4c7c79/hello_world_singularity.sh ────────────────────────────────────────────────────────────
+#!/usr/bin/bash                                                                                                                                                                                                                                                            
+set -eo pipefail                                                                                                                                                                                                                                                           
+# Content of run section                                                                                                                                                                                                                                                   
+singularity run -B /home/ubuntu/buildtest/var/tests/generic.local.bash/hello_world_singularity/hello_world_singularity/8c4c7c79/stage:/buildtest docker://hello-world                                                                                                      
+echo 'Test Complete!'                                                                                                                                                                                                                                                      

@@ -335,6 +335,7 @@ class BuildTestParser:
         self.cdash_menu()
         self.unittest_menu()
         self.stylecheck_menu()
+        self.tutorial_menu()
         self.misc_menu()
 
     def parse(self):
@@ -589,6 +590,22 @@ class BuildTestParser:
         ]
 
         for args, kwargs in stylecheck_args:
+            parser.add_argument(*args, **kwargs)
+
+    def tutorial_menu(self):
+        parser = self.subparsers.choices["tutorial-examples"]
+
+        unittests_args = [
+            (
+                ["examples"],
+                {
+                    "help": "Select which tutorial examples to build",
+                    "choices": ["aws", "spack"],
+                },
+            )
+        ]
+
+        for args, kwargs in unittests_args:
             parser.add_argument(*args, **kwargs)
 
     def unittest_menu(self):

@@ -1,0 +1,86 @@
+$ buildtest build -b /home/ubuntu/buildtest/aws_tutorial/hello_world/multi_compiler_hello.yml 
+╭──────────────────────────────────────────────────────────── buildtest summary ─────────────────────────────────────────────────────────────╮                                                                                                                             
+│                                                                                                                                            │                                                                                                                             
+│ User:               ubuntu                                                                                                                 │                                                                                                                             
+│ Hostname:           ip-172-31-96-59                                                                                                        │                                                                                                                             
+│ Platform:           Linux                                                                                                                  │                                                                                                                             
+│ Current Time:       2024/02/28 18:34:46                                                                                                    │                                                                                                                             
+│ buildtest path:     /home/ubuntu/buildtest/bin/buildtest                                                                                   │                                                                                                                             
+│ buildtest version:  1.8                                                                                                                    │                                                                                                                             
+│ python path:        /usr/bin/python3                                                                                                       │                                                                                                                             
+│ python version:     3.8.10                                                                                                                 │                                                                                                                             
+│ Configuration File: /home/ubuntu/buildtest/buildtest/settings/aws.yml                                                                      │                                                                                                                             
+│ Test Directory:     /home/ubuntu/buildtest/var/tests                                                                                       │                                                                                                                             
+│ Report File:        /home/ubuntu/buildtest/var/report.json                                                                                 │                                                                                                                             
+│ Command:            /home/ubuntu/buildtest/bin/buildtest build -b /home/ubuntu/buildtest/aws_tutorial/hello_world/multi_compiler_hello.yml │                                                                                                                             
+│                                                                                                                                            │                                                                                                                             
+╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯                                                                                                                             
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+                           Discovered buildspecs                            
+╔══════════════════════════════════════════════════════════════════════════╗
+║ buildspec                                                                ║
+╟──────────────────────────────────────────────────────────────────────────╢
+║ /home/ubuntu/buildtest/aws_tutorial/hello_world/multi_compiler_hello.yml ║
+╟──────────────────────────────────────────────────────────────────────────╢
+║ Total: 1                                                                 ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+
+Total Discovered Buildspecs:  1
+Total Excluded Buildspecs:  0
+Detected Buildspecs after exclusion:  1
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Valid Buildspecs: 1
+Invalid Buildspecs: 0
+/home/ubuntu/buildtest/aws_tutorial/hello_world/multi_compiler_hello.yml: VALID
+Total builder objects created: 2
+                                                                                                               Builders by type=script                                                                                                               
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ builder                             ┃ type   ┃ executor           ┃ compiler   ┃ nodes ┃ procs ┃ description                                                           ┃ buildspecs                                                               ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ hello_world_multi_compiler/7ea7082b │ script │ generic.local.bash │ gcc_11.4.0 │ None  │ None  │ Hello world compilation in C, C++ and Fortran with multiple compilers │ /home/ubuntu/buildtest/aws_tutorial/hello_world/multi_compiler_hello.yml │
+├─────────────────────────────────────┼────────┼────────────────────┼────────────┼───────┼───────┼───────────────────────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────┤
+│ hello_world_multi_compiler/543d59fb │ script │ generic.local.bash │ gcc_9.4.0  │ None  │ None  │ Hello world compilation in C, C++ and Fortran with multiple compilers │ /home/ubuntu/buildtest/aws_tutorial/hello_world/multi_compiler_hello.yml │
+└─────────────────────────────────────┴────────┴────────────────────┴────────────┴───────┴───────┴───────────────────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────┘
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+hello_world_multi_compiler/7ea7082b: Creating Test Directory: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/7ea7082b
+hello_world_multi_compiler/543d59fb: Creating Test Directory: /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/543d59fb
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Spawning 8 processes for processing builders
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+hello_world_multi_compiler/7ea7082b does not have any dependencies adding test to queue
+hello_world_multi_compiler/543d59fb does not have any dependencies adding test to queue
+       Builders Eligible to Run        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Builder                             ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ hello_world_multi_compiler/7ea7082b │
+│ hello_world_multi_compiler/543d59fb │
+└─────────────────────────────────────┘
+hello_world_multi_compiler/7ea7082b: Current Working Directory : /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/7ea7082b/stage
+hello_world_multi_compiler/543d59fb: Current Working Directory : /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/543d59fb/stage
+hello_world_multi_compiler/543d59fb: Running Test via command: bash hello_world_multi_compiler_build.sh
+hello_world_multi_compiler/7ea7082b: Running Test via command: bash hello_world_multi_compiler_build.sh
+hello_world_multi_compiler/7ea7082b: Test completed in 0.545868 seconds with returncode: 0
+hello_world_multi_compiler/7ea7082b: Writing output file -  /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/7ea7082b/hello_world_multi_compiler.out
+hello_world_multi_compiler/7ea7082b: Writing error file - /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/7ea7082b/hello_world_multi_compiler.err
+hello_world_multi_compiler/543d59fb: Test completed in 0.571412 seconds with returncode: 0
+hello_world_multi_compiler/543d59fb: Writing output file -  /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/543d59fb/hello_world_multi_compiler.out
+hello_world_multi_compiler/543d59fb: Writing error file - /home/ubuntu/buildtest/var/tests/generic.local.bash/multi_compiler_hello/hello_world_multi_compiler/543d59fb/hello_world_multi_compiler.err
+                                        Test Summary                                        
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
+┃ builder                             ┃ executor           ┃ status ┃ returncode ┃ runtime ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
+│ hello_world_multi_compiler/7ea7082b │ generic.local.bash │ PASS   │ 0          │ 0.546   │
+├─────────────────────────────────────┼────────────────────┼────────┼────────────┼─────────┤
+│ hello_world_multi_compiler/543d59fb │ generic.local.bash │ PASS   │ 0          │ 0.571   │
+└─────────────────────────────────────┴────────────────────┴────────┴────────────┴─────────┘
+
+
+
+Passed Tests: 2/2 Percentage: 100.000%
+Failed Tests: 0/2 Percentage: 0.000%
+
+
+Adding 2 test results to report file: /home/ubuntu/buildtest/var/report.json
+Writing Logfile to /home/ubuntu/buildtest/var/logs/buildtest_bknghril.log
