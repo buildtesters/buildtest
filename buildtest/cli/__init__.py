@@ -610,6 +610,13 @@ class BuildTestParser:
                     "help": "Just print commands that will be generated without running them",
                 },
             ),
+            (
+                ["-w", "--write"],
+                {
+                    "action": "store_true",
+                    "help": "Write the content of each command to file",
+                },
+            )
         ]
 
         for args, kwargs in tutorial:

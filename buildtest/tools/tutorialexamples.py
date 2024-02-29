@@ -11,13 +11,14 @@ from buildtest.exceptions import BuildTestError
 from buildtest.utils.file import create_dir, is_dir, is_file, write_file
 
 
-def generate_tutorial_examples(examples, dryrun=None):
+def generate_tutorial_examples(examples, dryrun=None, write=None):
     """This method is the entry point for "buildtest tutorial-examples" command which generates
     documentation examples for Buildtest Tutorial.
 
     Args:
         examples (str): The type of examples to generate. This can be either 'spack' or 'aws'
         dryrun (bool, optional): If set to True, we will perform a dryrun. Default is None.
+        write (bool, optional): If set to True, we will write output to file. Default is None.
     """
 
     settings_file = None
@@ -53,7 +54,8 @@ def generate_tutorial_examples(examples, dryrun=None):
     config.detect_system()
     config.validate(moduletool=moduletool)
 
-    if not dryrun:
+    if write:
+
         if is_file(autogen_examples_dir):
             os.remove(autogen_examples_dir)
 
@@ -62,7 +64,7 @@ def generate_tutorial_examples(examples, dryrun=None):
 
         create_dir(autogen_examples_dir)
 
-        clean(config, yes=True)
+    clean(config, yes=True)
 
     if examples == "spack":
         build_spack_examples(autogen_examples_dir, dryrun=dryrun)
@@ -91,17 +93,18 @@ def run(query):
     return command.stdout
 
 
-def write_example(fname, command):
+def write_example(fname, command, content):
     """Given a shell command, we will write output to file. We will print first
     10 lines from upon writing file to ensure file was written properly.
 
     Args:
         fname (str): Path to file where output of command will be written
         command (str): Command that was executed
+        content (str): Content to write to file
 
     """
     out = f"$ {command} \n"
-    out += run(command)
+    out += content
     write_file(fname, out)
 
     console.print(f"Writing output to {fname}")
@@ -116,12 +119,13 @@ def write_example(fname, command):
     console.print(firstNlines)
 
 
-def build_aws_examples(build_dir, dryrun=None):
+def build_aws_examples(build_dir, dryrun=None, write=None):
     """This method will build AWS examples for the tutorial
 
     Args:
         build_dir (str): Directory where auto generated documentation examples will be written.
         dryrun (bool, optional): If True we print commands to run and return. If False we execute commands. Defaults to None.
+        write (bool, optional): If True we write output to file. Defaults to None.
     """
 
     AWS_EXAMPLE_DIR = os.path.join(BUILDTEST_ROOT, "aws_tutorial")
@@ -153,15 +157,18 @@ def build_aws_examples(build_dir, dryrun=None):
         return
 
     for fname, command in commands_to_run.items():
-        write_example(fname, command)
+        output = run(command)
+        if write:
+            write_example(fname=fname, command=command, content=output)
 
 
-def build_spack_examples(autogen_dir, dryrun=None):
+def build_spack_examples(autogen_dir, dryrun=None, write=None):
     """This method will build spack examples for the tutorial
 
     Args:
         autogen_dir (str): Directory where auto generated documentation examples will be written.
         dryrun (bool, optional): If True we print commands to run and return. If False we execute commands. Defaults to None.
+        write (bool, optional): If True we write output to file. Defaults to None.
     """
 
     build_dir = os.path.join(autogen_dir, "spack", "build")
@@ -208,4 +215,6 @@ def build_spack_examples(autogen_dir, dryrun=None):
         return
 
     for fname, command in commands_to_run.items():
-        write_example(fname, command)
+        output = run(command)
+        if write:
+            write_example(fname=fname, command=command, content=output)
