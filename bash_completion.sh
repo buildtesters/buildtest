@@ -557,7 +557,7 @@ _buildtest ()
       ;;
     tutorial-examples)
       local cmds="aws spack"
-      local opts="--help -h"
+      local opts="--help -h -d --dryrun --failfast -w --write"
       COMPREPLY=( $( compgen -W "${cmds}" -- "${cur}" ) )
       if [[ $cur == -* ]] ; then
         COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
