@@ -91,16 +91,15 @@ on google style see: https://google.github.io/styleguide/pyguide.html
 Generating Documentation Examples for Buildtest Tutorial
 ----------------------------------------------------------
 
-The documentation examples for the buildtest tutorial are run inside the container image
-ghcr.io/buildtesters/buildtest_spack:latest which means that some of the example output needs to be generated manually. There
-is a script `doc-examples.py <https://github.com/buildtesters/buildtest/blob/devel/scripts/spack_container/doc-examples.py>`_ that
-is responsible for auto-generating the documentation examples inside the container.
+The documentation examples for the :ref:`buildtest_spack_integration` are run inside the container image
+`ghcr.io/buildtesters/buildtest_spack:latest <https://ghcr.io/buildtesters/buildtest_spack:latest>`_ which means that some of the
+example output needs to be generated manually.
 
 To get into the container along with the buildtest codebase you will need to run the following commands
 
 .. Note::
 
-   You may need to `source /etc/profile` in your container if you see module command is not found.
+   You may need to `source /etc/profile` in your container if you see **module command is not found**.
 
 .. Note::
 
@@ -118,13 +117,17 @@ Once you are in the container run the following commands
     cd /home/spack/buildtest
     source scripts/spack_container/setup.sh
 
-Once your setup is complete, you can auto-generate documentation examples by running the following::
+Once your setup is complete, you can run the spack generated examples in dryrun mode by running::
 
-        buildtest tutorial-examples
+        buildtest tutorial-examples spack --dryrun
 
-Alternatively, the script can also be invoked via python as shown below::
+This will print a list of buildtest commands that will be run without actually executing them. If you want to generate the examples, simply remove the
+``--dryrun`` flag.
 
-        python scripts/spack_container/doc-examples.py
+If you want to generate the examples for :ref:`buildtest_aws`, you will need to access the E4S Pro container image and clone buildtest, checkout to your
+branch and then run the command::
+
+    buildtest tutorial-examples aws
 
 Please verify all the auto-generated examples that will be used in the documentation. Once you are content with all the changes please add all
 the changes via ``git add``.

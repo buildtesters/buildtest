@@ -1,3 +1,5 @@
+.. _buildtest_aws:
+
 Buildtest Tutorial on AWS
 =========================
 
