@@ -27,10 +27,10 @@ from buildtest.buildsystem.checks import (
     is_dir_check,
     is_file_check,
     is_symlink_check,
+    linecount_check,
     regex_check,
     returncode_check,
     runtime_check,
-    linecount_check
 )
 from buildtest.cli.compilers import BuildtestCompilers
 from buildtest.defaults import BUILDTEST_EXECUTOR_DIR, console
