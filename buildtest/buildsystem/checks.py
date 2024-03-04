@@ -648,6 +648,7 @@ def file_count_check(builder):
     console.print(f"[blue]{builder}[/]: File Count Check: {bool_check}")
     return bool_check
 
+
 def linecount_check(builder):
     """This method is used to perform line count check when ``linecount`` property is specified
 
@@ -672,4 +673,3 @@ def linecount_check(builder):
         f"[blue]{builder}[/]: Performing line count check on file: {fname} with {builder.status['linecount']['count']} (ref count) == {len(content.splitlines())} (actual count). Check: {comparison}"
     )
     return comparison
-
