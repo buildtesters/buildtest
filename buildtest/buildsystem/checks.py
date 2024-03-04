@@ -670,6 +670,6 @@ def linecount_check(builder):
     comparison = len(content.splitlines()) == builder.status["linecount"]["count"]
 
     console.print(
-        f"[blue]{builder}[/]: Performing line count check on file: {fname} with {builder.status['linecount']['count']} (ref count) == {len(content.splitlines())} (actual count). Check: {comparison}"
+        f"[blue]{builder}[/]: Performing line count check on file: {fname} with {builder.status['linecount']['count']} (ref count) == {len(content.splitlines())} (actual count). linecount Check: {comparison}"
     )
     return comparison
