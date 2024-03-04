@@ -440,6 +440,10 @@
           "type": "object",
             "description": "Check for number of lines in stdout or stderr stream. If linecount is set, buildtest will check for number of lines in stdout or stderr stream and compare with linecount. If linecount matches buildtest will report as ``PASS``",
             "additionalProperties": false,
+            "required": [
+              "stream",
+              "count"
+            ],
             "properties": {
                 "stream": {
                     "type": "string",

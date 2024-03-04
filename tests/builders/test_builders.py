@@ -184,3 +184,12 @@ def test_runtime_check():
         configuration=config,
     )
     cmd.build()
+
+def test_linecount():
+    """This test will perform status check with linecount"""
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "linecount.yml")],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()
