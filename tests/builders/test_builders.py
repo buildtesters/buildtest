@@ -185,6 +185,7 @@ def test_runtime_check():
     )
     cmd.build()
 
+
 def test_linecount():
     """This test will perform status check with linecount"""
     cmd = BuildTest(
