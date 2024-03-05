@@ -24,9 +24,9 @@ should expect the second test to fail.
 
 Let's try building this test and you will see the test will pass based on line count comparison.
 
-.. dropdown:: ``buildtest build -b $BUILDTEST_ROOT/tutorials/test_status/linecount.yml``
+.. dropdown:: ``buildtest build -b tutorials/test_status/linecount.yml``
 
-    .. command-output:: buildtest build -b $BUILDTEST_ROOT/tutorials/test_status/linecount.yml
+    .. command-output:: buildtest build -b tutorials/test_status/linecount.yml
 
     We can inspect the output and error file for each corresponding test and we will notice that both tests will contain 10 lines of output.
 
