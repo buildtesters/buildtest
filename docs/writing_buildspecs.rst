@@ -15,4 +15,4 @@ Writing Buildspecs
    writing_buildspecs/multi_executor
    writing_buildspecs/customize_shell
    writing_buildspecs/containers
-   writing_buildspecs/test_status
+   writing_buildspecs/status_check
