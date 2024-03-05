@@ -434,6 +434,31 @@
         },
         "mode": {
           "$ref": "#/definitions/mode"
+        },
+        "linecount":
+        {
+          "type": "object",
+            "description": "Check for number of lines in stdout or stderr stream. If linecount is set, buildtest will check for number of lines in stdout or stderr stream and compare with linecount. If linecount matches buildtest will report as ``PASS``",
+            "additionalProperties": false,
+            "required": [
+              "stream",
+              "count"
+            ],
+            "properties": {
+                "stream": {
+                    "type": "string",
+                    "enum": [
+                    "stdout",
+                    "stderr"
+                    ],
+                    "description": "The stream field can be stdout or stderr. buildtest will read the output or error stream after completion of test and check if linecount matches"
+                },
+                "count": {
+                    "type": "integer",
+                    "description": "Specify number of lines as reference value to compare with actual output",
+                    "minimum": 0
+                }
+            }
         }
       }
     },

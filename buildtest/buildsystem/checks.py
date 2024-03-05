@@ -647,3 +647,29 @@ def file_count_check(builder):
 
     console.print(f"[blue]{builder}[/]: File Count Check: {bool_check}")
     return bool_check
+
+
+def linecount_check(builder):
+    """This method is used to perform line count check when ``linecount`` property is specified
+
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+    """
+    content = None
+    fname = None
+    if builder.status["linecount"]["stream"] == "stdout":
+        logger.debug(
+            f"Detected regex stream 'stdout' so reading output file: {builder.metadata['outfile']}"
+        )
+        content = builder.output()
+        fname = builder.metadata["outfile"]
+    else:
+        content = builder.error()
+        fname = builder.metadata["errfile"]
+
+    comparison = len(content.splitlines()) == builder.status["linecount"]["count"]
+
+    console.print(
+        f"[blue]{builder}[/]: Performing line count check on file: {fname} with {builder.status['linecount']['count']} (ref count) == {len(content.splitlines())} (actual count). linecount Check: {comparison}"
+    )
+    return comparison
