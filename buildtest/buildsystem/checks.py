@@ -673,3 +673,38 @@ def linecount_check(builder):
         f"[blue]{builder}[/]: Performing line count check on file: {fname} with {builder.status['linecount']['count']} (ref count) == {len(content.splitlines())} (actual count). linecount Check: {comparison}"
     )
     return comparison
+
+
+def file_linecount_check(builder):
+    """This method is used to perform line count check when ``file_linecount`` property is specified
+
+    Args:
+        builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
+    """
+    assert_check = []
+    for file_check in builder.status["file_linecount"]:
+        resolved_fname = resolve_path(file_check["file"])
+        if not resolved_fname:
+            msg = (
+                f"[blue]{builder}[/]: Unable to resolve file path: {file_check['file']}"
+            )
+            logger.error(msg)
+            console.print(msg, style="red")
+            assert_check.append(False)
+            continue
+
+        if not is_file(resolved_fname):
+            msg = f"[blue]{builder}[/]: File: {resolved_fname} is not a file"
+            logger.error(msg)
+            console.print(msg, style="red")
+            assert_check.append(False)
+            continue
+
+        content = read_file(resolved_fname)
+        comparison = len(content.splitlines()) == file_check["count"]
+        console.print(
+            f"[blue]{builder}[/]: Performing line count check on file: {resolved_fname} with {file_check['count']} (ref count) == {len(content.splitlines())} (actual count). linecount Check: {comparison}"
+        )
+        assert_check.append(comparison)
+
+    return all(assert_check)
