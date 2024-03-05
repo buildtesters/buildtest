@@ -39,7 +39,7 @@ def test_buildspec_validate():
             ),
             os.path.join(
                 BUILDTEST_ROOT, "tutorials", "test_status", "file_linecount_invalid.yml"
-            )
+            ),
         ],
         tags=["pass", "python"],
         executors=["generic.local.sh"],
