@@ -667,6 +667,9 @@ class BuildTest:
         """
         self.verbose = verbose
 
+        # variable used to determine if buildtest build command was successful. We initially start with False and if method runs to completion we set to True
+        self.success = False
+
         if self.verbose:
             console.print("[blue]Starting buildtest build")
             console.print(
@@ -1067,9 +1070,6 @@ class BuildTest:
         # if --helpfilter is specified then return immediately.
         if self.helpfilter or self.save_profile:
             return
-
-        # variable used to determine if buildtest build command was successful. We initially start with False and if method runs to completion we set to True
-        self.success = False
 
         self.discovered_bp = discover_buildspecs(
             buildspecs=self.buildspecs,
