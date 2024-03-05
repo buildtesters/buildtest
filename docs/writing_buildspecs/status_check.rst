@@ -78,12 +78,12 @@ then buildtest will raise an error according to the JSON schema.
 
 .. literalinclude:: ../tutorials/test_status/file_linecount_invalid.yml
    :language: yaml
-   :emphasize-lines: 12-16
+   :emphasize-lines: 11
 
 We will simply try validating this buildspec and you will see the error message from the JSON schema
 
 .. dropdown:: ``buildtest buildspec validate -b tutorials/test_status/file_linecount_invalid.yml``
    :color: warning
 
-    .. command-output:: buildtest build -b tutorials/test_status/file_linecount_invalid.yml
+    .. command-output:: buildtest buildspec validate -b tutorials/test_status/file_linecount_invalid.yml
        :returncode: 1
