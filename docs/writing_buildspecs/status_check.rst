@@ -5,6 +5,7 @@ Buildtest has several mechanisms for determining how test will pass.
 The status check is defined in the ``status`` field of a test. The status field is a list of
 dictionaries where each dictionary is a status check.
 
+.. _linecount:
 
 linecount
 ----------
@@ -34,10 +35,12 @@ Let's try building this test and you will see the test will pass based on line c
 
     .. command-output:: buildtest inspect query -e linecount_stderr_mismatch
 
+.. _file_linecount:
+
 file_linecount
 ---------------
 
-The ``file_linecount`` status check is similar to ``linecount`` but instead of comparing output from stdout or stderr,
+The ``file_linecount`` status check is similar to :ref:`linecount` but instead of comparing output from stdout or stderr,
 it compares output from a file. This is useful if you want to compare output from a file with a reference count.
 The ``file_linecount`` is an array of objects which requires the fields: ``file`` and ``count``.
 The ``file`` is the path to file and ``count`` is the reference count to compare against.
