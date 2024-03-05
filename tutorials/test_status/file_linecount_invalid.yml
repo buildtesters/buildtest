@@ -1,11 +1,11 @@
 buildspecs:
   file_linecount_negative_value:
-      type: script
-      executor: generic.local.bash
-      description: "Performing file count with a negative count value will result in error"
-      run: |
-        > empty.txt
-      status:
-        file_linecount:
-        - file: empty.txt
-          count: -1
+    type: script
+    executor: generic.local.bash
+    description: "Performing file count with a negative count value will result in error"
+    run: |
+      > empty.txt
+    status:
+      file_linecount:
+      - file: empty.txt
+        count: -1

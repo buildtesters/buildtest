@@ -674,6 +674,7 @@ def linecount_check(builder):
     )
     return comparison
 
+
 def file_linecount_check(builder):
     """This method is used to perform line count check when ``file_linecount`` property is specified
 
@@ -684,7 +685,9 @@ def file_linecount_check(builder):
     for file_check in builder.status["file_linecount"]:
         resolved_fname = resolve_path(file_check["file"])
         if not resolved_fname:
-            msg = f"[blue]{builder}[/]: Unable to resolve file path: {file_check['file']}"
+            msg = (
+                f"[blue]{builder}[/]: Unable to resolve file path: {file_check['file']}"
+            )
             logger.error(msg)
             console.print(msg, style="red")
             assert_check.append(False)

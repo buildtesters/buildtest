@@ -1,5 +1,7 @@
 import os
+
 import pytest
+
 from buildtest.cli.build import BuildTest
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import DEFAULT_SETTINGS_FILE
@@ -195,10 +197,14 @@ def test_linecount():
     )
     cmd.build()
 
+
 def test_file_linecount():
     """This test will perform status check with linecount"""
     cmd = BuildTest(
-        buildspecs=[os.path.join(here, "file_linecount.yml"), os.path.join(here, "file_linecount_failure.yml")],
+        buildspecs=[
+            os.path.join(here, "file_linecount.yml"),
+            os.path.join(here, "file_linecount_failure.yml"),
+        ],
         buildtest_system=system,
         configuration=config,
     )
@@ -211,4 +217,3 @@ def test_file_linecount():
     )
     with pytest.raises(SystemExit):
         cmd.build()
-
