@@ -24,6 +24,7 @@ from buildtest.buildsystem.checks import (
     exists_check,
     file_count_check,
     file_regex_check,
+    file_linecount_check,
     is_dir_check,
     is_file_check,
     is_symlink_check,
@@ -248,6 +249,7 @@ class BuilderBase(ABC):
             "is_file",
             "file_count",
             "linecount",
+            "file_linecount",
         ]
         self.metadata["check"] = {name: None for name in status_check_names}
         self.metadata["metrics"] = {}
@@ -1144,6 +1146,8 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             if self.status.get("linecount"):
                 self.metadata["check"]["linecount"] = linecount_check(builder=self)
 
+            if self.status.get("file_linecount"):
+                self.metadata["check"]["file_linecount"] = file_linecount_check(builder=self)
             # filter out any None values from status check
             status_checks = [
                 value for value in self.metadata["check"].values() if value is not None
