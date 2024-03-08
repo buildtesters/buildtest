@@ -603,6 +603,7 @@ class BuildTest:
         executors=None,
         testdir=None,
         stage=None,
+        dry_run=None,
         filter_buildspecs=None,
         rebuild=None,
         buildtest_system=None,
@@ -641,6 +642,7 @@ class BuildTest:
             executors (list, optional): list of executors passed from command line ``buildtest build --executors``
             testdir (str): Path to test directory where tests are written. This argument can be passed from command line ``buildtest build --testdir``
             stage (str, optional): Stop build after parse or build stage which can be configured via ``buildtest build --stage`` option
+            dry_run (bool, optional): Show a list of tests that will potentially be run without actually running them via ``buildtest build --dry-run``
             filter_buildspecs (dict, optional): filters buildspecs and tests based on ``buildtest build --filter`` argument which is a key/value dictionary that can filter tests based on **tags**, **type**, and **maintainers**
             rebuild (int, optional): Rebuild tests X times based on ``buildtest build --rebuild`` option.
             buildtest_system (buildtest.system.BuildTestSystem, optional): Instance of BuildTestSystem class
@@ -725,6 +727,7 @@ class BuildTest:
         self.rerun = rerun
         self.account = account
         self.stage = stage
+        self.dry_run = dry_run
         self.filter_buildspecs = filter_buildspecs
         self.rebuild = rebuild
         self.modules = modules
@@ -871,6 +874,7 @@ class BuildTest:
         self.executors = content["executors"]
         self.report_file = content["report_file"]
         self.stage = content["stage"]
+        self.dry_run = content["dry_run"]
         self.remove_stagedir = content["remove_stagedir"]
         self.testdir = content["testdir"]
         self.maxpendtime = content["maxpendtime"]
@@ -900,6 +904,7 @@ class BuildTest:
             "exclude_buildspecs": self.exclude_buildspecs,
             "executors": self.executors,
             "report_file": self.report_file,
+            "dry_run": self.dry_run,
             "stage": self.stage,
             "remove_stagedir": self.remove_stagedir,
             "testdir": self.testdir,
@@ -943,6 +948,7 @@ class BuildTest:
             "module": self.modules,
             "unload-modules": self.unload_modules,
             "module-purge": self.modulepurge,
+            "dry-run": self.dry_run,
             "rebuild": self.rebuild,
             "limit": self.limit,
             "account": self.account,
@@ -1030,6 +1036,7 @@ class BuildTest:
         self.modules = profile_configuration.get("module")
         self.unload_modules = profile_configuration.get("unload-modules")
         self.modulepurge = profile_configuration.get("module-purge")
+        self.dry_run = profile_configuration.get("dry-run")
         self.rebuild = profile_configuration.get("rebuild")
         self.filter_buildspecs = profile_configuration.get("filter")
         self.executor_type = profile_configuration.get("executor-type")
@@ -1091,6 +1098,7 @@ class BuildTest:
         self.parse_buildspecs()
 
         # if no builders found or  --stage=parse set we return from method
+        # TODO remove buildtest build --stage=parse --> buildtest build --validate
         if not self.builders or self.stage == "parse":
             return
 
@@ -1102,8 +1110,8 @@ class BuildTest:
 
         self.build_phase()
 
-        # if --stage=build is set  we return from method
-        if self.stage == "build":
+        # if --dry-run is speicied we return from method
+        if self.dry_run:
             return
 
         self.finished_builders = self.run_phase()
