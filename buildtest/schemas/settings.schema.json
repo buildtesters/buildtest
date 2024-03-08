@@ -712,6 +712,7 @@
         "module": {"type": "string"},
         "unload-modules": {"type": "string"},
         "module-purge": {"type": "boolean"},
+        "dry-run": {"type": "boolean", "description": "Show a list of tests that will potentially be run"},
         "rebuild": {"type": "integer", "minimum": 1, "maximum": 50, "description": "Specify number of tests to rebuild"},
         "limit": {"type": "integer", "minimum": 1, "description": "Limit number of tests to build"},
         "account": {"$ref": "#/definitions/account"},
