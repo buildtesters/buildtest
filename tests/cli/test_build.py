@@ -79,14 +79,20 @@ class TestBuildTest:
     def test_build_rerun(self):
         #  testing buildtest build --rerun
         cmd = BuildTest(
-            configuration=configuration, rerun=True, buildtest_system=self.system
+            configuration=configuration,
+            rerun=True,
+            dry_run=True,
+            buildtest_system=self.system,
         )
         cmd.build()
 
         os.remove(BUILDTEST_RERUN_FILE)
         with pytest.raises(BuildTestError):
             BuildTest(
-                configuration=configuration, rerun=True, buildtest_system=self.system
+                configuration=configuration,
+                rerun=True,
+                dry_run=True,
+                buildtest_system=self.system,
             )
 
     @pytest.mark.cli
