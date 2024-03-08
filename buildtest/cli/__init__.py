@@ -945,7 +945,7 @@ class BuildTestParser:
                 (
                     ["-s", "--stage"],
                     {
-                        "help": "Control behavior of buildtest build to stop execution after 'parse' stage",
+                        "help": "Control behavior of buildtest build to stop execution after 'parse' stage"
                     },
                 ),
                 (
