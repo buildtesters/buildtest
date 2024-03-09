@@ -1110,7 +1110,7 @@ class BuildTest:
 
         self.build_phase()
 
-        # if --dry-run is speicied we return from method
+        # if --dry-run is specified we return from method
         if self.dry_run:
             return
 

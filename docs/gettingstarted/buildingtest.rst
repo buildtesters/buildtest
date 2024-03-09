@@ -298,9 +298,9 @@ Please see :ref:`buildspec_maintainers` on list of maintainers and breakdown of 
 We can also filter tests by ``type`` field in the buildspec which corresponds to the schema type. In this next example, we filter all tests by script schema type by
 passing option ``--filter type=script``.
 
-.. dropdown:: ``buildtest build -b tutorials --filter type=script``
+.. dropdown:: ``buildtest build -b tutorials --filter type=script --dry-run``
 
-    .. command-output:: buildtest build -b tutorials --filter type=script
+    .. command-output:: buildtest build -b tutorials --filter type=script --dry-run
 
 Filter By Executor Type
 -------------------------
@@ -375,8 +375,8 @@ where test failed to run since we provided invalid executor.
     .. command-output:: buildtest build -b tutorials/invalid_executor.yml
         :returncode: 1
 
-Troubleshoot Tests (``buildtest build --dry-run``)
-----------------------------------------------
+Dry Run (``buildtest build --dry-run``)
+----------------------------------------
 
 The `buildtest build` command can help troubleshoot your test script without
 actually running them via ``--dry-run`` option, which will stop after build phase.
