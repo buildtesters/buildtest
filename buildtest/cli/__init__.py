@@ -900,6 +900,13 @@ class BuildTestParser:
             ],
             "extra": [
                 (
+                    ["--dry-run"],
+                    {
+                        "action": "store_true",
+                        "help": "Show a list of tests that will potentially be run without actually running them.",
+                    },
+                ),
+                (
                     ["--limit"],
                     {
                         "type": positive_number,
@@ -938,8 +945,7 @@ class BuildTestParser:
                 (
                     ["-s", "--stage"],
                     {
-                        "choices": ["parse", "build"],
-                        "help": "Control behavior of buildtest build to stop execution after 'parse' or 'build' stage",
+                        "help": "Control behavior of buildtest build to stop execution after 'parse' stage"
                     },
                 ),
                 (

@@ -79,14 +79,20 @@ class TestBuildTest:
     def test_build_rerun(self):
         #  testing buildtest build --rerun
         cmd = BuildTest(
-            configuration=configuration, rerun=True, buildtest_system=self.system
+            configuration=configuration,
+            rerun=True,
+            dry_run=True,
+            buildtest_system=self.system,
         )
         cmd.build()
 
         os.remove(BUILDTEST_RERUN_FILE)
         with pytest.raises(BuildTestError):
             BuildTest(
-                configuration=configuration, rerun=True, buildtest_system=self.system
+                configuration=configuration,
+                rerun=True,
+                dry_run=True,
+                buildtest_system=self.system,
             )
 
     @pytest.mark.cli
@@ -348,11 +354,13 @@ class TestBuildTest:
         )
         cmd.build()
 
-        # testing buildtest build --tags tutorials --stage=build
+    @pytest.mark.cli
+    def test_build_dryrun(self):
+        # testing buildtest build --tags tutorials --dry-run
         cmd = BuildTest(
             configuration=configuration,
             tags=["python"],
-            stage="build",
+            dry_run=True,
             buildtest_system=self.system,
         )
         cmd.build()
@@ -530,6 +538,7 @@ class TestBuildTest:
             modules="gcc/9.1.0",
             unload_modules="gcc",
             modulepurge=True,
+            dry_run=True,
             limit=10,
             rebuild=2,
             timeout=60,

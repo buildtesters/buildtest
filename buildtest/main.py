@@ -171,6 +171,7 @@ def main():
                 filter_buildspecs=args.filter,
                 rebuild=args.rebuild,
                 stage=args.stage,
+                dry_run=args.dry_run,
                 testdir=args.testdir,
                 buildtest_system=system,
                 report_file=report_file,

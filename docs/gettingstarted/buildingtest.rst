@@ -296,11 +296,11 @@ the buildspec will be filtered out if ``--filter maintainers`` is specified. In 
 Please see :ref:`buildspec_maintainers` on list of maintainers and breakdown of buildspecs by maintainers.
 
 We can also filter tests by ``type`` field in the buildspec which corresponds to the schema type. In this next example, we filter all tests by script schema type by
-passing option ``--filter type=script``. We inform buildtest to stop after build stage (``--stage=build``) for more details see :ref:`build_stage`.
+passing option ``--filter type=script``.
 
-.. dropdown:: ``buildtest build -b tutorials --filter type=script --stage=build``
+.. dropdown:: ``buildtest build -b tutorials --filter type=script --dry-run``
 
-    .. command-output:: buildtest build -b tutorials --filter type=script --stage=build
+    .. command-output:: buildtest build -b tutorials --filter type=script --dry-run
 
 Filter By Executor Type
 -------------------------
@@ -337,8 +337,8 @@ Configure Build Stages
 -----------------------
 
 We can control behavior of ``buildtest build`` command to stop at certain phase
-using ``--stage`` option. The **--stage** option accepts ``parse`` or ``build``, which
-will instruct buildtest to stop at parse or build phase of the pipeline.
+using ``--stage`` option. The **--stage** option accepts ``parse``, which
+will instruct buildtest to stop at parse phase of the pipeline.
 
 Buildtest will validate all the buildspecs in the parse stage, so you can
 instruct buildtest to stop at parse stage via ``--stage=parse``. This can be useful
@@ -348,15 +348,6 @@ buildtest to stop after parse stage.
 .. dropdown:: ``buildtest build -b tutorials/vars.yml --stage=parse``
 
     .. command-output:: buildtest build -b tutorials/vars.yml --stage=parse
-
-Likewise, if you want to troubleshoot your test script without running them you can
-use ``--stage=build`` which will stop after build phase. This can
-be used when you are writing buildspec to troubleshoot how test is generated.
-In this next example, we inform buildtest to stop after build stage.
-
-.. dropdown:: ``buildtest build -b tutorials/vars.yml --stage=build``
-
-    .. command-output:: buildtest build -b tutorials/vars.yml --stage=build
 
 .. _invalid_buildspecs:
 
@@ -383,6 +374,20 @@ where test failed to run since we provided invalid executor.
 
     .. command-output:: buildtest build -b tutorials/invalid_executor.yml
         :returncode: 1
+
+Dry Run (``buildtest build --dry-run``)
+----------------------------------------
+
+When you use the **buildtest build** command, you have the option to enter a dry run mode by
+adding the ``--dry-run`` option. In this mode, the command will simulate the build process
+but won't execute the tests. It's particularly useful when you're creating or editing a
+buildspec file and want to see how the test script is generated without actually running the tests.
+For instance, in the following example, we demonstrate how to instruct buildtest to halt after
+the build stage.
+
+.. dropdown:: ``buildtest build -b tutorials/vars.yml --dry-run``
+
+    .. command-output:: buildtest build -b tutorials/vars.yml --dry-run
 
 Rebuild Tests (``buildtest build --rebuild``)
 ----------------------------------------------
@@ -469,12 +474,12 @@ Next let's rerun the same command via ``buildtest build --rerun`` and take note 
 
     .. command-output:: buildtest build --rerun
 
-If you pass additional options with ``--rerun`` it will simply be ignored. In this case ``-t python --stage=build`` will not be read by buildtest instead we will
+If you pass additional options with ``--rerun`` it will simply be ignored. In this case ``-t python --dry-run`` will not be read by buildtest instead we will
 rerun same command.
 
-.. dropdown:: ``buildtest build --rerun -t python --stage=build``
+.. dropdown:: ``buildtest build --rerun -t python --dry-run``
 
-    .. command-output:: buildtest build --rerun -t python --stage=build
+    .. command-output:: buildtest build --rerun -t python --dry-run
 
 .. Note::
     The ``buildtest clean`` will erase all history of builds and if you run ``buildtest build --rerun`` will raise an exception
