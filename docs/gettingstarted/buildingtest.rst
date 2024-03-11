@@ -378,10 +378,12 @@ where test failed to run since we provided invalid executor.
 Dry Run (``buildtest build --dry-run``)
 ----------------------------------------
 
-The `buildtest build` command can help troubleshoot your test script without
-actually running them via ``--dry-run`` option, which will stop after build phase.
-This can be used when you are writing buildspec to troubleshoot how test is generated.
-In this next example, we inform buildtest to stop after build stage.
+When you use the **buildtest build** command, you have the option to enter a dry run mode by
+adding the ``--dry-run`` option. In this mode, the command will simulate the build process
+but won't execute the tests. It's particularly useful when you're creating or editing a
+buildspec file and want to see how the test script is generated without actually running the tests.
+For instance, in the following example, we demonstrate how to instruct buildtest to halt after
+the build stage.
 
 .. dropdown:: ``buildtest build -b tutorials/vars.yml --dry-run``
 
