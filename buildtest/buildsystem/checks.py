@@ -101,7 +101,6 @@ def file_regex_check(builder):
 
     Args:
         builder (buildtest.builders.base.BuilderBase): An instance of BuilderBase class used for printing the builder name
-
     Returns:
         bool: Returns True if there is a regex match otherwise returns False.
     """
@@ -110,6 +109,8 @@ def file_regex_check(builder):
 
     for file_check in builder.status["file_regex"]:
         fname = file_check["file"]
+        regex_type = file_check.get("re")
+        pattern = file_check["exp"]
         resolved_fname = resolve_path(fname)
         if not resolved_fname:
             msg = f"[blue]{builder}[/]: Unable to resolve file path: {fname}"
@@ -127,13 +128,22 @@ def file_regex_check(builder):
 
         # read file and apply regex
         content = read_file(resolved_fname)
-        regex = re.search(file_check["exp"], content)
+        content = content.strip()
+        match = None
+
+        if regex_type == "re.match":
+            match = re.match(pattern, content)
+        elif regex_type == "re.fullmatch":
+            match = re.fullmatch(pattern, content)
+        else:
+            match = re.search(pattern, content)
+
         console.print(
-            f"[blue]{builder}[/]: Performing regex expression '{file_check['exp']}' on file {resolved_fname}"
+            f"[blue]{builder}[/]: Performing regex expression '{pattern}' on file {resolved_fname}"
         )
 
-        if not regex:
-            msg = f"[blue]{builder}[/]: Regular expression: '{file_check['exp']}' is not found in file: {resolved_fname}"
+        if not match:
+            msg = f"[blue]{builder}[/]: Regular expression: '{pattern}' not found in file: {resolved_fname}"
             logger.error(msg)
             console.print(msg, style="red")
             assert_file_regex.append(False)
@@ -166,6 +176,8 @@ def regex_check(builder):
     """
 
     file_stream = None
+    regex_type = builder.status["regex"].get("re")
+    pattern = builder.status['regex']['exp']
     if builder.status["regex"]["stream"] == "stdout":
         logger.debug(
             f"Detected regex stream 'stdout' so reading output file: {builder.metadata['outfile']}"
@@ -182,14 +194,22 @@ def regex_check(builder):
 
         file_stream = builder.metadata["errfile"]
 
-    logger.debug(f"Applying re.search with exp: {builder.status['regex']['exp']}")
+    logger.debug(f"Applying re.search with exp: {pattern}")
+    # remove any new lines
+    content = content.strip()
+    if regex_type == "re.match":
+        match = re.match(pattern, content, re.MULTILINE)
+    elif regex_type == "re.fullmatch":
+        match = re.fullmatch(pattern, content, re.MULTILINE)
+    else:
+        match = re.search(pattern, content, re.MULTILINE)
 
-    regex = re.search(builder.status["regex"]["exp"], content)
+    #regex = re.search(builder.status["regex"]["exp"], content)
 
     console.print(
-        f"[blue]{builder}[/]: performing regular expression - '{builder.status['regex']['exp']}' on file: {file_stream}"
+        f"[blue]{builder}[/]: performing regular expression - '{pattern}' on file: {file_stream}"
     )
-    if not regex:
+    if not match:
         console.print(f"[blue]{builder}[/]: Regular Expression Match - [red]Failed![/]")
         return False
 

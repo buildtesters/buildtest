@@ -70,6 +70,20 @@
           "exp": {
             "type": "string",
             "description": "Specify a regular expression to run on the selected file name"
+          },
+          "item": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Specify the item number used to index element in `match.group() <https://docs.python.org/3/library/re.html#match-objects>`_"
+          },
+          "re": {
+            "type": "string",
+            "description": "Specify the regular expression type, it can be either re.search, re.match, or re.fullmatch. By default it uses re.search",
+            "enum": [
+                "re.search",
+                "re.match",
+                "re.fullmatch"
+            ]
           }
         }
       }
@@ -95,6 +109,15 @@
           "type": "integer",
           "minimum": 0,
           "description": "Specify the item number used to index element in `match.group() <https://docs.python.org/3/library/re.html#match-objects>`_"
+        },
+        "re": {
+          "type": "string",
+          "description": "Specify the regular expression type, it can be either re.search, re.match, or re.fullmatch. By default it uses re.search",
+          "enum": [
+              "re.search",
+              "re.match",
+              "re.fullmatch"
+          ]
         }
       }
     },
@@ -123,6 +146,15 @@
           "type": "integer",
           "minimum": 0,
           "description": "Specify the item number used to index element in `match.group() <https://docs.python.org/3/library/re.html#match-objects>`_"
+        },
+        "re": {
+          "type": "string",
+          "description": "Specify the regular expression type, it can be either re.search, re.match, or re.fullmatch. By default it uses re.search",
+          "enum": [
+              "re.search",
+              "re.match",
+              "re.fullmatch"
+          ]
         }
       }
     },
