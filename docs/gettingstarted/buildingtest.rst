@@ -337,17 +337,16 @@ Configure Build Stages
 -----------------------
 
 We can control behavior of ``buildtest build`` command to stop at certain phase
-using ``--stage`` option. The **--stage** option accepts ``parse``, which
-will instruct buildtest to stop at parse phase of the pipeline.
+using ``--validate`` and ``--dry-run`` options.
 
 Buildtest will validate all the buildspecs in the parse stage, so you can
-instruct buildtest to stop at parse stage via ``--stage=parse``. This can be useful
+instruct buildtest to stop at parse stage via ``--validate``. This can be useful
 when debugging buildspecs that are invalid. In this example below, we instruct
 buildtest to stop after parse stage.
 
-.. dropdown:: ``buildtest build -b tutorials/vars.yml --stage=parse``
+.. dropdown:: ``buildtest build -b tutorials/vars.yml --validate``
 
-    .. command-output:: buildtest build -b tutorials/vars.yml --stage=parse
+    .. command-output:: buildtest build -b tutorials/vars.yml --validate
 
 .. _invalid_buildspecs:
 

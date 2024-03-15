@@ -19,7 +19,7 @@ configuration = SiteConfiguration(DEFAULT_SETTINGS_FILE)
 configuration.detect_system()
 configuration.validate()
 
-# this will invoke buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml -b $BUILDTEST_ROOT/general_tests/configuration -x $BUILDTEST_ROOT/general_tests/configuration/ulimits.yml --stage=parse
+# this will invoke buildtest build -b $BUILDTEST_ROOT/tutorials/vars.yml -b $BUILDTEST_ROOT/general_tests/configuration -x $BUILDTEST_ROOT/general_tests/configuration/ulimits.yml --validate
 cmd = BuildTest(
     configuration=configuration,
     buildspecs=input_buildspecs,
