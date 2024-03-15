@@ -170,7 +170,7 @@ def main():
                 exclude_tags=args.exclude_tags,
                 filter_buildspecs=args.filter,
                 rebuild=args.rebuild,
-                stage=args.stage,
+                validate=args.validate,
                 dry_run=args.dry_run,
                 testdir=args.testdir,
                 buildtest_system=system,

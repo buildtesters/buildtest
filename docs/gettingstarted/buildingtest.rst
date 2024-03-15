@@ -375,6 +375,20 @@ where test failed to run since we provided invalid executor.
     .. command-output:: buildtest build -b tutorials/invalid_executor.yml
         :returncode: 1
 
+Validate Tests (``buildtest build --validate``)
+------------------------------------------------
+
+When you use the **buildtest build** command, you have the option to enter a validate mode by
+adding the ``--validate`` option. In this mode, the command will validate given buildspecs 
+and stop after the parse stage. It's particularly useful when you're creating or editing a
+buildspec file and want to check its validity before entering the build stage.
+For instance, in the following example, we demonstrate how to instruct buildtest to halt after
+the parse stage.
+
+.. dropdown:: ``buildtest build -b tutorials/vars.yml --validate``
+
+    .. command-output:: buildtest build -b tutorials/vars.yml --validate
+
 Dry Run (``buildtest build --dry-run``)
 ----------------------------------------
 
