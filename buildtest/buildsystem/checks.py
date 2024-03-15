@@ -177,7 +177,7 @@ def regex_check(builder):
 
     file_stream = None
     regex_type = builder.status["regex"].get("re")
-    pattern = builder.status['regex']['exp']
+    pattern = builder.status["regex"]["exp"]
     if builder.status["regex"]["stream"] == "stdout":
         logger.debug(
             f"Detected regex stream 'stdout' so reading output file: {builder.metadata['outfile']}"
@@ -204,7 +204,7 @@ def regex_check(builder):
     else:
         match = re.search(pattern, content, re.MULTILINE)
 
-    #regex = re.search(builder.status["regex"]["exp"], content)
+    # regex = re.search(builder.status["regex"]["exp"], content)
 
     console.print(
         f"[blue]{builder}[/]: performing regular expression - '{pattern}' on file: {file_stream}"
