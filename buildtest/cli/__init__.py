@@ -946,7 +946,7 @@ class BuildTestParser:
                     ["--validate"],
                     {
                         "action": "store_true",
-                        "help": "Validate given buildspecs and control behavior of buildtest build to stop execution after parsing the YAML files."
+                        "help": "Validate given buildspecs and control behavior of buildtest build to stop execution after parsing the YAML files.",
                     },
                 ),
                 (
