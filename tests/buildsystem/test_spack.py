@@ -37,7 +37,7 @@ def test_spack_examples():
     cmd = BuildTest(
         configuration=configuration,
         tags=["spack"],
-        stage="build",
+        dry_run=True,
         buildtest_system=system,
     )
     cmd.build()

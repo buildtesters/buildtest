@@ -24,7 +24,7 @@ cmd = BuildTest(
     configuration=configuration,
     buildspecs=input_buildspecs,
     exclude_buildspecs=exclude_buildspecs,
-    stage="parse",
+    validate=True,
     buildtest_system=buildtest_system,
 )
 cmd.build()
