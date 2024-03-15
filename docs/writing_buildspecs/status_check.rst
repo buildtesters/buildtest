@@ -88,9 +88,10 @@ We will simply try validating this buildspec and you will see the error message 
     .. command-output:: buildtest buildspec validate -b tutorials/test_status/file_linecount_invalid.yml
        :returncode: 1
 
+.. _re:
 
-re
---
+Using 're' property to specify regular expression type
+------------------------------------------------------
 
 The ``re`` property can be used to select the type of regular expression to use with :ref:`regex <regex>` or :ref:`file_regex <file_regex>`
 which can be `re.search <https://docs.python.org/3/library/re.html#re.search>`_, `re.match <https://docs.python.org/3/library/re.html#re.match>`_
