@@ -110,7 +110,7 @@ and this test will **PASS**.
 
 .. literalinclude:: ../tutorials/test_status/specify_regex_type.yml
    :language: yaml
-   :emphasize-lines: 11,22,33,46,49,52
+   :emphasize-lines: 6,8-11,17,19-22,28,30-33,39-41,43-52
 
 Let's try running this test example and see the generated output, all test should pass with exception of ``re.match.stdout``.
 
