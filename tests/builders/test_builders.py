@@ -177,6 +177,7 @@ def test_file_regex():
     )
     cmd.build()
 
+
 def test_regex_type():
     """This test will perform status check with different regular expression type using ``re`` property that can be "re.match", "re.search", "re.fullmatch" """
     cmd = BuildTest(
@@ -185,6 +186,7 @@ def test_regex_type():
         configuration=config,
     )
     cmd.build()
+
 
 def test_runtime_check():
     """This test will perform status check with runtime"""
