@@ -949,8 +949,13 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             if regex:
                 stream = regex.get("stream")
                 content = self._output if stream == "stdout" else self._error
-                match = re.search(regex["exp"], content, re.MULTILINE)
 
+                if regex.get("re") == "re.match":
+                    match = re.match(regex["exp"], content, re.MULTILINE)
+                elif regex.get("re") == "re.fullmatch":
+                    match = re.fullmatch(regex["exp"], content, re.MULTILINE)
+                else:
+                    match = re.search(regex["exp"], content, re.MULTILINE)
                 if match:
                     try:
                         self.metadata["metrics"][key] = match.group(

@@ -1,0 +1,11 @@
+buildspecs:
+  invalid_re_value:
+    type: script
+    executor: generic.local.bash
+    description: The "re" value is invalid
+    run: echo "world"
+    status:
+      regex:
+        stream: stdout
+        exp: "world$"
+        re: "search"

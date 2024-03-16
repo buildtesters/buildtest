@@ -178,6 +178,16 @@ def test_file_regex():
     cmd.build()
 
 
+def test_regex_type():
+    """This test will perform status check with different regular expression type using ``re`` property that can be "re.match", "re.search", "re.fullmatch" """
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "specify_regex_type.yml")],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()
+
+
 def test_runtime_check():
     """This test will perform status check with runtime"""
     cmd = BuildTest(
@@ -217,3 +227,13 @@ def test_file_linecount():
     )
     with pytest.raises(SystemExit):
         cmd.build()
+
+
+def test_metrics_with_regex_type():
+    """This test will perform status check with regular expression type and metrics"""
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "metrics_with_regex_type.yml")],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()

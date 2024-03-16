@@ -52,6 +52,37 @@ join them together into a single string. Shown below is the metrics for the prev
    .. command-output:: buildtest report --filter buildspec=tutorials/metrics/metrics_regex.yml --format name,metrics
 
 
+Metrics with Regex Type via 're'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Building on the previous example, we will use the ``re`` property specify the regular expression type to use. By default, buildtest will
+use `re.search <https://docs.python.org/3/library/re.html#re.search>`_ if **re** is not specified; however you can specify **re** to use `re.match <https://docs.python.org/3/library/re.html#re.match>`_,
+`re.fullmatch <https://docs.python.org/3/library/re.html#re.fullmatch>`_, or `re.search <https://docs.python.org/3/library/re.html#re.search>`_.
+
+In this example, we will define 4 metrics **hpcg_text**, **hpcg_result**, **hpcg_file_text**, **hpcg_file_result**. The first two
+metrics will capture from stdout using the ``regex`` property while the last two will capture from a file using the ``file_regex`` property.
+The ``re.match`` will be used to capture the text **HPCG result is VALID** and **HPCG result is INVALID** from stdout and file, whereas
+the ``re.search`` will be used to capture the test result **63.6515** and **28.1215** from stdout and file.
+
+Finally, we will use the comparison operator :ref:`assert_eq` to compare the metrics with reference value.
+
+.. literalinclude:: ../tutorials/metrics/metrics_with_regex_type.yml
+    :language: yaml
+    :emphasize-lines: 7-45
+
+Let's attempt to build this test
+
+.. dropdown:: ``buildtest build -b tutorials/metrics/metrics_with_regex_type.yml``
+
+   .. command-output:: buildtest build -b tutorials/metrics/metrics_with_regex_type.yml
+
+Upon completion, lets take a look at the metrics for this test, we can see this by running ``buildtest inspect query``
+which shows the name of captured metrics and its corresponding values.
+
+.. dropdown:: ``buildtest inspect query metric_regex_example_with_re``
+
+   .. command-output:: buildtest inspect query metric_regex_example_with_re
+
 Invalid Metrics
 ~~~~~~~~~~~~~~~~~
 

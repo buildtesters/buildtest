@@ -1,0 +1,52 @@
+buildspecs:
+  re.search.stdout:
+    executor: generic.local.bash
+    type: script
+    description: Test re.search on stdout
+    run: echo "This is a string"
+    status:
+      regex:
+        stream: stdout
+        exp: 'is'
+        re: "re.search"
+
+  re.match.stdout:
+    executor: generic.local.bash
+    type: script
+    description: Test re.match on stdout
+    run: echo "This is a string"
+    status:
+      regex:
+        stream: stdout
+        exp: 'is'
+        re: "re.match"
+
+  re.fullmatch.stdout:
+    executor: generic.local.bash
+    type: script
+    description: Test re.fullmatch on stdout
+    run: echo "This is a string"
+    status:
+      regex:
+        stream: stdout
+        exp: 'This is a string'
+        re: "re.fullmatch"
+
+  re.match_on_file_regex:
+    executor: generic.local.bash
+    type: script
+    description: Test re.match on file regex
+    run: |
+      echo "This is a string" > file.txt
+      echo "Hello World" > hello.txt
+    status:
+      file_regex:
+        - file: file.txt
+          exp: 'string'
+          re: "re.search"
+        - file: hello.txt
+          exp: 'Hello'
+          re: "re.match"
+        - file: hello.txt
+          exp: 'Hello World'
+          re: "re.fullmatch"

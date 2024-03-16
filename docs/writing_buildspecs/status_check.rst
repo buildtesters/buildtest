@@ -87,3 +87,33 @@ We will simply try validating this buildspec and you will see the error message 
 
     .. command-output:: buildtest buildspec validate -b tutorials/test_status/file_linecount_invalid.yml
        :returncode: 1
+
+.. _re:
+
+Using 're' property to specify regular expression type
+------------------------------------------------------
+
+The ``re`` property can be used to select the type of regular expression to use with :ref:`regex <regex>` or :ref:`file_regex <file_regex>`
+which can be `re.search <https://docs.python.org/3/library/re.html#re.search>`_, `re.match <https://docs.python.org/3/library/re.html#re.match>`_
+or `re.fullmatch <https://docs.python.org/3/library/re.html#re.fullmatch>`_. The ``re`` property is a string type which is used to select the
+regular expression function to use. In this next example, we will demonstrate the use of this feature with both ``regex`` and ``file_regex``.
+The ``re`` property is optional and if not specified it defaults to **re.search**.
+
+Since **re.search** will search for text at any position in the string, the first test ``re.search.stdout`` will match the
+string **is** with the output. In the second test ``re.match.stdout`` we use **re.match** which matches from beginning of
+string with input pattern **is** with output. We expect this match to **FAIL** since the output starts with **This is ...**.
+
+In the third test ``re.fullmatch.stdout`` we set ``re: re.fullmatch`` which will match the entire string with the pattern.
+We expect this match to **PASS** since the output and pattern are exactly the same. In the fourth test ``match_on_file_regex`` we have
+have three regular expression, one for each type **re.search**, **re.match** and **re.fullmatch**. All of these expressions will find a match
+and this test will **PASS**.
+
+.. literalinclude:: ../tutorials/test_status/specify_regex_type.yml
+   :language: yaml
+   :emphasize-lines: 6,8-11,17,19-22,28,30-33,39-41,43-52
+
+Let's try running this test example and see the generated output, all test should pass with exception of ``re.match.stdout``.
+
+.. dropdown:: ``buildtest build -b tutorials/test_status/specify_regex_type.yml``
+
+    .. command-output:: buildtest build -b tutorials/test_status/specify_regex_type.yml
