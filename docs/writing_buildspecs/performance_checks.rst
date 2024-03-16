@@ -66,21 +66,21 @@ the ``re.search`` will be used to capture the test result **63.6515** and **28.1
 
 Finally, we will use the comparison operator :ref:`assert_eq` to compare the metrics with reference value.
 
-.. literalinclude:: ../tutorials/metrics/metrics_regex_type.yml
+.. literalinclude:: ../tutorials/metrics/metrics_with_regex_type.yml
     :language: yaml
     :emphasize-lines: 7-45
 
 Let's attempt to build this test
 
-.. dropdown:: ``buildtest build -b tutorials/metrics/metrics_regex_type.yml``
+.. dropdown:: ``buildtest build -b tutorials/metrics/metrics_with_regex_type.yml``
 
-   .. command-output:: buildtest build -b tutorials/metrics/metrics_regex_type.yml
+   .. command-output:: buildtest build -b tutorials/metrics/metrics_with_regex_type.yml
 
 Upon completion, lets take a look at the metrics for this test, we can see this by running ``buildtest inspect query``
 
-.. dropdown:: ``buildtest inspect query metric_regex_type_example``
+.. dropdown:: ``buildtest inspect query metric_regex_example_with_re``
 
-   .. command-output:: buildtest inspect query metric_regex_type_example
+   .. command-output:: buildtest inspect query metric_regex_example_with_re
 
 Invalid Metrics
 ~~~~~~~~~~~~~~~~~
