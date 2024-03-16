@@ -132,11 +132,11 @@ def file_regex_check(builder):
         match = None
 
         if regex_type == "re.match":
-            match = re.match(pattern, content)
+            match = re.match(pattern, content, re.MULTILINE)
         elif regex_type == "re.fullmatch":
-            match = re.fullmatch(pattern, content)
+            match = re.fullmatch(pattern, content, re.MULTILINE)
         else:
-            match = re.search(pattern, content)
+            match = re.search(pattern, content, re.MULTILINE)
 
         console.print(
             f"[blue]{builder}[/]: Performing regex expression '{pattern}' on file {resolved_fname}"
@@ -203,8 +203,6 @@ def regex_check(builder):
         match = re.fullmatch(pattern, content, re.MULTILINE)
     else:
         match = re.search(pattern, content, re.MULTILINE)
-
-    # regex = re.search(builder.status["regex"]["exp"], content)
 
     console.print(
         f"[blue]{builder}[/]: performing regular expression - '{pattern}' on file: {file_stream}"

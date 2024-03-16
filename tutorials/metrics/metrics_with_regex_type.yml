@@ -1,0 +1,45 @@
+buildspecs:
+  metric_regex_example:
+    executor: generic.local.bash
+    type: script
+    description: capture result metric from output
+    tags: tutorials
+    run: |
+      echo "HPCG result is VALID with a GFLOP/s rating of=63.6515"
+      echo "HPCG result is INVALID with a GFLOP/s rating of=28.1215" > hpcg.txt
+    metrics:
+      hpcg_result:
+        type: float
+        regex:
+          re: "re.search"
+          exp: '(\d+\.\d+)$'
+          stream: stdout
+      hpcg_text:
+        type: str
+        regex:
+          re: "re.match"
+          exp: '^HPCG result is VALID'
+          stream: stdout
+      hpcg_file_text:
+        type: str
+        file_regex:
+          re: "re.match"
+          exp: '^HPCG result is INVALID'
+          file: hpcg.txt
+      hpcg_file_result:
+        type: float
+        file_regex:
+          re: "re.search"
+          exp: '(\d+\.\d+)$'
+          file: hpcg.txt
+    status:
+      assert_eq:
+        comparisons:
+          - name: hpcg_text
+            ref: "HPCG result is VALID"
+          - name: hpcg_result
+            ref: 63.6515
+          - name: hpcg_file_text
+            ref: "HPCG result is INVALID"
+          - name: hpcg_file_result
+            ref: 28.1215

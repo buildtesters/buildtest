@@ -227,3 +227,12 @@ def test_file_linecount():
     )
     with pytest.raises(SystemExit):
         cmd.build()
+
+def test_metrics_with_regex_type():
+    """This test will perform status check with regular expression type and metrics"""
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "metrics_with_regex_type.yml")],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()
