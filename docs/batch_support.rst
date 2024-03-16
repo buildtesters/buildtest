@@ -609,10 +609,9 @@ resources and IBM BlueGene series. Cobalt resembles `PBS <https://community.alta
 in terms of command line interface such as ``qsub``, ``qacct`` however they
 slightly differ in their behavior.
 
-Cobalt support has been tested on JLSE and `Theta <https://www.alcf.anl.gov/support-center/theta>`_
-system. Cobalt directives are specified using ``#COBALT`` this can be specified
-using ``cobalt`` property which accepts a list of strings. Shown below is an example
-using cobalt property.
+Cobalt support has been tested on JLSE and Theta system. Cobalt directives
+are specified using ``#COBALT`` this can be specified using ``cobalt`` property
+which accepts a list of strings. Shown below is an example using cobalt property.
 
 .. code-block:: yaml
     :emphasize-lines: 5
