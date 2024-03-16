@@ -2,7 +2,7 @@ buildspecs:
   metric_regex_example:
     executor: generic.local.bash
     type: script
-    description: capture result metric from output
+    description: capture metric with different regex types
     tags: tutorials
     run: |
       echo "HPCG result is VALID with a GFLOP/s rating of=63.6515"
@@ -35,11 +35,11 @@ buildspecs:
     status:
       assert_eq:
         comparisons:
-          - name: hpcg_text
-            ref: "HPCG result is VALID"
-          - name: hpcg_result
-            ref: 63.6515
-          - name: hpcg_file_text
-            ref: "HPCG result is INVALID"
-          - name: hpcg_file_result
-            ref: 28.1215
+        - name: hpcg_text
+          ref: "HPCG result is VALID"
+        - name: hpcg_result
+          ref: 63.6515
+        - name: hpcg_file_text
+          ref: "HPCG result is INVALID"
+        - name: hpcg_file_result
+          ref: 28.1215
