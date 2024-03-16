@@ -602,7 +602,7 @@ class BuildTest:
         exclude_tags=None,
         executors=None,
         testdir=None,
-        stage=None,
+        validate=None,
         dry_run=None,
         filter_buildspecs=None,
         rebuild=None,
@@ -641,7 +641,7 @@ class BuildTest:
             exclude_tags (list, optional): list if tags to exclude specified via command line ``buildtest build --exclude-tags``
             executors (list, optional): list of executors passed from command line ``buildtest build --executors``
             testdir (str): Path to test directory where tests are written. This argument can be passed from command line ``buildtest build --testdir``
-            stage (str, optional): Stop build after parse or build stage which can be configured via ``buildtest build --stage`` option
+            validate (bool, optional): Validate given buildspecs and buildtest will stop after parse stage which can be configured via ``buildtest build --validate`` option
             dry_run (bool, optional): Show a list of tests that will potentially be run without actually running them via ``buildtest build --dry-run``
             filter_buildspecs (dict, optional): filters buildspecs and tests based on ``buildtest build --filter`` argument which is a key/value dictionary that can filter tests based on **tags**, **type**, and **maintainers**
             rebuild (int, optional): Rebuild tests X times based on ``buildtest build --rebuild`` option.
@@ -691,7 +691,7 @@ class BuildTest:
                 raise BuildTestError(f"{arg_name} is not of type list")
 
         # check for input arguments that are expected to be a string
-        for arg_name in [testdir, stage, save_profile, profile]:
+        for arg_name in [testdir, save_profile, profile]:
             if arg_name and not isinstance(arg_name, str):
                 raise BuildTestError(f"{arg_name} is not of type str")
 
@@ -726,7 +726,7 @@ class BuildTest:
         self.retry = retry
         self.rerun = rerun
         self.account = account
-        self.stage = stage
+        self.validate = validate
         self.dry_run = dry_run
         self.filter_buildspecs = filter_buildspecs
         self.rebuild = rebuild
@@ -873,7 +873,7 @@ class BuildTest:
         self.exclude_buildspecs = content["exclude_buildspecs"]
         self.executors = content["executors"]
         self.report_file = content["report_file"]
-        self.stage = content["stage"]
+        self.validate = content["validate"]
         self.dry_run = content["dry_run"]
         self.remove_stagedir = content["remove_stagedir"]
         self.testdir = content["testdir"]
@@ -905,7 +905,7 @@ class BuildTest:
             "executors": self.executors,
             "report_file": self.report_file,
             "dry_run": self.dry_run,
-            "stage": self.stage,
+            "validate": self.validate,
             "remove_stagedir": self.remove_stagedir,
             "testdir": self.testdir,
             "maxpendtime": self.maxpendtime,
@@ -948,6 +948,7 @@ class BuildTest:
             "module": self.modules,
             "unload-modules": self.unload_modules,
             "module-purge": self.modulepurge,
+            "validate": self.validate,
             "dry-run": self.dry_run,
             "rebuild": self.rebuild,
             "limit": self.limit,
@@ -1036,6 +1037,7 @@ class BuildTest:
         self.modules = profile_configuration.get("module")
         self.unload_modules = profile_configuration.get("unload-modules")
         self.modulepurge = profile_configuration.get("module-purge")
+        self.validate = profile_configuration.get("validate")
         self.dry_run = profile_configuration.get("dry-run")
         self.rebuild = profile_configuration.get("rebuild")
         self.filter_buildspecs = profile_configuration.get("filter")
@@ -1097,9 +1099,8 @@ class BuildTest:
         # is a builder object used for building test.
         self.parse_buildspecs()
 
-        # if no builders found or  --stage=parse set we return from method
-        # TODO remove buildtest build --stage=parse --> buildtest build --validate
-        if not self.builders or self.stage == "parse":
+        # if no builders found or buildtest build --validate set we return from method
+        if not self.builders or self.validate:
             return
 
         if self.limit:

@@ -344,19 +344,19 @@ class TestBuildTest:
             cmd.build()
 
     @pytest.mark.cli
-    def test_build_by_stages(self):
-        # testing buildtest build --tags python --stage=parse
+    def test_build_validate(self):
+        # testing buildtest build --tags python --validate
         cmd = BuildTest(
             configuration=configuration,
             tags=["python"],
-            stage="parse",
+            validate=True,
             buildtest_system=self.system,
         )
         cmd.build()
 
     @pytest.mark.cli
     def test_build_dryrun(self):
-        # testing buildtest build --tags tutorials --dry-run
+        # testing buildtest build --tags python --dry-run
         cmd = BuildTest(
             configuration=configuration,
             tags=["python"],
@@ -538,6 +538,7 @@ class TestBuildTest:
             modules="gcc/9.1.0",
             unload_modules="gcc",
             modulepurge=True,
+            validate=False,
             dry_run=True,
             limit=10,
             rebuild=2,
@@ -649,11 +650,6 @@ class TestBuildTest_TypeCheck:
         # executors must be a list not a string
         with pytest.raises(BuildTestError):
             BuildTest(configuration=configuration, executors="generic.local.bash")
-
-    def test_invalid_stage(self):
-        # invalid type for stage argument, must be a string not list
-        with pytest.raises(BuildTestError):
-            BuildTest(configuration=configuration, tags=["pass"], stage=["parse"])
 
     def test_invalid_type_for_testdir(self):
         # invalid value for testdir argument, must be a str

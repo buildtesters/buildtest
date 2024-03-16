@@ -943,9 +943,10 @@ class BuildTestParser:
                     },
                 ),
                 (
-                    ["-s", "--stage"],
+                    ["--validate"],
                     {
-                        "help": "Control behavior of buildtest build to stop execution after 'parse' stage"
+                        "action": "store_true",
+                        "help": "Validate given buildspecs and control behavior of buildtest build to stop execution after parsing the YAML files.",
                     },
                 ),
                 (
