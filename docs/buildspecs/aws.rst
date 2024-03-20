@@ -132,7 +132,7 @@ This benchmark is used to measure performance of MPI libraries and is a popular 
 which measures bandwidth. The test requires we specify 2 processes.
 
 In this next example, we will run 2 tests, the first is simply invoking the ``osu_bw`` test with 2 processes, and the second test will
-run the same test and use :ref:`performance metrics <perf_checks>` to compare the bandwidth result. The ``metrics`` property is used to
+run the same test and use :ref:`comparison_operators <comparison_operators>` to compare the bandwidth result. The ``metrics`` property is used to
 capture performance metrics that can be used for comparison. We will use the :ref:`assert_ge <assert_ge>` status check that
 will do a greater than or equal comparison with reference value. The metrics will capture performance results for message length **16384** and
 perform a comparison with reference value of 10000. If the test result is greater than or equal to 10000, the test will pass otherwise it will fail.
