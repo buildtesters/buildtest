@@ -129,8 +129,8 @@ to view your test results and briefly analyze the test results. Shown below is a
 Exercise 4: Specifying Performance Checks
 --------------------------------------------
 
-In this exercise, you will be running the `STREAM benchmark <https://www.cs.virginia.edu/stream/>`_ and use :ref:`performance checks <perf_checks>` to determine if
-test will pass based on the performance results. Shown below is the stream test that we will be using for this exercise
+In this exercise, you will be running the `STREAM benchmark <https://www.cs.virginia.edu/stream/>`_ and use :ref:`comparison operators <comparison_operators>`
+to determine if test will pass based on the performance results. Shown below is the stream test that we will be using for this exercise
 
 .. literalinclude:: ../perlmutter_tutorial/ex4/stream.yml
    :language: yaml
