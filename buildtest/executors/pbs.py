@@ -98,3 +98,6 @@ class PBSExecutor(BaseExecutor):
         self.logger.debug(msg)
 
         return builder
+
+class TorqueExecutor(PBSExecutor):
+    """This class is a sub-class of PBSExecutor class and is responsible for Torque Executor"""

@@ -22,7 +22,7 @@ from buildtest.executors.cobalt import CobaltExecutor
 from buildtest.executors.container import ContainerExecutor
 from buildtest.executors.local import LocalExecutor
 from buildtest.executors.lsf import LSFExecutor
-from buildtest.executors.pbs import PBSExecutor
+from buildtest.executors.pbs import PBSExecutor, TorqueExecutor
 from buildtest.executors.slurm import SlurmExecutor
 from buildtest.tools.modules import get_module_commands
 from buildtest.utils.file import create_dir, write_file
@@ -93,6 +93,7 @@ class BuildExecutor:
             "slurm": SlurmExecutor,
             "lsf": LSFExecutor,
             "pbs": PBSExecutor,
+            "torque": TorqueExecutor,
             "cobalt": CobaltExecutor,
             "container": ContainerExecutor,
         }

@@ -402,3 +402,60 @@ class PBS(Scheduler):
         queues = list(self.queue_summary["Queue"].keys())
         self.logger.debug(f"Available Queues: {queues}")
         return queues
+
+class Torque(PBS):
+    """The Torque class is a subclass of PBS class and inherits all methods from PBS class"""
+
+    def check(self, binaries):
+        binary_validation = super().check_binaries(binaries)
+
+        if not binary_validation:
+            return False
+
+        # check output of qsub --version to see if it contains 'Commit:'
+        # (buildtest) adaptive50@e4spro-cluster:$ qsub --version
+        # Version: 7.0.1
+        # Commit: b405f8c22d41d29cbf9b9016bc1146bf4559e895
+
+        cmd = BuildTestCommand("qsub --version")
+        cmd.execute()
+        out = " ".join(cmd.get_output())
+
+        match = re.search(r'Commit:\s*(.*)$', out, re.MULTILINE)
+        if match:
+            return True
+        return False
+
+
+    def _get_queues(self):
+        """Get queue configuration using ``qstat -Q -f -F json`` and retrieve a
+        list of queues.
+        """
+
+        query = "qstat -Qf"
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        content = cmd.get_output()
+
+        pattern = r'Queue:\s*(\w+)\s*(.*?)(?=Queue:|\Z)'  # Pattern to match each Queue block
+
+        queues = []
+
+        for match in re.finditer(pattern, content, re.DOTALL):
+            queue_name = match.group(1)
+            queue_metadata = match.group(2).strip().split('\n')
+            queue_dict = {"Queue": queue_name}
+            for metadata in queue_metadata:
+                if metadata.strip():  # Ignore empty lines
+                    key_value_pair = metadata.strip().split(' = ', 1)
+                    if len(key_value_pair) == 2:
+                        key, value = key_value_pair
+                        queue_dict[key] = value
+                    else:
+                        key = key_value_pair[0]
+                        queue_dict[key] = None
+            queues.append(queue_dict)
+
+        print(queues)
+
+        return queues
