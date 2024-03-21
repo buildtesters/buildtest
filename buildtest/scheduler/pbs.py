@@ -118,25 +118,21 @@ class PBSJob(Job):
             }
         """
 
-        #query = f"qstat -x -f -F json {self.jobid}"
+        # query = f"qstat -x -f -F json {self.jobid}"
         query = f"qstat -f {self.jobid}"
-
 
         logger.debug(query)
         cmd = BuildTestCommand(query)
         cmd.execute()
         output = " ".join(cmd.get_output())
 
-        jobid_match = re.search(r'^Job Id:\s*(?P<jobid>\S+)', output, re.MULTILINE)
+        jobid_match = re.search(r"^Job Id:\s*(?P<jobid>\S+)", output, re.MULTILINE)
         if jobid_match:
-            self.jobid = jobid_match.group('jobid')
+            self.jobid = jobid_match.group("jobid")
 
+        # job_data = json.loads(output)
 
-        #job_data = json.loads(output)
-
-        state_match = re.search(
-            r'^\s*job_state = (?P<state>[A-Z])', info, re.MULTILINE
-        )
+        state_match = re.search(r"^\s*job_state = (?P<state>[A-Z])", info, re.MULTILINE)
 
         """
         if not state_match:
@@ -144,19 +140,18 @@ class PBSJob(Job):
             continue
         """
 
-        self._state = state_match.group('state')
+        self._state = state_match.group("state")
 
-        #self._state = job_data["Jobs"][self.jobid]["job_state"]
+        # self._state = job_data["Jobs"][self.jobid]["job_state"]
 
         # The Exit_status property will be available when job is finished
-        #self._exitcode = job_data["Jobs"][self.jobid].get("Exit_status")
+        # self._exitcode = job_data["Jobs"][self.jobid].get("Exit_status")
 
         exitcode_match = re.search(
-            r'^\s*exit_status = (?P<code>\d+)',
-            info, re.MULTILINE,
+            r"^\s*exit_status = (?P<code>\d+)", info, re.MULTILINE
         )
         if exitcode_match:
-            self._exitcode = int(exitcode_match.group('code'))
+            self._exitcode = int(exitcode_match.group("code"))
 
         # if job is running and the start time is not recorded then we record the start time
         if self.is_running() and not self.starttime:
@@ -195,6 +190,7 @@ class PBSJob(Job):
         logger.debug(f"Cancelling job {self.jobid} by running: {query}")
         cmd = BuildTestCommand(query)
         cmd.execute()
+
 
 class TorqueJob(PBSJob):
     pass
