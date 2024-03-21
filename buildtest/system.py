@@ -403,6 +403,7 @@ class PBS(Scheduler):
         self.logger.debug(f"Available Queues: {queues}")
         return queues
 
+
 class Torque(PBS):
     """The Torque class is a subclass of PBS class and inherits all methods from PBS class"""
 
@@ -421,11 +422,10 @@ class Torque(PBS):
         cmd.execute()
         out = " ".join(cmd.get_output())
 
-        match = re.search(r'Commit:\s*(.*)$', out, re.MULTILINE)
+        match = re.search(r"Commit:\s*(.*)$", out, re.MULTILINE)
         if match:
             return True
         return False
-
 
     def _get_queues(self):
         """Get queue configuration using ``qstat -Q -f -F json`` and retrieve a
@@ -437,17 +437,19 @@ class Torque(PBS):
         cmd.execute()
         content = cmd.get_output()
 
-        pattern = r'Queue:\s*(\w+)\s*(.*?)(?=Queue:|\Z)'  # Pattern to match each Queue block
+        pattern = (
+            r"Queue:\s*(\w+)\s*(.*?)(?=Queue:|\Z)"  # Pattern to match each Queue block
+        )
 
         queues = []
 
         for match in re.finditer(pattern, content, re.DOTALL):
             queue_name = match.group(1)
-            queue_metadata = match.group(2).strip().split('\n')
+            queue_metadata = match.group(2).strip().split("\n")
             queue_dict = {"Queue": queue_name}
             for metadata in queue_metadata:
                 if metadata.strip():  # Ignore empty lines
-                    key_value_pair = metadata.strip().split(' = ', 1)
+                    key_value_pair = metadata.strip().split(" = ", 1)
                     if len(key_value_pair) == 2:
                         key, value = key_value_pair
                         queue_dict[key] = value
