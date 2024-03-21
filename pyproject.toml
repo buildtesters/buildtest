@@ -19,11 +19,15 @@ dependencies=[
    'PyYAML >= 5.12',
    'requests',
    'rich',
+   'urllib3>=2.1.0',
+    # both coverage and pytest required for running 'buildtest tutorial-examples'
    'coverage',
    'pytest',
+
+    # required for running 'buildtest stylecheck'
    'black==24.3.0',
    'pyflakes',
-   'urllib3>=2.1.0',
+   'isort',
 ]
 
 
@@ -39,10 +43,7 @@ path = "buildtest/__init__.py"
 
 [project.optional-dependencies]
 dev = [
-    'docutils==0.16',
     'pre-commit',
-    'isort',
-    'black==24.3.0',
     'yamllint'
 ]
 docs = [
