@@ -517,7 +517,8 @@ class SiteConfiguration:
 
             if self.verbose:
                 console.print(
-                    "No PBS/Torque executors found in configuration file", style="bold blue"
+                    "No PBS/Torque executors found in configuration file",
+                    style="bold blue",
                 )
 
             return
@@ -544,8 +545,8 @@ class SiteConfiguration:
                 continue
 
             if (
-                    pbs.queue_summary["Queue"][queue]["enabled"] != "True"
-                    or pbs.queue_summary["Queue"][queue]["started"] != "True"
+                pbs.queue_summary["Queue"][queue]["enabled"] != "True"
+                or pbs.queue_summary["Queue"][queue]["started"] != "True"
             ):
                 self.invalid_executors.append(executor_name)
                 logger.info("Queue configuration")

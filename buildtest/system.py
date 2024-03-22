@@ -409,6 +409,7 @@ class PBS(Scheduler):
         self.logger.debug(f"Available Queues: {queues}")
         return queues
 
+
 class Torque(PBS):
     """The Torque class is a subclass of PBS class and inherits all methods from PBS class"""
 
@@ -435,4 +436,7 @@ class Torque(PBS):
         return False
 
     def _get_queues(self):
+        """Get queue configuration using ``qstat -Q -f -F json`` and retrieve a
+        list of queues.
+        """
         pass
