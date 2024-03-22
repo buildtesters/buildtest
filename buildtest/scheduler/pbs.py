@@ -1,7 +1,8 @@
 import json
 import logging
+import re
 import time
-
+import xml.etree.ElementTree as ET
 from buildtest.scheduler.job import Job
 from buildtest.utils.command import BuildTestCommand
 
@@ -26,7 +27,7 @@ class PBSJob(Job):
 
     def is_complete(self):
         """Return ``True`` if job is complete. A completed job is in state ``F``."""
-        return self._state == "F"
+        return self._state == "C"
 
     def is_suspended(self):
         """Return ``True`` if job is suspended which would be in one of these states ``H``, ``U``, ``S``."""
@@ -118,40 +119,60 @@ class PBSJob(Job):
             }
         """
 
-        # query = f"qstat -x -f -F json {self.jobid}"
         query = f"qstat -f {self.jobid}"
 
-        logger.debug(query)
+        logger.debug(f"Polling job by running: {query}")
         cmd = BuildTestCommand(query)
         cmd.execute()
         output = " ".join(cmd.get_output())
 
-        jobid_match = re.search(r"^Job Id:\s*(?P<jobid>\S+)", output, re.MULTILINE)
+        pattern=r'^Job Id:\s*(?P<jobid>\S+)'
+        jobid_match = re.search(pattern, output, re.MULTILINE)
+        logger.debug(f"Extracting Job ID from output of command: {query} by applying regular expression pattern: '{pattern}'. The return value is {jobid_match}")
         if jobid_match:
             self.jobid = jobid_match.group("jobid")
 
         # job_data = json.loads(output)
-
-        state_match = re.search(r"^\s*job_state = (?P<state>[A-Z])", info, re.MULTILINE)
+        pattern=r'^\s*job_state = (?P<state>[A-Z])'
+        state_match = re.search(pattern, output, re.MULTILINE)
 
         """
         if not state_match:
-            self.log(f'Job state not found (job info follows):\n{info}')
+            self.log(f'Job state not found (job info follows):\n{output}')
             continue
         """
 
         self._state = state_match.group("state")
 
-        # self._state = job_data["Jobs"][self.jobid]["job_state"]
+        pattern=r'^\s*exit_status = (?P<code>\d+)'
+        exitcode_match = re.search(pattern, output, re.MULTILINE)
 
-        # The Exit_status property will be available when job is finished
-        # self._exitcode = job_data["Jobs"][self.jobid].get("Exit_status")
-
-        exitcode_match = re.search(
-            r"^\s*exit_status = (?P<code>\d+)", info, re.MULTILINE
-        )
+        logger.debug(f"Retrieving exitcode for Job: {self.jobid} by applying regular expression pattern: '{pattern}'. The return value is {exitcode_match}")
         if exitcode_match:
             self._exitcode = int(exitcode_match.group("code"))
+            logger.debug(f"Retrieve exitcode: {self._exitcode} for Job: {self.jobid}")
+
+        # Regular expression pattern to match the OutPut_Path field. This will account for text spanning multiple lines
+        pattern = r'Output_Path\s*=\s*(.*?)\s*Priority'
+        match = re.search(pattern, output, re.DOTALL)
+
+        if match:
+            lines = match.group(1).split(":")[1].split('\n')
+            # Remove leading whitespace from lines after the first line
+            formatted_lines = [lines[0]] + [line.strip() for line in lines[1:]]
+
+            self._outfile = ''.join(formatted_lines)
+            logger.debug(self._outfile)
+
+        # Regular expression pattern to match the Error_Path field
+        pattern = r'Error_Path\s*=\s*(.*?)\s*(?:\n\s*(?:\w+\s*=)|$)'
+        match = re.search(pattern, output, re.DOTALL)
+        if match:
+            lines = match.group(1).split(":")[1].split('\n')
+            # Remove leading whitespace from lines after the first line
+            formatted_lines = [lines[0]] + [line.strip() for line in lines[1:]]
+
+            self._errfile = ''.join(formatted_lines)
 
         # if job is running and the start time is not recorded then we record the start time
         if self.is_running() and not self.starttime:
@@ -163,27 +184,27 @@ class PBSJob(Job):
         for getting output file, error file and exit status of job.
         """
 
-        query = f"qstat -x -f -F json {self.jobid}"
 
-        logger.debug(f"Executing command: {query}")
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        output = cmd.get_output()
-        output = " ".join(output)
-
-        job_data = json.loads(output)
+        #job_data = json.loads(output)
 
         # output in the form of pbs:<path>
-        self._outfile = job_data["Jobs"][self.jobid]["Output_Path"].split(":")[1]
-        self._errfile = job_data["Jobs"][self.jobid]["Error_Path"].split(":")[1]
+        #self._outfile = job_data["Jobs"][self.jobid]["Output_Path"].split(":")[1]
+        #self._errfile = job_data["Jobs"][self.jobid]["Error_Path"].split(":")[1]
 
-        # if job is complete but terminated or deleted we won't have exit status in that case we ignore this file
-        try:
-            self._exitcode = job_data["Jobs"][self.jobid]["Exit_status"]
-        except KeyError:
-            self._exitcode = -1
-        return job_data
+        #self._exitcode = self._get_exitcode()
+        return {}
 
+    def _get_exitcode(self):
+        cmd = BuildTestCommand(f"qstat -f {self.jobid}")
+        output = " ".join(cmd.get_output())
+        exitcode_match = re.search(
+            r'^\s*exit_status = (?P<code>\d+)', output, re.MULTILINE
+        )
+        if exitcode_match:
+            logger.debug(exitcode_match.group('exit_status'))
+            return int(exit_status_match.group('exit_status'))
+
+        return None
     def cancel(self):
         """Cancel PBS job by running ``qdel <jobid>``."""
         query = f"qdel {self.jobid}"

@@ -522,7 +522,7 @@ class SiteConfiguration:
 
             return
 
-        executor_type = "pbs"
+        executor_type = "torque"
 
         torque = Torque()
         if not torque.active():
@@ -534,7 +534,7 @@ class SiteConfiguration:
             if self.is_executor_disabled(pbs_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
-
+            """
             queue = pbs_executor[executor].get("queue")
             if queue not in pbs.queues:
                 self.invalid_executors.append(executor_name)
@@ -554,7 +554,7 @@ class SiteConfiguration:
                     f"[{self.file}]: '{queue}' not 'enabled' or 'started' properly."
                 )
                 continue
-
+            """
             self.valid_executors[executor_type][executor_name] = {
                 "setting": pbs_executor[executor]
             }

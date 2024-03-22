@@ -7,6 +7,7 @@ import json
 import logging
 import os
 import platform
+import re
 import shutil
 import sys
 
@@ -86,6 +87,7 @@ class BuildTestSystem:
         lsf = LSF()
         cobalt = Cobalt()
         pbs = PBS()
+        torque = Torque()
 
         self.system["scheduler"] = []
 
@@ -104,6 +106,10 @@ class BuildTestSystem:
         if pbs.state:
             self.logger.debug("Detected PBS Scheduler")
             self.system["scheduler"].append("pbs")
+
+        if torque.state:
+            self.logger.debug("Detected Torque Scheduler")
+            self.system["scheduler"].append("torque")
 
     def detect_module_tool(self):
         """Check if module tool exists, we check for Lmod or environment-modules by
@@ -419,43 +425,14 @@ class Torque(PBS):
 
         cmd = BuildTestCommand("qsub --version")
         cmd.execute()
-        out = " ".join(cmd.get_output())
+        # output goes to error stream
+        content = " ".join(cmd.get_error())
 
-        match = re.search(r'Commit:\s*(.*)$', out, re.MULTILINE)
+        match = re.search(r'Commit:\s*(.*)$', content, re.MULTILINE)
+
         if match:
             return True
         return False
 
-
     def _get_queues(self):
-        """Get queue configuration using ``qstat -Q -f -F json`` and retrieve a
-        list of queues.
-        """
-
-        query = "qstat -Qf"
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        content = cmd.get_output()
-
-        pattern = r'Queue:\s*(\w+)\s*(.*?)(?=Queue:|\Z)'  # Pattern to match each Queue block
-
-        queues = []
-
-        for match in re.finditer(pattern, content, re.DOTALL):
-            queue_name = match.group(1)
-            queue_metadata = match.group(2).strip().split('\n')
-            queue_dict = {"Queue": queue_name}
-            for metadata in queue_metadata:
-                if metadata.strip():  # Ignore empty lines
-                    key_value_pair = metadata.strip().split(' = ', 1)
-                    if len(key_value_pair) == 2:
-                        key, value = key_value_pair
-                        queue_dict[key] = value
-                    else:
-                        key = key_value_pair[0]
-                        queue_dict[key] = None
-            queues.append(queue_dict)
-
-        print(queues)
-
-        return queues
+        pass
