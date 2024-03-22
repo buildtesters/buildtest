@@ -429,7 +429,7 @@ class Torque(PBS):
         # output goes to error stream
         content = " ".join(cmd.get_error())
 
-        match = re.search(r'Commit:\s*(.*)$', content, re.MULTILINE)
+        match = re.search(r"Commit:\s*(.*)$", content, re.MULTILINE)
 
         if match:
             return True

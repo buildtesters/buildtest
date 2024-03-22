@@ -3,6 +3,7 @@ import logging
 import re
 import time
 import xml.etree.ElementTree as ET
+
 from buildtest.scheduler.job import Job
 from buildtest.utils.command import BuildTestCommand
 
@@ -126,14 +127,16 @@ class PBSJob(Job):
         cmd.execute()
         output = " ".join(cmd.get_output())
 
-        pattern=r'^Job Id:\s*(?P<jobid>\S+)'
+        pattern = r"^Job Id:\s*(?P<jobid>\S+)"
         jobid_match = re.search(pattern, output, re.MULTILINE)
-        logger.debug(f"Extracting Job ID from output of command: {query} by applying regular expression pattern: '{pattern}'. The return value is {jobid_match}")
+        logger.debug(
+            f"Extracting Job ID from output of command: {query} by applying regular expression pattern: '{pattern}'. The return value is {jobid_match}"
+        )
         if jobid_match:
             self.jobid = jobid_match.group("jobid")
 
         # job_data = json.loads(output)
-        pattern=r'^\s*job_state = (?P<state>[A-Z])'
+        pattern = r"^\s*job_state = (?P<state>[A-Z])"
         state_match = re.search(pattern, output, re.MULTILINE)
 
         """
@@ -144,35 +147,37 @@ class PBSJob(Job):
 
         self._state = state_match.group("state")
 
-        pattern=r'^\s*exit_status = (?P<code>\d+)'
+        pattern = r"^\s*exit_status = (?P<code>\d+)"
         exitcode_match = re.search(pattern, output, re.MULTILINE)
 
-        logger.debug(f"Retrieving exitcode for Job: {self.jobid} by applying regular expression pattern: '{pattern}'. The return value is {exitcode_match}")
+        logger.debug(
+            f"Retrieving exitcode for Job: {self.jobid} by applying regular expression pattern: '{pattern}'. The return value is {exitcode_match}"
+        )
         if exitcode_match:
             self._exitcode = int(exitcode_match.group("code"))
             logger.debug(f"Retrieve exitcode: {self._exitcode} for Job: {self.jobid}")
 
         # Regular expression pattern to match the OutPut_Path field. This will account for text spanning multiple lines
-        pattern = r'Output_Path\s*=\s*(.*?)\s*Priority'
+        pattern = r"Output_Path\s*=\s*(.*?)\s*Priority"
         match = re.search(pattern, output, re.DOTALL)
 
         if match:
-            lines = match.group(1).split(":")[1].split('\n')
+            lines = match.group(1).split(":")[1].split("\n")
             # Remove leading whitespace from lines after the first line
             formatted_lines = [lines[0]] + [line.strip() for line in lines[1:]]
 
-            self._outfile = ''.join(formatted_lines)
+            self._outfile = "".join(formatted_lines)
             logger.debug(self._outfile)
 
         # Regular expression pattern to match the Error_Path field
-        pattern = r'Error_Path\s*=\s*(.*?)\s*(?:\n\s*(?:\w+\s*=)|$)'
+        pattern = r"Error_Path\s*=\s*(.*?)\s*(?:\n\s*(?:\w+\s*=)|$)"
         match = re.search(pattern, output, re.DOTALL)
         if match:
-            lines = match.group(1).split(":")[1].split('\n')
+            lines = match.group(1).split(":")[1].split("\n")
             # Remove leading whitespace from lines after the first line
             formatted_lines = [lines[0]] + [line.strip() for line in lines[1:]]
 
-            self._errfile = ''.join(formatted_lines)
+            self._errfile = "".join(formatted_lines)
 
         # if job is running and the start time is not recorded then we record the start time
         if self.is_running() and not self.starttime:
@@ -184,27 +189,27 @@ class PBSJob(Job):
         for getting output file, error file and exit status of job.
         """
 
-
-        #job_data = json.loads(output)
+        # job_data = json.loads(output)
 
         # output in the form of pbs:<path>
-        #self._outfile = job_data["Jobs"][self.jobid]["Output_Path"].split(":")[1]
-        #self._errfile = job_data["Jobs"][self.jobid]["Error_Path"].split(":")[1]
+        # self._outfile = job_data["Jobs"][self.jobid]["Output_Path"].split(":")[1]
+        # self._errfile = job_data["Jobs"][self.jobid]["Error_Path"].split(":")[1]
 
-        #self._exitcode = self._get_exitcode()
+        # self._exitcode = self._get_exitcode()
         return {}
 
     def _get_exitcode(self):
         cmd = BuildTestCommand(f"qstat -f {self.jobid}")
         output = " ".join(cmd.get_output())
         exitcode_match = re.search(
-            r'^\s*exit_status = (?P<code>\d+)', output, re.MULTILINE
+            r"^\s*exit_status = (?P<code>\d+)", output, re.MULTILINE
         )
         if exitcode_match:
-            logger.debug(exitcode_match.group('exit_status'))
-            return int(exit_status_match.group('exit_status'))
+            logger.debug(exitcode_match.group("exit_status"))
+            return int(exit_status_match.group("exit_status"))
 
         return None
+
     def cancel(self):
         """Cancel PBS job by running ``qdel <jobid>``."""
         query = f"qdel {self.jobid}"
