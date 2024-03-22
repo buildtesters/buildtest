@@ -237,3 +237,13 @@ def test_metrics_with_regex_type():
         configuration=config,
     )
     cmd.build()
+
+
+def test_metrics_regex_with_linenum():
+    """This test will perform status check on a particular line where regular expression is applied"""
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "metrics_regex_with_linenum.yml")],
+        buildtest_system=system,
+        configuration=config,
+    )
+    cmd.build()

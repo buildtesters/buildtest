@@ -944,11 +944,15 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             self.metadata["metrics"][key] = ""
             regex = metric.get("regex")
             file_regex = metric.get("file_regex")
-            self.metadata["metrics"][key] = ""
 
             if regex:
                 stream = regex.get("stream")
                 content = self._output if stream == "stdout" else self._error
+
+                linenum = regex.get("linenum")
+                if linenum is not None:
+                    split = content.split("\n")
+                    content = split[:-1][linenum] if split[-1] == "" else split[linenum]
 
                 if regex.get("re") == "re.match":
                     match = re.match(regex["exp"], content, re.MULTILINE)

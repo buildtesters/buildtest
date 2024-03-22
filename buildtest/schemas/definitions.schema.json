@@ -147,6 +147,10 @@
           "minimum": 0,
           "description": "Specify the item number used to index element in `match.group() <https://docs.python.org/3/library/re.html#match-objects>`_"
         },
+        "linenum": {
+          "type": "integer",
+          "description": "Specify the line number used to extract a particular line where regex is applied"
+        },
         "re": {
           "type": "string",
           "description": "Specify the regular expression type, it can be either re.search, re.match, or re.fullmatch. By default it uses re.search",

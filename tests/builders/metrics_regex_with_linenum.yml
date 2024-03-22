@@ -1,0 +1,30 @@
+buildspecs:
+  metric_regex_example:
+    executor: generic.local.bash
+    type: script
+    description: capture result metric from output
+    run: |
+      echo "HPCG result is VALID with a GFLOP/s rating of=63.6515"
+      echo "HPCG result is SUPERB with a GFLOP/s rating of=88"
+    tags: tutorials
+    metrics:
+      hpcg_rating_stream:
+        type: float
+        regex:
+          exp: '(\d+\.\d+)$'
+          stream: stdout
+          linenum: 0
+      hpcg_state_stream:
+        type: str
+        regex:
+          exp: '(SUPERB)'
+          stream: stdout
+          linenum: -1
+    status:
+      assert_eq:
+        comparisons:
+        - name: hpcg_rating_stream
+          ref: 63.6515
+        - name: hpcg_state_stream
+          ref: SUPERB
+
