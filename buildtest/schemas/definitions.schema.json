@@ -149,7 +149,7 @@
         },
         "linenum": {
           "type": "integer",
-          "description": "Specify the line number used to extract a particular line where regex is applied"
+          "description": "Specify the line number used to extract from the content where regex is applied"
         },
         "re": {
           "type": "string",
