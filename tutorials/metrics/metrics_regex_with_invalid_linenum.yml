@@ -16,4 +16,3 @@ buildspecs:
           exp: 'This is line: \d'
           stream: stdout
           linenum: 10
-
