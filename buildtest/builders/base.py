@@ -947,7 +947,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             try:
                 content = lines[:-1][linenum] if lines[-1] == "" else lines[linenum]
             except Exception as e:
-                raise ValueError(f"Failed to index linenum from the content") from e
+                raise ValueError("Failed to index linenum from the content") from e
         return content
 
     def add_metrics(self):

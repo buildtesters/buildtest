@@ -249,10 +249,10 @@ def test_metrics_regex_with_linenum():
     cmd.build()
 
 
-def test_metrics_regex_with_linenum_fail():
+def test_metrics_regex_with_invalid_linenum():
     """This test will test failure on invalid linenum"""
     cmd = BuildTest(
-        buildspecs=[os.path.join(here, "metrics_regex_with_linenum_failure.yml")],
+        buildspecs=[os.path.join(here, "metrics_regex_with_invalid_linenum.yml")],
         buildtest_system=system,
         configuration=config,
     )
