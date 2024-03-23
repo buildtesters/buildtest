@@ -1,29 +1,36 @@
 buildspecs:
-  metric_regex_example:
+  metric_regex_with_linenum_example:
     executor: generic.local.bash
     type: script
     description: capture result metric from output
     run: |
-      echo "HPCG result is VALID with a GFLOP/s rating of=63.6515"
-      echo "HPCG result is SUPERB with a GFLOP/s rating of=88"
+      echo "This is line: 1"
+      echo "This is line: 2"
+      echo "This is line: 3"
+      echo "This is line: 4"
     tags: tutorials
     metrics:
-      hpcg_rating_stream:
-        type: float
-        regex:
-          exp: '(\d+\.\d+)$'
-          stream: stdout
-          linenum: 0
-      hpcg_state_stream:
+      second_line:
         type: str
         regex:
-          exp: '(SUPERB)'
+          exp: 'This is line: \d'
           stream: stdout
-          linenum: -1
+          linenum: 1
+      without_linenum:
+        type: str
+        regex:
+          exp: 'This is line: \d'
+          stream: stdout
+      linenum_to_stderr:
+        type: str
+        regex:
+          exp: 'This is line: \d'
+          stream: stderr
+          linenum: 2
     status:
       assert_eq:
         comparisons:
-        - name: hpcg_rating_stream
-          ref: 63.6515
-        - name: hpcg_state_stream
-          ref: SUPERB
+        - name: second_line
+          ref: "This is line: 2"
+        - name: without_linenum
+          ref: "This is line: 1"

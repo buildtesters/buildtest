@@ -247,3 +247,14 @@ def test_metrics_regex_with_linenum():
         configuration=config,
     )
     cmd.build()
+
+
+def test_metrics_regex_with_linenum_fail():
+    """This test will test failure on invalid linenum"""
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "metrics_regex_with_linenum_failure.yml")],
+        buildtest_system=system,
+        configuration=config,
+    )
+    with pytest.raises(ValueError, match="Failed to index linenum from the content"):
+        cmd.build()

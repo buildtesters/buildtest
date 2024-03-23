@@ -943,8 +943,11 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         linenum = regex.get("linenum")
         if linenum is not None and content:
-            split = content.split("\n")
-            content = split[:-1][linenum] if split[-1] == "" else split[linenum]
+            lines = content.split("\n")
+            try:
+                content = lines[:-1][linenum] if lines[-1] == "" else lines[linenum]
+            except Exception as e:
+                raise ValueError(f"Failed to index linenum from the content") from e
         return content
 
     def add_metrics(self):
