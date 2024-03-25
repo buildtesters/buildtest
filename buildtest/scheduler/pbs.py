@@ -62,6 +62,53 @@ class PBSJob(Job):
         """Return ``True`` if their is a job failure which would be if exit code is not 0"""
         return not self.success()
 
+    def fetch_output_error_files(self):
+        """Fetch output and error files right after job submission."""
+        query = f"qstat -f {self.jobid}"
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        output = " ".join(cmd.get_output())
+
+        # Extract output and error files from the qstat output
+        output_match = re.search(r"Output_Path = .+:(?P<output>.+)", output)
+        error_match = re.search(r"Error_Path = .+:(?P<error>.+)", output)
+
+        if output_match:
+            self._outfile = output_match.group("output")
+        if error_match:
+            self._errfile = error_match.group("error")
+
+        """
+        # Regular expression pattern to match the OutPut_Path field. This will account for text spanning multiple lines
+        pattern = r"Output_Path\s*=\s*(.*?)\s*Priority"
+        match = re.search(pattern, output, re.DOTALL)
+
+        if match:
+            lines = match.group(1).split(":")[1].split("\n")
+            # Remove leading whitespace from lines after the first line
+            formatted_lines = [lines[0]] + [line.strip() for line in lines[1:]]
+
+            self._outfile = "".join(formatted_lines)
+            logger.debug(self._outfile)
+
+        # Regular expression pattern to match the Error_Path field
+        pattern = r"Error_Path\s*=\s*(.*?)\s*(?:\n\s*(?:\w+\s*=)|$)"
+        match = re.search(pattern, output, re.DOTALL)
+        if match:
+            lines = match.group(1).split(":")[1].split("\n")
+            # Remove leading whitespace from lines after the first line
+            formatted_lines = [lines[0]] + [line.strip() for line in lines[1:]]
+
+            self._errfile = "".join(formatted_lines)
+        """
+
+    def is_output_ready(self):
+        """Check if the output and error file exists."""
+        if not self._outfile or not self._errfile:
+            self.fetch_output_error_files()
+        return os.path.exists(self._outfile) and os.path.exists(self._errfile)
+
+
     def poll(self):
         """This method will poll the PBS Job by running ``qstat -x -f -F json <jobid>`` which will report job data in JSON format that
         can be parsed to extract the job state. In PBS the active job state can be retrieved by reading property ``job_state`` property.
@@ -157,27 +204,8 @@ class PBSJob(Job):
             self._exitcode = int(exitcode_match.group("code"))
             logger.debug(f"Retrieve exitcode: {self._exitcode} for Job: {self.jobid}")
 
-        # Regular expression pattern to match the OutPut_Path field. This will account for text spanning multiple lines
-        pattern = r"Output_Path\s*=\s*(.*?)\s*Priority"
-        match = re.search(pattern, output, re.DOTALL)
-
-        if match:
-            lines = match.group(1).split(":")[1].split("\n")
-            # Remove leading whitespace from lines after the first line
-            formatted_lines = [lines[0]] + [line.strip() for line in lines[1:]]
-
-            self._outfile = "".join(formatted_lines)
-            logger.debug(self._outfile)
-
-        # Regular expression pattern to match the Error_Path field
-        pattern = r"Error_Path\s*=\s*(.*?)\s*(?:\n\s*(?:\w+\s*=)|$)"
-        match = re.search(pattern, output, re.DOTALL)
-        if match:
-            lines = match.group(1).split(":")[1].split("\n")
-            # Remove leading whitespace from lines after the first line
-            formatted_lines = [lines[0]] + [line.strip() for line in lines[1:]]
-
-            self._errfile = "".join(formatted_lines)
+        # ---- Get output and error files ----
+        self.is_output_ready()
 
         # if job is running and the start time is not recorded then we record the start time
         if self.is_running() and not self.starttime:
