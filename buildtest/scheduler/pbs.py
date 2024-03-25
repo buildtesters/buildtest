@@ -108,7 +108,6 @@ class PBSJob(Job):
             self.fetch_output_error_files()
         return os.path.exists(self._outfile) and os.path.exists(self._errfile)
 
-
     def poll(self):
         """This method will poll the PBS Job by running ``qstat -x -f -F json <jobid>`` which will report job data in JSON format that
         can be parsed to extract the job state. In PBS the active job state can be retrieved by reading property ``job_state`` property.
