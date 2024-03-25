@@ -1,0 +1,7 @@
+buildspecs:
+  hostname_test:
+    type: script
+    executor: generic.torque.e4spro
+    pbs: ["-l nodes=1"]
+    run: |
+      sleep 5
