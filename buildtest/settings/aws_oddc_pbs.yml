@@ -11,7 +11,7 @@ system:
       format: name,description
       terse: false
       root:
-      - $BUILDTEST_ROOT/aws_tutorial
+      - $BUILDTEST_ROOT/aws_oddc
     report:
       count: 25
       terse: false
