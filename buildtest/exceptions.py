@@ -75,3 +75,6 @@ class ConfigurationError(Exception):
 
     def __str__(self):
         return repr(f"[{self.settings_file}]: {self.msg}")
+
+class JobSchedulerError(Exception):
+    """JobSchedulerError is raised when their is an issue with submitting job to Job Scheduler"""

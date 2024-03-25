@@ -86,8 +86,6 @@ class PBSExecutor(BaseExecutor):
         out = command.get_output()
         JobID = " ".join(out).strip()
 
-        builder.metadata["jobid"] = JobID
-
         builder.job = PBSJob(JobID)
 
         # store job id
