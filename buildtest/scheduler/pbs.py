@@ -1,13 +1,14 @@
-import os
 import json
 import logging
+import os
 import re
 import time
 import xml.etree.ElementTree as ET
 
+from buildtest.exceptions import JobSchedulerError
 from buildtest.scheduler.job import Job
 from buildtest.utils.command import BuildTestCommand
-from buildtest.exceptions import JobSchedulerError
+
 logger = logging.getLogger(__name__)
 
 
@@ -93,7 +94,6 @@ class PBSJob(Job):
             formatted_lines = [lines[0]] + [line.strip() for line in lines[1:]]
 
             self._errfile = "".join(formatted_lines)
-
 
     def is_output_ready(self):
         """Check if the output and error file exists."""
@@ -228,7 +228,9 @@ class PBSJob(Job):
         if jobid_match:
             self.jobid = jobid_match.group("jobid")
         else:
-            raise JobSchedulerError(f"Unable to extract Job ID from output of qstat command: {query}")
+            raise JobSchedulerError(
+                f"Unable to extract Job ID from output of qstat command: {query}"
+            )
 
         # job_data = json.loads(output)
         pattern = r"^\s*job_state = (?P<state>[A-Z])"
