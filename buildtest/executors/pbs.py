@@ -86,8 +86,6 @@ class PBSExecutor(BaseExecutor):
         out = command.get_output()
         JobID = " ".join(out).strip()
 
-        builder.metadata["jobid"] = JobID
-
         builder.job = PBSJob(JobID)
 
         # store job id
@@ -98,3 +96,7 @@ class PBSExecutor(BaseExecutor):
         self.logger.debug(msg)
 
         return builder
+
+
+class TorqueExecutor(PBSExecutor):
+    """This class is a sub-class of PBSExecutor class and is responsible for Torque Executor"""

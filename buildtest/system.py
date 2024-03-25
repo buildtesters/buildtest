@@ -7,6 +7,7 @@ import json
 import logging
 import os
 import platform
+import re
 import shutil
 import sys
 
@@ -86,6 +87,7 @@ class BuildTestSystem:
         lsf = LSF()
         cobalt = Cobalt()
         pbs = PBS()
+        torque = Torque()
 
         self.system["scheduler"] = []
 
@@ -104,6 +106,10 @@ class BuildTestSystem:
         if pbs.state:
             self.logger.debug("Detected PBS Scheduler")
             self.system["scheduler"].append("pbs")
+
+        if torque.state:
+            self.logger.debug("Detected Torque Scheduler")
+            self.system["scheduler"].append("torque")
 
     def detect_module_tool(self):
         """Check if module tool exists, we check for Lmod or environment-modules by
@@ -402,3 +408,35 @@ class PBS(Scheduler):
         queues = list(self.queue_summary["Queue"].keys())
         self.logger.debug(f"Available Queues: {queues}")
         return queues
+
+
+class Torque(PBS):
+    """The Torque class is a subclass of PBS class and inherits all methods from PBS class"""
+
+    def check(self, binaries):
+        binary_validation = super().check_binaries(binaries)
+
+        if not binary_validation:
+            return False
+
+        # check output of qsub --version to see if it contains 'Commit:'
+        # (buildtest) adaptive50@e4spro-cluster:$ qsub --version
+        # Version: 7.0.1
+        # Commit: b405f8c22d41d29cbf9b9016bc1146bf4559e895
+
+        cmd = BuildTestCommand("qsub --version")
+        cmd.execute()
+        # output goes to error stream
+        content = " ".join(cmd.get_error())
+
+        match = re.search(r"Commit:\s*(.*)$", content, re.MULTILINE)
+
+        if match:
+            return True
+        return False
+
+    def _get_queues(self):
+        """Get queue configuration using ``qstat -Q -f -F json`` and retrieve a
+        list of queues.
+        """
+        pass

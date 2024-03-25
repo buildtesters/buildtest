@@ -12,7 +12,7 @@ from buildtest.defaults import (
 from buildtest.exceptions import BuildTestError, ConfigurationError
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_recipe, load_schema
-from buildtest.system import LSF, PBS, Cobalt, Slurm
+from buildtest.system import LSF, PBS, Cobalt, Slurm, Torque
 from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import resolve_path
 from buildtest.utils.shell import Shell
@@ -49,6 +49,7 @@ class SiteConfiguration:
             "lsf": {},
             "pbs": {},
             "cobalt": {},
+            "torque": {},
             "container": {},
         }
 
@@ -175,6 +176,7 @@ class SiteConfiguration:
         self._validate_lsf_executors()
         self._validate_cobalt_executors()
         self._validate_pbs_executors()
+        self._validate_torque_executors()
         self._validate_container_executors()
 
         for executor_type in self.target_config["executors"]:
@@ -504,6 +506,56 @@ class SiteConfiguration:
                 )
                 continue
 
+            self.valid_executors[executor_type][executor_name] = {
+                "setting": pbs_executor[executor]
+            }
+
+    def _validate_torque_executors(self):
+
+        pbs_executor = deep_get(self.target_config, "executors", "torque")
+        if not pbs_executor:
+
+            if self.verbose:
+                console.print(
+                    "No PBS/Torque executors found in configuration file",
+                    style="bold blue",
+                )
+
+            return
+
+        executor_type = "torque"
+
+        torque = Torque()
+        if not torque.active():
+            return
+
+        for executor in pbs_executor:
+            executor_name = f"{self.name()}.{executor_type}.{executor}"
+
+            if self.is_executor_disabled(pbs_executor[executor]):
+                self.disabled_executors.append(executor_name)
+                continue
+            """
+            queue = pbs_executor[executor].get("queue")
+            if queue not in pbs.queues:
+                self.invalid_executors.append(executor_name)
+                logger.error(
+                    f"PBS queue - '{queue}' not in list of available queues: {pbs.queues} "
+                )
+                continue
+
+            if (
+                pbs.queue_summary["Queue"][queue]["enabled"] != "True"
+                or pbs.queue_summary["Queue"][queue]["started"] != "True"
+            ):
+                self.invalid_executors.append(executor_name)
+                logger.info("Queue configuration")
+                logger.info(json.dumps(pbs.queue_summary, indent=2))
+                logger.error(
+                    f"[{self.file}]: '{queue}' not 'enabled' or 'started' properly."
+                )
+                continue
+            """
             self.valid_executors[executor_type][executor_name] = {
                 "setting": pbs_executor[executor]
             }

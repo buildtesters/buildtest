@@ -793,6 +793,8 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             for line in self.pbs:
                 lines.append(f"#PBS {line}")
             lines.append(f"#PBS -N {self.name}")
+            lines.append(f"#PBS -o {self.name}.o")
+            lines.append(f"#PBS -e {self.name}.e")
 
         if self.cobalt:
             for line in self.cobalt:

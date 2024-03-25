@@ -353,6 +353,16 @@
                   "$ref": "#/definitions/pbs"
                 }
               },
+              "torque": {
+                "type": "object",
+                "description": "The ``torque`` section is used for declaring PBS/Torque executors for running jobs using Torque scheduler",
+                "propertyNames": {
+                  "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "additionalProperties": {
+                  "$ref": "#/definitions/pbs"
+                }
+              },
               "container": {
                 "type": "object",
                 "description": "The ``container`` section is used for declaring container executors for running jobs using container technology",
@@ -608,7 +618,7 @@
     },
     "pbs": {
       "type": "object",
-      "description": "An instance object of cobalt executor",
+      "description": "An instance object of pbs executor",
       "additionalProperties": false,
       "required": [ "queue" ],
       "properties": {
