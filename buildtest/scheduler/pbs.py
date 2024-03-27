@@ -1,9 +1,7 @@
-import json
 import logging
 import os
 import re
 import time
-import xml.etree.ElementTree as ET
 
 from buildtest.exceptions import JobSchedulerError
 from buildtest.scheduler.job import Job
