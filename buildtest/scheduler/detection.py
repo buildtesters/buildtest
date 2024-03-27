@@ -32,7 +32,7 @@ class Scheduler:
 
     def active(self):
         """Returns ``True`` if buildtest is able to retrieve queues from Scheduler otherwises returns ``False``"""
-        return hasattr(self, "queues")
+        return self.is_active
 
 
 class Slurm(Scheduler):
@@ -47,20 +47,13 @@ class Slurm(Scheduler):
     def __init__(self):
         self.logger = logging.getLogger(__name__)
 
-        self.state = self.check_binaries(self.binaries)
+        self.is_active = self.check_binaries(self.binaries)
 
         # retrieve slurm partitions, qos, and cluster only if slurm is detected.
-        if self.state:
+        if self.is_active:
             self.partitions = self._get_partitions()
             self.clusters = self._get_clusters()
             self.qos = self._get_qos()
-
-    def active(self):
-        """Slurm scheduler is active if we are able to retrieve partitions or qos from scheduler. This method
-        will return a boolean type where ``True`` indicates that slurm executors can be validated.
-        """
-
-        return hasattr(self, "partitions") or hasattr(self, "qos")
 
     def _get_partitions(self):
         """Get list of all partitions slurm partitions using ``sinfo -a -h -O partitionname``. The output
@@ -142,10 +135,10 @@ class LSF(Scheduler):
     def __init__(self):
         self.logger = logging.getLogger(__name__)
 
-        self.state = self.check_binaries(self.binaries)
+        self.is_active = self.check_binaries(self.binaries)
 
         # retrieve LSF queues if LSF is detected
-        if self.state:
+        if self.is_active:
             self.queues = self._get_queues()
 
     def _get_queues(self):
@@ -201,9 +194,9 @@ class Cobalt(Scheduler):
     def __init__(self):
         self.logger = logging.getLogger(__name__)
 
-        self.state = self.check_binaries(self.binaries)
+        self.is_active = self.check_binaries(self.binaries)
 
-        if self.state:
+        if self.is_active:
             self.queues = self._get_queues()
 
     def _get_queues(self):
@@ -234,18 +227,30 @@ class PBS(Scheduler):
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        self.state = self.check(self.binaries)
+        self.is_active = self.check(self.binaries)
 
-        if self.state:
+        if self.is_active:
             self.queues = self._get_queues()
 
     def check(self, binaries):
+        """Check if binaries exist in $PATH and run ``qsub --version`` to see output to
+        determine if its OpenPBS scheduler. The return will be a boolean type where ``True`` indicates
+        the check has passed.
+
+        Output of ``qsub --version`` from OpenPBS scheduler would be as follows, we will search for string `pbs_version`
+
+        [pbsuser@pbs tmp]$ qsub --version
+        pbs_version = 19.0.0
+
+        Args:
+            binaries (list): list of binaries to check for existence in $PATH
+        """
         binary_validation = super().check_binaries(binaries)
 
         if not binary_validation:
             return False
 
-        # check output of qsub --version to see if it contains string 'pbs_version' I
+        # check output of qsub --version to see if it contains string 'pbs_version'
         # [pbsuser@pbs tmp]$ qsub --version
         # pbs_version = 19.0.0
         qsub_version = "qsub --version"
@@ -316,9 +321,24 @@ class Torque(PBS):
     """The Torque class is a subclass of PBS class and inherits all methods from PBS class"""
 
     def check(self, binaries):
-        binary_validation = super().check_binaries(binaries)
+        """Check if binaries exist in $PATH and run ``qsub --version`` to see output if its Torque Scheduler.
+        The return will be a boolean type where ``True`` indicates the check has passed.
 
-        if not binary_validation:
+        Output from ``qsub --version`` from Torque scheduler would be as follows, we will search for
+        `Commit:` in output to distinguish Torque from OpenPBS
+
+        .. code-block:: console
+
+            $ qsub --version
+            Version: 7.0.1
+            Commit: b405f8c22d41d29cbf9b9016bc1146bf4559e895
+
+        Args:
+            binaries (list): list of binaries to check for existence in $PATH
+
+        """
+
+        if not super().check_binaries(binaries):
             return False
 
         # check output of qsub --version to see if it contains 'Commit:'
