@@ -93,19 +93,20 @@ class LSFJob(Job):
         # if job is running and the start time is not recorded then we record the start time
         if self.is_running() and not self.starttime:
             self.starttime = time.time()
+
     def get_output_and_error_files(self):
         """This method will extract output and error file for a given jobID by running the following commands:
-           ``bjobs -noheader -o 'output_file' <JOBID>`` and ``bjobs -noheader -o 'error_file' <JOBID>``
+        ``bjobs -noheader -o 'output_file' <JOBID>`` and ``bjobs -noheader -o 'error_file' <JOBID>``
 
-            .. code-block:: console
+         .. code-block:: console
 
-                $ bjobs -noheader -o 'output_file' 70910
-                hold_job.out
+             $ bjobs -noheader -o 'output_file' 70910
+             hold_job.out
 
-            .. code-block:: console
+         .. code-block:: console
 
-                $ bjobs -noheader -o 'error_file' 70910
-                hold_job.err
+             $ bjobs -noheader -o 'error_file' 70910
+             hold_job.err
         """
         # get path to output file
         query = f"bjobs -noheader -o 'output_file' {self.jobid} "

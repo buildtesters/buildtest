@@ -55,7 +55,6 @@ class Job:
         """Get output and error of job"""
         raise NotImplementedError
 
-
     def output_file(self):
         """Return output file of job"""
         return self._outfile

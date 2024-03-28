@@ -150,38 +150,38 @@ class SlurmJob(Job):
 
     def get_output_and_error_files(self):
         """This method will extract file paths to StdOut and StdErr using ``scontrol show job <jobid>`` command that will
-           be used to set output and error file.
+        be used to set output and error file.
 
-           .. code-block:: console
+        .. code-block:: console
 
-           siddiq90@login07> scontrol show job 23608796
-           JobId=23608796 JobName=perlmutter-gpu.slurm
-               UserId=siddiq90(92503) GroupId=siddiq90(92503) MCS_label=N/A
-               Priority=69119 Nice=0 Account=nstaff_g QOS=gpu_debug
-               JobState=PENDING Reason=Priority Dependency=(null)
-               Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
-               RunTime=00:00:00 TimeLimit=00:05:00 TimeMin=N/A
-               SubmitTime=2024-03-28T12:36:05 EligibleTime=2024-03-28T12:36:05
-               AccrueTime=2024-03-28T12:36:05
-               StartTime=2024-03-28T12:36:14 EndTime=2024-03-28T12:41:14 Deadline=N/A
-               SuspendTime=None SecsPreSuspend=0 LastSchedEval=2024-03-28T12:36:12 Scheduler=Backfill:*
-               Partition=gpu_ss11 AllocNode:Sid=login07:1529462
-               ReqNodeList=(null) ExcNodeList=(null)
-               NodeList=
-               NumNodes=1-1 NumCPUs=4 NumTasks=4 CPUs/Task=1 ReqB:S:C:T=0:0:*:*
-               ReqTRES=cpu=4,mem=229992M,node=1,billing=4,gres/gpu=1
-               AllocTRES=(null)
-               Socks/Node=* NtasksPerN:B:S:C=4:0:*:* CoreSpec=*
-               MinCPUsNode=4 MinMemoryNode=0 MinTmpDiskNode=0
-               Features=gpu&a100 DelayBoot=00:00:00
-               OverSubscribe=NO Contiguous=0 Licenses=u1:1 Network=(null)
-               Command=/global/u1/s/siddiq90/jobs/perlmutter-gpu.slurm
-               WorkDir=/global/u1/s/siddiq90/jobs
-               StdErr=/global/u1/s/siddiq90/jobs/slurm-23608796.out
-               StdIn=/dev/null
-               StdOut=/global/u1/s/siddiq90/jobs/slurm-23608796.out
-               Power=
-               TresPerJob=gres:gpu:1
+        siddiq90@login07> scontrol show job 23608796
+        JobId=23608796 JobName=perlmutter-gpu.slurm
+            UserId=siddiq90(92503) GroupId=siddiq90(92503) MCS_label=N/A
+            Priority=69119 Nice=0 Account=nstaff_g QOS=gpu_debug
+            JobState=PENDING Reason=Priority Dependency=(null)
+            Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0
+            RunTime=00:00:00 TimeLimit=00:05:00 TimeMin=N/A
+            SubmitTime=2024-03-28T12:36:05 EligibleTime=2024-03-28T12:36:05
+            AccrueTime=2024-03-28T12:36:05
+            StartTime=2024-03-28T12:36:14 EndTime=2024-03-28T12:41:14 Deadline=N/A
+            SuspendTime=None SecsPreSuspend=0 LastSchedEval=2024-03-28T12:36:12 Scheduler=Backfill:*
+            Partition=gpu_ss11 AllocNode:Sid=login07:1529462
+            ReqNodeList=(null) ExcNodeList=(null)
+            NodeList=
+            NumNodes=1-1 NumCPUs=4 NumTasks=4 CPUs/Task=1 ReqB:S:C:T=0:0:*:*
+            ReqTRES=cpu=4,mem=229992M,node=1,billing=4,gres/gpu=1
+            AllocTRES=(null)
+            Socks/Node=* NtasksPerN:B:S:C=4:0:*:* CoreSpec=*
+            MinCPUsNode=4 MinMemoryNode=0 MinTmpDiskNode=0
+            Features=gpu&a100 DelayBoot=00:00:00
+            OverSubscribe=NO Contiguous=0 Licenses=u1:1 Network=(null)
+            Command=/global/u1/s/siddiq90/jobs/perlmutter-gpu.slurm
+            WorkDir=/global/u1/s/siddiq90/jobs
+            StdErr=/global/u1/s/siddiq90/jobs/slurm-23608796.out
+            StdIn=/dev/null
+            StdOut=/global/u1/s/siddiq90/jobs/slurm-23608796.out
+            Power=
+            TresPerJob=gres:gpu:1
 
 
         """
@@ -197,22 +197,25 @@ class SlurmJob(Job):
 
         logger.debug(f"Output of scontrol show job {self.jobid}:\n{content}")
 
-        pattern=r"StdOut=(?P<stdout>.+)"
+        pattern = r"StdOut=(?P<stdout>.+)"
         match = re.search(pattern, content)
-        logger.debug(f"Extracting StdOut file by applying regular expression: {pattern}")
+        logger.debug(
+            f"Extracting StdOut file by applying regular expression: {pattern}"
+        )
         if match:
             self._outfile = match.group("stdout")
         else:
             logger.error(f"Unable to extract StdOut file from output: {content}")
 
-        pattern=r"StdErr=(?P<stderr>.+)"
+        pattern = r"StdErr=(?P<stderr>.+)"
         match = re.search(pattern, output)
-        logger.debug(f"Extracting StdOut file by applying regular expression: {pattern}")
+        logger.debug(
+            f"Extracting StdOut file by applying regular expression: {pattern}"
+        )
         if match:
             self._errfile = match.group("stderr")
         else:
             logger.error(f"Unable to extract StdErr file from error: {content}")
-
 
         self.logger.debug(f"Output File: {self._outfile}")
         self.logger.debug(f"Error File: {self._errfile}")
