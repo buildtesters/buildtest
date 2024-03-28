@@ -1,4 +1,5 @@
 import logging
+import re
 import time
 
 from buildtest.scheduler.job import Job
@@ -208,7 +209,7 @@ class SlurmJob(Job):
             logger.error(f"Unable to extract StdOut file from output: {content}")
 
         pattern = r"StdErr=(?P<stderr>.+)"
-        match = re.search(pattern, output)
+        match = re.search(pattern, content)
         logger.debug(
             f"Extracting StdOut file by applying regular expression: {pattern}"
         )
@@ -217,8 +218,8 @@ class SlurmJob(Job):
         else:
             logger.error(f"Unable to extract StdErr file from error: {content}")
 
-        self.logger.debug(f"Output File: {self._outfile}")
-        self.logger.debug(f"Error File: {self._errfile}")
+        logger.debug(f"Output File: {self._outfile}")
+        logger.debug(f"Error File: {self._errfile}")
 
     def gather(self):
         """Gather job record which is called after job completion. We use `sacct` to gather

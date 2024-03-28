@@ -130,8 +130,8 @@ class SlurmExecutor(BaseExecutor):
             f"[{builder.name}] returncode: {builder.metadata['result']['returncode']}"
         )
 
-        builder.metadata["outfile"] = buildtest.job.output_file()
-        builder.metadata["errfile"] = buildtest.job.error_file()
+        builder.metadata["outfile"] = builder.job.output_file()
+        builder.metadata["errfile"] = builder.job.error_file()
 
         console.print(f"[blue]{builder}[/]: Job {builder.job.get()} is complete! ")
         builder.post_run_steps()
