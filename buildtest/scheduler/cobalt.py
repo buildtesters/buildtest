@@ -55,21 +55,6 @@ class CobaltJob(Job):
 
         return self._cobaltlog
 
-    def output_file(self):
-        """Return job output file"""
-
-        return self._outfile
-
-    def error_file(self):
-        """Return job error file"""
-
-        return self._errfile
-
-    def exitcode(self):
-        """Return job exit code"""
-
-        return self._exitcode
-
     def poll(self):
         """Poll job by running ``qstat -l --header State <jobid>`` which retrieves job state."""
 

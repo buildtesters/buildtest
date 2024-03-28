@@ -8,6 +8,9 @@ class Job:
     def __init__(self, jobID):
         self.jobid = jobID
         self._state = None
+        self._outfile = None
+        self._errfile = None
+        self._exitcode = None
         # used to store the job elapsed time
         self.elapsedtime = 0
 
@@ -47,3 +50,20 @@ class Job:
     def poll(self):
         """Poll job and update job state."""
         raise NotImplementedError
+
+    def get_output_and_error_files(self):
+        """Get output and error of job"""
+        raise NotImplementedError
+
+
+    def output_file(self):
+        """Return output file of job"""
+        return self._outfile
+
+    def error_file(self):
+        """Return error file of job"""
+        return self._errfile
+
+    def exitcode(self):
+        """Return exit code of job"""
+        return self._exitcode
