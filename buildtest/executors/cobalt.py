@@ -130,7 +130,6 @@ class CobaltExecutor(BaseExecutor):
             self.gather(builder)
             return
 
-
         builder.stop()
 
         if builder.job.is_running():
@@ -143,7 +142,7 @@ class CobaltExecutor(BaseExecutor):
             if self._cancel_job_if_pendtime_exceeds_maxpendtime(builder):
                 return
         builder.start()
-        
+
     def gather(self, builder):
         """This method is responsible for moving output and error file in the run
         directory. We need to read ``<JOBID>.cobaltlog`` file which contains

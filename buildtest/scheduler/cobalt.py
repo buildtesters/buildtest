@@ -1,5 +1,6 @@
 import logging
 import time
+
 from buildtest.scheduler.job import Job
 from buildtest.utils.command import BuildTestCommand
 
