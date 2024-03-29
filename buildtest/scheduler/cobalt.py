@@ -75,7 +75,7 @@ class CobaltJob(Job):
 
         logger.debug(f"Job ID: '{self.job}' Job State: {self._state}")
 
-    def gather(self):
+    def retrieve_jobdata(self):
         """Gather Job state by running **qstat -lf <jobid>** which retrieves all fields.
         The output is in text format which is parsed into key/value pair and stored in a dictionary. This method will
         return a dict containing the job record
@@ -108,7 +108,8 @@ class CobaltJob(Job):
             value = value.strip()
             job_record[key] = value
 
-        return job_record
+        self._jobdata = job_record
+
 
     def cancel(self):
         """Cancel job by running ``qdel <jobid>``. This method is called if job timer exceeds

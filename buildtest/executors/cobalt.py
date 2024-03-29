@@ -106,10 +106,13 @@ class CobaltExecutor(BaseExecutor):
         logger.debug(f"Output file will be written to: {builder.metadata['outfile']}")
         logger.debug(f"Error file will be written to: {builder.metadata['errfile']}")
 
-        builder.metadata["job"] = builder.job.gather()
+        # gather job record
+        builder.job.retrieve_jobdata()
+        builder.metadata["job"] = builder.job.jobdata()
         logger.debug(json.dumps(builder.metadata["job"], indent=2))
 
         return builder
+
 
     def poll(self, builder):
         """This method is responsible for polling Cobalt job by invoking the builder method
