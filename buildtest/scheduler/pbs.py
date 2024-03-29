@@ -94,8 +94,7 @@ class PBSJob(Job):
 
         .. code-block:: console
 
-
-        (buildtest) adaptive50@e4spro-cluster:~/Documents/buildtest/aws_oddc$ qstat -f  40680075.e4spro-cluster
+            (buildtest) adaptive50@e4spro-cluster:~/Documents/buildtest/aws_oddc$ qstat -f  40680075.e4spro-cluster
             Job Id: 40680075.e4spro-cluster
                 Job_Name = hostname_test
                 Job_Owner = adaptive50@server.nodus.com
