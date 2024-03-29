@@ -113,7 +113,6 @@ class CobaltExecutor(BaseExecutor):
 
         return builder
 
-
     def poll(self, builder):
         """This method is responsible for polling Cobalt job by invoking the builder method
         ``builder.job.poll()``.  We check the job state and existence of output file. If file

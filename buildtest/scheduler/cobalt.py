@@ -110,7 +110,6 @@ class CobaltJob(Job):
 
         self._jobdata = job_record
 
-
     def cancel(self):
         """Cancel job by running ``qdel <jobid>``. This method is called if job timer exceeds
         ``maxpendtime`` if job is pending.
