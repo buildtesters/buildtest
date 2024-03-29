@@ -932,6 +932,27 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         return lines
 
+    def _extract_content(self, regex):
+        """Extract content based on the stream and linenum properties
+        from the regex field and return it as a string.
+
+        Args:
+            regex (dict): regex section from the metrics field
+        """
+
+        stream = regex.get("stream")
+        content = self._output if stream == "stdout" else self._error
+
+        linenum = regex.get("linenum")
+        if linenum is not None and content:
+            lines = content.split("\n")
+            try:
+                content = lines[linenum]
+            except IndexError as e:
+                content = ""
+                self.logger.error(e)
+        return content
+
     def add_metrics(self):
         """This method will update the metrics field stored in ``self.metadata['metrics']``. The ``metrics``
         property can be defined in the buildspdec to assign value to a metrics name based on regular expression,
@@ -946,11 +967,10 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             self.metadata["metrics"][key] = ""
             regex = metric.get("regex")
             file_regex = metric.get("file_regex")
-            self.metadata["metrics"][key] = ""
 
             if regex:
-                stream = regex.get("stream")
-                content = self._output if stream == "stdout" else self._error
+
+                content = self._extract_content(regex)
 
                 if regex.get("re") == "re.match":
                     match = re.match(regex["exp"], content, re.MULTILINE)
