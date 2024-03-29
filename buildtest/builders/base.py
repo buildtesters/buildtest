@@ -947,7 +947,7 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             try:
                 content = lines[linenum]
             except IndexError as e:
-                content = ''
+                content = ""
                 self.logger.error(e)
         return content
 
