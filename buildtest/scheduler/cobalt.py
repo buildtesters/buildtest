@@ -1,5 +1,5 @@
 import logging
-
+import time
 from buildtest.scheduler.job import Job
 from buildtest.utils.command import BuildTestCommand
 
@@ -73,7 +73,10 @@ class CobaltJob(Job):
         if job_state:
             self._state = job_state
 
-        logger.debug(f"Job ID: '{self.job}' Job State: {self._state}")
+        logger.debug(f"Job ID: '{self.jobid}' Job State: {self._state}")
+
+        if self.is_running() and not self.starttime:
+            self.starttime = time.time()
 
     def retrieve_jobdata(self):
         """Gather Job state by running **qstat -lf <jobid>** which retrieves all fields.
