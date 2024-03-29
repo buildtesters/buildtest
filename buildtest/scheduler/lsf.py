@@ -39,21 +39,6 @@ class LSFJob(Job):
 
         return self._state == "EXIT"
 
-    def output_file(self):
-        """Return job output file"""
-
-        return self._outfile
-
-    def error_file(self):
-        """Return job error file"""
-
-        return self._errfile
-
-    def exitcode(self):
-        """Return job exit code"""
-
-        return self._exitcode
-
     def poll(self):
         """Given a job id we poll the LSF Job by retrieving its job state, output file, error file and exit code.
         We run the following commands to retrieve following states
@@ -128,7 +113,7 @@ class LSFJob(Job):
         self._errfile = "".join(cmd.get_output()).rstrip()
         logger.debug(f"Error File: {self._errfile}")
 
-    def gather(self):
+    def retrieve_jobdata(self):
         """We will gather job record at onset of job completion by running ``bjobs -o '<format1> <format2>' <jobid> -json``. T
 
         Shown below is the output format and we retrieve the job records defined in **RECORDS** property
@@ -203,7 +188,7 @@ class LSFJob(Job):
         for field, value in records.items():
             job_data[field] = value
 
-        return job_data
+        self._jobdata = job_data
 
     def cancel(self):
         """Cancel LSF Job by running ``bkill <jobid>``. This method is called if job pending time exceeds

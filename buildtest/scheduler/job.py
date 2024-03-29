@@ -11,6 +11,7 @@ class Job:
         self._outfile = None
         self._errfile = None
         self._exitcode = None
+        self._jobdata = None
         # used to store the job elapsed time
         self.elapsedtime = 0
 
@@ -66,3 +67,9 @@ class Job:
     def exitcode(self):
         """Return exit code of job"""
         return self._exitcode
+
+    def retrieve_jobdata(self):
+        raise NotImplementedError
+
+    def jobdata(self):
+        return self._jobdata

@@ -90,11 +90,6 @@ class SlurmJob(Job):
 
         return self._workdir
 
-    def exitcode(self):
-        """Return job exit code"""
-
-        return self._exitcode
-
     def cancel(self):
         """Cancel job by running ``scancel <jobid>``. If job is specified to a slurm
         cluster we cancel job using ``scancel <jobid> --clusters=<cluster>``. This method
@@ -221,8 +216,8 @@ class SlurmJob(Job):
         logger.debug(f"Output File: {self._outfile}")
         logger.debug(f"Error File: {self._errfile}")
 
-    def gather(self):
-        """Gather job record which is called after job completion. We use `sacct` to gather
+    def retrieve_jobdata(self):
+        """This method will get job record which is called after job completion. We use `sacct` to gather
         job record and return the job record as a dictionary. The command we run is
         ``sacct -j <jobid> -X -n -P -o <field1>,<field2>,...,<fieldN>``. We retrieve the following
         format fields from job record:
@@ -326,4 +321,4 @@ class SlurmJob(Job):
         for field, value in zip(sacct_fields, out):
             job_data[field] = value
 
-        return job_data
+        self._jobdata = job_data

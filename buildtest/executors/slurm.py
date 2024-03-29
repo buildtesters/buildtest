@@ -122,7 +122,7 @@ class SlurmExecutor(BaseExecutor):
         """
         builder.record_endtime()
 
-        builder.metadata["job"] = builder.job.gather()
+        builder.metadata["job"] = builder.job.jobdata()
 
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
 

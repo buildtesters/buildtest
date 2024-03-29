@@ -247,7 +247,7 @@ class PBSJob(Job):
         if self.is_running() and not self.starttime:
             self.starttime = time.time()
 
-    def gather(self):
+    def retrieve_jobdata(self):
         """This method is called once job is complete. We will gather record of job by running
         ``qstat -x -f -F json <jobid>`` and return the json object as a dict.  This method is responsible
         for getting output file, error file and exit status of job.
