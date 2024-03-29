@@ -945,9 +945,10 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
         if linenum is not None and content:
             lines = content.split("\n")
             try:
-                content = lines[:-1][linenum] if lines[-1] == "" else lines[linenum]
-            except Exception as e:
-                raise ValueError("Failed to index linenum from the content") from e
+                content = lines[linenum]
+            except IndexError as e:
+                content = ''
+                self.logger.error(e)
         return content
 
     def add_metrics(self):
