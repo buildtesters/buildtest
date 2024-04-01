@@ -36,18 +36,6 @@ class PBSJob(Job):
         """Return ``True`` if job is suspended which would be in one of these states ``H``, ``U``, ``S``."""
         return self._state in ["H", "U", "S"]
 
-    def output_file(self):
-        """Return output file of job"""
-        return self._outfile
-
-    def error_file(self):
-        """Return error file of job"""
-        return self._errfile
-
-    def exitcode(self):
-        """Return exit code of job"""
-        return self._exitcode
-
     def success(self):
         """This method determines if job was completed successfully and returns ``True`` if exit code is 0.
 
@@ -64,7 +52,7 @@ class PBSJob(Job):
         """Return ``True`` if their is a job failure which would be if exit code is not 0"""
         return not self.success()
 
-    def fetch_output_error_files(self):
+    def get_output_error_files(self):
         """Fetch output and error files right after job submission."""
         query = f"qstat -f {self.jobid}"
         cmd = BuildTestCommand(query)
@@ -96,7 +84,7 @@ class PBSJob(Job):
     def is_output_ready(self):
         """Check if the output and error file exists."""
         if not self._outfile or not self._errfile:
-            self.fetch_output_error_files()
+            self.get_output_error_files()
         return os.path.exists(self._outfile) and os.path.exists(self._errfile)
 
     def poll(self):
@@ -106,8 +94,7 @@ class PBSJob(Job):
 
         .. code-block:: console
 
-
-        (buildtest) adaptive50@e4spro-cluster:~/Documents/buildtest/aws_oddc$ qstat -f  40680075.e4spro-cluster
+            (buildtest) adaptive50@e4spro-cluster:~/Documents/buildtest/aws_oddc$ qstat -f  40680075.e4spro-cluster
             Job Id: 40680075.e4spro-cluster
                 Job_Name = hostname_test
                 Job_Owner = adaptive50@server.nodus.com
@@ -259,7 +246,7 @@ class PBSJob(Job):
         if self.is_running() and not self.starttime:
             self.starttime = time.time()
 
-    def gather(self):
+    def retrieve_jobdata(self):
         """This method is called once job is complete. We will gather record of job by running
         ``qstat -x -f -F json <jobid>`` and return the json object as a dict.  This method is responsible
         for getting output file, error file and exit status of job.

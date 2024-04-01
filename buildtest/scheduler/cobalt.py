@@ -1,4 +1,5 @@
 import logging
+import time
 
 from buildtest.scheduler.job import Job
 from buildtest.utils.command import BuildTestCommand
@@ -55,21 +56,6 @@ class CobaltJob(Job):
 
         return self._cobaltlog
 
-    def output_file(self):
-        """Return job output file"""
-
-        return self._outfile
-
-    def error_file(self):
-        """Return job error file"""
-
-        return self._errfile
-
-    def exitcode(self):
-        """Return job exit code"""
-
-        return self._exitcode
-
     def poll(self):
         """Poll job by running ``qstat -l --header State <jobid>`` which retrieves job state."""
 
@@ -88,9 +74,12 @@ class CobaltJob(Job):
         if job_state:
             self._state = job_state
 
-        logger.debug(f"Job ID: '{self.job}' Job State: {self._state}")
+        logger.debug(f"Job ID: '{self.jobid}' Job State: {self._state}")
 
-    def gather(self):
+        if self.is_running() and not self.starttime:
+            self.starttime = time.time()
+
+    def retrieve_jobdata(self):
         """Gather Job state by running **qstat -lf <jobid>** which retrieves all fields.
         The output is in text format which is parsed into key/value pair and stored in a dictionary. This method will
         return a dict containing the job record
@@ -123,7 +112,7 @@ class CobaltJob(Job):
             value = value.strip()
             job_record[key] = value
 
-        return job_record
+        self._jobdata = job_record
 
     def cancel(self):
         """Cancel job by running ``qdel <jobid>``. This method is called if job timer exceeds
