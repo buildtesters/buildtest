@@ -159,7 +159,6 @@ class Slurm(Scheduler):
         )
 
         if part_state != "up":
-            self.invalid_executors.append(executor_name)
             self.logger.error(
                 f"partition - {slurm_executor['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
             )
