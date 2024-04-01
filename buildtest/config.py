@@ -335,6 +335,9 @@ class SiteConfiguration:
         slurm_partitions = slurm.partitions()
         slurm_qos = slurm.qos()
         slurm_clusters = slurm.clusters()
+        self.logger.debug(f"SLURM Partitions: {slurm_partitions}")
+        self.logger.debug(f"SLURM QOS: {slurm_qos}")
+        self.logger.debug(f"SLURM Clusters: {slurm_clusters}")
         for executor in slurm_executor:
             executor_name = f"{self.name()}.{executor_type}.{executor}"
 
@@ -342,27 +345,15 @@ class SiteConfiguration:
                 self.disabled_executors.append(executor_name)
                 continue
 
-            # if 'partition' key defined check if its valid partition
-            if slurm_executor[executor].get("partition"):
-                if slurm_executor[executor]["partition"] not in slurm_partitions:
-                    self.invalid_executors(executor_name)
-                    logger.error(
-                        f"executor - {executor} has invalid partition name '{slurm_executor[executor]['partition']}'. Please select one of the following partitions: {slurm_partitions}"
-                    )
-                    continue
+            if not slurm.validate_partition(executor, slurm_executor[executor]):
+                self.invalid_executors(executor_name)
+                continue
 
-                # check if partition is in 'up' state. If not we raise an error.
-                part_state = slurm.run_command(
-                    f"sinfo -p {slurm_executor[executor]['partition']} -h -O available"
-                )
+            if not slurm.validate_cluster(executor, slurm_executor[executor]):
+                self.invalid_executors(executor_name)
+                continue
 
-                if part_state != "up":
-                    self.invalid_executors(f"{executor_name}")
-                    logger.error(
-                        f"partition - {slurm_executor[executor]['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
-                    )
-                    continue
-                """    
+            """    
                 query = (
                     f"sinfo -p {slurm_executor[executor]['partition']} -h -O available"
                 )
@@ -391,17 +382,6 @@ class SiteConfiguration:
                     f"{slurm_executor[executor]['qos']} not a valid qos! Please select one of the following qos: {slurm.qos}",
                 )
             """
-
-            # check if 'cluster' key is valid slurm cluster
-            if (
-                slurm_executor[executor].get("cluster")
-                and slurm_executor[executor].get("cluster") not in slurm_clusters
-            ):
-                self.invalid_executors(f"{executor_name}")
-                logger.error(
-                    f"executor - {executor} has invalid slurm cluster - {slurm_executor[executor]['cluster']}. Please select one of the following slurm clusters: {slurm_clusters}"
-                )
-                continue
 
             self.valid_executors[executor_type][executor_name] = {
                 "setting": slurm_executor[executor]

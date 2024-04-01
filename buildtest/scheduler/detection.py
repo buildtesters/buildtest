@@ -134,6 +134,58 @@ class Slurm(Scheduler):
 
         return self.run_command("sacctmgr list qos -P -n  format=Name")
 
+    def validate_partition(self, executor, slurm_executor):
+        """Validate the partition for a given executor.
+
+        Args:
+            executor (str): The name of the executor.
+            slurm_executor (dict): The configuration of the executor.
+
+        Returns:
+            bool: True if the partition is valid and in 'up' state, False otherwise.
+        """
+
+        # if 'partition' key defined check if its valid partition
+        if slurm_executor[executor].get("partition"):
+            if slurm_executor[executor]["partition"] not in self.partitions():
+
+                logger.error(
+                    f"executor - {executor} has invalid partition name '{slurm_executor[executor]['partition']}'. Please select one of the following partitions: {self.partitions()}"
+                )
+                return False
+
+            # check if partition is in 'up' state. If not we raise an error.
+            part_state = self.run_command(
+                f"sinfo -p {slurm_executor[executor]['partition']} -h -O available"
+            )
+
+            if part_state != "up":
+                self.invalid_executors.append(executor_name)
+                logger.error(
+                    f"partition - {slurm_executor[executor]['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
+                )
+                return False
+
+        return True
+
+    def validate_cluster(self, executor, slurm_executor):
+        """This method will validate a cluster for a given executor. If 'cluster' key is defined in slurm executor configuration
+        we will check if cluster is valid, if so we return True otherwise we return False.
+
+        Args:
+            executor (str): The name of the executor.
+            slurm_executor (dict): The configuration of the executor.
+        """
+        # check if 'cluster' key is valid slurm cluster
+        cluster = slurm_executor[executor].get("cluster")
+        if cluster is not None and cluster not in self.clusters():
+            logger.error(
+                f"executor - {executor} has invalid slurm cluster - {cluster}. Please select one of the following slurm clusters: {self.clusters()}"
+            )
+            return False
+
+        return True
+
 
 class LSF(Scheduler):
     """The LSF class checks for LSF binaries and returns a list of LSF queues"""
