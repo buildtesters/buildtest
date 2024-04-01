@@ -335,23 +335,23 @@ class SiteConfiguration:
         slurm_partitions = slurm.partitions()
         slurm_qos = slurm.qos()
         slurm_clusters = slurm.clusters()
-        self.logger.debug(f"SLURM Partitions: {slurm_partitions}")
-        self.logger.debug(f"SLURM QOS: {slurm_qos}")
-        self.logger.debug(f"SLURM Clusters: {slurm_clusters}")
+        logger.debug(f"SLURM Partitions: {slurm_partitions}")
+        logger.debug(f"SLURM QOS: {slurm_qos}")
+        logger.debug(f"SLURM Clusters: {slurm_clusters}")
         for executor in slurm_executor:
             executor_name = f"{self.name()}.{executor_type}.{executor}"
 
             if self.is_executor_disabled(slurm_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
-
-            if not slurm.validate_partition(executor, slurm_executor[executor]):
-                self.invalid_executors(executor_name)
-                continue
-
-            if not slurm.validate_cluster(executor, slurm_executor[executor]):
-                self.invalid_executors(executor_name)
-                continue
+            if slurm_executor[executor].get('partition'):
+                if not slurm.validate_partition(executor, slurm_executor[executor]):
+                    self.invalid_executors.append(executor_name)
+                    continue
+            if slurm_executor[executor].get('cluster'):
+                if not slurm.validate_cluster(executor, slurm_executor[executor]):
+                    self.invalid_executors.append(executor_name)
+                    continue
 
             """    
                 query = (

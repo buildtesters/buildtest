@@ -144,27 +144,26 @@ class Slurm(Scheduler):
         Returns:
             bool: True if the partition is valid and in 'up' state, False otherwise.
         """
-
+        
         # if 'partition' key defined check if its valid partition
-        if slurm_executor[executor].get("partition"):
-            if slurm_executor[executor]["partition"] not in self.partitions():
+        if slurm_executor["partition"] not in self.partitions():
 
-                logger.error(
-                    f"executor - {executor} has invalid partition name '{slurm_executor[executor]['partition']}'. Please select one of the following partitions: {self.partitions()}"
+            self.logger.error(
+                    f"executor - {executor} has invalid partition name '{slurm_executor['partition']}'. Please select one of the following partitions: {self.partitions()}"
                 )
-                return False
+            return False
 
-            # check if partition is in 'up' state. If not we raise an error.
-            part_state = self.run_command(
-                f"sinfo -p {slurm_executor[executor]['partition']} -h -O available"
+        # check if partition is in 'up' state. If not we raise an error.
+        part_state = self.run_command(
+            f"sinfo -p {slurm_executor['partition']} -h -O available"
+        )
+
+        if part_state != "up":
+            self.invalid_executors.append(executor_name)
+            self.logger.error(
+                f"partition - {slurm_executor['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
             )
-
-            if part_state != "up":
-                self.invalid_executors.append(executor_name)
-                logger.error(
-                    f"partition - {slurm_executor[executor]['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
-                )
-                return False
+            return False
 
         return True
 
@@ -177,9 +176,9 @@ class Slurm(Scheduler):
             slurm_executor (dict): The configuration of the executor.
         """
         # check if 'cluster' key is valid slurm cluster
-        cluster = slurm_executor[executor].get("cluster")
+        cluster = slurm_executor.get("cluster")
         if cluster is not None and cluster not in self.clusters():
-            logger.error(
+            self.logger.error(
                 f"executor - {executor} has invalid slurm cluster - {cluster}. Please select one of the following slurm clusters: {self.clusters()}"
             )
             return False
