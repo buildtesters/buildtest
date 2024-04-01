@@ -360,7 +360,7 @@ no impact if job is running. buildtest starts a timer at job submission and ever
 (``pollinterval`` field) checks if job has exceeded **maxpendtime** only if job is pending.
 If job pendtime exceeds `maxpendtime` limit, buildtest will
 cancel job the job using the appropriate scheduler command like (``scancel``, ``bkill``, ``qdel``).
-Buildtestwill remove cancelled jobs from poll queue, in addition cancelled jobs won't be
+Buildtest will remove cancelled jobs from poll queue, in addition cancelled jobs won't be
 reported in test report.
 
 For more details on `maxpendtime` click :ref:`here <max_pend_time>`.
