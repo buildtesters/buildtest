@@ -144,13 +144,13 @@ class Slurm(Scheduler):
         Returns:
             bool: True if the partition is valid and in 'up' state, False otherwise.
         """
-        
+
         # if 'partition' key defined check if its valid partition
         if slurm_executor["partition"] not in self.partitions():
 
             self.logger.error(
-                    f"executor - {executor} has invalid partition name '{slurm_executor['partition']}'. Please select one of the following partitions: {self.partitions()}"
-                )
+                f"executor - {executor} has invalid partition name '{slurm_executor['partition']}'. Please select one of the following partitions: {self.partitions()}"
+            )
             return False
 
         # check if partition is in 'up' state. If not we raise an error.
@@ -180,6 +180,24 @@ class Slurm(Scheduler):
         if cluster is not None and cluster not in self.clusters():
             self.logger.error(
                 f"executor - {executor} has invalid slurm cluster - {cluster}. Please select one of the following slurm clusters: {self.clusters()}"
+            )
+            return False
+
+        return True
+
+    def validate_qos(self, executor, slurm_executor):
+        """This method will validate a qos for a given executor. If 'qos' key is defined in slurm executor configuration
+        we will check if qos is valid, if so we return True otherwise we return False.
+
+        Args:
+            executor (str): The name of the executor.
+            slurm_executor (dict): The configuration of the executor.
+        """
+        # check if 'qos' key is valid slurm qos
+        qos = slurm_executor["qos"]
+        if qos is not None and qos not in self.qos():
+            self.logger.error(
+                f"executor - {executor} has invalid slurm qos - {qos}. Please select one of the following slurm qos: {self.qos()}"
             )
             return False
 

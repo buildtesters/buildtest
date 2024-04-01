@@ -344,15 +344,19 @@ class SiteConfiguration:
             if self.is_executor_disabled(slurm_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
-            if slurm_executor[executor].get('partition'):
+            if slurm_executor[executor].get("partition"):
                 if not slurm.validate_partition(executor, slurm_executor[executor]):
                     self.invalid_executors.append(executor_name)
                     continue
-            if slurm_executor[executor].get('cluster'):
+            if slurm_executor[executor].get("cluster"):
                 if not slurm.validate_cluster(executor, slurm_executor[executor]):
                     self.invalid_executors.append(executor_name)
                     continue
 
+            if slurm_executor[executor].get("qos"):
+                if not slurm.validate_qos(executor, slurm_executor[executor]):
+                    self.invalid_executors.append(executor_name)
+                    continue
             """    
                 query = (
                     f"sinfo -p {slurm_executor[executor]['partition']} -h -O available"
