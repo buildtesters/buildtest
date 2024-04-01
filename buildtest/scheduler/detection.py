@@ -376,6 +376,32 @@ class PBS(Scheduler):
         return queues
 
 
+    def validate_queue(self, queue):
+        """Validate a PBS queue. Return True if queue exists and is enabled and started, False otherwise.
+
+        Args:
+            queue (str): The name of the queue to validate.
+        """
+
+        if queue not in self.queues():
+            self.logger.error(
+                f"PBS queue - '{queue}' not in list of available queues: {self.queues()} "
+            )
+            return False
+
+        if (
+                self.queue_summary["Queue"][queue]["enabled"] != "True"
+                or self.queue_summary["Queue"][queue]["started"] != "True"
+        ):
+            self.logger.info("Queue configuration")
+            self.logger.info(json.dumps(self.queue_summary, indent=2))
+            self.logger.error(
+                f"'{queue}' not 'enabled' or 'started' properly."
+            )
+            return False
+
+        return True
+
 class Torque(PBS):
     """The Torque class is a subclass of PBS class and inherits all methods from PBS class"""
 
