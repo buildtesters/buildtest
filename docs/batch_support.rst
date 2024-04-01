@@ -360,7 +360,7 @@ below is an example buildspec using the `script` schema.
    :emphasize-lines: 5
    :language: yaml
 
-buildtest will poll PBS jobs using ``qstat -x -f -F json <jobID>`` until job is finished. Note that
+buildtest will poll PBS jobs using ``qstat``  until job is finished. Note that
 we use **-x** option to retrieve finished jobs which is required in-order for buildtest to detect job
 state upon completion.
 
@@ -598,6 +598,30 @@ Let's run this example and notice that this job ran to completion but it was rep
 
         Adding 1 test results to /home/pbsuser/buildtest/var/report.json
         Writing Logfile to: /home/pbsuser/buildtest/var/logs/buildtest_vnk2erx5.log
+
+Torque
+-------
+
+Buildtest has support for running jobs on `Torque <https://adaptivecomputing.com/products/torque-resource-manager/>`_ scheduler. You must
+define a :ref:`torque_scheduler` in your configuration file to use Torque scheduler. The ``#PBS`` directives can be specified using
+``pbs`` property which is a list of PBS options that get inserted at top of script. Shown below is an example sleep job that will run on
+a single node for 5 seconds.
+
+.. code-block:: yaml
+    :emphasize-lines: 5
+
+    buildspecs:
+      hostname_test:
+        type: script
+        executor: generic.torque.e4spro
+        description: run sleep for 5 seconds
+        pbs: ["-l nodes=1"]
+        run: |
+          sleep 5
+
+We will run this test and poll every 5 second. We have enabled debug mode so you can see the detailed output including the scheduler commands that are used to submit and poll
+the job.
+
 
 
 Cobalt
