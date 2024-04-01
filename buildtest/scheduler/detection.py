@@ -64,11 +64,20 @@ class Slurm(Scheduler):
 
         # retrieve slurm partitions, qos, and cluster only if slurm is detected.
         if self.is_active:
-            self.partitions = self._get_partitions()
-            self.clusters = self._get_clusters()
-            self.qos = self._get_qos()
+            self._partitions = self._get_partitions()
+            self._clusters = self._get_clusters()
+            self._qos = self._get_qos()
 
-    def _run_command(self, query):
+    def partitions(self):
+        return self._partitions
+
+    def clusters(self):
+        return self._clusters
+
+    def qos(self):
+        return self._qos
+
+    def run_command(self, query):
         """Run a command and return output as list of lines"""
         cmd = BuildTestCommand(query)
         cmd.execute()
@@ -93,7 +102,7 @@ class Slurm(Scheduler):
         """
         # get list of partitions
 
-        return self._run_command("sinfo -a -h -O partitionname")
+        return self.run_command("sinfo -a -h -O partitionname")
 
     def _get_clusters(self):
         """Get list of slurm clusters by running ``sacctmgr list cluster -P -n format=Cluster``.
@@ -106,7 +115,7 @@ class Slurm(Scheduler):
              escori
 
         """
-        return self._run_command("sacctmgr list cluster -P -n format=Cluster")
+        return self.run_command("sacctmgr list cluster -P -n format=Cluster")
 
     def _get_qos(self):
         """Retrieve a list of all slurm qos by running ``sacctmgr list qos -P -n  format=Name``. The output
@@ -123,7 +132,7 @@ class Slurm(Scheduler):
 
         """
 
-        return self._run_command("sacctmgr list qos -P -n  format=Name")
+        return self.run_command("sacctmgr list qos -P -n  format=Name")
 
 
 class LSF(Scheduler):
@@ -210,12 +219,12 @@ class PBS(Scheduler):
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
-        self.is_active = self.check(self.binaries)
+        self.is_active = self.check()
 
         if self.is_active:
             self._queues = self.get_queues()
 
-    def check(self, binaries):
+    def check(self):
         """Check if binaries exist in $PATH and run ``qsub --version`` to see output to
         determine if its OpenPBS scheduler. The return will be a boolean type where ``True`` indicates
         the check has passed.
@@ -228,9 +237,8 @@ class PBS(Scheduler):
         Args:
             binaries (list): list of binaries to check for existence in $PATH
         """
-        binary_validation = super().check_binaries(binaries)
 
-        if not binary_validation:
+        if not super().check_binaries(self.binaries):
             return False
 
         # check output of qsub --version to see if it contains string 'pbs_version'
@@ -252,7 +260,7 @@ class PBS(Scheduler):
 
         return True
 
-    def _get_queues(self):
+    def get_queues(self):
         """Get queue configuration using ``qstat -Q -f -F json`` and retrieve a
         list of queues.
 
@@ -303,7 +311,7 @@ class PBS(Scheduler):
 class Torque(PBS):
     """The Torque class is a subclass of PBS class and inherits all methods from PBS class"""
 
-    def check(self, binaries):
+    def check(self):
         """Check if binaries exist in $PATH and run ``qsub --version`` to see output if its Torque Scheduler.
         The return will be a boolean type where ``True`` indicates the check has passed.
 
@@ -321,7 +329,7 @@ class Torque(PBS):
 
         """
 
-        if not super().check_binaries(binaries):
+        if not super().check_binaries(self.binaries):
             return False
 
         # check output of qsub --version to see if it contains 'Commit:'
