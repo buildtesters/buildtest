@@ -9,12 +9,21 @@ from buildtest.utils.command import BuildTestCommand
 
 class Scheduler:
     """This is a base Scheduler class used for implementing common methods for
-    detecting Scheduler details. The subclass implement specific queries that
-    are scheduler specific. The ``Slurm``, ``LSF``, ``PBS`` and ``Cobalt`` class inherit
-    from Base Class ``Scheduler``.
+    detecting Scheduler details. The subclass implements specific queries that
+    are scheduler specific.
     """
 
     logger = logging.getLogger(__name__)
+    binaries = []
+
+    def __init__(self):
+        self.logger = logging.getLogger(__name__)
+        self.is_active = self.check_binaries(self.binaries)
+        if self.is_active:
+            self._queues = self.get_queues()
+
+    def queues(self):
+        return self._queues
 
     def check_binaries(self, binaries):
         """Check if binaries exist binary exist in $PATH"""
@@ -34,6 +43,10 @@ class Scheduler:
         """Returns ``True`` if buildtest is able to retrieve queues from Scheduler otherwises returns ``False``"""
         return self.is_active
 
+    def get_queues(self):
+        """This method is implemented by subclass to return a list of queues for a given scheduler"""
+        raise NotImplementedError
+
 
 class Slurm(Scheduler):
     """The Slurm class implements common functions to query Slurm cluster
@@ -42,7 +55,7 @@ class Slurm(Scheduler):
     """
 
     # specify a set of Slurm commands to check for file existence
-    binaries = ["sbatch", "sacct", "sacctmgr", "sinfo", "scancel"]
+    binaries = ["sbatch", "sacct", "sacctmgr", "sinfo", "scancel", "scontrol"]
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
@@ -54,6 +67,15 @@ class Slurm(Scheduler):
             self.partitions = self._get_partitions()
             self.clusters = self._get_clusters()
             self.qos = self._get_qos()
+
+    def _run_command(self, query):
+        """Run a command and return output as list of lines"""
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        out = cmd.get_output()
+        self.logger.debug(f"Running command: {query}")
+
+        return [item.rstrip() for item in out]
 
     def _get_partitions(self):
         """Get list of all partitions slurm partitions using ``sinfo -a -h -O partitionname``. The output
@@ -71,14 +93,7 @@ class Slurm(Scheduler):
         """
         # get list of partitions
 
-        query = "sinfo -a -h -O partitionname"
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        out = cmd.get_output()
-
-        self.logger.debug(f"Get all Slurm Partitions by running: {query}")
-        partitions = [partition.rstrip() for partition in out]
-        return partitions
+        return self._run_command("sinfo -a -h -O partitionname")
 
     def _get_clusters(self):
         """Get list of slurm clusters by running ``sacctmgr list cluster -P -n format=Cluster``.
@@ -91,15 +106,7 @@ class Slurm(Scheduler):
              escori
 
         """
-
-        query = "sacctmgr list cluster -P -n format=Cluster"
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        out = cmd.get_output()
-
-        self.logger.debug(f"Get all Slurm Clusters by running: {query}")
-        slurm_clusters = [clustername.rstrip() for clustername in out]
-        return slurm_clusters
+        return self._run_command("sacctmgr list cluster -P -n format=Cluster")
 
     def _get_qos(self):
         """Retrieve a list of all slurm qos by running ``sacctmgr list qos -P -n  format=Name``. The output
@@ -116,14 +123,7 @@ class Slurm(Scheduler):
 
         """
 
-        query = "sacctmgr list qos -P -n  format=Name"
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        out = cmd.get_output()
-
-        self.logger.debug(f"Get all Slurm Quality of Service (QOS) by running: {query}")
-        slurm_qos = [qos.rstrip() for qos in out]
-        return slurm_qos
+        return self._run_command("sacctmgr list qos -P -n  format=Name")
 
 
 class LSF(Scheduler):
@@ -132,16 +132,7 @@ class LSF(Scheduler):
     # specify a set of LSF commands to check for file existence
     binaries = ["bsub", "bqueues", "bkill", "bjobs"]
 
-    def __init__(self):
-        self.logger = logging.getLogger(__name__)
-
-        self.is_active = self.check_binaries(self.binaries)
-
-        # retrieve LSF queues if LSF is detected
-        if self.is_active:
-            self.queues = self._get_queues()
-
-    def _get_queues(self):
+    def get_queues(self):
         """Return json dictionary of available LSF Queues and their queue states.
         The command we run is the following: ``bqueues -o 'queue_name status' -json`` which
         returns a JSON record of all queue details.
@@ -191,15 +182,7 @@ class Cobalt(Scheduler):
     # specify a set of Cobalt commands to check for file existence
     binaries = ["qsub", "qstat", "qdel", "nodelist", "showres", "partlist"]
 
-    def __init__(self):
-        self.logger = logging.getLogger(__name__)
-
-        self.is_active = self.check_binaries(self.binaries)
-
-        if self.is_active:
-            self.queues = self._get_queues()
-
-    def _get_queues(self):
+    def get_queues(self):
         """Get all Cobalt queues by running ``qstat -Ql`` and parsing output"""
 
         query = "qstat -Ql"
@@ -230,7 +213,7 @@ class PBS(Scheduler):
         self.is_active = self.check(self.binaries)
 
         if self.is_active:
-            self.queues = self._get_queues()
+            self._queues = self.get_queues()
 
     def check(self, binaries):
         """Check if binaries exist in $PATH and run ``qsub --version`` to see output to
@@ -363,7 +346,7 @@ class Torque(PBS):
             return True
         return False
 
-    def _get_queues(self):
+    def get_queues(self):
         """Get queue configuration using 'qstat -Qf' and parse the output into a JSON dictionary.
         The output of this command will be as follows
 
