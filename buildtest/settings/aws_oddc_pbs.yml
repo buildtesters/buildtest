@@ -23,7 +23,7 @@ system:
           shell: bash
       torque:
         e4spro:
-          queue: lbl-cluster
+          queue: e4spro-cluster
     compilers:
       find:
         gcc: ^(gcc)
