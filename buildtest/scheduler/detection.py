@@ -146,13 +146,17 @@ class Slurm(Scheduler):
 
         # if 'partition' key defined check if its valid partition
         if slurm_executor["partition"] not in self._partitions:
-            self.logger.error(f"Executor Configuration: {json.dumps(slurm_executor, indent=2)}")
+            self.logger.error(
+                f"Executor Configuration: {json.dumps(slurm_executor, indent=2)}"
+            )
             self.logger.error(
                 f"executor -  '{slurm_executor['partition']}' is not a valid partition. Please select one of the following partitions: {self._partitions}"
             )
             return False
 
-        self.logger.debug("Slurm partition: {slurm_executor['partition']} is found in list of partitions.")
+        self.logger.debug(
+            "Slurm partition: {slurm_executor['partition']} is found in list of partitions."
+        )
         # check if partition is in 'up' state. If not we raise an error.
         part_state = self.run_command(
             f"sinfo -p {slurm_executor['partition']} -h -O available"
@@ -177,12 +181,16 @@ class Slurm(Scheduler):
         # check if 'cluster' key is valid slurm cluster
         cluster = slurm_executor.get("cluster")
         if cluster is not None and cluster not in self._clusters:
-            self.logger.error(f"Executor Configuration: {json.dumps(slurm_executor, indent=2)}")
+            self.logger.error(
+                f"Executor Configuration: {json.dumps(slurm_executor, indent=2)}"
+            )
             self.logger.error(
                 f"executor - {executor} has invalid slurm cluster - {cluster}. Please select one of the following slurm clusters: {self._clusters}"
             )
             return False
-        self.logger.debug(f"Slurm cluster: {cluster} is found in list of slurm clusters.")
+        self.logger.debug(
+            f"Slurm cluster: {cluster} is found in list of slurm clusters."
+        )
         return True
 
     def validate_qos(self, executor, slurm_executor):
@@ -362,48 +370,52 @@ class PBS(Scheduler):
         query = "qstat -Q -f -F json"
         cmd = BuildTestCommand(query)
         cmd.execute()
-        content = cmd.get_output()
+        content = " ".join(cmd.get_output())
 
         self.logger.debug(f"Get PBS Queues details by running '{query}'")
         try:
-            self.queue_summary = json.loads(" ".join(content))
+            queue_summary = json.loads(content)
         except json.JSONDecodeError:
             raise BuildTestError(f"Unable to process PBS Queues when running: '{query}")
 
-        self.logger.debug(json.dumps(self.queue_summary, indent=2))
+        self.logger.debug("PBS Queue Configuration")
+        self.logger.debug(json.dumps(queue_summary, indent=2))
 
-        queues = list(self.queue_summary["Queue"].keys())
-        self.logger.debug(f"Available Queues: {queues}")
-        return queues
+        queues = list(queue_summary["Queue"].keys())
+        self.logger.debug(
+            f"The following queues: {queues} are available in PBS Scheduler."
+        )
 
+        return queue_summary
 
-    def validate_queue(self, queue):
+    def validate_queue(self, queue_name):
         """Validate a PBS queue. Return True if queue exists and is enabled and started, False otherwise.
 
         Args:
-            queue (str): The name of the queue to validate.
+            queue_name (str): The name of the queue to validate.
         """
 
-        if queue not in self.queues():
+        if queue_name not in self._queues:
             self.logger.error(
-                f"PBS queue - '{queue}' not in list of available queues: {self._queues} "
+                f"PBS queue - '{queue_name}' not in list of available queues: {self._queues} "
             )
             return False
 
-        self.logger.debug(f"PBS queue: {queue} is found in list of available queues.")
+        self.logger.debug(
+            f"PBS queue: {queue_name} is found in list of available queues."
+        )
 
         if (
-                self.queue_summary["Queue"][queue]["enabled"] != "False"
-                or self.queue_summary["Queue"][queue]["started"] != "True"
+            self._queue["Queue"][queue_name]["enabled"] != "True"
+            or self._queue["Queue"][queue_name]["started"] != "True"
         ):
-            self.logger.info("PBS Queue Configuration")
-            self.logger.info(json.dumps(self.queue_summary["Queue"][queue], indent=2))
-            self.logger.error(
-                f"'{queue}' not 'enabled' or 'started' properly."
-            )
+            self.logger.info(f"PBS Queue Configuration: {queue_name}")
+            self.logger.info(json.dumps(self._queue["Queue"][queue_name], indent=2))
+            self.logger.error(f"'{queue}' not 'enabled' or 'started' properly.")
             return False
 
         return True
+
 
 class Torque(PBS):
     """The Torque class is a subclass of PBS class and inherits all methods from PBS class"""
@@ -510,12 +522,15 @@ class Torque(PBS):
                 f"Torque queue - '{queue}' not in list of available queues: {list(self._queues)} "
             )
             return False
-        self.logger.debug(f"Torque queue: {queue} is found in list of available queues.")
+        self.logger.debug(
+            f"Torque queue: {queue} is found in list of available queues."
+        )
         if (
             self._queues[queue]["enabled"] != "True"
             or self._queues[queue]["started"] != "True"
         ):
-
+            self.logger.debug(f"Torque Queue Configuration: {queue}")
+            self.logger.debug(json.dumps(self._queues[queue], indent=2))
             self.logger.error(f"Queue '{queue}' not 'enabled' or 'started' properly.")
             return False
 
