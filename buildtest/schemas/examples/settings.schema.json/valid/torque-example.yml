@@ -1,7 +1,7 @@
 system:
   generic:
     hostnames: ['.*']
-    moduletool: lmod
+    moduletool: none
     poolsize: 1
     buildspecs:
       # whether to rebuild cache file automatically when running `buildtest buildspec find`
@@ -18,28 +18,17 @@ system:
       #enable terse mode for report
       terse: False
       format: "name,id,state,runtime,returncode"
-    testdir: /tmp/buildtest
     executors:
       defaults:
-        pollinterval: 20
+        pollinterval: 10
         maxpendtime: 30
-        account: admin
       local:
         bash:
           description: submit jobs via bash shell
           shell: bash
-      slurm:
-        normal:
-          options: ["-C haswell"]
-          qos: normal
-          cluster: cori
-          before_script: |
-            time
-            echo "commands run before job"
-        debug:
-          options: ["-C cpu -t 5"]
-          partition: debug
-          cluster: perlmutter
+      torque:
+        lbl-cluster:
+          queue: lbl-cluster
     compilers:
       compiler:
         gcc:

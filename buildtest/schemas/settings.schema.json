@@ -501,11 +501,6 @@
       "description": "An instance object of slurm executor",
       "properties": {
         "description": { "$ref": "#/definitions/description" },
-        "launcher": {
-          "type": "string",
-          "enum": [ "sbatch" ],
-          "description": "Specify the slurm batch scheduler to use. This overrides the default ``launcher`` field. This must be ``sbatch``. "
-        },
         "options": {
           "type": "array",
           "items": { "type": "string" },
@@ -549,11 +544,6 @@
           "type": "string",
           "description": "description field for documenting your executor"
         },
-        "launcher": {
-          "type": "string",
-          "enum": [ "bsub" ],
-          "description": "Specify the lsf batch scheduler to use. This overrides the default ``launcher`` field. It must be ``bsub``. "
-        },
         "options": {
           "type": "array",
           "items": { "type": "string" },
@@ -586,11 +576,6 @@
       "required": [ "queue" ],
       "properties": {
         "description": { "$ref": "#/definitions/description" },
-        "launcher": {
-          "type": "string",
-          "enum": [ "qsub" ],
-          "description": "Specify the cobalt batch scheduler to use. This overrides the default ``launcher`` field. It must be ``qsub``. "
-        },
         "options": {
           "type": "array",
           "items": { "type": "string" },
@@ -623,11 +608,6 @@
       "required": [ "queue" ],
       "properties": {
         "description": { "$ref": "#/definitions/description" },
-        "launcher": {
-          "type": "string",
-          "enum": [ "qsub" ],
-          "description": "Specify the pbs batch scheduler to use. This overrides the default ``launcher`` field. It must be ``qsub``. "
-        },
         "options": {
           "type": "array",
           "items": { "type": "string" },

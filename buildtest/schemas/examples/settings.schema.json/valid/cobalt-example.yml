@@ -13,7 +13,6 @@ system:
       cobalt:
         knl:
           queue: knl
-
         haswell:
           queue: haswell
     buildspecs:
