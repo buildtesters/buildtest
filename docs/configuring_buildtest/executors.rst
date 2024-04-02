@@ -6,11 +6,14 @@ Configuring Executors
 An executor is responsible for running the test and capture output/error file and
 return code. An executor can be local executor which runs tests on local machine or
 batch executor that can be modelled as partition/queue. A batch executor is
-responsible for dispatching job, then poll job until its finish and
+responsible for dispatching job to scheduler and poll job until its finish and
 gather job results.
 
-Executor Declaration
----------------------
+Executor Types
+---------------
+
+Local Executor
+~~~~~~~~~~~~~~
 
 The ``executors`` is a JSON `object`, that defines one or more executors. The executors
 are grouped by their type followed by executor name. In this example we define two
@@ -80,7 +83,7 @@ command.
 .. _slurm_executors:
 
 Slurm Executors
-----------------
+~~~~~~~~~~~~~~~~
 
 If you have a `Slurm <https://slurm.schedmd.com/documentation.html>`_ cluster, you can define
 slurm executors in your configuration via ``slurm`` property.
@@ -132,6 +135,160 @@ To check availability of partition state, let's say ``regular_hsw``, buildtest w
 
     $ sinfo -p regular_hsw -h -O available
     up
+
+.. _pbs_executors:
+
+PBS Executors
+~~~~~~~~~~~~~~
+
+.. Note:: buildtest PBS support relies on job history set because buildtest needs to query job after completion using ``qstat -x``. This
+          can be configured using ``qmgr`` by setting ``set server job_history_enable=True``. For more details see section **14.15.5.1 Enabling Job History** in `PBS 2021.1.3 Admin Guide <https://help.altair.com/2021.1.3/PBS%20Professional/PBSAdminGuide2021.1.3.pdf>`_
+
+
+buildtest supports `PBS <https://community.altair.com/community?id=altair_product_documentation>`_ scheduler
+which can be defined in the ``executors`` section. Shown below is an example configuration using
+one ``pbs`` executor named ``workq``.  The property ``queue: workq`` defines
+the name of PBS queue that is available in your system.
+
+.. code-block:: yaml
+    :emphasize-lines: 10-12
+
+    system:
+      generic:
+        hostnames: ['.*']
+
+        moduletool: N/A
+        executors:
+          defaults:
+             pollinterval: 10
+             max_pend_time: 30
+          pbs:
+            workq:
+              queue: workq
+        compilers:
+          compiler:
+            gcc:
+              default:
+                cc: /usr/bin/gcc
+                cxx: /usr/bin/g++
+                fc: /usr/bin/gfortran
+
+buildtest will detect the PBS queues in your system and determine if queues are active
+and enabled before submitting job to scheduler. buildtest will run ``qstat -Q -f -F json`` command to check for
+queue state which reports in JSON format and check if queue has the fields ``enabled: "True"`` or ``started: "True"`` set
+in the queue definition. If these values are not set, buildtest will raise an exception.
+
+Shown below is an example with one queue **workq** that is ``enabled`` and ``started``.
+
+.. code-block:: console
+    :emphasize-lines: 6-7, 17-18
+    :linenos:
+
+    $ qstat -Q -f -F json
+    {
+        "timestamp":1615924938,
+        "pbs_version":"19.0.0",
+        "pbs_server":"pbs",
+        "Queue":{
+            "workq":{
+                "queue_type":"Execution",
+                "total_jobs":0,
+                "state_count":"Transit:0 Queued:0 Held:0 Waiting:0 Running:0 Exiting:0 Begun:0 ",
+                "resources_assigned":{
+                    "mem":"0kb",
+                    "ncpus":0,
+                    "nodect":0
+                },
+                "hasnodes":"True",
+                "enabled":"True",
+                "started":"True"
+            }
+        }
+    }
+
+.. _torque_executors:
+
+PBS/Torque Executors
+~~~~~~~~~~~~~~~~~~~~~
+
+buildtest has support for `Torque <https://adaptivecomputing.com/cherry-services/torque-resource-manager/>`_ scheduler which can
+be defined in the ``executors`` section by using the ``torque`` property. Shown below is an example configuration that defines
+an executor name `lbl` using the queue name **lbl-cluster**
+
+.. code-block:: yaml
+    :emphasize-lines: 2-4
+
+    executors:
+      torque:
+        lbl:
+          queue: lbl-cluster
+
+We will run `qstat -Qf` to get queue details and check if queue is enabled and started before adding executor. If queue is not enabled or started, then
+buildtest will mark the executor as a **invalid** state and will be unusable.
+
+Shown below is a sample output of ``qstat -Qf`` command on a PBS/Torque system which shows the queue configuration. Buildtest will parse this output to
+extract queue details and compare with executor configuration.
+
+.. code-block:: console
+    :emphasize-lines: 2,10-11
+
+    (buildtest) adaptive50@lbl-cluster:$ qstat -Qf
+    Queue: lbl-cluster
+        queue_type = Execution
+        total_jobs = 0
+        state_count = Transit:0 Queued:0 Held:0 Waiting:0 Running:0 Exiting:0 Comp
+        lete:0
+        resources_default.nodes = 1
+        resources_default.walltime = 24:00:00
+        mtime = 1711641211
+        enabled = True
+        started = True
+
+
+.. _container_executor:
+
+Container Executor
+~~~~~~~~~~~~~~~~~~~
+
+Buildtest supports executor declaration for container based jobs. The container executor will run all associated test for the executor
+on the specified container image. Currently, we support `docker`, `podman` and `singularity` as the container platforms. We assume container
+runtime is installed on your system and is accessible in your $PATH.
+
+Let's take a look at the following container executor declaration. The top level keyword ``container`` is used to define the container
+executor which can follow any arbitrary name. We have defined two container executors named **ubuntu** and **python** that specify the
+container image and platform via ``image`` and ``platform`` property. The ``description`` is used for information purposes and does not
+impact buildtest in any way.
+
+You can specify the full URI to the container image which is useful if you are using a custom registry
+
+.. code-block:: yaml
+    :emphasize-lines: 2-10
+
+    executors:
+      container:
+        ubuntu:
+          image: ubuntu:20.04
+          platform: docker
+          description: submit jobs on ubuntu container
+        python:
+          image: python:3.11.0
+          platform: docker
+          description: submit jobs on python container
+
+You can specify container runtime options via ``options`` and bind mount via ``mount`` property. Both properties are
+are string type, for instance let's say you want to bind mount ``/tmp`` directory to ``/tmp``
+
+.. code-block:: yaml
+    :emphasize-lines: 6-7
+
+    executors:
+      container:
+        ubuntu:
+          image: ubuntu:20.04
+          platform: docker
+          mount: "/tmp:/tmp"
+          options: "--user root"
+          description: submit jobs on ubuntu container
 
 .. _project_account:
 
@@ -203,125 +360,10 @@ no impact if job is running. buildtest starts a timer at job submission and ever
 (``pollinterval`` field) checks if job has exceeded **maxpendtime** only if job is pending.
 If job pendtime exceeds `maxpendtime` limit, buildtest will
 cancel job the job using the appropriate scheduler command like (``scancel``, ``bkill``, ``qdel``).
-Buildtestwill remove cancelled jobs from poll queue, in addition cancelled jobs won't be
+Buildtest will remove cancelled jobs from poll queue, in addition cancelled jobs won't be
 reported in test report.
 
 For more details on `maxpendtime` click :ref:`here <max_pend_time>`.
-
-.. _pbs_executors:
-
-PBS Executors
---------------
-
-.. Note:: buildtest PBS support relies on job history set because buildtest needs to query job after completion using ``qstat -x``. This
-          can be configured using ``qmgr`` by setting ``set server job_history_enable=True``. For more details see section **14.15.5.1 Enabling Job History** in `PBS 2021.1.3 Admin Guide <https://help.altair.com/2021.1.3/PBS%20Professional/PBSAdminGuide2021.1.3.pdf>`_
-
-
-buildtest supports `PBS <https://community.altair.com/community?id=altair_product_documentation>`_ scheduler
-which can be defined in the ``executors`` section. Shown below is an example configuration using
-one ``pbs`` executor named ``workq``.  The property ``queue: workq`` defines
-the name of PBS queue that is available in your system.
-
-.. code-block:: yaml
-    :emphasize-lines: 10-12
-
-    system:
-      generic:
-        hostnames: ['.*']
-
-        moduletool: N/A
-        executors:
-          defaults:
-             pollinterval: 10
-             max_pend_time: 30
-          pbs:
-            workq:
-              queue: workq
-        compilers:
-          compiler:
-            gcc:
-              default:
-                cc: /usr/bin/gcc
-                cxx: /usr/bin/g++
-                fc: /usr/bin/gfortran
-
-buildtest will detect the PBS queues in your system and determine if queues are active
-and enabled before submitting job to scheduler. buildtest will run ``qstat -Q -f -F json`` command to check for
-queue state which reports in JSON format and check if queue has the fields ``enabled: "True"`` or ``started: "True"`` set
-in the queue definition. If these values are not set, buildtest will raise an exception.
-
-Shown below is an example with one queue **workq** that is ``enabled`` and ``started``.
-
-.. code-block:: console
-    :emphasize-lines: 6-7, 17-18
-    :linenos:
-
-    $ qstat -Q -f -F json
-    {
-        "timestamp":1615924938,
-        "pbs_version":"19.0.0",
-        "pbs_server":"pbs",
-        "Queue":{
-            "workq":{
-                "queue_type":"Execution",
-                "total_jobs":0,
-                "state_count":"Transit:0 Queued:0 Held:0 Waiting:0 Running:0 Exiting:0 Begun:0 ",
-                "resources_assigned":{
-                    "mem":"0kb",
-                    "ncpus":0,
-                    "nodect":0
-                },
-                "hasnodes":"True",
-                "enabled":"True",
-                "started":"True"
-            }
-        }
-    }
-
-.. _container_executor:
-
-Container Executor
---------------------
-
-Buildtest supports executor declaration for container based jobs. The container executor will run all associated test for the executor
-on the specified container image. Currently, we support `docker`, `podman` and `singularity` as the container platforms. We assume container
-runtime is installed on your system and is accessible in your $PATH.
-
-Let's take a look at the following container executor declaration. The top level keyword ``container`` is used to define the container
-executor which can follow any arbitrary name. We have defined two container executors named **ubuntu** and **python** that specify the
-container image and platform via ``image`` and ``platform`` property. The ``description`` is used for information purposes and does not
-impact buildtest in any way.
-
-You can specify the full URI to the container image which is useful if you are using a custom registry
-
-.. code-block:: yaml
-    :emphasize-lines: 2-10
-
-    executors:
-      container:
-        ubuntu:
-          image: ubuntu:20.04
-          platform: docker
-          description: submit jobs on ubuntu container
-        python:
-          image: python:3.11.0
-          platform: docker
-          description: submit jobs on python container
-
-You can specify container runtime options via ``options`` and bind mount via ``mount`` property. Both properties are
-are string type, for instance let's say you want to bind mount ``/tmp`` directory to ``/tmp``
-
-.. code-block:: yaml
-    :emphasize-lines: 6-7
-
-    executors:
-      container:
-        ubuntu:
-          image: ubuntu:20.04
-          platform: docker
-          mount: "/tmp:/tmp"
-          options: "--user root"
-          description: submit jobs on ubuntu container
 
 
 Run command commands before executing test
