@@ -345,7 +345,7 @@ class SiteConfiguration:
                 self.disabled_executors.append(executor_name)
                 continue
             if slurm_executor[executor].get("partition"):
-                if not slurm.validate_partition(executor, slurm_executor[executor]):
+                if not slurm.validate_partition(slurm_executor[executor]):
                     self.invalid_executors.append(executor_name)
                     continue
             if slurm_executor[executor].get("cluster"):
@@ -357,35 +357,6 @@ class SiteConfiguration:
                 if not slurm.validate_qos(executor, slurm_executor[executor]):
                     self.invalid_executors.append(executor_name)
                     continue
-            """    
-                query = (
-                    f"sinfo -p {slurm_executor[executor]['partition']} -h -O available"
-                )
-                cmd = BuildTestCommand(query)
-                cmd.execute()
-                part_state = "".join(cmd.get_output())
-                part_state = part_state.rstrip()
-                # check if partition is in 'up' state. If not we raise an error.
-                if part_state != "up":
-                    self.invalid_executors(f"{executor_name}")
-                    logger.error(
-                        f"partition - {slurm_executor[executor]['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
-                    )
-                    continue
-            """
-
-            """ disable qos check for now. Issue with 'regular' qos at Cori where it maps to 'regular_hsw' partition while 'regular' is the valid qos name' 
-            # check if 'qos' key is valid qos
-            if (
-                slurm_executor[executor].get("qos")
-                and slurm_executor[executor].get("qos") not in slurm.qos
-            ):
-                raise ConfigurationError(
-                    self.config,
-                    self.file,
-                    f"{slurm_executor[executor]['qos']} not a valid qos! Please select one of the following qos: {slurm.qos}",
-                )
-            """
 
             self.valid_executors[executor_type][executor_name] = {
                 "setting": slurm_executor[executor]
@@ -490,23 +461,8 @@ class SiteConfiguration:
                 continue
 
             queue = pbs_executor[executor].get("queue")
-            if queue not in pbs.queues:
+            if not pbs.validate_queue(queue):
                 self.invalid_executors.append(executor_name)
-                logger.error(
-                    f"PBS queue - '{queue}' not in list of available queues: {pbs.queues} "
-                )
-                continue
-
-            if (
-                pbs.queue_summary["Queue"][queue]["enabled"] != "True"
-                or pbs.queue_summary["Queue"][queue]["started"] != "True"
-            ):
-                self.invalid_executors.append(executor_name)
-                logger.info("Queue configuration")
-                logger.info(json.dumps(pbs.queue_summary, indent=2))
-                logger.error(
-                    f"[{self.file}]: '{queue}' not 'enabled' or 'started' properly."
-                )
                 continue
 
             self.valid_executors[executor_type][executor_name] = {
@@ -532,8 +488,6 @@ class SiteConfiguration:
         if not torque.active():
             return
 
-        queue_info = torque.queues()
-
         for executor in torque_executor:
             executor_name = f"{self.name()}.{executor_type}.{executor}"
 
@@ -541,20 +495,9 @@ class SiteConfiguration:
                 self.disabled_executors.append(executor_name)
                 continue
 
-            queue = torque_executor[executor].get("queue")
-            if queue not in queue_info:
-                self.invalid_executors.append(executor_name)
-                logger.error(
-                    f"Torque queue - '{queue}' not in list of available queues: {list(queue_info.keys())} "
-                )
-                continue
 
-            if (
-                queue_info[queue]["enabled"] != "True"
-                or queue_info[queue]["started"] != "True"
-            ):
+            if not torque.validate_queue(torque_executor[executor]):
                 self.invalid_executors.append(executor_name)
-                logger.error(f"Queue '{queue}' not 'enabled' or 'started' properly.")
                 continue
 
             self.valid_executors[executor_type][executor_name] = {
