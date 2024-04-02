@@ -394,10 +394,11 @@ class PBS(Scheduler):
         Args:
             queue_name (str): The name of the queue to validate.
         """
+        avail_queues = list(self._queues["Queue"].keys())
 
-        if queue_name not in self._queues:
+        if queue_name not in avail_queues:
             self.logger.error(
-                f"PBS queue - '{queue_name}' not in list of available queues: {self._queues} "
+                f"PBS queue - '{queue_name}' not in list of available queues: {avail_queues} "
             )
             return False
 
@@ -406,12 +407,12 @@ class PBS(Scheduler):
         )
 
         if (
-            self._queue["Queue"][queue_name]["enabled"] != "True"
-            or self._queue["Queue"][queue_name]["started"] != "True"
+            self._queues["Queue"][queue_name]["enabled"] != "True"
+            or self._queues["Queue"][queue_name]["started"] != "True"
         ):
             self.logger.info(f"PBS Queue Configuration: {queue_name}")
-            self.logger.info(json.dumps(self._queue["Queue"][queue_name], indent=2))
-            self.logger.error(f"'{queue}' not 'enabled' or 'started' properly.")
+            self.logger.info(json.dumps(self._queues["Queue"][queue_name], indent=2))
+            self.logger.error(f"'{queue_name}' not 'enabled' or 'started' properly.")
             return False
 
         return True

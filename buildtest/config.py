@@ -495,7 +495,6 @@ class SiteConfiguration:
                 self.disabled_executors.append(executor_name)
                 continue
 
-
             if not torque.validate_queue(torque_executor[executor]):
                 self.invalid_executors.append(executor_name)
                 continue
