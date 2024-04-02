@@ -1,0 +1,6 @@
+buildspecs:
+  sleep_job:
+    type: script
+    executor: generic.torque.lbl
+    pbs: ["-l nodes=1", "-l walltime=00:02:00"]
+    run: sleep 5
