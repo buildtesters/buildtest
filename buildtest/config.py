@@ -1,4 +1,3 @@
-import json
 import logging
 import platform
 import re
@@ -13,7 +12,6 @@ from buildtest.exceptions import BuildTestError, ConfigurationError
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_recipe, load_schema
 from buildtest.system import LSF, PBS, Cobalt, Slurm, Torque
-from buildtest.utils.command import BuildTestCommand
 from buildtest.utils.file import resolve_path
 from buildtest.utils.shell import Shell
 from buildtest.utils.tools import deep_get
@@ -267,7 +265,8 @@ class SiteConfiguration:
 
         queue_list = []
         valid_queue_state = "Open:Active"
-        record = lsf.queues["RECORDS"]
+
+        record = lsf.queues()["RECORDS"]
         # retrieve all queues from json record
         for name in record:
             queue_list.append(name["QUEUE_NAME"])
@@ -331,60 +330,31 @@ class SiteConfiguration:
         if not slurm.active():
             return
 
+        slurm_partitions = slurm.partitions()
+        slurm_qos = slurm.qos()
+        slurm_clusters = slurm.clusters()
+        logger.debug(f"SLURM Partitions: {slurm_partitions}")
+        logger.debug(f"SLURM QOS: {slurm_qos}")
+        logger.debug(f"SLURM Clusters: {slurm_clusters}")
         for executor in slurm_executor:
             executor_name = f"{self.name()}.{executor_type}.{executor}"
 
             if self.is_executor_disabled(slurm_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
-
-            # if 'partition' key defined check if its valid partition
             if slurm_executor[executor].get("partition"):
-                if slurm_executor[executor]["partition"] not in slurm.partitions:
-                    self.invalid_executors(executor_name)
-                    logger.error(
-                        f"executor - {executor} has invalid partition name '{slurm_executor[executor]['partition']}'. Please select one of the following partitions: {slurm.partitions}"
-                    )
+                if not slurm.validate_partition(slurm_executor[executor]):
+                    self.invalid_executors.append(executor_name)
+                    continue
+            if slurm_executor[executor].get("cluster"):
+                if not slurm.validate_cluster(executor, slurm_executor[executor]):
+                    self.invalid_executors.append(executor_name)
                     continue
 
-                query = (
-                    f"sinfo -p {slurm_executor[executor]['partition']} -h -O available"
-                )
-                cmd = BuildTestCommand(query)
-                cmd.execute()
-                part_state = "".join(cmd.get_output())
-                part_state = part_state.rstrip()
-                # check if partition is in 'up' state. If not we raise an error.
-                if part_state != "up":
-                    self.invalid_executors(f"{executor_name}")
-                    logger.error(
-                        f"partition - {slurm_executor[executor]['partition']} is in state: {part_state}. It must be in 'up' state in order to accept jobs"
-                    )
+            if slurm_executor[executor].get("qos"):
+                if not slurm.validate_qos(executor, slurm_executor[executor]):
+                    self.invalid_executors.append(executor_name)
                     continue
-
-            """ disable qos check for now. Issue with 'regular' qos at Cori where it maps to 'regular_hsw' partition while 'regular' is the valid qos name' 
-            # check if 'qos' key is valid qos
-            if (
-                slurm_executor[executor].get("qos")
-                and slurm_executor[executor].get("qos") not in slurm.qos
-            ):
-                raise ConfigurationError(
-                    self.config,
-                    self.file,
-                    f"{slurm_executor[executor]['qos']} not a valid qos! Please select one of the following qos: {slurm.qos}",
-                )
-            """
-
-            # check if 'cluster' key is valid slurm cluster
-            if (
-                slurm_executor[executor].get("cluster")
-                and slurm_executor[executor].get("cluster") not in slurm.clusters
-            ):
-                self.invalid_executors(f"{executor_name}")
-                logger.error(
-                    f"executor - {executor} has invalid slurm cluster - {slurm_executor[executor]['cluster']}. Please select one of the following slurm clusters: {slurm.clusters}"
-                )
-                continue
 
             self.valid_executors[executor_type][executor_name] = {
                 "setting": slurm_executor[executor]
@@ -412,6 +382,8 @@ class SiteConfiguration:
         if not cobalt.active():
             return
 
+        queue_info = cobalt.queues()
+
         for executor in cobalt_executor:
             executor_name = f"{self.name()}.{executor_type}.{executor}"
 
@@ -421,9 +393,9 @@ class SiteConfiguration:
 
             queue = cobalt_executor[executor].get("queue")
             # if queue property defined in cobalt executor name check if it exists
-            if queue not in cobalt.queues:
+            if queue not in queue_info:
                 logger.error(
-                    f"Cobalt queue '{queue}' does not exist. Available Cobalt queues: {cobalt.queues} "
+                    f"Cobalt queue '{queue}' does not exist. Available Cobalt queues: {queue_info} "
                 )
                 continue
 
@@ -487,23 +459,8 @@ class SiteConfiguration:
                 continue
 
             queue = pbs_executor[executor].get("queue")
-            if queue not in pbs.queues:
+            if not pbs.validate_queue(queue):
                 self.invalid_executors.append(executor_name)
-                logger.error(
-                    f"PBS queue - '{queue}' not in list of available queues: {pbs.queues} "
-                )
-                continue
-
-            if (
-                pbs.queue_summary["Queue"][queue]["enabled"] != "True"
-                or pbs.queue_summary["Queue"][queue]["started"] != "True"
-            ):
-                self.invalid_executors.append(executor_name)
-                logger.info("Queue configuration")
-                logger.info(json.dumps(pbs.queue_summary, indent=2))
-                logger.error(
-                    f"[{self.file}]: '{queue}' not 'enabled' or 'started' properly."
-                )
                 continue
 
             self.valid_executors[executor_type][executor_name] = {
@@ -512,8 +469,8 @@ class SiteConfiguration:
 
     def _validate_torque_executors(self):
 
-        pbs_executor = deep_get(self.target_config, "executors", "torque")
-        if not pbs_executor:
+        torque_executor = deep_get(self.target_config, "executors", "torque")
+        if not torque_executor:
 
             if self.verbose:
                 console.print(
@@ -529,35 +486,19 @@ class SiteConfiguration:
         if not torque.active():
             return
 
-        for executor in pbs_executor:
+        for executor in torque_executor:
             executor_name = f"{self.name()}.{executor_type}.{executor}"
 
-            if self.is_executor_disabled(pbs_executor[executor]):
+            if self.is_executor_disabled(torque_executor[executor]):
                 self.disabled_executors.append(executor_name)
                 continue
-            """
-            queue = pbs_executor[executor].get("queue")
-            if queue not in pbs.queues:
+
+            if not torque.validate_queue(torque_executor[executor]):
                 self.invalid_executors.append(executor_name)
-                logger.error(
-                    f"PBS queue - '{queue}' not in list of available queues: {pbs.queues} "
-                )
                 continue
 
-            if (
-                pbs.queue_summary["Queue"][queue]["enabled"] != "True"
-                or pbs.queue_summary["Queue"][queue]["started"] != "True"
-            ):
-                self.invalid_executors.append(executor_name)
-                logger.info("Queue configuration")
-                logger.info(json.dumps(pbs.queue_summary, indent=2))
-                logger.error(
-                    f"[{self.file}]: '{queue}' not 'enabled' or 'started' properly."
-                )
-                continue
-            """
             self.valid_executors[executor_type][executor_name] = {
-                "setting": pbs_executor[executor]
+                "setting": torque_executor[executor]
             }
 
     def get_profile(self, profile_name):
