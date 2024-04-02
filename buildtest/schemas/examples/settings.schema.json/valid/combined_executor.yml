@@ -25,18 +25,24 @@ system:
           shell: bash -v
       slurm:
         haswell:
-          launcher: sbatch
+          partition: haswell
           options: ["-p haswell", "-t 00:10"]
       lsf:
         batch:
-          launcher: bsub
           queue: batch
           options: ["-q batch", "-t 00:10"]
       cobalt:
         normal:
-          launcher: qsub
           queue: normal
           options: ["-n 1", "-t 10"]
+      pbs:
+        dev:
+          queue: development
+          options: ["-l walltime 00:10:00"]
+      torque:
+        dev:
+          queue: development
+          options: [ "-l walltime 00:10:00" ]
       container:
         ubuntu:
           image: ubuntu:20.04
