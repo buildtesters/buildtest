@@ -322,7 +322,7 @@ LSF
 ----
 
 buildtest can support job submission to `IBM Spectrum LSF <https://www.ibm.com/support/knowledgecenter/en/SSWRJV/product_welcome_spectrum_lsf.html>`_
-if you have defined LSF executors in your configuration file.
+if you have defined :ref:`lsf_executors` in your configuration file.
 
 The ``bsub`` property can be used to  specify **#BSUB** directive into job script. This example
 will use the executor ``ascent.lsf.batch`` executor that was defined in buildtest configuration.
@@ -337,15 +337,10 @@ will use the executor ``ascent.lsf.batch`` executor that was defined in buildtes
         bsub: [ "-W 10",  "-nnodes 1"]
         run: jsrun hostname
 
-The LSFExecutor poll jobs  and retrieve job state using
+The LSF Executor poll jobs  and retrieve job state using
 ``bjobs -noheader -o 'stat' <JOBID>``. The LSFExecutor will poll
 job so long as they are in **PEND** or **RUN** state. Once job is not in
-any of the two states, LSFExecutor will gather job results. buildtest will retrieve
-the following format fields using ``bjobs``: **job_name**, **stat**, **user**, **user_group**, **queue**, **proj_name**,
-**pids**, **exit_code**, **from_host**, **exec_host**, **submit_time**, **start_time**,
-**finish_time**, **nthreads**, **exec_home**, **exec_cwd**, **output_file**, **error_file** to
-get job record.
-
+any of the two states, LSF Executor will gather job results.
 
 PBS
 ----
