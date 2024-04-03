@@ -291,4 +291,3 @@ class TorqueJob(PBSJob):
         logger.debug(f"Retrieved job data for job: {self.jobid}:\n{output}")
 
         return output
-    pass
