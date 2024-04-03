@@ -244,6 +244,48 @@ extract queue details and compare with executor configuration.
         enabled = True
         started = True
 
+.. _lsf_executors:
+
+LSF Executors
+~~~~~~~~~~~~~~
+
+Buildtest supports `LSF <https://www.ibm.com/support/knowledgecenter/en/SSWRJV_10.1.0/lsf_welcome/lsf_welcome.html>`_ scheduler
+which can be defined in the ``executors`` section. Shown below is an example configuration that declares one executor named
+``batch`` that uses the LSF queue named **batch**. The ``lsf`` property is used to define LSF executors, and the ``queue`` property
+is used to specify the LSF queue name.
+
+.. code-block:: yaml
+    :emphasize-lines: 2-4
+
+    executors:
+      lsf:
+        batch:
+          queue: batch
+
+
+buildtest will run ``bqueues -o 'queue_name status' -json`` command to get queue details to retrieve list of queues. If the ``queue``
+property specifies an invalid queue name, buildtest will raise an exception.
+
+
+.. code-block:: console
+    :emphasize-lines: 6-7
+
+    $ bqueues -o 'queue_name status' -json
+        {
+          "COMMAND":"bqueues",
+          "QUEUES":2,
+          "RECORDS":[
+            {
+              "QUEUE_NAME":"batch",
+              "STATUS":"Open:Active"
+            },
+            {
+              "QUEUE_NAME":"test",
+              "STATUS":"Open:Active"
+            }
+          ]
+        }
+
 
 .. _container_executor:
 
