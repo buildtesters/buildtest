@@ -2,9 +2,10 @@ import os
 import shutil
 
 import pytest
-from buildtest.scheduler.detection import PBS
+
 from buildtest.cli.build import BuildTest
 from buildtest.config import SiteConfiguration
+from buildtest.scheduler.detection import PBS
 from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
 

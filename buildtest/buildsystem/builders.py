@@ -400,7 +400,6 @@ class Builder:
         if not recipe.get("tags"):
             return True
 
-
         # the input tag names from test can be list or string
         tests_in_tags = recipe["tags"]
         # if input is string, convert to list otherwise we assume its a list
