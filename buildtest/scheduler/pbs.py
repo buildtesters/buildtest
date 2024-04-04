@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import re
@@ -14,6 +15,8 @@ class PBSJob(Job):
     """The PBSJob models a PBS Job with helper methods to retrieve job state, check if job is running/pending/suspended. We have methods
     to poll job state, gather job results upon completion and cancel job.
     """
+
+    poll_command = "qstat -xf"
 
     def __init__(self, jobID):
         self._outfile = None
@@ -54,7 +57,7 @@ class PBSJob(Job):
 
     def get_output_error_files(self):
         """Fetch output and error files right after job submission."""
-        query = f"qstat -f {self.jobid}"
+        query = f"{self.poll_command} {self.jobid}"
         cmd = BuildTestCommand(query)
         cmd.execute()
         output = " ".join(cmd.get_output())
@@ -198,7 +201,7 @@ class PBSJob(Job):
                 copy_on_rerun = False
 
         """
-        query = f"qstat -f {self.jobid}"
+        query = f"{self.poll_command} {self.jobid}"
 
         logger.debug(f"Polling job by running: {query}")
         cmd = BuildTestCommand(query)
@@ -252,14 +255,16 @@ class PBSJob(Job):
         for getting output file, error file and exit status of job.
         """
 
-        # job_data = json.loads(output)
+        query = f"{self.poll_command} -F json {self.jobid}"
+        logger.debug(f"Retrieving job data by running: {query}")
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        output = " ".join(cmd.get_output())
+        job_data = json.loads(output)
 
-        # output in the form of pbs:<path>
-        # self._outfile = job_data["Jobs"][self.jobid]["Output_Path"].split(":")[1]
-        # self._errfile = job_data["Jobs"][self.jobid]["Error_Path"].split(":")[1]
+        logger.debug(f"Retrieved job data for job: {self.jobid}:\n{job_data}")
 
-        # self._exitcode = self._get_exitcode()
-        return {}
+        return job_data
 
     def cancel(self):
         """Cancel PBS job by running ``qdel <jobid>``."""
@@ -270,4 +275,19 @@ class PBSJob(Job):
 
 
 class TorqueJob(PBSJob):
-    pass
+
+    poll_command = "qstat -f"
+
+    def retrieve_jobdata(self):
+        """This method is called once job is complete. We will gather record of job by running
+        `qstat -f <jobid>` and return the output as a string.
+        """
+        query = f"{self.poll_command} {self.jobid}"
+        logger.debug(f"Retrieving job data by running: {query}")
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        output = " ".join(cmd.get_output())
+
+        logger.debug(f"Retrieved job data for job: {self.jobid}:\n{output}")
+
+        return output
