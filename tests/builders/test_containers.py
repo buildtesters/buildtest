@@ -24,7 +24,6 @@ def test_docker_example():
         buildspecs=[
             os.path.join(BUILDTEST_ROOT, "tutorials", "containers", "hello_world.yml")
         ],
-        buildtest_system=system,
         configuration=config,
     )
     cmd.build()
@@ -40,7 +39,6 @@ def test_singularity_example():
                 BUILDTEST_ROOT, "tutorials", "containers", "hello_world_singularity.yml"
             )
         ],
-        buildtest_system=system,
         configuration=config,
     )
     cmd.build()

@@ -7,7 +7,6 @@ import pytest
 from buildtest.cli.build import BuildTest
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.config import SiteConfiguration
-from buildtest.system import BuildTestSystem
 
 here = os.path.dirname(os.path.abspath(__file__))
 
@@ -21,8 +20,6 @@ def test_spack_examples():
             "Unable to run this test requires docker container:  ghcr.io/buildtesters/buildtest_spack:latest"
         )
 
-    system = BuildTestSystem()
-
     configuration = SiteConfiguration(
         settings_file=os.path.join(here, "spack_container.yml")
     )
@@ -34,10 +31,5 @@ def test_spack_examples():
     bp = BuildspecCache(rebuild=True, configuration=configuration)
     bp.print_tags()
 
-    cmd = BuildTest(
-        configuration=configuration,
-        tags=["spack"],
-        dry_run=True,
-        buildtest_system=system,
-    )
+    cmd = BuildTest(configuration=configuration, tags=["spack"], dry_run=True)
     cmd.build()

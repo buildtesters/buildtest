@@ -11,7 +11,6 @@ from buildtest.cli.clean import clean
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_RERUN_FILE, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
-from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
 
 test_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -30,7 +29,6 @@ def test_clean():
 
 
 class TestBuildTest:
-    system = BuildTestSystem()
 
     @pytest.mark.cli
     def test_build_by_tags(self):
@@ -38,81 +36,49 @@ class TestBuildTest:
         BuildspecCache(rebuild=True, configuration=configuration)
 
         #  buildtest build --tags pass
-        cmd = BuildTest(
-            configuration=configuration, tags=["pass"], buildtest_system=self.system
-        )
+        cmd = BuildTest(configuration=configuration, tags=["pass"])
         cmd.build()
 
         #  buildtest build --tags fail --tags python
-        cmd = BuildTest(
-            configuration=configuration,
-            tags=["fail", "python"],
-            buildtest_system=self.system,
-        )
+        cmd = BuildTest(configuration=configuration, tags=["fail", "python"])
         cmd.build()
 
         #   testing multiple tags as comma separated list:
         #  buildtest build --tags fail,python --tags network
-        cmd = BuildTest(
-            configuration=configuration,
-            tags=["fail,python", "network"],
-            buildtest_system=self.system,
-        )
+        cmd = BuildTest(configuration=configuration, tags=["fail,python", "network"])
         cmd.build()
 
         # testing no tag names
         # buildtest build --tags ,,
-        cmd = BuildTest(
-            configuration=configuration, tags=[",,"], buildtest_system=self.system
-        )
+        cmd = BuildTest(configuration=configuration, tags=[",,"])
         with pytest.raises(SystemExit):
             cmd.build()
         # testing with spaces between tags
-        cmd = BuildTest(
-            configuration=configuration,
-            tags=["  ,python,  fail,   ,,"],
-            buildtest_system=self.system,
-        )
+        cmd = BuildTest(configuration=configuration, tags=["  ,python,  fail,   ,,"])
         cmd.build()
 
     @pytest.mark.cli
     def test_build_rerun(self):
         #  testing buildtest build --rerun
-        cmd = BuildTest(
-            configuration=configuration,
-            rerun=True,
-            dry_run=True,
-            buildtest_system=self.system,
-        )
+        cmd = BuildTest(configuration=configuration, rerun=True, dry_run=True)
         cmd.build()
 
         os.remove(BUILDTEST_RERUN_FILE)
         with pytest.raises(BuildTestError):
-            BuildTest(
-                configuration=configuration,
-                rerun=True,
-                dry_run=True,
-                buildtest_system=self.system,
-            )
+            BuildTest(configuration=configuration, rerun=True, dry_run=True)
 
     @pytest.mark.cli
     def test_build_executor_type(self):
-        system = BuildTestSystem()
+
         # buildtest build --tags python --executor-type local
         cmd = BuildTest(
-            configuration=configuration,
-            tags=["python"],
-            executor_type="local",
-            buildtest_system=system,
+            configuration=configuration, tags=["python"], executor_type="local"
         )
         cmd.build()
 
         # buildtest build --tags python --executor-type batch
         cmd = BuildTest(
-            configuration=configuration,
-            tags=["python"],
-            executor_type="batch",
-            buildtest_system=system,
+            configuration=configuration, tags=["python"], executor_type="batch"
         )
         with pytest.raises(SystemExit):
             cmd.build()
@@ -124,7 +90,6 @@ class TestBuildTest:
             configuration=configuration,
             tags=["pass"],
             filter_buildspecs={"tags": ["pass"]},
-            buildtest_system=self.system,
         )
         cmd.build()
 
@@ -133,7 +98,6 @@ class TestBuildTest:
             configuration=configuration,
             buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials")],
             filter_buildspecs={"maintainers": ["@shahzebsiddiqui"]},
-            buildtest_system=self.system,
         )
         cmd.build()
 
@@ -144,7 +108,6 @@ class TestBuildTest:
                 os.path.join(BUILDTEST_ROOT, "tutorials", "shell_examples.yml")
             ],
             filter_buildspecs={"type": ["script"]},
-            buildtest_system=self.system,
         )
         cmd.build()
 
@@ -157,7 +120,6 @@ class TestBuildTest:
                     os.path.join(BUILDTEST_ROOT, "tutorials", "shell_examples.yml")
                 ],
                 filter_buildspecs={"type": ["spack"]},
-                buildtest_system=self.system,
             )
             cmd.build()
 
@@ -185,11 +147,7 @@ class TestBuildTest:
         buildspec_paths = os.path.join(test_root, "buildsystem", "valid_buildspecs")
 
         #  testing buildtest build --buildspec tests/buildsystem/valid_buildspecs
-        cmd = BuildTest(
-            configuration=configuration,
-            buildspecs=[buildspec_paths],
-            buildtest_system=self.system,
-        )
+        cmd = BuildTest(configuration=configuration, buildspecs=[buildspec_paths])
         cmd.build()
 
         excluded_buildspecs = walk_tree(buildspec_paths, ".yml")
@@ -199,7 +157,6 @@ class TestBuildTest:
             configuration=configuration,
             buildspecs=[buildspec_paths],
             exclude_buildspecs=[excluded_buildspecs[0]],
-            buildtest_system=self.system,
         )
         cmd.build()
 
@@ -210,7 +167,6 @@ class TestBuildTest:
                 configuration=configuration,
                 buildspecs=[buildspec_paths],
                 exclude_buildspecs=[buildspec_paths],
-                buildtest_system=self.system,
             )
             cmd.build()
 
@@ -222,7 +178,6 @@ class TestBuildTest:
         cmd = BuildTest(
             configuration=configuration,
             tags=["python"],
-            buildtest_system=self.system,
             modulepurge=True,
             modules="gcc/9.1.0",
             unload_modules="gcc",
@@ -243,31 +198,25 @@ class TestBuildTest:
                     "metrics_file_regex_invalid_file.yml",
                 ),
             ],
-            buildtest_system=self.system,
         )
         cmd.build()
 
     def test_run_all_perf_checks(self):
-        system = BuildTestSystem()
+
         buildspecs = walk_tree(
             root_dir=os.path.join(BUILDTEST_ROOT, "tutorials", "perf_checks"),
             ext=".yml",
         )
 
         #  buildtest build --buildspec $BUILDTEST_ROOT/tutorials/perf_checks
-        cmd = BuildTest(
-            configuration=configuration, buildspecs=buildspecs, buildtest_system=system
-        )
+        cmd = BuildTest(configuration=configuration, buildspecs=buildspecs)
         cmd.build()
 
     @pytest.mark.cli
     def test_buildspec_tag_executor(self):
         # buildtest build --tags fail --executor generic.local.csh
         cmd = BuildTest(
-            configuration=configuration,
-            tags=["fail"],
-            executors=["generic.local.csh"],
-            buildtest_system=self.system,
+            configuration=configuration, tags=["fail"], executors=["generic.local.csh"]
         )
         cmd.build()
 
@@ -275,10 +224,7 @@ class TestBuildTest:
     def test_exclude_tags(self):
         # testing buildtest build --tags fail --exclude-tags fail
         cmd = BuildTest(
-            configuration=configuration,
-            tags=["fail"],
-            exclude_tags=["fail"],
-            buildtest_system=self.system,
+            configuration=configuration, tags=["fail"], exclude_tags=["fail"]
         )
         cmd.build()
 
@@ -287,7 +233,6 @@ class TestBuildTest:
             configuration=configuration,
             buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "python-hello.yml")],
             exclude_tags=["python"],
-            buildtest_system=self.system,
         )
         # no test will be run
         with pytest.raises(SystemExit):
@@ -297,19 +242,13 @@ class TestBuildTest:
     def test_buildspecs_by_name(self):
         # testing buildtest build --name
         cmd = BuildTest(
-            configuration=configuration,
-            name=["hello_world", "add_numbers"],
-            buildtest_system=self.system,
+            configuration=configuration, name=["hello_world", "add_numbers"]
         )
         cmd.build()
 
         # should raise exception if `name` is not a list
         with pytest.raises(BuildTestError):
-            BuildTest(
-                configuration=configuration,
-                name="pass_test",
-                buildtest_system=self.system,
-            )
+            BuildTest(configuration=configuration, name="pass_test")
 
     @pytest.mark.cli
     def test_build_csh_executor(self):
@@ -317,11 +256,7 @@ class TestBuildTest:
             pytest.skip("Unable to run this test since it requires 'csh'")
 
         # testing buildtest build --executor generic.local.csh
-        cmd = BuildTest(
-            configuration=configuration,
-            executors=["generic.local.csh"],
-            buildtest_system=self.system,
-        )
+        cmd = BuildTest(configuration=configuration, executors=["generic.local.csh"])
         cmd.build()
 
     @pytest.mark.cli
@@ -329,7 +264,6 @@ class TestBuildTest:
         cmd = BuildTest(
             buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "skip_tests.yml")],
             configuration=configuration,
-            buildtest_system=self.system,
         )
         cmd.build()
 
@@ -338,7 +272,6 @@ class TestBuildTest:
                 os.path.join(BUILDTEST_ROOT, "tutorials", "skip_buildspec.yml")
             ],
             configuration=configuration,
-            buildtest_system=self.system,
         )
         with pytest.raises(SystemExit):
             cmd.build()
@@ -346,23 +279,13 @@ class TestBuildTest:
     @pytest.mark.cli
     def test_build_validate(self):
         # testing buildtest build --tags python --validate
-        cmd = BuildTest(
-            configuration=configuration,
-            tags=["python"],
-            validate=True,
-            buildtest_system=self.system,
-        )
+        cmd = BuildTest(configuration=configuration, tags=["python"], validate=True)
         cmd.build()
 
     @pytest.mark.cli
     def test_build_dryrun(self):
         # testing buildtest build --tags python --dry-run
-        cmd = BuildTest(
-            configuration=configuration,
-            tags=["python"],
-            dry_run=True,
-            buildtest_system=self.system,
-        )
+        cmd = BuildTest(configuration=configuration, tags=["python"], dry_run=True)
         cmd.build()
 
     @pytest.mark.cli
@@ -371,10 +294,7 @@ class TestBuildTest:
 
         # rebuild 5 times (buildtest build -b tutorials/python-shell.yml --rebuild=5
         cmd = BuildTest(
-            configuration=configuration,
-            buildspecs=[buildspec_file],
-            rebuild=5,
-            buildtest_system=self.system,
+            configuration=configuration, buildspecs=[buildspec_file], rebuild=5
         )
         cmd.build()
 
@@ -382,42 +302,24 @@ class TestBuildTest:
     def test_build_limit(self):
         # rebuild 5 times (buildtest build -t python --rebuild=5 --limit=2
         cmd = BuildTest(
-            configuration=configuration,
-            tags=["python"],
-            rebuild=5,
-            buildtest_system=self.system,
-            limit=2,
+            configuration=configuration, tags=["python"], rebuild=5, limit=2
         )
         cmd.build()
 
         # should raise error when --limit=0 testing special case
         with pytest.raises(BuildTestError):
-            BuildTest(
-                configuration=configuration,
-                tags=["python"],
-                rebuild=5,
-                buildtest_system=self.system,
-                limit=0,
-            )
+            BuildTest(configuration=configuration, tags=["python"], rebuild=5, limit=0)
 
         # should raise error when --limit is a negative number
         with pytest.raises(BuildTestError):
             BuildTest(
-                configuration=configuration,
-                tags=["python"],
-                rebuild=5,
-                buildtest_system=self.system,
-                limit=-99,
+                configuration=configuration, tags=["python"], rebuild=5, limit=-99
             )
 
         # should raise error when --limit is not an int
         with pytest.raises(BuildTestError):
             BuildTest(
-                configuration=configuration,
-                tags=["python"],
-                rebuild=5,
-                buildtest_system=self.system,
-                limit=1.5,
+                configuration=configuration, tags=["python"], rebuild=5, limit=1.5
             )
 
     def test_max_jobs(self):
@@ -457,11 +359,7 @@ class TestBuildTest:
 
         # buildtest build -b tutorials/invalid_tags.yml -b tutorials/invalid_executor.yml
         with pytest.raises(SystemExit):
-            cmd = BuildTest(
-                configuration=configuration,
-                buildspecs=buildspec_file,
-                buildtest_system=self.system,
-            )
+            cmd = BuildTest(configuration=configuration, buildspecs=buildspec_file)
             cmd.build()
 
     def test_jobdeps(self):
@@ -469,41 +367,24 @@ class TestBuildTest:
             os.path.join(BUILDTEST_ROOT, "tutorials", "job_dependency")
         )
 
-        cmd = BuildTest(
-            configuration=configuration,
-            buildspecs=buildspecs,
-            buildtest_system=self.system,
-        )
+        cmd = BuildTest(configuration=configuration, buildspecs=buildspecs)
         cmd.build()
 
     @pytest.mark.cli
     def test_timeout(self):
         buildspecs = [os.path.join(BUILDTEST_ROOT, "tutorials", "sleep.yml")]
-        cmd = BuildTest(
-            configuration=configuration,
-            buildspecs=buildspecs,
-            buildtest_system=self.system,
-            timeout=1,
-        )
+        cmd = BuildTest(configuration=configuration, buildspecs=buildspecs, timeout=1)
         cmd.build()
 
         # running same test with timeout=10 which should pass
-        cmd = BuildTest(
-            configuration=configuration,
-            buildspecs=buildspecs,
-            buildtest_system=self.system,
-            timeout=10,
-        )
+        cmd = BuildTest(configuration=configuration, buildspecs=buildspecs, timeout=10)
         cmd.build()
 
     @pytest.mark.cli
     def test_remove_stagedir(self):
         buildspec_file = [os.path.join(BUILDTEST_ROOT, "tutorials", "python-shell.yml")]
         cmd = BuildTest(
-            configuration=configuration,
-            buildspecs=buildspec_file,
-            buildtest_system=self.system,
-            remove_stagedir=True,
+            configuration=configuration, buildspecs=buildspec_file, remove_stagedir=True
         )
         cmd.build()
 
@@ -546,7 +427,6 @@ class TestBuildTest:
             executor_type="local",
             remove_stagedir=True,
             max_jobs=2,
-            buildtest_system=self.system,
             save_profile="demo",
             verbose=True,
         )
@@ -579,12 +459,7 @@ class TestBuildTest:
                 BUILDTEST_ROOT, "tutorials", "test_status", "pass_returncode.yml"
             )
         ]
-        cmd = BuildTest(
-            configuration=configuration,
-            buildspecs=buildspecs,
-            buildtest_system=self.system,
-            retry=2,
-        )
+        cmd = BuildTest(configuration=configuration, buildspecs=buildspecs, retry=2)
         cmd.build()
 
 

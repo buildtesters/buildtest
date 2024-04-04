@@ -173,7 +173,6 @@ def main():
                 validate=args.validate,
                 dry_run=args.dry_run,
                 testdir=args.testdir,
-                buildtest_system=system,
                 report_file=report_file,
                 maxpendtime=args.maxpendtime,
                 poll_interval=args.pollinterval,
