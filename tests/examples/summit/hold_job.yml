@@ -1,7 +1,7 @@
 buildspecs:
   hold_job:
     type: script
-    executor: ascent.lsf.batch
+    executor: summit.lsf.batch
     description: Test job cancellation by holding job
     tags: [jobs]
     bsub: ["-W 10", "-nnodes 1", "-H"]

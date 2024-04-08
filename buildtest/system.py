@@ -7,6 +7,7 @@ import logging
 import os
 import platform
 import shutil
+import socket
 
 import distro
 
@@ -55,7 +56,7 @@ class BuildTestSystem:
         self.system["python"] = os.getenv("BUILDTEST_PYTHON")
         self.system["pyver"] = platform.python_version()
         self.system["processor"] = platform.processor()
-        self.system["host"] = platform.node()
+        self.system["host"] = socket.getfqdn()
         self.system["machine"] = platform.machine()
 
         self.logger.info(f"Machine: {self.system['machine']}")

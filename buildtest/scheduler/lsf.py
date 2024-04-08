@@ -174,7 +174,7 @@ class LSFJob(Job):
 
         query = f"bjobs -o '{' '.join(format_fields)}' {self.jobid} -json"
 
-        logger.debug(f"Gather LSF job data by running: {query}")
+        logger.debug(f"Gather LSF job: {self.jobid} data by running: {query}")
         cmd = BuildTestCommand(query)
         cmd.execute()
         out = cmd.get_output()
@@ -182,6 +182,7 @@ class LSFJob(Job):
 
         out = json.loads(out)
 
+        logger.debug(json.dumps(out, indent=2))
         job_data = {}
 
         records = out["RECORDS"][0]

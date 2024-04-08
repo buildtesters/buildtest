@@ -1,7 +1,7 @@
 buildspecs:
   lsf_job_state_example:
     type: script
-    executor: ascent.lsf.batch
+    executor: summit.lsf.batch
     description: This job will only PASS if LSF Job state is EXIT
     tags: [jobs]
     bsub: ["-W 10", "-nnodes 1"]

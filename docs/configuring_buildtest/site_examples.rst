@@ -17,20 +17,20 @@ configuring compilers that is available on Perlmutter.
 Oak Ridge National Laboratory
 -----------------------------
 
-`Ascent <https://docs.olcf.ornl.gov/systems/ascent_user_guide.html>`_ is a training
+`Summit <https://docs.olcf.ornl.gov/systems/summit_user_guide.html>`_ is a training
 system for Summit at OLCF, which is using a IBM Load Sharing
 Facility (LSF) as their batch scheduler. Ascent has two
 queues **batch** and **test**. To declare LSF executors we define them under ``lsf``
 section within the ``executors`` section.
 
-The default launcher is `bsub` which can be defined under ``defaults``. The
-``pollinterval`` will poll LSF jobs every 10 seconds using ``bjobs``. The
-``pollinterval`` accepts a range between **10 - 300** seconds as defined in
-schema. In order to avoid polling scheduler excessively pick a number that is best
-suitable for your site
+The default batch configuration is defined in ``defaults``, for instance we set the fields ``pollinterval``, ``maxpendtime``
+and to **30s** and **300s** each. The field ``account`` is used to specify project account where all jobs will be charged. This can be
+customized to each site but and can be changed in the configuration file or overridden via command line ``buildtest build --account <ACCOUNT>``.
 
-.. literalinclude:: ../../tests/settings/ascent.yml
+
+.. literalinclude:: ../../tests/settings/summit.yml
    :language: yaml
+   :emphasize-lines: 19-23,37-39
 
 Argonne National Laboratory
 ---------------------------

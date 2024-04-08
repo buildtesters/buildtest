@@ -325,7 +325,7 @@ buildtest can support job submission to `IBM Spectrum LSF <https://www.ibm.com/s
 if you have defined :ref:`lsf_executors` in your configuration file.
 
 The ``bsub`` property can be used to  specify **#BSUB** directive into job script. This example
-will use the executor ``ascent.lsf.batch`` executor that was defined in buildtest configuration.
+will use the executor ``summit.lsf.batch`` executor that was defined in buildtest configuration.
 
 .. code-block:: yaml
     :emphasize-lines: 6
@@ -333,14 +333,563 @@ will use the executor ``ascent.lsf.batch`` executor that was defined in buildtes
     buildspecs:
       hostname:
         type: script
-        executor: ascent.lsf.batch
+        executor: summit.lsf.batch
         bsub: [ "-W 10",  "-nnodes 1"]
         run: jsrun hostname
 
-The LSF Executor poll jobs  and retrieve job state using
-``bjobs -noheader -o 'stat' <JOBID>``. The LSFExecutor will poll
-job so long as they are in **PEND** or **RUN** state. Once job is not in
-any of the two states, LSF Executor will gather job results.
+The LSF Executor poll jobs and retrieve job state using ``bjobs`` command. Furthermore, we get the exit code and output
+and error file for job upon completion. Once job is complete we extract several fields from the job records that is stored in
+the test.
+
+.. dropdown:: LSF Job Submission Example
+
+    Shown below is an example job submission with LSF scheduler in debug mode on Summit. You will notice that the job is dispatched and polled via ``bjobs`` command. Furthermore, you
+    will see the job state and job runtime in the output.
+
+    .. code-block:: console
+
+        (buildtest) [siddiq90@login1.summit summit]$ buildtest -d build -b hostname.yml --pollinterval=10
+        [04/08/24 16:57:02] DEBUG    Starting System Compatibility Check                                                                                                                                                                                                  system.py:45
+                            INFO     Machine: ppc64le                                                                                                                                                                                                                     system.py:62
+                            INFO     Host: login1.summit.olcf.ornl.gov                                                                                                                                                                                                    system.py:63
+                            INFO     User: siddiq90                                                                                                                                                                                                                       system.py:64
+                            INFO     Operating System: rhel                                                                                                                                                                                                               system.py:65
+                            INFO     System Kernel: Linux and Kernel Release: 4.18.0-372.52.1.el8_6.ppc64le                                                                                                                                                               system.py:66
+                            INFO     Python Path: /autofs/nccs-svm1_home1/siddiq90/.local/share/virtualenvs/buildtest-PJVB0tHr/bin/python3                                                                                                                                system.py:69
+                            INFO     Python Version: 3.11.6                                                                                                                                                                                                               system.py:70
+                            INFO     BUILDTEST_ROOT: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest                                                                                                                                                                   system.py:71
+                            INFO     Path to Buildtest: /ccs/home/siddiq90/gitrepo/buildtest/bin/buildtest                                                                                                                                                                system.py:72
+                            INFO     Detected module system: lmod                                                                                                                                                                                                        system.py:107
+                            INFO     Detected Lmod with version: 8.6.14                                                                                                                                                                                                  system.py:108
+                            DEBUG    We will check the following binaries ['sbatch', 'sacct', 'sacctmgr', 'sinfo', 'scancel', 'scontrol'] for existence.                                                                                                               detection.py:31
+                            DEBUG    sbatch: /usr/bin/sbatch                                                                                                                                                                                                           detection.py:39
+                            DEBUG    sacct: /usr/bin/sacct                                                                                                                                                                                                             detection.py:39
+                            DEBUG    sacctmgr: /usr/bin/sacctmgr                                                                                                                                                                                                       detection.py:39
+                            DEBUG    sinfo: /usr/bin/sinfo                                                                                                                                                                                                             detection.py:39
+                            DEBUG    scancel: /usr/bin/scancel                                                                                                                                                                                                         detection.py:39
+                            DEBUG    scontrol: /usr/bin/scontrol                                                                                                                                                                                                       detection.py:39
+                            DEBUG    Running command: sinfo -a -h -O partitionname                                                                                                                                                                                     detection.py:85
+                            DEBUG    Running command: sacctmgr list cluster -P -n format=Cluster                                                                                                                                                                       detection.py:85
+        [04/08/24 16:57:03] DEBUG    Running command: sacctmgr list qos -P -n  format=Name                                                                                                                                                                             detection.py:85
+                            DEBUG    Detected Slurm Scheduler                                                                                                                                                                                                             system.py:89
+                            DEBUG    We will check the following binaries ['bsub', 'bqueues', 'bkill', 'bjobs'] for existence.                                                                                                                                         detection.py:31
+                            DEBUG    bsub: /sw/sources/lsf-tools/2.0/summit/bin/bsub                                                                                                                                                                                   detection.py:39
+                            DEBUG    bqueues: /opt/ibm/spectrumcomputing/lsf/10.1.0.13/linux3.10-glibc2.17-ppc64le-csm/bin/bqueues                                                                                                                                     detection.py:39
+                            DEBUG    bkill: /opt/ibm/spectrumcomputing/lsf/10.1.0.13/linux3.10-glibc2.17-ppc64le-csm/bin/bkill                                                                                                                                         detection.py:39
+                            DEBUG    bjobs: /opt/ibm/spectrumcomputing/lsf/10.1.0.13/linux3.10-glibc2.17-ppc64le-csm/bin/bjobs                                                                                                                                         detection.py:39
+                            DEBUG    Get all LSF Queues by running bqueues -o 'queue_name status' -json                                                                                                                                                               detection.py:251
+                            DEBUG    Detected LSF Scheduler                                                                                                                                                                                                               system.py:89
+                            DEBUG    We will check the following binaries ['qsub', 'qstat', 'qdel', 'nodelist', 'showres', 'partlist'] for existence.                                                                                                                  detection.py:31
+                            DEBUG    Cannot find qsub command in $PATH                                                                                                                                                                                                 detection.py:36
+                            DEBUG    We will check the following binaries ['qsub', 'qstat', 'qdel', 'qstart', 'qhold', 'qmgr'] for existence.                                                                                                                          detection.py:31
+                            DEBUG    Cannot find qsub command in $PATH                                                                                                                                                                                                 detection.py:36
+                            DEBUG    We will check the following binaries ['qsub', 'qstat', 'qdel', 'qstart', 'qhold', 'qmgr'] for existence.                                                                                                                          detection.py:31
+                            DEBUG    Cannot find qsub command in $PATH                                                                                                                                                                                                 detection.py:36
+                            INFO     Finished System Compatibility Check                                                                                                                                                                                                  system.py:77
+                            DEBUG    List of available systems: ['summit'] found in configuration file                                                                                                                                                                   config.py:100
+                            DEBUG    Checking hostname: login1.summit.olcf.ornl.gov in system: 'summit' with hostnames: ['login1.summit.olcf.ornl.gov', 'login2.summit.olcf.ornl.gov']                                                                                   config.py:115
+                            INFO     Found matching system: summit based on hostname: login1.summit.olcf.ornl.gov                                                                                                                                                        config.py:122
+                            DEBUG    Loading default settings schema: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/buildtest/schemas/settings.schema.json                                                                                                          config.py:141
+                            DEBUG    Successfully loaded schema file: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/buildtest/schemas/settings.schema.json                                                                                                            utils.py:41
+                            DEBUG    Validating configuration file with schema: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/buildtest/schemas/settings.schema.json                                                                                                config.py:144
+                            DEBUG    Validation was successful                                                                                                                                                                                                           config.py:152
+                            DEBUG    We will check the following binaries ['bsub', 'bqueues', 'bkill', 'bjobs'] for existence.                                                                                                                                         detection.py:31
+                            DEBUG    bsub: /sw/sources/lsf-tools/2.0/summit/bin/bsub                                                                                                                                                                                   detection.py:39
+                            DEBUG    bqueues: /opt/ibm/spectrumcomputing/lsf/10.1.0.13/linux3.10-glibc2.17-ppc64le-csm/bin/bqueues                                                                                                                                     detection.py:39
+                            DEBUG    bkill: /opt/ibm/spectrumcomputing/lsf/10.1.0.13/linux3.10-glibc2.17-ppc64le-csm/bin/bkill                                                                                                                                         detection.py:39
+                            DEBUG    bjobs: /opt/ibm/spectrumcomputing/lsf/10.1.0.13/linux3.10-glibc2.17-ppc64le-csm/bin/bjobs                                                                                                                                         detection.py:39
+                            DEBUG    Get all LSF Queues by running bqueues -o 'queue_name status' -json                                                                                                                                                               detection.py:251
+                            INFO     Processing buildtest configuration file: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/settings/summit.yml                                                                                                                 main.py:149
+                            DEBUG    Tests will be written in /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests                                                                                                                                                build.py:791
+                            DEBUG    Getting Executors from buildtest settings                                                                                                                                                                                             setup.py:89
+        ╭──────────────────────────────────────────────── buildtest summary ────────────────────────────────────────────────╮
+        │                                                                                                                   │
+        │ User:               siddiq90                                                                                      │
+        │ Hostname:           login1                                                                                        │
+        │ Platform:           Linux                                                                                         │
+        │ Current Time:       2024/04/08 16:57:03                                                                           │
+        │ buildtest path:     /ccs/home/siddiq90/gitrepo/buildtest/bin/buildtest                                            │
+        │ buildtest version:  1.8                                                                                           │
+        │ python path:        /autofs/nccs-svm1_home1/siddiq90/.local/share/virtualenvs/buildtest-PJVB0tHr/bin/python3      │
+        │ python version:     3.11.6                                                                                        │
+        │ Configuration File: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/settings/summit.yml                  │
+        │ Test Directory:     /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests                                  │
+        │ Report File:        /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/report.json                            │
+        │ Command:            /ccs/home/siddiq90/gitrepo/buildtest/bin/buildtest -d build -b hostname.yml --pollinterval=10 │
+        │                                                                                                                   │
+        ╰───────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                            DEBUG    Discovering buildspecs based on tags=None, executor=None, buildspec=['hostname.yml'], excluded buildspec=None                                                                                                                        build.py:149
+                            DEBUG    Buildspec: hostname.yml is a file                                                                                                                                                                                                    build.py:560
+                            INFO     Based on input argument we discovered the following buildspecs: ['/autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/hostname.yml']                                                                            build.py:572
+                            DEBUG    buildtest discovered the following Buildspecs: ['/autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/hostname.yml']                                                                                             build.py:228
+        ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+                                          Discovered buildspecs
+        ╔═══════════════════════════════════════════════════════════════════════════════════════╗
+        ║ buildspec                                                                             ║
+        ╟───────────────────────────────────────────────────────────────────────────────────────╢
+        ║ /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/hostname.yml ║
+        ╟───────────────────────────────────────────────────────────────────────────────────────╢
+        ║ Total: 1                                                                              ║
+        ╚═══════════════════════════════════════════════════════════════════════════════════════╝
+
+
+        Total Discovered Buildspecs:  1
+        Total Excluded Buildspecs:  0
+        Detected Buildspecs after exclusion:  1
+        ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+                            INFO     Validating /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/hostname.yml with schema: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/buildtest/schemas/global.schema.json                               parser.py:164
+                            INFO     Validating test - 'hostname' in recipe: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/hostname.yml                                                                                                       parser.py:176
+                            INFO     Test: 'hostname' is using schema type: 'script'                                                                                                                                                                                     parser.py:118
+                            INFO     Validating /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/hostname.yml with schema:  /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/buildtest/schemas/script.schema.json                              parser.py:193
+                            DEBUG    Searching for builders for test: hostname by applying regular expression with available builders: ['summit.local.bash', 'summit.local.sh', 'summit.local.csh', 'summit.local.python', 'summit.lsf.batch']                         builders.py:269
+                            DEBUG    Found a match in buildspec with available executors via re.fullmatch(summit.lsf.batch,summit.lsf.batch)                                                                                                                           builders.py:277
+                            DEBUG    Processing Buildspec File: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/hostname.yml                                                                                                                      base.py:144
+                            DEBUG    Processing Test: hostname                                                                                                                                                                                                             base.py:145
+                            DEBUG    Using shell bash                                                                                                                                                                                                                      base.py:181
+                            DEBUG    Shebang used for test: #!/usr/bin/bash                                                                                                                                                                                                base.py:182
+        Valid Buildspecs: 1
+        Invalid Buildspecs: 0
+        /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/hostname.yml: VALID
+        Total builder objects created: 1
+                                                                                            Builders by type=script
+        ┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ builder           ┃ type   ┃ executor         ┃ compiler ┃ nodes ┃ procs ┃ description               ┃ buildspecs                                                                            ┃
+        ┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ hostname/411112cb │ script │ summit.lsf.batch │ None     │ None  │ None  │ Run hostname in batch job │ /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/hostname.yml │
+        └───────────────────┴────────┴──────────────────┴──────────┴───────┴───────┴───────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────┘
+                                                               Batch Job Builders
+        ┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ builder           ┃ executor         ┃ buildspecs                                                                            ┃
+        ┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ hostname/411112cb │ summit.lsf.batch │ /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/hostname.yml │
+        └───────────────────┴──────────────────┴───────────────────────────────────────────────────────────────────────────────────────┘
+        ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+                            DEBUG    Creating test directory: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/hostname/hostname/411112cb                                                                                                     base.py:527
+                            DEBUG    Creating the stage directory: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/hostname/hostname/411112cb/stage                                                                                          base.py:536
+        hostname/411112cb: Creating Test Directory: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/hostname/hostname/411112cb
+                            INFO     Opening Test File for Writing: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/hostname/hostname/411112cb/stage/hostname.sh                                                                             base.py:658
+                            DEBUG    Changing permission to 755 for script: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/hostname/hostname/411112cb/stage/hostname.sh                                                                     base.py:856
+                            DEBUG    Writing build script: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/hostname/hostname/411112cb/stage/hostname_build.sh                                                                                base.py:631
+                            DEBUG    Changing permission to 755 for script: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/hostname/hostname/411112cb/stage/hostname_build.sh                                                               base.py:856
+                            DEBUG    Copying build script to: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/hostname/hostname/411112cb/hostname_build.sh                                                                                   base.py:637
+        ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+        Spawning 8 processes for processing builders
+        ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+        hostname/411112cb does not have any dependencies adding test to queue
+        Builders Eligible to Run
+        ┏━━━━━━━━━━━━━━━━━━━┓
+        ┃ Builder           ┃
+        ┡━━━━━━━━━━━━━━━━━━━┩
+        │ hostname/411112cb │
+        └───────────────────┘
+                            DEBUG    Changing to stage directory /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/hostname/hostname/411112cb/stage                                                                                              lsf.py:80
+        hostname/411112cb: Current Working Directory : /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/hostname/hostname/411112cb/stage
+        hostname/411112cb: Running Test via command: bash hostname_build.sh
+                            DEBUG    Running Test via command: bash hostname_build.sh                                                                                                                                                                                      base.py:378
+                            DEBUG    Applying regular expression '(\d+)' to output: 'Job <3386667> is submitted to queue <batch>.                                                                                                                                            lsf.py:98
+                                     '
+                            DEBUG    hostname/411112cb: JobID: 3386667 dispatched to scheduler                                                                                                                                                                              lsf.py:120
+        hostname/411112cb: JobID: 3386667 dispatched to scheduler
+        Polling Jobs in 10 seconds
+        [04/08/24 16:57:13] DEBUG    bjobs -noheader -o 'stat' 3386667                                                                                                                                                                                                       lsf.py:52
+                            DEBUG    Extracting Job State for job: 3386667 by running  'bjobs -noheader -o 'stat' 3386667'                                                                                                                                                   lsf.py:53
+                            DEBUG    Job State: RUN                                                                                                                                                                                                                          lsf.py:60
+                            DEBUG    Extracting EXIT CODE for job: 3386667 by running  'bjobs -noheader -o 'EXIT_CODE' 3386667 '                                                                                                                                             lsf.py:63
+                            DEBUG    Exit Code: 0                                                                                                                                                                                                                            lsf.py:76
+                                                Running Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder           ┃ executor         ┃ jobid   ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ hostname/411112cb │ summit.lsf.batch │ 3386667 │ RUN      │ 10.358  │ 0.0         │ 0        │
+        └───────────────────┴──────────────────┴─────────┴──────────┴─────────┴─────────────┴──────────┘
+        Polling Jobs in 10 seconds
+        [04/08/24 16:57:23] DEBUG    bjobs -noheader -o 'stat' 3386667                                                                                                                                                                                                       lsf.py:52
+                            DEBUG    Extracting Job State for job: 3386667 by running  'bjobs -noheader -o 'stat' 3386667'                                                                                                                                                   lsf.py:53
+                            DEBUG    Job State: RUN                                                                                                                                                                                                                          lsf.py:60
+                            DEBUG    Extracting EXIT CODE for job: 3386667 by running  'bjobs -noheader -o 'EXIT_CODE' 3386667 '                                                                                                                                             lsf.py:63
+                            DEBUG    Exit Code: 0                                                                                                                                                                                                                            lsf.py:76
+                                                Running Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder           ┃ executor         ┃ jobid   ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ hostname/411112cb │ summit.lsf.batch │ 3386667 │ RUN      │ 20.464  │ 10.11       │ 0        │
+        └───────────────────┴──────────────────┴─────────┴──────────┴─────────┴─────────────┴──────────┘
+        Polling Jobs in 10 seconds
+        [04/08/24 16:57:33] DEBUG    bjobs -noheader -o 'stat' 3386667                                                                                                                                                                                                       lsf.py:52
+                            DEBUG    Extracting Job State for job: 3386667 by running  'bjobs -noheader -o 'stat' 3386667'                                                                                                                                                   lsf.py:53
+                            DEBUG    Job State: RUN                                                                                                                                                                                                                          lsf.py:60
+                            DEBUG    Extracting EXIT CODE for job: 3386667 by running  'bjobs -noheader -o 'EXIT_CODE' 3386667 '                                                                                                                                             lsf.py:63
+                            DEBUG    Exit Code: 0                                                                                                                                                                                                                            lsf.py:76
+                                                Running Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder           ┃ executor         ┃ jobid   ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ hostname/411112cb │ summit.lsf.batch │ 3386667 │ RUN      │ 30.575  │ 20.22       │ 0        │
+        └───────────────────┴──────────────────┴─────────┴──────────┴─────────┴─────────────┴──────────┘
+        Polling Jobs in 10 seconds
+        [04/08/24 16:57:43] DEBUG    bjobs -noheader -o 'stat' 3386667                                                                                                                                                                                                       lsf.py:52
+                            DEBUG    Extracting Job State for job: 3386667 by running  'bjobs -noheader -o 'stat' 3386667'                                                                                                                                                   lsf.py:53
+        [04/08/24 16:57:44] DEBUG    Job State: RUN                                                                                                                                                                                                                          lsf.py:60
+                            DEBUG    Extracting EXIT CODE for job: 3386667 by running  'bjobs -noheader -o 'EXIT_CODE' 3386667 '                                                                                                                                             lsf.py:63
+                            DEBUG    Exit Code: 0                                                                                                                                                                                                                            lsf.py:76
+                                                Running Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder           ┃ executor         ┃ jobid   ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ hostname/411112cb │ summit.lsf.batch │ 3386667 │ RUN      │ 40.686  │ 30.33       │ 0        │
+        └───────────────────┴──────────────────┴─────────┴──────────┴─────────┴─────────────┴──────────┘
+        Polling Jobs in 10 seconds
+        [04/08/24 16:57:54] DEBUG    bjobs -noheader -o 'stat' 3386667                                                                                                                                                                                                       lsf.py:52
+                            DEBUG    Extracting Job State for job: 3386667 by running  'bjobs -noheader -o 'stat' 3386667'                                                                                                                                                   lsf.py:53
+                            DEBUG    Job State: RUN                                                                                                                                                                                                                          lsf.py:60
+                            DEBUG    Extracting EXIT CODE for job: 3386667 by running  'bjobs -noheader -o 'EXIT_CODE' 3386667 '                                                                                                                                             lsf.py:63
+                            DEBUG    Exit Code: 0                                                                                                                                                                                                                            lsf.py:76
+                                                Running Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder           ┃ executor         ┃ jobid   ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ hostname/411112cb │ summit.lsf.batch │ 3386667 │ RUN      │ 50.793  │ 40.44       │ 0        │
+        └───────────────────┴──────────────────┴─────────┴──────────┴─────────┴─────────────┴──────────┘
+        Polling Jobs in 10 seconds
+        [04/08/24 16:58:04] DEBUG    bjobs -noheader -o 'stat' 3386667                                                                                                                                                                                                       lsf.py:52
+                            DEBUG    Extracting Job State for job: 3386667 by running  'bjobs -noheader -o 'stat' 3386667'                                                                                                                                                   lsf.py:53
+                            DEBUG    Job State: DONE                                                                                                                                                                                                                         lsf.py:60
+                            DEBUG    Extracting EXIT CODE for job: 3386667 by running  'bjobs -noheader -o 'EXIT_CODE' 3386667 '                                                                                                                                             lsf.py:63
+                            DEBUG    Exit Code: 0                                                                                                                                                                                                                            lsf.py:76
+                            DEBUG    Extracting OUTPUT FILE for job: 3386667 by running  'bjobs -noheader -o 'output_file' 3386667 '                                                                                                                                         lsf.py:98
+                            DEBUG    Output File: hostname.out                                                                                                                                                                                                              lsf.py:104
+                            DEBUG    Extracting ERROR FILE for job: 3386667 by running  'bjobs -noheader -o 'error_file' 3386667 '                                                                                                                                          lsf.py:108
+                            DEBUG    Error File: hostname.err                                                                                                                                                                                                               lsf.py:114
+                            DEBUG    Gather LSF job: 3386667 data by running: bjobs -o 'job_name stat user user_group queue proj_name pids exit_code from_host exec_host submit_time start_time finish_time nthreads exec_home exec_cwd output_file error_file' 3386667     lsf.py:177
+                                     -json
+                            DEBUG    {                                                                                                                                                                                                                                      lsf.py:185
+                                       "COMMAND": "bjobs",
+                                       "JOBS": 1,
+                                       "RECORDS": [
+                                         {
+                                           "JOB_NAME": "hostname",
+                                           "STAT": "DONE",
+                                           "USER": "siddiq90",
+                                           "USER_GROUP": "GEN243-HPCTEST",
+                                           "QUEUE": "batch",
+                                           "PROJ_NAME": "GEN243-HPCTEST",
+                                           "PIDS": "",
+                                           "EXIT_CODE": "",
+                                           "FROM_HOST": "login1",
+                                           "EXEC_HOST":
+                                     "batch1:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n1
+                                     0:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10:a01n10",
+                                           "SUBMIT_TIME": "Apr  8 16:57",
+                                           "START_TIME": "Apr  8 16:57",
+                                           "FINISH_TIME": "Apr  8 16:57 L",
+                                           "NTHREADS": "",
+                                           "EXEC_HOME": "/ccs/home/siddiq90",
+                                           "EXEC_CWD": "/autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/hostname/hostname/411112cb/stage",
+                                           "OUTPUT_FILE": "hostname.out",
+                                           "ERROR_FILE": "hostname.err"
+                                         }
+                                       ]
+                                     }
+                            DEBUG     returncode: 0                                                                                                                                                                                                                        base.py:133
+        hostname/411112cb: Job 3386667 is complete!
+        hostname/411112cb: Test completed in 40.44 seconds with returncode: 0
+        hostname/411112cb: Writing output file -  /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/hostname/hostname/411112cb/hostname.out
+        hostname/411112cb: Writing error file - /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/hostname/hostname/411112cb/hostname.err
+                                               Completed Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder           ┃ executor         ┃ jobid   ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ hostname/411112cb │ summit.lsf.batch │ 3386667 │ DONE     │ 40.44   │ 40.44       │ 0        │
+        └───────────────────┴──────────────────┴─────────┴──────────┴─────────┴─────────────┴──────────┘
+                                      Test Summary
+        ┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
+        ┃ builder           ┃ executor         ┃ status ┃ returncode ┃ runtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
+        │ hostname/411112cb │ summit.lsf.batch │ PASS   │ 0          │ 40.440  │
+        └───────────────────┴──────────────────┴────────┴────────────┴─────────┘
+
+
+
+        Passed Tests: 1/1 Percentage: 100.000%
+        Failed Tests: 0/1 Percentage: 0.000%
+
+
+                            DEBUG    Updating report file: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/report.json                                                                                                                                            build.py:1719
+        Adding 1 test results to report file: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/report.json
+        Writing Logfile to /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/logs/buildtest_i42712_e.log
+
+
+In LSF, you can determine status check based on job state. For LSF jobs you can use ``lsf_job_state`` under the **status** to specify a matching
+state. In this example, we are checking if the job state is ``EXIT``. If the job state is ``EXIT`` the test will pass, otherwise it will test will fail.
+
+.. code-block:: yaml
+    :emphasize-lines: 10
+
+    buildspecs:
+      lsf_job_state_example:
+        type: script
+        executor: summit.lsf.batch
+        description: This job will only PASS if LSF Job state is EXIT
+        tags: [jobs]
+        bsub: ["-W 10", "-nnodes 1"]
+        run: jsrun hostname
+        status:
+          lsf_job_state: EXIT
+
+
+Take note when you run this test, the job will be in ``RUN`` state and will transition to ``DONE`` state after the job completes. The test will run to completion,
+however the status check reported test failed, which is because the job state did not match the expected state.
+
+.. dropdown:: ``buildtest -d build -b lsf_job_state.yml --pollinterval=15``
+
+
+    .. code-block:: console
+
+        (buildtest) [siddiq90@login1.summit summit]$ buildtest -d build -b lsf_job_state.yml --pollinterval=15
+        [04/08/24 17:04:49] DEBUG    Starting System Compatibility Check                                                                                                                                                                                                  system.py:45
+                            INFO     Machine: ppc64le                                                                                                                                                                                                                     system.py:62
+                            INFO     Host: login1.summit.olcf.ornl.gov                                                                                                                                                                                                    system.py:63
+                            INFO     User: siddiq90                                                                                                                                                                                                                       system.py:64
+                            INFO     Operating System: rhel                                                                                                                                                                                                               system.py:65
+                            INFO     System Kernel: Linux and Kernel Release: 4.18.0-372.52.1.el8_6.ppc64le                                                                                                                                                               system.py:66
+                            INFO     Python Path: /autofs/nccs-svm1_home1/siddiq90/.local/share/virtualenvs/buildtest-PJVB0tHr/bin/python3                                                                                                                                system.py:69
+                            INFO     Python Version: 3.11.6                                                                                                                                                                                                               system.py:70
+                            INFO     BUILDTEST_ROOT: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest                                                                                                                                                                   system.py:71
+                            INFO     Path to Buildtest: /ccs/home/siddiq90/gitrepo/buildtest/bin/buildtest                                                                                                                                                                system.py:72
+                            INFO     Detected module system: lmod                                                                                                                                                                                                        system.py:107
+                            INFO     Detected Lmod with version: 8.6.14                                                                                                                                                                                                  system.py:108
+                            DEBUG    We will check the following binaries ['sbatch', 'sacct', 'sacctmgr', 'sinfo', 'scancel', 'scontrol'] for existence.                                                                                                               detection.py:31
+                            DEBUG    sbatch: /usr/bin/sbatch                                                                                                                                                                                                           detection.py:39
+                            DEBUG    sacct: /usr/bin/sacct                                                                                                                                                                                                             detection.py:39
+                            DEBUG    sacctmgr: /usr/bin/sacctmgr                                                                                                                                                                                                       detection.py:39
+                            DEBUG    sinfo: /usr/bin/sinfo                                                                                                                                                                                                             detection.py:39
+                            DEBUG    scancel: /usr/bin/scancel                                                                                                                                                                                                         detection.py:39
+                            DEBUG    scontrol: /usr/bin/scontrol                                                                                                                                                                                                       detection.py:39
+                            DEBUG    Running command: sinfo -a -h -O partitionname                                                                                                                                                                                     detection.py:85
+        [04/08/24 17:04:50] DEBUG    Running command: sacctmgr list cluster -P -n format=Cluster                                                                                                                                                                       detection.py:85
+                            DEBUG    Running command: sacctmgr list qos -P -n  format=Name                                                                                                                                                                             detection.py:85
+                            DEBUG    Detected Slurm Scheduler                                                                                                                                                                                                             system.py:89
+                            DEBUG    We will check the following binaries ['bsub', 'bqueues', 'bkill', 'bjobs'] for existence.                                                                                                                                         detection.py:31
+                            DEBUG    bsub: /sw/sources/lsf-tools/2.0/summit/bin/bsub                                                                                                                                                                                   detection.py:39
+                            DEBUG    bqueues: /opt/ibm/spectrumcomputing/lsf/10.1.0.13/linux3.10-glibc2.17-ppc64le-csm/bin/bqueues                                                                                                                                     detection.py:39
+                            DEBUG    bkill: /opt/ibm/spectrumcomputing/lsf/10.1.0.13/linux3.10-glibc2.17-ppc64le-csm/bin/bkill                                                                                                                                         detection.py:39
+                            DEBUG    bjobs: /opt/ibm/spectrumcomputing/lsf/10.1.0.13/linux3.10-glibc2.17-ppc64le-csm/bin/bjobs                                                                                                                                         detection.py:39
+                            DEBUG    Get all LSF Queues by running bqueues -o 'queue_name status' -json                                                                                                                                                               detection.py:251
+                            DEBUG    Detected LSF Scheduler                                                                                                                                                                                                               system.py:89
+                            DEBUG    We will check the following binaries ['qsub', 'qstat', 'qdel', 'nodelist', 'showres', 'partlist'] for existence.                                                                                                                  detection.py:31
+                            DEBUG    Cannot find qsub command in $PATH                                                                                                                                                                                                 detection.py:36
+                            DEBUG    We will check the following binaries ['qsub', 'qstat', 'qdel', 'qstart', 'qhold', 'qmgr'] for existence.                                                                                                                          detection.py:31
+                            DEBUG    Cannot find qsub command in $PATH                                                                                                                                                                                                 detection.py:36
+                            DEBUG    We will check the following binaries ['qsub', 'qstat', 'qdel', 'qstart', 'qhold', 'qmgr'] for existence.                                                                                                                          detection.py:31
+                            DEBUG    Cannot find qsub command in $PATH                                                                                                                                                                                                 detection.py:36
+                            INFO     Finished System Compatibility Check                                                                                                                                                                                                  system.py:77
+                            DEBUG    List of available systems: ['summit'] found in configuration file                                                                                                                                                                   config.py:100
+                            DEBUG    Checking hostname: login1.summit.olcf.ornl.gov in system: 'summit' with hostnames: ['login1.summit.olcf.ornl.gov', 'login2.summit.olcf.ornl.gov']                                                                                   config.py:115
+                            INFO     Found matching system: summit based on hostname: login1.summit.olcf.ornl.gov                                                                                                                                                        config.py:122
+                            DEBUG    Loading default settings schema: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/buildtest/schemas/settings.schema.json                                                                                                          config.py:141
+                            DEBUG    Successfully loaded schema file: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/buildtest/schemas/settings.schema.json                                                                                                            utils.py:41
+                            DEBUG    Validating configuration file with schema: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/buildtest/schemas/settings.schema.json                                                                                                config.py:144
+                            DEBUG    Validation was successful                                                                                                                                                                                                           config.py:152
+                            DEBUG    We will check the following binaries ['bsub', 'bqueues', 'bkill', 'bjobs'] for existence.                                                                                                                                         detection.py:31
+                            DEBUG    bsub: /sw/sources/lsf-tools/2.0/summit/bin/bsub                                                                                                                                                                                   detection.py:39
+                            DEBUG    bqueues: /opt/ibm/spectrumcomputing/lsf/10.1.0.13/linux3.10-glibc2.17-ppc64le-csm/bin/bqueues                                                                                                                                     detection.py:39
+                            DEBUG    bkill: /opt/ibm/spectrumcomputing/lsf/10.1.0.13/linux3.10-glibc2.17-ppc64le-csm/bin/bkill                                                                                                                                         detection.py:39
+                            DEBUG    bjobs: /opt/ibm/spectrumcomputing/lsf/10.1.0.13/linux3.10-glibc2.17-ppc64le-csm/bin/bjobs                                                                                                                                         detection.py:39
+                            DEBUG    Get all LSF Queues by running bqueues -o 'queue_name status' -json                                                                                                                                                               detection.py:251
+                            INFO     Processing buildtest configuration file: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/settings/summit.yml                                                                                                                 main.py:149
+                            DEBUG    Tests will be written in /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests                                                                                                                                                build.py:791
+                            DEBUG    Getting Executors from buildtest settings                                                                                                                                                                                             setup.py:89
+        ╭────────────────────────────────────────────────── buildtest summary ───────────────────────────────────────────────────╮
+        │                                                                                                                        │
+        │ User:               siddiq90                                                                                           │
+        │ Hostname:           login1                                                                                             │
+        │ Platform:           Linux                                                                                              │
+        │ Current Time:       2024/04/08 17:04:50                                                                                │
+        │ buildtest path:     /ccs/home/siddiq90/gitrepo/buildtest/bin/buildtest                                                 │
+        │ buildtest version:  1.8                                                                                                │
+        │ python path:        /autofs/nccs-svm1_home1/siddiq90/.local/share/virtualenvs/buildtest-PJVB0tHr/bin/python3           │
+        │ python version:     3.11.6                                                                                             │
+        │ Configuration File: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/settings/summit.yml                       │
+        │ Test Directory:     /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests                                       │
+        │ Report File:        /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/report.json                                 │
+        │ Command:            /ccs/home/siddiq90/gitrepo/buildtest/bin/buildtest -d build -b lsf_job_state.yml --pollinterval=15 │
+        │                                                                                                                        │
+        ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+                            DEBUG    Discovering buildspecs based on tags=None, executor=None, buildspec=['lsf_job_state.yml'], excluded buildspec=None                                                                                                                   build.py:149
+                            DEBUG    Buildspec: lsf_job_state.yml is a file                                                                                                                                                                                               build.py:560
+                            INFO     Based on input argument we discovered the following buildspecs: ['/autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/lsf_job_state.yml']                                                                       build.py:572
+                            DEBUG    buildtest discovered the following Buildspecs: ['/autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/lsf_job_state.yml']                                                                                        build.py:228
+        ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────  Discovering Buildspecs ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+                                            Discovered buildspecs
+        ╔════════════════════════════════════════════════════════════════════════════════════════════╗
+        ║ buildspec                                                                                  ║
+        ╟────────────────────────────────────────────────────────────────────────────────────────────╢
+        ║ /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/lsf_job_state.yml ║
+        ╟────────────────────────────────────────────────────────────────────────────────────────────╢
+        ║ Total: 1                                                                                   ║
+        ╚════════════════════════════════════════════════════════════════════════════════════════════╝
+
+
+        Total Discovered Buildspecs:  1
+        Total Excluded Buildspecs:  0
+        Detected Buildspecs after exclusion:  1
+        ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Parsing Buildspecs ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+                            INFO     Validating /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/lsf_job_state.yml with schema: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/buildtest/schemas/global.schema.json                          parser.py:164
+                            INFO     Validating test - 'lsf_job_state_example' in recipe: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/lsf_job_state.yml                                                                                     parser.py:176
+                            INFO     Test: 'lsf_job_state_example' is using schema type: 'script'                                                                                                                                                                        parser.py:118
+                            INFO     Validating /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/lsf_job_state.yml with schema:  /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/buildtest/schemas/script.schema.json                         parser.py:193
+                            DEBUG    Searching for builders for test: lsf_job_state_example by applying regular expression with available builders: ['summit.local.bash', 'summit.local.sh', 'summit.local.csh', 'summit.local.python', 'summit.lsf.batch']            builders.py:269
+                            DEBUG    Found a match in buildspec with available executors via re.fullmatch(summit.lsf.batch,summit.lsf.batch)                                                                                                                           builders.py:277
+                            DEBUG    Processing Buildspec File: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/lsf_job_state.yml                                                                                                                 base.py:144
+                            DEBUG    Processing Test: lsf_job_state_example                                                                                                                                                                                                base.py:145
+                            DEBUG    Using shell bash                                                                                                                                                                                                                      base.py:181
+                            DEBUG    Shebang used for test: #!/usr/bin/bash                                                                                                                                                                                                base.py:182
+        Valid Buildspecs: 1
+        Invalid Buildspecs: 0
+        /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/lsf_job_state.yml: VALID
+        Total builder objects created: 1
+                                                                                                                 Builders by type=script
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ builder                        ┃ type   ┃ executor         ┃ compiler ┃ nodes ┃ procs ┃ description                                      ┃ buildspecs                                                                                 ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ lsf_job_state_example/49179e87 │ script │ summit.lsf.batch │ None     │ None  │ None  │ This job will only PASS if LSF Job state is EXIT │ /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/lsf_job_state.yml │
+        └────────────────────────────────┴────────┴──────────────────┴──────────┴───────┴───────┴──────────────────────────────────────────────────┴────────────────────────────────────────────────────────────────────────────────────────────┘
+                                                                        Batch Job Builders
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ builder                        ┃ executor         ┃ buildspecs                                                                                 ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ lsf_job_state_example/49179e87 │ summit.lsf.batch │ /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/tests/examples/summit/lsf_job_state.yml │
+        └────────────────────────────────┴──────────────────┴────────────────────────────────────────────────────────────────────────────────────────────┘
+        ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Building Test ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+                            DEBUG    Creating test directory: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/lsf_job_state/lsf_job_state_example/49179e87                                                                                   base.py:527
+                            DEBUG    Creating the stage directory: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/lsf_job_state/lsf_job_state_example/49179e87/stage                                                                        base.py:536
+        lsf_job_state_example/49179e87: Creating Test Directory: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/lsf_job_state/lsf_job_state_example/49179e87
+                            INFO     Opening Test File for Writing: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/lsf_job_state/lsf_job_state_example/49179e87/stage/lsf_job_state_example.sh                                              base.py:658
+                            DEBUG    Changing permission to 755 for script: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/lsf_job_state/lsf_job_state_example/49179e87/stage/lsf_job_state_example.sh                                      base.py:856
+                            DEBUG    Writing build script: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/lsf_job_state/lsf_job_state_example/49179e87/stage/lsf_job_state_example_build.sh                                                 base.py:631
+                            DEBUG    Changing permission to 755 for script: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/lsf_job_state/lsf_job_state_example/49179e87/stage/lsf_job_state_example_build.sh                                base.py:856
+                            DEBUG    Copying build script to: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/lsf_job_state/lsf_job_state_example/49179e87/lsf_job_state_example_build.sh                                                    base.py:637
+        ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Running Tests ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+        Spawning 8 processes for processing builders
+        ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Iteration 1 ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+        lsf_job_state_example/49179e87 does not have any dependencies adding test to queue
+             Builders Eligible to Run
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+        ┃ Builder                        ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+        │ lsf_job_state_example/49179e87 │
+        └────────────────────────────────┘
+                            DEBUG    Changing to stage directory /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/lsf_job_state/lsf_job_state_example/49179e87/stage                                                                            lsf.py:80
+        lsf_job_state_example/49179e87: Current Working Directory : /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/lsf_job_state/lsf_job_state_example/49179e87/stage
+        lsf_job_state_example/49179e87: Running Test via command: bash lsf_job_state_example_build.sh
+                            DEBUG    Running Test via command: bash lsf_job_state_example_build.sh                                                                                                                                                                         base.py:378
+                            DEBUG    Applying regular expression '(\d+)' to output: 'Job <3386735> is submitted to queue <batch>.                                                                                                                                            lsf.py:98
+                                     '
+                            DEBUG    lsf_job_state_example/49179e87: JobID: 3386735 dispatched to scheduler                                                                                                                                                                 lsf.py:120
+        lsf_job_state_example/49179e87: JobID: 3386735 dispatched to scheduler
+        Polling Jobs in 15 seconds
+        [04/08/24 17:05:05] DEBUG    bjobs -noheader -o 'stat' 3386735                                                                                                                                                                                                       lsf.py:52
+                            DEBUG    Extracting Job State for job: 3386735 by running  'bjobs -noheader -o 'stat' 3386735'                                                                                                                                                   lsf.py:53
+                            DEBUG    Job State: RUN                                                                                                                                                                                                                          lsf.py:60
+                            DEBUG    Extracting EXIT CODE for job: 3386735 by running  'bjobs -noheader -o 'EXIT_CODE' 3386735 '                                                                                                                                             lsf.py:63
+        [04/08/24 17:05:06] DEBUG    Exit Code: 0                                                                                                                                                                                                                            lsf.py:76
+                                                      Running Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder                        ┃ executor         ┃ jobid   ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ lsf_job_state_example/49179e87 │ summit.lsf.batch │ 3386735 │ RUN      │ 15.396  │ 0.0         │ 0        │
+        └────────────────────────────────┴──────────────────┴─────────┴──────────┴─────────┴─────────────┴──────────┘
+        Polling Jobs in 15 seconds
+        [04/08/24 17:05:21] DEBUG    bjobs -noheader -o 'stat' 3386735                                                                                                                                                                                                       lsf.py:52
+                            DEBUG    Extracting Job State for job: 3386735 by running  'bjobs -noheader -o 'stat' 3386735'                                                                                                                                                   lsf.py:53
+                            DEBUG    Job State: RUN                                                                                                                                                                                                                          lsf.py:60
+                            DEBUG    Extracting EXIT CODE for job: 3386735 by running  'bjobs -noheader -o 'EXIT_CODE' 3386735 '                                                                                                                                             lsf.py:63
+                            DEBUG    Exit Code: 0                                                                                                                                                                                                                            lsf.py:76
+                                                      Running Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder                        ┃ executor         ┃ jobid   ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ lsf_job_state_example/49179e87 │ summit.lsf.batch │ 3386735 │ RUN      │ 30.504  │ 15.11       │ 0        │
+        └────────────────────────────────┴──────────────────┴─────────┴──────────┴─────────┴─────────────┴──────────┘
+        Polling Jobs in 15 seconds
+        [04/08/24 17:05:36] DEBUG    bjobs -noheader -o 'stat' 3386735                                                                                                                                                                                                       lsf.py:52
+                            DEBUG    Extracting Job State for job: 3386735 by running  'bjobs -noheader -o 'stat' 3386735'                                                                                                                                                   lsf.py:53
+                            DEBUG    Job State: RUN                                                                                                                                                                                                                          lsf.py:60
+                            DEBUG    Extracting EXIT CODE for job: 3386735 by running  'bjobs -noheader -o 'EXIT_CODE' 3386735 '                                                                                                                                             lsf.py:63
+                            DEBUG    Exit Code: 0                                                                                                                                                                                                                            lsf.py:76
+                                                      Running Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder                        ┃ executor         ┃ jobid   ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ lsf_job_state_example/49179e87 │ summit.lsf.batch │ 3386735 │ RUN      │ 45.663  │ 30.27       │ 0        │
+        └────────────────────────────────┴──────────────────┴─────────┴──────────┴─────────┴─────────────┴──────────┘
+        Polling Jobs in 15 seconds
+        [04/08/24 17:05:51] DEBUG    bjobs -noheader -o 'stat' 3386735                                                                                                                                                                                                       lsf.py:52
+                            DEBUG    Extracting Job State for job: 3386735 by running  'bjobs -noheader -o 'stat' 3386735'                                                                                                                                                   lsf.py:53
+                            DEBUG    Job State: DONE                                                                                                                                                                                                                         lsf.py:60
+                            DEBUG    Extracting EXIT CODE for job: 3386735 by running  'bjobs -noheader -o 'EXIT_CODE' 3386735 '                                                                                                                                             lsf.py:63
+                            DEBUG    Exit Code: 0                                                                                                                                                                                                                            lsf.py:76
+                            DEBUG    Extracting OUTPUT FILE for job: 3386735 by running  'bjobs -noheader -o 'output_file' 3386735 '                                                                                                                                         lsf.py:98
+                            DEBUG    Output File: lsf_job_state_example.out                                                                                                                                                                                                 lsf.py:104
+                            DEBUG    Extracting ERROR FILE for job: 3386735 by running  'bjobs -noheader -o 'error_file' 3386735 '                                                                                                                                          lsf.py:108
+                            DEBUG    Error File: lsf_job_state_example.err                                                                                                                                                                                                  lsf.py:114
+                            DEBUG    Gather LSF job: 3386735 data by running: bjobs -o 'job_name stat user user_group queue proj_name pids exit_code from_host exec_host submit_time start_time finish_time nthreads exec_home exec_cwd output_file error_file' 3386735     lsf.py:177
+                                     -json
+                            DEBUG    {                                                                                                                                                                                                                                      lsf.py:185
+                                       "COMMAND": "bjobs",
+                                       "JOBS": 1,
+                                       "RECORDS": [
+                                         {
+                                           "JOB_NAME": "lsf_job_state_example",
+                                           "STAT": "DONE",
+                                           "USER": "siddiq90",
+                                           "USER_GROUP": "GEN243-HPCTEST",
+                                           "QUEUE": "batch",
+                                           "PROJ_NAME": "GEN243-HPCTEST",
+                                           "PIDS": "",
+                                           "EXIT_CODE": "",
+                                           "FROM_HOST": "login1",
+                                           "EXEC_HOST":
+                                     "batch1:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n0
+                                     9:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09:h15n09",
+                                           "SUBMIT_TIME": "Apr  8 17:04",
+                                           "START_TIME": "Apr  8 17:04",
+                                           "FINISH_TIME": "Apr  8 17:05 L",
+                                           "NTHREADS": "",
+                                           "EXEC_HOME": "/ccs/home/siddiq90",
+                                           "EXEC_CWD": "/autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/lsf_job_state/lsf_job_state_example/49179e87/stage",
+                                           "OUTPUT_FILE": "lsf_job_state_example.out",
+                                           "ERROR_FILE": "lsf_job_state_example.err"
+                                         }
+                                       ]
+                                     }
+                            DEBUG     returncode: 0                                                                                                                                                                                                                        base.py:133
+        lsf_job_state_example/49179e87: Job 3386735 is complete!
+        lsf_job_state_example/49179e87: Test completed in 30.27 seconds with returncode: 0
+        lsf_job_state_example/49179e87: Writing output file -  /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/lsf_job_state/lsf_job_state_example/49179e87/lsf_job_state_example.out
+        lsf_job_state_example/49179e87: Writing error file - /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/tests/summit.lsf.batch/lsf_job_state/lsf_job_state_example/49179e87/lsf_job_state_example.err
+                                                     Completed Jobs (1)
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━┳━━━━━━━━━━┓
+        ┃ builder                        ┃ executor         ┃ jobid   ┃ jobstate ┃ runtime ┃ elapsedtime ┃ pendtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━╇━━━━━━━━━━┩
+        │ lsf_job_state_example/49179e87 │ summit.lsf.batch │ 3386735 │ DONE     │ 30.27   │ 30.27       │ 0        │
+        └────────────────────────────────┴──────────────────┴─────────┴──────────┴─────────┴─────────────┴──────────┘
+                                            Test Summary
+        ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━┓
+        ┃ builder                        ┃ executor         ┃ status ┃ returncode ┃ runtime ┃
+        ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━┩
+        │ lsf_job_state_example/49179e87 │ summit.lsf.batch │ FAIL   │ 0          │ 30.270  │
+        └────────────────────────────────┴──────────────────┴────────┴────────────┴─────────┘
+
+
+
+        Passed Tests: 0/1 Percentage: 0.000%
+        Failed Tests: 1/1 Percentage: 100.000%
+
+
+                            DEBUG    Updating report file: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/report.json                                                                                                                                            build.py:1719
+        Adding 1 test results to report file: /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/report.json
+        Writing Logfile to /autofs/nccs-svm1_home1/siddiq90/gitrepo/buildtest/var/logs/buildtest_873njlcb.log
 
 PBS
 ----
