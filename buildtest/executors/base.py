@@ -125,7 +125,8 @@ class BaseExecutor:
         """
 
         builder.record_endtime()
-
+        
+        builder.job.retrieve_jobdata()
         builder.metadata["job"] = builder.job.jobdata()
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
