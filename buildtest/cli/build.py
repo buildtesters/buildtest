@@ -3,9 +3,11 @@ This module contains all the methods related to "buildtest build" which is used
 for building test scripts from a Buildspec
 """
 
+import getpass
 import json
 import logging
 import os
+import platform
 import re
 import shutil
 import sys
@@ -46,7 +48,6 @@ from buildtest.exceptions import (
 from buildtest.executors.setup import BuildExecutor
 from buildtest.log import init_logfile
 from buildtest.schemas.defaults import custom_validator, schema_table
-from buildtest.system import BuildTestSystem
 from buildtest.utils.file import (
     create_dir,
     is_dir,
@@ -606,7 +607,6 @@ class BuildTest:
         dry_run=None,
         filter_buildspecs=None,
         rebuild=None,
-        buildtest_system=None,
         report_file=None,
         maxpendtime=None,
         poll_interval=None,
@@ -645,7 +645,6 @@ class BuildTest:
             dry_run (bool, optional): Show a list of tests that will potentially be run without actually running them via ``buildtest build --dry-run``
             filter_buildspecs (dict, optional): filters buildspecs and tests based on ``buildtest build --filter`` argument which is a key/value dictionary that can filter tests based on **tags**, **type**, and **maintainers**
             rebuild (int, optional): Rebuild tests X times based on ``buildtest build --rebuild`` option.
-            buildtest_system (buildtest.system.BuildTestSystem, optional): Instance of BuildTestSystem class
             report_file (str, optional): Location to report file where test data will be written upon completion. This can be specified via ``buildtest build --report`` command
             maxpendtime (int, optional): Specify maximum pending time in seconds for batch job until job is cancelled
             poll_interval (int, optional): Specify poll interval in seconds for polling batch jobs.
@@ -819,24 +818,24 @@ class BuildTest:
             timeout=self.timeout,
             max_jobs=self.max_jobs,
         )
-
+        """
         self.system = buildtest_system
 
         if not isinstance(self.system, BuildTestSystem):
             self.system = BuildTestSystem()
-
+        """
         if self.filter_buildspecs:
             self._validate_filters()
 
         msg = f"""
-[magenta]User:[/]               [cyan]{self.system.system['user']}
-[magenta]Hostname:[/]           [cyan]{self.system.system['host']}
-[magenta]Platform:[/]           [cyan]{self.system.system['platform']}
+[magenta]User:[/]               [cyan]{getpass.getuser()}
+[magenta]Hostname:[/]           [cyan]{platform.node()}
+[magenta]Platform:[/]           [cyan]{platform.system()}
 [magenta]Current Time:[/]       [cyan]{datetime.now().strftime('%Y/%m/%d %X')}
 [magenta]buildtest path:[/]     [cyan]{shutil.which('buildtest')}
 [magenta]buildtest version:[/]  [cyan]{BUILDTEST_VERSION}    
-[magenta]python path:[/]        [cyan]{self.system.system['python']}
-[magenta]python version:[/]     [cyan]{self.system.system['pyver']}[/]
+[magenta]python path:[/]        [cyan]{os.getenv("BUILDTEST_PYTHON")}
+[magenta]python version:[/]     [cyan]{platform.python_version()}[/]
 [magenta]Configuration File:[/] [cyan]{self.configuration.file}[/]
 [magenta]Test Directory:[/]     [cyan]{self.testdir}[/]
 [magenta]Report File:[/]        [cyan]{self.report_file}[/]
@@ -1183,7 +1182,6 @@ class BuildTest:
                 filters=self.filter_buildspecs,
                 testdir=self.testdir,
                 rebuild=self.rebuild,
-                buildtest_system=self.system,
                 configuration=self.configuration,
                 numprocs=self.numprocs,
                 numnodes=self.numnodes,
@@ -1438,13 +1436,13 @@ class BuildTest:
 
         history_data = {
             "command": " ".join(sys.argv),
-            "user": self.system.system["user"],
-            "hostname": self.system.system["host"],
-            "platform": self.system.system["platform"],
+            "user": getpass.getuser(),
+            "hostname": platform.node(),
+            "platform": platform.system(),
             "date": datetime.now().strftime("%Y/%m/%d %X"),
             "buildtest": shutil.which("buildtest"),
-            "python": self.system.system["python"],
-            "python_version": self.system.system["pyver"],
+            "python": os.getenv("BUILDTEST_PYTHON"),
+            "python_version": platform.python_version(),
             "testdir": self.testdir,
             "configuration": self.configuration.file,
             "system": self.configuration.name(),

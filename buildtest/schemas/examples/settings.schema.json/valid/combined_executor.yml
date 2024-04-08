@@ -42,7 +42,7 @@ system:
       torque:
         dev:
           queue: development
-          options: [ "-l walltime 00:10:00" ]
+          options: ["-l walltime 00:10:00"]
       container:
         ubuntu:
           image: ubuntu:20.04

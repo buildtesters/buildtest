@@ -7,7 +7,6 @@ from buildtest.cli.build import BuildTest
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.cli.compilers import BuildtestCompilers, compiler_test
 from buildtest.config import SiteConfiguration
-from buildtest.system import BuildTestSystem
 
 hostname = socket.getfqdn()
 here = os.path.dirname(os.path.abspath(__file__))
@@ -26,26 +25,17 @@ def test_ascent():
     bc.validate(moduletool="lmod")
     BuildspecCache(rebuild=True, configuration=bc)
 
-    system = BuildTestSystem()
-
     ascent_examples_dir = os.path.join(here, "examples", "ascent")
     buildspec_files = [
         os.path.join(ascent_examples_dir, "hostname.yml"),
         os.path.join(ascent_examples_dir, "lsf_job_state.yml"),
     ]
-    cmd = BuildTest(
-        configuration=bc, buildspecs=buildspec_files, buildtest_system=system
-    )
+    cmd = BuildTest(configuration=bc, buildspecs=buildspec_files)
     cmd.build()
 
     # This job will be held indefinitely but job will be cancelled by scheduler after 15sec once job pending time has reached maxpendtime
     buildspec_files = [os.path.join(ascent_examples_dir, "hold_job.yml")]
-    cmd = BuildTest(
-        configuration=bc,
-        buildspecs=buildspec_files,
-        buildtest_system=system,
-        maxpendtime=15,
-    )
+    cmd = BuildTest(configuration=bc, buildspecs=buildspec_files, maxpendtime=15)
     with pytest.raises(SystemExit):
         cmd.build()
 

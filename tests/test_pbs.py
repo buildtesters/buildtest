@@ -5,7 +5,6 @@ import pytest
 from buildtest.cli.build import BuildTest
 from buildtest.config import SiteConfiguration
 from buildtest.scheduler.detection import PBS
-from buildtest.system import BuildTestSystem
 from buildtest.utils.file import walk_tree
 
 
@@ -17,7 +16,6 @@ def test_pbs():
 
     here = os.path.dirname(os.path.abspath(__file__))
     settings_file = os.path.join(here, "settings", "pbs.yml")
-    system = BuildTestSystem()
 
     bc = SiteConfiguration(settings_file)
     bc.detect_system()
@@ -25,15 +23,12 @@ def test_pbs():
 
     buildspec_files = walk_tree(os.path.join(here, "examples", "pbs"))
 
-    cmd = BuildTest(
-        configuration=bc, buildspecs=buildspec_files, buildtest_system=system
-    )
+    cmd = BuildTest(configuration=bc, buildspecs=buildspec_files)
     cmd.build()
 
     cmd = BuildTest(
         configuration=bc,
         buildspecs=[os.path.join(here, "examples", "pbs", "sleep.yml")],
-        buildtest_system=system,
         numprocs=[1, 2, 4],
         poll_interval=5,
     )

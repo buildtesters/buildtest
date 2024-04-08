@@ -46,7 +46,6 @@ class TestNersc:
                     BUILDTEST_ROOT, "tests", "examples", "perlmutter", "hostname.yml"
                 )
             ],
-            buildtest_system=self.system,
             poll_interval=5,
             maxpendtime=120,
             numprocs=[1, 4],
@@ -73,7 +72,6 @@ class TestNersc:
                     "hold_job.yml",
                 )
             ],
-            buildtest_system=self.system,
             poll_interval=5,
             maxpendtime=10,
         )

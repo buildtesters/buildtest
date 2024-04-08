@@ -109,10 +109,7 @@ class TestProfiles:
     buildtest_config.validate(moduletool=system.system["moduletool"])
 
     cmd = BuildTest(
-        configuration=buildtest_config,
-        buildtest_system=system,
-        tags=["python"],
-        save_profile="python",
+        configuration=buildtest_config, tags=["python"], save_profile="python"
     )
     cmd.build()
 
