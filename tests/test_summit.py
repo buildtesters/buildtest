@@ -30,7 +30,7 @@ def test_summit():
         os.path.join(examples_dir, "hostname.yml"),
         os.path.join(examples_dir, "lsf_job_state.yml"),
     ]
-    cmd = BuildTest(configuration=bc, buildspecs=buildspec_files)
+    cmd = BuildTest(configuration=bc, buildspecs=buildspec_files, pollinterval=10)
     cmd.build()
 
     # This job will be held indefinitely but job will be cancelled by scheduler after 15sec once job pending time has reached maxpendtime
