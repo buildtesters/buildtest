@@ -1,6 +1,6 @@
 import logging
-import platform
 import re
+import socket
 
 from buildtest.defaults import (
     DEFAULT_SETTINGS_FILE,
@@ -103,7 +103,7 @@ class SiteConfiguration:
         host_lookup = {}
 
         # get hostname fqdn
-        hostname = platform.node()
+        hostname = socket.getfqdn()
 
         if self.verbose:
             console.print(f"Detected hostname: {hostname}", style="bold blue")

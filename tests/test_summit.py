@@ -13,6 +13,7 @@ here = os.path.dirname(os.path.abspath(__file__))
 
 settings_file = os.path.join(here, "settings", "summit.yml")
 
+
 def test_summit():
     # this test must run on Ascent system with domain '.summit.olcf.ornl.gov' otherwise its skipped
 
