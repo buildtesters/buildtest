@@ -1,7 +1,8 @@
 system:
-  ascent:
+  summit:
     hostnames:
-    - login1.ascent.olcf.ornl.gov
+    - login1.summit.olcf.ornl.gov
+    - login2.summit.olcf.ornl.gov
     moduletool: lmod
     poolsize: 8
     max_jobs: 10
@@ -19,7 +20,7 @@ system:
       defaults:
         pollinterval: 30
         maxpendtime: 300
-        account: gen014ecpci
+        account: gen243-hpctest
       local:
         bash:
           description: submit jobs on local machine using bash shell
