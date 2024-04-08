@@ -181,7 +181,7 @@ class LSFJob(Job):
         out = "".join(out).rstrip()
 
         out = json.loads(out)
-        
+
         logger.debug(json.dumps(out, indent=2))
         job_data = {}
 
