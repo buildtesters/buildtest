@@ -282,18 +282,18 @@ class LSF(Scheduler):
 
         for record in self._queues["RECORDS"]:
             # check queue record for Status
-            for name in record:
-                # skip record until we find matching queue
-                if name["QUEUE_NAME"] != queue_name:
-                    continue
 
-                queue_state = name["STATUS"]
-                # if state not Open:Active we raise error
-                if not queue_state == queue_active_state:
-                    self.logger.error(
-                        f"'{queue_name}' is in state: {queue_state}. It must be in {queue_active_state} state in order to accept jobs"
-                    )
-                    return False
+            # skip record until we find matching queue
+            if record["QUEUE_NAME"] != queue_name:
+                continue
+
+            queue_state = record["STATUS"]
+            # if state not Open:Active we raise error
+            if not queue_state == queue_active_state:
+                self.logger.error(
+                    f"'{queue_name}' is in state: {queue_state}. It must be in {queue_active_state} state in order to accept jobs"
+                )
+                return False
 
         return True
 
