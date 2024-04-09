@@ -37,6 +37,10 @@ system:
       lsf:
         batch:
           queue: batch
+        storage:
+          queue: storage
+        debug:
+          queue: debug
     compilers:
       find:
         gcc: ^(gcc)
