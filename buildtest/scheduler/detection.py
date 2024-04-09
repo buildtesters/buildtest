@@ -262,10 +262,15 @@ class LSF(Scheduler):
         return queues
 
     def validate_queue(self, executor):
-        """Validate a LSF queue.
+        """This method will validate a LSF queue. We check if queue is available and in 'Open:Active' state.
+        The input is a dictionary containing the LSF executor configuration. If queue is not
+        found we return False.
 
         Args:
             executor (dict): The dictionary containing the LSF executor configuration.
+
+        Returns:
+            bool: True if queue is found and in 'Open:Active' state, False otherwise.
         """
 
         queue_name = executor["queue"]
