@@ -263,14 +263,6 @@ class SiteConfiguration:
         if not lsf.active():
             return
 
-        queue_list = []
-        valid_queue_state = "Open:Active"
-
-        record = lsf.queues()["RECORDS"]
-        # retrieve all queues from json record
-        for name in record:
-            queue_list.append(name["QUEUE_NAME"])
-
         # check all executors have defined valid queues and check queue state.
         for executor in lsf_executors:
             executor_name = f"{self.name()}.{executor_type}.{executor}"
@@ -278,30 +270,9 @@ class SiteConfiguration:
                 self.disabled_executors.append(executor_name)
                 continue
 
-            queue = lsf_executors[executor].get("queue")
-            # if queue field is defined check if its valid queue
-            if queue:
-                if queue not in queue_list:
-                    self.invalid_executors.append(executor_name)
-                    logger.error(
-                        f"'{queue}' is invalid LSF queue. Please select one of the following queues: {queue_list}"
-                    )
-                    continue
-
-                # check queue record for Status
-                for name in record:
-                    # skip record until we find matching queue
-                    if name["QUEUE_NAME"] != queue:
-                        continue
-
-                    queue_state = name["STATUS"]
-                    # if state not Open:Active we raise error
-                    if not queue_state == valid_queue_state:
-                        self.invalid_executors.append(executor_name)
-                        logger.error(
-                            f"'{queue}' is in state: {queue_state}. It must be in {valid_queue_state} state in order to accept jobs"
-                        )
-                        break
+            if not lsf.validate_queue(executor=lsf_executors[executor]):
+                self.invalid_executors.append(executor_name)
+                continue
 
             self.valid_executors[executor_type][executor_name] = {
                 "setting": lsf_executors[executor]

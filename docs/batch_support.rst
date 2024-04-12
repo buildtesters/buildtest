@@ -1146,7 +1146,7 @@ Let's run this example and notice that this job ran to completion but it was rep
 Torque
 -------
 
-Buildtest has support for running jobs on `Torque <https://adaptivecomputing.com/products/torque-resource-manager/>`_ scheduler. You must
+Buildtest has support for running jobs on `Torque <https://adaptivecomputing.com/cherry-services/torque-resource-manager/>`_ scheduler. You must
 define a :ref:`torque_executors` in your configuration file to use Torque scheduler. The ``#PBS`` directives can be specified using
 ``pbs`` property which is a list of PBS options that get inserted at top of script. Shown below is an example sleep job that will run on
 a single node for 5 seconds.

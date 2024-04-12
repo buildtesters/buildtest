@@ -261,6 +261,42 @@ class LSF(Scheduler):
 
         return queues
 
+    def validate_queue(self, executor):
+        """This method will validate a LSF queue. We check if queue is available and in 'Open:Active' state.
+        The input is a dictionary containing the LSF executor configuration. If queue is not
+        found we return False.
+
+        Args:
+            executor (dict): The dictionary containing the LSF executor configuration.
+
+        Returns:
+            bool: True if queue is found and in 'Open:Active' state, False otherwise.
+        """
+
+        queue_name = executor["queue"]
+        queue_active_state = "Open:Active"
+
+        queue_list = [name["QUEUE_NAME"] for name in self._queues["RECORDS"]]
+        if queue_name not in queue_list:
+            return False
+
+        for record in self._queues["RECORDS"]:
+            # check queue record for Status
+
+            # skip record until we find matching queue
+            if record["QUEUE_NAME"] != queue_name:
+                continue
+
+            queue_state = record["STATUS"]
+            # if state not Open:Active we raise error
+            if not queue_state == queue_active_state:
+                self.logger.error(
+                    f"'{queue_name}' is in state: {queue_state}. It must be in {queue_active_state} state in order to accept jobs"
+                )
+                return False
+
+        return True
+
 
 class Cobalt(Scheduler):
     """The Cobalt class checks for Cobalt binaries and gets a list of Cobalt queues"""
