@@ -47,7 +47,7 @@ dev = [
     'yamllint'
 ]
 docs = [
-    "docutils==0.18.1",
+    "docutils==0.21.1",
     "readthedocs-sphinx-search==0.3.2",
     "sphinx==7.1.2",
     "sphinx-design==0.5.0",
