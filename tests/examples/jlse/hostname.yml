@@ -1,8 +1,8 @@
 buildspecs:
   hostname_test:
-    executor: jlse.cobalt.testing
+    executor: jlse.cobalt.iris
     type: script
     tags: [jobs]
-    description: Run hostname on testing queue
+    description: Run hostname as batch job
     cobalt: ["-n 1", "-t 10"]
     run: hostname

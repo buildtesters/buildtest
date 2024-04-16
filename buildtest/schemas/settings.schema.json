@@ -353,6 +353,16 @@
                   "$ref": "#/definitions/pbs"
                 }
               },
+              "torque": {
+                "type": "object",
+                "description": "The ``torque`` section is used for declaring PBS/Torque executors for running jobs using Torque scheduler",
+                "propertyNames": {
+                  "pattern": "^[A-Za-z0-9_.-]+$"
+                },
+                "additionalProperties": {
+                  "$ref": "#/definitions/pbs"
+                }
+              },
               "container": {
                 "type": "object",
                 "description": "The ``container`` section is used for declaring container executors for running jobs using container technology",
@@ -491,11 +501,6 @@
       "description": "An instance object of slurm executor",
       "properties": {
         "description": { "$ref": "#/definitions/description" },
-        "launcher": {
-          "type": "string",
-          "enum": [ "sbatch" ],
-          "description": "Specify the slurm batch scheduler to use. This overrides the default ``launcher`` field. This must be ``sbatch``. "
-        },
         "options": {
           "type": "array",
           "items": { "type": "string" },
@@ -539,11 +544,6 @@
           "type": "string",
           "description": "description field for documenting your executor"
         },
-        "launcher": {
-          "type": "string",
-          "enum": [ "bsub" ],
-          "description": "Specify the lsf batch scheduler to use. This overrides the default ``launcher`` field. It must be ``bsub``. "
-        },
         "options": {
           "type": "array",
           "items": { "type": "string" },
@@ -576,11 +576,6 @@
       "required": [ "queue" ],
       "properties": {
         "description": { "$ref": "#/definitions/description" },
-        "launcher": {
-          "type": "string",
-          "enum": [ "qsub" ],
-          "description": "Specify the cobalt batch scheduler to use. This overrides the default ``launcher`` field. It must be ``qsub``. "
-        },
         "options": {
           "type": "array",
           "items": { "type": "string" },
@@ -608,16 +603,11 @@
     },
     "pbs": {
       "type": "object",
-      "description": "An instance object of cobalt executor",
+      "description": "An instance object of pbs executor",
       "additionalProperties": false,
       "required": [ "queue" ],
       "properties": {
         "description": { "$ref": "#/definitions/description" },
-        "launcher": {
-          "type": "string",
-          "enum": [ "qsub" ],
-          "description": "Specify the pbs batch scheduler to use. This overrides the default ``launcher`` field. It must be ``qsub``. "
-        },
         "options": {
           "type": "array",
           "items": { "type": "string" },
@@ -712,6 +702,8 @@
         "module": {"type": "string"},
         "unload-modules": {"type": "string"},
         "module-purge": {"type": "boolean"},
+        "validate": {"type": "boolean", "description": "Validate given buildspecs and buildtest will stop after parse stage"},
+        "dry-run": {"type": "boolean", "description": "Show a list of tests that will potentially be run"},
         "rebuild": {"type": "integer", "minimum": 1, "maximum": 50, "description": "Specify number of tests to rebuild"},
         "limit": {"type": "integer", "minimum": 1, "description": "Limit number of tests to build"},
         "account": {"$ref": "#/definitions/account"},

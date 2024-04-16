@@ -1,25 +1,26 @@
 system:
-  ascent:
+  summit:
     hostnames:
-    - login1.ascent.olcf.ornl.gov
+    - login1.summit.olcf.ornl.gov
+    - login2.summit.olcf.ornl.gov
     moduletool: lmod
     poolsize: 8
     max_jobs: 10
-    pager: False
+    pager: false
     buildspecs:
-      rebuild: False
+      rebuild: false
       count: 15
-      format: "name,description"
-      terse: False
+      format: name,description
+      terse: false
     report:
       count: 25
-      terse: False
-      format: "name,id,state,runtime,returncode"
+      terse: false
+      format: name,id,state,runtime,returncode
     executors:
       defaults:
         pollinterval: 30
         maxpendtime: 300
-        account: gen014ecpci
+        account: gen243-hpctest
       local:
         bash:
           description: submit jobs on local machine using bash shell
@@ -36,39 +37,19 @@ system:
       lsf:
         batch:
           queue: batch
+        storage:
+          queue: storage
+        debug:
+          queue: debug
     compilers:
       find:
-        gcc: '^(gcc)'
+        gcc: ^(gcc)
       compiler:
         gcc:
           builtin_gcc:
             cc: /usr/bin/gcc
             cxx: /usr/bin/g++
             fc: /usr/bin/gfortran
-          gcc/9.3.0:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            module:
-              load:
-              - gcc/9.3.0
-              purge: false
-          gcc/11.1.0:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            module:
-              load:
-              - gcc/11.1.0
-              purge: false
-          gcc/7.5.0:
-            cc: gcc
-            cxx: g++
-            fc: gfortran
-            module:
-              load:
-              - gcc/7.5.0
-              purge: false
           gcc/12.1.0:
             cc: gcc
             cxx: g++
@@ -77,27 +58,27 @@ system:
               load:
               - gcc/12.1.0
               purge: false
-          gcc/11.2.0:
+          gcc/9.3.0:
             cc: gcc
             cxx: g++
             fc: gfortran
             module:
               load:
-              - gcc/11.2.0
+              - gcc/9.3.0
               purge: false
-          gcc/10.2.0:
+          gcc/12.2.0:
             cc: gcc
             cxx: g++
             fc: gfortran
             module:
               load:
-              - gcc/10.2.0
+              - gcc/12.2.0
               purge: false
-          gcc/9.1.0:
+          gcc/9.3.0-compiler_only:
             cc: gcc
             cxx: g++
             fc: gfortran
             module:
               load:
-              - gcc/9.1.0
+              - gcc/9.3.0-compiler_only
               purge: false

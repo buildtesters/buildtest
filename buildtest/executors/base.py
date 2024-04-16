@@ -126,7 +126,8 @@ class BaseExecutor:
 
         builder.record_endtime()
 
-        builder.metadata["job"] = builder.job.gather()
+        builder.job.retrieve_jobdata()
+        builder.metadata["job"] = builder.job.jobdata()
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
         self.logger.debug(

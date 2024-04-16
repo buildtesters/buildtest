@@ -107,6 +107,8 @@ class SlurmExecutor(BaseExecutor):
 
         msg = f"[blue]{builder}[/blue]: JobID {builder.metadata['jobid']} dispatched to scheduler"
         console.print(msg)
+
+        builder.job.get_output_and_error_files()
         self.logger.debug(msg)
 
         return builder
@@ -120,7 +122,7 @@ class SlurmExecutor(BaseExecutor):
         """
         builder.record_endtime()
 
-        builder.metadata["job"] = builder.job.gather()
+        builder.metadata["job"] = builder.job.jobdata()
 
         builder.metadata["result"]["returncode"] = builder.job.exitcode()
 
@@ -128,12 +130,8 @@ class SlurmExecutor(BaseExecutor):
             f"[{builder.name}] returncode: {builder.metadata['result']['returncode']}"
         )
 
-        builder.metadata["outfile"] = os.path.join(
-            builder.job.workdir(), builder.name + ".out"
-        )
-        builder.metadata["errfile"] = os.path.join(
-            builder.job.workdir(), builder.name + ".err"
-        )
+        builder.metadata["outfile"] = builder.job.output_file()
+        builder.metadata["errfile"] = builder.job.error_file()
 
         console.print(f"[blue]{builder}[/]: Job {builder.job.get()} is complete! ")
         builder.post_run_steps()

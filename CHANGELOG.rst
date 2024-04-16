@@ -1,6 +1,48 @@
 CHANGELOG
 =========
 
+v2.0 (Apr 16th, 2024)
+----------------------
+
+**Major Changes**
+
+This release comes with several improvements to batch scheduler integration including code refactoring of all schedulers. We have
+added supported for Torque scheduler. Furthermore, we have changed logic for PBS scheduler for polling jobs to be consistent with Torque
+since both schedulers are very similar. We have improved logging for batch jobs and scheduler detection. Furthermore we have added validation
+for queues to ensure executor validation takes place to invalidate an executor if queue is not found.
+
+- Add support for Torque batch scheduler `#1734 <https://github.com/buildtesters/buildtest/pull/1734>`_
+- Improve scheduler detection logic `#1738 <https://github.com/buildtesters/buildtest/pull/1738>`_, `#1739 <https://github.com/buildtesters/buildtest/pull/1739>`_
+- Change poll command to `qstat -xf` for PBS scheduler and `qstat -f` for Torque `#1746 <https://github.com/buildtesters/buildtest/pull/1746/>`_
+- Improvement to LSF executors such as queue validation and testing LSF executors on OLCF system on Summit `#1748 <https://github.com/buildtesters/buildtest/pull/1748>`_, `#1750 <https://github.com/buildtesters/buildtest/pull/1750>`_
+
+**Buildspecs Changes**
+
+- Add support for regular expression types such as ``re.search``, ``re.match``, and ``re.fullmatch`` using the **re** property for status check and metrics `#1730 <https://github.com/buildtesters/buildtest/pull/1730>`_ 
+- Add support for line count (``linecount``) and file line count (``file_line_count``) status check used for counting lines in a file or stdout/stderr. `#1722 <https://github.com/buildtesters/buildtest/pull/1722>`_, `#1723 <https://github.com/buildtesters/buildtest/pull/1723>`_
+- Remove burst buffer and data warp directives from spack schema `#1717 <https://github.com/buildtesters/buildtest/pull/1717>`_
+- Extract line number from stdout/stderr via ``linenum`` field used in status check particularly useful with regular expression search `#1735 <https://github.com/buildtesters/buildtest/pull/1735>`_
+
+**Command Line Changes**
+
+- Add support for ``buildtest build --validate`` option that will be used for validating buildspecs and stop after parse stage. This feature will deprecate feature ``buildtest build --stage=parse`` `#1729 <https://github.com/buildtesters/buildtest/pull/1729>`_
+- Add dry run mode for buildtest via ``buildtest build --dry-run`` option. This feature will build the test but not run it. This feature will deprecate **buildtest build --stage=build** `#1727 <https://github.com/buildtesters/buildtest/pull/1727>`_
+- Add dryrun (``--dryrun``), write (``--write``) and failfast (``--failfast``) options to ``buildtest tutorial-examples`` command `#1720 <https://github.com/buildtesters/buildtest/pull/1720>`_
+- List all buildtest options via command line via ``buildtest --listopts`` `#1715 <https://github.com/buildtesters/buildtest/pull/1715>`_
+
+**Documentation Changes**
+
+- Build prototype for AWS tutorial that includes several example buildspecs, configuration file and improvement to ``buildtest tutorial-examples`` command to help auto-generate examples. For instance we added positional argument to specify either ``buildtest tutorial-examples {aws,spack}`` which will be used to generate example docs for each section `#1719 <https://github.com/buildtesters/buildtest/pull/1719>`_
+- Rearrange documentation pages to move all status checks into single page `#1733 <https://github.com/buildtesters/buildtest/pull/1733>`_
+- Add documentation for Torque Executors `#1743 <https://github.com/buildtesters/buildtest/pull/1743>`_
+- Add documentation for LSF Executors `#1745 <https://github.com/buildtesters/buildtest/pull/1745>`_
+
+**Project Improvements**
+
+- Add github workflow to run regression test examples with spack using github action `spack/setup-spack <https://github.com/spack/setup-spack>`_  to help increase code coverage for spack schema `#1716 <https://github.com/buildtesters/buildtest/pull/1716>`_
+- Change singularity invocation from **singularity exec** to **singularity run** when running singularity containers `#1711 <https://github.com/buildtesters/buildtest/pull/1711>`_
+- Fix a bug in argparser invocation when running ``buildtest --help-all`` that caused an error with showing all help options. `#1708 <https://github.com/buildtesters/buildtest/pull/1708>`_
+
 v1.8 (Feb 14th, 2024)
 ----------------------
 

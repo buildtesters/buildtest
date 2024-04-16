@@ -39,21 +39,6 @@ class LSFJob(Job):
 
         return self._state == "EXIT"
 
-    def output_file(self):
-        """Return job output file"""
-
-        return self._outfile
-
-    def error_file(self):
-        """Return job error file"""
-
-        return self._errfile
-
-    def exitcode(self):
-        """Return job exit code"""
-
-        return self._exitcode
-
     def poll(self):
         """Given a job id we poll the LSF Job by retrieving its job state, output file, error file and exit code.
         We run the following commands to retrieve following states
@@ -94,40 +79,42 @@ class LSFJob(Job):
         if self.is_running() and not self.starttime:
             self.starttime = time.time()
 
-    def gather(self):
-        """This method will retrieve the output and error file for a given jobID using the following commands.
+    def get_output_and_error_files(self):
+        """This method will extract output and error file for a given jobID by running the following commands:
+        ``bjobs -noheader -o 'output_file' <JOBID>`` and ``bjobs -noheader -o 'error_file' <JOBID>``
 
-        .. code-block:: console
+         .. code-block:: console
 
-            $ bjobs -noheader -o 'output_file' 70910
-            hold_job.out
+             $ bjobs -noheader -o 'output_file' 70910
+             hold_job.out
 
-        .. code-block:: console
+         .. code-block:: console
 
-            $ bjobs -noheader -o 'error_file' 70910
-            hold_job.err
+             $ bjobs -noheader -o 'error_file' 70910
+             hold_job.err
+        """
+        # get path to output file
+        query = f"bjobs -noheader -o 'output_file' {self.jobid} "
+        logger.debug(
+            f"Extracting OUTPUT FILE for job: {self.jobid} by running  '{query}'"
+        )
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        self._outfile = "".join(cmd.get_output()).rstrip()
+        logger.debug(f"Output File: {self._outfile}")
 
-        We will gather job record at onset of job completion by running ``bjobs -o '<format1> <format2>' <jobid> -json``. The format
-        fields extracted from job are the following:
+        # get path to error file
+        query = f"bjobs -noheader -o 'error_file' {self.jobid} "
+        logger.debug(
+            f"Extracting ERROR FILE for job: {self.jobid} by running  '{query}'"
+        )
+        cmd = BuildTestCommand(query)
+        cmd.execute()
+        self._errfile = "".join(cmd.get_output()).rstrip()
+        logger.debug(f"Error File: {self._errfile}")
 
-           - "job_name"
-           - "stat"
-           - "user"
-           - "user_group"
-           - "queue"
-           - "proj_name"
-           - "pids"
-           - "exit_code"
-           - "from_host"
-           - "exec_host"
-           - "submit_time"
-           - "start_time"
-           - "finish_time"
-           - "nthreads"
-           - "exec_home"
-           - "exec_cwd"
-           - "output_file"
-           - "error_file"
+    def retrieve_jobdata(self):
+        """We will gather job record at onset of job completion by running ``bjobs -o '<format1> <format2>' <jobid> -json``. T
 
         Shown below is the output format and we retrieve the job records defined in **RECORDS** property
 
@@ -162,25 +149,7 @@ class LSFJob(Job):
             }
         """
 
-        # get path to output file
-        query = f"bjobs -noheader -o 'output_file' {self.jobid} "
-        logger.debug(
-            f"Extracting OUTPUT FILE for job: {self.jobid} by running  '{query}'"
-        )
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        self._outfile = "".join(cmd.get_output()).rstrip()
-        logger.debug(f"Output File: {self._outfile}")
-
-        # get path to error file
-        query = f"bjobs -noheader -o 'error_file' {self.jobid} "
-        logger.debug(
-            f"Extracting ERROR FILE for job: {self.jobid} by running  '{query}'"
-        )
-        cmd = BuildTestCommand(query)
-        cmd.execute()
-        self._errfile = "".join(cmd.get_output()).rstrip()
-        logger.debug(f"Error File: {self._errfile}")
+        self.get_output_and_error_files()
 
         format_fields = [
             "job_name",
@@ -205,7 +174,7 @@ class LSFJob(Job):
 
         query = f"bjobs -o '{' '.join(format_fields)}' {self.jobid} -json"
 
-        logger.debug(f"Gather LSF job data by running: {query}")
+        logger.debug(f"Gather LSF job: {self.jobid} data by running: {query}")
         cmd = BuildTestCommand(query)
         cmd.execute()
         out = cmd.get_output()
@@ -213,13 +182,14 @@ class LSFJob(Job):
 
         out = json.loads(out)
 
+        logger.debug(json.dumps(out, indent=2))
         job_data = {}
 
         records = out["RECORDS"][0]
         for field, value in records.items():
             job_data[field] = value
 
-        return job_data
+        self._jobdata = job_data
 
     def cancel(self):
         """Cancel LSF Job by running ``bkill <jobid>``. This method is called if job pending time exceeds

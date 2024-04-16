@@ -111,6 +111,10 @@ def print_build_show():
         "buildtest build --profile=python-profile",
         "Run buildtest from profile name 'python-profile'",
     )
+    table.add_row(
+        "buildtest build --validate -b <file>",
+        "Test will validate buildspecs and stop after parsing stage",
+    )
     console.print(table)
 
 

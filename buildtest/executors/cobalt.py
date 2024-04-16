@@ -106,7 +106,9 @@ class CobaltExecutor(BaseExecutor):
         logger.debug(f"Output file will be written to: {builder.metadata['outfile']}")
         logger.debug(f"Error file will be written to: {builder.metadata['errfile']}")
 
-        builder.metadata["job"] = builder.job.gather()
+        # gather job record
+        builder.job.retrieve_jobdata()
+        builder.metadata["job"] = builder.job.jobdata()
         logger.debug(json.dumps(builder.metadata["job"], indent=2))
 
         return builder
@@ -129,20 +131,16 @@ class CobaltExecutor(BaseExecutor):
             return
 
         builder.stop()
-        # if job is pending or suspended check if builder timer duration exceeds maxpendtime if so cancel job
-        if builder.job.is_pending() or builder.job.is_suspended():
-            logger.debug(f"Time Duration: {builder.duration}")
-            logger.debug(f"Max Pend Time: {self.maxpendtime}")
 
-            # if timer time is more than requested pend time then cancel job
-            if int(builder.timer.duration()) > self.maxpendtime:
-                builder.job.cancel()
-                builder.failed()
-                console.print(
-                    f"[blue]{builder}[/]: [red]Cancelling Job {builder.job.get()} because job exceeds max pend time of {self.maxpendtime} sec with current pend time of {builder.timer.duration()} sec[/red] "
-                )
-            return
+        if builder.job.is_running():
+            builder.job.elapsedtime = time.time() - builder.job.starttime
+            builder.job.elapsedtime = round(builder.job.elapsedtime, 2)
+            if self._cancel_job_if_elapsedtime_exceeds_timeout(builder):
+                return
 
+        if builder.job.is_suspended() or builder.job.is_pending():
+            if self._cancel_job_if_pendtime_exceeds_maxpendtime(builder):
+                return
         builder.start()
 
     def gather(self, builder):

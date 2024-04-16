@@ -23,10 +23,12 @@ from buildtest.buildsystem.checks import (
     contains_check,
     exists_check,
     file_count_check,
+    file_linecount_check,
     file_regex_check,
     is_dir_check,
     is_file_check,
     is_symlink_check,
+    linecount_check,
     regex_check,
     returncode_check,
     runtime_check,
@@ -246,6 +248,8 @@ class BuilderBase(ABC):
             "is_dir",
             "is_file",
             "file_count",
+            "linecount",
+            "file_linecount",
         ]
         self.metadata["check"] = {name: None for name in status_check_names}
         self.metadata["metrics"] = {}
@@ -789,6 +793,8 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             for line in self.pbs:
                 lines.append(f"#PBS {line}")
             lines.append(f"#PBS -N {self.name}")
+            lines.append(f"#PBS -o {self.name}.o")
+            lines.append(f"#PBS -e {self.name}.e")
 
         if self.cobalt:
             for line in self.cobalt:
@@ -926,6 +932,27 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         return lines
 
+    def _extract_content(self, regex):
+        """Extract content based on the stream and linenum properties
+        from the regex field and return it as a string.
+
+        Args:
+            regex (dict): regex section from the metrics field
+        """
+
+        stream = regex.get("stream")
+        content = self._output if stream == "stdout" else self._error
+
+        linenum = regex.get("linenum")
+        if linenum is not None and content:
+            lines = content.split("\n")
+            try:
+                content = lines[linenum]
+            except IndexError as e:
+                content = ""
+                self.logger.error(e)
+        return content
+
     def add_metrics(self):
         """This method will update the metrics field stored in ``self.metadata['metrics']``. The ``metrics``
         property can be defined in the buildspdec to assign value to a metrics name based on regular expression,
@@ -940,13 +967,17 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             self.metadata["metrics"][key] = ""
             regex = metric.get("regex")
             file_regex = metric.get("file_regex")
-            self.metadata["metrics"][key] = ""
 
             if regex:
-                stream = regex.get("stream")
-                content = self._output if stream == "stdout" else self._error
-                match = re.search(regex["exp"], content)
 
+                content = self._extract_content(regex)
+
+                if regex.get("re") == "re.match":
+                    match = re.match(regex["exp"], content, re.MULTILINE)
+                elif regex.get("re") == "re.fullmatch":
+                    match = re.fullmatch(regex["exp"], content, re.MULTILINE)
+                else:
+                    match = re.search(regex["exp"], content, re.MULTILINE)
                 if match:
                     try:
                         self.metadata["metrics"][key] = match.group(
@@ -968,7 +999,11 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
                         continue
 
                     content = read_file(resolved_fname)
-                    match = re.search(file_regex["exp"], content) if content else None
+                    match = (
+                        re.search(file_regex["exp"], content, re.MULTILINE)
+                        if content
+                        else None
+                    )
 
                     if match:
                         try:
@@ -1135,6 +1170,13 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
             if self.status.get("file_count"):
                 self.metadata["check"]["file_count"] = file_count_check(builder=self)
 
+            if self.status.get("linecount"):
+                self.metadata["check"]["linecount"] = linecount_check(builder=self)
+
+            if self.status.get("file_linecount"):
+                self.metadata["check"]["file_linecount"] = file_linecount_check(
+                    builder=self
+                )
             # filter out any None values from status check
             status_checks = [
                 value for value in self.metadata["check"].values() if value is not None

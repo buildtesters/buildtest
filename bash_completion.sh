@@ -151,7 +151,7 @@ _buildtest_show_commands()
 
 _buildtest_options()
 {
-  python -c "from buildtest.cli import BuildTestParser; print(' '.join(BuildTestParser().get_buildtest_options()))"
+  buildtest --listopts
 }
 #  entry point to buildtest bash completion function
 _buildtest ()
@@ -162,13 +162,13 @@ _buildtest ()
 
   COMPREPLY=()   # Array variable storing the possible completions.
 
-  declare -a buildtest_opts=("--color" "--config" "--debug" "--editor" "--help" "--helpcolor" "--help-all" "--logpath" "--loglevel" "--print-log" "--no-color" "--report" "--version" "--view-log" "-c" "-d" "-h" "-l" "-p" "-r" "-H" "-V")
+  main_opts=($(_buildtest_options))
 
   commands_with_input=( "--color" "--config" "-c" "--report" "-r" "--loglevel" "-l" "--editor" )   # Array variable storing commands which require an input argument from the user.
 
   for command in "${COMP_WORDS[@]}"
   do
-    for element in "${buildtest_opts[@]}"
+    for element in "${main_opts[@]}"
     do
 
         if [[ "$command" == "$element" ]]; then
@@ -190,7 +190,7 @@ _buildtest ()
   case "$next" in
     build|bd)
       local shortoption="-b -e -et -f -m -n -s -t -u -x -xt"
-      local longoption="--buildspec --executor --executor-type --exclude --exclude-tags --filter --helpfilter --limit --maxpendtime --max-jobs --modules --module-purge --name --nodes --pollinterval --procs --profile --rerun --remove-stagedir --retry --save-profile --stage --tags --timeout --unload-modules"
+      local longoption="--buildspec --dry-run --executor --executor-type --exclude --exclude-tags --filter --helpfilter --limit --maxpendtime --max-jobs --modules --module-purge --name --nodes --pollinterval --procs --profile --rerun --remove-stagedir --retry --save-profile --tags --timeout --unload-modules --validate"
       local allopts="${longoption} ${shortoption}"
 
       COMPREPLY=( $( compgen -W "$allopts" -- "${cur}" ) )
@@ -198,9 +198,6 @@ _buildtest ()
       case "${prev}" in
         -e|--executor)
             COMPREPLY=( $( compgen -W "$(_avail_executors)" -- "${cur}" ) )
-            ;;
-        -s|--stage)
-            COMPREPLY=( $( compgen -W "stage parse" -- "${cur}" ) )
             ;;
         -et|--executor-type)
             COMPREPLY=( $( compgen -W "local batch" -- "${cur}" ) )
@@ -555,8 +552,16 @@ _buildtest ()
       local opts="--help --with-aliases -a -h"
       COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
       ;;
+    tutorial-examples)
+      local cmds="aws spack"
+      local opts="--help -h -d --dryrun --failfast -w --write"
+      COMPREPLY=( $( compgen -W "${cmds}" -- "${cur}" ) )
+      if [[ $cur == -* ]] ; then
+        COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
+      fi
+      ;;
     # options with only --help
-    debugreport|info|docs|tutorial-examples)
+    debugreport|info|docs)
       local opts="-h --help"
       COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
       ;;

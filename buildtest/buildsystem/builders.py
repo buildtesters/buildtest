@@ -29,7 +29,6 @@ class Builder:
         filters,
         testdir,
         configuration,
-        buildtest_system,
         rebuild=1,
         numprocs=None,
         numnodes=None,
@@ -46,7 +45,6 @@ class Builder:
             filters (dict): List of filter fields specified via ``buildtest build --filter`` for filtering tests
             testdir (str): Test directory where tests will be written which could be specified via ``buildtest build --testdir`` or configuration file
             configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
-            buildtest_system (buildtest.system.BuildTestSystem): Instance of BuildTestSystem class
             rebuild (int, option): Number of rebuild for test. This is specified via ``buildtest build --rebuild``. Defaults to 1
             numprocs (list, optional): List of processor values to create builder objects specified via ``buildtest build --procs``
             numnodes (list, optional): List of processor values to create builder objects specified via ``buildtest build --nodes``
@@ -55,7 +53,6 @@ class Builder:
         """
 
         self.configuration = configuration
-        self.system = buildtest_system
         self.logger = logging.getLogger(__name__)
         self.testdir = testdir
         self.buildexecutor = buildexecutor
@@ -400,7 +397,6 @@ class Builder:
         if not recipe.get("tags"):
             return True
 
-        found = False
         # the input tag names from test can be list or string
         tests_in_tags = recipe["tags"]
         # if input is string, convert to list otherwise we assume its a list

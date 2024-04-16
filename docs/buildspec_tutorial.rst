@@ -7,6 +7,7 @@ Buildspec Tutorial
    :maxdepth: 1
 
    buildspecs/buildspec_overview
+   buildspecs/aws
    buildspecs/spack
    buildspecs/e4s_testsuite
 

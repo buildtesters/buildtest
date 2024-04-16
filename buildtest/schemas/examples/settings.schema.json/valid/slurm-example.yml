@@ -32,9 +32,14 @@ system:
         normal:
           options: ["-C haswell"]
           qos: normal
+          cluster: cori
           before_script: |
             time
             echo "commands run before job"
+        debug:
+          options: ["-C cpu -t 5"]
+          partition: debug
+          cluster: perlmutter
     compilers:
       compiler:
         gcc:
