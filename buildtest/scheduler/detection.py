@@ -42,7 +42,7 @@ class Scheduler:
         if custom_dirs:
             paths.extend(custom_dirs)
         for command in binaries:
-            if not shutil.which(command):
+            if not shutil.which(command, path=paths):
                 self.logger.debug(f"Cannot find {command} command in $PATH")
                 return False
 
