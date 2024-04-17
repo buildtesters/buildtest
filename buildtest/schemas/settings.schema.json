@@ -394,6 +394,34 @@
             }
           }
         },
+        "paths":
+        {
+          "type": "object",
+          "description": "Specify paths to look up for executables",
+          "additionalProperties": false,
+          "properties": {
+            "slurm": {
+              "type": "string",
+              "description": "Specify path to slurm executable"
+            },
+            "lsf": {
+              "type": "string",
+              "description": "Specify path to lsf executable"
+            },
+            "cobalt": {
+              "type": "string",
+              "description": "Specify path to cobalt executable"
+            },
+            "pbs": {
+              "type": "string",
+              "description": "Specify path to pbs executable"
+            },
+            "torque": {
+              "type": "string",
+              "description": "Specify path to torque executable"
+            }
+          }
+        },
         "profiles": {
           "type": "object",
           "description": "The profiles section is used for declaring one or more profiles that can be used to run ``buildtest build`` that are captured as command options ",
