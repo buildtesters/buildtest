@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 import re
 import shutil
 
@@ -16,21 +17,30 @@ class Scheduler:
     logger = logging.getLogger(__name__)
     binaries = []
 
-    def __init__(self):
+    def __init__(self, custom_dirs=None):
         self.logger = logging.getLogger(__name__)
-        self.is_active = self.check_binaries(self.binaries)
+        self.is_active = self.check_binaries(self.binaries, custom_dirs=custom_dirs)
         if self.is_active:
             self._queues = self.get_queues()
 
     def queues(self):
         return self._queues
 
-    def check_binaries(self, binaries):
-        """Check if binaries exist binary exist in $PATH"""
+    def check_binaries(self, binaries, custom_dirs=None):
+        """Check if binaries exist binary exist in $PATH
+
+        Args:
+            binaries (list): list of binaries to check for existence in $PATH
+            custom_dirs (list, optional): list of custom directories to check for binaries. Defaults to None.
+        """
 
         self.logger.debug(
             f"We will check the following binaries {binaries} for existence."
         )
+
+        paths = os.getenv("PATH").split(os.pathsep)
+        if custom_dirs:
+            paths.extend(custom_dirs)
         for command in binaries:
             if not shutil.which(command):
                 self.logger.debug(f"Cannot find {command} command in $PATH")
@@ -57,10 +67,10 @@ class Slurm(Scheduler):
     # specify a set of Slurm commands to check for file existence
     binaries = ["sbatch", "sacct", "sacctmgr", "sinfo", "scancel", "scontrol"]
 
-    def __init__(self):
+    def __init__(self, custom_dirs=None):
         self.logger = logging.getLogger(__name__)
 
-        self.is_active = self.check_binaries(self.binaries)
+        self.is_active = self.check_binaries(self.binaries, custom_dirs=custom_dirs)
 
         # retrieve slurm partitions, qos, and cluster only if slurm is detected.
         if self.is_active:
@@ -330,14 +340,14 @@ class PBS(Scheduler):
     # specify a set of PBS commands to check for file existence
     binaries = ["qsub", "qstat", "qdel", "qstart", "qhold", "qmgr"]
 
-    def __init__(self):
+    def __init__(self, custom_dirs=None):
         self.logger = logging.getLogger(__name__)
-        self.is_active = self.check()
+        self.is_active = self.check(custom_dirs=custom_dirs)
 
         if self.is_active:
             self._queues = self.get_queues()
 
-    def check(self):
+    def check(self, custom_dirs=None):
         """Check if binaries exist in $PATH and run ``qsub --version`` to see output to
         determine if its OpenPBS scheduler. The return will be a boolean type where ``True`` indicates
         the check has passed.
@@ -351,7 +361,7 @@ class PBS(Scheduler):
             binaries (list): list of binaries to check for existence in $PATH
         """
 
-        if not super().check_binaries(self.binaries):
+        if not super().check_binaries(self.binaries, custom_dirs=custom_dirs):
             return False
 
         # check output of qsub --version to see if it contains string 'pbs_version'
@@ -457,7 +467,7 @@ class PBS(Scheduler):
 class Torque(PBS):
     """The Torque class is a subclass of PBS class and inherits all methods from PBS class"""
 
-    def check(self):
+    def check(self, custom_dirs=None)
         """Check if binaries exist in $PATH and run ``qsub --version`` to see output if its Torque Scheduler.
         The return will be a boolean type where ``True`` indicates the check has passed.
 
@@ -475,7 +485,7 @@ class Torque(PBS):
 
         """
 
-        if not super().check_binaries(self.binaries):
+        if not super().check_binaries(self.binaries, custom_dirs=custom_dirs):
             return False
 
         # check output of qsub --version to see if it contains 'Commit:'
