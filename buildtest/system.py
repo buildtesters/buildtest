@@ -13,11 +13,8 @@ import distro
 
 from buildtest.defaults import BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
-from buildtest.scheduler.detection import LSF, PBS, Cobalt, Slurm, Torque
 
 SUPPORTED_PLATFORMS = ["Linux", "Darwin"]
-
-SCHEDULERS = [Slurm, LSF, Cobalt, PBS, Torque]
 
 
 class BuildTestSystem:
@@ -72,21 +69,7 @@ class BuildTestSystem:
         self.logger.info(f"Path to Buildtest: {shutil.which('buildtest')}")
 
         self.detect_module_tool()
-        self.check_scheduler()
-
         self.logger.info("Finished System Compatibility Check")
-
-    def check_scheduler(self):
-        """Check existence of batch scheduler and if so determine which scheduler
-        it is. Currently, we support Slurm, LSF, Cobalt, PBS and Torque. We invoke each
-        class and see if its valid state. The checks determine if scheduler
-        binaries exist in $PATH.
-        """
-
-        for scheduler in SCHEDULERS:
-            sched = scheduler()
-            if sched.active():
-                self.logger.debug(f"Detected {sched.__class__.__name__} Scheduler")
 
     def detect_module_tool(self):
         """Check if module tool exists, we check for Lmod or environment-modules by
