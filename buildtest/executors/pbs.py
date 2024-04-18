@@ -6,7 +6,8 @@ import os
 
 from buildtest.defaults import console
 from buildtest.executors.base import BaseExecutor
-from buildtest.scheduler.pbs import PBSJob
+from buildtest.scheduler.pbs import PBSJob, TorqueJob
+from buildtest.utils.tools import check_binaries, deep_get
 
 logger = logging.getLogger(__name__)
 
@@ -37,9 +38,21 @@ class PBSExecutor(BaseExecutor):
         )
 
         self.queue = self._settings.get("queue")
+        self.custom_dirs = None
+
+        if isinstance(self, PBSExecutor):
+            self.custom_dirs = deep_get(site_configs.target_config, "paths", "pbs")
+        elif isinstance(self, TorqueExecutor):
+            self.custom_dirs = deep_get(site_configs.target_config, "paths", "torque")
 
     def launcher_command(self, numprocs=None, numnodes=None):
-        batch_cmd = ["qsub"]
+        batch_cmd = []
+
+        self.pbs_cmds = check_binaries(
+            ["qsub", "qstat", "qdel"], custom_dirs=self.custom_dirs
+        )
+
+        batch_cmd += [self.pbs_cmds["qsub"]]
 
         if self.queue:
             batch_cmd += [f"-q {self.queue}"]
@@ -86,7 +99,10 @@ class PBSExecutor(BaseExecutor):
         out = command.get_output()
         JobID = " ".join(out).strip()
 
-        builder.job = PBSJob(JobID)
+        if isinstance(self, TorqueExecutor):
+            builder.job = TorqueJob(JobID, self.pbs_cmds)
+        elif isinstance(self, PBSExecutor):
+            builder.job = PBSJob(JobID, self.pbs_cmds)
 
         # store job id
         builder.metadata["jobid"] = builder.job.get()
