@@ -1,0 +1,21 @@
+name: jlse regtest
+
+on:
+  pull_request:
+    branches: [devel]
+    paths:
+      - 'buildtest/**'
+      - 'tests/**'
+      - '.github/workflows/regression.yml'
+      - 'requirements.txt'
+      - 'pyproject.toml'
+
+jobs:
+
+  regtest_on_jlse:
+    runs-on: jlse
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Regression Test on JLSE"
+        run: |
+          hostname
