@@ -15,9 +15,10 @@ class SlurmJob(Job):
     command which can retrieve pending, running and complete jobs.
     """
 
-    def __init__(self, jobID, cluster=None):
+    def __init__(self, jobID, slurm_cmds, cluster=None):
         super().__init__(jobID)
         self.cluster = cluster
+        self.slurm_cmds = slurm_cmds
 
     def is_pending(self):
         """If job is pending return ``True`` otherwise return ``False``. Slurm Job state for pending
@@ -95,9 +96,11 @@ class SlurmJob(Job):
         cluster we cancel job using ``scancel <jobid> --clusters=<cluster>``. This method
         is called if job exceeds `maxpendtime`."""
 
-        query = f"scancel {self.jobid}"
+        query = f"{self.slurm_cmds['scancel']} {self.jobid}"
         if self.cluster:
-            query = f"scancel {self.jobid} --clusters={self.cluster}"
+            query = (
+                f"{self.slurm_cmds['scancel']} {self.jobid} --clusters={self.cluster}"
+            )
 
         cmd = BuildTestCommand(query)
         cmd.execute()
@@ -119,7 +122,7 @@ class SlurmJob(Job):
             PENDING
         """
 
-        query = f"sacct -j {self.jobid} -o State -n -X -P"
+        query = f"{self.slurm_cmds['sacct']} -j {self.jobid} -o State -n -X -P"
         if self.cluster:
             query += f" --clusters={self.cluster}"
 
@@ -182,7 +185,7 @@ class SlurmJob(Job):
 
         """
 
-        query = f"scontrol show job {self.jobid}"
+        query = f"{self.slurm_cmds['scontrol']} show job {self.jobid}"
         if self.cluster:
             query += f" --clusters={self.cluster}"
 
@@ -287,7 +290,9 @@ class SlurmJob(Job):
             "WorkDir",
         ]
 
-        query = f"sacct -j {self.jobid} -X -n -P -o ExitCode,Workdir"
+        query = (
+            f"{self.slurm_cmds['sacct']} -j {self.jobid} -X -n -P -o ExitCode,Workdir"
+        )
         if self.cluster:
             query += f" --clusters={self.cluster}"
 
@@ -305,7 +310,7 @@ class SlurmJob(Job):
         self._exitcode = int(exitcode.split(":")[0])
         self._workdir = workdir
 
-        query = f"sacct -j {self.jobid} -X -n -P -o {','.join(sacct_fields)}"
+        query = f"{self.slurm_cmds['sacct']} -j {self.jobid} -X -n -P -o {','.join(sacct_fields)}"
 
         # to query jobs from another cluster we must add -M <cluster> to sacct
         if self.cluster:

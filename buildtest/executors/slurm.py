@@ -11,6 +11,7 @@ import re
 from buildtest.defaults import console
 from buildtest.executors.base import BaseExecutor
 from buildtest.scheduler.slurm import SlurmJob
+from buildtest.utils.tools import check_binaries, deep_get
 
 logger = logging.getLogger(__name__)
 
@@ -42,10 +43,14 @@ class SlurmExecutor(BaseExecutor):
         self.cluster = self._settings.get("cluster")
         self.partition = self._settings.get("partition")
         self.qos = self._settings.get("qos")
+        self.custom_dirs = deep_get(site_configs.target_config, "paths", "slurm")
 
     def launcher_command(self, numprocs=None, numnodes=None):
         """Return sbatch launcher command with options used to submit job"""
-        sbatch_cmd = ["sbatch", "--parsable"]
+        self.slurm_cmds = check_binaries(
+            ["sbatch", "scontrol", "sacct", "scancel"], custom_dirs=self.custom_dirs
+        )
+        sbatch_cmd = [self.slurm_cmds["sbatch"], "--parsable"]
 
         if self.partition:
             sbatch_cmd += [f"-p {self.partition}"]
@@ -103,7 +108,11 @@ class SlurmExecutor(BaseExecutor):
         else:
             builder.metadata["jobid"] = int(parse_jobid)
 
-        builder.job = SlurmJob(builder.metadata["jobid"], self.cluster)
+        builder.job = SlurmJob(
+            jobID=builder.metadata["jobid"],
+            cluster=self.cluster,
+            slurm_cmds=self.slurm_cmds,
+        )
 
         msg = f"[blue]{builder}[/blue]: JobID {builder.metadata['jobid']} dispatched to scheduler"
         console.print(msg)
