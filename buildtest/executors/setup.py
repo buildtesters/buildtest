@@ -407,7 +407,9 @@ class BuildExecutor:
             jobs = [
                 builder
                 for builder in jobs
-                if builder.job.is_running() or builder.job.is_pending() or builder.job.is_suspended()
+                if builder.job.is_running()
+                or builder.job.is_pending()
+                or builder.job.is_suspended()
             ]
 
     def _print_job_details(self, active_jobs):
