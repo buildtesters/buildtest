@@ -142,7 +142,7 @@ class CobaltExecutor(BaseExecutor):
             builder.job.elapsedtime = round(builder.job.elapsedtime, 2)
             if self._cancel_job_if_elapsedtime_exceeds_timeout(builder):
                 return
-
+           
         if builder.job.is_suspended() or builder.job.is_pending():
             if self._cancel_job_if_pendtime_exceeds_maxpendtime(builder):
                 return
@@ -181,7 +181,7 @@ class CobaltExecutor(BaseExecutor):
 
         # if os.path.exists(cobaltlog):
         content = read_file(cobaltlog)
-        pattern = r"(exit code of.)(\d+)(\;)"
+        pattern = r'(exit code of.)(\d+)(\;)'
         # pattern to check in cobalt log file is 'exit code of <CODE>;'
         m = re.search(pattern, content)
         if m:
