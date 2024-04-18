@@ -9,9 +9,9 @@ from buildtest.defaults import (
     console,
 )
 from buildtest.exceptions import BuildTestError, ConfigurationError
+from buildtest.scheduler.detection import LSF, PBS, Cobalt, Slurm, Torque
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_recipe, load_schema
-from buildtest.system import LSF, PBS, Cobalt, Slurm, Torque
 from buildtest.utils.file import resolve_path
 from buildtest.utils.shell import Shell
 from buildtest.utils.tools import deep_get
