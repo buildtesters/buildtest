@@ -12,6 +12,7 @@ from buildtest.defaults import console
 from buildtest.executors.base import BaseExecutor
 from buildtest.scheduler.cobalt import CobaltJob
 from buildtest.utils.file import is_file, read_file
+from buildtest.utils.tools import check_binaries, deep_get
 
 logger = logging.getLogger(__name__)
 
@@ -36,9 +37,13 @@ class CobaltExecutor(BaseExecutor):
         super().__init__(name, settings, site_configs, timeout=timeout)
 
         self.queue = self._settings.get("queue")
+        self.custom_dirs = deep_get(site_configs.target_config, "paths", "cobalt")
 
     def launcher_command(self, numprocs, numnodes):
-        batch_cmd = ["qsub"]
+        self.cobalt_cmds = check_binaries(
+            ["qsub", "qstat", "qdel"], custom_dirs=self.custom_dirs
+        )
+        batch_cmd = [self.cobalt_cmds["qsub"]]
 
         if self.queue:
             batch_cmd += [f"-q {self.queue}"]
@@ -86,7 +91,7 @@ class CobaltExecutor(BaseExecutor):
         job_id = int(out)
         builder.metadata["jobid"] = job_id
 
-        builder.job = CobaltJob(job_id)
+        builder.job = CobaltJob(job_id, self.cobalt_cmds)
 
         msg = f"[blue]{builder}[/]: JobID: {builder.metadata['jobid']} dispatched to scheduler"
         console.print(msg)
