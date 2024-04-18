@@ -130,7 +130,7 @@ class SlurmExecutor(BaseExecutor):
             builder (buildtest.buildsystem.base.BuilderBase): An instance object of BuilderBase type
         """
         builder.record_endtime()
-
+        builder.job.retrieve_jobdata()
         builder.metadata["job"] = builder.job.jobdata()
 
         builder.metadata["result"]["returncode"] = builder.job.exitcode()

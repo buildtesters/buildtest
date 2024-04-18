@@ -309,7 +309,7 @@ class SlurmJob(Job):
         # Exit Code field is in format <ExitCode>:<Signal> for now we care only about first number
         self._exitcode = int(exitcode.split(":")[0])
         self._workdir = workdir
-
+        logger.debug(f"JobID: '{self.jobid}' finished with exitcode: {self._exitcode}")
         query = f"{self.slurm_cmds['sacct']} -j {self.jobid} -X -n -P -o {','.join(sacct_fields)}"
 
         # to query jobs from another cluster we must add -M <cluster> to sacct
