@@ -6,7 +6,7 @@ on:
     paths:
       - 'buildtest/**'
       - 'tests/**'
-      - '.github/workflows/regression.yml'
+      - '.github/workflows/jlse.yml'
       - 'requirements.txt'
       - 'pyproject.toml'
 
