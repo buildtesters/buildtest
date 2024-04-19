@@ -323,7 +323,7 @@ class PBS(Scheduler):
         self.sched_cmds = None
         self._state = self.check(custom_dirs=custom_dirs)
 
-        if self.sched_cmds:
+        if self._state:
             self._queues = self.get_queues()
 
     def active(self):
@@ -456,10 +456,14 @@ class Torque(Scheduler):
     def __init__(self, custom_dirs=None):
         self.logger = logging.getLogger(__name__)
         self.sched_cmds = None
-        self.check(custom_dirs=custom_dirs)
+        self._state = self.check(custom_dirs=custom_dirs)
 
-        if self.sched_cmds:
+        if self._state:
             self._queues = self.get_queues()
+
+    def active(self):
+        """Return True if Torque Scheduler is detected otherwise return False"""
+        return True if self._state and self._queues else False
 
     def check(self, custom_dirs=None):
         """Check if binaries exist in $PATH and run ``qsub --version`` to see output if its Torque Scheduler.
