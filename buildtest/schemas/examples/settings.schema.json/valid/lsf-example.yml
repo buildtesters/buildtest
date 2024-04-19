@@ -18,6 +18,8 @@ system:
       #enable terse mode for report
       terse: False
       format: "name,id,state,runtime,returncode"
+    paths:
+      lsf: /usr/bin
     executors:
       defaults:
         pollinterval: 10
