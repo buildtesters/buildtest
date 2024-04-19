@@ -9,9 +9,9 @@ from buildtest.defaults import (
     console,
 )
 from buildtest.exceptions import BuildTestError, ConfigurationError
+from buildtest.scheduler.detection import LSF, PBS, Cobalt, Slurm, Torque
 from buildtest.schemas.defaults import custom_validator
 from buildtest.schemas.utils import load_recipe, load_schema
-from buildtest.system import LSF, PBS, Cobalt, Slurm, Torque
 from buildtest.utils.file import resolve_path
 from buildtest.utils.shell import Shell
 from buildtest.utils.tools import deep_get
@@ -259,7 +259,7 @@ class SiteConfiguration:
 
         executor_type = "lsf"
 
-        lsf = LSF()
+        lsf = LSF(custom_dirs=deep_get(self.target_config, "paths", "lsf"))
         if not lsf.active():
             return
 
@@ -296,7 +296,7 @@ class SiteConfiguration:
             return
 
         executor_type = "slurm"
-        slurm = Slurm()
+        slurm = Slurm(custom_dirs=deep_get(self.target_config, "paths", "slurm"))
 
         if not slurm.active():
             return
@@ -349,7 +349,7 @@ class SiteConfiguration:
 
         executor_type = "cobalt"
 
-        cobalt = Cobalt()
+        cobalt = Cobalt(custom_dirs=deep_get(self.target_config, "paths", "cobalt"))
         if not cobalt.active():
             return
 
@@ -418,7 +418,7 @@ class SiteConfiguration:
 
         executor_type = "pbs"
 
-        pbs = PBS()
+        pbs = PBS(custom_dirs=deep_get(self.target_config, "paths", "pbs"))
         if not pbs.active():
             return
 
@@ -453,7 +453,7 @@ class SiteConfiguration:
 
         executor_type = "torque"
 
-        torque = Torque()
+        torque = Torque(custom_dirs=deep_get(self.target_config, "paths", "torque"))
         if not torque.active():
             return
 

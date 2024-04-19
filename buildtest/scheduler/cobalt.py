@@ -13,11 +13,12 @@ class CobaltJob(Job):
     is pending, running, complete, suspended.
     """
 
-    def __init__(self, jobID):
+    def __init__(self, jobID, cobalt_cmds):
         super().__init__(jobID)
         self._outfile = str(jobID) + ".output"
         self._errfile = str(jobID) + ".error"
         self._cobaltlog = str(jobID) + ".cobaltlog"
+        self.cobalt_cmds = cobalt_cmds
 
     def is_pending(self):
         """Return ``True`` if job is pending otherwise returns ``False``. When cobalt recieves job it is
@@ -60,7 +61,7 @@ class CobaltJob(Job):
         """Poll job by running ``qstat -l --header State <jobid>`` which retrieves job state."""
 
         # get Job State by running 'qstat -l --header <jobid>'
-        query = f"qstat -l --header State {self.jobid}"
+        query = f"{self.cobalt_cmds['qstat']} -l --header State {self.jobid}"
         logger.debug(f"Getting Job State for '{self.jobid}' by running: '{query}'")
         cmd = BuildTestCommand(query)
         cmd.execute()
@@ -98,7 +99,7 @@ class CobaltJob(Job):
         """
 
         # 'qstat -lf <jobid>' will get all fields of Job.
-        qstat_cmd = f"qstat -lf {self.jobid}"
+        qstat_cmd = f"{self.cobalt_cmds['qstat']} -lf {self.jobid}"
         logger.debug(f"Executing command: {qstat_cmd}")
         cmd = BuildTestCommand(qstat_cmd)
         cmd.execute()
@@ -119,7 +120,7 @@ class CobaltJob(Job):
         ``maxpendtime`` if job is pending.
         """
 
-        query = f"qdel {self.jobid}"
+        query = f"{self.cobalt_cmds['qdel']} {self.jobid}"
         logger.debug(f"Cancelling job {self.jobid} by running: {query}")
         cmd = BuildTestCommand(query)
         cmd.execute()

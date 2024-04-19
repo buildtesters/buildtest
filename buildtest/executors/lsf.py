@@ -11,6 +11,7 @@ import re
 from buildtest.defaults import console
 from buildtest.executors.base import BaseExecutor
 from buildtest.scheduler.lsf import LSFJob
+from buildtest.utils.tools import check_binaries, deep_get
 
 logger = logging.getLogger(__name__)
 
@@ -40,12 +41,16 @@ class LSFExecutor(BaseExecutor):
         )
 
         self.queue = self._settings.get("queue")
+        self.custom_dirs = deep_get(site_configs.target_config, "paths", "lsf")
 
     def launcher_command(self, numprocs=None, numnodes=None):
         """This command returns the launcher command and any options specified in configuration file. This
         is useful when generating the build script in the BuilderBase class
         """
-        cmd = ["bsub"]
+        self.lsf_cmds = check_binaries(
+            ["bsub", "bjobs", "bkill"], custom_dirs=self.custom_dirs
+        )
+        cmd = [self.lsf_cmds["bsub"]]
 
         if self.queue:
             cmd += [f"-q {self.queue}"]
@@ -94,25 +99,25 @@ class LSFExecutor(BaseExecutor):
         out = " ".join(out)
         pattern = r"(\d+)"
         # output in the form:  'Job <58654> is submitted to queue <batch>' and applying regular expression to get job ID
-        m = re.search(pattern, out)
+        regex_match = re.search(pattern, out)
         self.logger.debug(f"Applying regular expression '{pattern}' to output: '{out}'")
 
         # if there is no match we raise error
-        if not m:
+        if not regex_match:
             self.logger.debug(f"Unable to find LSF Job ID in output: '{out}'")
             builder.failed()
             return builder
 
         try:
-            job_id = int(m.group(0))
+            job_id = int(regex_match.group(0))
         except ValueError:
             self.logger.debug(
-                f"Unable to convert '{m.group(0)}' to int to extract Job ID"
+                f"Unable to convert '{regex_match.group(0)}' to int to extract Job ID"
             )
             builder.failed()
             return builder
 
-        builder.job = LSFJob(job_id)
+        builder.job = LSFJob(job_id, self.lsf_cmds)
 
         builder.metadata["jobid"] = job_id
 

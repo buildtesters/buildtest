@@ -16,11 +16,11 @@ class PBSJob(Job):
     to poll job state, gather job results upon completion and cancel job.
     """
 
-    poll_command = "qstat -xf"
-
-    def __init__(self, jobID):
+    def __init__(self, jobID, sched_cmds):
         self._outfile = None
         self._errfile = None
+        self.qdel_cmd = sched_cmds["qdel"]
+        self.poll_command = f"{sched_cmds['qstat']} -xf"
         super().__init__(jobID)
 
     def is_pending(self):
@@ -268,7 +268,7 @@ class PBSJob(Job):
 
     def cancel(self):
         """Cancel PBS job by running ``qdel <jobid>``."""
-        query = f"qdel {self.jobid}"
+        query = f"{self.qdel_cmd} {self.jobid}"
         logger.debug(f"Cancelling job {self.jobid} by running: {query}")
         cmd = BuildTestCommand(query)
         cmd.execute()
@@ -276,7 +276,13 @@ class PBSJob(Job):
 
 class TorqueJob(PBSJob):
 
-    poll_command = "qstat -f"
+    def __init__(self, jobID, sched_cmds):
+        self._outfile = None
+        self._errfile = None
+        super().__init__(jobID, sched_cmds)
+        self.qdel_cmd = sched_cmds["qdel"]
+        # need to redeclare this since we are using qstat -f and not qstat -xf (PBS)
+        self.poll_command = f"{sched_cmds['qstat']} -f"
 
     def retrieve_jobdata(self):
         """This method is called once job is complete. We will gather record of job by running

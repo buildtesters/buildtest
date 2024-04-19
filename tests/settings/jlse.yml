@@ -1,7 +1,7 @@
 system:
   jlse:
     # hostnames on JLSE where jobs are run are jlsebatch[1-2]
-    hostnames: ['^jlsebatch\d{1}$']
+    hostnames: ['^jlsebatch([1-2]).*']
     moduletool: environment-modules
     poolsize: 8
     max_jobs: 10
@@ -18,7 +18,7 @@ system:
     executors:
       defaults:
         pollinterval: 30
-        maxpendtime: 300
+        maxpendtime: 15
       local:
         bash:
           description: submit jobs on local machine using bash shell

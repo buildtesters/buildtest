@@ -3,7 +3,7 @@ system:
     hostnames:
     - .*
     description: Generic System
-    moduletool: environment-modules
+    moduletool: 'none'
     pager: false
     buildspecs:
       rebuild: false
@@ -22,8 +22,8 @@ system:
           description: submit jobs on local machine using bash shell
           shell: bash
       torque:
-        e4spro:
-          queue: e4spro-cluster
+        lbl:
+          queue: lbl-cluster
     compilers:
       find:
         gcc: ^(gcc)

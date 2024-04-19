@@ -9,8 +9,9 @@ logger = logging.getLogger(__name__)
 
 
 class LSFJob(Job):
-    def __init__(self, jobID):
+    def __init__(self, jobID, lsf_cmds):
         super().__init__(jobID)
+        self.lsf_cmds = lsf_cmds
 
     def is_pending(self):
         """Check if Job is pending which is reported by LSF as ``PEND``. Return ``True`` if there is a match otherwise returns ``False``"""
@@ -48,7 +49,7 @@ class LSFJob(Job):
         """
 
         # get job state
-        query = f"bjobs -noheader -o 'stat' {self.jobid}"
+        query = f"{self.lsf_cmds['bjobs']} -noheader -o 'stat' {self.jobid}"
         logger.debug(query)
         logger.debug(
             f"Extracting Job State for job: {self.jobid} by running  '{query}'"
@@ -59,7 +60,7 @@ class LSFJob(Job):
         self._state = "".join(job_state).rstrip()
         logger.debug(f"Job State: {self._state}")
 
-        query = f"bjobs -noheader -o 'EXIT_CODE' {self.jobid} "
+        query = f"{self.lsf_cmds['bjobs']} -noheader -o 'EXIT_CODE' {self.jobid} "
         logger.debug(
             f"Extracting EXIT CODE for job: {self.jobid} by running  '{query}'"
         )
@@ -94,7 +95,7 @@ class LSFJob(Job):
              hold_job.err
         """
         # get path to output file
-        query = f"bjobs -noheader -o 'output_file' {self.jobid} "
+        query = f"{self.lsf_cmds['bjobs']} -noheader -o 'output_file' {self.jobid} "
         logger.debug(
             f"Extracting OUTPUT FILE for job: {self.jobid} by running  '{query}'"
         )
@@ -104,7 +105,7 @@ class LSFJob(Job):
         logger.debug(f"Output File: {self._outfile}")
 
         # get path to error file
-        query = f"bjobs -noheader -o 'error_file' {self.jobid} "
+        query = f"{self.lsf_cmds['bjobs']} -noheader -o 'error_file' {self.jobid} "
         logger.debug(
             f"Extracting ERROR FILE for job: {self.jobid} by running  '{query}'"
         )
@@ -172,7 +173,7 @@ class LSFJob(Job):
             "error_file",
         ]
 
-        query = f"bjobs -o '{' '.join(format_fields)}' {self.jobid} -json"
+        query = f"{self.lsf_cmds['bjobs']} -o '{' '.join(format_fields)}' {self.jobid} -json"
 
         logger.debug(f"Gather LSF job: {self.jobid} data by running: {query}")
         cmd = BuildTestCommand(query)
@@ -195,7 +196,7 @@ class LSFJob(Job):
         """Cancel LSF Job by running ``bkill <jobid>``. This method is called if job pending time exceeds
         `maxpendtime` limit during poll stage."""
 
-        query = f"bkill {self.jobid}"
+        query = f"{self.lsf_cmds['bkill']} {self.jobid}"
         logger.debug(f"Cancelling job {self.jobid} by running: {query}")
         cmd = BuildTestCommand(query)
         cmd.execute()

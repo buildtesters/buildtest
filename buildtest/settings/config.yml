@@ -45,6 +45,24 @@ system:
       # specify format fields
       format: name,id,state,runtime,returncode
 
+    # specify directory paths to search for binaries
+    #paths:
+      # directory path to search for slurm binaries.
+      #slurm: "/usr/bin"
+
+      # directory path to search for lsf binaries.
+      #lsf: "/usr/bin"
+
+      # directory path to search for pbs binaries.
+      #pbs: "/usr/bin"
+
+      # directory path to search for torque binaries.
+      #torque: "/usr/bin"
+
+      # directory path to search for cobalt binaries.
+      #cobalt: "/usr/bin"
+
+
     # start of executor configuration
     executors:
       # local executor is used to submit jobs on local machine. In this example we have 4 executors: bash, sh, csh, zsh that will submit jobs using bash, sh, csh, zsh shell respectively.

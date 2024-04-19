@@ -151,6 +151,26 @@ based on platform (Linux, Mac).
 The buildtest logs will start with **buildtest_** followed by random identifier with
 a **.log** extension.
 
+Specify directory paths to search for binaries
+----------------------------------------------
+
+The ``paths`` property can be used to search for binaries for batch schedulers. If your scheduler binaries
+are installed in a non-standard location that is not in $PATH, you can use this to specify the directory path.
+
+In example below we will, we will specify directories for SLURM, LSF, PBS, TORQUE, and COBALT binaries that
+are not in $PATH and installed in `/usr/local/slurm/bin`, `/usr/local/lsf/bin`,
+`/usr/local/pbs/bin`, `/usr/local/torque/bin`, `/usr/local/cobalt/bin` respectively.
+
+.. code-block:: yaml
+
+    paths:
+      slurm: /usr/local/slurm/bin
+      lsf: /usr/local/lsf/bin
+      pbs: /usr/local/pbs/bin
+      torque: /usr/local/torque/bin
+      cobalt: /usr/local/cobalt/bin
+
+
 Buildspec Cache
 ----------------
 

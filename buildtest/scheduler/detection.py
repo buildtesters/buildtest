@@ -1,10 +1,10 @@
 import json
 import logging
 import re
-import shutil
 
 from buildtest.exceptions import BuildTestError
 from buildtest.utils.command import BuildTestCommand
+from buildtest.utils.tools import check_binaries
 
 
 class Scheduler:
@@ -16,32 +16,19 @@ class Scheduler:
     logger = logging.getLogger(__name__)
     binaries = []
 
-    def __init__(self):
+    def __init__(self, custom_dirs=None):
+
         self.logger = logging.getLogger(__name__)
-        self.is_active = self.check_binaries(self.binaries)
-        if self.is_active:
+        self.sched_cmds = check_binaries(self.binaries, custom_dirs=custom_dirs)
+        if self.sched_cmds:
             self._queues = self.get_queues()
 
     def queues(self):
         return self._queues
 
-    def check_binaries(self, binaries):
-        """Check if binaries exist binary exist in $PATH"""
-
-        self.logger.debug(
-            f"We will check the following binaries {binaries} for existence."
-        )
-        for command in binaries:
-            if not shutil.which(command):
-                self.logger.debug(f"Cannot find {command} command in $PATH")
-                return False
-
-            self.logger.debug(f"{command}: {shutil.which(command)}")
-        return True
-
     def active(self):
         """Returns ``True`` if buildtest is able to retrieve queues from Scheduler otherwises returns ``False``"""
-        return self.is_active
+        return self.sched_cmds
 
     def get_queues(self):
         """This method is implemented by subclass to return a list of queues for a given scheduler"""
@@ -57,13 +44,13 @@ class Slurm(Scheduler):
     # specify a set of Slurm commands to check for file existence
     binaries = ["sbatch", "sacct", "sacctmgr", "sinfo", "scancel", "scontrol"]
 
-    def __init__(self):
+    def __init__(self, custom_dirs=None):
         self.logger = logging.getLogger(__name__)
 
-        self.is_active = self.check_binaries(self.binaries)
+        self.sched_cmds = check_binaries(self.binaries, custom_dirs=custom_dirs)
 
         # retrieve slurm partitions, qos, and cluster only if slurm is detected.
-        if self.is_active:
+        if self.sched_cmds:
             self._partitions = self._get_partitions()
             self._clusters = self._get_clusters()
             self._qos = self._get_qos()
@@ -102,7 +89,7 @@ class Slurm(Scheduler):
         """
         # get list of partitions
 
-        return self.run_command("sinfo -a -h -O partitionname")
+        return self.run_command(f"{self.sched_cmds['sinfo']} -a -h -O partitionname")
 
     def _get_clusters(self):
         """Get list of slurm clusters by running ``sacctmgr list cluster -P -n format=Cluster``.
@@ -115,7 +102,9 @@ class Slurm(Scheduler):
              escori
 
         """
-        return self.run_command("sacctmgr list cluster -P -n format=Cluster")
+        return self.run_command(
+            f"{self.sched_cmds['sacctmgr']} list cluster -P -n format=Cluster"
+        )
 
     def _get_qos(self):
         """Retrieve a list of all slurm qos by running ``sacctmgr list qos -P -n  format=Name``. The output
@@ -132,7 +121,9 @@ class Slurm(Scheduler):
 
         """
 
-        return self.run_command("sacctmgr list qos -P -n  format=Name")
+        return self.run_command(
+            f"{self.sched_cmds['sacctmgr']} list qos -P -n  format=Name"
+        )
 
     def validate_partition(self, slurm_executor):
         """Validate the partition for a given executor.
@@ -154,12 +145,10 @@ class Slurm(Scheduler):
             )
             return False
 
-        self.logger.debug(
-            "Slurm partition: {slurm_executor['partition']} is found in list of partitions."
-        )
+        self.logger.debug(f"Slurm partition: {slurm_executor['partition']} is found.")
         # check if partition is in 'up' state. If not we raise an error.
         part_state = self.run_command(
-            f"sinfo -p {slurm_executor['partition']} -h -O available"
+            f"{self.sched_cmds['sinfo']} -p {slurm_executor['partition']} -h -O available"
         )
 
         if part_state != "up":
@@ -243,7 +232,7 @@ class LSF(Scheduler):
 
         """
 
-        query = "bqueues -o 'queue_name status' -json"
+        query = f"{self.sched_cmds['bqueues']} -o 'queue_name status' -json"
         cmd = BuildTestCommand(query)
         cmd.execute()
         out = cmd.get_output()
@@ -258,8 +247,7 @@ class LSF(Scheduler):
                 raise BuildTestError(
                     f"Unable to process LSF Queues when running: {query}"
                 )
-
-        return queues
+            return queues
 
     def validate_queue(self, executor):
         """This method will validate a LSF queue. We check if queue is available and in 'Open:Active' state.
@@ -307,7 +295,7 @@ class Cobalt(Scheduler):
     def get_queues(self):
         """Get all Cobalt queues by running ``qstat -Ql`` and parsing output"""
 
-        query = "qstat -Ql"
+        query = f"{self.sched_cmds['qstat']} -Ql"
         cmd = BuildTestCommand(query)
         cmd.execute()
         content = cmd.get_output()
@@ -328,16 +316,21 @@ class PBS(Scheduler):
     """The PBS class checks for PBS binaries and gets a list of available queues"""
 
     # specify a set of PBS commands to check for file existence
-    binaries = ["qsub", "qstat", "qdel", "qstart", "qhold", "qmgr"]
+    binaries = ["qsub", "qstat", "qdel", "qhold", "qmgr"]
 
-    def __init__(self):
+    def __init__(self, custom_dirs=None):
         self.logger = logging.getLogger(__name__)
-        self.is_active = self.check()
+        self.sched_cmds = None
+        self._state = self.check(custom_dirs=custom_dirs)
 
-        if self.is_active:
+        if self._state:
             self._queues = self.get_queues()
 
-    def check(self):
+    def active(self):
+        """Return True if PBS Scheduler is detected otherwise return False"""
+        return True if self._state and self._queues else False
+
+    def check(self, custom_dirs=None):
         """Check if binaries exist in $PATH and run ``qsub --version`` to see output to
         determine if its OpenPBS scheduler. The return will be a boolean type where ``True`` indicates
         the check has passed.
@@ -350,14 +343,14 @@ class PBS(Scheduler):
         Args:
             binaries (list): list of binaries to check for existence in $PATH
         """
-
-        if not super().check_binaries(self.binaries):
+        self.sched_cmds = check_binaries(self.binaries, custom_dirs=custom_dirs)
+        if not self.sched_cmds:
             return False
 
         # check output of qsub --version to see if it contains string 'pbs_version'
         # [pbsuser@pbs tmp]$ qsub --version
         # pbs_version = 19.0.0
-        qsub_version = "qsub --version"
+        qsub_version = f"{self.sched_cmds['qsub']} --version"
         cmd = BuildTestCommand(qsub_version)
         cmd.execute()
         out = " ".join(cmd.get_output())
@@ -403,7 +396,7 @@ class PBS(Scheduler):
                  }
              }
         """
-        query = "qstat -Q -f -F json"
+        query = f"{self.sched_cmds['qstat']} -Q -f -F json"
         cmd = BuildTestCommand(query)
         cmd.execute()
         content = " ".join(cmd.get_output())
@@ -454,10 +447,25 @@ class PBS(Scheduler):
         return True
 
 
-class Torque(PBS):
-    """The Torque class is a subclass of PBS class and inherits all methods from PBS class"""
+class Torque(Scheduler):
+    """The Torque class for detecting Torque Scheduler and getting list of queues."""
 
-    def check(self):
+    # specify a set of Torque commands to check for file existence
+    binaries = ["qsub", "qstat", "qdel", "qhold", "qmgr"]
+
+    def __init__(self, custom_dirs=None):
+        self.logger = logging.getLogger(__name__)
+        self.sched_cmds = None
+        self._state = self.check(custom_dirs=custom_dirs)
+
+        if self._state:
+            self._queues = self.get_queues()
+
+    def active(self):
+        """Return True if Torque Scheduler is detected otherwise return False"""
+        return True if self._state and self._queues else False
+
+    def check(self, custom_dirs=None):
         """Check if binaries exist in $PATH and run ``qsub --version`` to see output if its Torque Scheduler.
         The return will be a boolean type where ``True`` indicates the check has passed.
 
@@ -474,15 +482,15 @@ class Torque(PBS):
             binaries (list): list of binaries to check for existence in $PATH
 
         """
-
-        if not super().check_binaries(self.binaries):
+        self.sched_cmds = check_binaries(self.binaries, custom_dirs=custom_dirs)
+        if not self.sched_cmds:
             return False
 
         # check output of qsub --version to see if it contains 'Commit:'
         # (buildtest) adaptive50@e4spro-cluster:$ qsub --version
         # Version: 7.0.1
         # Commit: b405f8c22d41d29cbf9b9016bc1146bf4559e895
-        qsub_version = "qsub --version"
+        qsub_version = f"{self.sched_cmds['qsub']} --version"
         cmd = BuildTestCommand(qsub_version)
         cmd.execute()
         # output goes to error stream
@@ -498,6 +506,7 @@ class Torque(PBS):
                 f"Found 'Commit:' in output of {qsub_version}, this must be a Torque Scheduler"
             )
             return True
+
         return False
 
     def get_queues(self):
@@ -519,7 +528,7 @@ class Torque(PBS):
 
         """
 
-        query = "qstat -Qf"
+        query = f"{self.sched_cmds['qstat']} -Qf"
         cmd = BuildTestCommand(query)
         cmd.execute()
         self.logger.debug(f"Get Torque Queues details by running '{query}'")
