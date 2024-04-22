@@ -216,3 +216,21 @@ def test_metrics_regex_with_invalid_linenum():
         configuration=config,
     )
     cmd.build()
+
+
+def test_metrics_file_regex_with_linenum():
+    """This test will perform status check on a particular line from a file where regular expression is applied"""
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "metrics_file_regex_with_linenum.yml")],
+        configuration=config,
+    )
+    cmd.build()
+
+
+def test_metrics_file_regex_with_invalid_linenum():
+    """This test will test metrics file regex with invalid line number"""
+    cmd = BuildTest(
+        buildspecs=[os.path.join(here, "metrics_file_regex_with_invalid_linenum.yml")],
+        configuration=config,
+    )
+    cmd.build()
