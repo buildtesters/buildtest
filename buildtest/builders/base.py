@@ -932,25 +932,26 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
         return lines
 
-    def _extract_line(self, regex, content):
-        """Extract content based on the linenum property from the regex or file_regex
-        field and return it as a string.
+    def _extract_line(self, linenum, content):
+        """Extract content based on the line number and return it as a string.
 
         Args:
-            regex (dict): regex or file_regex section from the metrics field
+            linenum (int): line number
             content (str): content to be extracted from
         """
 
-        linenum = regex.get("linenum")
-        if linenum is not None and content:
-            lines = content.split("\n")
-            if lines[-1] == "":
-                lines.pop()
-            try:
-                content = lines[linenum]
-            except IndexError as e:
-                content = ""
-                self.logger.error(e)
+        if linenum is None:
+            return content
+
+        lines = content.split("\n")
+        # removen last line if file ends in new line character
+        if lines[-1] == "":
+            lines.pop()
+        try:
+            content = lines[linenum]
+        except IndexError as e:
+            content = ""
+            self.logger.error(e)
         return content
 
     def add_metrics(self):
@@ -972,7 +973,9 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
 
                 stream = regex.get("stream")
                 content_input = self._output if stream == "stdout" else self._error
-                content = self._extract_line(regex, content_input)
+
+                linenum = regex.get("linenum")
+                content = self._extract_line(linenum, content_input)
 
                 if regex.get("re") == "re.match":
                     match = re.match(regex["exp"], content, re.MULTILINE)
@@ -1000,8 +1003,10 @@ trap cleanup SIGINT SIGTERM SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGPIPE SIGTE
                         console.print(msg, style="red")
                         continue
 
+                    linenum = file_regex.get("linenum")
                     content_input = read_file(resolved_fname)
-                    content = self._extract_line(file_regex, content_input)
+                    content = self._extract_line(linenum, content_input)
+
                     match = (
                         re.search(file_regex["exp"], content, re.MULTILINE)
                         if content
