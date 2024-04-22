@@ -921,6 +921,10 @@ class BuildTestParser:
                     },
                 ),
                 (
+                    ["--profile"],
+                    {"help": "Specify a profile to load from configuration file"},
+                ),
+                (
                     ["--remove-stagedir"],
                     {
                         "action": "store_true",
@@ -943,10 +947,9 @@ class BuildTestParser:
                     },
                 ),
                 (
-                    ["--validate"],
+                    ["--save-profile"],
                     {
-                        "action": "store_true",
-                        "help": "Validate given buildspecs and control behavior of buildtest build to stop execution after parsing the YAML files.",
+                        "help": "Save buildtest command options into a profile and update configuration file"
                     },
                 ),
                 (
@@ -963,15 +966,19 @@ class BuildTestParser:
                     },
                 ),
                 (
-                    ["--save-profile"],
+                    ["--validate"],
                     {
-                        "help": "Save buildtest command options into a profile and update configuration file"
+                        "action": "store_true",
+                        "help": "Validate given buildspecs and control behavior of buildtest build to stop execution after parsing the YAML files.",
                     },
                 ),
                 (
-                    ["--profile"],
-                    {"help": "Specify a profile to load from configuration file"},
-                ),
+                    ["--write-config-file"],
+                    {
+                        "type": str,
+                        "help": "Specify path to configuration file to write changes when saving profile",
+                    },
+                )
             ],
         }
 
