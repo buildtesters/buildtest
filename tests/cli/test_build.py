@@ -6,9 +6,9 @@ import pytest
 from rich.pretty import pprint
 
 from buildtest.cli.build import BuildTest, discover_buildspecs
-from buildtest.cli.config import list_profiles
 from buildtest.cli.buildspec import BuildspecCache
 from buildtest.cli.clean import clean
+from buildtest.cli.config import list_profiles
 from buildtest.config import SiteConfiguration
 from buildtest.defaults import BUILDTEST_RERUN_FILE, BUILDTEST_ROOT
 from buildtest.exceptions import BuildTestError
@@ -474,11 +474,12 @@ class TestBuildTest:
             print(f"Writing to same configuration file: {tf.name} is not allowed")
             BuildTest(
                 configuration=configuration,
-                buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "hello_world.yml")],
+                buildspecs=[
+                    os.path.join(BUILDTEST_ROOT, "tutorials", "hello_world.yml")
+                ],
                 save_profile="demo",
                 write_config_file=tf.name,
             )
-
 
         tf = tempfile.TemporaryDirectory()
         # writing to directory is not allowed
@@ -486,12 +487,12 @@ class TestBuildTest:
             print(f"Writing to directory: {tf.name} is not allowed")
             BuildTest(
                 configuration=configuration,
-                buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "hello_world.yml")],
+                buildspecs=[
+                    os.path.join(BUILDTEST_ROOT, "tutorials", "hello_world.yml")
+                ],
                 save_profile="demo",
-                write_config_file=tf.name
+                write_config_file=tf.name,
             )
-
-
 
     @pytest.mark.cli
     def test_retry(self):

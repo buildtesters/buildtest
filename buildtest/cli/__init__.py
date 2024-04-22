@@ -978,7 +978,7 @@ class BuildTestParser:
                         "type": str,
                         "help": "Specify path to configuration file to write changes when saving profile",
                     },
-                )
+                ),
             ],
         }
 
