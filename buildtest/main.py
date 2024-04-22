@@ -193,6 +193,7 @@ def main():
                 profile=args.profile,
                 max_jobs=args.max_jobs,
                 verbose=args.verbose,
+                write_config_file=args.write_config_file,
             )
             cmd.build()
 

@@ -627,6 +627,7 @@ class BuildTest:
         profile=None,
         max_jobs=None,
         verbose=None,
+        write_config_file=None,
     ):
         """The initializer method is responsible for checking input arguments for type
         check, if any argument fails type check we raise an error. If all arguments pass
@@ -665,6 +666,7 @@ class BuildTest:
             profile (str, optional): Profile to load from buildtest configuration specified by ``buildtest build --profile``
             max_jobs (int, optional): Maximum number of jobs to run concurrently. This option is specified by ``buildtest build --max-jobs``
             verbose (bool, optional): Enable verbose output for buildtest that is specified by ``buildtest --verbose``
+            write_config_file (str, optional): Write configuration file to specified location. This is specified by ``buildtest build --write-config-file``
         """
         self.verbose = verbose
 
@@ -690,7 +692,7 @@ class BuildTest:
                 raise BuildTestError(f"{arg_name} is not of type list")
 
         # check for input arguments that are expected to be a string
-        for arg_name in [testdir, save_profile, profile]:
+        for arg_name in [testdir, save_profile, profile, write_config_file]:
             if arg_name and not isinstance(arg_name, str):
                 raise BuildTestError(f"{arg_name} is not of type str")
 
@@ -740,6 +742,7 @@ class BuildTest:
         self.save_profile = save_profile
         self.profile = profile
         self.max_jobs = max_jobs
+        self.write_config_file = write_config_file
 
         # this variable contains the detected buildspecs that will be processed by buildtest.
         self.detected_buildspecs = None
@@ -930,7 +933,24 @@ class BuildTest:
         """This method will save profile to configuration file. This method is called when ``buildtest build --save-profile`` is invoked. We will open the configuration
         file and update the profile section, if profile already exist we will override it, otherwise we will insert into the configuration file.
         """
+        config_file_path = None
+        if self.write_config_file:
+            config_file_path = resolve_path(self.write_config_file, exist=False)
+            if not config_file_path:
+                raise BuildTestError(
+                    f"Unable to resolve path for {self.write_config_file}"
+                )
+            if is_dir(config_file_path):
+                raise BuildTestError(
+                    f"{config_file_path} is a directory, please specify a file path"
+                )
 
+            if os.path.exists(config_file_path):
+                raise BuildTestError(
+                    f"[red]Configuration file {config_file_path} already exists. Please specify a new file path"
+                )
+
+        config_file_path = config_file_path or self.configuration.file
         resolved_buildspecs = []
         if self.buildspecs:
             for file in self.buildspecs:
@@ -1002,10 +1022,10 @@ class BuildTest:
         )
 
         console.print(
-            f"Saved profile {self.save_profile} to configuration file {self.configuration.file}"
+            f"Saved profile {self.save_profile} to configuration file {config_file_path}"
         )
 
-        with open(self.configuration.file, "w") as fd:
+        with open(config_file_path, "w") as fd:
             yaml.safe_dump(
                 self.configuration.config, fd, default_flow_style=False, sort_keys=False
             )
