@@ -19,3 +19,9 @@ jobs:
       - name: "Regression Test on JLSE"
         run: |
           hostname
+          ml conda
+          python -m venv $CI_PROJECT_DIR/.pyenv
+          source $CI_PROJECT_DIR/.pyenv/bin/activate
+          source setup.sh
+          pip install -r docs/requirements.txt
+          python $BUILDTEST_ROOT/buildtest/tools/unittests.py -c
