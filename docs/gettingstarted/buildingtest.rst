@@ -597,7 +597,7 @@ To demonstrate this, we will save the profile to configuration file ``/tmp/my_co
 
     We can view the profile configuration file by specifying the path to the configuration file.
 
-    .. command-output:: buildtest --config-file /tmp/my_config.yml config view
+    .. command-output:: buildtest --config /tmp/my_config.yml config view
 
 Please note that when using ``-write-config-file``, the path must be a file path and file must not exist. If you specify
 a directory path or file already exists you will get an error message.
