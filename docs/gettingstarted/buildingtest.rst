@@ -586,6 +586,22 @@ Next, let's build the tests via newly created profile and take note that it will
 
     .. command-output:: buildtest build --profile=python-tests
 
+
+You can also specify an alternate location to write configuration file via ``--write-config-file`` when saving profile configuration.
+This can be useful if one wants to use a new configuration file without overwriting the current file for testing purposes.
+To demonstrate this, we will save the profile to configuration file ``/tmp/my_config.yml``
+
+.. dropdown:: ``buildtest build -t python --save-profile=python --write-config-file=/tmp/my_config.yml``
+
+    .. command-output:: buildtest build -t python --save-profile=python --write-config-file=/tmp/my_config.yml
+
+    We can view the profile configuration file by specifying the path to the configuration file.
+
+    .. command-output:: buildtest --config-file /tmp/my_config.yml config view
+
+Please note that when using ``-write-config-file``, the path must be a file path and file must not exist. If you specify
+a directory path or file already exists you will get an error message.
+
 .. _limit_max_jobs:
 
 Limit Maximum Jobs that can run concurrently (``buildtest build --max-jobs``)
