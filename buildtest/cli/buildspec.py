@@ -29,9 +29,9 @@ from buildtest.utils.file import (
     is_dir,
     is_file,
     load_json,
+    read_file,
     resolve_path,
     walk_tree,
-    read_file
 )
 from buildtest.utils.tools import checkColor
 
