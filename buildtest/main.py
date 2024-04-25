@@ -311,7 +311,7 @@ def main():
         if args.config in ["compilers", "co"]:
             compiler_cmd(args, configuration)
         else:
-            config_cmd(args, configuration, buildtest_editor, system)
+            config_cmd(command_args=args, configuration=configuration, editor=buildtest_editor, system=system)
 
     # buildtest report
     elif args.subcommands in ["report", "rt"]:
