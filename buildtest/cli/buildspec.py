@@ -1132,42 +1132,6 @@ class BuildspecCache:
             console.print(path)
 
 
-def edit_buildspec_test(test_names, configuration, editor):
-    """Open a list of test names in editor mode defined by ``EDITOR`` environment otherwise resort to ``vim``.
-    This method will search for buildspec cache and find path to buildspec file corresponding to test name and open
-    file in editor. If multiple test are specified via ``buildtest buildspec edit-test`` then each file will be open and
-    upon closing file, the next file will be open for edit until all files are written.
-
-    Args:
-        test_names (list): A list of test names to open in editor
-        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
-        editor (str): Path to editor to use when opening file
-    """
-    cache = BuildspecCache(configuration=configuration)
-
-    for name in test_names:
-        if name not in cache.get_names():
-            console.print(f"[red]Unable to find test {name} in cache")
-            continue
-
-        buildspec = cache.lookup_buildspec_by_name(name)
-
-        # only used for regression testing to ensure test is not stuck for closing file
-        if not editor:
-            editor = "echo"  # Doesnt call the editor.
-
-        subprocess.call([editor, buildspec])
-        print(f"Writing file: {buildspec}")
-
-        be = BuildExecutor(configuration)
-        try:
-            BuildspecParser(buildspec, be)
-        except ValidationError:
-            console.print(f"[red]{buildspec} is invalid")
-            continue
-        console.print(f"[green]{buildspec} is valid")
-
-
 def edit_buildspec_file(buildspecs, configuration, editor):
     """Open buildspec in editor and validate buildspec with parser. This method is invoked by command ``buildtest buildspec edit-file``.
 
@@ -1541,3 +1505,44 @@ def buildspec_find(args, configuration):
         return
 
     cache.print_buildspecs(quiet=args.quiet, row_count=args.row_count)
+
+def open_buildspec_in_editor(buildspec, editor):
+    """Open a buildspec in the specified editor and print a message."""
+
+    # only used for regression testing to ensure test is not stuck for closing file
+    if not editor:
+        editor = "echo"  # Doesnt call the editor.
+
+    subprocess.call([editor, buildspec])
+    print(f"Writing file: {buildspec}")
+
+def validate_buildspec(buildspec, configuration):
+    """Validate a buildspec and print the result."""
+    be = BuildExecutor(configuration)
+    try:
+        BuildspecParser(buildspec, be)
+        console.print(f"[green]{buildspec} is valid")
+    except ValidationError:
+        console.print(f"[red]{buildspec} is invalid")
+
+def edit_buildspec_test(test_names, configuration, editor):
+    """Open a list of test names in editor mode defined by ``EDITOR`` environment otherwise resort to ``vim``.
+    This method will search for buildspec cache and find path to buildspec file corresponding to test name and open
+    file in editor. If multiple test are specified via ``buildtest buildspec edit-test`` then each file will be open and
+    upon closing file, the next file will be open for edit until all files are written.
+
+    Args:
+        test_names (list): A list of test names to open in editor
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+        editor (str): Path to editor to use when opening file
+    """
+    cache = BuildspecCache(configuration=configuration)
+
+    for name in test_names:
+        if name not in cache.get_names():
+            print(f"Invalid test name: {name}")
+            continue
+
+        buildspec = cache.lookup_buildspec_by_name(name)
+        open_buildspec_in_editor(buildspec, editor)
+        validate_buildspec(buildspec, configuration)
