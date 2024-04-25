@@ -1007,7 +1007,7 @@ class BuildTestParser:
                 "help": "Edit buildspec file based on filename",
                 "parents": [],
                 "aliases": ["ef"],
-                "args": [
+                "arguments": [
                     (["file"], {"help": "Edit buildspec file in editor", "nargs": "*"})
                 ],
             },
@@ -1016,7 +1016,7 @@ class BuildTestParser:
                 "help": "Edit buildspec file based on test name",
                 "parents": [],
                 "aliases": ["et"],
-                "args": [
+                "arguments": [
                     (
                         ["name"],
                         {
