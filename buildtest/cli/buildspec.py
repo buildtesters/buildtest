@@ -1147,21 +1147,9 @@ def edit_buildspec_file(buildspecs, configuration, editor):
                 f"buildspec: {buildspec} is a directory, please specify a file type"
             )
             continue
-        # only used for regression testing to ensure test is not stuck for closing file
-        if not editor:
-            editor = "cat"
-        subprocess.call([editor, buildspec])
 
-        print(f"Writing file: {buildspec}")
-
-        be = BuildExecutor(configuration)
-        try:
-            BuildspecParser(buildspec, be)
-        except ValidationError:
-            console.print(f"[red]{buildspec} is invalid")
-            continue
-        console.print(f"[green]{buildspec} is valid")
-
+        open_buildspec_in_editor(buildspec, editor)
+        validate_buildspec(buildspec, configuration)
 
 def show_buildspecs(test_names, configuration, theme=None):
     """This is the entry point for ``buildtest buildspec show`` command which will print content of
