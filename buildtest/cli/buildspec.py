@@ -31,6 +31,7 @@ from buildtest.utils.file import (
     load_json,
     resolve_path,
     walk_tree,
+    read_file
 )
 from buildtest.utils.tools import checkColor
 
@@ -1151,6 +1152,33 @@ def edit_buildspec_file(buildspecs, configuration, editor):
         open_buildspec_in_editor(buildspec, editor)
         validate_buildspec(buildspec, configuration)
 
+
+def is_test_name_in_cache(test_name, cache):
+    """Check if a test name is in the cache.
+
+    Args:
+        test_name (str): The test name to check.
+        cache (BuildspecCache): The cache to check in.
+
+    Returns:
+        bool: True if the test name is in the cache, False otherwise.
+    """
+    return test_name in cache.get_names()
+
+
+def print_buildspec_content(buildspec, theme):
+    """Print the content of a buildspec.
+
+    Args:
+        buildspec (str): The buildspec to print the content of.
+        theme (str): The theme to use when printing the content.
+    """
+    console.rule(buildspec)
+    content = read_file(buildspec)
+    syntax = Syntax(content, "yaml", theme=theme)
+    console.print(syntax)
+
+
 def show_buildspecs(test_names, configuration, theme=None):
     """This is the entry point for ``buildtest buildspec show`` command which will print content of
     buildspec based on name of test.
@@ -1166,22 +1194,18 @@ def show_buildspecs(test_names, configuration, theme=None):
     error_msg = []
     visited = set()
     for name in test_names:
-        if name not in cache.get_names():
-            error_msg.append(f"[red]Unable to find test {name} in cache")
+        if not is_test_name_in_cache(name, cache):
+            error_msg.append(f"Invalid test name: {name}")
             continue
 
         buildspec = cache.lookup_buildspec_by_name(name)
         if buildspec not in visited:
+            print_buildspec_content(buildspec, theme)
             visited.add(buildspec)
-
-            console.rule(buildspec)
-            with open(buildspec) as fd:
-                syntax = Syntax(fd.read(), "yaml", theme=theme)
-            console.print(syntax)
 
     if error_msg:
         for line in error_msg:
-            console.print(line)
+            console.print(line, style="bold red")
 
 
 def show_failed_buildspecs(
@@ -1494,6 +1518,7 @@ def buildspec_find(args, configuration):
 
     cache.print_buildspecs(quiet=args.quiet, row_count=args.row_count)
 
+
 def open_buildspec_in_editor(buildspec, editor):
     """Open a buildspec in the specified editor and print a message."""
 
@@ -1504,14 +1529,21 @@ def open_buildspec_in_editor(buildspec, editor):
     subprocess.call([editor, buildspec])
     print(f"Writing file: {buildspec}")
 
+
 def validate_buildspec(buildspec, configuration):
-    """Validate a buildspec and print the result."""
+    """Validate a buildspec and print the result.
+
+    Args:
+        buildspec (str): Path to buildspec file to validate
+        configuration (buildtest.config.SiteConfiguration): An instance of SiteConfiguration class
+    """
     be = BuildExecutor(configuration)
     try:
         BuildspecParser(buildspec, be)
         console.print(f"[green]{buildspec} is valid")
     except ValidationError:
         console.print(f"[red]{buildspec} is invalid")
+
 
 def edit_buildspec_test(test_names, configuration, editor):
     """Open a list of test names in editor mode defined by ``EDITOR`` environment otherwise resort to ``vim``.
