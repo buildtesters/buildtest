@@ -33,15 +33,21 @@ def config_cmd(command_args, configuration, editor, system):
 
 def handle_view_command(command_args, configuration):
     if command_args.config in ["view", "v"]:
-        view_configuration(configuration, theme=command_args.theme, pager=command_args.pager)
+        view_configuration(
+            configuration, theme=command_args.theme, pager=command_args.pager
+        )
+
 
 def handle_profiles_command(command_args, configuration):
     if command_args.config in ["profiles", "prof"]:
         if command_args.profiles in ["list", "ls"]:
-            list_profiles(configuration, theme=command_args.theme, print_yaml=command_args.yaml)
+            list_profiles(
+                configuration, theme=command_args.theme, print_yaml=command_args.yaml
+            )
 
         if command_args.profiles in ["remove", "rm"]:
             remove_profiles(configuration, profile_name=command_args.profile_name)
+
 
 def handle_executors_command(command_args, configuration, system):
     if command_args.config in ["executors", "ex"]:
@@ -59,21 +65,26 @@ def handle_executors_command(command_args, configuration, system):
         if command_args.executors in ["remove", "rm"]:
             remove_executors(configuration, command_args.executor_names)
 
+
 def handle_validate_command(command_args, configuration, system):
     if command_args.config in ["validate", "val"]:
         validate_config(configuration, system.system["moduletool"])
+
 
 def handle_systems_command(command_args, configuration):
     if command_args.config == "systems":
         view_system(configuration)
 
+
 def handle_edit_command(command_args, configuration, editor):
     if command_args.config in ["edit", "e"]:
         edit_configuration(configuration, editor)
 
+
 def handle_path_command(command_args, configuration):
     if command_args.config in ["path", "p"]:
         view_path(configuration)
+
 
 def edit_configuration(configuration, editor):
     """This method will open configuration file in editor. The preferred editor will be determined based on environment
@@ -83,11 +94,11 @@ def edit_configuration(configuration, editor):
         configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class used for storing buildtest configuration
     """
 
-
     cmd = subprocess.Popen([editor, configuration.file])
     cmd.communicate()
 
     print(f"Writing configuration file: {configuration.file}")
+
 
 def view_system(configuration):
     """This method implements command ``buildtest config systems`` which displays
@@ -222,8 +233,12 @@ def remove_profiles(configuration, profile_name):
 
         with open(configuration.file, "w") as file_descriptor:
             yaml.safe_dump(
-                configuration.config, file_descriptor, default_flow_style=False, sort_keys=False
+                configuration.config,
+                file_descriptor,
+                default_flow_style=False,
+                sort_keys=False,
             )
+
 
 def list_profiles(configuration, theme=None, print_yaml=None):
     """Display the list of profile for buildtest configuration file. This implements command ``buildtest config profiles list``
@@ -251,11 +266,14 @@ def list_profiles(configuration, theme=None, print_yaml=None):
     for profile_name in configuration.target_config["profiles"].keys():
         print(profile_name)
 
+
 def display_executors_in_json_format(executor_settings):
     console.print(json.dumps(executor_settings, indent=2))
 
+
 def display_executors_in_yaml_format(executor_settings):
     console.print(yaml.dump(executor_settings, default_flow_style=False))
+
 
 def display_disabled_executors(configuration):
     if not configuration.disabled_executors:
@@ -265,6 +283,7 @@ def display_disabled_executors(configuration):
     for executor in configuration.disabled_executors:
         console.print(executor)
 
+
 def display_invalid_executors(configuration):
     if not configuration.invalid_executors:
         console.print("There are no invalid executors")
@@ -273,10 +292,12 @@ def display_invalid_executors(configuration):
     for executor in configuration.invalid_executors:
         console.print(executor)
 
+
 def display_all_executors(configuration):
     names = configuration.get_all_executors()
     for name in names:
         print(name)
+
 
 def view_executors(
     configuration,
@@ -325,6 +346,7 @@ def view_executors(
     for name in names:
         print(name)
 
+
 def remove_executors(configuration, executor_names):
     """Remove executors from buildtest configuration. This implements ``buildtest config executors remove`` command.
 
@@ -369,5 +391,8 @@ def remove_executors(configuration, executor_names):
 
         with open(configuration.file, "w") as file_descriptor:
             yaml.safe_dump(
-                configuration.config, file_descriptor, default_flow_style=False, sort_keys=False
+                configuration.config,
+                file_descriptor,
+                default_flow_style=False,
+                sort_keys=False,
             )
