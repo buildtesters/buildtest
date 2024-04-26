@@ -7,7 +7,7 @@ from buildtest.schemas.utils import load_schema
 here = os.path.dirname(os.path.abspath(__file__))
 
 schema_table = {}
-schema_table["types"] = ["script", "compiler", "spack"]
+schema_table["types"] = ["script", "spack"]
 schema_table["names"] = [
     "global.schema.json",
     "definitions.schema.json",
