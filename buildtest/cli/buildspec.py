@@ -857,10 +857,18 @@ class BuildspecCache:
         """Return a list of maintainers"""
         return self.cache["maintainers"]
 
-    def print_maintainer(self):
+    def print_maintainer(self, row_count=None, terse=None, pager=None, count=None):
         """This method prints maintainers from buildspec cache file which implements ``buildtest buildspec maintainers`` command."""
+        terse = terse or self.terse
+
+        self.terse = terse if terse is not None else self.terse
+        self.row_count = row_count if row_count is not None else self.row_count
+        self.count = count if count is not None else self.count
 
         tdata = [[maintainer] for maintainer in self.get_maintainers()]
+        if count:
+            tdata = tdata[:count]
+
         if self.terse:
             self.print_terse_format(tdata, headers=["Maintainers"])
             return
@@ -868,7 +876,7 @@ class BuildspecCache:
         table = self.create_table(
             columns=["Maintainers"], data=tdata, title="List of Maintainers"
         )
-        self.print_table(table)
+        self.print_table(table, row_count=self.row_count, pager=pager)
 
     def print_maintainers_find(self, name):
         """Display a list of buildspec files associated to a given maintainer. This command is used when running
@@ -1327,6 +1335,8 @@ def buildspec_maintainers(
     color=None,
     name=None,
     row_count=None,
+    count=None,
+    pager=None,
 ):
     """Entry point for ``buildtest buildspec maintainers`` command.
 
@@ -1337,6 +1347,8 @@ def buildspec_maintainers(
         color (bool, optional): Print output of table with selected color
         name (str, optional): List all buildspecs corresponding to maintainer name. This command is specified via ``buildtest buildspec maintainers find <name>``
         row_count (bool, opotional): Print row count of the maintainer table. This command is specified via ``buildtest --row-count buildspec maintainers -l``
+        count (int, optional): Number of entries to display in output. This argument contains value of ``buildtest buildspec maintainers --count``
+        pager (bool, optional): Enable paging of output
     """
 
     cache = BuildspecCache(
@@ -1355,7 +1367,7 @@ def buildspec_maintainers(
         cache.print_maintainers_find(name=name)
         return
 
-    cache.print_maintainer()
+    cache.print_maintainer(row_count=row_count, count=count, pager=pager)
 
 
 def buildspec_find(args, configuration):

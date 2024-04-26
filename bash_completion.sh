@@ -409,7 +409,7 @@ _buildtest ()
          case ${COMP_WORDS[3+offset]} in
          # completion for 'buildtest buildspec find invalid'
          invalid)
-           local opts="--error --help --row-count -e -h"
+           local opts="--error --help --pager --row-count --terse -e -h"
            COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) );;
          # completion for rest of arguments
          *)
@@ -468,7 +468,7 @@ _buildtest ()
         esac
         ;;
       maintainers|m)
-        local opts="--breakdown --help --row-count --terse --no-header -b -h -n find"
+        local opts="--breakdown --count  --help --no-header --pager  --row-count --terse  -b -c -h -n find"
         COMPREPLY=( $( compgen -W "${opts}" -- "${cur}" ) )
 
         case ${COMP_WORDS[3+offset]} in

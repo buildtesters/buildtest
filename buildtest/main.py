@@ -378,6 +378,8 @@ def handle_buildspec_command(args, configuration, report_file, buildtest_editor)
             color=args.color,
             name=name,
             row_count=args.row_count,
+            count=args.count,
+            pager=args.pager,
         )
 
     elif args.buildspecs_subcommand in ["validate", "val"]:

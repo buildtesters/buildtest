@@ -1031,11 +1031,11 @@ class BuildTestParser:
                 "help": "Query information from buildspecs cache",
                 "aliases": ["f"],
                 "parents": [
+                    self.parent_parser["count"],
+                    self.parent_parser["no-header"],
                     self.parent_parser["pager"],
                     self.parent_parser["row-count"],
                     self.parent_parser["terse"],
-                    self.parent_parser["no-header"],
-                    self.parent_parser["count"],
                 ],
                 " args": [],
             },
@@ -1044,9 +1044,11 @@ class BuildTestParser:
                 "help": "Query maintainers from buildspecs cache",
                 "aliases": ["m"],
                 "parents": [
+                    self.parent_parser["count"],
+                    self.parent_parser["no-header"],
+                    self.parent_parser["pager"],
                     self.parent_parser["row-count"],
                     self.parent_parser["terse"],
-                    self.parent_parser["no-header"],
                 ],
                 "arguments": [
                     (
@@ -1217,20 +1219,6 @@ class BuildTestParser:
                     },
                 ),
                 (
-                    ["--helpfilter"],
-                    {
-                        "action": "store_true",
-                        "help": "Show Filter fields for --filter option for filtering buildspec cache output",
-                    },
-                ),
-                (
-                    ["--helpformat"],
-                    {
-                        "action": "store_true",
-                        "help": "Show Format fields for --format option for formatting buildspec cache output",
-                    },
-                ),
-                (
                     ["--filterfields"],
                     {
                         "action": "store_true",
@@ -1244,8 +1232,29 @@ class BuildTestParser:
                         "help": "Print raw Format fields for --format option for formatting buildspec cache output",
                     },
                 ),
+                (
+                    ["--helpfilter"],
+                    {
+                        "action": "store_true",
+                        "help": "Show Filter fields for --filter option for filtering buildspec cache output",
+                    },
+                ),
+                (
+                    ["--helpformat"],
+                    {
+                        "action": "store_true",
+                        "help": "Show Format fields for --format option for formatting buildspec cache output",
+                    },
+                ),
             ],
             "extra": [
+                (
+                    ["-q", "--quiet"],
+                    {
+                        "action": "store_true",
+                        "help": "Don't print output of buildspec cache when rebuilding cache",
+                    },
+                ),
                 (
                     ["-r", "--rebuild"],
                     {
@@ -1259,13 +1268,6 @@ class BuildTestParser:
                         "type": str,
                         "action": "append",
                         "help": "Specify root buildspecs (directory) path to load buildspecs into buildspec cache.",
-                    },
-                ),
-                (
-                    ["-q", "--quiet"],
-                    {
-                        "action": "store_true",
-                        "help": "Don't print output of buildspec cache when rebuilding cache",
                     },
                 ),
             ],
