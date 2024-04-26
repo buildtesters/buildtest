@@ -36,7 +36,7 @@ def build_history(args):
 
 
 def sorted_alphanumeric(data):
-    """This method is used for alpha numeric sorting of files.
+    """This method is used for alphanumeric sorting of files.
 
     Args:
         data: A list of history files to sort alpha numerically
@@ -70,132 +70,6 @@ def print_terse(table, no_header=None, consoleColor=None):
     for row in transpose_list:
         line = "|".join(row)
         console.print(f"[{consoleColor}]{line}")
-
-
-def list_build_history(
-    no_header=None, terse=None, pager=None, color=None, row_count=None
-):
-    """This method is entry point for ``buildtest history list`` which prints all previous builds
-    stored in **BUILD_HISTORY_DIR**. Each directory has a ``build.json`` file that stores content
-    of each build that was run by ``buildtest build``.
-
-    Args:
-        no_header (bool, optional): Control whether header columns are displayed with terse format
-        terse (bool, optional): Print output in terse format
-        pager (bool, optional): Print output in paging format
-        color (bool, optional): Select desired color when displaying results
-        row_count (bool, optional): Print row count of all previous builds
-    """
-
-    consoleColor = checkColor(color)
-
-    history_files = walk_tree(BUILD_HISTORY_DIR, ".json")
-    logger.debug(f"Searching for all '.json' files in directory: {BUILD_HISTORY_DIR}")
-
-    # only filter filters that are 'build.json'
-    history_files = [f for f in history_files if os.path.basename(f) == "build.json"]
-
-    if row_count:
-        print(len(history_files))
-        return
-
-    # sort all files alpha-numerically
-    history_files = sorted_alphanumeric(history_files)
-
-    logger.info(f"We have detected {len(history_files)} history files")
-    for file in history_files:
-        logger.info(file)
-
-    table = {
-        "id": [],
-        "hostname": [],
-        "user": [],
-        "system": [],
-        "date": [],
-        "pass_tests": [],
-        "fail_tests": [],
-        "total_tests": [],
-        "pass_rate": [],
-        "fail_rate": [],
-        "command": [],
-    }
-
-    for fname in history_files:
-        content = load_json(fname)
-
-        table["id"].append(os.path.basename(os.path.dirname(fname)))
-        for field in ["user", "hostname", "system", "date", "command"]:
-            table[field].append(content[field])
-
-        table["pass_tests"].append(content["test_summary"]["pass"])
-        table["fail_tests"].append(content["test_summary"]["fail"])
-        table["total_tests"].append(content["test_summary"]["total"])
-        table["pass_rate"].append(content["test_summary"]["pass_rate"])
-        table["fail_rate"].append(content["test_summary"]["fail_rate"])
-
-    if terse:
-        if pager:
-            with console.pager():
-                print_terse(table, no_header, consoleColor)
-            return
-
-        print_terse(table, no_header, consoleColor)
-        return
-
-    history_table = Table(
-        header_style="blue", show_lines=True, row_styles=[consoleColor]
-    )
-    for field in [
-        "id",
-        "hostname",
-        "user",
-        "system",
-        "date",
-        "pass tests",
-        "fail tests",
-        "total tests",
-        "command",
-    ]:
-        history_table.add_column(field, overflow="fold")
-
-    for (
-        build_id,
-        hostname,
-        user,
-        system,
-        date,
-        pass_test,
-        fail_tests,
-        total_tests,
-        command,
-    ) in zip(
-        table["id"],
-        table["hostname"],
-        table["user"],
-        table["system"],
-        table["date"],
-        table["pass_tests"],
-        table["fail_tests"],
-        table["total_tests"],
-        table["command"],
-    ):
-        history_table.add_row(
-            build_id,
-            hostname,
-            user,
-            system,
-            date,
-            pass_test,
-            fail_tests,
-            total_tests,
-            command,
-        )
-    if pager:
-        with console.pager():
-            console.print(history_table)
-        return
-
-    console.print(history_table)
 
 
 def query_builds(build_id, log_option=None, output=None, pager=None):
@@ -241,3 +115,116 @@ def query_builds(build_id, log_option=None, output=None, pager=None):
         return
 
     pprint(content)
+
+
+def create_history_table(table, consoleColor):
+    history_table = Table(
+        header_style="blue", show_lines=True, row_styles=[consoleColor]
+    )
+    for field in [
+        "id",
+        "hostname",
+        "user",
+        "system",
+        "date",
+        "pass tests",
+        "fail tests",
+        "total tests",
+        "command",
+    ]:
+        history_table.add_column(field, overflow="fold")
+    for (
+        build_id,
+        hostname,
+        user,
+        system,
+        date,
+        pass_test,
+        fail_tests,
+        total_tests,
+        command,
+    ) in zip(
+        table["id"],
+        table["hostname"],
+        table["user"],
+        table["system"],
+        table["date"],
+        table["pass_tests"],
+        table["fail_tests"],
+        table["total_tests"],
+        table["command"],
+    ):
+        history_table.add_row(
+            build_id,
+            hostname,
+            user,
+            system,
+            date,
+            pass_test,
+            fail_tests,
+            total_tests,
+            command,
+        )
+    return history_table
+
+
+def list_build_history(
+    no_header=None, terse=None, pager=None, color=None, row_count=None
+):
+    """This method is entry point for ``buildtest history list`` which prints all previous builds
+    stored in **BUILD_HISTORY_DIR**. Each directory has a ``build.json`` file that stores content
+    of each build that was run by ``buildtest build``.
+
+    Args:
+        no_header (bool, optional): Control whether header columns are displayed with terse format
+        terse (bool, optional): Print output in terse format
+        pager (bool, optional): Print output in paging format
+        color (bool, optional): Select desired color when displaying results
+        row_count (bool, optional): Print row count of all previous builds
+    """
+    consoleColor = checkColor(color)
+    history_files = walk_tree(BUILD_HISTORY_DIR, ".json")
+    # only filter filters that are 'build.json'
+    history_files = [f for f in history_files if os.path.basename(f) == "build.json"]
+    # There are many ways to calcuate number of history files. There should be one build.json file per subdirectory so a count on number of build.json
+    # equal to number of subdirectories in BUILD_HISTORY_DIR
+    if row_count:
+        print(len(history_files))
+        return
+    history_files = sorted_alphanumeric(history_files)
+    table = {
+        "id": [],
+        "hostname": [],
+        "user": [],
+        "system": [],
+        "date": [],
+        "pass_tests": [],
+        "fail_tests": [],
+        "total_tests": [],
+        "pass_rate": [],
+        "fail_rate": [],
+        "command": [],
+    }
+    for fname in history_files:
+        content = load_json(fname)
+        table["id"].append(os.path.basename(os.path.dirname(fname)))
+        for field in ["user", "hostname", "system", "date", "command"]:
+            table[field].append(content[field])
+        table["pass_tests"].append(content["test_summary"]["pass"])
+        table["fail_tests"].append(content["test_summary"]["fail"])
+        table["total_tests"].append(content["test_summary"]["total"])
+        table["pass_rate"].append(content["test_summary"]["pass_rate"])
+        table["fail_rate"].append(content["test_summary"]["fail_rate"])
+    if terse:
+        if pager:
+            with console.pager():
+                print_terse(table, no_header, consoleColor)
+            return
+        print_terse(table, no_header, consoleColor)
+        return
+    history_table = create_history_table(table, consoleColor)
+    if pager:
+        with console.pager():
+            console.print(history_table)
+        return
+    console.print(history_table)

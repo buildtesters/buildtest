@@ -1066,7 +1066,7 @@ def is_test_name_in_cache(test_name, cache):
 
     Args:
         test_name (str): The test name to check.
-        cache (BuildspecCache): The cache to check in.
+        cache (BuildspecCache): An instance of BuildspecCache used for storing the buildspec cache
 
     Returns:
         bool: True if the test name is in the cache, False otherwise.
@@ -1218,7 +1218,8 @@ def buildspec_validate_command(
 
 
 def summarize_buildspec_cache(pager, configuration, color=None):
-    """entry point for ``buildtest buildspec summary``
+    """This is a helper method used for printing output of ``buildtest buildspec summary`` with and without
+    pagination
 
     Args:
         configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
@@ -1243,6 +1244,14 @@ def create_table(title, columns, data, consoleColor):
 
 
 def summary_print(configuration, color=None):
+    """This method will print summary of buildspec cache file. This method is the core logic
+    used for showing output of command ``buildtest buildspec summary``.
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
+        color (str, optional): An instance of str, color that the summary should be printed in
+
+    """
     cache = BuildspecCache(configuration=configuration)
     consoleColor = checkColor(color)
     msg = f"""
@@ -1424,7 +1433,12 @@ def buildspec_find(args, configuration):
 
 
 def open_buildspec_in_editor(buildspec, editor):
-    """Open a buildspec in the specified editor and print a message."""
+    """Open a buildspec in the specified editor and print a message.
+
+    Args:
+        buildspec (str): The path to the buildspec file to open.
+        editor (str): The editor to open the buildspec file in.
+    """
 
     # only used for regression testing to ensure test is not stuck for closing file
     if not editor:
@@ -1435,7 +1449,7 @@ def open_buildspec_in_editor(buildspec, editor):
 
 
 def validate_buildspec(buildspec, configuration):
-    """Validate a buildspec and print the result.
+    """Validate a buildspec with JSON Schema and print whether it is valid or not.
 
     Args:
         buildspec (str): Path to buildspec file to validate
