@@ -24,7 +24,7 @@ def config_cmd(command_args, configuration, editor, system):
 
     handle_view_command(command_args, configuration)
     handle_profiles_command(command_args, configuration)
-    handle_executors_command(command_args, configuration, system)
+    handle_executors_command(command_args, configuration)
     handle_validate_command(command_args, configuration, system)
     handle_systems_command(command_args, configuration)
     handle_edit_command(command_args, configuration, editor)
@@ -49,7 +49,7 @@ def handle_profiles_command(command_args, configuration):
             remove_profiles(configuration, profile_name=command_args.profile_name)
 
 
-def handle_executors_command(command_args, configuration, system):
+def handle_executors_command(command_args, configuration):
     if command_args.config in ["executors", "ex"]:
         buildexecutor = BuildExecutor(configuration)
         if command_args.executors in ["list", "ls"]:
