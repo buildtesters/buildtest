@@ -886,34 +886,17 @@ class BuildspecCache:
     def print_maintainers_by_buildspecs(self):
         """This method prints maintainers breakdown by buildspecs. This method implements ``buildtest buildspec maintainers --breakdown``."""
 
-        if self.terse:
-            if not self.header:
-                console.print("maintainers|buildspec", style=self.color)
-
-            for maintainer, buildspecs in self.cache["maintainers"].items():
-                console.print(f"[{self.color}]{maintainer}|{':'.join(buildspecs)}")
-            return
-
-        table = Table(
-            Column("Maintainers", overflow="fold"),
-            Column("Buildspec", overflow="fold"),
-            title="Breakdown of buildspecs by maintainers",
-            header_style="blue",
-            style="cyan",
-            title_style="red",
-            row_styles=[self.color],
-            show_lines=True,
-        )
-
+        tdata = []
         for maintainer, buildspecs in self.cache["maintainers"].items():
-            table.add_row(maintainer, ":".join(buildspecs))
+            tdata.append([maintainer, ":".join(buildspecs)])
 
-        if self.pager:
-            with console.pager():
-                console.print(table)
+        if self.terse:
+            self.print_terse_format(tdata, headers=["Maintainers"])
             return
 
-        console.print(table)
+        table = self.create_table(columns=["Maintainers", "Buildspecs"], data=tdata, title="List of Maintainers")
+        self.print_table(table)
+
 
     def print_invalid_buildspecs(
         self, error=None, terse=None, header=None, row_count=None
