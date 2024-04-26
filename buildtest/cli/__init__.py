@@ -1283,7 +1283,7 @@ class BuildTestParser:
             {
                 "name": "invalid",
                 "help": "Show invalid buildspecs",
-                "parents": [self.parent_parser["row-count"]],
+                "parents": [self.parent_parser["row-count"], self.parent_parser["terse"], self.parent_parser['pager']],
                 "arguments": [
                     (
                         ["-e", "--error"],

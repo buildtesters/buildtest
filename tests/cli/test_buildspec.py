@@ -9,7 +9,7 @@ from rich.color import Color
 from buildtest.cli.buildspec import (
     BuildspecCache,
     buildspec_maintainers,
-    buildspec_validate,
+    buildspec_validate_command,
     edit_buildspec_file,
     edit_buildspec_test,
     show_buildspecs,
@@ -28,7 +28,7 @@ configuration.validate()
 
 @pytest.mark.cli
 def test_buildspec_validate():
-    buildspec_validate(
+    buildspec_validate_command(
         buildspecs=[
             os.path.join(BUILDTEST_ROOT, "tutorials", "vars.yml"),
             os.path.join(BUILDTEST_ROOT, "tutorials", "test_status"),
@@ -47,7 +47,7 @@ def test_buildspec_validate():
     )
 
     with pytest.raises(SystemExit):
-        buildspec_validate(
+        buildspec_validate_command(
             buildspecs=[os.path.join(BUILDTEST_ROOT, "tutorials", "invalid_tags.yml")],
             configuration=configuration,
         )

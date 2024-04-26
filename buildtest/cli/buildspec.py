@@ -902,60 +902,52 @@ class BuildspecCache:
         self.print_table(table)
 
     def print_invalid_buildspecs(
-        self, error=None, terse=None, header=None, row_count=None
+        self, error=None, terse=None, row_count=None
     ):
         """Print invalid buildspecs from cache file. This method implements command ``buildtest buildspec find invalid``
 
         Args:
             error (bool, optional): Display error messages for invalid buildspecs. Default is ``False`` where we only print list of invalid buildspecs
             terse (bool, optional): Display output in machine readable format.
-            header (bool, optional): Determine whether to print header column in machine readable format.
             row_count (bool, optional): Display row count of invalid buildspces table
         """
 
         terse = terse or self.terse
-        header = header or self.header
+
+        tdata = self.get_invalid_buildspecs()
 
         if error and terse:
-            console.print("The --terse flag can not be used with the --error option")
+            console.print("[red]The --terse flag can not be used with the --error option")
             sys.exit(1)
 
-        if not self.get_invalid_buildspecs():
-            console.print("There are no invalid buildspecs in cache")
+        if not tdata:
+            console.print("[green]Unable to find any invalid buildspecs in cache. All buildspecs are valid!")
             return
 
         if row_count:
-            print(len(self.cache["invalids"].keys()))
-            return
+            print(len(tdata))
+            sys.exit(1)
 
         # implementation for machine readable format specified via --terse
         if terse:
-            if not header:
-                print("buildspec")
-            for buildspec in self.cache["invalids"].keys():
-                print(buildspec)
+            self.print_terse_format(tdata, headers=["Buildspecs"])
+            # will raise exit 1 to indicate error if there is any invalid buildspec which can be useful for scripting
             sys.exit(1)
 
-        # if --error is not specified print list of invalid buildspecs in rich table
-        if not error:
-            table = Table(
-                Column("Buildspec", overflow="fold"),
-                Column("Exception", overflow="fold"),
-                title="Invalid Buildspecs",
-                header_style="blue",
-                style="cyan",
-                title_style="red",
-                row_styles=[self.color],
-            )
-            for buildspec in self.cache["invalids"].keys():
-                table.add_row(buildspec, self.cache["invalids"][buildspec]["exception"])
-            console.print(table)
+        # if --error is specified print list of invalid buildspecs in rich table
+        if error:
+            # implementation for --error which displays buildspec file and exception message
+            for buildspec, exc in self.cache["invalids"].items():
+                console.rule(buildspec)
+                pprint(exc)
             sys.exit(1)
 
-        # implementation for --error which displays buildspec file followed by error
-        for buildspec, value in self.cache["invalids"].items():
-            console.rule(buildspec)
-            pprint(value)
+        # default is to print as table
+        tdata = []
+        for buildspec, exc in self.cache['invalids'].items():
+            tdata.append([buildspec, exc['exception']])
+        table = self.create_table(columns=["Buildspecs", "Exception"], data=tdata, title="Invalid Buildspecs")
+        self.print_table(table, row_count=row_count, pager=self.pager)
         sys.exit(1)
 
     def print_filter_fields(self):
