@@ -329,6 +329,7 @@ def test_buildspec_find_invalid():
     with pytest.raises(SystemExit):
         cache.print_invalid_buildspecs(terse=True)
 
+
 @pytest.mark.cli
 def test_edit_test():
     edit_buildspec_test(

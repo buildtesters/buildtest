@@ -901,9 +901,7 @@ class BuildspecCache:
         )
         self.print_table(table)
 
-    def print_invalid_buildspecs(
-        self, error=None, terse=None, row_count=None
-    ):
+    def print_invalid_buildspecs(self, error=None, terse=None, row_count=None):
         """Print invalid buildspecs from cache file. This method implements command ``buildtest buildspec find invalid``
 
         Args:
@@ -917,11 +915,15 @@ class BuildspecCache:
         tdata = self.get_invalid_buildspecs()
 
         if error and terse:
-            console.print("[red]The --terse flag can not be used with the --error option")
+            console.print(
+                "[red]The --terse flag can not be used with the --error option"
+            )
             sys.exit(1)
 
         if not tdata:
-            console.print("[green]Unable to find any invalid buildspecs in cache. All buildspecs are valid!")
+            console.print(
+                "[green]Unable to find any invalid buildspecs in cache. All buildspecs are valid!"
+            )
             return
 
         if row_count:
@@ -944,9 +946,11 @@ class BuildspecCache:
 
         # default is to print as table
         tdata = []
-        for buildspec, exc in self.cache['invalids'].items():
-            tdata.append([buildspec, exc['exception']])
-        table = self.create_table(columns=["Buildspecs", "Exception"], data=tdata, title="Invalid Buildspecs")
+        for buildspec, exc in self.cache["invalids"].items():
+            tdata.append([buildspec, exc["exception"]])
+        table = self.create_table(
+            columns=["Buildspecs", "Exception"], data=tdata, title="Invalid Buildspecs"
+        )
         self.print_table(table, row_count=row_count, pager=self.pager)
         sys.exit(1)
 
