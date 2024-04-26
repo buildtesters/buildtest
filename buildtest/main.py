@@ -13,7 +13,7 @@ from buildtest.cli.buildspec import (
     BuildspecCache,
     buildspec_find,
     buildspec_maintainers,
-    buildspec_validate,
+    buildspec_validate_command,
     edit_buildspec_file,
     edit_buildspec_test,
     show_buildspecs,
@@ -381,7 +381,7 @@ def handle_buildspec_command(args, configuration, report_file, buildtest_editor)
         )
 
     elif args.buildspecs_subcommand in ["validate", "val"]:
-        buildspec_validate(
+        buildspec_validate_command(
             buildspecs=args.buildspec,
             excluded_buildspecs=args.exclude,
             tags=args.tag,
