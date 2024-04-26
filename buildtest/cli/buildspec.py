@@ -632,7 +632,7 @@ class BuildspecCache:
         self.row_count = row_count if row_count is not None else self.row_count
         self.count = count if count is not None else self.count
 
-        display_buildspecs = self.get_valid_buildspecs()[:self.count]
+        display_buildspecs = self.get_valid_buildspecs()[: self.count]
 
         if self.count < 0:
             display_buildspecs = self.get_valid_buildspecs()
@@ -647,7 +647,9 @@ class BuildspecCache:
             self.print_terse_format(data, headers=["Buildspecs"])
             return
 
-        table = self.create_table(columns=["Buildspecs"], data=data, title="List of Buildspecs")
+        table = self.create_table(
+            columns=["Buildspecs"], data=data, title="List of Buildspecs"
+        )
         self.print_table(table, row_count=row_count, pager=self.pager)
 
     def print_tags(self, row_count=None, count=None, terse=None, header=None):
@@ -706,7 +708,9 @@ class BuildspecCache:
             self.print_terse_format(data, headers=["Executors"])
             return
 
-        table = self.create_table(columns=["Executors"], data=data, title="List of Executors")
+        table = self.create_table(
+            columns=["Executors"], data=data, title="List of Executors"
+        )
         self.print_table(table, row_count=row_count, pager=self.pager)
 
     def print_by_executors(self, row_count=None, count=None, terse=None, header=None):
@@ -740,7 +744,9 @@ class BuildspecCache:
         columns = ["Executors", "Name", "Description"]
 
         # Create and print the table
-        table = self.create_table(columns=columns, data=data, title="Tests by Executors")
+        table = self.create_table(
+            columns=columns, data=data, title="Tests by Executors"
+        )
         self.print_table(table, row_count=row_count, pager=self.pager)
 
     def print_by_tags(self, count=None, row_count=None, terse=None, header=None):
@@ -756,7 +762,7 @@ class BuildspecCache:
         self.row_count = row_count if row_count is not None else self.row_count
         self.count = count if count is not None else self.count
 
-        data = [ ]
+        data = []
         print_count = 0
         for tagname in self.cache["tags"].keys():
             for test_name, description in self.cache["tags"][tagname].items():
@@ -771,8 +777,11 @@ class BuildspecCache:
 
         columns = ["Tags", "Name", "Description"]
         # Create and print the table
-        table = self.create_table(columns=columns, data=data, title="Tests by Executors")
+        table = self.create_table(
+            columns=columns, data=data, title="Tests by Executors"
+        )
         self.print_table(table, row_count=row_count, pager=self.pager)
+
     def print_terse_format(self, tdata, headers):
         """This method will print the output of ``buildtest buildspec find`` in terse format.
 
@@ -828,7 +837,7 @@ class BuildspecCache:
         raw_data = [list(i) for i in zip(*join_list)]
 
         # display_data is the final data to display in table. If --count is specified we reduce the list to length of self.count
-        display_data = raw_data[:self.count]
+        display_data = raw_data[: self.count]
         # if --count is negative we show the entire list
         if self.count < 0:
             display_data = raw_data
@@ -837,9 +846,12 @@ class BuildspecCache:
             self.print_terse_format(display_data, headers=self.table.keys())
             return
 
-        table = self.create_table(columns=self.table.keys(), data=display_data, title=f"Buildspec Cache: {BUILDSPEC_CACHE_FILE}")
+        table = self.create_table(
+            columns=self.table.keys(),
+            data=display_data,
+            title=f"Buildspec Cache: {BUILDSPEC_CACHE_FILE}",
+        )
         self.print_table(table, row_count=row_count, pager=self.pager)
-
 
     def list_maintainers(self):
         """Return a list of maintainers"""
@@ -853,9 +865,10 @@ class BuildspecCache:
             self.print_terse_format(tdata, headers=["Maintainers"])
             return
 
-        table = self.create_table(columns=["Maintainers"], data=tdata, title="List of Maintainers")
+        table = self.create_table(
+            columns=["Maintainers"], data=tdata, title="List of Maintainers"
+        )
         self.print_table(table)
-
 
     def print_maintainers_find(self, name):
         """Display a list of buildspec files associated to a given maintainer. This command is used when running
@@ -1119,6 +1132,7 @@ def show_tests_by_status(
         tests = all_tests
     show_buildspecs(tests, configuration, theme)
 
+
 def show_failed_buildspecs(
     configuration, test_names=None, report_file=None, theme=None
 ):
@@ -1131,7 +1145,8 @@ def show_failed_buildspecs(
         report_file (str, optional): Full path to report file to read
         theme (str, optional): Color theme to choose. This is the Pygments style (https://pygments.org/docs/styles/#getting-a-list-of-available-styles) which is specified by ``--theme`` option
     """
-    show_tests_by_status(configuration, 'FAIL', test_names, report_file, theme)
+    show_tests_by_status(configuration, "FAIL", test_names, report_file, theme)
+
 
 def handle_exception(buildspec, exception):
     """Handle exceptions during buildspec validation."""
@@ -1141,6 +1156,7 @@ def handle_exception(buildspec, exception):
     else:
         print(exception)
     print("\n")
+
 
 def buildspec_validate_command(
     configuration, buildspecs=None, excluded_buildspecs=None, tags=None, executors=None
