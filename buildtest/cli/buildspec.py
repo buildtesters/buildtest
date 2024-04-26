@@ -550,19 +550,19 @@ class BuildspecCache:
 
     def get_valid_buildspecs(self):
         """Return a list of valid buildspecs"""
-        return self.cache["buildspecs"].keys()
+        return list(self.cache["buildspecs"].keys())
 
     def get_invalid_buildspecs(self):
         """Return a list of invalid buildspecs"""
-        return self.cache["invalids"].keys()
+        return list(self.cache["invalids"].keys())
 
     def get_unique_tags(self):
         """Return a list of unique tags."""
-        return self.cache["unique_tags"]
+        return list(self.cache["unique_tags"])
 
     def get_unique_executors(self):
         """Return a list of unique executors."""
-        return self.cache["unique_executors"]
+        return list(self.cache["unique_executors"])
 
     def get_maintainers(self):
         """Return a list of maintainers."""
@@ -597,6 +597,26 @@ class BuildspecCache:
 
         return buildspec_summary
 
+    def create_table(self, columns, data, title=None):
+        """Create a table with the given columns and data."""
+        table = Table(title=title, header_style="blue", show_lines=False)
+        for column in columns:
+            table.add_column(column, style=self.color, overflow="fold")
+        for row in data:
+            table.add_row(*row)
+        return table
+
+    def print_table(self, table, row_count=None, pager=None):
+        """Print the given table, optionally showing the row count or using a pager."""
+        if row_count:
+            print(table.row_count)
+            return
+        if pager:
+            with console.pager():
+                console.print(table)
+        else:
+            console.print(table)
+
     def print_buildspecfiles(self, terse=None, header=None, row_count=None, count=None):
         """This method implements ``buildtest buildspec find --buildspec`` which reports all buildspec files in cache.
 
@@ -612,39 +632,23 @@ class BuildspecCache:
         self.row_count = row_count if row_count is not None else self.row_count
         self.count = count if count is not None else self.count
 
-        display_buildspecs = list(self.cache["buildspecs"].keys())[: self.count]
+        display_buildspecs = self.get_valid_buildspecs()[:self.count]
 
         if self.count < 0:
-            display_buildspecs = list(self.cache["buildspecs"].keys())
+            display_buildspecs = self.get_valid_buildspecs()
 
-        if self.terse:
-            if not self.header:
-                console.print("buildspec", style=self.color)
+        data = []
+        for idx, buildspec in enumerate(display_buildspecs):
+            if count and idx == count:
+                break
+            data.append([buildspec])
 
-            for buildspec in display_buildspecs:
-                console.print(f"[{self.color}]{buildspec}")
-
+        if terse:
+            self.print_terse_format(data, headers=["Buildspecs"])
             return
 
-        table = Table(
-            Column("Buildspecs", overflow="fold"),
-            title="List of Buildspecs",
-            header_style="blue",
-            row_styles=[self.color],
-        )
-        for buildspec in display_buildspecs:
-            table.add_row(buildspec)
-
-        if self.pager:
-            with console.pager():
-                console.print(table)
-            return
-
-        if self.row_count:
-            print(table.row_count)
-            return
-
-        console.print(table)
+        table = self.create_table(columns=["Buildspecs"], data=data, title="List of Buildspecs")
+        self.print_table(table, row_count=row_count, pager=self.pager)
 
     def print_tags(self, row_count=None, count=None, terse=None, header=None):
         """This method implements ``buildtest buildspec find --tags`` which
@@ -662,40 +666,21 @@ class BuildspecCache:
         self.count = count if count is not None else self.count
 
         # slice list to only display number of tags specified by --count option
-        display_tags = self.cache["unique_tags"][: self.count]
+        display_tags = self.get_unique_tags()[: self.count]
         # if --count is negative we show the entire list
         if self.count < 0:
-            display_tags = self.cache["unique_tags"]
+            display_tags = self.get_unique_tags()
+
+        data = [[tagname] for tagname in display_tags]
 
         # if --terse option specified print list of all tags in machine readable format
         if self.terse:
-            if not self.header:
-                console.print("tag", style=self.color)
-
-            for tag in display_tags:
-                console.print(f"[{self.color}]{tag}")
-
+            self.print_terse_format(data, headers=["Tags"])
             return
 
-        table = Table(
-            Column("Tags", overflow="fold"),
-            title="List of Tags",
-            header_style="blue",
-            row_styles=[self.color],
-        )
-        for tagname in display_tags:
-            table.add_row(tagname)
-
-        if self.pager:
-            with console.pager():
-                console.print(table)
-            return
-
-        if self.row_count:
-            print(table.row_count)
-            return
-
-        console.print(table)
+        table = self.create_table(columns=["Tags"], data=data, title="List of Tags")
+        self.print_table(table, row_count=row_count, pager=self.pager)
+        return
 
     def print_executors(self, row_count=None, count=None, terse=None, header=None):
         """This method implements ``buildtest buildspec find --executors`` which reports all executors from cache.
@@ -711,38 +696,18 @@ class BuildspecCache:
         self.row_count = row_count if row_count is not None else self.row_count
         self.count = count if count is not None else self.count
 
-        display_executors = self.cache["unique_executors"][: self.count]
+        display_executors = self.get_unique_executors()[: self.count]
         if self.count < 0:
-            display_executors = self.cache["unique_executors"]
+            display_executors = self.get_unique_executors()
+
+        data = [[executor] for executor in display_executors]
 
         if self.terse:
-            if not self.header:
-                console.print("executor", style=self.color)
-
-            for executor in display_executors:
-                console.print(f"[{self.color}]{executor}")
-
+            self.print_terse_format(data, headers=["Executors"])
             return
 
-        table = Table(
-            Column("Executors", overflow="fold"),
-            title="List of Executors",
-            header_style="blue",
-            row_styles=[self.color],
-        )
-        for executor in display_executors:
-            table.add_row(executor)
-
-        if self.pager:
-            with console.pager():
-                console.print(table)
-            return
-
-        if self.row_count:
-            print(table.row_count)
-            return
-
-        console.print(table)
+        table = self.create_table(columns=["Executors"], data=data, title="List of Executors")
+        self.print_table(table, row_count=row_count, pager=self.pager)
 
     def print_by_executors(self, row_count=None, count=None, terse=None, header=None):
         """This method prints executors by tests and implements ``buildtest buildspec find --group-by-executor`` command
@@ -758,50 +723,25 @@ class BuildspecCache:
         self.row_count = row_count if row_count is not None else self.row_count
         self.count = count if count is not None else self.count
 
-        if self.terse:
-            if not self.header:
-                console.print("executor|name|description", style=self.color)
-
-            print_count = 0
-            for executor_name in self.cache["executor"].keys():
-                for test_name, description in self.cache["executor"][
-                    executor_name
-                ].items():
-                    # limit number of rows printed by --count. If --count is negative we print all rows and this condition will never be true.
-                    if print_count == self.count:
-                        break
-
-                    console.print(
-                        f"[{self.color}]{executor_name}|{test_name}|{description}"
-                    )
-                    print_count += 1
-            return
-
-        table = Table(title="Tests by Executors", header_style="blue", show_lines=True)
-        table.add_column("Executors", style=self.color, overflow="fold")
-        table.add_column("Name", style=self.color, overflow="fold")
-        table.add_column("Description", style=self.color, overflow="fold")
-
+        data = []
         print_count = 0
-
         for executor_name in self.cache["executor"].keys():
             for test_name, description in self.cache["executor"][executor_name].items():
                 if print_count == self.count:
                     break
-
-                table.add_row(executor_name, test_name, description)
+                data.append([executor_name, test_name, description])
                 print_count += 1
 
-        if self.pager:
-            with console.pager():
-                console.print(table)
+        if self.terse:
+            self.print_terse_format(data, headers=["executor", "name", "description"])
             return
 
-        if self.row_count:
-            print(table.row_count)
-            return
+        # Define the column names
+        columns = ["Executors", "Name", "Description"]
 
-        console.print(table)
+        # Create and print the table
+        table = self.create_table(columns=columns, data=data, title="Tests by Executors")
+        self.print_table(table, row_count=row_count, pager=self.pager)
 
     def print_by_tags(self, count=None, row_count=None, terse=None, header=None):
         """This method prints tags by tests and implements ``buildtest buildspec find --group-by-tags`` command
@@ -816,54 +756,35 @@ class BuildspecCache:
         self.row_count = row_count if row_count is not None else self.row_count
         self.count = count if count is not None else self.count
 
-        if self.terse:
-            if not self.header:
-                console.print("tags|name|description", style=self.color)
-            print_count = 0
-            for tagname in self.cache["tags"].keys():
-                for test_name, description in self.cache["tags"][tagname].items():
-                    if print_count == self.count:
-                        break
-                    console.print(f"[{self.color}]{tagname}|{test_name}|{description}")
-                    print_count += 1
-            return
-
-        table = Table(title="Tests by Tags", header_style="blue", show_lines=True)
-        table.add_column("Tags", style=self.color, overflow="fold")
-        table.add_column("Name", style=self.color, overflow="fold")
-        table.add_column("Description", style=self.color, overflow="fold")
-
+        data = [ ]
         print_count = 0
         for tagname in self.cache["tags"].keys():
             for test_name, description in self.cache["tags"][tagname].items():
                 if print_count == self.count:
                     break
-                table.add_row(tagname, test_name, description)
+                data.append([tagname, test_name, description])
                 print_count += 1
 
-        if self.pager:
-            with console.pager():
-                console.print(table)
+        if self.terse:
+            self.print_terse_format(data, headers=["Tags", "Name", "Description"])
             return
 
-        if self.row_count:
-            print(table.row_count)
-            return
-
-        console.print(table)
-
-    def _print_terse_format(self, tdata):
+        columns = ["Tags", "Name", "Description"]
+        # Create and print the table
+        table = self.create_table(columns=columns, data=data, title="Tests by Executors")
+        self.print_table(table, row_count=row_count, pager=self.pager)
+    def print_terse_format(self, tdata, headers):
         """This method will print the output of ``buildtest buildspec find`` in terse format.
 
         Args:
             tdata (list): Table data to print in terse format
-
+            headers (list): List of headers to print in terse format
         Returns:
 
         """
         # print terse output
         if not self.header:
-            console.print("|".join(self.table.keys()), style=self.color)
+            console.print("|".join(headers), style=self.color)
 
         if self.count == 0:
             return
@@ -900,47 +821,25 @@ class BuildspecCache:
         self.row_count = row_count if row_count is not None else self.row_count
         self.count = count if count is not None else self.count
 
-        table = Table(
-            title=f"Buildspec Cache: {BUILDSPEC_CACHE_FILE}",
-            show_lines=True,
-            row_styles=[self.color],
-            title_justify="center",
-            show_edge=False,
-        )
-
         join_list = []
-
         for key in self.table.keys():
             join_list.append(self.table[key])
-            table.add_column(key, overflow="fold", header_style="blue")
 
-        tdata = [list(i) for i in zip(*join_list)]
-        # if --count is specified then reduce list to length of self.count
-        tdata = tdata[: self.count] if self.count > 0 else tdata
+        raw_data = [list(i) for i in zip(*join_list)]
+
+        # display_data is the final data to display in table. If --count is specified we reduce the list to length of self.count
+        display_data = raw_data[:self.count]
+        # if --count is negative we show the entire list
+        if self.count < 0:
+            display_data = raw_data
 
         if self.terse:
-            self._print_terse_format(tdata)
+            self.print_terse_format(display_data, headers=self.table.keys())
             return
 
-        # print table output
-        if self.count == 0:
-            console.print(table)
-            return
+        table = self.create_table(columns=self.table.keys(), data=display_data, title=f"Buildspec Cache: {BUILDSPEC_CACHE_FILE}")
+        self.print_table(table, row_count=row_count, pager=self.pager)
 
-        for i in tdata:
-            table.add_row(*i)
-
-        if self.row_count:
-            console.print(table.row_count)
-            return
-
-        # print with pager format
-        if self.pager:
-            with console.pager():
-                console.print(table)
-            return
-        # the default print format in table form
-        console.print(table)
 
     def list_maintainers(self):
         """Return a list of maintainers"""
@@ -949,31 +848,14 @@ class BuildspecCache:
     def print_maintainer(self):
         """This method prints maintainers from buildspec cache file which implements ``buildtest buildspec maintainers`` command."""
 
+        tdata = [[maintainer] for maintainer in self.get_maintainers()]
         if self.terse:
-            if not self.header:
-                console.print("maintainers", style=self.color)
-
-            for maintainer in self.cache["maintainers"]:
-                console.print(f"[{self.color}]{maintainer}")
-
+            self.print_terse_format(tdata, headers=["Maintainers"])
             return
 
-        table = Table(
-            Column("Maintainers", overflow="fold"),
-            header_style="blue",
-            title_style="red",
-            row_styles=[self.color],
-        )
+        table = self.create_table(columns=["Maintainers"], data=tdata, title="List of Maintainers")
+        self.print_table(table)
 
-        for maintainer in self.cache["maintainers"].keys():
-            table.add_row(maintainer)
-
-        if self.pager:
-            with console.pager():
-                console.print(table)
-            return
-
-        console.print(table)
 
     def print_maintainers_find(self, name):
         """Display a list of buildspec files associated to a given maintainer. This command is used when running
@@ -1208,11 +1090,40 @@ def show_buildspecs(test_names, configuration, theme=None):
             console.print(line, style="bold red")
 
 
+def show_tests_by_status(
+    configuration, status, test_names=None, report_file=None, theme=None
+):
+    """This method which will print content of
+    buildspec given test names for a desired status. The ``status`` argument can be **FAIL** or **PASS**
+    which will be used to search in report file and extract test names based on status and then determine
+    the corresponding buildspec that generated the test.
+
+    Args:
+        configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
+        status (str): Status of the tests to show ('FAIL' or 'PASS').
+        test_names (list, optional): List of test names to show content of file
+        report_file (str, optional): Full path to report file to read
+        theme (str, optional): Color theme to choose. This is the Pygments style (https://pygments.org/docs/styles/#getting-a-list-of-available-styles) which is specified by ``--theme`` option
+    """
+    results = Report(report_file=report_file, configuration=configuration)
+    all_tests = results.get_test_by_state(state=status)
+
+    if test_names:
+        for test_name in test_names:
+            if test_name not in all_tests:
+                console.print(
+                    f"[red]{test_name} is not in one of the following {status} test: {all_tests}"
+                )
+        tests = test_names
+    else:
+        tests = all_tests
+    show_buildspecs(tests, configuration, theme)
+
 def show_failed_buildspecs(
     configuration, test_names=None, report_file=None, theme=None
 ):
     """This is the entry point for ``buildtest buildspec show-fail`` command which will print content of
-    buildspec on name of all failed tests if a list of test names are not speficied
+    buildspec on name of all failed tests if a list of test names are not specified
 
     Args:
         configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class
@@ -1220,22 +1131,18 @@ def show_failed_buildspecs(
         report_file (str, optional): Full path to report file to read
         theme (str, optional): Color theme to choose. This is the Pygments style (https://pygments.org/docs/styles/#getting-a-list-of-available-styles) which is specified by ``--theme`` option
     """
-    results = Report(report_file=report_file, configuration=configuration)
-    all_failed_tests = results.get_test_by_state(state="FAIL")
+    show_tests_by_status(configuration, 'FAIL', test_names, report_file, theme)
 
-    if test_names:
-        for test_name in test_names:
-            if test_name not in all_failed_tests:
-                console.print(
-                    f"[red]{test_name} is not in one of the following failed test: {all_failed_tests}"
-                )
-        failed_tests = test_names
+def handle_exception(buildspec, exception):
+    """Handle exceptions during buildspec validation."""
+    console.rule(buildspec)
+    if isinstance(exception, BuildspecError):
+        print(exception.get_exception())
     else:
-        failed_tests = all_failed_tests
-    show_buildspecs(failed_tests, configuration, theme)
+        print(exception)
+    print("\n")
 
-
-def buildspec_validate(
+def buildspec_validate_command(
     configuration, buildspecs=None, excluded_buildspecs=None, tags=None, executors=None
 ):
     """Entry point for ``buildtest buildspec validate``. This method is responsible for discovering buildspec
@@ -1270,12 +1177,7 @@ def buildspec_validate(
             )
         except (BuildspecError, ExecutorError, ValidationError) as err:
             exception_counter += 1
-            console.rule(buildspec)
-            if isinstance(err, BuildspecError):
-                print(err.get_exception())
-            else:
-                print(err)
-            print("\n")
+            handle_exception(buildspec, err)
         else:
             console.print(f"[green]buildspec: {buildspec} is valid")
 
@@ -1493,7 +1395,7 @@ def buildspec_find(args, configuration):
 
     # buildtest buildspec find --group-by-tags
     if args.group_by_tags:
-        cache.print_by_tags()
+        cache.print_by_tags(row_count=args.row_count, count=args.count)
         return
 
     # buildtest buildspec find --helpfilter
