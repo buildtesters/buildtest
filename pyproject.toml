@@ -102,6 +102,10 @@ omit = [
 ]
 
 [tool.coverage.report]
+ignore_errors = true
+skip_empty = true
+sort = "-cover"
+precision = 2
 # Regexes for lines to exclude from consideration
 exclude_lines = [
     # Have to re-enable the standard pragma
@@ -126,10 +130,6 @@ exclude_lines = [
     'report_cmd',
     'build_history',
 ]
-ignore_errors = true
-skip_empty = true
-sort = "-cover"
-precision = 2
 
 [tool.coverage.html]
 directory = "htmlcov"

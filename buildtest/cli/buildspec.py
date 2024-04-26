@@ -11,7 +11,7 @@ from rich.layout import Layout
 from rich.panel import Panel
 from rich.pretty import pprint
 from rich.syntax import Syntax
-from rich.table import Column, Table
+from rich.table import Table
 
 from buildtest.buildsystem.parser import BuildspecParser
 from buildtest.cli.build import discover_buildspecs

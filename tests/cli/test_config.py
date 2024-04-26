@@ -143,8 +143,8 @@ def test_config_executors():
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
-        json_format=True,
-        yaml_format=False,
+        display_in_json_format=True,
+        display_in_yaml_format=False,
         disabled=False,
         invalid=False,
         all_executors=False,
@@ -154,8 +154,8 @@ def test_config_executors():
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=True,
+        display_in_json_format=False,
+        display_in_yaml_format=True,
         disabled=False,
         invalid=False,
         all_executors=False,
@@ -165,8 +165,8 @@ def test_config_executors():
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=False,
+        display_in_json_format=False,
+        display_in_yaml_format=False,
         disabled=False,
         invalid=False,
         all_executors=True,
@@ -176,8 +176,8 @@ def test_config_executors():
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=False,
+        display_in_json_format=False,
+        display_in_yaml_format=False,
         disabled=True,
         invalid=False,
     )
@@ -186,8 +186,8 @@ def test_config_executors():
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=False,
+        display_in_json_format=False,
+        display_in_yaml_format=False,
         disabled=False,
         invalid=True,
     )
@@ -196,8 +196,8 @@ def test_config_executors():
     view_executors(
         configuration=configuration,
         buildexecutor=buildexecutor,
-        json_format=False,
-        yaml_format=False,
+        display_in_json_format=False,
+        display_in_yaml_format=False,
         disabled=False,
         invalid=False,
     )
@@ -217,8 +217,8 @@ def test_disabled_invalid_executors():
     view_executors(
         configuration=configuration,
         buildexecutor=be,
-        json_format=False,
-        yaml_format=False,
+        display_in_json_format=False,
+        display_in_yaml_format=False,
         disabled=True,
         invalid=False,
     )
@@ -227,8 +227,8 @@ def test_disabled_invalid_executors():
     view_executors(
         configuration=configuration,
         buildexecutor=be,
-        json_format=False,
-        yaml_format=False,
+        display_in_json_format=False,
+        display_in_yaml_format=False,
         disabled=False,
         invalid=True,
     )
