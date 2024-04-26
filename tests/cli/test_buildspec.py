@@ -313,25 +313,21 @@ def test_buildspec_find_invalid():
     with pytest.raises(SystemExit):
         cache.print_invalid_buildspecs(error=True)
 
+    # print default table of invalid buildspecs
     with pytest.raises(SystemExit):
-        cache.print_invalid_buildspecs(error=False)
+        cache.print_invalid_buildspecs()
 
+    # show count of invalid buildspecs via --row-count
+    with pytest.raises(SystemExit):
+        cache.print_invalid_buildspecs(row_count=True)
+
+    # the --error and --terse option can't be specified together since they will impact how printing is done
     with pytest.raises(SystemExit):
         cache.print_invalid_buildspecs(error=True, terse=True)
 
+    # print in terse format
     with pytest.raises(SystemExit):
-        cache.print_invalid_buildspecs(error=False, terse=True)
-
-    with pytest.raises(SystemExit):
-        cache.print_invalid_buildspecs(error=True, terse=True, header=True)
-
-    with pytest.raises(SystemExit):
-        cache.print_invalid_buildspecs(error=False, terse=True, header=True)
-
-    cache.print_invalid_buildspecs(
-        error=False, terse=False, header=False, row_count=True
-    )
-
+        cache.print_invalid_buildspecs(terse=True)
 
 @pytest.mark.cli
 def test_edit_test():
