@@ -894,9 +894,12 @@ class BuildspecCache:
             self.print_terse_format(tdata, headers=["Maintainers"])
             return
 
-        table = self.create_table(columns=["Maintainers", "Buildspecs"], data=tdata, title="List of Maintainers")
+        table = self.create_table(
+            columns=["Maintainers", "Buildspecs"],
+            data=tdata,
+            title="List of Maintainers",
+        )
         self.print_table(table)
-
 
     def print_invalid_buildspecs(
         self, error=None, terse=None, header=None, row_count=None
