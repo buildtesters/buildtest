@@ -1232,13 +1232,17 @@ def summarize_buildspec_cache(pager, configuration, color=None):
     summary_print(configuration, color)
 
 
-def summary_print(configuration, color=None):
-    """Prints summary of buildspec cache which is run via command ``buildtest buildspec summary``
+def create_table(title, columns, data, consoleColor):
+    table = Table(title=title, header_style="blue")
+    for col in columns:
+        table.add_column(col, style=consoleColor, overflow="fold")
 
-    Args:
-        configuration (buildtest.config.SiteConfiguration): instance of type SiteConfiguration
-        color (str, optional): An instance of str, color that the summary should be printed in
-    """
+    for item, count in data.items():
+        table.add_row(item, str(len(count)))
+    return table
+
+
+def summary_print(configuration, color=None):
     cache = BuildspecCache(configuration=configuration)
     consoleColor = checkColor(color)
     msg = f"""
@@ -1247,66 +1251,37 @@ def summary_print(configuration, color=None):
     [yellow]Total Invalid Buildspecs:[/yellow]      [cyan]{len(cache.get_invalid_buildspecs())}[/cyan] 
     [yellow]Total Unique Tags:[/yellow]             [cyan]{len(cache.get_unique_tags())}[/cyan] 
     [yellow]Total Maintainers:[/yellow]             [cyan]{len(cache.get_maintainers())}[/cyan] 
-"""
-
+    """
     console.print(Panel.fit(msg))
     layout = Layout()
     layout.split_column(Layout(name="top"), Layout(name="bottom"))
-
     layout["top"].split_row(
         Layout(name="top-left"), Layout(name="top-center"), Layout(name="top-right")
     )
     layout["top"].ratio = 2
 
-    # layout['bottom'].split_row(Layout(name="bottom-left"))
-    ################ Tag Breakdown #################
-    tag_table = Table(title="Tag Breakdown", header_style="blue")
-    # tag_table.overflow="fold"
-
-    tag_table.add_column("tag", style=consoleColor, overflow="fold")
-    tag_table.add_column("total tests", style=consoleColor, overflow="fold")
-
-    tag_summary = cache.tag_breakdown()
-    for tag, tag_count in tag_summary.items():
-        tag_table.add_row(tag, str(len(tag_count)))
-
-    ################ Executor Breakdown #################
-    executor_table = Table(title="Executor Breakdown")
-    executor_table.add_column(
-        "executor", style=consoleColor, header_style="blue", overflow="fold"
+    tag_table = create_table(
+        "Tag Breakdown",
+        columns=["Tag", "Total"],
+        data=cache.tag_breakdown(),
+        consoleColor=consoleColor,
     )
-    executor_table.add_column(
-        "total tests", style=consoleColor, header_style="blue", overflow="fold"
+    executor_table = create_table(
+        "Executor Breakdown",
+        columns=["Executor", "Total"],
+        data=cache.executor_breakdown(),
+        consoleColor=consoleColor,
+    )
+    maintainer_table = create_table(
+        "Maintainers Breakdown",
+        columns=["Maintainers", "Total"],
+        data=cache.list_maintainers(),
+        consoleColor=consoleColor,
     )
 
-    executor_summary = cache.executor_breakdown()
-    for executor, executor_count in executor_summary.items():
-        executor_table.add_row(executor, str(len(executor_count)))
-
-    ################ Maintainers #################
-    maintainer_table = Table(title="Maintainers Breakdown")
-    maintainer_table.add_column(
-        "maintainers", style=consoleColor, header_style="blue", overflow="fold"
-    )
-    maintainer_table.add_column(
-        "total buildspecs", style=consoleColor, header_style="blue", overflow="fold"
-    )
-
-    for maintainer in cache.list_maintainers():
-        num_buildspecs = len(cache.cache["maintainers"][maintainer])
-        maintainer_table.add_row(maintainer, str(num_buildspecs))
-
-    buildspec_table = Table(
-        title="Test Breakdown by buildspec", show_lines=True, header_style="blue"
-    )
-    buildspec_table.add_column("Tests", style=consoleColor, overflow="fold")
-    buildspec_table.add_column("Total", style=consoleColor, overflow="fold")
-    buildspec_table.add_column("Buildspec", style=consoleColor, overflow="fold")
-
-    ################ Test Breakdown by Buildspec #################
-    buildspec_summary = cache.test_breakdown_by_buildspec()
-    for buildspec, tests in buildspec_summary.items():
-        buildspec_table.add_row("\n".join(tests), str(len(tests)), buildspec)
+    layout["top-left"].update(tag_table)
+    layout["top-center"].update(executor_table)
+    layout["top-right"].update(maintainer_table)
 
     invalid_buildspecs_table = Table(
         title="Invalid Buildspecs", show_lines=True, header_style="blue"
@@ -1314,17 +1289,11 @@ def summary_print(configuration, color=None):
     invalid_buildspecs_table.add_column(
         "Buildspecs", style=consoleColor, overflow="fold"
     )
-
     for buildspec in cache.get_invalid_buildspecs():
         invalid_buildspecs_table.add_row(buildspec)
-
-    layout["top-left"].update(tag_table)
-    layout["top-center"].update(executor_table)
-    layout["top-right"].update(maintainer_table)
     layout["bottom"].update(invalid_buildspecs_table)
 
     console.print(layout)
-    console.print(buildspec_table)
 
 
 def buildspec_maintainers(

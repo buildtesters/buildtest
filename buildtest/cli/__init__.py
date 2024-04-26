@@ -1093,7 +1093,7 @@ class BuildTestParser:
             {
                 "name": "summary",
                 "help": "Print summary of buildspec cache",
-                "parents": [self.parent_parser["theme"], self.parent_parser["pager"]],
+                "parents": [self.parent_parser["pager"]],
                 "arguments": [],
                 "aliases": ["sm"],
             },
