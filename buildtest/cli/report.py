@@ -807,8 +807,8 @@ def report_cmd(args, configuration, report_file=None):
 
     results = Report(
         configuration=configuration,
-        filter_args=args.filter,
-        format_args=args.format,
+        filter=args.filter,
+        format=args.format,
         start=args.start,
         end=args.end,
         failure=args.fail,
@@ -898,15 +898,15 @@ def report_summary(report, configuration, detailed=None, color=None):
             str(test_breakdown[k]["runs"]),
         )
     pass_results = Report(
-        filter_args={"state": "PASS"},
-        format_args="name,id,executor,state,returncode,runtime",
+        filter={"state": "PASS"},
+        format="name,id,executor,state,returncode,runtime",
         report_file=report.reportfile(),
         configuration=configuration,
     )
 
     fail_results = Report(
-        filter_args={"state": "FAIL"},
-        format_args="name,id,executor,state,returncode,runtime",
+        filter={"state": "FAIL"},
+        format="name,id,executor,state,returncode,runtime",
         report_file=report.reportfile(),
         configuration=configuration,
     )
