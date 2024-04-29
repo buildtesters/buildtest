@@ -1222,28 +1222,28 @@ class BuildTestParser:
                     ["--filterfields"],
                     {
                         "action": "store_true",
-                        "help": "Print raw Filter fields for --filter option for filtering buildspec cache output",
+                        "help": "Print raw filter fields for --filter option for filtering buildspec cache output",
                     },
                 ),
                 (
                     ["--formatfields"],
                     {
                         "action": "store_true",
-                        "help": "Print raw Format fields for --format option for formatting buildspec cache output",
+                        "help": "Print raw format fields for --format option for formatting buildspec cache output",
                     },
                 ),
                 (
                     ["--helpfilter"],
                     {
                         "action": "store_true",
-                        "help": "Show Filter fields for --filter option for filtering buildspec cache output",
+                        "help": "Show filter fields for --filter option for filtering buildspec cache output",
                     },
                 ),
                 (
                     ["--helpformat"],
                     {
                         "action": "store_true",
-                        "help": "Show Format fields for --format option for formatting buildspec cache output",
+                        "help": "Show format fields for --format option for formatting buildspec cache output",
                     },
                 ),
             ],
