@@ -88,20 +88,7 @@ class Report:
         """
         Args:
             configuration (buildtest.config.SiteConfiguration): Instance of SiteConfiguration class that is loaded buildtest configuration.
-            report_file (str, optional): Full path to report file to read
-            filter_args (str, optional): A comma separated list of Key=Value pair for filter arguments via ``buildtest report --filter``
-            format (str, optional): A comma separated list of format fields for altering report table. This is specified via ``buildtest report --format``
-            start (datetime, optional): Fetch run for all tests discovered filered by starttime. This is specified via ``buildtest report --start``
-            end (datetime, optional): Fetch run for all tests discovered filered by endtime. This is specified via ``buildtest report --end``
-            failure (bool, optional): Fetch failure run for all tests discovered. This is specified via ``buildtest report --fail``
-            passed (bool, optional): Fetch passed run for all tests discovered. This is specified via ``buildtest report --pass``
-            latest (bool, optional): Fetch latest run for all tests discovered. This is specified via ``buildtest report --latest``
-            oldest (bool, optional): Fetch oldest run for all tests discovered. This is specified via ``buildtest report --oldest``
-            count (int, optional): Fetch limited number of rows get printed for all tests discovered. This is specified via ``buildtest report --count``
-            pager (bool, optional): Enabling PAGING output for ``buildtest report``. This can be specified via ``buildtest report --pager``
-            format_detailed(bool, optional): Print a detailed summary of the test results. This can be specified via ``buildtest report --detailed``
-            color (str, optional): An instance of a string class that tells print_report what color the output should be printed in.
-
+            **kwargs: Arbitrary keyword arguments. This will set report parameters for report class.
         """
         self.configuration = configuration
         self.set_report_parameters(**kwargs)
@@ -128,10 +115,8 @@ class Report:
         self.color = kwargs.get("color")
         self.count = kwargs.get("count")
         self.detailed = kwargs.get("detailed")
-        self.input_report = kwargs.get("report_file")
-        self._reportfile = (
-            resolve_path(self.input_report) if self.input_report else BUILD_REPORT
-        )
+        input_report = kwargs.get("report_file")
+        self._reportfile = resolve_path(input_report) if input_report else BUILD_REPORT
 
         # if detailed option is specified
         if self.detailed:
@@ -561,8 +546,9 @@ class Report:
             )
 
         # print_report method can specify count argument instead of calling the Report class which is useful for regression test. Therefore if its specified
-        # in method then use the value
-        self.count = count or self.count
+        # in method then use the value. Note if `--count=0` is specified we need to use the or condition otherwise it will not evaluate condition to True
+        if count or count == 0:
+            self.count = count
 
         terse = (
             self.configuration.target_config["report"].get("terse")
@@ -870,6 +856,7 @@ def report_cmd(args, configuration, report_file=None):
         row_count=args.row_count,
         noheader=args.no_header,
         color=consoleColor,
+        count=args.count,
     )
 
 

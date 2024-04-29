@@ -6,6 +6,7 @@ import tempfile
 import pytest
 from rich.color import Color
 
+from buildtest.cli.build import BuildTest
 from buildtest.cli.report import (
     Report,
     clear_report,
@@ -32,6 +33,11 @@ def test_report():
 
     result.print_report()
 
+    # buildtest report --count 0
+    result.print_report(count=-1)
+    # buildtest report --count 0 --terse
+    result.print_report(count=-1, terse=True)
+
     # run 'buildtest --color <Color> report --format name,state,returncode,buildspec --terse'
     result.print_report(terse=True, color=Color.default().name)
 
@@ -42,7 +48,6 @@ def test_report():
         configuration=configuration, format="name,state,returncode,buildspec"
     )
     result.print_report()
-
     result = Report(configuration, pager=True)
     result.print_report()
     result = Report(configuration, color="red")
@@ -136,6 +141,22 @@ def test_report_filter():
         },
         format="name,returncode,state,executor,tags",
     )
+
+
+def test_report_with_metrics():
+    buildspecs = [
+        os.path.join(BUILDTEST_ROOT, "tutorials", "perf_checks", "assert_ge.yml")
+    ]
+    build_cmd = BuildTest(configuration=configuration, buildspecs=buildspecs)
+    build_cmd.build()
+
+    # see if metrics are printed properly
+    cmd = Report(
+        configuration=configuration,
+        filter={"buildspec": buildspecs[0]},
+        format="name,metrics",
+    )
+    cmd.print_report()
 
 
 @pytest.mark.cli
