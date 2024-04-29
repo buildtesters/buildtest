@@ -63,8 +63,7 @@ def print_builders(report):
         report (str): Path to report file
     """
 
-    builders = report.builder_names()
-    for name in builders:
+    for name in report.builder_names():
         console.print(name)
 
 
@@ -110,8 +109,8 @@ def inspect_list(
         pager (bool, optional): Print output in paging format
         row_count (bool, optional): Print total number of test runs
     """
-    consoleColor = checkColor(color)
 
+    consoleColor = checkColor(color)
     test_ids = report._testid_lookup()
 
     if row_count:

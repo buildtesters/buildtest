@@ -118,6 +118,12 @@ def query_builds(build_id, log_option=None, output=None, pager=None):
 
 
 def create_history_table(table, consoleColor):
+    """This method creates a rich Table object for displaying build history in tabular format
+
+    Args:
+        table (dict): A dictionary containing keys and values for each column in table
+        consoleColor (str): Color for console output
+    """
     history_table = Table(
         header_style="blue", show_lines=True, row_styles=[consoleColor]
     )
